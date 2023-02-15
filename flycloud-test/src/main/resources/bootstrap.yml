@@ -1,0 +1,9 @@
+server:
+  port: 8099
+  servlet:
+    context-path: /flycloudTestServer
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: @profiles.active@

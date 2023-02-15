@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/flycloud-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-code/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-mall/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-music/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-test/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-user/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

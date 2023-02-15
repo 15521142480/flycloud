@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="flycloud-user" />
+        <module name="flycloud-common-code" />
+        <module name="flycloud-api-system" />
+        <module name="flycloud-generator" />
+        <module name="flycloud-system" />
+        <module name="flycloud-test" />
+        <module name="flycloud-gateway" />
+        <module name="flycloud-mall" />
+        <module name="flycloud-api" />
+        <module name="flycloud-auth" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="flycloud-api-system" target="1.8" />
+      <module name="flycloud-server-gateway" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="flycloud-auth" options="" />
+      <module name="flycloud-gateway" options="" />
+      <module name="flycloud-generator" options="" />
+      <module name="flycloud-mall" options="" />
+      <module name="flycloud-system" options="" />
+      <module name="flycloud-test" options="" />
+      <module name="flycloud-user" options="" />
+    </option>
+  </component>
+</project>
