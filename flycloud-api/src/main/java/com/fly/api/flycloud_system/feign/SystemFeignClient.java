@@ -42,6 +42,7 @@ public interface SystemFeignClient {
     }*/
 
 
+
     @GetMapping(value = "/feign/system/getUserInfo")
     String getUserInfo(@RequestParam("id") int id);
 

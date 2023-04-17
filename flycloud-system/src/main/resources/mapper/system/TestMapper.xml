@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.system.mapper.TestMapper">
+
+
+    <select id="selectUserList" resultType="com.fly.system.domain.User">
+        select
+            uuid as uuid,
+            user_name as userName,
+            nick_name as nickName,
+            password as password,
+            phone as phone,
+            e_mail as Email,
+            status as status,
+            sys_type as sysType,
+            tenant_id as tenantId,
+            is_admin as isAdmin,
+            is_admin as isAdmin,
+            create_time as createTime,
+            update_time as updateTime
+        from user
+    </select>
+
+</mapper>

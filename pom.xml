@@ -51,7 +51,6 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <nacos.version>2.1.1</nacos.version>
         <aliyun.oss.version>3.8.0</aliyun.oss.version>
-        <dameng.version>8.1.2.79</dameng.version>
         <aliyun.dysmsapi.version>2.0.18</aliyun.dysmsapi.version>
         <tencentcloud.sdk.version>3.1.574</tencentcloud.sdk.version>
         <qiniu.version>7.11.0</qiniu.version>
@@ -61,6 +60,7 @@
         <oshi.version>6.2.2</oshi.version>
         <easyexcel.version>3.1.1</easyexcel.version>
         <easytrans.version>2.0.12</easytrans.version>
+        <fastjson.version>1.2.67</fastjson.version>
     </properties>
 
 
@@ -187,12 +187,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.dameng</groupId>
-                <artifactId>DmJdbcDriver18</artifactId>
-                <version>${dameng.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>dysmsapi20170525</artifactId>
                 <version>${aliyun.dysmsapi.version}</version>
@@ -250,6 +244,12 @@
                 <groupId>com.fhs-opensource</groupId>
                 <artifactId>easy-trans-mybatis-plus-extend</artifactId>
                 <version>${easytrans.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
 
         </dependencies>

@@ -10,9 +10,11 @@
         <module name="flycloud-user" />
         <module name="flycloud-common-code" />
         <module name="flycloud-api-system" />
+        <module name="flycloud-common-database" />
         <module name="flycloud-generator" />
         <module name="flycloud-system" />
         <module name="flycloud-test" />
+        <module name="flycloud-common-security" />
         <module name="flycloud-gateway" />
         <module name="flycloud-mall" />
         <module name="flycloud-api" />

@@ -26,11 +26,11 @@
             <artifactId>flycloud-common-code</artifactId>
             <version>${revision}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>net.maku</groupId>-->
-<!--            <artifactId>maku-cloud-mybatis</artifactId>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-database</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
 
         <!--注册中心客户端-->
