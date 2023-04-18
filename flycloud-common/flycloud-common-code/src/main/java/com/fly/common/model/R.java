@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 响应信息主体
  *
  * @param <T>
- * @author ygnet
+ * @author lxs
  */
 @ToString
 @AllArgsConstructor

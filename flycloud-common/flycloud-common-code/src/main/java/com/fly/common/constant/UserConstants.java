@@ -3,7 +3,7 @@ package com.fly.common.constant;
 /**
  * 用户常量信息
  *
- * @author ruoyi
+ * @author lxs
  */
 public interface UserConstants {
 

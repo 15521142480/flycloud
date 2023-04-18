@@ -21,8 +21,7 @@ package com.fly.common.model;
  * REST API 响应码
  * </p>
  *
- * @author geekidea
- * @since 2018-11-08
+ * @author lxs
  */
 public enum ApiCode {
 

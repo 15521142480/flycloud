@@ -1,11 +1,15 @@
 package com.fly.system.controller;
 
+import com.fly.common.database.domain.vo.PageVo;
 import com.fly.common.model.R;
 import com.fly.system.domain.User;
+import com.fly.system.domain.dto.UserDto;
+import com.fly.system.domain.vo.UserVo;
 import com.fly.system.service.TestService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,13 +30,32 @@ public class TestController {
 
 
     /**
+     * 获取用户分页列表
+     */
+    @GetMapping("/getUserPageList")
+    public R<PageVo<UserVo>> getUserPageList(UserDto userDto) {
+
+        return R.ok(testService.getUserPageList(userDto));
+    }
+
+
+    /**
      * 获取用户列表
      */
     @GetMapping("/getUserList")
-    public R<List<User>> getUserList() {
+    public R<List<UserVo>> getUserList() {
 
         return R.ok(testService.getUserList());
     }
 
+
+    /**
+     * 获取用户信息
+     */
+    @GetMapping("/getUserInfo")
+    public R<UserVo> getUserInfo(@RequestParam(required = true) int uuid) {
+
+        return R.ok(testService.getUserInfo(uuid));
+    }
 
 }

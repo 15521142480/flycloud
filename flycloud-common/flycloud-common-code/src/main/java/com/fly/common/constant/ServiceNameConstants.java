@@ -3,8 +3,7 @@
 package com.fly.common.constant;
 
 /**
- * @author ygnet
- * @date 2018年06月22日16:41:01
+ * @author lxs
  * 服务名称
  */
 public interface ServiceNameConstants {

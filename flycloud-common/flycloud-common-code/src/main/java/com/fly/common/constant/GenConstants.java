@@ -3,7 +3,7 @@ package com.fly.common.constant;
 /**
  * 代码生成通用常量
  *
- * @author ruoyi
+ * @author lxs
  */
 public interface GenConstants {
     /**

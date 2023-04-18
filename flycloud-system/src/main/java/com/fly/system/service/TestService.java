@@ -1,6 +1,8 @@
 package com.fly.system.service;
 
-import com.fly.system.domain.User;
+import com.fly.common.database.domain.vo.PageVo;
+import com.fly.system.domain.dto.UserDto;
+import com.fly.system.domain.vo.UserVo;
 
 import java.util.List;
 
@@ -14,13 +16,13 @@ public interface TestService {
 
 
 
-    List<User> getUserPageList();
+    PageVo<UserVo> getUserPageList(UserDto userDto);
 
 
-    List<User> getUserList();
+    List<UserVo> getUserList();
 
 
-    User getUserInfo();
+    UserVo getUserInfo(int uuid);
 
 
 }

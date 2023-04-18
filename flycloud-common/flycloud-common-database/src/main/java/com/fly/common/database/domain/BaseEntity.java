@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Entity基类
  *
- * @author Lion Li
+ * @author lxs
  */
 
 @Data

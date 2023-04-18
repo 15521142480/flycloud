@@ -15,10 +15,10 @@ import java.util.Set;
 /**
  * 字符串工具类
  *
- * @author Lion Li
+ * @author lxs
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 获取参数不为空值

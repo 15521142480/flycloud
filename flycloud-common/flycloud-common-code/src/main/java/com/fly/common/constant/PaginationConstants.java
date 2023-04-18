@@ -2,8 +2,7 @@ package com.fly.common.constant;
 
 /**
  * 分页相关的参数
- * @author lishangbu
- * @date 2018/11/22
+ * @author lxs
  */
 public interface PaginationConstants {
 	/**

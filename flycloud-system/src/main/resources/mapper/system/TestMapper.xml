@@ -5,14 +5,15 @@
 <mapper namespace="com.fly.system.mapper.TestMapper">
 
 
-    <select id="selectUserList" resultType="com.fly.system.domain.User">
+
+    <select id="selectUserPageList" resultType="com.fly.system.domain.vo.UserVo">
         select
             uuid as uuid,
             user_name as userName,
             nick_name as nickName,
             password as password,
             phone as phone,
-            e_mail as Email,
+            email as email,
             status as status,
             sys_type as sysType,
             tenant_id as tenantId,
@@ -21,6 +22,55 @@
             create_time as createTime,
             update_time as updateTime
         from user
+        <where>
+            <if test="dto.userName != null and dto.userName != ''">
+                and user_name like concat('%', #{dto.userName}, '%')
+            </if>
+            <if test="dto.nickName != null and dto.nickName != ''">
+                and nick_name = #{dto.nickName}
+            </if>
+        </where>
     </select>
+
+
+    <select id="selectUserList" resultType="com.fly.system.domain.vo.UserVo">
+        select
+            uuid as uuid,
+            user_name as userName,
+            nick_name as nickName,
+            password as password,
+            phone as phone,
+            email as email,
+            status as status,
+            sys_type as sysType,
+            tenant_id as tenantId,
+            is_admin as isAdmin,
+            is_admin as isAdmin,
+            create_time as createTime,
+            update_time as updateTime
+        from user
+        limit 5
+    </select>
+
+
+    <select id="selectUserInfo" resultType="com.fly.system.domain.vo.UserVo">
+        select
+            uuid as uuid,
+            user_name as userName,
+            nick_name as nickName,
+            password as password,
+            phone as phone,
+            email as email,
+            status as status,
+            sys_type as sysType,
+            tenant_id as tenantId,
+            is_admin as isAdmin,
+            is_admin as isAdmin,
+            create_time as createTime,
+            update_time as updateTime
+        from user
+        where uuid = #{uuid}
+    </select>
+
 
 </mapper>

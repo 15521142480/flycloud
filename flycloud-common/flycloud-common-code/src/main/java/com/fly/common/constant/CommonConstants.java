@@ -3,8 +3,7 @@
 package com.fly.common.constant;
 
 /**
- * @author ygnet
- * @date 2017/10/29
+ * @author lxs
  */
 public interface CommonConstants {
 

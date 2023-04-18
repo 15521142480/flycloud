@@ -3,7 +3,7 @@ package com.fly.common.constant;
 /**
  * 缓存的key 常量
  *
- * @author ruoyi
+ * @author lxs
  */
 public interface CacheConstants {
 

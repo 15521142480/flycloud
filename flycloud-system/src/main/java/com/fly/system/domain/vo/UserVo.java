@@ -1,6 +1,5 @@
-package com.fly.system.domain;
+package com.fly.system.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,8 +11,7 @@ import java.util.Date;
  * @date 2023/4/17
  */
 @Data
-@TableName("user")
-public class User {
+public class UserVo {
 
     private int uuid;
     private String userName;

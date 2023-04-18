@@ -20,7 +20,7 @@ public class PageVo<T> implements Serializable {
     /**
      * 总页数
      */
-    private Integer pages;
+    private Long pages;
 
     /**
      * 总条目数
