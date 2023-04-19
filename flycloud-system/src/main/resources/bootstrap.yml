@@ -18,8 +18,14 @@ spring:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yaml
         namespace: @nacos.namespace@
-        shared-configs:
-          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
         username: ${spring.cloud.nacos.discovery.username}
         password: ${spring.cloud.nacos.discovery.password}
+
+        extension-configs:
+          - data-id: application-common.yaml
+            refresh: true
+
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
 

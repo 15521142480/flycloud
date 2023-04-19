@@ -19,6 +19,7 @@
         <module>flycloud-common-code</module>
         <module>flycloud-common-database</module>
         <module>flycloud-common-security</module>
+        <module>flycloud-common-doc</module>
     </modules>
 
 </project>

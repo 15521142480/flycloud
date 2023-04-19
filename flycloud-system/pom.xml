@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-code</artifactId>
+            <artifactId>flycloud-common-doc</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
@@ -31,7 +31,6 @@
             <artifactId>flycloud-common-database</artifactId>
             <version>${revision}</version>
         </dependency>
-
 
         <!--注册中心客户端-->
         <dependency>
@@ -43,10 +42,10 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-bootstrap</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
@@ -69,10 +68,7 @@
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-springdoc-ui</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
@@ -93,6 +89,17 @@
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
         </dependency>
+
+        <!--接口文档-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-core</artifactId>
+        </dependency>
+
     </dependencies>
 
 

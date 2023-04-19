@@ -43,9 +43,10 @@
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
 
         <mybatisplus.version>3.5.2</mybatisplus.version>
-        <knife4j.version>3.0.3</knife4j.version>
+
         <springdoc.version>1.6.8</springdoc.version>
-<!--        <hutool.version>5.7.22</hutool.version>-->
+        <swagger-core.version>2.2.8</swagger-core.version>
+
         <hutool.version>5.5.8</hutool.version>
         <captcha.version>1.6.2</captcha.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
@@ -103,14 +104,12 @@
                 <version>${mybatisplus.version}</version>
             </dependency>
 
-            <!-- knife4j -->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-springdoc-ui</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-
             <!-- springDoc -->
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-core.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-webmvc-core</artifactId>
@@ -118,12 +117,18 @@
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
+                <artifactId>springdoc-openapi-javadoc</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webflux-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webflux-ui</artifactId>
+                <artifactId>springdoc-openapi-webflux-core</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
 
