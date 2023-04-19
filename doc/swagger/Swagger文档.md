@@ -11,7 +11,7 @@
 
 
 > 使用方法2 (使用第三方工具):
-> 由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/v3/api-docs/`, 如: http://localhost:8080/v3/api-docs/
+> 由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
 > ![img.png](img.png)
 
 

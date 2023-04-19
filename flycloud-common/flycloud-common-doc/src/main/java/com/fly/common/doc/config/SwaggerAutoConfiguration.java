@@ -37,6 +37,16 @@ public class SwaggerAutoConfiguration {
 
     private final ServiceInstance serviceInstance;
 
+
+
+    /**
+     * 设值 OpenAPI 信息
+     *
+     * openAPI.servers 的作用即 swagger-ui页面的Servers, 代表着接口请求服务的url前缀, 如 http://localhost:8080/flycloud-system
+     *
+     * 还可设值 oauth2 password 等安全信息
+     *
+     */
     @Bean
     public OpenAPI springOpenAPI() {
 
@@ -59,7 +69,11 @@ public class SwaggerAutoConfiguration {
         return openAPI;
     }
 
-    // 全局添加token
+
+    /**
+     * 全局添加token
+     *
+     */
     private SecurityScheme securityScheme() {
 
         SecurityScheme securityScheme = new SecurityScheme();

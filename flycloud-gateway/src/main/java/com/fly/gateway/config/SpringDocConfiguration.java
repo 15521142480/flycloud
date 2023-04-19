@@ -31,6 +31,18 @@ public class SpringDocConfiguration {
     private final RouteDefinitionLocator locator;
 
 
+    /**
+     * todo 分组文档OpenAPI (手动)
+     *
+     * 启动每个微服务都是一个个独立文档, swagger称之为一个个组名, 即 组名=服务名
+     * 通过把当前服务的组名放到 swaggerUiConfigParameters.addGroup 中, 即添加到对应swagger-ui页面 definition 的下拉选项)
+     *
+     * 一旦您启动每个微服务，它将公开端点/v3/api-docs, 由上诉swagger设置好组名后, 其 OpenAPI 的url是 资源/v3/api-docs/{SERVICE_NAME} ，例如 http://localhost:8080/v3/api-docs/flycloud-system ,
+     * 但这样的链接无法被网关识别, 本方案是在网关处理, 先将请求地址重写: /v3/api-docs/{SERVICE_NAME} 重写为 /{SERVICE_NAME}/v3/api-docs, 把重写后的地址代理到目标路由:  网关端口 + /{SERVICE_NAME}/v3/api-docs ,
+     * 如 得到代理后的地址: http://localhost:8080/flycloud-system/v3/api-docs
+     *
+     *
+     */
     @Bean
     @Lazy(false)
     @ConditionalOnProperty(name = "springdoc.api-docs.enabled", matchIfMissing = true)
@@ -45,6 +57,22 @@ public class SpringDocConfiguration {
         }
         return groups;
     }
+
+
+    /**
+     * 分组文档OpenAPI (自动; 即 读取gateway的路由配置，截取服务前缀)
+     *
+     */
+//    @Bean
+//    public List<GroupedOpenApi> apis() {
+//        List<GroupedOpenApi> groups = new ArrayList<>();
+//        List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
+//        definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-service")).forEach(routeDefinition -> {
+//            String name = routeDefinition.getId().replaceAll("-service", "");
+//            GroupedOpenApi.builder().pathsToMatch("/" + name + "/**").setGroup(name).build();
+//        });
+//        return groups;
+//    }
 
 
 
