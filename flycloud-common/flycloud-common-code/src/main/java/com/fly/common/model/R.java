@@ -21,15 +21,23 @@ import java.io.Serializable;
 public class R<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 响应code
+	 */
 	@Getter
 	@Setter
 	private int code;
 
+	/**
+	 * 响应消息
+	 */
 	@Getter
 	@Setter
 	private String msg;
 
-
+	/**
+	 * 响应数据
+	 */
 	@Getter
 	@Setter
 	private T data;

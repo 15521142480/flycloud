@@ -15,12 +15,36 @@ import java.util.Date;
 @TableName("user")
 public class User {
 
+    /**
+     * uuid 用户唯一id
+     */
     private int uuid;
+
+    /**
+     * 姓名
+     */
     private String userName;
+
+    /**
+     * 昵称
+     */
     private String nickName;
+
+    /**
+     * 密码
+     */
     private String password;
+
+    /**
+     * 电话
+     */
     private String phone;
+
+    /**
+     * email
+     */
     private String email;
+
     private int status;
     private int sysType;
     private int tenantId;

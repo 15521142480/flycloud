@@ -1,0 +1,101 @@
+
+# spring 配置
+spring:
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 1000MB
+      # 设置总上传的文件大小
+      max-request-size: 5000MB
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+  #jackson配置
+  jackson:
+    # 日期格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      # 格式化输出
+      INDENT_OUTPUT: false
+      # 忽略无法转换的对象
+      fail_on_empty_beans: false
+    deserialization:
+      # 允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
+  cloud:
+    # sentinel 配置
+    # sentinel:
+    #   # sentinel 开关
+    #   enabled: true
+    #   # 取消控制台懒加载
+    #   eager: true
+    #   transport:
+    #     # dashboard控制台服务名 用于服务发现
+    #     # 如无此配置将默认使用下方 dashboard 配置直接注册
+    #     server-name: ruoyi-sentinel-dashboard
+    #     # 客户端指定注册的ip 用于多网卡ip不稳点使用
+    #     # client-ip:
+    #     # 控制台地址 从1.3.0开始使用 server-name 注册
+    #     # dashboard: localhost:8718
+
+  # redis通用配置 子服务可以自行配置进行覆盖
+  # redis:
+  #   host: 106.15.42.115
+  #   port: 6379
+  #   # 密码(如没有密码请注释掉)
+  #   # password:
+  #   database: 0
+  #   timeout: 10s
+  #   ssl: false
+
+
+# redisson 配置
+# redisson:
+#   # redis key前缀
+#   keyPrefix:
+#   # 线程池数量
+#   threads: 4
+#   # Netty线程池数量
+#   nettyThreads: 8
+#   # 单节点配置
+#   singleServerConfig:
+#     # 客户端名称
+#     clientName: ${spring.application.name}
+#     # 最小空闲连接数
+#     connectionMinimumIdleSize: 8
+#     # 连接池大小
+#     connectionPoolSize: 32
+#     # 连接空闲超时，单位：毫秒
+#     idleConnectionTimeout: 10000
+#     # 命令等待超时，单位：毫秒
+#     timeout: 3000
+#     # 发布和订阅连接池大小
+#     subscriptionConnectionPoolSize: 50
+    
+
+# springdoc 配置
+springdoc:
+  api-docs:
+    # 是否开启接口文档
+    enabled: true
+  swagger-ui:
+    # 持久化认证数据
+    persistAuthorization: true
+
+
+# swagger 配置
+swagger:
+  enabled: true
+  title: Fly Swagger API
+  gateway: http://localhost:8080
+  token-url: ${swagger.gateway}/auth/oauth/token
+  scope: server
+  services:
+    flycloud-gateway: flycloud-gateway
+    flycloud-system: flycloud-system
+    flycloud-mall: flycloud-mall
