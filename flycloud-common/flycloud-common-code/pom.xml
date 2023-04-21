@@ -68,6 +68,12 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+        </dependency>
+
+
         <!-- 分布式事务 -->
 <!--        <dependency>-->
 <!--            <groupId>io.seata</groupId>-->

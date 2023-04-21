@@ -7,7 +7,7 @@
     <artifactId>flycloud-server</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <version>1.0.0</version>
-<!--    <version>${revision}</version>-->
+    <!--    <version>${revision}</version>-->
     <packaging>pom</packaging>
 
 
@@ -45,11 +45,14 @@
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
 
         <mybatisplus.version>3.5.2</mybatisplus.version>
+        <velocity.version>2.3</velocity.version>
 
         <springdoc.version>1.6.8</springdoc.version>
         <swagger-core.version>2.2.8</swagger-core.version>
+        <dynamic-ds.version>3.5.2</dynamic-ds.version>
+        <p6spy.version>3.9.1</p6spy.version>
 
-        <hutool.version>5.5.8</hutool.version>
+        <hutool.version>5.8.15</hutool.version>
         <captcha.version>1.6.2</captcha.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <nacos.version>2.1.1</nacos.version>
@@ -61,6 +64,7 @@
         <qcloud.cos.version>5.6.89</qcloud.cos.version>
         <huaweicloud.obs.version>3.22.3</huaweicloud.obs.version>
         <oshi.version>6.2.2</oshi.version>
+        <poi.version>5.2.3</poi.version>
         <easyexcel.version>3.1.1</easyexcel.version>
         <easytrans.version>2.0.12</easytrans.version>
         <fastjson.version>1.2.67</fastjson.version>
@@ -104,6 +108,24 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatisplus.version}</version>
+            </dependency>
+            <!-- 代码生成使用模板 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+            <!-- Dynamic DataSource -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-ds.version}</version>
+            </dependency>
+            <!-- sql性能分析插件 -->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
             </dependency>
 
             <!-- springDoc -->
@@ -165,26 +187,13 @@
                 <version>${nacos.version}</version>
             </dependency>
 
-            <!-- hutool -->
-<!--            <dependency>-->
-<!--                <groupId>cn.hutool</groupId>-->
-<!--                <artifactId>hutool-all</artifactId>-->
-<!--                <version>${hutool.version}</version>-->
-<!--            </dependency>-->
+            <!-- hutool 的依赖配置-->
             <dependency>
                 <groupId>cn.hutool</groupId>
-                <artifactId>hutool-core</artifactId>
+                <artifactId>hutool-bom</artifactId>
                 <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-crypto</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-http</artifactId>
-                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -257,6 +266,29 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- 工具依赖 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.poi</groupId>
+                        <artifactId>poi-ooxml-schemas</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
         </dependencies>
@@ -370,6 +402,7 @@
                     <encoding>${project.encoding}</encoding>
                 </configuration>
             </plugin>
+
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${maven-resources-plugin.version}</version>
@@ -378,9 +411,17 @@
                 </configuration>
             </plugin>
         </plugins>
+
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <!-- 引入所有 匹配文件进行过滤 -->
+                <includes>
+                    <include>application*</include>
+                    <include>bootstrap*</include>
+                    <include>logback*</include>
+                </includes>
+                <!-- 启用过滤 即该资源中的变量将会被过滤器中的值替换 -->
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -395,8 +436,21 @@
             <properties>
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
-                <!--https://github.com/alibaba/nacos/issues/3460  默认的命名空间不要去设置namespace -->
+
+                <!-- nacos注册地址 -->
+                <nacos.server>106.15.42.115:8848</nacos.server>
+
+                <!--
+                    nacos命名空间 https://github.com/alibaba/nacos/issues/3460
+                    默认的命名空间不要去设置namespace
+                    如有命名空间namespace字段的值必须是命名空间ID
+                -->
                 <nacos.namespace/>
+
+                <!-- nacos分组 (分组的概念是: 两个配置文件名称可以相同,但所属的分组一定要不同) -->
+                <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
+                <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
+
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -407,14 +461,18 @@
             <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
-                <nacos.namespace>x</nacos.namespace>
+                <nacos.server>106.15.42.115:8848</nacos.server>
+                <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
+                <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <nacos.namespace>x</nacos.namespace>
+                <nacos.server>106.15.42.115:8848</nacos.server>
+                <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
+                <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
             </properties>
         </profile>
     </profiles>

@@ -4,7 +4,7 @@ server:
 #    context-path: /flycloudSystemServer
 spring:
   application:
-    name: @artifactId@
+    name: "@artifactId@"
   profiles:
     active: @profiles.active@
   cloud:
@@ -17,12 +17,14 @@ spring:
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yaml
-        namespace: @nacos.namespace@
+        namespace: "@nacos.namespace@"
         username: ${spring.cloud.nacos.discovery.username}
         password: ${spring.cloud.nacos.discovery.password}
 
         extension-configs:
           - data-id: application-common.yaml
+            refresh: true
+          - data-id: application-datasource.yaml
             refresh: true
 
         shared-configs:

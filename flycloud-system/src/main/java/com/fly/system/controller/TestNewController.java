@@ -2,7 +2,6 @@ package com.fly.system.controller;
 
 import com.fly.common.database.domain.vo.PageVo;
 import com.fly.common.model.R;
-import com.fly.system.domain.User;
 import com.fly.system.domain.dto.UserDto;
 import com.fly.system.domain.vo.UserVo;
 import com.fly.system.service.TestService;
@@ -23,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/test")
 @AllArgsConstructor
-public class TestController {
+public class TestNewController {
 
 
     private final TestService testService;

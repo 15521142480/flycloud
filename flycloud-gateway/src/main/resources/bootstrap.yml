@@ -4,7 +4,7 @@ server:
 spring:
 
   application:
-    name: @artifactId@      # 应用的名称, 在spring cloud中被用来注册的服务名
+    name: "@artifactId@"      # 应用的名称, 在spring cloud中被用来注册的服务名
 
   profiles:
     active: @profiles.active@
@@ -18,7 +18,7 @@ spring:
       discovery:
         server-addr: ${nacos_host:106.15.42.115}:${nacos_port:8848}
         # 命名空间，默认：public
-        namespace: @nacos.namespace@
+        namespace: "@nacos.namespace@"
         service: ${spring.application.name}
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
@@ -29,7 +29,7 @@ spring:
         extension-configs:
           - data-id: application-common.yaml
             refresh: true
-#          - data-id: datasource.yaml
+#          - data-id: application-datasource.yaml
 #            refresh: true
 
         # 共享配置; 动态配置, 即: ${prefix}-${spring.profiles.active}.${file-extension}, 如此项目读取的配置为: flycloud-gateway_dev.yaml

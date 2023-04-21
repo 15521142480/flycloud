@@ -143,8 +143,7 @@ public class BeanCopyUtils {
      * BeanCopier属性缓存<br>
      * 缓存用于防止多次反射造成的性能问题
      *
-     * @author Looly
-     * @since 5.4.1
+     * @author lxs
      */
     public enum BeanCopierCache {
         /**

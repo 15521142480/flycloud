@@ -20,6 +20,7 @@
         <module>flycloud-common-database</module>
         <module>flycloud-common-security</module>
         <module>flycloud-common-doc</module>
+        <module>flycloud-common-seata</module>
     </modules>
 
 </project>
