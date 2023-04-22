@@ -1,0 +1,112 @@
+package ${packageName}.controller;
+
+import com.fly.common.validate.AddGroup;
+import com.fly.common.validate.EditGroup;
+import com.fly.common.database.web.controller.BaseController;
+import com.fly.common.utils.ExcelUtil;
+import com.fly.common.annotation.Log;
+import com.fly.common.enums.BusinessType;
+import com.fly.common.model.R;
+import com.fly.common.database.web.domain.vo.PageVo;
+import com.fly.common.database.web.domain.bo.PageBo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import ${packageName}.domain.vo.${ClassName}Vo;
+import ${packageName}.domain.bo.${ClassName}Bo;
+import ${packageName}.service.I${ClassName}Service;
+#if($table.crud || $table.sub)
+#elseif($table.tree)
+#end
+
+import java.util.List;
+import java.util.Arrays;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * ${functionName}控制器
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Validated
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/${businessName}")
+public class ${ClassName}Controller extends BaseController {
+
+    private final I${ClassName}Service i${ClassName}Service;
+
+
+    /**
+     * 查询${functionName}列表
+     */
+##    @SaCheckPermission("${permissionPrefix}:list")
+    @GetMapping("/list")
+#if($table.crud || $table.sub)
+    public R<PageVo<${ClassName}Vo>> list(${ClassName}Bo bo, PageBo page) {
+        return R.ok(i${ClassName}Service.queryPageList(bo, page));
+    }
+#elseif($table.tree)
+    public R<List<${ClassName}Vo>> list(${ClassName}Bo bo) {
+        List<${ClassName}Vo> list = i${ClassName}Service.queryList(bo);
+        return R.ok(list);
+    }
+#end
+
+
+    /**
+     * 导出${functionName}列表
+     */
+    @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(${ClassName}Bo bo, HttpServletResponse response) {
+        List<${ClassName}Vo> list = i${ClassName}Service.queryList(bo);
+        ExcelUtil.exportExcel(list, "${functionName}", ${ClassName}Vo.class, response);
+    }
+
+
+    /**
+     * 获取${functionName}详细信息
+     *
+     * @param ${pkColumn.javaField} 主键
+     */
+    @GetMapping("/{${pkColumn.javaField}}")
+    public R<${ClassName}Vo> getInfo(@NotNull(message = "主键不能为空") @PathVariable ${pkColumn.javaType} ${pkColumn.javaField}) {
+        return R.ok(i${ClassName}Service.queryById(${pkColumn.javaField}));
+    }
+
+
+    /**
+     * 新增${functionName}
+     */
+    @Log(title = "${functionName}", businessType = BusinessType.INSERT)
+    @PostMapping()
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody ${ClassName}Bo bo) {
+        return R.ok(i${ClassName}Service.insertByBo(bo));
+    }
+
+
+    /**
+     * 修改${functionName}
+     */
+    @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
+    @PutMapping()
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Bo bo) {
+        return R.ok(i${ClassName}Service.updateByBo(bo));
+    }
+
+
+    /**
+     * 删除${functionName}
+     *
+     * @param ${pkColumn.javaField}s 主键串
+     */
+    @Log(title = "${functionName}", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{${pkColumn.javaField}s}")
+    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
+        return R.ok(i${ClassName}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s), true));
+    }
+}

@@ -1,6 +1,6 @@
 //package com.fly.common.database.handler;
 //
-//import com.ruoyi.common.core.domain.R;
+//import com.fly.common.core.domain.R;
 //import lombok.extern.slf4j.Slf4j;
 //import org.mybatis.spring.MyBatisSystemException;
 //import org.springframework.dao.DuplicateKeyException;

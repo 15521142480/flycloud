@@ -6,10 +6,10 @@
 //import com.fly.common.database.domain.BaseEntity;
 //import com.fly.common.exception.ServiceException;
 //import com.fly.common.utils.StringUtils;
-//import com.ruoyi.common.core.exception.ServiceException;
-//import com.ruoyi.common.core.utils.StringUtils;
-//import com.ruoyi.common.core.web.domain.BaseEntity;
-//import com.ruoyi.common.satoken.utils.LoginHelper;
+//import com.fly.common.core.exception.ServiceException;
+//import com.fly.common.core.utils.StringUtils;
+//import com.fly.common.core.web.domain.BaseEntity;
+//import com.fly.common.satoken.utils.LoginHelper;
 //import com.ruoyi.system.api.model.LoginUser;
 //import lombok.extern.slf4j.Slf4j;
 //import org.apache.ibatis.reflection.MetaObject;

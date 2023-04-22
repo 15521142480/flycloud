@@ -1,9 +1,7 @@
 package com.fly.generator.mapper;
 
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
-import com.fly.common.database.mapper.BaseMapperPlus;
+import com.fly.common.database.web.mapper.BaseMapperPlus;
 import com.fly.generator.domain.GenTableColumn;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -13,8 +11,9 @@ import java.util.List;
  * @author lxs
  */
 //@InterceptorIgnore(dataPermission = "true")
-@Mapper
+//@Mapper
 public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumnMapper, GenTableColumn, GenTableColumn> {
+
 
     /**
      * 根据表名称查询列信息

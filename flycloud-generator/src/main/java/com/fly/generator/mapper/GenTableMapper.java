@@ -1,10 +1,8 @@
 package com.fly.generator.mapper;
 
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fly.common.database.mapper.BaseMapperPlus;
+import com.fly.common.database.web.mapper.BaseMapperPlus;
 import com.fly.generator.domain.GenTable;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.List;
  * @author lxs
  */
 //@InterceptorIgnore(dataPermission = "true")
-@Mapper
+//@Mapper
 public interface GenTableMapper extends BaseMapperPlus<GenTableMapper, GenTable, GenTable> {
 
     Page<GenTable> selectPageDbTableList(@Param("page") Page<GenTable> page, @Param("genTable") GenTable genTable);

@@ -415,6 +415,14 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <!-- 关闭过滤 (解决打包后mybatis-plus配置读取不了xml问题) -->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/webapp/</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
                 <!-- 引入所有 匹配文件进行过滤 -->
                 <includes>
                     <include>application*</include>

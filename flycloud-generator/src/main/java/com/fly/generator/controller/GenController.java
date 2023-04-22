@@ -2,7 +2,7 @@ package com.fly.generator.controller;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
-import com.fly.common.database.controller.BaseController;
+import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.model.R;
 import com.fly.generator.service.IGenTableService;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 代码生成 操作处理

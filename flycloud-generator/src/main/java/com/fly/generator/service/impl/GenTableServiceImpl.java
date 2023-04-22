@@ -52,6 +52,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @author lxs
  */
 //@DS("#header.datasource")
+@DS("master")
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -562,11 +563,33 @@ public class GenTableServiceImpl implements IGenTableService {
      * @param template 模板文件路径
      * @return 生成地址
      */
+//    public static String getGenPath(GenTable table, String template) {
+//        String genPath = table.getGenPath();
+//        if (StringUtils.equals(genPath, "/")) {
+//            return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+//        }
+//        return genPath + File.separator + VelocityUtils.getFileName(template, table);
+//    }
+
+
+    /**
+     * 获取代码生成地址 (兼容生成在默认路径, 即当前项目根目录)
+     *
+     * @param table    业务表信息
+     * @param template 模板文件路径
+     * @return 生成地址
+     */
     public static String getGenPath(GenTable table, String template) {
+
+        String resultPath = "";
         String genPath = table.getGenPath();
-        if (StringUtils.equals(genPath, "/")) {
-            return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+        if (StringUtils.equals(genPath, "/") || StringUtils.isBlank(genPath)) {
+            resultPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+        } else {
+            resultPath = genPath + File.separator + VelocityUtils.getFileName(template, table);
         }
-        return genPath + File.separator + VelocityUtils.getFileName(template, table);
+        System.out.println("=====表模型("+table.getTableName()+"-"+template+")的代码生成地址为:" + resultPath);
+        return resultPath;
     }
+
 }

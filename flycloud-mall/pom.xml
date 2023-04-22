@@ -19,6 +19,16 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-code</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-database</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
             <artifactId>flycloud-api</artifactId>
             <version>${revision}</version>
         </dependency>

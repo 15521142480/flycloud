@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fly.common.database.domain.BaseEntity;
+import com.fly.common.database.web.domain.BaseEntity;
 import com.fly.common.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -51,15 +51,17 @@ public class R<T> implements Serializable {
 	/**
 	 * 响应返回结果 (适用于增删改)
 	 */
-	public static <T> R<T> toAjax(Boolean result) {
+	public static <T> R<T> ok(Boolean result) {
 		return result ? R.ok() : R.failed();
 	}
+
 	/**
 	 * 响应返回结果 (适用于增删改)
 	 */
-	public static <T> R<T> toAjax(int rows) {
+	public static <T> R<T> ok(int rows) {
 		return rows > 0 ? R.ok() : R.failed();
 	}
+
 
 	public static <T> R<T> ok(T data) {
 		return restResult(data, CommonConstants.SUCCESS, null);
