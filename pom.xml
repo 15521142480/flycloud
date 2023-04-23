@@ -68,6 +68,9 @@
         <easyexcel.version>3.1.1</easyexcel.version>
         <easytrans.version>2.0.12</easytrans.version>
         <fastjson.version>1.2.67</fastjson.version>
+
+        <redisson.version>3.20.0</redisson.version>
+        <lock4j.version>2.2.4</lock4j.version>
     </properties>
 
 
@@ -245,12 +248,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>easyexcel</artifactId>
-                <version>${easyexcel.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.fhs-opensource</groupId>
                 <artifactId>easy-trans-spring-boot-starter</artifactId>
                 <version>${easytrans.version}</version>
@@ -289,6 +286,30 @@
                         <artifactId>poi-ooxml-schemas</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!--redisson-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.redisson</groupId>
+                        <artifactId>redisson-spring-data-30</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-data-27</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>lock4j-redisson-spring-boot-starter</artifactId>
+                <version>${lock4j.version}</version>
             </dependency>
 
         </dependencies>
@@ -450,7 +471,7 @@
 
                 <!--
                     nacos命名空间 https://github.com/alibaba/nacos/issues/3460
-                    默认的命名空间不要去设置namespace
+                    默认的命名空间不要去设置namespace  (命名空间的概念是: 新增命名空间可以实现开发/生产等环境)
                     如有命名空间namespace字段的值必须是命名空间ID
                 -->
                 <nacos.namespace/>

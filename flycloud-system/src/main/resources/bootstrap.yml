@@ -2,31 +2,40 @@ server:
   port: 8085
 #  servlet:
 #    context-path: /flycloudSystemServer
+
 spring:
+
   application:
     name: "@artifactId@"
+
   profiles:
     active: @profiles.active@
+
   cloud:
     nacos:
-      discovery:
-        server-addr: ${NACOS_HOST:106.15.42.115}:${NACOS_PORT:8848}
-        service: ${spring.application.name}
-#        username: nacos
-#        password: nacos
-      config:
-        server-addr: ${spring.cloud.nacos.discovery.server-addr}
-        file-extension: yaml
-        namespace: "@nacos.namespace@"
-        username: ${spring.cloud.nacos.discovery.username}
-        password: ${spring.cloud.nacos.discovery.password}
 
+      # nacos 服务地址
+      server-addr: @nacos.server@
+
+      discovery:
+        # 注册组
+        group: @nacos.discovery.group@
+        namespace: "@nacos.namespace@"
+
+      config:
+        # 配置组
+        group: @nacos.config.group@
+        namespace: "@nacos.namespace@"
+        file-extension: yaml
+
+        # 指定配置 (优先)
         extension-configs:
           - data-id: application-common.yaml
             refresh: true
           - data-id: application-datasource.yaml
             refresh: true
 
+        # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
 

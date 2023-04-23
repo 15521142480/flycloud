@@ -14,7 +14,6 @@ spring:
           password: ${datasource.system-master.password}
 
 
-#       其他数据库系统-参数说明:          
 #        oracle:
 #          type: ${spring.datasource.type}
 #          driverClassName: oracle.jdbc.OracleDriver
@@ -30,3 +29,14 @@ spring:
 #          url: ${datasource.system-postgres.url}
 #          username: ${datasource.system-postgres.username}
 #          password: ${datasource.system-postgres.password}
+
+# 代码生成 配置
+gen:
+  # 作者
+  author: fly
+  # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
+  packageName: com.fly.system
+  # 自动去除表前缀，默认是false
+  autoRemovePre: false
+  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
+  tablePrefix: sys_

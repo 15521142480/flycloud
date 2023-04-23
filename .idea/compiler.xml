@@ -32,6 +32,7 @@
         <module name="flycloud-gateway" />
         <module name="flycloud-auth" />
         <module name="flycloud-common-doc" />
+        <module name="flycloud-common-redis" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -9,11 +9,10 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>flycloud-common-security</artifactId>
-    <description>飞翔云-安全相关模块</description>
+    <artifactId>flycloud-common-redis</artifactId>
+    <description>飞翔云-redis模块</description>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-
 
     <dependencies>
 
@@ -23,8 +22,20 @@
             <version>${revision}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-data-27</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>lock4j-redisson-spring-boot-starter</artifactId>
+        </dependency>
 
     </dependencies>
+
 
 </project>

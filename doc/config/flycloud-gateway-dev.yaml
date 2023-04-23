@@ -28,7 +28,7 @@ spring:
           order: 1
           predicates:                      # 断言（判断条件）
             - Path=/flycloud-system/**     # 断言, 路径相匹配的进行路由; 服务一般不用设置servlet-context-path,因为直接让客户端请求带上此断言服务名字即可 (即类似nginx的断言)
-            # filters:
+          # filters:
             # - StripPrefix=1              # 去除第一个路径 (http://localhost:8080/aaa/order/orderInfo -> http://localhost:8080/order/orderInfo)
             # - PrefixPath=/order          # 请求路径添加前缀 (http://localhost:8080/order/orderInfo -> http://localhost:8080/aaa/order/orderInfo)
 
@@ -39,6 +39,16 @@ spring:
           uri: lb://flycloud-mall
           predicates:
             - Path=/flycloud-mall/**
+
+        - id: flycloud-generator
+          uri: lb://flycloud-generator
+          predicates:
+            - Path=/flycloud-generator/**
+            -
+        - id: flycloud-test
+          uri: lb://flycloud-test
+          predicates:
+            - Path=/flycloud-test/**
 
 
 logging:

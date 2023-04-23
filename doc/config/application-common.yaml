@@ -43,40 +43,40 @@ spring:
     #     # 控制台地址 从1.3.0开始使用 server-name 注册
     #     # dashboard: localhost:8718
 
-  # redis通用配置 子服务可以自行配置进行覆盖
-  # redis:
-  #   host: 106.15.42.115
-  #   port: 6379
-  #   # 密码(如没有密码请注释掉)
-  #   # password:
-  #   database: 0
-  #   timeout: 10s
-  #   ssl: false
+  # redis 通用配置 子服务可以自行配置进行覆盖
+  redis:
+    host: 106.15.42.115
+    port: 6379
+    # 密码(如没有密码请注释掉password字段)
+    password: 123456
+    database: 0
+    timeout: 30s
+    ssl: false
 
 
 # redisson 配置
-# redisson:
-#   # redis key前缀
-#   keyPrefix:
-#   # 线程池数量
-#   threads: 4
-#   # Netty线程池数量
-#   nettyThreads: 8
-#   # 单节点配置
-#   singleServerConfig:
-#     # 客户端名称
-#     clientName: ${spring.application.name}
-#     # 最小空闲连接数
-#     connectionMinimumIdleSize: 8
-#     # 连接池大小
-#     connectionPoolSize: 32
-#     # 连接空闲超时，单位：毫秒
-#     idleConnectionTimeout: 10000
-#     # 命令等待超时，单位：毫秒
-#     timeout: 3000
-#     # 发布和订阅连接池大小
-#     subscriptionConnectionPoolSize: 50
-    
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: ${spring.application.name}
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+
 
 # springdoc 配置
 springdoc:
@@ -99,3 +99,7 @@ swagger:
     flycloud-gateway: flycloud-gateway
     flycloud-system: flycloud-system
     flycloud-mall: flycloud-mall
+    flycloud-music: flycloud-music
+    flycloud-generator: flycloud-generator
+    flycloud-job: flycloud-job
+    flycloud-test: flycloud-test

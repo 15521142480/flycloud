@@ -9,24 +9,24 @@ spring:
         master:
           type: ${spring.datasource.type}
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: ${datasource.system-master.url}
-          username: ${datasource.system-master.username}
-          password: ${datasource.system-master.password}
+          url: ${datasource.mall-master.url}
+          username: ${datasource.mall-master.username}
+          password: ${datasource.mall-master.password}
 
 
 #       其他数据库系统-参数说明:          
 #        oracle:
 #          type: ${spring.datasource.type}
 #          driverClassName: oracle.jdbc.OracleDriver
-#          url: ${datasource.system-oracle.url}
-#          username: ${datasource.system-oracle.username}
-#          password: ${datasource.system-oracle.password}
+#          url: ${datasource.mall-oracle.url}
+#          username: ${datasource.mall-oracle.username}
+#          password: ${datasource.mall-oracle.password}
 #          hikari:
 #            connectionTestQuery: SELECT 1 FROM DUAL
 
 #        postgres:
 #          type: ${spring.datasource.type}
 #          driverClassName: org.postgresql.Driver
-#          url: ${datasource.system-postgres.url}
-#          username: ${datasource.system-postgres.username}
-#          password: ${datasource.system-postgres.password}
+#          url: ${datasource.mall-postgres.url}
+#          username: ${datasource.mall-postgres.username}
+#          password: ${datasource.mall-postgres.password}

@@ -67,7 +67,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     private LambdaQueryWrapper<SysUser> buildQueryWrapper(SysUserBo bo) {
-        Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<SysUser> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getDeptId() != null, SysUser::getDeptId, bo.getDeptId());
         lqw.like(StringUtils.isNotBlank(bo.getUserName()), SysUser::getUserName, bo.getUserName());
@@ -76,11 +75,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         lqw.eq(StringUtils.isNotBlank(bo.getEmail()), SysUser::getEmail, bo.getEmail());
         lqw.eq(StringUtils.isNotBlank(bo.getPhonenumber()), SysUser::getPhonenumber, bo.getPhonenumber());
         lqw.eq(StringUtils.isNotBlank(bo.getSex()), SysUser::getSex, bo.getSex());
-        lqw.eq(StringUtils.isNotBlank(bo.getAvatar()), SysUser::getAvatar, bo.getAvatar());
-        lqw.eq(StringUtils.isNotBlank(bo.getPassword()), SysUser::getPassword, bo.getPassword());
-        lqw.eq(StringUtils.isNotBlank(bo.getStatus()), SysUser::getStatus, bo.getStatus());
-        lqw.eq(StringUtils.isNotBlank(bo.getLoginIp()), SysUser::getLoginIp, bo.getLoginIp());
-        lqw.eq(bo.getLoginDate() != null, SysUser::getLoginDate, bo.getLoginDate());
         return lqw;
     }
 

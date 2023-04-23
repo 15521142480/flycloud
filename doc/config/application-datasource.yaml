@@ -1,0 +1,140 @@
+
+# 数据源连接 配置
+datasource:
+
+  # 系统模块的-主库数据源 (根据需求配置-从库数据源)
+  system-master:
+    # jdbc 所有参数配置参考 https://lionli.blog.csdn.net/article/details/122018562
+    # rewriteBatchedStatements=true 批处理优化 大幅提升批量插入更新删除性能
+    url: jdbc:mysql://106.15.42.115:3306/fly-cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    username: root
+    password: w2570078967
+  # system-slave:
+
+  # 商城模块的-主库数据源
+  mall-master:
+    url: jdbc:mysql://106.15.42.115:3306/fly-mall?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    username: root
+    password: w2570078967
+
+  # 音乐模块的-主库数据源
+  music-master:
+    url: jdbc:mysql://106.15.42.115:3306/fly-music?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    username: root
+    password: w2570078967
+
+  # 定时任务数据库
+  job:
+    url: jdbc:mysql://106.15.42.115:3306/fly-job?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    username: root
+    password: w2570078967
+
+  # 自动生成数据库说明: 由于要自动生成某个数据库的表信息, 所以只需要指向你要生成的已经在使用的数据库即可
+  gen:
+    url: jdbc:mysql://106.15.42.115:3306/fly-cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    username: root
+    password: w2570078967
+    
+#  其他数据库系统说明
+#  system-oracle:
+#    url: jdbc:oracle:thin:@//localhost:1521/XE
+#    username: ROOT
+#    password: password
+
+#  system-postgres:
+#    url: jdbc:postgresql://localhost:5432/postgres?useUnicode=true&characterEncoding=utf8&useSSL=true&autoReconnect=true&reWriteBatchedInserts=true
+#    username: root
+#    password: password
+
+
+# 数据源属性 配置
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    # 动态数据源文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/content
+    dynamic:
+      # 性能分析插件(有性能损耗 不建议生产环境使用)
+      p6spy: false
+      # 开启seata代理，开启后默认每个数据源都代理，如果某个不需要代理可单独关闭
+      # seata: false
+      # 严格模式 匹配不到数据源则报错
+      strict: true
+      hikari:
+        # 最大连接池数量
+        maxPoolSize: 20
+        # 最小空闲线程数量
+        minIdle: 10
+        # 配置获取连接等待超时的时间
+        connectionTimeout: 30000
+        # 校验超时时间
+        validationTimeout: 5000
+        # 空闲连接存活最大时间，默认10分钟
+        idleTimeout: 600000
+        # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认30分钟
+        maxLifetime: 1800000
+        # 连接测试query（配置检测连接是否有效）
+        connectionTestQuery: SELECT 1
+        # 多久检查一次连接的活性
+        keepaliveTime: 30000
+
+
+# seata配置
+seata:
+  # 关闭自动代理
+  enable-auto-data-source-proxy: false
+
+
+# MyBatisPlus配置  (https://baomidou.com/config/)
+mybatis-plus:
+  # 扫描mapper接口包有两种: (法1: 默认扫描(也就是加@Mapper注解);  法2: 手动扫描, 在相关启动配置类加上@MapperScan("要扫描包的路径"),  
+  # 本项目用的是 法2 (因为基本上整个项目的包名前缀都是一样的,除非要注入第三方的bean); 如有需要支持多包可在注解配置 或 提升扫包等级 (例如 com.**.**.mapper)
+  mapperPackage: com.fly.**.mapper
+  # 对应的 XML 文件位置
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.fly.**.domain
+  # 启动时是否检查 MyBatis XML 文件的存在，默认不检查
+  checkConfigLocation: false
+  configuration:
+    # 自动驼峰命名规则（camel case）映射
+    mapUnderscoreToCamelCase: true
+    # MyBatis 自动映射策略
+    # NONE：不启用 PARTIAL：只对非嵌套 resultMap 自动映射 FULL：对所有 resultMap 自动映射
+    autoMappingBehavior: PARTIAL
+    # MyBatis 自动映射时未知列或未知属性处理策
+    # NONE：不做处理 WARNING：打印相关警告 FAILING：抛出异常和详细信息
+    autoMappingUnknownColumnBehavior: NONE
+    # 更详细的日志输出 会有性能损耗 org.apache.ibatis.logging.stdout.StdOutImpl
+    # 关闭日志记录 (可单纯使用 p6spy 分析) org.apache.ibatis.logging.nologging.NoLoggingImpl
+    # 默认日志输出 org.apache.ibatis.logging.slf4j.Slf4jImpl
+    logImpl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+  global-config:
+    # 是否打印 Logo banner
+    banner: true
+    dbConfig:
+      # 主键类型
+      # AUTO 自增 NONE 空 INPUT 用户输入 ASSIGN_ID 雪花 ASSIGN_UUID 唯一 UUID
+      idType: ASSIGN_ID
+      # 逻辑已删除值
+      logicDeleteValue: 2
+      # 逻辑未删除值
+      logicNotDeleteValue: 0
+      insertStrategy: NOT_NULL
+      updateStrategy: NOT_NULL
+      where-strategy: NOT_NULL
+
+
+# 数据加密
+mybatis-encryptor:
+  # 是否开启加密
+  enable: false
+  # 默认加密算法
+  algorithm: BASE64
+  # 编码方式 BASE64/HEX。默认BASE64
+  encode: BASE64
+  # 安全秘钥 对称算法的秘钥 如：AES，SM4
+  password:
+  # 公私钥 非对称算法的公私钥 如：SM2，RSA
+  publicKey:
+  privateKey:
+  

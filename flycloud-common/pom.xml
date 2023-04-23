@@ -21,6 +21,7 @@
         <module>flycloud-common-security</module>
         <module>flycloud-common-doc</module>
         <module>flycloud-common-seata</module>
+        <module>flycloud-common-redis</module>
     </modules>
 
 </project>
