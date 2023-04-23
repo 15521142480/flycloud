@@ -13,14 +13,14 @@
 
 
 ### 3、系统集成了:
->   核心框架                 Spring Boot 2.6
->   分布式/注册中心框架        Spring-cloud-alibaba 2021.0.1 + Nacos 2.1.1
->   安全/授权框架             Spring-security (待续) + oauth2.0 (待续)
->   数据库/持久层/自动生成框架  Mysql + Mybatis-plus + Velocity
->   缓存/搜索引擎框架         Ehcache + Redis + ElasticSearch (待续)
->   分布式事务框架            Seata (待续)
->   文档框架                 SpringDoc + Swagger3.0
->   日志框架框架              Logback
+-   核心框架                 Spring Boot 2.6
+-   分布式/注册中心框架        Spring-cloud-alibaba 2021.0.1 + Nacos 2.1.1
+-   安全/授权框架             Spring-security (待续) + oauth2.0 (待续)
+-   数据库/持久层/自动生成框架  Mysql + Mybatis-plus + Velocity
+-   缓存/搜索引擎框架         Ehcache + Redis + ElasticSearch (待续)
+-   分布式事务框架            Seata (待续)
+-   文档框架                 SpringDoc + Swagger3.0
+-   日志框架框架              Logback
 
 
 ### 4、框架目录结构:
@@ -67,28 +67,28 @@ flycloud
 
 
 ### 6、Swagger文档说明:
->   本系统使用的是 Spring doc + swagger3.0
+-   本系统使用的是 Spring doc + swagger3.0
 >   优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
          2. 支持spring boot, spring cloud, spring gateway, 等
          3. 最重要是支持 javadoc (java注释), 基于java注释可实现零入侵
->   使用方法1 (使用自带ui工具):
->       本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
->   使用方法2 (使用第三方工具):
->       由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
->       | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
+-   使用方法1 (使用自带ui工具):
+-       本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
+-   使用方法2 (使用第三方工具):
+       由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+       | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
 
 
 ### 7、generator自动生成代码说明:
 >   有两种生成方式两种:
->   第一种: 通过后台管理生产
->   第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
+>   <br> 第一种: 通过后台管理生产
+>   <br> 第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
 
 
 ### 8、系统日志说明:
 >   使用springboot自带的Logback:
->   在服务模块的resource层新增logback-spring.xml文件,格式配置根据需求自行修改
+>   <br> 在服务模块的resource层新增logback-spring.xml文件,格式配置根据需求自行修改
 
 
 ### 9、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
->   VO -> 客户端(页面)展示的数据, 通常以json存在的形式
+>   <br> VO -> 客户端(页面)展示的数据, 通常以json存在的形式
