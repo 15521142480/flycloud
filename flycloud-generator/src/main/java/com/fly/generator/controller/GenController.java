@@ -2,11 +2,12 @@ package com.fly.generator.controller;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.model.R;
 import com.fly.generator.service.IGenTableService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +23,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/gen")
 @RestController
+@Slf4j
 public class GenController extends BaseController {
 
     private final IGenTableService genTableService;
-
-    @Value("${mybatis-plus.mapperPackage}")
-    private String mapperPackage;
 
     /**
      * 根据表生成代码 (tables参数规则: table1,table2,...  默认生成在当前项目的根目录)
@@ -35,8 +34,10 @@ public class GenController extends BaseController {
     @GetMapping("/generatorCode")
     public R<Boolean> generatorCode(String tables) {
 
-        System.out.println("mapperPackage:" + mapperPackage);
+        log.info("===即将生成表("+ JSONObject.toJSONString(tables) +")信息...");
         String[] tableNames = Convert.toStrArray(tables);
+        log.info("===即将生成表("+ JSONObject.toJSONString(tables) +")结束");
+
         return R.ok(genTableService.generatorCode(tableNames));
     }
 

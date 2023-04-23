@@ -1,0 +1,12 @@
+2023-04-23 15:29:00.890 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2023-04-23 15:29:01.052 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-generator] & group[DEFAULT_GROUP]
+2023-04-23 15:29:01.091 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-generator.yaml] & group[DEFAULT_GROUP]
+2023-04-23 15:29:01.978 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.generator]' package. Please check your configuration.
+2023-04-23 15:29:40.203 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2023-04-23 15:29:40.354 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-test] & group[DEFAULT_GROUP]
+2023-04-23 15:29:40.394 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-test.yaml] & group[DEFAULT_GROUP]
+2023-04-23 15:29:41.693 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.test]' package. Please check your configuration.
+2023-04-23 15:29:45.877 [main] WARN  i.n.resolver.dns.DnsServerAddressStreamProviders - Can not find io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider in the classpath, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'
+2023-04-23 15:31:19.877 [http-nio-8099-exec-3] WARN  com.fly.test.controller.LogTestController - ===这是warn日志
+2023-04-23 16:29:37.616 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@109523e8 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-23 16:31:25.962 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1aac3863 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
