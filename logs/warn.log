@@ -10,3 +10,4 @@
 2023-04-23 15:31:19.877 [http-nio-8099-exec-3] WARN  com.fly.test.controller.LogTestController - ===这是warn日志
 2023-04-23 16:29:37.616 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@109523e8 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 2023-04-23 16:31:25.962 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1aac3863 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-23 16:35:19.028 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@20151e28 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
