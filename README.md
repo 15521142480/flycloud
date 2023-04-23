@@ -29,6 +29,7 @@
 ### 4、框架目录结构:
 ```
 flycloud
+├─db       -- 系统sql
 ├─doc      -- 系统文档
 ├─flycloud-api         -- 内网接口
 │  ├─flycloud-api-auth -- 授权对内接口
@@ -51,7 +52,6 @@ flycloud
 └─flycloud-test      -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-user      -- 用户服务 
 └─logs     -- 系统日志 
-└─sql      -- 系统sql
 ```
 
 
