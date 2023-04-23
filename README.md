@@ -1,8 +1,8 @@
 
 ### 1、项目说明:
->   flycloud-server 是一个款商城兼音乐的后台管理系统, 基于spring-cloud-alibaba全家桶开发的分布式微服务；所含技术栈都集结了较新且稳定的国内使用场景。
->   <br> 所属个人开发；为了方便学习开源公共服务，代码checkout下来无需修改配置即可直接运行（前提公共服务如nacos、mysql等没有down掉，因为是1G服务器），以方便有问题可以随时讨论。
->   <br> 项目目前在收尾的整合阶段，具体情况看下面的 3、 4、 5、 点。
+- flycloud-server 是一个款商城兼音乐的后台管理系统, 基于spring-cloud-alibaba全家桶开发的分布式微服务；所含技术栈都集结了较新且稳定的国内使用场景。
+- 所属个人开发；为了方便学习开源公共服务，代码checkout下来无需修改配置即可直接运行（前提公共服务如nacos、mysql等没有down掉，因为是1G服务器），以方便有问题可以随时讨论。
+- 项目目前在收尾的整合阶段，具体情况看下面的 3、 4、 5、 点。
 
 
 ### 2、交流和反馈
@@ -70,14 +70,14 @@ flycloud
 
 
 ### 6、Swagger文档说明:
->  本系统使用的是 Spring doc + swagger3.0
->  <br> 优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
+-  本系统使用的是 Spring doc + swagger3.0
+>   优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
 >      <br>  2. 支持spring boot, spring cloud, spring gateway, 等
 >      <br>  3. 最重要是支持 javadoc (java注释), 基于java注释可实现零入侵
->  <br> 使用方法1 (使用自带ui工具):
->  <br>   本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
->  <br> 使用方法2 (使用第三方工具):
->  <br>   由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+-  使用方法1 (使用自带ui工具):
+>    本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
+-  使用方法2 (使用第三方工具):
+>   由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
 > | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
 
 

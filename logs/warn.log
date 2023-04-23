@@ -17,3 +17,11 @@
 2023-04-23 16:54:51.360 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@55ba1bc (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 2023-04-23 16:54:59.296 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5cf07bde (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 2023-04-23 16:54:59.836 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3acff5b3 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-23 16:58:17.530 [Thread-4] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2023-04-23 16:58:17.530 [Thread-11] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2023-04-23 16:58:17.530 [Thread-11] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2023-04-23 16:58:17.533 [Thread-4] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2023-04-23 16:58:17.602 [Thread-10] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2023-04-23 16:58:17.602 [Thread-4] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2023-04-23 16:58:17.602 [Thread-10] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2023-04-23 16:58:17.605 [Thread-4] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
