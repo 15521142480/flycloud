@@ -13,14 +13,17 @@
 
 
 ### 3、系统集成了:
--   核心框架                 Spring Boot 2.6
--   分布式/注册中心框架        Spring-cloud-alibaba 2021.0.1 + Nacos 2.1.1
--   安全/授权框架             Spring-security (待续) + oauth2.0 (待续)
--   数据库/持久层/自动生成框架  Mysql + Mybatis-plus + Velocity
--   缓存/搜索引擎框架         Ehcache + Redis + ElasticSearch (待续)
--   分布式事务框架            Seata (待续)
--   文档框架                 SpringDoc + Swagger3.0
--   日志框架框架              Logback
+
+| 技能                     | 框架                    |
+|------------------------|-----------------------|
+| 核心框架                   | Spring Boot 2.6 |
+| 分布式/注册中心框架          | Spring-cloud-alibaba 2021.0.1 + Nacos 2.1.1 |
+| 安全/授权框架               | Spring-security (待续) + oauth2.0 (待续) |
+| 数据库/持久层/自动生成框架    | Mysql + Mybatis-plus + Velocity |
+| 缓存/搜索引擎框架            | Ehcache + Redis + ElasticSearch (待续) |
+| 分布式事务框架               | Seata (待续) |
+| 文档框架                   | SpringDoc + Swagger3.0 |
+| 日志框架框架                 | Logback |
 
 
 ### 4、框架目录结构:
@@ -67,14 +70,14 @@ flycloud
 
 
 ### 6、Swagger文档说明:
--   本系统使用的是 Spring doc + swagger3.0
->   优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
-         2. 支持spring boot, spring cloud, spring gateway, 等
-         3. 最重要是支持 javadoc (java注释), 基于java注释可实现零入侵
--   使用方法1 (使用自带ui工具):
->      本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
--   使用方法2 (使用第三方工具):
->      由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+>  本系统使用的是 Spring doc + swagger3.0
+>  <br> 优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
+>      <br>  2. 支持spring boot, spring cloud, spring gateway, 等
+>      <br>  3. 最重要是支持 javadoc (java注释), 基于java注释可实现零入侵
+>  <br> 使用方法1 (使用自带ui工具):
+>  <br>   本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
+>  <br> 使用方法2 (使用第三方工具):
+>  <br>   由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
 > | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
 
 
