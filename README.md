@@ -12,20 +12,20 @@
 ### 框架目录结构:
 ```
 flycloud
-├─doc -- 系统文档
-├─flycloud-api -- 内网接口
-│  ├─flycloud-api-auth  -- 授权对内接口
-│  ├─flycloud_mall  -- 商城对内接口
-│  ├─flycloud_system  -- 系统对内接口
-├─flycloud-auth  -- 授权校验模块
-├─flycloud-common -- 一些公共的方法
-│  ├─flycloud-common-core  -- 公共模块核心（公共中的公共代码）
-│  ├─flycloud-common-database  -- 数据库连接相关公共代码
-│  └─flycloud-common-doc  -- springdoc(swagger)相关公共代码
-│  └─flycloud-common-redis  -- redis相关公共代码
-│  └─flycloud-common-seata  -- seata(分布式事务)相关公共代码
-│  └─flycloud-common-security  -- 安全相关公共代码
-│  ├─flycloud-common-rocketmq  -- rocketmq相关公共代码
+├─doc      -- 系统文档
+├─flycloud-api         -- 内网接口
+│  ├─flycloud-api-auth -- 授权对内接口
+│  ├─flycloud_mall     -- 商城对内接口
+│  ├─flycloud_system   -- 系统对内接口
+├─flycloud-auth        -- 授权校验模块
+├─flycloud-common      -- 公共模块
+│  ├─flycloud-common-core       -- 公共模块核心（公共中的公共代码）
+│  ├─flycloud-common-database   -- 数据库连接相关公共代码
+│  └─flycloud-common-doc        -- springdoc(swagger)相关公共代码
+│  └─flycloud-common-redis      -- redis相关公共代码
+│  └─flycloud-common-seata      -- seata(分布式事务)相关公共代码
+│  └─flycloud-common-security   -- 安全相关公共代码
+│  ├─flycloud-common-rocketmq   -- rocketmq相关公共代码
 ├─flycloud-gateway   -- 网关服务
 ├─flycloud-generator -- 自动生成代码服务
 └─flycloud-mall      -- 商城服务
@@ -33,18 +33,23 @@ flycloud
 └─flycloud-system    -- 系统服务
 └─flycloud-test      -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-user      -- 用户服务 
-└─logs      -- 系统日志 
+└─logs     -- 系统日志 
 └─sql      -- 系统sql
 ```
 
 
 ### 框架服务:
 
-| 服务                       | 地址                    |
-|--------------------------|-----------------------|
-| flycloud-gatway   网关服务   | http://127.0.0.1:8080 |
-| flycloud-auth     授权校验服务 | http://127.0.0.1:8088 |
-| flycloud-system   系统服务   | http://127.0.0.1:8085 |
+| 服务                            | 地址                    |
+|-------------------------------|-----------------------|
+| flycloud-auth        授权校验服务   | http://127.0.0.1:8088 |
+| flycloud-gateway     网关服务     | http://127.0.0.1:8080 |
+| flycloud-generator   自动生成代码服务 | http://127.0.0.1:8089 |
+| flycloud-mall        商城服务     | http://127.0.0.1:8083 |
+| flycloud-music       音乐服务     | http://127.0.0.1:8084 |
+| flycloud-system      系统服务     | http://127.0.0.1:8085 |
+| flycloud-test        测试服务     | http://127.0.0.1:8099 |
+| flycloud-user        用户服务     | http://127.0.0.1:8082 |
 
 
 ### generator自动生成代码说明:
