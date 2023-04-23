@@ -72,10 +72,10 @@ flycloud
          2. 支持spring boot, spring cloud, spring gateway, 等
          3. 最重要是支持 javadoc (java注释), 基于java注释可实现零入侵
 -   使用方法1 (使用自带ui工具):
--       本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
+>     <br> 本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
 -   使用方法2 (使用第三方工具):
-       由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
-       | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
+>     <br> 由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+> | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
 
 
 ### 7、generator自动生成代码说明:
