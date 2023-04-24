@@ -1,6 +1,6 @@
 
 server:
-  port: 8085
+  port: 9095
 
 spring:
 

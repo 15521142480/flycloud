@@ -8,7 +8,10 @@ import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 时间工具类
@@ -33,6 +36,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
             "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
 
+
     /**
      * 获取当前Date型日期
      *
@@ -40,6 +44,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Date getNowDate() {
         return new Date();
+    }
+
+    /**
+     * 获取当前日期
+     *
+     * @param pattern
+     */
+    public static final String getCurDateTime(String pattern) {
+        return format(new Date(), pattern);
     }
 
     /**
@@ -116,6 +129,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return
      */
     public static final String format(Object date, String pattern) {
+
         if (date == null) {
             return null;
         }
@@ -123,6 +137,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return format(date, YYYY_MM_DD_HH_MM_SS);
         }
         return new SimpleDateFormat(pattern).format(date);
+    }
+
+    /**
+     * 格式化日期
+     * String -> Date
+     * @param dateStr
+     * @param pattern
+     * @return
+     */
+    public static final Date format(String dateStr, String pattern) throws ParseException {
+        if (dateStr == null) {
+            return null;
+        }
+        if (pattern == null) {
+            pattern = "yyyy-MM-dd HH:mm:ss";
+        }
+        return new SimpleDateFormat(pattern).parse(dateStr);
     }
 
     /**
@@ -206,6 +237,75 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+
+    /**
+     * 获取距离当前时间前或者后几个月的年月
+     *
+     * @return
+     */
+    public static String getYearMonth(int num) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MONTH, num);
+        return sdf.format(cal.getTime());
+    }
+
+    /**
+     *  获取开始与结束时间之间的日期列表
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static List<String> getBetweenDateList(String startDate, String endDate, String dateFormat) throws ParseException {
+        Date startTime = format(startDate, dateFormat);
+        Date endTime = format(endDate, dateFormat);
+        List<String> dateList = new ArrayList<>();
+        while(startTime.compareTo(endTime) != 1) {
+            dateList.add(format(startTime, dateFormat));
+            startTime.setTime(startTime.getTime() + 1000 * 60 * 60 * 24); // 加一天
+        }
+        return dateList;
+    }
+
+    /**
+     * 获取当天使第几周
+     * @param dt
+     * @return
+     */
+    public static int getCurWeekOfDate(Date dt) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int week = cal.get(7) - 1;
+        if (week < 0) {
+            week = 0;
+        }
+
+        return week;
+    }
+
+    /**
+     * 单独获取当前年月日数字(去零处理)
+     * 参数(yyyy  MM  dd)
+     * @return
+     */
+    public static int getCurDateNum(String format) {
+
+        String num = "";
+
+        if (format.equals("yyyy")) {
+            num = getCurDateTime(format);
+        } else {
+
+            num = getCurDateTime(format);
+            if (num.contains("0")) {
+                num = num.replace("0", "");
+            }
+        }
+
+        return Integer.parseInt(num);
     }
 
 }

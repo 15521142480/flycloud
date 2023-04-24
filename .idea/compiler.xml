@@ -20,6 +20,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/2.6.14/spring-boot-configuration-processor-2.6.14.jar" />
         </processorPath>
         <module name="flycloud-user" />
+        <module name="flycloud-file-admin" />
         <module name="flycloud-common-database" />
         <module name="flycloud-generator" />
         <module name="flycloud-test" />
@@ -27,6 +28,8 @@
         <module name="flycloud-common-seata" />
         <module name="flycloud-mall" />
         <module name="flycloud-api" />
+        <module name="flycloud-xxl-job-admin" />
+        <module name="flycloud-music" />
         <module name="flycloud-common-code" />
         <module name="flycloud-system" />
         <module name="flycloud-gateway" />
@@ -37,6 +40,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="flycloud-api-system" target="1.8" />
+      <module name="flycloud-file-server-admin" target="1.8" />
+      <module name="flycloud-modules" target="1.8" />
       <module name="flycloud-seata" target="1.8" />
       <module name="flycloud-server-gateway" target="8" />
     </bytecodeTargetLevel>

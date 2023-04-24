@@ -9,7 +9,7 @@
 - 作者邮箱：        2570078967@qq.com
 - 作者vx (phone)： 15521142480
 - Github仓库：     https://github.com/15521142480/flycloud
-- 演示地址：        106.15.42.115:7075 （待续）
+- 演示地址：        http://106.15.42.115:7075 （待续）
 
 
 ### 3、系统集成了:
@@ -62,8 +62,8 @@ flycloud
 | flycloud-auth        授权校验服务   | http://127.0.0.1:8088 |
 | flycloud-gateway     网关服务     | http://127.0.0.1:8080 |
 | flycloud-generator   自动生成代码服务 | http://127.0.0.1:8089 |
-| flycloud-mall        商城服务     | http://127.0.0.1:8083 |
-| flycloud-music       音乐服务     | http://127.0.0.1:8084 |
+| flycloud-mall        商城服务     | http://127.0.0.1:8081 |
+| flycloud-music       音乐服务     | http://127.0.0.1:8083 |
 | flycloud-system      系统服务     | http://127.0.0.1:8085 |
 | flycloud-test        测试服务     | http://127.0.0.1:8099 |
 | flycloud-user        用户服务     | http://127.0.0.1:8082 |
@@ -72,8 +72,8 @@ flycloud
 ### 6、Swagger文档说明:
 -  本系统使用的是 Spring doc + swagger3.0
 >   优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
->      <br>  2. 支持spring boot, spring cloud, spring gateway, 等
->      <br>  3. 最重要是支持 javadoc (java注释), 基于java注释可实现零入侵
+>      <br>  2. 支持spring boot, spring cloud, spring gateway 等
+>      <br>  3. 最重要是支持 javadoc (java注释), 由于无需写注解基于java注释可实现零入侵
 -  使用方法1 (使用自带ui工具):
 >    本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
 -  使用方法2 (使用第三方工具):
@@ -83,7 +83,7 @@ flycloud
 
 ### 7、generator自动生成代码说明:
 >   有两种生成方式两种:
->   <br> 第一种: 通过后台管理生产
+>   <br> 第一种: 通过后台管理生成
 >   <br> 第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
 
 

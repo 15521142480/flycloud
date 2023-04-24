@@ -7,10 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.AntPathMatcher;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 字符串工具类
@@ -301,6 +298,24 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return deptCode;
     }
 
+    /**
+     * 获取index
+     */
+    public static String genIndexCode(int codeLen) {
+        StringBuffer tmpBuff = new StringBuffer("a,b,c,d,e,f,g,h,i,g,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z");
+        tmpBuff.append(",A,B,C,D,E,F,G,H,I,G,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z");
+        tmpBuff.append(",1,2,3,4,5,6,7,8,9,0");
+        Random r = new Random();
+        String[] strArray = tmpBuff.toString().split(",");
+        StringBuffer resultBuff = new StringBuffer();
+
+        for(int i = 0; i < codeLen; ++i) {
+            int k = r.nextInt();
+            resultBuff.append(String.valueOf(strArray[Math.abs(k % 62)]));
+        }
+
+        return resultBuff.toString();
+    }
 
 
 }

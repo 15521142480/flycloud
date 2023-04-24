@@ -1,6 +1,6 @@
 
 server:
-  port: 9092
+  port: 8089
 
 spring:
 
@@ -37,28 +37,5 @@ spring:
         # 共享配置
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
-
-#  cloud:
-#    nacos:
-#
-#      discovery:
-#        server-addr: ${NACOS_HOST:106.15.42.115}:${NACOS_PORT:8848}
-#        service: ${spring.application.name}
-#
-#      config:
-#        server-addr: ${spring.cloud.nacos.discovery.server-addr}
-#        file-extension: yaml
-#        namespace: "@nacos.namespace@"
-#        username: ${spring.cloud.nacos.discovery.username}
-#        password: ${spring.cloud.nacos.discovery.password}
-#
-#        extension-configs:
-#          - data-id: application-common.yaml
-#            refresh: true
-#          - data-id: application-datasource.yaml
-#            refresh: true
-#
-#        shared-configs:
-#          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
 
 

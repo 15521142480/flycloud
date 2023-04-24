@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>flycloud-extend</artifactId>
+        <groupId>com.flycloud</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>flycloud-file-admin</artifactId>
+    <description>飞翔云-扩展-（file-admin）文件服务后台</description>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-code</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-database</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-doc</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--注册中心客户端-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>
