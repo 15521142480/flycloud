@@ -12,22 +12,22 @@ import lombok.Data;
 public class ConnectFtpBo {
 
     // 账号
-    private String user; // root
+    private String user;
 
     // 主机ip
-    private String host; // 47.111.71.133
+    private String host;
 
     // 密码
-    private String password; // Wwlxs@#$
+    private String password;
 
     // 端口
-    private int port; // 22
+    private int port;
 
     //上传地址
-    private String directory; // /project-file
+    private String directory;
 
     // 下载目录
-    private String saveFile; // /Users/laixueshi/Desktop/
+    private String saveFile;
 
 
 }

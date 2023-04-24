@@ -103,3 +103,6 @@ swagger:
     flycloud-generator: flycloud-generator
     flycloud-job: flycloud-job
     flycloud-test: flycloud-test
+    flycloud-file-admin: flycloud-file-admin
+
+    

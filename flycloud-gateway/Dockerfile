@@ -1,6 +1,6 @@
 
 #继承自哪一个基础的镜像
-#FROM anapsix/alpine-java:8_server-jre_unlimited
+FROM anapsix/alpine-java:8_server-jre_unlimited
 #FROM centos:centos7
 
 # 作者信息

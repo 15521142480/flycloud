@@ -44,11 +44,17 @@ spring:
           uri: lb://flycloud-generator
           predicates:
             - Path=/flycloud-generator/**
-            -
+
         - id: flycloud-test
           uri: lb://flycloud-test
           predicates:
             - Path=/flycloud-test/**
+
+        - id: flycloud-file-admin
+          uri: lb://flycloud-file-admin
+          predicates:
+            - Path=/flycloud-file-admin/**
+            
 
 
 logging:

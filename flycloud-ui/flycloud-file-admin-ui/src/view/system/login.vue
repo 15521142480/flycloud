@@ -35,8 +35,8 @@ export default {
   data () {
     return {
       dataForm: {
-        loginName: '',
-        password: ''
+        loginName: 'admin',
+        password: 'admin'
       },
       ruleInline: {
         loginName: [{required: true, message: '用户不能为空!', trigger: 'blur'}],

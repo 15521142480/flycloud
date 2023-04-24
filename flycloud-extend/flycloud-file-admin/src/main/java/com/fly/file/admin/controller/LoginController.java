@@ -63,13 +63,11 @@ public class LoginController {
 
 //            int curWeek = DateUtils.getCurWeekOfDate(new Date()); // 当前周几
 //            int curMonth = DateUtils.getCurDateNum("MM"); // 当前几月 (去零处理 如10 -> 1)
-            int curDay = DateUtils.getCurDateNum("dd"); // 当前几号 (去零处理 如30 -> 3)
+//            int curDay = DateUtils.getCurDateNum("dd"); // 当前几号 (去零处理 如30 -> 3)
 //            String lastPasswordNum = String.valueOf(curWeek * curMonth * curDay);
 
 //            autoLoginName += String.valueOf(curWeek);
 //            autoPassword += lastPasswordNum;
-
-            autoPassword += curDay;
 
             if (!loginName.equals(autoLoginName) || !password.equals(autoPassword)) {
                 resultMap.put("resultCode", "10002");
