@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>flycloud-mall</artifactId>
-    <description>飞翔云-商城模块</description>
+    <description>飞翔云-商城模块 (平台端)</description>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
@@ -104,6 +104,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

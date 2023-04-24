@@ -487,10 +487,12 @@
 
     <!-- todo 配置文件 -->
     <profiles>
+
         <!--使用 mvn clean package -Pprod 进行激活prod环境的配置，否则激活默认环境-->
         <profile>
             <id>dev</id>
             <properties>
+
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
 
@@ -507,27 +509,30 @@
                 <!-- nacos分组 (分组的概念是: 两个配置文件名称可以相同,但所属的分组一定要不同) -->
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
-
             </properties>
             <activation>
                 <!-- 默认环境 -->
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
+
         <profile>
             <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
                 <nacos.server>106.15.42.115:8848</nacos.server>
+                <nacos.namespace>98fa7b23-cac3-4eb5-9b3f-0b40b7cb8aa2</nacos.namespace>
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
             </properties>
         </profile>
+
         <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
                 <nacos.server>106.15.42.115:8848</nacos.server>
+                <nacos.namespace>c5ab8826-7c54-44ee-a089-49a3dd530652</nacos.namespace>
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
             </properties>
