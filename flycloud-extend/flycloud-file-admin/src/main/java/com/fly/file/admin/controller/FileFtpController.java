@@ -347,14 +347,18 @@ public class FileFtpController {
                 break;
 
             case "4": // 删除文件/夹
-                if (StringUtils.isBlank(deleteFileName)) {
-                    resultMap.put("resultMsg", "要删除的文件名 -> 为空!");
-                    resultMap.put("resultCode", "1001");
-                    return resultMap;
-                }
-                cmdList[2] = "rm -rf " + curPath + File.separator + deleteFileName;
-                successMes = "删除成功!";
-                break;
+                resultMap.put("resultMsg", "危险指令，无法操作!");
+                resultMap.put("resultCode", "1001");
+                return resultMap;
+
+//                if (StringUtils.isBlank(deleteFileName)) {
+//                    resultMap.put("resultMsg", "要删除的文件名 -> 为空!");
+//                    resultMap.put("resultCode", "1001");
+//                    return resultMap;
+//                }
+//                cmdList[2] = "rm -rf " + curPath + File.separator + deleteFileName;
+//                successMes = "删除成功!";
+//                break;
 
             case "5": // 压缩文件/夹
                 if (StringUtils.isBlank(ysOrJyFileName)) {

@@ -49,12 +49,13 @@ public class LoginController {
             resultMap.put("resultMsg", "账号或密码不能为空！");
             return resultMap;
         }
-        String newBase64 = base64.substring(4) + base64.substring(0, 4);
-        String newBase = Base64Utils.decode64(newBase64); // 账号#密码
-        String loginName = newBase.split("#")[0];
-        String password = newBase.split("#")[1];
 
         try {
+
+            String newBase64 = base64.substring(4) + base64.substring(0, 4);
+            String newBase = Base64Utils.decode64(newBase64); // 账号#密码
+            String loginName = newBase.split("#")[0];
+            String password = newBase.split("#")[1];
 
             // 账号/密码生成
             String autoLoginName = "admin";
