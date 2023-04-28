@@ -23,6 +23,25 @@
             <version>${revision}</version>
         </dependency>
 
+        <!--注册中心客户端-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!--
+            spring security + oauth2.0
+            (spring-cloud-starter-oauth2依赖了spring-cloud-starter-security。spring-cloud-starter-security依赖了spring-boot-starter-security；因此添加spring-cloud-starter-oauth2即可)
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <version>2.2.5.RELEASE</version>
+        </dependency>
 
 
     </dependencies>

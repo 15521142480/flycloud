@@ -13,7 +13,7 @@ package com.fly.common.annotation;//package com.ygnet.cloudcommon.annotation;
 ///**
 // * 数据脱敏注解
 // *
-// * @author zhujie
+// * @author lxs
 // */
 //@Retention(RetentionPolicy.RUNTIME)
 //@Target(ElementType.FIELD)

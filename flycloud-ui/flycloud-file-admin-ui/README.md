@@ -1,4 +1,7 @@
-# flycloud-file-admin-ui
+
+## 项目说明
+-flycloud-file-admin-ui 是一个文件管理后台ui; 其对应的后端项目是 flycloud-file-admin。
+-项目主要采用了 vue2.0 + iview。
 
 > A Vue.js project
 

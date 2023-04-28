@@ -71,11 +71,10 @@
         <fastjson.version>1.2.67</fastjson.version>
         <jsch.version>0.1.55</jsch.version>
         <fileupload.version>1.3.1</fileupload.version>
-
         <redisson.version>3.20.0</redisson.version>
         <lock4j.version>2.2.4</lock4j.version>
-
         <xxl-job.version>2.3.1</xxl-job.version>
+        <spring-oauth.version>2.2.5.RELEASE</spring-oauth.version>
 
     </properties>
 
@@ -336,8 +335,9 @@
                 <artifactId>commons-fileupload</artifactId>
                 <version>${fileupload.version}</version>
             </dependency>
-
             <!-- 远程服务连接相关依赖 end -->
+
+
 
 
         </dependencies>

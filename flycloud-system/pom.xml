@@ -33,6 +33,11 @@
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.flycloud</groupId>-->
+<!--            <artifactId>flycloud-common-security</artifactId>-->
+<!--            <version>${revision}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.flycloud</groupId>-->
 <!--            <artifactId>flycloud-common-seata</artifactId>-->
 <!--            <version>${revision}</version>-->
 <!--        </dependency>-->
@@ -47,10 +52,6 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-bootstrap</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
