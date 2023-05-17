@@ -1,6 +1,6 @@
 
 ### 1、项目说明:
-- flycloud-server 是一个款商城兼音乐的后台管理系统, 基于spring-cloud-alibaba全家桶开发的分布式微服务；所含技术栈都集结了较新且稳定的国内使用场景。
+- flycloud-server 是基于Spring Cloud Alibaba + Nacos、Spring Security + oauth2、Mybatis-Plus + Velocity、SpringDoc、Redis + ElasticSearch、 Rabbitmq 等全栈主流技术栈构建的开源项目; 主要以商城项目为主,扩展项目为辅的一个飞翔云系统。
 - 所属个人开发；为了方便学习开源公共服务，代码checkout下来无需修改配置即可直接运 -> 但要前提检查 1.在nacos上public命名空间下无服务时 2.公共服务如nacos、mysql等没有down掉(因为是1G服务器); 以方便有问题可以随时讨论。
 - 项目目前在收尾的整合阶段，具体情况看下面的 3、 4、 5、 点。
 
@@ -14,16 +14,16 @@
 
 ### 3、系统集成了:
 
-| 技能             | 框架                                       |
-|----------------|------------------------------------------|
-| 核心框架           | Spring Boot 2.6                          |
+| 技能             | 框架                            |
+|----------------|-------------------------------|
+| 核心框架           | Spring Boot 2.6               |
 | 分布式/注册中心框架     | Spring-cloud-alibaba 2021.0.1 + Nacos 2.1.1 |
-| 安全/授权框架        | Spring-security (待续) + oauth2.0 (待续)     |
-| 数据库/持久层/自动生成框架 | Mysql + Mybatis-plus、 Velocity           |
-| 缓存/搜索引擎框架      | Ehcache、 Redis、ElasticSearch (待续)         |
-| 分布式事务/消息队列框架   | Seata (待续)、RocketMQ (待续)       |
-| 文档框架           | SpringDoc + Swagger3.0                   |
-| 日志框架框架         | Logback                                  |
+| 安全/授权框架        | Spring-security + oauth2.0    |
+| 数据库/持久层/自动生成框架 | Mysql + Mybatis-plus、 Velocity |
+| 缓存/搜索引擎框架      | Ehcache、 Redis、ElasticSearch (待续) |
+| 分布式事务/消息队列框架   | Seata (待续)、RocketMQ (待续)      |
+| 文档框架           | SpringDoc + Swagger3.0        |
+| 日志框架框架         | Logback                       |
 
 
 ### 4、框架目录结构:
