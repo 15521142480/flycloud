@@ -1,4 +1,4 @@
-package com.fly.system.controller;
+package com.fly.user.controller;
 
 import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
@@ -12,9 +12,9 @@ import com.fly.common.database.web.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.fly.system.domain.vo.SysUserVo;
-import com.fly.system.domain.bo.SysUserBo;
-import com.fly.system.service.ISysUserService;
+import com.fly.user.domain.vo.SysUserVo;
+import com.fly.user.domain.bo.SysUserBo;
+import com.fly.user.service.ISysUserService;
 
 import java.util.List;
 import java.util.Arrays;

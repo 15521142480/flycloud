@@ -1,6 +1,8 @@
-package com.fly.system.service.impl;
+package com.fly.user.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.fly.api.flycloud_system.domain.UserAuthInfo;
+import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
@@ -10,14 +12,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.fly.system.domain.bo.SysUserBo;
-import com.fly.system.domain.vo.SysUserVo;
-import com.fly.system.domain.SysUser;
-import com.fly.system.mapper.SysUserMapper;
-import com.fly.system.service.ISysUserService;
+import com.fly.user.domain.bo.SysUserBo;
+import com.fly.user.domain.vo.SysUserVo;
+import com.fly.user.domain.SysUser;
+import com.fly.user.mapper.SysUserMapper;
+import com.fly.user.service.ISysUserService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -122,6 +123,19 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteBatchIds(ids) > 0;
+    }
+
+    /**
+     * 根据系统账号获取系统用户信息
+     */
+    @Override
+    public UserAuthInfo getUserInfoByName(String username) {
+
+        LambdaQueryWrapper<SysUser> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StringUtils.isNotBlank(username), SysUser::getUserName, username);
+        SysUser sysUser = baseMapper.selectOne(lqw);
+
+        return BeanUtils.copy(sysUser, UserAuthInfo.class);
     }
 
 }

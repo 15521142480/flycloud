@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fly.system.mapper.SysUserMapper">
+<mapper namespace="com.fly.user.mapper.SysUserMapper">
 
-    <resultMap type="com.fly.system.domain.SysUser" id="SysUserResult">
+    <resultMap type="com.fly.user.domain.SysUser" id="SysUserResult">
     <result property="userId" column="user_id"/>
     <result property="deptId" column="dept_id"/>
     <result property="userName" column="user_name"/>

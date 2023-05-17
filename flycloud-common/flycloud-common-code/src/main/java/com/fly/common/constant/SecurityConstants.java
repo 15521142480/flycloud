@@ -6,35 +6,82 @@ package com.fly.common.constant;
  * @author lxs
  */
 public interface SecurityConstants {
+
+
+    /**
+     * 黑名单TOKEN Key前缀
+     */
+    String BLACKLIST_TOKEN_PREFIX = "AUTH:BLACKLIST_TOKEN:";
+
+    /**
+     * 验证码key前缀
+     */
+    String VERIFY_CODE_KEY_PREFIX = "AUTH:VERIFY_CODE:";
+
+    /**
+     * 短信验证码key前缀
+     */
+    String SMS_CODE_PREFIX = "SMS_CODE:";
+
+
+    // todo oauth2 客户端id start
+    /**
+     * 系统管理 web 客户端ID
+     */
+    String ADMIN_CLIENT_ID = "flycloud-system";
+
+    /**
+     * 移动端（H5/Android/IOS）客户端ID
+     */
+    String APP_CLIENT_ID = "flycloud-app";
+
+    /**
+     * 微信小程序客户端ID
+     */
+    String WEAPP_CLIENT_ID = "flycloud-weapp";
+
+    /**
+     * 接口文档 Knife4j 测试客户端ID
+     */
+    String TEST_CLIENT_ID = "flycloud-client";
+
+    // todo oauth2 客户端id end
+
+
     /**
      * 刷新
      */
     String REFRESH_TOKEN = "refresh_token";
+
     /**
      * 验证码有效期
      */
     int CODE_TIME = 180;
+
     /**
      * 验证码长度
      */
     String CODE_SIZE = "4";
+
     /**
      * 角色前缀
      */
     String ROLE = "ROLE_";
+
     /**
      * 前缀
      */
-    String MICRO_PREFIX = "micro_";
+    String FLY_PREFIX = "fly_";
 
     /**
      * oauth 相关前缀
      */
     String OAUTH_PREFIX = "oauth:";
+
     /**
      * 项目的license
      */
-    String MICRO_LICENSE = "made by sunshine boy";
+    String FLY_LICENSE = "made by sunshine boy";
 
     /**
      * 内部
@@ -44,7 +91,8 @@ public interface SecurityConstants {
     /**
      * 标志(内部调用、泄露掉这个值相当于所有内部调用值均泄密)
      */
-    String FROM = "micro_inner_security";
+    String FROM = "fly_inner_security";
+
     /**
      * 统单点登录URL地址转接
      */
@@ -64,6 +112,7 @@ public interface SecurityConstants {
      * 社交登录URL
      */
     String SOCIAL_TOKEN_URL = "/mobile/token/social";
+
     /**
      * 自定义登录URL
      */
@@ -73,10 +122,11 @@ public interface SecurityConstants {
      * PKI 证书登录
      */
     String PKI_TOKEN_URL = "/pki/token/certificate";
+
     /**
      * oauth 客户端信息
      */
-    String CLIENT_DETAILS_KEY = "micro_oauth:client:details";
+    String CLIENT_DETAILS_KEY = "fly_oauth:client:details";
 
     /**
      * 微信获取OPENID
@@ -88,6 +138,7 @@ public interface SecurityConstants {
      * {bcrypt} 加密的特征码
      */
     String BCRYPT = "{bcrypt}";
+
     /**
      * sys_oauth_client_details 表的字段，不包括client_id、client_secret
      */
@@ -120,14 +171,17 @@ public interface SecurityConstants {
      * 客户端模式
      */
     String CLIENT_CREDENTIALS = "client_credentials";
+
     /**
      * 用户ID
      */
     String TOKEN_USER_ID="user_id";
+
     /**
      * 用户名称
      */
     String TOKEN_USER_NAME="username";
+
     /**
      * 用户部门ID
      */

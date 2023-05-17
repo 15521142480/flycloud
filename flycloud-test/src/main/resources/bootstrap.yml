@@ -7,7 +7,7 @@ spring:
     name: "@artifactId@"
 
   profiles:
-    active: @profiles.active@
+    active: "@profiles.active@"
 
   cloud:
     nacos:
@@ -16,11 +16,13 @@ spring:
       server-addr: @nacos.server@
 
       discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
         # 注册组
         group: @nacos.discovery.group@
         namespace: "@nacos.namespace@"
 
       config:
+        server-addr: ${spring.cloud.nacos.server-addr}
         # 配置组
         group: @nacos.config.group@
         namespace: "@nacos.namespace@"

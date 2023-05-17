@@ -41,6 +41,23 @@ public enum ApiCode {
      * 你请求的资源不存在
      **/
     NOT_FOUND(404, "你请求的资源不存在"),
+
+    USER_ERROR(1001, "用户端错误"),
+    USER_LOGIN_ERROR(1002, "用户登录异常"),
+
+    USER_NOT_EXIST(1003, "用户不存在"),
+    USER_ACCOUNT_LOCKED(1004, "用户账户被冻结"),
+    USER_ACCOUNT_INVALID(1005, "用户账户已作废"),
+
+    USERNAME_OR_PASSWORD_ERROR(1006, "用户名或密码错误"),
+    PASSWORD_ENTER_EXCEED_LIMIT(1007, "用户输入密码次数超限"),
+    CLIENT_AUTHENTICATION_FAILED(1008, "客户端认证失败"),
+    INVALID_TOKEN(1009, "token无效或已过期"),
+    TOKEN_ACCESS_FORBIDDEN(1010, "token已被禁止访问"),
+
+    AUTHORIZED_ERROR(1011, "访问权限异常"),
+    ACCESS_UNAUTHORIZED(1012, "访问未授权"),
+
     /**
      * 操作失败
      **/
@@ -106,10 +123,11 @@ public enum ApiCode {
     HTTP_REQUEST_METHOD_NOT_SUPPORTED_EXCEPTION(5108, "METHOD NOT SUPPORTED"),
 
 
-    USERPWDERR_EXCEPTION(5109,"用户名密码错误"),
 
-    TIMEOUT_EXCEPTION(5110,"请求超时")
+    TIMEOUT_EXCEPTION(5110,"请求超时"),
 
+
+    DEGRADATION(220, "系统功能降级"),
 
     ;
 

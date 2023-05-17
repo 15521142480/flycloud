@@ -17,11 +17,13 @@ spring:
       server-addr: @nacos.server@
 
       discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
         # 注册组
         group: @nacos.discovery.group@
         namespace: "@nacos.namespace@"
 
       config:
+        server-addr: ${spring.cloud.nacos.server-addr}
         # 配置组
         group: @nacos.config.group@
         namespace: "@nacos.namespace@"
@@ -38,4 +40,17 @@ spring:
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
 
+
+client:
+  oauth2:
+    client:
+      client-id: appId # 客户端标识 ID
+      secret: 123456 # 客户端安全码
+      scope: server
+      #默认放行、服务间调用需要放行
+      ignore-urls:
+        # - /actuator/**
+        - /v2/api-docs-ext
+        - /cas/sso/**
+        - /sso/**
 

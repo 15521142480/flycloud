@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogTestController {
 
 
+    /**
+     * 打印
+     */
     @GetMapping("/print")
     public R<String> print() {
 

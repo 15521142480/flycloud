@@ -1,8 +1,8 @@
-package com.fly.system.mapper;
+package com.fly.user.mapper;
 
 import com.fly.common.database.web.mapper.BaseMapperPlus;
-import com.fly.system.domain.SysUser;
-import com.fly.system.domain.vo.SysUserVo;
+import com.fly.user.domain.SysUser;
+import com.fly.user.domain.vo.SysUserVo;
 
 /**
  * 用户信息Mapper接口

@@ -1,4 +1,4 @@
-package com.fly.system.domain.vo;
+package com.fly.user.domain.vo;
 
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;

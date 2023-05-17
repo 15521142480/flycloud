@@ -75,6 +75,7 @@
         <lock4j.version>2.2.4</lock4j.version>
         <xxl-job.version>2.3.1</xxl-job.version>
         <spring-oauth.version>2.2.5.RELEASE</spring-oauth.version>
+        <nimbus-jose-jwt.version>9.16.1</nimbus-jose-jwt.version>
 
     </properties>
 
@@ -337,6 +338,12 @@
             </dependency>
             <!-- 远程服务连接相关依赖 end -->
 
+            <!-- JWT工具 -->
+<!--            <dependency>-->
+<!--                <groupId>com.nimbusds</groupId>-->
+<!--                <artifactId>nimbus-jose-jwt</artifactId>-->
+<!--                <version>${nimbus-jose-jwt.version}</version>-->
+<!--            </dependency>-->
 
 
 
@@ -538,6 +545,5 @@
             </properties>
         </profile>
     </profiles>
-
 
 </project>

@@ -1,7 +1,6 @@
 package com.fly.system.controller;
 
 import com.fly.api.flycloud_mall.feign.MallFeignClient;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/sys/user")
-//@AllArgsConstructor
 public class UserController {
 
 

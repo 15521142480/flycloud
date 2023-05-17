@@ -12,9 +12,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author lxs
  * @date 2023/2/13
  */
-@EnableFeignClients
-@EnableDiscoveryClient
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients(basePackages = "com.fly.api")
 @EnableSwaggerDoc
 public class SystemApplication {
 

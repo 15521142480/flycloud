@@ -1,0 +1,55 @@
+
+server:
+  port: 8088
+
+spring:
+
+  application:
+    name: "@artifactId@"
+
+  profiles:
+    active: @profiles.active@
+
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  cloud:
+    nacos:
+
+      # nacos 服务地址
+      server-addr: @nacos.server@
+
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        # 注册组
+        group: @nacos.discovery.group@
+        namespace: "@nacos.namespace@"
+
+      config:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        # 配置组
+        group: @nacos.config.group@
+        namespace: "@nacos.namespace@"
+        file-extension: yaml
+
+        # 指定配置 (优先)
+        extension-configs:
+          - data-id: application-common.yaml
+            refresh: true
+          - data-id: application-datasource.yaml
+            refresh: true
+
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
+
+
+# 指标监控健康检查
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*" # 暴露的端点
+

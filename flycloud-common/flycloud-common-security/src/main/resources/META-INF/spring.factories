@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.fly.common.security.config.SecurityResourceServerConfig,\
+    com.fly.common.security.config.properties.SecurityAuthorizationProperties,\
+    com.fly.common.security.exception.MyAccessDeniedHandler,\
+    com.fly.common.security.exception.MyAuthenticationEntryPoint

@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.fly.common.utils.BeanCopyUtils;
+import com.fly.common.utils.BeanUtils;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
@@ -145,7 +145,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (ObjectUtil.isNull(obj)) {
             return null;
         }
-        return BeanCopyUtils.copy(obj, voClass);
+        return BeanUtils.copy(obj, voClass);
     }
 
     default List<V> selectVoBatchIds(Collection<? extends Serializable> idList) {
@@ -160,7 +160,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(list)) {
             return CollUtil.newArrayList();
         }
-        return BeanCopyUtils.copyList(list, voClass);
+        return BeanUtils.copyList(list, voClass);
     }
 
     default List<V> selectVoByMap(Map<String, Object> map) {
@@ -175,7 +175,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(list)) {
             return CollUtil.newArrayList();
         }
-        return BeanCopyUtils.copyList(list, voClass);
+        return BeanUtils.copyList(list, voClass);
     }
 
     default V selectVoOne(Wrapper<T> wrapper) {
@@ -190,7 +190,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (ObjectUtil.isNull(obj)) {
             return null;
         }
-        return BeanCopyUtils.copy(obj, voClass);
+        return BeanUtils.copy(obj, voClass);
     }
 
     default List<V> selectVoList(Wrapper<T> wrapper) {
@@ -205,7 +205,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(list)) {
             return CollUtil.newArrayList();
         }
-        return BeanCopyUtils.copyList(list, voClass);
+        return BeanUtils.copyList(list, voClass);
     }
 
     default <P extends IPage<V>> P selectVoPage(IPage<T> page, Wrapper<T> wrapper) {
@@ -221,7 +221,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(pageData.getRecords())) {
             return (P) voPage;
         }
-        voPage.setRecords(BeanCopyUtils.copyList(pageData.getRecords(), voClass));
+        voPage.setRecords(BeanUtils.copyList(pageData.getRecords(), voClass));
         return (P) voPage;
     }
 

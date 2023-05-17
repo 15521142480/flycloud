@@ -21,7 +21,7 @@ import java.util.List;
  * @author lxs
  * @date 2023/2/13
  */
-@FeignClient(name = ServerNames.SYSTEM_SERVER_NAME)
+@FeignClient(name = ServerNames.SYSTEM_SERVER_NAME, contextId = "system")
 public interface SystemFeignClient {
 
 

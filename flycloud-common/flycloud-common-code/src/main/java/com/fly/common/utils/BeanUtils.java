@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * bean深拷贝工具(基于 cglib 性能优异)
+ * bean工具(基于 cglib 性能优异)
  * <p>
  * 重点 cglib 不支持 拷贝到链式对象
  * 例如: 源对象 拷贝到 目标(链式对象)
@@ -29,7 +29,7 @@ import java.util.Set;
  * @author lxs
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class BeanCopyUtils {
+public class BeanUtils {
 
     /**
      * 单对象基于class创建拷贝

@@ -1,8 +1,8 @@
-package com.fly.system.service;
+package com.fly.user.service;
 
-import com.fly.system.domain.SysUser;
-import com.fly.system.domain.vo.SysUserVo;
-import com.fly.system.domain.bo.SysUserBo;
+import com.fly.api.flycloud_system.domain.UserAuthInfo;
+import com.fly.user.domain.vo.SysUserVo;
+import com.fly.user.domain.bo.SysUserBo;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
 
@@ -46,5 +46,11 @@ public interface ISysUserService {
      * 校验并批量删除用户信息信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 根据系统账号获取系统用户信息
+     */
+    UserAuthInfo getUserInfoByName(String username);
+
 
 }

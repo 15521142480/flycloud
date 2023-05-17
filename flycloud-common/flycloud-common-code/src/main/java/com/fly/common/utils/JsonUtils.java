@@ -1,5 +1,6 @@
 package com.fly.common.utils;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JSON 工具类
@@ -80,6 +82,18 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(text, OBJECT_MAPPER.getTypeFactory().constructType(Dict.class));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Object对象转Map
+     */
+    public static Map<String, String> parseMap(Object text) {
+        try {
+//            Map<String,String> map = BeanUtil.beanToMap(text);
+            return new ObjectMapper().convertValue(text, Map.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Object对象转Map失败" + e);
         }
     }
 
