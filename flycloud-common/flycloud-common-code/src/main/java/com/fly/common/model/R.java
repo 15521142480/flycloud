@@ -65,6 +65,9 @@ public class R<T> implements Serializable {
     public static <T> R<T> ok(int rows) {
         return rows > 0 ? R.ok() : R.failed();
     }
+    public static <T> R<T> ok(Integer rows) {
+        return rows > 0 ? R.ok() : R.failed();
+    }
 
 
     public static <T> R<T> ok(T data) {

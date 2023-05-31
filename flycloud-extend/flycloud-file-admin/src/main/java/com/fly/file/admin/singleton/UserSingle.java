@@ -42,7 +42,7 @@ public class UserSingle {
      * 获取ftp连接单例
      * @return
      */
-    public static UserSingle getUserSingleInst(){
+    public static UserSingle getUserSingleInst() {
         return UserTokenSingleInst.singleton;
     }
 

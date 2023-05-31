@@ -48,7 +48,7 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-security</artifactId>
+            <artifactId>flycloud-common-elasticsearch</artifactId>
             <version>${revision}</version>
         </dependency>
 

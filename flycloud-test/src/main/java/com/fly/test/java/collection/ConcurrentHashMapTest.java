@@ -1,4 +1,4 @@
-package com.fly.test.collection;
+package com.fly.test.java.collection;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;

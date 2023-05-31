@@ -25,6 +25,7 @@
         <module name="flycloud-generator" />
         <module name="flycloud-test" />
         <module name="flycloud-common-security" />
+        <module name="flycloud-common-elasticsearch" />
         <module name="flycloud-common-seata" />
         <module name="flycloud-api" />
         <module name="flycloud-mall" />
