@@ -1,0 +1,191 @@
+
+
+=================== 前端
+
+
+去掉eslintrc校驗:
+
+    在.eslintrc.js文件修改
+    // 'linebreak-style': ['error', 'unix'],
+    'linebreak-style': [0, 'error', 'windows'],
+
+
+
+如果你想在H5页面中进行文件上传处理，并让原生Android那边获取手机图片和文件，可以通过以下步骤实现：
+ 1. 在H5页面中，使用 `<input type="file">` 元素创建一个文件选择框，让用户主动选择要上传的文件。例如：
+html
+<input type="file" id="fileInput">
+2. 使用JavaScript监听文件选择框的 `change` 事件，并获取用户选择的文件。例如：
+document.getElementById('fileInput').addEventListener('change', function(event) {
+  var file = event.target.files[0]; // 获取用户选择的文件
+  // 将文件传递给原生Android进行处理
+  // ...
+});
+3. 将获取到的文件传递给原生Android代码进行处理。你可以使用WebView的JavaScript与原生代码进行通信，具体的实现方式可以参考WebView的相关文档。在原生Android代码中，可以通过接收到的文件路径或文件流进行进一步的处理，例如上传到服务器或进行其他操作。
+ 需要注意的是，Android系统对于文件访问有一些限制，尤其是在Android 11及以上版本中。你可能需要根据Android系统版本和权限配置，使用不同的方式获取手机图片和文件。可以参考Android官方文档中的相关内容，了解如何在Android中获取手机图片和文件的方法。
+ 综上所述，你可以在H5页面中通过文件选择框获取用户选择的文件，然后将文件传递给原生Android代码进行处理，以实现获取手机图片和文件的功能。
+
+
+
+
+===============================================================================================
+
+=================== 數據庫技術棧
+
+    去重  distinct
+    日期轉換    DATE_FORMAT(inst.createdTime, '%Y-%m-%d')
+    日期獲取    CURDATE()   YEAR(NOW())
+    字符追加    concat('1', '23')
+    字符截取    substring(establish_effective_date, 1, 4)  從第一個開始拿4個字符
+
+
+1. 根據分組獲取時間最新的一條:
+
+    select a1.workflowInstance, a1.to_handler_id, a1.to_handler_type from subsidy_work_flow_inst_task a1
+    inner join (
+            select workflowInstance, max(handledTime) as handledTime from subsidy_work_flow_inst_task group by workflowInstance
+        ) a2 on a1.workflowInstance = a2.workflowInstance and a1.handledTime = a2.handledTime
+
+
+2. 一对多查询实现取最新一条数据 (關聯字段)
+
+    select a.*
+    from opm_work_flow_inst a
+    left join (
+     select workflowInstance, max(handledTime) from opm_work_flow_inst_task group by workflowInstance
+    )b on a.id = b.workflowInstance
+
+
+
+3. 一对多查询实现取最新一条数据 (關聯字段和其他字段) (其實同第1點差不多, 外面再包一層)
+     (還有一半不會整張表group,加上條件優化查詢效率, 這個條件可以不是全部 因為他是作為一個子查詢而已)
+
+    select a.id, b.work_flow_task_flag as workFlowTaskFlag, b.comment, b.preTaskId, b.pre_transmit_message as preTransmitMessage
+    from opm_work_flow_inst a
+    left join (
+        select t1.id, t1.workflowInstance, t1.work_flow_task_flag, t1.comment, t1.preTaskId, t1.pre_transmit_message
+        from opm_work_flow_inst_task t1
+        inner join (  -- 一定要inner join
+            select workflowInstance, max(handledTime) as handledTime
+            from opm_work_flow_inst_task
+            where to_handler_id = '17cfbjg56HeBERuFi4' and handled = 1
+            group by workflowInstance
+        ) t2 on t1.workflowInstance = t2.workflowInstance and t1.handledTime = t2.handledTime
+    )b on a.id = b.workflowInstance
+
+
+4. 條件 ifnull, case, COALESCE (类似三元运算符),
+
+        case when sp.name_chin is not null then sp.name_chin when sp.name_pt is not null then sp.name_pt when sp.name_eng is not null then sp.name_eng end submitUserName
+    可以写成
+        COALESCE(sp.name_chin, sp.name_pt, sp.name_eng) submitUserName
+
+
+5. 查詢時間的交集
+    select * from ga_biz.work_org_person where 1 = 1
+    and ( ('2023-10-05' <= end_date and end_date < '2023-10-20') # 全部包含（子集）和左边包含
+    or ('2023-10-05' <= start_date and start_date < '2023-10-20') # 右边包含
+    or (start_date <= '2023-10-05' and '2023-10-20' < end_date)); # 全部包含（被子集）(2023-09-01 2023-10-10)
+
+
+6. group_concat 以xx1分组，把xx2字段的值拼成一行，逗号分隔(默认)
+
+    select id,group_concat(age) from test_group_concat group by id;
+    -- 1   20,20,10
+
+    select id,group_concat(age separator ';') from test_group_concat group by id;
+    -- 1   20;20;10
+
+    select id,group_concat(age order by age desc) from test_group_concat group by id;
+    -- 1   20;10
+
+
+7. FIND_IN_SET('value', field), 查询以逗号隔开的字段
+
+    select * from tmp_all where FIND_IN_SET('04', org_type);
+
+
+8. 查詢字段新增序列; 使用變量
+
+    字段: @row_number:=@row_number + 1 AS serial_number   表: (SELECT @row_number:=0) AS t
+    例: select  @row_number:=@row_number + 1 AS serial_number, org_code, field from ga_biz.org, (SELECT @row_number:=0) AS t order by field is null, field;
+
+
+99. 函數與存儲過程
+
+    存储过程与函数区别：
+    存储过程：可以有0个返回，也可以有多个返回，适合做批量插入、批量更新。
+    函数：有且仅有1 个返回，适合做处理数据后返回一个结果。
+
+    row_count()
+    row_count函数返回的是当前连接中最近一次操作数据库的所影响的行数，增删改语句都能对它有效果
+
+
+=================== 前端技術棧
+
+
+display:flex属性:
+
+    https://blog.csdn.net/weixin_46380993/article/details/104572253
+
+
+当前屏幕的高度:
+
+    height: 100vh;
+
+    或者
+    height: calc(100vh - 100px);
+
+
+排序:
+
+    let arr = [{id:'001'},{id:'004'},{id:"003"},{id:"002"}]
+    arr.sort(function(a,b){
+        console.log(a,b)
+        return a.id - b.id
+    })
+
+ element: 隐藏输入框 通过按钮实现彈出
+
+    https://blog.csdn.net/IT_iosers/article/details/116202792?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-116202792-blog-128718657.235%5Ev38%5Epc_relevant_anti_vip_base&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-116202792-blog-128718657.235%5Ev38%5Epc_relevant_anti_vip_base&utm_relevant_index=2
+
+
+
+=================== 后端技術棧
+
+
+動態編輯dpf:
+
+    編輯軟件: Adobe Acrobat DC
+    編輯key之後在後端相應的賦值
+
+
+List<Object> 轉 List<泛型>:
+
+     List<Object> list = JSONUtil.parseArray(strJsonArray);
+        JSONArray jsonArray = JSONUtil.parseArray(list);
+        List<WhiteListVO> listVOS = JSONUtil.toList(jsonArray, WhiteListVO.class);
+
+
+byte[] 和  InputStream 互转:
+
+    inputStream.readAllBytes(); // 文件较小
+    new ByteArrayInputStream(bytes);
+
+
+函数式接口 BiConsumer:
+
+    当一个方法只接受两个参数而且不返回任何东西时，那么可以考虑使用Biconsumer来实现;
+
+    即 a方法包含b方法, 但是b方法不需要返回參數(通常是重寫等原因), 但是a方法又要獲取b方法的參數(處理對象),拿到後在a方法可對該返回的參數做業務代碼;
+
+    BiConsumer<參數1, 參數2>
+
+
+
+================== idea 軟件
+
+
+更新代碼 push代碼失敗要停掉服務才行
+
+    搜索git -> 勾選 Use credential helper
