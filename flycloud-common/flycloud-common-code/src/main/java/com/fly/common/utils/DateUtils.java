@@ -8,10 +8,7 @@ import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 时间工具类
@@ -306,6 +303,113 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
 
         return Integer.parseInt(num);
+    }
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////// 計算時間的交集或並集 start
+
+    /**
+     * 获取两个时间段的交并集
+     *
+     * @param periods1 第一个时间段
+     * @param periods2 第二个时间段
+     * @param type     0 交集 1 并集
+     * @return 不存在为null
+     */
+    public static List<LocalDate[]> twoTimePeriods(LocalDate[] periods1, LocalDate[] periods2, int type) {
+
+        //校验时间段1是否有效
+        boolean valid1 = Objects.nonNull(periods1)
+                && periods1.length > 1
+                && periods1[0] != null
+                && periods1[1] != null
+                && (periods1[0].isEqual(periods1[1]) || periods1[0].isBefore(periods1[1]));
+        //校验时间段2是否有效
+        boolean valid2 = Objects.nonNull(periods2)
+                && periods2.length > 1
+                && periods2[0] != null
+                && periods2[1] != null
+                && (periods2[0].isEqual(periods2[1]) || periods2[0].isBefore(periods2[1]));
+        if (valid1 && valid2) {
+            if (0 == type) {
+                LocalDate[] intersection = twoTimePeriodsIntersection(periods1, periods2);
+                if (Objects.nonNull(intersection)) {
+                    return Collections.singletonList(intersection);
+                }
+            }
+            if (1 == type) {
+                return twoTimePeriodsUnion(periods1, periods2);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 获取两个时间段的交集
+     *
+     * @param periods1 第一个时间段
+     * @param periods2 第二个时间段
+     * @return 不存在为null
+     */
+    public static LocalDate[] twoTimePeriodsIntersection(LocalDate[] periods1, LocalDate[] periods2) {
+
+        //判断两个时间段是否存在交集
+        if (!(periods1[0].isAfter(periods2[1]) || periods2[0].isAfter(periods1[1]))) {
+            return new LocalDate[]{
+                    periods1[0].isAfter(periods2[0]) ? periods1[0] : periods2[0],
+                    periods1[1].isBefore(periods2[1]) ? periods1[1] : periods2[1]
+            };
+        }
+
+        return null;
+    }
+
+    /**
+     * 获取两个时间段的并集
+     *
+     * @param periods1 第一个时间段
+     * @param periods2 第二个时间段
+     * @return 存在交集 一个 LocalDate[] 不存在 两个 LocalDate[]
+     */
+    public static List<LocalDate[]> twoTimePeriodsUnion(LocalDate[] periods1, LocalDate[] periods2) {
+
+        List<LocalDate[]> periodsList = new ArrayList<>(2);
+        //判断两个时间段是否存在交集
+        if (periods1[0].isAfter(periods2[1]) || periods2[0].isAfter(periods1[1])) {
+            //不存在
+            periodsList.add(periods1);
+            periodsList.add(periods2);
+        } else {
+            //存在
+            periodsList.add(
+                    new LocalDate[]{
+                            periods1[0].isBefore(periods2[0]) ? periods1[0] : periods2[0],
+                            periods1[1].isAfter(periods2[1]) ? periods1[1] : periods2[1]
+                    }
+            );
+        }
+
+        return periodsList;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////// 計算時間的交集或並集 end
+
+
+    public static void main(String[] args) {
+        List<LocalDate[]> localDates = twoTimePeriods(
+                new LocalDate[]{LocalDate.of(2023, 8, 12), LocalDate.of(2023, 8, 17)},
+                new LocalDate[]{LocalDate.of(2023, 8, 13), LocalDate.of(2023, 8, 20)},
+                0
+        );
+        if (localDates != null && !localDates.isEmpty()) {
+            for (LocalDate[] periods : localDates) {
+                System.out.println(Arrays.toString(periods));
+            }
+        }
     }
 
 }
