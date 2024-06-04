@@ -20,10 +20,39 @@ public class Recursion {
 
 
         // 获取菜单递归信息
-        List<MenuBean> resultList = getMenuRecursion();
-        System.out.println("递归数据:" + resultList);
+        List<MenuBean> recursionList = getMenuRecursion();
+        System.out.println("菜单递归数据:" + recursionList);
+
+        // 菜单递归数据转数组数据
+        List<MenuBean> menuBeanList = getMenuListByRecursion(recursionList);
+        System.out.println("菜单数组数据:" + menuBeanList);
+
+    }
 
 
+    /**
+     * 根据递归获取数组信息
+     */
+    public static List<MenuBean> getMenuListByRecursion(List<MenuBean> recursionList) {
+
+        // 结果(递归)数据
+        List<MenuBean> resultList = new ArrayList<>();
+
+        handleMenuBeanList(resultList, recursionList);
+
+        return resultList;
+    }
+
+    public static void handleMenuBeanList(List<MenuBean> resultList, List<MenuBean> recursionList) {
+
+        for (MenuBean menuBean : recursionList) {
+
+            resultList.add(menuBean);
+            List<MenuBean> menuBeanList2 = menuBean.getChildList();
+            if (menuBeanList2 != null && menuBeanList2.size() > 0) {
+                handleMenuBeanList(resultList, menuBeanList2);
+            }
+        }
     }
 
 
