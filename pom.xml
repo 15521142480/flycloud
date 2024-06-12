@@ -56,7 +56,8 @@
         <hutool.version>5.8.15</hutool.version>
         <captcha.version>1.6.2</captcha.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <nacos.version>2.1.1</nacos.version>
+<!--        <nacos.version>2.1.1</nacos.version>-->
+        <nacos.version>2.0.3</nacos.version>
         <aliyun.oss.version>3.8.0</aliyun.oss.version>
         <aliyun.dysmsapi.version>2.0.18</aliyun.dysmsapi.version>
         <tencentcloud.sdk.version>3.1.574</tencentcloud.sdk.version>

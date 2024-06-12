@@ -48,7 +48,7 @@ spring:
     host: 39.98.125.88
     port: 6379
     # 密码(如没有密码请注释掉password字段)
-    password: 123456
+    password: wW257007
     database: 0
     timeout: 30s
     ssl: false
