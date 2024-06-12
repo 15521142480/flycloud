@@ -4,7 +4,7 @@
  Source Server         : mysql-one
  Source Server Type    : MySQL
  Source Server Version : 50741 (5.7.41)
- Source Host           : 106.15.42.115:3306
+ Source Host           : 39.98.125.88:3306
  Source Schema         : fly-cloud
 
  Target Server Type    : MySQL

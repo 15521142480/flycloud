@@ -45,7 +45,7 @@ spring:
 
   # redis 通用配置 子服务可以自行配置进行覆盖
   redis:
-    host: 106.15.42.115
+    host: 39.98.125.88
     port: 6379
     # 密码(如没有密码请注释掉password字段)
     password: 123456

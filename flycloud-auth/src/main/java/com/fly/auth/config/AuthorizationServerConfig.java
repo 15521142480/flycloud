@@ -112,7 +112,7 @@
 //        // 方式2：使用内存方式管理客户端
 ////        clients.inMemory() // 内存中
 ////                .withClient("flycloud-system") // 客户端ID
-////                .secret(passwordEncoder.encode("w2570078967")) // 秘钥
+////                .secret(passwordEncoder.encode("wW@@@257007")) // 秘钥
 ////                .authorizedGrantTypes("password", "refresh_token") // 授权类型
 ////                .redirectUris("https://www.baidu.com") // 重定向到的地址
 ////                .scopes("all"); // 授权范围

@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: { // 跨域
       '/flycloud-file-admin': {
         target: 'http://localhost:8080/flycloud-file-admin/',
-        // target: 'http://106.15.42.115:5055/',
+        // target: 'http://39.98.125.88:5055/',
         pathRewrite: {
           '^/flycloud-file-admin': '/'
         }
