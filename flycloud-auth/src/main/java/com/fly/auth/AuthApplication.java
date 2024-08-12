@@ -13,8 +13,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @date 2023/4/28
  */
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.fly.api")
 @EnableDiscoveryClient
+@EnableFeignClients(basePackages = "com.flycloud.system.api")
 @EnableSwaggerDoc
 public class AuthApplication {
 

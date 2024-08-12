@@ -11,17 +11,12 @@
 
     <artifactId>flycloud-api</artifactId>
     <description>飞翔云-内网接口模块</description>
+    <modules>
+        <module>flycloud-feign-api</module>
+        <module>flycloud-system-api</module>
+    </modules>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-
-
-    <dependencies>
-        <dependency>
-            <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-code</artifactId>
-            <version>${revision}</version>
-        </dependency>
-    </dependencies>
+    <packaging>pom</packaging>
 
 
 </project>

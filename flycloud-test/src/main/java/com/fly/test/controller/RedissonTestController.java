@@ -22,7 +22,7 @@ public class RedissonTestController {
     public R<String> redisSet(String key, String value) {
 
         System.out.println("redis设值开始...");
-        RedisUtils.setCacheObject(key, value);
+//        RedisUtils.setCacheObject(key, value);
         System.out.println("redis设值结束...");
         return R.ok("set成功");
     }

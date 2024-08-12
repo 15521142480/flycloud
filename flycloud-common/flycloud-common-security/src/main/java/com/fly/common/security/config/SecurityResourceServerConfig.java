@@ -4,8 +4,11 @@ import cn.hutool.core.convert.Convert;
 import com.fly.common.security.config.properties.SecurityAuthorizationProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,9 +36,10 @@ import java.util.stream.Collectors;
  * @author lxs
  * @date 2023/4/28
  */
-@Configuration
-@EnableWebSecurity
+@Order(5)
+//@Configuration
 @EnableResourceServer // 开启资源服务器校验
+//@EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 激活方法上的@PreAuthorize注解
 @RequiredArgsConstructor
 public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapter { // todo ResourceServerConfigurerAdapter 资源服务端的接口切面配置; 用于保护oauth要开放的资源，同时主要作用于client端以及token的认证(Bearer auth)

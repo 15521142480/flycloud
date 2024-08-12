@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author lxs
  * @date 2023/5/16
  */
-@Configuration
+//@Configuration
 public class TokenConfig {
 
     private String SIGNING_KEY = "fly123"; // 签名秘钥

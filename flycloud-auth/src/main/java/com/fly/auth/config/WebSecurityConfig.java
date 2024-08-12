@@ -2,11 +2,11 @@ package com.fly.auth.config;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.auth.config.properties.SecurityAuthorizationProperties;
+import com.fly.auth.handler.MateAuthenticationFailureHandler;
+import com.fly.auth.handler.MateAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +14,10 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * web安全配置
@@ -23,18 +25,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author lxs
  * @date 2023/5/3
  */
-@Configuration
+@Order(3)
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Slf4j
-@Order(-1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo WebSecurityConfigurerAdapter web端的接口切面配置; 用于保护oauth相关的endpoints，同时主要作用于用户的登录(form login,Basic auth)
 
 
     private final SecurityAuthorizationProperties securityAuthorizationProperties;
 
+
     /**
      * 放行和认证规则
+     *
+     * anyRequest          |   匹配所有请求路径
+     * access              |   SpringEl表达式结果为true时可以访问
+     * anonymous           |   匿名可以访问
+     * denyAll             |   用户不能访问
+     * fullyAuthenticated  |   用户完全认证可以访问（非remember-me下自动登录）
+     * hasAnyAuthority     |   如果有参数，参数表示权限，则其中任何一个权限可以访问
+     * hasAnyRole          |   如果有参数，参数表示角色，则其中任何一个角色可以访问
+     * hasAuthority        |   如果有参数，参数表示权限，则其权限可以访问
+     * hasIpAddress        |   如果有参数，参数表示IP地址，如果用户IP和参数匹配，则可以访问
+     * hasRole             |   如果有参数，参数表示角色，则其角色可以访问
+     * permitAll           |   用户可以任意访问
+     * rememberMe          |   允许通过remember-me登录的用户访问
+     * authenticated       |   用户登录后可访问
      */
     @Override
     @SneakyThrows
@@ -73,24 +88,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
 
 
     /**
-     * 认证管理对象
-     *
-     * @return
-     * @throws Exception
-     */
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-
-    /***
-     * 采用BCryptPasswordEncoder对密码进行编码
+     * 密码加密模式
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+
+//        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+
+    /**
+     * 认证管理对象（必须要定义，否则不支持grant_type=password模式）
+     *
+     */
+    @Bean
+    @Override
+    @SneakyThrows
+    public AuthenticationManager authenticationManagerBean() {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler mateAuthenticationSuccessHandler() {
+        return new MateAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler mateAuthenticationFailureHandler() {
+        return new MateAuthenticationFailureHandler();
+    }
+
 
 
 

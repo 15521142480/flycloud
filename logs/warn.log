@@ -1,113 +1,251 @@
-2023-05-20 17:45:13.197 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
-2023-05-20 17:45:13.419 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-system] & group[DEFAULT_GROUP]
-2023-05-20 17:45:13.458 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-system.yaml] & group[DEFAULT_GROUP]
-2023-05-20 17:45:15.569 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly]' package. Please check your configuration.
-2023-05-20 17:45:18.919 [main] WARN  c.b.mybatisplus.core.injector.DefaultSqlInjector - class com.fly.system.domain.SysRoleMenu ,Not found @TableId annotation, Cannot use Mybatis-Plus 'xxById' Method.
-2023-05-20 17:45:18.939 [main] WARN  c.b.mybatisplus.core.injector.DefaultSqlInjector - class com.fly.system.domain.SysUserRole ,Not found @TableId annotation, Cannot use Mybatis-Plus 'xxById' Method.
-2023-05-20 17:45:19.549 [main] WARN  o.s.s.o.p.token.store.JwtAccessTokenConverter - Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
-2023-05-20 17:45:22.325 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: f947c71c-dad7-487c-a973-91f2a51780b9
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2023-05-20 17:45:24.199 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2023-05-20 17:45:24.201 [main] WARN  o.s.c.s.o.SpringCloudSecurityAutoConfiguration - All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.
-2023-05-20 18:28:30.545 [nacos.client.cachedata.internal.notifier] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-system] & group[DEFAULT_GROUP]
-2023-05-20 18:28:30.584 [nacos.client.cachedata.internal.notifier] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-system.yaml] & group[DEFAULT_GROUP]
-2023-05-20 19:12:50.963 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7ae57018 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:43:36.746 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2dc6c9ba (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:43:41.753 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4a7411cb (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:43:46.760 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6acddbae (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:43:51.765 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@744015d (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:43:56.768 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@18afba76 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:44:03.717 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@50c88111 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:46:22.568 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1aa8153f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:46:27.575 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3079ca80 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:47:35.216 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@9db92e2 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:47:56.804 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@781ca142 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:48:01.811 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4cef2ef7 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:48:06.816 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@671ad2d9 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:48:11.820 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@36161555 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:48:16.825 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2302a00a (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 19:48:20.802 [master housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - master - Thread starvation or clock leap detected (housekeeper delta=51s173ms).
-2023-05-20 20:08:26.909 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6aab9a3f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:09:32.722 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@26bc020 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:10:41.478 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@27f60639 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:11:57.614 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@62d58464 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:12:02.618 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@10fbf46f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:14:37.870 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4ba6c801 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:15:54.836 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5b894518 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:17:26.001 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4b013970 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:17:31.007 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@74c46037 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:17:36.017 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@60ebc7fd (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:17:41.029 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5b22f517 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:17:46.039 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@33b98e50 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:17:49.449 [master housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - master - Thread starvation or clock leap detected (housekeeper delta=51s833ms).
-2023-05-20 20:20:25.863 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4493d94d (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:21:50.162 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3a02f792 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:21:55.174 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@65487bdd (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:00.180 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@662a1246 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:05.185 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@284bb1b3 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:10.191 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@bffa057 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:15.198 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2dcda23a (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:20.210 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6fef19b8 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:25.221 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@512572d (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:30.229 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2c8316e4 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:22:35.241 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@90d55a5 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:25:15.913 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@38b60e9d (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:25:31.976 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5f8a1d0a (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:29:53.269 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3455a80 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:29:58.279 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@74101e33 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:30:03.286 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@556f3e4f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:31:32.987 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3f5c341f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:31:37.995 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@36e020d5 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:34:15.342 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@54d64e2b (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:34:20.348 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1186f24b (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:34:30.489 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4e1d4fca (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:38:35.059 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1240797f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:06.591 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@fdd99cf (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:11.784 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6ac6ba56 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:16.789 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@40490329 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:21.793 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7641e62c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:26.799 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@453da04f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:31.804 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@422a4c02 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:36.807 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@aac6cac (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:41.809 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3c1d6ebe (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:46.819 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2b839b5a (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:40:51.212 [master housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - master - Thread starvation or clock leap detected (housekeeper delta=1m823ms).
-2023-05-20 20:44:52.821 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@540fc126 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:44:57.827 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@55d7094f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:46:26.363 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1665f78d (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:46:31.370 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@d847d4c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:50:18.063 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@71e06bf0 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:51:20.237 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@534d9513 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:51:25.241 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@aff5c6c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:51:30.246 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2e3006bf (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:53:04.851 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1264415c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:53:42.365 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@73541e5e (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:54:48.021 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@155b2bb8 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:54:53.028 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@733e5e43 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:54:58.034 [master housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - master - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1c27fc04 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-2023-05-20 20:55:00.399 [Thread-12] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
-2023-05-20 20:55:00.399 [Thread-5] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
-2023-05-20 20:55:00.400 [Thread-12] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
-2023-05-20 20:55:00.403 [Thread-5] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
-2023-05-20 20:55:36.163 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
-2023-05-20 20:55:37.153 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-test] & group[DEFAULT_GROUP]
-2023-05-20 20:55:37.464 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-test.yaml] & group[DEFAULT_GROUP]
-2023-05-20 20:55:40.384 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.test]' package. Please check your configuration.
-2023-05-20 20:55:47.960 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Unsatisfied dependency expressed through method 'setFilterChainProxySecurityConfigurer' parameter 1; nested exception is org.springframework.beans.factory.BeanExpressionException: Expression parsing failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through method 'setConfigurers' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'com.fly.common.security.config.SecurityResourceServerConfig': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.security.oauth2.provider.token.TokenStore' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
-2023-05-20 20:55:48.654 [Thread-8] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
-2023-05-20 20:55:48.654 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
-2023-05-20 20:55:48.655 [Thread-8] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
-2023-05-20 20:56:53.009 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
-2023-05-20 20:56:53.970 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-test] & group[DEFAULT_GROUP]
-2023-05-20 20:56:54.279 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-test.yaml] & group[DEFAULT_GROUP]
-2023-05-20 20:56:55.905 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.test]' package. Please check your configuration.
-2023-05-20 20:57:45.366 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2023-05-20 20:57:46.170 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is java.lang.reflect.UndeclaredThrowableException
-2023-05-20 20:57:47.349 [Thread-4] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
-2023-05-20 20:57:47.349 [Thread-11] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
-2023-05-20 20:57:47.349 [Thread-11] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
-2023-05-20 20:57:47.350 [Thread-4] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2024-08-13 00:11:36.163 [Thread-6] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2024-08-13 00:11:36.163 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2024-08-13 00:11:36.165 [Thread-6] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2024-08-13 00:11:36.167 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2024-08-13 00:12:57.029 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:12:57.140 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-gateway] & group[DEFAULT_GROUP]
+2024-08-13 00:12:57.189 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-gateway.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:13:10.194 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:13:10.343 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth] & group[DEFAULT_GROUP]
+2024-08-13 00:13:10.388 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:13:10.714 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: A circular @Import has been detected: Illegal attempt by @Configuration class 'SecurityResourceServerConfig' to import class 'SecurityResourceServerConfig' as 'SecurityResourceServerConfig' is already present in the current import stack [SecurityResourceServerConfig->SecurityResourceServerConfig->AuthApplication]
+Offending resource: class path resource [com/fly/common/security/config/SecurityResourceServerConfig.class]
+2024-08-13 00:13:10.737 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2024-08-13 00:13:10.738 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2024-08-13 00:13:10.738 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2024-08-13 00:13:46.135 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:13:46.322 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth] & group[DEFAULT_GROUP]
+2024-08-13 00:13:46.381 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:13:47.195 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.auth]' package. Please check your configuration.
+2024-08-13 00:13:47.784 [main] WARN  c.b.dynamic.datasource.DynamicRoutingDataSource - dynamic-datasource initial loaded [0] datasource,Please add your primary datasource or check your configuration
+2024-08-13 00:13:50.577 [main] WARN  o.s.s.o.p.token.store.JwtAccessTokenConverter - Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2024-08-13 00:13:50.681 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Injection of autowired dependencies failed; nested exception is java.lang.IllegalStateException: @Order on WebSecurityConfigurers must be unique. Order of 3 was already used on com.fly.auth.config.WebSecurityConfig$$EnhancerBySpringCGLIB$$5b302104@9d2af36, so it cannot be used on org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$$EnhancerBySpringCGLIB$$59bd78b0@740ad32e too.
+2024-08-13 00:14:45.594 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:14:45.786 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth] & group[DEFAULT_GROUP]
+2024-08-13 00:14:45.846 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:14:46.638 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.auth]' package. Please check your configuration.
+2024-08-13 00:14:47.222 [main] WARN  c.b.dynamic.datasource.DynamicRoutingDataSource - dynamic-datasource initial loaded [0] datasource,Please add your primary datasource or check your configuration
+2024-08-13 00:14:49.118 [main] WARN  o.s.s.o.p.token.store.JwtAccessTokenConverter - Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2024-08-13 00:14:49.223 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Injection of autowired dependencies failed; nested exception is java.lang.IllegalStateException: @Order on WebSecurityConfigurers must be unique. Order of 3 was already used on com.fly.auth.config.WebSecurityConfig$$EnhancerBySpringCGLIB$$5b302104@9d2af36, so it cannot be used on org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration$$EnhancerBySpringCGLIB$$59bd78b0@740ad32e too.
+2024-08-13 00:19:45.593 [boundedElastic-7] WARN  o.s.cloud.loadbalancer.core.RoundRobinLoadBalancer - No servers available for service: flycloud-system
+2024-08-13 00:19:45.639 [boundedElastic-7] WARN  o.s.cloud.loadbalancer.core.RoundRobinLoadBalancer - No servers available for service: flycloud-system
+2024-08-13 00:20:45.580 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2024-08-13 00:24:54.509 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:24:54.678 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth] & group[DEFAULT_GROUP]
+2024-08-13 00:24:54.729 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:24:55.551 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.auth]' package. Please check your configuration.
+2024-08-13 00:24:56.087 [main] WARN  c.b.dynamic.datasource.DynamicRoutingDataSource - dynamic-datasource initial loaded [0] datasource,Please add your primary datasource or check your configuration
+2024-08-13 00:24:57.976 [main] WARN  o.s.s.o.p.token.store.JwtAccessTokenConverter - Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2024-08-13 00:24:58.132 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/css/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:24:58.132 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/index.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:24:58.132 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:24:58.132 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:24:58.132 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:24:58.133 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:24:59.302 [main] WARN  o.s.c.s.o.SpringCloudSecurityAutoConfiguration - All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.
+2024-08-13 00:24:59.780 [RMI TCP Connection(3)-192.168.5.13] WARN  o.s.boot.actuate.jdbc.DataSourceHealthIndicator - DataSource health check failed
+com.baomidou.dynamic.datasource.exception.CannotFindDataSourceException: dynamic-datasource can not find primary datasource
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.determinePrimaryDataSource(DynamicRoutingDataSource.java:97)
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.getDataSource(DynamicRoutingDataSource.java:126)
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.determineDataSource(DynamicRoutingDataSource.java:83)
+	at com.baomidou.dynamic.datasource.ds.AbstractRoutingDataSource.getConnection(AbstractRoutingDataSource.java:55)
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:159)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:117)
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:80)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:330)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.getProduct(DataSourceHealthIndicator.java:122)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.doDataSourceHealthCheck(DataSourceHealthIndicator.java:105)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.doHealthCheck(DataSourceHealthIndicator.java:100)
+	at org.springframework.boot.actuate.health.AbstractHealthIndicator.health(AbstractHealthIndicator.java:82)
+	at org.springframework.boot.actuate.health.HealthIndicator.getHealth(HealthIndicator.java:37)
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:94)
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:41)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getLoggedHealth(HealthEndpointSupport.java:172)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:145)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getAggregateContribution(HealthEndpointSupport.java:156)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:141)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:110)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:81)
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:88)
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:78)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:282)
+	at org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker.invoke(ReflectiveOperationInvoker.java:74)
+	at org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation.invoke(AbstractDiscoveredOperation.java:60)
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:122)
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:97)
+	at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:819)
+	at com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:801)
+	at javax.management.remote.rmi.RMIConnectionImpl.doOperation(RMIConnectionImpl.java:1468)
+	at javax.management.remote.rmi.RMIConnectionImpl.access$300(RMIConnectionImpl.java:76)
+	at javax.management.remote.rmi.RMIConnectionImpl$PrivilegedOperation.run(RMIConnectionImpl.java:1309)
+	at javax.management.remote.rmi.RMIConnectionImpl.doPrivilegedOperation(RMIConnectionImpl.java:1401)
+	at javax.management.remote.rmi.RMIConnectionImpl.invoke(RMIConnectionImpl.java:829)
+	at sun.reflect.GeneratedMethodAccessor28.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:357)
+	at sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+2024-08-13 00:25:29.590 [boundedElastic-11] WARN  com.alibaba.nacos.client.naming - write DEFAULT_GROUP%40%40flycloud-auth conflict;retry time: 1
+2024-08-13 00:33:59.077 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2024-08-13 00:33:59.080 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2024-08-13 00:33:59.085 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2024-08-13 00:33:59.087 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2024-08-13 00:34:04.889 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:34:05.058 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth] & group[DEFAULT_GROUP]
+2024-08-13 00:34:05.112 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:34:05.899 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.auth]' package. Please check your configuration.
+2024-08-13 00:34:06.459 [main] WARN  c.b.dynamic.datasource.DynamicRoutingDataSource - dynamic-datasource initial loaded [0] datasource,Please add your primary datasource or check your configuration
+2024-08-13 00:34:08.314 [main] WARN  o.s.s.o.p.token.store.JwtAccessTokenConverter - Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2024-08-13 00:34:08.469 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/css/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:08.469 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/index.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:08.469 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:08.469 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:08.469 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:08.469 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:09.617 [main] WARN  o.s.c.s.o.SpringCloudSecurityAutoConfiguration - All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.
+2024-08-13 00:34:10.210 [RMI TCP Connection(2)-192.168.5.13] WARN  o.s.boot.actuate.jdbc.DataSourceHealthIndicator - DataSource health check failed
+com.baomidou.dynamic.datasource.exception.CannotFindDataSourceException: dynamic-datasource can not find primary datasource
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.determinePrimaryDataSource(DynamicRoutingDataSource.java:97)
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.getDataSource(DynamicRoutingDataSource.java:126)
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.determineDataSource(DynamicRoutingDataSource.java:83)
+	at com.baomidou.dynamic.datasource.ds.AbstractRoutingDataSource.getConnection(AbstractRoutingDataSource.java:55)
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:159)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:117)
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:80)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:330)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.getProduct(DataSourceHealthIndicator.java:122)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.doDataSourceHealthCheck(DataSourceHealthIndicator.java:105)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.doHealthCheck(DataSourceHealthIndicator.java:100)
+	at org.springframework.boot.actuate.health.AbstractHealthIndicator.health(AbstractHealthIndicator.java:82)
+	at org.springframework.boot.actuate.health.HealthIndicator.getHealth(HealthIndicator.java:37)
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:94)
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:41)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getLoggedHealth(HealthEndpointSupport.java:172)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:145)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getAggregateContribution(HealthEndpointSupport.java:156)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:141)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:110)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:81)
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:88)
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:78)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:282)
+	at org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker.invoke(ReflectiveOperationInvoker.java:74)
+	at org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation.invoke(AbstractDiscoveredOperation.java:60)
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:122)
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:97)
+	at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:819)
+	at com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:801)
+	at javax.management.remote.rmi.RMIConnectionImpl.doOperation(RMIConnectionImpl.java:1468)
+	at javax.management.remote.rmi.RMIConnectionImpl.access$300(RMIConnectionImpl.java:76)
+	at javax.management.remote.rmi.RMIConnectionImpl$PrivilegedOperation.run(RMIConnectionImpl.java:1309)
+	at javax.management.remote.rmi.RMIConnectionImpl.doPrivilegedOperation(RMIConnectionImpl.java:1401)
+	at javax.management.remote.rmi.RMIConnectionImpl.invoke(RMIConnectionImpl.java:829)
+	at sun.reflect.GeneratedMethodAccessor28.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:357)
+	at sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+2024-08-13 00:34:14.663 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2024-08-13 00:34:14.663 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2024-08-13 00:34:14.664 [Thread-7] WARN  com.alibaba.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2024-08-13 00:34:14.665 [Thread-2] WARN  com.alibaba.nacos.common.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2024-08-13 00:34:20.705 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[application-dev.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:34:20.859 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth] & group[DEFAULT_GROUP]
+2024-08-13 00:34:20.904 [main] WARN  c.a.cloud.nacos.client.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[flycloud-auth.yaml] & group[DEFAULT_GROUP]
+2024-08-13 00:34:21.653 [main] WARN  org.mybatis.spring.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.fly.common.doc.config, com.fly.auth]' package. Please check your configuration.
+2024-08-13 00:34:22.185 [main] WARN  c.b.dynamic.datasource.DynamicRoutingDataSource - dynamic-datasource initial loaded [0] datasource,Please add your primary datasource or check your configuration
+2024-08-13 00:34:23.996 [main] WARN  o.s.s.o.p.token.store.JwtAccessTokenConverter - Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2024-08-13 00:34:24.150 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/css/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:24.150 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/index.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:24.150 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:24.150 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:24.150 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:24.150 [main] WARN  o.s.s.config.annotation.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-13 00:34:25.327 [main] WARN  o.s.c.s.o.SpringCloudSecurityAutoConfiguration - All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.
+2024-08-13 00:34:26.016 [RMI TCP Connection(2)-192.168.5.13] WARN  o.s.boot.actuate.jdbc.DataSourceHealthIndicator - DataSource health check failed
+com.baomidou.dynamic.datasource.exception.CannotFindDataSourceException: dynamic-datasource can not find primary datasource
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.determinePrimaryDataSource(DynamicRoutingDataSource.java:97)
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.getDataSource(DynamicRoutingDataSource.java:126)
+	at com.baomidou.dynamic.datasource.DynamicRoutingDataSource.determineDataSource(DynamicRoutingDataSource.java:83)
+	at com.baomidou.dynamic.datasource.ds.AbstractRoutingDataSource.getConnection(AbstractRoutingDataSource.java:55)
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:159)
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:117)
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:80)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:330)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.getProduct(DataSourceHealthIndicator.java:122)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.doDataSourceHealthCheck(DataSourceHealthIndicator.java:105)
+	at org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator.doHealthCheck(DataSourceHealthIndicator.java:100)
+	at org.springframework.boot.actuate.health.AbstractHealthIndicator.health(AbstractHealthIndicator.java:82)
+	at org.springframework.boot.actuate.health.HealthIndicator.getHealth(HealthIndicator.java:37)
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:94)
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:41)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getLoggedHealth(HealthEndpointSupport.java:172)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:145)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getAggregateContribution(HealthEndpointSupport.java:156)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:141)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:110)
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:81)
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:88)
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:78)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:282)
+	at org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker.invoke(ReflectiveOperationInvoker.java:74)
+	at org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation.invoke(AbstractDiscoveredOperation.java:60)
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:122)
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:97)
+	at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:819)
+	at com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:801)
+	at javax.management.remote.rmi.RMIConnectionImpl.doOperation(RMIConnectionImpl.java:1468)
+	at javax.management.remote.rmi.RMIConnectionImpl.access$300(RMIConnectionImpl.java:76)
+	at javax.management.remote.rmi.RMIConnectionImpl$PrivilegedOperation.run(RMIConnectionImpl.java:1309)
+	at javax.management.remote.rmi.RMIConnectionImpl.doPrivilegedOperation(RMIConnectionImpl.java:1401)
+	at javax.management.remote.rmi.RMIConnectionImpl.invoke(RMIConnectionImpl.java:829)
+	at sun.reflect.GeneratedMethodAccessor28.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:357)
+	at sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)

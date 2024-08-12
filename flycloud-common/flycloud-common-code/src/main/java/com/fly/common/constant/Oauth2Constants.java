@@ -91,11 +91,11 @@ public class Oauth2Constants {
 	 */
 	public static final String IMPLICIT = "implicit";
 
-	public static final String SIGN_KEY = "MATE";
+	public static final String SIGN_KEY = "Fly";
 
-	public static final String CAPTCHA_KEY = "mate.captcha.";
+	public static final String CAPTCHA_KEY = "fly.captcha.";
 
-	public static final String SMS_CODE_KEY = "mate.sms.code.";
+	public static final String SMS_CODE_KEY = "fly.sms.code.";
 
 	public static final String CAPTCHA_HEADER_KEY = "key";
 
@@ -105,14 +105,14 @@ public class Oauth2Constants {
 
 	public static final int LOGIN_MOBILE_TYPE = 2;
 
-	public static final String HEADER_TOKEN = "Mate-Auth";
+	public static final String HEADER_TOKEN = "Fly-Auth";
 
 	/**
 	 * 自定义client表名
 	 */
-	public static final String CLIENT_TABLE = "mate_sys_client";
+	public static final String CLIENT_TABLE = "fly_sys_client";
 
-	public static final String ENCRYPT = "{mate}";
+	public static final String ENCRYPT = "{fly}";
 
 	public static final String CAPTCHA_ERROR = "验证码不正确！";
 
@@ -142,36 +142,36 @@ public class Oauth2Constants {
 	/**
 	 * 权限标识前缀
 	 */
-	public static final String MATE_PERMISSION_PREFIX = "mate.permission.";
+	public static final String FLY_PERMISSION_PREFIX = "fly.permission.";
 
 	/**
 	 * 字段描述开始：用户ID
 	 */
-	public static final String MATE_USER_ID = "userId";
+	public static final String FLY_USER_ID = "userId";
 
 	/**
 	 * 用户名
 	 */
-	public static final String MATE_USER_NAME = "userName";
+	public static final String FLY_USER_NAME = "userName";
 
 	/**
 	 * 用户头像
 	 */
-	public static final String MATE_AVATAR = "avatar";
+	public static final String FLY_AVATAR = "avatar";
 
 	/**
 	 * 用户权限ID
 	 */
-	public static final String MATE_ROLE_ID = "roleId";
+	public static final String FLY_ROLE_ID = "roleId";
 
 	/**
 	 * 用户类型
 	 */
-	public static final String MATE_TYPE = "type";
+	public static final String FLY_TYPE = "type";
 
 	/**
 	 * 租户ID
 	 */
-	public static final String MATE_TENANT_ID = "tenantId";
+	public static final String FLY_TENANT_ID = "tenantId";
 
 }

@@ -16,9 +16,15 @@
 
     <dependencies>
 
+
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-api</artifactId>
+            <artifactId>flycloud-common-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-system-api</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
@@ -31,16 +37,12 @@
             <artifactId>flycloud-common-database</artifactId>
             <version>${revision}</version>
         </dependency>
-        <dependency>
-            <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-security</artifactId>
-            <version>${revision}</version>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.flycloud</groupId>-->
 <!--            <artifactId>flycloud-common-seata</artifactId>-->
 <!--            <version>${revision}</version>-->
 <!--        </dependency>-->
+
 
         <!--注册中心客户端-->
         <dependency>

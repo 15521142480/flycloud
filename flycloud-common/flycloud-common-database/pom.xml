@@ -21,6 +21,11 @@
             <artifactId>flycloud-common-code</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-doc</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>com.flycloud</groupId>-->
@@ -32,6 +37,10 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
         </dependency>
 
         <!-- Dynamic DataSource -->

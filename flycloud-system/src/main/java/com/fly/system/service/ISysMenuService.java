@@ -1,49 +1,73 @@
 package com.fly.system.service;
 
-import com.fly.common.database.web.domain.bo.PageBo;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.system.domain.bo.SysMenuBo;
-import com.fly.system.domain.vo.SysMenuVo;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.fly.common.database.entity.Search;
+import com.flycloud.system.api.entity.SysMenu;
+import com.flycloud.system.api.poi.SysMenuPOI;
+import com.flycloud.system.api.vo.SysMenuVO;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
- * 菜单权限Service接口
+ * 菜单权限表 服务类
  *
- * @author fly
- * @date 2023-04-23
  */
-public interface ISysMenuService {
+public interface ISysMenuService extends IService<SysMenu> {
 
     /**
-     * 查询菜单权限
+     * 菜单路由
+     *
+     * @param roleId 角色ID
+     * @return List
      */
-    SysMenuVo queryById(Long menuId);
+    List<SysMenuVO> routes(String roleId);
 
     /**
-     * 查询菜单权限列表
+     * 查询列表
+     *
+     * @param search 检索对象
+     * @return List
      */
-    PageVo<SysMenuVo> queryPageList(SysMenuBo bo, PageBo pageBo);
+    List<SysMenu> searchList(Search search);
 
     /**
-     * 查询菜单权限列表
+     * 保存全部
+     *
+     * @param sysMenu 菜单对象
+     * @return boolean
      */
-    List<SysMenuVo> queryList(SysMenuBo bo);
+    boolean saveAll(SysMenu sysMenu);
 
     /**
-     * 修改菜单权限
+     * 状态设置
+     *
+     * @param ids    id列表
+     * @param status 状态
+     * @return boolean
      */
-    Boolean insertByBo(SysMenuBo bo);
+    boolean status(String ids, String status);
 
     /**
-     * 修改菜单权限
+     * 菜单导出
+     *
+     * @return 菜单导出
      */
-    Boolean updateByBo(SysMenuBo bo);
+    List<SysMenuPOI> export();
 
     /**
-     * 校验并批量删除菜单权限信息
+     * 检查是否存在菜单子节点
+     *
+     * @param id 菜单ID
+     * @return 是否
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    boolean checkChild(Long id);
+
+    /**
+     * 根据菜单ID查询父类ID
+     *
+     * @param menuId 菜单ID
+     * @return parentId
+     */
+    Long getMenuChild(Long menuId);
 
 }

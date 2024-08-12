@@ -1,49 +1,72 @@
 package com.fly.system.service;
 
-import com.fly.common.database.web.domain.bo.PageBo;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.system.domain.bo.SysRoleBo;
-import com.fly.system.domain.vo.SysRoleVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.fly.common.database.entity.Search;
+import com.flycloud.system.api.entity.SysRole;
+import com.flycloud.system.api.poi.SysRolePOI;
+import com.flycloud.system.api.vo.SysRoleVO;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
- * 角色信息Service接口
+ * 角色表 服务类
  *
- * @author fly
- * @date 2023-04-23
  */
-public interface ISysRoleService {
+public interface ISysRoleService extends IService<SysRole> {
 
     /**
-     * 查询角色信息
+     * 角色树
+     *
+     * @return
      */
-    SysRoleVo queryById(Long roleId);
+    List<SysRoleVO> tree();
 
     /**
-     * 查询角色信息列表
+     * 查询角色列表
+     *
+     * @param search
+     * @return
      */
-    PageVo<SysRoleVo> queryPageList(SysRoleBo bo, PageBo pageBo);
+    List<SysRole> listSearch(Map<String, String> search);
 
     /**
-     * 查询角色信息列表
+     * 查询权限集
+     *
+     * @param id
+     * @return
      */
-    List<SysRoleVo> queryList(SysRoleBo bo);
+    List<String> getPermission(String id);
 
     /**
-     * 修改角色信息
+     * 角色导出
+     *
+     * @return
      */
-    Boolean insertByBo(SysRoleBo bo);
+    List<SysRolePOI> export();
 
     /**
-     * 修改角色信息
+     * 分页列表
+     *
+     * @param search
+     * @return
      */
-    Boolean updateByBo(SysRoleBo bo);
+    IPage<SysRole> listPage(Search search);
 
     /**
-     * 校验并批量删除角色信息信息
+     * 设置角色
+     *
+     * @param sysRole 角色对象
+     * @return 布尔
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    boolean set(SysRole sysRole);
 
+    /**
+     * 根据ids批量删除角色
+     *
+     * @param ids ID列表
+     * @return boolean
+     */
+    boolean batchDeleteByIds(String ids);
 }

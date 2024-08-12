@@ -3,6 +3,7 @@ package com.fly.gateway.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -41,10 +42,12 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         URI uri = request.getURI();
         String path = request.getPath().pathWithinApplication().value();
         String requestUrl = this.getOriginalRequestUrl(exchange);
+        String tranUrl = this.getTranRequestUrl(exchange);
         String method = request.getMethodValue();
         HttpHeaders headers = request.getHeaders();
 
-        log.info("=====request-url:{}, method: {}", requestUrl, method);
+        log.info("=====原请求地址:{}, method: {}", requestUrl, method);
+        log.info("=====转发后地址:{}, method: {}", tranUrl, method);
         if ("POST".equals(method)) {
 
             return DataBufferUtils.join(exchange.getRequest().getBody()).flatMap(dataBuffer -> {
@@ -101,6 +104,23 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
 
         // 第二种: http://localhost:8080/v3/api-docs/flycloud-gateway
         return requestUri.toString();
+    }
+
+
+    /**
+     * 获取转发后的地址
+     */
+    private String getTranRequestUrl(ServerWebExchange exchange) {
+
+        Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+        // 配置文件中配置的route的uri属性(匹配到的route)，即断言代理后的地址
+        String uri = route.getUri().toString();
+
+        // 请求路径中域名之后的部分,本例中是/api/name/get
+        ServerHttpRequest request = exchange.getRequest();
+        String path = request.getPath().toString();
+
+        return uri + path;
     }
 
 

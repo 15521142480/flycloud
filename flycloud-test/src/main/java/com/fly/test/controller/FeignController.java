@@ -1,7 +1,5 @@
 package com.fly.test.controller;
 
-import com.fly.api.flycloud_system.domain.UserAuthInfo;
-import com.fly.api.flycloud_system.feign.SysUserFeignClient;
 import com.fly.common.model.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeignController {
 
 
-    private final SysUserFeignClient sysUserFeignClient;
+//    private final SysUserFeignClient sysUserFeignClient;
 
 
     /**
@@ -29,11 +27,11 @@ public class FeignController {
      * @param username
      *
     */
-    @GetMapping("/getUserInfoByName")
-    public R<UserAuthInfo> getUserInfoByName(String username) {
-
-        return sysUserFeignClient.getUserInfoByName(username);
-    }
+//    @GetMapping("/getUserInfoByName")
+//    public R<UserAuthInfo> getUserInfoByName(String username) {
+//
+//        return sysUserFeignClient.getUserInfoByName(username);
+//    }
 
 
 
