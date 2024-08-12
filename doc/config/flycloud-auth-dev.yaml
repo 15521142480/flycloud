@@ -1,0 +1,29 @@
+
+
+# 安全授权配置
+security:
+  oauth2:
+    client:
+
+      # 客户端标识 ID
+      client-id: flycloud-system
+
+      # 客户端安全码
+      client-secret: wW@@@257007
+
+      # 授权类型
+      grant-types: 3
+
+      # token有效期
+      token-validity-time: 7200
+
+      # refresh-token有效期
+      refresh-token-validity-time: 7200
+
+      # 客户端访问范围
+      scopes:
+
+      # 白名单 (对外直接暴露服务资源的URL)
+      ignore-urls:
+        # - /v3/api-docs/**
+        - /auth/login
