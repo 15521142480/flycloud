@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("mate_sys_role")
+@TableName("sys_role")
 @Schema(name = "SysRole对象", description = "角色表")
 public class SysRole extends BaseEntity {
 

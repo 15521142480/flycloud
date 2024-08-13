@@ -16,7 +16,7 @@ import com.fly.common.database.entity.BaseEntity;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("mate_sys_menu")
+@TableName("sys_menu")
 @Schema(name = "SysMenu对象", description = "菜单权限表")
 public class SysMenu extends BaseEntity {
 

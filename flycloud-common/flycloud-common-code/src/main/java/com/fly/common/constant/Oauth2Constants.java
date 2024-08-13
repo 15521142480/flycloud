@@ -110,7 +110,7 @@ public class Oauth2Constants {
 	/**
 	 * 自定义client表名
 	 */
-	public static final String CLIENT_TABLE = "fly_sys_client";
+	public static final String CLIENT_TABLE = "sys_client";
 
 	public static final String ENCRYPT = "{fly}";
 

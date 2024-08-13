@@ -25,7 +25,7 @@ import java.util.Map;
  * @date 2023/5/2
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/oauth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -39,8 +39,10 @@ public class AuthController {
     /**
      * 登录
      *
+     * <p>
+     * 除普通参数之外，header还需传Authorization：如 Basic Zmx5OmZseV9zZWNyZXQ=
      */
-    @GetMapping("/login")
+    @GetMapping("/token")
     public R<Map<String, Object>> getAccessToken(Principal principal, @RequestParam Map<String, String> loginParam) throws HttpRequestMethodNotSupportedException {
 
         OAuth2AccessToken accessToken =  tokenEndpoint.postAccessToken(principal, loginParam).getBody();
@@ -58,6 +60,8 @@ public class AuthController {
     /**
      * 登录
      *
+     * <p>
+     * 除普通参数之外，header还需传Authorization：如 Basic Zmx5OmZseV9zZWNyZXQ=
     */
     @PostMapping("/login")
     @Parameters({

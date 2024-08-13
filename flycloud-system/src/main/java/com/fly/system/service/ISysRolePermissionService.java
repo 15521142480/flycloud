@@ -17,6 +17,6 @@ public interface ISysRolePermissionService extends IService<SysRolePermission> {
      * @param roleId 角色ID
      * @return 菜单ID列表
      */
-    List<String> getMenuIdByRoleId(String roleId);
+//    List<String> getMenuIdByRoleId(String roleId);
 
 }

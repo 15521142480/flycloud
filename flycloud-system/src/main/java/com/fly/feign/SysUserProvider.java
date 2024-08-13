@@ -78,7 +78,7 @@ public class SysUserProvider implements ISysUserProvider {
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setSysUser(sysUser);
-        userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
+//        userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
         userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
         userInfo.setTenantId(sysUser.getTenantId());
 

@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("mate_sys_depart")
+@TableName("sys_depart")
 @Schema(name = "SysDepart对象", description = "组织机构表")
 public class SysDepart extends BaseEntity {
 

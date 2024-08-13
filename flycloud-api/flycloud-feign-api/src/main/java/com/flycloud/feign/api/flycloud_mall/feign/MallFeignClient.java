@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author lxs
  * @date 2023/2/13
  */
-@FeignClient(name = ServerNames.MALL_SERVER_NAME)
+@FeignClient(name = ServerNames.MALL_SERVER_NAME, contextId = "MallFeignClient")
 public interface MallFeignClient {
 
 

@@ -1,4 +1,4 @@
-package com.fly.userTest.domain.bo;
+package com.fly.test.domain.bo;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  */
 
 @Data
-public class SysUserBo {
+public class SysUserTestBo {
 
     /**
      * 用户ID

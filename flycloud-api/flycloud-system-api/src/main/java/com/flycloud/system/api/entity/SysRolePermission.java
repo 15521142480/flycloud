@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-@TableName("mate_sys_role_permission")
+@TableName("sys_role_permission")
 @Schema(name = "SysRolePermission对象", description = "角色权限表")
 public class SysRolePermission implements Serializable {
 

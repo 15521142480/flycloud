@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fly.common.tree.INode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import com.flycloud.system.api.entity.MenuMeta;
+import com.flycloud.system.api.entity.Menu;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class SysMenuVO implements INode {
 	 */
 	private Integer sort;
 
-	private MenuMeta meta;
+	private Menu menu;
 
 	private String component;
 

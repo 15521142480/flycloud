@@ -1,7 +1,7 @@
-package com.fly.userTest.service;
+package com.fly.test.service;
 
-import com.fly.userTest.domain.vo.SysUserVo;
-import com.fly.userTest.domain.bo.SysUserBo;
+import com.fly.test.domain.vo.SysUserTestVo;
+import com.fly.test.domain.bo.SysUserTestBo;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
 
@@ -19,27 +19,27 @@ public interface ISysUserTestService {
     /**
      * 查询用户信息
      */
-    SysUserVo queryById(Long userId);
+    SysUserTestVo queryById(Long userId);
 
     /**
      * 查询用户信息列表
      */
-    PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo);
+    PageVo<SysUserTestVo> queryPageList(SysUserTestBo bo, PageBo pageBo);
 
     /**
      * 查询用户信息列表
      */
-    List<SysUserVo> queryList(SysUserBo bo);
+    List<SysUserTestVo> queryList(SysUserTestBo bo);
 
     /**
      * 修改用户信息
      */
-    Boolean insertByBo(SysUserBo bo);
+    Boolean insertByBo(SysUserTestBo bo);
 
     /**
      * 修改用户信息
      */
-    Boolean updateByBo(SysUserBo bo);
+    Boolean updateByBo(SysUserTestBo bo);
 
     /**
      * 校验并批量删除用户信息信息

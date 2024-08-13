@@ -1,4 +1,4 @@
-package com.fly.userTest.domain.vo;
+package com.fly.test.domain.vo;
 
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -16,7 +16,7 @@ import lombok.Data;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysUserVo {
+public class SysUserTestVo {
 
     private static final long serialVersionUID = 1L;
 

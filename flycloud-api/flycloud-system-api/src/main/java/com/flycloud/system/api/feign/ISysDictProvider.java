@@ -14,7 +14,7 @@ import java.util.List;
  * 字典远程调用接口类
  *
  */
-@FeignClient(value = ServerNames.SYSTEM_SERVER_NAME)
+@FeignClient(value = ServerNames.SYSTEM_SERVER_NAME, contextId = "SysDictProvider")
 public interface ISysDictProvider {
 
     /**

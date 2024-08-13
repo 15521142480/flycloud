@@ -32,7 +32,7 @@
     </sql>
     <select id="selectOneIgnoreTenant" resultMap="BaseResultMap" parameterType="com.flycloud.system.api.entity.SysUser">
         SELECT <include refid="Base_Column_List" />
-        FROM mate_sys_user
+        FROM sys_user
         <trim prefix="where" prefixOverrides="and|or">
             <if test="account != null and account != ''">
                 account =#{account}

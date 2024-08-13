@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author pangu
  */
 @Data
-public class MenuMeta implements Serializable {
+public class Menu implements Serializable {
 
     private static final long serialVersionUID = -1918771120674335058L;
 

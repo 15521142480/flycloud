@@ -12,7 +12,7 @@ public class CommConstant {
 	/**
 	 * 应用版本号
 	 */
-	public static final String MATE_APP_VERSION = "4.7.8-SNAPSHOT";
+	public static final String FLY_APP_VERSION = "4.7.8-SNAPSHOT";
 
 	/**
 	 * Spring 应用名 prop key
@@ -46,7 +46,7 @@ public class CommConstant {
 	/**
 	 * 微服务之间传递的唯一标识
 	 */
-	public static final String MATE_TRACE_ID = "mate-trace-id";
+	public static final String Fly_TRACE_ID = "flytrace-id";
 
 	/**
 	 * 日志链路追踪id日志标志
@@ -71,22 +71,22 @@ public class CommConstant {
 	/**
 	 * 服务资源
 	 */
-	public static final String MATE_SERVICE_RESOURCE = "mate-service-resource";
+	public static final String FLY_SERVICE_RESOURCE = "flyservice-resource";
 
 	/**
 	 * API资源
 	 */
-	public static final String MATE_API_RESOURCE = "mate-api-resource";
+	public static final String FLY_API_RESOURCE = "flyapi-resource";
 
 	/**
 	 * 权限认证的排序
 	 */
-	public static final int MATE_UAA_FILTER_ORDER = -200;
+	public static final int FLY_UAA_FILTER_ORDER = -200;
 
 	/**
 	 * 签名排序
 	 */
-	public static final int MATE_SIGN_FILTER_ORDER = -300;
+	public static final int FLY_SIGN_FILTER_ORDER = -300;
 
 	/**
 	 * json类型报文，UTF-8字符集
@@ -94,7 +94,7 @@ public class CommConstant {
 	public static final String JSON_UTF8 = "application/json;charset=UTF-8";
 
 
-	public static final String CONFIG_DATA_ID_DYNAMIC_ROUTES = "mate-dynamic-routes.yaml";
+	public static final String CONFIG_DATA_ID_DYNAMIC_ROUTES = "flydynamic-routes.yaml";
 	public static final String CONFIG_GROUP = "DEFAULT_GROUP";
 	public static final long CONFIG_TIMEOUT_MS = 5000;
 

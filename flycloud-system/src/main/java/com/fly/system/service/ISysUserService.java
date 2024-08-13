@@ -25,7 +25,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param status 状态
      * @return boolean
      */
-    boolean status(String ids, String status);
+//    boolean status(String ids, String status);
 
 
     /**
@@ -35,7 +35,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param sysUser 部门参数
      * @return 分页列表
      */
-    IPage<SysUser> listPage(Search search, SysUser sysUser);
+//    IPage<SysUser> listPage(Search search, SysUser sysUser);
 
 
     /**
@@ -52,5 +52,5 @@ public interface ISysUserService extends IService<SysUser> {
      *
      * @return 导出POI数据
      */
-    List<SysUserPOI> export();
+//    List<SysUserPOI> export();
 }

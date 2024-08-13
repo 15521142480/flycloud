@@ -14,7 +14,7 @@ import com.flycloud.system.api.entity.SysUser;
  *
  * @author pangu
  */
-@FeignClient(value = ServerNames.SYSTEM_SERVER_NAME)
+@FeignClient(value = ServerNames.SYSTEM_SERVER_NAME, contextId = "SysUserProvider") // 每个@FeignClient注解对应的接口会导致FeignClientSpecification重复注入，使用contextId解决
 public interface ISysUserProvider {
 
     /**

@@ -2,8 +2,8 @@ package com.fly.auth.config;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.auth.config.properties.SecurityAuthorizationProperties;
-import com.fly.auth.handler.MateAuthenticationFailureHandler;
-import com.fly.auth.handler.MateAuthenticationSuccessHandler;
+import com.fly.auth.handler.AuthenticationFailureHandler;
+import com.fly.auth.handler.AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * web安全配置
@@ -110,13 +108,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
     }
 
     @Bean
-    public AuthenticationSuccessHandler mateAuthenticationSuccessHandler() {
-        return new MateAuthenticationSuccessHandler();
+    public org.springframework.security.web.authentication.AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler();
     }
 
     @Bean
-    public AuthenticationFailureHandler mateAuthenticationFailureHandler() {
-        return new MateAuthenticationFailureHandler();
+    public org.springframework.security.web.authentication.AuthenticationFailureHandler authenticationFailureHandler() {
+        return new AuthenticationFailureHandler();
     }
 
 

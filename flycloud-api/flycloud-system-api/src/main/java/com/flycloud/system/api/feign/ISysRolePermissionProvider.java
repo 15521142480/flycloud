@@ -12,7 +12,7 @@ import java.util.List;
  * 角色权限远程调用接口
  *
  */
-@FeignClient(value = ServerNames.SYSTEM_SERVER_NAME)
+@FeignClient(value = ServerNames.SYSTEM_SERVER_NAME, contextId = "SysRolePermissionProvider")
 public interface ISysRolePermissionProvider {
 
 
