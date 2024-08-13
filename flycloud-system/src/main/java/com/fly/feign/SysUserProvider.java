@@ -48,7 +48,7 @@ public class SysUserProvider implements ISysUserProvider {
      * 根据用户名查询用户信息
      */
     @Override
-    @GetMapping(ProviderConstants.PROVIDER_USER_MOBILE)
+    @GetMapping(ProviderConstants.PROVIDER_USER_USERNAME)
     public R<UserInfo> getUserByUserName(String userName) {
 
         SysUser sysUser = sysUserService.getOneIgnoreTenant(new SysUser().setAccount(userName));

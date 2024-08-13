@@ -19,28 +19,24 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-code</artifactId>
+            <artifactId>flycloud-common-feign</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-database</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-doc</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-redis</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-elasticsearch</artifactId>

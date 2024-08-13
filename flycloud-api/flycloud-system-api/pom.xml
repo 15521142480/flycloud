@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-code</artifactId>
+            <artifactId>flycloud-common-feign</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>

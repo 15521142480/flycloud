@@ -2,7 +2,7 @@ package com.flycloud.system.api.poi;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.Data;
-import com.fly.common.constant.CommConstant;
+import com.fly.common.constant.CommonConstants;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -24,6 +24,6 @@ public class SysRolePOI implements Serializable {
     @Excel(name = "角色描述" ,orderNum = "3", width = 30, isImportField = "true_st")
     private String description;
 
-    @Excel(name = "创建时间", format = CommConstant.DATETIME_FORMAT, orderNum = "4", width = 30, isImportField = "true_st")
+    @Excel(name = "创建时间", format = CommonConstants.DATETIME_FORMAT, orderNum = "4", width = 30, isImportField = "true_st")
     private LocalDateTime createTime;
 }

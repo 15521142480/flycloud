@@ -2,11 +2,10 @@ package com.fly.system.controller;
 
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.model.R;
+import com.fly.system.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 临时
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: lxs
  * @date: 2024/8/13
  */
-@Validated
+//@Validated
 @RestController
 @RequestMapping("/temp")
 @AllArgsConstructor

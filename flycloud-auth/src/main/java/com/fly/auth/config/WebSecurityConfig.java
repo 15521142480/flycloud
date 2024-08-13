@@ -2,8 +2,8 @@ package com.fly.auth.config;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.auth.config.properties.SecurityAuthorizationProperties;
-import com.fly.auth.handler.AuthenticationFailureHandler;
-import com.fly.auth.handler.AuthenticationSuccessHandler;
+import com.fly.common.security.handler.AuthenticationFailureHandler;
+import com.fly.common.security.handler.AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;

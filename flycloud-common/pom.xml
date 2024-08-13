@@ -23,6 +23,7 @@
 <!--        <module>flycloud-common-seata</module>-->
         <module>flycloud-common-redis</module>
         <module>flycloud-common-elasticsearch</module>
+        <module>flycloud-common-feign</module>
     </modules>
 
 </project>

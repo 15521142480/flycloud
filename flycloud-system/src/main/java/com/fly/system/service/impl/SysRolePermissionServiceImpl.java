@@ -7,7 +7,7 @@ import com.fly.system.service.ISysMenuService;
 import com.fly.system.service.ISysRolePermissionService;
 import com.flycloud.system.api.entity.SysMenu;
 import com.flycloud.system.api.entity.SysRolePermission;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
  *
  */
 @Service
+@RequiredArgsConstructor
 public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements ISysRolePermissionService {
 
 
-//    @Autowired
-//    private ISysMenuService sysMenuService;
+//    private final ISysMenuService sysMenuService;
 //
 //
 //
@@ -40,4 +40,6 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 //                .eq(SysMenu::getType, 2).in(SysMenu::getId, menuIds));
 //        return sysMenuList.stream().map(SysMenu::getPermission).collect(Collectors.toList());
 //    }
+
+
 }

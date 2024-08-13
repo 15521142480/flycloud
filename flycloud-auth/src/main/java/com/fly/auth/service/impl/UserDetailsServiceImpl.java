@@ -35,6 +35,9 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	private ISysUserProvider sysUserProvider;
 
 
+	/**
+	 * 根据用户名查询用户信息
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
@@ -48,8 +51,13 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 
 	}
 
+
+	/**
+	 * 根据用户手机号查询用户信息
+	 */
 	@Override
 	public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException {
+
 		UserInfo userInfo = sysUserProvider.getUserByMobile(mobile).getData();
 		if (userInfo == null) {
 			throw new TokenException("该用户：" + mobile + "不存在");
@@ -59,8 +67,13 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		return getUserDetails(userInfo);
 	}
 
+
+	/**
+	 * 根据社交账号登录
+	 */
 	@Override
 	public UserDetails loadUserBySocial(String openId) throws UsernameNotFoundException {
+
 		String userName = "admin";
 		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
 		if (userInfo == null) {
@@ -72,6 +85,12 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	}
 
 
+	// =============================================================================
+
+
+	/**
+	 * 处理用户信息
+	 */
 	private UserDetails getUserDetails(UserInfo userInfo) {
 
 		if (ObjectUtils.isEmpty(userInfo)) {

@@ -2,7 +2,7 @@ package com.flycloud.system.api.poi;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.Data;
-import com.fly.common.constant.CommConstant;
+import com.fly.common.constant.CommonConstants;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,6 +27,6 @@ public class SysMenuPOI implements Serializable {
     @Excel(name = "菜单类型" ,orderNum = "4", replace = { "目录_0", "菜单_1", "按钮_2" }, width = 30, isImportField = "true_st")
     private String type;
 
-    @Excel(name = "创建时间", format = CommConstant.DATETIME_FORMAT, orderNum = "5", width = 30, isImportField = "true_st")
+    @Excel(name = "创建时间", format = CommonConstants.DATETIME_FORMAT, orderNum = "5", width = 30, isImportField = "true_st")
     private LocalDateTime createTime;
 }

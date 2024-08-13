@@ -1,19 +1,22 @@
 package com.fly.common.security.config;
 
 import cn.hutool.core.convert.Convert;
-import com.fly.common.security.config.properties.SecurityAuthorizationProperties;
+import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
+import com.fly.common.security.handler.AccessDeniedHandler;
+import com.fly.common.security.handler.AuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
-import javax.annotation.Resource;
 
 /**
  * security 资源服务配置
@@ -22,7 +25,6 @@ import javax.annotation.Resource;
  * @date 2023/4/28
  */
 @Order(5)
-//@Configuration
 @EnableResourceServer // 开启资源服务器校验
 //@EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 激活方法上的@PreAuthorize注解
@@ -30,7 +32,11 @@ import javax.annotation.Resource;
 public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapter { // todo ResourceServerConfigurerAdapter 资源服务端的接口切面配置; 用于保护oauth要开放的资源，同时主要作用于client端以及token的认证(Bearer auth)
 
 
-    private final SecurityAuthorizationProperties securityAuthorizationProperties;
+//    private final SecurityAuthorizationProperties securityAuthorizationProperties;
+    private final ServerResourceSecurityProperties serverResourceSecurityProperties;
+
+    private final RedisConnectionFactory redisConnectionFactory;
+
 
 
     /**
@@ -44,13 +50,11 @@ public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapte
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity.authorizeRequests();
 
         // 放行白名单接口
-//        securityAuthorizationProperties.getIgnoreUrls().forEach(
-//                url -> registry.antMatchers(url).permitAll()
-//        );
-        registry.antMatchers(Convert.toStrArray(securityAuthorizationProperties.getIgnoreUrls())).permitAll();
+        registry.antMatchers(Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls())).permitAll();
 
         // 放行静态资源
         registry.antMatchers(
+                "/temp/**",
                 "/css/**",
                 "/swagger-ui/index.html",
                 "/swagger-ui.html",
@@ -68,19 +72,24 @@ public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapte
 
 
     /**
-     * 公钥解析器配置
+     * 自定义授权相关处理器
      *
      */
-
-    @Resource
-    TokenStore tokenStore;
-
     @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        resources
-//                .resourceId(RESOURCE_ID)//资源 id
-                .tokenStore(tokenStore)
-                .stateless(true);
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        resources.authenticationEntryPoint(new AuthenticationEntryPoint())
+                .accessDeniedHandler(new AccessDeniedHandler());
+    }
+
+
+    // =============================================================================
+
+    /**
+     * 配置token存储到redis中
+     */
+    @Bean
+    public RedisTokenStore redisTokenStore() {
+        return new RedisTokenStore(redisConnectionFactory);
     }
 
 }

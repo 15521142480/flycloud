@@ -1,4 +1,4 @@
-package com.fly.auth.handler;
+package com.fly.common.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fly.common.constant.WebConstants;

@@ -41,5 +41,5 @@ security:
       # 白名单 (对外直接暴露服务资源的URL)
       ignore-urls:
         # - /v3/api-docs/**
-        - /auth/*
-        - /oauth/*
+        - /auth/**
+        - /oauth/**

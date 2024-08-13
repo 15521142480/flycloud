@@ -1,5 +1,6 @@
 package com.fly.common.doc.config;
 
+import com.fly.common.constant.CommonConstants;
 import com.fly.common.doc.config.properties.SwaggerProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpHeaders;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -60,8 +60,8 @@ public class SwaggerAutoConfiguration {
         openAPI.setInfo(new Info().title(swaggerProperties.getTitle()));
 
         // oauth2.0 password
-        openAPI.addSecurityItem(new SecurityRequirement().addList(HttpHeaders.AUTHORIZATION));
-        openAPI.schemaRequirement(HttpHeaders.AUTHORIZATION, this.securityScheme());
+        openAPI.addSecurityItem(new SecurityRequirement().addList(CommonConstants.AUTHORIZATION_KEY));
+        openAPI.schemaRequirement(CommonConstants.AUTHORIZATION_KEY, this.securityScheme());
 
         // servers 提供调用的接口地址前缀
         System.out.println("swaggerProperties.getServices():" + swaggerProperties.getServices().toString());
@@ -85,7 +85,7 @@ public class SwaggerAutoConfiguration {
         //类型
         securityScheme.setType(SecurityScheme.Type.APIKEY);
         //请求头的name
-        securityScheme.setName(HttpHeaders.AUTHORIZATION);
+        securityScheme.setName(CommonConstants.AUTHORIZATION_KEY);
         //token所在未知
         securityScheme.setIn(SecurityScheme.In.HEADER);
         return securityScheme;

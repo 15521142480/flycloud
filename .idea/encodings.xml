@@ -26,6 +26,9 @@
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-elasticsearch/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-elasticsearch/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-elasticsearch/src/main/webapp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-feign/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-feign/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-feign/src/main/webapp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-redis/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-redis/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-redis/src/main/webapp" charset="UTF-8" />

@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fly.common.constant.Constants;
+import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.GenConstants;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.FileUtils;
@@ -113,7 +113,7 @@ public class GenTableServiceImpl implements IGenTableService {
                 if (!StringUtils.containsAny(template, "sql.vm", "api.js.vm", "index.vue.vm", "index-tree.vue.vm")) {
                     // 渲染模板
                     StringWriter sw = new StringWriter();
-                    Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+                    Template tpl = Velocity.getTemplate(template, CommonConstants.ENCODE_UTF8);
                     tpl.merge(context, sw);
                     try {
                         String path = getGenPath(table, template);

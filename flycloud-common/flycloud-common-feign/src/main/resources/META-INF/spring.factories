@@ -1,0 +1,3 @@
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.fly.common.feign.config.TokenFeignClientInterceptor

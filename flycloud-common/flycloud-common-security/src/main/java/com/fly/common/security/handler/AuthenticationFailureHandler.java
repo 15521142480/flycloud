@@ -1,4 +1,4 @@
-package com.fly.auth.handler;
+package com.fly.common.security.handler;
 
 import com.fly.common.enums.ResultCodeEnum;
 import com.fly.common.model.R;

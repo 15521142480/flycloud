@@ -18,12 +18,12 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-doc</artifactId>
+            <artifactId>flycloud-common-feign</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-database</artifactId>
+            <artifactId>flycloud-common-doc</artifactId>
             <version>${revision}</version>
         </dependency>
 

@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 安全授权（oauth2）配置属性
+ * 服务资源安全配置
  *
  * @author lxs
  * @date 2023/4/28
  */
 @Component
-@ConfigurationProperties(prefix = "security.oauth2.client")
+@ConfigurationProperties(prefix = "server.resource.security")
 @Data
-public class SecurityAuthorizationProperties {
+public class ServerResourceSecurityProperties {
 
     /**
      * 客户端标识 ID
@@ -27,21 +27,6 @@ public class SecurityAuthorizationProperties {
      * 客户端安全码
      */
     private String clientSecret;
-
-    /**
-     * 授权类型
-     */
-    private String[] grantTypes;
-
-    /**
-     * token有效期
-     */
-    private int tokenValidityTime;
-
-    /**
-     * refresh-token有效期
-     */
-    private int refreshTokenValidityTime;
 
     /**
      * 客户端访问范围
