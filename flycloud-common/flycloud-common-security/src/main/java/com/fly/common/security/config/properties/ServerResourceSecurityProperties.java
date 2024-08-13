@@ -11,7 +11,7 @@ import java.util.List;
  * 服务资源安全配置
  *
  * @author lxs
- * @date 2023/4/28
+ * @date 2024/08/13
  */
 @Component
 @ConfigurationProperties(prefix = "server.resource.security")

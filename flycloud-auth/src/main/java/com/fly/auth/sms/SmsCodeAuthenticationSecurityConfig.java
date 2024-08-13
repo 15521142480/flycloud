@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 /**
  * 短信验证码登录方式配置
  *
- * @author pangu
  */
 @Component
 public class SmsCodeAuthenticationSecurityConfig

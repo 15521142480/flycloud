@@ -14,7 +14,6 @@ import java.util.Objects;
 /**
  * 短信验证码验证提供者
  *
- * @author pangu
  */
 @AllArgsConstructor
 public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
