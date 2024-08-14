@@ -25,6 +25,11 @@
             <artifactId>flycloud-common-doc</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <!--注册中心客户端-->
         <dependency>
@@ -36,6 +41,7 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
+        <!-- 连接工具 -->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>

@@ -18,14 +18,14 @@ Vue.use(Iview)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$api = api;
-Vue.prototype.$cookies = cookies;
+Vue.prototype.$api = api
+Vue.prototype.$cookies = cookies
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

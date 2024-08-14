@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -85,15 +86,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
     }
 
 
+    // ==================================================================================
+
     /**
      * 密码加密模式
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
 
-//        return new BCryptPasswordEncoder();
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
+
+//    public static void main(String[] args) {
+//
+//        BCryptPasswordEncoder brcy = new BCryptPasswordEncoder();
+//        String password = brcy.encode("file123456");
+//        System.out.println("password:" + password);
+//
+//        boolean isTure = brcy.matches("file123456777", password);
+//        System.out.println("isTure:" + isTure);
+//    }
 
 
     /**

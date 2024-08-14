@@ -174,7 +174,7 @@ export default {
                     marginLeft: '5px',
                     fontSize: '15px',
                     fontWeight: 500
-                  },
+                  }
                 }, fileName)
               ])
           }
@@ -210,7 +210,6 @@ export default {
           width: 110,
           align: 'center',
           render: (h, params) => {
-
             const fileData = params.row
             let btnList = []
 
@@ -362,10 +361,10 @@ export default {
           'Content-Type': 'multipart/form-data',
           userToken: this.userToken
         },
-        data: formData,
+        data: formData
       }).then((res) => {
         let resultCode = res.data.resultCode
-        let resultMsg = res.data.resultMsg
+        // let resultMsg = res.data.resultMsg
         if (resultCode === '1') {
           // this.isUploadSuccess = true
           this.init()
@@ -415,7 +414,6 @@ export default {
         duration: 0,
         // desc: '上传进度...',
         render: h => {
-
           let percentTextList = []
           let notSuccess = h('span', {
             style: {fontSize: '24px'},
@@ -438,7 +436,7 @@ export default {
 
           return h('i-circle',
             {
-              props: {   // props: 自定义的属性对象
+              props: { // props: 自定义的属性对象
                 percent: this.percent,
                 strokeColor: this.percentColor
               },
@@ -453,7 +451,6 @@ export default {
 
     // 上传文件前的事件钩子
     handleUpload (file) {
-
       // 大小校验(单位: kb)
       let size = file.size / 1000
       if (size > this.fileMaxSize) {
@@ -521,7 +518,7 @@ export default {
   watch: {
     curPath (newVal) {
       // this.params.path = newVal
-    },
+    }
     // percent (newVal) {
     //   if (newVal === 100) {
     //     if (!this.isUploadSuccess) {

@@ -1,4 +1,4 @@
-const base={
-    dev:'/flycloud-file-admin'
+const base = {
+  dev: '/flycloud-file-admin'
 }
-export default base;
+export default base

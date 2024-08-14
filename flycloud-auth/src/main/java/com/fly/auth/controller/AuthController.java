@@ -40,7 +40,7 @@ public class AuthController {
      * 登录
      *
      * <p>
-     * 除普通参数之外，header还需传Authorization：如 Basic Zmx5OmZseV9zZWNyZXQ=
+     * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
      */
     @GetMapping("/token")
     public R<Map<String, Object>> getAccessToken(Principal principal, @RequestParam Map<String, String> loginParam) throws HttpRequestMethodNotSupportedException {
@@ -61,7 +61,7 @@ public class AuthController {
      * 登录
      *
      * <p>
-     * 除普通参数之外，header还需传Authorization：如 Basic Zmx5OmZseV9zZWNyZXQ=
+     * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
     */
     @PostMapping("/login")
     @Parameters({

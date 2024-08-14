@@ -47,8 +47,8 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		}
 		userInfo.setType(Oauth2Constants.LOGIN_USERNAME_TYPE);
 		userInfo.setUserName(userName);
-		return getUserDetails(userInfo);
-
+		
+		return this.handleUserDetails(userInfo);
 	}
 
 
@@ -64,7 +64,8 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		}
 		userInfo.setType(Oauth2Constants.LOGIN_MOBILE_TYPE);
 		userInfo.setUserName(mobile);
-		return getUserDetails(userInfo);
+
+		return this.handleUserDetails(userInfo);
 	}
 
 
@@ -81,7 +82,8 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		}
 		userInfo.setType(Oauth2Constants.LOGIN_USERNAME_TYPE);
 		userInfo.setUserName(userName);
-		return getUserDetails(userInfo);
+
+		return this.handleUserDetails(userInfo);
 	}
 
 
@@ -91,7 +93,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	/**
 	 * 处理用户信息
 	 */
-	private UserDetails getUserDetails(UserInfo userInfo) {
+	private UserDetails handleUserDetails(UserInfo userInfo) {
 
 		if (ObjectUtils.isEmpty(userInfo)) {
 			log.info("该用户：{} 不存在！", userInfo.getUserName());
@@ -100,15 +102,19 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 			log.info("该用户：{} 已被停用!", userInfo.getUserName());
 			throw new TokenException("对不起，您的账号：" + userInfo.getUserName() + " 已停用");
 		}
+		
 		SysUser user = userInfo.getSysUser();
 		log.info("用户名：{}", userInfo.getSysUser().getAccount());
-		Collection<? extends GrantedAuthority> authorities
-				= AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getRoleIds()));
+		
+		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getRoleIds()));
 		log.info("authorities: {}", authorities);
+
+
+		// todo !!! 把spring security的User字段信息设置上，用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现 !!!
 		return new FlyUser(user.getId(), userInfo.getType(), user.getDepartId(), user.getRoleId(), user.getTelephone(), user.getAvatar(),
 				user.getTenantId(), userInfo.getUserName(), user.getPassword(), ENABLE.equals(user.getStatus()),
-				true, true, true,
-				authorities);
+				true, true, true, authorities
+		);
 	}
 
 }

@@ -35,10 +35,10 @@ export default new Router({
       component: () => import('../view/file/file-list')
     },
     {
-      path: '/test-list',
-      name: 'testList',
+      path: '/test',
+      name: 'test',
       meta: {
-        title: '文件列表'
+        title: '测试'
       },
       component: () => import('../view/test/test-list')
     }

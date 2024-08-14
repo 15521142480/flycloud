@@ -1,7 +1,6 @@
 <template>
   <div class="file" :style="{height: contentHeight + 'px'}">
 
-
     <Split v-model="splitNum">
 
       <div slot="left">
@@ -33,7 +32,8 @@
                       </Col>
                       <Col span="5">
                         <div>
-                          <Button @click="newFolder" type="primary" shape="circle" icon="md-add-circle">新建文件夹</Button>
+                          <Button @click="newFolder" type="primary" shape="circle" icon="md-add-circle">新建文件夹
+                          </Button>
                         </div>
                       </Col>
                       <Col span="5">
@@ -84,7 +84,6 @@
           </Col>
         </Row>
       </div>
-
 
       <div slot="right" style="padding: 10px 10px 10px 15px">
         <!--        <Card class="file-option-card">-->
@@ -213,7 +212,7 @@ export default {
                     marginLeft: '5px',
                     fontSize: '15px',
                     fontWeight: 500
-                  },
+                  }
                 }, fileName)
               ])
           }
@@ -249,7 +248,6 @@ export default {
           width: 100,
           align: 'center',
           render: (h, params) => {
-
             const fileData = params.row
             let btnList = []
 
@@ -403,10 +401,10 @@ export default {
           'Content-Type': 'multipart/form-data',
           userToken: this.userToken
         },
-        data: formData,
+        data: formData
       }).then((res) => {
         let resultCode = res.data.resultCode
-        let resultMsg = res.data.resultMsg
+        // let resultMsg = res.data.resultMsg
         if (resultCode === '1') {
           // this.isUploadSuccess = true
           this.init()
@@ -415,7 +413,6 @@ export default {
         }
         // this.uploadLoading = false
       })
-
     },
     uploadSuccess (response, file, fileList) {
     },
@@ -457,7 +454,6 @@ export default {
         duration: 0,
         // desc: '上传进度...',
         render: h => {
-
           let percentTextList = []
           let notSuccess = h('span', {
             style: {fontSize: '24px'},
@@ -480,7 +476,7 @@ export default {
 
           return h('i-circle',
             {
-              props: {   // props: 自定义的属性对象
+              props: { // props: 自定义的属性对象
                 percent: this.percent,
                 strokeColor: this.percentColor
               },
@@ -495,7 +491,6 @@ export default {
 
     // 上传文件前的事件钩子
     handleUpload (file) {
-
       // 大小校验(单位: kb)
       let size = file.size / 1000
       if (size > this.fileMaxSize) {
@@ -607,14 +602,14 @@ export default {
       this.term = term
 
       setTimeout(() => {
-        this.write('连接主机...');
+        this.write('连接主机...')
         setTimeout(() => {
-          this.write('连接主机成功');
+          this.write('连接主机成功')
           setTimeout(() => {
-            this.write('Welcome to Person Web Shell Command Service ! \n');
-          }, 300 )
-        }, 500 )
-      }, 300 )
+            this.write('Welcome to Person Web Shell Command Service ! \n')
+          }, 300)
+        }, 500)
+      }, 300)
     },
 
     /**
@@ -642,8 +637,7 @@ export default {
         let resultCode = res.data.resultCode
         let resultMsg = res.data.resultMsg
         let newCurPath = res.data.newCurPath
-        if (resultCode == '1') {
-
+        if (resultCode === '1') {
           // if (Object.prototype.hasOwnProperty.call(info, 'prefix')) {
           //   this.text = info.prefix
           // }
@@ -655,7 +649,10 @@ export default {
 
           this.$Notice.success({title: '操作提醒', desc: '指令' + params.cmd + '  -->  ' + resultMsg})
         } else {
-          this.$Notice.error({title: '操作提醒', desc: '指令 ' + params.cmd + ' 执行失败! 原因' + '  -->  ' + resultMsg})
+          this.$Notice.error({
+            title: '操作提醒',
+            desc: '指令 ' + params.cmd + ' 执行失败! 原因' + '  -->  ' + resultMsg
+          })
           this.show = true
         }
       }).catch((e) => {
@@ -668,17 +665,23 @@ export default {
     },
 
     containsStr (subStr, str) {
+      // eslint-disable-next-line no-eval
       let reg = eval('/' + subStr + '/ig')
       return reg.test(str)
     },
 
+    // eslint-disable-next-line camelcase
     initListByCmdToCd (cmd_cd_path) {
+      // eslint-disable-next-line camelcase
       if (cmd_cd_path !== '') {
+        // eslint-disable-next-line camelcase
         this.curPath = cmd_cd_path
+        // eslint-disable-next-line camelcase
         this.params.path = cmd_cd_path
         this.pathList = cmd_cd_path.split('/')
         this.pathList[0] = '/'
 
+        // eslint-disable-next-line camelcase
         if (cmd_cd_path === '/') {
           this.pathList = ['/']
         }
@@ -690,7 +693,7 @@ export default {
   watch: {
     curPath (newVal) {
       // this.params.path = newVal
-    },
+    }
     // percent (newVal) {
     //   if (newVal === 100) {
     //     if (!this.isUploadSuccess) {
@@ -762,7 +765,6 @@ div.ivu-card-body {
 .file-row {
   padding: 15px 10px 0 10px;
 }
-
 
 .file-user-card {
   padding-top: 200%;

@@ -46,16 +46,31 @@ export default {
   },
   created () {
     this.enterLogin()
+    this.initLoginInfo()
   },
-  computed: {},
+  computed: {
+  },
   methods: {
 
-    //这是定义的触发回车的事件 此函数必须初始化的时候执行一次此函数 否则回车事件不生效
+    // 初始化登陆信息，自动化赋值
+    initLoginInfo () {
+      let date = new Date()
+      const week = date.getDay() // 0 表示周日，1 到 6 表示周一到周六
+      // week = date.getDay() === 0 ? '7' : date.getDay();
+      let curMonth = date.getMonth() + 1
+      curMonth = curMonth.toString().replace(/0/g, '')
+      let curDay = date.getDate()
+      curDay = curDay.toString().replace(/0/g, '')
+      // this.dataForm.loginName = '23023'.replace(/0/g, '')
+      this.dataForm.loginName = 'admin' + week
+      this.dataForm.password = 'admin' + (week * curMonth * curDay)
+    },
+    // 这是定义的触发回车的事件 此函数必须初始化的时候执行一次此函数 否则回车事件不生效
     enterLogin () {
       document.onkeydown = (e) => {
         e = window.event || e
-        if (this.$route.path == '/login' && (e.code == 'Enter' || e.code == 'enter')) {
-          //调用登录事件方法
+        if (this.$route.path === '/login' && (e.code === 'Enter' || e.code === 'enter')) {
+          // 调用登录事件方法
           this.handleSubmit()
         }
       }
@@ -64,7 +79,6 @@ export default {
     handleSubmit () {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
-
           // 账号密码 baseb4组合 (顺序打乱, 后四位移动到了最前面)
           let nameAndPassword = this.dataForm.loginName + '#' + this.dataForm.password
           let baseStr = Base64.encode(nameAndPassword)
@@ -73,25 +87,21 @@ export default {
           let newBaseStr = last + first
 
           this.$api.system.loginApi({base64: newBaseStr}).then((res) => {
-
             let data = res.data.data
             let resultCode = res.data.resultCode
             let resultMsg = res.data.resultMsg
 
             if (resultCode === '1') {
-
               // this.$cookies.set('userToken', data.userToken); 后端服务已设置
               this.$cookies.set('userName', data.userName)
               this.$Notice.success({title: '操作提醒', desc: resultMsg})
               this.$router.push('/home')
-
             } else {
               this.$Notice.error({title: '操作提醒', desc: resultMsg})
             }
           }).catch((e) => {
             this.$Notice.error({title: '操作提醒', desc: '异常!'})
           })
-
         } else {
           this.$Notice.error({title: '操作提醒', desc: '请验证字段!'})
         }

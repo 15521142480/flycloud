@@ -2,6 +2,7 @@ package com.fly.auth.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.fly.common.constant.Oauth2Constants;
+import com.fly.common.exception.TokenException;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -53,6 +54,7 @@ public class ClientDetailsServiceImpl extends JdbcClientDetailsService {
 	 */
 	@Override
 	public ClientDetails loadClientByClientId(String clientId) throws InvalidClientException {
+
 		ClientDetails clientDetails = (ClientDetails) redisTemplate.opsForValue().get(clientKey(clientId));
 		if (ObjectUtil.isEmpty(clientDetails)) {
 			clientDetails = getCacheClient(clientId);
@@ -61,6 +63,7 @@ public class ClientDetailsServiceImpl extends JdbcClientDetailsService {
 		return clientDetails;
 	}
 
+
 	/**
 	 * 自定义语句查询，并将数据同步至redis
 	 *
@@ -68,20 +71,28 @@ public class ClientDetailsServiceImpl extends JdbcClientDetailsService {
 	 * @return ClientDetails
 	 */
 	private ClientDetails getCacheClient(String clientId) {
-		ClientDetails clientDetails = null;
 
+		ClientDetails clientDetails = null;
 		try {
+
 			clientDetails = super.loadClientByClientId(clientId);
 			if (ObjectUtil.isNotEmpty(clientDetails)) {
 				redisTemplate.opsForValue().set(clientKey(clientId), clientDetails);
 				log.debug("Cache clientId:{}, clientDetails:{}", clientId, clientDetails);
 			}
 		} catch (Exception e) {
+
 			log.error("Exception for clientId:{}, message:{}", clientId, e.getMessage());
+			log.error("客户端key或secret不存在!", e);
+			throw new TokenException("客户端key或secret不存在!");
 		}
 		return clientDetails;
 	}
 
+
+	/**
+	 * 缓存key
+	 */
 	private String clientKey(String clientId) {
 		return Oauth2Constants.CLIENT_TABLE + ":" + clientId;
 	}

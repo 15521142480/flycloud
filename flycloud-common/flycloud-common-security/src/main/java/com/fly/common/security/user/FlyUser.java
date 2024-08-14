@@ -7,7 +7,10 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 /**
- * 自定义用户
+ * 自定义授权用户
+ *
+ * <p>
+ * 需继承spring security的User；用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现
  *
  * @author: lxs
  * @date: 2024/8/12

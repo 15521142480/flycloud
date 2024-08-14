@@ -1,7 +1,5 @@
-
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 
 // player
 import mutations from './mutations'
@@ -23,9 +21,7 @@ export default new Vuex.Store({
   getters: getters,
   mutations: mutations,
   actions: actions,
-  modules: {
-
-  },
+  modules: {},
   strict: debug,
   plugins: debug ? [createLogger()] : []
 })
