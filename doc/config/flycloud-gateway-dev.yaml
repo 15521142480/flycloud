@@ -28,12 +28,17 @@ spring:
           order: 1
           predicates:                      # 断言（判断条件）
             - Path=/flycloud-system/**     # 断言, 路径相匹配的进行路由; 服务一般不用设置servlet-context-path,因为直接让客户端请求带上此断言服务名字即可 (即类似nginx的断言)
-          # filters:
+            # filters:
             # - StripPrefix=1              # 去除第一个路径 (http://localhost:8080/aaa/order/orderInfo -> http://localhost:8080/order/orderInfo)
             # - PrefixPath=/order          # 请求路径添加前缀 (http://localhost:8080/order/orderInfo -> http://localhost:8080/aaa/order/orderInfo)
 
             # - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
             # 路由重写 (断言之前执行), 如将 https://localhost:8080/v3/api-docs/flycloud-system 这个路径重写为 https://localhost:8080/flycloud-system/v3/api-docs
+
+        - id: flycloud-auth
+          uri: lb://flycloud-auth
+          predicates:
+            - Path=/flycloud-auth/**
 
         - id: flycloud-mall
           uri: lb://flycloud-mall
@@ -50,11 +55,31 @@ spring:
           predicates:
             - Path=/flycloud-test/**
 
-        - id: flycloud-file-admin
-          uri: lb://flycloud-file-admin
-          predicates:
-            - Path=/flycloud-file-admin/**
-            
+
+
+# 网关服务安全配置
+gateway:
+  server:
+    security:
+
+      # 网关认证开关
+      enable: true
+
+      # 白名单 (授权、swagger、监控中心等url)
+      ignore-urls:
+        - /oauth/**
+        - /auth/**
+        - /actuator/**
+        - /webjars/**
+        - /druid/**
+        - /assets/**
+        - /v2/api-docs/**
+        - /v3/api-docs/**
+        - /swagger/api-docs
+        - /swagger-ui.html
+        - /swagger-resources/**
+        - /doc.html
+
 
 
 logging:

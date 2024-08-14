@@ -78,11 +78,12 @@
         <lock4j.version>2.2.4</lock4j.version>
         <xxl-job.version>2.3.1</xxl-job.version>
         <spring-oauth.version>2.2.5.RELEASE</spring-oauth.version>
-        <nimbus-jose-jwt.version>9.16.1</nimbus-jose-jwt.version>
+        <jjwt.version>0.9.1</jjwt.version>
         <easy-es.version>1.1.1</easy-es.version>
         <easypoi.version>4.4.0</easypoi.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <commons-collections.version>3.2.2</commons-collections.version>
+        <transmittable.version>2.14.2</transmittable.version>
 
     </properties>
 
@@ -363,11 +364,11 @@
             <!-- 远程服务连接相关依赖 end -->
 
             <!-- JWT工具 -->
-<!--            <dependency>-->
-<!--                <groupId>com.nimbusds</groupId>-->
-<!--                <artifactId>nimbus-jose-jwt</artifactId>-->
-<!--                <version>${nimbus-jose-jwt.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
 
             <!-- es(easy-es) 搜索引擎依赖 -->
             <dependency>
@@ -393,6 +394,12 @@
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
                 <version>${commons-collections.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable.version}</version>
             </dependency>
 
 

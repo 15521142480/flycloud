@@ -1,11 +1,7 @@
 package com.fly.common.redis.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fly.common.spring.SpringUtils;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -19,9 +15,6 @@ import org.springframework.util.Assert;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * redis 工具类

@@ -34,7 +34,7 @@ public class TempController extends BaseController {
 
     @GetMapping("/need")
     public R<String> need() {
-        return R.ok("需要权限访问喔");
+        return R.ok("这是一个需要权限访问的接口，由此看到此消息已证明权限已无问题。");
     }
 
 

@@ -1,4 +1,4 @@
-package com.fly.common.admain;
+package com.fly.common.entity.override;
 
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;

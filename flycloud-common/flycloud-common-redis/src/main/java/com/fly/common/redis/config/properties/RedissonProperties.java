@@ -2,8 +2,6 @@ package com.fly.common.redis.config.properties;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.redisson.config.ReadMode;
-import org.redisson.config.SubscriptionMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -120,15 +118,15 @@ public class RedissonProperties {
          */
         private int subscriptionConnectionPoolSize;
 
-        /**
-         * 读取模式
-         */
-        private ReadMode readMode;
-
-        /**
-         * 订阅模式
-         */
-        private SubscriptionMode subscriptionMode;
+//        /**
+//         * 读取模式
+//         */
+//        private ReadMode readMode;
+//
+//        /**
+//         * 订阅模式
+//         */
+//        private SubscriptionMode subscriptionMode;
 
     }
 

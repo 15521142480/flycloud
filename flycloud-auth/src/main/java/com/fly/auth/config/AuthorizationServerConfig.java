@@ -251,12 +251,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
                 // 如果用户不为空 则把id放入jwt token中
                 if (user != null) {
-                    additionMessage.put(Oauth2Constants.FLY_USER_ID, String.valueOf(user.getId()));
-                    additionMessage.put(Oauth2Constants.FLY_USER_NAME, user.getUsername());
-                    additionMessage.put(Oauth2Constants.FLY_AVATAR, user.getAvatar());
-                    additionMessage.put(Oauth2Constants.FLY_ROLE_ID, String.valueOf(user.getRoleId()));
-                    additionMessage.put(Oauth2Constants.FLY_TYPE, user.getType());
-                    additionMessage.put(Oauth2Constants.FLY_TENANT_ID, user.getTenantId());
+                    additionMessage.put(Oauth2Constants.USER_ID, String.valueOf(user.getId()));
+                    additionMessage.put(Oauth2Constants.USER_NAME, user.getUsername());
+                    additionMessage.put(Oauth2Constants.AVATAR, user.getAvatar());
+                    additionMessage.put(Oauth2Constants.ROLE_ID, String.valueOf(user.getRoleId()));
+                    additionMessage.put(Oauth2Constants.TYPE, user.getType());
+                    additionMessage.put(Oauth2Constants.TENANT_ID, user.getTenantId());
                 }
                 ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionMessage);
                 return oAuth2AccessToken;

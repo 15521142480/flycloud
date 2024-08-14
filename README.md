@@ -1,9 +1,8 @@
 
 ### 1、项目说明:
 - flycloud-server 是一款基于Spring Cloud Alibaba的微服务架构。
-- 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、ElasticSearch、MyBatis Plus、seat、Redis、Rabbitmq 等主流技术。
+- 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
 - 主要以商城项目为主，扩展项目为辅的一个飞翔云系统。
-
 
 
 ### 2、交流和反馈
@@ -52,10 +51,10 @@ flycloud
 │  └─[flycloud-common-elasticsearch     -- es相关
 │  └─flycloud-common-feign              -- feign相关
 │  └─flycloud-common-redis              -- redis相关
-│  └─flycloud-common-seata              -- seata(分布式事务)相关公共代码
+│  └─flycloud-common-seata              -- seata(分布式事务)相关
 │  └─flycloud-common-security           -- 安全相关
 │  ├─flycloud-common-rocketmq           -- rocketmq相关
-├─flycloud-extend    -      - 扩展模块 (如 xxl-job-admin、springboot-admin等)
+├─flycloud-extend           -- 扩展模块 (如 xxl-job-admin、springboot-admin等)
 │  ├─flycloud-file-admin                -- 文件管理后台服务
 │  ├─flycloud-xxl-job-admin             -- 任务调度服务
 ├─flycloud-gateway          -- 网关服务
@@ -67,7 +66,7 @@ flycloud
 └─flycloud-ui               -- 系统的ui前端模块
 │  ├─flycloud-file-admin-ui             -- 文件管理后台ui
 └─flycloud-user             -- 用户服务 
-└─logs                      -- 系统日志 
+└─logs     -- 系统日志 
 ```
 
 

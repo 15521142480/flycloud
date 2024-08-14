@@ -12,6 +12,10 @@ spring:
   main:
     web-application-type: reactive
 
+    # bean重名覆盖
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
   cloud:
 
     nacos:

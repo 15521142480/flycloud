@@ -24,10 +24,18 @@ public interface CommonConstants {
     String AUTHORIZATION_KEY = "Authorization";
 
     // 请求头-授权-前缀 Bearer
-    String AUTHORIZATION_BEARER = "Bearer ";
+    String AUTHORIZATION_BEARER = "Bearer"; // bearer
+    String AUTHORIZATION_BEARER_HAS_BLANK = "Bearer "; // bearer
+
+    // 请求头-授权-前缀 Basic
+    String AUTHORIZATION_BASIC = "Basic";
+    String AUTHORIZATION_BASIC_HAS_BLANK = "Basic ";
 
     // 移动端接口请求头
     String AUTHORIZATION_MOBILE = "X-Auth0-Token";
+
+    // 权限认证的排序
+    int OAUTH_FILTER_ORDER = -200;
 
 
     // todo 系统相关
