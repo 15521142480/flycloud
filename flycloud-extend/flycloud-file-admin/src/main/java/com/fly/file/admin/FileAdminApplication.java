@@ -12,9 +12,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author lxs
  * @date 2023/4/24
  */
+@SpringBootApplication(scanBasePackages = { "com.fly", "com.fly.common.security.*" })
 @EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication
 @EnableSwaggerDoc
 public class FileAdminApplication {
 

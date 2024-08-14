@@ -17,8 +17,11 @@ import java.util.UUID;
  */
 public class SingleLoginTokenServices extends DefaultTokenServices {
 
+
 	private TokenStore tokenStore;
 	private TokenEnhancer accessTokenEnhancer;
+
+
 
 	/**
 	 * 是否登录同应用同账号互踢

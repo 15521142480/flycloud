@@ -3,7 +3,7 @@ package com.fly.auth.config;
 import com.fly.auth.granter.CaptchaTokenGranter;
 import com.fly.auth.granter.SmsCodeTokenGranter;
 import com.fly.auth.granter.SocialTokenGranter;
-import com.fly.auth.service.SingleLoginTokenServices;
+import com.fly.auth.service.impl.SingleLoginTokenServices;
 import com.fly.auth.service.impl.ClientDetailsServiceImpl;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.redis.utils.RedisUtils;

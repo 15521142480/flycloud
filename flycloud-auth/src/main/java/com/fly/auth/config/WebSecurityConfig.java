@@ -2,18 +2,22 @@ package com.fly.auth.config;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.auth.config.properties.SecurityAuthorizationProperties;
+import com.fly.auth.service.impl.UserDetailsServiceImpl;
 import com.fly.common.security.handler.AuthenticationFailureHandler;
 import com.fly.common.security.handler.AuthenticationSuccessHandler;
+import com.fly.common.utils.CryptoUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -86,7 +90,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
     }
 
 
+    /**
+     * 用户自定义和管理身份验证
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.
+                userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());
+    }
+
+
+    /**
+     * 重写用户实现
+     */
+    @Override
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
+
+
     // ==================================================================================
+
+
 
     /**
      * 密码加密模式
@@ -94,17 +121,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
     @Bean
     public PasswordEncoder passwordEncoder() {
 
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        return new BCryptPasswordEncoder();
     }
 
 //    public static void main(String[] args) {
 //
-//        BCryptPasswordEncoder brcy = new BCryptPasswordEncoder();
-//        String password = brcy.encode("file123456");
+////        BCryptPasswordEncoder brcy = new BCryptPasswordEncoder();
+////        String password = brcy.encode("admin123456");
+////        System.out.println("password:" + password);
+////
+////        boolean isTure = brcy.matches("admin123456", password);
+////        System.out.println("isTure:" + isTure);
+//
+//        String md5str = CryptoUtils.encodeMD5("admin123456");
+//        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        String password = encoder.encode(md5str);
+//        System.out.println("md5str:" + md5str);
 //        System.out.println("password:" + password);
 //
-//        boolean isTure = brcy.matches("file123456777", password);
+//        boolean isTure = encoder.matches(CryptoUtils.encodeMD5("admin123456"), password);
 //        System.out.println("isTure:" + isTure);
 //    }
 
