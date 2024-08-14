@@ -32,4 +32,10 @@ public class TempController extends BaseController {
     }
 
 
+    @GetMapping("/need")
+    public R<String> need() {
+        return R.ok("需要权限访问喔");
+    }
+
+
 }
