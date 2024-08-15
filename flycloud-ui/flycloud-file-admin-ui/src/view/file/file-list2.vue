@@ -640,7 +640,6 @@ export default {
         let resultMsg = res.data.msg
 
         let newCurPath = data.newCurPath
-        alert(resultCode)
         if (resultCode === 0) {
           // if (Object.prototype.hasOwnProperty.call(info, 'prefix')) {
           //   this.text = info.prefix
