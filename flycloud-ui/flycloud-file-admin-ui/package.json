@@ -22,6 +22,7 @@
     "hls.js": "^0.14.17",
     "iview": "^3.5.4",
     "js-base64": "^2.5.2",
+    "js-md5": "^0.8.3",
     "lodash": "^4.17.20",
     "lyric-parser": "^1.0.1",
     "require": "^2.4.20",
@@ -41,7 +42,7 @@
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^7.2.3",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.1",

@@ -63,7 +63,7 @@ public class AuthController {
      * <p>
      * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
     */
-    @PostMapping("/login")
+    @PostMapping("/token")
     @Parameters({
             @Parameter(name = "grant_type", required = true,  description = "授权类型", in = ParameterIn.QUERY),
             @Parameter(name = "username", required = true,  description = "用户名", in = ParameterIn.QUERY),

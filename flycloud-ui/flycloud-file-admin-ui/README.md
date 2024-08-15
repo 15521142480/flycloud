@@ -5,7 +5,7 @@
 ## Build Setup
 
 ``` bash
-# install dependencies
+# install dependencies 报特多错试下加权限  sudo
 npm install
 
 # serve with hot reload at localhost:8080

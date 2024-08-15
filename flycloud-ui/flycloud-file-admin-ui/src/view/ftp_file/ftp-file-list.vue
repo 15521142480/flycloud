@@ -10,13 +10,13 @@
             <Card class="file-option-card">
               <Row>
                 <Col span="24">
-                  <p style="font-size: 16px; text-align: center; font-weight: bold;">ftp服务器</p>
+                  <p style="font-size: 16px; text-align: center; font-weight: bold;margin-bottom: 10px">ftp服务器</p>
                   <p slot="title" class="file-option-title">操作</p>
                   <div class="file-option-option">
-                    <h3>
-                      <div>当前目录:</div>
-                      <div style="margin-top: 7px; margin-bottom: 6px;">{{ curPath }}</div>
-                    </h3>
+<!--                    <h3>-->
+<!--                      <div>当前目录:</div>-->
+<!--                      <div style="margin-top: 7px; margin-bottom: 6px;">{{ curPath }}</div>-->
+<!--                    </h3>-->
 
                     <Row>
                       <Col span="1">
@@ -57,8 +57,8 @@
                 </Col>
               </Row>
 
-              <div style="margin: 15px 50px 20px 50px">
-                <hr>
+              <div style="margin: 15px 30px 20px 30px">
+<!--                <hr>-->
               </div>
 
               <Row>
@@ -155,7 +155,7 @@ export default {
   data () {
     return {
       userName: this.$cookies.get('userName'),
-      userToken: this.$cookies.get('userToken'),
+      userToken: localStorage.getItem('userToken'),
       splitNum: 0.58,
       value: '',
       text: '[root@ ~]#',
@@ -300,7 +300,7 @@ export default {
   },
   mounted () {
     this.initTerm()
-    this.tableHeight = window.innerHeight - 290 // 整个浏览器的高度 - table以上的内容高度
+    this.tableHeight = window.innerHeight - 220 // 整个浏览器的高度 - table以上的内容高度
     this.contentHeight = window.innerHeight - 80
   },
   methods: {
@@ -308,13 +308,13 @@ export default {
     init () {
       this.loading = true
       // this.$api.fileStp.isConnectApi().then((res) => {
-      //   let resultCode = res.data.resultCode
+      //   let resultCode = res.data.code
       //   let conCode = res.data.connectCode
-      //   let resultMsg = res.data.resultMsg
-      //   if (resultCode === '1') {
+      //   let resultMsg = res.data.msg
+      //   if (resultCode === 0) {
       //     if (conCode === '1') {
       //       this.$api.fileStp.getFileListApi(this.params).then((res) => {
-      //         let resultCode = res.data.resultCode
+      //         let resultCode = res.data.code
       //         if (resultCode === "1") {
       //           this.tableData = res.data.data
       //         }
@@ -333,14 +333,18 @@ export default {
       //   this.loading = false
       // });
 
-      this.$api.fileStp.getFtpFileListApi(this.params).then((res) => {
-        let resultCode = res.data.resultCode
-        if (resultCode === '1') {
+      this.$api.fileStp.getFtpFileListApi(this.params.path).then((res) => {
+        let resultCode = res.data.code
+        if (resultCode === 0) {
           this.tableData = res.data.data
+        } else {
+          this.$Message.error('接口出错')
+          this.$emit('on-handle', '0')
         }
         this.loading = false
         this.uploadLoading = false
       }).catch((e) => {
+        this.$emit('on-handle', '0')
         this.loading = false
       })
     },
@@ -399,13 +403,13 @@ export default {
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data',
-          userToken: this.userToken
+          Authorization: 'Bearer ' + this.userToken
         },
         data: formData
       }).then((res) => {
-        let resultCode = res.data.resultCode
-        // let resultMsg = res.data.resultMsg
-        if (resultCode === '1') {
+        let resultCode = res.data.code
+        // let resultMsg = res.data.msg
+        if (resultCode === 0) {
           // this.isUploadSuccess = true
           this.init()
           // this.uploadLoading = false
@@ -545,9 +549,9 @@ export default {
         content: '<p>确认要退出系统吗?</p>',
         onOk: () => {
           this.$api.system.loginOutApi().then((res) => {
-            let resultCode = res.data.resultCode
-            let resultMsg = res.data.resultMsg
-            if (resultCode === '1') {
+            let resultCode = res.data.code
+            let resultMsg = res.data.msg
+            if (resultCode === 0) {
               this.$Notice.success({title: '操作提醒', desc: resultMsg})
             } else {
               this.$Notice.error({title: '操作提醒', desc: '操作失败'})
@@ -602,7 +606,7 @@ export default {
       this.term = term
 
       setTimeout(() => {
-        this.write('连接主机...')
+        this.write('连接主机中...')
         setTimeout(() => {
           this.write('连接主机成功')
           setTimeout(() => {
@@ -634,20 +638,21 @@ export default {
       this.$api.fileStp.executeCommandFtpApi(params).then((res) => {
         this.value = ''
         let data = res.data.data
-        let resultCode = res.data.resultCode
-        let resultMsg = res.data.resultMsg
-        let newCurPath = res.data.newCurPath
-        if (resultCode === '1') {
+        let resultCode = res.data.code
+        let resultMsg = res.data.msg
+
+        let newCurPath = data.newCurPath
+        if (resultCode === 0) {
           // if (Object.prototype.hasOwnProperty.call(info, 'prefix')) {
           //   this.text = info.prefix
           // }
           // this.write(info.content)
-          this.write(data)
+          this.write(data.cmdResult)
 
           // todo 处理新路径
           this.initListByCmdToCd(newCurPath)
 
-          this.$Notice.success({title: '操作提醒', desc: '指令' + params.cmd + '  -->  ' + resultMsg})
+          this.$Notice.success({title: '操作提醒', desc: '指令 ' + params.cmd + ' ' + resultMsg, duration: 1.5})
         } else {
           this.$Notice.error({
             title: '操作提醒',
@@ -776,7 +781,8 @@ div.ivu-card-body {
 
 .ftp-file-path-title {
   font-size: 16px;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
+  margin-left: 10px;
 
   .file-path-text {
     cursor: pointer;
@@ -789,6 +795,7 @@ div.ivu-card-body {
 
 .file-option-card {
   // height: 500px;
+  margin: 15px 15px 15px 15px ;
   .file-option-title {
     text-align: center;
     font-size: 20px;

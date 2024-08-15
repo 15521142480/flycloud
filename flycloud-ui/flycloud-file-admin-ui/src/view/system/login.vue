@@ -27,7 +27,9 @@
 </template>
 
 <script>
-let Base64 = require('js-base64').Base64
+// let Base64 = require('js-base64').Base64
+import md5 from 'js-md5'
+import axios from 'axios'
 export default {
   name: 'login',
   components: {},
@@ -35,8 +37,8 @@ export default {
   data () {
     return {
       dataForm: {
-        loginName: 'admin',
-        password: 'admin'
+        loginName: 'adminfile',
+        password: 'admin123456'
       },
       ruleInline: {
         loginName: [{required: true, message: '用户不能为空!', trigger: 'blur'}],
@@ -54,16 +56,17 @@ export default {
 
     // 初始化登陆信息，自动化赋值
     initLoginInfo () {
-      let date = new Date()
-      const week = date.getDay() // 0 表示周日，1 到 6 表示周一到周六
-      // week = date.getDay() === 0 ? '7' : date.getDay();
-      let curMonth = date.getMonth() + 1
-      curMonth = curMonth.toString().replace(/0/g, '')
-      let curDay = date.getDate()
-      curDay = curDay.toString().replace(/0/g, '')
-      // this.dataForm.loginName = '23023'.replace(/0/g, '')
-      this.dataForm.loginName = 'admin' + week
-      this.dataForm.password = 'admin' + (week * curMonth * curDay)
+      // todo 旧
+      // let date = new Date()
+      // const week = date.getDay() // 0 表示周日，1 到 6 表示周一到周六
+      // // week = date.getDay() === 0 ? '7' : date.getDay();
+      // let curMonth = date.getMonth() + 1
+      // curMonth = curMonth.toString().replace(/0/g, '')
+      // let curDay = date.getDate()
+      // curDay = curDay.toString().replace(/0/g, '')
+      // // this.dataForm.loginName = '23023'.replace(/0/g, '')
+      // this.dataForm.loginName = 'admin' + week
+      // this.dataForm.password = 'admin' + (week * curMonth * curDay)
     },
     // 这是定义的触发回车的事件 此函数必须初始化的时候执行一次此函数 否则回车事件不生效
     enterLogin () {
@@ -79,22 +82,36 @@ export default {
     handleSubmit () {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
+          // 旧
           // 账号密码 baseb4组合 (顺序打乱, 后四位移动到了最前面)
-          let nameAndPassword = this.dataForm.loginName + '#' + this.dataForm.password
-          let baseStr = Base64.encode(nameAndPassword)
-          let last = baseStr.substring(baseStr.length - 4, baseStr.length) // 截取后4位
-          let first = baseStr.substring(0, baseStr.length - 4) // 截取从0到倒数第4位
-          let newBaseStr = last + first
+          // let nameAndPassword = this.dataForm.loginName + '#' + this.dataForm.password
+          // let baseStr = Base64.encode(nameAndPassword)
+          // let last = baseStr.substring(baseStr.length - 4, baseStr.length) // 截取后4位
+          // let first = baseStr.substring(0, baseStr.length - 4) // 截取从0到倒数第4位
+          // let newBaseStr = last + first
+          // todo 新
+          let loginParams = {
+            username: this.dataForm.loginName,
+            password: md5(this.dataForm.password),
+            grant_type: 'password',
+            scope: 'all'
+          }
 
-          this.$api.system.loginApi({base64: newBaseStr}).then((res) => {
+          this.$api.system.loginApi(loginParams).then((res) => {
             let data = res.data.data
-            let resultCode = res.data.resultCode
-            let resultMsg = res.data.resultMsg
+            let resultCode = res.data.code
+            let resultMsg = res.data.msg
 
-            if (resultCode === '1') {
-              // this.$cookies.set('userToken', data.userToken); 后端服务已设置
+            if (resultCode === 0) {
+              localStorage.setItem('userToken', data.accessToken)
+              // 设置axios全局默认头，后续所有请求都会带上这个token
+              axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.accessToken
+              // this.$cookies.set('userToken', data.userToken);
               this.$cookies.set('userName', data.userName)
-              this.$Notice.success({title: '操作提醒', desc: resultMsg})
+              // isFtpStatus 是否ftp模式状态
+              localStorage.setItem('isFtpStatus', '0')
+
+              this.$Notice.success({title: '操作提醒', desc: '登录成功！'})
               this.$router.push('/home')
             } else {
               this.$Notice.error({title: '操作提醒', desc: resultMsg})

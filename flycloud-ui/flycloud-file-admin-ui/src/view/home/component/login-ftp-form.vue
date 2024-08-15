@@ -91,15 +91,16 @@ export default {
           }
 
           this.$api.fileStp.ftpLogin(newDataForm).then((res) => {
-            let resultCode = res.data.resultCode
-            let resultMsg = res.data.resultMsg
-            if (resultCode === '1') {
+            let resultCode = res.data.code
+            let resultMsg = res.data.msg
+            if (resultCode === 0) {
               this.$Notice.success({
                 title: '系统提醒',
                 desc: resultMsg,
                 duration: 5
               })
-              this.set_isFtpModel(true)
+              this.$emit('on-handle', '1')
+              // this.set_isFtpModel(true)
               this.isShow = false
             } else {
               this.$Notice.error({
@@ -109,7 +110,7 @@ export default {
               })
             }
           }).catch((e) => {
-            this.$Message.error('接口异常!' + e.getMessages())
+            this.$Message.error('接口异常!')
           })
         } else {
           this.$Message.error('验证失败!')

@@ -110,9 +110,9 @@ export default {
     // ========== 执行操作接口
     executeOptionServer (param) {
       this.$api.fileStp.executeOptionFtpApi(param).then((res) => {
-        let resultCode = res.data.resultCode
-        let resultMsg = res.data.resultMsg
-        if (resultCode === '1') {
+        let resultCode = res.data.code
+        let resultMsg = res.data.msg
+        if (resultCode === 0) {
           this.$Notice.success({
             title: '操作提醒',
             desc: resultMsg

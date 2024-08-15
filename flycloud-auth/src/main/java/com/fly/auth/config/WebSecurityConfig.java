@@ -3,8 +3,7 @@ package com.fly.auth.config;
 import cn.hutool.core.convert.Convert;
 import com.fly.auth.config.properties.SecurityAuthorizationProperties;
 import com.fly.auth.service.impl.UserDetailsServiceImpl;
-import com.fly.common.security.handler.AuthenticationFailureHandler;
-import com.fly.common.security.handler.AuthenticationSuccessHandler;
+import com.fly.common.security.handler.CustomAuthenticationSuccessHandler;
 import com.fly.common.utils.CryptoUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -18,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -128,19 +126,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
 //    public static void main(String[] args) {
 //
 ////        BCryptPasswordEncoder brcy = new BCryptPasswordEncoder();
-////        String password = brcy.encode("admin123456");
+////        String password = brcy.encode("admin123");
 ////        System.out.println("password:" + password);
 ////
 ////        boolean isTure = brcy.matches("admin123456", password);
 ////        System.out.println("isTure:" + isTure);
 //
-//        String md5str = CryptoUtils.encodeMD5("admin123456");
+//        String md5str = CryptoUtils.encodeMD5("admin123");
 //        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //        String password = encoder.encode(md5str);
 //        System.out.println("md5str:" + md5str);
 //        System.out.println("password:" + password);
 //
-//        boolean isTure = encoder.matches(CryptoUtils.encodeMD5("admin123456"), password);
+//        boolean isTure = encoder.matches(CryptoUtils.encodeMD5("admin123"), password);
 //        System.out.println("isTure:" + isTure);
 //    }
 
@@ -156,15 +154,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public org.springframework.security.web.authentication.AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new AuthenticationSuccessHandler();
-    }
 
-    @Bean
-    public org.springframework.security.web.authentication.AuthenticationFailureHandler authenticationFailureHandler() {
-        return new AuthenticationFailureHandler();
-    }
+    /**
+     * 授权成功的回调
+     */
+//    @Bean
+//    public org.springframework.security.web.authentication.AuthenticationSuccessHandler authenticationSuccessHandler() {
+//        return new CustomAuthenticationSuccessHandler();
+//    }
+
+
+    /**
+     * 授权失败的回调
+     */
+//    @Bean
+//    public AuthenticationFailureHandler authenticationFailureHandler() {
+//        return new CustomAuthenticationFailureHandler();
+//    }
 
 
 

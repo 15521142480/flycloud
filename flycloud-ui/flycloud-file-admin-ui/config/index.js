@@ -11,13 +11,23 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: { // 跨域
+
+      '/flycloud-auth': {
+        target: 'http://localhost:8080/flycloud-auth/',
+        // target: 'http://39.98.125.88:8080/flycloud-auth',
+        pathRewrite: {
+          '^/flycloud-auth': '/'
+        }
+      },
+
       '/flycloud-file-admin': {
         target: 'http://localhost:8080/flycloud-file-admin/',
-        // target: 'http://39.98.125.88:5055/',
+        // target: 'http://39.98.125.88:8080/flycloud-file-admin/',
         pathRewrite: {
           '^/flycloud-file-admin': '/'
         }
       }
+
     },
 
     // Various Dev Server settings

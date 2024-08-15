@@ -4,8 +4,8 @@
  */
 import axios from 'axios'
 import router from '../router'
-import Vue from 'vue'
 import {Message} from 'iview'
+let Base64 = require('js-base64').Base64
 
 axios.defaults.withCredentials = true // 允许跨域携带cookie
 
@@ -47,7 +47,8 @@ const errorHandle = (status, message) => {
 var instance = axios.create({timeout: 1000 * 60})
 
 // 设置post请求头
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+instance.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
 /**
  * 请求拦截器
@@ -62,8 +63,18 @@ instance.interceptors.request.use(
     // const token = store.state.token;
     // token && (config.headers.Authorization = token);
 
-    const userToken = Vue.prototype.$cookies.get('userToken')
-    userToken && (config.headers.userToken = userToken) // 设置请求头部token
+    // const userToken = Vue.prototype.$cookies.get('userToken')
+    const userToken = localStorage.getItem('userToken')
+    userToken && (config.headers.userToken = userToken)
+
+    // todo 有用户token设值用户token，无则赋值客户端登录信息token
+    // todo 设置请求头部token
+    // debugger
+    if (userToken && (config.headers.userToken = userToken)) {
+      config.headers.Authorization = `Bearer ${userToken}`
+    } else {
+      config.headers.Authorization = `Basic ${Base64.encode(`fly:fly_secret`)}`
+    }
 
     return config
   },

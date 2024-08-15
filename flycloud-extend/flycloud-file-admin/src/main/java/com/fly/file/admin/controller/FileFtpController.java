@@ -1,5 +1,6 @@
 package com.fly.file.admin.controller;
 
+import com.fly.common.model.R;
 import com.fly.common.utils.ArrayUtils;
 import com.fly.common.utils.Base64Utils;
 import com.fly.common.utils.StringUtils;
@@ -8,6 +9,9 @@ import com.fly.file.admin.domain.bo.ExecuteOptionBo;
 import com.fly.file.admin.singleton.ConFtpSingle;
 import com.fly.file.admin.singleton.UploadFileScheduleSingle;
 import com.jcraft.jsch.JSchException;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +29,7 @@ import java.util.*;
  * @author lxs
  * @date 2023/4/24
  */
+@Slf4j
 @RestController
 @RequestMapping("/fileFtp")
 public class FileFtpController {
@@ -37,19 +42,18 @@ public class FileFtpController {
     /**
      * 登陆ftp
      * 
-     * @param user 用户
-     * @param port 端口
-     * @param baseKey ip与密码base64
+     * @param requestParams user 用户
+     * @param requestParams port 端口
+     * @param requestParams baseKey ip与密码base64
     */
     @PostMapping("/login")
-    public Object login(String user, String port, String baseKey, HttpServletRequest request){
+    public R<?> login(@RequestBody Map<String, String> requestParams, HttpServletRequest request){
 
-        Map<String, Object> resultMap = new HashMap<>();
-
+        String user = requestParams.get("user");
+        String port = requestParams.get("port");
+        String baseKey = requestParams.get("baseKey");
         if (StringUtils.isBlank(baseKey) || StringUtils.isBlank(user) || StringUtils.isBlank(port)) {
-            resultMap.put("resultMsg", "baseKey|用户|端口都不能为空!");
-            resultMap.put("resultCode", "1001");
-            return resultMap;
+            return R.failed("baseKey|用户|端口都不能为空!");
         }
 
         try {
@@ -67,16 +71,13 @@ public class FileFtpController {
 
             ConFtpSingle singleton = ConFtpSingle.getConFtpSingle(); // 生成单例
             singleton.loginConnect(conBean); // 登陆ftp
-            resultMap.put("resultMsg", "ftp连接成功!");
-            resultMap.put("resultCode", "1");
 
-        }catch (JSchException e) {
-            e.printStackTrace();
-            resultMap.put("resultMsg", "ftp连接失败!");
-            resultMap.put("resultCode", "1000");
+        } catch (JSchException e) {
+            log.error("error", e);
+            return R.failed("ftp连接失败!");
         }
 
-        return resultMap;
+        return R.ok(null, "ftp连接成功!");
     }
 
 
@@ -85,23 +86,17 @@ public class FileFtpController {
      *
      */
     @PostMapping("/loginOut")
-    public Object loginOut(HttpServletRequest request){
-
-        Map<String, Object> resultMap = new HashMap<>();
+    public R<?> loginOut(HttpServletRequest request){
 
         try {
             ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
             singleton.loginOutConnect();
-            resultMap.put("resultMsg", "ftp登出成功!");
-            resultMap.put("resultCode", "1");
-
-        }catch (JSchException e) {
-            e.printStackTrace();
-            resultMap.put("resultMsg", "ftp登出失败!");
-            resultMap.put("resultCode", "1000");
+        } catch (JSchException e) {
+            log.error("error", e);
+            return R.failed("ftp登出失败!");
         }
 
-        return resultMap;
+        return R.ok(null, "ftp登出成功");
     }
 
 
@@ -110,21 +105,18 @@ public class FileFtpController {
      *
      */
     @PostMapping("/isConnect")
-    public Object isConnect(){
+    public R<?> isConnect(){
 
-        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
-
             ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
-            resultMap = singleton.getConnect();
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            resultMap.put("resultMsg", "验证失败!");
-            resultMap.put("resultCode", "1000");
+            dataMap = singleton.getConnect();
+        } catch (Exception e) {
+            log.error("error", e);
+            return R.failed("验证失败");
         }
 
-        return resultMap;
+        return R.ok(null, String.valueOf(dataMap.get("resultMsg")));
     }
 
 
@@ -134,11 +126,11 @@ public class FileFtpController {
      * @param path 路径
      */
     @PostMapping("/getList")
-    public Object getList(String path, HttpServletRequest request){
+    public R<?> getList(@RequestBody String path, HttpServletRequest request){
 
-        Map<String, Object> resultMap = new HashMap<>();
         ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
         String cmdResult = "";
+        List<Map<String, String>> fileList = new ArrayList<>();
 
         try {
 
@@ -159,7 +151,6 @@ public class FileFtpController {
 //            System.out.println(directoryList);
 
             // 2.使用命令方法显示文件列表(自定义信息)
-            List<Map<String, String>> fileList = new ArrayList<>();
             cmdResult = singleton.executeCmd("cd " + path + "; ls -l -lh --time-style '+%Y-%m-%d %H:%M:%S' -t");
             // cmdResult = singleton.executeCmd("cd /project-api; ls -l -lh --time-style '+%Y-%m-%d %H:%M:%S' -t");
             String[] resultList = cmdResult.split("\n");
@@ -187,17 +178,12 @@ public class FileFtpController {
                 }
             }
 
-            resultMap.put("data", fileList);
-            resultMap.put("resultMsg", "查询成功!");
-            resultMap.put("resultCode", "1");
-
         }catch (Exception e){
-            e.printStackTrace();
-            resultMap.put("resultMsg", "系统出错!");
-            resultMap.put("resultCode", "1000");
+            log.error("error", e);
+            return R.failed("系统出错");
         }
 
-        return resultMap;
+        return R.ok(fileList, "查询成功");
     }
 
 
@@ -207,32 +193,22 @@ public class FileFtpController {
      * @param curPath 服务器当前路径
      */
     @PostMapping("/uploadFile")
-    @ResponseBody
-    public Object uploadFile(String curPath, HttpServletRequest request, @RequestParam(value = "file") MultipartFile file){
+    public R<?> uploadFile(String curPath, HttpServletRequest request, @RequestParam(value = "file") MultipartFile file){
 
-        Map<String, Object> resultMap = new HashMap<>();
         if (StringUtils.isBlank(curPath) || file.isEmpty()) {
-            resultMap.put("resultMsg", "服务器当前路径为空 | 文件为空!");
-            resultMap.put("resultCode", "1001");
-            return resultMap;
+            return R.failed("服务器当前路径为空 | 文件为空!");
         }
 
+        String fileName = "";
         try {
-
             ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
-            String fileName = singleton.uploadFile(file, curPath);
-
-            resultMap.put("data", fileName);
-            resultMap.put("resultMsg", "上传成功!");
-            resultMap.put("resultCode", "1");
-
-        }catch (Exception e){
-            e.printStackTrace();
-            resultMap.put("resultMsg", "系统出错!");
-            resultMap.put("resultCode", "1000");
+            fileName = singleton.uploadFile(file, curPath);
+        } catch (Exception e){
+            log.error("error", e);
+            return R.failed("系统出错");
         }
 
-        return resultMap;
+        return R.ok(fileName, "上传成功");
     }
 
 
@@ -241,19 +217,25 @@ public class FileFtpController {
      *
      */
     @GetMapping("/getFileUploadProgress")
-    public UploadFileScheduleSingle getFileUploadProgress(){
-        return uploadFileScheduleSingle;
+    public R<UploadFileScheduleSingle> getFileUploadProgress(){
+        return R.ok(uploadFileScheduleSingle);
     }
 
 
     /**
-     * 上传文件
+     * 下载文件
      *
-     * @param path 下载文件路径
-     * @param fileName 文件名
+     * @param requestParams path 下载文件路径
+     * @param requestParams fileName 文件名
      */
-    @GetMapping("/downloadFile")
-    public Object downloadFile(String path, String fileName, HttpServletRequest request, HttpServletResponse response){
+    @PostMapping("/downloadFile")
+    public void downloadFile(@RequestBody Map<String, String> requestParams, HttpServletRequest request, HttpServletResponse response){
+
+        String path = requestParams.get("path");
+        String fileName = requestParams.get("fileName");
+        if (StringUtils.isBlank(path) || StringUtils.isBlank(fileName)) {
+            return;
+        }
 
         ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
         BufferedInputStream bis = null;
@@ -279,8 +261,6 @@ public class FileFtpController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
 
@@ -289,9 +269,8 @@ public class FileFtpController {
      *
      */
     @PostMapping("/executeOption")
-    public Object executeOption(ExecuteOptionBo executeOptionBo, HttpServletRequest request){
+    public R<?> executeOption(@RequestBody ExecuteOptionBo executeOptionBo, HttpServletRequest request){
 
-        Map<String, Object> resultMap = new HashMap<>();
         String curPath = executeOptionBo.getCurPath();
         String type = executeOptionBo.getType();
         String executeFileName = executeOptionBo.getExecuteFileName();
@@ -303,9 +282,7 @@ public class FileFtpController {
         String ysToFileName = executeOptionBo.getYsToFileName();
 
         if (StringUtils.isBlank(type) || StringUtils.isBlank(curPath)) {
-            resultMap.put("resultMsg", "服务器当前路径 | 操作类型 -> 为空!");
-            resultMap.put("resultCode", "1001");
-            return resultMap;
+            return R.failed("服务器当前路径 | 操作类型 -> 为空!");
         }
 
         String successMes = "";
@@ -316,9 +293,7 @@ public class FileFtpController {
         switch (type){
             case "0": // 新建文件夹
                 if (StringUtils.isBlank(newFolderName)) {
-                    resultMap.put("resultMsg", "文件夹名称 -> 为空!");
-                    resultMap.put("resultCode", "1001");
-                    return resultMap;
+                    return R.failed("文件夹名称 -> 为空!");
                 }
                 cmdList[2] = "mkdir " + curPath + File.separator + newFolderName;
                 successMes = "新建文件夹成功!";
@@ -336,9 +311,7 @@ public class FileFtpController {
 
             case "3": // 重命名
                 if (StringUtils.isBlank(oldFileName) || StringUtils.isBlank(newFileName)) {
-                    resultMap.put("resultMsg", "旧文件/夹名 | 新文件/夹名 -> 为空!");
-                    resultMap.put("resultCode", "1001");
-                    return resultMap;
+                    return R.failed("旧文件/夹名 | 新文件/夹名 -> 为空!");
                 }
                 String oldFile = curPath + File.separator + oldFileName;
                 String newFile = curPath + File.separator + newFileName;
@@ -347,24 +320,22 @@ public class FileFtpController {
                 break;
 
             case "4": // 删除文件/夹
-                resultMap.put("resultMsg", "危险指令，无法操作!");
-                resultMap.put("resultCode", "1001");
-                return resultMap;
 
-//                if (StringUtils.isBlank(deleteFileName)) {
-//                    resultMap.put("resultMsg", "要删除的文件名 -> 为空!");
-//                    resultMap.put("resultCode", "1001");
-//                    return resultMap;
-//                }
+                if (StringUtils.isBlank(deleteFileName)) {
+                    return R.failed("要删除的文件名 -> 为空!");
+                }
+                if (!deleteFileName.contains(".")) {
+                    return R.failed("只能删除文件!");
+                }
 //                cmdList[2] = "rm -rf " + curPath + File.separator + deleteFileName;
-//                successMes = "删除成功!";
-//                break;
+                cmdList[2] = "rm " + curPath + File.separator + deleteFileName;
+                successMes = "删除成功!";
+                break;
 
             case "5": // 压缩文件/夹
                 if (StringUtils.isBlank(ysOrJyFileName)) {
-                    resultMap.put("resultMsg", "要压缩的文件/夹 -> 为空!");
-                    resultMap.put("resultCode", "1001");
-                    return resultMap;
+                    return R.failed("要压缩的文件/夹 -> 为空!");
+
                 }
                 if (StringUtils.isBlank(ysToFileName)) {
                     ysToFileName = ysOrJyFileName;
@@ -385,54 +356,45 @@ public class FileFtpController {
 
             case "10": // 执行文件
                 if (StringUtils.isBlank(executeFileName)) {
-                    resultMap.put("resultMsg", "文件 -> 为空!");
-                    resultMap.put("resultCode", "1001");
-                    return resultMap;
+                    return R.failed("文件 -> 为空!");
                 }
                 cmdList[2] = "cd " + curPath + "; chmod +x ./"+executeFileName+"; ./"+executeFileName;
                 successMes = "执行成功!";
                 break;
         }
 
+        String[] optionData = new ArrayList<>().toArray(new String[100]);
         try {
 
             ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
             String cmdResult = singleton.executeCmd(cmdList[2]); // todo 执行最后一条
-            String[] optionData = cmdResult.split("\n");
-
-            resultMap.put("data", optionData);
-            resultMap.put("resultMsg", successMes);
-            resultMap.put("resultCode", "1");
+            optionData = cmdResult.split("\n");
 
         }catch (Exception e){
-            e.printStackTrace();
-            resultMap.put("resultMsg", "系统出错!");
-            resultMap.put("resultCode", "1000");
+            log.error("error", e);
+            return R.failed("系统出错!");
         }
 
-        return resultMap;
+        return R.ok(optionData, successMes);
     }
 
 
     /**
      * 执行指令
-     * @param curPath 服务器当前路径
-     * @param cmd 指令
+     * @param requestParams curPath 服务器当前路径
+     * @param requestParams cmd 指令
      */
     @PostMapping("/executeCommand")
-    public Object executeCommand(String curPath, String cmd, HttpServletRequest request){
+    public R<?> executeCommand(@RequestBody Map<String, String> requestParams, HttpServletRequest request){
 
-        Map<String, Object> resultMap = new HashMap<>();
+        String curPath = requestParams.get("curPath");
+        String cmd = requestParams.get("cmd");
+        Map<String, String> dateMap = new HashMap<>();
         if (StringUtils.isBlank(curPath) || StringUtils.isBlank(cmd)) {
-            resultMap.put("resultMsg", "服务器当前路径 | 指令 -> 为空!");
-            resultMap.put("resultCode", "1001");
-            return resultMap;
+            return R.failed("服务器当前路径 | 指令 -> 为空!");
         }
-
         if (cmd.contains("rm")) {
-            resultMap.put("resultMsg", "敏感指令!");
-            resultMap.put("resultCode", "1002");
-            return resultMap;
+            return R.failed("敏感指令!");
         }
 
         try {
@@ -441,7 +403,7 @@ public class FileFtpController {
             ConFtpSingle singleton = ConFtpSingle.getConFtpSingle();
             String cmdResult = singleton.executeCmd(cmdStr);
 
-            // todo cd命令处理
+            // todo cd命令处理最新目录路径
             String new_cur_path = "";
             if (cmd.contains("cd")) {
                 String new_cur_path2 = singleton.executeCmd("pwd");
@@ -462,18 +424,15 @@ public class FileFtpController {
                 }
             }
 
-            resultMap.put("data", cmdResult);
-            resultMap.put("newCurPath", new_cur_path);
-            resultMap.put("resultMsg", "执行成功");
-            resultMap.put("resultCode", "1");
+            dateMap.put("cmdResult", cmdResult);
+            dateMap.put("newCurPath", new_cur_path);
 
         }catch (Exception e){
-            e.printStackTrace();
-            resultMap.put("resultMsg", "系统出错!");
-            resultMap.put("resultCode", "1000");
+            log.error("error", e);
+            return R.failed("系统出错!");
         }
 
-        return resultMap;
+        return R.ok(dateMap, "执行成功");
     }
 
 

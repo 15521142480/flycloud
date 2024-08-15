@@ -168,35 +168,83 @@ public class CommandUtils {
         return result;
     }
 
-    // ============================= 测试
-    public static void main(String[] args) {
 
-        //单行字符串命令
-//		Result r = ProcessUtils.run("cmd /C ipconfig /all", "GBK");
-//		System.out.println("code:" + r.code + "\ndata:" + r.data);
-        //字符串列表命令
-        List<String> cmdList = new ArrayList<>();
-          //cmdList.add("pwd");
-        cmdList.add("cmd");
-        cmdList.add("/c");
-        cmdList.add("cd /Users/laixueshi/");
+    /**
+     * 执行mac命令
+     *
+     * @param command // String[] cmdList,
+    */
+    public static String execMacCmd(String command) {
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash", "-c", command);
 
         try {
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-//            Result r = CommandUtils.run(new File("/Users/laixueshi/"), cmdList);
-//            System.out.println("code:" + r.code + "\n数据:" + r.data);
+            StringBuffer output = new StringBuffer();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
 
-            // String[] cmdList2 = {"cd /Users/laixueshi/", "ls"};
-            String[] cmdList2 = {"ls"};
-            execLinuxCmd(cmdList2);
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                System.out.println("Mac 命令执行成功");
+                System.out.println(output);
+                return output.toString();
+            } else {
+                // handle non-zero exit code if needed
+                return null;
+            }
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
+
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return null;
         }
+    }
+
+
+
+    // ================================================================================= 测试
+
+    public static void main(String[] args) {
+
+
+        // todo mac 测试
+        String output = execMacCmd("cd /git; ls");
+//        System.out.println(output);
+
+
+        // todo linux 测试
+//        //单行字符串命令
+//        //字符串列表命令
+//        List<String> cmdList = new ArrayList<>();
+//          //cmdList.add("pwd");
+//        cmdList.add("cmd");
+//        cmdList.add("/c");
+//        cmdList.add("cd /Users/laixueshi/");
+//
+//        try {
+//
+////            Result r = CommandUtils.run(new File("/Users/laixueshi/"), cmdList);
+////            System.out.println("code:" + r.code + "\n数据:" + r.data);
+//
+//            // String[] cmdList2 = {"cd /Users/laixueshi/", "ls"};
+//            String[] cmdList2 = {"ls"};
+//            execLinuxCmd(cmdList2);
+//
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+
+
     }
 
 

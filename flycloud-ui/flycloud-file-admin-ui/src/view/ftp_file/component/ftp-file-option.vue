@@ -37,6 +37,7 @@
 <script>
 import FtpFileOptionModal from './ftp-file-option-modal'
 import {isNull} from '../../../util/stringUtils'
+import {download} from '../../../util/common'
 
 export default {
   name: 'ftp-file-option',
@@ -110,7 +111,13 @@ export default {
         title: '下载',
         content: '<p">确认下载该文件 ' + fileName + ' 吗?</p>',
         onOk: () => {
-          window.location.href = this.$api.fileStp.downloadFtpFileApi(curPath, fileName)
+          // window.location.href = this.$api.fileStp.downloadFtpFileApi(curPath, fileName)
+
+          let params = {
+            path: curPath,
+            fileName: fileName
+          }
+          download(this.$api.fileStp.downloadFtpFilePath, params, fileName)
         }
       })
     },
@@ -178,9 +185,9 @@ export default {
      */
     executeOptionServer (optionData) {
       this.$api.fileStp.executeOptionFtpApi(optionData).then((res) => {
-        let resultCode = res.data.resultCode
-        let resultMsg = res.data.resultMsg
-        if (resultCode === '1') {
+        let resultCode = res.data.code
+        let resultMsg = res.data.msg
+        if (resultCode === 0) {
           this.$Notice.success({
             title: '操作提醒',
             desc: resultMsg

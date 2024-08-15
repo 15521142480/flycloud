@@ -6,7 +6,7 @@ export default {
 
   // 登陆到ftp
   ftpLogin (params) {
-    return axios.post(`${base.dev}/fileFtp/login`, qs.stringify(params))
+    return axios.post(`${base.dev}/fileFtp/login`, JSON.stringify(params))
   },
 
   // 登出ftp
@@ -26,7 +26,7 @@ export default {
 
   // 文件列表
   getFtpFileListApi (params) {
-    return axios.post(`${base.dev}/fileFtp/getList`, qs.stringify(params))
+    return axios.post(`${base.dev}/fileFtp/getList`, params)
   },
 
   // 上传文件
@@ -36,18 +36,19 @@ export default {
   uploadFtpFileApiPath: `${base.dev}/fileFtp/uploadFile`,
 
   // 下载文件
-  downloadFtpFileApi (path, fileName) {
-    return `${base.dev}/fileFtp/downloadFile` + '?path=' + path + '&fileName=' + fileName
-  },
+  // downloadFtpFileApi (path, fileName) {
+  //   return `${base.dev}/fileFtp/downloadFile` + '?path=' + path + '&fileName=' + fileName
+  // },
+  downloadFtpFilePath: `${base.dev}/fileFtp/downloadFile`,
 
   // 执行操作 -> 操作类型(0:新建文件夹, 1:启动服务, 2:关闭服务, 3:文件/夹重命名, 4:删除文件/夹, 5:压缩文件/夹, 6:解压文件/夹, 10:执行文件)
   executeOptionFtpApi (params) {
-    return axios.post(`${base.dev}/fileFtp/executeOption`, qs.stringify(params))
+    return axios.post(`${base.dev}/fileFtp/executeOption`, JSON.stringify(params))
   },
 
   // 执行操作命令
   executeCommandFtpApi (params) {
-    return axios.post(`${base.dev}/fileFtp/executeCommand`, qs.stringify(params))
+    return axios.post(`${base.dev}/fileFtp/executeCommand`, JSON.stringify(params))
   }
 
 }

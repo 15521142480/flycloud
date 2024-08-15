@@ -1,9 +1,13 @@
 package com.fly.common.handler;
 
 import com.fly.common.constant.CommonConstants;
+import com.fly.common.constant.WebConstants;
+import com.fly.common.exception.TokenException;
 import com.fly.common.model.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -18,7 +22,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * 全局异常
+     * 全局异常处理
      *
      * @param e the e
      * @return R
@@ -33,6 +37,39 @@ public class GlobalExceptionHandler {
                 .code(CommonConstants.FAIL)
                 .build();
     }
+
+
+    /**
+     * 登录授权相关异常处理
+     *
+     * @param e 所属异常
+     */
+//    @ExceptionHandler(TokenException.class)
+////    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+//    public R handleTokenException(TokenException e) {
+//
+//        log.error("=====授权相关异常: {}", e.getMessage(), e);
+//        return R.failed(e.getMessage());
+//    }
+    @ExceptionHandler(TokenException.class)
+    public R<?> handleTokenException(TokenException e) {
+        log.error("授权相关异常==>errorCode:{}, exception:{}", HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        return R.failed(WebConstants.Status.UNAUTHORIZED.getCode(), e.getMessage());
+    }
+
+
+    /**
+     * 接口权限相关异常处理
+     *
+     * @param e 所属异常
+     */
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+//    public R handleAuthException(Exception e) {
+//
+//        log.error("=====xxx: {}", e.getMessage(), e);
+//        return R.failed(e.getMessage());
+//    }
 
 
 

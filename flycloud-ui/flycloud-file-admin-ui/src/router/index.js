@@ -32,7 +32,8 @@ export default new Router({
       meta: {
         title: '文件列表'
       },
-      component: () => import('../view/file/file-list')
+      component: () => import('../view/file/file-list2')
+      // component: () => import('../view/file/file-list')
     },
     {
       path: '/test',
