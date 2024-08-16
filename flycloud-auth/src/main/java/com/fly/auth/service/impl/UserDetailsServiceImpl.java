@@ -1,12 +1,13 @@
 package com.fly.auth.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
+import com.fly.auth.service.ISysUserService;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.exception.TokenException;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.user.FlyUserDetailsService;
 import com.flycloud.system.api.dto.UserInfo;
-import com.flycloud.system.api.feign.ISysUserProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -31,8 +32,14 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	public static final String ENABLE = "0";
 	public static final String DISABLE = "1";
 
+//	@Resource
+//	private ISysUserProvider sysUserProvider;
+
 	@Resource
-	private ISysUserProvider sysUserProvider;
+	private ISysUserService sysUserProvider;
+
+
+//	<!-- todo two_master_server_dev 两个主服务分支版本（即auth集成用户查询） -->
 
 
 	/**
@@ -41,10 +48,18 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
-		if (userInfo == null) {
+//		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
+		SysUser sysUser = sysUserProvider.getOneIgnoreTenant(new SysUser().setAccount(userName));
+		if (sysUser == null) {
 			throw new TokenException("该用户：" + userName + "不存在");
 		}
+
+		UserInfo userInfo = new UserInfo();
+//		userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
+		userInfo.setSysUser(sysUser);
+		userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
+		userInfo.setTenantId(sysUser.getTenantId());
+
 		userInfo.setType(Oauth2Constants.LOGIN_USERNAME_TYPE);
 		userInfo.setUserName(userName);
 		
@@ -58,10 +73,18 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	@Override
 	public UserDetails loadUserByMobile(String mobile) throws UsernameNotFoundException {
 
-		UserInfo userInfo = sysUserProvider.getUserByMobile(mobile).getData();
-		if (userInfo == null) {
+//		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
+		SysUser sysUser = sysUserProvider.getOneIgnoreTenant(new SysUser().setTelephone(mobile));
+		if (sysUser == null) {
 			throw new TokenException("该用户：" + mobile + "不存在");
 		}
+
+		UserInfo userInfo = new UserInfo();
+//		userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
+		userInfo.setSysUser(sysUser);
+		userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
+		userInfo.setTenantId(sysUser.getTenantId());
+
 		userInfo.setType(Oauth2Constants.LOGIN_MOBILE_TYPE);
 		userInfo.setUserName(mobile);
 
@@ -76,10 +99,18 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	public UserDetails loadUserBySocial(String openId) throws UsernameNotFoundException {
 
 		String userName = "admin";
-		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
-		if (userInfo == null) {
+//		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
+		SysUser sysUser = sysUserProvider.getOneIgnoreTenant(new SysUser().setAccount(userName));
+		if (sysUser == null) {
 			throw new TokenException("该用户：" + userName + "不存在");
 		}
+
+		UserInfo userInfo = new UserInfo();
+//		userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
+		userInfo.setSysUser(sysUser);
+		userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
+		userInfo.setTenantId(sysUser.getTenantId());
+
 		userInfo.setType(Oauth2Constants.LOGIN_USERNAME_TYPE);
 		userInfo.setUserName(userName);
 

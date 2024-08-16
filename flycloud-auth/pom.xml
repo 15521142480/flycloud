@@ -24,12 +24,19 @@
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-system-api</artifactId>
+            <artifactId>flycloud-common-redis</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-redis</artifactId>
+            <artifactId>flycloud-system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- todo two_master_server_dev 两个主服务分支版本（即auth集成用户查询）  -->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-database</artifactId>
             <version>${revision}</version>
         </dependency>
 
