@@ -174,8 +174,6 @@ export default {
             } else {
               this.$Notice.error({title: '操作提醒', desc: '操作失败'})
             }
-            this.$cookies.remove('userToken')
-            this.$cookies.remove('userName')
           }).catch((e) => {
           })
           this.$router.push('/')

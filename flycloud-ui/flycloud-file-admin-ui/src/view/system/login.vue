@@ -82,6 +82,9 @@ export default {
     handleSubmit () {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
+          // todo 去除所有的旧缓存
+          localStorage.removeItem('userToken')
+          this.$cookies.remove('userName')
           // 旧
           // 账号密码 baseb4组合 (顺序打乱, 后四位移动到了最前面)
           // let nameAndPassword = this.dataForm.loginName + '#' + this.dataForm.password
