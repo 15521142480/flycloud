@@ -16,6 +16,9 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 
 	private final Object principal;
 
+	/**
+	 * 根据手机号设置principal获取token
+	 */
 	public SmsCodeAuthenticationToken(String mobile) {
 		super(null);
 		this.principal = mobile;
@@ -38,6 +41,10 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 		return this.principal;
 	}
 
+
+	/**
+	 * 设置新增当前principal获取token
+	 */
 	@Override
 	@SneakyThrows
 	public void setAuthenticated(boolean isAuthenticated) {

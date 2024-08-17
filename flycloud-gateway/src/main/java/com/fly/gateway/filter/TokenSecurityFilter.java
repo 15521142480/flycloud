@@ -73,7 +73,8 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
         String token = TokenUtils.getToken(headerToken);
         Claims claims = SecurityUtils.getClaims(token);
         if (claims == null) {
-            return this.unAuthorized(resp, "token已过期或验证不正确！");
+//            return this.unAuthorized(resp, "token已过期或验证不正确！");
+            return this.unAuthorized(resp, "token已过期！");
         }
 
         // 判断token是否存在于redis,对于只允许一台设备场景适用。

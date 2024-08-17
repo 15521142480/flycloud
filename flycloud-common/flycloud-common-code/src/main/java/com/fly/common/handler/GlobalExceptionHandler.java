@@ -7,8 +7,9 @@ import com.fly.common.model.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 全局异常捕获处理
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @date 2023/5/3
  */
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice // 等于@ResponseBody和 + ControllerAdvice
 public class GlobalExceptionHandler {
 
 
@@ -51,8 +52,9 @@ public class GlobalExceptionHandler {
 //        log.error("=====授权相关异常: {}", e.getMessage(), e);
 //        return R.failed(e.getMessage());
 //    }
+
     @ExceptionHandler(TokenException.class)
-    public R<?> handleTokenException(TokenException e) {
+    public R<?> handleTokenException(HttpServletRequest request, TokenException e) {
         log.error("授权相关异常==>errorCode:{}, exception:{}", HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         return R.failed(WebConstants.Status.UNAUTHORIZED.getCode(), e.getMessage());
     }

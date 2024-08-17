@@ -158,25 +158,28 @@ export default {
         this.$Message.error('接口异常!')
       })
     },
-    // 退出登录
+    // 退出登录 登出
     loginOut () {
       this.$Modal.confirm({
         title: '退出系统',
         content: '<p>确认要退出系统吗?</p>',
         onOk: () => {
-          localStorage.removeItem('userToken')
-          this.$cookies.remove('userName')
           this.$api.system.loginOutApi().then((res) => {
             let resultCode = res.data.code
             let resultMsg = res.data.msg
             if (resultCode === 0) {
               this.$Notice.success({title: '操作提醒', desc: resultMsg})
             } else {
-              this.$Notice.error({title: '操作提醒', desc: '操作失败'})
+              this.$Notice.error({title: '操作提醒', desc: '操作失败' + resultMsg})
             }
+            localStorage.removeItem('userToken')
+            this.$cookies.remove('userName')
+            this.$router.push('/')
           }).catch((e) => {
+            localStorage.removeItem('userToken')
+            this.$cookies.remove('userName')
+            this.$router.push('/')
           })
-          this.$router.push('/')
         }
       })
     }
