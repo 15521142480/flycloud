@@ -406,22 +406,24 @@ public class FileFtpController {
             // todo cd命令处理最新目录路径
             String new_cur_path = "";
             if (cmd.contains("cd")) {
-                String new_cur_path2 = singleton.executeCmd("pwd");
-//                new_cur_path = new_cur_path2.replaceAll("\n", "");
-                new_cur_path = "/" + cmdStr.substring(cmdStr.lastIndexOf("cd") + 3);
-                if (new_cur_path.contains("~")) {
-                    new_cur_path = "/";
-                }
-                if (new_cur_path.contains("../")) {
-                    new_cur_path = curPath.substring(0, curPath.lastIndexOf("/"));
-                }
-                if (new_cur_path.contains("./")) {
-                    new_cur_path = curPath + "/" + cmdStr.substring(cmdStr.lastIndexOf("./") + 2);
-                }
 
-                if (StringUtils.isBlank(new_cur_path)) {
-                    new_cur_path = "/";
-                }
+//                new_cur_path = "/" + cmdStr.substring(cmdStr.lastIndexOf("cd") + 3);
+//                if (new_cur_path.contains("~")) {
+//                    new_cur_path = "/";
+//                }
+//                if (new_cur_path.contains("../")) {
+//                    new_cur_path = curPath.substring(0, curPath.lastIndexOf("/"));
+//                }
+//                if (new_cur_path.contains("./")) {
+//                    new_cur_path = curPath + "/" + cmdStr.substring(cmdStr.lastIndexOf("./") + 2);
+//                }
+//
+//                if (StringUtils.isBlank(new_cur_path)) {
+//                    new_cur_path = "/";
+//                }
+
+                String new_cur_path2 = singleton.executeCmd(cmdStr + "; " + "pwd");
+                new_cur_path = new_cur_path2.replaceAll("\n", "");
             }
 
             dateMap.put("cmdResult", cmdResult);

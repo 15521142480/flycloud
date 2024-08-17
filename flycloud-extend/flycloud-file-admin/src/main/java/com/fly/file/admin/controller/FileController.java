@@ -372,21 +372,30 @@ public class FileController {
             // todo cd命令处理最新目录路径
             String new_cur_path = "";
             if (cmd.contains("cd")) {
-                String new_cur_path2 = CommandUtils.execLinuxCmd("pwd");
-//                new_cur_path = new_cur_path2.replaceAll("\n", "");
-                new_cur_path = "/" + cmdStr.substring(cmdStr.lastIndexOf("cd") + 3);
-                if (new_cur_path.contains("~")) {
-                    new_cur_path = "/";
-                }
-                if (new_cur_path.contains("../")) {
-                    new_cur_path = curPath.substring(0, curPath.lastIndexOf("/"));
-                }
-                if (new_cur_path.contains("./")) {
-                    new_cur_path = curPath + "/" + cmdStr.substring(cmdStr.lastIndexOf("./") + 2);
-                }
 
-                if (StringUtils.isBlank(new_cur_path)) {
-                    new_cur_path = "/";
+//                new_cur_path = "/" + cmdStr.substring(cmdStr.lastIndexOf("cd") + 3);
+//                if (new_cur_path.contains("~")) {
+//                    new_cur_path = "/";
+//                }
+//                if (new_cur_path.contains("../")) {
+//                    new_cur_path = curPath.substring(0, curPath.lastIndexOf("/"));
+//                }
+//                if (new_cur_path.contains("./")) {
+//                    new_cur_path = curPath + "/" + cmdStr.substring(cmdStr.lastIndexOf("./") + 2);
+//                }
+//
+//                if (StringUtils.isBlank(new_cur_path)) {
+//                    new_cur_path = "/";
+//                }
+
+                if (SystemUtils.isMac()) {
+                    String new_cur_path2 = CommandUtils.execMacCmd(cmdStr + "; " + "pwd");
+                    new_cur_path = new_cur_path2.replaceAll("\n", "");
+                } else if (SystemUtils.isLinux()) {
+                    String new_cur_path2 = CommandUtils.execLinuxCmd(cmdStr + "; " + "pwd");
+                    new_cur_path = new_cur_path2.replaceAll("\n", "");
+                } else {
+
                 }
             }
 

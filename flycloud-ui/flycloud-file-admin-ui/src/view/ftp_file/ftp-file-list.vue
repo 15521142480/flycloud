@@ -106,11 +106,10 @@
               <Button style="font-size: 16px; color: #eaa335">sftp远程与shell指令使用提醒</Button>
               <div class="api" slot="content">
                 <Card style="line-height: 25px">
-                  <p>1. 该模块支持sftp与shell操作 (shell功能在上方input输入指令按回车键)</p>
-                  <p>2. ip与密码前段后已加密处理 (双层登录)</p>
-                  <p>3. 支持cd指令后左边的文件目录自动跳转</p>
-                  <p>4. 过滤敏感指令, 如rm</p>
-                  <p>5. 不支持长链接会话, 如进入redis链接进行内部指令操作</p>
+                  <p>1. 支持sftp与shell操作 (目前只支持Linux，输入指令按回车键)</p>
+                  <p>3. 支持cd指令左边的文件目录自动跳转</p>
+                  <p>4. 过滤敏感指令</p>
+                  <p>5. 不支持如docker、redis等长链接会话</p>
                 </Card>
               </div>
             </Poptip>

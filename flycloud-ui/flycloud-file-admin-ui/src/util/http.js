@@ -22,15 +22,21 @@ const toLogin = () => {
   })
 }
 
-const errorHandle = (status, message) => {
+/**
+ * 处理错误的响应
+ * @param status
+ * @param data
+ */
+const errorHandle = (status, data) => {
   // 状态码判断
   switch (status) {
     case 401: // 401: 未登录状态，跳转登录页
+      Message.warning(data.msg)
       toLogin()
       break
 
     case 403: // 403 token过期 清除token并跳转登录页
-      Message.warning(message)
+      Message.warning(data.msg)
       toLogin()
       break
 
@@ -80,7 +86,9 @@ instance.interceptors.request.use(
   },
   error => Promise.error(error))
 
-// 响应拦截器
+/**
+ * 响应拦截器
+ */
 instance.interceptors.response.use(
   // 请求成功
   res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
@@ -89,7 +97,7 @@ instance.interceptors.response.use(
     const {response} = error
     if (response) {
       // 请求已发出，但是不在2xx的范围
-      errorHandle(response.status, response.data.message)
+      errorHandle(response.status, response.data)
       return Promise.reject(response)
     } else {
       // 处理断网的情况

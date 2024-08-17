@@ -156,8 +156,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
+
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey(Oauth2Constants.SIGN_KEY);
+        jwtAccessTokenConverter.setSigningKey(Oauth2Constants.SIGN_KEY); // 签名密钥, 验签, 防止配篡改
         return jwtAccessTokenConverter;
     }
 
@@ -230,6 +231,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     /**
      * jwt token增强，添加额外信息
+     *
+     * <p>
+     * 利用其签名密钥原理，往第二部分塞入用户信息可通过token获取用户信息
      *
      */
     @Bean

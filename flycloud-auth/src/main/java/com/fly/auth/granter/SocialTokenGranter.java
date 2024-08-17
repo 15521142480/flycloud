@@ -57,6 +57,7 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 
 	@Override
 	protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
+
 		Map<String, String> parameters = new LinkedHashMap<>(tokenRequest.getRequestParameters());
 		String code = parameters.get("code");
 		String state = parameters.get("state");

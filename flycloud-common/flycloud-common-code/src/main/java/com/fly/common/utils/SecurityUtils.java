@@ -78,7 +78,8 @@ public class SecurityUtils {
 			try {
 				claims = TokenUtils.getClaims(token);
 			} catch (Exception e) {
-				throw new TokenException("Token已过期！");
+				log.error("Token已过期!", e);
+//				throw new TokenException("Token已过期！");
 			}
 		}
 		return claims;

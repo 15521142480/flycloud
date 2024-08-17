@@ -83,7 +83,7 @@ public class R<T> implements Serializable {
     }
 
     public static <T> R<T> failed(Integer code, String message) {
-        return restResult(null, CommonConstants.FAIL, null);
+        return restResult(null, CommonConstants.FAIL, message);
     }
 
     public static <T> R<T> failed(String msg) {

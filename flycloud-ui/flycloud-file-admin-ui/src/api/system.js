@@ -10,7 +10,7 @@ export default {
 
   // 登出
   loginOutApi (params) {
-    return axios.post(`${auth.dev}/oauth/loginOut`, JSON.stringify(params))
+    return axios.post(`${auth.dev}/oauth/logOut`, JSON.stringify(params))
   }
 
 }

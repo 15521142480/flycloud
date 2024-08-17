@@ -43,8 +43,13 @@ public class SmsCodeTokenGranter extends AbstractTokenGranter {
 		this.authenticationManager = authenticationManager;
 	}
 
+
+	/**
+	 * 根据手机号获取并赋值security的的token
+	 */
 	@Override
 	protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
+
 		Map<String, String> parameters = new LinkedHashMap<>(tokenRequest.getRequestParameters());
 		String mobile = parameters.get("mobile");
 		String code = parameters.get("code");

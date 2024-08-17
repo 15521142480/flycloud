@@ -1,2 +1,5 @@
+
+# com.fly.common.config.ExceptionConfiguration,\
+#    com.fly.common.handler.GlobalExceptionHandler
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.fly.common.handler.GlobalExceptionHandler
+    com.fly.common.config.ExceptionConfiguration
