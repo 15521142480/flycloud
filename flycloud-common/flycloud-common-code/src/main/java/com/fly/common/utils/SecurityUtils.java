@@ -78,8 +78,11 @@ public class SecurityUtils {
 			try {
 				claims = TokenUtils.getClaims(token);
 			} catch (Exception e) {
+
+				// todo 2024-08-17 此处后续优化
 				log.error("Token已过期!", e);
 //				throw new TokenException("Token已过期！");
+
 			}
 		}
 		return claims;
