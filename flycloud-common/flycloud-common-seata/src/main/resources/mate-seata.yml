@@ -1,0 +1,28 @@
+
+# seata 配置
+seata:
+
+  enabled: true
+
+  application-id: account-service # Seata 应用编号，默认为 ${spring.application.name}
+  tx-service-group: my_test_tx_group # Seata 事务组编号，用于 TC 集群名
+
+  config:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      namespace:
+      server-addr: ${spring.cloud.nacos.discovery.server-addr} # Nacos 服务地址
+
+  service:
+    # 虚拟组和分组的映射
+    vgroup-mapping:
+      my_test_tx_group: default
+
+  registry:
+    type: nacos # 注册中心类型，默认为 file
+    nacos:
+      cluster: default # 使用的 Seata 分组
+      namespace: # Nacos 命名空间
+      serverAddr: ${spring.cloud.nacos.discovery.server-addr} # Nacos 服务地址
+

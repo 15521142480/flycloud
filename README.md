@@ -86,7 +86,6 @@ flycloud
 └─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-ui               -- 系统的ui前端模块
 │  ├─flycloud-file-admin-ui             -- 文件管理后台ui
-└─flycloud-user             -- 用户服务 
 └─logs     -- 系统日志 
 ```
 
@@ -101,7 +100,6 @@ flycloud
 | 系统业务服务:                           |
 | flycloud-mall        商城服务         | http://127.0.0.1:8081 |
 | flycloud-music       音乐服务         | http://127.0.0.1:8083 |
-| flycloud-user        用户服务         | http://127.0.0.1:8082 |
 | 其他服务:                             |
 | flycloud-generator   自动生成代码服务     | http://127.0.0.1:8089 |
 | flycloud-test        测试服务         | http://127.0.0.1:8099 |

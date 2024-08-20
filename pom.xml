@@ -16,7 +16,6 @@
         <module>flycloud-auth</module>
         <module>flycloud-common</module>
         <module>flycloud-gateway</module>
-        <module>flycloud-user</module>
         <module>flycloud-mall</module>
         <module>flycloud-music</module>
         <module>flycloud-generator</module>
@@ -47,6 +46,7 @@
         <justauth.springboot.version>1.3.3</justauth.springboot.version>
 
         <mybatisplus.version>3.5.2</mybatisplus.version>
+        <seata.version>1.5.2</seata.version>
         <velocity.version>2.3</velocity.version>
 
         <springdoc.version>1.6.8</springdoc.version>
@@ -131,6 +131,19 @@
                 <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatisplus.version}</version>
             </dependency>
+
+            <!-- seata -->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-spring-boot-starter</artifactId>
+                <version>${seata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>${seata.version}</version>
+            </dependency>
+
             <!-- 代码生成使用模板 -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>

@@ -19,7 +19,6 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/2.6.14/spring-boot-configuration-processor-2.6.14.jar" />
         </processorPath>
-        <module name="flycloud-user" />
         <module name="flycloud-feign-api" />
         <module name="flycloud-common-database" />
         <module name="flycloud-file-admin" />
@@ -28,6 +27,7 @@
         <module name="flycloud-common-security" />
         <module name="flycloud-common-elasticsearch" />
         <module name="flycloud-common-feign" />
+        <module name="flycloud-common-seata" />
         <module name="flycloud-mall" />
         <module name="flycloud-system-api" />
         <module name="flycloud-xxl-job-admin" />
@@ -42,11 +42,11 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="flycloud-api-system" target="1.8" />
-      <module name="flycloud-common-seata" target="1.8" />
       <module name="flycloud-file-server-admin" target="1.8" />
       <module name="flycloud-modules" target="1.8" />
       <module name="flycloud-seata" target="1.8" />
       <module name="flycloud-server-gateway" target="8" />
+      <module name="flycloud-user" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
