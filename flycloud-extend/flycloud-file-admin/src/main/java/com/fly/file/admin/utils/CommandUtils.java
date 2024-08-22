@@ -1,5 +1,7 @@
 package com.fly.file.admin.utils;
 
+import com.fly.common.exception.TokenException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -14,6 +16,7 @@ import java.util.StringTokenizer;
  * @author lxs
  * @date 2023/4/23
  */
+@Slf4j
 public class CommandUtils {
 
     /**
@@ -91,7 +94,7 @@ public class CommandUtils {
         String line;
         while ((line = reader.readLine()) != null) {
             data.append(line).append(System.lineSeparator());
-            System.out.println("\033[0;35m" + line + "\033[0m");
+//            log.info("\033[0;35m" + line + "\033[0m");
         }
         // 获取返回码
         result.code = process.waitFor();
@@ -132,50 +135,51 @@ public class CommandUtils {
     }
 
     /**
-     * 执行linux命令
+     *执行linux命令
      * @param cmdList
      * @throws IOException
      * @throws InterruptedException
      */
     public static String execLinuxCmd(String[] cmdList) throws IOException, InterruptedException {
 
+        log.info("Linux执行指令：{}", Arrays.toString(cmdList));
         Process ps = Runtime.getRuntime().exec(cmdList);
         ps.waitFor();
 
         String result = IOUtils.toString(ps.getInputStream(), "UTF-8");
-        System.out.println("Linux 命令执行成功");
-        System.out.println(result);
+        log.info("Linux执行指令成功，返回：{}", result);
 
         return result;
     }
 
 
     /**
-     * 执行linux命令
+     *执行linux命令
      * @param cmdList
      * @throws IOException
      * @throws InterruptedException
      */
     public static String execLinuxCmd(String cmdList) throws IOException, InterruptedException {
 
+        log.info("Linux执行指令：{}", cmdList);
         Process ps = Runtime.getRuntime().exec(cmdList);
         ps.waitFor();
 
         String result = IOUtils.toString(ps.getInputStream(), "UTF-8");
-        System.out.println("Linux 命令执行成功");
-        System.out.println(result);
+        log.info("Linux执行指令成功，返回：{}", result);
 
         return result;
     }
 
 
     /**
-     * 执行mac命令
+     *执行mac命令
      *
      * @param command // String[] cmdList,
     */
     public static String execMacCmd(String command) {
 
+        log.info("Mac执行指令：{}", command);
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", "-c", command);
 
@@ -191,8 +195,7 @@ public class CommandUtils {
 
             int exitVal = process.waitFor();
             if (exitVal == 0) {
-                System.out.println("Mac 命令执行成功");
-                System.out.println(output);
+                log.info("Mac执行指令成功，返回：{}", output.toString());
                 return output.toString();
             } else {
                 // handle non-zero exit code if needed
@@ -215,7 +218,7 @@ public class CommandUtils {
 
         // todo mac 测试
         String output = execMacCmd("cd /git; ls");
-//        System.out.println(output);
+//        log.info(output);
 
 
         // todo linux 测试
@@ -230,7 +233,7 @@ public class CommandUtils {
 //        try {
 //
 ////            Result r = CommandUtils.run(new File("/Users/laixueshi/"), cmdList);
-////            System.out.println("code:" + r.code + "\n数据:" + r.data);
+////            log.info("code:" + r.code + "\n数据:" + r.data);
 //
 //            // String[] cmdList2 = {"cd /Users/laixueshi/", "ls"};
 //            String[] cmdList2 = {"ls"};
