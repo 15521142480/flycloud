@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.fly.common.database.config.MybatisPlusConfig
+com.fly.common.database.config.MybatisPlusConfig,\
+com.fly.common.database.config.DataSourceConfig

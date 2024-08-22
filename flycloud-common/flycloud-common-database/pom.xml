@@ -27,12 +27,6 @@
             <version>${revision}</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.flycloud</groupId>-->
-<!--            <artifactId>flycloud-common-security</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--        </dependency>-->
-
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -71,10 +65,10 @@
             <artifactId>postgresql</artifactId>
         </dependency>
         <!-- SqlServer -->
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.microsoft.sqlserver</groupId>-->
+<!--            <artifactId>mssql-jdbc</artifactId>-->
+<!--        </dependency>-->
 
 
     </dependencies>

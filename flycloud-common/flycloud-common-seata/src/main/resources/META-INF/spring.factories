@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.fly.common.seata.config.SeataConfiguration
+
+
+

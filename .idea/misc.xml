@@ -6,12 +6,14 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/flycloud-api/pom.xml" />
+        <option value="$PROJECT_DIR$/flycloud-common/flycloud-common-seata/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/flycloud-extend/flycloud-file-server-admin/pom.xml" />
         <option value="$PROJECT_DIR$/flycloud-modules/pom.xml" />
+        <option value="$PROJECT_DIR$/flycloud-user/pom.xml" />
       </set>
     </option>
   </component>

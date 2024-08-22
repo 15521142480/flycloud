@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>flycloud-server</artifactId>
+        <artifactId>flycloud-common</artifactId>
         <groupId>com.flycloud</groupId>
         <version>1.0.0</version>
     </parent>
@@ -16,10 +16,15 @@
 
     <dependencies>
 
-        <!-- SpringBoot Seata -->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>-->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-code</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
 <!--            <exclusions>-->
 <!--                <exclusion>-->
 <!--                    <groupId>org.apache.logging.log4j</groupId>-->
@@ -34,7 +39,16 @@
 <!--                    <artifactId>dubbo-filter-seata</artifactId>-->
 <!--                </exclusion>-->
 <!--            </exclusions>-->
-<!--        </dependency>-->
+        </dependency>
+
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-all</artifactId>
+        </dependency>
 
     </dependencies>
 
