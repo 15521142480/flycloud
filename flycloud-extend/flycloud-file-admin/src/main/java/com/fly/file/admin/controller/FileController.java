@@ -359,12 +359,17 @@ public class FileController {
         String cmdResult = "";
         try {
 
+            String[] cmdList = new String[10];
+            cmdList[0] = "bash";
+            cmdList[1] = "-c";
+
             String cmdStr = "cd " + curPath + "; " + cmd;
 
             if (SystemUtils.isMac()) {
                 cmdResult = CommandUtils.execMacCmd(cmdStr);
             } else if (SystemUtils.isLinux()) {
-                cmdResult = CommandUtils.execLinuxCmd(cmdStr);
+                cmdList[2] = cmdStr;
+                cmdResult = CommandUtils.execLinuxCmd(cmdList); // linux 需加上bash -c
             } else {
 //                cmdResult = XXXX;
             }
@@ -392,7 +397,9 @@ public class FileController {
                     String new_cur_path2 = CommandUtils.execMacCmd(cmdStr + "; " + "pwd");
                     new_cur_path = new_cur_path2.replaceAll("\n", "");
                 } else if (SystemUtils.isLinux()) {
-                    String new_cur_path2 = CommandUtils.execLinuxCmd(cmdStr + "; " + "pwd");
+
+                    cmdList[2] = cmdStr + "; " + "pwd";
+                    String new_cur_path2 = CommandUtils.execLinuxCmd(cmdList);
                     new_cur_path = new_cur_path2.replaceAll("\n", "");
                 } else {
 

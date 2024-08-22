@@ -89,9 +89,9 @@ public class Oauth2Constants {
 
 	public static final String SMS_CODE_KEY = "fly.sms.code.";
 
-	public static final String CAPTCHA_HEADER_KEY = "key";
+	public static final String CAPTCHA_HEADER_KEY = "Code-Key";
 
-	public static final String CAPTCHA_HEADER_CODE = "code";
+	public static final String CAPTCHA_HEADER_CODE = "Code-Value";
 
 	/**
 	 * 登录类型相关

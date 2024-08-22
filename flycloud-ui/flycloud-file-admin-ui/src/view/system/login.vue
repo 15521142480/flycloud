@@ -8,7 +8,7 @@
       <Card>
         <Form class="form-form" ref="dataForm" :model="dataForm" :rules="ruleInline">
           <FormItem prop="loginName">
-            <Input class="form-item-input" type="text" v-model="dataForm.loginName" placeholder="用户">
+            <Input class="form-item-input" type="text" v-model="dataForm.loginName" placeholder="账号">
               <Icon type="ios-person-outline" slot="prepend"></Icon>
             </Input>
           </FormItem>
@@ -16,6 +16,18 @@
             <Input type="password" v-model="dataForm.password" placeholder="密码">
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </Input>
+          </FormItem>
+          <FormItem prop="code">
+            <Row>
+              <Col span="14" style="margin-top: 3px">
+                <Input v-model="dataForm.code" placeholder="验证码"></Input>
+              </Col>
+              <Col span="1" style="text-align: center">&nbsp;</Col>
+              <Col span="8">
+                <img v-if="codeUrl" :src="codeUrl" style="cursor: pointer;" @click="getCode" />
+                <Button v-else @click="getCode()">点击获取</Button>
+              </Col>
+            </Row>
           </FormItem>
           <FormItem>
             <Button type="primary" @keyup.enter.native="enterLogin()" @click="handleSubmit()">登录</Button>
@@ -38,17 +50,22 @@ export default {
     return {
       dataForm: {
         loginName: 'adminfile',
-        password: 'admin123456'
+        password: 'admin123456',
+        code: ''
       },
+      codeKey: '',
+      codeUrl: '',
       ruleInline: {
         loginName: [{required: true, message: '用户不能为空!', trigger: 'blur'}],
-        password: [{required: true, message: '密码不嫩为空!', trigger: 'blur'}]
+        password: [{required: true, message: '密码不能为空!', trigger: 'blur'}],
+        code: [{required: true, message: '验证码不能为空!', trigger: 'blur'}]
       }
     }
   },
   created () {
-    this.enterLogin()
-    this.initLoginInfo()
+    // this.enterLogin()
+    // this.initLoginInfo()
+    this.getCode()
   },
   computed: {
   },
@@ -79,6 +96,25 @@ export default {
       }
     },
 
+    // 获取验证码
+    getCode () {
+      this.$api.system.getCodeApi().then((res) => {
+        let data = res.data.data
+        let resultCode = res.data.code
+        let resultMsg = res.data.msg
+
+        if (resultCode === 0) {
+          this.codeKey = data.key
+          this.codeUrl = data.codeUrl
+        } else {
+          this.$Notice.error({title: '操作提醒', desc: resultMsg})
+        }
+      }).catch((e) => {
+        this.$Notice.error({title: '操作提醒', desc: '异常!'})
+      })
+    },
+
+    // 登录
     handleSubmit () {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
@@ -96,8 +132,11 @@ export default {
           let loginParams = {
             username: this.dataForm.loginName,
             password: md5(this.dataForm.password),
-            grant_type: 'password',
-            scope: 'all'
+            grant_type: 'captcha',
+            // grant_type: 'password',
+            scope: 'all',
+            codeKey: this.codeKey,
+            codeValue: this.dataForm.code
           }
 
           this.$api.system.loginApi(loginParams).then((res) => {
@@ -149,8 +188,8 @@ export default {
   }
 
   .form-tag {
-    width: 500px;
-    height: 300px;
+    width: 470px;
+    height: 320px;
     margin: auto;
     margin-top: 100px;
   }
