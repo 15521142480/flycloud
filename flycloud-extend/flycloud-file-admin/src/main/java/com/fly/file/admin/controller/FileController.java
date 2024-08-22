@@ -359,7 +359,7 @@ public class FileController {
         String cmdResult = "";
         try {
 
-            String[] cmdList = new String[10];
+            String[] cmdList = new String[3];
             cmdList[0] = "bash";
             cmdList[1] = "-c";
 
