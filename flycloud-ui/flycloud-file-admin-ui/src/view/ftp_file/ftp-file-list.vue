@@ -343,6 +343,7 @@ export default {
         this.loading = false
         this.uploadLoading = false
       }).catch((e) => {
+        this.$Message.error('接口出错')
         this.$emit('on-handle', '0')
         this.loading = false
       })

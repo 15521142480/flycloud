@@ -30,8 +30,16 @@
             </Row>
           </FormItem>
           <FormItem>
-            <Button type="primary" @keyup.enter.native="enterLogin()" @click="handleSubmit()">登录</Button>
+            <Row>
+              <Col span="15">
+                <Button type="primary" style="margin-left: 120px" @keyup.enter.native="enterLogin()" @click="handleSubmit()">登录</Button>
+              </Col>
+              <Col span="6">
+                <Button type="info" style="margin-left: 60px">注册</Button>
+              </Col>
+            </Row>
           </FormItem>
+
         </Form>
       </Card>
     </div>
