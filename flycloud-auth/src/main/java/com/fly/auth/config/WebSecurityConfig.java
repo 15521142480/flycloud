@@ -23,6 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * web安全配置
  *
+ * <p>
+ * WebSecurityConfigurerAdapter web端的接口切面配置; 用于保护oauth相关的endpoints，同时主要作用于用户的登录(form login,Basic auth)
+ * todo 但springboot2.7版本后弃用WebSecurityConfigurerAdapter，改用配置注入Bean【SecurityFilterChain】的方式，后续再调整
+ *
  * @author lxs
  * @date 2023/5/3
  */
@@ -153,25 +157,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
     public AuthenticationManager authenticationManagerBean() {
         return super.authenticationManagerBean();
     }
-
-
-    /**
-     * 授权成功的回调
-     */
-//    @Bean
-//    public org.springframework.security.web.authentication.AuthenticationSuccessHandler authenticationSuccessHandler() {
-//        return new CustomAuthenticationSuccessHandler();
-//    }
-
-
-    /**
-     * 授权失败的回调
-     */
-//    @Bean
-//    public AuthenticationFailureHandler authenticationFailureHandler() {
-//        return new CustomAuthenticationFailureHandler();
-//    }
-
 
 
 

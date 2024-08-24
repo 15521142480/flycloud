@@ -1,6 +1,8 @@
 
 # com.fly.common.security.config.SecurityResourceServerConfig,\
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.fly.common.security.component.PermissionService,\
+    com.fly.common.security.config.SecurityResourceServerConfig,\
     com.fly.common.security.config.properties.SecurityAuthorizationProperties,\
     com.fly.common.security.handler.CustomAccessDeniedHandler,\
     com.fly.common.security.handler.CustomAuthenticationEntryPoint,\
