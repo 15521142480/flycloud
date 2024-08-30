@@ -20,8 +20,8 @@ export default {
    * 文件服务的请求基础路径
    */
   fileBaseUrl: {
-    dev: '/flycloud-auth',
-    pro: '/flycloud-auth'
+    dev: '/flycloud-file-admin',
+    pro: '/flycloud-file-admin'
   },
 
   // token在Cookie中存储的天数，默认1天
