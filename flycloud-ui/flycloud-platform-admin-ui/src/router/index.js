@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Main from '../components/main'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      redirect: '/login' // 入口重定向到路由login
-    },
+    // {
+    //   path: '/',
+    //   redirect: '/login' // 入口重定向到路由login
+    // },
     {
       path: '/login',
       name: 'login',
@@ -19,29 +20,50 @@ export default new Router({
       component: () => import('../view/system/login')
     },
     {
-      path: '/home',
-      name: 'home',
+      path: '/',
+      name: 'main',
+      // todo 重定向指定某个路由
+      redirect: '/home',
       meta: {
-        title: '首页'
+        title: '导航'
       },
-      component: () => import('../view/home/home')
+      component: Main,
+      children: [
+        {
+          path: '/home',
+          name: 'home',
+          meta: {
+            title: '文件服务'
+          },
+          component: () => import('../view/home/home')
+        }
+      ]
     },
     {
-      path: '/file-list',
-      name: 'fileList',
+      path: '/sys',
+      name: 'sys',
       meta: {
-        title: '文件列表'
+        title: '系统'
       },
-      component: () => import('../view/file/file-list2')
-      // component: () => import('../view/file/file-list')
-    },
-    {
-      path: '/test',
-      name: 'test',
-      meta: {
-        title: '测试'
-      },
-      component: () => import('../view/test/test-list')
+      component: Main,
+      children: [
+        {
+          path: 'test', // 带参数  path: 'test/:id'
+          name: 'test',
+          meta: {
+            title: '文件服务'
+          },
+          component: () => import('../view/test/test-list')
+        },
+        {
+          path: 'home',
+          name: 'home',
+          meta: {
+            title: '文件服务'
+          },
+          component: () => import('../view/home/home')
+        }
+      ]
     }
   ]
 })

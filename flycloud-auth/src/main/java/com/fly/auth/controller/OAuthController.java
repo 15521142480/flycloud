@@ -1,6 +1,5 @@
 package com.fly.auth.controller;
 
-import com.fly.auth.config.properties.SecurityAuthorizationProperties;
 import com.fly.common.model.R;
 import com.fly.common.utils.SecurityUtils;
 import com.fly.common.utils.StringUtils;
@@ -40,7 +39,6 @@ public class OAuthController {
     @Qualifier("consumerTokenServices")
     private final ConsumerTokenServices consumerTokenServices;
 
-    private final SecurityAuthorizationProperties securityAuthorizationProperties;
 
 
     /**

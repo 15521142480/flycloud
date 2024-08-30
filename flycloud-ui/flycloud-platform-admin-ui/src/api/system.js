@@ -1,12 +1,12 @@
 import axios from '../util/http'
-import auth from './auth-base'
+import config from '../config'
 
 export default {
 
   // 登录
   loginApi (params) {
     return axios.post(
-      `${auth.dev}/oauth/token`,
+      `${config.authBaseUrl.dev}/oauth/token`,
       JSON.stringify(params),
       {
         headers: {
@@ -19,12 +19,12 @@ export default {
 
   // 登出
   loginOutApi (params) {
-    return axios.post(`${auth.dev}/oauth/logOut`, JSON.stringify(params))
+    return axios.post(`${config.authBaseUrl.dev}/oauth/logOut`, JSON.stringify(params))
   },
 
   // 获取验证码
   getCodeApi (params) {
-    return axios.get(`${auth.dev}/auth/code`, JSON.stringify(params))
+    return axios.get(`${config.authBaseUrl.dev}/auth/code`, JSON.stringify(params))
   }
 
 }

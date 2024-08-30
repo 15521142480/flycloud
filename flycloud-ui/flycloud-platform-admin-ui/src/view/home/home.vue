@@ -174,11 +174,11 @@ export default {
             }
             localStorage.removeItem('userToken')
             this.$cookies.remove('userName')
-            this.$router.push('/')
+            this.$router.push('/login')
           }).catch((e) => {
             localStorage.removeItem('userToken')
             this.$cookies.remove('userName')
-            this.$router.push('/')
+            this.$router.push('/login')
           })
         }
       })

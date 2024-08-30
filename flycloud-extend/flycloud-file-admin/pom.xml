@@ -52,6 +52,8 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+
+            <!-- todo spring-boot自带打包插件 (正常使用) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -64,6 +66,21 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- todo maven传统打包插件 (如果需要将此项目打成jar供别的springboot项目使用则用到, 还要排除启动类) -->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>1.8</source> &lt;!&ndash;指明源码用的Jdk版本&ndash;&gt;-->
+<!--                    <target>1.8</target> &lt;!&ndash;指明打包后的Jdk版本&ndash;&gt;-->
+<!--                    <excludes>-->
+<!--&lt;!&ndash;                        <exclude>**/config/**</exclude>&ndash;&gt;-->
+<!--                        <exclude>**/FileAdminApplication.java</exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
         </plugins>
     </build>
 

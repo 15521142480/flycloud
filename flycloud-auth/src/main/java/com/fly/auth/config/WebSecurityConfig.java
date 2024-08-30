@@ -1,10 +1,8 @@
 package com.fly.auth.config;
 
 import cn.hutool.core.convert.Convert;
-import com.fly.auth.config.properties.SecurityAuthorizationProperties;
 import com.fly.auth.service.impl.UserDetailsServiceImpl;
-import com.fly.common.security.handler.CustomAuthenticationSuccessHandler;
-import com.fly.common.utils.CryptoUtils;
+import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -30,13 +28,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author lxs
  * @date 2023/5/3
  */
-@Order(3)
+@Order(4)
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo WebSecurityConfigurerAdapter web端的接口切面配置; 用于保护oauth相关的endpoints，同时主要作用于用户的登录(form login,Basic auth)
 
 
-    private final SecurityAuthorizationProperties securityAuthorizationProperties;
+    private final ServerResourceSecurityProperties serverResourceSecurityProperties;
 
 
     /**
@@ -66,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
 //        securityAuthorizationProperties.getIgnoreUrls().forEach(
 //                url -> registry.antMatchers(url).permitAll()
 //        );
-        registry.antMatchers(Convert.toStrArray(securityAuthorizationProperties.getIgnoreUrls())).permitAll();
+        registry.antMatchers(Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls())).permitAll();
 
 
         registry.anyRequest().authenticated().and().csrf().disable();
