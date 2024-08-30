@@ -1,7 +1,7 @@
 export default {
 
   /**
-   * 系统的请求基础路径
+   * 平台服务的请求基础路径
    */
   baseUrl: {
     dev: '/flycloud-system',
@@ -12,6 +12,14 @@ export default {
    * 统一授权的请求基础路径
    */
   authBaseUrl: {
+    dev: '/flycloud-auth',
+    pro: '/flycloud-auth'
+  },
+
+  /**
+   * 文件服务的请求基础路径
+   */
+  fileBaseUrl: {
     dev: '/flycloud-auth',
     pro: '/flycloud-auth'
   },

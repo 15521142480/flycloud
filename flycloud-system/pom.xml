@@ -17,11 +17,11 @@
     <dependencies>
 
         <!-- ========== 外部jar包 (可选) start -->
-        <dependency>
-            <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-file-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.flycloud</groupId>-->
+<!--            <artifactId>flycloud-file-core</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
         <!-- ========== 外部jar包 (可选) end -->
 
         <dependency>
