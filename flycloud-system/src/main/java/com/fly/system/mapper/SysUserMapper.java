@@ -1,15 +1,17 @@
 package com.fly.system.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.flycloud.system.api.entity.SysUser;
+import com.fly.common.database.web.mapper.BaseMapperPlus;
+import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysUserVo;
 
 /**
- * 用户表 Mapper 接口
+ * 用户Mapper接口
  *
+ * @author fly
+ * @date 2024-08-31
  */
-public interface SysUserMapper extends BaseMapper<SysUser> {
-
+public interface SysUserMapper extends BaseMapperPlus<SysUserMapper, SysUser, SysUserVo> {
 
     /**
      * 忽略租户信息

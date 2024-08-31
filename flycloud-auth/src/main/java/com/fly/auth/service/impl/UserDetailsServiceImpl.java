@@ -5,8 +5,8 @@ import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.exception.TokenException;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.user.FlyUserDetailsService;
-import com.flycloud.system.api.dto.UserInfo;
-import com.flycloud.system.api.feign.ISysUserProvider;
+import com.fly.system.api.domain.common.UserInfo;
+import com.fly.system.api.feign.ISysUserProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import com.flycloud.system.api.entity.SysUser;
+import com.fly.system.api.domain.SysUser;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -106,13 +106,14 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		SysUser user = userInfo.getSysUser();
 		log.info("用户名：{}", userInfo.getSysUser().getAccount());
 		
-		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getRoleIds()));
+//		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getRoleIds()));
+		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList();
 		log.info("authorities: {}", authorities);
 
 
 		// todo !!! 把spring security的User字段信息设置上，用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现 !!!
-		return new FlyUser(user.getId(), userInfo.getType(), user.getDepartId(), user.getRoleId(), user.getTelephone(), user.getAvatar(),
-				user.getTenantId(), userInfo.getUserName(), user.getPassword(), ENABLE.equals(user.getStatus()),
+		return new FlyUser(user.getId(), userInfo.getType(), user.getDepartId(), user.getTelephone(), user.getAvatar(),
+				userInfo.getUserName(), user.getPassword(), ENABLE.equals(user.getStatus()),
 				true, true, true, authorities
 		);
 	}

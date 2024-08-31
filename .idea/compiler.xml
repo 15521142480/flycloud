@@ -22,7 +22,6 @@
         </processorPath>
         <module name="flycloud-feign-api" />
         <module name="flycloud-common-database" />
-        <module name="flycloud-file-admin" />
         <module name="flycloud-generator" />
         <module name="flycloud-test" />
         <module name="flycloud-common-security" />
@@ -39,6 +38,22 @@
         <module name="flycloud-auth" />
         <module name="flycloud-common-doc" />
         <module name="flycloud-common-redis" />
+      </profile>
+      <profile name="Annotation profile for flycloud-file-admin" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/com/github/therapi/therapi-runtime-javadoc-scribe/0.15.0/therapi-runtime-javadoc-scribe-0.15.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/github/therapi/therapi-runtime-javadoc/0.15.0/therapi-runtime-javadoc-0.15.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/2.6.14/spring-boot-configuration-processor-2.6.14.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/github/therapi/therapi-runtime-javadoc-scribe/0.15.0/therapi-runtime-javadoc-scribe-0.15.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/github/therapi/therapi-runtime-javadoc/0.15.0/therapi-runtime-javadoc-0.15.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/2.6.14/spring-boot-configuration-processor-2.6.14.jar" />
+        </processorPath>
+        <module name="flycloud-file-admin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />

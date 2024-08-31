@@ -1,4 +1,4 @@
-package ${packageName}.domain.bo;
+package ${packageName}.api.domain.bo;
 
 import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;

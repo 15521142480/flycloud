@@ -1,8 +1,8 @@
 package ${packageName}.mapper;
 
 import com.fly.common.database.web.mapper.BaseMapperPlus;
-import ${packageName}.domain.${ClassName};
-import ${packageName}.domain.vo.${ClassName}Vo;
+import ${packageName}.api.domain.${ClassName};
+import ${packageName}.api.domain.vo.${ClassName}Vo;
 
 /**
  * ${functionName}Mapper接口

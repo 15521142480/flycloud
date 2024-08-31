@@ -4,10 +4,10 @@ import cn.hutool.core.collection.ListUtil;
 import com.fly.common.constant.ProviderConstants;
 import com.fly.common.model.R;
 import com.fly.system.service.ISysRolePermissionService;
+import com.fly.system.api.domain.common.UserInfo;
+import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.feign.ISysUserProvider;
 import com.fly.system.service.ISysUserService;
-import com.flycloud.system.api.dto.UserInfo;
-import com.flycloud.system.api.entity.SysUser;
-import com.flycloud.system.api.feign.ISysUserProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,8 +79,7 @@ public class SysUserProvider implements ISysUserProvider {
         UserInfo userInfo = new UserInfo();
         userInfo.setSysUser(sysUser);
 //        userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
-        userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
-        userInfo.setTenantId(sysUser.getTenantId());
+//        userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
 
         log.debug("feign调用：userInfo:{}", userInfo);
         return userInfo;

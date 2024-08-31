@@ -106,6 +106,7 @@ export default {
 
     // 获取验证码
     getCode () {
+      localStorage.removeItem('userToken')
       this.$api.system.getCodeApi().then((res) => {
         let data = res.data.data
         let resultCode = res.data.code

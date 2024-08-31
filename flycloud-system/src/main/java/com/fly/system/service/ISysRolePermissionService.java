@@ -1,9 +1,7 @@
 package com.fly.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.flycloud.system.api.entity.SysRolePermission;
-
-import java.util.List;
+import com.fly.system.api.domain.SysRolePermission;
 
 /**
  * 角色权限表 服务类

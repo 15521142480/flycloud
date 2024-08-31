@@ -1,22 +1,55 @@
 package com.fly.system.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fly.common.database.entity.Search;
-import com.flycloud.system.api.entity.SysUser;
-import com.flycloud.system.api.poi.SysUserPOI;
+import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysUserVo;
+import com.fly.system.api.domain.bo.SysUserBo;
+import com.fly.common.database.web.domain.vo.PageVo;
+import com.fly.common.database.web.domain.bo.PageBo;
 
+import java.util.Collection;
 import java.util.List;
 
-
 /**
- * 用户表 服务类
+ * 用户Service接口
  *
- * @author: lxs
- * @date: 2024/8/12
+ * @author fly
+ * @date 2024-08-31
  */
 public interface ISysUserService extends IService<SysUser> {
 
+    /**
+     * 查询用户
+     */
+    SysUserVo queryById(Long id);
+
+    /**
+     * 查询用户列表
+     */
+    PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo);
+
+    /**
+     * 查询用户列表
+     */
+    List<SysUserVo> queryList(SysUserBo bo);
+
+    /**
+     * 修改用户
+     */
+    Boolean insertByBo(SysUserBo bo);
+
+    /**
+     * 修改用户
+     */
+    Boolean updateByBo(SysUserBo bo);
+
+    /**
+     * 校验并批量删除用户信息
+     */
+    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+
+    // ==============================================================================
 
     /**
      * 用户状态设置
@@ -53,4 +86,5 @@ public interface ISysUserService extends IService<SysUser> {
      * @return 导出POI数据
      */
 //    List<SysUserPOI> export();
+
 }

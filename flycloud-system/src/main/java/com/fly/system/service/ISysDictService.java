@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fly.common.constant.SystemConstants;
 import com.fly.common.database.entity.Search;
 import com.fly.common.model.R;
-import com.flycloud.system.api.entity.SysDict;
+import com.fly.system.api.domain.SysDict;
 
 import java.util.List;
 

@@ -1,17 +1,11 @@
 package com.fly.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fly.system.mapper.SysRolePermissionMapper;
-import com.fly.system.service.ISysMenuService;
 import com.fly.system.service.ISysRolePermissionService;
-import com.flycloud.system.api.entity.SysMenu;
-import com.flycloud.system.api.entity.SysRolePermission;
+import com.fly.system.api.domain.SysRolePermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 角色权限表 服务实现类

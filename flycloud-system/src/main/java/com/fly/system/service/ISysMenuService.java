@@ -2,9 +2,9 @@ package com.fly.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fly.common.database.entity.Search;
-import com.flycloud.system.api.entity.SysMenu;
-import com.flycloud.system.api.poi.SysMenuPOI;
-import com.flycloud.system.api.vo.SysMenuVO;
+import com.fly.system.api.domain.SysMenu;
+import com.fly.system.api.poi.SysMenuPOI;
+import com.fly.system.api.vo.SysMenuVO;
 
 import java.util.List;
 

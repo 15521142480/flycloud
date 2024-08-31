@@ -1,111 +1,135 @@
 package com.fly.system.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.fly.common.utils.StringUtils;
+import com.fly.common.database.web.domain.vo.PageVo;
+import com.fly.common.database.web.domain.bo.PageBo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fly.common.constant.SystemConstants;
-import com.fly.common.database.entity.Search;
-import com.fly.common.database.enums.OrderTypeEnum;
-import com.fly.common.database.util.PageUtils;
-import com.fly.common.exception.base.BaseException;
-import com.fly.common.utils.CollectionUtils;
-import com.fly.system.mapper.SysUserMapper;
-import com.fly.system.service.ISysDepartService;
-import com.fly.system.service.ISysDictService;
-import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserService;
-import com.flycloud.system.api.entity.SysUser;
-import com.flycloud.system.api.poi.SysUserPOI;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import com.fly.system.api.domain.bo.SysUserBo;
+import com.fly.system.api.domain.vo.SysUserVo;
+import com.fly.system.api.domain.SysUser;
+import com.fly.system.mapper.SysUserMapper;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Collection;
 
 /**
- * 用户表 服务实现类
+ * 用户Service业务层处理
  *
- * @author: lxs
- * @date: 2024/8/12
+ * @author fly
+ * @date 2024-08-31
  */
-@Service
-//@AllArgsConstructor
 @RequiredArgsConstructor
-public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+@Service
+public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
 
-//    private final ISysDepartService sysDepartService;
-//    private final ISysDictService dictService;
-//    private final ISysRoleService sysRoleService;
+    private final SysUserMapper baseMapper;
+
+    /**
+     * 查询用户
+     */
+    @Override
+    public SysUserVo queryById(Long id){
+        return baseMapper.selectVoById(id);
+    }
 
 
     /**
-     * 用户状态设置
+     * 查询用户列表
      */
-//    @Override
-//    public boolean status(String ids, String status) {
-//        Collection<? extends Serializable> collection = CollectionUtils.stringToCollection(ids);
-//
-//        if (ObjectUtils.isEmpty(collection)) {
-//            throw new BaseException("传入的ID值不能为空！");
-//        }
-//
-//        collection.forEach(id -> {
-//            SysUser sysUser = this.baseMapper.selectById(CollectionUtils.objectToLong(id, 0L));
-//            sysUser.setStatus(status);
-//            this.baseMapper.updateById(sysUser);
-//        });
-//        return true;
-//    }
+    @Override
+    public PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo) {
+        LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
+        Page<SysUserVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
+        return this.build(result);
+    }
 
 
     /**
-     * 业务分页
+     * 查询用户列表
      */
-//    @Override
-//    public IPage<SysUser> listPage(Search search, SysUser user) {
-//
-//        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
-//        queryWrapper.between(StrUtil.isNotBlank(search.getStartDate()), SysUser::getCreateTime, search.getStartDate(), search.getEndDate());
-//        boolean isKeyword = StrUtil.isNotBlank(search.getKeyword());
-//        queryWrapper.like(isKeyword, SysUser::getName, search.getKeyword()).or(isKeyword)
-//                .like(isKeyword, SysUser::getId, search.getKeyword());
-//
-//        queryWrapper.eq(user.getDepartId() != null, SysUser::getDepartId, user.getDepartId());
-//
-//        // 根据排序字段进行排序
-//        if (StrUtil.isNotBlank(search.getProp())) {
-//            if (OrderTypeEnum.ASC.getValue().equalsIgnoreCase(search.getOrder())) {
-//                queryWrapper.orderByAsc(SysUser::getId);
-//            } else {
-//                queryWrapper.orderByDesc(SysUser::getId);
-//            }
-//        }
-//        // 分页查询
-//        IPage<SysUser> sysUserPage = this.baseMapper.selectPage(PageUtils.getPage(search), queryWrapper);
-//
-//        // 拼装转换为中文字段数据
-//        List<SysUser> sysUserList = sysUserPage.getRecords().stream().peek(sysUser -> {
-//            sysUser.setDepartName(sysDepartService.getById(sysUser.getDepartId()).getName());
-//            sysUser.setStatusName(dictService.getValue("status", sysUser.getStatus()).getData());
-//            // 判断如果roleId为0，则赋值一个默认值
-//            if (SystemConstants.ROLE_DEFAULT_ID.equals(sysUser.getRoleId())) {
-//                sysUser.setRoleName(SystemConstants.ROLE_DEFAULT_VALUE);
-//            } else {
-//                sysUser.setRoleName(sysRoleService.getById(sysUser.getRoleId()).getRoleName());
-//            }
-//        }).collect(Collectors.toList());
-//        sysUserPage.setRecords(sysUserList);
-//        return sysUserPage;
-//    }
+    @Override
+    public List<SysUserVo> queryList(SysUserBo bo) {
+        LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(lqw);
+    }
 
+    private LambdaQueryWrapper<SysUser> buildQueryWrapper(SysUserBo bo) {
+        Map<String, Object> params = bo.getParams();
+        LambdaQueryWrapper<SysUser> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StringUtils.isNotBlank(bo.getAccount()), SysUser::getAccount, bo.getAccount());
+        lqw.eq(StringUtils.isNotBlank(bo.getPassword()), SysUser::getPassword, bo.getPassword());
+        lqw.like(StringUtils.isNotBlank(bo.getName()), SysUser::getName, bo.getName());
+        lqw.like(StringUtils.isNotBlank(bo.getRealName()), SysUser::getRealName, bo.getRealName());
+        lqw.eq(StringUtils.isNotBlank(bo.getAvatar()), SysUser::getAvatar, bo.getAvatar());
+        lqw.eq(StringUtils.isNotBlank(bo.getEmail()), SysUser::getEmail, bo.getEmail());
+        lqw.eq(StringUtils.isNotBlank(bo.getTelephone()), SysUser::getTelephone, bo.getTelephone());
+        lqw.eq(bo.getBirthday() != null, SysUser::getBirthday, bo.getBirthday());
+        lqw.eq(bo.getSex() != null, SysUser::getSex, bo.getSex());
+        lqw.eq(bo.getDepartId() != null, SysUser::getDepartId, bo.getDepartId());
+        lqw.eq(StringUtils.isNotBlank(bo.getStatus()), SysUser::getStatus, bo.getStatus());
+        lqw.eq(StringUtils.isNotBlank(bo.getIsDeleted()), SysUser::getIsDeleted, bo.getIsDeleted());
+        return lqw;
+    }
+
+
+    /**
+     * 新增用户
+     */
+    @Override
+    public Boolean insertByBo(SysUserBo bo) {
+        SysUser add = BeanUtil.toBean(bo, SysUser.class);
+        validEntityBeforeSave(add);
+        boolean flag = baseMapper.insert(add) > 0;
+        if (flag) {
+            bo.setId(add.getId());
+        }
+        return flag;
+    }
+
+
+    /**
+     * 修改用户
+     */
+    @Override
+    public Boolean updateByBo(SysUserBo bo) {
+        SysUser update = BeanUtil.toBean(bo, SysUser.class);
+        validEntityBeforeSave(update);
+        return baseMapper.updateById(update) > 0;
+    }
+
+
+    /**
+     * 保存前的数据校验
+     */
+    private void validEntityBeforeSave(SysUser entity){
+        //TODO 做一些数据校验,如唯一约束
+    }
+
+
+    /**
+     * 批量删除用户
+     */
+    @Override
+    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
+        if(isValid){
+            //TODO 做一些业务上的校验,判断是否需要校验
+        }
+        return baseMapper.deleteBatchIds(ids) > 0;
+    }
+
+
+
+    // ==============================================================================
 
     /**
      * 忽略租户查询用户信息

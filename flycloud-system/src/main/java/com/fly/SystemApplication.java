@@ -14,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication(scanBasePackages = { "com.fly.**" }) // , "com.fly.common.security.*"
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"com.flycloud.system.api.*"})
+@EnableFeignClients(basePackages = {"com.fly.system.api.*"})
 @EnableSwaggerDoc
 public class SystemApplication {
 

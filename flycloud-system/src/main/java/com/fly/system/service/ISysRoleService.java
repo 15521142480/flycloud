@@ -3,9 +3,9 @@ package com.fly.system.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fly.common.database.entity.Search;
-import com.flycloud.system.api.entity.SysRole;
-import com.flycloud.system.api.poi.SysRolePOI;
-import com.flycloud.system.api.vo.SysRoleVO;
+import com.fly.system.api.domain.SysRole;
+import com.fly.system.api.poi.SysRolePOI;
+import com.fly.system.api.vo.SysRoleVO;
 
 import java.util.List;
 import java.util.Map;

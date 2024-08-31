@@ -1,0 +1,103 @@
+package com.fly.system.api.vo;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fly.common.tree.INode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import com.fly.system.api.domain.Menu;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 菜单视图对象
+ *
+ */
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SysMenuVO implements INode {
+
+	private static final long serialVersionUID = -8036122418979736148L;
+
+	/**
+	 * 菜单ID
+	 */
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Schema(description = "主键")
+	private Long id;
+
+	/**
+	 * 菜单标题
+	 */
+	private String name;
+
+	/**
+	 * 菜单权限
+	 */
+	private String permission;
+
+	/**
+	 * 路径
+	 */
+	private String path;
+
+	/**
+	 * 父菜单ID
+	 */
+	private Long parentId;
+
+	/**
+	 * 菜单图标
+	 */
+	private String icon;
+
+	/**
+	 * 菜单类型
+	 */
+	private String type;
+
+	/**
+	 * 排序值
+	 */
+	private Integer sort;
+
+	private Menu menu;
+
+	private String component;
+
+	private String hidden;
+
+	private String redirect;
+
+	private Boolean alwaysShow;
+
+	private Boolean target;
+
+	private String typeName;
+
+	private LocalDateTime createTime;
+
+	/**
+	 * 子孙节点
+	 */
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private List<INode> children;
+
+	/**
+	 * 是否有子孙节点
+	 */
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private Boolean hasChildren;
+
+	@Override
+	public List<INode> getChildren() {
+		if (this.children == null) {
+			this.children = new ArrayList<>();
+		}
+		return this.children;
+	}
+
+}

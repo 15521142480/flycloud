@@ -29,10 +29,6 @@ public class FlyUser extends User {
     /**
      * 部门ID
      */
-    private final String roleId;
-    /**
-     * 部门ID
-     */
     private final Long departId;
 
     /**
@@ -46,23 +42,20 @@ public class FlyUser extends User {
     private final String avatar;
 
     /**
-     * 租户ID
-     */
-    private final String tenantId;
-
-    /**
      * 登录类型
      */
     private final int type;
 
-    public FlyUser(Long id, int type, Long departId, String roleId, String phone, String avatar, String tenantId, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+
+    /**
+     * 构造系统用户信息
+     */
+    public FlyUser(Long id, int type, Long departId, String phone, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
         this.type = type;
-        this.roleId = roleId;
         this.departId = departId;
         this.phone = phone;
         this.avatar = avatar;
-        this.tenantId = tenantId;
     }
 }

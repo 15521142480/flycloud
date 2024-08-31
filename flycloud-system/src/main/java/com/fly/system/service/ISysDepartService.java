@@ -1,9 +1,9 @@
 package com.fly.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.flycloud.system.api.entity.SysDepart;
-import com.flycloud.system.api.poi.SysDepartPOI;
-import com.flycloud.system.api.vo.SysDepartVO;
+import com.fly.system.api.domain.SysDepart;
+import com.fly.system.api.poi.SysDepartPOI;
+import com.fly.system.api.vo.SysDepartVO;
 
 import java.util.List;
 import java.util.Map;
