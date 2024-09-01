@@ -36,22 +36,21 @@ public class UserInfo implements Serializable {
 	private List<String> roleIds;
 
 	/**
-	 * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录
-	 */
-	@Schema(description = "登录类型")
-	private int type;
-
-	/**
 	 * 用户名
 	 */
 	@Schema(description = "用户名")
 	private String userName;
 
 	/**
-	 * 租户ID
+	 * 用户列类型
 	 */
-	@Schema(description = "租户ID")
-	private String tenantId;
+	private int userType;
+
+	/**
+	 * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
+	 */
+	private int loginType;
+
 
 
 }

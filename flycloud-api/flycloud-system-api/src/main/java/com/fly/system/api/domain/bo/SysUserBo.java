@@ -31,79 +31,89 @@ public class SysUserBo extends BaseEntity {
     /**
      * 账号
      */
-    @NotBlank(message = "账号不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "账号不能为空", groups = { AddGroup.class, EditGroup.class })
     private String account;
 
     /**
      * 密码
      */
-    @NotBlank(message = "密码不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "密码不能为空", groups = { AddGroup.class, EditGroup.class })
     private String password;
+
+    /**
+     * 用户类型
+     */
+    private int userType;
+
+    /**
+     * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
+     */
+    private int loginType;
 
     /**
      * 昵称
      */
-    @NotBlank(message = "昵称不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "昵称不能为空", groups = { AddGroup.class, EditGroup.class })
     private String name;
 
     /**
      * 真名
      */
-    @NotBlank(message = "真名不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "真名不能为空", groups = { AddGroup.class, EditGroup.class })
     private String realName;
 
     /**
      * 头像
      */
-    @NotBlank(message = "头像不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "头像不能为空", groups = { AddGroup.class, EditGroup.class })
     private String avatar;
 
     /**
      * 邮箱
      */
-    @NotBlank(message = "邮箱不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "邮箱不能为空", groups = { AddGroup.class, EditGroup.class })
     private String email;
 
     /**
      * 手机
      */
-    @NotBlank(message = "手机不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "手机不能为空", groups = { AddGroup.class, EditGroup.class })
     private String telephone;
 
     /**
      * 生日
      */
-    @NotNull(message = "生日不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotNull(message = "生日不能为空", groups = { AddGroup.class, EditGroup.class })
     private Date birthday;
 
     /**
      * 性别
      */
-    @NotNull(message = "性别不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotNull(message = "性别不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer sex;
 
     /**
      * 部门id
      */
-    @NotNull(message = "部门id不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotNull(message = "部门id不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long departId;
 
     /**
      * 状态
      */
-    @NotBlank(message = "状态不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "状态不能为空", groups = { AddGroup.class, EditGroup.class })
     private String status;
 
     /**
      * 备注
      */
-    @NotBlank(message = "备注不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "备注不能为空", groups = { AddGroup.class, EditGroup.class })
     private String remark;
 
     /**
      * 逻辑删除
      */
-    @NotBlank(message = "逻辑删除不能为空", groups = { AddGroup.class, EditGroup.class })
+    // @NotBlank(message = "逻辑删除不能为空", groups = { AddGroup.class, EditGroup.class })
     private String isDeleted;
 
 

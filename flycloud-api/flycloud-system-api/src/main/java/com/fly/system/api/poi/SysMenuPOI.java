@@ -18,7 +18,7 @@ public class SysMenuPOI implements Serializable {
     @Excel(name = "菜单名称" ,orderNum = "1", width = 30, isImportField = "true_st")
     private String name;
 
-    @Excel(name = "菜单权限" ,orderNum = "2", width = 30, isImportField = "true_st")
+    @Excel(name = "菜单" ,orderNum = "2", width = 30, isImportField = "true_st")
     private String permission;
 
     @Excel(name = "菜单路径" ,orderNum = "3", width = 30, isImportField = "true_st")

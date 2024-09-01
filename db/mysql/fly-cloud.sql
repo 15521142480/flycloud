@@ -413,7 +413,7 @@ DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
   `name` varchar(32) DEFAULT NULL COMMENT '菜单标题',
-  `permission` varchar(32) DEFAULT NULL COMMENT '菜单权限',
+  `permission` varchar(32) DEFAULT NULL COMMENT '菜单',
   `path` varchar(128) DEFAULT NULL COMMENT '路径',
   `component` varchar(128) DEFAULT NULL COMMENT '组件',
   `parent_id` bigint(20) DEFAULT '0' COMMENT '父菜单ID',
@@ -431,7 +431,7 @@ CREATE TABLE `sys_menu` (
   `is_deleted` char(1) DEFAULT '0' COMMENT '删除标识',
   `tenant_id` bigint(20) unsigned DEFAULT '0' COMMENT '租户ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2070 DEFAULT CHARSET=utf8mb4 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2070 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of sys_menu

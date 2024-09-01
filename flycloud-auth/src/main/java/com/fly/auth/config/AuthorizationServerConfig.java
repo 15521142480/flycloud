@@ -258,7 +258,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                     additionMessage.put(Oauth2Constants.USER_NAME, user.getUsername());
                     additionMessage.put(Oauth2Constants.AVATAR, user.getAvatar());
 //                    additionMessage.put(Oauth2Constants.ROLE_ID, String.valueOf(user.getRoleId()));
-                    additionMessage.put(Oauth2Constants.TYPE, user.getType());
+                    additionMessage.put(Oauth2Constants.USER_TYPE, user.getUserType());
                 }
                 ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionMessage);
                 return oAuth2AccessToken;

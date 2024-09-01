@@ -24,12 +24,12 @@ public class FlyUser extends User {
     /**
      * 用户ID
      */
-    private final Long id;
+    private final String id;
 
     /**
      * 部门ID
      */
-    private final Long departId;
+    private final String departId;
 
     /**
      * 手机号
@@ -42,18 +42,25 @@ public class FlyUser extends User {
     private final String avatar;
 
     /**
-     * 登录类型
+     * 用户类型
      */
-    private final int type;
+    private final int userType;
+
+    /**
+     * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
+     */
+    private final int loginType;
+
 
 
     /**
      * 构造系统用户信息
      */
-    public FlyUser(Long id, int type, Long departId, String phone, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public FlyUser(String id, int userType, int loginType, String departId, String phone, String avatar, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
-        this.type = type;
+        this.userType = userType;
+        this.loginType = loginType;
         this.departId = departId;
         this.phone = phone;
         this.avatar = avatar;

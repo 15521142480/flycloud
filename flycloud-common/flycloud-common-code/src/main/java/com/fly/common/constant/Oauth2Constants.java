@@ -77,10 +77,16 @@ public class Oauth2Constants {
 	 * 认证类型参数 key
 	 */
 	public static final String GRANT_TYPE = "grant_type";
+
+	/**
+	 * 用户类型
+	 */
+	public static final String USER_TYPE = "userType";
+
 	/**
 	 * 登录类型
 	 */
-	public static final String LOGIN_TYPE = "login_type";
+	public static final String LOGIN_TYPE = "loginType";
 
 	/**
 	 * 登录缓存相关
@@ -179,15 +185,5 @@ public class Oauth2Constants {
 	 * 用户权限ID
 	 */
 	public static final String ROLE_ID = "roleId";
-
-	/**
-	 * 用户类型
-	 */
-	public static final String TYPE = "type";
-
-	/**
-	 * 租户ID
-	 */
-	public static final String TENANT_ID = "tenantId";
 
 }

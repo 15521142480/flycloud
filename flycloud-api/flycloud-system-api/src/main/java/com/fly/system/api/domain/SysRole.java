@@ -1,71 +1,60 @@
 package com.fly.system.api.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import com.fly.common.database.entity.BaseEntity;
+import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.util.Date;
+import java.math.BigDecimal;
 
-import java.util.List;
+import com.fly.common.database.web.domain.BaseEntity;
 
 /**
- * <p>
- * 角色表
- * </p>
+ * 角色对象 sys_role
  *
+ * @author fly
+ * @date 2024-08-31
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 @TableName("sys_role")
-@Schema(name = "SysRole对象", description = "角色表")
 public class SysRole extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID=1L;
 
+    /**
+     * 主键id
+     */
+    @TableId(value = "id")
+    private Long id;
+    /**
+     * 角色类型（sys_type）
+     */
+    private Long type;
     /**
      * 角色名称
      */
-    @Schema(description = "角色名称")
-    private String roleName;
+    private String name;
     /**
      * 角色编码
      */
-    @Schema(description = "角色编码")
-    private String roleCode;
-    /**
-     * 排序
-     */
-    @Schema(description = "排序")
-    private int sort;
-    /**
-     * 状态
-     */
-    @Schema(description = "状态")
-    private String status;
+    private String code;
     /**
      * 描述
      */
-    @Schema(description = "描述")
-    private String description;
-
+    private String remark;
+    /**
+     * 排序
+     */
+    private Long sort;
+    /**
+     * 状态
+     */
+    private String status;
     /**
      * 删除标识
      */
-    @Schema(description = "删除标识")
-    private String isDeleted;
-    /**
-     * 租户ID
-     */
-    @Schema(description = "租户ID")
-    private Integer tenantId;
+    private Integer isDeleted;
 
-    /**
-     * 菜单列表
-     */
-    @TableField(exist = false)
-    @Schema(description = "菜单列表")
-    private List<String> menu;
 }

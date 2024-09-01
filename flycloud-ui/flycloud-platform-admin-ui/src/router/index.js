@@ -30,7 +30,7 @@ export default new Router({
       component: Main,
       children: [
         {
-          path: '/home',
+          path: 'home', // 带参数  path: 'test/:id'
           name: 'home',
           meta: {
             title: '文件服务'
@@ -43,25 +43,33 @@ export default new Router({
       path: '/sys',
       name: 'sys',
       meta: {
-        title: '系统'
+        title: '系统管理'
       },
       component: Main,
       children: [
         {
-          path: 'test', // 带参数  path: 'test/:id'
+          path: 'menu',
+          name: 'menu',
+          meta: {
+            title: '菜单管理'
+          },
+          component: () => import('../view/system/sys_menu/sys-menu-list')
+        },
+        {
+          path: 'role',
+          name: 'role',
+          meta: {
+            title: '角色管理'
+          },
+          component: () => import('../view/system/sys_role/sys-role-list')
+        },
+        {
+          path: 'test',
           name: 'test',
           meta: {
             title: '文件服务'
           },
           component: () => import('../view/test/test-list')
-        },
-        {
-          path: 'home',
-          name: 'home',
-          meta: {
-            title: '文件服务'
-          },
-          component: () => import('../view/home/home')
         }
       ]
     }

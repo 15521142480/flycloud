@@ -51,11 +51,5 @@ public class SysRoute extends BaseEntity {
 	*/
 	@Schema(description = "删除标识")
 	private String isDeleted;
-	/**
-	* 租户ID
-	*/
-	@Schema(description = "租户ID")
-	private Integer tenantId;
-
 
 }

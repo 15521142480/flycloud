@@ -1,9 +1,7 @@
 package com.fly.feign;
 
-import cn.hutool.core.collection.ListUtil;
 import com.fly.common.constant.ProviderConstants;
 import com.fly.common.model.R;
-import com.fly.system.service.ISysRolePermissionService;
 import com.fly.system.api.domain.common.UserInfo;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.feign.ISysUserProvider;
@@ -26,7 +24,6 @@ public class SysUserProvider implements ISysUserProvider {
 
 
     private final ISysUserService sysUserService;
-    private final ISysRolePermissionService sysRolePermissionService;
 
 
 

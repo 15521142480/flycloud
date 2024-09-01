@@ -37,8 +37,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param str String
      * @return true：为空 false：非空
      */
-    public static boolean isEmpty(String str) {
-        return StrUtil.isEmpty(str);
+    public static boolean isBlank(String str) {
+        return StrUtil.isEmpty(str) || str.equals("null");
     }
 
     /**
@@ -47,7 +47,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param str String
      * @return true：非空串 false：空串
      */
-    public static boolean isNotEmpty(String str) {
+    public static boolean isNotBlank(String str) {
         return !isEmpty(str);
     }
 

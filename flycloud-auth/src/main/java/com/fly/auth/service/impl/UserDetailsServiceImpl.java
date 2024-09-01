@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		if (userInfo == null) {
 			throw new TokenException("该用户：" + userName + "不存在");
 		}
-		userInfo.setType(Oauth2Constants.LOGIN_USERNAME_TYPE);
+		userInfo.setLoginType(Oauth2Constants.LOGIN_USERNAME_TYPE);
 		userInfo.setUserName(userName);
 		
 		return this.handleUserDetails(userInfo);
@@ -62,7 +62,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		if (userInfo == null) {
 			throw new TokenException("该用户：" + mobile + "不存在");
 		}
-		userInfo.setType(Oauth2Constants.LOGIN_MOBILE_TYPE);
+		userInfo.setLoginType(Oauth2Constants.LOGIN_MOBILE_TYPE);
 		userInfo.setUserName(mobile);
 
 		return this.handleUserDetails(userInfo);
@@ -80,7 +80,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		if (userInfo == null) {
 			throw new TokenException("该用户：" + userName + "不存在");
 		}
-		userInfo.setType(Oauth2Constants.LOGIN_USERNAME_TYPE);
+		userInfo.setLoginType(Oauth2Constants.LOGIN_USERNAME_TYPE);
 		userInfo.setUserName(userName);
 
 		return this.handleUserDetails(userInfo);
@@ -112,7 +112,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 
 
 		// todo !!! 把spring security的User字段信息设置上，用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现 !!!
-		return new FlyUser(user.getId(), userInfo.getType(), user.getDepartId(), user.getTelephone(), user.getAvatar(),
+		return new FlyUser(user.getId().toString(), userInfo.getUserType(), userInfo.getLoginType(), user.getDepartId().toString(), user.getTelephone(), user.getAvatar(),
 				userInfo.getUserName(), user.getPassword(), ENABLE.equals(user.getStatus()),
 				true, true, true, authorities
 		);

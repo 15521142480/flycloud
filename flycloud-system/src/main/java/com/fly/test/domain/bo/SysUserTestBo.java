@@ -15,7 +15,7 @@ public class SysUserTestBo {
     /**
      * 用户ID
      */
-//    @NotNull(message = "用户ID不能为空", groups = { EditGroup.class })
+//    // @NotNull(message = "用户ID不能为空", groups = { EditGroup.class })
     private Long userId;
 
     /**

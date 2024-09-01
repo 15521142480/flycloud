@@ -30,10 +30,6 @@ public class LoginUser implements Serializable {
 	 */
 	private String nickName;
 	/**
-	 * 租户ID
-	 */
-	private String tenantId;
-	/**
 	 * 部门id
 	 */
 	private String deptId;
@@ -51,8 +47,13 @@ public class LoginUser implements Serializable {
 	private String roleName;
 
 	/**
-	 * 登录类型
+	 * 用户类型
 	 */
-	private int type;
+	private int userType;
+
+	/**
+	 * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
+	 */
+	private int loginType;
 
 }

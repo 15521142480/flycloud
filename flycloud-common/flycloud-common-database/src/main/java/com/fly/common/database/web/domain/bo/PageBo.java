@@ -46,14 +46,14 @@ public class PageBo implements Serializable {
     /**
      * 当前页
      */
-    @NotNull(message = "pageNum 不能为空")
+    // @NotNull(message = "pageNum 不能为空")
     @Min(value = 1, message = "页码最小值为 1")
     private Integer pageNum;
 
     /**
      * 每页大小
      */
-    @NotNull(message = "pageSize 不能为空")
+    // @NotNull(message = "pageSize 不能为空")
     @Range(min = 1, max = 1000, message = "每页条数，取值范围 1-1000") // 防止有人直接传入一个较大的数，导致服务器内存溢出宕机
     private Integer pageSize;
 

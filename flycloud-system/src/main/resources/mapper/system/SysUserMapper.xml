@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,account,password,name,real_name,avatar,email,telephone,birthday,sex,depart_id,status,is_deleted,create_by,update_by,create_time,update_time
+        id,account,password,user_type,login_type,name,real_name,avatar,email,telephone,birthday,sex,depart_id,status,is_deleted,create_by,update_by,create_time,update_time
     </sql>
 
     <!-- 根据用户信息查询用户 -->

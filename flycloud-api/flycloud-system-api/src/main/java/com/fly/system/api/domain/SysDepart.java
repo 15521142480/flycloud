@@ -42,10 +42,4 @@ public class SysDepart extends BaseEntity {
      */
     @Schema(description = "上级ID")
     private Long parentId;
-    /**
-     * 租户ID
-     */
-    @Schema(description = "租户ID")
-    private Long tenantId;
-
 }

@@ -1,4 +1,4 @@
-package com.fly.system.api.vo;
+package com.fly.system.api.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

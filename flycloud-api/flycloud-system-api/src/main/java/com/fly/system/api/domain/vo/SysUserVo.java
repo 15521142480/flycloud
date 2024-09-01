@@ -41,6 +41,16 @@ public class SysUserVo {
     private String password;
 
     /**
+     * 用户类型
+     */
+    private int userType;
+
+    /**
+     * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
+     */
+    private int loginType;
+
+    /**
      * 昵称
      */
     @ExcelProperty(value = "昵称")

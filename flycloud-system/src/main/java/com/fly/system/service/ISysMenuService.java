@@ -1,73 +1,67 @@
 package com.fly.system.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.fly.common.database.entity.Search;
 import com.fly.system.api.domain.SysMenu;
-import com.fly.system.api.poi.SysMenuPOI;
-import com.fly.system.api.vo.SysMenuVO;
+import com.fly.system.api.domain.vo.SysMenuTreeVo;
+import com.fly.system.api.domain.vo.SysMenuVo;
+import com.fly.system.api.domain.bo.SysMenuBo;
+import com.fly.common.database.web.domain.vo.PageVo;
+import com.fly.common.database.web.domain.bo.PageBo;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
- * 菜单权限表 服务类
+ * 菜单Service接口
  *
+ * @author fly
+ * @date 2024-08-31
  */
-public interface ISysMenuService extends IService<SysMenu> {
+public interface ISysMenuService {
+
 
     /**
-     * 菜单路由
-     *
-     * @param roleId 角色ID
-     * @return List
+     * 查询菜单列表
      */
-    List<SysMenuVO> routes(String roleId);
+    List<SysMenuVo> queryList(SysMenuBo bo);
+
+    List<SysMenuTreeVo> getList(SysMenuBo bo);
 
     /**
-     * 查询列表
-     *
-     * @param search 检索对象
-     * @return List
+     * 查询菜单列表 - 树型
      */
-    List<SysMenu> searchList(Search search);
+    List<SysMenuTreeVo> getTreeList(SysMenuBo bo);
+
 
     /**
-     * 保存全部
-     *
-     * @param sysMenu 菜单对象
-     * @return boolean
+     * 新增/修改菜单
      */
-    boolean saveAll(SysMenu sysMenu);
+    int saveOrUpdate(SysMenuBo bo);
+
 
     /**
-     * 状态设置
-     *
-     * @param ids    id列表
-     * @param status 状态
-     * @return boolean
+     * 查询菜单
      */
-    boolean status(String ids, String status);
+    SysMenuVo queryById(Long id);
 
     /**
-     * 菜单导出
-     *
-     * @return 菜单导出
+     * 查询菜单列表 - 分页
      */
-    List<SysMenuPOI> export();
+    PageVo<SysMenuVo> queryPageList(SysMenuBo bo, PageBo pageBo);
+
 
     /**
-     * 检查是否存在菜单子节点
-     *
-     * @param id 菜单ID
-     * @return 是否
+     * 修改菜单
      */
-    boolean checkChild(Long id);
+    Boolean insertByBo(SysMenuBo bo);
 
     /**
-     * 根据菜单ID查询父类ID
-     *
-     * @param menuId 菜单ID
-     * @return parentId
+     * 修改菜单
      */
-    Long getMenuChild(Long menuId);
+    Boolean updateByBo(SysMenuBo bo);
+
+    /**
+     * 校验并批量删除菜单信息
+     */
+    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
 }

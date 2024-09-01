@@ -1,72 +1,66 @@
 package com.fly.system.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.fly.common.database.entity.Search;
 import com.fly.system.api.domain.SysRole;
-import com.fly.system.api.poi.SysRolePOI;
-import com.fly.system.api.vo.SysRoleVO;
+import com.fly.system.api.domain.vo.SysMenuTreeVo;
+import com.fly.system.api.domain.vo.SysRoleVo;
+import com.fly.system.api.domain.bo.SysRoleBo;
+import com.fly.common.database.web.domain.vo.PageVo;
+import com.fly.common.database.web.domain.bo.PageBo;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 角色表 服务类
+ * 角色Service接口
  *
+ * @author fly
+ * @date 2024-08-31
  */
-public interface ISysRoleService extends IService<SysRole> {
+public interface ISysRoleService {
 
     /**
-     * 角色树
-     *
-     * @return
+     * 查询角色
      */
-    List<SysRoleVO> tree();
+    SysRoleVo queryById(Long id);
 
     /**
      * 查询角色列表
-     *
-     * @param search
-     * @return
      */
-    List<SysRole> listSearch(Map<String, String> search);
+    PageVo<SysRoleVo> queryPageList(SysRoleBo bo, PageBo pageBo);
 
     /**
-     * 查询权限集
-     *
-     * @param id
-     * @return
+     * 查询角色菜单权限列表 - 树型
      */
-    List<String> getPermission(String id);
+    List<SysMenuTreeVo> getRoleTreeList(Long id);
 
     /**
-     * 角色导出
-     *
-     * @return
+     * 新增/修改角色
      */
-    List<SysRolePOI> export();
+    int saveOrUpdate(SysRoleBo bo);
 
     /**
-     * 分页列表
-     *
-     * @param search
-     * @return
+     * 修改角色信息
      */
-    IPage<SysRole> listPage(Search search);
+    int updateById(SysRoleBo bo);
 
     /**
-     * 设置角色
-     *
-     * @param sysRole 角色对象
-     * @return 布尔
+     * 查询角色列表
      */
-    boolean set(SysRole sysRole);
+    List<SysRoleVo> queryList(SysRoleBo bo);
 
     /**
-     * 根据ids批量删除角色
-     *
-     * @param ids ID列表
-     * @return boolean
+     * 修改角色
      */
-    boolean batchDeleteByIds(String ids);
+    Boolean insertByBo(SysRoleBo bo);
+
+    /**
+     * 修改角色
+     */
+    Boolean updateByBo(SysRoleBo bo);
+
+    /**
+     * 校验并批量删除角色信息
+     */
+    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
 }

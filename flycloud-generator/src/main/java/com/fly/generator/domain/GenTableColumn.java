@@ -58,7 +58,7 @@ public class GenTableColumn extends BaseEntity {
     /**
      * JAVA字段名
      */
-    @NotBlank(message = "Java属性不能为空")
+    // @NotBlank(message = "Java属性不能为空")
     private String javaField;
 
     /**

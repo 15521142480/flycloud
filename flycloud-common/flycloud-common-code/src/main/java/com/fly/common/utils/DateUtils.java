@@ -53,6 +53,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 获取日期时间
+     *
+     * @return
+     */
+    public static final String getCurDateTime() {
+        return format(new Date(), "yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
      * 获取当前日期, 默认格式为yyyy-MM-dd
      *
      * @return String

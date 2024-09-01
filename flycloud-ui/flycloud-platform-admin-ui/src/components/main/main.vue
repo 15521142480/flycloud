@@ -11,11 +11,15 @@
           </Menu-item>
           <Menu-item name="2">
             <Icon type="ios-keypad" :size="iconSize"></Icon>
-            <span class="layout-text">选项2</span>
+            <span class="layout-text">菜单</span>
           </Menu-item>
           <Menu-item name="3">
             <Icon type="ios-analytics" :size="iconSize"></Icon>
-            <span class="layout-text">选项3</span>
+            <span class="layout-text">角色</span>
+          </Menu-item>
+          <Menu-item name="4">
+            <Icon type="ios-analytics" :size="iconSize"></Icon>
+            <span class="layout-text">测试</span>
           </Menu-item>
         </Menu>
       </i-col>
@@ -43,7 +47,7 @@
         </div>
         <!--  右边的底部  -->
         <div class="layout-copy">
-          2011-2016 &copy; TalkingData
+          2022-2024 &copy; 飞翔云-https://github.com/15521142480/flycloud
         </div>
       </i-col>
     </Row>
@@ -91,10 +95,14 @@ export default {
       //   params,
       //   query
       // })
-      if (menuName === '2') {
-        this.$router.push('test')
-      } else {
-        this.$router.push('home')
+      if (menuName === '1') {
+        this.$router.push('/home')
+      } else if (menuName === '2') {
+        this.$router.push('/sys/menu')
+      } else if (menuName === '3') {
+        this.$router.push('/sys/role')
+      } else if (menuName === '4') {
+        this.$router.push('/sys/test')
       }
     }
   },
@@ -119,7 +127,7 @@ export default {
   padding: 10px 15px 0;
 }
 .layout-content{
-  min-height: 200px;
+  height: calc(100vh - 122px);
   margin: 15px;
   overflow: hidden;
   background: #fff;
@@ -130,7 +138,7 @@ export default {
 }
 .layout-copy{
   text-align: center;
-  padding: 10px 0 20px;
+  padding: 2px 0 10px;
   color: #9ea7b4;
 }
 .layout-menu-left{

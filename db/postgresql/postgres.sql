@@ -193,7 +193,7 @@ insert into sys_role values('2', '普通角色',    'common', 2, '2', 't', 't', 
 
 
 -- ----------------------------
--- 5、菜单权限表
+-- 5、菜单表
 -- ----------------------------
 drop table if exists sys_menu;
 create table if not exists sys_menu
@@ -220,7 +220,7 @@ create table if not exists sys_menu
     constraint "sys_menu_pk" primary key (menu_id)
 );
 
-comment on table sys_menu is '菜单权限表';
+comment on table sys_menu is '菜单表';
 comment on column sys_menu.menu_id is '菜单ID';
 comment on column sys_menu.menu_name is '菜单名称';
 comment on column sys_menu.parent_id is '父菜单ID';

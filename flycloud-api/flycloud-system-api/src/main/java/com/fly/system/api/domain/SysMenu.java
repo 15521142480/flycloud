@@ -1,96 +1,96 @@
 package com.fly.system.api.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import com.fly.common.database.entity.BaseEntity;
+import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.util.Date;
+import java.math.BigDecimal;
+
+import com.fly.common.database.web.domain.BaseEntity;
 
 /**
- * <p>
- * 菜单权限表
- * </p>
+ * 菜单对象 sys_menu
  *
+ * @author fly
+ * @date 2024-08-31
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 @TableName("sys_menu")
-@Schema(name = "SysMenu对象", description = "菜单权限表")
 public class SysMenu extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID=1L;
 
+    /**
+     * 菜单ID
+     */
+    @TableId(value = "id")
+    private Long id;
+    /**
+     * 菜单类型（sys_type）
+     */
+    private Long type;
     /**
      * 菜单标题
      */
-    @Schema(description = "菜单标题")
     private String name;
-    /**
-     * 菜单权限
-     */
-    @Schema(description = "菜单权限")
-    private String permission;
-    /**
-     * 路径
-     */
-    @Schema(description = "路径")
-    private String path;
-    /**
-     * 组件
-     */
-    @Schema(description = "组件")
-    private String component;
     /**
      * 父菜单ID
      */
-    @Schema(description = "父菜单ID")
     private Long parentId;
+    /**
+     * 菜单
+     */
+    private String permission;
+    /**
+     * 按钮权限
+     */
+    private String buttonPermission;
+    /**
+     * 菜单等级
+     */
+    private Long level;
+    /**
+     * 路由路径
+     */
+    private String path;
+    /**
+     * 组件路径
+     */
+    private String component;
     /**
      * 菜单图标
      */
-    @Schema(description = "菜单图标")
     private String icon;
+    /**
+     * 状态（0:启用，1:禁用）
+     */
+    private String status;
     /**
      * 排序值
      */
-    @Schema(description = "排序值")
-    private Integer sort;
+    private Long sort;
+    /**
+     * 备注
+     */
+    private String remark;
     /**
      * 是否缓存该页面: 1:是  0:不是
      */
-    @Schema(description = "是否缓存该页面: 1:是  0:不是")
-    private String keepAlive;
-    /**
-     * 菜单类型
-     */
-    @Schema(description = "菜单类型")
-    private String type;
+    private Integer keepAlive;
     /**
      * 是否隐藏
      */
-    @Schema(description = "是否隐藏")
-    private String hidden;
+    private Integer hidden;
     /**
      * 是否外链
      */
-    @Schema(description = "是否外链")
-    private String target;
-    /**
-     * 状态
-     */
-    @Schema(description = "状态")
-    private String status;
+    private Integer target;
     /**
      * 删除标识
      */
-    @Schema(description = "删除标识")
-    private String isDeleted;
-    /**
-     * 租户ID
-     */
-    @Schema(description = "租户ID")
-    private Long tenantId;
+    private Integer isDeleted;
 
 }

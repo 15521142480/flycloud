@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.system.mapper.SysMenuMapper">
+
+    <resultMap type="com.fly.system.api.domain.SysMenu" id="SysMenuResult">
+    <result property="id" column="id"/>
+    <result property="type" column="type"/>
+    <result property="name" column="name"/>
+    <result property="parentId" column="parent_id"/>
+    <result property="permission" column="permission"/>
+    <result property="buttonPermission" column="button_permission"/>
+    <result property="level" column="level"/>
+    <result property="path" column="path"/>
+    <result property="component" column="component"/>
+    <result property="icon" column="icon"/>
+    <result property="status" column="status"/>
+    <result property="sort" column="sort"/>
+    <result property="remark" column="remark"/>
+    <result property="keepAlive" column="keep_alive"/>
+    <result property="hidden" column="hidden"/>
+    <result property="target" column="target"/>
+    <result property="createBy" column="create_by"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+
+    <select id="selectListToTree" resultType="com.fly.system.api.domain.vo.SysMenuTreeVo">
+        select
+            me.id AS id,
+            me.parent_id AS parentId,
+            me.name AS title,
+            me.button_permission AS buttonPermission,
+            me.level AS level,
+            me.status AS status
+        from sys_menu me
+        where me.is_deleted = 0
+        <if test="type != null">
+            and me.type = #{type}
+        </if>
+        order by me.sort asc
+    </select>
+
+</mapper>
