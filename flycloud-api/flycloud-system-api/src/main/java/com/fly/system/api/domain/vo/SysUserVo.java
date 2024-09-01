@@ -46,6 +46,11 @@ public class SysUserVo {
     private int userType;
 
     /**
+     * 用户类型名称
+     */
+    private String userTypeName;
+
+    /**
      * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
      */
     private int loginType;
@@ -115,6 +120,26 @@ public class SysUserVo {
      */
     @ExcelProperty(value = "逻辑删除")
     private String isDeleted;
+
+    /**
+     * 创建时间
+     */
+    @ExcelProperty(value = "创建时间")
+    private Date createTime;
+
+
+    /**
+     * 用户角色
+     */
+    @ExcelProperty(value = "用户角色")
+    private String roleIds;
+
+
+    /**
+     * 用户角色名称
+     */
+    @ExcelProperty(value = "用户角色名称")
+    private String roleNames;
 
 
 }

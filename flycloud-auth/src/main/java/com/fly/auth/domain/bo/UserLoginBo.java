@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2023/5/2
  */
 @Data
-public class FlyUserLoginBo {
+public class UserLoginBo {
 
 
     /**

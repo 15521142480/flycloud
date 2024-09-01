@@ -50,6 +50,10 @@ public class SysRoleController extends BaseController {
         return R.ok(iSysRoleService.queryPageList(bo, page));
     }
 
+    @PostMapping("/getList")
+    public R<List<SysRoleVo>> queryList(@RequestBody SysRoleBo bo) {
+        return R.ok(iSysRoleService.queryList(bo));
+    }
 
     /**
      * 查询角色菜单权限列表 - 树型

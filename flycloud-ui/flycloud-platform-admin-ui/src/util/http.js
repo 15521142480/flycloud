@@ -50,7 +50,12 @@ const errorHandle = (status, data) => {
 }
 
 // 创建axios实例
-var instance = axios.create({timeout: 1000 * 60})
+var instance = axios.create({
+  timeout: 1000 * 60,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
 
 // 设置post请求头
 // instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'

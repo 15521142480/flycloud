@@ -19,5 +19,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result property="isDeleted" column="is_deleted"/>
     </resultMap>
 
+    <select id="selectPermissionListByUserId" resultType="java.lang.String">
+        select
+            sm.permission
+        from sys_menu sm
+                 inner join sys_role_menu srm on srm.menu_id = sm.id
+                 inner join sys_user_role sur on sur.role_id = srm.role_id
+        where length(sm.permission) > 0 and sm.status = '0' and sm.type = 0
+          and sur.user_id = #{userId}
+        union
+        select
+            concat(sm.permission, '.', srm.permission) as permission
+        from sys_menu sm
+                 inner join sys_role_menu srm on srm.menu_id = sm.id
+                 inner join sys_user_role sur on sur.role_id = srm.role_id
+        where length(sm.permission) > 0 and sm.status = '0' and sm.type = 0
+          and sur.user_id = #{userId}
+    </select>
+
+    <select id="selectRoleIdListByUserId" resultType="java.lang.String">
+        select
+            sur.role_id
+        from sys_user_role sur
+        where sur.user_id = #{userId}
+    </select>
+    <select id="getRoleNameListByUserId" resultType="java.lang.String">
+        select
+            distinct sr.name
+        from sys_role sr
+        inner join sys_user_role sur on sur.role_id = sr.id
+        where sur.user_id = #{userId}
+    </select>
+
 
 </mapper>

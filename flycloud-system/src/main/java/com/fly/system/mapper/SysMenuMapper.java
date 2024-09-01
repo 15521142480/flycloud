@@ -22,4 +22,8 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, Sy
      */
     List<SysMenuTreeVo> selectListToTree(SysMenuBo bo);
 
+    /**
+     * 根据用户获取菜单列表
+     */
+    List<SysMenuTreeVo> selectMenuListByUserId(Long userId);
 }

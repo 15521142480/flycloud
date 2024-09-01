@@ -1,6 +1,7 @@
 package com.fly.system.api.domain.common;
 
 import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -23,17 +24,7 @@ public class UserInfo implements Serializable {
 	@Schema(description = "系统用户信息")
 	private SysUser sysUser;
 
-	/**
-	 * 系统权限标识组
-	 */
-	@Schema(description = "系统权限标识组")
-	private List<String> permissions;
-
-	/**
-	 * 系统角色标识组
-	 */
-	@Schema(description = "系统角色标识组")
-	private List<String> roleIds;
+	// ========================================
 
 	/**
 	 * 用户名
@@ -42,15 +33,28 @@ public class UserInfo implements Serializable {
 	private String userName;
 
 	/**
-	 * 用户列类型
-	 */
-	private int userType;
-
-	/**
 	 * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
 	 */
 	private int loginType;
 
 
+	// ======================================== 菜单与权限
+	/**
+	 * 系统权限标识组
+	 */
+	@Schema(description = "系统权限标识组")
+	private List<String> permissionList;
+
+	/**
+	 * 系统角色标识组id
+	 */
+	@Schema(description = "系统角色标识组id")
+	private List<String> roleIdList;
+
+	/**
+	 * 系统菜单树列表
+	 */
+	@Schema(description = "系统菜单树列表")
+	private List<SysMenuTreeVo> menuTreeList;
 
 }

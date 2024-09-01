@@ -17,9 +17,8 @@ import com.fly.common.database.web.domain.BaseEntity;
  * @date 2024-08-31
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_user_role")
-public class SysUserRole extends BaseEntity {
+public class SysUserRole implements Serializable {
 
     private static final long serialVersionUID=1L;
 

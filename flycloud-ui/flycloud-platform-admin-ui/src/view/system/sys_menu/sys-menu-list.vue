@@ -1,6 +1,6 @@
 <template>
     <div>
-      <Card style="height: calc(100vh - 145px)">
+<!--      <Card style="height: calc(100vh - 145px)">-->
       <div style="margin-top: 15px">
 <!--        <Button v-show="checkOperationAccess('system.menu.add')" style="fontSize:13px"  type="primary" shape="circle" @click="showEditModal"><Icon size="14" type="md-body" /> 新增一级菜单</Button>-->
         <Button style="fontSize:13px"  type="primary" shape="circle" @click="showEditModal"><Icon size="14" type="md-body" /> 新增一级菜单</Button>
@@ -17,7 +17,7 @@
       </span>
       </div>
       <Spin size="large" fix v-if="showLoading"></Spin>
-      </Card>
+<!--      </Card>-->
       <div>
         <SysMenuEditPop ref="sysMenuEditPop"
           v-model="isShowModal"

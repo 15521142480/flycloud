@@ -1,5 +1,6 @@
 package com.fly.system.api.domain.bo;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import lombok.Data;
@@ -115,6 +116,13 @@ public class SysUserBo extends BaseEntity {
      */
     // @NotBlank(message = "逻辑删除不能为空", groups = { AddGroup.class, EditGroup.class })
     private String isDeleted;
+
+    /**
+     * 用户角色
+     */
+    @ExcelProperty(value = "用户角色")
+    private String roleIds;
+
 
 
 }

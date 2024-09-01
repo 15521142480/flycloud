@@ -5,24 +5,24 @@
                :styles="{top: '30px'}"
                :closable='true' :mask-closable=false
                @on-visible-change="resetData"
-               width="590">
+               width="50%">
           <div slot="header" >
             <Button v-show="!isUpdate" type="default" shape="circle" icon="md-person-add">添加菜单</Button>
             <Button v-show="isUpdate" type="default" shape="circle" icon="ios-create">编辑菜单</Button>
           </div>
           <Form ref="editForm"
                 :model="editForm"
-                :label-width="100"
+                :label-width="130"
                 label-position="right"
                 :rules="formValidate"
                 @submit.native.prevent="saveEdit">
 
             <FormItem label="菜单名称:" prop="name">
-              <Input v-model="editForm.name" placeholder="" style="width:410px;"></Input>
+              <Input v-model="editForm.name" placeholder="" style="width:85%;"></Input>
             </FormItem>
             <FormItem label="菜单类型:"  inline>
-              <FormItem prop="type" style="display:inline-block">
-                <Select v-model="editForm.type" disabled style="width:410px;" placeholder="选择类型" clearable>
+              <FormItem prop="type" style="width:85%;">
+                <Select v-model="editForm.type" disabled style="width:100%" placeholder="选择类型">
                   <Option :value="0" :key="0">平台管理系统</Option>
                   <Option :value="1" :key="1">商家管理系统</Option>
                   <Option :value="2" :key="2">音乐平台管理系统</Option>
@@ -31,11 +31,11 @@
              </FormItem>
             </FormItem>
             <FormItem label="菜单权限:" prop="permission">
-              <Input v-model="editForm.permission" placeholder="" style="width:410px;"></Input>
+              <Input v-model="editForm.permission" placeholder="" style="width:85%;"></Input>
             </FormItem>
 
             <FormItem label="按钮权限:" prop="">
-              <card style="width: 410px;">
+              <card style="width: 85%;">
                 <table align="center" width="100%" style="text-align:center;font-size: 13px;margin-bottom: 7px">
                   <tr>
                     <th style="padding-right: 30px;">按钮名称</th> <!-- style="padding-right: 70px;padding-left: 10px;padding-bottom: 8px"-->
@@ -52,15 +52,15 @@
             </FormItem>
 
             <FormItem label="路由路径:" prop="path">
-              <Input v-model="editForm.path" placeholder="" style="width:410px;"></Input>
+              <Input v-model="editForm.path" placeholder="" style="width:85%;"></Input>
             </FormItem>
 
             <FormItem label="页面路径:" prop="component">
-              <Input v-model="editForm.component" placeholder="" style="width:410px;"></Input>
+              <Input v-model="editForm.component" placeholder="" style="width:85%;"></Input>
             </FormItem>
 
             <FormItem label="排序:" prop="sort">
-              <Input v-model="editForm.sort" type="number" placeholder="" style="width:410px;"></Input>
+              <Input v-model="editForm.sort" type="number" placeholder="" style="width:85%;"></Input>
             </FormItem>
             <FormItem label="是否启用:" prop="status">
               <i-switch v-model="editForm.status" true-value="0" false-value="1" @on-change="handleStatusChange" />
@@ -69,13 +69,13 @@
 <!--              <i-switch v-model="editForm.hidden" :true-value="1" :false-value="0" />-->
 <!--            </FormItem>-->
             <FormItem label="备注:" prop="remark">
-              <Input v-model="editForm.remark" type="textarea" placeholder="描述" style="width:410px;"></Input>
+              <Input v-model="editForm.remark" type="textarea" placeholder="描述" style="width:85%;"></Input>
             </FormItem>
 
           </Form>
           <div slot="footer">
             <Button type="default" size="large" @click="cancelEdit">取消</Button>
-            <Button type="primary" size="large" @click="saveEdit">确定</Button>
+            <Button type="primary" size="large" @click="saveEdit" style="margin-right: 30px">确定</Button>
           </div>
           <Spin size="large" fix v-if="showLoading"></Spin>
         </Modal>

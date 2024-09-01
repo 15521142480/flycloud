@@ -3,8 +3,7 @@ package com.fly.system.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.fly.common.constant.Status;
-import com.fly.common.constant.SysType;
-import com.fly.common.entity.LoginUser;
+import com.fly.common.enums.SysTypeEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
@@ -15,14 +14,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fly.common.utils.UUIDUtils;
 import com.fly.system.api.domain.SysRoleMenu;
 import com.fly.system.api.domain.bo.SysMenuBo;
 import com.fly.system.api.domain.bo.SysRoleMenuBo;
 import com.fly.system.api.domain.vo.SysMenuButtonPermissionVo;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import com.fly.system.api.domain.vo.SysRoleMenuVo;
-import com.fly.system.mapper.SysMenuMapper;
 import com.fly.system.mapper.SysRoleMenuMapper;
 import com.fly.system.service.ISysMenuService;
 import com.fly.system.service.ISysRoleMenuService;
@@ -177,7 +174,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
 
             // 基本信息
 //            sysRole.setId(UUIDUtils.generateUUID());
-            sysRole.setType(SysType.fly_platform);
+            sysRole.setType(SysTypeEnum.fly_platform.getCode());
             sysRole.setStatus(Status.start);
             sysRole.setCreateBy(flyUser.getId());
             sysRole.setCreateTime(new Date());
@@ -186,7 +183,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         } else { // 修改
 
             // 基础信息
-            sysRole.setType(SysType.fly_platform);
+            sysRole.setType(SysTypeEnum.fly_platform.getCode());
             sysRole.setStatus(Status.start);
             sysRole.setUpdateBy(flyUser.getId());
             sysRole.setUpdateTime(new Date());
@@ -295,6 +292,31 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteBatchIds(ids) > 0;
+    }
+
+
+    /**
+     * 根据用户查询权限信息
+     */
+    @Override
+    public List<String> getPermissionListByUserId(Long userId) {
+
+        return baseMapper.selectPermissionListByUserId(userId);
+    }
+
+
+    /**
+     * 根据用户查询角色信息列表
+     */
+    @Override
+    public List<String> getRoleIdListByUserId(Long userId) {
+
+        return baseMapper.selectRoleIdListByUserId(userId);
+    }
+    @Override
+    public List<String> getRoleNameListByUserId(Long userId) {
+
+        return baseMapper.getRoleNameListByUserId(userId);
     }
 
 }

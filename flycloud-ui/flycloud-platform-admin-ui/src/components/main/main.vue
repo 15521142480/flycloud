@@ -9,6 +9,10 @@
             <Icon type="ios-navigate" :size="iconSize"></Icon>
             <span class="layout-text">接口服务</span>
           </Menu-item>
+          <Menu-item name="5">
+            <Icon type="ios-analytics" :size="iconSize"></Icon>
+            <span class="layout-text">用户</span>
+          </Menu-item>
           <Menu-item name="2">
             <Icon type="ios-keypad" :size="iconSize"></Icon>
             <span class="layout-text">菜单</span>
@@ -39,12 +43,12 @@
 <!--          </Breadcrumb>-->
 <!--        </div>-->
         <!--  右边的内容  -->
-        <div class="layout-content">
+        <Card class="layout-content">
           <div class="layout-content-main">
             <!-- <keep-alive :include="cacheList"><router-view/></keep-alive>-->
             <router-view/>
           </div>
-        </div>
+        </Card>
         <!--  右边的底部  -->
         <div class="layout-copy">
           2022-2024 &copy; 飞翔云-https://github.com/15521142480/flycloud
@@ -103,6 +107,8 @@ export default {
         this.$router.push('/sys/role')
       } else if (menuName === '4') {
         this.$router.push('/sys/test')
+      } else if (menuName === '5') {
+        this.$router.push('/sys/user')
       }
     }
   },

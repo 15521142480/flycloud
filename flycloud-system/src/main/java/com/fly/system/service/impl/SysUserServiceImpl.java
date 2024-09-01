@@ -2,6 +2,12 @@ package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.fly.common.constant.CommonConstants;
+import com.fly.common.enums.SysTypeEnum;
+import com.fly.common.exception.ServiceException;
+import com.fly.common.security.user.FlyUser;
+import com.fly.common.security.util.UserUtils;
+import com.fly.common.utils.CryptoUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
@@ -9,17 +15,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fly.system.api.domain.SysRoleMenu;
+import com.fly.system.api.domain.SysUserRole;
+import com.fly.system.mapper.SysUserRoleMapper;
+import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.domain.bo.SysUserBo;
 import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.mapper.SysUserMapper;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * 用户Service业务层处理
@@ -33,6 +43,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
 
     private final SysUserMapper baseMapper;
+    private final ISysRoleService sysRoleService;
+    private final SysUserRoleMapper sysUserRoleMapper;
 
     /**
      * 查询用户
@@ -48,9 +60,105 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      */
     @Override
     public PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo) {
+
         LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
         Page<SysUserVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+
+        PageVo<SysUserVo> pageVo = this.build(result);
+        List<SysUserVo> sysUserVoList = pageVo.getList();
+        for (SysUserVo sysUserVo : sysUserVoList) {
+
+            sysUserVo.setUserTypeName(SysTypeEnum.getSysTypeNameByType(sysUserVo.getUserType()));
+            sysUserVo.setRoleIds(String.join(",", sysRoleService.getRoleIdListByUserId(sysUserVo.getId())));
+            sysUserVo.setRoleNames(String.join(",", sysRoleService.getRoleNameListByUserId(sysUserVo.getId())));
+        }
+        pageVo.setList(sysUserVoList);
+
+        return pageVo;
+    }
+
+
+    /**
+     * 用户新增/修改
+     */
+    @Override
+    public int saveOrUpdate(SysUserBo bo) {
+
+        SysUser sysUser = BeanUtil.toBean(bo, SysUser.class);
+        FlyUser curUser = UserUtils.getCurUser();
+        boolean isUpdate = sysUser.getId() != null;
+
+        // 用户账号/昵称 判重
+        int accountCount = baseMapper.selectCountByAccount(sysUser.getAccount(), isUpdate ? sysUser.getId() : null);
+        if (accountCount > 0) {
+            throw new ServiceException("账号重复！");
+        }
+        if (StringUtils.isNotBlank(sysUser.getName())) {
+            int nameCount = baseMapper.selectCountByName(sysUser.getName(), isUpdate ? sysUser.getId() : null);
+            if (nameCount > 0) {
+                throw new ServiceException("昵称重复！");
+            }
+        }
+
+        if (!isUpdate) { // 新增
+
+            PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+            String newPassword = encoder.encode(sysUser.getPassword());
+            sysUser.setPassword(newPassword);
+
+            sysUser.setCreateBy(curUser.getId());
+            sysUser.setCreateTime(new Date());
+            baseMapper.insert(sysUser);
+
+        } else { // 修改
+
+            // 是否有修改密码
+            SysUser o_sysUser = baseMapper.selectById(sysUser.getId());
+            if (!o_sysUser.getPassword().equals(sysUser.getPassword())) {
+                PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+                String newPassword = encoder.encode(sysUser.getPassword());
+                sysUser.setPassword(newPassword);
+            }
+
+            sysUser.setUpdateBy(curUser.getId());
+            sysUser.setUpdateTime(new Date());
+            baseMapper.updateById(sysUser);
+
+            // 移除用户角色权限
+            LambdaQueryWrapper<SysUserRole> lqw = Wrappers.lambdaQuery();
+            lqw.eq(SysUserRole::getUserId, sysUser.getId());
+            sysUserRoleMapper.delete(lqw);
+        }
+
+        // 初始化用户角色权限
+        List<SysUserRole> sysUserRoleList = new ArrayList<>();
+        for (String roleId : bo.getRoleIds().split(",")) {
+
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(sysUser.getId());
+            sysUserRole.setRoleId(Long.valueOf(roleId));
+            sysUserRoleList.add(sysUserRole);
+        }
+        sysUserRoleMapper.insertBatch(sysUserRoleList);
+
+        return 1;
+    }
+
+
+    /**
+     * 重置密码
+     */
+    @Override
+    public int resetPassword(Long id) {
+
+        SysUser sysUser = baseMapper.selectById(id);
+
+        String md5str = CryptoUtils.encodeMD5(CommonConstants.INIT_USER_PASSWORD);
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        String initPassword = encoder.encode(md5str);
+        sysUser.setPassword(initPassword);
+
+        return baseMapper.updateById(sysUser);
     }
 
 

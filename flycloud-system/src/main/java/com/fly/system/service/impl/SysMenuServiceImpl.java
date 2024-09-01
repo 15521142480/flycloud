@@ -1,12 +1,9 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.fly.common.constant.SysType;
-import com.fly.common.entity.LoginUser;
+import com.fly.common.enums.SysTypeEnum;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
-import com.fly.common.utils.DateUtils;
-import com.fly.common.utils.SecurityUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
@@ -14,8 +11,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fly.common.utils.UUIDUtils;
-import com.fly.system.api.domain.common.UserInfo;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,7 +51,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
     @Override
     public List<SysMenuTreeVo> getList(SysMenuBo bo) {
 
-        bo.setType(SysType.fly_platform);
+        bo.setType(SysTypeEnum.fly_platform.getCode());
         return baseMapper.selectListToTree(bo);
     }
 
@@ -112,6 +107,40 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
         }
 
         return sysMenuTreeList;
+    }
+
+
+    /**
+     * 根据用户获取菜单树数据列表
+     */
+    @Override
+    public List<SysMenuTreeVo> getMenuTreeListByUserId(Long userId) {
+
+        List<SysMenuTreeVo> resultList = new ArrayList<>();
+        List<SysMenuTreeVo> sysMenuTreeDataList = baseMapper.selectMenuListByUserId(userId);
+        Map<String, List<SysMenuTreeVo>> sysMenuMap = new HashMap<>();
+
+        // 菜单树型数据组装
+        for (SysMenuTreeVo sysMenuTreeData : sysMenuTreeDataList) {
+
+            sysMenuTreeData.setExpand(false);
+            if (sysMenuMap.get(sysMenuTreeData.getParentId().toString()) == null) {
+                List<SysMenuTreeVo> sysMenuTreeInitList = new ArrayList<>();
+                sysMenuMap.put(sysMenuTreeData.getParentId().toString(), sysMenuTreeInitList);
+            }
+
+            sysMenuMap.get(sysMenuTreeData.getParentId().toString()).add(sysMenuTreeData);
+        }
+
+        for (SysMenuTreeVo sysMenuTreeData : sysMenuTreeDataList) {
+
+            if (sysMenuTreeData.getParentId().toString().equals("0")) {
+                sysMenuTreeData.setChildren(this.handleSysMenuChild(sysMenuMap, sysMenuTreeData.getId()));
+                resultList.add(sysMenuTreeData);
+            }
+        }
+
+        return resultList;
     }
 
 
@@ -247,5 +276,6 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
         }
         return baseMapper.deleteBatchIds(ids) > 0;
     }
+
 
 }

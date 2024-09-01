@@ -34,7 +34,7 @@ public class SysMenuTreeVo {
     private String buttonPermission;
 
     /**
-     * 按钮权限
+     * 等级
      */
     private int level;
 
@@ -42,6 +42,31 @@ public class SysMenuTreeVo {
      * 按钮权限
      */
     private String status;
+
+    /**
+     * 路由
+     */
+    private int path;
+
+    /**
+     * 组件
+     */
+    private int component;
+
+    /**
+     * 图标
+     */
+    private int icon;
+
+    /**
+     * 是否缓存该页面: 1:是  0:不是
+     */
+    private Integer keepAlive;
+
+    /**
+     * 是否隐藏
+     */
+    private Integer hidden;
 
     /**
      * 是否展开

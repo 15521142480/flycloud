@@ -63,4 +63,15 @@ public interface ISysRoleService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
+    /**
+     * 根据用户查询权限信息列表
+     */
+    List<String> getPermissionListByUserId(Long userId);
+
+    /**
+     * 根据用户查询角色信息列表
+     */
+    List<String> getRoleIdListByUserId(Long userId);
+    List<String> getRoleNameListByUserId(Long userId);
+
 }

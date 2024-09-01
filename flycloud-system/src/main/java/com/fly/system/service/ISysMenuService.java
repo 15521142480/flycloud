@@ -64,4 +64,8 @@ public interface ISysMenuService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
+    /**
+     * 根据用户获取菜单树数据列表
+     */
+    List<SysMenuTreeVo> getMenuTreeListByUserId(Long id);
 }

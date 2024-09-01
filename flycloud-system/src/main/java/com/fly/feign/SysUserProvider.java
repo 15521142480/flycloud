@@ -5,6 +5,8 @@ import com.fly.common.model.R;
 import com.fly.system.api.domain.common.UserInfo;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.feign.ISysUserProvider;
+import com.fly.system.service.ISysMenuService;
+import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,8 @@ public class SysUserProvider implements ISysUserProvider {
 
 
     private final ISysUserService sysUserService;
+    private final ISysRoleService sysRoleService;
+    private final ISysMenuService sysMenuService;
 
 
 
@@ -68,6 +72,11 @@ public class SysUserProvider implements ISysUserProvider {
 
     // ====================================================================
 
+    /**
+     * 组装通用登录用户数据（权限/菜单等）
+     *
+     * @param sysUser 系统用户信息
+    */
     public UserInfo getUserInfo(SysUser sysUser) {
 
         if (sysUser == null) {
@@ -75,8 +84,14 @@ public class SysUserProvider implements ISysUserProvider {
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setSysUser(sysUser);
-//        userInfo.setPermissions(sysRolePermissionService.getMenuIdByRoleId(sysUser.getRoleId()));
-//        userInfo.setRoleIds(ListUtil.toList(sysUser.getRoleId()));
+        userInfo.setUserName(sysUser.getAccount()); // 用户名
+
+        // 权限
+        userInfo.setPermissionList(sysRoleService.getPermissionListByUserId(sysUser.getId()));
+        userInfo.setRoleIdList(sysRoleService.getRoleIdListByUserId(sysUser.getId()));
+
+        // 菜单
+        userInfo.setMenuTreeList(sysMenuService.getMenuTreeListByUserId(sysUser.getId()));
 
         log.debug("feign调用：userInfo:{}", userInfo);
         return userInfo;

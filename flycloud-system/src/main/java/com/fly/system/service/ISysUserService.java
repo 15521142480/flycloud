@@ -29,6 +29,16 @@ public interface ISysUserService extends IService<SysUser> {
     PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo);
 
     /**
+     * 用户新增/修改
+     */
+    int saveOrUpdate(SysUserBo bo);
+
+    /**
+     * 重置密码
+     */
+    int resetPassword(Long id);
+
+    /**
      * 查询用户列表
      */
     List<SysUserVo> queryList(SysUserBo bo);

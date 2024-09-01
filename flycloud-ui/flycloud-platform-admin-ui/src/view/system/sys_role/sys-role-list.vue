@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card>
+<!--    <Card>-->
       <div style="margin-top: 15px">
         <div style="margin-bottom: 25px">
           <Input v-model="params.name" placeholder="角色名称" style="width: 200px"><Icon type="ios-search" slot="prefix" /></Input>&nbsp;&nbsp;
@@ -11,8 +11,8 @@
         </div>
       </div>
       <div>
-        <Table border
-               style="min-height: 525px;"
+        <Table
+               style="height: calc(100vh - 305px)"
                no-data-text="没有相关数据喔!"
                :columns="sysRoleColumns"
                :loading="loading"
@@ -34,7 +34,7 @@
           </Col>
         </Row>
       </div>
-    </Card>
+<!--    </Card>-->
   </div>
 </template>
 
@@ -181,7 +181,7 @@ export default {
       this.loading = true
       setTimeout(() => {
         this.loading = false
-      }, 30000)
+      }, 800)
       this.$api.system.getRoleListApi(this.params).then(res => {
         let data = res.data
         if (data.code === 0) {
@@ -260,6 +260,30 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.ivu-card-body {
+  padding: 0;
+}
+.ivu-table-wrapper {
+  border: none;
+}
+.ivu-table:before {
+  content: '';
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1
+}
 
+.ivu-table:after {
+  content: '';
+  width: 0px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3
+}
 </style>

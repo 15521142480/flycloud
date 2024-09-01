@@ -45,11 +45,8 @@ public interface CommonConstants {
     // 请求超时时间 默认为二分钟
     Integer HTTP_TIMEOUT_MILLION_SECONDS = 120 * 1000;
 
-    // 新建用户，默认密码
-    String USER_PASSWORD = "HZ888888";
-
-    // 新建用户，默认密码
-    String USER_PASSWORD_ENCODE = "$2a$10$WyvbhINlhLQS3A0g74d7teF5iZtplYxUQXMD0rXnVejgcNQ2mct8q";
+    // 默认密码
+    String INIT_USER_PASSWORD = "fly123456";
 
 
 

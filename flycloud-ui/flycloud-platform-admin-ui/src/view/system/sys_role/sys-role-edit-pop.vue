@@ -39,7 +39,7 @@
                     </FormItem>
                     <FormItem label="角色类型:"  inline>
                       <FormItem prop="menuType" style="display:inline-block;">
-                        <Select v-model="roleEditFrom.type" disabled style="width:250px;" placeholder="选择类型" clearable>
+                        <Select v-model="roleEditFrom.type" disabled style="width:250px;" placeholder="选择类型">
                           <Option :value="0" :key="0">平台管理系统</Option>
                           <Option :value="1" :key="1">商家管理系统</Option>
                           <Option :value="2" :key="2">音乐平台管理系统</Option>
@@ -240,9 +240,9 @@ export default {
           let bindSwitch = h('i-switch', {
             props: {
               type: 'primary',
-              'true-value': 1,
-              'false-value': 0,
-              value: d[item].flag === '1' ? 1 : 0 // 循环 控制开关的打开或关闭状态
+              'true-value': '1',
+              'false-value': '0',
+              value: d[item].flag === '1' ? '1' : '0'
             },
             style: {
               marginRight: '10px'

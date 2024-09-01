@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 字符串工具类
@@ -48,7 +49,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return true：非空串 false：空串
      */
     public static boolean isNotBlank(String str) {
-        return !isEmpty(str);
+        return !isBlank(str);
     }
 
     /**

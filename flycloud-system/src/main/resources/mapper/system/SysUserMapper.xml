@@ -48,4 +48,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         limit 1
     </select>
 
+    <select id="selectCountByAccount" resultType="java.lang.Integer">
+        select count(*)
+        from sys_user
+        where account = #{account} and is_deleted = 0
+        <if test="id != null and id != ''">
+            and id != #{id}
+        </if>
+    </select>
+
+    <select id="selectCountByName" resultType="java.lang.Integer">
+        select count(*)
+        from sys_user
+        where name = #{name} and is_deleted = 0
+        <if test="id != null and id != ''">
+            and id != #{id}
+        </if>
+    </select>
+
 </mapper>

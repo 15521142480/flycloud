@@ -48,6 +48,14 @@ export default new Router({
       component: Main,
       children: [
         {
+          path: 'user',
+          name: 'user',
+          meta: {
+            title: '用户管理'
+          },
+          component: () => import('../view/system/sys_user/sys-user-list')
+        },
+        {
           path: 'menu',
           name: 'menu',
           meta: {

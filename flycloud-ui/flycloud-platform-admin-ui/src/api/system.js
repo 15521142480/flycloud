@@ -31,6 +31,48 @@ export default {
   // ============================================== 用户/菜单/角色 start
 
   /**
+   * 用户列表
+   */
+  getUserListApi (params) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/user/list`,
+      method: 'get',
+      params: params
+    })
+  },
+
+  /**
+   * 用户详情
+   */
+  getUserDetailApi (userId) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/user/${userId}`,
+      method: 'get'
+    })
+  },
+
+  /**
+   * 用户新增/修改
+   */
+  saveOrUpdateUserApi (params) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/user/saveOrUpdate`,
+      method: 'post',
+      data: params
+    })
+  },
+
+  /**
+   * 重置密码
+   */
+  resetPasswordUserApi (userId) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/user/resetPassword${userId}`,
+      method: 'get'
+    })
+  },
+
+  /**
    * 菜单列表
    */
   getMenuTreeListApi (params) {
@@ -70,6 +112,17 @@ export default {
       url: `${config.baseUrl.dev}/role/list`,
       method: 'get',
       params: params
+    })
+  },
+
+  /**
+   * 角色下拉列表
+   */
+  getRoleSelectListApi (params) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/role/getList`,
+      method: 'post',
+      data: params
     })
   },
 

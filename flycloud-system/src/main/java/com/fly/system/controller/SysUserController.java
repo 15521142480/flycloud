@@ -45,15 +45,20 @@ public class SysUserController extends BaseController {
         return R.ok(iSysUserService.queryPageList(bo, page));
     }
 
+    /**
+     * 用户新增/修改
+     */
+    @PostMapping("/saveOrUpdate")
+    public R<Void> saveOrUpdate(@RequestBody SysUserBo bo) {
+        return R.ok(iSysUserService.saveOrUpdate(bo));
+    }
 
     /**
-     * 导出用户列表
+     * 重置密码
      */
-    @Log(title = "用户", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(SysUserBo bo, HttpServletResponse response) {
-        List<SysUserVo> list = iSysUserService.queryList(bo);
-        ExcelUtil.exportExcel(list, "用户", SysUserVo.class, response);
+    @PostMapping("/resetPassword{id}")
+    public R<Void> resetPassword(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(iSysUserService.resetPassword(id));
     }
 
 
@@ -97,5 +102,16 @@ public class SysUserController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iSysUserService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+
+    /**
+     * 导出用户列表
+     */
+    @Log(title = "用户", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(SysUserBo bo, HttpServletResponse response) {
+        List<SysUserVo> list = iSysUserService.queryList(bo);
+        ExcelUtil.exportExcel(list, "用户", SysUserVo.class, response);
     }
 }
