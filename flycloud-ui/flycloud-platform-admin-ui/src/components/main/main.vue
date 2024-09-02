@@ -4,7 +4,9 @@
     <Row type="flex">
       <i-col :span="spanLeft" class="layout-menu-left">
         <Menu active-name="1" theme="dark" width="auto" @on-select="handleSelectMenu">
-          <div class="layout-logo-left"></div>
+          <div class="layout-logo-left">
+            飞翔云平台管理系统
+          </div>
           <Menu-item name="1">
             <Icon type="ios-navigate" :size="iconSize"></Icon>
             <span class="layout-text">接口服务</span>
@@ -30,18 +32,44 @@
       <!--  右边的头部/内容/底部  -->
       <i-col :span="spanRight">
         <!--  右边的头部  -->
-        <div class="layout-header">
-          <Button type="text" @click="toggleClick">
-            <Icon type="md-menu" size="30"/>
-          </Button>
-        </div>
-<!--        <div class="layout-breadcrumb">-->
-<!--          <Breadcrumb>-->
-<!--            <Breadcrumb-item href="#">首页</Breadcrumb-item>-->
-<!--            <Breadcrumb-item href="#">应用中心</Breadcrumb-item>-->
-<!--            <Breadcrumb-item>某应用</Breadcrumb-item>-->
-<!--          </Breadcrumb>-->
-<!--        </div>-->
+        <Row style="z-index: 2">
+          <Col span="24"> <!--style="background: #fff;"-->
+            <div class="layout-header">
+              <Row>
+                <Col span="12">
+                  <Button type="text" @click="toggleClick">
+                    <Icon type="md-menu" size="30"/>
+                  </Button>
+                </Col>
+                <Col span="6">
+                  &nbsp;
+                </Col>
+                <Col span="6">
+                  <div style="float: right;">
+                    <Menu @on-select="loginOut" mode="horizontal" theme="light" active-name="1">
+                      <Submenu name="3">
+                        <template slot="title">
+                          <Icon type="md-person"/>
+                          <span>{{ userName }}</span> &nbsp;
+                        </template>
+                        <MenuGroup title="系统">
+                          <MenuItem name="3-1">退出</MenuItem>
+                        </MenuGroup>
+                      </Submenu>
+                    </Menu>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+        <!--        <div class="layout-breadcrumb">-->
+        <!--          <Breadcrumb>-->
+        <!--            <Breadcrumb-item href="#">首页</Breadcrumb-item>-->
+        <!--            <Breadcrumb-item href="#">应用中心</Breadcrumb-item>-->
+        <!--            <Breadcrumb-item>某应用</Breadcrumb-item>-->
+        <!--          </Breadcrumb>-->
+        <!--        </div>-->
         <!--  右边的内容  -->
         <Card class="layout-content">
           <div class="layout-content-main">
@@ -73,6 +101,7 @@ export default {
   },
   data () {
     return {
+      userName: this.$cookies.get('userName'),
       spanLeft: 5,
       spanRight: 19
     }
@@ -110,6 +139,31 @@ export default {
       } else if (menuName === '5') {
         this.$router.push('/sys/user')
       }
+    },
+    // 退出登录 登出
+    loginOut () {
+      this.$Modal.confirm({
+        title: '退出系统',
+        content: '<p>确认要退出系统吗?</p>',
+        onOk: () => {
+          this.$api.system.loginOutApi().then((res) => {
+            let resultCode = res.data.code
+            let resultMsg = res.data.msg
+            if (resultCode === 0) {
+              this.$Notice.success({title: '操作提醒', desc: resultMsg})
+            } else {
+              this.$Notice.error({title: '操作提醒', desc: '操作失败' + resultMsg})
+            }
+            localStorage.removeItem('userToken')
+            this.$cookies.remove('userName')
+            this.$router.push('/login')
+          }).catch((e) => {
+            localStorage.removeItem('userToken')
+            this.$cookies.remove('userName')
+            this.$router.push('/login')
+          })
+        }
+      })
     }
   },
   watch: {},
@@ -156,11 +210,16 @@ export default {
   box-shadow: 0 1px 1px rgba(0,0,0,.1);
 }
 .layout-logo-left{
-  width: 90%;
-  height: 30px;
-  background: #5b6270;
+  text-align: center;
+  //background: #5b6270;
+  background: #ececec;
+  width: 92%;
+  height: 40px;
+  font-size: 17px;
+  font-weight: bold;
   border-radius: 3px;
   margin: 15px auto;
+  padding-top: 7px;
 }
 .layout-ceiling-main a{
   color: #9ba7b5;

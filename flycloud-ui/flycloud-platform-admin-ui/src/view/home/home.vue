@@ -1,34 +1,16 @@
 <template>
   <div class="file">
     <div>
-
-      <Row>
-        <Col span="12" style="padding: 13px 20px 10px 25px">
-          <!--          <Card>-->
-          <div class="file-login-div" v-show="isFtpStatus === '0'" style="margin-left: 33px">
-<!--            <Button type="success" style="margin-right: 20px">正在使用接口服务连接...</Button>-->
+      <Row style="margin-bottom: 10px;margin-left: 30px">
+        <Col span="12">
+          <div class="file-login-div" v-show="isFtpStatus === '0'">
             <Button @click="loginFtp" type="primary" icon="ios-jet-outline">使用SFTP连接</Button>
           </div>
           <div class="file-login-div" v-show="isFtpStatus === '1'">
-<!--            <Button type="success" style="margin-right: 20px">正在使用FTP连接...</Button>-->
             <Button @click="loginOutFtp" type="warning">退出FTP连接, 使用接口服务连接</Button>
           </div>
-          <!--          </Card>-->
         </Col>
         <Col span="12">
-          <div class="file-user">
-            <Menu @on-select="loginOut" mode="horizontal" theme="light" active-name="1">
-              <Submenu name="3">
-                <template slot="title">
-                  <Icon type="md-person"/>
-                  <span>{{ userName }}</span> &nbsp;
-                </template>
-                <MenuGroup title="系统">
-                  <MenuItem name="3-1">退出</MenuItem>
-                </MenuGroup>
-              </Submenu>
-            </Menu>
-          </div>
         </Col>
       </Row>
 
@@ -157,31 +139,6 @@ export default {
       }).catch((e) => {
         this.$Message.error('接口异常!')
       })
-    },
-    // 退出登录 登出
-    loginOut () {
-      this.$Modal.confirm({
-        title: '退出系统',
-        content: '<p>确认要退出系统吗?</p>',
-        onOk: () => {
-          this.$api.system.loginOutApi().then((res) => {
-            let resultCode = res.data.code
-            let resultMsg = res.data.msg
-            if (resultCode === 0) {
-              this.$Notice.success({title: '操作提醒', desc: resultMsg})
-            } else {
-              this.$Notice.error({title: '操作提醒', desc: '操作失败' + resultMsg})
-            }
-            localStorage.removeItem('userToken')
-            this.$cookies.remove('userName')
-            this.$router.push('/login')
-          }).catch((e) => {
-            localStorage.removeItem('userToken')
-            this.$cookies.remove('userName')
-            this.$router.push('/login')
-          })
-        }
-      })
     }
   },
   watch: {
@@ -209,10 +166,6 @@ export default {
     to {
       transform: rotate(360deg);
     }
-  }
-
-  .file-user {
-    float: right;
   }
 
   .file-row {

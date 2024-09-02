@@ -2,6 +2,6 @@
 ## 依赖包注入 （可选）
 ### 文件服务
 ```shell script
-mvn install:install-file -Dfile=./ext-lib/flycloud-file-admin.jar -DgroupId=com.flycloud -DartifactId=flycloud-file-core -Dversion=1.0.0 -Dpackaging=jar
+mvn install:install-file -Dfile=./ext-lib/flycloud-file-core/flycloud-file-admin.jar -DgroupId=com.flycloud -DartifactId=flycloud-file-core -Dversion=1.0.0 -Dpackaging=jar -DgeneratePom=true -DpomFile=./ext-lib/flycloud-file-core/pom.xml
 ```
 

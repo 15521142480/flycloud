@@ -7,80 +7,77 @@
         <Row>
           <Col span="24">
 
-            <Card class="file-option-card">
-              <Row>
-                <Col span="24">
-                  <p style="font-size: 16px; text-align: center; font-weight: bold;margin-bottom: 10px">ftp服务器</p>
-                  <p slot="title" class="file-option-title">操作</p>
-                  <div class="file-option-option">
+            <Row>
+              <Col span="24">
+                <p style="font-size: 16px; text-align: center; font-weight: bold;margin-bottom: 10px;margin-top: 8px">ftp服务器</p>
+                <p slot="title" class="file-option-title">操作</p>
+                <div class="file-option-option">
 <!--                    <h3>-->
 <!--                      <div>当前目录:</div>-->
 <!--                      <div style="margin-top: 7px; margin-bottom: 6px;">{{ curPath }}</div>-->
 <!--                    </h3>-->
+                  <Row>
+                    <Col span="1">
+                      &nbsp;
+                    </Col>
+                    <Col span="4">
+                      <div>
+                        <Button @click="init" type="primary" shape="circle" icon="md-refresh"
+                                style="margin-right: 45px">
+                          刷新
+                        </Button>
+                      </div>
+                    </Col>
+                    <Col span="5">
+                      <div>
+                        <Button @click="newFolder" type="primary" shape="circle" icon="md-add-circle">新建文件夹
+                        </Button>
+                      </div>
+                    </Col>
+                    <Col span="5">
+                      <div>
+                        <!-- //是否支持多文件上传 //显示上传的文件 //上传前需要的一些操作 //上传的文件保存的地方 //上传成功时调用的方法 //这里是设置的请求头token //这是上传时的后台接口 -->
+                        <Upload
+                          ref="upload"
+                          action="api"
+                          :max-size="fileMaxSize"
+                          :show-upload-list="false"
+                          :before-upload="handleUpload"
+                          :on-success="uploadSuccess"
+                          :headers='{"userToken": userToken}'
+                        >
+                          <Button type="primary" shape="circle" icon="md-cloud-upload">上传文件</Button>
+                        </Upload>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
 
-                    <Row>
-                      <Col span="1">
-                        &nbsp;
-                      </Col>
-                      <Col span="4">
-                        <div>
-                          <Button @click="init" type="primary" shape="circle" icon="md-refresh"
-                                  style="margin-right: 45px">
-                            刷新
-                          </Button>
-                        </div>
-                      </Col>
-                      <Col span="5">
-                        <div>
-                          <Button @click="newFolder" type="primary" shape="circle" icon="md-add-circle">新建文件夹
-                          </Button>
-                        </div>
-                      </Col>
-                      <Col span="5">
-                        <div>
-                          <!-- //是否支持多文件上传 //显示上传的文件 //上传前需要的一些操作 //上传的文件保存的地方 //上传成功时调用的方法 //这里是设置的请求头token //这是上传时的后台接口 -->
-                          <Upload
-                            ref="upload"
-                            action="api"
-                            :max-size="fileMaxSize"
-                            :show-upload-list="false"
-                            :before-upload="handleUpload"
-                            :on-success="uploadSuccess"
-                            :headers='{"userToken": userToken}'
-                          >
-                            <Button type="primary" shape="circle" icon="md-cloud-upload">上传文件</Button>
-                          </Upload>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </Col>
-              </Row>
-
-              <div style="margin: 15px 30px 20px 30px">
+            <div style="margin: 15px 30px 20px 30px">
 <!--                <hr>-->
-              </div>
+            </div>
 
-              <Row>
-                <Breadcrumb class="ftp-file-path-title">
-                  <BreadcrumbItem v-for="(item, index) in pathList" :key="index">
-                    <span v-if="index === 0" class="file-path-text" @click="getFileListByIndex(index)">根目录</span>
-                    <span v-else class="file-path-text" @click="getFileListByIndex(index)">{{ item }}</span>
-                  </BreadcrumbItem>
-                </Breadcrumb>
+            <Row>
+              <Breadcrumb class="ftp-file-path-title">
+                <BreadcrumbItem v-for="(item, index) in pathList" :key="index">
+                  <span v-if="index === 0" class="file-path-text" @click="getFileListByIndex(index)">根目录</span>
+                  <span v-else class="file-path-text" @click="getFileListByIndex(index)">{{ item }}</span>
+                </BreadcrumbItem>
+              </Breadcrumb>
 
-                <Table
-                  class="file-table"
-                  :columns="tableColumns"
-                  :data="tableData"
-                  no-data-text="暂无文件"
-                  :loading="loading"
-                  :height="tableHeight"
-                />
+              <Table
+                class="file-table"
+                :columns="tableColumns"
+                :data="tableData"
+                no-data-text="暂无文件"
+                :loading="loading"
+                :height="tableHeight"
+              />
 
-              </Row>
+            </Row>
 
-            </Card>
           </Col>
         </Row>
       </div>
@@ -97,7 +94,7 @@
           <span class="textbox" slot="prepend">{{ text }}</span>
         </Input>
 
-        <Row style="margin-top: 80px">
+        <Row style="margin-top: 40px">
           <Col span="8">
             &nbsp;
           </Col>
@@ -219,12 +216,12 @@ export default {
         {
           title: '大小',
           key: 'fileSize',
-          width: 80
+          width: 75
         },
         {
           title: '类型',
           key: 'fileTypeText',
-          width: 80
+          width: 75
         },
         {
           title: '修改时间',
@@ -236,15 +233,14 @@ export default {
           key: 'permission',
           width: 100
         },
-        {
-          title: '用户/组',
-          key: 'userOrGroup',
-          width: 90
-        },
+        // {
+        //   title: '用户/组',
+        //   key: 'userOrGroup'
+        // },
         {
           title: '操作',
           key: 'operation',
-          width: 100,
+          width: 90,
           align: 'center',
           render: (h, params) => {
             const fileData = params.row

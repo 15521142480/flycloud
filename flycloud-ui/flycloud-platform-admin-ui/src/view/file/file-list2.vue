@@ -7,7 +7,7 @@
         <Row>
           <Col span="24">
 
-            <Card class="file-option-card">
+            <div class="file-option-card">
               <Row>
                 <Col span="24">
                   <p style="font-size: 16px; text-align: center; font-weight: bold;margin-bottom: 10px">接口服务器</p>
@@ -80,15 +80,14 @@
 
               </Row>
 
-            </Card>
+            </div>
           </Col>
         </Row>
       </div>
 
       <div slot="right" style="padding: 10px 10px 10px 15px">
-        <!--        <Card class="file-option-card">-->
         <Row>
-          <Col span="24">
+          <Col span="24" style="">
             <div id="xterm"></div>
           </Col>
         </Row>
@@ -97,7 +96,7 @@
           <span class="textbox" slot="prepend">{{ text }}</span>
         </Input>
 
-        <Row style="margin-top: 80px">
+        <Row style="margin-top: 40px">
           <Col span="8">
             &nbsp;
           </Col>
@@ -118,7 +117,6 @@
             &nbsp;
           </Col>
         </Row>
-        <!--        </Card>-->
       </div>
     </Split>
 
@@ -219,12 +217,12 @@ export default {
         {
           title: '大小',
           key: 'fileSize',
-          width: 80
+          width: 75
         },
         {
           title: '类型',
           key: 'fileTypeText',
-          width: 80
+          width: 75
         },
         {
           title: '修改时间',
@@ -236,15 +234,14 @@ export default {
           key: 'permission',
           width: 100
         },
-        {
-          title: '用户/组',
-          key: 'userOrGroup',
-          width: 90
-        },
+        // {
+        //   title: '用户/组',
+        //   key: 'userOrGroup'
+        // },
         {
           title: '操作',
           key: 'operation',
-          width: 100,
+          width: 90,
           align: 'center',
           render: (h, params) => {
             const fileData = params.row

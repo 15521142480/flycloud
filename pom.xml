@@ -244,17 +244,17 @@
                 <version>${aliyun.oss.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>dysmsapi20170525</artifactId>
-                <version>${aliyun.dysmsapi.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.aliyun</groupId>-->
+<!--                <artifactId>dysmsapi20170525</artifactId>-->
+<!--                <version>${aliyun.dysmsapi.version}</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>com.tencentcloudapi</groupId>
-                <artifactId>tencentcloud-sdk-java</artifactId>
-                <version>${tencentcloud.sdk.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.tencentcloudapi</groupId>-->
+<!--                <artifactId>tencentcloud-sdk-java</artifactId>-->
+<!--                <version>${tencentcloud.sdk.version}</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>com.qiniu</groupId>
@@ -286,17 +286,17 @@
                 <version>${oshi.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.fhs-opensource</groupId>
-                <artifactId>easy-trans-spring-boot-starter</artifactId>
-                <version>${easytrans.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.fhs-opensource</groupId>-->
+<!--                <artifactId>easy-trans-spring-boot-starter</artifactId>-->
+<!--                <version>${easytrans.version}</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>com.fhs-opensource</groupId>
-                <artifactId>easy-trans-mybatis-plus-extend</artifactId>
-                <version>${easytrans.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.fhs-opensource</groupId>-->
+<!--                <artifactId>easy-trans-mybatis-plus-extend</artifactId>-->
+<!--                <version>${easytrans.version}</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>

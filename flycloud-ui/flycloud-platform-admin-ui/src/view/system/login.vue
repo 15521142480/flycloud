@@ -1,11 +1,10 @@
 <template>
   <div class="login">
-    <div class="head">
-      <h1 class="title">文件管理系统</h1>
-    </div>
-
     <div class="form-tag">
       <Card>
+        <div class="head">
+          <h2 class="title">飞翔云平台管理系统</h2>
+        </div>
         <Form class="form-form" ref="dataForm" :model="dataForm" :rules="ruleInline">
           <FormItem prop="loginName">
             <Input class="form-item-input" type="text" v-model="dataForm.loginName" placeholder="账号">
@@ -186,21 +185,21 @@ export default {
 }
 
 .login {
+  background-image: url('../../assets/launch.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  //height: calc(100vh - 100px);
+  height: calc(100vh);
   text-align: center;
-
-  .head {
-    margin-top: 50px;
-
-    .title {
-      font-size: 35px;
-    }
-  }
-
   .form-tag {
-    width: 470px;
-    height: 320px;
-    margin: auto;
-    margin-top: 100px;
+    position: fixed;
+    top: 23%;
+    right: 10%;
+    .head {
+      .title {
+        font-size: 25px;
+      }
+    }
   }
 
   .form-form {

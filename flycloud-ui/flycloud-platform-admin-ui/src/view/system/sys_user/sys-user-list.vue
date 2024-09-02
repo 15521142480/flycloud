@@ -59,13 +59,14 @@ export default {
       columns: [
         {title: '账号', align: 'center', key: 'account'},
         {title: '昵称', align: 'center', key: 'name'},
-        {title: '用户类型', align: 'center', key: 'userTypeName'},
-        {title: '联系方式', align: 'center', key: 'telephone'},
+        {title: '用户类型', align: 'center', key: 'userTypeName', width: 115},
+        {title: '联系方式', align: 'center', key: 'telephone', width: 115},
         {title: '创建时间', align: 'center', key: 'createTime'},
         {
           title: '状态',
           align: 'center',
           key: 'status',
+          width: 120,
           render: (h, params) => {
             const row = params.row
             return h('Button', {
@@ -76,7 +77,7 @@ export default {
                 icon: row.status === '0' ? 'md-checkmark-circle' : 'md-eye-off'
               }),
               style: {
-                marginRight: '15px'
+                // marginRight: '15px'
               }
             }, row.status === '0' ? '已启用' : '已禁用')
           }
@@ -84,6 +85,7 @@ export default {
         {
           title: '操作',
           align: 'center',
+          width: 200,
           key: 'status',
           render: (h, params) => {
             // return this.btnRender(h, params)
