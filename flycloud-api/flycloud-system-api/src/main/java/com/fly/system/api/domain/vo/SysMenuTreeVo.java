@@ -46,17 +46,17 @@ public class SysMenuTreeVo {
     /**
      * 路由
      */
-    private int path;
+    private String path;
 
     /**
      * 组件
      */
-    private int component;
+    private String component;
 
     /**
      * 图标
      */
-    private int icon;
+    private String icon;
 
     /**
      * 是否缓存该页面: 1:是  0:不是

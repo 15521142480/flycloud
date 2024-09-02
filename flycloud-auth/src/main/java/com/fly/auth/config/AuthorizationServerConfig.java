@@ -79,7 +79,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 //        clients.inMemory()// 使用in-memory存储
 //                .withClient("flycloud-system")// client_id
-//                .secret(new BCryptPasswordEncoder().encode("wW@@@257007"))//客户端密钥
+//                .secret(new BCryptPasswordEncoder().encode("155007"))//客户端密钥
 ////                .resourceIds("xuecheng-plus")//资源列表
 //                .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")// 该client允许的授权类型authorization_code,password,refresh_token,implicit,client_credentials
 //                .scopes("all")// 允许的授权范围

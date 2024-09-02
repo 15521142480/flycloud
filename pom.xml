@@ -594,17 +594,6 @@
         </profile>
 
         <profile>
-            <id>test</id>
-            <properties>
-                <profiles.active>test</profiles.active>
-                <nacos.server>39.98.125.88:8848</nacos.server>
-                <nacos.namespace>98fa7b23-cac3-4eb5-9b3f-0b40b7cb8aa2</nacos.namespace>
-                <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
-                <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
-            </properties>
-        </profile>
-
-        <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>

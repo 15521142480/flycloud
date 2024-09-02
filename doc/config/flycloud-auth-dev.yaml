@@ -22,7 +22,7 @@ server:
       client-id: flycloud-system
 
       # 客户端安全码
-      client-secret: wW@@@257007
+      client-secret: 155007
 
       # 授权类型
       # grant-types: 3
