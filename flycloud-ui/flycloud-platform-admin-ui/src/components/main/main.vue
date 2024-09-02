@@ -3,31 +3,10 @@
     <!--  左边的菜单导航  -->
     <Row type="flex">
       <i-col :span="spanLeft" class="layout-menu-left">
-        <Menu active-name="1" theme="dark" width="auto" @on-select="handleSelectMenu">
-          <div class="layout-logo-left">
-            飞翔云平台管理系统
-          </div>
-          <Menu-item name="1">
-            <Icon type="ios-navigate" :size="iconSize"></Icon>
-            <span class="layout-text">接口服务</span>
-          </Menu-item>
-          <Menu-item name="5">
-            <Icon type="ios-analytics" :size="iconSize"></Icon>
-            <span class="layout-text">用户</span>
-          </Menu-item>
-          <Menu-item name="2">
-            <Icon type="ios-keypad" :size="iconSize"></Icon>
-            <span class="layout-text">菜单</span>
-          </Menu-item>
-          <Menu-item name="3">
-            <Icon type="ios-analytics" :size="iconSize"></Icon>
-            <span class="layout-text">角色</span>
-          </Menu-item>
-          <Menu-item name="4">
-            <Icon type="ios-analytics" :size="iconSize"></Icon>
-            <span class="layout-text">测试</span>
-          </Menu-item>
-        </Menu>
+        <div class="layout-logo-left">
+          飞翔云平台管理系统
+        </div>
+        <main-menu ref="mainMenuRef" :span-left="spanLeft" @on-menu-select="handleSelectMenu"/>
       </i-col>
       <!--  右边的头部/内容/底部  -->
       <i-col :span="spanRight">
@@ -87,16 +66,13 @@
 </template>
 
 <script>
+import mainMenu from './components/main-menu'
 import { getUserName, removeUserCache } from '../../util/cacheUtils'
 export default {
-  components: {},
+  components: {
+    mainMenu
+  },
   props: {
-    // patientIn: {
-    //   type: Object,
-    //   default () {
-    //     return {}
-    //   }
-    // }
   },
   data () {
     return {
@@ -121,23 +97,13 @@ export default {
         this.spanRight = 19
       }
     },
-    handleSelectMenu (menuName) {
+    handleSelectMenu (menuRouterPath) {
       // this.$router.push({
       //   'test',
       //   params,
       //   query
       // })
-      if (menuName === '1') {
-        this.$router.push('/home')
-      } else if (menuName === '2') {
-        this.$router.push('/sys/menu')
-      } else if (menuName === '3') {
-        this.$router.push('/sys/role')
-      } else if (menuName === '4') {
-        this.$router.push('/sys/test')
-      } else if (menuName === '5') {
-        this.$router.push('/sys/user')
-      }
+      this.$router.push(menuRouterPath)
     },
     // 退出登录 登出
     loginOut () {

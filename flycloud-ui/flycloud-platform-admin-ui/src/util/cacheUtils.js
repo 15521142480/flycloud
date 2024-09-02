@@ -49,14 +49,14 @@ export const getUserToken = () => {
  * @param permission
  */
 export const setPermission = (permission) => {
-  return localStorage.setItem(userPermissionKey, permission)
+  return localStorage.setItem(userPermissionKey, JSON.stringify(permission))
 }
 
 /**
  * 获取用户权限
  */
 export const getPermission = () => {
-  return localStorage.getItem(userPermissionKey)
+  return JSON.parse(localStorage.getItem(userPermissionKey))
 }
 
 /**
@@ -64,14 +64,14 @@ export const getPermission = () => {
  * @param userMenuTree
  */
 export const setUserMenu = (userMenuTree) => {
-  return localStorage.setItem(userMenuTreeKey, userMenuTree)
+  return localStorage.setItem(userMenuTreeKey, JSON.stringify(userMenuTree))
 }
 
 /**
  * 获取用户菜单
  */
 export const getUserMenu = () => {
-  return localStorage.getItem(userMenuTreeKey)
+  return JSON.parse(localStorage.getItem(userMenuTreeKey))
 }
 
 // =====================
@@ -83,4 +83,5 @@ export const removeUserCache = () => {
   localStorage.removeItem(userTokenKey)
   localStorage.removeItem(userPermissionKey)
   localStorage.removeItem(userMenuTreeKey)
+  localStorage.setItem('isFtpStatus', '0')
 }

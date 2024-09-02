@@ -168,10 +168,10 @@ export default {
         ], */
         permission: [
           {required: true, message: '请输入菜单权限', trigger: 'blur'}
+        ],
+        path: [
+          {required: true, message: '请输入路由路径', trigger: 'change'}
         ]
-        /* status: [
-          {required: true, message: '请选择是否显示', trigger: 'change'}
-        ], */
       },
       // 按钮权限验证
       ruleBtnValidate: {

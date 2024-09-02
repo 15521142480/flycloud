@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="type != null">
             and me.type = #{type}
         </if>
-        order by me.sort asc
+        order by me.sort
     </select>
 
     <select id="selectMenuListByUserId" resultType="com.fly.system.api.domain.vo.SysMenuTreeVo">
@@ -56,10 +56,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             , sm.icon
             , sm.keep_alive as keepAlive
             , sm.hidden
+            , sm.sort
         from sys_menu sm
             inner join sys_role_menu srm on srm.menu_id = sm.id
             inner join sys_user_role sur on sur.role_id = srm.role_id
-        where sm.status = '0' and sur.user_id = #{userId};
+        where sm.status = '0' and sur.user_id = #{userId}
+        order by sm.sort
     </select>
 
 </mapper>

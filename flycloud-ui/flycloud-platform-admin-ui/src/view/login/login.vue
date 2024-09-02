@@ -31,7 +31,7 @@
           <FormItem>
             <Row>
               <Col span="15">
-                <Button type="primary" style="margin-left: 120px" @keyup.enter.native="enterLogin()" @click="handleSubmit()">登录</Button>
+                <Button type="primary" :loading="loginLoading" style="margin-left: 120px" @keyup.enter.native="enterLogin()" @click="handleSubmit()">登录</Button>
               </Col>
               <Col span="6">
                 <Button type="info" style="margin-left: 60px">注册</Button>
@@ -61,6 +61,7 @@ export default {
         password: 'admin123',
         code: ''
       },
+      loginLoading: false,
       codeKey: '',
       codeUrl: '',
       ruleInline: {
@@ -127,6 +128,7 @@ export default {
     handleSubmit () {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
+          this.loginLoading = true
           // todo 去除所有的旧缓存
           removeUserCache()
           // 旧
@@ -176,15 +178,19 @@ export default {
                   this.$router.push('/home')
                 } else {
                   this.$Notice.error({title: '操作提醒', desc: userResultMsg})
+                  this.loginLoading = false
                 }
               }).catch((e) => {
                 this.$Notice.error({title: '操作提醒', desc: '用户系统异常!'})
+                this.loginLoading = false
               })
             } else {
               this.$Notice.error({title: '操作提醒', desc: resultMsg})
+              this.loginLoading = false
             }
           }).catch((e) => {
             this.$Notice.error({title: '操作提醒', desc: '登录系统异常!'})
+            this.loginLoading = false
           })
         } else {
           this.$Notice.error({title: '操作提醒', desc: '请验证字段!'})

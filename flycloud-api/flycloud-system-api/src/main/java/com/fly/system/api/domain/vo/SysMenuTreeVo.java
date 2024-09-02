@@ -69,6 +69,11 @@ public class SysMenuTreeVo {
     private Integer hidden;
 
     /**
+     * 是否隐藏
+     */
+    private int sort;
+
+    /**
      * 是否展开
      */
     private Boolean expand;
