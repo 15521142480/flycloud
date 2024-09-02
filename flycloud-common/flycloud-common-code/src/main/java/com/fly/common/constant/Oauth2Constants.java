@@ -78,6 +78,7 @@ public class Oauth2Constants {
 	 */
 	public static final String GRANT_TYPE = "grant_type";
 
+
 	/**
 	 * 用户类型
 	 */
@@ -87,6 +88,28 @@ public class Oauth2Constants {
 	 * 登录类型
 	 */
 	public static final String LOGIN_TYPE = "loginType";
+
+	/**
+	 * 字段描述开始：用户ID
+	 */
+	public static final String USER_ID = "userId";
+
+	/**
+	 * 用户名
+	 */
+	public static final String USER_NAME = "userName";
+
+	/**
+	 * 用户权限ID
+	 */
+	public static final String ROLE_IDS = "roleIds";
+
+	/**
+	 * 用户头像
+	 */
+	public static final String AVATAR = "avatar";
+
+
 
 	/**
 	 * 登录缓存相关
@@ -166,24 +189,6 @@ public class Oauth2Constants {
 	 */
 	public static final String PERMISSION_PREFIX = "fly.permission.";
 
-	/**
-	 * 字段描述开始：用户ID
-	 */
-	public static final String USER_ID = "userId";
 
-	/**
-	 * 用户名
-	 */
-	public static final String USER_NAME = "userName";
-
-	/**
-	 * 用户头像
-	 */
-	public static final String AVATAR = "avatar";
-
-	/**
-	 * 用户权限ID
-	 */
-	public static final String ROLE_ID = "roleId";
 
 }

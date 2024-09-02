@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import FileOptionModal from './file-option-modal'
-import {isNull} from '../../../util/stringUtils'
-import {download} from '../../../util/common'
+import FileOptionModal from './file-option-modal.vue'
+import {isNull} from '../../../../util/stringUtils'
+import {download} from '../../../../util/common'
 
 export default {
   name: 'file-option',
@@ -111,7 +111,7 @@ export default {
         title: '下载',
         content: '<p">确认下载该文件 ' + fileName + ' 吗?</p>',
         onOk: () => {
-          // window.location.href = this.$api.file.downloadFileApi(curPath, fileName)
+          // window.location.href = this.$api.api_file.downloadFileApi(curPath, fileName)
 
           let params = {
             path: curPath,

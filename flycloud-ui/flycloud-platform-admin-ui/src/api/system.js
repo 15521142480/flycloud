@@ -29,6 +29,15 @@ export default {
   },
 
   // ============================================== 用户/菜单/角色 start
+  /**
+   * 用户详情信息
+   */
+  getUserDetailInfoApi (userId) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/user/getDetailInfo${userId}`,
+      method: 'get'
+    })
+  },
 
   /**
    * 用户列表

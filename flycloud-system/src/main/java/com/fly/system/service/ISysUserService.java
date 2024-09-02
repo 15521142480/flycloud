@@ -6,6 +6,7 @@ import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.domain.bo.SysUserBo;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.system.api.domain.vo.UserDetailInfoVo;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +18,11 @@ import java.util.List;
  * @date 2024-08-31
  */
 public interface ISysUserService extends IService<SysUser> {
+
+    /**
+     * 获取用户详情信息
+     */
+    UserDetailInfoVo getDetailInfo(Long id);
 
     /**
      * 查询用户

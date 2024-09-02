@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import FtpFileOptionModal from './ftp-file-option-modal'
-import {isNull} from '../../../util/stringUtils'
-import {download} from '../../../util/common'
+import FtpFileOptionModal from './ftp-file-option-modal.vue'
+import {isNull} from '../../../../util/stringUtils'
+import {download} from '../../../../util/common'
 
 export default {
   name: 'ftp-file-option',

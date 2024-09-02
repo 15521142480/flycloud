@@ -243,22 +243,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             @Override
             public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
 
-                // 添加额外信息的map
-                final Map<String, Object> additionMessage = new HashMap<>(2);
                 // 对于客户端鉴权模式，直接返回token
                 if (oAuth2Authentication.getUserAuthentication() == null) {
                     return oAuth2AccessToken;
                 }
-                // 获取当前登录的用户
+
+                // 添加额外信息的map
+                // 把当前登录用户需要的信息放入jwt token中
+                final Map<String, Object> additionMessage = new HashMap<>(2);
                 FlyUser user = (FlyUser) oAuth2Authentication.getUserAuthentication().getPrincipal();
 
-                // 如果用户不为空 则把id放入jwt token中
                 if (user != null) {
                     additionMessage.put(Oauth2Constants.USER_ID, String.valueOf(user.getId()));
                     additionMessage.put(Oauth2Constants.USER_NAME, user.getUsername());
-                    additionMessage.put(Oauth2Constants.AVATAR, user.getAvatar());
-//                    additionMessage.put(Oauth2Constants.ROLE_ID, String.valueOf(user.getRoleId()));
                     additionMessage.put(Oauth2Constants.USER_TYPE, user.getUserType());
+                    additionMessage.put(Oauth2Constants.LOGIN_TYPE, user.getLoginType());
+                    additionMessage.put(Oauth2Constants.ROLE_IDS, user.getRoleIds());
+                    additionMessage.put(Oauth2Constants.AVATAR, user.getAvatar());
                 }
                 ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionMessage);
                 return oAuth2AccessToken;

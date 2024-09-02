@@ -1,7 +1,6 @@
 package com.fly.common.utils;
 
 import com.fly.common.constant.Oauth2Constants;
-//import com.fly.common.context.UserContext;
 import com.fly.common.entity.LoginUser;
 import com.fly.common.exception.TokenException;
 import io.jsonwebtoken.Claims;
@@ -59,10 +58,10 @@ public class SecurityUtils {
 		LoginUser loginUser = new LoginUser();
 		loginUser.setUserId(String.valueOf(claims.get(Oauth2Constants.USER_ID)));
 		loginUser.setAccount((String) claims.get(Oauth2Constants.USER_NAME));
-		loginUser.setRoleId(String.valueOf(claims.get(Oauth2Constants.ROLE_ID)));
 		loginUser.setUserType(NumberUtil.stoi(String.valueOf(claims.get(Oauth2Constants.USER_TYPE))));
 		loginUser.setLoginType(NumberUtil.stoi(String.valueOf(claims.get(Oauth2Constants.LOGIN_TYPE))));
-//		UserContext.setUser(loginUser);
+		loginUser.setRoleId(String.valueOf(claims.get(Oauth2Constants.ROLE_IDS)));
+
 		return loginUser;
 	}
 	

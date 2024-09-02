@@ -5,7 +5,6 @@ import com.fly.common.model.R;
 import com.fly.system.api.domain.common.UserInfo;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.feign.ISysUserProvider;
-import com.fly.system.service.ISysMenuService;
 import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +25,8 @@ public class SysUserProvider implements ISysUserProvider {
 
 
     private final ISysUserService sysUserService;
+
     private final ISysRoleService sysRoleService;
-    private final ISysMenuService sysMenuService;
 
 
 
@@ -88,10 +87,7 @@ public class SysUserProvider implements ISysUserProvider {
 
         // 权限
         userInfo.setPermissionList(sysRoleService.getPermissionListByUserId(sysUser.getId()));
-        userInfo.setRoleIdList(sysRoleService.getRoleIdListByUserId(sysUser.getId()));
-
-        // 菜单
-        userInfo.setMenuTreeList(sysMenuService.getMenuTreeListByUserId(sysUser.getId()));
+        userInfo.setRoleIds(String.join(",", sysRoleService.getRoleIdListByUserId(sysUser.getId())));
 
         log.debug("feign调用：userInfo:{}", userInfo);
         return userInfo;

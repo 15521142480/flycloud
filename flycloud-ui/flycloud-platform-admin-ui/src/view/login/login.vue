@@ -48,6 +48,7 @@
 <script>
 // let Base64 = require('js-base64').Base64
 import md5 from 'js-md5'
+import { setUserToken, setPermission, setUserMenu, setUserData, removeUserCache } from '../../util/cacheUtils'
 import axios from 'axios'
 export default {
   name: 'login',
@@ -56,8 +57,8 @@ export default {
   data () {
     return {
       dataForm: {
-        loginName: 'adminfile',
-        password: 'admin123456',
+        loginName: 'admin',
+        password: 'admin123',
         code: ''
       },
       codeKey: '',
@@ -105,7 +106,7 @@ export default {
 
     // 获取验证码
     getCode () {
-      localStorage.removeItem('userToken')
+      removeUserCache()
       this.$api.system.getCodeApi().then((res) => {
         let data = res.data.data
         let resultCode = res.data.code
@@ -127,8 +128,7 @@ export default {
       this.$refs.dataForm.validate((valid) => {
         if (valid) {
           // todo 去除所有的旧缓存
-          localStorage.removeItem('userToken')
-          this.$cookies.remove('userName')
+          removeUserCache()
           // 旧
           // 账号密码 baseb4组合 (顺序打乱, 后四位移动到了最前面)
           // let nameAndPassword = this.dataForm.loginName + '#' + this.dataForm.password
@@ -146,28 +146,45 @@ export default {
             codeKey: this.codeKey,
             codeValue: this.dataForm.code
           }
-
+          // 一：登录请求
           this.$api.system.loginApi(loginParams).then((res) => {
             let data = res.data.data
             let resultCode = res.data.code
             let resultMsg = res.data.msg
-
             if (resultCode === 0) {
-              localStorage.setItem('userToken', data.accessToken)
-              // 设置axios全局默认头，后续所有请求都会带上这个token
+              // 1. 登录授权信息
+              // data.userName  'userId', data.userId
               axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.accessToken
-              // this.$cookies.set('userToken', data.userToken);
-              this.$cookies.set('userName', data.userName)
-              // isFtpStatus 是否ftp模式状态
-              localStorage.setItem('isFtpStatus', '0')
+              setUserToken(data.accessToken)
+              // 二：用户信息请求
+              this.$api.system.getUserDetailInfoApi(data.userId).then((userRes) => {
+                let userResultData = userRes.data
+                let userResultCode = userResultData.code
+                let userResultMsg = userResultData.msg
+                if (userResultCode === 0) {
+                  // 2. 用户信息
+                  setUserData(userResultData.data.user)
+                  setPermission(userResultData.data.permissionList)
+                  setUserMenu(userResultData.data.menuTreeList)
 
-              this.$Notice.success({title: '操作提醒', desc: '登录成功！'})
-              this.$router.push('/home')
+                  // 3. 其他信息
+                  // isFtpStatus 是否ftp模式状态
+                  localStorage.setItem('isFtpStatus', '0')
+
+                  // 4. 路由跳转
+                  this.$Notice.success({title: '操作提醒', desc: '登录成功！'})
+                  this.$router.push('/home')
+                } else {
+                  this.$Notice.error({title: '操作提醒', desc: userResultMsg})
+                }
+              }).catch((e) => {
+                this.$Notice.error({title: '操作提醒', desc: '用户系统异常!'})
+              })
             } else {
               this.$Notice.error({title: '操作提醒', desc: resultMsg})
             }
           }).catch((e) => {
-            this.$Notice.error({title: '操作提醒', desc: '异常!'})
+            this.$Notice.error({title: '操作提醒', desc: '登录系统异常!'})
           })
         } else {
           this.$Notice.error({title: '操作提醒', desc: '请验证字段!'})

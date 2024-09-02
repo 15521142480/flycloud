@@ -83,7 +83,7 @@
       </div>
 
       <div slot="right" style="padding: 10px 10px 10px 15px">
-        <!--        <Card class="file-option-card">-->
+        <!--        <Card class="api_file-option-card">-->
         <Row>
           <Col span="24">
             <div id="xterm"></div>
@@ -134,9 +134,10 @@
 </template>
 
 <script>
+import { getUserToken } from '../../../util/cacheUtils'
 import axios from 'axios'
-import FtpFileOption from './component/ftp-file-option'
-import FtpFileOptionModal from './component/ftp-file-option-modal'
+import FtpFileOption from './component/ftp-file-option.vue'
+import FtpFileOptionModal from './component/ftp-file-option-modal.vue'
 import 'xterm/css/xterm.css'
 import {Terminal} from 'xterm'
 import {FitAddon} from 'xterm-addon-fit'
@@ -150,8 +151,7 @@ export default {
   props: {},
   data () {
     return {
-      userName: this.$cookies.get('userName'),
-      userToken: localStorage.getItem('userToken'),
+      userToken: getUserToken(),
       splitNum: 0.58,
       value: '',
       text: '[root@ ~]#',
@@ -182,9 +182,9 @@ export default {
             let fileType = params.row.fileType
             let src = ''
             if (fileType === '1') {
-              src = require('../../assets/folder_images/folder-min.png')
+              src = require('../../../assets/folder_images/folder-min.png')
             } else {
-              src = require('../../assets/folder_images/file.png')
+              src = require('../../../assets/folder_images/file.png')
             }
             return h('div',
               {
@@ -424,7 +424,7 @@ export default {
      * 获取上传进度接口
      */
     getUploadPercent () {
-      // this.$api.file.uploadFilePercentApi().then((res) => {
+      // this.$api.api_file.uploadFilePercentApi().then((res) => {
       //   this.percent = parseInt(res.data)
       //   console.log(this.percent)
       //   if (this.percent === 100) {
@@ -508,11 +508,11 @@ export default {
       }
 
       // 文件类型校验
-      // let fileType = file.name.substring(file.name.lastIndexOf('.') + 1)
+      // let fileType = api_file.name.substring(api_file.name.lastIndexOf('.') + 1)
       // if (this.permissionUploadFileTypeList.indexOf(fileType) === -1) {
       //   this.$Notice.error({
       //     title: '文件类型超限!',
-      //     desc: '文件  ' + file.name + ' 类型超出限制!'
+      //     desc: '文件  ' + api_file.name + ' 类型超出限制!'
       //   });
       //   return false
       // }
@@ -528,7 +528,7 @@ export default {
 
       // 选择文件后 这里判断文件类型 保存文件 自定义一个keyid 值 方便后面删除操作
       // let keyID = Math.random().toString().substr(2);
-      // file['keyID'] = keyID;
+      // api_file['keyID'] = keyID;
 
       this.file.push(file) // 保存文件到总展示文件数据里
       this.fileList.push(file) // 保存文件到需要上传的文件数组里
@@ -537,29 +537,6 @@ export default {
       return false // 手动上传
     },
     // ========== 上传文件 end
-
-    // 退出登录
-    loginOut () {
-      this.$Modal.confirm({
-        title: '退出系统',
-        content: '<p>确认要退出系统吗?</p>',
-        onOk: () => {
-          this.$api.system.loginOutApi().then((res) => {
-            let resultCode = res.data.code
-            let resultMsg = res.data.msg
-            if (resultCode === 0) {
-              this.$Notice.success({title: '操作提醒', desc: resultMsg})
-            } else {
-              this.$Notice.error({title: '操作提醒', desc: '操作失败'})
-            }
-            this.$cookies.remove('userToken')
-            this.$cookies.remove('userName')
-          }).catch((e) => {
-          })
-          this.$router.push('/')
-        }
-      })
-    },
 
     /**
      * 初始化 term

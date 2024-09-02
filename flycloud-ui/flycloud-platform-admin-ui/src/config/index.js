@@ -24,18 +24,26 @@ export default {
     pro: '/flycloud-file-admin'
   },
 
-  // token在Cookie中存储的天数，默认1天
+  /**
+   * token在Cookie中存储的天数，默认1天
+   */
   cookieExpires: 1,
 
-  // 是否使用国际化，默认为false
-  //              如果不使用，则需要在路由中给需要在菜单中展示的路由设置meta: {title: 'xxx'}
-  //              用来在菜单中显示文字
+  /**
+   * 是否使用国际化，默认为false
+   * 如果不使用，则需要在路由中给需要在菜单中展示的路由设置meta: {title: 'xxx'}
+   * 用来在菜单中显示文字
+   */
   useI18n: false,
 
-  // 默认打开的首页的路由name值，默认为home
+  /**
+   * 默认打开的首页的路由name值，默认为home
+   */
   // homeName: 'home',
 
-  // 需要加载的插件
+  /**
+   * 需要加载的插件
+   */
   plugin: {
   }
 }

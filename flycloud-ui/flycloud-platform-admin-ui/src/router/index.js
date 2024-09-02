@@ -17,7 +17,7 @@ export default new Router({
         title: '登陆'
         // isCache: true // 是否缓存改页面  !!! 用于路由返回时记住上次的滚动位置 等等
       },
-      component: () => import('../view/system/login')
+      component: () => import('../view/login/login.vue')
     },
     {
       path: '/',

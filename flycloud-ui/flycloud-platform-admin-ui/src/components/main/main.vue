@@ -87,8 +87,7 @@
 </template>
 
 <script>
-// import
-
+import { getUserName, removeUserCache } from '../../util/cacheUtils'
 export default {
   components: {},
   props: {
@@ -101,7 +100,7 @@ export default {
   },
   data () {
     return {
-      userName: this.$cookies.get('userName'),
+      userName: getUserName(),
       spanLeft: 5,
       spanRight: 19
     }
@@ -154,12 +153,10 @@ export default {
             } else {
               this.$Notice.error({title: '操作提醒', desc: '操作失败' + resultMsg})
             }
-            localStorage.removeItem('userToken')
-            this.$cookies.remove('userName')
+            removeUserCache()
             this.$router.push('/login')
           }).catch((e) => {
-            localStorage.removeItem('userToken')
-            this.$cookies.remove('userName')
+            removeUserCache()
             this.$router.push('/login')
           })
         }

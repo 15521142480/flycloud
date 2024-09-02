@@ -17,7 +17,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.system.api.domain.SysRoleMenu;
 import com.fly.system.api.domain.SysUserRole;
+import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
+import com.fly.system.service.ISysMenuService;
 import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
@@ -43,14 +45,41 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
 
     private final SysUserMapper baseMapper;
+
     private final ISysRoleService sysRoleService;
+
     private final SysUserRoleMapper sysUserRoleMapper;
+
+    private final ISysMenuService sysMenuService;
+
+
 
     /**
      * 查询用户
      */
     @Override
-    public SysUserVo queryById(Long id){
+    public UserDetailInfoVo getDetailInfo(Long id) {
+
+        UserDetailInfoVo userDetailInfoVo = new UserDetailInfoVo();
+
+        // 用户基本信息
+        userDetailInfoVo.setUser(this.queryById(id));
+        userDetailInfoVo.getUser().setPassword(null);
+
+        // 权限信息
+        userDetailInfoVo.setPermissionList(sysRoleService.getPermissionListByUserId(id));
+
+        // 菜单信息
+        userDetailInfoVo.setMenuTreeList(sysMenuService.getMenuTreeListByUserId(id));
+
+        return userDetailInfoVo;
+    }
+
+    /**
+     * 查询用户
+     */
+    @Override
+    public SysUserVo queryById(Long id) {
         return baseMapper.selectVoById(id);
     }
 

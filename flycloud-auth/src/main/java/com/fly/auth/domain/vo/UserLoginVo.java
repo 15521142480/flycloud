@@ -61,19 +61,9 @@ public class UserLoginVo implements Serializable {
 
     // ================================================================================================
     /**
-     * 系统权限标识组
+     * 系统权限标识组id
      */
-    private List<String> permissionList;
-
-    /**
-     * 系统角色标识组id
-     */
-    private List<String> roleIdList;
-
-    /**
-     * 系统菜单树列表
-     */
-    private List<SysMenuTreeVo> menuTreeList;
+    private String roleIds;
 
 
 }

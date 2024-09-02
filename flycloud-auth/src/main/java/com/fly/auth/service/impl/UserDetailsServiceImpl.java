@@ -104,17 +104,28 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		}
 		
 		SysUser user = userInfo.getSysUser();
-		log.info("用户名：{}", userInfo.getSysUser().getAccount());
+		log.info("账号：{}", userInfo.getSysUser().getAccount());
 		
-//		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getRoleIds()));
-		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList();
-		log.info("authorities: {}", authorities);
+		Collection<? extends GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getPermissionList()));
+		log.info("权限: {}", authorityList);
 
 
 		// todo !!! 把spring security的User字段信息设置上，用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现 !!!
-		return new FlyUser(user.getId().toString(), userInfo.getSysUser().getUserType(), userInfo.getLoginType(), user.getDepartId().toString(), user.getTelephone(), user.getAvatar(),
-				userInfo.getUserName(), user.getPassword(), ENABLE.equals(user.getStatus()),
-				true, true, true, authorities
+		return new FlyUser(
+				user.getId().toString()
+				, userInfo.getSysUser().getUserType()
+				, userInfo.getLoginType()
+				, user.getDepartId().toString()
+				, user.getTelephone()
+				, user.getAvatar()
+				, userInfo.getRoleIds()
+				, userInfo.getUserName()
+				, user.getPassword()
+				, ENABLE.equals(user.getStatus()),
+				true
+				, true
+				, true
+				, authorityList
 		);
 	}
 

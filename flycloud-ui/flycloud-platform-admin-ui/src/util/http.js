@@ -2,11 +2,11 @@
  * axios封装
  * 请求拦截、响应拦截、错误统一处理
  */
+import { getUserToken } from './cacheUtils'
 import axios from 'axios'
 import router from '../router'
 import {Message} from 'iview'
 let Base64 = require('js-base64').Base64
-
 axios.defaults.withCredentials = true // 允许跨域携带cookie
 
 /**
@@ -74,8 +74,7 @@ instance.interceptors.request.use(
     // const token = store.state.token;
     // token && (config.headers.Authorization = token);
 
-    // const userToken = Vue.prototype.$cookies.get('userToken')
-    const userToken = localStorage.getItem('userToken')
+    const userToken = getUserToken()
     userToken && (config.headers.userToken = userToken)
 
     // todo 有用户token设值用户token，无则赋值客户端登录信息token

@@ -19,7 +19,7 @@
     <hr/>
 
     <div>
-      <file-list2 ref="fileListRef" v-if="isFtpStatus === '0'" @on-handle="handleIsFtpStatus"/>
+      <file-list ref="fileListRef" v-if="isFtpStatus === '0'" @on-handle="handleIsFtpStatus"/>
       <ftp-file-list ref="ftpFileListRef" v-if="isFtpStatus === '1'" @on-handle="handleIsFtpStatus"/>
       <login-ftp-form ref="loginFtpFormRef" @on-handle="handleIsFtpStatus"/>
     </div>
@@ -28,26 +28,22 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import fileList from '../file/file-list'
-import fileList2 from '../file/file-list2'
-import ftpFileList from '../ftp_file/ftp-file-list'
+import fileList from '../file/api_file/file-list.vue'
+import ftpFileList from '../file/ftp_file/ftp-file-list'
 import LoginFtpForm from './component/login-ftp-form'
 import {mapGetters, mapMutations} from 'vuex'
 
 export default {
   name: 'home',
   components: {
-    fileList2,
+    fileList,
     ftpFileList,
     LoginFtpForm
   },
   props: {},
   data () {
     return {
-      isFtpStatus: localStorage.getItem('isFtpStatus'),
-      userName: this.$cookies.get('userName'),
-      userToken: localStorage.getItem('userToken')
+      isFtpStatus: localStorage.getItem('isFtpStatus')
     }
   },
   created () {
@@ -237,7 +233,7 @@ export default {
           margin-bottom: 25px;
         }
 
-        /*.file-option-path :nth-last-child(1){*/
+        /*.api_file-option-path :nth-last-child(1){*/
         /*  margin-top: 5px;*/
         /*  font-size: 16px;*/
         /*  color: #000;*/

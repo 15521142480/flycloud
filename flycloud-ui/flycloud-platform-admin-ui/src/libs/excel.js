@@ -41,7 +41,7 @@ function fixdata(data) {
     return o
 }
 
-// get head from excel file,return array
+// get head from excel api_file,return array
 function get_header_row(sheet) {
     const headers = []
     const range = XLSX.utils.decode_range(sheet['!ref'])

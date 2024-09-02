@@ -40,21 +40,16 @@ public class UserInfo implements Serializable {
 
 	// ======================================== 菜单与权限
 	/**
+	 * 系统权限标识组id
+	 */
+	@Schema(description = "系统权限标识组id")
+	private String roleIds;
+
+	/**
 	 * 系统权限标识组
 	 */
 	@Schema(description = "系统权限标识组")
 	private List<String> permissionList;
 
-	/**
-	 * 系统角色标识组id
-	 */
-	@Schema(description = "系统角色标识组id")
-	private List<String> roleIdList;
-
-	/**
-	 * 系统菜单树列表
-	 */
-	@Schema(description = "系统菜单树列表")
-	private List<SysMenuTreeVo> menuTreeList;
 
 }

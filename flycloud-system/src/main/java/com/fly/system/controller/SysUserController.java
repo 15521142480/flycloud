@@ -9,6 +9,7 @@ import com.fly.common.enums.BusinessType;
 import com.fly.common.model.R;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +36,16 @@ import javax.servlet.http.HttpServletResponse;
 public class SysUserController extends BaseController {
 
     private final ISysUserService iSysUserService;
+
+
+
+    /**
+     * 获取用户详情信息
+     */
+    @GetMapping("/getDetailInfo{id}")
+    public R<UserDetailInfoVo> getDetailInfo(@NotNull(message = "id不能为空") @PathVariable Long id) {
+        return R.ok(iSysUserService.getDetailInfo(id));
+    }
 
 
     /**
