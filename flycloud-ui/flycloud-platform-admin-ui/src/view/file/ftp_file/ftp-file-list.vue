@@ -30,12 +30,12 @@
                     </Col>
                     <Col span="5">
                       <div>
-                        <Button @click="newFolder" type="primary" shape="circle" icon="md-add-circle">新建文件夹
+                        <Button v-show="checkHasPermission('file.create')" @click="newFolder" type="primary" shape="circle" icon="md-add-circle">新建文件夹
                         </Button>
                       </div>
                     </Col>
                     <Col span="5">
-                      <div>
+                      <div v-show="checkHasPermission('file.upload')">
                         <!-- //是否支持多文件上传 //显示上传的文件 //上传前需要的一些操作 //上传的文件保存的地方 //上传成功时调用的方法 //这里是设置的请求头token //这是上传时的后台接口 -->
                         <Upload
                           ref="upload"
@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { getUserToken } from '../../../util/cacheUtils'
+import { getUserToken, hasPermission } from '../../../util/cacheUtils'
 import axios from 'axios'
 import FtpFileOption from './component/ftp-file-option.vue'
 import FtpFileOptionModal from './component/ftp-file-option-modal.vue'
@@ -665,6 +665,11 @@ export default {
         }
         this.init()
       }
+    },
+
+    // 检查操作权限
+    checkHasPermission (btnPermission) {
+      return hasPermission(btnPermission)
     }
 
   },

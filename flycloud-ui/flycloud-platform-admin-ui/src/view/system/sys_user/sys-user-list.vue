@@ -7,8 +7,7 @@
           <Input placeholder="登录账号" v-model="params.account" clearable style="width: 200px;"><Icon type="ios-search" slot="prefix" /></Input>&nbsp;&nbsp;
           <Button type="primary" shape="circle" icon="ios-search" @click="search">查询</Button>&nbsp;&nbsp;
           <Button type="default" shape="circle" icon="ios-nuclear" @click="clear">清空</Button>&nbsp;&nbsp;
-<!--          <Button type="primary" shape="circle" icon="md-body" @click="add" v-show="checkOperationAccess('system.user.add')">新增账号</Button>-->
-          <Button type="primary" shape="circle" icon="md-body" @click="add">新增账号</Button>
+          <Button v-show="checkHasPermission('sys.user.saveOrUpdate')" type="primary" shape="circle" icon="md-body" @click="add">新增账号</Button>
         </Col>
       </Row>
     </div>
@@ -43,7 +42,7 @@
 </template>
 
 <script>
-// import { hasOperationAccess } from '@/libs/util'
+import { hasPermission } from '../../../util/cacheUtils'
 import SysUserEdit from './sys-user-edit'
 export default {
   name: 'sys-user-list',
@@ -94,51 +93,51 @@ export default {
 
             let btnList = []
 
-            // if (this.checkOperationAccess('system.role.modify')) {
-            let editBtn = h('Button', {
-              props: {
-                type: 'primary',
-                size: 'small',
-                shape: 'circle',
-                icon: 'ios-create'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              on: {
-                click: () => {
-                  this.$refs.sysUserEditPop.getSysUserDetailData(row)
-                  // this.isShowModal = true
+            if (this.checkHasPermission('sys.user.saveOrUpdate')) {
+              let editBtn = h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small',
+                  shape: 'circle',
+                  icon: 'ios-create'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.$refs.sysUserEditPop.getSysUserDetailData(row)
+                    // this.isShowModal = true
+                  }
                 }
-              }
-            }, '编辑')
-            btnList.push(editBtn)
-            // }
+              }, '编辑')
+              btnList.push(editBtn)
+            }
 
-            // if (this.checkOperationAccess('system.role.status')) {
-            let enableSwitch = h('i-switch', {
-              props: {
-                size: 'large',
-                type: 'primary',
-                'true-value': '0',
-                'false-value': '1',
-                value: row.status === '0' ? '0' : '1'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              scopedSlots: {
-                open: () => h('span', '已启'),
-                close: () => h('span', '已禁')
-              },
-              on: {
-                'on-change': (value) => {
-                  this.updateStatus(row, value)
+            if (this.checkHasPermission('sys.user.enable')) {
+              let enableSwitch = h('i-switch', {
+                props: {
+                  size: 'large',
+                  type: 'primary',
+                  'true-value': '0',
+                  'false-value': '1',
+                  value: row.status === '0' ? '0' : '1'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                scopedSlots: {
+                  open: () => h('span', '已启'),
+                  close: () => h('span', '已禁')
+                },
+                on: {
+                  'on-change': (value) => {
+                    this.updateStatus(row, value)
+                  }
                 }
-              }
-            })
-            btnList.push(enableSwitch)
-            // }
+              })
+              btnList.push(enableSwitch)
+            }
 
             return h('div',
               btnList
@@ -151,39 +150,6 @@ export default {
     }
   },
   methods: {
-
-    // 拼接按钮
-    btnRender (h, params) {
-      let btnList = []
-      // if (this.checkOperationAccess('system.user.modify')) {
-      let detail = this.createBtn(h, '修改', 'primary', function (that) {
-        that.managerId = params.row.id
-        that.isShowEdit = true
-      })
-      btnList.push(detail)
-      // }
-      // if (this.checkOperationAccess('system.user.status')) {
-      let status = params.row.status
-      let btnStr = this.createBtn(h, status ? '禁用' : '启用', status ? 'error' : 'success', function (that) {
-        that.updateStatus(params.row)
-      })
-      btnList.push(btnStr)
-      // }
-      return btnList
-    },
-    createBtn (h, title, type, callback) {
-      return h('Button', {
-        props: {type: type, size: 'small'},
-        style: {marginRight: '5px'},
-        on: {
-          click: () => {
-            let that = this
-            callback(that)
-          }
-        }
-      }, title)
-    },
-
     /** ***************************************** 点击事件 *******************************************/
     // 跳页
     pageChange: function (num) {
@@ -265,12 +231,12 @@ export default {
       //   },
       //   onCancel: () => { this.$Message.info('已取消') }
       // })
-    }
+    },
 
     // 检查操作权限
-    // checkOperationAccess (requireAccess) {
-    //   return hasOperationAccess(requireAccess)
-    // }
+    checkHasPermission (btnPermission) {
+      return hasPermission(btnPermission)
+    }
   },
 
   // vue生命周期-组件创建完成执行

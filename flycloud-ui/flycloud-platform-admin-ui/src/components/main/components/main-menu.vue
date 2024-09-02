@@ -1,6 +1,6 @@
 <template>
   <div class="main-menu">
-    <Menu ref="menu" :active-name="activeName"  theme="dark" width="auto" @on-select="handleSelectMenu">
+    <Menu ref="menu" :active-name="activeName" :open-names="['/sys']" theme="dark" width="auto" @on-select="handleSelectMenu">
       <template v-for="item in menuDataList">
         <template v-if="item.children && item.children.length > 0">
           <!-- 此处如果需要递归菜单，写一个字菜单组件即可（本系统只做二级菜单） -->
@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      activeName: '', // 当前菜单所选的位置
+      activeName: '/home', // 当前菜单所选的位置
       menuDataList: getUserMenu(),
       name: ''
     }

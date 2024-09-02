@@ -13,13 +13,13 @@
           <Button @click="reNameFile" type="primary" shape="circle" icon="md-albums">重命名</Button>
         </div>
         <div v-show="fileData.fileType === '2'" class="file-option-comm">
-          <Button @click="downloadFile" type="primary" shape="circle" icon="md-cloud-download">下载</Button>
+          <Button v-show="checkHasPermission('file.download')" @click="downloadFile" type="primary" shape="circle" icon="md-cloud-download">下载</Button>
         </div>
         <div class="file-option-comm">
           <Button @click="compressFile" type="primary" shape="circle" icon="md-attach">压缩</Button>
         </div>
         <div class="file-option-comm">
-          <Button @click="deleteFile" type="error" shape="circle" icon="md-trash">删除</Button>
+          <Button v-show="checkHasPermission('file.delete')" @click="deleteFile" type="error" shape="circle" icon="md-trash">删除</Button>
         </div>
         <div v-show="fileData.fileType === '2' && isOptionServerShow" class="file-option-comm">
           <Button @click="execute" type="success" shape="circle" icon="md-play">执行</Button>
@@ -38,6 +38,7 @@
 import FileOptionModal from './file-option-modal.vue'
 import {isNull} from '../../../../util/stringUtils'
 import {download} from '../../../../util/common'
+import { hasPermission } from '../../../../util/cacheUtils'
 
 export default {
   name: 'file-option',
@@ -202,7 +203,13 @@ export default {
         this.$emit('on-ok-cancel')
       }).catch((e) => {
       })
+    },
+
+    // 检查操作权限
+    checkHasPermission (btnPermission) {
+      return hasPermission(btnPermission)
     }
+
   },
   computed: {},
   watch: {

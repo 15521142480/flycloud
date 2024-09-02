@@ -85,3 +85,15 @@ export const removeUserCache = () => {
   localStorage.removeItem(userMenuTreeKey)
   localStorage.setItem('isFtpStatus', '0')
 }
+
+// =====================
+/**
+ * 是否有该按钮权限
+ * @returns btnPermission
+ */
+export const hasPermission = (btnPermission) => {
+  if (getPermission().indexOf(btnPermission) >= 0) {
+    return true
+  }
+  return false
+}

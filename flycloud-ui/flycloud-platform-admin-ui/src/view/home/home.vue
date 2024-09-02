@@ -4,7 +4,7 @@
       <Row style="margin-bottom: 10px;margin-left: 30px">
         <Col span="12">
           <div class="file-login-div" v-show="isFtpStatus === '0'">
-            <Button @click="loginFtp" type="primary" icon="ios-jet-outline">使用SFTP连接</Button>
+            <Button v-show="checkHasPermission('file.connect')" @click="loginFtp" type="primary" icon="ios-jet-outline">使用SFTP连接</Button>
           </div>
           <div class="file-login-div" v-show="isFtpStatus === '1'">
             <Button @click="loginOutFtp" type="warning">退出FTP连接, 使用接口服务连接</Button>
@@ -32,7 +32,7 @@ import fileList from '../file/api_file/file-list.vue'
 import ftpFileList from '../file/ftp_file/ftp-file-list'
 import LoginFtpForm from './component/login-ftp-form'
 import {mapGetters, mapMutations} from 'vuex'
-
+import { hasPermission } from '../../util/cacheUtils'
 export default {
   name: 'home',
   components: {
@@ -135,6 +135,11 @@ export default {
       }).catch((e) => {
         this.$Message.error('接口异常!')
       })
+    },
+
+    // 检查操作权限
+    checkHasPermission (btnPermission) {
+      return hasPermission(btnPermission)
     }
   },
   watch: {

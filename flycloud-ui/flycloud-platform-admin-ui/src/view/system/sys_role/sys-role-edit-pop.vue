@@ -27,6 +27,7 @@
                   <Form ref="roleEditFrom"
                         :model="roleEditFrom"
                         :label-width="90"
+                        style="margin-top: 18px"
                         label-position="right"
                         :rules="ruleValidate"
                         @submit.native.prevent="saveEdit">
@@ -64,7 +65,7 @@
                 <Card>
                   <p slot="title" style="text-align: center">权限管理</p>
                   <div>
-                  <div style="margin-top: 10px;height: calc(100vh - 280px);overflow-y:auto;overflow-x:hidden;">
+                  <div style="margin-top: 10px;height: calc(100vh - 260px);overflow-y:auto;overflow-x:hidden;padding-left: 15px">
                     <Tree
                       :data="sysRoleMenuData"
                       :render="renderContent"
@@ -149,6 +150,7 @@ export default {
           name: '',
           type: 0,
           remark: '',
+          status: '0',
           roleMenuPermissionJson: ''
         }
       }
@@ -240,9 +242,9 @@ export default {
           let bindSwitch = h('i-switch', {
             props: {
               type: 'primary',
-              'true-value': '1',
-              'false-value': '0',
-              value: d[item].flag === '1' ? '1' : '0'
+              'true-value': 1,
+              'false-value': 0,
+              value: d[item].flag === '1' ? 1 : 0
             },
             style: {
               marginRight: '10px'

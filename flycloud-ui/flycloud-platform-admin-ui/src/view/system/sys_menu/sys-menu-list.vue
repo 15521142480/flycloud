@@ -2,19 +2,16 @@
     <div>
 <!--      <Card style="height: calc(100vh - 145px)">-->
       <div style="margin-top: 15px">
-<!--        <Button v-show="checkOperationAccess('system.menu.add')" style="fontSize:13px"  type="primary" shape="circle" @click="showEditModal"><Icon size="14" type="md-body" /> 新增一级菜单</Button>-->
-        <Button style="fontSize:13px"  type="primary" shape="circle" @click="showEditModal"><Icon size="14" type="md-body" /> 新增一级菜单</Button>
+        <Button v-show="checkHasPermission('sys.menu.saveOrUpdate')" style="font-size:13px;margin-left: 20px"  type="primary" shape="circle" @click="showEditModal"><Icon size="14" type="md-body" /> 新增一级菜单</Button>
       </div>
       <Divider />
-      <div>
-      <span style="margin-top: 10px">
+      <div style="height: calc(100vh - 200px); overflow-y:auto; overflow-x:hidden;">
         <Tree
           :data="sysMenuData"
           :render="renderContent"
-          style="width: 40%;font-size: 18px;"
+          style="width: 40%;font-size: 18px;margin-left: 20px;"
         >
         </Tree>
-      </span>
       </div>
       <Spin size="large" fix v-if="showLoading"></Spin>
 <!--      </Card>-->
@@ -30,7 +27,7 @@
 
 <script>
 import SysMenuEditPop from './sys-menu-edit-pop'
-// import {hasOperationAccess} from '@/libs/util'
+import { hasPermission } from '../../../util/cacheUtils'
 
 export default {
   name: 'sys-menu-list',
@@ -101,69 +98,69 @@ export default {
 
       let btnList = []
 
-      // if (this.checkOperationAccess('system.menu.add')) {
-      let addBtn = h('Button', {
-        props: Object.assign({}, this.buttonProps, {
-          type: 'primary',
-          size: 'default',
-          icon: 'md-person-add',
-          shape: 'circle',
-          disabled: canMenuBtn
-        }),
-        style: {
-          marginRight: '15px'
-        },
-        on: {
-          click: () => {
-            // 传 id 是因为下个子类信息的parentId就是此id
-            this.$refs.sysMenuEditPop.getSysMenuCurrentIdAndMenuLevel(data.id, data.level)
-            this.showEditModal()
+      if (this.checkHasPermission('sys.menu.saveOrUpdate')) {
+        let addBtn = h('Button', {
+          props: Object.assign({}, this.buttonProps, {
+            type: 'primary',
+            size: 'default',
+            icon: 'md-person-add',
+            shape: 'circle',
+            disabled: canMenuBtn
+          }),
+          style: {
+            marginRight: '15px'
+          },
+          on: {
+            click: () => {
+              // 传 id 是因为下个子类信息的parentId就是此id
+              this.$refs.sysMenuEditPop.getSysMenuCurrentIdAndMenuLevel(data.id, data.level)
+              this.showEditModal()
+            }
           }
-        }
-      }, '添加子类')
-      btnList.push(addBtn)
-      // }
+        }, '添加子类')
+        btnList.push(addBtn)
+      }
 
-      // if (this.checkOperationAccess('system.menu.modify')) {
-      let editBtn = h('Button', {
-        props: {
-          type: 'primary',
-          size: 'default',
-          shape: 'circle',
-          icon: 'ios-create'
-        },
-        style: {
-          marginRight: '15px'
-        },
-        on: {
-          click: () => {
-            this.$refs.sysMenuEditPop.getSysMenuDetailData(data.id)
-            this.showEditModal()
+      if (this.checkHasPermission('sys.menu.saveOrUpdate')) {
+        let editBtn = h('Button', {
+          props: {
+            type: 'primary',
+            size: 'default',
+            shape: 'circle',
+            icon: 'ios-create'
+          },
+          style: {
+            marginRight: '15px'
+          },
+          on: {
+            click: () => {
+              this.$refs.sysMenuEditPop.getSysMenuDetailData(data.id)
+              this.showEditModal()
+            }
           }
-        }
-      }, '编辑')
-      btnList.push(editBtn)
-      // }
+        }, '编辑')
+        btnList.push(editBtn)
+      }
 
-      // if (this.checkOperationAccess('system.menu.enable')) {
-      let enableBtn = h('Button', {
-        props: Object.assign({}, this.buttonProps, {
-          type: data.status === '0' ? 'success' : 'error',
-          size: 'default',
-          shape: 'circle',
-          icon: data.status === '0' ? 'md-checkmark-circle' : 'md-eye-off'
-        }),
-        style: {
-          marginRight: '15px'
-        },
-        on: {
-          click: () => {
-            this.updateEnable(data)
+      if (this.checkHasPermission('sys.menu.enable')) {
+        let enableBtn = h('Button', {
+          props: Object.assign({}, this.buttonProps, {
+            type: data.status === '0' ? 'success' : 'error',
+            size: 'default',
+            shape: 'circle',
+            icon: data.status === '0' ? 'md-checkmark-circle' : 'md-eye-off'
+          }),
+          style: {
+            marginRight: '15px'
+          },
+          on: {
+            click: () => {
+              this.updateEnable(data)
+            }
           }
-        }
-      }, data.status === '0' ? '已启' : '已禁') // 后台返回回来的short类型,所以直接是1不是"1"
-      btnList.push(enableBtn)
-      // }
+        }, data.status === '0' ? '已启' : '已禁') // 后台返回回来的short类型,所以直接是1不是"1"
+        btnList.push(enableBtn)
+      }
 
       return h('span', {
         style: {
@@ -231,12 +228,12 @@ export default {
     },
     confirmSysMenuEdit () {
       this.init()
-    }
+    },
 
     // 检查操作权限
-    // checkOperationAccess (requireAccess) {
-    //   return hasOperationAccess(requireAccess)
-    // }
+    checkHasPermission (btnPermission) {
+      return hasPermission(btnPermission)
+    }
 
   },
   watch: {

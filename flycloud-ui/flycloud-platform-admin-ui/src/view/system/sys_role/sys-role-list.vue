@@ -6,8 +6,7 @@
           <Input v-model="params.name" placeholder="角色名称" style="width: 200px"><Icon type="ios-search" slot="prefix" /></Input>&nbsp;&nbsp;
           <Button type="primary" shape="circle" icon="ios-search" @click="search" >查询</Button>&nbsp;&nbsp;
           <Button type="default" shape="circle" icon="ios-nuclear" @click="clear">清空</Button>&nbsp;&nbsp;
-<!--          <Button v-show="checkOperationAccess('system.role.add')" type="primary" shape="circle" icon="md-body" @click="addRoleInfo">新增</Button>-->
-          <Button type="primary" shape="circle" icon="md-body" @click="addRoleInfo">新增</Button>
+          <Button type="primary" v-show="checkHasPermission('sys.role.saveOrUpdate')" shape="circle" icon="md-body" @click="addRoleInfo">新增</Button>
         </div>
       </div>
       <div>
@@ -40,7 +39,7 @@
 
 <script>
 import SysRoleEditPop from './sys-role-edit-pop'
-// import { hasOperationAccess } from '@/libs/util'
+import { hasPermission } from '../../../util/cacheUtils'
 export default {
   name: 'sys-role-list',
   components: {
@@ -119,51 +118,51 @@ export default {
 
             let btnList = []
 
-            // if (this.checkOperationAccess('system.role.modify')) {
-            let editBtn = h('Button', {
-              props: {
-                type: 'primary',
-                size: 'small',
-                shape: 'circle',
-                icon: 'ios-create'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              on: {
-                click: () => {
-                  this.$refs.sysRoleEditPop.getSysRoleDetailData(row)
-                  this.isShowModal = true
+            if (this.checkHasPermission('sys.role.saveOrUpdate')) {
+              let editBtn = h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small',
+                  shape: 'circle',
+                  icon: 'ios-create'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.$refs.sysRoleEditPop.getSysRoleDetailData(row)
+                    this.isShowModal = true
+                  }
                 }
-              }
-            }, '编辑')
-            btnList.push(editBtn)
-            // }
+              }, '编辑')
+              btnList.push(editBtn)
+            }
 
-            // if (this.checkOperationAccess('system.role.status')) {
-            let enableSwitch = h('i-switch', {
-              props: {
-                size: 'large',
-                type: 'primary',
-                'true-value': '0',
-                'false-value': '1',
-                value: row.status === '0' ? '0' : '1'
-              },
-              style: {
-                marginRight: '5px'
-              },
-              scopedSlots: {
-                open: () => h('span', '已启'),
-                close: () => h('span', '已禁')
-              },
-              on: {
-                'on-change': (value) => {
-                  this.updateEnable(row, value)
+            if (this.checkHasPermission('sys.role.enable')) {
+              let enableSwitch = h('i-switch', {
+                props: {
+                  size: 'large',
+                  type: 'primary',
+                  'true-value': '0',
+                  'false-value': '1',
+                  value: row.status === '0' ? '0' : '1'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                scopedSlots: {
+                  open: () => h('span', '已启'),
+                  close: () => h('span', '已禁')
+                },
+                on: {
+                  'on-change': (value) => {
+                    this.updateEnable(row, value)
+                  }
                 }
-              }
-            })
-            btnList.push(enableSwitch)
-            // }
+              })
+              btnList.push(enableSwitch)
+            }
 
             return h('div',
               btnList
@@ -246,12 +245,12 @@ export default {
     sizeChange (size) {
       this.params.pageSize = size
       this.init()
-    }
+    },
 
     // 检查操作权限
-    // checkOperationAccess (requireAccess) {
-    //   return hasOperationAccess(requireAccess)
-    // }
+    checkHasPermission (btnPermission) {
+      return hasPermission(btnPermission)
+    }
 
   },
   watch: {

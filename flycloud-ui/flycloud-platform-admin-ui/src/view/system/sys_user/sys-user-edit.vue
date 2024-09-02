@@ -71,19 +71,11 @@
 <!--          <Input v-model="dataFrom.urgentPhone" placeholder="联系人电话" style="width: 85%;"/>-->
 <!--        </FormItem>-->
 
-        <FormItem label="管理员密码" v-show="isUpdate">
+        <FormItem label="管理员密码" prop="password">
           <Input type="password" v-model="dataFrom.password" placeholder="密码" style="width: 85%;"/>
         </FormItem>
 
-        <FormItem label="管理员密码" prop="password" v-show="!isUpdate">
-          <Input type="password" v-model="dataFrom.password" placeholder="密码" style="width: 85%;"/>
-        </FormItem>
-
-        <FormItem label="确认密码" v-show="isUpdate" >
-          <Input type="password" v-model="dataFrom.cfirmpswd" placeholder="确认密码" style="width: 85%;"/>
-        </FormItem>
-
-        <FormItem label="确认密码" prop="cfirmpswd" v-show="!isUpdate" >
+        <FormItem label="确认密码" prop="cfirmpswd">
           <Input type="password" v-model="dataFrom.cfirmpswd" placeholder="确认密码" style="width: 85%;"/>
         </FormItem>
 
@@ -184,6 +176,9 @@ export default {
         // password: [
         //   { required: true, validator: validatePass, trigger: 'blur' }
         // ],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' }
+        ],
         // cfirmpswd: [
         //   { required: true, validator: validatePassCheck, trigger: 'blur' }
         // ],
@@ -291,7 +286,10 @@ export default {
       let password = this.dataFrom.password
       let cfirmpswd = this.dataFrom.cfirmpswd
       if (this.isUpdate) {
-        if (cfirmpswd !== undefined && cfirmpswd !== '' && password !== cfirmpswd) {
+        // alert(password)
+        // alert(cfirmpswd)
+
+        if (password !== this.o_password && (cfirmpswd === undefined || cfirmpswd === '' || password !== cfirmpswd)) {
           this.$Message.error('两次密码不一样！')
           return
         }
@@ -305,16 +303,14 @@ export default {
           return
         }
       }
-      this.modalLoading = true
-      if (!this.isUpdate) {
-        this.dataFrom.password = md5(password)
-      } else {
+      if (this.isUpdate) {
         if (this.o_password !== password) {
-          alert(this.o_password)
-          alert(password)
           this.dataFrom.password = md5(password)
         }
+      } else {
+        this.dataFrom.password = md5(password)
       }
+      this.modalLoading = true
       this.$api.system.saveOrUpdateUserApi(this.dataFrom).then(res => {
         let data = res.data
         if (data.code === 0) {
@@ -323,7 +319,7 @@ export default {
           this.$emit('saveSucCallBack')
         } else {
           this.$Message.error(data.msg)
-          this.dataFrom.password = cfirmpswd
+          this.dataFrom.password = password
         }
         this.modalLoading = false
       })

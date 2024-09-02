@@ -227,7 +227,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
         lqw.eq(bo.getTarget() != null, SysMenu::getTarget, bo.getTarget());
         lqw.eq(bo.getIsDeleted() != null, SysMenu::getIsDeleted, bo.getIsDeleted());
 
-        lqw.orderByDesc(SysMenu::getSort);
+        lqw.orderByAsc(SysMenu::getSort);
         return lqw;
     }
 

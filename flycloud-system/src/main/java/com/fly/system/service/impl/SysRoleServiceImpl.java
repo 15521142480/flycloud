@@ -65,6 +65,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     public PageVo<SysRoleVo> queryPageList(SysRoleBo bo, PageBo pageBo) {
 
         LambdaQueryWrapper<SysRole> lqw = buildQueryWrapper(bo);
+        lqw.orderByAsc(SysRole::getSort);
         Page<SysRoleVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
         return this.build(result);
     }
@@ -184,7 +185,6 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
 
             // 基础信息
             sysRole.setType(SysTypeEnum.fly_platform.getCode());
-            sysRole.setStatus(Status.start);
             sysRole.setUpdateBy(flyUser.getId());
             sysRole.setUpdateTime(new Date());
             rowBaseCount = baseMapper.updateById(sysRole);
@@ -233,6 +233,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     @Override
     public List<SysRoleVo> queryList(SysRoleBo bo) {
         LambdaQueryWrapper<SysRole> lqw = buildQueryWrapper(bo);
+        lqw.orderByAsc(SysRole::getSort);
         return baseMapper.selectVoList(lqw);
     }
 
