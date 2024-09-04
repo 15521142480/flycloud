@@ -80,12 +80,13 @@ flycloud
 │  ├─flycloud-xxl-job-admin             -- 任务调度服务
 ├─flycloud-gateway          -- 网关服务
 ├─flycloud-generator        -- 自动生成代码服务
-└─flycloud-mall             -- 商城服务
+└─flycloud-mall             -- 商家服务
 └─flycloud-music            -- 音乐服务
-└─flycloud-system           -- 系统服务
+└─flycloud-system           -- 平台服务
 └─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-ui               -- 系统的ui前端模块
 │  ├─flycloud-file-admin-ui             -- 文件管理后台ui
+│  ├─flycloud-platform-admin-ui         -- 平台管理后台ui
 └─logs     -- 系统日志 
 ```
 
