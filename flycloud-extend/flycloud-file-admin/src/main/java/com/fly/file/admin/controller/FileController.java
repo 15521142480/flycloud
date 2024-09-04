@@ -9,6 +9,7 @@ import com.fly.file.admin.singleton.ConFtpSingle;
 import com.fly.file.admin.utils.CommandUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +36,7 @@ public class FileController {
      *
      * @param path 目录地址
      */
+    @PreAuthorize("@pms.hasPermission('file.list')")
     @PostMapping("/getList")
     public R<?> getList(@RequestBody String path, HttpServletRequest request) {
 
@@ -145,6 +147,7 @@ public class FileController {
      * @param file    文件流
      * @return
      */
+    @PreAuthorize("@pms.hasPermission('file.upload')")
     @PostMapping("/uploadFile")
     public R<?> uploadFile(String curPath, HttpServletRequest request, @RequestParam(value = "file") MultipartFile file) {
 
@@ -187,6 +190,7 @@ public class FileController {
      * @param requestParams path     下载文件路径
      * @param requestParams fileName 文件名
      */
+    @PreAuthorize("@pms.hasPermission('file.download')")
     @PostMapping("/downloadFile")
     public void downloadFile(@RequestBody Map<String, String> requestParams, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -231,6 +235,7 @@ public class FileController {
     /**
      * 执行操作
      */
+    @PreAuthorize("@pms.hasPermission('file.create')") // 'file.delete' ...
     @PostMapping("/executeOption")
     public R<?> executeOption(@RequestBody ExecuteOptionBo executeOptionBo, HttpServletRequest request) {
 
@@ -343,6 +348,7 @@ public class FileController {
      * @param requestParams curPath 服务器当前路径
      * @param requestParams cmd 指令
      */
+    @PreAuthorize("@pms.hasPermission('file.create')") // 'file.delete' ...
     @PostMapping("/executeCommand")
     public R<?> executeCommand(@RequestBody Map<String, String> requestParams, HttpServletRequest request){
 

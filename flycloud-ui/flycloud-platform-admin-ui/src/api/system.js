@@ -72,6 +72,17 @@ export default {
   },
 
   /**
+   * 用户禁用启用
+   */
+  updateUserEnableApi (params) {
+    return axios.request({
+      url: `${config.baseUrl.dev}/user/enable`,
+      method: 'post',
+      params: params
+    })
+  },
+
+  /**
    * 重置密码
    */
   resetPasswordUserApi (userId) {

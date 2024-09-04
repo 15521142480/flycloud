@@ -2,6 +2,8 @@ package com.fly.common.security.config;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
+import com.fly.common.security.handler.CustomAccessDeniedHandler;
+import com.fly.common.security.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 
@@ -65,12 +68,13 @@ public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapte
 
     /**
      * 自定义授权相关处理器
+     * todo 2024-9-4: 无论是这里重写还是自己注入bean，貌似都会被全局异常拦截，目前的做法是新建对于该异常的拦截器：SecurityExceptionHandler
      *
      */
 //    @Override
 //    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-//        resources.authenticationEntryPoint(new AuthenticationEntryPoint())
-//                .accessDeniedHandler(new AccessDeniedHandler());
+//        resources.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//                .accessDeniedHandler(new CustomAccessDeniedHandler());
 //    }
 
 

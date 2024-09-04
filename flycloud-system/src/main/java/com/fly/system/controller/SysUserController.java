@@ -9,9 +9,11 @@ import com.fly.common.enums.BusinessType;
 import com.fly.common.model.R;
 import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.system.api.domain.vo.SysUserVo;
@@ -51,6 +53,7 @@ public class SysUserController extends BaseController {
     /**
      * 查询用户列表
      */
+    @PreAuthorize("@pms.hasPermission('sys.user.list')")
     @GetMapping("/list")
     public R<PageVo<SysUserVo>> list(SysUserBo bo, PageBo page) {
         return R.ok(iSysUserService.queryPageList(bo, page));
@@ -59,14 +62,26 @@ public class SysUserController extends BaseController {
     /**
      * 用户新增/修改
      */
+    @PreAuthorize("@pms.hasPermission('sys.user.saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@RequestBody SysUserBo bo) {
         return R.ok(iSysUserService.saveOrUpdate(bo));
     }
 
     /**
+     * 禁用启用
+     */
+    @PreAuthorize("@pms.hasPermission('sys.user.enable')")
+    @PostMapping("/enable")
+    public R<Void> enable(@RequestParam() Long id, @RequestParam() String status) {
+
+        return R.ok(iSysUserService.updateById(new SysUser().setId(id).setStatus(status)));
+    }
+
+    /**
      * 重置密码
      */
+    @PreAuthorize("@pms.hasPermission('sys.user.reset')")
     @PostMapping("/resetPassword{id}")
     public R<Void> resetPassword(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iSysUserService.resetPassword(id));
@@ -109,6 +124,7 @@ public class SysUserController extends BaseController {
      *
      * @param ids 主键串
      */
+    @PreAuthorize("@pms.hasPermission('sys.user.delete')")
     @Log(title = "用户", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {

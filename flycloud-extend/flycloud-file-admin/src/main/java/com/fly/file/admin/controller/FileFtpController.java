@@ -12,6 +12,7 @@ import com.jcraft.jsch.JSchException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +47,7 @@ public class FileFtpController {
      * @param requestParams port 端口
      * @param requestParams baseKey ip与密码base64
     */
+    @PreAuthorize("@pms.hasPermission('file.connect')")
     @PostMapping("/login")
     public R<?> login(@RequestBody Map<String, String> requestParams, HttpServletRequest request){
 
@@ -104,6 +106,7 @@ public class FileFtpController {
      * 是否在连接
      *
      */
+    @PreAuthorize("@pms.hasPermission('file.connect')")
     @PostMapping("/isConnect")
     public R<?> isConnect(){
 
@@ -125,6 +128,7 @@ public class FileFtpController {
      *
      * @param path 路径
      */
+    @PreAuthorize("@pms.hasPermission('file.list')")
     @PostMapping("/getList")
     public R<?> getList(@RequestBody String path, HttpServletRequest request){
 
@@ -192,6 +196,7 @@ public class FileFtpController {
      *
      * @param curPath 服务器当前路径
      */
+    @PreAuthorize("@pms.hasPermission('file.upload')")
     @PostMapping("/uploadFile")
     public R<?> uploadFile(String curPath, HttpServletRequest request, @RequestParam(value = "file") MultipartFile file){
 
@@ -228,6 +233,7 @@ public class FileFtpController {
      * @param requestParams path 下载文件路径
      * @param requestParams fileName 文件名
      */
+    @PreAuthorize("@pms.hasPermission('file.download')")
     @PostMapping("/downloadFile")
     public void downloadFile(@RequestBody Map<String, String> requestParams, HttpServletRequest request, HttpServletResponse response){
 
@@ -268,6 +274,7 @@ public class FileFtpController {
      * 执行操作
      *
      */
+    @PreAuthorize("@pms.hasPermission('file.create')") // 'file.delete' ...
     @PostMapping("/executeOption")
     public R<?> executeOption(@RequestBody ExecuteOptionBo executeOptionBo, HttpServletRequest request){
 
@@ -384,6 +391,7 @@ public class FileFtpController {
      * @param requestParams curPath 服务器当前路径
      * @param requestParams cmd 指令
      */
+    @PreAuthorize("@pms.hasPermission('file.create')") // 'file.delete' ...
     @PostMapping("/executeCommand")
     public R<?> executeCommand(@RequestBody Map<String, String> requestParams, HttpServletRequest request){
 

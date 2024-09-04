@@ -17,11 +17,10 @@
       <Row class="search-container" type="flex" justify="space-between">
         <Col span="24">
           <Table
-                 style="height: calc(100vh - 305px)"
+                 style="border: none; height: calc(100vh - 305px); overflow-y:auto; overflow-x:hidden;"
                  no-data-text="没有相关数据喔!"
                  :columns="columns"
                  :loading="loading"
-                 :highlight-row="true"
                  :data="userList">
           </Table>
         </Col>
@@ -202,7 +201,7 @@ export default {
     updateStatus: function (data) {
       let status = data.status === '0' ? '1' : '0'
       let statusStr = data.status === '0' ? '禁用' : '启用'
-      this.$api.system.saveOrUpdateUserApi({'id': data.id, 'status': status}).then(res => {
+      this.$api.system.updateUserEnableApi({'id': data.id, 'status': status}).then(res => {
         let data = res.data
         if (data.code === 0) {
           this.$Message.info(statusStr + '成功')
@@ -249,9 +248,9 @@ export default {
 .ivu-card-body {
   padding: 0;
 }
-.ivu-table-wrapper {
-  border: none;
-}
+//.ivu-table-wrapper {
+//  border: none;
+//}
 .ivu-table:before {
   content: '';
   width: 100%;

@@ -13,6 +13,7 @@ import com.fly.common.database.web.domain.vo.PageVo;
 import com.fly.common.database.web.domain.bo.PageBo;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.system.api.domain.vo.SysMenuVo;
@@ -52,6 +53,7 @@ public class SysMenuController extends BaseController {
     /**
      * 查询菜单列表 - 树型
      */
+    @PreAuthorize("@pms.hasPermission('sys.menu.list')")
     @GetMapping("/getTreeList")
     public R<List<SysMenuTreeVo>> getTreeList(SysMenuBo bo) {
         return R.ok(iSysMenuService.getTreeList(bo));
@@ -60,6 +62,7 @@ public class SysMenuController extends BaseController {
     /**
      * 新增/修改菜单
      */
+    @PreAuthorize("@pms.hasPermission('sys.menu.saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysMenuBo bo, HttpServletRequest request) {
 
@@ -72,6 +75,7 @@ public class SysMenuController extends BaseController {
     /**
      * 查询菜单列表 - 分页
      */
+    @PreAuthorize("@pms.hasPermission('sys.menu.list')")
     @GetMapping("/list")
     public R<PageVo<SysMenuVo>> list(SysMenuBo bo, PageBo page) {
         return R.ok(iSysMenuService.queryPageList(bo, page));
@@ -125,6 +129,7 @@ public class SysMenuController extends BaseController {
      *
      * @param ids 主键串
      */
+    @PreAuthorize("@pms.hasPermission('sys.menu.delete')")
     @Log(title = "菜单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {

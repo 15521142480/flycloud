@@ -18,19 +18,20 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2023/5/3
  */
 @Slf4j
-@RestControllerAdvice // 等于@ResponseBody和 + ControllerAdvice
+@RestControllerAdvice // 等于@ResponseBody和 + ControllerAdvice；默认拦截所有controller (可指定包，如basePackages = "com.xxx.controller"))
 public class GlobalExceptionHandler {
+
+    // 注：安全异常信息在security包下的SecurityExceptionHandler拦截
 
 
     /**
      * 全局异常处理
      *
      * @param e the e
-     * @return R
      */
     @ExceptionHandler(Exception.class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public R handleGlobalException(Exception e) {
+    public R handleGlobalException(Exception e) throws Exception {
 
         log.error("=====全局异常信息: {}", e.getMessage(), e);
         return R.builder()
@@ -38,6 +39,8 @@ public class GlobalExceptionHandler {
                 .code(CommonConstants.FAIL)
                 .build();
     }
+
+
 
 
     /**
@@ -55,6 +58,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TokenException.class)
     public R<?> handleTokenException(HttpServletRequest request, TokenException e) {
+
         log.error("授权相关异常==>errorCode:{}, exception:{}", HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         return R.failed(WebConstants.Status.UNAUTHORIZED.getCode(), e.getMessage());
     }

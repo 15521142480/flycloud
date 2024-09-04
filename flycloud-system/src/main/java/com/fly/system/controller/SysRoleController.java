@@ -14,6 +14,7 @@ import com.fly.common.database.web.domain.bo.PageBo;
 import com.fly.system.api.domain.bo.SysMenuBo;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.system.api.domain.vo.SysRoleVo;
@@ -45,6 +46,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询角色列表
      */
+    @PreAuthorize("@pms.hasPermission('sys.role.list')")
     @GetMapping("/list")
     public R<PageVo<SysRoleVo>> list(SysRoleBo bo, PageBo page) {
         return R.ok(iSysRoleService.queryPageList(bo, page));
@@ -68,6 +70,7 @@ public class SysRoleController extends BaseController {
     /**
      * 新增/修改角色
      */
+    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
@@ -78,6 +81,7 @@ public class SysRoleController extends BaseController {
     /**
      * 修改角色信息
      */
+    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
     @PostMapping("/updateById")
     public R<Void> updateById(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
@@ -134,6 +138,7 @@ public class SysRoleController extends BaseController {
      *
      * @param ids 主键串
      */
+    @PreAuthorize("@pms.hasPermission('sys.role.delete')")
     @Log(title = "角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {

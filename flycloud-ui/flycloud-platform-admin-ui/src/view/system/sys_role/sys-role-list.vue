@@ -11,7 +11,7 @@
       </div>
       <div>
         <Table
-               style="height: calc(100vh - 305px)"
+               style="border: none; height: calc(100vh - 305px);overflow-y:auto; overflow-x:hidden;"
                no-data-text="没有相关数据喔!"
                :columns="sysRoleColumns"
                :loading="loading"
@@ -263,9 +263,9 @@ export default {
 .ivu-card-body {
   padding: 0;
 }
-.ivu-table-wrapper {
-  border: none;
-}
+//.ivu-table-wrapper {
+//  border: none;
+//}
 .ivu-table:before {
   content: '';
   width: 100%;
