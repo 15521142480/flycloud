@@ -110,12 +110,13 @@ flycloud
 
 
 ### 6、前端服务:（可选）
-| 服务                                        | 地址                   |
-|-------------------------------------------|----------------------|
-| flycloud-mall-ui (待续)       商城(后台端/商家端)ui | http://127.0.0.1:xxx |
-| flycloud-music-ui (待续)      音乐ui              | http://127.0.0.1:xxx |
-| flycloud-system-ui (待续)     系统后台ui            | http://127.0.0.1:xxx |
-| flycloud-file-admin-ui   文件管理后台ui         | http://127.0.0.1:xxx |
+| 服务                                        | 地址                    |
+|-------------------------------------------|-----------------------|
+| flycloud-platform-admin-ui   平台ui         | http://127.0.0.1:7075 |
+| flycloud-mall-ui (待续)       商城(后台端/商家端)ui | http://127.0.0.1:xxx  |
+| flycloud-music-ui (待续)      音乐ui          | http://127.0.0.1:xxx  |
+| flycloud-system-ui (待续)     系统后台ui        | http://127.0.0.1:xxx  |
+| flycloud-file-admin-ui   文件管理后台ui         | http://127.0.0.1:xxx  |
 
 
 ### 7、Swagger文档说明:
