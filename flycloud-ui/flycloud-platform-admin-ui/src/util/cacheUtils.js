@@ -20,13 +20,17 @@ export const setUserData = (userData) => {
  * 获取用户信息
  */
 export const getUserData = () => {
-  return JSON.parse(localStorage.getItem(userDataKey))
+  let userData = JSON.parse(localStorage.getItem(userDataKey))
+  if (userData === undefined || userData === null) {
+    userData = {}
+  }
+  return userData
 }
 export const getUserId = () => {
-  return JSON.parse(localStorage.getItem(userDataKey))[userIdKey]
+  return getUserData()[userIdKey]
 }
 export const getUserName = () => {
-  return JSON.parse(localStorage.getItem(userDataKey))[userNameKey]
+  return getUserData()[userNameKey]
 }
 
 /**
@@ -89,9 +93,12 @@ export const removeUserCache = () => {
 // =====================
 /**
  * 是否有该按钮权限
- * @returns btnPermission
+ * @returns boolean
  */
 export const hasPermission = (btnPermission) => {
+  if (getPermission() === null || getPermission() === undefined) {
+    return false
+  }
   if (getPermission().indexOf(btnPermission) >= 0) {
     return true
   }
