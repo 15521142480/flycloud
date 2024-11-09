@@ -334,13 +334,13 @@ export default {
         if (resultCode === 0) {
           this.tableData = res.data.data
         } else {
-          this.$Message.error('接口出错')
+          this.$Message.error(res.data.msg)
           this.$emit('on-handle', '0')
         }
         this.loading = false
         this.uploadLoading = false
       }).catch((e) => {
-        this.$Message.error('接口出错')
+        this.$Message.error('接口异常')
         this.$emit('on-handle', '0')
         this.loading = false
       })
