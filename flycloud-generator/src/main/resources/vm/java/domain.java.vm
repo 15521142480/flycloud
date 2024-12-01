@@ -3,18 +3,13 @@ package ${packageName}.api.domain;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
-import java.util.Date;
-import java.math.BigDecimal;
 
 #foreach ($import in $importList)
 import ${import};
 #end
 #if($table.crud || $table.sub)
-import com.fly.common.database.web.domain.BaseEntity;
 #elseif($table.tree)
-import com.fly.common.database.web.domain.TreeEntity;
+import com.fly.common.domain.TreeEntity;
 #end
 
 /**

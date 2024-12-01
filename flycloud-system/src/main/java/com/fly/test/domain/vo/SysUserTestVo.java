@@ -1,5 +1,6 @@
 package com.fly.test.domain.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -16,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysUserTestVo {
+public class SysUserTestVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -87,7 +88,7 @@ public class SysUserTestVo {
      */
     @ExcelProperty(value = "帐号状态", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "0=正常,1=停用")
-    private String status;
+    private Integer status;
 
     /**
      * 最后登录IP

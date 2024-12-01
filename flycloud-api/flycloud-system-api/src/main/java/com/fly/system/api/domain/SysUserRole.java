@@ -2,13 +2,8 @@ package com.fly.system.api.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
-import java.util.Date;
-import java.math.BigDecimal;
 
-import com.fly.common.database.web.domain.BaseEntity;
+import java.io.Serializable;
 
 /**
  * 用户角色对象 sys_user_role

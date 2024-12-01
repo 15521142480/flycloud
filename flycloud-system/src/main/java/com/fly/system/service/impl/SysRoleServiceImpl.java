@@ -2,14 +2,15 @@ package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
-import com.fly.common.constant.Status;
+import com.fly.common.enums.RoleCodeEnum;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.enums.SysTypeEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -17,21 +18,19 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.system.api.domain.SysRoleMenu;
 import com.fly.system.api.domain.bo.SysMenuBo;
 import com.fly.system.api.domain.bo.SysRoleMenuBo;
-import com.fly.system.api.domain.vo.SysMenuButtonPermissionVo;
-import com.fly.system.api.domain.vo.SysMenuTreeVo;
-import com.fly.system.api.domain.vo.SysRoleMenuVo;
+import com.fly.system.api.domain.vo.*;
 import com.fly.system.mapper.SysRoleMenuMapper;
 import com.fly.system.service.ISysMenuService;
 import com.fly.system.service.ISysRoleMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.domain.bo.SysRoleBo;
-import com.fly.system.api.domain.vo.SysRoleVo;
 import com.fly.system.api.domain.SysRole;
 import com.fly.system.mapper.SysRoleMapper;
 import com.fly.system.service.ISysRoleService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -77,20 +76,19 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     @Override
     public List<SysMenuTreeVo> getRoleTreeList(Long roleId) {
 
-        List<SysMenuTreeVo> sysMenuTreeDataList = sysMenuService.getList(new SysMenuBo());
+        List<SysMenuTreeVo> sysMenuTreeDataList = sysMenuService.getAllList(new SysMenuBo().setType(SysTypeEnum.fly_platform.getCode()));
 
         // 菜单树型数据组装
         List<SysMenuTreeVo> resultList = new ArrayList<>();
-        Map<String, List<SysMenuTreeVo>> sysMenuMap = new HashMap<>();
+        Map<Long, List<SysMenuTreeVo>> sysMenuMap = new HashMap<>();
 
         for (SysMenuTreeVo sysMenuTreeData : sysMenuTreeDataList) {
 
-            sysMenuTreeData.setExpand(true);
-            if (sysMenuMap.get(sysMenuTreeData.getParentId().toString()) == null) {
+            if (sysMenuMap.get(sysMenuTreeData.getParentId()) == null) {
                 List<SysMenuTreeVo> sysMenuTreeInitList = new ArrayList<>();
-                sysMenuMap.put(sysMenuTreeData.getParentId().toString(), sysMenuTreeInitList);
+                sysMenuMap.put(sysMenuTreeData.getParentId(), sysMenuTreeInitList);
             }
-            sysMenuMap.get(sysMenuTreeData.getParentId().toString()).add(sysMenuTreeData);
+            sysMenuMap.get(sysMenuTreeData.getParentId()).add(sysMenuTreeData);
 
             // 处理按钮权限
             // 1.查询菜单的全部按钮列表
@@ -99,11 +97,11 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
             // 2.查询角色的按钮权限列表 3.进行对比
             if (roleId != null && StringUtils.isNotBlank(roleId.toString())) {
                 List<SysRoleMenuVo> sysRoleMenuDataList = sysRoleMenuService.queryList(new SysRoleMenuBo().setRoleId(roleId));
-                Map<String, Map<String,String>> roleMenuPermissionMap = new HashMap<>();
+                Map<Long, Map<String,String>> roleMenuPermissionMap = new HashMap<>();
 
                 for (SysRoleMenuVo sysRoleMenuData : sysRoleMenuDataList) {
 
-                    String menuId = sysRoleMenuData.getMenuId().toString();
+                    Long menuId = sysRoleMenuData.getMenuId();
                     String permission = sysRoleMenuData.getPermission();
                     if (roleMenuPermissionMap.containsKey(menuId)) {
                         Map<String,String> permissionMap = roleMenuPermissionMap.get(menuId);
@@ -147,7 +145,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      * @param sysMenuMap 父菜单集合数据
      * @param menuId 菜单id
      */
-    public List<SysMenuTreeVo> handleSysMenuChild (Map<String, List<SysMenuTreeVo>> sysMenuMap, String menuId){
+    public List<SysMenuTreeVo> handleSysMenuChild (Map<Long, List<SysMenuTreeVo>> sysMenuMap, Long menuId){
 
         List<SysMenuTreeVo> sysMenuTreeList = sysMenuMap.get(menuId);
         if (sysMenuTreeList != null) {
@@ -176,17 +174,17 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
             // 基本信息
 //            sysRole.setId(UUIDUtils.generateUUID());
             sysRole.setType(SysTypeEnum.fly_platform.getCode());
-            sysRole.setStatus(Status.start);
-            sysRole.setCreateBy(flyUser.getId());
-            sysRole.setCreateTime(new Date());
+            sysRole.setStatus(StatusEnum.ENABLE.getStatus());
+            sysRole.setCreateBy(flyUser.getId().toString());
+            sysRole.setCreateTime(LocalDateTime.now());
             rowBaseCount = baseMapper.insert(sysRole);
 
         } else { // 修改
 
             // 基础信息
             sysRole.setType(SysTypeEnum.fly_platform.getCode());
-            sysRole.setUpdateBy(flyUser.getId());
-            sysRole.setUpdateTime(new Date());
+            sysRole.setUpdateBy(flyUser.getId().toString());
+            sysRole.setUpdateTime(LocalDateTime.now());
             rowBaseCount = baseMapper.updateById(sysRole);
 
             // 权限信息；先删后新增
@@ -244,7 +242,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         lqw.like(StringUtils.isNotBlank(bo.getName()), SysRole::getName, bo.getName());
         lqw.eq(StringUtils.isNotBlank(bo.getCode()), SysRole::getCode, bo.getCode());
         lqw.eq(bo.getSort() != null, SysRole::getSort, bo.getSort());
-        lqw.eq(StringUtils.isNotBlank(bo.getStatus()), SysRole::getStatus, bo.getStatus());
+        lqw.eq(bo.getStatus() != null, SysRole::getStatus, bo.getStatus());
         lqw.eq(bo.getIsDeleted() != null, SysRole::getIsDeleted, bo.getIsDeleted());
         return lqw;
     }
@@ -302,7 +300,34 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     @Override
     public List<String> getPermissionListByUserId(Long userId) {
 
-        return baseMapper.selectPermissionListByUserId(userId);
+        // 超级管理员展示全部权限, 否则显示用户角色拥有的权限
+        List<String> resultList = new ArrayList<>();
+        int count = baseMapper.getRoleCountByUserAndCode(userId, SysTypeEnum.fly_platform.getCode(), RoleCodeEnum.SUPER_ADMIN.getCode());
+        if (count > 0) {
+
+            List<SysMenuVo> sysMenuVoList = sysMenuService.queryList(new SysMenuBo().setType(SysTypeEnum.fly_platform.getCode()).setStatus(StatusEnum.ENABLE.getStatus()));
+            for (SysMenuVo sysMenuVo : sysMenuVoList) {
+
+                if (StringUtils.isNotBlank(sysMenuVo.getPermission())) {
+
+                    resultList.add(sysMenuVo.getPermission()); // 1. 菜单权限
+                    if (StringUtils.isNotBlank(sysMenuVo.getButtonPermission())) {
+
+                        List<SysMenuButtonPermissionVo> buttonPermissionList = JSON.parseArray(sysMenuVo.getButtonPermission(), SysMenuButtonPermissionVo.class);
+                        for (SysMenuButtonPermissionVo sysMenuButtonPermissionVo : buttonPermissionList) {
+
+                            // 2. 菜单按钮权限
+                            resultList.add(sysMenuVo.getPermission() + ":" + sysMenuButtonPermissionVo.getBtnPermission());
+                        }
+                    }
+                }
+            }
+
+        } else {
+            resultList = baseMapper.selectPermissionListByUserId(userId);
+        }
+
+        return resultList;
     }
 
 

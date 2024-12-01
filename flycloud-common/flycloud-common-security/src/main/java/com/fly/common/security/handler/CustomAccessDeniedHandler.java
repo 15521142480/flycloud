@@ -1,8 +1,6 @@
 package com.fly.common.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.common.model.ApiCode;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import com.fly.common.utils.ResponseUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;

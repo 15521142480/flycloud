@@ -25,16 +25,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from sys_menu sm
                  inner join sys_role_menu srm on srm.menu_id = sm.id
                  inner join sys_user_role sur on sur.role_id = srm.role_id
-        where length(sm.permission) > 0 and sm.status = '0' and sm.type = 0
+        where length(sm.permission) > 0 and sm.status = 0 and sm.type = 0
           and sur.user_id = #{userId}
         union
         select
-            concat(sm.permission, '.', srm.permission) as permission
+            concat(sm.permission, ':', srm.permission) as permission
         from sys_menu sm
                  inner join sys_role_menu srm on srm.menu_id = sm.id
                  inner join sys_user_role sur on sur.role_id = srm.role_id
-        where length(sm.permission) > 0 and sm.status = '0' and sm.type = 0
+        where length(sm.permission) > 0 and sm.status = 0 and sm.type = 0
           and sur.user_id = #{userId}
+    </select>
+
+
+    <select id="getRoleCountByUserAndCode" resultType="java.lang.Integer">
+        select
+            count(sr.code) as roleCount
+        from sys_role sr
+        inner join sys_user_role sur on sur.role_id = sr.id
+        where sur.user_id = #{userId} and sr.code = #{roleCode} and sr.status = 0 and sr.type = #{type}
     </select>
 
     <select id="selectRoleIdListByUserId" resultType="java.lang.String">

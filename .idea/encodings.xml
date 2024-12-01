@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/flycloud-api/flycloud-bpm-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-api/flycloud-bpm-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-api/flycloud-bpm-api/src/main/webapp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-api/flycloud-feign-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-api/flycloud-feign-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-api/flycloud-feign-api/src/main/webapp" charset="UTF-8" />
@@ -13,6 +16,9 @@
     <file url="file://$PROJECT_DIR$/flycloud-auth/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-auth/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-auth/src/main/webapp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-bpm/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-bpm/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/flycloud-bpm/src/main/webapp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-code/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-code/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/flycloud-common/flycloud-common-code/src/main/webapp" charset="UTF-8" />

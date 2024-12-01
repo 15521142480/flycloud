@@ -4,8 +4,8 @@ import ${packageName}.api.domain.${ClassName};
 import ${packageName}.api.domain.vo.${ClassName}Vo;
 import ${packageName}.api.domain.bo.${ClassName}Bo;
 #if($table.crud || $table.sub)
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 #end
 
 import java.util.Collection;

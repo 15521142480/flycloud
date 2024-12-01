@@ -254,7 +254,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 FlyUser user = (FlyUser) oAuth2Authentication.getUserAuthentication().getPrincipal();
 
                 if (user != null) {
-                    additionMessage.put(Oauth2Constants.USER_ID, String.valueOf(user.getId()));
+                    additionMessage.put(Oauth2Constants.USER_ID, user.getId());
                     additionMessage.put(Oauth2Constants.USER_NAME, user.getUsername());
                     additionMessage.put(Oauth2Constants.USER_TYPE, user.getUserType());
                     additionMessage.put(Oauth2Constants.LOGIN_TYPE, user.getLoginType());

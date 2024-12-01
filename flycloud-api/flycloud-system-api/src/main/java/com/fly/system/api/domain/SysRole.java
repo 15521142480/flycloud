@@ -3,12 +3,8 @@ package com.fly.system.api.domain;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
-import java.util.Date;
-import java.math.BigDecimal;
 
-import com.fly.common.database.web.domain.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 角色对象 sys_role
@@ -51,10 +47,6 @@ public class SysRole extends BaseEntity {
     /**
      * 状态
      */
-    private String status;
-    /**
-     * 删除标识
-     */
-    private Integer isDeleted;
+    private Integer status;
 
 }

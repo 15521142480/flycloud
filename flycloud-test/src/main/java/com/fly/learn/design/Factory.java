@@ -1,10 +1,5 @@
 package com.fly.learn.design;
 
-import com.fly.common.spring.SpringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 工厂模式
  *

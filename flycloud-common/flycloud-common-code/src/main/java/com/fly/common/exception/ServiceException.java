@@ -1,10 +1,15 @@
 package com.fly.common.exception;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * 业务异常
  *
  * @author lxs
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public final class ServiceException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -35,9 +40,9 @@ public final class ServiceException extends RuntimeException {
         this.message = message;
     }
 
-    public ServiceException(String message, Integer code) {
-        this.message = message;
+    public ServiceException(Integer code, String message) {
         this.code = code;
+        this.message = message;
     }
 
     public String getDetailMessage() {

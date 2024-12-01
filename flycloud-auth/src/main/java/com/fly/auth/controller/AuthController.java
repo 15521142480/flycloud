@@ -1,7 +1,7 @@
 package com.fly.auth.controller;
 
 import com.fly.auth.service.ValidateService;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

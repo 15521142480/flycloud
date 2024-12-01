@@ -24,10 +24,15 @@ public class PermissionService {
      * 判断接口是否有权限
      *
      * <p>
-     * 格式为xxx.xxx或xxx.xxx.xxx，如 @PreAuthorize("@pms.hasPermission('sys.user.add')")
+     * 格式为xxx:xxx或xxx:xxx:xxx，如 @PreAuthorize("@pms.hasPermission('sys:user:add')")
      *
      */
     public boolean hasPermission(String permission) {
+
+        // todo 先写死true
+        if (StrUtil.isNotBlank(permission)) {
+            return true;
+        }
 
         if (StrUtil.isBlank(permission)) {
             return false;

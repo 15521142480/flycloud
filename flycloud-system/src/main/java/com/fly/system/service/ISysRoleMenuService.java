@@ -1,10 +1,9 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.SysRoleMenu;
 import com.fly.system.api.domain.vo.SysRoleMenuVo;
 import com.fly.system.api.domain.bo.SysRoleMenuBo;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 
 import java.util.Collection;
 import java.util.List;

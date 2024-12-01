@@ -1,20 +1,14 @@
 package ${packageName}.api.domain.bo;
 
-import com.fly.common.validate.AddGroup;
-import com.fly.common.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import javax.validation.constraints.*;
-
-import java.util.Date;
 
 #foreach ($import in $importList)
 import ${import};
 #end
 #if($table.crud || $table.sub)
-import com.fly.common.database.web.domain.BaseEntity;
 #elseif($table.tree)
-import com.fly.common.database.web.domain.TreeEntity;
+import com.fly.common.domain.TreeEntity;
 #end
 
 /**

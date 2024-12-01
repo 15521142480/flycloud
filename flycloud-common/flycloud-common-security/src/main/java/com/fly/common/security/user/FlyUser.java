@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 自定义授权用户
@@ -25,12 +24,12 @@ public class FlyUser extends User {
     /**
      * 用户ID
      */
-    private final String id;
+    private Long id;
 
     /**
      * 部门ID
      */
-    private final String departId;
+    private final String deptId;
 
     /**
      * 手机号
@@ -61,12 +60,12 @@ public class FlyUser extends User {
     /**
      * 构造系统用户信息
      */
-    public FlyUser(String id, int userType, int loginType, String departId, String phone, String avatar, String roleIds, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public FlyUser(Long id, int userType, int loginType, String deptId, String phone, String avatar, String roleIds, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
         this.userType = userType;
         this.loginType = loginType;
-        this.departId = departId;
+        this.deptId = deptId;
         this.phone = phone;
         this.avatar = avatar;
         this.roleIds = roleIds;

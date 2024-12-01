@@ -2,6 +2,8 @@ package com.fly.system.api.domain.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 菜单按钮权限
  *
@@ -9,7 +11,7 @@ import lombok.Data;
  * @date: 2024/8/31
  */
 @Data
-public class SysMenuButtonPermissionVo {
+public class SysMenuButtonPermissionVo implements Serializable {
 
 
     /**

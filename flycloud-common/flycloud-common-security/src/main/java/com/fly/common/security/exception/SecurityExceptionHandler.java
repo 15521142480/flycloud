@@ -1,6 +1,6 @@
 package com.fly.common.security.exception;
 
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

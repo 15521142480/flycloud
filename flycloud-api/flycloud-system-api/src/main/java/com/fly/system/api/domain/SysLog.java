@@ -1,11 +1,12 @@
 
 package com.fly.system.api.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.fly.common.database.entity.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 import java.time.LocalDateTime;
 
@@ -17,11 +18,16 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("sys_log")
-@EqualsAndHashCode(callSuper = true)
 @Schema(name = "SysLog对象", description = "系统日志表")
-public class SysLog extends BaseEntity {
+public class SysLog {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 主键id
+	 */
+	@TableId(value = "id")
+	private Long id;
 
 	/**
 	* 日志类型
@@ -94,11 +100,7 @@ public class SysLog extends BaseEntity {
 	*/
 	@Schema(description = "更新时间")
 	private LocalDateTime updateTime;
-	/**
-	* 删除标识
-	*/
-	@Schema(description = "删除标识")
-	private String isDeleted;
+	
 	/**
 	 * 异常信息
 	 */

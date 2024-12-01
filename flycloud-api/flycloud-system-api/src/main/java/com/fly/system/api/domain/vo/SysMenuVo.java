@@ -5,6 +5,8 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -13,11 +15,11 @@ import java.util.Date;
  * 菜单视图对象
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2024-11-24
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysMenuVo {
+public class SysMenuVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,9 +37,9 @@ public class SysMenuVo {
     private Long type;
 
     /**
-     * 菜单标题
+     * 菜单名称
      */
-    @ExcelProperty(value = "菜单标题")
+    @ExcelProperty(value = "菜单名称")
     private String name;
 
     /**
@@ -47,9 +49,9 @@ public class SysMenuVo {
     private Long parentId;
 
     /**
-     * 菜单
+     * 菜单权限
      */
-    @ExcelProperty(value = "菜单")
+    @ExcelProperty(value = "菜单权限")
     private String permission;
 
     /**
@@ -59,8 +61,15 @@ public class SysMenuVo {
     private String buttonPermission;
 
     /**
+     * 排序值
+     */
+    @ExcelProperty(value = "排序值")
+    private Long sort;
+
+    /**
      * 菜单等级
      */
+    @ExcelProperty(value = "菜单等级")
     private Long level;
 
     /**
@@ -70,35 +79,35 @@ public class SysMenuVo {
     private String path;
 
     /**
-     * 组件路径
-     */
-    @ExcelProperty(value = "组件路径")
-    private String component;
-
-    /**
      * 菜单图标
      */
     @ExcelProperty(value = "菜单图标")
     private String icon;
 
     /**
+     * 组件路径
+     */
+    @ExcelProperty(value = "组件路径")
+    private String component;
+
+    /**
+     * 组件名
+     */
+    @ExcelProperty(value = "组件名")
+    private String componentName;
+
+    /**
      * 状态（0:启用，1:禁用）
      */
     @ExcelProperty(value = "状态", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "0=:启用，1:禁用")
-    private String status;
+    private Integer status;
 
     /**
-     * 排序值
+     * 是否可见
      */
-    @ExcelProperty(value = "排序值")
-    private Long sort;
-
-    /**
-     * 备注
-     */
-    @ExcelProperty(value = "备注")
-    private String remark;
+    @ExcelProperty(value = "是否可见")
+    private Integer visible;
 
     /**
      * 是否缓存该页面: 1:是  0:不是
@@ -107,10 +116,10 @@ public class SysMenuVo {
     private Integer keepAlive;
 
     /**
-     * 是否隐藏
+     * 是否总是显示
      */
-    @ExcelProperty(value = "是否隐藏")
-    private Integer hidden;
+    @ExcelProperty(value = "是否总是显示")
+    private Integer alwaysShow;
 
     /**
      * 是否外链
@@ -119,12 +128,9 @@ public class SysMenuVo {
     private Integer target;
 
     /**
-     * 删除标识
+     * 备注
      */
-    @ExcelProperty(value = "删除标识")
-    private Integer isDeleted;
-
-
-
+    @ExcelProperty(value = "备注")
+    private String remark;
 
 }

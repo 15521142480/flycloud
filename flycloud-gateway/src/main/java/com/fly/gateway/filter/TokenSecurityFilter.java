@@ -5,9 +5,9 @@ import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.constant.WebConstants;
 import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.utils.ResponseUtils;
-import com.fly.common.utils.SecurityUtils;
+import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.StringPoolUtils;
-import com.fly.common.utils.TokenUtils;
+import com.fly.common.utils.auth.TokenUtils;
 import com.fly.gateway.config.properties.GatewayServerSecurityProperties;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
@@ -15,11 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 统一网关的token验证
@@ -51,6 +54,8 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
+        ServerHttpResponse response = exchange.getResponse();
+
         // 如果未启用网关验证，则跳过
         if (!gatewayServerSecurityProperties.getEnable()) {
             return chain.filter(exchange);
@@ -64,25 +69,24 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
         }
 
         // 验证token是否有效
-        ServerHttpResponse resp = exchange.getResponse();
         String headerToken = exchange.getRequest().getHeaders().getFirst(Oauth2Constants.HEADER_TOKEN_KEY);
         if (headerToken == null) {
-            return unAuthorized(resp, "没有携带Token信息！");
+            log.error("没有携带Token信息！");
+            return unAuthorized(response, "没有携带Token信息！");
         }
 
         String token = TokenUtils.getToken(headerToken);
         Claims claims = SecurityUtils.getClaims(token);
         if (claims == null) {
-//            return this.unAuthorized(resp, "token已过期或验证不正确！");
-            return this.unAuthorized(resp, "token已过期！");
+            return this.unAuthorized(response, "token已过期！");
         }
 
         // 判断token是否存在于redis,对于只允许一台设备场景适用。
         // 如只允许一台设备登录，需要在登录成功后，查询key是否存在，如存在，则删除此key，提供思路。
         boolean hasKey = redisUtils.hasKey("auth:" + token);
-        log.debug("查询token是否存在: " + hasKey);
+        log.debug("查询token是否存在: {}", hasKey);
         if (!hasKey) {
-            return unAuthorized(resp, "登录超时，请重新登录");
+            return unAuthorized(response, "登录超时，请重新登录");
         }
 
         return chain.filter(exchange);
@@ -121,6 +125,7 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
         }
         return path;
     }
+
 
     /**
      * 返回授权错误信息

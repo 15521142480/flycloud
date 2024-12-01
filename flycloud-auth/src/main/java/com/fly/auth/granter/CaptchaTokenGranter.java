@@ -1,9 +1,12 @@
 package com.fly.auth.granter;
 
 import cn.hutool.core.util.StrUtil;
+import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
+import com.fly.common.exception.AuthException;
 import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.utils.HttpContextUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
@@ -21,6 +24,7 @@ import java.util.Map;
  * 验证码的TokenGranter
  *
  */
+@Slf4j
 public class CaptchaTokenGranter extends AbstractTokenGranter {
 
 	private static final String GRANT_TYPE = "captcha";
@@ -78,10 +82,17 @@ public class CaptchaTokenGranter extends AbstractTokenGranter {
 		try {
 			userAuth = authenticationManager.authenticate(userAuth);
 		} catch (AccountStatusException | BadCredentialsException ase) {
-			//covers expired, locked, disabled cases (mentioned in section 5.2, draft 31)
-			throw new InvalidGrantException(ase.getMessage());
+
+			log.error("登录失败:", ase);
+			String errorMsg = ase.getMessage();
+			if (errorMsg.contains("Bad credentials")) {
+				throw new AuthException(CommonConstants.FAIL, Oauth2Constants.NAME_OR_PSD_ERROR);
+			} else if (errorMsg.contains("User is disabled")) {
+				throw new AuthException(CommonConstants.FAIL, Oauth2Constants.USER_DISABLED_ERROR);
+			}else {
+				throw new AuthException(CommonConstants.FAIL, errorMsg);
+			}
 		}
-		// If the username/password are wrong the spec says we should send 400/invalid grant
 
 		if (userAuth == null || !userAuth.isAuthenticated()) {
 			throw new InvalidGrantException("Could not authenticate user: " + username);

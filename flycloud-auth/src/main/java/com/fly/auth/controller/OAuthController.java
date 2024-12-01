@@ -1,7 +1,7 @@
 package com.fly.auth.controller;
 
-import com.fly.common.model.R;
-import com.fly.common.utils.SecurityUtils;
+import com.fly.common.domain.model.R;
+import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

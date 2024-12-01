@@ -1,11 +1,10 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.SysMenu;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import com.fly.system.api.domain.vo.SysMenuVo;
 import com.fly.system.api.domain.bo.SysMenuBo;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +23,7 @@ public interface ISysMenuService {
      */
     List<SysMenuVo> queryList(SysMenuBo bo);
 
-    List<SysMenuTreeVo> getList(SysMenuBo bo);
+    List<SysMenuTreeVo> getAllList(SysMenuBo bo);
 
     /**
      * 查询菜单列表 - 树型

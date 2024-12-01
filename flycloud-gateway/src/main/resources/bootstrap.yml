@@ -19,22 +19,28 @@ spring:
   cloud:
 
     nacos:
+      # nacos 服务地址
+      server-addr: @nacos.server@
+
       discovery:
-        server-addr: ${nacos_host:39.98.125.88}:${nacos_port:8848}
-        # 命名空间，默认：public
+        server-addr: ${spring.cloud.nacos.server-addr}
+        # 注册组
+        group: @nacos.discovery.group@
         namespace: "@nacos.namespace@"
-        service: ${spring.application.name}
+
       config:
-        server-addr: ${spring.cloud.nacos.discovery.server-addr}
-        namespace: ${spring.cloud.nacos.discovery.namespace}
+        server-addr: ${spring.cloud.nacos.server-addr}
+        # 配置组
+        group: @nacos.config.group@
+        namespace: "@nacos.namespace@"
         file-extension: yaml
 
         # 指定配置/常规配置; 优先级大于shared-configs,在shared-configs之后加载. (在nacos配置指定如下名字的配置文件)
         extension-configs:
           - data-id: application-common.yaml
             refresh: true
-#          - data-id: application-datasource.yaml
-#            refresh: true
+          - data-id: application-datasource.yaml
+            refresh: true
 
         # 共享配置; 动态配置, 即: ${prefix}-${spring.profiles.active}.${file-extension}, 如此项目读取的配置为: flycloud-gateway_dev.yaml
         # prefix 默认为 spring.application.name 的值，也可以通过配置项 spring.cloud.nacos.config.prefix来配置

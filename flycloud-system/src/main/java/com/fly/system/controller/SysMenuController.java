@@ -1,16 +1,17 @@
 package com.fly.system.controller;
 
-import com.fly.common.entity.LoginUser;
-import com.fly.common.utils.SecurityUtils;
+import com.fly.common.domain.entity.LoginUser;
+import com.fly.common.enums.SysTypeEnum;
+import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.utils.ExcelUtil;
 import com.fly.common.annotation.Log;
 import com.fly.common.enums.BusinessType;
-import com.fly.common.model.R;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.model.R;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,6 +48,8 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping("/getList")
     public R<List<SysMenuVo>> getList(SysMenuBo bo) {
+
+        bo.setType(SysTypeEnum.fly_platform.getCode());
         return R.ok(iSysMenuService.queryList(bo));
     }
 
@@ -56,6 +59,8 @@ public class SysMenuController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys.menu.list')")
     @GetMapping("/getTreeList")
     public R<List<SysMenuTreeVo>> getTreeList(SysMenuBo bo) {
+
+        bo.setType(SysTypeEnum.fly_platform.getCode());
         return R.ok(iSysMenuService.getTreeList(bo));
     }
 

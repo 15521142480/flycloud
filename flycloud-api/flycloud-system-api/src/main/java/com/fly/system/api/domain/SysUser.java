@@ -3,13 +3,10 @@ package com.fly.system.api.domain;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
-import java.util.Date;
-import java.math.BigDecimal;
 
 import java.util.Date;
-import com.fly.common.database.web.domain.BaseEntity;
+
+import com.fly.common.domain.BaseEntity;
 import lombok.experimental.Accessors;
 
 /**
@@ -78,18 +75,14 @@ public class SysUser extends BaseEntity {
     /**
      * 部门id
      */
-    private Long departId;
+    private Long deptId;
     /**
      * 状态
      */
-    private String status;
+    private Integer status;
     /**
      * 备注
      */
     private String remark;
-    /**
-     * 逻辑删除
-     */
-    private String isDeleted;
 
 }

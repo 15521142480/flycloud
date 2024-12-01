@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.fly.common.database.entity.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 客户端表实体类
@@ -80,12 +80,7 @@ public class SysClient extends BaseEntity {
 	* 状态
 	*/
 	@Schema(description = "状态")
-	private String status;
-	/**
-	* 是否已删除
-	*/
-	@Schema(description = "是否已删除")
-	private Integer isDeleted;
+	private Integer status;
 
 
 }

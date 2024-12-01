@@ -1,6 +1,5 @@
 package com.fly.common.security.util;
 
-import com.fly.common.entity.LoginUser;
 import com.fly.common.security.user.FlyUser;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,7 @@ public class UserUtils {
 	/**
 	 * 获取当前用户
 	 */
-	public FlyUser getCurUser() {
+	public static FlyUser getCurUser() {
 
 		Authentication authentication = getAuthentication();
 		Object principal = authentication.getPrincipal();
@@ -28,31 +27,21 @@ public class UserUtils {
 		return null;
 	}
 
-//	public LoginUser getCurUser() {
-//
-//		Authentication authentication = getAuthentication();
-//		Object principal = authentication.getPrincipal();
-//		if (principal instanceof LoginUser) {
-//			return (LoginUser) principal;
-//		}
-//
-//		return null;
-//	}
-
 	/**
-	 * 获取Authentication
+	 * 获取当前用户id
 	 */
-	private Authentication getAuthentication() {
-		return SecurityContextHolder.getContext().getAuthentication();
-	}
+	public static Long getCurUserId() {
 
+		FlyUser flyUser = getCurUser();
+		return flyUser != null ? flyUser.getId() : null;
+	}
 
 	/**
 	 * 获取用户名称
 	 *
 	 * @return username
 	 */
-	public String getUsername() {
+	public static String getUsername() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null) {
@@ -60,4 +49,13 @@ public class UserUtils {
 		}
 		return authentication.getName();
 	}
+
+
+	/**
+	 * 获取Authentication
+	 */
+	private static Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+
 }

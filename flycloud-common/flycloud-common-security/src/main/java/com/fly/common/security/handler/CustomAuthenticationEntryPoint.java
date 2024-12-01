@@ -1,8 +1,8 @@
 package com.fly.common.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.common.model.ApiCode;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.ApiCode;
+import com.fly.common.domain.model.R;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

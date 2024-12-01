@@ -10,7 +10,7 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.fly.common.service.DictService;
-import com.fly.common.spring.SpringUtils;
+import com.fly.common.utils.spring.SpringUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.utils.ExcelUtil;

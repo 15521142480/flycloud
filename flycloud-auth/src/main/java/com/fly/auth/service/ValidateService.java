@@ -1,7 +1,7 @@
 package com.fly.auth.service;
 
 import com.fly.common.exception.CaptchaException;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 
 /**
  * 验证码业务类

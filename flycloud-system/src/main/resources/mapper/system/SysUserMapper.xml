@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result property="telephone" column="telephone"/>
     <result property="birthday" column="birthday"/>
     <result property="sex" column="sex"/>
-    <result property="departId" column="depart_id"/>
+    <result property="deptId" column="dept_id"/>
     <result property="status" column="status"/>
     <result property="remark" column="remark"/>
     <result property="createBy" column="create_by"/>
@@ -28,21 +28,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,account,password,user_type,login_type,name,real_name,avatar,email,telephone,birthday,sex,depart_id,status,is_deleted,create_by,update_by,create_time,update_time
+        id,account,password,user_type,login_type,name,real_name,avatar,email,telephone,birthday,sex,dept_id,status,is_deleted,create_by,update_by,create_time,update_time
     </sql>
 
+
+    <select id="selectAllListSimple" resultType="com.fly.system.api.domain.vo.SysUserVo">
+        select
+            su.id,
+            su.name,
+            su.dept_id as deptId,
+            sd.name as deptName
+        from sys_user su
+            left join sys_dept sd on su.dept_id = sd.id
+        where su.status = 0 and su.is_deleted = 0
+        <if test="userType != null and userType != ''">
+            and su.user_type = #{userType}
+        </if>
+    </select>
+
+
     <!-- 根据用户信息查询用户 -->
-    <select id="selectOneIgnoreTenant" resultMap="SysUserResult" parameterType="com.fly.system.api.domain.SysUser">
+    <select id="selectOneUserByUser" resultMap="SysUserResult" parameterType="com.fly.system.api.domain.SysUser">
         SELECT
             <include refid="Base_Column_List" />
         FROM
             sys_user
         <trim prefix="where" prefixOverrides="and|or">
             <if test="account != null and account != ''">
-                account =#{account}
+                account = #{account}
             </if>
             <if test="telephone != null and telephone != ''">
-                and telephone =#{telephone}
+                and telephone = #{telephone}
             </if>
         </trim>
         limit 1
@@ -65,5 +81,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and id != #{id}
         </if>
     </select>
+
 
 </mapper>

@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.fly.common.database.web.controller.BaseController;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import com.fly.generator.service.IGenTableService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

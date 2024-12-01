@@ -1,6 +1,6 @@
 package com.fly.mall.app.controller;
 
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

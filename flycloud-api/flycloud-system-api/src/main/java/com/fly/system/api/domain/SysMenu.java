@@ -3,18 +3,14 @@ package com.fly.system.api.domain;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
-import java.util.Date;
-import java.math.BigDecimal;
 
-import com.fly.common.database.web.domain.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 菜单对象 sys_menu
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2024-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -33,7 +29,7 @@ public class SysMenu extends BaseEntity {
      */
     private Long type;
     /**
-     * 菜单标题
+     * 菜单名称
      */
     private String name;
     /**
@@ -41,13 +37,17 @@ public class SysMenu extends BaseEntity {
      */
     private Long parentId;
     /**
-     * 菜单
+     * 菜单权限
      */
     private String permission;
     /**
      * 按钮权限
      */
     private String buttonPermission;
+    /**
+     * 排序值
+     */
+    private Long sort;
     /**
      * 菜单等级
      */
@@ -57,40 +57,39 @@ public class SysMenu extends BaseEntity {
      */
     private String path;
     /**
-     * 组件路径
-     */
-    private String component;
-    /**
      * 菜单图标
      */
     private String icon;
     /**
+     * 组件路径
+     */
+    private String component;
+    /**
+     * 组件名
+     */
+    private String componentName;
+    /**
      * 状态（0:启用，1:禁用）
      */
-    private String status;
+    private Integer status;
     /**
-     * 排序值
+     * 是否可见
      */
-    private Long sort;
-    /**
-     * 备注
-     */
-    private String remark;
+    private Integer visible;
     /**
      * 是否缓存该页面: 1:是  0:不是
      */
     private Integer keepAlive;
     /**
-     * 是否隐藏
+     * 是否总是显示
      */
-    private Integer hidden;
+    private Integer alwaysShow;
     /**
      * 是否外链
      */
     private Integer target;
     /**
-     * 删除标识
+     * 备注
      */
-    private Integer isDeleted;
-
+    private String remark;
 }

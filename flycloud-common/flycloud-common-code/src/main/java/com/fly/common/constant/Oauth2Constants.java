@@ -90,6 +90,13 @@ public class Oauth2Constants {
 	public static final String LOGIN_TYPE = "loginType";
 
 	/**
+	 * 验证
+	 */
+	public static final String NAME_OR_PSD_ERROR = "用户或密码不正确！";
+	public static final String USER_DISABLED_ERROR = "用户已被停用！";
+	public static final String CAPTCHA_ERROR = "验证码不正确！";
+
+	/**
 	 * 字段描述开始：用户ID
 	 */
 	public static final String USER_ID = "userId";
@@ -158,8 +165,6 @@ public class Oauth2Constants {
 	public static final String CLIENT_TABLE = "sys_client";
 
 	public static final String ENCRYPT = "{fly}";
-
-	public static final String CAPTCHA_ERROR = "验证码不正确！";
 
 	public static final String SUPER_ADMIN = "admin";
 

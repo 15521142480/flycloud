@@ -5,6 +5,8 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -17,7 +19,7 @@ import java.util.Date;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysRoleVo {
+public class SysRoleVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,13 +64,6 @@ public class SysRoleVo {
      * 状态
      */
     @ExcelProperty(value = "状态")
-    private String status;
-
-    /**
-     * 删除标识
-     */
-    @ExcelProperty(value = "删除标识")
-    private Integer isDeleted;
-
+    private Integer status;
 
 }

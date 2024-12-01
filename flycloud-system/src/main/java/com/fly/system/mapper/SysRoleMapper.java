@@ -3,6 +3,7 @@ package com.fly.system.mapper;
 import com.fly.common.database.web.mapper.BaseMapperPlus;
 import com.fly.system.api.domain.SysRole;
 import com.fly.system.api.domain.vo.SysRoleVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +25,10 @@ public interface SysRoleMapper extends BaseMapperPlus<SysRoleMapper, SysRole, Sy
      */
     List<String> selectRoleIdListByUserId(Long userId);
     List<String> getRoleNameListByUserId(Long userId);
+
+    /**
+     * 含有某个角色编码的角色数量
+     */
+    int getRoleCountByUserAndCode(@Param("userId") Long userId, @Param("type") Long type, @Param("roleCode") String roleCode);
+
 }

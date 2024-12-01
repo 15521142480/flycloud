@@ -1,14 +1,9 @@
 package com.fly.system.api.domain.bo;
 
-import com.fly.common.validate.AddGroup;
-import com.fly.common.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import javax.validation.constraints.*;
 
-import java.util.Date;
-
-import com.fly.common.database.web.domain.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 角色业务对象
@@ -61,13 +56,7 @@ public class SysRoleBo extends BaseEntity {
      * 状态
      */
     // @NotBlank(message = "状态不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String status;
-
-    /**
-     * 删除标识
-     */
-    // @NotNull(message = "删除标识不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Integer isDeleted;
+    private Integer status;
 
 
     /**

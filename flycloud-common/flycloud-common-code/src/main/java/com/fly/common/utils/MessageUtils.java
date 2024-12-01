@@ -1,6 +1,6 @@
 package com.fly.common.utils;
 
-import com.fly.common.spring.SpringUtils;
+import com.fly.common.utils.spring.SpringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.context.MessageSource;

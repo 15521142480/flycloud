@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.domain.bo.SysUserBo;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 import com.fly.system.api.domain.vo.UserDetailInfoVo;
 
 import java.util.Collection;
@@ -19,6 +19,19 @@ import java.util.List;
  */
 public interface ISysUserService extends IService<SysUser> {
 
+
+    /**
+     * 查询用户列表
+     */
+    PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo);
+
+    /**
+     * 查询所有用户精简版
+     *
+     * @param bo
+     */
+    List<SysUserVo> queryAllListSimple(SysUserBo bo);
+
     /**
      * 获取用户详情信息
      */
@@ -28,11 +41,6 @@ public interface ISysUserService extends IService<SysUser> {
      * 查询用户
      */
     SysUserVo queryById(Long id);
-
-    /**
-     * 查询用户列表
-     */
-    PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo);
 
     /**
      * 用户新增/修改
@@ -88,12 +96,24 @@ public interface ISysUserService extends IService<SysUser> {
 
 
     /**
-     * 忽略租户查询用户信息
+     * 查询用户信息
      *
      * @param sysUser 用户对象
      * @return 用户对象
      */
-    SysUser getOneIgnoreTenant(SysUser sysUser);
+    SysUser queryOneUserByUser(SysUser sysUser);
+
+
+    /**
+     * 根据用户ids查询用户列表
+     */
+    List<SysUser> getByIds(Collection<Long> ids);
+
+
+    /**
+     * 根据ids验证用户
+     */
+    Boolean validateDeptByIds(Collection<Long> ids);
 
 
     /**

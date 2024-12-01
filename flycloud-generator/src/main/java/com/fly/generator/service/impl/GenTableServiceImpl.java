@@ -1,24 +1,15 @@
 package com.fly.generator.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.GenConstants;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.FileUtils;
-import com.fly.common.utils.JsonUtils;
+import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.StringUtils;
-import com.fly.generator.config.GenConfig;
 import com.fly.generator.domain.GenTable;
 import com.fly.generator.domain.GenTableColumn;
 import com.fly.generator.mapper.GenTableColumnMapper;
@@ -33,18 +24,10 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * 业务 服务层实现

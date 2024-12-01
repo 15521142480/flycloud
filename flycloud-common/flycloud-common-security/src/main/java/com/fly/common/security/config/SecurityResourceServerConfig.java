@@ -53,7 +53,7 @@ public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapte
 
         // 放行静态资源
         registry.antMatchers(
-                "/temp/test/**",
+                "/test/**",
                 "/css/**",
                 "/swagger-ui/index.html",
                 "/swagger-ui.html",

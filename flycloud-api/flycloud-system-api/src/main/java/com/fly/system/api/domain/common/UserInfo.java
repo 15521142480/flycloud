@@ -33,6 +33,12 @@ public class UserInfo implements Serializable {
 	private String userName;
 
 	/**
+	 * 用户昵称
+	 */
+	@Schema(description = "用户昵称")
+	private String nickName;
+
+	/**
 	 * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
 	 */
 	private int loginType;

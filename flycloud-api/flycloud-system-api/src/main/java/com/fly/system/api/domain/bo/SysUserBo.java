@@ -1,7 +1,6 @@
 package com.fly.system.api.domain.bo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,8 +8,7 @@ import javax.validation.constraints.*;
 
 import java.util.Date;
 
-import java.util.Date;
-import com.fly.common.database.web.domain.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 用户业务对象
@@ -97,25 +95,19 @@ public class SysUserBo extends BaseEntity {
      * 部门id
      */
     // @NotNull(message = "部门id不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long departId;
+    private Long deptId;
 
     /**
      * 状态
      */
     // @NotBlank(message = "状态不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String status;
+    private Integer status;
 
     /**
      * 备注
      */
     // @NotBlank(message = "备注不能为空", groups = { AddGroup.class, EditGroup.class })
     private String remark;
-
-    /**
-     * 逻辑删除
-     */
-    // @NotBlank(message = "逻辑删除不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String isDeleted;
 
     /**
      * 用户角色

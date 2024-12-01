@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.fly.common.database.enums.DataBaseType;
 import com.fly.common.exception.ServiceException;
-import com.fly.common.spring.SpringUtils;
+import com.fly.common.utils.spring.SpringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -3,7 +3,7 @@ package com.fly.common.handler;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.WebConstants;
 import com.fly.common.exception.TokenException;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

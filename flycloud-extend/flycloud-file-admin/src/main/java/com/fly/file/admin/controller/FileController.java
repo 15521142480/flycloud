@@ -1,11 +1,10 @@
 package com.fly.file.admin.controller;
 
-import com.fly.common.model.R;
-import com.fly.common.utils.ArrayUtils;
+import com.fly.common.domain.model.R;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.SystemUtils;
+import com.fly.common.utils.collection.ArrayUtils;
 import com.fly.file.admin.domain.bo.ExecuteOptionBo;
-import com.fly.file.admin.singleton.ConFtpSingle;
 import com.fly.file.admin.utils.CommandUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;

@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.fly.auth.service.ValidateService;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.exception.CaptchaException;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import com.fly.common.redis.utils.RedisUtils;
 import com.wf.captcha.ArithmeticCaptcha;
 import lombok.AllArgsConstructor;

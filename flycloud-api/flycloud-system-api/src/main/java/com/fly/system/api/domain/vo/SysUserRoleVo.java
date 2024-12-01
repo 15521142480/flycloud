@@ -5,6 +5,8 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -17,7 +19,7 @@ import java.util.Date;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysUserRoleVo {
+public class SysUserRoleVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

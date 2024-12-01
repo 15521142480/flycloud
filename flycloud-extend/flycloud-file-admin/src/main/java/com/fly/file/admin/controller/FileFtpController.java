@@ -1,17 +1,15 @@
 package com.fly.file.admin.controller;
 
-import com.fly.common.model.R;
-import com.fly.common.utils.ArrayUtils;
+import com.fly.common.domain.model.R;
 import com.fly.common.utils.Base64Utils;
 import com.fly.common.utils.StringUtils;
+import com.fly.common.utils.collection.ArrayUtils;
 import com.fly.file.admin.domain.bo.ConnectFtpBo;
 import com.fly.file.admin.domain.bo.ExecuteOptionBo;
 import com.fly.file.admin.singleton.ConFtpSingle;
 import com.fly.file.admin.singleton.UploadFileScheduleSingle;
 import com.jcraft.jsch.JSchException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

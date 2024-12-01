@@ -1,21 +1,23 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.fly.common.constant.CommonConstants;
+import com.fly.common.enums.ErrorCodeConstants;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.enums.SysTypeEnum;
 import com.fly.common.exception.ServiceException;
+import com.fly.common.exception.utils.ServiceExceptionUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.CryptoUtils;
 import com.fly.common.utils.StringUtils;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fly.system.api.domain.SysRoleMenu;
+import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.domain.SysUserRole;
 import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
@@ -31,6 +33,7 @@ import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.mapper.SysUserMapper;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -53,6 +56,39 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private final ISysMenuService sysMenuService;
 
 
+
+    /**
+     * 查询用户列表
+     */
+    @Override
+    public PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo) {
+
+        LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
+        Page<SysUserVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
+
+        PageVo<SysUserVo> pageVo = this.build(result);
+        List<SysUserVo> sysUserVoList = pageVo.getList();
+        for (SysUserVo sysUserVo : sysUserVoList) {
+
+            sysUserVo.setUserTypeName(SysTypeEnum.getSysTypeNameByType(sysUserVo.getUserType()));
+            sysUserVo.setRoleIds(String.join(",", sysRoleService.getRoleIdListByUserId(sysUserVo.getId())));
+            sysUserVo.setRoleNames(String.join(",", sysRoleService.getRoleNameListByUserId(sysUserVo.getId())));
+        }
+        pageVo.setList(sysUserVoList);
+
+        return pageVo;
+    }
+
+
+    /**
+     * 查询所有用户精简版
+     *
+     */
+    @Override
+    public List<SysUserVo> queryAllListSimple(SysUserBo bo) {
+
+        return baseMapper.selectAllListSimple(bo);
+    }
 
     /**
      * 查询用户
@@ -85,29 +121,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
 
     /**
-     * 查询用户列表
-     */
-    @Override
-    public PageVo<SysUserVo> queryPageList(SysUserBo bo, PageBo pageBo) {
-
-        LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
-        Page<SysUserVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-
-        PageVo<SysUserVo> pageVo = this.build(result);
-        List<SysUserVo> sysUserVoList = pageVo.getList();
-        for (SysUserVo sysUserVo : sysUserVoList) {
-
-            sysUserVo.setUserTypeName(SysTypeEnum.getSysTypeNameByType(sysUserVo.getUserType()));
-            sysUserVo.setRoleIds(String.join(",", sysRoleService.getRoleIdListByUserId(sysUserVo.getId())));
-            sysUserVo.setRoleNames(String.join(",", sysRoleService.getRoleNameListByUserId(sysUserVo.getId())));
-        }
-        pageVo.setList(sysUserVoList);
-
-        return pageVo;
-    }
-
-
-    /**
      * 用户新增/修改
      */
     @Override
@@ -135,8 +148,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             String newPassword = encoder.encode(sysUser.getPassword());
             sysUser.setPassword(newPassword);
 
-            sysUser.setCreateBy(curUser.getId());
-            sysUser.setCreateTime(new Date());
+            sysUser.setCreateBy(curUser.getId().toString());
+            sysUser.setCreateTime(LocalDateTime.now());
             baseMapper.insert(sysUser);
 
         } else { // 修改
@@ -149,8 +162,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
                 sysUser.setPassword(newPassword);
             }
 
-            sysUser.setUpdateBy(curUser.getId());
-            sysUser.setUpdateTime(new Date());
+            sysUser.setUpdateBy(curUser.getId().toString());
+            sysUser.setUpdateTime(LocalDateTime.now());
             baseMapper.updateById(sysUser);
 
             // 移除用户角色权限
@@ -212,9 +225,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         lqw.eq(StringUtils.isNotBlank(bo.getTelephone()), SysUser::getTelephone, bo.getTelephone());
         lqw.eq(bo.getBirthday() != null, SysUser::getBirthday, bo.getBirthday());
         lqw.eq(bo.getSex() != null, SysUser::getSex, bo.getSex());
-        lqw.eq(bo.getDepartId() != null, SysUser::getDepartId, bo.getDepartId());
-        lqw.eq(StringUtils.isNotBlank(bo.getStatus()), SysUser::getStatus, bo.getStatus());
-        lqw.eq(StringUtils.isNotBlank(bo.getIsDeleted()), SysUser::getIsDeleted, bo.getIsDeleted());
+        lqw.eq(bo.getDeptId() != null, SysUser::getDeptId, bo.getDeptId());
+        lqw.eq(bo.getStatus() != null, SysUser::getStatus, bo.getStatus());
+        lqw.eq(bo.getIsDeleted() != null, SysUser::getIsDeleted, bo.getIsDeleted());
         return lqw;
     }
 
@@ -272,8 +285,49 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * 忽略租户查询用户信息
      */
     @Override
-    public SysUser getOneIgnoreTenant(SysUser sysUser) {
-        return this.baseMapper.selectOneIgnoreTenant(sysUser);
+    public SysUser queryOneUserByUser(SysUser sysUser) {
+        return this.baseMapper.selectOneUserByUser(sysUser);
+    }
+
+    /**
+     * 忽略租户查询用户信息
+     */
+    @Override
+    public List<SysUser> getByIds(Collection<Long> ids) {
+
+        if (ids == null || ids.isEmpty()){
+            return new ArrayList<>();
+        }
+        return this.baseMapper.selectBatchIds(ids);
+    }
+
+    /**
+     * 根据ids验证用户
+     */
+    @Override
+    public Boolean validateDeptByIds(Collection<Long> ids) {
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return false;
+        }
+
+        // 获得用户信息
+        List<SysUser> userList = this.getByIds(ids);
+        Map<Long, SysUser> userMap = CollectionUtils.convertMap(userList, SysUser::getId);
+
+        // 校验
+        ids.forEach(id -> {
+
+            SysUser user = userMap.get(id);
+            if (user == null) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.USER_NOT_EXISTS);
+            }
+            if (!StatusEnum.ENABLE.getStatus().equals(user.getStatus())) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.USER_IS_DISABLE, user.getName());
+            }
+        });
+
+        return true;
     }
 
 

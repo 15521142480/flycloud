@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.fly.common.database.entity.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 系统接口表实体类
@@ -70,17 +70,13 @@ public class SysApi extends BaseEntity {
 	* API状态:0:禁用 1:启用
 	*/
 	@Schema(description = "API状态:0:禁用 1:启用")
-	private String status;
+	private Integer status;
 	/**
 	* 是否认证:0:不认证 1:认证
 	*/
 	@Schema(description = "是否认证:0:不认证 1:认证")
 	private String auth;
-	/**
-	* 删除标识
-	*/
-	@Schema(description = "删除标识")
-	private String isDeleted;
+	
 
 
 }

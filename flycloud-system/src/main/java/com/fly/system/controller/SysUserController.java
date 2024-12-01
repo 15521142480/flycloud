@@ -1,14 +1,16 @@
 package com.fly.system.controller;
 
+import com.fly.common.security.user.FlyUser;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.utils.ExcelUtil;
 import com.fly.common.annotation.Log;
 import com.fly.common.enums.BusinessType;
-import com.fly.common.model.R;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.model.R;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.service.ISysUserService;
@@ -40,6 +42,35 @@ public class SysUserController extends BaseController {
     private final ISysUserService iSysUserService;
 
 
+    /**
+     * 查询用户列表
+     */
+//    @PreAuthorize("@pms.hasPermission('sys.user.list')")
+    @GetMapping("/list")
+    public R<PageVo<SysUserVo>> list(SysUserBo bo, PageBo page) {
+        return R.ok(iSysUserService.queryPageList(bo, page));
+    }
+
+
+    /**
+     * 查询所有用户精简版
+     */
+    @GetMapping("/allListSimple")
+    public R<List<SysUserVo>> list(SysUserBo bo) {
+        return R.ok(iSysUserService.queryAllListSimple(bo));
+    }
+
+
+    /**
+     * 获取用户详情信息
+     */
+    @GetMapping("/getUserInfo")
+    public R<UserDetailInfoVo> getDetailInfo() {
+
+        FlyUser user = UserUtils.getCurUser();
+        return R.ok(iSysUserService.getDetailInfo(user.getId()));
+    }
+
 
     /**
      * 获取用户详情信息
@@ -49,20 +80,10 @@ public class SysUserController extends BaseController {
         return R.ok(iSysUserService.getDetailInfo(id));
     }
 
-
-    /**
-     * 查询用户列表
-     */
-    @PreAuthorize("@pms.hasPermission('sys.user.list')")
-    @GetMapping("/list")
-    public R<PageVo<SysUserVo>> list(SysUserBo bo, PageBo page) {
-        return R.ok(iSysUserService.queryPageList(bo, page));
-    }
-
     /**
      * 用户新增/修改
      */
-    @PreAuthorize("@pms.hasPermission('sys.user.saveOrUpdate')")
+//    @PreAuthorize("@pms.hasPermission('sys.user.saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@RequestBody SysUserBo bo) {
         return R.ok(iSysUserService.saveOrUpdate(bo));
@@ -71,9 +92,9 @@ public class SysUserController extends BaseController {
     /**
      * 禁用启用
      */
-    @PreAuthorize("@pms.hasPermission('sys.user.enable')")
+//    @PreAuthorize("@pms.hasPermission('sys.user.enable')")
     @PostMapping("/enable")
-    public R<Void> enable(@RequestParam() Long id, @RequestParam() String status) {
+    public R<Void> enable(@RequestParam() Long id, @RequestParam() int status) {
 
         return R.ok(iSysUserService.updateById(new SysUser().setId(id).setStatus(status)));
     }

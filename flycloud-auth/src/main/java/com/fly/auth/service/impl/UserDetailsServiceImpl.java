@@ -2,11 +2,12 @@ package com.fly.auth.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.common.constant.Oauth2Constants;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.TokenException;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.user.FlyUserDetailsService;
 import com.fly.system.api.domain.common.UserInfo;
-import com.fly.system.api.feign.ISysUserProvider;
+import com.fly.system.api.feign.ISysUserApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -28,11 +29,8 @@ import java.util.Collection;
 public class UserDetailsServiceImpl implements FlyUserDetailsService {
 
 
-	public static final String ENABLE = "0";
-	public static final String DISABLE = "1";
-
 	@Resource
-	private ISysUserProvider sysUserProvider;
+	private ISysUserApi sysUserProvider;
 
 
 	/**
@@ -41,7 +39,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getData();
+		UserInfo userInfo = sysUserProvider.getUserByUserName(userName).getCheckedData();
 		if (userInfo == null) {
 			throw new TokenException("该用户：" + userName + "不存在");
 		}
@@ -98,7 +96,7 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		if (ObjectUtils.isEmpty(userInfo)) {
 			log.info("该用户：{} 不存在！", userInfo.getUserName());
 			throw new TokenException("该用户：" + userInfo.getUserName() + "不存在");
-		} else if (DISABLE.equals(userInfo.getSysUser().getStatus())) {
+		} else if (StatusEnum.DISABLE.getStatus() == userInfo.getSysUser().getStatus()) {
 			log.info("该用户：{} 已被停用!", userInfo.getUserName());
 			throw new TokenException("对不起，您的账号：" + userInfo.getUserName() + " 已停用");
 		}
@@ -112,16 +110,16 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 
 		// todo !!! 把spring security的User字段信息设置上，用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现 !!!
 		return new FlyUser(
-				user.getId().toString()
+				user.getId()
 				, userInfo.getSysUser().getUserType()
 				, userInfo.getLoginType()
-				, user.getDepartId().toString()
+				, user.getDeptId().toString()
 				, user.getTelephone()
 				, user.getAvatar()
 				, userInfo.getRoleIds()
 				, userInfo.getUserName()
 				, user.getPassword()
-				, ENABLE.equals(user.getStatus()),
+				, StatusEnum.ENABLE.getStatus() == user.getStatus(),
 				true
 				, true
 				, true

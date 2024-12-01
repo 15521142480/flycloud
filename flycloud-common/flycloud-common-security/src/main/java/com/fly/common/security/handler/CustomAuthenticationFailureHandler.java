@@ -1,7 +1,7 @@
 package com.fly.common.security.handler;
 
 import com.fly.common.enums.ResultCodeEnum;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import com.fly.common.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -2,6 +2,7 @@ package com.fly.common.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -318,5 +319,20 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return resultBuff.toString();
     }
 
+
+    public static List<Long> splitToLong(String value, CharSequence separator) {
+        long[] longs = StrUtil.splitToLong(value, separator);
+        return Arrays.stream(longs).boxed().collect(Collectors.toList());
+    }
+
+
+    public static Set<Long> splitToLongSet(String value) {
+        return splitToLongSet(value, StrPool.COMMA);
+    }
+
+    public static Set<Long> splitToLongSet(String value, CharSequence separator) {
+        long[] longs = StrUtil.splitToLong(value, separator);
+        return Arrays.stream(longs).boxed().collect(Collectors.toSet());
+    }
 
 }

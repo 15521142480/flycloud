@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fly.common.database.web.domain.bo.PageBo;
-import com.fly.common.database.web.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
 import com.fly.common.database.web.service.BaseService;
 
 

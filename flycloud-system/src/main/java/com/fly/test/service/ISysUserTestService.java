@@ -2,8 +2,8 @@ package com.fly.test.service;
 
 import com.fly.test.domain.vo.SysUserTestVo;
 import com.fly.test.domain.bo.SysUserTestBo;
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 
 import java.util.Collection;
 import java.util.List;

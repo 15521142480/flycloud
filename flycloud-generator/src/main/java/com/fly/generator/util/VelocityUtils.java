@@ -7,7 +7,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.fly.common.constant.GenConstants;
 import com.fly.common.database.helper.DataBaseHelper;
 import com.fly.common.utils.DateUtils;
-import com.fly.common.utils.JsonUtils;
+import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.generator.domain.GenTable;
 import com.fly.generator.domain.GenTableColumn;

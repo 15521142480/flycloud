@@ -1,12 +1,8 @@
 package com.fly.test.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
-import com.fly.common.database.web.domain.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 用户信息对象 sys_user
@@ -65,7 +61,7 @@ public class SysUserTest extends BaseEntity {
 //    /**
 //     * 帐号状态（0正常 1停用）
 //     */
-//    private String status;
+//    private Integer status;
 //    /**
 //     * 删除标志（0代表存在 2代表删除）
 //     */

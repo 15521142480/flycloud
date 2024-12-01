@@ -1,48 +1,49 @@
 package com.fly.system.service;
 
-import com.alicp.jetcache.anno.Cached;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.fly.common.constant.SystemConstants;
-import com.fly.common.database.entity.Search;
-import com.fly.common.model.R;
-import com.fly.system.api.domain.SysDict;
+import com.fly.system.api.domain.vo.SysDictVo;
+import com.fly.system.api.domain.bo.SysDictBo;
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
- * 字典表 服务类
+ * 字典数据Service接口
  *
+ * @author fly
+ * @date 2024-11-23
  */
-public interface ISysDictService extends IService<SysDict> {
+public interface ISysDictService {
 
     /**
-     * 根据编码和键获取值
-     *
-     * @param code
-     * @param dictKey
-     * @return
+     * 查询字典数据
      */
-    @Cached(name = SystemConstants.SYS_DICT_CACHE, expire = 3600)
-    R<String> getValue(String code, String dictKey);
+    SysDictVo queryById(Long id);
 
     /**
-     * 根据编码查询字典列表
-     *
-     * @param code
-     * @return
+     * 查询字典数据列表
      */
-    @Cached(name = SystemConstants.SYS_DICT_CACHE, key = "#code", expire = 3600)
-    R<List<SysDict>> getList(String code);
+    PageVo<SysDictVo> queryPageList(SysDictBo bo, PageBo pageBo);
 
     /**
-     * 字典分页查询
-     *
-     * @param page
-     * @param search
-     * @return
+     * 查询字典数据列表
      */
-    IPage<SysDict> listPage(Page page, Search search);
+    List<SysDictVo> queryList(SysDictBo bo);
+
+    /**
+     * 修改字典数据
+     */
+    Boolean insertByBo(SysDictBo bo);
+
+    /**
+     * 修改字典数据
+     */
+    Boolean updateByBo(SysDictBo bo);
+
+    /**
+     * 校验并批量删除字典数据信息
+     */
+    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
 }

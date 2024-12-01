@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.fly.common.database.entity.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 
 /**
  * 系统路由表实体类
@@ -45,11 +45,7 @@ public class SysRoute extends BaseEntity {
 	* API状态:0:禁用 1:启用
 	*/
 	@Schema(description = "API状态:0:禁用 1:启用")
-	private String status;
-	/**
-	* 删除标识
-	*/
-	@Schema(description = "删除标识")
-	private String isDeleted;
+	private Integer status;
+	
 
 }

@@ -1,10 +1,9 @@
 package ${packageName}.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.fly.common.utils.StringUtils;
-#if($table.crud || $table.sub)
-import com.fly.common.database.web.domain.vo.PageVo;
-import com.fly.common.database.web.domain.bo.PageBo;
+    #if($table.crud || $table.sub)
+import com.fly.common.domain.vo.PageVo;
+import com.fly.common.domain.bo.PageBo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 #end

@@ -1,14 +1,11 @@
 package com.fly.system.api.domain.bo;
 
-import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.validation.constraints.*;
 
-import java.util.Date;
-
-import com.fly.common.database.web.domain.BaseEntity;
+import com.fly.common.domain.BaseEntity;
 import lombok.experimental.Accessors;
 
 /**

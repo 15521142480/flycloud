@@ -1,7 +1,7 @@
 package com.fly.test.controller;
 
 import cn.easyes.core.conditions.LambdaEsQueryWrapper;
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import com.fly.test.domain.Document;
 import com.fly.test.esmapper.DocumentMapper;
 import lombok.RequiredArgsConstructor;

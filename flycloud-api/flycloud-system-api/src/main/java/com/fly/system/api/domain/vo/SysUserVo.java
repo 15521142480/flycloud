@@ -1,5 +1,6 @@
 package com.fly.system.api.domain.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -18,7 +19,7 @@ import java.util.Date;
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysUserVo {
+public class SysUserVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -101,13 +102,19 @@ public class SysUserVo {
      * 部门id
      */
     @ExcelProperty(value = "部门id")
-    private Long departId;
+    private Long deptId;
+
+    /**
+     * 部门id
+     */
+    @ExcelProperty(value = "部门名称")
+    private Long deptName;
 
     /**
      * 状态
      */
     @ExcelProperty(value = "状态")
-    private String status;
+    private Integer status;
 
     /**
      * 备注

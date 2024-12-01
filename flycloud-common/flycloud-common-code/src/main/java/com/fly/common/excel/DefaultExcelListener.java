@@ -5,9 +5,9 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelAnalysisException;
 import com.alibaba.excel.exception.ExcelDataConvertException;
-import com.fly.common.utils.JsonUtils;
+import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.StreamUtils;
-import com.fly.common.utils.ValidatorUtils;
+import com.fly.common.utils.validation.ValidationUtils;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -87,7 +87,7 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
     @Override
     public void invoke(T data, AnalysisContext context) {
         if (isValidate) {
-            ValidatorUtils.validate(data);
+            ValidationUtils.validate(data);
         }
         excelResult.getList().add(data);
     }

@@ -1,6 +1,6 @@
 package com.fly.test.controller;
 
-import com.fly.common.model.R;
+import com.fly.common.domain.model.R;
 import com.fly.common.redis.utils.RedisUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
