@@ -27,11 +27,6 @@
 | master                 | 主分支                      | jdk8              |
 | two_master_server_dev  | 两个主服务分支版本（即auth服务集成用户服务） | jdk8              |
 
-### 👉 交流和反馈：
-- 作者邮箱：        2570078967@qq.com
-- 作者vx (phone)： 15521142480
-- Github仓库：     https://github.com/15521142480/flycloud
-
 
 ### 3、系统集成了:
 
@@ -120,14 +115,8 @@ flycloud
 
 
 ### 7、Swagger文档说明:
--  本系统使用的是 Spring doc + swagger3.0
->   优点: 1. 由于Springfox 已停止维护, 且随着springboot升级bug众多; 且需要编写大量的注解来支持文档生成
->      <br>  2. 支持spring boot, spring cloud, spring gateway 等
->      <br>  3. 最重要是支持 javadoc (java注释), 由于无需写注解基于java注释可实现零入侵
--  使用方法1 (使用自带ui工具):
->    本系统文档的访问路径：`域名+网关端口+/swagger-ui.html`，如: http://localhost:8080/swagger-ui.html
--  使用方法2 (使用第三方工具):
->   由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+-  本系统使用的是 Spring doc
+>  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
 > | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
 
 
@@ -137,16 +126,11 @@ flycloud
 >   <br> 第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
 
 
-### 9、系统日志说明:
->   使用springboot自带的Logback:
->   <br> 在服务模块的resource层新增logback-spring.xml文件,格式配置根据需求自行修改
-
-
-### 10、实体模型(domain)说明:
+### 9、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
 >   <br> VO -> 客户端(页面)展示的数据, 通常以json存在的形式
 
 
-### 11、es索引引擎说明:
+### 10、es索引引擎说明:
 >   elasticsearch 版本为: 7.17.7
 >   elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
