@@ -32,7 +32,7 @@ public class BpmProcessDefinitionInfo extends BaseEntity {
     private Long id;
     /**
      * 流程定义的编号
-     * 关联 {@link ProcessDefinition#getId()} 属性
+     * 关联 {@link org.flowable.engine.repository.ProcessDefinition#getId()} 属性
      */
     private String processDefinitionId;
     /**

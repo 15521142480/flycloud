@@ -40,20 +40,18 @@ public class BpmUserGroupController extends BaseController {
     /**
      * 查询BPM 用户组列表
      */
-    @GetMapping("/list")
-    public R<PageVo<BpmUserGroupVo>> list(BpmUserGroupBo bo, PageBo page) {
+    @GetMapping("/page")
+    public R<PageVo<BpmUserGroupVo>> page(BpmUserGroupBo bo, PageBo page) {
         return R.ok(iBpmUserGroupService.queryPageList(bo, page));
     }
 
 
     /**
-     * 导出BPM 用户组列表
+     * 查询BPM 获取用户组精简信息列表
      */
-    @Log(title = "BPM 用户组", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(BpmUserGroupBo bo, HttpServletResponse response) {
-        List<BpmUserGroupVo> list = iBpmUserGroupService.queryList(bo);
-        ExcelUtil.exportExcel(list, "BPM 用户组", BpmUserGroupVo.class, response);
+    @GetMapping("/list")
+    public R<List<BpmUserGroupVo>> list(BpmUserGroupBo bo) {
+        return R.ok(iBpmUserGroupService.queryList(bo));
     }
 
 
@@ -62,7 +60,7 @@ public class BpmUserGroupController extends BaseController {
      *
      * @param id 主键
      */
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public R<BpmUserGroupVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iBpmUserGroupService.queryById(id));
     }
@@ -72,7 +70,7 @@ public class BpmUserGroupController extends BaseController {
      * 新增BPM 用户组
      */
     @Log(title = "BPM 用户组", businessType = BusinessType.INSERT)
-    @PostMapping()
+    @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmUserGroupBo bo) {
         return R.ok(iBpmUserGroupService.insertByBo(bo));
     }
@@ -82,7 +80,7 @@ public class BpmUserGroupController extends BaseController {
      * 修改BPM 用户组
      */
     @Log(title = "BPM 用户组", businessType = BusinessType.UPDATE)
-    @PutMapping()
+    @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmUserGroupBo bo) {
         return R.ok(iBpmUserGroupService.updateByBo(bo));
     }
@@ -94,7 +92,7 @@ public class BpmUserGroupController extends BaseController {
      * @param ids 主键串
      */
     @Log(title = "BPM 用户组", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmUserGroupService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

@@ -15,6 +15,9 @@ public interface CommonConstants {
     // 失败标记
     Integer FAIL = 1;
 
+    // 请求超时时间 默认为二分钟
+    Integer HTTP_TIMEOUT_MILLION_SECONDS = 120 * 1000;
+
 
     // todo 授权相关
     // 请求头 header
@@ -39,14 +42,13 @@ public interface CommonConstants {
 
 
     // todo 系统相关
-    // 超级管理员标识
-    String ADMIN_FLAG = "1";
-
-    // 请求超时时间 默认为二分钟
-    Integer HTTP_TIMEOUT_MILLION_SECONDS = 120 * 1000;
-
     // 默认密码
     String INIT_USER_PASSWORD = "fly123456";
+
+
+    // todo 接口相关
+    // feign调用前缀
+    public static final String FEIGN_API_PREFIX = "/feign";
 
 
 

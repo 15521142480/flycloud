@@ -8,7 +8,7 @@ import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenTaskTimeoutReqDTO;
 import com.fly.bpm.api.domain.vo.task.*;
 import com.fly.bpm.common.service.BpmMessageService;
 import com.fly.bpm.common.service.BpmModelService;
-import com.fly.bpm.common.service.IBpmProcessInstanceCopyService;
+import com.fly.bpm.task.service.IBpmInstanceCopyService;
 import com.fly.bpm.flowable.convert.BpmTaskConvert;
 import com.fly.bpm.flowable.utils.BpmnModelUtils;
 import com.fly.bpm.flowable.utils.FlowableUtils;
@@ -80,7 +80,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     @Resource
     private BpmInstanceService processInstanceService;
     @Resource
-    private IBpmProcessInstanceCopyService processInstanceCopyService;
+    private IBpmInstanceCopyService instanceCopyService;
     @Resource
     private BpmModelService modelService;
     @Resource
@@ -354,7 +354,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
 
         // 2. 抄送用户
         if (CollUtil.isNotEmpty(reqVO.getCopyUserIds())) {
-            processInstanceCopyService.createProcessInstanceCopy(reqVO.getCopyUserIds(), reqVO.getId());
+            instanceCopyService.createProcessInstanceCopy(reqVO.getCopyUserIds(), reqVO.getId());
         }
 
         // 情况一：被委派的任务，不调用 complete 去完成任务
@@ -552,14 +552,17 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         taskService.setVariableLocal(id, BpmnVariableConstants.TASK_VARIABLE_REASON, reason);
     }
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void returnTask(Long userId, BpmTaskReturnReqVO reqVO) {
+
         // 1.1 当前任务 task
         Task task = validateTask(userId, reqVO.getId());
         if (task.isSuspended()) {
             throw exception(TASK_IS_PENDING);
         }
+
         // 1.2 校验源头和目标节点的关系，并返回目标元素
         FlowElement targetElement = validateTargetTaskCanReturn(task.getTaskDefinitionKey(),
                 reqVO.getTargetTaskDefinitionKey(), task.getProcessDefinitionId());
@@ -602,10 +605,12 @@ public class BpmTaskServiceImpl implements BpmTaskService {
      * @param reqVO         前端参数封装
      */
     public void returnTask(Task currentTask, FlowElement targetElement, BpmTaskReturnReqVO reqVO) {
+
         // 1. 获得所有需要回撤的任务 taskDefinitionKey，用于稍后的 moveActivityIdsToSingleActivityId 回撤
         // 1.1 获取所有正常进行的任务节点 Key
         List<Task> taskList = taskService.createTaskQuery().processInstanceId(currentTask.getProcessInstanceId()).list();
         List<String> runTaskKeyList = convertList(taskList, Task::getTaskDefinitionKey);
+
         // 1.2 通过 targetElement 的出口连线，计算在 runTaskKeyList 有哪些 key 需要被撤回
         // 为什么不直接使用 runTaskKeyList 呢？因为可能存在多个审批分支，例如说：A -> B -> C 和 D -> F，而只要 C 撤回到 A，需要排除掉 F
         List<UserTask> returnUserTaskList = BpmnModelUtils.iteratorFindChildUserTasks(targetElement, runTaskKeyList, null, null);

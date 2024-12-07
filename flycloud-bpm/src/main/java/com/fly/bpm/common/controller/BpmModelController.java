@@ -63,8 +63,10 @@ public class BpmModelController {
 
 
 
+    /**
+     * 获得模型分页
+     */
     @GetMapping("/page")
-    @Operation(summary = "获得模型分页")
     public R<PageVo<BpmModelRespVO>> getModelPage(BpmModelPageReqVO pageVO) {
 
         PageVo<Model> pageVo = modelService.getModelPage(pageVO);
@@ -103,11 +105,14 @@ public class BpmModelController {
                 formMap, categoryMap, deploymentMap, processDefinitionMap, userMap));
     }
 
-    @GetMapping("/get")
-    @Operation(summary = "获得模型")
-    @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    @PreAuthorize("@pms.hasPermission('bpm:model:query')")
-    public R<BpmModelRespVO> getModel(@RequestParam("id") String id) {
+
+    /**
+     * 获得模型
+     *
+     */
+    @GetMapping("/get/{id}")
+    public R<BpmModelRespVO> getModel(@PathVariable String id) {
+
         Model model = modelService.getModel(id);
         if (model == null) {
             return null;
@@ -116,33 +121,46 @@ public class BpmModelController {
         return R.ok(BpmModelConvert.INSTANCE.buildModel(model, bpmnBytes));
     }
 
+
+    /**
+     * 新建模型
+     *
+     */
     @PostMapping("/create")
-    @Operation(summary = "新建模型")
-    @PreAuthorize("@pms.hasPermission('bpm:model:create')")
     public R<String> createModel(@Valid @RequestBody BpmModelSaveReqVO createRetVO) {
         return R.ok(modelService.createModel(createRetVO));
     }
 
+
+    /**
+     * 修改模型
+     *
+     */
     @PutMapping("/update")
-    @Operation(summary = "修改模型")
-    @PreAuthorize("@pms.hasPermission('bpm:model:update')")
     public R<Boolean> updateModel(@Valid @RequestBody BpmModelSaveReqVO modelVO) {
         modelService.updateModel(getCurUserId(), modelVO);
         return R.ok(true);
     }
 
-    @PostMapping("/deploy")
-    @Operation(summary = "部署模型")
-    @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    @PreAuthorize("@pms.hasPermission('bpm:model:deploy')")
-    public R<Boolean> deployModel(@RequestParam("id") String id) {
+
+    /**
+     * 部署模型
+     *
+     */
+    @PostMapping("/deploy/{id}")
+    public R<Boolean> deployModel(@PathVariable("id") String id) {
+
         modelService.deployModel(getCurUserId(), id);
         return R.ok(true);
     }
 
+
+    /**
+     * 修改模型的状态
+     *
+     * 注意: 实际更新的部署的流程定义的状态
+     */
     @PutMapping("/update-state")
-    @Operation(summary = "修改模型的状态", description = "实际更新的部署的流程定义的状态")
-    @PreAuthorize("@pms.hasPermission('bpm:model:update')")
     public R<Boolean> updateModelState(@Valid @RequestBody BpmModelUpdateStateReqVO reqVO) {
         modelService.updateModelState(getCurUserId(), reqVO.getId(), reqVO.getState());
         return R.ok(true);

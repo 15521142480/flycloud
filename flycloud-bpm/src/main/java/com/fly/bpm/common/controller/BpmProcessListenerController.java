@@ -40,20 +40,9 @@ public class BpmProcessListenerController extends BaseController {
     /**
      * 查询BPM 流程监听器列表
      */
-    @GetMapping("/list")
+    @GetMapping("/page")
     public R<PageVo<BpmProcessListenerVo>> list(BpmProcessListenerBo bo, PageBo page) {
         return R.ok(iBpmProcessListenerService.queryPageList(bo, page));
-    }
-
-
-    /**
-     * 导出BPM 流程监听器列表
-     */
-    @Log(title = "BPM 流程监听器", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(BpmProcessListenerBo bo, HttpServletResponse response) {
-        List<BpmProcessListenerVo> list = iBpmProcessListenerService.queryList(bo);
-        ExcelUtil.exportExcel(list, "BPM 流程监听器", BpmProcessListenerVo.class, response);
     }
 
 
@@ -62,7 +51,7 @@ public class BpmProcessListenerController extends BaseController {
      *
      * @param id 主键
      */
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public R<BpmProcessListenerVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iBpmProcessListenerService.queryById(id));
     }
@@ -72,7 +61,7 @@ public class BpmProcessListenerController extends BaseController {
      * 新增BPM 流程监听器
      */
     @Log(title = "BPM 流程监听器", businessType = BusinessType.INSERT)
-    @PostMapping()
+    @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmProcessListenerBo bo) {
         return R.ok(iBpmProcessListenerService.insertByBo(bo));
     }
@@ -82,7 +71,7 @@ public class BpmProcessListenerController extends BaseController {
      * 修改BPM 流程监听器
      */
     @Log(title = "BPM 流程监听器", businessType = BusinessType.UPDATE)
-    @PutMapping()
+    @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmProcessListenerBo bo) {
         return R.ok(iBpmProcessListenerService.updateByBo(bo));
     }
@@ -94,7 +83,7 @@ public class BpmProcessListenerController extends BaseController {
      * @param ids 主键串
      */
     @Log(title = "BPM 流程监听器", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmProcessListenerService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

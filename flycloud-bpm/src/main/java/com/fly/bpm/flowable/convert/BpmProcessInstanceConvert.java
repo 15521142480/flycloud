@@ -13,7 +13,7 @@ import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.collection.MapUtils;
 import com.fly.common.utils.number.NumberUtils;
 import com.fly.system.api.domain.SysUser;
-import com.fly.system.api.domain.bo.SysDeptBo;
+import com.fly.system.api.domain.vo.SysDeptVo;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -44,7 +44,7 @@ public interface BpmProcessInstanceConvert {
                                                                       Map<String, BpmCategory> categoryMap,
                                                                       Map<String, List<Task>> taskMap,
                                                                       Map<Long, SysUser> userMap,
-                                                                      Map<Long, SysDeptBo> deptMap) {
+                                                                      Map<Long, SysDeptVo> deptMap) {
 
         PageVo<BpmProcessInstanceRespVO> vpPageResult = BeanUtils.toBean(pageResult, BpmProcessInstanceRespVO.class);
 
@@ -82,7 +82,7 @@ public interface BpmProcessInstanceConvert {
                                                           BpmProcessDefinitionInfo processDefinitionExt,
                                                           String bpmnXml,
                                                           SysUser startUser,
-                                                          SysDeptBo dept) {
+                                                          SysDeptVo dept) {
         BpmProcessInstanceRespVO respVO = BeanUtils.toBean(processInstance, BpmProcessInstanceRespVO.class);
         respVO.setStatus(FlowableUtils.getProcessInstanceStatus(processInstance));
         respVO.setFormVariables(FlowableUtils.getProcessInstanceFormVariable(processInstance));

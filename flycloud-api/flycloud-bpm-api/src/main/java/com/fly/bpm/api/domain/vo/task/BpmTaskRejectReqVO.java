@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class BpmTaskRejectReqVO implements Serializable {
 
-    @Schema(description = "任务编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @Schema(description = "任务(工作项)编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     @NotEmpty(message = "任务编号不能为空")
     private String id;
 

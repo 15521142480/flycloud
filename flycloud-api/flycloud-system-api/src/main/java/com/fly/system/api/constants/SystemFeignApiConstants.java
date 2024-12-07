@@ -1,5 +1,7 @@
 package com.fly.system.api.constants;
 
+import com.fly.common.constant.CommonConstants;
+
 /**
  * 系统常量
  *
@@ -10,7 +12,7 @@ public interface SystemFeignApiConstants {
     /**
      * 远程调用公共前缀
      */
-    String PROVIDER = "/feign/sys";
+    String PROVIDER = CommonConstants.FEIGN_API_PREFIX +  "/sys";
 
 
     // ================================================== 用户

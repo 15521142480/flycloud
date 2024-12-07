@@ -1,6 +1,7 @@
 package com.fly.bpm.common.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fly.common.utils.collection.ArrayUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.bpm.api.domain.bo.BpmProcessExpressionBo;
@@ -62,12 +64,29 @@ public class BpmProcessExpressionServiceImpl extends BaseServiceImpl<BpmProcessE
     }
 
     private LambdaQueryWrapper<BpmProcessExpression> buildQueryWrapper(BpmProcessExpressionBo bo) {
-        Map<String, Object> params = bo.getParams();
+
+        bo.setIsDeleted(false);
+        bo.setStatus(StatusEnum.ENABLE.getStatus());
+
         LambdaQueryWrapper<BpmProcessExpression> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), BpmProcessExpression::getName, bo.getName());
         lqw.eq(bo.getStatus() != null, BpmProcessExpression::getStatus, bo.getStatus());
-        lqw.eq(StringUtils.isNotBlank(bo.getExpression()), BpmProcessExpression::getExpression, bo.getExpression());
+        lqw.like(StringUtils.isNotBlank(bo.getExpression()), BpmProcessExpression::getExpression, bo.getExpression());
         lqw.eq(bo.getIsDeleted() != null, BpmProcessExpression::getIsDeleted, bo.getIsDeleted());
+
+        Object val1 = ArrayUtils.get(bo.getCreateTime(), 0);
+        Object val2 = ArrayUtils.get(bo.getCreateTime(), 1);
+        if (val1 != null && val2 != null) {
+            return lqw.between(BpmProcessExpression::getCreateTime, val1, val2);
+        }
+        if (val1 != null) {
+            return lqw.ge(BpmProcessExpression::getCreateTime, val1);
+        }
+        if (val2 != null) {
+            return lqw.le(BpmProcessExpression::getCreateTime, val2);
+        }
+
+        lqw.orderByDesc(BpmProcessExpression::getId);
         return lqw;
     }
 

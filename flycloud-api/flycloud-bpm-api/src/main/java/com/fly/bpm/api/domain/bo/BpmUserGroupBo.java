@@ -1,9 +1,13 @@
 package com.fly.bpm.api.domain.bo;
 
+import com.fly.common.utils.DateUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import com.fly.common.domain.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 /**
  * BPM 用户组业务对象
@@ -13,8 +17,7 @@ import com.fly.common.domain.BaseEntity;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class BpmUserGroupBo extends BaseEntity {
+public class BpmUserGroupBo {
 
     /**
      * 编号
@@ -46,5 +49,15 @@ public class BpmUserGroupBo extends BaseEntity {
     // @NotNull(message = "状态（0正常 1停用）不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer status;
 
+    /**
+     * 是否删除
+     */
+    private Boolean isDeleted;
+
+    /**
+     * 创建时间
+     */
+    @DateTimeFormat(pattern = DateUtils.YYYY_MM_DD_HH_MM_SS)
+    private LocalDateTime[] createTime;
 
 }

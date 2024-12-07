@@ -40,20 +40,9 @@ public class BpmProcessExpressionController extends BaseController {
     /**
      * 查询BPM 流程达式列表
      */
-    @GetMapping("/list")
+    @GetMapping("/page")
     public R<PageVo<BpmProcessExpressionVo>> list(BpmProcessExpressionBo bo, PageBo page) {
         return R.ok(iBpmProcessExpressionService.queryPageList(bo, page));
-    }
-
-
-    /**
-     * 导出BPM 流程达式列表
-     */
-    @Log(title = "BPM 流程达式", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(BpmProcessExpressionBo bo, HttpServletResponse response) {
-        List<BpmProcessExpressionVo> list = iBpmProcessExpressionService.queryList(bo);
-        ExcelUtil.exportExcel(list, "BPM 流程达式", BpmProcessExpressionVo.class, response);
     }
 
 
@@ -62,7 +51,7 @@ public class BpmProcessExpressionController extends BaseController {
      *
      * @param id 主键
      */
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public R<BpmProcessExpressionVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iBpmProcessExpressionService.queryById(id));
     }
@@ -72,7 +61,7 @@ public class BpmProcessExpressionController extends BaseController {
      * 新增BPM 流程达式
      */
     @Log(title = "BPM 流程达式", businessType = BusinessType.INSERT)
-    @PostMapping()
+    @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmProcessExpressionBo bo) {
         return R.ok(iBpmProcessExpressionService.insertByBo(bo));
     }
@@ -82,7 +71,7 @@ public class BpmProcessExpressionController extends BaseController {
      * 修改BPM 流程达式
      */
     @Log(title = "BPM 流程达式", businessType = BusinessType.UPDATE)
-    @PutMapping()
+    @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmProcessExpressionBo bo) {
         return R.ok(iBpmProcessExpressionService.updateByBo(bo));
     }
@@ -94,7 +83,7 @@ public class BpmProcessExpressionController extends BaseController {
      * @param ids 主键串
      */
     @Log(title = "BPM 流程达式", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmProcessExpressionService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

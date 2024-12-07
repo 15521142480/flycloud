@@ -14,7 +14,7 @@ import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.number.NumberUtils;
 import com.fly.system.api.domain.SysUser;
-import com.fly.system.api.domain.bo.SysDeptBo;
+import com.fly.system.api.domain.vo.SysDeptVo;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -65,7 +65,7 @@ public interface BpmTaskConvert {
     default PageVo<BpmTaskRespVO> buildTaskPage(PageVo<HistoricTaskInstance> PageVo,
                                                     Map<String, HistoricProcessInstance> processInstanceMap,
                                                     Map<Long, SysUser> userMap,
-                                                    Map<Long, SysDeptBo> deptMap) {
+                                                    Map<Long, SysDeptVo> deptMap) {
         List<BpmTaskRespVO> taskVOList = CollectionUtils.convertList(PageVo.getList(), task -> {
 
             BpmTaskRespVO taskVO = BeanUtils.toBean(task, BpmTaskRespVO.class);
@@ -92,7 +92,7 @@ public interface BpmTaskConvert {
                                                                  HistoricProcessInstance processInstance,
                                                                  Map<Long, BpmForm> formMap,
                                                                  Map<Long, SysUser> userMap,
-                                                                 Map<Long, SysDeptBo> deptMap,
+                                                                 Map<Long, SysDeptVo> deptMap,
                                                                  BpmnModel bpmnModel) {
         List<BpmTaskRespVO> taskVOList = CollectionUtils.convertList(taskList, task -> {
             BpmTaskRespVO taskVO = BeanUtils.toBean(task, BpmTaskRespVO.class);
@@ -146,12 +146,12 @@ public interface BpmTaskConvert {
      */
     default List<BpmTaskRespVO> buildTaskListByParentTaskId(List<Task> taskList,
                                                             Map<Long, SysUser> userMap,
-                                                            Map<Long, SysDeptBo> deptMap) {
+                                                            Map<Long, SysDeptVo> deptMap) {
         return convertList(taskList, task -> BeanUtils.toBean(task, BpmTaskRespVO.class, taskVO -> {
             SysUser assignUser = userMap.get(NumberUtils.parseLong(task.getAssignee()));
             if (assignUser != null) {
                 taskVO.setAssigneeUser(BeanUtils.toBean(assignUser, BpmProcessInstanceRespVO.User.class));
-                SysDeptBo dept = deptMap.get(assignUser.getDeptId());
+                SysDeptVo dept = deptMap.get(assignUser.getDeptId());
                 if (dept != null) {
                     taskVO.getAssigneeUser().setDeptName(dept.getName());
                 }

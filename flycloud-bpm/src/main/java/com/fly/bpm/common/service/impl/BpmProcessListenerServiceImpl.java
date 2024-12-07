@@ -1,6 +1,7 @@
 package com.fly.bpm.common.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -62,7 +63,10 @@ public class BpmProcessListenerServiceImpl extends BaseServiceImpl<BpmProcessLis
     }
 
     private LambdaQueryWrapper<BpmProcessListener> buildQueryWrapper(BpmProcessListenerBo bo) {
-        Map<String, Object> params = bo.getParams();
+
+        bo.setIsDeleted(false);
+        bo.setStatus(StatusEnum.ENABLE.getStatus());
+
         LambdaQueryWrapper<BpmProcessListener> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), BpmProcessListener::getName, bo.getName());
         lqw.eq(StringUtils.isNotBlank(bo.getType()), BpmProcessListener::getType, bo.getType());
@@ -71,6 +75,9 @@ public class BpmProcessListenerServiceImpl extends BaseServiceImpl<BpmProcessLis
         lqw.eq(StringUtils.isNotBlank(bo.getValueType()), BpmProcessListener::getValueType, bo.getValueType());
         lqw.eq(StringUtils.isNotBlank(bo.getValue()), BpmProcessListener::getValue, bo.getValue());
         lqw.eq(bo.getIsDeleted() != null, BpmProcessListener::getIsDeleted, bo.getIsDeleted());
+
+        lqw.orderByDesc(BpmProcessListener::getId);
+
         return lqw;
     }
 

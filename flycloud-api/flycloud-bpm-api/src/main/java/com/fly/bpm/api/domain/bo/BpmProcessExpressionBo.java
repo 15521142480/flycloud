@@ -1,9 +1,10 @@
 package com.fly.bpm.api.domain.bo;
 
+import com.fly.common.utils.DateUtils;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fly.common.domain.BaseEntity;
+import java.time.LocalDateTime;
 
 /**
  * BPM 流程达式业务对象
@@ -13,8 +14,7 @@ import com.fly.common.domain.BaseEntity;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class BpmProcessExpressionBo extends BaseEntity {
+public class BpmProcessExpressionBo {
 
     /**
      * 编号
@@ -35,10 +35,20 @@ public class BpmProcessExpressionBo extends BaseEntity {
     private Integer status;
 
     /**
+     * 是否删除
+     */
+    private Boolean isDeleted;
+
+    /**
      * 表达式
      */
     // @NotBlank(message = "表达式不能为空", groups = { AddGroup.class, EditGroup.class })
     private String expression;
 
+    /**
+     * 创建时间
+     */
+    @DateTimeFormat(pattern = DateUtils.YYYY_MM_DD_HH_MM_SS)
+    private LocalDateTime[] createTime;
 
 }

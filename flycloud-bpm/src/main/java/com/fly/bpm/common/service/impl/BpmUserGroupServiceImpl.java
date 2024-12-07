@@ -1,6 +1,8 @@
 package com.fly.bpm.common.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.fly.common.database.web.query.LambdaQueryWrapperX;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -8,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fly.common.utils.collection.ArrayUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.bpm.api.domain.bo.BpmUserGroupBo;
@@ -62,14 +65,35 @@ public class BpmUserGroupServiceImpl extends BaseServiceImpl<BpmUserGroupMapper,
     }
 
     private LambdaQueryWrapper<BpmUserGroup> buildQueryWrapper(BpmUserGroupBo bo) {
-        Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<BpmUserGroup> lqw = Wrappers.lambdaQuery();
-        lqw.like(StringUtils.isNotBlank(bo.getName()), BpmUserGroup::getName, bo.getName());
-        lqw.eq(StringUtils.isNotBlank(bo.getDescription()), BpmUserGroup::getDescription, bo.getDescription());
-        lqw.eq(StringUtils.isNotBlank(bo.getUserIds()), BpmUserGroup::getUserIds, bo.getUserIds());
-        lqw.eq(bo.getStatus() != null, BpmUserGroup::getStatus, bo.getStatus());
-        lqw.eq(bo.getIsDeleted() != null, BpmUserGroup::getIsDeleted, bo.getIsDeleted());
-        return lqw;
+
+        bo.setIsDeleted(false);
+        bo.setStatus(StatusEnum.ENABLE.getStatus());
+
+//        LambdaQueryWrapper<BpmUserGroup> lqw = new LambdaQueryWrapperX<>().;
+//        lqw.like(StringUtils.isNotBlank(bo.getName()), BpmUserGroup::getName, bo.getName());
+//        lqw.eq(StringUtils.isNotBlank(bo.getDescription()), BpmUserGroup::getDescription, bo.getDescription());
+//        lqw.eq(StringUtils.isNotBlank(bo.getUserIds()), BpmUserGroup::getUserIds, bo.getUserIds());
+//        lqw.eq(bo.getStatus() != null, BpmUserGroup::getStatus, bo.getStatus());
+//        lqw.eq(bo.getIsDeleted() != null, BpmUserGroup::getIsDeleted, bo.getIsDeleted());
+//
+//        Object val1 = ArrayUtils.get(bo.getCreateTime(), 0);
+//        Object val2 = ArrayUtils.get(bo.getCreateTime(), 1);
+//        if (val1 != null && val2 != null) {
+//            return lqw.between(BpmUserGroup::getCreateTime, val1, val2);
+//        }
+//        if (val1 != null) {
+//            return lqw.ge(BpmUserGroup::getCreateTime, val1);
+//        }
+//        if (val2 != null) {
+//            return lqw.le(BpmUserGroup::getCreateTime, val2);
+//        }
+
+        return new LambdaQueryWrapperX<BpmUserGroup>()
+                .likeIfPresent(BpmUserGroup::getName, bo.getName())
+                .eqIfPresent(BpmUserGroup::getStatus, bo.getStatus())
+                .eqIfPresent(BpmUserGroup::getIsDeleted, bo.getIsDeleted())
+                .betweenIfPresent(BpmUserGroup::getCreateTime, bo.getCreateTime())
+                .orderByDesc(BpmUserGroup::getId);
     }
 
 
