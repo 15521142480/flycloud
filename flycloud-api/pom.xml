@@ -12,7 +12,7 @@
     <artifactId>flycloud-api</artifactId>
     <description>飞翔云-内网接口模块</description>
     <modules>
-        <module>flycloud-feign-api</module>
+        <module>flycloud-bpm-api</module>
         <module>flycloud-system-api</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>

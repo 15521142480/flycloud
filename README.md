@@ -37,6 +37,7 @@
 | 微服务          | Spring cloud 2021 Alibaba、Spring cloud Alibaba2021 |
 | 注册和配置中心      | Nacos 2.1.1                                        |
 | 安全/授权框架      | Spring Security + OAuth2.0                         |
+| 工作流框架        | Flowable 6.8.0                                     |
 | 数据库/持久层/自动生成 | Mysql5.7 + Mybatis plus、 Velocity                  |
 | 分布式事务        | Seata (待续)                                         |
 | 缓存           | Ehcache、 Redis                                     |
@@ -57,9 +58,11 @@
 flycloud
 ├─db       -- 系统sql
 ├─doc      -- 系统文档
-├─flycloud-api              -- 内网接口（实体层和feign层）
-│  ├─flycloud_system_api                -- 系统业务
+├─flycloud-api              -- 内网接口（实体和feign等api层）
+│  ├─flycloud_bpm_api                   -- 工作流api
+│  ├─flycloud_system_api                -- 系统api
 ├─flycloud-auth             -- 授权服务
+├─flycloud-bpm              -- 工作流服务
 ├─flycloud-common           -- 公共模块
 │  ├─flycloud-common-core               -- 公共模块核心代码
 │  ├─flycloud-common-database           -- 数据库连接相关
@@ -80,8 +83,9 @@ flycloud
 └─flycloud-system           -- 平台服务
 └─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-ui               -- 系统的ui前端模块
+│  ├─flycloud-admin-ui                  -- 文件管理后台ui (新, vue3)
 │  ├─flycloud-file-admin-ui             -- 文件管理后台ui
-│  ├─flycloud-platform-admin-ui         -- 平台管理后台ui
+│  ├─flycloud-platform-admin-ui         -- 平台管理后台ui (旧, vue2)
 └─logs     -- 系统日志 
 ```
 
