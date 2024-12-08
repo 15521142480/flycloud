@@ -1,7 +1,7 @@
 
 ### 1、项目说明:
 - flycloud-server 是一款基于Spring Cloud Alibaba的微服务架构。
-- 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
+- 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、Flowable 6.8.0、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
 - 主要以商城项目为主，扩展项目为辅的一个飞翔云系统。
 
 
@@ -98,6 +98,7 @@ flycloud
 | flycloud-auth        授权校验服务       | http://127.0.0.1:8088 |
 | flycloud-system      系统服务         | http://127.0.0.1:8085 |
 | 系统业务服务:                           |
+| flycloud-bpm         工作流服务        | http://127.0.0.1:8090 |
 | flycloud-mall        商城服务         | http://127.0.0.1:8081 |
 | flycloud-music       音乐服务         | http://127.0.0.1:8083 |
 | 其他服务:                             |
@@ -111,30 +112,39 @@ flycloud
 ### 6、前端服务:（可选）
 | 服务                                        | 地址                    |
 |-------------------------------------------|-----------------------|
-| flycloud-platform-admin-ui   平台ui         | http://127.0.0.1:7075 |
+| flycloud-admin-ui            平台ui (新)     | http://127.0.0.1:7075 |
+| flycloud-platform-admin-ui   平台ui (旧)     | http://127.0.0.1:7075 |
 | flycloud-mall-ui (待续)       商城(后台端/商家端)ui | http://127.0.0.1:xxx  |
 | flycloud-music-ui (待续)      音乐ui          | http://127.0.0.1:xxx  |
 | flycloud-system-ui (待续)     系统后台ui        | http://127.0.0.1:xxx  |
 | flycloud-file-admin-ui   文件管理后台ui         | http://127.0.0.1:xxx  |
 
 
-### 7、Swagger文档说明:
--  本系统使用的是 Spring doc
->  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
-> | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
+### 7、工作流程说明:
+>   flowable 版本为: 6.8.0
+>   流程表单有简易表单和自定义表单两种; 
+>   实现工作流的基本与复杂功能, 如 审批、转交、抄送、驳回、向前加签、向后加签、减签、流程跳转、监听器、多样表达式等;
 
 
-### 8、generator自动生成代码说明:
+### 8、es索引引擎说明:
+>   elasticsearch 版本为: 7.17.7
+>   elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
+
+
+### 9、generator自动生成代码说明:
 >   有两种生成方式两种:
 >   <br> 第一种: 通过后台管理生成
 >   <br> 第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
 
 
-### 9、实体模型(domain)说明:
+### 10、Swagger文档说明:
+-  本系统使用的是 Spring doc
+>  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+> | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
+
+
+### 11、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
 >   <br> VO -> 客户端(页面)展示的数据, 通常以json存在的形式
 
 
-### 10、es索引引擎说明:
->   elasticsearch 版本为: 7.17.7
->   elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
