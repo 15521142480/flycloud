@@ -58,12 +58,12 @@
             v-if="selectActivityType === 'bpmn:UserTask'"
           >
             <template #default="scope">
-              {{ scope.row.assigneeUser?.nickname || scope.row.ownerUser?.nickname }}
+              {{ scope.row.assigneeUser?.name || scope.row.ownerUser?.name }}
             </template>
           </el-table-column>
           <el-table-column
             label="发起人"
-            prop="assigneeUser.nickname"
+            prop="assigneeUser.name"
             min-width="100"
             align="center"
             v-else

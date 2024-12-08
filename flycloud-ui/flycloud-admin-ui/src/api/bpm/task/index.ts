@@ -73,7 +73,7 @@ export const rejectTask = async (data: any) => {
 
 export const getTaskListByProcessInstanceId = async (processInstanceId: string) => {
   return await request.get({
-    url: `/${BPM_BASE_URL}/taskList?processInstanceId=` + processInstanceId
+    url: `/${BPM_BASE_URL}/task/taskList?processInstanceId=` + processInstanceId
   })
 }
 

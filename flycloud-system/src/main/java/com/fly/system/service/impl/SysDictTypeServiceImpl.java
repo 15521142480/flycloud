@@ -66,7 +66,6 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, S
 
     private LambdaQueryWrapper<SysDictType> buildQueryWrapper(SysDictTypeBo bo) {
 
-
         LambdaQueryWrapper<SysDictType> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), SysDictType::getName, bo.getName());
         lqw.eq(StringUtils.isNotBlank(bo.getType()), SysDictType::getType, bo.getType());

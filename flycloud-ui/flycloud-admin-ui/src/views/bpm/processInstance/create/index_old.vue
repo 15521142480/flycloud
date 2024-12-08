@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="流程发起、取消、重新发起" url="https://doc.iocoder.cn/bpm/process-instance/" />
 
   <!-- 第一步，通过流程定义的列表，选择对应的流程 -->
   <ContentWrap v-if="!selectProcessDefinition" v-loading="loading">
@@ -76,7 +75,7 @@
                       <el-option
                         v-for="user in userList"
                         :key="user.id"
-                        :label="user.nickname"
+                        :label="user.name"
                         :value="user.id"
                       />
                     </el-select>

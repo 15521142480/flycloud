@@ -7,13 +7,13 @@ import com.fly.bpm.api.domain.vo.model.BpmModelMetaInfoVO;
 import com.fly.bpm.api.domain.vo.model.BpmModelRespVO;
 import com.fly.bpm.api.domain.vo.model.BpmModelSaveReqVO;
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
-import com.fly.bpm.api.domain.vo.user.UserSimpleBaseVO;
+import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
 import com.fly.bpm.flowable.utils.BpmnModelUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.DateUtils;
 import com.fly.common.utils.json.JsonUtils;
-import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysUserVo;
 import org.flowable.common.engine.impl.db.SuspensionState;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.Model;
@@ -46,7 +46,7 @@ public interface BpmModelConvert {
                                                 Map<String, BpmCategory> categoryMap,
                                                 Map<String, Deployment> deploymentMap,
                                                 Map<String, ProcessDefinition> processDefinitionMap,
-                                                Map<Long, SysUser> userMap) {
+                                                Map<Long, SysUserVo> userMap) {
         List<BpmModelRespVO> result = convertList(list, model -> {
             BpmModelMetaInfoVO metaInfo = parseMetaInfo(model);
             BpmForm form = metaInfo != null ? formMap.get(metaInfo.getFormId()) : null;
@@ -54,7 +54,7 @@ public interface BpmModelConvert {
             Deployment deployment = model.getDeploymentId() != null ? deploymentMap.get(model.getDeploymentId()) : null;
             ProcessDefinition processDefinition = model.getDeploymentId() != null ?
                     processDefinitionMap.get(model.getDeploymentId()) : null;
-            List<SysUser> startUsers = metaInfo != null ? convertList(metaInfo.getStartUserIds(), userMap::get) : null;
+            List<SysUserVo> startUsers = metaInfo != null ? convertList(metaInfo.getStartUserIds(), userMap::get) : null;
             return buildModel0(model, metaInfo, form, category, deployment, processDefinition, startUsers);
         });
         // 排序
@@ -70,7 +70,7 @@ public interface BpmModelConvert {
                                                   Map<Long, BpmForm> formMap,
                                                   Map<String, BpmCategory> categoryMap, Map<String, Deployment> deploymentMap,
                                                   Map<String, ProcessDefinition> processDefinitionMap,
-                                                  Map<Long, SysUser> userMap)
+                                                  Map<Long, SysUserVo> userMap)
     {
         List<BpmModelRespVO> list = convertList(PageVo.getList(), model -> {
             BpmModelMetaInfoVO metaInfo = parseMetaInfo(model);
@@ -78,7 +78,7 @@ public interface BpmModelConvert {
             BpmCategory category = categoryMap.get(model.getCategory());
             Deployment deployment = model.getDeploymentId() != null ? deploymentMap.get(model.getDeploymentId()) : null;
             ProcessDefinition processDefinition = model.getDeploymentId() != null ? processDefinitionMap.get(model.getDeploymentId()) : null;
-            List<SysUser> startUsers = metaInfo != null ? convertList(metaInfo.getStartUserIds(), userMap::get) : null;
+            List<SysUserVo> startUsers = metaInfo != null ? convertList(metaInfo.getStartUserIds(), userMap::get) : null;
             return buildModel0(model, metaInfo, form, category, deployment, processDefinition, startUsers);
         });
 
@@ -105,7 +105,7 @@ public interface BpmModelConvert {
     default BpmModelRespVO buildModel0(Model model,
                                        BpmModelMetaInfoVO metaInfo, BpmForm form, BpmCategory category,
                                        Deployment deployment, ProcessDefinition processDefinition,
-                                       List<SysUser> startUsers) {
+                                       List<SysUserVo> startUsers) {
         BpmModelRespVO modelRespVO = new BpmModelRespVO().setId(model.getId()).setName(model.getName())
                 .setKey(model.getKey()).setCategory(model.getCategory())
                 .setCreateTime(DateUtils.of(model.getCreateTime()));
@@ -127,7 +127,7 @@ public interface BpmModelConvert {
                 modelRespVO.getProcessDefinition().setDeploymentTime(DateUtils.of(deployment.getDeploymentTime()));
             }
         }
-        modelRespVO.setStartUsers(BeanUtils.toBean(startUsers, UserSimpleBaseVO.class));
+        modelRespVO.setStartUsers(BeanUtils.toBean(startUsers, SysUserBpmVO.class));
         return modelRespVO;
     }
 

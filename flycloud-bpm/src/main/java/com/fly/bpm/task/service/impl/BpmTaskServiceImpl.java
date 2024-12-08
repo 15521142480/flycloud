@@ -8,6 +8,7 @@ import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenTaskTimeoutReqDTO;
 import com.fly.bpm.api.domain.vo.task.*;
 import com.fly.bpm.common.service.BpmMessageService;
 import com.fly.bpm.common.service.BpmModelService;
+import com.fly.bpm.common.service.BpmProcessDefinitionService;
 import com.fly.bpm.task.service.IBpmInstanceCopyService;
 import com.fly.bpm.flowable.convert.BpmTaskConvert;
 import com.fly.bpm.flowable.utils.BpmnModelUtils;
@@ -22,8 +23,8 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.DateUtils;
 import com.fly.common.utils.ObjectUtils;
 import com.fly.common.utils.number.NumberUtils;
-import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.SysDeptVo;
+import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysDeptApi;
 import com.fly.system.api.feign.ISysUserApi;
 import lombok.extern.slf4j.Slf4j;
@@ -35,14 +36,17 @@ import org.flowable.engine.HistoryService;
 import org.flowable.engine.ManagementService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
+import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
+import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 import org.flowable.task.service.impl.persistence.entity.TaskEntityImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -80,22 +84,27 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     @Resource
     private BpmInstanceService processInstanceService;
     @Resource
-    private IBpmInstanceCopyService instanceCopyService;
+    private BpmProcessDefinitionService bpmProcessDefinitionService;
+    @Resource
+    private IBpmInstanceCopyService processInstanceCopyService;
     @Resource
     private BpmModelService modelService;
     @Resource
     private BpmMessageService messageService;
 
     @Resource
-    private ISysUserApi sysUserProvider;
+    private ISysUserApi sysUserApi;
     @Resource
-    private ISysDeptApi sysDeptProvider;
+    private ISysDeptApi sysDeptApi;
+    @Autowired
+    private ISysUserApi iSysUserApi;
 
 
     // ========== Query 查询相关方法 ==========
 
     @Override
     public PageVo<Task> getTaskTodoPage(Long userId, BpmTaskPageReqVO pageVO) {
+        
         TaskQuery taskQuery = taskService.createTaskQuery()
                 .taskAssignee(String.valueOf(userId)) // 分配给自己
                 .active()
@@ -104,6 +113,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         if (StrUtil.isNotBlank(pageVO.getName())) {
             taskQuery.taskNameLike("%" + pageVO.getName() + "%");
         }
+        
         if (ArrayUtil.isNotEmpty(pageVO.getCreateTime())) {
             taskQuery.taskCreatedAfter(DateUtils.of(pageVO.getCreateTime()[0]));
             taskQuery.taskCreatedBefore(DateUtils.of(pageVO.getCreateTime()[1]));
@@ -113,7 +123,45 @@ public class BpmTaskServiceImpl implements BpmTaskService {
             return PageVo.empty();
         }
         List<Task> tasks = taskQuery.listPage(PageUtils.getStart(pageVO), pageVO.getPageSize());
+        
         return new PageVo<>(tasks, count);
+    }
+
+    
+    
+    @Override
+    public BpmTaskRespVO getFirstTodoTask(Long userId, String processInstanceId) {
+        if (processInstanceId == null) {
+            return null;
+        }
+        // 1. 查询所有任务
+        List<Task> tasks = taskService.createTaskQuery()
+                .active()
+                .processInstanceId(processInstanceId)
+                .includeTaskLocalVariables()
+                .includeProcessVariables()
+                .orderByTaskCreateTime().asc() // 按创建时间升序
+                .list();
+        if (CollUtil.isEmpty(tasks)) {
+            return null;
+        }
+
+        // 2.1 查询我的首个任务
+        Task todoTask = CollUtil.findOne(tasks, task -> {
+            return isAssignUserTask(userId, task) // 当前用户为审批人
+                    || isAddSignUserTask(userId, task); // 当前用户为加签人（为了减签）
+        });
+        if (todoTask == null) {
+            return null;
+        }
+        // 2.2 查询该任务的子任务
+        List<Task> childrenTasks = getAllChildrenTaskListByParentTaskId(todoTask.getId(), tasks);
+
+        // 3. 转换返回
+        BpmnModel bpmnModel = bpmProcessDefinitionService.getProcessDefinitionBpmnModel(todoTask.getProcessDefinitionId());
+        Map<Integer, BpmTaskRespVO.OperationButtonSetting> buttonsSetting = BpmnModelUtils.parseButtonsSetting(
+                bpmnModel, todoTask.getTaskDefinitionKey());
+        return BpmTaskConvert.INSTANCE.buildTodoTask(todoTask, childrenTasks, buttonsSetting);
     }
 
     @Override
@@ -170,16 +218,16 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     }
 
     @Override
-    public List<HistoricTaskInstance> getTaskListByProcessInstanceId(String processInstanceId) {
-        List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
+    public List<HistoricTaskInstance> getTaskListByProcessInstanceId(String processInstanceId, Boolean asc) {
+        HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery()
                 .includeTaskLocalVariables()
-                .processInstanceId(processInstanceId)
-                .orderByHistoricTaskInstanceStartTime().desc() // 创建时间倒序
-                .list();
-        if (CollUtil.isEmpty(tasks)) {
-            return Collections.emptyList();
+                .processInstanceId(processInstanceId);
+        if (Boolean.TRUE.equals(asc)) {
+            query.orderByHistoricTaskInstanceStartTime().asc();
+        } else {
+            query.orderByHistoricTaskInstanceStartTime().desc();
         }
-        return tasks;
+        return query.list();
     }
 
     /**
@@ -254,9 +302,41 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         if (CollUtil.isEmpty(previousUserList)) {
             return Collections.emptyList();
         }
-        // 2.2 过滤：只有串行可到达的节点，才可以回退。类似非串行、子流程无法退回
+        // 2.2 过滤：只有串行可到达的节点，才可以退回。类似非串行、子流程无法退回
         previousUserList.removeIf(userTask -> !BpmnModelUtils.isSequentialReachable(source, userTask, null));
         return previousUserList;
+    }
+
+    @Override
+    public <T extends TaskInfo> List<T> getAllChildrenTaskListByParentTaskId(String parentTaskId, List<T> tasks) {
+        if (CollUtil.isEmpty(tasks)) {
+            return Collections.emptyList();
+        }
+        Map<String, List<T>> parentTaskMap = convertMultiMap(
+                filterList(tasks, task -> StrUtil.isNotEmpty(task.getParentTaskId())), TaskInfo::getParentTaskId);
+        if (CollUtil.isEmpty(parentTaskMap)) {
+            return Collections.emptyList();
+        }
+
+        List<T> result = new ArrayList<>();
+        // 1. 递归获取子级
+        Stack<String> stack = new Stack<>();
+        stack.push(parentTaskId);
+        // 2. 递归遍历
+        for (int i = 0; i < Short.MAX_VALUE; i++) {
+            if (stack.isEmpty()) {
+                break;
+            }
+            // 2.1 获取子任务们
+            String taskId = stack.pop();
+            List<T> childTaskList = filterList(tasks, task -> StrUtil.equals(task.getParentTaskId(), taskId));
+            // 2.2 如果非空，则添加到 stack 进一步递归
+            if (CollUtil.isNotEmpty(childTaskList)) {
+                stack.addAll(convertList(childTaskList, TaskInfo::getId));
+                result.addAll(childTaskList);
+            }
+        }
+        return result;
     }
 
     /**
@@ -331,12 +411,50 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     }
 
     @Override
-    public Map<String, String> getTaskNameByTaskIds(Collection<String> taskIds) {
-        if (CollUtil.isEmpty(taskIds)) {
-            return Collections.emptyMap();
-        }
-        List<Task> tasks = taskService.createTaskQuery().taskIds(taskIds).list();
-        return convertMap(tasks, Task::getId, Task::getName);
+    public List<HistoricActivityInstance> getActivityListByProcessInstanceId(String processInstanceId) {
+        return historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId)
+                .orderByHistoricActivityInstanceStartTime().asc().list();
+    }
+
+    @Override
+    public List<HistoricActivityInstance> getHistoricActivityListByExecutionId(String executionId) {
+        return historyService.createHistoricActivityInstanceQuery().executionId(executionId).list();
+    }
+
+    /**
+     * 判断指定用户，是否是当前任务的审批人
+     *
+     * @param userId 用户编号
+     * @param task   任务
+     * @return 是否
+     */
+    private boolean isAssignUserTask(Long userId, Task task) {
+        Long assignee = NumberUtil.parseLong(task.getAssignee());
+        return ObjectUtil.equals(userId, assignee);
+    }
+
+    /**
+     * 判断指定用户，是否是当前任务的拥有人
+     *
+     * @param userId 用户编号
+     * @param task   任务
+     * @return 是否
+     */
+    private boolean isOwnerUserTask(Long userId, Task task) {
+        Long assignee = NumberUtil.parseLong(task.getOwner());
+        return ObjectUtil.equal(userId, assignee);
+    }
+
+    /**
+     * 判断指定用户，是否是当前任务的加签人
+     *
+     * @param userId 用户 Id
+     * @param task 任务
+     * @return 是否
+     */
+    private boolean isAddSignUserTask(Long userId, Task task) {
+        return (isAssignUserTask(userId, task) || isOwnerUserTask(userId, task))
+                && BpmTaskSignTypeEnum.of(task.getScopeType()) != null;
     }
 
     // ========== Update 写入相关方法 ==========
@@ -352,11 +470,6 @@ public class BpmTaskServiceImpl implements BpmTaskService {
             throw exception(PROCESS_INSTANCE_NOT_EXISTS);
         }
 
-        // 2. 抄送用户
-        if (CollUtil.isNotEmpty(reqVO.getCopyUserIds())) {
-            instanceCopyService.createProcessInstanceCopy(reqVO.getCopyUserIds(), reqVO.getId());
-        }
-
         // 情况一：被委派的任务，不调用 complete 去完成任务
         if (DelegationState.PENDING.equals(task.getDelegationState())) {
             approveDelegateTask(reqVO, task);
@@ -370,12 +483,12 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         }
 
         // 情况三：审批普通的任务。大多数情况下，都是这样
-        // 3.1 更新 task 状态、原因
+        // 2.1 更新 task 状态、原因
         updateTaskStatusAndReason(task.getId(), BpmTaskStatusEnum.APPROVE.getStatus(), reqVO.getReason());
-        // 3.2 添加评论
+        // 2.2 添加评论
         taskService.addComment(task.getId(), task.getProcessInstanceId(), BpmCommentTypeEnum.APPROVE.getType(),
                 BpmCommentTypeEnum.APPROVE.formatComment(reqVO.getReason()));
-        // 3.3 调用 BPM complete 去完成任务
+        // 2.3 调用 BPM complete 去完成任务
         // 其中，variables 是存储动态表单到 local 任务级别。过滤一下，避免 ProcessInstance 系统级的变量被占用
         if (CollUtil.isNotEmpty(reqVO.getVariables())) {
             Map<String, Object> variables = FlowableUtils.filterTaskFormVariable(reqVO.getVariables());
@@ -471,10 +584,9 @@ public class BpmTaskServiceImpl implements BpmTaskService {
      * @param task  当前被审批的任务
      */
     private void approveDelegateTask(BpmTaskApproveReqVO reqVO, Task task) {
-        
         // 1. 添加审批意见
-        SysUser currentUser = sysUserProvider.getUserById(UserUtils.getCurUserId()).getCheckedData();
-        SysUser ownerUser = sysUserProvider.getUserById(NumberUtils.parseLong(task.getOwner())).getCheckedData(); // 发起委托的用户
+        SysUserVo currentUser = iSysUserApi.getUserById(UserUtils.getCurUserId()).getCheckedData();
+        SysUserVo ownerUser = iSysUserApi.getUserById(NumberUtils.parseLong(task.getOwner())).getCheckedData(); // 发起委托的用户
         Assert.notNull(ownerUser, "委派任务找不到原审批人，需要检查数据");
         taskService.addComment(reqVO.getId(), task.getProcessInstanceId(), BpmCommentTypeEnum.DELEGATE_END.getType(),
                 BpmCommentTypeEnum.DELEGATE_END.formatComment(currentUser.getName(), ownerUser.getName(), reqVO.getReason()));
@@ -520,7 +632,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         BpmUserTaskRejectHandlerType userTaskRejectHandlerType = BpmnModelUtils.parseRejectHandlerType(userTaskElement);
         if (userTaskRejectHandlerType == BpmUserTaskRejectHandlerType.RETURN_USER_TASK) {
             String returnTaskId = BpmnModelUtils.parseReturnTaskId(userTaskElement);
-            Assert.notNull(returnTaskId, "回退的节点不能为空");
+            Assert.notNull(returnTaskId, "退回的节点不能为空");
             returnTask(userId, new BpmTaskReturnReqVO().setId(task.getId())
                     .setTargetTaskDefinitionKey(returnTaskId).setReason(reqVO.getReason()));
             return;
@@ -552,27 +664,24 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         taskService.setVariableLocal(id, BpmnVariableConstants.TASK_VARIABLE_REASON, reason);
     }
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void returnTask(Long userId, BpmTaskReturnReqVO reqVO) {
-
         // 1.1 当前任务 task
         Task task = validateTask(userId, reqVO.getId());
         if (task.isSuspended()) {
             throw exception(TASK_IS_PENDING);
         }
-
         // 1.2 校验源头和目标节点的关系，并返回目标元素
         FlowElement targetElement = validateTargetTaskCanReturn(task.getTaskDefinitionKey(),
                 reqVO.getTargetTaskDefinitionKey(), task.getProcessDefinitionId());
 
-        // 2. 调用 Flowable 框架的回退逻辑
+        // 2. 调用 Flowable 框架的退回逻辑
         returnTask(task, targetElement, reqVO);
     }
 
     /**
-     * 回退流程节点时，校验目标任务节点是否可回退
+     * 退回流程节点时，校验目标任务节点是否可退回
      *
      * @param sourceKey           当前任务节点 Key
      * @param targetKey           目标任务节点 key
@@ -590,7 +699,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
             throw exception(TASK_TARGET_NODE_NOT_EXISTS);
         }
 
-        // 2.2 只有串行可到达的节点，才可以回退。类似非串行、子流程无法退回
+        // 2.2 只有串行可到达的节点，才可以退回。类似非串行、子流程无法退回
         if (!BpmnModelUtils.isSequentialReachable(source, target, null)) {
             throw exception(TASK_RETURN_FAIL_SOURCE_TARGET_ERROR);
         }
@@ -598,27 +707,25 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     }
 
     /**
-     * 执行回退逻辑
+     * 执行退回逻辑
      *
-     * @param currentTask   当前回退的任务
-     * @param targetElement 需要回退到的目标任务
+     * @param currentTask   当前退回的任务
+     * @param targetElement 需要退回到的目标任务
      * @param reqVO         前端参数封装
      */
     public void returnTask(Task currentTask, FlowElement targetElement, BpmTaskReturnReqVO reqVO) {
-
         // 1. 获得所有需要回撤的任务 taskDefinitionKey，用于稍后的 moveActivityIdsToSingleActivityId 回撤
         // 1.1 获取所有正常进行的任务节点 Key
         List<Task> taskList = taskService.createTaskQuery().processInstanceId(currentTask.getProcessInstanceId()).list();
         List<String> runTaskKeyList = convertList(taskList, Task::getTaskDefinitionKey);
-
         // 1.2 通过 targetElement 的出口连线，计算在 runTaskKeyList 有哪些 key 需要被撤回
         // 为什么不直接使用 runTaskKeyList 呢？因为可能存在多个审批分支，例如说：A -> B -> C 和 D -> F，而只要 C 撤回到 A，需要排除掉 F
         List<UserTask> returnUserTaskList = BpmnModelUtils.iteratorFindChildUserTasks(targetElement, runTaskKeyList, null, null);
         List<String> returnTaskKeyList = convertList(returnUserTaskList, UserTask::getId);
 
-        // 2. 给当前要被回退的 task 数组，设置回退意见
+        // 2. 给当前要被退回的 task 数组，设置退回意见
         taskList.forEach(task -> {
-            // 需要排除掉，不需要设置回退意见的任务
+            // 需要排除掉，不需要设置退回意见的任务
             if (!returnTaskKeyList.contains(task.getTaskDefinitionKey())) {
                 return;
             }
@@ -644,7 +751,6 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delegateTask(Long userId, BpmTaskDelegateReqVO reqVO) {
-        
         String taskId = reqVO.getId();
         // 1.1 校验任务
         Task task = validateTask(userId, reqVO.getId());
@@ -652,13 +758,13 @@ public class BpmTaskServiceImpl implements BpmTaskService {
             throw exception(TASK_DELEGATE_FAIL_USER_REPEAT);
         }
         // 1.2 校验目标用户存在
-        SysUser delegateUser = sysUserProvider.getUserById(reqVO.getDelegateUserId()).getCheckedData();
+        SysUserVo delegateUser = iSysUserApi.getUserById(reqVO.getDelegateUserId()).getCheckedData();
         if (delegateUser == null) {
             throw exception(TASK_DELEGATE_FAIL_USER_NOT_EXISTS);
         }
 
         // 2. 添加委托意见
-        SysUser currentUser = sysUserProvider.getUserById(userId).getCheckedData();
+        SysUserVo currentUser = iSysUserApi.getUserById(userId).getCheckedData();
         taskService.addComment(taskId, task.getProcessInstanceId(), BpmCommentTypeEnum.DELEGATE_START.getType(),
                 BpmCommentTypeEnum.DELEGATE_START.formatComment(currentUser.getName(), delegateUser.getName(), reqVO.getReason()));
 
@@ -666,9 +772,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         taskService.setOwner(taskId, task.getAssignee());
         // 3.2 执行委派，将任务委派给 delegateUser
         taskService.delegateTask(taskId, reqVO.getDelegateUserId().toString());
-        // 3.3 更新 task 状态。
-        // 为什么不更新原因？因为原因目前主要给审批通过、不通过时使用
-        updateTaskStatus(taskId, BpmTaskStatusEnum.DELEGATE.getStatus());
+        // 补充说明：委托不单独设置状态。如果需要，可通过 Task 的 DelegationState 字段，判断是否为 DelegationState.PENDING 委托中
     }
 
     @Override
@@ -680,13 +784,13 @@ public class BpmTaskServiceImpl implements BpmTaskService {
             throw exception(TASK_TRANSFER_FAIL_USER_REPEAT);
         }
         // 1.2 校验目标用户存在
-        SysUser assigneeUser = sysUserProvider.getUserById(reqVO.getAssigneeUserId()).getCheckedData();
+        SysUserVo assigneeUser = iSysUserApi.getUserById(reqVO.getAssigneeUserId()).getCheckedData();
         if (assigneeUser == null) {
             throw exception(TASK_TRANSFER_FAIL_USER_NOT_EXISTS);
         }
 
         // 2. 添加委托意见
-        SysUser currentUser = sysUserProvider.getUserById(userId).getCheckedData();
+        SysUserVo currentUser = iSysUserApi.getUserById(userId).getCheckedData();
         taskService.addComment(taskId, task.getProcessInstanceId(), BpmCommentTypeEnum.TRANSFER.getType(),
                 BpmCommentTypeEnum.TRANSFER.formatComment(currentUser.getName(), assigneeUser.getName(), reqVO.getReason()));
 
@@ -731,7 +835,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     public void createSignTask(Long userId, BpmTaskSignCreateReqVO reqVO) {
         // 1. 获取和校验任务
         TaskEntityImpl taskEntity = validateTaskCanCreateSign(userId, reqVO);
-        List<SysUser> userList = sysUserProvider.getUserListByIds(reqVO.getUserIds()).getCheckedData();
+        List<SysUserVo> userList = iSysUserApi.getUserListByIds(reqVO.getUserIds()).getCheckedData();
         if (CollUtil.isEmpty(userList)) {
             throw exception(TASK_SIGN_CREATE_USER_NOT_EXIST);
         }
@@ -758,10 +862,10 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         createSignTaskList(convertList(reqVO.getUserIds(), String::valueOf), taskEntity);
 
         // 4. 记录加签的评论到 task 任务
-        SysUser currentUser = sysUserProvider.getUserById(userId).getCheckedData();
+        SysUserVo currentUser = iSysUserApi.getUserById(userId).getCheckedData();
         String comment = StrUtil.format(BpmCommentTypeEnum.ADD_SIGN.getComment(),
                 currentUser.getName(), BpmTaskSignTypeEnum.nameOfType(reqVO.getType()),
-                String.join(",", convertList(userList, SysUser::getName)), reqVO.getReason());
+                String.join(",", convertList(userList, SysUserVo::getName)), reqVO.getReason());
         taskService.addComment(reqVO.getId(), taskEntity.getProcessInstanceId(), BpmCommentTypeEnum.ADD_SIGN.getType(), comment);
     }
 
@@ -790,8 +894,8 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         List<Long> currentAssigneeList = convertListByFlatMap(taskList, task -> // 需要考虑 owner 的情况，因为向后加签时，它暂时没 assignee 而是 owner
                 Stream.of(NumberUtils.parseLong(task.getAssignee()), NumberUtils.parseLong(task.getOwner())));
         if (CollUtil.containsAny(currentAssigneeList, reqVO.getUserIds())) {
-            List<SysUser> userList = sysUserProvider.getUserListByIds(CollUtil.intersection(currentAssigneeList, reqVO.getUserIds())).getCheckedData();
-            throw exception(TASK_SIGN_CREATE_USER_REPEAT, String.join(",", convertList(userList, SysUser::getName)));
+            List<SysUserVo> userList = iSysUserApi.getUserListByIds(CollUtil.intersection(currentAssigneeList, reqVO.getUserIds())).getCheckedData();
+            throw exception(TASK_SIGN_CREATE_USER_REPEAT, String.join(",", convertList(userList, SysUserVo::getName)));
         }
         return taskEntity;
     }
@@ -845,16 +949,15 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteSignTask(Long userId, BpmTaskSignDeleteReqVO reqVO) {
-        
         // 1.1 校验 task 可以被减签
         Task task = validateTaskCanSignDelete(reqVO.getId());
         // 1.2 校验取消人存在
-        SysUser cancelUser = null;
+        SysUserVo cancelUser = null;
         if (StrUtil.isNotBlank(task.getAssignee())) {
-            cancelUser = sysUserProvider.getUserById(NumberUtils.parseLong(task.getAssignee())).getCheckedData();
+            cancelUser = iSysUserApi.getUserById(NumberUtils.parseLong(task.getAssignee())).getCheckedData();
         }
         if (cancelUser == null && StrUtil.isNotBlank(task.getOwner())) {
-            cancelUser = sysUserProvider.getUserById(NumberUtils.parseLong(task.getOwner())).getCheckedData();
+            cancelUser = iSysUserApi.getUserById(NumberUtils.parseLong(task.getOwner())).getCheckedData();
         }
         Assert.notNull(cancelUser, "任务中没有所有者和审批人，数据错误");
 
@@ -868,12 +971,17 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         taskService.deleteTasks(convertList(childTaskList, Task::getId));
 
         // 3. 记录日志到父任务中。先记录日志是因为，通过 handleParentTask 方法之后，任务可能被完成了，并且不存在了，会报异常，所以先记录
-        SysUser user = sysUserProvider.getUserById(userId).getCheckedData();
+        SysUserVo user = iSysUserApi.getUserById(userId).getCheckedData();
         taskService.addComment(task.getParentTaskId(), task.getProcessInstanceId(), BpmCommentTypeEnum.SUB_SIGN.getType(),
                 StrUtil.format(BpmCommentTypeEnum.SUB_SIGN.getComment(), user.getName(), cancelUser.getName()));
 
         // 4. 处理当前任务的父任务
         handleParentTaskIfSign(task.getParentTaskId());
+    }
+
+    @Override
+    public void copyTask(Long userId, BpmTaskCopyReqVO reqVO) {
+        processInstanceCopyService.createProcessInstanceCopy(reqVO.getCopyUserIds(), reqVO.getReason(), reqVO.getId());
     }
 
     /**
@@ -928,8 +1036,13 @@ public class BpmTaskServiceImpl implements BpmTaskService {
                 if (ObjectUtil.notEqual(transactionStatus, TransactionSynchronization.STATUS_COMMITTED)) {
                     return;
                 }
+                // TODO 芋艿：可以后续优化成 getSelf();
                 // 特殊情况一：【人工审核】审批人为空，根据配置是否要自动通过、自动拒绝
                 if (ObjectUtil.equal(approveType, BpmUserTaskApproveTypeEnum.USER.getType())) {
+                    // 如果有审批人、或者拥有人，则说明不满足情况一，不自动通过、不自动拒绝
+                    if (!ObjectUtil.isAllEmpty(task.getAssignee(), task.getOwner())) {
+                        return;
+                    }
                     if (ObjectUtil.equal(assignEmptyHandlerType, BpmUserTaskAssignEmptyHandlerTypeEnum.APPROVE.getType())) {
                         SpringUtil.getBean(BpmTaskService.class).approveTask(null, new BpmTaskApproveReqVO()
                                 .setId(task.getId()).setReason(BpmReasonEnum.ASSIGN_EMPTY_APPROVE.getReason()));
@@ -995,8 +1108,8 @@ public class BpmTaskServiceImpl implements BpmTaskService {
                 }
                 // 审批人与提交人为同一人时，根据 BpmUserTaskAssignStartUserHandlerTypeEnum 策略进行处理
                 if (StrUtil.equals(task.getAssignee(), processInstance.getStartUserId())) {
-                    // 判断是否为回退或者驳回：如果是回退或者驳回不走这个策略
-                    // TODO fly：【优化】未来有没更好的判断方式？！另外，还要考虑清理机制。就是说，下次处理了之后，就移除这个标识
+                    // 判断是否为退回或者驳回：如果是退回或者驳回不走这个策略
+                    // TODO 芋艿：【优化】未来有没更好的判断方式？！另外，还要考虑清理机制。就是说，下次处理了之后，就移除这个标识
                     Boolean returnTaskFlag = runtimeService.getVariable(processInstance.getProcessInstanceId(),
                             String.format(PROCESS_INSTANCE_VARIABLE_RETURN_FLAG, task.getTaskDefinitionKey()), Boolean.class);
                     if (ObjUtil.notEqual(returnTaskFlag, Boolean.TRUE)) {
@@ -1018,9 +1131,9 @@ public class BpmTaskServiceImpl implements BpmTaskService {
                         // 情况二：转交给部门负责人审批
                         if (ObjectUtils.equalsAny(assignStartUserHandlerType,
                                 BpmUserTaskAssignStartUserHandlerTypeEnum.TRANSFER_DEPT_LEADER.getType())) {
-                            SysUser startUser = sysUserProvider.getUserById(Long.valueOf(processInstance.getStartUserId())).getCheckedData();
+                            SysUserVo startUser = iSysUserApi.getUserById(Long.valueOf(processInstance.getStartUserId())).getCheckedData();
                             Assert.notNull(startUser, "提交人({})信息为空", processInstance.getStartUserId());
-                            SysDeptVo dept = startUser.getDeptId() != null ? sysDeptProvider.getDeptById(startUser.getDeptId()).getCheckedData() : null;
+                            SysDeptVo dept = startUser.getDeptId() != null ? sysDeptApi.getDeptById(startUser.getDeptId()).getCheckedData() : null;
                             Assert.notNull(dept, "提交人({})部门({})信息为空", processInstance.getStartUserId(), startUser.getDeptId());
                             // 找不到部门负责人的情况下，自动审批通过
                             // noinspection DataFlowIssue
@@ -1041,7 +1154,7 @@ public class BpmTaskServiceImpl implements BpmTaskService {
                     }
                 }
 
-                SysUser startUser = sysUserProvider.getUserById((Long.valueOf(processInstance.getStartUserId()))).getCheckedData();
+                SysUserVo startUser = iSysUserApi.getUserById(Long.valueOf(processInstance.getStartUserId())).getCheckedData();
                 messageService.sendMessageWhenTaskAssigned(BpmTaskConvert.INSTANCE.convert(processInstance, startUser, task));
             }
 
@@ -1095,5 +1208,6 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     private BpmTaskServiceImpl getSelf() {
         return SpringUtil.getBean(getClass());
     }
+
 
 }

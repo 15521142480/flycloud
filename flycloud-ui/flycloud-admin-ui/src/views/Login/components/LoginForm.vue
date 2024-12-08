@@ -173,7 +173,6 @@ const loginLoading = ref(false)
 // const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 const codeUrl = ref()
-import md5 from 'js-md5';
 
 
 /**
@@ -260,7 +259,6 @@ const handleLogin = async () => {
       return
     }
     const loginDataLoginForm = { ...loginData.loginForm }
-    loginDataLoginForm.password = md5(loginDataLoginForm.password)
     const res = await LoginApi.login(loginDataLoginForm)
     if (!res) {
       return

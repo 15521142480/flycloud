@@ -15,6 +15,7 @@ import com.fly.common.utils.DateUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.collection.MapUtils;
 import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysUserApi;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +68,7 @@ public class BpmInstanceCopyController extends BaseController {
         Map<String, HistoricProcessInstance> processInstanceMap = processInstanceService.getHistoricProcessInstanceMap(
                 CollectionUtils.convertSet(pageData.getList(), BpmProcessInstanceCopy::getProcessInstanceId));
 
-        Map<Long, SysUser> userMap = sysUserProvider.getUserMapByIds(CollectionUtils.convertListByFlatMap(pageData.getList(),
+        Map<Long, SysUserVo> userMap = sysUserProvider.getUserMapByIds(CollectionUtils.convertListByFlatMap(pageData.getList(),
                 copy -> Stream.of(copy.getStartUserId(), Long.parseLong(copy.getCreateBy()))));
 
         return R.ok(BeanUtils.toBean(pageData, BpmProcessInstanceCopyRespVO.class, copyVO -> {

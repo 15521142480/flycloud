@@ -1,25 +1,25 @@
-package com.fly.bpm.flowable.candidate.strategy;
+package com.fly.bpm.flowable.candidate.strategy.user;
 
 import cn.hutool.core.text.StrPool;
+import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
 import com.fly.common.utils.StringUtils;
 import com.fly.system.api.feign.ISysUserApi;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
- * 用户 {@link com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy} 实现类
+ * 用户 {@link BpmTaskCandidateStrategy} 实现类
  *
- * @author lxs
+ *
  */
 @Component
-public class BpmTaskCandidateUserStrategy extends BpmTaskCandidateAbstractStrategy {
+public class BpmTaskCandidateUserStrategy implements BpmTaskCandidateStrategy {
 
-    public BpmTaskCandidateUserStrategy(ISysUserApi sysUserApi) {
-        super(sysUserApi);
-    }
+    @Resource
+    private ISysUserApi sysUserApi;
 
     @Override
     public BpmTaskCandidateStrategyEnum getStrategy() {
@@ -28,11 +28,11 @@ public class BpmTaskCandidateUserStrategy extends BpmTaskCandidateAbstractStrate
 
     @Override
     public void validateParam(String param) {
-        super.sysUserProvider.validateDeptByIds(StringUtils.splitToLongSet(param)).checkError();
+        sysUserApi.validateDeptByIds(StringUtils.splitToLongSet(param)).checkError();
     }
 
     @Override
-    public Set<Long> calculateUsers(String param) {
+    public LinkedHashSet<Long> calculateUsers(String param) {
         return new LinkedHashSet<>(StringUtils.splitToLong(param, StrPool.COMMA));
     }
 

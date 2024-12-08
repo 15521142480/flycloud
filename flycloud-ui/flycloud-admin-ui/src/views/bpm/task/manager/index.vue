@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="工作流手册" url="https://doc.iocoder.cn/bpm/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -50,7 +49,7 @@
       <el-table-column
         align="center"
         label="发起人"
-        prop="processInstance.startUser.nickname"
+        prop="processInstance.startUser.name"
         width="100"
       />
       <el-table-column
@@ -75,7 +74,7 @@
         prop="endTime"
         width="180"
       />
-      <el-table-column align="center" label="审批人" prop="assigneeUser.nickname" width="100" />
+      <el-table-column align="center" label="审批人" prop="assigneeUser.name" width="100" />
       <el-table-column align="center" label="审批状态" prop="status" width="120">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_TASK_STATUS" :value="scope.row.status" />

@@ -140,7 +140,7 @@
               <el-option
                 v-for="item in userOptions"
                 :key="item.id"
-                :label="item.nickname"
+                :label="item.name"
                 :value="item.id"
               />
             </el-select>
@@ -192,7 +192,7 @@
               <el-option
                 v-for="item in userOptions"
                 :key="item.id"
-                :label="item.nickname"
+                :label="item.name"
                 :value="item.id"
               />
             </el-select>
@@ -244,7 +244,7 @@
               <el-option
                 v-for="item in userOptions"
                 :key="item.id"
-                :label="item.nickname"
+                :label="item.name"
                 :value="item.id"
               />
             </el-select>
@@ -296,7 +296,7 @@
               <el-option
                 v-for="item in userOptions"
                 :key="item.id"
-                :label="item.nickname"
+                :label="item.name"
                 :value="item.id"
               />
             </el-select>
@@ -779,8 +779,8 @@ const handleReCreate = async () => {
 /** 获取减签人员标签 */
 const getDeleteSignUserLabel = (task: any): string => {
   const deptName = task?.assigneeUser?.deptName || task?.ownerUser?.deptName
-  const nickname = task?.assigneeUser?.nickname || task?.ownerUser?.nickname
-  return `${nickname} ( 所属部门：${deptName} )`
+  const name = task?.assigneeUser?.name || task?.ownerUser?.name
+  return `${name} ( 所属部门：${deptName} )`
 }
 /** 处理减签 */
 const handlerDeleteSign = async () => {

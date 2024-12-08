@@ -176,7 +176,7 @@ export function useNodeForm(nodeType: NodeType) {
         const candidateNames: string[] = []
         userOptions?.value.forEach((item) => {
           if (configForm.value?.userIds!.includes(item.id)) {
-            candidateNames.push(item.nickname)
+            candidateNames.push(item.name)
           }
         })
         showText = `指定成员：${candidateNames.join(',')}`

@@ -1,5 +1,6 @@
 package com.fly.common.enums;
 
+import cn.hutool.core.util.ObjUtil;
 import com.fly.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +48,15 @@ public enum StatusEnum implements IntArrayValuable {
             }
         }
         return str;
+    }
+
+
+    public static boolean isEnable(Integer status) {
+        return ObjUtil.equal(ENABLE.status, status);
+    }
+
+    public static boolean isDisable(Integer status) {
+        return ObjUtil.equal(DISABLE.status, status);
     }
 
 }

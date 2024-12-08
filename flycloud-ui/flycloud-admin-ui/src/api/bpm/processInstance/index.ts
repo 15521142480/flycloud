@@ -93,12 +93,16 @@ export const getProcessInstanceCopyPage = async (params: any) => {
 }
 
 // 获取审批详情
-export const getApprovalDetail = async (processInstanceId?:string, processDefinitionId?:string) => {
-  const param = processInstanceId ? '?processInstanceId='+ processInstanceId : '?processDefinitionId='+ processDefinitionId
-  return await request.get({ url: `${BPM_BASE_URL}/instance/getApprovalDetail`+ param })
+export const getApprovalDetail = async (params: any) => {
+  return await request.get({ url: `/${BPM_BASE_URL}/instance/getApprovalDetail`, params })
 }
 
 // 获取表单字段权限
 export const getFormFieldsPermission = async (params: any) => {
   return await request.get({ url: `/${BPM_BASE_URL}/instance/getFormFieldsPermission`, params })
+}
+
+// 获取流程实例的 BPMN 模型视图
+export const getProcessInstanceBpmnModelView = async (id: string) => {
+  return await request.get({ url: `/${BPM_BASE_URL}/instance/getBpmModeView?id=` + id })
 }

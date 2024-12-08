@@ -4,6 +4,7 @@ import com.fly.system.api.constants.SystemFeignApiConstants;
 import com.fly.common.domain.model.R;
 import com.fly.system.api.domain.common.UserInfo;
 import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysUserApi;
 import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserService;
@@ -38,12 +39,12 @@ public class SysUserApiController implements ISysUserApi {
      */
     @Override
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_ID)
-    public R<SysUser> getUserById(Long id) {
+    public R<SysUserVo> getUserById(Long id) {
 
-        SysUser sysUser = sysUserService.getById(id);
+        SysUserVo sysUserVo = sysUserService.queryById(id);
         // 测试日志埋点
-//        TrackUtil.info(ISysUserProvider.class.getName(), "userInfoById", JSON.toJSONString(sysUser));
-        return R.ok(sysUser);
+//        TrackUtil.info(ISysUserProvider.class.getName(), "userInfoById", JSON.toJSONString(sysUserVo));
+        return R.ok(sysUserVo);
     }
 
 
@@ -52,9 +53,9 @@ public class SysUserApiController implements ISysUserApi {
      */
     @Override
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_IDS)
-    public R<List<SysUser>> getUserListByIds(Collection<Long> ids) {
+    public R<List<SysUserVo>> getUserListByIds(Collection<Long> ids) {
 
-        List<SysUser> sysUserList = sysUserService.getByIds(ids);
+        List<SysUserVo> sysUserList = sysUserService.getByIds(ids);
         return R.ok(sysUserList);
     }
 

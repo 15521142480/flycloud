@@ -2,13 +2,15 @@ package com.fly.bpm.api.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-
+import java.util.Set;
 
 
 /**
@@ -41,11 +43,11 @@ public class BpmUserGroupVo implements Serializable {
     @ExcelProperty(value = "描述")
     private String description;
 
+
     /**
-     * 成员编号数组
+     * 成员用户编号数组
      */
-    @ExcelProperty(value = "成员编号数组")
-    private String userIds;
+    private Set<Long> userIds;
 
     /**
      * 状态（0正常 1停用）

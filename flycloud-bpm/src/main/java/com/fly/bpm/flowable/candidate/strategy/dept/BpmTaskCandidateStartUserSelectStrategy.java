@@ -1,13 +1,16 @@
-package com.fly.bpm.flowable.candidate.strategy;
+package com.fly.bpm.flowable.candidate.strategy.dept;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjectUtil;
 import com.fly.bpm.flowable.utils.BpmnModelUtils;
 import com.fly.bpm.flowable.utils.FlowableUtils;
 import com.fly.bpm.task.service.BpmInstanceService;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
-import com.fly.system.api.feign.ISysUserApi;
+import com.google.common.collect.Sets;
 import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.bpmn.model.ServiceTask;
+import org.flowable.bpmn.model.Task;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -18,20 +21,16 @@ import javax.annotation.Resource;
 import java.util.*;
 
 /**
- * 发起人自选 {@link BpmTaskCandidateUserStrategy} 实现类
+ * 发起人自选 {@link com.fly.bpm.flowable.candidate.strategy.BpmTaskCandidateUserStrategy} 实现类
  *
- * @author 芋道源码
+ * @author LXS
  */
 @Component
-public class BpmTaskCandidateStartUserSelectStrategy extends BpmTaskCandidateAbstractStrategy {
+public class BpmTaskCandidateStartUserSelectStrategy extends AbstractBpmTaskCandidateDeptLeaderStrategy {
 
     @Resource
     @Lazy // 延迟加载，避免循环依赖
     private BpmInstanceService processInstanceService;
-
-    public BpmTaskCandidateStartUserSelectStrategy(ISysUserApi sysUserApi) {
-        super(sysUserApi);
-    }
 
     @Override
     public BpmTaskCandidateStrategyEnum getStrategy() {
@@ -42,7 +41,13 @@ public class BpmTaskCandidateStartUserSelectStrategy extends BpmTaskCandidateAbs
     public void validateParam(String param) {}
 
     @Override
-    public Set<Long> calculateUsers(DelegateExecution execution, String param) {
+    public boolean isParamRequired() {
+        return false;
+    }
+
+    @Override
+    public LinkedHashSet<Long> calculateUsersByTask(DelegateExecution execution, String param) {
+
         ProcessInstance processInstance = processInstanceService.getProcessInstance(execution.getProcessInstanceId());
         Assert.notNull(processInstance, "流程实例({})不能为空", execution.getProcessInstanceId());
         Map<String, List<Long>> startUserSelectAssignees = FlowableUtils.getStartUserSelectAssignees(processInstance);
@@ -50,47 +55,43 @@ public class BpmTaskCandidateStartUserSelectStrategy extends BpmTaskCandidateAbs
                 execution.getProcessInstanceId());
         // 获得审批人
         List<Long> assignees = startUserSelectAssignees.get(execution.getCurrentActivityId());
-        Set<Long> users = new LinkedHashSet<>(assignees);
-        removeDisableUsers(users);
-        return users;
+        return new LinkedHashSet<>(assignees);
     }
 
     @Override
-    public Set<Long> calculateUsers(Long startUserId, ProcessInstance processInstance, String activityId, String param) {
-        if (processInstance == null) {
-            return Collections.emptySet();
+    public LinkedHashSet<Long> calculateUsersByActivity(BpmnModel bpmnModel, String activityId, String param,
+                                                        Long startUserId, String processDefinitionId, Map<String, Object> processVariables) {
+        if (processVariables == null) {
+            return Sets.newLinkedHashSet();
         }
-        Map<String, List<Long>> startUserSelectAssignees = FlowableUtils.getStartUserSelectAssignees(processInstance);
-        Assert.notNull(startUserSelectAssignees, "流程实例({}) 的发起人自选审批人不能为空", processInstance.getId());
+        Map<String, List<Long>> startUserSelectAssignees = FlowableUtils.getStartUserSelectAssignees(processVariables);
+        if (startUserSelectAssignees == null) {
+            return Sets.newLinkedHashSet();
+        }
         // 获得审批人
         List<Long> assignees = startUserSelectAssignees.get(activityId);
-        Set<Long> users = new LinkedHashSet<>(assignees);
-        removeDisableUsers(users);
-        return users;
-    }
-
-    @Override
-    public boolean isParamRequired() {
-        return false;
+        return new LinkedHashSet<>(assignees);
     }
 
     /**
-     * 获得发起人自选审批人的 UserTask 列表
+     * 获得发起人自选审批人或抄送人的 Task 列表
      *
      * @param bpmnModel BPMN 模型
-     * @return UserTask 列表
+     * @return Task 列表
      */
-    public static List<UserTask> getStartUserSelectUserTaskList(BpmnModel bpmnModel) {
+    public static List<Task> getStartUserSelectTaskList(BpmnModel bpmnModel) {
         if (bpmnModel == null) {
-            return null;
+            return Collections.emptyList();
         }
-        List<UserTask> userTaskList = BpmnModelUtils.getBpmnModelElements(bpmnModel, UserTask.class);
-        if (CollUtil.isEmpty(userTaskList)) {
-            return null;
+        List<Task> tasks = new ArrayList<>();
+        tasks.addAll(BpmnModelUtils.getBpmnModelElements(bpmnModel, UserTask.class));
+        tasks.addAll(BpmnModelUtils.getBpmnModelElements(bpmnModel, ServiceTask.class));
+        if (CollUtil.isEmpty(tasks)) {
+            return Collections.emptyList();
         }
-        userTaskList.removeIf(userTask -> !Objects.equals(BpmnModelUtils.parseCandidateStrategy(userTask),
+        tasks.removeIf(task -> ObjectUtil.notEqual(BpmnModelUtils.parseCandidateStrategy(task),
                 BpmTaskCandidateStrategyEnum.START_USER_SELECT.getStrategy()));
-        return userTaskList;
+        return tasks;
     }
 
 }

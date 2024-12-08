@@ -107,7 +107,7 @@ public interface ISysUserService extends IService<SysUser> {
     /**
      * 根据用户ids查询用户列表
      */
-    List<SysUser> getByIds(Collection<Long> ids);
+    List<SysUserVo> getByIds(Collection<Long> ids);
 
 
     /**

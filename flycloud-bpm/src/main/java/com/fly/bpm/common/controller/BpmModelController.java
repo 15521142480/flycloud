@@ -16,6 +16,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.domain.SysUser;
+import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysUserApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -92,7 +93,7 @@ public class BpmModelController {
             BpmModelMetaInfoVO metaInfo = BpmModelConvert.INSTANCE.parseMetaInfo(model);
             return metaInfo != null ? metaInfo.getStartUserIds().stream() : Stream.empty();
         });
-        Map<Long, SysUser> userMap = iSysUserProvider.getUserMapByIds(userIds);
+        Map<Long, SysUserVo> userMap = iSysUserProvider.getUserMapByIds(userIds);
         return R.ok(BpmModelConvert.INSTANCE.buildModelList(list,
                 formMap, categoryMap, deploymentMap, processDefinitionMap, userMap));
     }
@@ -134,7 +135,7 @@ public class BpmModelController {
             BpmModelMetaInfoVO metaInfo = BpmModelConvert.INSTANCE.parseMetaInfo(model);
             return metaInfo != null ? metaInfo.getStartUserIds().stream() : Stream.empty();
         });
-        Map<Long, SysUser> userMap = iSysUserProvider.getUserMapByIds(userIds);
+        Map<Long, SysUserVo> userMap = iSysUserProvider.getUserMapByIds(userIds);
 
         return R.ok(BpmModelConvert.INSTANCE.buildModelPage(pageVo,
                 formMap, categoryMap, deploymentMap, processDefinitionMap, userMap));

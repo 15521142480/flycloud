@@ -1,32 +1,28 @@
-package com.fly.bpm.flowable.candidate.strategy;
+package com.fly.bpm.flowable.candidate.strategy.dept;
 
+import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.domain.vo.SysDeptVo;
 import com.fly.system.api.feign.ISysDeptApi;
-import com.fly.system.api.feign.ISysUserApi;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 
 
 /**
- * 部门的负责人 {@link com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy} 实现类
+ * 部门的负责人 {@link BpmTaskCandidateStrategy} 实现类
  *
  * @author lxs
  */
 @Component
-public class BpmTaskCandidateDeptLeaderStrategy extends BpmTaskCandidateAbstractStrategy {
+public class BpmTaskCandidateDeptLeaderStrategy implements BpmTaskCandidateStrategy {
 
-    private final ISysDeptApi sysDeptApi;
-
-
-    public BpmTaskCandidateDeptLeaderStrategy(ISysUserApi sysUserApi, ISysDeptApi sysDeptApi) {
-        super(sysUserApi);
-        this.sysDeptApi = sysDeptApi;
-    }
+    @Resource
+    private ISysDeptApi deptApi;
 
     @Override
     public BpmTaskCandidateStrategyEnum getStrategy() {
@@ -36,14 +32,15 @@ public class BpmTaskCandidateDeptLeaderStrategy extends BpmTaskCandidateAbstract
     @Override
     public void validateParam(String param) {
         Set<Long> deptIds = StringUtils.splitToLongSet(param);
-        sysDeptApi.validateDeptByIds(deptIds);
+        deptApi.validateDeptByIds(deptIds).checkError();
     }
 
     @Override
     public Set<Long> calculateUsers(String param) {
+
         Set<Long> deptIds = StringUtils.splitToLongSet(param);
-        List<SysDeptVo> deptList = sysDeptApi.getDeptListByIds(deptIds).getCheckedData();
-        return CollectionUtils.convertSet(deptList, SysDeptVo::getLeaderUserId);
+        List<SysDeptVo> deptVoList = deptApi.getDeptListByIds(deptIds).getCheckedData();
+        return CollectionUtils.convertSet(deptVoList, SysDeptVo::getLeaderUserId);
     }
 
 }

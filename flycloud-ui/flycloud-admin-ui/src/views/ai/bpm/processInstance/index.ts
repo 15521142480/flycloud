@@ -25,7 +25,7 @@ export type ProcessInstanceVO = {
 // 用户信息
 export type User = {
   id: number
-  nickname: string
+  name: string
   avatar: string
 }
 

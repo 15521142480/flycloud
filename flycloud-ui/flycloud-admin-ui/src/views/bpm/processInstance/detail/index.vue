@@ -28,10 +28,10 @@
               v-if="processInstance?.startUser?.avatar"
               :src="processInstance?.startUser?.avatar"
             />
-            <el-avatar :size="28" v-else-if="processInstance?.startUser?.nickname">
-              {{ processInstance?.startUser?.nickname.substring(0, 1) }}
+            <el-avatar :size="28" v-else-if="processInstance?.startUser?.name">
+              {{ processInstance?.startUser?.name.substring(0, 1) }}
             </el-avatar>
-            {{ processInstance?.startUser?.nickname }}
+            {{ processInstance?.startUser?.name }}
           </div>
           <div class="text-#878c93"> {{ formatDate(processInstance.startTime) }} 提交 </div>
         </div>

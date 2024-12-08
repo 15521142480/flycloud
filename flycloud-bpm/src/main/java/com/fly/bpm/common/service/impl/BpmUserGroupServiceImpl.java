@@ -1,8 +1,11 @@
 package com.fly.bpm.common.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import com.fly.common.constant.bpm.ErrorCodeConstants;
 import com.fly.common.database.web.query.LambdaQueryWrapperX;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.exception.utils.ServiceExceptionUtils;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
@@ -12,6 +15,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.ArrayUtils;
+import com.fly.common.utils.collection.CollectionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.bpm.api.domain.bo.BpmUserGroupBo;
@@ -64,6 +68,16 @@ public class BpmUserGroupServiceImpl extends BaseServiceImpl<BpmUserGroupMapper,
     public List<BpmUserGroupVo> queryList(BpmUserGroupBo bo) {
         LambdaQueryWrapper<BpmUserGroup> lqw = buildQueryWrapper(bo);
         return baseMapper.selectVoList(lqw);
+    }
+
+
+    /**
+     * 查询BPM 用户组列表
+     */
+    @Override
+    public List<BpmUserGroupVo> queryListByIds(Collection<Long> ids) {
+
+        return baseMapper.selectVoBatchIds(ids);
     }
 
     private LambdaQueryWrapper<BpmUserGroup> buildQueryWrapper(BpmUserGroupBo bo) {
@@ -150,6 +164,27 @@ public class BpmUserGroupServiceImpl extends BaseServiceImpl<BpmUserGroupMapper,
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteBatchIds(ids) > 0;
+    }
+
+    @Override
+    public void validUserGroupsByIds(Collection<Long> ids) {
+
+        if (CollUtil.isEmpty(ids)) {
+            return;
+        }
+        // 获得用户组信息
+        List<BpmUserGroup> userGroups = baseMapper.selectBatchIds(ids);
+        Map<Long, BpmUserGroup> userGroupMap = CollectionUtils.convertMap(userGroups, BpmUserGroup::getId);
+        // 校验
+        ids.forEach(id -> {
+            BpmUserGroup userGroup = userGroupMap.get(id);
+            if (userGroup == null) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.USER_GROUP_NOT_EXISTS);
+            }
+            if (!StatusEnum.ENABLE.getStatus().equals(userGroup.getStatus())) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.USER_GROUP_IS_DISABLE, userGroup.getName());
+            }
+        });
     }
 
 }

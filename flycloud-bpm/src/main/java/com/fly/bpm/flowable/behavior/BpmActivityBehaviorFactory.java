@@ -22,24 +22,24 @@ public class BpmActivityBehaviorFactory extends DefaultActivityBehaviorFactory {
 
     // todo 异常
 
-//    @Override
-//    public UserTaskActivityBehavior createUserTaskActivityBehavior(UserTask userTask) {
-//        return new BpmUserTaskActivityBehavior(userTask)
-//                .setTaskCandidateInvoker(taskCandidateInvoker);
-//    }
-//
-//    @Override
-//    public ParallelMultiInstanceBehavior createParallelMultiInstanceBehavior(Activity activity,
-//                                                                             AbstractBpmnActivityBehavior behavior) {
-//        return new BpmParallelMultiInstanceBehavior(activity, behavior)
-//                .setTaskCandidateInvoker(taskCandidateInvoker);
-//    }
-//
-//    @Override
-//    public SequentialMultiInstanceBehavior createSequentialMultiInstanceBehavior(Activity activity,
-//                                                                                 AbstractBpmnActivityBehavior behavior) {
-//        return new BpmSequentialMultiInstanceBehavior(activity, behavior)
-//                .setTaskCandidateInvoker(taskCandidateInvoker);
-//    }
+    @Override
+    public UserTaskActivityBehavior createUserTaskActivityBehavior(UserTask userTask) {
+        return new BpmUserTaskActivityBehavior(userTask)
+                .setTaskCandidateInvoker(taskCandidateInvoker);
+    }
+
+    @Override
+    public ParallelMultiInstanceBehavior createParallelMultiInstanceBehavior(Activity activity,
+                                                                             AbstractBpmnActivityBehavior behavior) {
+        return new BpmParallelMultiInstanceBehavior(activity, behavior)
+                .setTaskCandidateInvoker(taskCandidateInvoker);
+    }
+
+    @Override
+    public SequentialMultiInstanceBehavior createSequentialMultiInstanceBehavior(Activity activity,
+                                                                                 AbstractBpmnActivityBehavior behavior) {
+        return new BpmSequentialMultiInstanceBehavior(activity, behavior)
+                .setTaskCandidateInvoker(taskCandidateInvoker);
+    }
 
 }

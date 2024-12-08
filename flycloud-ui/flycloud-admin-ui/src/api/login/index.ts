@@ -4,6 +4,7 @@ import type { RegisterVO, UserLoginVO } from './types'
 
 import {service} from "@/config/axios/service";
 import { Base64 } from 'js-base64'
+import md5 from "js-md5"
 
 const AUTH_BASE_URL = import.meta.env.VITE_AUTH_SERVER
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
@@ -27,11 +28,11 @@ export const getCodeApi = () => {
 
 // 登录
 export const login = (data: UserLoginVO) => {
+  data.password = md5(data.password)
   const method = 'POST'
   const params = null
   return service({
     url: `${AUTH_BASE_URL}/oauth/token`,
-    // method,
     method: method,
     params: params,
     data: data,

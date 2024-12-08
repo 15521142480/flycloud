@@ -1,11 +1,13 @@
-//package com.fly.bpm.flowable.candidate.strategy;
+//package com.fly.bpm.flowable.candidate.strategy.user;
 //
 //import cn.iocoder.yudao.framework.common.util.string.StrUtils;
 //import cn.iocoder.yudao.module.bpm.framework.flowable.core.candidate.BpmTaskCandidateStrategy;
 //import cn.iocoder.yudao.module.bpm.framework.flowable.core.enums.BpmTaskCandidateStrategyEnum;
 //import cn.iocoder.yudao.module.system.api.permission.PermissionApi;
 //import cn.iocoder.yudao.module.system.api.permission.RoleApi;
-//import cn.iocoder.yudao.module.system.api.user.AdminUserApi;
+//import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
+//import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
+//import com.fly.system.api.feign.ISysRoleApi;
 //import org.springframework.stereotype.Component;
 //
 //import javax.annotation.Resource;
@@ -14,19 +16,15 @@
 ///**
 // * 角色 {@link BpmTaskCandidateStrategy} 实现类
 // *
-// * @author lxs
+// * @author kyle
 // */
 //@Component
-//public class BpmTaskCandidateRoleStrategy extends BpmTaskCandidateAbstractStrategy {
+//public class BpmTaskCandidateRoleStrategy implements BpmTaskCandidateStrategy {
 //
 //    @Resource
-//    private RoleApi roleApi;
+//    private ISysRoleApi sysRoleApi;
 //    @Resource
 //    private PermissionApi permissionApi;
-//
-//    public BpmTaskCandidateRoleStrategy(AdminUserApi adminUserApi) {
-//        super(adminUserApi);
-//    }
 //
 //    @Override
 //    public BpmTaskCandidateStrategyEnum getStrategy() {

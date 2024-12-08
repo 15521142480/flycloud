@@ -32,6 +32,14 @@ public interface IBpmUserGroupService {
     List<BpmUserGroupVo> queryList(BpmUserGroupBo bo);
 
     /**
+     * 获得用户组列表
+     *
+     * @param ids 编号
+     * @return 用户组列表
+     */
+    List<BpmUserGroupVo> queryListByIds(Collection<Long> ids);
+
+    /**
      * 修改BPM 用户组
      */
     Boolean insertByBo(BpmUserGroupBo bo);
@@ -45,5 +53,14 @@ public interface IBpmUserGroupService {
      * 校验并批量删除BPM 用户组信息
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 校验用户组们是否有效。如下情况，视为无效：
+     * 1. 用户组编号不存在
+     * 2. 用户组被禁用
+     *
+     * @param ids 用户组编号数组
+     */
+    void validUserGroupsByIds(Collection<Long> ids);
 
 }

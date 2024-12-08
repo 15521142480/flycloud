@@ -3,7 +3,7 @@
     <el-table-column label="审批节点" prop="name" min-width="120" align="center" />
     <el-table-column label="审批人" min-width="100" align="center">
       <template #default="scope">
-        {{ scope.row.assigneeUser?.nickname || scope.row.ownerUser?.nickname }}
+        {{ scope.row.assigneeUser?.name || scope.row.ownerUser?.name }}
       </template>
     </el-table-column>
     <el-table-column

@@ -1,5 +1,9 @@
 package com.fly.bpm.api.domain.vo.instance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
+import com.fly.bpm.api.domain.vo.task.BpmTaskRespVO;
+import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -7,6 +11,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 
 @Schema(description = "管理后台 - 审批详情 Response VO")
@@ -17,12 +22,28 @@ public class BpmApprovalDetailRespVO implements Serializable {
     @Schema(description = "流程实例的状态", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     private Integer status; // 参见 BpmProcessInstanceStatusEnum 枚举
 
-    @Schema(description = "审批信息列表", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ApprovalNodeInfo> approveNodes;
+    @Schema(description = "活动节点列表", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ActivityNode> activityNodes;
 
-    @Schema(description = "审批节点信息")
+    @Schema(description = "表单字段权限")
+    private Map<String, String> formFieldsPermission;
+
+    @Schema(description = "待办任务")
+    private BpmTaskRespVO todoTask;
+
+    /**
+     * 所属流程定义信息
+     */
+    private BpmProcessDefinitionRespVO processDefinition;
+
+    /**
+     * 所属流程实例信息
+     */
+    private BpmProcessInstanceRespVO processInstance;
+
+    @Schema(description = "活动节点信息")
     @Data
-    public static class ApprovalNodeInfo {
+    public static class ActivityNode {
 
         @Schema(description = "节点编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "StartUserNode")
         private String id;
@@ -42,42 +63,40 @@ public class BpmApprovalDetailRespVO implements Serializable {
         private LocalDateTime endTime;
 
         @Schema(description = "审批节点的任务信息")
-        private List<ApprovalTaskInfo> tasks;
+        private List<ActivityNodeTask> tasks;
+
+        @Schema(description = "候选人策略", example = "35")
+        private Integer candidateStrategy; // 参见 BpmTaskCandidateStrategyEnum 枚举。主要用于发起时，审批节点、抄送节点自选
+
+        @Schema(description = "候选人用户 ID 列表", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1818")
+        @JsonIgnore // 不返回，只是方便后续读取，赋值给 candidateUsers
+        private List<Long> candidateUserIds;
 
         @Schema(description = "候选人用户列表")
-        // TODO @jason：candidateUserList => candidateUsers，保持和 tasks 的命名风格一致哈
-        private List<User> candidateUserList; // 用于未运行任务节点
+        private List<SysUserBpmVO> candidateUsers; // 只包含未生成 ApprovalTaskInfo 的用户列表
 
     }
 
-    // TODO @jason：可以替换成 UserSimpleBaseVO。简化下
-    @Schema(description = "用户信息")
+    @Schema(description = "活动节点的任务信息")
     @Data
-    public static class User {
-
-        @Schema(description = "用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-        private Long id;
-
-        @Schema(description = "用户昵称", requiredMode = Schema.RequiredMode.REQUIRED, example = "fly")
-        private String nickname;
-
-        @Schema(description = "用户头像", example = "https://www.iocoder.cn/1.png")
-        private String avatar;
-
-    }
-
-    @Schema(description = "审批任务信息")
-    @Data
-    public static class ApprovalTaskInfo {
+    public static class ActivityNodeTask {
 
         @Schema(description = "任务编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
         private String id;
 
+        @Schema(description = "任务所属人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1818")
+        @JsonIgnore // 不返回，只是方便后续读取，赋值给 ownerUser
+        private Long owner;
+
         @Schema(description = "任务所属人", example = "1024")
-        private User ownerUser;
+        private SysUserBpmVO ownerUser;
+
+        @Schema(description = "任务分配人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
+        @JsonIgnore // 不返回，只是方便后续读取，赋值给 assigneeUser
+        private Long assignee;
 
         @Schema(description = "任务分配人", example = "2048")
-        private User assigneeUser;
+        private SysUserBpmVO assigneeUser;
 
         @Schema(description = "任务状态", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
         private Integer status;  // 参见 BpmTaskStatusEnum 枚举

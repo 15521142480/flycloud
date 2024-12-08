@@ -1,29 +1,25 @@
-//package com.fly.bpm.flowable.candidate.strategy;
+//package com.fly.bpm.flowable.candidate.strategy.user;
 //
-//import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
-//import com.fly.common.utils.StringUtils;
-//import com.fly.system.api.feign.ISysUserApi;
+//import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
 //import org.springframework.stereotype.Component;
 //
+//import javax.annotation.Resource;
 //import java.util.List;
 //import java.util.Set;
 //
-//import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 //
 ///**
 // * 岗位 {@link com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy} 实现类
 // *
-// * @author lxs
+// *
 // */
 //@Component
-//public class BpmTaskCandidatePostStrategy extends BpmTaskCandidateAbstractStrategy {
+//public class BpmTaskCandidatePostStrategy implements BpmTaskCandidateStrategy {
 //
-//    private final PostApi postApi;
-//
-//    public BpmTaskCandidatePostStrategy(ISysUserApi sysUserApi, PostApi postApi) {
-//        super(sysUserApi);
-//        this.postApi = postApi;
-//    }
+//    @Resource
+//    private PostApi postApi;
+//    @Resource
+//    private AdminUserApi adminUserApi;
 //
 //    @Override
 //    public BpmTaskCandidateStrategyEnum getStrategy() {
@@ -32,7 +28,7 @@
 //
 //    @Override
 //    public void validateParam(String param) {
-//        Set<Long> postIds = StringUtils.splitToLongSet(param);
+//        Set<Long> postIds = StrUtils.splitToLongSet(param);
 //        postApi.validPostList(postIds);
 //    }
 //

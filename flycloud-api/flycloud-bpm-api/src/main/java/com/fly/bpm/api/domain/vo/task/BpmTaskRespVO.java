@@ -1,6 +1,8 @@
 package com.fly.bpm.api.domain.vo.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fly.bpm.api.domain.vo.instance.BpmProcessInstanceRespVO;
+import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -18,7 +20,7 @@ public class BpmTaskRespVO implements Serializable {
     @Schema(description = "任务编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private String id;
 
-    @Schema(description = "任务名字", requiredMode = Schema.RequiredMode.REQUIRED, example = "fly")
+    @Schema(description = "任务名字", requiredMode = Schema.RequiredMode.REQUIRED, example = "芋道")
     private String name;
 
     @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -36,14 +38,22 @@ public class BpmTaskRespVO implements Serializable {
     @Schema(description = "审批理由", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     private String reason;
 
+    @Schema(description = "任务负责人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
+    @JsonIgnore // 不返回，只是方便后续读取，赋值给 ownerUser
+    private Long owner;
+
     /**
      * 负责人的用户信息
      */
-    private BpmProcessInstanceRespVO.User ownerUser;
+    private SysUserBpmVO ownerUser;
+
+    @Schema(description = "任务分配人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
+    @JsonIgnore // 不返回，只是方便后续读取，赋值给 assigneeUser
+    private Long assignee;
     /**
      * 审核的用户信息
      */
-    private BpmProcessInstanceRespVO.User assigneeUser;
+    private SysUserBpmVO assigneeUser;
 
     @Schema(description = "任务定义的标识", requiredMode = Schema.RequiredMode.REQUIRED, example = "Activity_one")
     private String taskDefinitionKey;
@@ -58,7 +68,7 @@ public class BpmTaskRespVO implements Serializable {
     @Schema(description = "父任务编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private String parentTaskId;
     @Schema(description = "子任务列表（由加签生成）", requiredMode = Schema.RequiredMode.REQUIRED, example = "childrenTask")
-    private List<BpmTaskRespVO> children;
+    private List<BpmTaskRespVO> children; // 由加签生成，包含多层子任务
 
     @Schema(description = "表单编号", example = "1024")
     private Long formId;
@@ -70,9 +80,6 @@ public class BpmTaskRespVO implements Serializable {
     private List<String> formFields;
     @Schema(description = "提交的表单值", requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<String, Object> formVariables;
-    // @fly 都改成了 fieldsPermission。 buttonsSetting。和 BpmSimpleModelNodeVO 统一
-    @Schema(description = "表单字段权限值")
-    private Map<String, String> fieldsPermission;
     @Schema(description = "操作按钮设置值")
     private Map<Integer, OperationButtonSetting> buttonsSetting;
 
@@ -83,7 +90,7 @@ public class BpmTaskRespVO implements Serializable {
         @Schema(description = "流程实例编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
         private String id;
 
-        @Schema(description = "流程实例名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "fly")
+        @Schema(description = "流程实例名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "芋道")
         private String name;
 
         @Schema(description = "提交时间", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -95,13 +102,12 @@ public class BpmTaskRespVO implements Serializable {
         /**
          * 发起人的用户信息
          */
-        private BpmProcessInstanceRespVO.User startUser;
+        private SysUserBpmVO startUser;
 
     }
 
     @Data
     @Schema(description = "操作按钮设置")
-    @Accessors(chain = true)
     public static class OperationButtonSetting {
 
         @Schema(description = "显示名称", example = "审批")

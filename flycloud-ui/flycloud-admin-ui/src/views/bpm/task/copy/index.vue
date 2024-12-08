@@ -48,7 +48,7 @@
       <el-table-column
         align="center"
         label="流程发起人"
-        prop="startUser.nickname"
+        prop="startUser.name"
         min-width="100"
       />
       <el-table-column
@@ -60,7 +60,7 @@
       />
       <el-table-column align="center" label="抄送节点" prop="activityName" min-width="180" />
       <el-table-column align="center" label="抄送人" min-width="100">
-        <template #default="scope"> {{ scope.row.createUser?.nickname || '系统' }} </template>
+        <template #default="scope"> {{ scope.row.createUser?.name || '系统' }} </template>
       </el-table-column>
       <el-table-column align="center" label="抄送意见" prop="reason" width="150" />
       <el-table-column

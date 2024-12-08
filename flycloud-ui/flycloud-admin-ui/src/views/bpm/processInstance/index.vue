@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="流程发起、取消、重新发起" url="https://doc.iocoder.cn/bpm/process-instance/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->

@@ -1,11 +1,4 @@
 <template>
-  <doc-alert title="审批通过、不通过、驳回" url="https://doc.iocoder.cn/bpm/task-todo-done/" />
-  <doc-alert title="审批加签、减签" url="https://doc.iocoder.cn/bpm/sign/" />
-  <doc-alert
-    title="审批转办、委派、抄送"
-    url="https://doc.iocoder.cn/bpm/task-delegation-and-cc/"
-  />
-  <doc-alert title="审批加签、减签" url="https://doc.iocoder.cn/bpm/sign/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -56,7 +49,7 @@
       <el-table-column
         align="center"
         label="发起人"
-        prop="processInstance.startUser.nickname"
+        prop="processInstance.startUser.name"
         width="100"
       />
       <el-table-column

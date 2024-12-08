@@ -5,6 +5,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.constants.SystemFeignApiConstants;
 import com.fly.system.api.domain.common.UserInfo;
+import com.fly.system.api.domain.vo.SysUserVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +33,7 @@ public interface ISysUserApi {
      * @return Result
      */
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_ID)
-    R<SysUser> getUserById(@RequestParam("id") Long id);
+    R<SysUserVo> getUserById(@RequestParam("id") Long id);
 
     /**
      * 根据ids查询用户列表
@@ -40,7 +41,7 @@ public interface ISysUserApi {
      * @return Result
      */
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_IDS)
-    R<List<SysUser>> getUserListByIds(@RequestParam("ids") Collection<Long> ids);
+    R<List<SysUserVo>> getUserListByIds(@RequestParam("ids") Collection<Long> ids);
 
     /**
      * 根据userName查询用户信息
@@ -76,10 +77,10 @@ public interface ISysUserApi {
      * @param ids 用户编号数组
      * @return 用户 Map
      */
-    default Map<Long, SysUser> getUserMapByIds(Collection<Long> ids) {
+    default Map<Long, SysUserVo> getUserMapByIds(Collection<Long> ids) {
 
-        List<SysUser> users = this.getUserListByIds(ids).getCheckedData();
-        return CollectionUtils.convertMap(users, SysUser::getId);
+        List<SysUserVo> users = this.getUserListByIds(ids).getCheckedData();
+        return CollectionUtils.convertMap(users, SysUserVo::getId);
     }
 
 

@@ -74,7 +74,7 @@ public class BpmInstanceCopyServiceImpl extends BaseServiceImpl<BpmProcessInstan
         lqw.like(StringUtils.isNotBlank(bo.getProcessInstanceName()), BpmProcessInstanceCopy::getProcessInstanceName, bo.getProcessInstanceName());
         lqw.eq(StringUtils.isNotBlank(bo.getCategory()), BpmProcessInstanceCopy::getCategory, bo.getCategory());
         lqw.eq(StringUtils.isNotBlank(bo.getTaskId()), BpmProcessInstanceCopy::getTaskId, bo.getTaskId());
-        lqw.like(StringUtils.isNotBlank(bo.getTaskName()), BpmProcessInstanceCopy::getTaskName, bo.getTaskName());
+//        lqw.like(StringUtils.isNotBlank(bo.getTaskName()), BpmProcessInstanceCopy::getTaskName, bo.getTaskName());
         lqw.eq(StringUtils.isNotBlank(bo.getActivityId()), BpmProcessInstanceCopy::getActivityId, bo.getActivityId());
         lqw.eq(BpmProcessInstanceCopy::getIsDeleted, false);
 
@@ -106,7 +106,7 @@ public class BpmInstanceCopyServiceImpl extends BaseServiceImpl<BpmProcessInstan
         lqw.like(StringUtils.isNotBlank(bo.getProcessInstanceName()), BpmProcessInstanceCopy::getProcessInstanceName, bo.getProcessInstanceName());
         lqw.eq(StringUtils.isNotBlank(bo.getCategory()), BpmProcessInstanceCopy::getCategory, bo.getCategory());
         lqw.eq(StringUtils.isNotBlank(bo.getTaskId()), BpmProcessInstanceCopy::getTaskId, bo.getTaskId());
-        lqw.like(StringUtils.isNotBlank(bo.getTaskName()), BpmProcessInstanceCopy::getTaskName, bo.getTaskName());
+//        lqw.like(StringUtils.isNotBlank(bo.getTaskName()), BpmProcessInstanceCopy::getTaskName, bo.getTaskName());
         lqw.eq(StringUtils.isNotBlank(bo.getActivityId()), BpmProcessInstanceCopy::getActivityId, bo.getActivityId());
         lqw.eq(BpmProcessInstanceCopy::getIsDeleted, false);
 
@@ -127,20 +127,19 @@ public class BpmInstanceCopyServiceImpl extends BaseServiceImpl<BpmProcessInstan
 
 
     @Override
-    public void createProcessInstanceCopy(Collection<Long> userIds, String taskId) {
-
+    public void createProcessInstanceCopy(Collection<Long> userIds, String reason, String taskId) {
         Task task = taskService.getTask(taskId);
         if (ObjectUtil.isNull(task)) {
             throw exception(ErrorCodeConstants.TASK_NOT_EXISTS);
         }
-        String processInstanceId = task.getProcessInstanceId();
-        createProcessInstanceCopy(userIds, processInstanceId, task.getTaskDefinitionKey(), task.getId(), task.getName());
+        // 执行抄送
+        createProcessInstanceCopy(userIds, reason,
+                task.getProcessInstanceId(), task.getTaskDefinitionKey(), task.getId(), task.getName());
     }
 
-
     @Override
-    public void createProcessInstanceCopy(Collection<Long> userIds, String processInstanceId, String activityId, String taskId, String taskName) {
-
+    public void createProcessInstanceCopy(Collection<Long> userIds, String reason, String processInstanceId,
+                                          String activityId, String activityName, String taskId) {
         // 1.1 校验流程实例存在
         ProcessInstance processInstance = processInstanceService.getProcessInstance(processInstanceId);
         if (processInstance == null) {
@@ -155,18 +154,12 @@ public class BpmInstanceCopyServiceImpl extends BaseServiceImpl<BpmProcessInstan
 
         // 2. 创建抄送流程
         List<BpmProcessInstanceCopy> copyList = convertList(userIds, userId -> new BpmProcessInstanceCopy()
-                .setUserId(userId).setStartUserId(Long.valueOf(processInstance.getStartUserId()))
+                .setUserId(userId).setReason(reason).setStartUserId(Long.valueOf(processInstance.getStartUserId()))
                 .setProcessInstanceId(processInstanceId).setProcessInstanceName(processInstance.getName())
-                .setCategory(processDefinition.getCategory()).setActivityId(activityId)
-                .setTaskId(taskId).setTaskName(taskName));
+                .setCategory(processDefinition.getCategory()).setTaskId(taskId)
+                .setActivityId(activityId).setActivityName(activityName));
         baseMapper.insertBatch(copyList);
     }
 
-
-    @Override
-    public Set<Long> getCopyUserIds(String processInstanceId, String activityId) {
-        return CollectionUtils.convertSet(baseMapper.selectListByProcessInstanceIdAndActivityId(processInstanceId, activityId),
-                BpmProcessInstanceCopy::getUserId);
-    }
 
 }

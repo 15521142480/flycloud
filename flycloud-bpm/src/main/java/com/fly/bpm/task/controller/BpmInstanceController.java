@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.bpm.api.domain.BpmCategory;
 import com.fly.bpm.api.domain.BpmProcessDefinitionInfo;
 import com.fly.bpm.api.domain.vo.instance.*;
+import com.fly.bpm.api.domain.vo.task.BpmProcessInstanceBpmnModelViewRespVO;
 import com.fly.bpm.common.service.BpmProcessDefinitionService;
 import com.fly.bpm.common.service.IBpmCategoryService;
 import com.fly.bpm.flowable.convert.BpmProcessInstanceConvert;
@@ -16,6 +17,7 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.number.NumberUtils;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.SysDeptVo;
+import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysDeptApi;
 import com.fly.system.api.feign.ISysUserApi;
 import io.swagger.v3.oas.annotations.Operation;
@@ -106,9 +108,9 @@ public class BpmInstanceController {
         Map<String, BpmCategory> categoryMap = categoryService.getCategoryMap(
                 convertSet(processDefinitionMap.values(), ProcessDefinition::getCategory));
         // 发起人信息
-        Map<Long, SysUser> userMap = sysUserApi.getUserMapByIds(
+        Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(
                 convertSet(pageVo.getList(), processInstance -> NumberUtils.parseLong(processInstance.getStartUserId())));
-        Map<Long, SysDeptVo> deptMap = sysDeptApi.getDeptMapByIds(convertSet(userMap.values(), SysUser::getDeptId));
+        Map<Long, SysDeptVo> deptMap = sysDeptApi.getDeptMapByIds(convertSet(userMap.values(), SysUserVo::getDeptId));
 
         return R.ok(BpmProcessInstanceConvert.INSTANCE.buildProcessInstancePage(pageVo, processDefinitionMap, categoryMap, taskMap, userMap, deptMap));
     }
@@ -135,14 +137,14 @@ public class BpmInstanceController {
                 processInstance.getProcessDefinitionId());
         BpmProcessDefinitionInfo processDefinitionInfo = processDefinitionService.getProcessDefinitionInfo(
                 processInstance.getProcessDefinitionId());
-        String bpmnXml = BpmnModelUtils.getBpmnXml(
-                processDefinitionService.getProcessDefinitionBpmnModel(processInstance.getProcessDefinitionId()));
-        SysUser startUser = sysUserApi.getUserById(NumberUtils.parseLong(processInstance.getStartUserId())).getCheckedData();
+
+        SysUserVo startUser = sysUserApi.getUserById(NumberUtils.parseLong(processInstance.getStartUserId())).getCheckedData();
         SysDeptVo dept = null;
         if (startUser != null && startUser.getDeptId() != null) {
             dept = sysDeptApi.getDeptById(startUser.getDeptId()).getCheckedData();
         }
-        return R.ok(BpmProcessInstanceConvert.INSTANCE.buildProcessInstance(processInstance, processDefinition, processDefinitionInfo, bpmnXml, startUser, dept));
+
+        return R.ok(BpmProcessInstanceConvert.INSTANCE.buildProcessInstance(processInstance, processDefinition, processDefinitionInfo, startUser, dept));
     }
 
 
@@ -196,13 +198,15 @@ public class BpmInstanceController {
 
 
     /**
-     * todo 获得表单字段权限
+     * todo 获取流程实例的 BPMN 模型视图
      *
-     * @param reqVO 表单字段权限参数
+     * 注意: 在【流程详细】界面中，进行调用
+     *
+     * @param id 流程实例的编号
      */
-    @GetMapping("/getFormFieldsPermission")
-    public R<Map<String, String>> getFormFieldsPermission(@Valid BpmFormFieldsPermissionReqVO reqVO) {
-        return R.ok(bpmInstanceService.getFormFieldsPermission(reqVO));
+    @GetMapping("/getBpmModeView")
+    public R<BpmProcessInstanceBpmnModelViewRespVO> getProcessInstanceBpmnModelView(@RequestParam(value = "id") String id) {
+        return R.ok(bpmInstanceService.getProcessInstanceBpmnModelView(id));
     }
 
 

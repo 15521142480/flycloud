@@ -12,8 +12,8 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.number.NumberUtils;
-import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.SysDeptVo;
+import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysDeptApi;
 import com.fly.system.api.feign.ISysUserApi;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,7 +76,7 @@ public class BpmTaskController {
         // 拼接数据
         Map<String, ProcessInstance> processInstanceMap = instanceService.getProcessInstanceMap(
                 convertSet(pageVo.getList(), Task::getProcessInstanceId));
-        Map<Long, SysUser> userMap = sysUserApi.getUserMapByIds(
+        Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(
                 convertSet(processInstanceMap.values(), instance -> Long.valueOf(instance.getStartUserId())));
 
         return R.ok(BpmTaskConvert.INSTANCE.buildTodoTaskPage(pageVo, processInstanceMap, userMap));
@@ -99,7 +99,7 @@ public class BpmTaskController {
         // 拼接数据
         Map<String, HistoricProcessInstance> processInstanceMap = instanceService.getHistoricProcessInstanceMap(
                 convertSet(pageVo.getList(), HistoricTaskInstance::getProcessInstanceId));
-        Map<Long, SysUser> userMap = sysUserApi.getUserMapByIds(
+        Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(
                 convertSet(processInstanceMap.values(), instance -> Long.valueOf(instance.getStartUserId())));
 
         return R.ok(BpmTaskConvert.INSTANCE.buildTaskPage(pageVo, processInstanceMap, userMap, null));
@@ -127,8 +127,8 @@ public class BpmTaskController {
         // 获得 User 和 Dept Map
         Set<Long> userIds = convertSet(processInstanceMap.values(), instance -> Long.valueOf(instance.getStartUserId()));
         userIds.addAll(convertSet(pageVo.getList(), task -> NumberUtils.parseLong(task.getAssignee())));
-        Map<Long, SysUser> userMap = sysUserApi.getUserMapByIds(userIds);
-        Map<Long, SysDeptVo> deptMap = deptApi.getDeptMapByIds(convertSet(userMap.values(), SysUser::getDeptId));
+        Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(userIds);
+        Map<Long, SysDeptVo> deptMap = deptApi.getDeptMapByIds(convertSet(userMap.values(), SysUserVo::getDeptId));
 
         return R.ok(BpmTaskConvert.INSTANCE.buildTaskPage(pageVo, processInstanceMap, userMap, deptMap));
     }
@@ -141,10 +141,10 @@ public class BpmTaskController {
      *
      * @param processInstanceId 流程实例的编号
     */
-    @GetMapping("/taskList/{processInstanceId}")
-    public R<List<BpmTaskRespVO>> getTaskListByProcessInstanceId(@PathVariable("processInstanceId") String processInstanceId) {
+    @GetMapping("/taskList")
+    public R<List<BpmTaskRespVO>> getTaskListByProcessInstanceId(@RequestParam("processInstanceId") String processInstanceId) {
 
-        List<HistoricTaskInstance> taskList = taskService.getTaskListByProcessInstanceId(processInstanceId);
+        List<HistoricTaskInstance> taskList = taskService.getTaskListByProcessInstanceId(processInstanceId, true);
         if (CollUtil.isEmpty(taskList)) {
             return R.ok(Collections.emptyList());
         }
@@ -155,16 +155,15 @@ public class BpmTaskController {
         Set<Long> userIds = convertSetByFlatMap(taskList, task ->
                 Stream.of(NumberUtils.parseLong(task.getAssignee()), NumberUtils.parseLong(task.getOwner())));
         userIds.add(NumberUtils.parseLong(processInstance.getStartUserId()));
-        Map<Long, SysUser> userMap = sysUserApi.getUserMapByIds(userIds);
+        Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(userIds);
         Map<Long, SysDeptVo> deptMap = deptApi.getDeptMapByIds(
-                convertSet(userMap.values(), SysUser::getDeptId));
+                convertSet(userMap.values(), SysUserVo::getDeptId));
+
         // 获得 Form Map
         Map<Long, BpmForm> formMap = formService.getFormMap(
                 convertSet(taskList, task -> NumberUtils.parseLong(task.getFormKey())));
-        // 获得 BpmnModel
-        BpmnModel bpmnModel = bpmProcessDefinitionService.getProcessDefinitionBpmnModel(processInstance.getProcessDefinitionId());
 
-        return R.ok(BpmTaskConvert.INSTANCE.buildTaskListByProcessInstanceId(taskList, processInstance, formMap, userMap, deptMap, bpmnModel));
+        return R.ok(BpmTaskConvert.INSTANCE.buildTaskListByProcessInstanceId(taskList, formMap, userMap, deptMap));
     }
 
 
@@ -295,10 +294,10 @@ public class BpmTaskController {
             return R.ok(Collections.emptyList());
         }
         // 拼接数据
-        Map<Long, SysUser> userMap = sysUserApi.getUserMapByIds(convertSetByFlatMap(taskList,
+        Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(convertSetByFlatMap(taskList,
                 user -> Stream.of(NumberUtils.parseLong(user.getAssignee()), NumberUtils.parseLong(user.getOwner()))));
         Map<Long, SysDeptVo> deptMap = deptApi.getDeptMapByIds(
-                convertSet(userMap.values(), SysUser::getDeptId));
+                convertSet(userMap.values(), SysUserVo::getDeptId));
 
         return R.ok(BpmTaskConvert.INSTANCE.buildTaskListByParentTaskId(taskList, userMap, deptMap));
     }

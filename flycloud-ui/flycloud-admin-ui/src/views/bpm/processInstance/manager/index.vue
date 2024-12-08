@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="工作流手册" url="https://doc.iocoder.cn/bpm/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -15,7 +14,7 @@
           <el-option
             v-for="user in userList"
             :key="user.id"
-            :label="user.nickname"
+            :label="user.name"
             :value="user.id"
           />
         </el-select>
@@ -97,7 +96,7 @@
         min-width="100"
         fixed="left"
       />
-      <el-table-column label="流程发起人" align="center" prop="startUser.nickname" width="120" />
+      <el-table-column label="流程发起人" align="center" prop="startUser.name" width="120" />
       <el-table-column label="发起部门" align="center" prop="startUser.deptName" width="120" />
       <el-table-column label="流程状态" prop="status" width="120">
         <template #default="scope">

@@ -20,6 +20,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public interface BpmProcessDefinitionConvert {
 
 
     /**
-     *
+     * 构建分页
      *
      * @param page
      * @param deploymentMap
@@ -53,21 +54,12 @@ public interface BpmProcessDefinitionConvert {
     }
 
 
-    /**
-     *
-     *
-     * @param list
-     * @param deploymentMap
-     * @param processDefinitionInfoMap
-     * @param formMap
-     * @param categoryMap
-    */
     default List<BpmProcessDefinitionRespVO> buildProcessDefinitionList(List<ProcessDefinition> list,
                                                                         Map<String, Deployment> deploymentMap,
                                                                         Map<String, BpmProcessDefinitionInfo> processDefinitionInfoMap,
                                                                         Map<Long, BpmForm> formMap,
                                                                         Map<String, BpmCategory> categoryMap) {
-        return CollectionUtils.convertList(list, definition -> {
+        List<BpmProcessDefinitionRespVO> result = CollectionUtils.convertList(list, definition -> {
             Deployment deployment = MapUtil.get(deploymentMap, definition.getDeploymentId(), Deployment.class);
             BpmProcessDefinitionInfo processDefinitionInfo = MapUtil.get(processDefinitionInfoMap, definition.getId(), BpmProcessDefinitionInfo.class);
             BpmForm form = null;
@@ -75,28 +67,19 @@ public interface BpmProcessDefinitionConvert {
                 form = MapUtil.get(formMap, processDefinitionInfo.getFormId(), BpmForm.class);
             }
             BpmCategory category = MapUtil.get(categoryMap, definition.getCategory(), BpmCategory.class);
-            return buildProcessDefinition(definition, deployment, processDefinitionInfo, form, category, null, null);
+            return buildProcessDefinition(definition, deployment, processDefinitionInfo, form, category, null);
         });
+        // 排序
+        result.sort(Comparator.comparing(BpmProcessDefinitionRespVO::getSort));
+        return result;
     }
 
-    /**
-     *
-     *
-     * @param definition
-     * @param deployment
-     * @param processDefinitionInfo
-     * @param form
-     * @param category
-     * @param bpmnModel
-     * @param startUserSelectUserTaskList
-    */
     default BpmProcessDefinitionRespVO buildProcessDefinition(ProcessDefinition definition,
                                                               Deployment deployment,
                                                               BpmProcessDefinitionInfo processDefinitionInfo,
                                                               BpmForm form,
                                                               BpmCategory category,
-                                                              BpmnModel bpmnModel,
-                                                              List<UserTask> startUserSelectUserTaskList) {
+                                                              BpmnModel bpmnModel) {
         BpmProcessDefinitionRespVO respVO = BeanUtils.toBean(definition, BpmProcessDefinitionRespVO.class);
         respVO.setSuspensionState(definition.isSuspended() ? SuspensionState.SUSPENDED.getStateCode() : SuspensionState.ACTIVE.getStateCode());
         // Deployment
@@ -118,17 +101,10 @@ public interface BpmProcessDefinitionConvert {
         // BpmnModel
         if (bpmnModel != null) {
             respVO.setBpmnXml(BpmnModelUtils.getBpmnXml(bpmnModel));
-            respVO.setStartUserSelectTasks(BeanUtils.toBean(startUserSelectUserTaskList, BpmProcessDefinitionRespVO.UserTask.class));
         }
         return respVO;
     }
 
-    /**
-     *
-     *
-     * @param from
-     * @param to
-    */
     @Mapping(source = "from.id", target = "to.id", ignore = true)
     void copyTo(BpmProcessDefinitionInfo from, @MappingTarget BpmProcessDefinitionRespVO to);
 

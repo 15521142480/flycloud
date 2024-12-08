@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("bpm_process_definition_info")
+@TableName(value = "bpm_process_definition_info", autoResultMap = true)
 @Accessors(chain = true)
 public class BpmProcessDefinitionInfo extends BaseEntity {
 

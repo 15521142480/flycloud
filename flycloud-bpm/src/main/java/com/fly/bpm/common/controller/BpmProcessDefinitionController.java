@@ -8,7 +8,7 @@ import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
 import com.fly.bpm.common.service.BpmProcessDefinitionService;
 import com.fly.bpm.common.service.IBpmCategoryService;
 import com.fly.bpm.common.service.IBpmFormService;
-import com.fly.bpm.flowable.candidate.strategy.BpmTaskCandidateStartUserSelectStrategy;
+import com.fly.bpm.flowable.candidate.strategy.dept.BpmTaskCandidateStartUserSelectStrategy;
 import com.fly.bpm.flowable.convert.BpmProcessDefinitionConvert;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.domain.model.R;
@@ -99,6 +99,7 @@ public class BpmProcessDefinitionController extends BaseController {
         Long userId = UserUtils.getCurUserId();
         Map<String, BpmProcessDefinitionInfo> processDefinitionMap = bpmProcessDefinitionService.getProcessDefinitionInfoMap(
                 CollectionUtils.convertSet(list, ProcessDefinition::getId));
+
         list.removeIf(processDefinition -> {
             BpmProcessDefinitionInfo processDefinitionInfo = processDefinitionMap.get(processDefinition.getId());
             return processDefinitionInfo == null // 不存在
@@ -107,8 +108,7 @@ public class BpmProcessDefinitionController extends BaseController {
         });
 
         // 2. 拼接 VO 返回
-        return R.ok(BpmProcessDefinitionConvert.INSTANCE.buildProcessDefinitionList(
-                list, null, processDefinitionMap, null, null));
+        return R.ok(BpmProcessDefinitionConvert.INSTANCE.buildProcessDefinitionList(list, null, processDefinitionMap, null, null));
     }
 
 
@@ -132,9 +132,9 @@ public class BpmProcessDefinitionController extends BaseController {
 
         BpmProcessDefinitionInfo processDefinitionInfo = bpmProcessDefinitionService.getProcessDefinitionInfo(processDefinition.getId());
         BpmnModel bpmnModel = bpmProcessDefinitionService.getProcessDefinitionBpmnModel(processDefinition.getId());
-        List<UserTask> userTaskList = BpmTaskCandidateStartUserSelectStrategy.getStartUserSelectUserTaskList(bpmnModel);
+
         return R.ok(BpmProcessDefinitionConvert.INSTANCE.buildProcessDefinition(
-                processDefinition, null, processDefinitionInfo, null, null, bpmnModel, userTaskList));
+                processDefinition, null, processDefinitionInfo, null, null, bpmnModel));
     }
 
 

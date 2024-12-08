@@ -46,6 +46,15 @@ public class SysDictTypeController extends BaseController {
     }
 
     /**
+     * 查询字典类型列表
+     */
+    @GetMapping("/list")
+    public R<List<SysDictTypeVo>> page(SysDictTypeBo bo) {
+        return R.ok(iSysDictTypeService.queryList(bo));
+    }
+
+
+    /**
      * 获取字典类型详细信息
      *
      * @param id 主键

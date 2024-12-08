@@ -1,5 +1,6 @@
 package com.fly.common.enums.bpm;
 
+import cn.hutool.core.util.ObjUtil;
 import com.fly.common.utils.ObjectUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,6 +58,14 @@ public enum BpmTaskStatusEnum {
         return ObjectUtils.equalsAny(status,
                 APPROVE.getStatus(), REJECT.getStatus(), CANCEL.getStatus(),
                 RETURN.getStatus(), APPROVING.getStatus());
+    }
+
+    public static boolean isCancelStatus(Integer status) {
+        return ObjUtil.equal(status, CANCEL.getStatus());
+    }
+
+    public static boolean isRejectStatus(Integer status) {
+        return REJECT.getStatus().equals(status);
     }
 
 }

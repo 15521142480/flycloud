@@ -1,11 +1,4 @@
 <template>
-  <doc-alert title="流程设计器（BPMN）" url="https://doc.iocoder.cn/bpm/model-designer-dingding/" />
-  <doc-alert
-    title="流程设计器（钉钉、飞书）"
-    url="https://doc.iocoder.cn/bpm/model-designer-bpmn/"
-  />
-  <doc-alert title="选择审批人、发起人自选" url="https://doc.iocoder.cn/bpm/assignee/" />
-  <doc-alert title="会签、或签、依次审批" url="https://doc.iocoder.cn/bpm/multi-instance/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -79,16 +72,16 @@
             全部可见
           </el-text>
           <el-text v-else-if="scope.row.startUsers.length == 1">
-            {{ scope.row.startUsers[0].nickname }}
+            {{ scope.row.startUsers[0].name }}
           </el-text>
           <el-text v-else>
             <el-tooltip
               class="box-item"
               effect="dark"
               placement="top"
-              :content="scope.row.startUsers.map((user: any) => user.nickname).join('、')"
+              :content="scope.row.startUsers.map((user: any) => user.name).join('、')"
             >
-              {{ scope.row.startUsers[0].nickname }}等 {{ scope.row.startUsers.length }} 人可见
+              {{ scope.row.startUsers[0].name }}等 {{ scope.row.startUsers.length }} 人可见
             </el-tooltip>
           </el-text>
         </template>

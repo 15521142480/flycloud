@@ -92,6 +92,7 @@ public class BpmProcessDefinitionServiceImpl extends BaseServiceImpl<BpmProcessD
 
     @Override
     public List<ProcessDefinition> getProcessDefinitionListBySuspensionState(Integer suspensionState) {
+
         // 拼接查询条件
         ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
         if (Objects.equals(SuspensionState.SUSPENDED.getStateCode(), suspensionState)) {
@@ -99,8 +100,10 @@ public class BpmProcessDefinitionServiceImpl extends BaseServiceImpl<BpmProcessD
         } else if (Objects.equals(SuspensionState.ACTIVE.getStateCode(), suspensionState)) {
             query.active();
         }
+
         // 执行查询
         query.processDefinitionTenantId(FlowableUtils.getTenantId());
+
         return query.list();
     }
 

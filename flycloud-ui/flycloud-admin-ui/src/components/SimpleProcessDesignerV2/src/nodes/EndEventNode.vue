@@ -21,7 +21,7 @@
           />
           <el-table-column
             label="发起人"
-            prop="assigneeUser.nickname"
+            prop="assigneeUser.name"
             min-width="100"
             align="center"
           />

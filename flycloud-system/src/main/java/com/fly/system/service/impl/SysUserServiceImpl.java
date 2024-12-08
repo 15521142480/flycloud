@@ -293,12 +293,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * 忽略租户查询用户信息
      */
     @Override
-    public List<SysUser> getByIds(Collection<Long> ids) {
+    public List<SysUserVo> getByIds(Collection<Long> ids) {
 
         if (ids == null || ids.isEmpty()){
             return new ArrayList<>();
         }
-        return this.baseMapper.selectBatchIds(ids);
+        return this.baseMapper.selectVoBatchIds(ids);
     }
 
     /**
@@ -312,13 +312,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         }
 
         // 获得用户信息
-        List<SysUser> userList = this.getByIds(ids);
-        Map<Long, SysUser> userMap = CollectionUtils.convertMap(userList, SysUser::getId);
+        List<SysUserVo> userList = this.getByIds(ids);
+        Map<Long, SysUserVo> userMap = CollectionUtils.convertMap(userList, SysUserVo::getId);
 
         // 校验
         ids.forEach(id -> {
 
-            SysUser user = userMap.get(id);
+            SysUserVo user = userMap.get(id);
             if (user == null) {
                 throw ServiceExceptionUtils.exception(ErrorCodeConstants.USER_NOT_EXISTS);
             }

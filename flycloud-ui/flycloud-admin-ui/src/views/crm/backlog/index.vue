@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="【通用】跟进记录、待办事项" url="https://doc.iocoder.cn/crm/follow-up/" />
 
   <el-row :gutter="20">
     <el-col :span="4" class="min-w-[200px]">

@@ -2,6 +2,7 @@ package com.fly.bpm.task.service;
 
 import com.fly.bpm.api.domain.dto.instance.BpmProcessInstanceCreateReqDTO;
 import com.fly.bpm.api.domain.vo.instance.*;
+import com.fly.bpm.api.domain.vo.task.BpmProcessInstanceBpmnModelViewRespVO;
 import com.fly.common.domain.vo.PageVo;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -82,17 +83,9 @@ public interface BpmInstanceService {
      * @return 流程实例的分页
      */
     PageVo<HistoricProcessInstance> getProcessInstancePage(Long userId,
-                                                           @Valid BpmProcessInstancePageReqVO pageReqVO);
+                                                               @Valid BpmProcessInstancePageReqVO pageReqVO);
 
-    /**
-     * 获得表单字段权限
-     *
-     * @param reqVO 请求消息
-     * @return 表单字段权限
-     */
-    Map<String, String> getFormFieldsPermission(@Valid BpmFormFieldsPermissionReqVO reqVO);
-
-    // TODO @fly：重点在 review 下
+    // TODO @芋艿：重点在 review 下
     /**
      * 获取审批详情。
      * <p>
@@ -103,6 +96,14 @@ public interface BpmInstanceService {
      * @return 流程实例的进度
      */
     BpmApprovalDetailRespVO getApprovalDetail(Long loginUserId, @Valid BpmApprovalDetailReqVO reqVO);
+
+    /**
+     * 获取流程实例的 BPMN 模型视图
+     *
+     * @param id 流程实例的编号
+     * @return BPMN 模型视图
+     */
+    BpmProcessInstanceBpmnModelViewRespVO getProcessInstanceBpmnModelView(String id);
 
     // ========== Update 写入相关方法 ==========
 

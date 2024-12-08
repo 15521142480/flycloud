@@ -12,34 +12,35 @@ export type DictTypeVO = {
 
 // 查询字典（精简)列表
 export const getSimpleDictTypeList = () => {
-  return request.get({ url: `/${SYS_BASE_URL}/dict-type/list-all-simple` })
+  return request.get({ url: `/${SYS_BASE_URL}/dictType/list` })
 }
 
 // 查询字典列表
 export const getDictTypePage = (params: PageParam) => {
-  return request.get({ url: `/${SYS_BASE_URL}/dict-type/page`, params })
+  return request.get({ url: `/${SYS_BASE_URL}/dictType/page`, params })
 }
 
 // 查询字典详情
 export const getDictType = (id: number) => {
-  return request.get({ url: `/${SYS_BASE_URL}/dict-type/get/` + id })
+  return request.get({ url: `/${SYS_BASE_URL}/dictType/get/` + id })
 }
 
 // 新增字典
 export const createDictType = (data: DictTypeVO) => {
-  return request.post({ url: `/${SYS_BASE_URL}/dict-type/create`, data })
+  return request.post({ url: `/${SYS_BASE_URL}/dictType/create`, data })
 }
 
 // 修改字典
 export const updateDictType = (data: DictTypeVO) => {
-  return request.put({ url: `/${SYS_BASE_URL}/dict-type/update`, data })
+  return request.put({ url: `/${SYS_BASE_URL}/dictType/update`, data })
 }
 
 // 删除字典
 export const deleteDictType = (id: number) => {
-  return request.delete({ url: `/${SYS_BASE_URL}/dict-type/delete/` + id })
+  return request.delete({ url: `/${SYS_BASE_URL}/dictType/delete/` + id })
 }
+
 // 导出字典类型
 export const exportDictType = (params) => {
-  return request.download({ url: `/${SYS_BASE_URL}/dict-type/export`, params })
+  return request.download({ url: `/${SYS_BASE_URL}/dictType/export`, params })
 }

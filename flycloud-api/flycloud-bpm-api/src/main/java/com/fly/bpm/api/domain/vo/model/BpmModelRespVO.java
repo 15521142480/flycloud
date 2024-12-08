@@ -1,7 +1,7 @@
 package com.fly.bpm.api.domain.vo.model;
 
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
-import com.fly.bpm.api.domain.vo.user.UserSimpleBaseVO;
+import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -42,7 +42,7 @@ public class BpmModelRespVO extends BpmModelMetaInfoVO implements Serializable {
     private String bpmnXml;
 
     @Schema(description = "可发起的用户数组")
-    private List<UserSimpleBaseVO> startUsers;
+    private List<SysUserBpmVO> startUsers;
 
     /**
      * 最新部署的流程定义

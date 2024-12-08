@@ -1,6 +1,4 @@
 <template>
-  <doc-alert title="【商机】商机管理、商机状态" url="https://doc.iocoder.cn/crm/business/" />
-  <doc-alert title="【通用】数据权限" url="https://doc.iocoder.cn/crm/permission/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->

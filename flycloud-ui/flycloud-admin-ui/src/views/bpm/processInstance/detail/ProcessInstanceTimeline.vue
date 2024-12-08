@@ -63,9 +63,9 @@
           >
             <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
             <el-avatar class="!m-5px" :size="28" v-else>
-              {{ user.nickname.substring(0, 1) }}
+              {{ user.name.substring(0, 1) }}
             </el-avatar>
-            {{ user.nickname }}
+            {{ user.name }}
           </div>
         </div>
         <div v-else class="flex items-center flex-wrap mt-1 gap2">
@@ -79,7 +79,7 @@
               <div
                 class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
               >
-                <template v-if="task.assigneeUser?.avatar || task.assigneeUser?.nickname">
+                <template v-if="task.assigneeUser?.avatar || task.assigneeUser?.name">
                   <el-avatar
                     class="!m-5px"
                     :size="28"
@@ -87,11 +87,11 @@
                     :src="task.assigneeUser?.avatar"
                   />
                   <el-avatar class="!m-5px" :size="28" v-else>
-                    {{ task.assigneeUser?.nickname.substring(0, 1) }}
+                    {{ task.assigneeUser?.name.substring(0, 1) }}
                   </el-avatar>
-                  {{ task.assigneeUser?.nickname }}
+                  {{ task.assigneeUser?.name }}
                 </template>
-                <template v-else-if="task.ownerUser?.avatar || task.ownerUser?.nickname">
+                <template v-else-if="task.ownerUser?.avatar || task.ownerUser?.name">
                   <el-avatar
                     class="!m-5px"
                     :size="28"
@@ -99,9 +99,9 @@
                     :src="task.ownerUser?.avatar"
                   />
                   <el-avatar class="!m-5px" :size="28" v-else>
-                    {{ task.ownerUser?.nickname.substring(0, 1) }}
+                    {{ task.ownerUser?.name.substring(0, 1) }}
                   </el-avatar>
-                  {{ task.ownerUser?.nickname }}
+                  {{ task.ownerUser?.name }}
                 </template>
                 <!-- 信息：任务 ICON -->
                 <div
@@ -133,9 +133,9 @@
           >
             <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
             <el-avatar class="!m-5px" :size="28" v-else>
-              {{ user.nickname.substring(0, 1) }}
+              {{ user.name.substring(0, 1) }}
             </el-avatar>
-            {{ user.nickname }}
+            {{ user.name }}
 
             <!-- 信息：任务 ICON -->
             <div

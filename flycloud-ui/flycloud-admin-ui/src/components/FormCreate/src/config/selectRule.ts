@@ -133,16 +133,16 @@ const apiSelectRule = [
     type: 'input',
     field: 'labelField',
     title: 'label 属性',
-    info: '可以使用 el 表达式：${属性}，来实现复杂数据组合。如：${nickname}-${id}',
+    info: '可以使用 el 表达式：${属性}，来实现复杂数据组合。如：${name}-${id}',
     props: {
-      placeholder: 'nickname'
+      placeholder: 'name'
     }
   },
   {
     type: 'input',
     field: 'valueField',
     title: 'value 属性',
-    info: '可以使用 el 表达式：${属性}，来实现复杂数据组合。如：${nickname}-${id}',
+    info: '可以使用 el 表达式：${属性}，来实现复杂数据组合。如：${name}-${id}',
     props: {
       placeholder: 'id'
     }
@@ -160,7 +160,7 @@ const apiSelectRule = [
       placeholder: `
         function (data) {
             console.log(data)
-            return data.list.map(item=> ({label: item.nickname,value: item.id}))
+            return data.list.map(item=> ({label: item.name,value: item.id}))
         }`
     }
   },

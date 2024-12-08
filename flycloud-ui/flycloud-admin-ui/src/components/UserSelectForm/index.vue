@@ -22,7 +22,7 @@
           filterable
           filter-placeholder="搜索成员"
           :data="transferUserList"
-          :props="{ label: 'nickname', key: 'id' }"
+          :props="{ label: 'name', key: 'id' }"
         />
       </el-col>
     </el-row>

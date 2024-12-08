@@ -96,16 +96,16 @@
               全部可见
             </el-text>
             <el-text v-else-if="scope.row.startUsers.length == 1">
-              {{ scope.row.startUsers[0].nickname }}
+              {{ scope.row.startUsers[0].name }}
             </el-text>
             <el-text v-else>
               <el-tooltip
                 class="box-item"
                 effect="dark"
                 placement="top"
-                :content="scope.row.startUsers.map((user: any) => user.nickname).join('、')"
+                :content="scope.row.startUsers.map((user: any) => user.name).join('、')"
               >
-                {{ scope.row.startUsers[0].nickname }}等 {{ scope.row.startUsers.length }} 人可见
+                {{ scope.row.startUsers[0].name }}等 {{ scope.row.startUsers.length }} 人可见
               </el-tooltip>
             </el-text>
           </template>
