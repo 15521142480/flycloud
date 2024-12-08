@@ -23,7 +23,7 @@ export const PurchaseInApi = {
 
   // 查询采购入库详情
   getPurchaseIn: async (id: number) => {
-    return await request.get({ url: `/erp/purchase-in/get?id=` + id })
+    return await request.get({ url: `/erp/purchase-in/get/` + id })
   },
 
   // 新增采购入库

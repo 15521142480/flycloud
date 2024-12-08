@@ -18,7 +18,7 @@ export const ProcessExpressionApi = {
 
   // 查询BPM 流程表达式详情
   getProcessExpression: async (id: number) => {
-    return await request.get({ url: `/${BPM_BASE_URL}/processExpression/get?id=` + id })
+    return await request.get({ url: `/${BPM_BASE_URL}/processExpression/get/` + id })
   },
 
   // 新增BPM 流程表达式
@@ -33,7 +33,7 @@ export const ProcessExpressionApi = {
 
   // 删除BPM 流程表达式
   deleteProcessExpression: async (id: number) => {
-    return await request.delete({ url: `/${BPM_BASE_URL}/processExpression/delete?id=` + id })
+    return await request.delete({ url: `/${BPM_BASE_URL}/processExpression/delete/` + id })
   },
 
   // 导出BPM 流程表达式 Excel

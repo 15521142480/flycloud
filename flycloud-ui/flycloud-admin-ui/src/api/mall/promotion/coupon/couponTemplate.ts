@@ -54,14 +54,14 @@ export function updateCouponTemplateStatus(id: number, status: [0, 1]) {
 // 删除优惠劵模板
 export function deleteCouponTemplate(id: number) {
   return request.delete({
-    url: '/promotion/coupon-template/delete?id=' + id
+    url: '/promotion/coupon-template/delete/' + id
   })
 }
 
 // 获得优惠劵模板
 export function getCouponTemplate(id: number) {
   return request.get({
-    url: '/promotion/coupon-template/get?id=' + id
+    url: '/promotion/coupon-template/get/' + id
   })
 }
 

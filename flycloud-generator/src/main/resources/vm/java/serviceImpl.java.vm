@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
     #if($table.crud || $table.sub)
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
+import com.fly.common.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 #end
@@ -22,7 +23,7 @@ import java.util.Map;
 import java.util.Collection;
 
 /**
- * ${functionName}Service业务层处理
+ * ${functionName} 业务层
  *
  * @author ${author}
  * @date ${datetime}
@@ -37,17 +38,19 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
      * 查询${functionName}
      */
     @Override
-    public ${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField}){
+    public ${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField}) {
+
         return baseMapper.selectVoById(${pkColumn.javaField});
     }
 
 
 #if($table.crud || $table.sub)
     /**
-     * 查询${functionName}列表
+     * 查询${functionName}分页列表
      */
     @Override
     public PageVo<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageBo pageBo) {
+
         LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(bo);
         Page<${ClassName}Vo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
         return this.build(result);
@@ -60,12 +63,15 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
      */
     @Override
     public List<${ClassName}Vo> queryList(${ClassName}Bo bo) {
+
         LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(bo);
         return baseMapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName}Bo bo) {
-        Map<String, Object> params = bo.getParams();
+
+##        Map<String, Object> params = bo.getParams();
+
         LambdaQueryWrapper<${ClassName}> lqw = Wrappers.lambdaQuery();
 #foreach($column in $columns)
 #if($column.query)
@@ -88,6 +94,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
 #end
 #end
 #end
+
         return lqw;
     }
 
@@ -97,6 +104,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
      */
     @Override
     public Boolean insertByBo(${ClassName}Bo bo) {
+
         ${ClassName} add = BeanUtil.toBean(bo, ${ClassName}.class);
         validEntityBeforeSave(add);
         boolean flag = baseMapper.insert(add) > 0;
@@ -113,6 +121,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
      */
     @Override
     public Boolean updateByBo(${ClassName}Bo bo) {
+
         ${ClassName} update = BeanUtil.toBean(bo, ${ClassName}.class);
         validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
@@ -122,7 +131,8 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
     /**
      * 保存前的数据校验
      */
-    private void validEntityBeforeSave(${ClassName} entity){
+    private void validEntityBeforeSave(${ClassName} entity) {
+
         //TODO 做一些数据校验,如唯一约束
     }
 
@@ -132,6 +142,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids, Boolean isValid) {
+
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }

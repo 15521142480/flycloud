@@ -187,6 +187,11 @@ public interface GenConstants {
     String TYPE_DATE = "Date";
 
     /**
+     * 时间类型
+     */
+    String TYPE_LOCALDATETIME = "LocalDateTime";
+
+    /**
      * 模糊查询
      */
     String QUERY_LIKE = "LIKE";

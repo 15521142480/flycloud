@@ -147,7 +147,8 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (ObjectUtil.isNull(obj)) {
             return null;
         }
-        return BeanUtils.copy(obj, voClass);
+//        return BeanUtils.copy(obj, voClass);
+        return BeanUtils.toBean(obj, voClass);
     }
 
     default List<V> selectVoBatchIds(Collection<? extends Serializable> idList) {
@@ -162,7 +163,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(list)) {
             return CollUtil.newArrayList();
         }
-        return BeanUtils.copyList(list, voClass);
+        return BeanUtils.toBean(list, voClass);
     }
 
     default List<V> selectVoByMap(Map<String, Object> map) {
@@ -177,7 +178,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(list)) {
             return CollUtil.newArrayList();
         }
-        return BeanUtils.copyList(list, voClass);
+        return BeanUtils.toBean(list, voClass);
     }
 
     default V selectVoOne(Wrapper<T> wrapper) {
@@ -192,7 +193,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (ObjectUtil.isNull(obj)) {
             return null;
         }
-        return BeanUtils.copy(obj, voClass);
+        return BeanUtils.toBean(obj, voClass);
     }
 
     default List<V> selectVoList(Wrapper<T> wrapper) {
@@ -211,7 +212,7 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(list)) {
             return CollUtil.newArrayList();
         }
-        return BeanUtils.copyList(list, voClass);
+        return BeanUtils.toBean(list, voClass);
     }
 
     default <P extends IPage<V>> P selectVoPage(IPage<T> page, Wrapper<T> wrapper) {
@@ -227,7 +228,8 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         if (CollUtil.isEmpty(pageData.getRecords())) {
             return (P) voPage;
         }
-        voPage.setRecords(BeanUtils.copyList(pageData.getRecords(), voClass));
+//        voPage.setRecords(BeanUtils.copyList(pageData.getRecords(), voClass));
+        voPage.setRecords(BeanUtils.toBean(pageData.getRecords(), voClass));
         return (P) voPage;
     }
 

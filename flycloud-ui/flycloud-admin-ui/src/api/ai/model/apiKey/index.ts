@@ -24,7 +24,7 @@ export const ApiKeyApi = {
 
   // 查询 API 密钥详情
   getApiKey: async (id: number) => {
-    return await request.get({ url: `/ai/api-key/get?id=` + id })
+    return await request.get({ url: `/ai/api-key/get/` + id })
   },
 
   // 新增 API 密钥
@@ -39,6 +39,6 @@ export const ApiKeyApi = {
 
   // 删除 API 密钥
   deleteApiKey: async (id: number) => {
-    return await request.delete({ url: `/ai/api-key/delete?id=` + id })
+    return await request.delete({ url: `/ai/api-key/delete/` + id })
   }
 }

@@ -21,7 +21,7 @@ export const StockInApi = {
 
   // 查询其它入库单详情
   getStockIn: async (id: number) => {
-    return await request.get({ url: `/erp/stock-in/get?id=` + id })
+    return await request.get({ url: `/erp/stock-in/get/` + id })
   },
 
   // 新增其它入库单

@@ -17,7 +17,7 @@ import com.fly.common.domain.BaseEntity;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("bpm_form")
+@TableName(value = "bpm_form", autoResultMap = true)
 public class BpmForm extends BaseEntity {
 
     private static final long serialVersionUID=1L;

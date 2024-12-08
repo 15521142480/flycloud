@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import ${import};
 #end
 #if($table.crud || $table.sub)
+import com.fly.common.domain.BaseEntity;
 #elseif($table.tree)
 import com.fly.common.domain.TreeEntity;
 #end
@@ -25,10 +26,10 @@ import com.fly.common.domain.TreeEntity;
 #end
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("${tableName}")
+@TableName(value = "${tableName}", autoResultMap = true)
 public class ${ClassName} extends ${Entity} {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField))
@@ -45,6 +46,7 @@ public class ${ClassName} extends ${Entity} {
     @TableId(value = "$column.columnName")
 #end
     private $column.javaType $column.javaField;
+
 #end
 #end
 

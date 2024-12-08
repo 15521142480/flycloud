@@ -39,6 +39,7 @@ public class GenUtils {
      * 初始化列属性字段
      */
     public static void initColumnField(GenTableColumn column, GenTable table) {
+
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
         column.setTableId(table.getTableId());
@@ -54,10 +55,14 @@ public class GenUtils {
             Integer columnLength = getColumnLength(column.getColumnType());
             String htmlType = columnLength >= 500 || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType) ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
             column.setHtmlType(htmlType);
+
         } else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
-            column.setJavaType(GenConstants.TYPE_DATE);
+
+//            column.setJavaType(GenConstants.TYPE_DATE);
+            column.setJavaType(GenConstants.TYPE_LOCALDATETIME);
             column.setHtmlType(GenConstants.HTML_DATETIME);
         } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
+
             column.setHtmlType(GenConstants.HTML_INPUT);
 
             // 如果是浮点型 统一用BigDecimal
@@ -65,10 +70,12 @@ public class GenUtils {
             if (str != null && str.length == 2 && Integer.parseInt(str[1]) > 0) {
                 column.setJavaType(GenConstants.TYPE_BIGDECIMAL);
             }
+
             // 如果是整形
             else if (str != null && str.length == 1 && Integer.parseInt(str[0]) <= 10) {
                 column.setJavaType(GenConstants.TYPE_INTEGER);
             }
+
             // 长整形
             else {
                 column.setJavaType(GenConstants.TYPE_LONG);

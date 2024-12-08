@@ -25,7 +25,7 @@ export const CategoryApi = {
 
   // 查询流程分类详情
   getCategory: async (id: number) => {
-    return await request.get({ url: `${BPM_BASE_URL}/category/get?id=` + id })
+    return await request.get({ url: `${BPM_BASE_URL}/category/get/` + id })
   },
 
   // 新增流程分类
@@ -40,6 +40,6 @@ export const CategoryApi = {
 
   // 删除流程分类
   deleteCategory: async (id: number) => {
-    return await request.delete({ url: `${BPM_BASE_URL}/category/delete?id=` + id })
+    return await request.delete({ url: `${BPM_BASE_URL}/category/delete/` + id })
   }
 }

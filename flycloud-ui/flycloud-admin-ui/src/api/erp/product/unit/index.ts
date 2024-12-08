@@ -21,7 +21,7 @@ export const ProductUnitApi = {
 
   // 查询产品单位详情
   getProductUnit: async (id: number) => {
-    return await request.get({ url: `/erp/product-unit/get?id=` + id })
+    return await request.get({ url: `/erp/product-unit/get/` + id })
   },
 
   // 新增产品单位
@@ -36,7 +36,7 @@ export const ProductUnitApi = {
 
   // 删除产品单位
   deleteProductUnit: async (id: number) => {
-    return await request.delete({ url: `/erp/product-unit/delete?id=` + id })
+    return await request.delete({ url: `/erp/product-unit/delete/` + id })
   },
 
   // 导出产品单位 Excel

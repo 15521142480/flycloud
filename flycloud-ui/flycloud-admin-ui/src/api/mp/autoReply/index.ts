@@ -19,14 +19,14 @@ export const updateAutoReply = (data) => {
 // 删除公众号的自动回复
 export const deleteAutoReply = (id) => {
   return request.delete({
-    url: '/mp/auto-reply/delete?id=' + id
+    url: '/mp/auto-reply/delete/' + id
   })
 }
 
 // 获得公众号的自动回复
 export const getAutoReply = (id) => {
   return request.get({
-    url: '/mp/auto-reply/get?id=' + id
+    url: '/mp/auto-reply/get/' + id
   })
 }
 

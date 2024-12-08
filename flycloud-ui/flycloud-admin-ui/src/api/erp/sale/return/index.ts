@@ -21,7 +21,7 @@ export const SaleReturnApi = {
 
   // 查询销售退货详情
   getSaleReturn: async (id: number) => {
-    return await request.get({ url: `/erp/sale-return/get?id=` + id })
+    return await request.get({ url: `/erp/sale-return/get/` + id })
   },
 
   // 新增销售退货

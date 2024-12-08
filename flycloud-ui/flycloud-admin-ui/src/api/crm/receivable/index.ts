@@ -39,7 +39,7 @@ export const getReceivablePageByCustomer = async (params) => {
 
 // 查询回款详情
 export const getReceivable = async (id: number) => {
-  return await request.get({ url: `/crm/receivable/get?id=` + id })
+  return await request.get({ url: `/crm/receivable/get/` + id })
 }
 
 // 新增回款
@@ -54,7 +54,7 @@ export const updateReceivable = async (data: ReceivableVO) => {
 
 // 删除回款
 export const deleteReceivable = async (id: number) => {
-  return await request.delete({ url: `/crm/receivable/delete?id=` + id })
+  return await request.delete({ url: `/crm/receivable/delete/` + id })
 }
 
 // 导出回款 Excel
@@ -64,7 +64,7 @@ export const exportReceivable = async (params) => {
 
 // 提交审核
 export const submitReceivable = async (id: number) => {
-  return await request.put({ url: `/crm/receivable/submit?id=${id}` })
+  return await request.put({ url: `/crm/receivable/submit/${id}` })
 }
 
 // 获得待审核回款数量

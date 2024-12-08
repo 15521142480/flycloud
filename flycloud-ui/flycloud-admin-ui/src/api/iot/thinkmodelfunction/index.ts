@@ -30,7 +30,7 @@ export const ThinkModelFunctionApi = {
 
   // 查询产品物模型详情
   getThinkModelFunction: async (id: number) => {
-    return await request.get({ url: `/iot/think-model-function/get?id=` + id })
+    return await request.get({ url: `/iot/think-model-function/get/` + id })
   },
 
   // 新增产品物模型
@@ -45,7 +45,7 @@ export const ThinkModelFunctionApi = {
 
   // 删除产品物模型
   deleteThinkModelFunction: async (id: number) => {
-    return await request.delete({ url: `/iot/think-model-function/delete?id=` + id })
+    return await request.delete({ url: `/iot/think-model-function/delete/` + id })
   },
 
   // 导出产品物模型 Excel

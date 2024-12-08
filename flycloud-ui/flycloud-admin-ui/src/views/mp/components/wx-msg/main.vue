@@ -124,7 +124,7 @@ const getPage = async (page: any, params: any = null) => {
   let dataTemp = await getMessagePage(
     Object.assign(
       {
-        pageNo: page.pageNum,
+        pageNum: page.pageNum,
         pageSize: page.pageSize,
         userId: props.userId,
         accountId: page.accountId

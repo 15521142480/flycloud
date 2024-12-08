@@ -29,7 +29,7 @@ export const getUserPage = async (params) => {
 
 // 查询会员用户详情
 export const getUser = async (id: number) => {
-  return await request.get({ url: `/member/user/get?id=` + id })
+  return await request.get({ url: `/member/user/get/` + id })
 }
 
 // 修改会员用户

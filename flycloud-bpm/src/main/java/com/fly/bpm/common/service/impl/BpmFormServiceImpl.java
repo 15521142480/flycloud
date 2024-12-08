@@ -6,6 +6,7 @@ import cn.hutool.core.lang.Assert;
 import com.fly.bpm.api.domain.dto.BpmFormFieldRespDTO;
 import com.fly.common.constant.bpm.ErrorCodeConstants;
 import com.fly.common.exception.utils.ServiceExceptionUtils;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
@@ -22,6 +23,7 @@ import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.common.mapper.BpmFormMapper;
 import com.fly.bpm.common.service.IBpmFormService;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -100,6 +102,8 @@ public class BpmFormServiceImpl extends BaseServiceImpl<BpmFormMapper, BpmForm> 
 
         this.validateFields(bo.getFields());
         BpmForm add = BeanUtil.toBean(bo, BpmForm.class);
+        add.setCreateBy(String.valueOf(UserUtils.getCurUserId()));
+        add.setCreateTime(LocalDateTime.now());
 
         boolean flag = baseMapper.insert(add) > 0;
         if (flag) {
@@ -118,6 +122,8 @@ public class BpmFormServiceImpl extends BaseServiceImpl<BpmFormMapper, BpmForm> 
 
         this.validateFields(bo.getFields());
         BpmForm update = BeanUtil.toBean(bo, BpmForm.class);
+        update.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        update.setUpdateTime(LocalDateTime.now());
 
         return baseMapper.updateById(update) > 0;
     }

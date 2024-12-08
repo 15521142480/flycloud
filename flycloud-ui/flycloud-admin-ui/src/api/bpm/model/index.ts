@@ -28,12 +28,16 @@ export type ModelVO = {
   bpmnXml: string
 }
 
+export const getModelList = async (name: string | undefined) => {
+  return await request.get({ url: `/${BPM_BASE_URL}/model/list`, params: { name } })
+}
+
 export const getModelPage = async (params) => {
   return await request.get({ url: `${BPM_BASE_URL}/model/page`, params })
 }
 
 export const getModel = async (id: string) => {
-  return await request.get({ url: `${BPM_BASE_URL}/model/get?id=` + id })
+  return await request.get({ url: `${BPM_BASE_URL}/model/get/` + id })
 }
 
 export const updateModel = async (data: ModelVO) => {
@@ -58,9 +62,9 @@ export const createModel = async (data: ModelVO) => {
 }
 
 export const deleteModel = async (id: number) => {
-  return await request.delete({ url: `${BPM_BASE_URL}/model/delete?id=` + id })
+  return await request.delete({ url: `${BPM_BASE_URL}/model/delete/` + id })
 }
 
 export const deployModel = async (id: number) => {
-  return await request.post({ url: `${BPM_BASE_URL}/model/deploy?id=` + id })
+  return await request.post({ url: `${BPM_BASE_URL}/model/deploy/` + id })
 }

@@ -19,7 +19,7 @@ export const getTenantPackagePage = (params: PageParam) => {
 
 // 获得租户
 export const getTenantPackage = (id: number) => {
-  return request.get({ url: '/system/tenant-package/get?id=' + id })
+  return request.get({ url: '/system/tenant-package/get/' + id })
 }
 
 // 新增租户套餐
@@ -34,7 +34,7 @@ export const updateTenantPackage = (data: TenantPackageVO) => {
 
 // 删除租户套餐
 export const deleteTenantPackage = (id: number) => {
-  return request.delete({ url: '/system/tenant-package/delete?id=' + id })
+  return request.delete({ url: '/system/tenant-package/delete/' + id })
 }
 // 获取租户套餐精简信息列表
 export const getTenantPackageList = () => {

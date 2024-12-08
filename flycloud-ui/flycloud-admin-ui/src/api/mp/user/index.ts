@@ -11,7 +11,7 @@ export const updateUser = (data) => {
 // 获得公众号粉丝
 export const getUser = (id) => {
   return request.get({
-    url: '/mp/user/get?id=' + id
+    url: '/mp/user/get/' + id
   })
 }
 

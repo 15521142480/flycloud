@@ -36,7 +36,7 @@ export const getAllUser = () => {
 
 // 查询用户详情
 export const getUser = (id: number) => {
-  return request.get({ url: `${SYS_BASE_URL}/user/get?id=` + id })
+  return request.get({ url: `${SYS_BASE_URL}/user/get/` + id })
 }
 
 // 新增用户
@@ -51,7 +51,7 @@ export const updateUser = (data: UserVO) => {
 
 // 删除用户
 export const deleteUser = (id: number) => {
-  return request.delete({ url: `${SYS_BASE_URL}/user/delete?id=` + id })
+  return request.delete({ url: `${SYS_BASE_URL}/user/delete/` + id })
 }
 
 // 导出用户

@@ -20,7 +20,7 @@ export const FinanceReceiptApi = {
 
   // 查询收款单详情
   getFinanceReceipt: async (id: number) => {
-    return await request.get({ url: `/erp/finance-receipt/get?id=` + id })
+    return await request.get({ url: `/erp/finance-receipt/get/` + id })
   },
 
   // 新增收款单

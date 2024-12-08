@@ -290,7 +290,7 @@ const openDetail = (id: number) => {
 /** 跳转执行日志 */
 const handleJobLog = (id?: number) => {
   if (id && id > 0) {
-    push('/job/job-log?id=' + id)
+    push('/job/job-log/' + id)
   } else {
     push('/job/job-log')
   }

@@ -92,7 +92,7 @@ export const getRefundPage = (params: RefundPageReqVO) => {
 
 // 查询详情退款订单
 export const getRefund = (id: number) => {
-  return request.get({ url: '/pay/refund/get?id=' + id })
+  return request.get({ url: '/pay/refund/get/' + id })
 }
 
 // 新增退款订单
@@ -107,7 +107,7 @@ export const updateRefund = (data: RefundVO) => {
 
 // 删除退款订单
 export const deleteRefund = (id: number) => {
-  return request.delete({ url: '/pay/refund/delete?id=' + id })
+  return request.delete({ url: '/pay/refund/delete/' + id })
 }
 
 // 导出退款订单

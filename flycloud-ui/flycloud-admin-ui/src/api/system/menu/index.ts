@@ -30,7 +30,7 @@ export const getMenuList = (params) => {
 
 // 获取菜单详情
 export const getMenu = (id: number) => {
-  return request.get({ url: '/system/menu/get?id=' + id })
+  return request.get({ url: '/system/menu/get/' + id })
 }
 
 // 新增菜单
@@ -45,5 +45,5 @@ export const updateMenu = (data: MenuVO) => {
 
 // 删除菜单
 export const deleteMenu = (id: number) => {
-  return request.delete({ url: '/system/menu/delete?id=' + id })
+  return request.delete({ url: '/system/menu/delete/' + id })
 }

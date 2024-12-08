@@ -42,7 +42,7 @@ declare global {
 
   interface PageParam {
     pageSize?: number
-    pageNo?: number
+    pageNum?: number
   }
 
   interface Tree {

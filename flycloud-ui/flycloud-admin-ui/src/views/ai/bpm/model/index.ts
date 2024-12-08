@@ -31,7 +31,7 @@ export const getModelList = async (name: string | undefined) => {
 }
 
 export const getModel = async (id: string) => {
-  return await request.get({ url: '/bpm/model/get?id=' + id })
+  return await request.get({ url: '/bpm/model/get/' + id })
 }
 
 export const updateModel = async (data: ModelVO) => {
@@ -66,9 +66,9 @@ export const createModel = async (data: ModelVO) => {
 }
 
 export const deleteModel = async (id: number) => {
-  return await request.delete({ url: '/bpm/model/delete?id=' + id })
+  return await request.delete({ url: '/bpm/model/delete/' + id })
 }
 
 export const deployModel = async (id: number) => {
-  return await request.post({ url: '/bpm/model/deploy?id=' + id })
+  return await request.post({ url: '/bpm/model/deploy/' + id })
 }

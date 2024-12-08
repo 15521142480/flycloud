@@ -20,7 +20,7 @@ export const getSimpleArticleCategoryList = async () => {
 
 // 查询文章分类详情
 export const getArticleCategory = async (id: number) => {
-  return await request.get({ url: `/promotion/article-category/get?id=` + id })
+  return await request.get({ url: `/promotion/article-category/get/` + id })
 }
 
 // 新增文章分类
@@ -35,5 +35,5 @@ export const updateArticleCategory = async (data: ArticleCategoryVO) => {
 
 // 删除文章分类
 export const deleteArticleCategory = async (id: number) => {
-  return await request.delete({ url: `/promotion/article-category/delete?id=` + id })
+  return await request.delete({ url: `/promotion/article-category/delete/` + id })
 }

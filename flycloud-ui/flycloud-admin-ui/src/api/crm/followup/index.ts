@@ -38,6 +38,6 @@ export const FollowUpRecordApi = {
 
   // 删除跟进记录
   deleteFollowUpRecord: async (id: number) => {
-    return await request.delete({ url: `/crm/follow-up-record/delete?id=` + id })
+    return await request.delete({ url: `/crm/follow-up-record/delete/` + id })
   }
 }

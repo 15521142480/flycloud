@@ -24,7 +24,7 @@ export const ProductCategoryApi = {
 
   // 查询产品分类详情
   getProductCategory: async (id: number) => {
-    return await request.get({ url: `/erp/product-category/get?id=` + id })
+    return await request.get({ url: `/erp/product-category/get/` + id })
   },
 
   // 新增产品分类
@@ -39,7 +39,7 @@ export const ProductCategoryApi = {
 
   // 删除产品分类
   deleteProductCategory: async (id: number) => {
-    return await request.delete({ url: `/erp/product-category/delete?id=` + id })
+    return await request.delete({ url: `/erp/product-category/delete/` + id })
   },
 
   // 导出产品分类 Excel

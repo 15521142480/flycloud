@@ -16,7 +16,7 @@ export const getDemo01ContactPage = async (params) => {
 
 // 查询示例联系人详情
 export const getDemo01Contact = async (id: number) => {
-  return await request.get({ url: `/infra/demo01-contact/get?id=` + id })
+  return await request.get({ url: `/infra/demo01-contact/get/` + id })
 }
 
 // 新增示例联系人
@@ -31,7 +31,7 @@ export const updateDemo01Contact = async (data: Demo01ContactVO) => {
 
 // 删除示例联系人
 export const deleteDemo01Contact = async (id: number) => {
-  return await request.delete({ url: `/infra/demo01-contact/delete?id=` + id })
+  return await request.delete({ url: `/infra/demo01-contact/delete/` + id })
 }
 
 // 导出示例联系人 Excel

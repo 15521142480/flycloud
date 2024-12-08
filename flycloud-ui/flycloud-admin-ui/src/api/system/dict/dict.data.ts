@@ -17,35 +17,35 @@ export type DictDataVO = {
 
 // 查询字典数据（精简)列表
 export const getSimpleDictDataList = () => {
-  return request.get({ url: `${SYS_BASE_URL}/dict/getList` })
+  return request.get({ url: `${SYS_BASE_URL}/dictData/getList` })
 }
 
 // 查询字典数据列表
 export const getDictDataPage = (params: PageParam) => {
-  return request.get({ url: `${SYS_BASE_URL}/dict/list`, params })
+  return request.get({ url: `${SYS_BASE_URL}/dictData/list`, params })
 }
 
 // 查询字典数据详情
 export const getDictData = (id: number) => {
-  return request.get({ url: `${SYS_BASE_URL}/dict/get?id=` + id })
+  return request.get({ url: `${SYS_BASE_URL}/dictData/get/` + id })
 }
 
 // 新增字典数据
 export const createDictData = (data: DictDataVO) => {
-  return request.post({ url: `${SYS_BASE_URL}/dict/create`, data })
+  return request.post({ url: `${SYS_BASE_URL}/dictData/create`, data })
 }
 
 // 修改字典数据
 export const updateDictData = (data: DictDataVO) => {
-  return request.put({ url: `${SYS_BASE_URL}/dict/update`, data })
+  return request.put({ url: `${SYS_BASE_URL}/dictData/update`, data })
 }
 
 // 删除字典数据
 export const deleteDictData = (id: number) => {
-  return request.delete({ url: `${SYS_BASE_URL}/dict/delete?id=` + id })
+  return request.delete({ url: `${SYS_BASE_URL}/dictData/delete/` + id })
 }
 
 // 导出字典类型数据
 export const exportDictData = (params) => {
-  return request.download({ url: `${SYS_BASE_URL}/dict/export`, params })
+  return request.download({ url: `${SYS_BASE_URL}/dictData/export`, params })
 }

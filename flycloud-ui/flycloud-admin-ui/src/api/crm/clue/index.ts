@@ -39,7 +39,7 @@ export const getCluePage = async (params: any) => {
 
 // 查询线索详情
 export const getClue = async (id: number) => {
-  return await request.get({ url: `/crm/clue/get?id=` + id })
+  return await request.get({ url: `/crm/clue/get/` + id })
 }
 
 // 新增线索
@@ -54,7 +54,7 @@ export const updateClue = async (data: ClueVO) => {
 
 // 删除线索
 export const deleteClue = async (id: number) => {
-  return await request.delete({ url: `/crm/clue/delete?id=` + id })
+  return await request.delete({ url: `/crm/clue/delete/` + id })
 }
 
 // 导出线索 Excel

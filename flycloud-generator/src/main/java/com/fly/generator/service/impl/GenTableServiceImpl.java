@@ -76,6 +76,8 @@ public class GenTableServiceImpl implements IGenTableService {
             List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
             List<GenTableColumn> saveColumns = new ArrayList<>();
             for (GenTableColumn column : genTableColumns) {
+
+                // 初始化列属性字段
                 GenUtils.initColumnField(column, table);
                 saveColumns.add(column);
             }
@@ -83,11 +85,13 @@ public class GenTableServiceImpl implements IGenTableService {
 
             // 设置主子表信息
             setSubTable(table);
+
             // 设置主键列信息
             setPkColumn(table);
 
             VelocityInitializer.initVelocity();
 
+            // 设置根据数据类型import不同的包
             VelocityContext context = VelocityUtils.prepareContext(table);
 
             // 获取模板列表

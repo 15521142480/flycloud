@@ -215,7 +215,7 @@ const queryParams = ref({
   status: undefined, // 拼团状态
   createTime: undefined, // 创建时间
   pageSize: 10,
-  pageNo: 1
+  pageNum: 1
 })
 const queryFormRef = ref() // 搜索的表单
 const combinationRecordListRef = ref() // 查询表单 Ref

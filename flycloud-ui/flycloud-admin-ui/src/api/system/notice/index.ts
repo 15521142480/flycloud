@@ -18,7 +18,7 @@ export const getNoticePage = (params: PageParam) => {
 
 // 查询公告详情
 export const getNotice = (id: number) => {
-  return request.get({ url: '/system/notice/get?id=' + id })
+  return request.get({ url: '/system/notice/get/' + id })
 }
 
 // 新增公告
@@ -33,10 +33,10 @@ export const updateNotice = (data: NoticeVO) => {
 
 // 删除公告
 export const deleteNotice = (id: number) => {
-  return request.delete({ url: '/system/notice/delete?id=' + id })
+  return request.delete({ url: '/system/notice/delete/' + id })
 }
 
 // 推送公告
 export const pushNotice = (id: number) => {
-  return request.post({ url: '/system/notice/push?id=' + id })
+  return request.post({ url: '/system/notice/push/' + id })
 }

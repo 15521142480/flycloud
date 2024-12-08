@@ -22,7 +22,7 @@ export const StockRecordApi = {
 
   // 查询产品库存明细详情
   getStockRecord: async (id: number) => {
-    return await request.get({ url: `/erp/stock-record/get?id=` + id })
+    return await request.get({ url: `/erp/stock-record/get/` + id })
   },
 
   // 导出产品库存明细 Excel

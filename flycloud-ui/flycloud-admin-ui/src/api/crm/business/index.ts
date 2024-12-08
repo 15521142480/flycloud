@@ -54,7 +54,7 @@ export const getBusinessPageByCustomer = async (params) => {
 
 // 查询 CRM 商机详情
 export const getBusiness = async (id: number) => {
-  return await request.get({ url: `/crm/business/get?id=` + id })
+  return await request.get({ url: `/crm/business/get/` + id })
 }
 
 // 获得 CRM 商机列表（精简）
@@ -79,7 +79,7 @@ export const updateBusinessStatus = async (data: BusinessVO) => {
 
 // 删除 CRM 商机
 export const deleteBusiness = async (id: number) => {
-  return await request.delete({ url: `/crm/business/delete?id=` + id })
+  return await request.delete({ url: `/crm/business/delete/` + id })
 }
 
 // 导出 CRM 商机 Excel

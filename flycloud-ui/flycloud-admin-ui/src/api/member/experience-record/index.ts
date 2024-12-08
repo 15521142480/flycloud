@@ -18,5 +18,5 @@ export const getExperienceRecordPage = async (params) => {
 
 // 查询会员经验记录详情
 export const getExperienceRecord = async (id: number) => {
-  return await request.get({ url: `/member/experience-record/get?id=` + id })
+  return await request.get({ url: `/member/experience-record/get/` + id })
 }

@@ -21,7 +21,7 @@ export const StockOutApi = {
 
   // 查询其它出库单详情
   getStockOut: async (id: number) => {
-    return await request.get({ url: `/erp/stock-out/get?id=` + id })
+    return await request.get({ url: `/erp/stock-out/get/` + id })
   },
 
   // 新增其它出库单

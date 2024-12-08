@@ -28,7 +28,7 @@ export const WarehouseApi = {
 
   // 查询仓库详情
   getWarehouse: async (id: number) => {
-    return await request.get({ url: `/erp/warehouse/get?id=` + id })
+    return await request.get({ url: `/erp/warehouse/get/` + id })
   },
 
   // 新增仓库
@@ -54,7 +54,7 @@ export const WarehouseApi = {
 
   // 删除仓库
   deleteWarehouse: async (id: number) => {
-    return await request.delete({ url: `/erp/warehouse/delete?id=` + id })
+    return await request.delete({ url: `/erp/warehouse/delete/` + id })
   },
 
   // 导出仓库 Excel

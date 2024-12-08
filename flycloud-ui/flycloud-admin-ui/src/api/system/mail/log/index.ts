@@ -26,5 +26,5 @@ export const getMailLogPage = async (params: PageParam) => {
 
 // 查询邮件日志详情
 export const getMailLog = async (id: number) => {
-  return await request.get({ url: '/system/mail-log/get?id=' + id })
+  return await request.get({ url: '/system/mail-log/get/' + id })
 }

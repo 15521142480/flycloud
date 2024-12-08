@@ -2,6 +2,7 @@ package com.fly.bpm.common.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -17,6 +18,7 @@ import com.fly.bpm.api.domain.BpmProcessListener;
 import com.fly.bpm.common.mapper.BpmProcessListenerMapper;
 import com.fly.bpm.common.service.IBpmProcessListenerService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -87,8 +89,12 @@ public class BpmProcessListenerServiceImpl extends BaseServiceImpl<BpmProcessLis
      */
     @Override
     public Boolean insertByBo(BpmProcessListenerBo bo) {
+
         BpmProcessListener add = BeanUtil.toBean(bo, BpmProcessListener.class);
         validEntityBeforeSave(add);
+        add.setCreateBy(String.valueOf(UserUtils.getCurUserId()));
+        add.setCreateTime(LocalDateTime.now());
+
         boolean flag = baseMapper.insert(add) > 0;
         if (flag) {
             bo.setId(add.getId());
@@ -102,8 +108,12 @@ public class BpmProcessListenerServiceImpl extends BaseServiceImpl<BpmProcessLis
      */
     @Override
     public Boolean updateByBo(BpmProcessListenerBo bo) {
+
         BpmProcessListener update = BeanUtil.toBean(bo, BpmProcessListener.class);
         validEntityBeforeSave(update);
+        update.setCreateBy(String.valueOf(UserUtils.getCurUserId()));
+        update.setCreateTime(LocalDateTime.now());
+
         return baseMapper.updateById(update) > 0;
     }
 

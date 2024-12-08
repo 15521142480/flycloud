@@ -24,7 +24,7 @@ export function getSimpleSmsChannelList() {
 
 // 查询短信渠道详情
 export const getSmsChannel = (id: number) => {
-  return request.get({ url: '/system/sms-channel/get?id=' + id })
+  return request.get({ url: '/system/sms-channel/get/' + id })
 }
 
 // 新增短信渠道
@@ -39,5 +39,5 @@ export const updateSmsChannel = (data: SmsChannelVO) => {
 
 // 删除短信渠道
 export const deleteSmsChannel = (id: number) => {
-  return request.delete({ url: '/system/sms-channel/delete?id=' + id })
+  return request.delete({ url: '/system/sms-channel/delete/' + id })
 }

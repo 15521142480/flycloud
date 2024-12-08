@@ -33,7 +33,7 @@ export const ChatModelApi = {
 
   // 查询聊天模型详情
   getChatModel: async (id: number) => {
-    return await request.get({ url: `/ai/chat-model/get?id=` + id })
+    return await request.get({ url: `/ai/chat-model/get/` + id })
   },
 
   // 新增聊天模型
@@ -48,6 +48,6 @@ export const ChatModelApi = {
 
   // 删除聊天模型
   deleteChatModel: async (id: number) => {
-    return await request.delete({ url: `/ai/chat-model/delete?id=` + id })
+    return await request.delete({ url: `/ai/chat-model/delete/` + id })
   }
 }

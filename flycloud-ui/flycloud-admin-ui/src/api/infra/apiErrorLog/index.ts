@@ -35,7 +35,7 @@ export const getApiErrorLogPage = (params: PageParam) => {
 // 更新 API 错误日志的处理状态
 export const updateApiErrorLogPage = (id: number, processStatus: number) => {
   return request.put({
-    url: '/infra/api-error-log/update-status?id=' + id + '&processStatus=' + processStatus
+    url: '/infra/api-error-log/update-status/' + id + '&processStatus=' + processStatus
   })
 }
 

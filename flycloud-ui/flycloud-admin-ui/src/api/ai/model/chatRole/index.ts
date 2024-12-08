@@ -20,7 +20,7 @@ export interface ChatRolePageReqVO {
   name?: string // 角色名称
   category?: string // 角色类别
   publicStatus: boolean // 是否公开
-  pageNo: number // 是否公开
+  pageNum: number // 是否公开
   pageSize: number // 是否公开
 }
 
@@ -33,7 +33,7 @@ export const ChatRoleApi = {
 
   // 查询聊天角色详情
   getChatRole: async (id: number) => {
-    return await request.get({ url: `/ai/chat-role/get?id=` + id })
+    return await request.get({ url: `/ai/chat-role/get/` + id })
   },
 
   // 新增聊天角色
@@ -48,7 +48,7 @@ export const ChatRoleApi = {
 
   // 删除聊天角色
   deleteChatRole: async (id: number) => {
-    return await request.delete({ url: `/ai/chat-role/delete?id=` + id })
+    return await request.delete({ url: `/ai/chat-role/delete/` + id })
   },
 
   // ======= chat 聊天
@@ -75,6 +75,6 @@ export const ChatRoleApi = {
 
   // 删除角色 my
   deleteMy: async (id: number) => {
-    return await request.delete({ url: `/ai/chat-role/delete-my?id=` + id })
+    return await request.delete({ url: `/ai/chat-role/delete-my/` + id })
   },
 }

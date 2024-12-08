@@ -38,7 +38,7 @@ export const getReceivablePlanPageByCustomer = async (params) => {
 
 // 查询回款计划详情
 export const getReceivablePlan = async (id: number) => {
-  return await request.get({ url: `/crm/receivable-plan/get?id=` + id })
+  return await request.get({ url: `/crm/receivable-plan/get/` + id })
 }
 
 // 查询回款计划下拉数据
@@ -60,7 +60,7 @@ export const updateReceivablePlan = async (data: ReceivablePlanVO) => {
 
 // 删除回款计划
 export const deleteReceivablePlan = async (id: number) => {
-  return await request.delete({ url: `/crm/receivable-plan/delete?id=` + id })
+  return await request.delete({ url: `/crm/receivable-plan/delete/` + id })
 }
 
 // 导出回款计划 Excel

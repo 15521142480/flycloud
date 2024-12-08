@@ -12,7 +12,7 @@ export const getMemberTagPage = async (params: any) => {
 
 // 查询会员标签详情
 export const getMemberTag = async (id: number) => {
-  return await request.get({ url: `/member/tag/get?id=` + id })
+  return await request.get({ url: `/member/tag/get/` + id })
 }
 
 // 查询会员标签 - 精简信息列表
@@ -32,5 +32,5 @@ export const updateMemberTag = async (data: TagVO) => {
 
 // 删除会员标签
 export const deleteMemberTag = async (id: number) => {
-  return await request.delete({ url: `/member/tag/delete?id=` + id })
+  return await request.delete({ url: `/member/tag/delete/` + id })
 }

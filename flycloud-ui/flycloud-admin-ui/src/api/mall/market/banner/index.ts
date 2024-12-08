@@ -18,7 +18,7 @@ export const getBannerPage = async (params) => {
 
 // 查询Banner管理详情
 export const getBanner = async (id: number) => {
-  return await request.get({ url: `/promotion/banner/get?id=` + id })
+  return await request.get({ url: `/promotion/banner/get/` + id })
 }
 
 // 新增Banner管理
@@ -33,5 +33,5 @@ export const updateBanner = async (data: BannerVO) => {
 
 // 删除Banner管理
 export const deleteBanner = async (id: number) => {
-  return await request.delete({ url: `/promotion/banner/delete?id=` + id })
+  return await request.delete({ url: `/promotion/banner/delete/` + id })
 }

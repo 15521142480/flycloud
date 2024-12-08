@@ -22,7 +22,7 @@ export const getDiyTemplatePage = async (params: any) => {
 
 // 查询装修模板详情
 export const getDiyTemplate = async (id: number) => {
-  return await request.get({ url: `/promotion/diy-template/get?id=` + id })
+  return await request.get({ url: `/promotion/diy-template/get/` + id })
 }
 
 // 新增装修模板
@@ -37,18 +37,18 @@ export const updateDiyTemplate = async (data: DiyTemplateVO) => {
 
 // 删除装修模板
 export const deleteDiyTemplate = async (id: number) => {
-  return await request.delete({ url: `/promotion/diy-template/delete?id=` + id })
+  return await request.delete({ url: `/promotion/diy-template/delete/` + id })
 }
 
 // 使用装修模板
 export const useDiyTemplate = async (id: number) => {
-  return await request.put({ url: `/promotion/diy-template/use?id=` + id })
+  return await request.put({ url: `/promotion/diy-template/use/` + id })
 }
 
 // 获得装修模板属性
 export const getDiyTemplateProperty = async (id: number) => {
   return await request.get<DiyTemplatePropertyVO>({
-    url: `/promotion/diy-template/get-property?id=` + id
+    url: `/promotion/diy-template/get-property/` + id
   })
 }
 

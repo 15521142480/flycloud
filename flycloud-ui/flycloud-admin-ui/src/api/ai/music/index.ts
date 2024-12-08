@@ -36,6 +36,6 @@ export const MusicApi = {
 
   // 删除音乐
   deleteMusic: async (id: number) => {
-    return await request.delete({ url: `/ai/music/delete?id=` + id })
+    return await request.delete({ url: `/ai/music/delete/` + id })
   }
 }

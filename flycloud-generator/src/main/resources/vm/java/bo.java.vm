@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import ${import};
 #end
 #if($table.crud || $table.sub)
+import com.fly.common.domain.BaseEntity;
 #elseif($table.tree)
 import com.fly.common.domain.TreeEntity;
 #end

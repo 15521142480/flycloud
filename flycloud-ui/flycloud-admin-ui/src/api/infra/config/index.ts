@@ -19,7 +19,7 @@ export const getConfigPage = (params: PageParam) => {
 
 // 查询参数详情
 export const getConfig = (id: number) => {
-  return request.get({ url: '/infra/config/get?id=' + id })
+  return request.get({ url: '/infra/config/get/' + id })
 }
 
 // 根据参数键名查询参数值
@@ -39,7 +39,7 @@ export const updateConfig = (data: ConfigVO) => {
 
 // 删除参数
 export const deleteConfig = (id: number) => {
-  return request.delete({ url: '/infra/config/delete?id=' + id })
+  return request.delete({ url: '/infra/config/delete/' + id })
 }
 
 // 导出参数

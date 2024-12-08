@@ -80,7 +80,7 @@ export const cancelProcessInstanceByAdmin = async (id: number, reason: string) =
 }
 
 export const getProcessInstance = async (id: string) => {
-  return await request.get({ url: '/bpm/process-instance/get?id=' + id })
+  return await request.get({ url: '/bpm/process-instance/get/' + id })
 }
 
 export const getProcessInstanceCopyPage = async (params: any) => {
@@ -99,5 +99,5 @@ export const getFormFieldsPermission = async (params: any) => {
 
 // 获取流程实例的 BPMN 模型视图
 export const getProcessInstanceBpmnModelView = async (id: string) => {
-  return await request.get({ url: '/bpm/process-instance/get-bpmn-model-view?id=' + id })
+  return await request.get({ url: '/bpm/process-instance/get-bpmn-model-view/' + id })
 }

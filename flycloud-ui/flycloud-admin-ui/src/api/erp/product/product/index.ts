@@ -32,7 +32,7 @@ export const ProductApi = {
 
   // 查询产品详情
   getProduct: async (id: number) => {
-    return await request.get({ url: `/erp/product/get?id=` + id })
+    return await request.get({ url: `/erp/product/get/` + id })
   },
 
   // 新增产品
@@ -47,7 +47,7 @@ export const ProductApi = {
 
   // 删除产品
   deleteProduct: async (id: number) => {
-    return await request.delete({ url: `/erp/product/delete?id=` + id })
+    return await request.delete({ url: `/erp/product/delete/` + id })
   },
 
   // 导出产品 Excel

@@ -60,7 +60,7 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     return {
       ...tableObject.params,
       pageSize: tableObject.pageSize,
-      pageNo: tableObject.currentPage
+      pageNum: tableObject.currentPage
     }
   })
 

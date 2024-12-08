@@ -28,7 +28,7 @@ export const getSmsTemplatePage = (params: PageParam) => {
 
 // 查询短信模板详情
 export const getSmsTemplate = (id: number) => {
-  return request.get({ url: '/system/sms-template/get?id=' + id })
+  return request.get({ url: '/system/sms-template/get/' + id })
 }
 
 // 新增短信模板
@@ -43,7 +43,7 @@ export const updateSmsTemplate = (data: SmsTemplateVO) => {
 
 // 删除短信模板
 export const deleteSmsTemplate = (id: number) => {
-  return request.delete({ url: '/system/sms-template/delete?id=' + id })
+  return request.delete({ url: '/system/sms-template/delete/' + id })
 }
 
 // 导出短信模板

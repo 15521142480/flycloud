@@ -11,6 +11,6 @@ export const updateBpmSimpleModel = async (data) => {
 
 export const getBpmSimpleModel = async (id) => {
   return await request.get({
-    url: `/${BPM_BASE_URL}/model/simple/get?id=` + id
+    url: `/${BPM_BASE_URL}/model/simple/get/` + id
   })
 }

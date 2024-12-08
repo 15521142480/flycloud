@@ -33,7 +33,7 @@ export const CustomerApi = {
 
   // 查询客户详情
   getCustomer: async (id: number) => {
-    return await request.get({ url: `/erp/customer/get?id=` + id })
+    return await request.get({ url: `/erp/customer/get/` + id })
   },
 
   // 新增客户
@@ -48,7 +48,7 @@ export const CustomerApi = {
 
   // 删除客户
   deleteCustomer: async (id: number) => {
-    return await request.delete({ url: `/erp/customer/delete?id=` + id })
+    return await request.delete({ url: `/erp/customer/delete/` + id })
   },
 
   // 导出客户 Excel

@@ -30,7 +30,7 @@ export const getCommentPage = async (params) => {
 
 // 查询商品评论详情
 export const getComment = async (id: number) => {
-  return await request.get({ url: `/product/comment/get?id=` + id })
+  return await request.get({ url: `/product/comment/get/` + id })
 }
 
 // 添加自评

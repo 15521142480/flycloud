@@ -7,5 +7,5 @@ export const getBrokerageRecordPage = async (params: any) => {
 
 // 查询佣金记录详情
 export const getBrokerageRecord = async (id: number) => {
-  return await request.get({ url: `/trade/brokerage-record/get?id=` + id })
+  return await request.get({ url: `/trade/brokerage-record/get/` + id })
 }

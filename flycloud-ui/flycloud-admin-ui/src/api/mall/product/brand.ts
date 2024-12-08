@@ -42,12 +42,12 @@ export const updateBrand = (data: BrandVO) => {
 
 // 删除商品品牌
 export const deleteBrand = (id: number) => {
-  return request.delete({ url: `/product/brand/delete?id=${id}` })
+  return request.delete({ url: `/product/brand/delete/${id}` })
 }
 
 // 获得商品品牌
 export const getBrand = (id: number) => {
-  return request.get({ url: `/product/brand/get?id=${id}` })
+  return request.get({ url: `/product/brand/get/${id}` })
 }
 
 // 获得商品品牌列表

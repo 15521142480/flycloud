@@ -26,7 +26,7 @@ export const getMailTemplatePage = async (params: PageParam) => {
 
 // 查询邮件模版详情
 export const getMailTemplate = async (id: number) => {
-  return await request.get({ url: '/system/mail-template/get?id=' + id })
+  return await request.get({ url: '/system/mail-template/get/' + id })
 }
 
 // 新增邮件模版
@@ -41,7 +41,7 @@ export const updateMailTemplate = async (data: MailTemplateVO) => {
 
 // 删除邮件模版
 export const deleteMailTemplate = async (id: number) => {
-  return await request.delete({ url: '/system/mail-template/delete?id=' + id })
+  return await request.delete({ url: '/system/mail-template/delete/' + id })
 }
 
 // 发送邮件

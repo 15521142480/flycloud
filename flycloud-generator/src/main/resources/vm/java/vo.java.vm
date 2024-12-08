@@ -3,12 +3,12 @@ package ${packageName}.api.domain.vo;
 #foreach ($import in $importList)
 import ${import};
 #end
+import java.io.Serializable;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
-import java.util.Date;
 
 
 

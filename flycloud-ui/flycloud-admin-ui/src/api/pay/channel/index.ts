@@ -37,7 +37,7 @@ export const updateChannel = (data: ChannelVO) => {
 
 // 删除支付渠道
 export const deleteChannel = (id: number) => {
-  return request.delete({ url: '/pay/channel/delete?id=' + id })
+  return request.delete({ url: '/pay/channel/delete/' + id })
 }
 
 // 导出支付渠道

@@ -42,12 +42,12 @@ export const updateCategory = (data: CategoryVO) => {
 
 // 删除商品分类
 export const deleteCategory = (id: number) => {
-  return request.delete({ url: `/product/category/delete?id=${id}` })
+  return request.delete({ url: `/product/category/delete/${id}` })
 }
 
 // 获得商品分类
 export const getCategory = (id: number) => {
-  return request.get({ url: `/product/category/get?id=${id}` })
+  return request.get({ url: `/product/category/get/${id}` })
 }
 
 // 获得商品分类列表

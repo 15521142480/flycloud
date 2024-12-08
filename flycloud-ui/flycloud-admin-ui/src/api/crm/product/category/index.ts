@@ -9,7 +9,7 @@ export interface ProductCategoryVO {
 
 // 查询产品分类详情
 export const getProductCategory = async (id: number) => {
-  return await request.get({ url: `/crm/product-category/get?id=` + id })
+  return await request.get({ url: `/crm/product-category/get/` + id })
 }
 
 // 新增产品分类
@@ -24,7 +24,7 @@ export const updateProductCategory = async (data: ProductCategoryVO) => {
 
 // 删除产品分类
 export const deleteProductCategory = async (id: number) => {
-  return await request.delete({ url: `/crm/product-category/delete?id=` + id })
+  return await request.delete({ url: `/crm/product-category/delete/` + id })
 }
 
 // 产品分类列表

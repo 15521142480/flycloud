@@ -18,7 +18,7 @@ export const getLevelList = async (params) => {
 
 // 查询会员等级详情
 export const getLevel = async (id: number) => {
-  return await request.get({ url: `/member/level/get?id=` + id })
+  return await request.get({ url: `/member/level/get/` + id })
 }
 
 // 查询会员等级 - 精简信息列表
@@ -38,5 +38,5 @@ export const updateLevel = async (data: LevelVO) => {
 
 // 删除会员等级
 export const deleteLevel = async (id: number) => {
-  return await request.delete({ url: `/member/level/delete?id=` + id })
+  return await request.delete({ url: `/member/level/delete/` + id })
 }

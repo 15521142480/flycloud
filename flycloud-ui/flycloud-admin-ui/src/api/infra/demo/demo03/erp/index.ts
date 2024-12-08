@@ -15,7 +15,7 @@ export const getDemo03StudentPage = async (params) => {
 
 // 查询学生详情
 export const getDemo03Student = async (id: number) => {
-  return await request.get({ url: `/infra/demo03-student/get?id=` + id })
+  return await request.get({ url: `/infra/demo03-student/get/` + id })
 }
 
 // 新增学生
@@ -30,7 +30,7 @@ export const updateDemo03Student = async (data: Demo03StudentVO) => {
 
 // 删除学生
 export const deleteDemo03Student = async (id: number) => {
-  return await request.delete({ url: `/infra/demo03-student/delete?id=` + id })
+  return await request.delete({ url: `/infra/demo03-student/delete/` + id })
 }
 
 // 导出学生 Excel
@@ -56,12 +56,12 @@ export const updateDemo03Course = async (data) => {
 
 // 删除学生课程
 export const deleteDemo03Course = async (id: number) => {
-  return await request.delete({ url: `/infra/demo03-student/demo03-course/delete?id=` + id })
+  return await request.delete({ url: `/infra/demo03-student/demo03-course/delete/` + id })
 }
 
 // 获得学生课程
 export const getDemo03Course = async (id: number) => {
-  return await request.get({ url: `/infra/demo03-student/demo03-course/get?id=` + id })
+  return await request.get({ url: `/infra/demo03-student/demo03-course/get/` + id })
 }
 
 // ==================== 子表（学生班级） ====================
@@ -82,10 +82,10 @@ export const updateDemo03Grade = async (data) => {
 
 // 删除学生班级
 export const deleteDemo03Grade = async (id: number) => {
-  return await request.delete({ url: `/infra/demo03-student/demo03-grade/delete?id=` + id })
+  return await request.delete({ url: `/infra/demo03-student/demo03-grade/delete/` + id })
 }
 
 // 获得学生班级
 export const getDemo03Grade = async (id: number) => {
-  return await request.get({ url: `/infra/demo03-student/demo03-grade/get?id=` + id })
+  return await request.get({ url: `/infra/demo03-student/demo03-grade/get/` + id })
 }

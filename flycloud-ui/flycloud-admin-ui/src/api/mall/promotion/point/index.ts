@@ -61,7 +61,7 @@ export const PointActivityApi = {
 
   // 查询积分商城活动详情
   getPointActivity: async (id: number) => {
-    return await request.get({ url: `/promotion/point-activity/get?id=` + id })
+    return await request.get({ url: `/promotion/point-activity/get/` + id })
   },
 
   // 查询积分商城活动列表，基于活动编号数组
@@ -81,11 +81,11 @@ export const PointActivityApi = {
 
   // 删除积分商城活动
   deletePointActivity: async (id: number) => {
-    return await request.delete({ url: `/promotion/point-activity/delete?id=` + id })
+    return await request.delete({ url: `/promotion/point-activity/delete/` + id })
   },
 
   // 关闭秒杀活动
   closePointActivity: async (id: number) => {
-    return await request.put({ url: '/promotion/point-activity/close?id=' + id })
+    return await request.put({ url: '/promotion/point-activity/close/' + id })
   }
 }

@@ -18,7 +18,7 @@ export const getSocialClientPage = async (params) => {
 
 // 查询社交客户端详情
 export const getSocialClient = async (id: number) => {
-  return await request.get({ url: `/system/social-client/get?id=` + id })
+  return await request.get({ url: `/system/social-client/get/` + id })
 }
 
 // 新增社交客户端
@@ -33,5 +33,5 @@ export const updateSocialClient = async (data: SocialClientVO) => {
 
 // 删除社交客户端
 export const deleteSocialClient = async (id: number) => {
-  return await request.delete({ url: `/system/social-client/delete?id=` + id })
+  return await request.delete({ url: `/system/social-client/delete/` + id })
 }

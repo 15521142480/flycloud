@@ -13,7 +13,7 @@ export const getDemo02CategoryList = async () => {
 
 // 查询示例分类详情
 export const getDemo02Category = async (id: number) => {
-  return await request.get({ url: `/infra/demo02-category/get?id=` + id })
+  return await request.get({ url: `/infra/demo02-category/get/` + id })
 }
 
 // 新增示例分类
@@ -28,7 +28,7 @@ export const updateDemo02Category = async (data: Demo02CategoryVO) => {
 
 // 删除示例分类
 export const deleteDemo02Category = async (id: number) => {
-  return await request.delete({ url: `/infra/demo02-category/delete?id=` + id })
+  return await request.delete({ url: `/infra/demo02-category/delete/` + id })
 }
 
 // 导出示例分类 Excel

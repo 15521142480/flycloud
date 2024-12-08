@@ -33,7 +33,7 @@ export const SupplierApi = {
 
   // 查询供应商详情
   getSupplier: async (id: number) => {
-    return await request.get({ url: `/erp/supplier/get?id=` + id })
+    return await request.get({ url: `/erp/supplier/get/` + id })
   },
 
   // 新增供应商
@@ -48,7 +48,7 @@ export const SupplierApi = {
 
   // 删除供应商
   deleteSupplier: async (id: number) => {
-    return await request.delete({ url: `/erp/supplier/delete?id=` + id })
+    return await request.delete({ url: `/erp/supplier/delete/` + id })
   },
 
   // 导出供应商 Excel

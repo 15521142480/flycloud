@@ -49,12 +49,12 @@ export const updateBusinessStatus = async (data: BusinessStatusTypeVO) => {
 
 // 查询商机状态类型详情
 export const getBusinessStatus = async (id: number) => {
-  return await request.get({ url: `/crm/business-status/get?id=` + id })
+  return await request.get({ url: `/crm/business-status/get/` + id })
 }
 
 // 删除商机状态
 export const deleteBusinessStatus = async (id: number) => {
-  return await request.delete({ url: `/crm/business-status/delete?id=` + id })
+  return await request.delete({ url: `/crm/business-status/delete/` + id })
 }
 
 // 获得商机状态组列表

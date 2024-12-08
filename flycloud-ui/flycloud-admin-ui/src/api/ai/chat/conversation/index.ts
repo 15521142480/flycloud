@@ -25,7 +25,7 @@ export interface ChatConversationVO {
 export const ChatConversationApi = {
   // 获得【我的】聊天对话
   getChatConversationMy: async (id: number) => {
-    return await request.get({ url: `/ai/chat/conversation/get-my?id=${id}` })
+    return await request.get({ url: `/ai/chat/conversation/get-my/${id}` })
   },
 
   // 新增【我的】聊天对话
@@ -40,7 +40,7 @@ export const ChatConversationApi = {
 
   // 删除【我的】聊天对话
   deleteChatConversationMy: async (id: string) => {
-    return await request.delete({ url: `/ai/chat/conversation/delete-my?id=${id}` })
+    return await request.delete({ url: `/ai/chat/conversation/delete-my/${id}` })
   },
 
   // 删除【我的】所有对话，置顶除外
@@ -60,6 +60,6 @@ export const ChatConversationApi = {
 
   // 管理员删除消息
   deleteChatConversationByAdmin: async (id: number) => {
-    return await request.delete({ url: `/ai/chat/conversation/delete-by-admin?id=${id}` })
+    return await request.delete({ url: `/ai/chat/conversation/delete-by-admin/${id}` })
   }
 }

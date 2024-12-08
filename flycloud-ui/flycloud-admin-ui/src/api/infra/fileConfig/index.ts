@@ -32,12 +32,12 @@ export const getFileConfigPage = (params: PageParam) => {
 
 // 查询文件配置详情
 export const getFileConfig = (id: number) => {
-  return request.get({ url: '/infra/file-config/get?id=' + id })
+  return request.get({ url: '/infra/file-config/get/' + id })
 }
 
 // 更新文件配置为主配置
 export const updateFileConfigMaster = (id: number) => {
-  return request.put({ url: '/infra/file-config/update-master?id=' + id })
+  return request.put({ url: '/infra/file-config/update-master/' + id })
 }
 
 // 新增文件配置
@@ -52,10 +52,10 @@ export const updateFileConfig = (data: FileConfigVO) => {
 
 // 删除文件配置
 export const deleteFileConfig = (id: number) => {
-  return request.delete({ url: '/infra/file-config/delete?id=' + id })
+  return request.delete({ url: '/infra/file-config/delete/' + id })
 }
 
 // 测试文件配置
 export const testFileConfig = (id: number) => {
-  return request.get({ url: '/infra/file-config/test?id=' + id })
+  return request.get({ url: '/infra/file-config/test/' + id })
 }

@@ -15,7 +15,7 @@ export const getSignInConfigList = async () => {
 
 // 查询积分签到规则详情
 export const getSignInConfig = async (id: number) => {
-  return await request.get({ url: `/member/sign-in/config/get?id=` + id })
+  return await request.get({ url: `/member/sign-in/config/get/` + id })
 }
 
 // 新增积分签到规则
@@ -30,5 +30,5 @@ export const updateSignInConfig = async (data: SignInConfigVO) => {
 
 // 删除积分签到规则
 export const deleteSignInConfig = async (id: number) => {
-  return await request.delete({ url: `/member/sign-in/config/delete?id=` + id })
+  return await request.delete({ url: `/member/sign-in/config/delete/` + id })
 }

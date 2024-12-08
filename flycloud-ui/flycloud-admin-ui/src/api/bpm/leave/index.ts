@@ -19,7 +19,7 @@ export const createLeave = async (data: LeaveVO) => {
 
 // 获得请假申请
 export const getLeave = async (id: number) => {
-  return await request.get({ url: `/${BPM_BASE_URL}/oa/leave/get?id=` + id })
+  return await request.get({ url: `/${BPM_BASE_URL}/oa/leave/get/` + id })
 }
 
 // 获得请假申请分页

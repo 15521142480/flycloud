@@ -68,5 +68,5 @@ export const deletePermissionBatch = async (val: number[]) => {
 
 // 删除自己的数据权限（退出团队）
 export const deleteSelfPermission = async (id: number) => {
-  return await request.delete({ url: '/crm/permission/delete-self?id=' + id })
+  return await request.delete({ url: '/crm/permission/delete-self/' + id })
 }

@@ -25,7 +25,7 @@ export const getNotifyTemplatePage = async (params: PageParam) => {
 
 // 查询站内信模板详情
 export const getNotifyTemplate = async (id: number) => {
-  return await request.get({ url: '/system/notify-template/get?id=' + id })
+  return await request.get({ url: '/system/notify-template/get/' + id })
 }
 
 // 新增站内信模板
@@ -40,7 +40,7 @@ export const updateNotifyTemplate = async (data: NotifyTemplateVO) => {
 
 // 删除站内信模板
 export const deleteNotifyTemplate = async (id: number) => {
-  return await request.delete({ url: '/system/notify-template/delete?id=' + id })
+  return await request.delete({ url: '/system/notify-template/delete/' + id })
 }
 
 // 发送站内信

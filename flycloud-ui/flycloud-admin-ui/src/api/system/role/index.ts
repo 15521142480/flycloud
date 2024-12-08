@@ -29,7 +29,7 @@ export const getSimpleRoleList = async (): Promise<RoleVO[]> => {
 
 // 查询角色详情
 export const getRole = async (id: number) => {
-  return await request.get({ url: '/system/role/get?id=' + id })
+  return await request.get({ url: '/system/role/get/' + id })
 }
 
 // 新增角色
@@ -49,7 +49,7 @@ export const updateRoleStatus = async (data: UpdateStatusReqVO) => {
 
 // 删除角色
 export const deleteRole = async (id: number) => {
-  return await request.delete({ url: '/system/role/delete?id=' + id })
+  return await request.delete({ url: '/system/role/delete/' + id })
 }
 
 // 导出角色

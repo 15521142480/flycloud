@@ -23,7 +23,7 @@ export const SaleOrderApi = {
 
   // 查询销售订单详情
   getSaleOrder: async (id: number) => {
-    return await request.get({ url: `/erp/sale-order/get?id=` + id })
+    return await request.get({ url: `/erp/sale-order/get/` + id })
   },
 
   // 新增销售订单

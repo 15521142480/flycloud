@@ -87,7 +87,7 @@ export const updateStatus = (data: { id: number; status: number }) => {
 
 // 获得商品 Spu
 export const getSpu = (id: number) => {
-  return request.get({ url: `/product/spu/get-detail?id=${id}` })
+  return request.get({ url: `/product/spu/get-detail/${id}` })
 }
 
 // 获得商品 Spu 详情列表
@@ -97,7 +97,7 @@ export const getSpuDetailList = (ids: number[]) => {
 
 // 删除商品 Spu
 export const deleteSpu = (id: number) => {
-  return request.delete({ url: `/product/spu/delete?id=${id}` })
+  return request.delete({ url: `/product/spu/delete/${id}` })
 }
 
 // 导出商品 Spu Excel

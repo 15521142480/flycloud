@@ -1,57 +1,45 @@
 package com.fly.system.api.domain.vo;
 
+import java.time.LocalDateTime;
+import java.io.Serializable;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
-
-import java.io.Serializable;
 import java.util.Date;
 
 
 
 /**
- * 字典数据视图对象
+ * 字典类型视图对象
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2024-12-08
  */
 @Data
 @ExcelIgnoreUnannotated
-public class SysDictVo implements Serializable {
+public class SysDictTypeVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 字典编码
+     * 字典主键
      */
-    @ExcelProperty(value = "字典编码")
+    @ExcelProperty(value = "字典主键")
     private Long id;
 
     /**
-     * 字典排序
+     * 字典名称
      */
-    @ExcelProperty(value = "字典排序")
-    private Long sort;
-
-    /**
-     * 字典标签
-     */
-    @ExcelProperty(value = "字典标签")
-    private String label;
-
-    /**
-     * 字典键值
-     */
-    @ExcelProperty(value = "字典键值")
-    private String value;
+    @ExcelProperty(value = "字典名称")
+    private String name;
 
     /**
      * 字典类型
      */
     @ExcelProperty(value = "字典类型")
-    private String dictType;
+    private String type;
 
     /**
      * 状态（0正常 1停用）
@@ -61,22 +49,22 @@ public class SysDictVo implements Serializable {
     private Integer status;
 
     /**
-     * 颜色类型
-     */
-    @ExcelProperty(value = "颜色类型")
-    private String colorType;
-
-    /**
-     * css 样式
-     */
-    @ExcelProperty(value = "css 样式")
-    private String cssClass;
-
-    /**
      * 备注
      */
     @ExcelProperty(value = "备注")
     private String remark;
+
+    /**
+     * 是否删除
+     */
+    @ExcelProperty(value = "是否删除")
+    private Integer isDeleted;
+
+    /**
+     * 删除时间
+     */
+    @ExcelProperty(value = "删除时间")
+    private LocalDateTime deletedTime;
 
 
 }

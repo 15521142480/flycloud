@@ -96,7 +96,7 @@ export const getOrder = async (id: number, sync?: boolean) => {
 
 // 获得支付订单的明细
 export const getOrderDetail = async (id: number) => {
-  return await request.get({ url: '/pay/order/get-detail?id=' + id })
+  return await request.get({ url: '/pay/order/get-detail/' + id })
 }
 
 // 提交支付订单

@@ -88,16 +88,16 @@ public class BeanUtils {
      * @param desc   描述对象 转换后的对象
      * @return desc
      */
-    public static <T, V> V copy(T source, Class<V> desc) {
-        if (ObjectUtil.isNull(source)) {
-            return null;
-        }
-        if (ObjectUtil.isNull(desc)) {
-            return null;
-        }
-        final V target = ReflectUtil.newInstanceIfPossible(desc);
-        return copy(source, target);
-    }
+//    public static <T, V> V copy(T source, Class<V> desc) {
+//        if (ObjectUtil.isNull(source)) {
+//            return null;
+//        }
+//        if (ObjectUtil.isNull(desc)) {
+//            return null;
+//        }
+//        final V target = ReflectUtil.newInstanceIfPossible(desc);
+//        return copy(source, target);
+//    }
 
     /**
      * 单对象基于对象创建拷贝
@@ -125,19 +125,19 @@ public class BeanUtils {
      * @param desc       描述对象 转换后的对象
      * @return desc
      */
-    public static <T, V> List<V> copyList(List<T> sourceList, Class<V> desc) {
-        if (ObjectUtil.isNull(sourceList)) {
-            return null;
-        }
-        if (CollUtil.isEmpty(sourceList)) {
-            return CollUtil.newArrayList();
-        }
-        return StreamUtils.toList(sourceList, source -> {
-            V target = ReflectUtil.newInstanceIfPossible(desc);
-            copy(source, target);
-            return target;
-        });
-    }
+//    public static <T, V> List<V> copyList(List<T> sourceList, Class<V> desc) {
+//        if (ObjectUtil.isNull(sourceList)) {
+//            return null;
+//        }
+//        if (CollUtil.isEmpty(sourceList)) {
+//            return CollUtil.newArrayList();
+//        }
+//        return StreamUtils.toList(sourceList, source -> {
+//            V target = ReflectUtil.newInstanceIfPossible(desc);
+//            copy(source, target);
+//            return target;
+//        });
+//    }
 
     /**
      * bean拷贝到map

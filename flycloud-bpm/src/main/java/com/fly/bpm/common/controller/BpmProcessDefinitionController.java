@@ -5,6 +5,7 @@ import com.fly.bpm.api.domain.BpmCategory;
 import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.api.domain.BpmProcessDefinitionInfo;
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
+import com.fly.bpm.common.service.BpmProcessDefinitionService;
 import com.fly.bpm.common.service.IBpmCategoryService;
 import com.fly.bpm.common.service.IBpmFormService;
 import com.fly.bpm.flowable.candidate.strategy.BpmTaskCandidateStartUserSelectStrategy;
@@ -23,7 +24,6 @@ import org.flowable.engine.repository.ProcessDefinition;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.api.domain.bo.BpmProcessDefinitionInfoBo;
-import com.fly.bpm.common.service.IBpmProcessDefinitionService;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +42,7 @@ import java.util.Map;
 public class BpmProcessDefinitionController extends BaseController {
 
 
-    private final IBpmProcessDefinitionService bpmProcessDefinitionService;
+    private final BpmProcessDefinitionService bpmProcessDefinitionService;
 
     private final IBpmCategoryService bpmCategoryService;
 

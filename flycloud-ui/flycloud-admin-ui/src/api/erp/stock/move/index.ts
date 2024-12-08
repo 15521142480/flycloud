@@ -20,7 +20,7 @@ export const StockMoveApi = {
 
   // 查询库存调度单详情
   getStockMove: async (id: number) => {
-    return await request.get({ url: `/erp/stock-move/get?id=` + id })
+    return await request.get({ url: `/erp/stock-move/get/` + id })
   },
 
   // 新增库存调度单

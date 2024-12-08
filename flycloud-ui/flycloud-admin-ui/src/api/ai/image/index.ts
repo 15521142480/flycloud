@@ -58,7 +58,7 @@ export const ImageApi = {
   },
   // 获取【我的】绘图记录
   getImageMy: async (id: number) => {
-    return await request.get({ url: `/ai/image/get-my?id=${id}` })
+    return await request.get({ url: `/ai/image/get-my/${id}` })
   },
   // 获取【我的】绘图记录列表
   getImageListMyByIds: async (ids: number[]) => {
@@ -70,7 +70,7 @@ export const ImageApi = {
   },
   // 删除【我的】绘画记录
   deleteImageMy: async (id: number) => {
-    return await request.delete({ url: `/ai/image/delete-my?id=${id}` })
+    return await request.delete({ url: `/ai/image/delete-my/${id}` })
   },
 
   // ================ midjourney 专属 ================
@@ -98,6 +98,6 @@ export const ImageApi = {
 
   // 删除绘画
   deleteImage: async (id: number) => {
-    return await request.delete({ url: `/ai/image/delete?id=` + id })
+    return await request.delete({ url: `/ai/image/delete/` + id })
   }
 }

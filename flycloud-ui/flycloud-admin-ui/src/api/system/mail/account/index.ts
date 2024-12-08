@@ -18,7 +18,7 @@ export const getMailAccountPage = async (params: PageParam) => {
 
 // 查询邮箱账号详情
 export const getMailAccount = async (id: number) => {
-  return await request.get({ url: '/system/mail-account/get?id=' + id })
+  return await request.get({ url: '/system/mail-account/get/' + id })
 }
 
 // 新增邮箱账号
@@ -33,7 +33,7 @@ export const updateMailAccount = async (data: MailAccountVO) => {
 
 // 删除邮箱账号
 export const deleteMailAccount = async (id: number) => {
-  return await request.delete({ url: '/system/mail-account/delete?id=' + id })
+  return await request.delete({ url: '/system/mail-account/delete/' + id })
 }
 
 // 获得邮箱账号精简列表

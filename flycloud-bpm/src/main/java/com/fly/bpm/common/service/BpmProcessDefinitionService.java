@@ -3,8 +3,10 @@ package com.fly.bpm.common.service;
 
 import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.api.domain.BpmProcessDefinitionInfo;
+import com.fly.bpm.api.domain.bo.BpmProcessDefinitionInfoBo;
 import com.fly.bpm.api.domain.vo.model.BpmModelMetaInfoVO;
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionPageReqVO;
+import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.repository.Deployment;
@@ -28,11 +30,9 @@ public interface BpmProcessDefinitionService {
 
     /**
      * 获得流程定义分页
-     *
-     * @param pageReqVO 分页入参
-     * @return 流程定义 Page
      */
-    PageVo<ProcessDefinition> getProcessDefinitionPage(BpmProcessDefinitionPageReqVO pageReqVO);
+    PageVo<ProcessDefinition> queryPageList(BpmProcessDefinitionInfoBo bo, PageBo pageBo);
+
 
     /**
      * 获得流程定义列表

@@ -23,5 +23,5 @@ export const getTransferPage = async (params) => {
 }
 
 export const getTransfer = async (id: number) => {
-  return await request.get({ url: '/pay/transfer/get?id=' + id })
+  return await request.get({ url: '/pay/transfer/get/' + id })
 }

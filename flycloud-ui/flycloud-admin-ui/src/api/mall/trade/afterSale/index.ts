@@ -46,12 +46,12 @@ export const getAfterSalePage = async (params) => {
 
 // 获得交易售后详情
 export const getAfterSale = async (id: any) => {
-  return await request.get({ url: `/trade/after-sale/get-detail?id=${id}` })
+  return await request.get({ url: `/trade/after-sale/get-detail/${id}` })
 }
 
 // 同意售后
 export const agree = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/agree?id=${id}` })
+  return await request.put({ url: `/trade/after-sale/agree/${id}` })
 }
 
 // 拒绝售后
@@ -61,15 +61,15 @@ export const disagree = async (data: any) => {
 
 // 确认收货
 export const receive = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/receive?id=${id}` })
+  return await request.put({ url: `/trade/after-sale/receive/${id}` })
 }
 
 // 拒绝收货
 export const refuse = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/refuse?id=${id}` })
+  return await request.put({ url: `/trade/after-sale/refuse/${id}` })
 }
 
 // 确认退款
 export const refund = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/refund?id=${id}` })
+  return await request.put({ url: `/trade/after-sale/refund/${id}` })
 }

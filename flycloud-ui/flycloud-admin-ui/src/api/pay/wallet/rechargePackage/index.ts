@@ -15,7 +15,7 @@ export const getWalletRechargePackagePage = async (params) => {
 
 // 查询套餐充值详情
 export const getWalletRechargePackage = async (id: number) => {
-  return await request.get({ url: '/pay/wallet-recharge-package/get?id=' + id })
+  return await request.get({ url: '/pay/wallet-recharge-package/get/' + id })
 }
 
 // 新增套餐充值
@@ -30,5 +30,5 @@ export const updateWalletRechargePackage = async (data: WalletRechargePackageVO)
 
 // 删除套餐充值
 export const deleteWalletRechargePackage = async (id: number) => {
-  return await request.delete({ url: '/pay/wallet-recharge-package/delete?id=' + id })
+  return await request.delete({ url: '/pay/wallet-recharge-package/delete/' + id })
 }

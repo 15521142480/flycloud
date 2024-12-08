@@ -21,7 +21,7 @@ export const StockApi = {
 
   // 查询产品库存详情
   getStock: async (id: number) => {
-    return await request.get({ url: `/erp/stock/get?id=` + id })
+    return await request.get({ url: `/erp/stock/get/` + id })
   },
 
   // 查询产品库存详情

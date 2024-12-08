@@ -44,7 +44,7 @@ export const DeviceApi = {
 
   // 查询设备详情
   getDevice: async (id: number) => {
-    return await request.get({ url: `/iot/device/get?id=` + id })
+    return await request.get({ url: `/iot/device/get/` + id })
   },
 
   // 新增设备
@@ -64,7 +64,7 @@ export const DeviceApi = {
 
   // 删除设备
   deleteDevice: async (id: number) => {
-    return await request.delete({ url: `/iot/device/delete?id=` + id })
+    return await request.delete({ url: `/iot/device/delete/` + id })
   },
 
   // 获取设备数量

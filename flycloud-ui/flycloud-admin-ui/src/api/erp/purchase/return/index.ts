@@ -21,7 +21,7 @@ export const PurchaseReturnApi = {
 
   // 查询采购退货详情
   getPurchaseReturn: async (id: number) => {
-    return await request.get({ url: `/erp/purchase-return/get?id=` + id })
+    return await request.get({ url: `/erp/purchase-return/get/` + id })
   },
 
   // 新增采购退货

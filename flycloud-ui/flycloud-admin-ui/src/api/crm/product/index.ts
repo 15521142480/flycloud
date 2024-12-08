@@ -25,7 +25,7 @@ export const getProductSimpleList = async () => {
 
 // 查询产品详情
 export const getProduct = async (id: number) => {
-  return await request.get({ url: `/crm/product/get?id=` + id })
+  return await request.get({ url: `/crm/product/get/` + id })
 }
 
 // 新增产品
@@ -40,7 +40,7 @@ export const updateProduct = async (data: ProductVO) => {
 
 // 删除产品
 export const deleteProduct = async (id: number) => {
-  return await request.delete({ url: `/crm/product/delete?id=` + id })
+  return await request.delete({ url: `/crm/product/delete/` + id })
 }
 
 // 导出产品 Excel

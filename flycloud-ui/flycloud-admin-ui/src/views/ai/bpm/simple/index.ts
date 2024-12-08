@@ -10,6 +10,6 @@ export const updateBpmSimpleModel = async (data) => {
 
 export const getBpmSimpleModel = async (id) => {
   return await request.get({
-    url: '/bpm/model/simple/get?id=' + id
+    url: '/bpm/model/simple/get/' + id
   })
 }

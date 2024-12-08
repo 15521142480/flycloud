@@ -35,7 +35,7 @@ const props = defineProps({
     required: true,
     type: Number
   },
-  // 当前页数：pageNo
+  // 当前页数：pageNum
   page: {
     type: Number,
     default: 1
@@ -59,7 +59,7 @@ const currentPage = computed({
     return props.page
   },
   set(val) {
-    // 触发 update:page 事件，更新 limit 属性，从而更新 pageNo
+    // 触发 update:page 事件，更新 limit 属性，从而更新 pageNum
     emit('update:page', val)
   }
 })

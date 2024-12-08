@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.api.domain.BpmProcessDefinitionInfo;
+import com.fly.bpm.api.domain.bo.BpmProcessDefinitionInfoBo;
 import com.fly.bpm.api.domain.vo.model.BpmModelMetaInfoVO;
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionPageReqVO;
 import com.fly.bpm.common.mapper.BpmProcessDefinitionInfoMapper;
@@ -13,7 +14,10 @@ import com.fly.bpm.common.service.BpmProcessDefinitionService;
 import com.fly.bpm.flowable.utils.FlowableUtils;
 import com.fly.common.constant.bpm.BpmnModelConstants;
 import com.fly.common.database.util.PageUtils;
+import com.fly.common.database.web.service.impl.BaseServiceImpl;
+import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.StringUtils;
 import lombok.AllArgsConstructor;
@@ -31,6 +35,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.fly.common.exception.utils.ServiceExceptionUtils.exception;
@@ -49,13 +54,55 @@ import static java.util.Collections.emptyList;
 @Validated
 @Slf4j
 @RequiredArgsConstructor
-public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionService {
+public class BpmProcessDefinitionServiceImpl extends BaseServiceImpl<BpmProcessDefinitionInfoMapper, BpmProcessDefinitionInfo> implements BpmProcessDefinitionService {
 
 
     private final RepositoryService repositoryService;
 
     private final BpmProcessDefinitionInfoMapper processDefinitionMapper;
 
+
+
+
+    /**
+     * 获得流程定义分页
+     */
+    @Override
+    public PageVo<ProcessDefinition> queryPageList(BpmProcessDefinitionInfoBo bo, PageBo pageBo) {
+
+        ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
+        query.processDefinitionTenantId(FlowableUtils.getTenantId());
+        if (StrUtil.isNotBlank(bo.getKey())) {
+            query.processDefinitionKey(bo.getKey());
+        }
+
+        // 执行查询
+        long count = query.count();
+        if (count == 0) {
+            return PageVo.empty(count);
+        }
+
+        List<ProcessDefinition> list = query.orderByProcessDefinitionVersion()
+                .desc()
+                .listPage(PageUtils.getStart(pageBo), pageBo.getPageSize());
+
+        return new PageVo<>(list, count);
+    }
+
+
+    @Override
+    public List<ProcessDefinition> getProcessDefinitionListBySuspensionState(Integer suspensionState) {
+        // 拼接查询条件
+        ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
+        if (Objects.equals(SuspensionState.SUSPENDED.getStateCode(), suspensionState)) {
+            query.suspended();
+        } else if (Objects.equals(SuspensionState.ACTIVE.getStateCode(), suspensionState)) {
+            query.active();
+        }
+        // 执行查询
+        query.processDefinitionTenantId(FlowableUtils.getTenantId());
+        return query.list();
+    }
 
 
     @Override
@@ -164,7 +211,11 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
         if (form != null) {
             definitionDO.setFormFields(form.getFields()).setFormConf(form.getConf());
         }
+
+        definitionDO.setCreateBy(String.valueOf(UserUtils.getCurUserId()));
+        definitionDO.setUpdateTime(LocalDateTime.now());
         processDefinitionMapper.insert(definitionDO);
+
         return definition.getId();
     }
 
@@ -212,37 +263,5 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
     }
 
 
-    @Override
-    public PageVo<ProcessDefinition> getProcessDefinitionPage(BpmProcessDefinitionPageReqVO pageVO) {
-
-        ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
-        query.processDefinitionTenantId(FlowableUtils.getTenantId());
-        if (StrUtil.isNotBlank(pageVO.getKey())) {
-            query.processDefinitionKey(pageVO.getKey());
-        }
-        // 执行查询
-        long count = query.count();
-        if (count == 0) {
-            return PageVo.empty(count);
-        }
-        List<ProcessDefinition> list = query.orderByProcessDefinitionVersion().desc()
-                .listPage(PageUtils.getStart(pageVO), pageVO.getPageSize());
-        return new PageVo<>(list, count);
-    }
-
-
-    @Override
-    public List<ProcessDefinition> getProcessDefinitionListBySuspensionState(Integer suspensionState) {
-        // 拼接查询条件
-        ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery();
-        if (Objects.equals(SuspensionState.SUSPENDED.getStateCode(), suspensionState)) {
-            query.suspended();
-        } else if (Objects.equals(SuspensionState.ACTIVE.getStateCode(), suspensionState)) {
-            query.active();
-        }
-        // 执行查询
-        query.processDefinitionTenantId(FlowableUtils.getTenantId());
-        return query.list();
-    }
 
 }

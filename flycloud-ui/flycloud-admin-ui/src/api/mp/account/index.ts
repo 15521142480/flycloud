@@ -17,12 +17,12 @@ export const updateAccount = async (data) => {
 
 // 删除公众号账号
 export const deleteAccount = async (id) => {
-  return request.delete({ url: '/mp/account/delete?id=' + id, method: 'delete' })
+  return request.delete({ url: '/mp/account/delete/' + id, method: 'delete' })
 }
 
 // 获得公众号账号
 export const getAccount = async (id) => {
-  return request.get({ url: '/mp/account/get?id=' + id })
+  return request.get({ url: '/mp/account/get/' + id })
 }
 
 // 获得公众号账号分页
@@ -37,10 +37,10 @@ export const getSimpleAccountList = async () => {
 
 // 生成公众号二维码
 export const generateAccountQrCode = async (id) => {
-  return request.put({ url: '/mp/account/generate-qr-code?id=' + id })
+  return request.put({ url: '/mp/account/generate-qr-code/' + id })
 }
 
 // 清空公众号 API 配额
 export const clearAccountQuota = async (id) => {
-  return request.put({ url: '/mp/account/clear-quota?id=' + id })
+  return request.put({ url: '/mp/account/clear-quota/' + id })
 }

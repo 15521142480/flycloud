@@ -3,7 +3,7 @@ package com.fly.system.api.feign;
 import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.system.api.constants.SystemFeignApiConstants;
-import com.fly.system.api.domain.SysDict;
+import com.fly.system.api.domain.SysDictData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +32,6 @@ public interface ISysDictApi {
      * @return Result
      */
     @GetMapping(SystemFeignApiConstants.PROVIDER_DICT_LIST)
-    R<List<SysDict>> getList(@RequestParam("code") String code);
+    R<List<SysDictData>> getList(@RequestParam("code") String code);
 
 }

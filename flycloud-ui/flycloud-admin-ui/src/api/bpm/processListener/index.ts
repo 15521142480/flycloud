@@ -21,7 +21,7 @@ export const ProcessListenerApi = {
 
   // 查询流程监听器详情
   getProcessListener: async (id: number) => {
-    return await request.get({ url: `/${BPM_BASE_URL}/processListener/get?id=` + id })
+    return await request.get({ url: `/${BPM_BASE_URL}/processListener/get/` + id })
   },
 
   // 新增流程监听器
@@ -36,6 +36,6 @@ export const ProcessListenerApi = {
 
   // 删除流程监听器
   deleteProcessListener: async (id: number) => {
-    return await request.delete({ url: `/${BPM_BASE_URL}/processListener/delete?id=` + id })
+    return await request.delete({ url: `/${BPM_BASE_URL}/processListener/delete/` + id })
   }
 }

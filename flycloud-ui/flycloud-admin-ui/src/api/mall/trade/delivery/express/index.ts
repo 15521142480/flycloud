@@ -16,7 +16,7 @@ export const getDeliveryExpressPage = async (params: PageParam) => {
 
 // 查询快递公司详情
 export const getDeliveryExpress = async (id: number) => {
-  return await request.get({ url: '/trade/delivery/express/get?id=' + id })
+  return await request.get({ url: '/trade/delivery/express/get/' + id })
 }
 
 // 获得快递公司精简信息列表
@@ -36,7 +36,7 @@ export const updateDeliveryExpress = async (data: DeliveryExpressVO) => {
 
 // 删除快递公司
 export const deleteDeliveryExpress = async (id: number) => {
-  return await request.delete({ url: '/trade/delivery/express/delete?id=' + id })
+  return await request.delete({ url: '/trade/delivery/express/delete/' + id })
 }
 
 // 导出快递公司 Excel

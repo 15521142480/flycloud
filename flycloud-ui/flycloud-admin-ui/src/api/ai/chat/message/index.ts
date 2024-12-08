@@ -61,7 +61,7 @@ export const ChatMessageApi = {
 
   // 删除消息
   deleteChatMessage: async (id: string) => {
-    return await request.delete({ url: `/ai/chat/message/delete?id=${id}` })
+    return await request.delete({ url: `/ai/chat/message/delete/${id}` })
   },
 
   // 删除指定对话的消息
@@ -78,6 +78,6 @@ export const ChatMessageApi = {
 
   // 管理员删除消息
   deleteChatMessageByAdmin: async (id: number) => {
-    return await request.delete({ url: `/ai/chat/message/delete-by-admin?id=${id}` })
+    return await request.delete({ url: `/ai/chat/message/delete-by-admin/${id}` })
   }
 }

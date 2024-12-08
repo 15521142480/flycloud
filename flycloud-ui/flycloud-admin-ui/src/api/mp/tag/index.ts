@@ -26,14 +26,14 @@ export const updateTag = (data: TagVO) => {
 // 删除公众号标签
 export const deleteTag = (id: number) => {
   return request.delete({
-    url: '/mp/tag/delete?id=' + id
+    url: '/mp/tag/delete/' + id
   })
 }
 
 // 获得公众号标签
 export const getTag = (id: number) => {
   return request.get({
-    url: '/mp/tag/get?id=' + id
+    url: '/mp/tag/get/' + id
   })
 }
 

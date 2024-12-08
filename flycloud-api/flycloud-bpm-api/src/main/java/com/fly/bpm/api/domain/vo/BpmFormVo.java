@@ -2,14 +2,11 @@ package com.fly.bpm.api.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.fly.common.annotation.ExcelDictFormat;
-import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-
-
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * BPM 单定义视图对象
@@ -50,13 +47,19 @@ public class BpmFormVo implements Serializable {
     /**
      * 表单项的数组
      */
-    @ExcelProperty(value = "表单项的数组")
-    private String fields;
+//    @ExcelProperty(value = "表单项的数组")
+    private List<String> fields;
 
     /**
      * 备注
      */
     @ExcelProperty(value = "备注")
     private String remark;
+
+
+    private String createBy;
+
+    private LocalDateTime createTime;
+
 
 }

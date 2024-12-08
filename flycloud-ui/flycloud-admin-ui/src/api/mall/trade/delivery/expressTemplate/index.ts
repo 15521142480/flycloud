@@ -30,7 +30,7 @@ export const getDeliveryExpressTemplatePage = async (params: PageParam) => {
 
 // 查询快递运费模板详情
 export const getDeliveryExpressTemplate = async (id: number) => {
-  return await request.get({ url: '/trade/delivery/express-template/get?id=' + id })
+  return await request.get({ url: '/trade/delivery/express-template/get/' + id })
 }
 
 // 查询快递运费模板详情
@@ -50,5 +50,5 @@ export const updateDeliveryExpressTemplate = async (data: DeliveryExpressTemplat
 
 // 删除快递运费模板
 export const deleteDeliveryExpressTemplate = async (id: number) => {
-  return await request.delete({ url: '/trade/delivery/express-template/delete?id=' + id })
+  return await request.delete({ url: '/trade/delivery/express-template/delete/' + id })
 }

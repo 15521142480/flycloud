@@ -59,7 +59,7 @@ export const getContactPageByBusiness = async (params: any) => {
 
 // 查询 CRM 联系人详情
 export const getContact = async (id: number) => {
-  return await request.get({ url: `/crm/contact/get?id=` + id })
+  return await request.get({ url: `/crm/contact/get/` + id })
 }
 
 // 新增 CRM 联系人
@@ -74,7 +74,7 @@ export const updateContact = async (data: ContactVO) => {
 
 // 删除 CRM 联系人
 export const deleteContact = async (id: number) => {
-  return await request.delete({ url: `/crm/contact/delete?id=` + id })
+  return await request.delete({ url: `/crm/contact/delete/` + id })
 }
 
 // 导出 CRM 联系人 Excel

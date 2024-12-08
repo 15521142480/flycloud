@@ -38,12 +38,12 @@ export const updateProperty = (data: PropertyVO) => {
 
 // 删除属性项
 export const deleteProperty = (id: number) => {
-  return request.delete({ url: `/product/property/delete?id=${id}` })
+  return request.delete({ url: `/product/property/delete/${id}` })
 }
 
 // 获得属性项
 export const getProperty = (id: number): Promise<PropertyVO> => {
-  return request.get({ url: `/product/property/get?id=${id}` })
+  return request.get({ url: `/product/property/get/${id}` })
 }
 
 // 获得属性项分页
@@ -65,7 +65,7 @@ export const getPropertyValuePage = (params: PageParam & any) => {
 
 // 获得属性值
 export const getPropertyValue = (id: number): Promise<PropertyValueVO> => {
-  return request.get({ url: `/product/property/value/get?id=${id}` })
+  return request.get({ url: `/product/property/value/get/${id}` })
 }
 
 // 创建属性值
@@ -80,7 +80,7 @@ export const updatePropertyValue = (data: PropertyValueVO) => {
 
 // 删除属性值
 export const deletePropertyValue = (id: number) => {
-  return request.delete({ url: `/product/property/value/delete?id=${id}` })
+  return request.delete({ url: `/product/property/value/delete/${id}` })
 }
 
 // 获得属性值精简列表

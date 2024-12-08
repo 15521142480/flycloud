@@ -67,6 +67,24 @@ public class BpmModelServiceImpl implements BpmModelService {
     private final BpmTaskCandidateInvoker taskCandidateInvoker;
 
 
+
+    /**
+     * 获得流程模型列表
+     *
+     * @param name 模型名称
+     * @return 流程模型列表
+     */
+    @Override
+    public List<Model> getModelList(String name) {
+
+        ModelQuery modelQuery = repositoryService.createModelQuery();
+        if (StrUtil.isNotEmpty(name)) {
+            modelQuery.modelNameLike(name);
+        }
+        return modelQuery.list();
+    }
+
+
     /**
      * 获得流程模型分页
      *
@@ -194,14 +212,18 @@ public class BpmModelServiceImpl implements BpmModelService {
 
         // 1.1 校验流程模型存在
         Model model = validateModelManager(id, userId);
+
         // 1.2 校验流程图
         byte[] bpmnBytes = getModelBpmnXML(model.getId());
         validateBpmnXml(bpmnBytes);
-        // 1.3 校验表单已配
+
+        // 1.3 校验表单已配和赋值表单
         BpmModelMetaInfoVO metaInfo = BpmModelConvert.INSTANCE.parseMetaInfo(model);
-        BpmForm form = validateFormConfig(metaInfo);
+        BpmForm form = this.validateFormConfig(metaInfo);
+
         // 1.4 校验任务分配规则已配置
         taskCandidateInvoker.validateBpmnConfig(bpmnBytes);
+
         // 1.5 获取仿钉钉流程设计器模型数据
         byte[] simpleBytes = getModelSimpleJson(model.getId());
 
@@ -214,6 +236,7 @@ public class BpmModelServiceImpl implements BpmModelService {
         // 2.3 更新 model 的 deploymentId，进行关联
         ProcessDefinition definition = processDefinitionService.getProcessDefinition(definitionId);
         model.setDeploymentId(definition.getDeploymentId());
+
         repositoryService.saveModel(model);
     }
 
@@ -313,19 +336,23 @@ public class BpmModelServiceImpl implements BpmModelService {
      * @return 表单配置
      */
     private BpmForm validateFormConfig(BpmModelMetaInfoVO metaInfo) {
+
         if (metaInfo == null || metaInfo.getFormType() == null) {
             throw exception(MODEL_DEPLOY_FAIL_FORM_NOT_CONFIG);
         }
         // 校验表单存在
         if (Objects.equals(metaInfo.getFormType(), BpmModelFormTypeEnum.NORMAL.getType())) {
+
             if (metaInfo.getFormId() == null) {
                 throw exception(MODEL_DEPLOY_FAIL_FORM_NOT_CONFIG);
             }
+            // 根据表单id获取和赋值表单信息
             BpmForm form = bpmFormMapper.selectById(metaInfo.getFormId());
             if (form == null) {
                 throw exception(FORM_NOT_EXISTS);
             }
             return form;
+
         } else {
             if (StrUtil.isEmpty(metaInfo.getFormCustomCreatePath()) || StrUtil.isEmpty(metaInfo.getFormCustomViewPath())) {
                 throw exception(MODEL_DEPLOY_FAIL_FORM_NOT_CONFIG);

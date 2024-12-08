@@ -58,7 +58,7 @@ export const getFollowCustomerCount = async () => {
 
 // 查询客户详情
 export const getCustomer = async (id: number) => {
-  return await request.get({ url: `/crm/customer/get?id=` + id })
+  return await request.get({ url: `/crm/customer/get/` + id })
 }
 
 // 新增客户
@@ -78,7 +78,7 @@ export const updateCustomerDealStatus = async (id: number, dealStatus: boolean) 
 
 // 删除客户
 export const deleteCustomer = async (id: number) => {
-  return await request.delete({ url: `/crm/customer/delete?id=` + id })
+  return await request.delete({ url: `/crm/customer/delete/` + id })
 }
 
 // 导出客户 Excel
@@ -128,5 +128,5 @@ export const distributeCustomer = async (ids: any[], ownerUserId: number) => {
 
 // 客户放入公海
 export const putCustomerPool = async (id: number) => {
-  return await request.put({ url: `/crm/customer/put-pool?id=${id}` })
+  return await request.put({ url: `/crm/customer/put-pool/${id}` })
 }

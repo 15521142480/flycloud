@@ -24,7 +24,7 @@ export const SeckillConfigApi = {
 
   // 查询秒杀时段详情
   getSeckillConfig: async (id: number) => {
-    return await request.get({ url: `/promotion/seckill-config/get?id=` + id })
+    return await request.get({ url: `/promotion/seckill-config/get/` + id })
   },
 
   // 新增秒杀时段
@@ -39,7 +39,7 @@ export const SeckillConfigApi = {
 
   // 删除秒杀时段
   deleteSeckillConfig: async (id: number) => {
-    return await request.delete({ url: `/promotion/seckill-config/delete?id=` + id })
+    return await request.delete({ url: `/promotion/seckill-config/delete/` + id })
   },
 
   // 修改时段配置状态

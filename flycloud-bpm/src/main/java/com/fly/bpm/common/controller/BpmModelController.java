@@ -29,10 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.fly.common.utils.collection.CollectionUtils.*;
@@ -61,6 +58,44 @@ public class BpmModelController {
 
     private final ISysUserApi iSysUserProvider;
 
+
+    /**
+     * 获得模型列表
+     *
+     */
+    @GetMapping("/list")
+    public R<List<BpmModelRespVO>> getModelPage(@RequestParam(value = "name", required = false) String name) {
+
+        List<Model> list = modelService.getModelList(name);
+        if (CollUtil.isEmpty(list)) {
+            return R.ok(Collections.emptyList());
+        }
+
+        // 获得 Form 表单
+        Set<Long> formIds = convertSet(list, model -> {
+            BpmModelMetaInfoVO metaInfo = BpmModelConvert.INSTANCE.parseMetaInfo(model);
+            return metaInfo != null ? metaInfo.getFormId() : null;
+        });
+        Map<Long, BpmForm> formMap = formService.getFormMap(formIds);
+        // 获得 Category Map
+        Map<String, BpmCategory> categoryMap = categoryService.getCategoryMap(
+                convertSet(list, Model::getCategory));
+        // 获得 Deployment Map
+        Map<String, Deployment> deploymentMap = processDefinitionService.getDeploymentMap(
+                convertSet(list, Model::getDeploymentId));
+        // 获得 ProcessDefinition Map
+        List<ProcessDefinition> processDefinitions = processDefinitionService.getProcessDefinitionListByDeploymentIds(
+                deploymentMap.keySet());
+        Map<String, ProcessDefinition> processDefinitionMap = convertMap(processDefinitions, ProcessDefinition::getDeploymentId);
+        // 获得 User Map
+        Set<Long> userIds = convertSetByFlatMap(list, model -> {
+            BpmModelMetaInfoVO metaInfo = BpmModelConvert.INSTANCE.parseMetaInfo(model);
+            return metaInfo != null ? metaInfo.getStartUserIds().stream() : Stream.empty();
+        });
+        Map<Long, SysUser> userMap = iSysUserProvider.getUserMapByIds(userIds);
+        return R.ok(BpmModelConvert.INSTANCE.buildModelList(list,
+                formMap, categoryMap, deploymentMap, processDefinitionMap, userMap));
+    }
 
 
     /**

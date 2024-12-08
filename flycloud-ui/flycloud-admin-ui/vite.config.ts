@@ -82,13 +82,14 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
         // 项目使用的vite插件。 单独提取到build/vite/plugin中管理
         plugins: createVitePlugins(),
         css: {
-            preprocessorOptions: {
-                scss: {
-                    additionalData: '@import "./src/styles/variables.scss";',
-                    javascriptEnabled: true
-                }
+          preprocessorOptions: {
+            scss: {
+              additionalData: '@use "@/styles/variables.scss" as *;',
+              javascriptEnabled: true
             }
+          }
         },
+
         resolve: {
             extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss', '.css'],
             alias: [

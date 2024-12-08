@@ -230,19 +230,25 @@ public class VelocityUtils {
      * @return 返回需要导入的包列表
      */
     public static HashSet<String> getImportList(GenTable genTable) {
+
         List<GenTableColumn> columns = genTable.getColumns();
         GenTable subGenTable = genTable.getSubTable();
         HashSet<String> importList = new HashSet<>();
         if (ObjectUtil.isNotNull(subGenTable)) {
             importList.add("java.util.List");
         }
+
         for (GenTableColumn column : columns) {
-            if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType())) {
-                importList.add("java.util.Date");
+
+//            if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType())) {
+//            importList.add("java.util.Date");
+            if (!column.isSuperColumn() && GenConstants.TYPE_LOCALDATETIME.equals(column.getJavaType())) {
+                importList.add("java.time.LocalDateTime");
             } else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType())) {
                 importList.add("java.math.BigDecimal");
             }
         }
+
         return importList;
     }
 

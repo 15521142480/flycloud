@@ -9,6 +9,7 @@ import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.repository.Model;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Flowable流程模型 - 接口层
@@ -18,6 +19,14 @@ import javax.validation.Valid;
  */
 public interface BpmModelService {
 
+
+    /**
+     * 获得流程模型列表
+     *
+     * @param name 模型名称
+     * @return 流程模型列表
+     */
+    List<Model> getModelList(String name);
 
     /**
      * 获得流程模型分页

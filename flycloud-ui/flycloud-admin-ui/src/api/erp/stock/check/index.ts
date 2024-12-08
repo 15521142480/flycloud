@@ -20,7 +20,7 @@ export const StockCheckApi = {
 
   // 查询库存盘点单详情
   getStockCheck: async (id: number) => {
-    return await request.get({ url: `/erp/stock-check/get?id=` + id })
+    return await request.get({ url: `/erp/stock-check/get/` + id })
   },
 
   // 新增库存盘点单

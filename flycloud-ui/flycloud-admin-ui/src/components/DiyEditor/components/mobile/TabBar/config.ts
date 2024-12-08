@@ -58,7 +58,7 @@ export const component = {
       },
       {
         text: '分类',
-        url: '/pages/index/category?id=3',
+        url: '/pages/index/category/3',
         iconUrl: 'http://mall.yudao.iocoder.cn/static/images/2-001.png',
         activeIconUrl: 'http://mall.yudao.iocoder.cn/static/images/2-002.png'
       },

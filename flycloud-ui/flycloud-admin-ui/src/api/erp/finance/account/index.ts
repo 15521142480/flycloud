@@ -25,7 +25,7 @@ export const AccountApi = {
 
   // 查询结算账户详情
   getAccount: async (id: number) => {
-    return await request.get({ url: `/erp/account/get?id=` + id })
+    return await request.get({ url: `/erp/account/get/` + id })
   },
 
   // 新增结算账户
@@ -51,7 +51,7 @@ export const AccountApi = {
 
   // 删除结算账户
   deleteAccount: async (id: number) => {
-    return await request.delete({ url: `/erp/account/delete?id=` + id })
+    return await request.delete({ url: `/erp/account/delete/` + id })
   },
 
   // 导出结算账户 Excel

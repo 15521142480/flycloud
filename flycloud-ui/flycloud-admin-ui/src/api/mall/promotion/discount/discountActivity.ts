@@ -36,7 +36,7 @@ export const getDiscountActivityPage = async (params) => {
 
 // 查询限时折扣活动详情
 export const getDiscountActivity = async (id: number) => {
-  return await request.get({ url: '/promotion/discount-activity/get?id=' + id })
+  return await request.get({ url: '/promotion/discount-activity/get/' + id })
 }
 
 // 新增限时折扣活动
@@ -51,10 +51,10 @@ export const updateDiscountActivity = async (data: DiscountActivityVO) => {
 
 // 关闭限时折扣活动
 export const closeDiscountActivity = async (id: number) => {
-  return await request.put({ url: '/promotion/discount-activity/close?id=' + id })
+  return await request.put({ url: '/promotion/discount-activity/close/' + id })
 }
 
 // 删除限时折扣活动
 export const deleteDiscountActivity = async (id: number) => {
-  return await request.delete({ url: '/promotion/discount-activity/delete?id=' + id })
+  return await request.delete({ url: '/promotion/discount-activity/delete/' + id })
 }

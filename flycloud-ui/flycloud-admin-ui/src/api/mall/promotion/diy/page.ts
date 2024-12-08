@@ -16,7 +16,7 @@ export const getDiyPagePage = async (params: any) => {
 
 // 查询装修页面详情
 export const getDiyPage = async (id: number) => {
-  return await request.get({ url: `/promotion/diy-page/get?id=` + id })
+  return await request.get({ url: `/promotion/diy-page/get/` + id })
 }
 
 // 新增装修页面
@@ -31,12 +31,12 @@ export const updateDiyPage = async (data: DiyPageVO) => {
 
 // 删除装修页面
 export const deleteDiyPage = async (id: number) => {
-  return await request.delete({ url: `/promotion/diy-page/delete?id=` + id })
+  return await request.delete({ url: `/promotion/diy-page/delete/` + id })
 }
 
 // 获得装修页面属性
 export const getDiyPageProperty = async (id: number) => {
-  return await request.get({ url: `/promotion/diy-page/get-property?id=` + id })
+  return await request.get({ url: `/promotion/diy-page/get-property/` + id })
 }
 
 // 更新装修页面属性

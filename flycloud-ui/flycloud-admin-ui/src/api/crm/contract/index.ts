@@ -63,7 +63,7 @@ export const getContractPageByBusiness = async (params: any) => {
 
 // 查询 CRM 合同详情
 export const getContract = async (id: number) => {
-  return await request.get({ url: `/crm/contract/get?id=` + id })
+  return await request.get({ url: `/crm/contract/get/` + id })
 }
 
 // 查询 CRM 合同下拉列表
@@ -85,7 +85,7 @@ export const updateContract = async (data: ContractVO) => {
 
 // 删除 CRM 合同
 export const deleteContract = async (id: number) => {
-  return await request.delete({ url: `/crm/contract/delete?id=` + id })
+  return await request.delete({ url: `/crm/contract/delete/` + id })
 }
 
 // 导出 CRM 合同 Excel
@@ -95,7 +95,7 @@ export const exportContract = async (params) => {
 
 // 提交审核
 export const submitContract = async (id: number) => {
-  return await request.put({ url: `/crm/contract/submit?id=${id}` })
+  return await request.put({ url: `/crm/contract/submit/${id}` })
 }
 
 // 合同转移

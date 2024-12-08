@@ -28,12 +28,12 @@ export const updateUserGroup = async (data: UserGroupVO) => {
 
 // 删除用户组
 export const deleteUserGroup = async (id: number) => {
-  return await request.delete({ url: '/bpm/user-group/delete?id=' + id })
+  return await request.delete({ url: '/bpm/user-group/delete/' + id })
 }
 
 // 获得用户组
 export const getUserGroup = async (id: number) => {
-  return await request.get({ url: '/bpm/user-group/get?id=' + id })
+  return await request.get({ url: '/bpm/user-group/get/' + id })
 }
 
 // 获得用户组分页

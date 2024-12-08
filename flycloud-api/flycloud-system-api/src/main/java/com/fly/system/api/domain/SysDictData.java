@@ -14,8 +14,8 @@ import com.fly.common.domain.BaseEntity;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_dict")
-public class SysDict extends BaseEntity {
+@TableName("sys_dict_data")
+public class SysDictData extends BaseEntity {
 
     private static final long serialVersionUID=1L;
 

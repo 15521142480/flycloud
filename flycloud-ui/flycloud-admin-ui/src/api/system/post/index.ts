@@ -22,7 +22,7 @@ export const getSimplePostList = async (): Promise<PostVO[]> => {
 
 // 查询岗位详情
 export const getPost = async (id: number) => {
-  return await request.get({ url: '/system/post/get?id=' + id })
+  return await request.get({ url: '/system/post/get/' + id })
 }
 
 // 新增岗位
@@ -37,7 +37,7 @@ export const updatePost = async (data: PostVO) => {
 
 // 删除岗位
 export const deletePost = async (id: number) => {
-  return await request.delete({ url: '/system/post/delete?id=' + id })
+  return await request.delete({ url: '/system/post/delete/' + id })
 }
 
 // 导出岗位

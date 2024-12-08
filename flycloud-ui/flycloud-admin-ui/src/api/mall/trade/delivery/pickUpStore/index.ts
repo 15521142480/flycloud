@@ -22,7 +22,7 @@ export const getDeliveryPickUpStorePage = async (params) => {
 
 // 查询自提门店详情
 export const getDeliveryPickUpStore = async (id: number) => {
-  return await request.get({ url: '/trade/delivery/pick-up-store/get?id=' + id })
+  return await request.get({ url: '/trade/delivery/pick-up-store/get/' + id })
 }
 
 // 查询自提门店精简列表
@@ -42,5 +42,5 @@ export const updateDeliveryPickUpStore = async (data: DeliveryPickUpStoreVO) => 
 
 // 删除自提门店
 export const deleteDeliveryPickUpStore = async (id: number) => {
-  return await request.delete({ url: '/trade/delivery/pick-up-store/delete?id=' + id })
+  return await request.delete({ url: '/trade/delivery/pick-up-store/delete/' + id })
 }

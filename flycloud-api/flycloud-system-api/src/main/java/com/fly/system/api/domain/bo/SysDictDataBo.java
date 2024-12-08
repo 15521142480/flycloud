@@ -14,7 +14,7 @@ import com.fly.common.domain.BaseEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysDictBo extends BaseEntity {
+public class SysDictDataBo extends BaseEntity {
 
     /**
      * 字典编码

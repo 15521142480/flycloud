@@ -83,7 +83,7 @@ export const cancelProcessInstanceByAdmin = async (id: number, reason: string) =
 }
 
 export const getProcessInstance = async (id: string) => {
-  return await request.get({ url: `/${BPM_BASE_URL}/instance/get?id=` + id })
+  return await request.get({ url: `/${BPM_BASE_URL}/instance/get/` + id })
 }
 
 

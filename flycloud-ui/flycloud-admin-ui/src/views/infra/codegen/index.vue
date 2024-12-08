@@ -210,7 +210,7 @@ const openImportTable = () => {
 
 /** 编辑操作 */
 const handleUpdate = (id: number) => {
-  push('/codegen/edit?id=' + id)
+  push('/codegen/edit/' + id)
 }
 
 /** 预览操作 */

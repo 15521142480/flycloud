@@ -13,9 +13,9 @@ import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.fly.system.api.domain.vo.SysDictVo;
-import com.fly.system.api.domain.bo.SysDictBo;
-import com.fly.system.service.ISysDictService;
+import com.fly.system.api.domain.vo.SysDictDataVo;
+import com.fly.system.api.domain.bo.SysDictDataBo;
+import com.fly.system.service.ISysDictDataService;
 
 import java.util.List;
 import java.util.Arrays;
@@ -32,17 +32,17 @@ import javax.servlet.http.HttpServletResponse;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/dict")
-public class SysDictController extends BaseController {
+@RequestMapping("/dictData")
+public class SysDictDataController extends BaseController {
 
-    private final ISysDictService iSysDictService;
+    private final ISysDictDataService iSysDictService;
 
 
     /**
      * 查询字典数据列表-分页
      */
     @GetMapping("/list")
-    public R<PageVo<SysDictVo>> list(SysDictBo bo, PageBo page) {
+    public R<PageVo<SysDictDataVo>> list(SysDictDataBo bo, PageBo page) {
         return R.ok(iSysDictService.queryPageList(bo, page));
     }
 
@@ -51,7 +51,7 @@ public class SysDictController extends BaseController {
      * 查询字典数据列表
      */
     @GetMapping("/getList")
-    public R<List<SysDictVo>> getList(SysDictBo bo) {
+    public R<List<SysDictDataVo>> getList(SysDictDataBo bo) {
 
         bo.setStatus(StatusEnum.ENABLE.getStatus());
         bo.setIsDeleted(false);
@@ -64,9 +64,9 @@ public class SysDictController extends BaseController {
      */
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(SysDictBo bo, HttpServletResponse response) {
-        List<SysDictVo> list = iSysDictService.queryList(bo);
-        ExcelUtil.exportExcel(list, "字典数据", SysDictVo.class, response);
+    public void export(SysDictDataBo bo, HttpServletResponse response) {
+        List<SysDictDataVo> list = iSysDictService.queryList(bo);
+        ExcelUtil.exportExcel(list, "字典数据", SysDictDataVo.class, response);
     }
 
 
@@ -76,7 +76,7 @@ public class SysDictController extends BaseController {
      * @param id 主键
      */
     @GetMapping("/{id}")
-    public R<SysDictVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+    public R<SysDictDataVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iSysDictService.queryById(id));
     }
 
@@ -86,7 +86,7 @@ public class SysDictController extends BaseController {
      */
     @Log(title = "字典数据", businessType = BusinessType.INSERT)
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysDictBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysDictDataBo bo) {
         return R.ok(iSysDictService.insertByBo(bo));
     }
 
@@ -96,7 +96,7 @@ public class SysDictController extends BaseController {
      */
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysDictBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysDictDataBo bo) {
         return R.ok(iSysDictService.updateByBo(bo));
     }
 

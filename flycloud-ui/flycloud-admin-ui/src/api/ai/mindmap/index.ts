@@ -55,6 +55,6 @@ export const AiMindMapApi = {
   },
   // 删除思维导图
   deleteMindMap: async (id: number) => {
-    return await request.delete({ url: `/ai/mind-map/delete?id=` + id })
+    return await request.delete({ url: `/ai/mind-map/delete/` + id })
   }
 }

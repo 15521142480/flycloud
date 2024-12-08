@@ -25,12 +25,12 @@ export const getBrokerageWithdrawPage = async (params: any) => {
 
 // 查询佣金提现详情
 export const getBrokerageWithdraw = async (id: number) => {
-  return await request.get({ url: `/trade/brokerage-withdraw/get?id=` + id })
+  return await request.get({ url: `/trade/brokerage-withdraw/get/` + id })
 }
 
 // 佣金提现 - 通过申请
 export const approveBrokerageWithdraw = async (id: number) => {
-  return await request.put({ url: `/trade/brokerage-withdraw/approve?id=` + id })
+  return await request.put({ url: `/trade/brokerage-withdraw/approve/` + id })
 }
 
 // 审核佣金提现 - 驳回申请

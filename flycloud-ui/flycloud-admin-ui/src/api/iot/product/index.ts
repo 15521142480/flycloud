@@ -27,7 +27,7 @@ export const ProductApi = {
 
   // 查询产品详情
   getProduct: async (id: number) => {
-    return await request.get({ url: `/iot/product/get?id=` + id })
+    return await request.get({ url: `/iot/product/get/` + id })
   },
 
   // 新增产品
@@ -42,7 +42,7 @@ export const ProductApi = {
 
   // 删除产品
   deleteProduct: async (id: number) => {
-    return await request.delete({ url: `/iot/product/delete?id=` + id })
+    return await request.delete({ url: `/iot/product/delete/` + id })
   },
 
   // 导出产品 Excel
@@ -52,7 +52,7 @@ export const ProductApi = {
 
   // 更新产品状态
   updateProductStatus: async (id: number, status: number) => {
-    return await request.put({ url: `/iot/product/update-status?id=` + id + `&status=` + status })
+    return await request.put({ url: `/iot/product/update-status/` + id + `&status=` + status })
   },
 
   // 查询产品（精简）列表

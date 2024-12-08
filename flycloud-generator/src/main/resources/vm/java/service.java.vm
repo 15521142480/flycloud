@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * ${functionName}Service接口
+ * ${functionName} 接口层
  *
  * @author ${author}
  * @date ${datetime}
@@ -26,7 +26,7 @@ public interface I${ClassName}Service {
 
 #if($table.crud || $table.sub)
     /**
-     * 查询${functionName}列表
+     * 查询${functionName}分页列表
      */
     PageVo<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageBo pageBo);
 #end

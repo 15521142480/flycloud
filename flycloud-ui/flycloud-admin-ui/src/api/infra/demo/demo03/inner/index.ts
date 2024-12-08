@@ -15,7 +15,7 @@ export const getDemo03StudentPage = async (params) => {
 
 // 查询学生详情
 export const getDemo03Student = async (id: number) => {
-  return await request.get({ url: `/infra/demo03-student/get?id=` + id })
+  return await request.get({ url: `/infra/demo03-student/get/` + id })
 }
 
 // 新增学生
@@ -30,7 +30,7 @@ export const updateDemo03Student = async (data: Demo03StudentVO) => {
 
 // 删除学生
 export const deleteDemo03Student = async (id: number) => {
-  return await request.delete({ url: `/infra/demo03-student/delete?id=` + id })
+  return await request.delete({ url: `/infra/demo03-student/delete/` + id })
 }
 
 // 导出学生 Excel

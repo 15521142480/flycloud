@@ -21,7 +21,7 @@ export const SaleOutApi = {
 
   // 查询销售出库详情
   getSaleOut: async (id: number) => {
-    return await request.get({ url: `/erp/sale-out/get?id=` + id })
+    return await request.get({ url: `/erp/sale-out/get/` + id })
   },
 
   // 新增销售出库

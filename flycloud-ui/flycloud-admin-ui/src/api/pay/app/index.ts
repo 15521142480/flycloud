@@ -35,7 +35,7 @@ export const getAppPage = (params: AppPageReqVO) => {
 
 // 查询详情支付应用
 export const getApp = (id: number) => {
-  return request.get({ url: '/pay/app/get?id=' + id })
+  return request.get({ url: '/pay/app/get/' + id })
 }
 
 // 新增支付应用
@@ -55,7 +55,7 @@ export const changeAppStatus = (data: AppUpdateStatusReqVO) => {
 
 // 删除支付应用
 export const deleteApp = (id: number) => {
-  return request.delete({ url: '/pay/app/delete?id=' + id })
+  return request.delete({ url: '/pay/app/delete/' + id })
 }
 
 // 获得支付应用列表

@@ -14,7 +14,7 @@ export const getGroupPage = async (params: any) => {
 
 // 查询用户分组详情
 export const getGroup = async (id: number) => {
-  return await request.get({ url: `/member/group/get?id=` + id })
+  return await request.get({ url: `/member/group/get/` + id })
 }
 
 // 新增用户分组
@@ -34,5 +34,5 @@ export const updateGroup = async (data: GroupVO) => {
 
 // 删除用户分组
 export const deleteGroup = async (id: number) => {
-  return await request.delete({ url: `/member/group/delete?id=` + id })
+  return await request.delete({ url: `/member/group/delete/` + id })
 }

@@ -29,14 +29,14 @@ export const updateForm = async (data: FormVO) => {
 // 删除工作流的表单定义
 export const deleteForm = async (id: number) => {
   return await request.delete({
-    url: '/bpm/form/delete?id=' + id
+    url: '/bpm/form/delete/' + id
   })
 }
 
 // 获得工作流的表单定义
 export const getForm = async (id: number) => {
   return await request.get({
-    url: '/bpm/form/get?id=' + id
+    url: '/bpm/form/get/' + id
   })
 }
 

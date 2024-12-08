@@ -38,7 +38,7 @@ export const getTenantPage = (params: TenantPageReqVO) => {
 
 // 查询租户详情
 export const getTenant = (id: number) => {
-  return request.get({ url: '/system/tenant/get?id=' + id })
+  return request.get({ url: '/system/tenant/get/' + id })
 }
 
 // 新增租户
@@ -53,7 +53,7 @@ export const updateTenant = (data: TenantVO) => {
 
 // 删除租户
 export const deleteTenant = (id: number) => {
-  return request.delete({ url: '/system/tenant/delete?id=' + id })
+  return request.delete({ url: '/system/tenant/delete/' + id })
 }
 
 // 导出租户

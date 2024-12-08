@@ -22,6 +22,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,30 @@ public interface BpmModelConvert {
 
 
     BpmModelConvert INSTANCE = Mappers.getMapper(BpmModelConvert.class);
+
+    /**
+     * 构建模型列表
+     */
+    default List<BpmModelRespVO> buildModelList(List<Model> list,
+                                                Map<Long, BpmForm> formMap,
+                                                Map<String, BpmCategory> categoryMap,
+                                                Map<String, Deployment> deploymentMap,
+                                                Map<String, ProcessDefinition> processDefinitionMap,
+                                                Map<Long, SysUser> userMap) {
+        List<BpmModelRespVO> result = convertList(list, model -> {
+            BpmModelMetaInfoVO metaInfo = parseMetaInfo(model);
+            BpmForm form = metaInfo != null ? formMap.get(metaInfo.getFormId()) : null;
+            BpmCategory category = categoryMap.get(model.getCategory());
+            Deployment deployment = model.getDeploymentId() != null ? deploymentMap.get(model.getDeploymentId()) : null;
+            ProcessDefinition processDefinition = model.getDeploymentId() != null ?
+                    processDefinitionMap.get(model.getDeploymentId()) : null;
+            List<SysUser> startUsers = metaInfo != null ? convertList(metaInfo.getStartUserIds(), userMap::get) : null;
+            return buildModel0(model, metaInfo, form, category, deployment, processDefinition, startUsers);
+        });
+        // 排序
+        result.sort(Comparator.comparing(BpmModelMetaInfoVO::getSort));
+        return result;
+    }
 
 
     /**

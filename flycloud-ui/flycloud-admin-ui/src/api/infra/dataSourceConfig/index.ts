@@ -21,12 +21,12 @@ export const updateDataSourceConfig = (data: DataSourceConfigVO) => {
 
 // 删除数据源配置
 export const deleteDataSourceConfig = (id: number) => {
-  return request.delete({ url: '/infra/data-source-config/delete?id=' + id })
+  return request.delete({ url: '/infra/data-source-config/delete/' + id })
 }
 
 // 查询数据源配置详情
 export const getDataSourceConfig = (id: number) => {
-  return request.get({ url: '/infra/data-source-config/get?id=' + id })
+  return request.get({ url: '/infra/data-source-config/get/' + id })
 }
 
 // 查询数据源配置列表

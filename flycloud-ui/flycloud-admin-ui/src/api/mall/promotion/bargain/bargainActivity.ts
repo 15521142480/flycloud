@@ -44,7 +44,7 @@ export const getBargainActivityPage = async (params: any) => {
 
 // 查询砍价活动详情
 export const getBargainActivity = async (id: number) => {
-  return await request.get({ url: '/promotion/bargain-activity/get?id=' + id })
+  return await request.get({ url: '/promotion/bargain-activity/get/' + id })
 }
 
 // 新增砍价活动
@@ -59,10 +59,10 @@ export const updateBargainActivity = async (data: BargainActivityVO) => {
 
 // 关闭砍价活动
 export const closeBargainActivity = async (id: number) => {
-  return await request.put({ url: '/promotion/bargain-activity/close?id=' + id })
+  return await request.put({ url: '/promotion/bargain-activity/close/' + id })
 }
 
 // 删除砍价活动
 export const deleteBargainActivity = async (id: number) => {
-  return await request.delete({ url: '/promotion/bargain-activity/delete?id=' + id })
+  return await request.delete({ url: '/promotion/bargain-activity/delete/' + id })
 }

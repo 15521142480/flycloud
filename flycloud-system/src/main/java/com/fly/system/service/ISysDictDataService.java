@@ -1,7 +1,7 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.vo.SysDictVo;
-import com.fly.system.api.domain.bo.SysDictBo;
+import com.fly.system.api.domain.vo.SysDictDataVo;
+import com.fly.system.api.domain.bo.SysDictDataBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 
@@ -14,32 +14,32 @@ import java.util.List;
  * @author fly
  * @date 2024-11-23
  */
-public interface ISysDictService {
+public interface ISysDictDataService {
 
     /**
      * 查询字典数据
      */
-    SysDictVo queryById(Long id);
+    SysDictDataVo queryById(Long id);
 
     /**
      * 查询字典数据列表
      */
-    PageVo<SysDictVo> queryPageList(SysDictBo bo, PageBo pageBo);
+    PageVo<SysDictDataVo> queryPageList(SysDictDataBo bo, PageBo pageBo);
 
     /**
      * 查询字典数据列表
      */
-    List<SysDictVo> queryList(SysDictBo bo);
+    List<SysDictDataVo> queryList(SysDictDataBo bo);
 
     /**
      * 修改字典数据
      */
-    Boolean insertByBo(SysDictBo bo);
+    Boolean insertByBo(SysDictDataBo bo);
 
     /**
      * 修改字典数据
      */
-    Boolean updateByBo(SysDictBo bo);
+    Boolean updateByBo(SysDictDataBo bo);
 
     /**
      * 校验并批量删除字典数据信息

@@ -23,7 +23,7 @@ export const getArticlePage = async (params: any) => {
 
 // 查询文章管理详情
 export const getArticle = async (id: number) => {
-  return await request.get({ url: `/promotion/article/get?id=` + id })
+  return await request.get({ url: `/promotion/article/get/` + id })
 }
 
 // 新增文章管理
@@ -38,5 +38,5 @@ export const updateArticle = async (data: ArticleVO) => {
 
 // 删除文章管理
 export const deleteArticle = async (id: number) => {
-  return await request.delete({ url: `/promotion/article/delete?id=` + id })
+  return await request.delete({ url: `/promotion/article/delete/` + id })
 }
