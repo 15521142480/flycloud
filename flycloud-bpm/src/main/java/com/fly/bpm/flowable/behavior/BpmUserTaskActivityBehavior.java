@@ -34,11 +34,19 @@ public class BpmUserTaskActivityBehavior extends UserTaskActivityBehavior {
         super(userTask);
     }
 
+
+    /**
+     * 处理审批节点的审批人
+     *
+     *
+    */
     @Override
     @Transactional(rollbackFor = Exception.class)
     protected void handleAssignments(TaskService taskService, String assignee, String owner,
         List<String> candidateUsers, List<String> candidateGroups, TaskEntity task, ExpressionManager expressionManager,
-        DelegateExecution execution, ProcessEngineConfigurationImpl processEngineConfiguration) {
+        DelegateExecution execution, ProcessEngineConfigurationImpl processEngineConfiguration)
+    {
+
         // 第一步，获得任务的候选用户
         Long assigneeUserId = calculateTaskCandidateUsers(execution);
         // 第二步，设置作为负责人
@@ -47,7 +55,10 @@ public class BpmUserTaskActivityBehavior extends UserTaskActivityBehavior {
         }
     }
 
+
+
     private Long calculateTaskCandidateUsers(DelegateExecution execution) {
+
         // 情况一，如果是多实例的任务，例如说会签、或签等情况，则从 Variable 中获取。
         // 顺序审批可见 BpmSequentialMultiInstanceBehavior，并发审批可见 BpmSequentialMultiInstanceBehavior
         if (super.multiInstanceActivityBehavior != null) {
@@ -60,6 +71,7 @@ public class BpmUserTaskActivityBehavior extends UserTaskActivityBehavior {
         if (CollUtil.isEmpty(candidateUserIds)) {
             return null;
         }
+
         // 第二步，后随机选择一个任务的处理人
         // 疑问：为什么一定要选择一个任务处理人？
         // 解答：项目对 bpm 的任务是责任到人，所以每个任务有且仅有一个处理人。

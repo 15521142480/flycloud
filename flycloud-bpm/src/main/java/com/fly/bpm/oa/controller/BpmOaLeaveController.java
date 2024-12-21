@@ -1,5 +1,6 @@
 package com.fly.bpm.oa.controller;
 
+import com.fly.bpm.api.domain.bo.BpmOALeaveCreateBo;
 import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import com.fly.common.database.web.controller.BaseController;
@@ -31,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/oaLeave")
+@RequestMapping("/oa/leave")
 public class BpmOaLeaveController extends BaseController {
 
     private final IBpmOaLeaveService iBpmOaLeaveService;
@@ -40,9 +41,52 @@ public class BpmOaLeaveController extends BaseController {
     /**
      * 查询OA 请假申请列表
      */
-    @GetMapping("/list")
+    @GetMapping("/page")
     public R<PageVo<BpmOaLeaveVo>> list(BpmOaLeaveBo bo, PageBo page) {
         return R.ok(iBpmOaLeaveService.queryPageList(bo, page));
+    }
+
+
+    /**
+     * 获取OA 请假申请详细信息
+     *
+     * @param id 主键
+     */
+    @GetMapping("/get/{id}")
+    public R<BpmOaLeaveVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(iBpmOaLeaveService.queryById(id));
+    }
+
+
+    /**
+     * 新增OA 请假申请
+     */
+    @Log(title = "OA 请假申请", businessType = BusinessType.INSERT)
+    @PostMapping("/create")
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmOALeaveCreateBo bo) {
+        return R.ok(iBpmOaLeaveService.insertByBo(bo));
+    }
+
+
+    /**
+     * 修改OA 请假申请
+     */
+    @Log(title = "OA 请假申请", businessType = BusinessType.UPDATE)
+    @PutMapping("/update")
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmOaLeaveBo bo) {
+        return R.ok(iBpmOaLeaveService.updateByBo(bo));
+    }
+
+
+    /**
+     * 删除OA 请假申请
+     *
+     * @param ids 主键串
+     */
+    @Log(title = "OA 请假申请", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete/{ids}")
+    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+        return R.ok(iBpmOaLeaveService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 
@@ -56,46 +100,4 @@ public class BpmOaLeaveController extends BaseController {
         ExcelUtil.exportExcel(list, "OA 请假申请", BpmOaLeaveVo.class, response);
     }
 
-
-    /**
-     * 获取OA 请假申请详细信息
-     *
-     * @param id 主键
-     */
-    @GetMapping("/{id}")
-    public R<BpmOaLeaveVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(iBpmOaLeaveService.queryById(id));
-    }
-
-
-    /**
-     * 新增OA 请假申请
-     */
-    @Log(title = "OA 请假申请", businessType = BusinessType.INSERT)
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmOaLeaveBo bo) {
-        return R.ok(iBpmOaLeaveService.insertByBo(bo));
-    }
-
-
-    /**
-     * 修改OA 请假申请
-     */
-    @Log(title = "OA 请假申请", businessType = BusinessType.UPDATE)
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmOaLeaveBo bo) {
-        return R.ok(iBpmOaLeaveService.updateByBo(bo));
-    }
-
-
-    /**
-     * 删除OA 请假申请
-     *
-     * @param ids 主键串
-     */
-    @Log(title = "OA 请假申请", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmOaLeaveService.deleteWithValidByIds(Arrays.asList(ids), true));
-    }
 }

@@ -93,7 +93,7 @@ const getUserList = async (deptId?: number) => {
   formLoading.value = true
   try {
     // @ts-ignore
-    // TODO @芋艿：替换到 simple List 暂不支持 deptId 过滤
+    // TODO ：替换到 simple List 暂不支持 deptId 过滤
     // TODO @Zqqq：这个，可以使用前端过滤么？通过 deptList 获取到 deptId 子节点，然后去 userList
     const data = await UserApi.getUserPage({ pageSize: 100, pageNum: 1, deptId })
     // 更新过滤后的用户列表

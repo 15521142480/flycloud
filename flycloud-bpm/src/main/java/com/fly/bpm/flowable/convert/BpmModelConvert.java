@@ -159,6 +159,11 @@ public interface BpmModelConvert {
             vo.setStartUserIds(Collections.emptyList());
         }
 
+        // 如果为空，兜底处理，使用 createTime 创建时间
+        if (vo.getSort() == null) {
+            vo.setSort(model.getCreateTime().getTime());
+        }
+
         return vo;
     }
 

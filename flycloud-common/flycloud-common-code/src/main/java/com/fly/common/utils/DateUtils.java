@@ -118,6 +118,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 
     /**
+     * 日期日期转换
+     */
+    public static Date formatDate(LocalDateTime date) {
+
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime zonedDateTime = date.atZone(zoneId);
+        return Date.from(zonedDateTime.toInstant());
+    }
+
+
+    /**
      * 格式化日期
      *
      * @param date

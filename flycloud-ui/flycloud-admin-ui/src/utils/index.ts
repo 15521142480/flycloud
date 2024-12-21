@@ -256,7 +256,7 @@ export const formatToFraction = (num: number | string | undefined): string => {
  *
  * @param num 整数
  */
-// TODO @芋艿：看看怎么融合掉
+// TODO ：看看怎么融合掉
 export const floatToFixed2 = (num: number | string | undefined): string => {
   let str = '0.00'
   if (typeof num === 'undefined') {
@@ -283,7 +283,7 @@ export const floatToFixed2 = (num: number | string | undefined): string => {
  * 将一个分数转换为整数
  * @param num
  */
-// TODO @芋艿：看看怎么融合掉
+// TODO ：看看怎么融合掉
 export const convertToInteger = (num: number | string | undefined): number => {
   if (typeof num === 'undefined') return 0
   const parsedNumber = typeof num === 'string' ? parseFloat(num) : num

@@ -16,6 +16,13 @@ public interface ServerNames {
 
 
     /**
+     * 工作流服务名
+     */
+    String BPM_SERVER_NAME = "flycloud-bpm";
+
+
+
+    /**
      * 商城服务名
      */
     String MALL_SERVER_NAME = "flycloud-mall";

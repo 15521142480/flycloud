@@ -1,11 +1,14 @@
 package com.fly.bpm.api.domain.bo;
 
+import com.fly.common.utils.DateUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.fly.common.domain.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * OA 请假申请业务对象
@@ -46,13 +49,15 @@ public class BpmOaLeaveBo extends BaseEntity {
      * 开始时间
      */
     // @NotNull(message = "开始时间不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Date startTime;
+    @DateTimeFormat(pattern = DateUtils.YYYY_MM_DD_HH_MM_SS)
+    private LocalDateTime startTime;
 
     /**
      * 结束时间
      */
     // @NotNull(message = "结束时间不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Date endTime;
+    @DateTimeFormat(pattern = DateUtils.YYYY_MM_DD_HH_MM_SS)
+    private LocalDateTime endTime;
 
     /**
      * 请假天数

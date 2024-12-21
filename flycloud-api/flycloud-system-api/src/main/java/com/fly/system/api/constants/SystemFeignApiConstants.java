@@ -3,7 +3,7 @@ package com.fly.system.api.constants;
 import com.fly.common.constant.CommonConstants;
 
 /**
- * 系统常量
+ * 系统api常量
  *
  */
 public interface SystemFeignApiConstants {

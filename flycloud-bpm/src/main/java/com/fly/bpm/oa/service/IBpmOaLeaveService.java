@@ -1,5 +1,6 @@
 package com.fly.bpm.oa.service;
 
+import com.fly.bpm.api.domain.bo.BpmOALeaveCreateBo;
 import com.fly.bpm.api.domain.vo.BpmOaLeaveVo;
 import com.fly.bpm.api.domain.bo.BpmOaLeaveBo;
 import com.fly.common.domain.vo.PageVo;
@@ -34,7 +35,7 @@ public interface IBpmOaLeaveService {
     /**
      * 修改OA 请假申请
      */
-    Boolean insertByBo(BpmOaLeaveBo bo);
+    Boolean insertByBo(BpmOALeaveCreateBo bo);
 
     /**
      * 修改OA 请假申请

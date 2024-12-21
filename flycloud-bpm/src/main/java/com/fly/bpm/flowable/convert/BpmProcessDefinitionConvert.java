@@ -9,6 +9,7 @@ import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
 import com.fly.bpm.flowable.utils.BpmnModelUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.utils.BeanUtils;
+import com.fly.common.utils.DateUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.UserTask;
@@ -102,6 +103,12 @@ public interface BpmProcessDefinitionConvert {
         if (bpmnModel != null) {
             respVO.setBpmnXml(BpmnModelUtils.getBpmnXml(bpmnModel));
         }
+
+        // 如果为空，兜底处理，使用 createTime 创建时间
+        if (respVO.getSort() == null) {
+            respVO.setSort(DateUtils.formatDate(processDefinitionInfo.getUpdateTime()).getTime());
+        }
+
         return respVO;
     }
 

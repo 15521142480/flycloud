@@ -1,6 +1,12 @@
 package com.fly.bpm.oa.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
+import com.fly.bpm.api.domain.bo.BpmOALeaveCreateBo;
+import com.fly.bpm.api.domain.dto.instance.BpmProcessInstanceCreateReqDTO;
+import com.fly.bpm.api.feign.IBpmInstanceApi;
+import com.fly.common.enums.bpm.BpmTaskStatusEnum;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -16,6 +22,7 @@ import com.fly.bpm.api.domain.BpmOaLeave;
 import com.fly.bpm.common.mapper.BpmOaLeaveMapper;
 import com.fly.bpm.oa.service.IBpmOaLeaveService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -31,6 +38,17 @@ import java.util.Collection;
 public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, BpmOaLeave> implements IBpmOaLeaveService {
 
     private final BpmOaLeaveMapper baseMapper;
+
+    private final IBpmInstanceApi bpmInstanceApi;
+
+
+
+    /**
+     * OA 请假对应的流程定义 KEY
+     */
+    public static final String PROCESS_KEY = "oa_leave";
+
+
 
     /**
      * 查询OA 请假申请
@@ -62,7 +80,10 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
     }
 
     private LambdaQueryWrapper<BpmOaLeave> buildQueryWrapper(BpmOaLeaveBo bo) {
+
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
+
         LambdaQueryWrapper<BpmOaLeave> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getUserId() != null, BpmOaLeave::getUserId, bo.getUserId());
         lqw.eq(bo.getType() != null, BpmOaLeave::getType, bo.getType());
@@ -81,13 +102,32 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
      * 新增OA 请假申请
      */
     @Override
-    public Boolean insertByBo(BpmOaLeaveBo bo) {
+    public Boolean insertByBo(BpmOALeaveCreateBo bo) {
+
+        // 1. 插入 OA 请假单
+        Long curUserId = UserUtils.getCurUserId();
         BpmOaLeave add = BeanUtil.toBean(bo, BpmOaLeave.class);
         validEntityBeforeSave(add);
+
+        long day = LocalDateTimeUtil.between(bo.getStartTime(), bo.getEndTime()).toDays();
+        add.setUserId(curUserId);
+        add.setDay((int) day);
+        add.setStatus(BpmTaskStatusEnum.RUNNING.getStatus());
         boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
-        }
+
+        // 2. 发起 BPM 流程
+        Map<String, Object> processInstanceVariables = new HashMap<>();
+        processInstanceVariables.put("day", day);
+        String processInstanceId = bpmInstanceApi.createInstance(curUserId,
+                new BpmProcessInstanceCreateReqDTO()
+                        .setProcessDefinitionKey(PROCESS_KEY)
+                        .setVariables(processInstanceVariables)
+                        .setBusinessKey(String.valueOf(add.getId()))
+                        .setStartUserSelectAssignees(bo.getStartUserSelectAssignees())).getCheckedData();
+
+        // 3. 将流程实例编号更新到 OA 请假单中
+        baseMapper.updateById(new BpmOaLeave().setId(add.getId()).setProcessInstanceId(processInstanceId));
+
         return flag;
     }
 
@@ -97,6 +137,7 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
      */
     @Override
     public Boolean updateByBo(BpmOaLeaveBo bo) {
+
         BpmOaLeave update = BeanUtil.toBean(bo, BpmOaLeave.class);
         validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
@@ -109,6 +150,7 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
     private void validEntityBeforeSave(BpmOaLeave entity){
         //TODO 做一些数据校验,如唯一约束
     }
+
 
 
     /**

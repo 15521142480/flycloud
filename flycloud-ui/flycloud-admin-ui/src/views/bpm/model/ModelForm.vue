@@ -198,7 +198,7 @@ const formRules = reactive({
   name: [{ required: true, message: '流程名称不能为空', trigger: 'blur' }],
   key: [{ required: true, message: '流程标识不能为空', trigger: 'blur' }],
   category: [{ required: true, message: '流程分类不能为空', trigger: 'blur' }],
-  icon: [{ required: true, message: '流程图标不能为空', trigger: 'blur' }],
+  // icon: [{ required: true, message: '流程图标不能为空', trigger: 'blur' }],
   type: [{ required: true, message: '是否可见不能为空', trigger: 'blur' }],
   formType: [{ required: true, message: '是否可见不能为空', trigger: 'blur' }],
   formId: [{ required: true, message: '流程表单不能为空', trigger: 'blur' }],
