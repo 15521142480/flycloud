@@ -202,10 +202,11 @@ const clear = () => {
 <template>
   <div
     :class="prefixCls"
-    class="fixed right-0 top-[45%] h-40px w-40px cursor-pointer bg-[var(--el-color-primary)] text-center leading-40px"
+    class="fixed right-87 top-[1.6%] h-40px w-40px cursor-pointer bg-[var(--el-color-primary)] text-center leading-40px"
+    style="z-index: 2020; background-color: #fff"
     @click="drawer = true"
   >
-    <Icon color="#fff" icon="ep:setting" />
+    <Icon color="#040303" :size="20" icon="ep:setting" />
   </div>
 
   <ElDrawer v-model="drawer" :z-index="4000" direction="rtl" size="350px">

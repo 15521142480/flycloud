@@ -74,7 +74,7 @@ const open = async (row: RoleApi.RoleVO) => {
   dialogVisible.value = true
   resetForm()
   // 加载 Menu 列表。注意，必须放在前面，不然下面 setChecked 没数据节点
-  menuOptions.value = handleTree(await MenuApi.getSimpleMenusList())
+  menuOptions.value = handleTree(await MenuApi.getMenusList())
   // 设置数据
   formData.id = row.id
   formData.name = row.name

@@ -374,7 +374,7 @@ watch(
 onMounted(async () => {
   try {
     // 加载菜单
-    const resp = await MenuApi.getSimpleMenusList()
+    const resp = await MenuApi.getMenusList()
     menus.value = handleTree(resp)
   } catch {}
 })

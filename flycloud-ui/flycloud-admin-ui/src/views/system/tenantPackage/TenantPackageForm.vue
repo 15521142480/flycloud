@@ -103,7 +103,7 @@ const open = async (type: string, id?: number) => {
   formType.value = type
   resetForm()
   // 加载 Menu 列表。注意，必须放在前面，不然下面 setChecked 没数据节点
-  menuOptions.value = handleTree(await MenuApi.getSimpleMenusList())
+  menuOptions.value = handleTree(await MenuApi.getMenusList())
   // 修改时，设置数据
   if (id) {
     formLoading.value = true

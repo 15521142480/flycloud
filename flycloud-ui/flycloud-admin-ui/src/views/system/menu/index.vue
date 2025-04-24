@@ -1,144 +1,78 @@
 <template>
-  <doc-alert title="功能权限" url="https://doc.iocoder.cn/resource-permission" />
-  <doc-alert title="菜单路由" url="https://doc.iocoder.cn/vue3/route/" />
 
-  <!-- 搜索工作栏 -->
-  <ContentWrap>
-    <el-form
-      ref="queryFormRef"
-      :inline="true"
-      :model="queryParams"
-      class="-mb-15px"
-      label-width="68px"
-    >
-      <el-form-item label="菜单名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          class="!w-240px"
-          clearable
-          placeholder="请输入菜单名称"
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          class="!w-240px"
-          clearable
-          placeholder="请选择菜单状态"
-        >
-          <el-option
-            v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
+  <!-- 树型 -->
+  <ContentWrap style="height: calc(100vh - 160px)">
+
+    <el-row>
+      <el-col :span="12">
+        <!--    v-hasPermi="['system:menu:create']"-->
+        <div style="margin-left: 30px">
+          <el-button type="primary" @click="openForm('create', undefined, 0)">
+            新增一级菜单
+          </el-button>
+        </div>
+      </el-col>
+
+      <el-col :span="12">
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
           搜索
         </el-button>
-        <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" />
-          重置
-        </el-button>
-        <el-button
-          v-hasPermi="['system:menu:create']"
-          plain
-          type="primary"
-          @click="openForm('create')"
-        >
-          <Icon class="mr-5px" icon="ep:plus" />
-          新增
-        </el-button>
-        <el-button plain type="danger" @click="toggleExpandAll">
-          <Icon class="mr-5px" icon="ep:sort" />
-          展开/折叠
-        </el-button>
-        <el-button plain @click="refreshMenu">
-          <Icon class="mr-5px" icon="ep:refresh" />
-          刷新菜单缓存
-        </el-button>
-      </el-form-item>
-    </el-form>
+      </el-col>
+    </el-row>
+
+    <el-divider style="margin: 10px 0" />
+    <div>
+<!--      <el-tree-v2 -->
+<!--      class="menu-tree"-->
+<!--      :height="treeHeight"-->
+      <el-tree
+        class="menu-tree"
+        style="height: calc(100vh - 240px); overflow-y: scroll"
+        :data="list"
+        :props="props"
+        v-loading="loading"
+      >
+        <template #default="{ node, data }">
+
+          <Icon :icon="data.icon" style="margin: 0 12px 0 8px" />
+          <span>{{ node.label }}</span>
+
+          <el-button type="primary" :icon="Plus" circle style="margin-left: 50%"  @click="openForm('create', undefined, data.id)" />
+          <el-button type="primary" :icon="Edit" circle  @click="openForm('update', data.id)" />
+          <el-switch
+            v-model="data.status"
+            style="margin: 0 10px 0 10px"
+            size="large"
+            inline-prompt
+            :active-value="0"
+            :inactive-value="1"
+            active-text="已启"
+            inactive-text="已禁"
+          />
+          <el-button type="danger" :icon="Delete" circle />
+
+        </template>
+      </el-tree>
+    </div>
   </ContentWrap>
 
-  <!-- 列表 -->
-  <ContentWrap>
-    <el-table
-      v-if="refreshTable"
-      v-loading="loading"
-      :data="list"
-      :default-expand-all="isExpandAll"
-      row-key="id"
-    >
-      <el-table-column :show-overflow-tooltip="true" label="菜单名称" prop="name" width="250" />
-      <el-table-column align="center" label="图标" prop="icon" width="100">
-        <template #default="scope">
-          <Icon :icon="scope.row.icon" />
-        </template>
-      </el-table-column>
-      <el-table-column label="排序" prop="sort" width="60" />
-      <el-table-column :show-overflow-tooltip="true" label="权限标识" prop="permission" />
-      <el-table-column :show-overflow-tooltip="true" label="组件路径" prop="component" />
-      <el-table-column :show-overflow-tooltip="true" label="组件名称" prop="componentName" />
-      <el-table-column label="状态" prop="status">
-        <template #default="scope">
-          <el-switch
-            class="ml-4px"
-            v-model="scope.row.status"
-            v-hasPermi="['system:menu:update']"
-            :active-value="CommonStatusEnum.ENABLE"
-            :inactive-value="CommonStatusEnum.DISABLE"
-            :loading="menuStatusUpdating[scope.row.id]"
-            @change="(val) => handleStatusChanged(scope.row, val as number)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作">
-        <template #default="scope">
-          <el-button
-            v-hasPermi="['system:menu:update']"
-            link
-            type="primary"
-            @click="openForm('update', scope.row.id)"
-          >
-            修改
-          </el-button>
-          <el-button
-            v-hasPermi="['system:menu:create']"
-            link
-            type="primary"
-            @click="openForm('create', undefined, scope.row.id)"
-          >
-            新增
-          </el-button>
-          <el-button
-            v-hasPermi="['system:menu:delete']"
-            link
-            type="danger"
-            @click="handleDelete(scope.row.id)"
-          >
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-  </ContentWrap>
 
   <!-- 表单弹窗：添加/修改 -->
   <MenuForm ref="formRef" @success="getList" />
+
+
 </template>
+
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { handleTree } from '@/utils/tree'
 import * as MenuApi from '@/api/system/menu'
-import { MenuVO } from '@/api/system/menu'
+import {getMenuPageList, getMenuTreeList, MenuVO} from '@/api/system/menu'
 import MenuForm from './MenuForm.vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
+import {CirclePlus, Delete, Edit, Plus} from "@element-plus/icons-vue";
 
 defineOptions({ name: 'SystemMenu' })
 
@@ -156,12 +90,28 @@ const queryFormRef = ref() // 搜索的表单
 const isExpandAll = ref(false) // 是否展开，默认全部折叠
 const refreshTable = ref(true) // 重新渲染表格状态
 
+const treeHeight = ref(0)
+const props = {
+  value: 'id',
+  label: 'name',
+  children: 'children'
+}
+
+const treeData = ref([
+  { label: '一级 1', children: [{ label: '二级 1-1' }] },
+  { label: '一级 2', children: [{ label: '二级 2-1' }] }
+])
+
+
 /** 查询列表 */
 const getList = async () => {
+
   loading.value = true
+  treeHeight.value = window.innerHeight
   try {
-    const data = await MenuApi.getMenuList(queryParams)
-    list.value = handleTree(data)
+    const data = await MenuApi.getMenuTreeList(queryParams)
+    list.value = data
+    // list.value = handleTree(data)
   } finally {
     loading.value = false
   }
@@ -238,3 +188,17 @@ onMounted(() => {
   getList()
 })
 </script>
+
+
+<style lang="scss" scoped>
+
+/* 增大Element Plus Tree组件的行高 */
+:deep .menu-tree .el-tree-node__content {
+  /*  line-height: 50px;*/
+  height: 45px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+</style>
