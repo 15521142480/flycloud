@@ -6,3 +6,8 @@ pnpm install
 
 # 启动服务
 npm run dev
+
+# 构建
+- npm run build:local
+- npm run build:dev
+- npm run build:prod
