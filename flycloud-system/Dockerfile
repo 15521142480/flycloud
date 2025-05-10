@@ -6,7 +6,7 @@ FROM openjdk:8-jre
 MAINTAINER lxs <2570078967@qq.com>
 
 # 暴露短口
-EXPOSE 8080
+EXPOSE 8085
 
 # 设置容器内jar工作目录
 WORKDIR /flycloud
@@ -18,7 +18,7 @@ VOLUME /flycloud/logs
 ENV TZ=Asia/Shanghai
 
 # 将jar包添加到容器中
-ADD flycloud-gateway.jar ./app.jar
+ADD flycloud-system.jar ./app.jar
 
 # 启动命令
 ENTRYPOINT ["java", "-jar", "app.jar"]

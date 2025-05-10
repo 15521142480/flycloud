@@ -13,18 +13,17 @@
 
     <!-- todo 引入模块 -->
     <modules>
+        <module>flycloud-api</module>
         <module>flycloud-auth</module>
+        <module>flycloud-bpm</module>
         <module>flycloud-common</module>
+        <module>flycloud-extend</module>
         <module>flycloud-gateway</module>
+        <module>flycloud-generator</module>
         <module>flycloud-mall</module>
         <module>flycloud-music</module>
-        <module>flycloud-generator</module>
-        <module>flycloud-test</module>
         <module>flycloud-system</module>
-        <module>flycloud-api</module>
-        <module>flycloud-extend</module>
-        <module>flycloud-bpm</module>
-        <module>flycloud-api/flycloud-bpm-api</module>
+        <module>flycloud-test</module>
     </modules>
 
 
@@ -88,7 +87,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <easy-es.version>1.1.1</easy-es.version>
         <easypoi.version>4.4.0</easypoi.version>
-        <easy-captcha.version>1.6.2</easy-captcha.version>
+<!--        <easy-captcha.version>1.6.2</easy-captcha.version>-->
         <commons-collections.version>3.2.2</commons-collections.version>
         <transmittable.version>2.14.2</transmittable.version>
         <mapstruct.version>1.6.2</mapstruct.version>
@@ -417,11 +416,11 @@
             </dependency>
 
             <!-- captcha -->
-            <dependency>
-                <groupId>com.github.whvcse</groupId>
-                <artifactId>easy-captcha</artifactId>
-                <version>${easy-captcha.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.github.whvcse</groupId>-->
+<!--                <artifactId>easy-captcha</artifactId>-->
+<!--                <version>${easy-captcha.version}</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>commons-collections</groupId>
