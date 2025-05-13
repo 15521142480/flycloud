@@ -270,7 +270,6 @@ export const handleTree = (data: any[], id?: string, parentId?: string, children
     }
   }
 
-  debugger
   return tree
 }
 

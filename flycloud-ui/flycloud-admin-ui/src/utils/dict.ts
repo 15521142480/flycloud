@@ -114,6 +114,7 @@ export enum DICT_TYPE {
   DATE_INTERVAL = 'date_interval', // 数据间隔
 
   // ========== SYSTEM 模块 ==========
+  SYSTEM_TYPE = 'sys_type',
   SYSTEM_USER_SEX = 'system_user_sex',
   SYSTEM_MENU_TYPE = 'system_menu_type',
   SYSTEM_ROLE_TYPE = 'system_role_type',

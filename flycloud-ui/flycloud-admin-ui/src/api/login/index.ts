@@ -52,7 +52,8 @@ export const loginOut = () => {
 
 // 注册
 export const register = (data: RegisterVO) => {
-  return request.post({ url: '/system/auth/register', data })
+  data.password = md5(data.password)
+  return request.post({ url: `/${SYS_BASE_URL}/user/register`, data })
 }
 
 

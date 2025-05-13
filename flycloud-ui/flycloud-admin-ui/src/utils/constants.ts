@@ -19,6 +19,15 @@ export const UserTypeEnum = {
 
 // ========== SYSTEM 模块 ==========
 /**
+ * 系统类型
+ */
+export const SystemTypeEnum = {
+  TYPE_0: 0, // 平台管理系统
+  TYPE_1: 1, // 商家管理系统
+  TYPE_2: 2, // 音乐平台管理系统
+  TYPE_3: 3 // 音乐歌手管理系统
+}
+/**
  * 菜单的类型枚举
  */
 export const SystemMenuTypeEnum = {

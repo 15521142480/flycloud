@@ -45,6 +45,14 @@ public class SysDeptController extends BaseController {
         return R.ok(iSysDeptService.queryPageList(bo, page));
     }
 
+    /**
+     * 查询所有部门精简版
+     */
+    @GetMapping("/getList")
+    public R<List<SysDeptVo>> allListSimple(SysDeptBo bo) {
+        return R.ok(iSysDeptService.queryList(bo));
+    }
+
 
     /**
      * 导出部门列表

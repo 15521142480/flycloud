@@ -2,7 +2,7 @@
   <ElDialog
     v-model="dialogVisible"
     :title="dialogTitle"
-    width="70%"
+    width="80%"
     top="4vh"
     style="height:94%; margin-bottom: -80px"
   >
@@ -43,7 +43,7 @@
             <el-form-item label="菜单类型" prop="type">
               <el-radio-group v-model="formData.type">
                 <el-radio-button
-                  v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_MENU_TYPE)"
+                  v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_TYPE)"
                   :key="dict.label"
                   :value="dict.value"
                 >
@@ -51,10 +51,10 @@
                 </el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="formData.type !== 3" label="菜单图标">
+            <el-form-item label="菜单图标">
               <IconSelect v-model="formData.icon" clearable />
             </el-form-item>
-            <el-form-item v-if="formData.type !== 3" label="路由地址" prop="path">
+            <el-form-item label="路由地址" prop="path">
               <template #label>
                 <Tooltip
                   message="访问的路由地址，如：`user`。如需外网地址时，则以 `http(s)://` 开头"
@@ -63,21 +63,21 @@
               </template>
               <el-input v-model="formData.path" clearable placeholder="请输入路由地址" />
             </el-form-item>
-            <el-form-item v-if="formData.type === 2" label="组件地址" prop="component">
+            <el-form-item label="组件地址" prop="component">
               <el-input v-model="formData.component" clearable placeholder="例如说：system/user/index" />
             </el-form-item>
-            <el-form-item v-if="formData.type === 2" label="组件名字" prop="componentName">
+            <el-form-item label="组件名字" prop="componentName">
               <el-input v-model="formData.componentName" clearable placeholder="例如说：SystemUser" />
             </el-form-item>
-            <el-form-item v-if="formData.type !== 1" label="权限标识" prop="permission">
-              <template #label>
-                <Tooltip
-                  message="Controller 方法上的权限字符，如：@PreAuthorize(`@ss.hasPermission('system:user:list')`)"
-                  title="权限标识"
-                />
-              </template>
-              <el-input v-model="formData.permission" clearable placeholder="请输入权限标识" />
-            </el-form-item>
+<!--            <el-form-item label="权限标识" prop="permission">-->
+<!--              <template #label>-->
+<!--                <Tooltip-->
+<!--                  message="Controller 方法上的权限字符，如：@PreAuthorize(`@ss.hasPermission('system:user:list')`)"-->
+<!--                  title="权限标识"-->
+<!--                />-->
+<!--              </template>-->
+<!--              <el-input v-model="formData.permission" clearable placeholder="请输入权限标识" />-->
+<!--            </el-form-item>-->
             <el-form-item label="显示排序" prop="sort">
               <el-input-number v-model="formData.sort" :min="0" clearable controls-position="right" />
             </el-form-item>
@@ -92,16 +92,16 @@
                 </el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="formData.type !== 3" label="显示状态" prop="visible">
+            <el-form-item label="显示状态" prop="visible">
               <template #label>
                 <Tooltip message="选择隐藏时，路由将不会出现在侧边栏，但仍然可以访问" title="显示状态" />
               </template>
               <el-radio-group v-model="formData.visible">
-                <el-radio key="true" :value="true" border>显示</el-radio>
-                <el-radio key="false" :value="false" border>隐藏</el-radio>
+                <el-radio key="true" :value="1" border>显示</el-radio>
+                <el-radio key="false" :value="0" border>隐藏</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="formData.type !== 3" label="总是显示" prop="alwaysShow">
+            <el-form-item label="总是显示" prop="alwaysShow">
               <template #label>
                 <Tooltip
                   message="选择不是时，当该菜单只有一个子菜单时，不展示自己，直接展示子菜单"
@@ -109,11 +109,11 @@
                 />
               </template>
               <el-radio-group v-model="formData.alwaysShow">
-                <el-radio key="true" :value="true" border>总是</el-radio>
-                <el-radio key="false" :value="false" border>不是</el-radio>
+                <el-radio key="true" :value="1" border>总是</el-radio>
+                <el-radio key="false" :value="0" border>不是</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="formData.type === 2" label="缓存状态" prop="keepAlive">
+            <el-form-item label="缓存状态" prop="keepAlive">
               <template #label>
                 <Tooltip
                   message="选择缓存时，则会被 `keep-alive` 缓存，必须填写「组件名称」字段"
@@ -121,8 +121,8 @@
                 />
               </template>
               <el-radio-group v-model="formData.keepAlive">
-                <el-radio key="true" :value="true" border>缓存</el-radio>
-                <el-radio key="false" :value="false" border>不缓存</el-radio>
+                <el-radio key="true" :value="1" border>缓存</el-radio>
+                <el-radio key="false" :value="0" border>不缓存</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-form>
@@ -136,25 +136,48 @@
               <span>按钮权限</span>
             </div>
           </template>
-          <div style="height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;">
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-            <div>123</div>
-          </div>
+
+<!--          <div style="height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;">-->
+<!--            <div>123</div>-->
+<!--            <div>123</div>-->
+<!--          </div>-->
+          <el-button type="primary" plain @click="openBtnForm(false)" > <!-- v-hasPermi="['system:menu:create']" -->
+            <Icon icon="ep:plus" /> 新增
+          </el-button>
+          <el-table :data="buttonPermissionList" style="width: 100%; height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;">
+            <el-table-column fixed align="center" prop="btnName" label="名称" />
+            <el-table-column align="center" prop="btnPermission" label="权限" />
+
+            <el-table-column fixed="right" align="center" label="操作" min-width="100">
+              <template #default="scope">
+                <el-button link type="primary" size="small" @click.prevent="openBtnForm(true, scope.row, scope.$index)">
+                  修改
+                </el-button>
+                <el-button link type="primary" size="small" @click.prevent="deleteRow(scope.$index)">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </el-col>
     </el-row>
+
+  <!--  按钮权限弹窗  -->
+    <Dialog v-model="btnDialogVisible" :title="btnDialogTitle" width="30%" >
+      <el-form ref="btnFormRef" :model="btnFormData" >
+        <el-form-item label="按钮名称">
+          <el-input v-model="btnFormData.btnName" />
+        </el-form-item>
+        <el-form-item label="按钮权限">
+          <el-input v-model="btnFormData.btnPermission" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button type="primary" @click="btnSubmitForm">确 定</el-button>
+        <el-button @click="btnDialogVisible = false">取 消</el-button>
+      </template>
+    </Dialog>
 
 <!--    <template #footer>-->
 <!--      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>-->
@@ -166,7 +189,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as MenuApi from '@/api/system/menu'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
-import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants'
+import {CommonStatusEnum, SystemMenuTypeEnum, SystemTypeEnum} from '@/utils/constants'
 import { defaultProps, handleTree } from '@/utils/tree'
 
 defineOptions({ name: 'SystemMenuForm' })
@@ -176,14 +199,19 @@ const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
+const btnDialogVisible = ref(false) // 按钮弹窗的是否展示
+const btnSaveTypeIsUpdate = ref(false) // 按钮保存类型是否修改
+const btnSaveUpdateIndex = ref(false) // 按钮保存为修改时操作的下标
 const dialogTitle = ref('') // 弹窗的标题
+const btnDialogTitle = ref('') // 按钮弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
   id: undefined,
   name: '',
   permission: '',
-  type: SystemMenuTypeEnum.DIR,
+  buttonPermission: '',
+  type: SystemTypeEnum.TYPE_0,
   sort: Number(undefined),
   parentId: 0,
   path: '',
@@ -191,9 +219,13 @@ const formData = ref({
   component: '',
   componentName: '',
   status: CommonStatusEnum.ENABLE,
-  visible: true,
-  keepAlive: true,
-  alwaysShow: true
+  visible: 1,
+  keepAlive: 1,
+  alwaysShow: 1
+})
+const btnFormData = ref({
+  btnName: '',
+  btnPermission: ''
 })
 const formRules = reactive({
   name: [{ required: true, message: '菜单名称不能为空', trigger: 'blur' }],
@@ -203,6 +235,7 @@ const formRules = reactive({
 })
 
 const formRef = ref() // 表单 Ref
+const buttonPermissionList = ref<any>([]) // 按钮权限列表
 
 const dialogHeight = window.innerHeight
 
@@ -221,6 +254,10 @@ const open = async (type: string, id?: number, parentId?: number) => {
     formLoading.value = true
     try {
       formData.value = await MenuApi.getMenu(id)
+      buttonPermissionList.value = []
+      if (formData.value.buttonPermission) {
+        buttonPermissionList.value = JSON.parse(formData.value.buttonPermission)
+      }
     } finally {
       formLoading.value = false
     }
@@ -240,20 +277,24 @@ const submitForm = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    if (
-      formData.value.type === SystemMenuTypeEnum.DIR ||
-      formData.value.type === SystemMenuTypeEnum.MENU
-    ) {
-      if (!isExternal(formData.value.path)) {
-        if (formData.value.parentId === 0 && formData.value.path.charAt(0) !== '/') {
-          message.error('路径必须以 / 开头')
-          return
-        } else if (formData.value.parentId !== 0 && formData.value.path.charAt(0) === '/') {
-          message.error('路径不能以 / 开头')
-          return
-        }
-      }
+    // 按钮权限组装
+    if (buttonPermissionList.value) {
+      formData.value.buttonPermission = JSON.stringify(buttonPermissionList.value)
     }
+    // if (
+    //   formData.value.type === SystemMenuTypeEnum.DIR ||
+    //   formData.value.type === SystemMenuTypeEnum.MENU
+    // ) {
+    //   if (!isExternal(formData.value.path)) {
+    //     if (formData.value.parentId === 0 && formData.value.path.charAt(0) !== '/') {
+    //       message.error('路径必须以 / 开头')
+    //       return
+    //     } else if (formData.value.parentId !== 0 && formData.value.path.charAt(0) === '/') {
+    //       message.error('路径不能以 / 开头')
+    //       return
+    //     }
+    //   }
+    // }
     const data = formData.value as unknown as MenuApi.MenuVO
     if (formType.value === 'create') {
       await MenuApi.createMenu(data)
@@ -292,7 +333,8 @@ const resetForm = () => {
     id: undefined,
     name: '',
     permission: '',
-    type: SystemMenuTypeEnum.DIR,
+    buttonPermission: '',
+    type: SystemTypeEnum.TYPE_0,
     sort: Number(undefined),
     parentId: 0,
     path: '',
@@ -300,15 +342,60 @@ const resetForm = () => {
     component: '',
     componentName: '',
     status: CommonStatusEnum.ENABLE,
-    visible: true,
-    keepAlive: true,
-    alwaysShow: true
+    visible: 1,
+    keepAlive: 1,
+    alwaysShow: 1
   }
   formRef.value?.resetFields()
+  buttonPermissionList.value = []
 }
 
 /** 判断 path 是不是外部的 HTTP 等链接 */
 const isExternal = (path: string) => {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
+
+/**
+ * 新增/修改-按钮权限
+ * @param isUpdate
+ */
+const openBtnForm = (isUpdate: boolean, btnData: object, updateIndex: number) => {
+  btnSaveTypeIsUpdate.value = isUpdate
+  btnDialogTitle.value = isUpdate ? '修改按钮权限' : '新增按钮权限'
+  btnFormData.value = {
+    btnName: '',
+    btnPermission: ''
+  }
+  if (isUpdate) {
+    btnFormData.value = btnData
+    btnSaveUpdateIndex.value = updateIndex
+  }
+  btnDialogVisible.value = true
+}
+
+/**
+ * 保存按钮权限
+ */
+const btnSubmitForm = () => {
+  if (!btnFormData.value.btnName || !btnFormData.value.btnPermission) {
+    message.error('请填写完【按钮名称】和【按钮权限】')
+    return
+  }
+  if (btnSaveTypeIsUpdate.value) {
+    buttonPermissionList.value[btnSaveUpdateIndex.value] = btnFormData.value
+  } else {
+    buttonPermissionList.value.push(btnFormData.value)
+  }
+  btnDialogVisible.value = false
+}
+
+/**
+ * 删除按钮权限
+ * @param index
+ */
+const deleteRow = (index: number) => {
+  buttonPermissionList.value.splice(index, 1)
+}
+
+
 </script>

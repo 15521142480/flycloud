@@ -22,6 +22,13 @@ public interface ISysDeptService {
      */
     SysDeptVo queryById(Long id);
 
+
+    /**
+     * 根据部门id查询部门名称
+     */
+    String queryDeptNameById(Long id);
+
+
     /**
      * 查询部门列表
      */
@@ -57,4 +64,5 @@ public interface ISysDeptService {
      * 根据ids验证部门
      */
     Boolean validateDeptByIds(Collection<Long> ids);
+
 }

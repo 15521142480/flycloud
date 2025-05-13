@@ -34,7 +34,7 @@ export type UserVO = {
 }
 
 export type RegisterVO = {
-  tenantName: string
+  name: string
   username: string
   password: string
 }

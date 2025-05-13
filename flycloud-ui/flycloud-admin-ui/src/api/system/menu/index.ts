@@ -5,6 +5,7 @@ export interface MenuVO {
   id: number
   name: string
   permission: string
+  buttonPermission: string
   type: number
   sort: number
   parentId: number
@@ -48,6 +49,11 @@ export const createMenu = (data: MenuVO) => {
 // 修改菜单
 export const updateMenu = (data: MenuVO) => {
   return request.put({ url: `/${SYS_BASE_URL}/menu/update`, data })
+}
+
+// 修改菜单状态
+export const updateStatus = (id: number, status: number) => {
+  return request.post({ url: `${SYS_BASE_URL}/menu/enable?id=` + id + `&status=` + status})
 }
 
 // 删除菜单

@@ -96,7 +96,7 @@
   </el-form>
 </template>
 <script lang="ts" setup>
-import { ElLoading } from 'element-plus'
+import {ElLoading, ElMessage} from 'element-plus'
 import LoginFormTitle from './LoginFormTitle.vue'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { useIcon } from '@/hooks/web/useIcon'
@@ -182,28 +182,32 @@ const handleRegister = async (params: any) => {
       registerData.registerForm.captchaVerification = params.captchaVerification
     }
 
-    const res = await LoginApi.register(registerData.registerForm)
-    if (!res) {
-      return
-    }
-    loading.value = ElLoading.service({
-      lock: true,
-      text: '正在加载系统中...',
-      background: 'rgba(0, 0, 0, 0.7)'
-    })
+    // todo 外部注册待开发，先用内部注册
+    ElMessage.warning("请登录后在 系统管理>用户管理 注册新用户！")
+    return
 
-    authUtil.removeLoginForm()
-
-    authUtil.setToken(res)
-    if (!redirect.value) {
-      redirect.value = '/'
-    }
-    // 判断是否为SSO登录
-    if (redirect.value.indexOf('sso') !== -1) {
-      window.location.href = window.location.href.replace('/login?redirect=', '')
-    } else {
-      push({ path: redirect.value || permissionStore.addRouters[0].path })
-    }
+    // const res = await LoginApi.register(registerData.registerForm)
+    // if (!res) {
+    //   return
+    // }
+    // loading.value = ElLoading.service({
+    //   lock: true,
+    //   text: '正在加载系统中...',
+    //   background: 'rgba(0, 0, 0, 0.7)'
+    // })
+    //
+    // authUtil.removeLoginForm()
+    //
+    // authUtil.setToken(res)
+    // if (!redirect.value) {
+    //   redirect.value = '/'
+    // }
+    // // 判断是否为SSO登录
+    // if (redirect.value.indexOf('sso') !== -1) {
+    //   window.location.href = window.location.href.replace('/login?redirect=', '')
+    // } else {
+    //   push({ path: redirect.value || permissionStore.addRouters[0].path })
+    // }
   } finally {
     loginLoading.value = false
     loading.value.close()

@@ -75,10 +75,32 @@ public class SysUserController extends BaseController {
     /**
      * 获取用户详情信息
      */
-    @GetMapping("/getDetailInfo{id}")
+    @GetMapping("/getDetailInfo/{id}")
     public R<UserDetailInfoVo> getDetailInfo(@NotNull(message = "id不能为空") @PathVariable Long id) {
         return R.ok(iSysUserService.getDetailInfo(id));
     }
+
+
+    /**
+     * 获取用户详细信息
+     *
+     * @param id 主键
+     */
+    @GetMapping("/get/{id}")
+    public R<SysUserVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(iSysUserService.queryById(id));
+    }
+
+
+    /**
+     * 用户注册
+     */
+//    @PreAuthorize("@pms.hasPermission('sys.user.register')")
+//    @PostMapping("/register")
+//    public R<Void> register(@RequestBody SysUserBo bo) {
+//        return R.ok(iSysUserService.register(bo));
+//    }
+
 
     /**
      * 用户新增/修改
@@ -88,6 +110,7 @@ public class SysUserController extends BaseController {
     public R<Void> saveOrUpdate(@RequestBody SysUserBo bo) {
         return R.ok(iSysUserService.saveOrUpdate(bo));
     }
+
 
     /**
      * 禁用启用
@@ -103,40 +126,21 @@ public class SysUserController extends BaseController {
      * 重置密码
      */
     @PreAuthorize("@pms.hasPermission('sys.user.reset')")
-    @PostMapping("/resetPassword{id}")
+    @PostMapping("/resetPassword/{id}")
     public R<Void> resetPassword(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iSysUserService.resetPassword(id));
     }
 
-
     /**
-     * 获取用户详细信息
-     *
-     * @param id 主键
+     * 自定义重置密码
      */
-    @GetMapping("/{id}")
-    public R<SysUserVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(iSysUserService.queryById(id));
-    }
-
-
-    /**
-     * 新增用户
-     */
-    @Log(title = "用户", businessType = BusinessType.INSERT)
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysUserBo bo) {
-        return R.ok(iSysUserService.insertByBo(bo));
-    }
-
-
-    /**
-     * 修改用户
-     */
-    @Log(title = "用户", businessType = BusinessType.UPDATE)
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysUserBo bo) {
-        return R.ok(iSysUserService.updateByBo(bo));
+    @PreAuthorize("@pms.hasPermission('sys.user.reset')")
+    @PostMapping("/customResetPassword/{id}/{password}")
+    public R<Void> customResetPassword(
+            @NotNull(message = "主键不能为空") @PathVariable Long id
+            , @NotNull(message = "密码不能为空") @PathVariable String password
+    ) {
+        return R.ok(iSysUserService.customResetPassword(id, password));
     }
 
 
@@ -147,10 +151,31 @@ public class SysUserController extends BaseController {
      */
     @PreAuthorize("@pms.hasPermission('sys.user.delete')")
     @Log(title = "用户", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iSysUserService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
+
+
+
+//    /**
+//     * 新增用户
+//     */
+//    @Log(title = "用户", businessType = BusinessType.INSERT)
+//    @PostMapping()
+//    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysUserBo bo) {
+//        return R.ok(iSysUserService.insertByBo(bo));
+//    }
+//
+//
+//    /**
+//     * 修改用户
+//     */
+//    @Log(title = "用户", businessType = BusinessType.UPDATE)
+//    @PutMapping()
+//    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysUserBo bo) {
+//        return R.ok(iSysUserService.updateByBo(bo));
+//    }
 
 
     /**
@@ -162,4 +187,7 @@ public class SysUserController extends BaseController {
         List<SysUserVo> list = iSysUserService.queryList(bo);
         ExcelUtil.exportExcel(list, "用户", SysUserVo.class, response);
     }
+
+
+
 }

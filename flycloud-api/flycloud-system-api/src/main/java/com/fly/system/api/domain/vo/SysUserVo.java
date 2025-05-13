@@ -108,7 +108,7 @@ public class SysUserVo implements Serializable {
      * 部门id
      */
     @ExcelProperty(value = "部门名称")
-    private Long deptName;
+    private String deptName;
 
     /**
      * 状态

@@ -43,6 +43,14 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
     }
 
 
+    @Override
+    public String queryDeptNameById(Long id) {
+
+        SysDeptVo sysDeptVo = this.queryById(id);
+        return sysDeptVo != null ? sysDeptVo.getName() : null;
+    }
+
+
     /**
      * 查询部门列表
      */

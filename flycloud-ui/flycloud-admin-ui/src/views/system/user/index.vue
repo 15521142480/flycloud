@@ -1,16 +1,13 @@
 <template>
-  <doc-alert title="用户体系" url="https://doc.iocoder.cn/user-center/" />
-  <doc-alert title="三方登陆" url="https://doc.iocoder.cn/social-user/" />
-  <doc-alert title="Excel 导入导出" url="https://doc.iocoder.cn/excel-import-and-export/" />
 
   <el-row :gutter="20">
     <!-- 左侧部门树 -->
-    <el-col :span="4" :xs="24">
-      <ContentWrap class="h-1/1">
-        <DeptTree @node-click="handleDeptNodeClick" />
-      </ContentWrap>
-    </el-col>
-    <el-col :span="20" :xs="24">
+<!--    <el-col :span="4" :xs="24">-->
+<!--      <ContentWrap class="h-1/1">-->
+<!--        <DeptTree @node-click="handleDeptNodeClick" />-->
+<!--      </ContentWrap>-->
+<!--    </el-col>-->
+    <el-col :span="24" :xs="24">
       <!-- 搜索 -->
       <ContentWrap>
         <el-form
@@ -20,18 +17,18 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="用户名称" prop="username">
+          <el-form-item label="账号" prop="account">
             <el-input
-              v-model="queryParams.username"
-              placeholder="请输入用户名称"
+              v-model="queryParams.account"
+              placeholder="请输入账号"
               clearable
               @keyup.enter="handleQuery"
               class="!w-240px"
             />
           </el-form-item>
-          <el-form-item label="手机号码" prop="mobile">
+          <el-form-item label="手机号码" prop="telephone">
             <el-input
-              v-model="queryParams.mobile"
+              v-model="queryParams.telephone"
               placeholder="请输入手机号码"
               clearable
               @keyup.enter="handleQuery"
@@ -94,19 +91,28 @@
           </el-form-item>
         </el-form>
       </ContentWrap>
+
+
       <ContentWrap>
         <el-table v-loading="loading" :data="list">
           <el-table-column label="用户编号" align="center" key="id" prop="id" />
           <el-table-column
-            label="用户名称"
+            label="账号"
             align="center"
-            prop="username"
+            prop="account"
             :show-overflow-tooltip="true"
           />
           <el-table-column
-            label="用户昵称"
+            label="昵称"
             align="center"
             prop="name"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            label="角色"
+            align="center"
+            key="roleNames"
+            prop="roleNames"
             :show-overflow-tooltip="true"
           />
           <el-table-column
@@ -116,8 +122,8 @@
             prop="deptName"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="手机号码" align="center" prop="mobile" width="120" />
-          <el-table-column label="状态" key="status">
+          <el-table-column label="手机号码" align="center" prop="telephone" width="120" />
+          <el-table-column label="状态" key="status" width="100">
             <template #default="scope">
               <el-switch
                 v-model="scope.row.status"
@@ -134,7 +140,8 @@
             :formatter="dateFormatter"
             width="180"
           />
-          <el-table-column label="操作" align="center" width="160">
+
+          <el-table-column label="操作" align="center" width="170">
             <template #default="scope">
               <div class="flex items-center justify-center">
                 <el-button
@@ -156,24 +163,25 @@
                   <el-button type="primary" link><Icon icon="ep:d-arrow-right" /> 更多</el-button>
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item
-                        command="handleDelete"
-                        v-if="checkPermi(['system:user:delete'])"
-                      >
-                        <Icon icon="ep:delete" />删除
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        command="handleResetPwd"
-                        v-if="checkPermi(['system:user:update-password'])"
-                      >
-                        <Icon icon="ep:key" />重置密码
-                      </el-dropdown-item>
+
                       <el-dropdown-item
                         command="handleRole"
-                        v-if="checkPermi(['system:permission:assign-user-role'])"
-                      >
+                      > <!-- v-if="checkPermi(['system:permission:assign-user-role'])" -->
                         <Icon icon="ep:circle-check" />分配角色
                       </el-dropdown-item>
+
+                      <el-dropdown-item
+                        command="handleResetPwd"
+                      > <!-- v-if="checkPermi(['system:user:update-password'])" -->
+                        <Icon icon="ep:key" />重置密码
+                      </el-dropdown-item>
+
+                      <el-dropdown-item
+                        command="handleDelete"
+                      > <!--  v-if="checkPermi(['system:user:delete'])" -->
+                        <Icon icon="ep:delete" />删除
+                      </el-dropdown-item>
+
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
@@ -221,8 +229,8 @@ const list = ref([]) // 列表的数
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  username: undefined,
-  mobile: undefined,
+  account: undefined,
+  telephone: undefined,
   status: undefined,
   deptId: undefined,
   createTime: []
@@ -276,7 +284,7 @@ const handleStatusChange = async (row: UserApi.UserVO) => {
   try {
     // 修改状态的二次确认
     const text = row.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
-    await message.confirm('确认要"' + text + '""' + row.username + '"用户吗?')
+    await message.confirm('确认要"' + text + '""' + row.account + '"用户吗?')
     // 发起修改状态
     await UserApi.updateUserStatus(row.id, row.status)
     // 刷新列表
@@ -339,7 +347,7 @@ const handleResetPwd = async (row: UserApi.UserVO) => {
   try {
     // 重置的二次确认
     const result = await message.prompt(
-      '请输入"' + row.username + '"的新密码',
+      '请输入"' + row.account + '"的新密码',
       t('common.reminder')
     )
     const password = result.value

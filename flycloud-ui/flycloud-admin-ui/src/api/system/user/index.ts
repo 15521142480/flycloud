@@ -1,15 +1,17 @@
 import request from '@/config/axios'
+import md5 from "js-md5"
 
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface UserVO {
   id: number
-  username: string
+  account: string
+  password: string
   name: string
   deptId: number
-  postIds: string[]
+  // postIds: string[]
   email: string
-  mobile: string
+  telephone: string
   sex: number
   avatar: string
   loginIp: string
@@ -21,7 +23,7 @@ export interface UserVO {
 
 // 查询用户管理列表
 export const getUserPage = (params: PageParam) => {
-  return request.get({ url: `${SYS_BASE_URL}/user/page`, params })
+  return request.get({ url: `${SYS_BASE_URL}/user/list`, params })
 }
 
 // 获取用户精简信息列表
@@ -36,22 +38,26 @@ export const getAllUser = () => {
 
 // 查询用户详情
 export const getUser = (id: number) => {
-  return request.get({ url: `${SYS_BASE_URL}/user/get/` + id })
+  return request.get({ url: `${SYS_BASE_URL}/user/getDetailInfo/` + id })
 }
 
 // 新增用户
 export const createUser = (data: UserVO) => {
-  return request.post({ url: `${SYS_BASE_URL}/user/create`, data })
+  data.password = md5(data.password)
+  return request.post({ url: `${SYS_BASE_URL}/user/saveOrUpdate`, data })
 }
 
 // 修改用户
 export const updateUser = (data: UserVO) => {
-  return request.put({ url: `${SYS_BASE_URL}/user/update`, data })
+  // data.password = md5(data.password)
+  return request.post({ url: `${SYS_BASE_URL}/user/saveOrUpdate`, data })
 }
 
 // 删除用户
 export const deleteUser = (id: number) => {
-  return request.delete({ url: `${SYS_BASE_URL}/user/delete/` + id })
+  const ids = []
+  ids.push(id)
+  return request.delete({ url: `${SYS_BASE_URL}/user/delete/` + ids })
 }
 
 // 导出用户
@@ -66,18 +72,19 @@ export const importUserTemplate = () => {
 
 // 用户密码重置
 export const resetUserPwd = (id: number, password: string) => {
-  const data = {
-    id,
-    password
-  }
-  return request.put({ url: `${SYS_BASE_URL}/user/update-password`, data: data })
+  // const data = {
+  //   id,
+  //   password
+  // }
+  return request.post({ url: `${SYS_BASE_URL}/user/customResetPassword/` + id + '/' + md5(password)})
 }
 
 // 用户状态修改
 export const updateUserStatus = (id: number, status: number) => {
-  const data = {
-    id,
-    status
-  }
-  return request.put({ url: `${SYS_BASE_URL}/user/update-status`, data: data })
+  // const data = {
+  //   id,
+  //   status
+  // }
+  // return request.post({ url: `${SYS_BASE_URL}/user/enable`, data: data })
+  return request.post({ url: `${SYS_BASE_URL}/user/enable?id=` + id + `&status=` + status})
 }

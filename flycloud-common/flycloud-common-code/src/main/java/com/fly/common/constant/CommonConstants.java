@@ -43,7 +43,7 @@ public interface CommonConstants {
 
     // todo 系统相关
     // 默认密码
-    String INIT_USER_PASSWORD = "fly123456";
+    String INIT_USER_PASSWORD = "123456"; // "fly123456";
 
 
     // todo 接口相关

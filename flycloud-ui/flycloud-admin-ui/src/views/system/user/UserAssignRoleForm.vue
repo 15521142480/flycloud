@@ -1,10 +1,10 @@
 <template>
   <Dialog v-model="dialogVisible" title="分配角色">
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item label="用户名称">
-        <el-input v-model="formData.username" :disabled="true" />
+      <el-form-item label="账号">
+        <el-input v-model="formData.account" :disabled="true" />
       </el-form-item>
-      <el-form-item label="用户昵称">
+      <el-form-item label="昵称">
         <el-input v-model="formData.name" :disabled="true" />
       </el-form-item>
       <el-form-item label="角色">
@@ -34,7 +34,7 @@ const formLoading = ref(false) // 表单的加载中：1）修改时的数据加
 const formData = ref({
   id: -1,
   name: '',
-  username: '',
+  account: '',
   roleIds: []
 })
 const formRef = ref() // 表单 Ref
@@ -46,17 +46,27 @@ const open = async (row: UserApi.UserVO) => {
   resetForm()
   // 设置数据
   formData.value.id = row.id
-  formData.value.username = row.username
+  formData.value.account = row.account
   formData.value.name = row.name
-  // 获得角色拥有的菜单集合
-  formLoading.value = true
-  try {
-    formData.value.roleIds = await PermissionApi.getUserRoleList(row.id)
-  } finally {
-    formLoading.value = false
+
+  if (row.roleIds) {
+    formData.value.roleIds = row.roleIds.split(',') // .map(BigInt)
   }
+
+  // 获得角色拥有的菜单集合
+  // formLoading.value = true
+  // try {
+  //   formData.value.roleIds = await PermissionApi.getUserRoleList(row.id)
+  // } finally {
+  //   formLoading.value = false
+  // }
+
   // 获得角色列表
-  roleList.value = await RoleApi.getSimpleRoleList()
+  let roleDataList = await RoleApi.getSimpleRoleList()
+  roleDataList.forEach((item) => {
+    item.id = item.id.toString()
+  })
+  roleList.value = roleDataList
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 
@@ -88,7 +98,7 @@ const resetForm = () => {
   formData.value = {
     id: -1,
     name: '',
-    username: '',
+    account: '',
     roleIds: []
   }
   formRef.value?.resetFields()

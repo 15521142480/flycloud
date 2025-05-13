@@ -21,9 +21,7 @@ import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.domain.SysUserRole;
 import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
-import com.fly.system.service.ISysMenuService;
-import com.fly.system.service.ISysRoleService;
-import com.fly.system.service.ISysUserService;
+import com.fly.system.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,9 +49,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     private final ISysRoleService sysRoleService;
 
+    private final ISysUserRoleService sysUserRoleService;
+
     private final SysUserRoleMapper sysUserRoleMapper;
 
     private final ISysMenuService sysMenuService;
+
+    private final ISysDeptService sysDeptService;
 
 
 
@@ -71,8 +73,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         for (SysUserVo sysUserVo : sysUserVoList) {
 
             sysUserVo.setUserTypeName(SysTypeEnum.getSysTypeNameByType(sysUserVo.getUserType()));
-            sysUserVo.setRoleIds(String.join(",", sysRoleService.getRoleIdListByUserId(sysUserVo.getId())));
-            sysUserVo.setRoleNames(String.join(",", sysRoleService.getRoleNameListByUserId(sysUserVo.getId())));
+            sysUserVo.setRoleIds(String.join(",", sysUserRoleService.getRoleIdListByUserId(sysUserVo.getId())));
+            sysUserVo.setRoleNames(String.join(",", sysUserRoleService.getRoleNameListByUserId(sysUserVo.getId())));
+
+            sysUserVo.setDeptName(sysDeptService.queryDeptNameById(sysUserVo.getDeptId()));
         }
         pageVo.setList(sysUserVoList);
 
@@ -154,9 +158,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
         } else { // 修改
 
-            // 是否有修改密码
+            // 是否有修改密码 (不为空 且 不等于旧密码)
             SysUser o_sysUser = baseMapper.selectById(sysUser.getId());
-            if (!o_sysUser.getPassword().equals(sysUser.getPassword())) {
+            if (StringUtils.isNotBlank(sysUser.getPassword()) && !o_sysUser.getPassword().equals(sysUser.getPassword())) {
                 PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 String newPassword = encoder.encode(sysUser.getPassword());
                 sysUser.setPassword(newPassword);
@@ -166,22 +170,24 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             sysUser.setUpdateTime(LocalDateTime.now());
             baseMapper.updateById(sysUser);
 
-            // 移除用户角色权限
-            LambdaQueryWrapper<SysUserRole> lqw = Wrappers.lambdaQuery();
-            lqw.eq(SysUserRole::getUserId, sysUser.getId());
-            sysUserRoleMapper.delete(lqw);
+            // todo 移除用户角色权限 ？ 逻辑待定  取决于前段用户角色功能放在修改里还是单独功能
+//            LambdaQueryWrapper<SysUserRole> lqw = Wrappers.lambdaQuery();
+//            lqw.eq(SysUserRole::getUserId, sysUser.getId());
+//            sysUserRoleMapper.delete(lqw);
         }
 
         // 初始化用户角色权限
-        List<SysUserRole> sysUserRoleList = new ArrayList<>();
-        for (String roleId : bo.getRoleIds().split(",")) {
+        if (StringUtils.isNotBlank(bo.getRoleIds())) {
+            List<SysUserRole> sysUserRoleList = new ArrayList<>();
+            for (String roleId : bo.getRoleIds().split(",")) {
 
-            SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setUserId(sysUser.getId());
-            sysUserRole.setRoleId(Long.valueOf(roleId));
-            sysUserRoleList.add(sysUserRole);
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setUserId(sysUser.getId());
+                sysUserRole.setRoleId(Long.valueOf(roleId));
+                sysUserRoleList.add(sysUserRole);
+            }
+            sysUserRoleMapper.insertBatch(sysUserRoleList);
         }
-        sysUserRoleMapper.insertBatch(sysUserRoleList);
 
         return 1;
     }
@@ -196,6 +202,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         SysUser sysUser = baseMapper.selectById(id);
 
         String md5str = CryptoUtils.encodeMD5(CommonConstants.INIT_USER_PASSWORD);
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        String initPassword = encoder.encode(md5str);
+        sysUser.setPassword(initPassword);
+
+        return baseMapper.updateById(sysUser);
+    }
+
+    /**
+     * 重置密码
+     */
+    @Override
+    public int customResetPassword(Long id, String password) {
+
+        SysUser sysUser = baseMapper.selectById(id);
+
+        String md5str = password;
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         String initPassword = encoder.encode(md5str);
         sysUser.setPassword(initPassword);
@@ -228,6 +250,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         lqw.eq(bo.getDeptId() != null, SysUser::getDeptId, bo.getDeptId());
         lqw.eq(bo.getStatus() != null, SysUser::getStatus, bo.getStatus());
         lqw.eq(bo.getIsDeleted() != null, SysUser::getIsDeleted, bo.getIsDeleted());
+
+        lqw.orderByDesc(SysUser::getCreateTime);
         return lqw;
     }
 
@@ -271,10 +295,20 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
-        return baseMapper.deleteBatchIds(ids) > 0;
+
+//        if (isValid) {
+//            //TODO 做一些业务上的校验,判断是否需要校验
+//        }
+
+//        for (Long id : ids) {
+//            SysUser sysUser = new SysUser();
+//            sysUser.setId(id);
+//            sysUser.setIsDeleted(true);
+//            baseMapper.updateById(sysUser);
+////            baseMapper.updateById(new SysUser().setId(id).setIsDeleted(true));
+//        }
+
+        return baseMapper.deleteBatchIds(ids) > 0; // 使用mybatis的逻辑删除，即字段isDeleted标注为@TableLogic
     }
 
 

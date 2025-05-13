@@ -5,12 +5,31 @@
       v-loading="formLoading"
       :model="formData"
       :rules="formRules"
-      label-width="80px"
+      label-width="90px"
     >
+
       <el-row>
         <el-col :span="12">
-          <el-form-item label="用户昵称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入用户昵称" />
+          <el-form-item v-if="formData.id === undefined" label="账号" prop="account">
+            <el-input v-model="formData.account" placeholder="请输入账号" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item v-if="formData.id === undefined" label="用户密码" prop="password">
+            <el-input
+              v-model="formData.password"
+              placeholder="请输入用户密码"
+              show-password
+              type="password"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="昵称" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入昵称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -28,30 +47,13 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="手机号码" prop="mobile">
-            <el-input v-model="formData.mobile" maxlength="11" placeholder="请输入手机号码" />
+          <el-form-item label="手机号码" prop="telephone">
+            <el-input v-model="formData.telephone" maxlength="11" placeholder="请输入手机号码" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="formData.email" maxlength="50" placeholder="请输入邮箱" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item v-if="formData.id === undefined" label="用户名称" prop="username">
-            <el-input v-model="formData.username" placeholder="请输入用户名称" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item v-if="formData.id === undefined" label="用户密码" prop="password">
-            <el-input
-              v-model="formData.password"
-              placeholder="请输入用户密码"
-              show-password
-              type="password"
-            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -68,18 +70,18 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="岗位">
-            <el-select v-model="formData.postIds" multiple placeholder="请选择">
-              <el-option
-                v-for="item in postList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id!"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="12">-->
+<!--          <el-form-item label="岗位">-->
+<!--            <el-select v-model="formData.postIds" multiple placeholder="请选择">-->
+<!--              <el-option-->
+<!--                v-for="item in postList"-->
+<!--                :key="item.id"-->
+<!--                :label="item.name"-->
+<!--                :value="item.id!"-->
+<!--              />-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
       </el-row>
       <el-row>
         <el-col :span="24">
@@ -116,19 +118,19 @@ const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
   name: '',
   deptId: '',
-  mobile: '',
+  telephone: '',
   email: '',
   id: undefined,
-  username: '',
+  account: '',
   password: '',
   sex: undefined,
   postIds: [],
   remark: '',
-  status: CommonStatusEnum.ENABLE,
-  roleIds: []
+  status: CommonStatusEnum.ENABLE
+  // roleIds: []
 })
 const formRules = reactive<FormRules>({
-  username: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
+  account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
   name: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
   password: [{ required: true, message: '用户密码不能为空', trigger: 'blur' }],
   email: [
@@ -138,7 +140,7 @@ const formRules = reactive<FormRules>({
       trigger: ['blur', 'change']
     }
   ],
-  mobile: [
+  telephone: [
     {
       pattern: /^(?:(?:\+|00)86)?1(?:3[\d]|4[5-79]|5[0-35-9]|6[5-7]|7[0-8]|8[\d]|9[189])\d{8}$/,
       message: '请输入正确的手机号码',
@@ -160,7 +162,9 @@ const open = async (type: string, id?: number) => {
   if (id) {
     formLoading.value = true
     try {
-      formData.value = await UserApi.getUser(id)
+      let userInfo = await UserApi.getUser(id)
+      let userData = userInfo.user
+      formData.value = userData
     } finally {
       formLoading.value = false
     }
@@ -168,7 +172,7 @@ const open = async (type: string, id?: number) => {
   // 加载部门树
   deptList.value = handleTree(await DeptApi.getSimpleDeptList())
   // 加载岗位列表
-  postList.value = await PostApi.getSimplePostList()
+  // postList.value = await PostApi.getSimplePostList()
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 
@@ -203,16 +207,16 @@ const resetForm = () => {
   formData.value = {
     name: '',
     deptId: '',
-    mobile: '',
+    telephone: '',
     email: '',
     id: undefined,
-    username: '',
+    account: '',
     password: '',
     sex: undefined,
     postIds: [],
     remark: '',
-    status: CommonStatusEnum.ENABLE,
-    roleIds: []
+    status: CommonStatusEnum.ENABLE
+    // roleIds: []
   }
   formRef.value?.resetFields()
 }

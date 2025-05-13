@@ -49,8 +49,9 @@
             :inactive-value="1"
             active-text="已启"
             inactive-text="已禁"
+            @change="handleStatusChange(data)"
           />
-          <el-button type="danger" :icon="Delete" circle />
+          <el-button type="danger" :icon="Delete" circle @click="deleteMenu(data)" />
 
         </template>
       </el-tree>
@@ -68,7 +69,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { handleTree } from '@/utils/tree'
 import * as MenuApi from '@/api/system/menu'
-import {getMenuPageList, getMenuTreeList, MenuVO} from '@/api/system/menu'
+import {getMenuPageList, getMenuTreeList, MenuVO, updateStatus} from '@/api/system/menu'
 import MenuForm from './MenuForm.vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
@@ -134,6 +135,46 @@ const openForm = (type: string, id?: number, parentId?: number) => {
   formRef.value.open(type, id, parentId)
 }
 
+/**
+ * 修改状态
+ * @param row
+ */
+const handleStatusChange = async (data: MenuVO) => {
+  try {
+    // 修改状态的二次确认
+    const text = data.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
+    await message.confirm('确认要"' + text + '"【' + data.name + '】菜单吗?')
+    // 发起修改状态
+    await MenuApi.updateStatus(data.id, data.status)
+    // 刷新列表
+    await getList()
+  } catch {
+    // 取消后，进行恢复按钮
+    data.status =
+      data.status === CommonStatusEnum.ENABLE ? CommonStatusEnum.DISABLE : CommonStatusEnum.ENABLE
+  }
+}
+
+/**
+ * 删除菜单
+ * @param data
+ */
+const deleteMenu = async (data: object) => {
+  try {
+    // 删除的二次确认
+    // await message.delConfirm()
+    const text = data.children ? '确认删除【' + data.name + '】菜单以及其下所有菜单吗' : '确认删除【' + data.name + '】菜单吗'
+    await message.confirm(text)
+    // 发起删除
+    await MenuApi.deleteMenu(data.id)
+    message.success(t('common.delSuccess'))
+    // 刷新列表
+    handleQuery()
+  } catch {}
+}
+
+
+
 /** 展开/折叠操作 */
 const toggleExpandAll = () => {
   refreshTable.value = false
@@ -170,18 +211,18 @@ const handleDelete = async (id: number) => {
 
 /** 开启/关闭菜单的状态 */
 const menuStatusUpdating = ref({}) // 菜单状态更新中的 menu 映射。key：菜单编号，value：是否更新中
-const handleStatusChanged = async (menu: MenuVO, val: number) => {
-  // 1. 标记 menu.id 更新中
-  menuStatusUpdating.value[menu.id] = true
-  try {
-    // 2. 发起更新状态
-    menu.status = val
-    await MenuApi.updateMenu(menu)
-  } finally {
-    // 3. 标记 menu.id 更新完成
-    menuStatusUpdating.value[menu.id] = false
-  }
-}
+// const handleStatusChanged = async (menu: MenuVO, val: number) => {
+//   // 1. 标记 menu.id 更新中
+//   menuStatusUpdating.value[menu.id] = true
+//   try {
+//     // 2. 发起更新状态
+//     menu.status = val
+//     await MenuApi.updateMenu(menu)
+//   } finally {
+//     // 3. 标记 menu.id 更新完成
+//     menuStatusUpdating.value[menu.id] = false
+//   }
+// }
 
 /** 初始化 **/
 onMounted(() => {
