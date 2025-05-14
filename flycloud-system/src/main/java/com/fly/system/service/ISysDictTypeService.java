@@ -33,9 +33,9 @@ public interface ISysDictTypeService {
     List<SysDictTypeVo> queryList(SysDictTypeBo bo);
 
     /**
-     * 修改字典类型
+     * 新增/修改字典类型
      */
-    Boolean insertByBo(SysDictTypeBo bo);
+    Boolean saveOrUpdate(SysDictTypeBo bo);
 
     /**
      * 修改字典类型

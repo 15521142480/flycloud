@@ -58,15 +58,16 @@
       row-key="id"
       :default-expand-all="isExpandAll"
       v-if="refreshTable"
+      height="calc(100vh - 250px)"
     >
       <el-table-column prop="name" label="部门名称" />
-      <el-table-column prop="leader" label="负责人">
+      <el-table-column prop="leader" label="负责人" width="200">
         <template #default="scope">
           {{ userList.find((user) => user.id === scope.row.leaderUserId)?.name }}
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="排序" />
-      <el-table-column prop="status" label="状态">
+      <el-table-column prop="sort" label="排序" align="center" width="150" />
+      <el-table-column prop="status" label="状态" align="center" width="180" >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -78,7 +79,7 @@
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="240">
         <template #default="scope">
           <el-button
             link
@@ -121,7 +122,7 @@ const loading = ref(true) // 列表的加载中
 const list = ref() // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
-  pageSize: 100,
+  pageSize: 10000,
   name: undefined,
   status: undefined
 })
@@ -135,7 +136,7 @@ const getList = async () => {
   loading.value = true
   try {
     const data = await DeptApi.getDeptPage(queryParams)
-    list.value = handleTree(data)
+    list.value = handleTree(data.list)
   } finally {
     loading.value = false
   }

@@ -30,14 +30,9 @@ export const getDictData = (id: number) => {
   return request.get({ url: `${SYS_BASE_URL}/dictData/get/` + id })
 }
 
-// 新增字典数据
-export const createDictData = (data: DictDataVO) => {
-  return request.post({ url: `${SYS_BASE_URL}/dictData/create`, data })
-}
-
-// 修改字典数据
-export const updateDictData = (data: DictDataVO) => {
-  return request.put({ url: `${SYS_BASE_URL}/dictData/update`, data })
+// 新增/修改字典数据
+export const saveOrUpdate = (data: DictDataVO) => {
+  return request.post({ url: `${SYS_BASE_URL}/dictData/saveOrUpdate`, data })
 }
 
 // 删除字典数据

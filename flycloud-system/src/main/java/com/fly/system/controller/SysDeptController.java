@@ -53,6 +53,39 @@ public class SysDeptController extends BaseController {
         return R.ok(iSysDeptService.queryList(bo));
     }
 
+    /**
+     * 获取部门详细信息
+     *
+     * @param id 主键
+     */
+    @GetMapping("/get/{id}")
+    public R<SysDeptVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(iSysDeptService.queryById(id));
+    }
+
+
+    /**
+     * 新增/修改部门
+     */
+    @Log(title = "部门", businessType = BusinessType.INSERT)
+    @PostMapping("/saveOrUpdate")
+    public R<Void> saveOrUpdate(@Validated(AddGroup.class) @RequestBody SysDeptBo bo) {
+        return R.ok(iSysDeptService.saveOrUpdate(bo));
+    }
+
+
+
+    /**
+     * 删除部门
+     *
+     * @param ids 主键串
+     */
+    @Log(title = "部门", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete/{ids}")
+    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+        return R.ok(iSysDeptService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
 
     /**
      * 导出部门列表
@@ -65,45 +98,4 @@ public class SysDeptController extends BaseController {
     }
 
 
-    /**
-     * 获取部门详细信息
-     *
-     * @param id 主键
-     */
-    @GetMapping("/{id}")
-    public R<SysDeptVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(iSysDeptService.queryById(id));
-    }
-
-
-    /**
-     * 新增部门
-     */
-    @Log(title = "部门", businessType = BusinessType.INSERT)
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysDeptBo bo) {
-        return R.ok(iSysDeptService.insertByBo(bo));
-    }
-
-
-    /**
-     * 修改部门
-     */
-    @Log(title = "部门", businessType = BusinessType.UPDATE)
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysDeptBo bo) {
-        return R.ok(iSysDeptService.updateByBo(bo));
-    }
-
-
-    /**
-     * 删除部门
-     *
-     * @param ids 主键串
-     */
-    @Log(title = "部门", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysDeptService.deleteWithValidByIds(Arrays.asList(ids), true));
-    }
 }

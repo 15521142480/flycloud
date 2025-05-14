@@ -1,6 +1,8 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.fly.common.security.user.FlyUser;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -16,6 +18,7 @@ import com.fly.system.api.domain.SysDictData;
 import com.fly.system.mapper.SysDictDataMapper;
 import com.fly.system.service.ISysDictDataService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -47,6 +50,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataMapper, S
     @Override
     public PageVo<SysDictDataVo> queryPageList(SysDictDataBo bo, PageBo pageBo) {
         LambdaQueryWrapper<SysDictData> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(SysDictData :: getCreateTime);
         Page<SysDictDataVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
         return this.build(result);
     }
@@ -80,28 +84,29 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataMapper, S
 
 
     /**
-     * 新增字典数据
+     * 新增/修改字典数据
      */
     @Override
-    public Boolean insertByBo(SysDictDataBo bo) {
-        SysDictData add = BeanUtil.toBean(bo, SysDictData.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
+    public Boolean saveOrUpdate(SysDictDataBo bo) {
+
+        SysDictData entity = BeanUtil.toBean(bo, SysDictData.class);
+        validEntityBeforeSave(entity);
+
+        FlyUser flyUser = UserUtils.getCurUser();
+
+        boolean isUpdate = entity.getId() != null;
+        boolean flag;
+        entity.setUpdateTime(LocalDateTime.now());
+        if (isUpdate) {
+            entity.setUpdateBy(flyUser.getId().toString());
+            flag = baseMapper.updateById(entity) > 0;
+        } else {
+            entity.setCreateBy(flyUser.getId().toString());
+            entity.setCreateTime(LocalDateTime.now());
+            flag = baseMapper.insert(entity) > 0;
         }
+
         return flag;
-    }
-
-
-    /**
-     * 修改字典数据
-     */
-    @Override
-    public Boolean updateByBo(SysDictDataBo bo) {
-        SysDictData update = BeanUtil.toBean(bo, SysDictData.class);
-        validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
     }
 
 

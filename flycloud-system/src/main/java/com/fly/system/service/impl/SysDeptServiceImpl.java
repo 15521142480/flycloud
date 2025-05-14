@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.enums.ErrorCodeConstants;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.utils.ServiceExceptionUtils;
+import com.fly.common.security.user.FlyUser;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import com.fly.system.api.domain.SysDept;
 import com.fly.system.mapper.SysDeptMapper;
 import com.fly.system.service.ISysDeptService;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -57,6 +60,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
     @Override
     public PageVo<SysDeptVo> queryPageList(SysDeptBo bo, PageBo pageBo) {
         LambdaQueryWrapper<SysDept> lqw = buildQueryWrapper(bo);
+        lqw.orderByAsc(SysDept :: getSort);
         Page<SysDeptVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
         return this.build(result);
     }
@@ -107,16 +111,27 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
 
 
     /**
-     * 新增部门
+     * 新增/修改部门
      */
     @Override
-    public Boolean insertByBo(SysDeptBo bo) {
-        SysDept add = BeanUtil.toBean(bo, SysDept.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
+    public Boolean saveOrUpdate(SysDeptBo bo) {
+
+        SysDept entity = BeanUtil.toBean(bo, SysDept.class);
+        boolean isUpdate = entity.getId() != null;
+        validEntityBeforeSave(entity);
+        FlyUser flyUser = UserUtils.getCurUser();
+        boolean flag;
+
+        entity.setUpdateTime(LocalDateTime.now());
+        if (isUpdate) {
+            entity.setUpdateBy(flyUser.getId().toString());
+            flag = baseMapper.updateById(entity) > 0;
+        } else {
+            entity.setCreateBy(flyUser.getId().toString());
+            entity.setCreateTime(LocalDateTime.now());
+            flag= baseMapper.insert(entity) > 0;
         }
+
         return flag;
     }
 

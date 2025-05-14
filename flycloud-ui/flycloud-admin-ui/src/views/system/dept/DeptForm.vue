@@ -133,10 +133,10 @@ const submitForm = async () => {
   try {
     const data = formData.value as unknown as DeptApi.DeptVO
     if (formType.value === 'create') {
-      await DeptApi.createDept(data)
+      await DeptApi.saveOrUpdate(data)
       message.success(t('common.createSuccess'))
     } else {
-      await DeptApi.updateDept(data)
+      await DeptApi.saveOrUpdate(data)
       message.success(t('common.updateSuccess'))
     }
     dialogVisible.value = false

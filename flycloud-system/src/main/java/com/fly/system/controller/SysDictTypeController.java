@@ -66,23 +66,14 @@ public class SysDictTypeController extends BaseController {
 
 
     /**
-     * 新增字典类型
+     * 新增/修改字典类型
      */
-    @Log(title = "字典类型", businessType = BusinessType.INSERT)
-    @PostMapping("/create")
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysDictTypeBo bo) {
-        return R.ok(iSysDictTypeService.insertByBo(bo));
+    @Log(title = "字典类型")
+    @PostMapping("/saveOrUpdate")
+    public R<Void> saveOrUpdate(@Validated @RequestBody SysDictTypeBo bo) {
+        return R.ok(iSysDictTypeService.saveOrUpdate(bo));
     }
 
-
-    /**
-     * 修改字典类型
-     */
-    @Log(title = "字典类型", businessType = BusinessType.UPDATE)
-    @PutMapping("/update")
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysDictTypeBo bo) {
-        return R.ok(iSysDictTypeService.updateByBo(bo));
-    }
 
 
     /**

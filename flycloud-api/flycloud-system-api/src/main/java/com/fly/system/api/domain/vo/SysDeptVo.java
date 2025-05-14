@@ -7,6 +7,7 @@ import com.fly.system.api.domain.SysDept;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,5 +80,12 @@ public class SysDeptVo implements Serializable {
 	 */
 	@ExcelProperty(value = "是否删除")
 	private Integer isDeleted;
+
+
+	/**
+	 * 创建时间
+	 */
+	@ExcelProperty(value = "创建时间")
+	private Date createTime;
 
 }

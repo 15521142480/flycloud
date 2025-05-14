@@ -75,30 +75,21 @@ public class SysDictDataController extends BaseController {
      *
      * @param id 主键
      */
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public R<SysDictDataVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iSysDictService.queryById(id));
     }
 
 
     /**
-     * 新增字典数据
+     * 新增/修改字典数据
      */
-    @Log(title = "字典数据", businessType = BusinessType.INSERT)
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysDictDataBo bo) {
-        return R.ok(iSysDictService.insertByBo(bo));
+    @Log(title = "字典数据")
+    @PostMapping("/saveOrUpdate")
+    public R<Void> saveOrUpdate(@Validated @RequestBody SysDictDataBo bo) {
+        return R.ok(iSysDictService.saveOrUpdate(bo));
     }
 
-
-    /**
-     * 修改字典数据
-     */
-    @Log(title = "字典数据", businessType = BusinessType.UPDATE)
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysDictDataBo bo) {
-        return R.ok(iSysDictService.updateByBo(bo));
-    }
 
 
     /**
@@ -107,7 +98,7 @@ public class SysDictDataController extends BaseController {
      * @param ids 主键串
      */
     @Log(title = "字典数据", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
+    @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iSysDictService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

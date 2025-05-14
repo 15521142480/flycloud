@@ -25,15 +25,11 @@ export const getDictType = (id: number) => {
   return request.get({ url: `/${SYS_BASE_URL}/dictType/get/` + id })
 }
 
-// 新增字典
-export const createDictType = (data: DictTypeVO) => {
-  return request.post({ url: `/${SYS_BASE_URL}/dictType/create`, data })
+// 新增/修改字典
+export const saveOrUpdate = (data: DictTypeVO) => {
+  return request.post({ url: `/${SYS_BASE_URL}/dictType/saveOrUpdate`, data })
 }
 
-// 修改字典
-export const updateDictType = (data: DictTypeVO) => {
-  return request.put({ url: `/${SYS_BASE_URL}/dictType/update`, data })
-}
 
 // 删除字典
 export const deleteDictType = (id: number) => {

@@ -29,14 +29,9 @@ export const getDept = async (id: number) => {
   return await request.get({ url: `/${SYS_BASE_URL}/dept/get/` + id })
 }
 
-// 新增部门
-export const createDept = async (data: DeptVO) => {
-  return await request.post({ url: `/${SYS_BASE_URL}/dept/create`, data: data })
-}
-
-// 修改部门
-export const updateDept = async (params: DeptVO) => {
-  return await request.put({ url: `/${SYS_BASE_URL}/dept/update`, data: params })
+// 新增/修改部门
+export const saveOrUpdate = async (data: DeptVO) => {
+  return await request.post({ url: `/${SYS_BASE_URL}/dept/saveOrUpdate`, data: data })
 }
 
 // 删除部门

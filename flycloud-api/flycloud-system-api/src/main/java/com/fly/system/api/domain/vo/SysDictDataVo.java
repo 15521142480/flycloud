@@ -7,6 +7,7 @@ import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -75,6 +76,13 @@ public class SysDictDataVo implements Serializable {
      */
     @ExcelProperty(value = "备注")
     private String remark;
+
+
+    /**
+     * 创建时间
+     */
+    @ExcelProperty(value = "创建时间")
+    private Date createTime;
 
 
 }

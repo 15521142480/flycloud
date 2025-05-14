@@ -3,6 +3,8 @@ package com.fly.system.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
+import com.fly.common.security.user.FlyUser;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
@@ -16,6 +18,7 @@ import com.fly.system.api.domain.SysDictType;
 import com.fly.system.mapper.SysDictTypeMapper;
 import com.fly.system.service.ISysDictTypeService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -49,6 +52,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, S
     public PageVo<SysDictTypeVo> queryPageList(SysDictTypeBo bo, PageBo pageBo) {
 
         LambdaQueryWrapper<SysDictType> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(SysDictType :: getCreateTime);
         Page<SysDictTypeVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
         return this.build(result);
     }
@@ -81,14 +85,24 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, S
      * 新增字典类型
      */
     @Override
-    public Boolean insertByBo(SysDictTypeBo bo) {
+    public Boolean saveOrUpdate(SysDictTypeBo bo) {
 
-        SysDictType add = BeanUtil.toBean(bo, SysDictType.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-        if (flag) {
-            bo.setId(add.getId());
+        SysDictType entity = BeanUtil.toBean(bo, SysDictType.class);
+        validEntityBeforeSave(entity);
+        FlyUser flyUser = UserUtils.getCurUser();
+
+        boolean isUpdate = entity.getId() != null;
+        boolean flag;
+        entity.setUpdateTime(LocalDateTime.now());
+        if (isUpdate) {
+            entity.setUpdateBy(flyUser.getId().toString());
+            flag = baseMapper.updateById(entity) > 0;
+        } else {
+            entity.setCreateBy(flyUser.getId().toString());
+            entity.setCreateTime(LocalDateTime.now());
+            flag = baseMapper.insert(entity) > 0;
         }
+
         return flag;
     }
 

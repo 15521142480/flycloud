@@ -87,15 +87,15 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="字典编号" prop="id" />
+      <el-table-column align="center" label="字典编号" prop="id" width="150px" />
       <el-table-column align="center" label="字典名称" prop="name" show-overflow-tooltip />
       <el-table-column align="center" label="字典类型" prop="type" width="300" />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" label="状态" prop="status" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark" />
+      <el-table-column align="center" label="备注" prop="remark" width="150" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
@@ -103,7 +103,7 @@
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" width="200">
         <template #default="scope">
           <el-button
             v-hasPermi="['system:dict:update']"

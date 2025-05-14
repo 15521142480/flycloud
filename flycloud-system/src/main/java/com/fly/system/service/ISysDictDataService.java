@@ -32,14 +32,10 @@ public interface ISysDictDataService {
     List<SysDictDataVo> queryList(SysDictDataBo bo);
 
     /**
-     * 修改字典数据
+     * 新增/修改字典数据
      */
-    Boolean insertByBo(SysDictDataBo bo);
+    Boolean saveOrUpdate(SysDictDataBo bo);
 
-    /**
-     * 修改字典数据
-     */
-    Boolean updateByBo(SysDictDataBo bo);
 
     /**
      * 校验并批量删除字典数据信息

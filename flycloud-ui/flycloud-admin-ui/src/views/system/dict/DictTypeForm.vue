@@ -42,6 +42,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as DictTypeApi from '@/api/system/dict/dict.type'
 import { CommonStatusEnum } from '@/utils/constants'
+import {saveOrUpdate} from "@/api/system/dict/dict.type";
 
 defineOptions({ name: 'SystemDictTypeForm' })
 
@@ -96,10 +97,10 @@ const submitForm = async () => {
   try {
     const data = formData.value as DictTypeApi.DictTypeVO
     if (formType.value === 'create') {
-      await DictTypeApi.createDictType(data)
+      await DictTypeApi.saveOrUpdate(data)
       message.success(t('common.createSuccess'))
     } else {
-      await DictTypeApi.updateDictType(data)
+      await DictTypeApi.saveOrUpdate(data)
       message.success(t('common.updateSuccess'))
     }
     dialogVisible.value = false

@@ -46,9 +46,9 @@ public interface ISysDeptService {
     List<SysDeptVo> queryListByIds(Collection<Long> ids);
 
     /**
-     * 修改部门
+     * 新增/修改部门
      */
-    Boolean insertByBo(SysDeptBo bo);
+    Boolean saveOrUpdate(SysDeptBo bo);
 
     /**
      * 修改部门
