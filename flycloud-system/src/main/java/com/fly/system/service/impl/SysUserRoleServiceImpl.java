@@ -14,10 +14,9 @@ import com.fly.system.api.domain.vo.SysUserRoleVo;
 import com.fly.system.api.domain.SysUserRole;
 import com.fly.system.mapper.SysUserRoleMapper;
 import com.fly.system.service.ISysUserRoleService;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * 用户角色Service业务层处理
@@ -30,6 +29,30 @@ import java.util.Collection;
 public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, SysUserRole> implements ISysUserRoleService {
 
     private final SysUserRoleMapper baseMapper;
+
+
+
+    /**
+     * 根据用户查询角色信息列表
+     */
+    @Override
+    public List<String> getRoleIdListByUserId(Long userId) {
+
+        return baseMapper.selectRoleIdListByUserId(userId);
+    }
+    @Override
+    public List<String> getRoleNameListByUserId(Long userId) {
+
+        return baseMapper.getRoleNameListByUserId(userId);
+    }
+
+
+    @Override
+    public List<Long> queryRoleIdsByUserId(Long userId) {
+        return baseMapper.selectRoleIdsByUserId(userId);
+    }
+
+
 
     /**
      * 查询用户角色
@@ -88,10 +111,25 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, S
      * 修改用户角色
      */
     @Override
+    @Transactional
     public Boolean updateByBo(SysUserRoleBo bo) {
-        SysUserRole update = BeanUtil.toBean(bo, SysUserRole.class);
-        validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
+
+        // 逻辑：先删后新增
+        LambdaQueryWrapper<SysUserRole> lqw = Wrappers.lambdaQuery();
+        lqw.eq(SysUserRole::getUserId, bo.getUserId());
+        baseMapper.delete(lqw);
+
+        List<SysUserRole> sysUserRoleList = new ArrayList<>();
+        for (Long roleId : bo.getRoleIds()) { // .split(",")
+
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(bo.getUserId());
+            sysUserRole.setRoleId(roleId);
+            sysUserRoleList.add(sysUserRole);
+        }
+        baseMapper.insertBatch(sysUserRoleList);
+
+        return true;
     }
 
 
@@ -108,9 +146,11 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, S
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
+
+//        if(isValid){
+//            //TODO 做一些业务上的校验,判断是否需要校验
+//        }
+
         return baseMapper.deleteBatchIds(ids) > 0;
     }
 

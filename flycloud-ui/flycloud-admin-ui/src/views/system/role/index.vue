@@ -1,6 +1,4 @@
 <template>
-  <doc-alert title="功能权限" url="https://doc.iocoder.cn/resource-permission" />
-  <doc-alert title="数据权限" url="https://doc.iocoder.cn/data-permission" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -86,16 +84,16 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="角色编号" prop="id" />
-      <el-table-column align="center" label="角色名称" prop="name" />
+      <el-table-column align="center" label="角色名称" prop="name" width="170"/>
       <el-table-column label="角色类型" align="center" prop="type">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.SYSTEM_ROLE_TYPE" :value="scope.row.type" />
+          <dict-tag :type="DICT_TYPE.SYSTEM_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="角色标识" prop="code" />
-      <el-table-column align="center" label="显示顺序" prop="sort" />
+      <el-table-column align="center" label="显示顺序" prop="sort" width="90" />
       <el-table-column align="center" label="备注" prop="remark" />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" label="状态" prop="status" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -105,9 +103,9 @@
         align="center"
         label="创建时间"
         prop="createTime"
-        width="180"
+        width="120"
       />
-      <el-table-column :width="300" align="center" label="操作">
+      <el-table-column :width="200" align="center" label="操作">
         <template #default="scope">
           <el-button
             v-hasPermi="['system:role:update']"

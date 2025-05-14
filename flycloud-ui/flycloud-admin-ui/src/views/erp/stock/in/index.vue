@@ -1,6 +1,4 @@
 <template>
-  <doc-alert title="【库存】其它入库、其它出库" url="https://doc.iocoder.cn/erp/stock-in-out/" />
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form

@@ -10,6 +10,17 @@
       <el-form-item label="角色名称" prop="name">
         <el-input v-model="formData.name" placeholder="请输入角色名称" />
       </el-form-item>
+      <el-form-item label="角色类型" prop="type">
+        <el-radio-group v-model="formData.type">
+          <el-radio-button
+            v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_TYPE)"
+            :key="dict.label"
+            :value="dict.value"
+          >
+            {{ dict.label }}
+          </el-radio-button>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="角色标识" prop="code">
         <el-input v-model="formData.code" placeholder="请输入角色标识" />
       </el-form-item>
@@ -53,6 +64,7 @@ const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
   id: undefined,
   name: '',
+  type: 0,
   code: '',
   sort: undefined,
   status: CommonStatusEnum.ENABLE,
@@ -89,6 +101,7 @@ const resetForm = () => {
   formData.value = {
     id: undefined,
     name: '',
+    type: 0,
     code: '',
     sort: undefined,
     status: CommonStatusEnum.ENABLE,

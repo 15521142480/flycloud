@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import com.fly.system.mapper.SysRoleMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.domain.bo.SysMenuBo;
 import com.fly.system.api.domain.vo.SysMenuVo;
@@ -34,6 +35,7 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
     private final SysMenuMapper baseMapper;
@@ -65,6 +67,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
     @Override
     public List<SysMenuTreeVo> getTreeList(SysMenuBo bo) {
 
+//        bo.setSearchStatusAll(true);
         List<SysMenuTreeVo> sysMenuTreeDataList = this.getAllList(bo);
 
         // 菜单树型数据组装
@@ -281,11 +284,35 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
+
+        for (Long id : ids) {
+
+            // 删除包含当前节点和其下所有子节点
+            List<Long> resultIds = new ArrayList<>();
+            this.handlerMenuIdById(id, resultIds);
+            log.info("删除菜单ids为：{}", resultIds);
+
+            baseMapper.deleteBatchIds(resultIds);
         }
-        return baseMapper.deleteBatchIds(ids) > 0;
+
+        return true;
     }
 
+
+    /**
+     * 递归处理根据菜单id获取所有其子菜单id
+     */
+    public void handlerMenuIdById(Long id, List<Long> resultIds) {
+
+        resultIds.add(id);
+        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(SysMenu :: getParentId, id);
+        List<SysMenu> sysMenuList = baseMapper.selectList(queryWrapper);
+        if (!sysMenuList.isEmpty()) {
+            for (SysMenu sysMenu : sysMenuList) {
+                handlerMenuIdById(sysMenu.getId(), resultIds);
+            }
+        }
+    }
 
 }

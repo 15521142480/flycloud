@@ -7,11 +7,9 @@ import com.fly.common.utils.ExcelUtil;
 import com.fly.common.annotation.Log;
 import com.fly.common.enums.BusinessType;
 import com.fly.common.domain.model.R;
-import com.fly.common.domain.vo.PageVo;
-import com.fly.common.domain.bo.PageBo;
+import com.fly.system.api.domain.SysMenu;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -120,6 +118,15 @@ public class SysMenuController extends BaseController {
 //        return R.ok(iSysMenuService.saveOrUpdate(bo));
 //    }
 
+    /**
+     * 禁用启用
+     */
+//    @PreAuthorize("@pms.hasPermission('sys.menu.enable')")
+    @PostMapping("/enable")
+    public R<Void> enable(@RequestParam() Long id, @RequestParam() int status) {
+
+        return R.ok(iSysMenuService.updateById(new SysMenu().setId(id).setStatus(status)));
+    }
 
     /**
      * 删除菜单

@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="【商品】商品属性" url="https://doc.iocoder.cn/mall/product-property/" />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>

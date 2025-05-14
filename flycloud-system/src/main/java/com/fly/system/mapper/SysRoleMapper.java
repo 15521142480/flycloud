@@ -21,12 +21,6 @@ public interface SysRoleMapper extends BaseMapperPlus<SysRoleMapper, SysRole, Sy
     List<String> selectPermissionListByUserId(Long userId);
 
     /**
-     * 根据用户查询角色信息列表
-     */
-    List<String> selectRoleIdListByUserId(Long userId);
-    List<String> getRoleNameListByUserId(Long userId);
-
-    /**
      * 含有某个角色编码的角色数量
      */
     int getRoleCountByUserAndCode(@Param("userId") Long userId, @Param("type") Long type, @Param("roleCode") String roleCode);

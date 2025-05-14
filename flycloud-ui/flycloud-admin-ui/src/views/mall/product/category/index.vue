@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="【商品】商品分类" url="https://doc.iocoder.cn/mall/product-category/" />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>

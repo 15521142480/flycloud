@@ -28,9 +28,9 @@ public interface ISysRoleService {
     PageVo<SysRoleVo> queryPageList(SysRoleBo bo, PageBo pageBo);
 
     /**
-     * 查询角色菜单权限列表 - 树型
+     * 查询角色菜单列表 - 树型
      */
-    List<SysMenuTreeVo> getRoleTreeList(Long id);
+    List<SysMenuTreeVo> getRoleMenuTreeList(Long id);
 
     /**
      * 新增/修改角色
@@ -41,6 +41,11 @@ public interface ISysRoleService {
      * 修改角色信息
      */
     int updateById(SysRoleBo bo);
+
+    /**
+     * 修改角色菜单权限
+     */
+    int updateMenuPermission(SysRoleBo bo);
 
     /**
      * 查询角色列表
@@ -66,11 +71,5 @@ public interface ISysRoleService {
      * 根据用户查询权限信息列表
      */
     List<String> getPermissionListByUserId(Long userId);
-
-    /**
-     * 根据用户查询角色信息列表
-     */
-    List<String> getRoleIdListByUserId(Long userId);
-    List<String> getRoleNameListByUserId(Long userId);
 
 }

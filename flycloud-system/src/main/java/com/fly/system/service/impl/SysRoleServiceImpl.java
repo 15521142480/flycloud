@@ -71,12 +71,19 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
 
 
     /**
-     * 查询角色菜单权限列表 - 树型
+     * 查询角色菜单列表 - 树型
      */
     @Override
-    public List<SysMenuTreeVo> getRoleTreeList(Long roleId) {
+    public List<SysMenuTreeVo> getRoleMenuTreeList(Long roleId) {
 
+        // 所有菜单
         List<SysMenuTreeVo> sysMenuTreeDataList = sysMenuService.getAllList(new SysMenuBo().setType(SysTypeEnum.fly_platform.getCode()));
+
+        // 角色含有的菜单
+        List<SysRoleMenuVo> sysRoleMenuDataList = new ArrayList<>();
+        if (roleId != null) {
+            sysRoleMenuDataList = sysRoleMenuService.queryList(new SysRoleMenuBo().setRoleId(roleId));
+        }
 
         // 菜单树型数据组装
         List<SysMenuTreeVo> resultList = new ArrayList<>();
@@ -94,11 +101,10 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
             // 1.查询菜单的全部按钮列表
             List<SysMenuButtonPermissionVo> buttonPermissionList = JSON.parseArray(sysMenuTreeData.getButtonPermission(), SysMenuButtonPermissionVo.class);
 
-            // 2.查询角色的按钮权限列表 3.进行对比
-            if (roleId != null && StringUtils.isNotBlank(roleId.toString())) {
-                List<SysRoleMenuVo> sysRoleMenuDataList = sysRoleMenuService.queryList(new SysRoleMenuBo().setRoleId(roleId));
-                Map<Long, Map<String,String>> roleMenuPermissionMap = new HashMap<>();
+            // 2.查询角色的按钮权限列表
+            if (roleId != null && buttonPermissionList != null && !buttonPermissionList.isEmpty()) {
 
+                Map<Long, Map<String,String>> roleMenuPermissionMap = new HashMap<>();
                 for (SysRoleMenuVo sysRoleMenuData : sysRoleMenuDataList) {
 
                     Long menuId = sysRoleMenuData.getMenuId();
@@ -114,18 +120,20 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
                     }
                 }
 
+                // 3. 通过当前的菜单所有权限和角色拥有的菜单权限对比，如有设值为是
                 if (roleMenuPermissionMap.containsKey(sysMenuTreeData.getId())) {
                     Map<String,String> permissionMap = roleMenuPermissionMap.get(sysMenuTreeData.getId());
-                    for(SysMenuButtonPermissionVo sysMenuButtonPermissionData : buttonPermissionList){
-                        if(permissionMap.containsKey(sysMenuButtonPermissionData.getBtnPermission())){
-                            sysMenuButtonPermissionData.setFlag("1");
+                    for (SysMenuButtonPermissionVo sysMenuButtonPermissionData : buttonPermissionList) {
+                        if (permissionMap.containsKey(sysMenuButtonPermissionData.getBtnPermission())) {
+//                            sysMenuButtonPermissionData.setFlag("1");
+                            sysMenuButtonPermissionData.setChecked(true); // 新版
                         }
                     }
                 }
-            }
 
-            // 4.赋值
-            sysMenuTreeData.setButtonPermission(JSON.toJSONString(buttonPermissionList));
+                // 4.赋值
+                sysMenuTreeData.setButtonPermission(JSON.toJSONString(buttonPermissionList));
+            }
         }
 
         for (SysMenuTreeVo sysMenuTreeData : sysMenuTreeDataList) {
@@ -173,7 +181,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
 
             // 基本信息
 //            sysRole.setId(UUIDUtils.generateUUID());
-            sysRole.setType(SysTypeEnum.fly_platform.getCode());
+//            sysRole.setType(SysTypeEnum.fly_platform.getCode());
             sysRole.setStatus(StatusEnum.ENABLE.getStatus());
             sysRole.setCreateBy(flyUser.getId().toString());
             sysRole.setCreateTime(LocalDateTime.now());
@@ -182,29 +190,32 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         } else { // 修改
 
             // 基础信息
-            sysRole.setType(SysTypeEnum.fly_platform.getCode());
             sysRole.setUpdateBy(flyUser.getId().toString());
             sysRole.setUpdateTime(LocalDateTime.now());
             rowBaseCount = baseMapper.updateById(sysRole);
 
-            // 权限信息；先删后新增
+        }
+
+        // 权限信息；先删后新增 todo 权限功能已拆分
+        if (StringUtils.isNotBlank(bo.getRoleMenuPermissionJson())) {
+
             LambdaQueryWrapper<SysRoleMenu> lqw = Wrappers.lambdaQuery();
             lqw.eq(SysRoleMenu::getRoleId, sysRole.getId());
             sysRoleMenuMapper.delete(lqw);
+
+            List<SysRoleMenuVo> sysRoleMenuDataList = JSON.parseArray(bo.getRoleMenuPermissionJson(), SysRoleMenuVo.class);
+            List<SysRoleMenu> roleMenuList = new ArrayList<SysRoleMenu>();
+            for (SysRoleMenuVo sysRoleMenuData : sysRoleMenuDataList){
+
+                SysRoleMenu sysRoleMenu = new SysRoleMenu();
+                sysRoleMenu.setRoleId(sysRole.getId());
+                sysRoleMenu.setMenuId(sysRoleMenuData.getMenuId());
+                sysRoleMenu.setPermission(sysRoleMenuData.getPermission());
+                roleMenuList.add(sysRoleMenu);
+            }
+            sysRoleMenuMapper.insertBatch(roleMenuList);
         }
 
-        // 权限信息
-        List<SysRoleMenuVo> sysRoleMenuDataList = JSON.parseArray(bo.getRoleMenuPermissionJson(), SysRoleMenuVo.class);
-        List<SysRoleMenu> roleMenuList = new ArrayList<SysRoleMenu>();
-        for (SysRoleMenuVo sysRoleMenuData : sysRoleMenuDataList){
-
-            SysRoleMenu sysRoleMenu = new SysRoleMenu();
-            sysRoleMenu.setRoleId(sysRole.getId());
-            sysRoleMenu.setMenuId(sysRoleMenuData.getMenuId());
-            sysRoleMenu.setPermission(sysRoleMenuData.getPermission());
-            roleMenuList.add(sysRoleMenu);
-        }
-        sysRoleMenuMapper.insertBatch(roleMenuList);
 
         return rowBaseCount;
     }
@@ -221,6 +232,28 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
             throw new ServiceException("id为空！");
         }
         baseMapper.updateById(sysRole);
+
+        return 1;
+    }
+
+    @Override
+    public int updateMenuPermission(SysRoleBo bo) {
+
+        LambdaQueryWrapper<SysRoleMenu> lqw = Wrappers.lambdaQuery();
+        lqw.eq(SysRoleMenu::getRoleId, bo.getId());
+        sysRoleMenuMapper.delete(lqw);
+
+        List<SysRoleMenuVo> sysRoleMenuDataList = JSON.parseArray(bo.getRoleMenuPermissionJson(), SysRoleMenuVo.class);
+        List<SysRoleMenu> roleMenuList = new ArrayList<SysRoleMenu>();
+        for (SysRoleMenuVo sysRoleMenuData : sysRoleMenuDataList){
+
+            SysRoleMenu sysRoleMenu = new SysRoleMenu();
+            sysRoleMenu.setRoleId(bo.getId());
+            sysRoleMenu.setMenuId(sysRoleMenuData.getMenuId());
+            sysRoleMenu.setPermission(sysRoleMenuData.getPermission());
+            roleMenuList.add(sysRoleMenu);
+        }
+        sysRoleMenuMapper.insertBatch(roleMenuList);
 
         return 1;
     }
@@ -331,18 +364,5 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     }
 
 
-    /**
-     * 根据用户查询角色信息列表
-     */
-    @Override
-    public List<String> getRoleIdListByUserId(Long userId) {
-
-        return baseMapper.selectRoleIdListByUserId(userId);
-    }
-    @Override
-    public List<String> getRoleNameListByUserId(Long userId) {
-
-        return baseMapper.getRoleNameListByUserId(userId);
-    }
 
 }

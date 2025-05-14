@@ -7,6 +7,8 @@ import javax.validation.constraints.*;
 
 import com.fly.common.domain.BaseEntity;
 
+import java.util.List;
+
 /**
  * 用户角色业务对象
  *
@@ -35,6 +37,11 @@ public class SysUserRoleBo extends BaseEntity {
      */
     // @NotNull(message = "角色id不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long roleId;
+
+    /**
+     * 角色ids
+     */
+    private List<Long> roleIds;
 
 
 }

@@ -56,7 +56,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         sm.id, sm.type, sm.name, sm.parent_id, sm.permission, sm.button_permission, sm.sort, sm.level, sm.path, sm.icon, sm.component, sm.component_name, sm.status, sm.visible, sm.keep_alive, sm.always_show, sm.target, sm.remark
         from sys_menu sm
-        where sm.status = 0 and sm.is_deleted = 0
+        where sm.is_deleted = 0
+        <if test="searchStatusAll == false">
+            and sm.status = 0
+        </if>
         <if test="type != null">
             and sm.type = #{type}
         </if>

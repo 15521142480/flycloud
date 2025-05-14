@@ -1,7 +1,5 @@
 <!-- ERP 产品库存列表 -->
 <template>
-  <doc-alert title="【库存】产品库存、库存明细" url="https://doc.iocoder.cn/erp/stock/" />
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form

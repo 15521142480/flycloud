@@ -25,8 +25,14 @@ public class SysMenuButtonPermissionVo implements Serializable {
     private String btnPermission;
 
     /**
-     * 是否选中 （0：不选中，1：选中）
+     * 是否选中/角色含有该权限 （0：不选中，1：选中）
      */
-    private String flag = "0";
+//    private String flag = "0";
+
+    /**
+     * 是否选中/角色含有该权限 （新版）
+     */
+    private Boolean checked = false;
+
 
 }

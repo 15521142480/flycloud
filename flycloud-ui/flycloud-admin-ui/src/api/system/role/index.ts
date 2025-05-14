@@ -4,13 +4,13 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface RoleVO {
   id: number
+  type: number
   name: string
   code: string
   sort: number
   status: number
-  type: number
-  dataScope: number
-  dataScopeDeptIds: number[]
+  // dataScope: number
+  // dataScopeDeptIds: number[]
   createTime: Date
 }
 
@@ -37,14 +37,24 @@ export const getRole = async (id: number) => {
   return await request.get({ url: `/${SYS_BASE_URL}/role/get/` + id })
 }
 
+// 查询角色菜单列表
+export const getRoleMenuTreeList = async (id: number) => {
+  return await request.get({ url: `/${SYS_BASE_URL}/role/getRoleMenuTreeList/` + id })
+}
+
 // 新增角色
 export const createRole = async (data: RoleVO) => {
-  return await request.post({ url: `/${SYS_BASE_URL}/role/create`, data })
+  return await request.post({ url: `/${SYS_BASE_URL}/role/saveOrUpdate`, data })
 }
 
 // 修改角色
 export const updateRole = async (data: RoleVO) => {
-  return await request.put({ url: `/${SYS_BASE_URL}/role/update`, data })
+  return await request.post({ url: `/${SYS_BASE_URL}/role/saveOrUpdate`, data })
+}
+
+// 修改角色菜单权限
+export const updateMenuPermission = async (data: RoleVO) => {
+  return await request.post({ url: `/${SYS_BASE_URL}/role/updateMenuPermission`, data })
 }
 
 // 修改角色状态

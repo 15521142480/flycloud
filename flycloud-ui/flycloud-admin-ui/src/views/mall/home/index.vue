@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="商城手册（功能开启）" url="https://doc.iocoder.cn/mall/build/" />
 
   <div class="flex flex-col">
     <!-- 数据对照 -->

@@ -1,14 +1,32 @@
 <template>
-  <Dialog v-model="dialogVisible" title="菜单权限">
+  <ElDialog
+    v-model="dialogVisible"
+    title="菜单权限"
+    width="90%"
+    top="3vh"
+    style="height:96%; margin-bottom: -80px"
+  >
+
+    <el-divider content-position="right" style="margin: -5px 0 20px 0">
+      <el-button :disabled="formLoading" type="primary" round @click="submitForm">确 定</el-button>
+    </el-divider>
+
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item label="角色名称">
-        <el-tag>{{ formData.name }}</el-tag>
-      </el-form-item>
-      <el-form-item label="角色标识">
-        <el-tag>{{ formData.code }}</el-tag>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="角色名称">
+            <el-tag>{{ formData.name }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="角色标识">
+            <el-tag>{{ formData.code }}</el-tag>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-form-item label="菜单权限">
-        <el-card class="w-full h-400px !overflow-y-scroll" shadow="never">
+        <el-card class="w-full" shadow="never">
           <template #header>
             全选/全不选:
             <el-switch
@@ -18,7 +36,7 @@
               inline-prompt
               @change="handleCheckedTreeNodeAll"
             />
-            全部展开/折叠:
+            <span style="margin-left: 20px">全部展开/折叠: </span>
             <el-switch
               v-model="menuExpand"
               active-text="展开"
@@ -27,28 +45,54 @@
               @change="handleCheckedTreeExpand"
             />
           </template>
+
           <el-tree
+            class="menu-tree"
             ref="treeRef"
-            :data="menuOptions"
+            style="height: calc(100vh - 280px); overflow-y: scroll; font-size: 16px; font-weight: bold;"
+            :data="treeDataList"
             :props="defaultProps"
-            empty-text="加载中，请稍候"
             node-key="id"
-            show-checkbox
-          />
+            default-expand-all
+            :expand-on-click-node="false"
+          >
+            <template #default="{ node, data }">
+              <div class="custom-tree-node">
+
+                <span>
+                  <Icon :icon="data.icon" style="margin: 10px 12px 0 5px" />
+                  {{ node.label }}
+                </span>
+
+                <div style="margin-left: 20px">
+                  <span v-show="data.buttonPermission" v-for="(item, index) in rolePermissionMap.get(data.id)"  :key="index">
+                    <span>{{ item.btnName }}</span>
+                    <el-switch
+                      v-model="item.checked"
+                      style="margin: 0 12px 0 3px"
+                      size="large"
+                      :active-value="true"
+                      :inactive-value="false"
+                      @change="handlePermissionChange"
+                    />
+                  </span>
+                </div>
+              </div>
+            </template>
+          </el-tree>
+          
         </el-card>
       </el-form-item>
     </el-form>
-    <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
-    </template>
-  </Dialog>
+  </ElDialog>
 </template>
 <script lang="ts" setup>
 import { defaultProps, handleTree } from '@/utils/tree'
 import * as RoleApi from '@/api/system/role'
 import * as MenuApi from '@/api/system/menu'
 import * as PermissionApi from '@/api/system/permission'
+import {array} from "vue-types";
+import {getRoleMenuTreeList, updateMenuPermission} from "@/api/system/role";
 
 defineOptions({ name: 'SystemRoleAssignMenuForm' })
 
@@ -61,35 +105,60 @@ const formData = reactive({
   id: undefined,
   name: '',
   code: '',
-  menuIds: []
+  roleMenuPermissionJson: ''
 })
 const formRef = ref() // 表单 Ref
-const menuOptions = ref<any[]>([]) // 菜单树形结构
-const menuExpand = ref(false) // 展开/折叠
+const treeDataList = ref<any[]>([]) // 菜单树形结构
+const menuExpand = ref(true) // 展开/折叠
 const treeRef = ref() // 菜单树组件 Ref
 const treeNodeAll = ref(false) // 全选/全不选
+// const rolePermissionList = ref(false) // 角色拥有的权限列表
+const rolePermissionMap = ref(new Map<number, any[]>()); // 角色菜单和按钮权限map
+
 
 /** 打开弹窗 */
 const open = async (row: RoleApi.RoleVO) => {
-  dialogVisible.value = true
-  resetForm()
-  // 加载 Menu 列表。注意，必须放在前面，不然下面 setChecked 没数据节点
-  menuOptions.value = handleTree(await MenuApi.getMenusList())
+
   // 设置数据
+  resetForm()
   formData.id = row.id
   formData.name = row.name
   formData.code = row.code
-  formLoading.value = true
-  try {
-    formData.value.menuIds = await PermissionApi.getRoleMenuList(row.id)
-    // 设置选中
-    formData.value.menuIds.forEach((menuId: number) => {
-      treeRef.value.setChecked(menuId, true, false)
-    })
-  } finally {
-    formLoading.value = false
-  }
+
+  dialogVisible.value = true
+  // 查询角色菜单列表（里面已返回权限）
+  let resData = await RoleApi.getRoleMenuTreeList(row.id)
+  treeDataList.value = resData
+  handleRoleMenuData(resData)
+
+  // 根据角色拥有的菜单和按钮设置选中
+  // formLoading.value = true
+  // try {
+  //   formData.value.menuIds = await PermissionApi.getRoleMenuList(row.id)
+  //   formData.value.menuIds.forEach((menuId: number) => {
+  //     treeRef.value.setChecked(menuId, true, false)
+  //   })
+  // } finally {
+  //   formLoading.value = false
+  // }
 }
+
+/**
+ * 处理角色菜单数据（把递归数据拆成普通数据，因为按钮权限是自定义独立的）
+ * @param resData
+ */
+const handleRoleMenuData = (resData: any []) => {
+
+  resData.forEach(item => {
+    if (item.buttonPermission) {
+      rolePermissionMap.value.set(item.id, JSON.parse(item.buttonPermission))
+      if (item.children) {
+        handleRoleMenuData(item.children)
+      }
+    }
+  })
+}
+
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 
 /** 提交表单 */
@@ -99,17 +168,32 @@ const submitForm = async () => {
   if (!formRef) return
   const valid = await formRef.value.validate()
   if (!valid) return
+  const roleMenuPermissionList = []
+  rolePermissionMap.value.forEach((value, key) => {
+    if (value) {
+      value.forEach(item => {
+        if (item.checked) {
+          const roleMenuPermission = {
+            menuId: key,
+            permission: item.btnPermission
+          }
+          roleMenuPermissionList.push(roleMenuPermission)
+        }
+      })
+    }
+  })
+  if (roleMenuPermissionList.length < 1) {
+    message.error('请至少选择一项菜单或按钮权限！')
+    return
+  }
   // 提交请求
   formLoading.value = true
   try {
     const data = {
-      roleId: formData.id,
-      menuIds: [
-        ...(treeRef.value.getCheckedKeys(false) as unknown as Array<number>), // 获得当前选中节点
-        ...(treeRef.value.getHalfCheckedKeys() as unknown as Array<number>) // 获得半选中的父节点
-      ]
+      id: formData.id,
+      roleMenuPermissionJson: JSON.stringify(roleMenuPermissionList)
     }
-    await PermissionApi.assignRoleMenu(data)
+    await RoleApi.updateMenuPermission(data)
     message.success(t('common.updateSuccess'))
     dialogVisible.value = false
     // 发送操作成功的事件
@@ -123,21 +207,49 @@ const submitForm = async () => {
 const resetForm = () => {
   // 重置选项
   treeNodeAll.value = false
-  menuExpand.value = false
+  menuExpand.value = true
   // 重置表单
   formData.value = {
     id: undefined,
     name: '',
     code: '',
-    menuIds: []
+    roleMenuPermissionJson: []
   }
   treeRef.value?.setCheckedNodes([])
   formRef.value?.resetFields()
 }
 
+
+/**
+ * 选择权限
+ * @param data
+ */
+const handlePermissionChange = (data) => {
+  // let data2 = rolePermissionMap.value.get(1)
+  // alert(JSON.stringify(data2))
+}
+
+
 /** 全选/全不选 */
-const handleCheckedTreeNodeAll = () => {
-  treeRef.value.setCheckedNodes(treeNodeAll.value ? menuOptions.value : [])
+const handleCheckedTreeNodeAll = (flag) => {
+  // treeRef.value.setCheckedNodes(treeNodeAll.value ? treeDataList.value : [])
+  if (flag) {
+    rolePermissionMap.value.forEach((value, key) => {
+      if (value) {
+        value.forEach(item => {
+          item.checked = true
+        })
+      }
+    })
+  } else {
+    rolePermissionMap.value.forEach((value, key) => {
+      if (value) {
+        value.forEach(item => {
+          item.checked = false
+        })
+      }
+    })
+  }
 }
 
 /** 展开/折叠全部 */
@@ -151,3 +263,21 @@ const handleCheckedTreeExpand = () => {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+/* 增大Element Plus Tree组件的行高 */
+:deep .menu-tree .el-tree-node__content {
+  /*  line-height: 50px;*/
+  height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+}
+</style>

@@ -11,4 +11,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
 
+    <select id="selectRoleIdListByUserId" resultType="java.lang.String">
+        select
+            sur.role_id
+        from sys_user_role sur
+        where sur.user_id = #{userId}
+    </select>
+
+    <select id="getRoleNameListByUserId" resultType="java.lang.String">
+        select
+            distinct sr.name
+        from sys_role sr
+                 inner join sys_user_role sur on sur.role_id = sr.id
+        where sur.user_id = #{userId}
+    </select>
+
+    <select id="selectRoleIdsByUserId" resultType="java.lang.String">
+        select
+            sur.role_id
+        from sys_user_role sur
+        where sur.user_id = #{userId}
+    </select>
+
 </mapper>

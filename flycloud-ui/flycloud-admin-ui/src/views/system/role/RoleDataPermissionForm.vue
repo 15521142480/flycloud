@@ -113,24 +113,25 @@ defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 /** 提交表单 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
 const submitForm = async () => {
-  formLoading.value = true
-  try {
-    const data = {
-      roleId: formData.id,
-      dataScope: formData.dataScope,
-      dataScopeDeptIds:
-        formData.dataScope !== SystemDataScopeEnum.DEPT_CUSTOM
-          ? []
-          : treeRef.value.getCheckedKeys(false)
-    }
-    await PermissionApi.assignRoleDataScope(data)
-    message.success(t('common.updateSuccess'))
-    dialogVisible.value = false
-    // 发送操作成功的事件
-    emit('success')
-  } finally {
-    formLoading.value = false
-  }
+  message.warning('待开发')
+  // formLoading.value = true
+  // try {
+  //   const data = {
+  //     roleId: formData.id,
+  //     dataScope: formData.dataScope,
+  //     dataScopeDeptIds:
+  //       formData.dataScope !== SystemDataScopeEnum.DEPT_CUSTOM
+  //         ? []
+  //         : treeRef.value.getCheckedKeys(false)
+  //   }
+  //   await PermissionApi.assignRoleDataScope(data)
+  //   message.success(t('common.updateSuccess'))
+  //   dialogVisible.value = false
+  //   // 发送操作成功的事件
+  //   emit('success')
+  // } finally {
+  //   formLoading.value = false
+  // }
 }
 
 /** 重置表单 */

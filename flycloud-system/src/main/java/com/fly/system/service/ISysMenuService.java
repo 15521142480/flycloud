@@ -1,5 +1,7 @@
 package com.fly.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.fly.system.api.domain.SysMenu;
 import com.fly.system.api.domain.vo.SysMenuTreeVo;
 import com.fly.system.api.domain.vo.SysMenuVo;
 import com.fly.system.api.domain.bo.SysMenuBo;
@@ -15,7 +17,7 @@ import java.util.List;
  * @author fly
  * @date 2024-08-31
  */
-public interface ISysMenuService {
+public interface ISysMenuService extends IService<SysMenu> {
 
 
     /**

@@ -62,7 +62,7 @@ public class BaseEntity implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic
+    @TableLogic // 逻辑删除，配置为： 已删除 logicDeleteValue = 1， 未删除 logicNotDeleteValue: 0
     private Boolean isDeleted;
 
 

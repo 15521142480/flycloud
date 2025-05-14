@@ -7,6 +7,7 @@ import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysUserApi;
 import com.fly.system.service.ISysRoleService;
+import com.fly.system.service.ISysUserRoleService;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class SysUserApiController implements ISysUserApi {
     private final ISysUserService sysUserService;
 
     private final ISysRoleService sysRoleService;
+    private final ISysUserRoleService sysUserRoleService;
 
 
 
@@ -111,7 +113,7 @@ public class SysUserApiController implements ISysUserApi {
 
         // 权限
         userInfo.setPermissionList(sysRoleService.getPermissionListByUserId(sysUser.getId()));
-        userInfo.setRoleIds(String.join(",", sysRoleService.getRoleIdListByUserId(sysUser.getId())));
+        userInfo.setRoleIds(String.join(",", sysUserRoleService.getRoleIdListByUserId(sysUser.getId())));
 
         log.debug("feign调用：userInfo:{}", userInfo);
         return userInfo;

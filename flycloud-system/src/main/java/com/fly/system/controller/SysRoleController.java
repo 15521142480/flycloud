@@ -57,12 +57,23 @@ public class SysRoleController extends BaseController {
     }
 
     /**
-     * 查询角色菜单权限列表 - 树型
+     * 查询角色菜单列表 - 树型
      */
-//    @GetMapping("/getRoleTreeList/{id}")
-    @GetMapping("/getRoleTreeList")
-    public R<List<SysMenuTreeVo>> getRoleTreeList(@RequestParam(required = false) Long id) {
-        return R.ok(iSysRoleService.getRoleTreeList(id));
+//    @GetMapping("/getRoleTreeList")
+    @GetMapping("/getRoleMenuTreeList/{roleId}")
+    public R<List<SysMenuTreeVo>> getRoleMenuTreeList(@PathVariable Long roleId) {
+        return R.ok(iSysRoleService.getRoleMenuTreeList(roleId));
+    }
+
+
+    /**
+     * 获取角色详细信息
+     *
+     * @param id 主键
+     */
+    @GetMapping("/get/{id}")
+    public R<SysRoleVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(iSysRoleService.queryById(id));
     }
 
 
@@ -88,6 +99,40 @@ public class SysRoleController extends BaseController {
         return R.ok(iSysRoleService.updateById(bo));
     }
 
+    /**
+     * 修改角色菜单权限
+     */
+//    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
+    @PostMapping("/updateMenuPermission")
+    public R<Void> updateMenuPermission(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
+
+        return R.ok(iSysRoleService.updateMenuPermission(bo));
+    }
+
+//    /**
+//     * 修改角色数据权限
+//     */
+////    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
+//    @PostMapping("/updateDataPermission")
+//    public R<Void> updateDataPermission(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
+//
+//        return R.ok(iSysRoleService.updateDataPermission(bo));
+//    }
+
+
+    /**
+     * 删除角色
+     *
+     * @param ids 主键串
+     */
+    @PreAuthorize("@pms.hasPermission('sys.role.delete')")
+    @Log(title = "角色", businessType = BusinessType.DELETE)
+    @DeleteMapping("/delete/{ids}")
+    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+        return R.ok(iSysRoleService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+
 
 
     /**
@@ -98,49 +143,5 @@ public class SysRoleController extends BaseController {
     public void export(SysRoleBo bo, HttpServletResponse response) {
         List<SysRoleVo> list = iSysRoleService.queryList(bo);
         ExcelUtil.exportExcel(list, "角色", SysRoleVo.class, response);
-    }
-
-
-    /**
-     * 获取角色详细信息
-     *
-     * @param id 主键
-     */
-    @GetMapping("/{id}")
-    public R<SysRoleVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(iSysRoleService.queryById(id));
-    }
-
-
-    /**
-     * 新增角色
-     */
-    @Log(title = "角色", businessType = BusinessType.INSERT)
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody SysRoleBo bo) {
-        return R.ok(iSysRoleService.insertByBo(bo));
-    }
-
-
-    /**
-     * 修改角色
-     */
-    @Log(title = "角色", businessType = BusinessType.UPDATE)
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysRoleBo bo) {
-        return R.ok(iSysRoleService.updateByBo(bo));
-    }
-
-
-    /**
-     * 删除角色
-     *
-     * @param ids 主键串
-     */
-    @PreAuthorize("@pms.hasPermission('sys.role.delete')")
-    @Log(title = "角色", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysRoleService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 }

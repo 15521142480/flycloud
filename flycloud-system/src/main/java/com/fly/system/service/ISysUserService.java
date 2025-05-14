@@ -53,6 +53,11 @@ public interface ISysUserService extends IService<SysUser> {
     int resetPassword(Long id);
 
     /**
+     * 自定义重置密码
+     */
+    int customResetPassword(Long id, String password);
+
+    /**
      * 查询用户列表
      */
     List<SysUserVo> queryList(SysUserBo bo);
@@ -114,6 +119,7 @@ public interface ISysUserService extends IService<SysUser> {
      * 根据ids验证用户
      */
     Boolean validateDeptByIds(Collection<Long> ids);
+
 
 
     /**

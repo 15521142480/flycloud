@@ -32,7 +32,7 @@ export const getMenuPageList = (params) => {
 
 // 查询菜单（精简）列表
 export const getMenusList = () => {
-  return request.get({ url: `/${SYS_BASE_URL}/menu/list` })
+  return request.get({ url: `/${SYS_BASE_URL}/menu/getList` })
 }
 
 

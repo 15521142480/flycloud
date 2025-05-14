@@ -43,7 +43,7 @@
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item prop="code" >
           <el-col :span="16">
-            <el-input v-model="loginData.loginForm.code" :placeholder="t('login.codePlaceholder')"/>
+            <el-input v-model="loginData.loginForm.code"  :placeholder="t('login.codePlaceholder')" @keyup.enter="handleLogin()"/>
           </el-col>
           <el-col :span="1" style="text-align: center">&nbsp;</el-col>
           <el-col :span="7">

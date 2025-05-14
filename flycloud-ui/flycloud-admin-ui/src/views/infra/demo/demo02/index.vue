@@ -1,6 +1,4 @@
 <template>
-  <doc-alert title="代码生成（树表）" url="https://doc.iocoder.cn/new-feature/tree/" />
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form

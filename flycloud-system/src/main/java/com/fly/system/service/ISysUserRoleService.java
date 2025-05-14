@@ -17,6 +17,18 @@ import java.util.List;
 public interface ISysUserRoleService {
 
     /**
+     * 根据用户查询角色信息列表
+     */
+    List<String> getRoleIdListByUserId(Long userId);
+    List<String> getRoleNameListByUserId(Long userId);
+
+    /**
+     * 获取用户的角色id列表
+     */
+    List<Long> queryRoleIdsByUserId(Long userId);
+
+
+    /**
      * 查询用户角色
      */
     SysUserRoleVo queryById(Long id);

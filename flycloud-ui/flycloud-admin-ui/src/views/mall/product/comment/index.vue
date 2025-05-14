@@ -1,5 +1,4 @@
 <template>
-  <doc-alert title="【商品】商品评价" url="https://doc.iocoder.cn/mall/product-comment/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
