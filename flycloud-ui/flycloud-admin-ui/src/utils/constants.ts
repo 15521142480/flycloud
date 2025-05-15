@@ -18,6 +18,7 @@ export const UserTypeEnum = {
 }
 
 // ========== SYSTEM 模块 ==========
+
 /**
  * 系统类型
  */
@@ -27,6 +28,14 @@ export const SystemTypeEnum = {
   TYPE_2: 2, // 音乐平台管理系统
   TYPE_3: 3 // 音乐歌手管理系统
 }
+
+/**
+ * 角色标识
+ */
+export const RoleEnum = {
+  SUPER_ADMIN: 'super_admin', // 平台管理系统
+}
+
 /**
  * 菜单的类型枚举
  */

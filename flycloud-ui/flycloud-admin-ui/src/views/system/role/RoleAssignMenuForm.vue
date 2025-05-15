@@ -13,14 +13,15 @@
 
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
       <el-row>
-        <el-col :span="12">
+        <el-col :span="10">
           <el-form-item label="角色名称">
             <el-tag>{{ formData.name }}</el-tag>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="14">
           <el-form-item label="角色标识">
             <el-tag>{{ formData.code }}</el-tag>
+            <span v-show="formData.code == RoleEnum.SUPER_ADMIN" style="margin-left: 10px; color: red">{{RoleEnum.SUPER_ADMIN}} 为超级管理员角色标识，登录即是所有权限，所以可无需赋权</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -93,6 +94,7 @@ import * as MenuApi from '@/api/system/menu'
 import * as PermissionApi from '@/api/system/permission'
 import {array} from "vue-types";
 import {getRoleMenuTreeList, updateMenuPermission} from "@/api/system/role";
+import {RoleEnum} from '@/utils/constants'
 
 defineOptions({ name: 'SystemRoleAssignMenuForm' })
 
