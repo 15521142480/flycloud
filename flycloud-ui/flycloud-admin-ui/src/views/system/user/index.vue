@@ -67,7 +67,7 @@
               type="primary"
               plain
               @click="openForm('create')"
-              v-hasPermi="['system:user:create']"
+              v-hasPermi="['sys:user:saveOrUpdate']"
             >
               <Icon icon="ep:plus" /> 新增
             </el-button>
@@ -75,7 +75,7 @@
               type="warning"
               plain
               @click="handleImport"
-              v-hasPermi="['system:user:import']"
+              v-hasPermi="['sys:user:download']"
             >
               <Icon icon="ep:upload" /> 导入
             </el-button>
@@ -127,6 +127,7 @@
             <template #default="scope">
               <el-switch
                 v-model="scope.row.status"
+                :disabled="!checkPermi(['sys:user:enable'])"
                 :active-value="0"
                 :inactive-value="1"
                 @change="handleStatusChange(scope.row)"
@@ -148,16 +149,16 @@
                   type="primary"
                   link
                   @click="openForm('update', scope.row.id)"
-                  v-hasPermi="['system:user:update']"
+                  v-hasPermi="['sys:user:saveOrUpdate']"
                 >
                   <Icon icon="ep:edit" />修改
                 </el-button>
                 <el-dropdown
                   @command="(command) => handleCommand(command, scope.row)"
                   v-hasPermi="[
-                    'system:user:delete',
-                    'system:user:update-password',
-                    'system:permission:assign-user-role'
+                    'sys:user:delete',
+                    'sys:user:restartPassword',
+                    'sys:user:assignRole'
                   ]"
                 >
                   <el-button type="primary" link><Icon icon="ep:d-arrow-right" /> 更多</el-button>
@@ -166,19 +167,22 @@
 
                       <el-dropdown-item
                         command="handleRole"
-                      > <!-- v-if="checkPermi(['system:permission:assign-user-role'])" -->
+                        v-if="checkPermi(['sys:user:assignRole'])"
+                      >
                         <Icon icon="ep:circle-check" />分配角色
                       </el-dropdown-item>
 
                       <el-dropdown-item
                         command="handleResetPwd"
-                      > <!-- v-if="checkPermi(['system:user:update-password'])" -->
+                        v-if="checkPermi(['sys:user:restartPassword'])"
+                      >
                         <Icon icon="ep:key" />重置密码
                       </el-dropdown-item>
 
                       <el-dropdown-item
                         command="handleDelete"
-                      > <!--  v-if="checkPermi(['system:user:delete'])" -->
+                        v-if="checkPermi(['sys:user:delete'])"
+                      >
                         <Icon icon="ep:delete" />删除
                       </el-dropdown-item>
 

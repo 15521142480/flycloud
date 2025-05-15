@@ -43,7 +43,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:post:create']"
+          v-hasPermi="['sys:post:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -52,7 +52,7 @@
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['system:post:export']"
+          v-hasPermi="['sys:post:download']"
         >
           <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
@@ -86,7 +86,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:post:update']"
+            v-hasPermi="['sys:post:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -94,7 +94,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['system:post:delete']"
+            v-hasPermi="['sys:post:delete']"
           >
             删除
           </el-button>

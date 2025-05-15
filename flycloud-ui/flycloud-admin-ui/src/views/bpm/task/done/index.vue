@@ -89,7 +89,7 @@
       <el-table-column align="center" label="任务编号" prop="id" :show-overflow-tooltip="true" />
       <el-table-column align="center" label="操作" fixed="right" width="80">
         <template #default="scope">
-          <el-button link type="primary" @click="handleAudit(scope.row)">历史</el-button>
+          <el-button v-hasPermi="['bpm:audit:done:history']" link type="primary" @click="handleAudit(scope.row)">历史</el-button>
         </template>
       </el-table-column>
     </el-table>

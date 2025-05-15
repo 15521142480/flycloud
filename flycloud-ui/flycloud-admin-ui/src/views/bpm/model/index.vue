@@ -27,7 +27,7 @@
         </el-form-item>
         <!-- 右上角：新建模型、更多操作 -->
         <el-form-item>
-          <el-button type="primary" @click="openForm('create')" v-hasPermi="['bpm:model:create']">
+          <el-button type="primary" @click="openForm('create')" v-hasPermi="['bpm:manage:model:create']">
             <Icon icon="ep:plus" class="mr-5px" /> 新建模型
           </el-button>
         </el-form-item>

@@ -66,7 +66,7 @@ public class BpmTaskController {
     */
     @GetMapping("/todoPage")
     @Operation(summary = "获取 Todo 待办任务分页")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:todo:list')")
+    @PreAuthorize("@pms.hasPermission('bpm:audit:todo:list')")
     public R<PageVo<BpmTaskRespVO>> getTaskTodoPage(@Valid BpmTaskPageReqVO pageVO) {
 
         PageVo<Task> pageVo = taskService.getTaskTodoPage(UserUtils.getCurUserId(), pageVO);
@@ -90,7 +90,7 @@ public class BpmTaskController {
      * @param pageVO 流程任务的的分页参数
      */
     @GetMapping("/donePage")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:done:list')")
+    @PreAuthorize("@pms.hasPermission('bpm:audit:todo:list')")
     public R<PageVo<BpmTaskRespVO>> getTaskDonePage(@Valid BpmTaskPageReqVO pageVO) {
 
         PageVo<HistoricTaskInstance> pageVo = taskService.getTaskDonePage(UserUtils.getCurUserId(), pageVO);

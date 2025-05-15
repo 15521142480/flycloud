@@ -58,7 +58,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['system:role:create']"
+          v-hasPermi="['sys:role:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -67,7 +67,7 @@
           新增
         </el-button>
         <el-button
-          v-hasPermi="['system:role:export']"
+          v-hasPermi="['sys:role:download']"
           :loading="exportLoading"
           plain
           type="success"
@@ -108,7 +108,7 @@
       <el-table-column :width="200" align="center" label="操作">
         <template #default="scope">
           <el-button
-            v-hasPermi="['system:role:update']"
+            v-hasPermi="['sys:role:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
@@ -116,7 +116,7 @@
             编辑
           </el-button>
           <el-button
-            v-hasPermi="['system:permission:assign-role-menu']"
+            v-hasPermi="['sys:role:menuPermission']"
             link
             preIcon="ep:basketball"
             title="菜单权限"
@@ -126,7 +126,7 @@
             菜单权限
           </el-button>
           <el-button
-            v-hasPermi="['system:permission:assign-role-data-scope']"
+            v-hasPermi="['sys:role:dataPermission']"
             link
             preIcon="ep:coin"
             title="数据权限"
@@ -136,7 +136,7 @@
             数据权限
           </el-button>
           <el-button
-            v-hasPermi="['system:role:delete']"
+            v-hasPermi="['sys:role:delete']"
             link
             type="danger"
             @click="handleDelete(scope.row.id)"

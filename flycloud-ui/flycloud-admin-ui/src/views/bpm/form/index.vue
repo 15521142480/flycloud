@@ -27,7 +27,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
-        <el-button v-hasPermi="['bpm:form:create']" plain type="primary" @click="openForm">
+        <el-button v-hasPermi="['bpm:manage:form:saveOrUpdate']" plain type="primary" @click="openForm">
           <Icon class="mr-5px" icon="ep:plus" />
           新增
         </el-button>
@@ -37,7 +37,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list" height="calc(100vh - 310px)">
       <el-table-column align="center" label="编号" prop="id" />
       <el-table-column align="center" label="表单名" prop="name" />
       <el-table-column align="center" label="状态" prop="status">
@@ -55,18 +55,18 @@
       <el-table-column align="center" label="操作">
         <template #default="scope">
           <el-button
-            v-hasPermi="['bpm:form:update']"
+            v-hasPermi="['bpm:manage:form:saveOrUpdate']"
             link
             type="primary"
             @click="openForm(scope.row.id)"
           >
             编辑
           </el-button>
-          <el-button v-hasPermi="['bpm:form:query']" link @click="openDetail(scope.row.id)">
+          <el-button link @click="openDetail(scope.row.id)">
             详情
           </el-button>
           <el-button
-            v-hasPermi="['bpm:form:delete']"
+            v-hasPermi="['bpm:manage:form:delete']"
             link
             type="danger"
             @click="handleDelete(scope.row.id)"

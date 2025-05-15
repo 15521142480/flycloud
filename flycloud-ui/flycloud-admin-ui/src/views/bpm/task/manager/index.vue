@@ -44,7 +44,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list" height="calc(100vh - 310px)">
       <el-table-column align="center" label="流程" prop="processInstance.name" width="180" />
       <el-table-column
         align="center"
@@ -90,7 +90,7 @@
       <el-table-column align="center" label="任务编号" prop="id" :show-overflow-tooltip="true" />
       <el-table-column align="center" label="操作" fixed="right" width="80">
         <template #default="scope">
-          <el-button link type="primary" @click="handleAudit(scope.row)">历史</el-button>
+          <el-button v-hasPermi="['bpm:manage:task:history']" link type="primary" @click="handleAudit(scope.row)">历史</el-button>
         </template>
       </el-table-column>
     </el-table>

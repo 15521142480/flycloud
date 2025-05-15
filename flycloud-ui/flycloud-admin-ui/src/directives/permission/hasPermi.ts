@@ -7,27 +7,25 @@ export function hasPermi(app: App<Element>) {
 
   app.directive('hasPermi', (el, binding) => {
 
-    // const { wsCache } = useCache()
-    // const { value } = binding
-    // const all_permission = '*:*:*'
-    // const permissionList = wsCache.get(CACHE_KEY.USER).permissionList
-    //
-    // if (value && value instanceof Array && value.length > 0) {
-    //   const permissionFlag = value
-    //
-    //   const hasPermissions = permissionList.some((permission: string) => {
-    //     return all_permission === permission || permissionFlag.includes(permission)
-    //   })
-    //
-    //   if (!hasPermissions) {
-    //     el.parentNode && el.parentNode.removeChild(el)
-    //   }
-    // } else {
-    //   throw new Error(t('permission.hasPermission'))
-    // }
+    const { wsCache } = useCache()
+    const { value } = binding
+    const all_permission = '*:*:*'
+    const permissionList = wsCache.get(CACHE_KEY.USER).permissionList
 
-    // todo 先写死
+    if (value && value instanceof Array && value.length > 0) {
+      const permissionFlag = value
+
+      const hasPermissions = permissionList.some((permission: string) => {
+        return all_permission === permission || permissionFlag.includes(permission)
+      })
+
+      if (!hasPermissions) {
+        el.parentNode && el.parentNode.removeChild(el)
+      }
+    } else {
+      throw new Error(t('permission.hasPermission'))
+    }
+
     return true
-
   })
 }

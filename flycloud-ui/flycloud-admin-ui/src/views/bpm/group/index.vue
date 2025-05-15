@@ -46,7 +46,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['bpm:user-group:create']"
+          v-hasPermi="['bpm:manage:group:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -56,7 +56,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list" height="calc(100vh - 300px)">
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="组名" align="center" prop="name" />
       <el-table-column label="描述" align="center" prop="description" />
@@ -84,7 +84,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['bpm:user-group:update']"
+            v-hasPermi="['bpm:manage:group:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -92,7 +92,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['bpm:user-group:delete']"
+            v-hasPermi="['bpm:manage:group:delete']"
           >
             删除
           </el-button>

@@ -87,7 +87,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list" height="calc(100vh - 410px)">
       <el-table-column label="流程名称" align="center" prop="name" min-width="200px" fixed="left" />
       <el-table-column
         label="流程分类"
@@ -135,7 +135,7 @@
           <el-button
             link
             type="primary"
-            v-hasPermi="['bpm:process-instance:cancel']"
+            v-hasPermi="['bpm:manage:instance:detail']"
             @click="handleDetail(scope.row)"
           >
             详情
@@ -144,7 +144,7 @@
             link
             type="primary"
             v-if="scope.row.status === 1"
-            v-hasPermi="['bpm:process-instance:query']"
+            v-hasPermi="['bpm:manage:instance:cancel']"
             @click="handleCancel(scope.row)"
           >
             取消

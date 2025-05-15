@@ -74,9 +74,10 @@
         :cell-style="{ paddingLeft: '10px' }"
         :row-style="{ height: '68px' }"
         :data="modelList"
+        height="calc(100vh - 320px)"
         row-key="id"
       >
-        <el-table-column label="流程名" prop="name" min-width="150">
+        <el-table-column label="流程名" prop="name">
           <template #default="scope">
             <div class="flex items-center">
               <el-tooltip content="拖动排序" v-if="isModelSorting">
@@ -90,7 +91,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="可见范围" prop="startUserIds" min-width="100">
+        <el-table-column label="可见范围" prop="startUserIds" width="150">
           <template #default="scope">
             <el-text v-if="!scope.row.startUsers || scope.row.startUsers.length === 0">
               全部可见
@@ -110,7 +111,7 @@
             </el-text>
           </template>
         </el-table-column>
-        <el-table-column label="表单信息" prop="formType" min-width="200">
+        <el-table-column label="表单信息" prop="formType">
           <template #default="scope">
             <el-button
               v-if="scope.row.formType === BpmModelFormType.NORMAL"
@@ -131,7 +132,7 @@
             <label v-else>暂无表单</label>
           </template>
         </el-table-column>
-        <el-table-column label="最后发布" prop="deploymentTime" min-width="250">
+        <el-table-column label="最后发布" prop="deploymentTime" width="225">
           <template #default="scope">
             <div class="flex items-center">
               <span v-if="scope.row.processDefinition" class="w-150px">
@@ -151,13 +152,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column label="操作" width="230" fixed="right" align="center">
           <template #default="scope">
             <el-button
               link
               type="primary"
               @click="openModelForm('update', scope.row.id)"
-              v-hasPermi="['bpm:model:update']"
+              v-hasPermi="['bpm:manage:model:update']"
               :disabled="!isManagerUser(scope.row)"
             >
               修改
@@ -167,7 +168,7 @@
               class="!ml-5px"
               type="primary"
               @click="handleDesign(scope.row)"
-              v-hasPermi="['bpm:model:update']"
+              v-hasPermi="['bpm:manage:model:designModel']"
               :disabled="!isManagerUser(scope.row)"
             >
               设计
@@ -177,7 +178,7 @@
               class="!ml-5px"
               type="primary"
               @click="handleDeploy(scope.row)"
-              v-hasPermi="['bpm:model:deploy']"
+              v-hasPermi="['bpm:manage:model:designModel']"
               :disabled="!isManagerUser(scope.row)"
             >
               发布
@@ -185,20 +186,20 @@
             <el-dropdown
               class="!align-middle ml-5px"
               @command="(command) => handleModelCommand(command, scope.row)"
-              v-hasPermi="['bpm:process-definition:query', 'bpm:model:update', 'bpm:model:delete']"
+              v-hasPermi="['bpm:manage:model:history', 'bpm:manage:model:enable', 'bpm:manage:model:delete']"
             >
               <el-button type="primary" link>更多</el-button>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item
                     command="handleDefinitionList"
-                    v-if="checkPermi(['bpm:process-definition:query'])"
+                    v-if="checkPermi(['bpm:manage:model:history'])"
                   >
                     历史
                   </el-dropdown-item>
                   <el-dropdown-item
                     command="handleChangeState"
-                    v-if="checkPermi(['bpm:model:update']) && scope.row.processDefinition"
+                    v-if="checkPermi(['bpm:manage:model:enable']) && scope.row.processDefinition"
                     :disabled="!isManagerUser(scope.row)"
                   >
                     {{ scope.row.processDefinition.suspensionState === 1 ? '停用' : '启用' }}
@@ -206,7 +207,7 @@
                   <el-dropdown-item
                     type="danger"
                     command="handleDelete"
-                    v-if="checkPermi(['bpm:model:delete'])"
+                    v-if="checkPermi(['bpm:manage:model:delete'])"
                     :disabled="!isManagerUser(scope.row)"
                   >
                     删除

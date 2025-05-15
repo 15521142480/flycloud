@@ -5,9 +5,8 @@
 
     <el-row>
       <el-col :span="12">
-        <!--    v-hasPermi="['system:menu:create']"-->
         <div style="margin-left: 30px">
-          <el-button type="primary" @click="openForm('create', undefined, 0)">
+          <el-button v-hasPermi="['sys:menu:saveOrUpdate']" type="primary" @click="openForm('create', undefined, 0)">
             新增一级菜单
           </el-button>
         </div>
@@ -23,9 +22,6 @@
 
     <el-divider style="margin: 10px 0" />
     <div>
-<!--      <el-tree-v2 -->
-<!--      class="menu-tree"-->
-<!--      :height="treeHeight"-->
       <el-tree
         class="menu-tree"
         style="height: calc(100vh - 240px); overflow-y: scroll"
@@ -38,10 +34,12 @@
           <Icon :icon="data.icon" style="margin: 0 12px 0 8px" />
           <span>{{ node.label }}</span>
 
-          <el-button type="primary" :icon="Plus" circle style="margin-left: 50%"  @click="openForm('create', undefined, data.id)" />
-          <el-button type="primary" :icon="Edit" circle  @click="openForm('update', data.id)" />
+          <span style="margin-left: 50%"></span>
+          <el-button v-hasPermi="['sys:menu:saveOrUpdate']" type="primary" :icon="Plus" circle @click="openForm('create', undefined, data.id)" />
+          <el-button v-hasPermi="['sys:menu:saveOrUpdate']" type="primary" :icon="Edit" circle  @click="openForm('update', data.id)" />
           <el-switch
             v-model="data.status"
+            :disabled="!checkPermi(['sys:menu:enable'])"
             style="margin: 0 10px 0 10px"
             size="large"
             inline-prompt
@@ -51,7 +49,7 @@
             inactive-text="已禁"
             @change="handleStatusChange(data)"
           />
-          <el-button type="danger" :icon="Delete" circle @click="deleteMenu(data)" />
+          <el-button v-hasPermi="['sys:menu:delete']" type="danger" :icon="Delete" circle @click="deleteMenu(data)" />
 
         </template>
       </el-tree>
@@ -74,6 +72,7 @@ import MenuForm from './MenuForm.vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
 import {CirclePlus, Delete, Edit, Plus} from "@element-plus/icons-vue";
+import {checkPermi} from "@/utils/permission";
 
 defineOptions({ name: 'SystemMenu' })
 

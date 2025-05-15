@@ -67,7 +67,7 @@
       />
       <el-table-column align="center" label="操作" fixed="right" width="80">
         <template #default="scope">
-          <el-button link type="primary" @click="handleAudit(scope.row)">详情</el-button>
+          <el-button v-hasPermi="['bpm:audit:copy:detail']" link type="primary" @click="handleAudit(scope.row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>

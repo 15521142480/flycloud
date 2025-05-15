@@ -60,7 +60,7 @@
             v-if="activeTab === 'form'"
             class="h-50px bottom-10 text-14px flex items-center color-#32373c dark:color-#fff font-bold btn-container"
           >
-            <el-button plain type="success" @click="submitForm">
+            <el-button plain type="success" v-hasPermi="['bpm:audit:create:create']" @click="submitForm">
               <Icon icon="ep:select" />&nbsp; 发起
             </el-button>
             <el-button plain type="danger" @click="handleCancel">

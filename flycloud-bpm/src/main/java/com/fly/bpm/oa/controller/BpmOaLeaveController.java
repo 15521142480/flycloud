@@ -43,7 +43,7 @@ public class BpmOaLeaveController extends BaseController {
      * 查询OA 请假申请列表
      */
     @GetMapping("/page")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:oa:list')")
+    @PreAuthorize("@pms.hasPermission('bpm:oa:leave:list')")
     public R<PageVo<BpmOaLeaveVo>> list(BpmOaLeaveBo bo, PageBo page) {
         return R.ok(iBpmOaLeaveService.queryPageList(bo, page));
     }
@@ -55,7 +55,7 @@ public class BpmOaLeaveController extends BaseController {
      * @param id 主键
      */
     @GetMapping("/get/{id}")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:oa:detail')")
+    @PreAuthorize("@pms.hasPermission('bpm:oa:leave:detail')")
     public R<BpmOaLeaveVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(iBpmOaLeaveService.queryById(id));
     }
@@ -66,7 +66,7 @@ public class BpmOaLeaveController extends BaseController {
      */
     @Log(title = "OA 请假申请", businessType = BusinessType.INSERT)
     @PostMapping("/create")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:oa:create')")
+    @PreAuthorize("@pms.hasPermission('bpm:oa:leave:create')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmOALeaveCreateBo bo) {
         return R.ok(iBpmOaLeaveService.insertByBo(bo));
     }

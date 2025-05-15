@@ -89,7 +89,7 @@ public class BpmProcessDefinitionController extends BaseController {
      * @param suspensionState 挂起状态; 参见 Flowable SuspensionState 枚举
      */
     @GetMapping("/list")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:create:list')")
+    @PreAuthorize("@pms.hasPermission('bpm:audit:create:list')")
     public R<List<BpmProcessDefinitionRespVO>> getProcessDefinitionList(@RequestParam("suspensionState") Integer suspensionState) {
 
         // 1.1 获得开启的流程定义

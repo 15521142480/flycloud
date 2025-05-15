@@ -35,7 +35,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['bpm:process-listener:create']"
+          v-hasPermi="['bpm:manage:listener:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -45,7 +45,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" height="calc(100vh - 310px)">
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="名字" align="center" prop="name" />
       <el-table-column label="类型" align="center" prop="type">
@@ -81,7 +81,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['bpm:process-listener:update']"
+            v-hasPermi="['bpm:manage:listener:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -89,7 +89,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['bpm:process-listener:delete']"
+            v-hasPermi="['bpm:manage:listener:delete']"
           >
             删除
           </el-button>

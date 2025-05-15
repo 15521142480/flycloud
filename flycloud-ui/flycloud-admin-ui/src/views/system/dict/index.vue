@@ -62,7 +62,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['system:dict:create']"
+          v-hasPermi="['sys:dict:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -71,7 +71,7 @@
           新增
         </el-button>
         <el-button
-          v-hasPermi="['system:dict:export']"
+          v-hasPermi="['sys:dict:download']"
           :loading="exportLoading"
           plain
           type="success"
@@ -106,7 +106,7 @@
       <el-table-column align="center" label="操作" width="200">
         <template #default="scope">
           <el-button
-            v-hasPermi="['system:dict:update']"
+            v-hasPermi="['sys:dict:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
@@ -114,10 +114,10 @@
             修改
           </el-button>
           <router-link :to="'/dict/type/data/' + scope.row.type">
-            <el-button link type="primary">数据</el-button>
+            <el-button v-hasPermi="['sys:dict:optionDictData']" link type="primary">数据</el-button>
           </router-link>
           <el-button
-            v-hasPermi="['system:dict:delete']"
+            v-hasPermi="['sys:dict:delete']"
             link
             type="danger"
             @click="handleDelete(scope.row.id)"

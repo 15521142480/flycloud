@@ -54,7 +54,7 @@ public class BpmInstanceCopyController extends BaseController {
      *
      */
     @GetMapping("/page")
-    @PreAuthorize("@pms.hasPermission('bpm:manage:copy:list')")
+    @PreAuthorize("@pms.hasPermission('bpm:audit:todo:list')")
     public R<PageVo<BpmProcessInstanceCopyRespVO>> list(BpmProcessInstanceCopyBo bo, PageBo page) {
 
         PageVo<BpmProcessInstanceCopy> pageData = instanceCopyService.getProcessInstanceCopyPageByEntity(

@@ -60,7 +60,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['bpm:category:create']"
+          v-hasPermi="['bpm:manage:category:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -70,7 +70,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" height="calc(100vh - 360px)">
       <el-table-column label="分类编号" align="center" prop="id" />
       <el-table-column label="分类名" align="center" prop="name" />
       <el-table-column label="分类标志" align="center" prop="code" />
@@ -94,7 +94,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['bpm:category:update']"
+            v-hasPermi="['bpm:manage:category:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -102,7 +102,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['bpm:category:delete']"
+            v-hasPermi="['bpm:manage:category:delete']"
           >
             删除
           </el-button>

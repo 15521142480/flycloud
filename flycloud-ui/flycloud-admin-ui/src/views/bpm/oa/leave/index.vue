@@ -68,7 +68,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
-        <el-button plain type="primary" @click="handleCreate()">
+        <el-button v-hasPermi="['bpm:oa:leave:create']" plain type="primary" @click="handleCreate()">
           <Icon class="mr-5px" icon="ep:plus" />
           发起请假
         </el-button>
@@ -115,7 +115,7 @@
       <el-table-column align="center" label="操作" width="200">
         <template #default="scope">
           <el-button
-            v-hasPermi="['bpm:oa-leave:query']"
+            v-hasPermi="['bpm:oa:leave:detail']"
             link
             type="primary"
             @click="handleDetail(scope.row)"
@@ -123,7 +123,7 @@
             详情
           </el-button>
           <el-button
-            v-hasPermi="['bpm:oa-leave:query']"
+            v-hasPermi="['bpm:oa:leave:progress']"
             link
             type="primary"
             @click="handleProcessDetail(scope.row)"
@@ -132,7 +132,6 @@
           </el-button>
           <el-button
             v-if="scope.row.result === 1"
-            v-hasPermi="['bpm:oa-leave:create']"
             link
             type="danger"
             @click="cancelLeave(scope.row)"
