@@ -10,6 +10,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.api.domain.vo.BpmProcessExpressionVo;
@@ -41,6 +42,7 @@ public class BpmProcessExpressionController extends BaseController {
      * 查询BPM 流程达式列表
      */
     @GetMapping("/page")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:expression:list')")
     public R<PageVo<BpmProcessExpressionVo>> list(BpmProcessExpressionBo bo, PageBo page) {
         return R.ok(iBpmProcessExpressionService.queryPageList(bo, page));
     }
@@ -62,6 +64,7 @@ public class BpmProcessExpressionController extends BaseController {
      */
     @Log(title = "BPM 流程达式", businessType = BusinessType.INSERT)
     @PostMapping("/create")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:expression:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmProcessExpressionBo bo) {
         return R.ok(iBpmProcessExpressionService.insertByBo(bo));
     }
@@ -72,6 +75,7 @@ public class BpmProcessExpressionController extends BaseController {
      */
     @Log(title = "BPM 流程达式", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:expression:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmProcessExpressionBo bo) {
         return R.ok(iBpmProcessExpressionService.updateByBo(bo));
     }
@@ -84,6 +88,7 @@ public class BpmProcessExpressionController extends BaseController {
      */
     @Log(title = "BPM 流程达式", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:expression:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmProcessExpressionService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

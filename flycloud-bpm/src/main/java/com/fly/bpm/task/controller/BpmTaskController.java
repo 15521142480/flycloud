@@ -66,6 +66,7 @@ public class BpmTaskController {
     */
     @GetMapping("/todoPage")
     @Operation(summary = "获取 Todo 待办任务分页")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:todo:list')")
     public R<PageVo<BpmTaskRespVO>> getTaskTodoPage(@Valid BpmTaskPageReqVO pageVO) {
 
         PageVo<Task> pageVo = taskService.getTaskTodoPage(UserUtils.getCurUserId(), pageVO);
@@ -89,6 +90,7 @@ public class BpmTaskController {
      * @param pageVO 流程任务的的分页参数
      */
     @GetMapping("/donePage")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:done:list')")
     public R<PageVo<BpmTaskRespVO>> getTaskDonePage(@Valid BpmTaskPageReqVO pageVO) {
 
         PageVo<HistoricTaskInstance> pageVo = taskService.getTaskDonePage(UserUtils.getCurUserId(), pageVO);
@@ -114,6 +116,7 @@ public class BpmTaskController {
      * @param pageVO 流程任务的的分页参数
      */
     @GetMapping("/managerPage")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:task:list')")
     public R<PageVo<BpmTaskRespVO>> getTaskManagerPage(@Valid BpmTaskPageReqVO pageVO) {
 
         PageVo<HistoricTaskInstance> pageVo = taskService.getTaskPage(UserUtils.getCurUserId(), pageVO);
@@ -216,7 +219,6 @@ public class BpmTaskController {
      */
     @PutMapping("/return")
     @Operation(summary = "回退任务", description = "用于【流程详情】的【回退】按钮")
-    @PreAuthorize("@ss.hasPermission('bpm:task:update')")
     public R<Boolean> returnTask(@Valid @RequestBody BpmTaskReturnReqVO reqVO) {
         taskService.returnTask(UserUtils.getCurUserId(), reqVO);
         return R.ok(true);

@@ -21,6 +21,7 @@ import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.api.domain.bo.BpmProcessDefinitionInfoBo;
@@ -53,6 +54,7 @@ public class BpmProcessDefinitionController extends BaseController {
      * 获得流程定义分页
      */
     @GetMapping("/page")
+//    @PreAuthorize("@pms.hasPermission('bpm:manage:expression:saveOrUpdate')")
     public R<PageVo<BpmProcessDefinitionRespVO>> list(BpmProcessDefinitionInfoBo bo, PageBo page) {
 
             PageVo<ProcessDefinition> pageResult = bpmProcessDefinitionService.queryPageList(bo, page);
@@ -87,6 +89,7 @@ public class BpmProcessDefinitionController extends BaseController {
      * @param suspensionState 挂起状态; 参见 Flowable SuspensionState 枚举
      */
     @GetMapping("/list")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:create:list')")
     public R<List<BpmProcessDefinitionRespVO>> getProcessDefinitionList(@RequestParam("suspensionState") Integer suspensionState) {
 
         // 1.1 获得开启的流程定义

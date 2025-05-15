@@ -10,6 +10,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.api.domain.vo.BpmCategoryVo;
@@ -40,6 +41,7 @@ public class BpmCategoryController extends BaseController {
     /**
      * 流程分类分页列表
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:category:list')")
     @GetMapping("/page")
     public R<PageVo<BpmCategoryVo>> pageList(BpmCategoryBo bo, PageBo page) {
         return R.ok(iBpmCategoryService.queryPageList(bo, page));
@@ -81,6 +83,7 @@ public class BpmCategoryController extends BaseController {
      */
     @Log(title = "BPM 流程分类", businessType = BusinessType.INSERT)
     @PostMapping("/create")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:category:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmCategoryBo bo) {
         return R.ok(iBpmCategoryService.insertByBo(bo));
     }
@@ -91,6 +94,7 @@ public class BpmCategoryController extends BaseController {
      */
     @Log(title = "BPM 流程分类", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:category:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmCategoryBo bo) {
         return R.ok(iBpmCategoryService.updateByBo(bo));
     }
@@ -103,6 +107,7 @@ public class BpmCategoryController extends BaseController {
      */
     @Log(title = "BPM 流程分类", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:category:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmCategoryService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

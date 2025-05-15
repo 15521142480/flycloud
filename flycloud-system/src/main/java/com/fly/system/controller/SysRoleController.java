@@ -45,7 +45,7 @@ public class SysRoleController extends BaseController {
     /**
      * 查询角色列表
      */
-    @PreAuthorize("@pms.hasPermission('sys.role.list')")
+    @PreAuthorize("@pms.hasPermission('sys:role:list')")
     @GetMapping("/list")
     public R<PageVo<SysRoleVo>> list(SysRoleBo bo, PageBo page) {
         return R.ok(iSysRoleService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class SysRoleController extends BaseController {
     /**
      * 新增/修改角色
      */
-    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('sys:role:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
@@ -102,7 +102,7 @@ public class SysRoleController extends BaseController {
     /**
      * 修改角色菜单权限
      */
-//    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('sys:role:menuPermission')")
     @PostMapping("/updateMenuPermission")
     public R<Void> updateMenuPermission(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
@@ -112,7 +112,7 @@ public class SysRoleController extends BaseController {
 //    /**
 //     * 修改角色数据权限
 //     */
-////    @PreAuthorize("@pms.hasPermission('sys.role.saveOrUpdate')")
+////    @PreAuthorize("@pms.hasPermission('sys:role:dataPermission')")
 //    @PostMapping("/updateDataPermission")
 //    public R<Void> updateDataPermission(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 //
@@ -125,7 +125,7 @@ public class SysRoleController extends BaseController {
      *
      * @param ids 主键串
      */
-    @PreAuthorize("@pms.hasPermission('sys.role.delete')")
+    @PreAuthorize("@pms.hasPermission('sys:role:delete')")
     @Log(title = "角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
@@ -139,6 +139,7 @@ public class SysRoleController extends BaseController {
      * 导出角色列表
      */
     @Log(title = "角色", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@pms.hasPermission('sys:role:download')")
     @PostMapping("/export")
     public void export(SysRoleBo bo, HttpServletResponse response) {
         List<SysRoleVo> list = iSysRoleService.queryList(bo);

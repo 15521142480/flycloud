@@ -10,6 +10,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.api.domain.vo.BpmUserGroupVo;
@@ -41,6 +42,7 @@ public class BpmUserGroupController extends BaseController {
      * 查询BPM 用户组列表
      */
     @GetMapping("/page")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:group:list')")
     public R<PageVo<BpmUserGroupVo>> page(BpmUserGroupBo bo, PageBo page) {
         return R.ok(iBpmUserGroupService.queryPageList(bo, page));
     }
@@ -71,6 +73,7 @@ public class BpmUserGroupController extends BaseController {
      */
     @Log(title = "BPM 用户组", businessType = BusinessType.INSERT)
     @PostMapping("/create")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:group:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmUserGroupBo bo) {
         return R.ok(iBpmUserGroupService.insertByBo(bo));
     }
@@ -81,6 +84,7 @@ public class BpmUserGroupController extends BaseController {
      */
     @Log(title = "BPM 用户组", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:group:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmUserGroupBo bo) {
         return R.ok(iBpmUserGroupService.updateByBo(bo));
     }
@@ -93,6 +97,7 @@ public class BpmUserGroupController extends BaseController {
      */
     @Log(title = "BPM 用户组", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:group:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmUserGroupService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

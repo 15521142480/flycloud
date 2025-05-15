@@ -29,11 +29,6 @@ public class PermissionService {
      */
     public boolean hasPermission(String permission) {
 
-        // todo 先写死true
-        if (StrUtil.isNotBlank(permission)) {
-            return true;
-        }
-
         if (StrUtil.isBlank(permission)) {
             return false;
         }

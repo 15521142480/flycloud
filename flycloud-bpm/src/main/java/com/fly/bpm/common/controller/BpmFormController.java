@@ -10,6 +10,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.api.domain.vo.BpmFormVo;
@@ -41,6 +42,7 @@ public class BpmFormController extends BaseController {
      * 表单定义分页列表
      */
     @GetMapping("/page")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:form:list')")
     public R<PageVo<BpmFormVo>> page(BpmFormBo bo, PageBo page) {
         return R.ok(iBpmFormService.queryPageList(bo, page));
     }
@@ -71,6 +73,7 @@ public class BpmFormController extends BaseController {
      */
     @Log(title = "BPM 表单定义", businessType = BusinessType.INSERT)
     @PostMapping("/create")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:form:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmFormBo bo) {
         return R.ok(iBpmFormService.insertByBo(bo));
     }
@@ -81,6 +84,7 @@ public class BpmFormController extends BaseController {
      */
     @Log(title = "BPM 表单定义", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:form:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmFormBo bo) {
         return R.ok(iBpmFormService.updateByBo(bo));
     }
@@ -93,6 +97,7 @@ public class BpmFormController extends BaseController {
      */
     @Log(title = "BPM 表单定义", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:form:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iBpmFormService.deleteWithValidByIds(Arrays.asList(ids), true));
     }

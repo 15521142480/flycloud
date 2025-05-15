@@ -54,6 +54,15 @@
             <el-form-item label="菜单图标">
               <IconSelect v-model="formData.icon" clearable />
             </el-form-item>
+            <el-form-item label="菜单权限" prop="permission">
+              <template #label>
+                <Tooltip
+                  message="访问的菜单权限，如：一级菜单【系统管理】为 sys，其下的二级菜单【用户管理】为 sys:user，如其下还要有第三级则为 sys:user:xxx,与此类推（符号为英文冒号）"
+                  title="菜单权限"
+                />
+              </template>
+              <el-input v-model="formData.permission" clearable placeholder="如：一级菜单【系统管理】为 sys，二级菜单【用户管理】为sys:user" />
+            </el-form-item>
             <el-form-item label="路由地址" prop="path">
               <template #label>
                 <Tooltip
@@ -231,7 +240,8 @@ const formRules = reactive({
   name: [{ required: true, message: '菜单名称不能为空', trigger: 'blur' }],
   sort: [{ required: true, message: '菜单顺序不能为空', trigger: 'blur' }],
   path: [{ required: true, message: '路由地址不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
+  permission: [{ required: true, message: '菜单权限不能为空', trigger: 'blur' }]
 })
 
 const formRef = ref() // 表单 Ref

@@ -86,7 +86,7 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list" height="calc(100vh - 355px)">
       <el-table-column align="center" label="字典编号" prop="id" width="150px" />
       <el-table-column align="center" label="字典名称" prop="name" show-overflow-tooltip />
       <el-table-column align="center" label="字典类型" prop="type" width="300" />

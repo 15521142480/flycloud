@@ -11,6 +11,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.system.api.domain.vo.SysDictDataVo;
@@ -85,6 +86,7 @@ public class SysDictDataController extends BaseController {
      * 新增/修改字典数据
      */
     @Log(title = "字典数据")
+    @PreAuthorize("@pms.hasPermission('sys:dict:optionDictData')") // todo 二级页面：操作字典数据， 后续可修改
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysDictDataBo bo) {
         return R.ok(iSysDictService.saveOrUpdate(bo));

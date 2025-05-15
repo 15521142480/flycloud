@@ -20,6 +20,7 @@ import com.fly.system.api.feign.ISysUserApi;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.bpm.task.service.IBpmInstanceCopyService;
@@ -53,6 +54,7 @@ public class BpmInstanceCopyController extends BaseController {
      *
      */
     @GetMapping("/page")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:copy:list')")
     public R<PageVo<BpmProcessInstanceCopyRespVO>> list(BpmProcessInstanceCopyBo bo, PageBo page) {
 
         PageVo<BpmProcessInstanceCopy> pageData = instanceCopyService.getProcessInstanceCopyPageByEntity(

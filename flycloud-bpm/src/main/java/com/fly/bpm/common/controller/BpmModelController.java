@@ -64,6 +64,7 @@ public class BpmModelController {
      * 获得模型列表
      *
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:list')")
     @GetMapping("/list")
     public R<List<BpmModelRespVO>> getModelPage(@RequestParam(value = "name", required = false) String name) {
 
@@ -102,6 +103,7 @@ public class BpmModelController {
     /**
      * 获得模型分页
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:list')")
     @GetMapping("/page")
     public R<PageVo<BpmModelRespVO>> getModelPage(BpmModelPageReqVO pageVO) {
 
@@ -162,6 +164,7 @@ public class BpmModelController {
      * 新建模型
      *
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:create')")
     @PostMapping("/create")
     public R<String> createModel(@Valid @RequestBody BpmModelSaveReqVO createRetVO) {
         return R.ok(modelService.createModel(createRetVO));
@@ -172,6 +175,7 @@ public class BpmModelController {
      * 修改模型
      *
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:update')")
     @PutMapping("/update")
     public R<Boolean> updateModel(@Valid @RequestBody BpmModelSaveReqVO modelVO) {
         modelService.updateModel(getCurUserId(), modelVO);
@@ -183,6 +187,7 @@ public class BpmModelController {
      * 部署模型
      *
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:publish')")
     @PostMapping("/deploy/{id}")
     public R<Boolean> deployModel(@PathVariable("id") String id) {
 
@@ -196,6 +201,7 @@ public class BpmModelController {
      *
      * 注意: 实际更新的部署的流程定义的状态
      */
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:enable')")
     @PutMapping("/update-state")
     public R<Boolean> updateModelState(@Valid @RequestBody BpmModelUpdateStateReqVO reqVO) {
         modelService.updateModelState(getCurUserId(), reqVO.getId(), reqVO.getState());
@@ -207,16 +213,17 @@ public class BpmModelController {
      */
     @PutMapping("/update-bpmn")
     @Operation(summary = "修改模型的 BPMN")
-    @PreAuthorize("@pms.hasPermission('bpm:model:update')")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:designModel')")
     public R<Boolean> updateModelBpmn(@Valid @RequestBody BpmModeUpdateBpmnReqVO reqVO) {
         modelService.updateModelBpmnXml(reqVO.getId(), reqVO.getBpmnXml());
         return R.ok(true);
     }
 
+
     @DeleteMapping("/delete")
     @Operation(summary = "删除模型")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    @PreAuthorize("@pms.hasPermission('bpm:model:delete')")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:model:delete')")
     public R<Boolean> deleteModel(@RequestParam("id") String id) {
         modelService.deleteModel(getCurUserId(), id);
         return R.ok(true);

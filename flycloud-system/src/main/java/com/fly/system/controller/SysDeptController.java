@@ -10,6 +10,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.system.api.domain.vo.SysDeptVo;
@@ -40,6 +41,7 @@ public class SysDeptController extends BaseController {
     /**
      * 查询部门列表
      */
+    @PreAuthorize("@pms.hasPermission('sys:dept:list')")
     @GetMapping("/list")
     public R<PageVo<SysDeptVo>> list(SysDeptBo bo, PageBo page) {
         return R.ok(iSysDeptService.queryPageList(bo, page));
@@ -68,6 +70,7 @@ public class SysDeptController extends BaseController {
      * 新增/修改部门
      */
     @Log(title = "部门", businessType = BusinessType.INSERT)
+    @PreAuthorize("@pms.hasPermission('sys:dept:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated(AddGroup.class) @RequestBody SysDeptBo bo) {
         return R.ok(iSysDeptService.saveOrUpdate(bo));
@@ -81,6 +84,7 @@ public class SysDeptController extends BaseController {
      * @param ids 主键串
      */
     @Log(title = "部门", businessType = BusinessType.DELETE)
+    @PreAuthorize("@pms.hasPermission('sys:dept:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iSysDeptService.deleteWithValidByIds(Arrays.asList(ids), true));

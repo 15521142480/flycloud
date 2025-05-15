@@ -49,7 +49,7 @@ public class SysMenuController extends BaseController {
     /**
      * 查询菜单列表 - 树型
      */
-//    @PreAuthorize("@pms.hasPermission('sys.menu.list')")
+    @PreAuthorize("@pms.hasPermission('sys:menu:list')")
     @GetMapping("/getTreeList")
     public R<List<SysMenuTreeVo>> getTreeList(SysMenuBo bo) {
 
@@ -91,6 +91,7 @@ public class SysMenuController extends BaseController {
      * 新增菜单
      */
     @Log(title = "菜单", businessType = BusinessType.INSERT)
+    @PreAuthorize("@pms.hasPermission('sys:menu:saveOrUpdate')")
     @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SysMenuBo bo) {
         return R.ok(iSysMenuService.insertByBo(bo));
@@ -101,6 +102,7 @@ public class SysMenuController extends BaseController {
      * 修改菜单
      */
     @Log(title = "菜单", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@pms.hasPermission('sys:menu:saveOrUpdate')")
     @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysMenuBo bo) {
         return R.ok(iSysMenuService.updateByBo(bo));
@@ -121,7 +123,7 @@ public class SysMenuController extends BaseController {
     /**
      * 禁用启用
      */
-//    @PreAuthorize("@pms.hasPermission('sys.menu.enable')")
+    @PreAuthorize("@pms.hasPermission('sys:menu:enable')")
     @PostMapping("/enable")
     public R<Void> enable(@RequestParam() Long id, @RequestParam() int status) {
 
@@ -133,7 +135,7 @@ public class SysMenuController extends BaseController {
      *
      * @param ids 主键串
      */
-//    @PreAuthorize("@pms.hasPermission('sys.menu.delete')")
+    @PreAuthorize("@pms.hasPermission('sys:menu:delete')")
     @Log(title = "菜单", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {

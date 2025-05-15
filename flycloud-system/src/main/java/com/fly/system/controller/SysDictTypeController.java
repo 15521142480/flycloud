@@ -10,6 +10,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.fly.system.api.domain.vo.SysDictTypeVo;
@@ -40,6 +41,7 @@ public class SysDictTypeController extends BaseController {
     /**
      * 查询字典类型分页列表
      */
+    @PreAuthorize("@pms.hasPermission('sys:dict:list')")
     @GetMapping("/page")
     public R<PageVo<SysDictTypeVo>> page(SysDictTypeBo bo, PageBo page) {
         return R.ok(iSysDictTypeService.queryPageList(bo, page));
@@ -69,6 +71,7 @@ public class SysDictTypeController extends BaseController {
      * 新增/修改字典类型
      */
     @Log(title = "字典类型")
+    @PreAuthorize("@pms.hasPermission('sys:dict:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysDictTypeBo bo) {
         return R.ok(iSysDictTypeService.saveOrUpdate(bo));
@@ -82,6 +85,7 @@ public class SysDictTypeController extends BaseController {
      * @param ids 主键串
      */
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
+    @PreAuthorize("@pms.hasPermission('sys:dict:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(iSysDictTypeService.deleteWithValidByIds(Arrays.asList(ids), true));
@@ -91,6 +95,7 @@ public class SysDictTypeController extends BaseController {
      * 导出字典类型列表
      */
     @Log(title = "字典类型", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@pms.hasPermission('sys:dict:download')")
     @PostMapping("/export")
     public void export(SysDictTypeBo bo, HttpServletResponse response) {
         List<SysDictTypeVo> list = iSysDictTypeService.queryList(bo);

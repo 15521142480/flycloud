@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.task.api.Task;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +65,7 @@ public class BpmInstanceController {
      * @param pageReqVO 流程实例分页参数
     */
     @GetMapping("/myPage")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:my:list')")
     public R<PageVo<BpmProcessInstanceRespVO>> getProcessInstanceMyPage(@Valid BpmProcessInstancePageReqVO pageReqVO) {
 
         PageVo<HistoricProcessInstance> pageVo = bpmInstanceService.getProcessInstancePage(UserUtils.getCurUserId(), pageReqVO);
@@ -91,6 +93,7 @@ public class BpmInstanceController {
      * @param pageReqVO 流程实例分页参数
     */
     @GetMapping("/managerPage")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:instance:list')")
     public R<PageVo<BpmProcessInstanceRespVO>> getProcessInstanceManagerPage(@Valid BpmProcessInstancePageReqVO pageReqVO) {
 
         PageVo<HistoricProcessInstance> pageVo = bpmInstanceService.getProcessInstancePage(null, pageReqVO);
@@ -153,6 +156,7 @@ public class BpmInstanceController {
      * @param createReqVO 流程实例的创建参数
     */
     @PostMapping("/create")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:create:create')")
     public R<String> createProcessInstance(@Valid @RequestBody BpmProcessInstanceCreateReqVO createReqVO) {
         return R.ok(bpmInstanceService.createProcessInstance(UserUtils.getCurUserId(), createReqVO));
     }
@@ -164,6 +168,7 @@ public class BpmInstanceController {
      * @param reqVO 审批详情参数
     */
     @GetMapping("/getApprovalDetail")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:instance:detail')")
     public R<BpmApprovalDetailRespVO> getApprovalDetail(@Valid BpmApprovalDetailReqVO reqVO) {
         return R.ok(bpmInstanceService.getApprovalDetail(UserUtils.getCurUserId(), reqVO));
     }
@@ -175,6 +180,7 @@ public class BpmInstanceController {
      * @param cancelReqVO 流程实例的取消参数
     */
     @DeleteMapping("/cancelByStartUser")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:my:cancel')")
     @Operation(summary = "用户取消流程实例", description = "取消发起的流程")
     public R<Boolean> cancelProcessInstanceByStartUser(@Valid @RequestBody BpmProcessInstanceCancelReqVO cancelReqVO) {
         bpmInstanceService.cancelProcessInstanceByStartUser(UserUtils.getCurUserId(), cancelReqVO);
@@ -188,6 +194,7 @@ public class BpmInstanceController {
      * @param cancelReqVO 流程实例的取消参数
      */
     @DeleteMapping("/cancelByAdmin")
+    @PreAuthorize("@pms.hasPermission('bpm:manage:instance:cancel')")
     @Operation(summary = "管理员取消流程实例", description = "管理员撤回流程")
     public R<Boolean> cancelProcessInstanceByManager(@Valid @RequestBody BpmProcessInstanceCancelReqVO cancelReqVO) {
         bpmInstanceService.cancelProcessInstanceByAdmin(UserUtils.getCurUserId(), cancelReqVO);
