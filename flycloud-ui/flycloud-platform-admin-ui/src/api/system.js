@@ -34,7 +34,7 @@ export default {
    */
   getUserDetailInfoApi (userId) {
     return axios.request({
-      url: `${config.baseUrl.dev}/user/getDetailInfo${userId}`,
+      url: `${config.baseUrl.dev}/user/getDetailInfo/${userId}`,
       method: 'get'
     })
   },

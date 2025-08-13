@@ -14,8 +14,8 @@ module.exports = {
 
       // 统一授权服务
       '/flycloud-auth': {
-        target: 'http://localhost:8080/flycloud-auth',
-        // target: 'http://39.98.125.88:8080/flycloud-auth',
+        // target: 'http://localhost:8080/flycloud-auth',
+        target: 'http://101.34.33.33:8080/flycloud-auth',
         pathRewrite: {
           '^/flycloud-auth': '/'
         }
@@ -23,8 +23,8 @@ module.exports = {
 
       // 平台服务
       '/flycloud-system': {
-        target: 'http://localhost:8080/flycloud-system/', // 本地
-        // target: 'http://39.98.125.88:8080/flycloud-system/',
+        // target: 'http://localhost:8080/flycloud-system/', // 本地
+        target: 'http://101.34.33.33:8080/flycloud-system/',
         // target: 'http://localhost:8085/', // 服务的真实端口，适用于授权接口在测试服
         pathRewrite: {
           '^/flycloud-system': '/'
@@ -33,8 +33,8 @@ module.exports = {
 
       // 文件服务
       '/flycloud-file-admin': {
-        // target: 'http://localhost:8080/flycloud-file-admin/', // 本地
-        target: 'http://39.98.125.88:8080/flycloud-file-admin/',
+        target: 'http://localhost:8080/flycloud-file-admin/', // 本地
+        // target: 'http://101.34.33.33:8080/flycloud-file-admin/',
         // target: 'http://localhost:9095/', // 服务的真实端口，适用于授权接口在测试服
         pathRewrite: {
           '^/flycloud-file-admin': '/'
