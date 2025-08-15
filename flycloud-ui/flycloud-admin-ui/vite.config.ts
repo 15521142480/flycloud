@@ -1,5 +1,5 @@
 import {resolve} from 'path'
-import type {ConfigEnv, UserConfig} from 'vite'
+import type {defineConfig, ConfigEnv, UserConfig} from 'vite'
 import {loadEnv} from 'vite'
 import {createVitePlugins} from './build/vite'
 import {exclude, include} from "./build/vite/optimize"
@@ -15,6 +15,10 @@ const root = process.cwd()
 function pathResolve(dir: string) {
     return resolve(root, '.', dir)
 }
+
+// export default defineConfig({
+//   base: "./"
+// })
 
 // https://vitejs.dev/config/
 export default ({command, mode}: ConfigEnv): UserConfig => {

@@ -15,7 +15,7 @@ import errorCode from './errorCode'
 import { resetRouter } from '@/router'
 import { deleteUserCache } from '@/hooks/web/useCache'
 // const router = useRouter() // 路由
-import router from '@/router' // 路由
+// import router from '@/router' // 路由
 // import {useUserStore} from "@/store/modules/user";
 // const userStore = useUserStore()
 
@@ -135,6 +135,7 @@ service.interceptors.response.use(
       // 如果是忽略的错误码，直接返回 msg 异常
       return Promise.reject(msg)
     } else if (code === 401) {
+      // debugger
       // 如果未认证，并且未进行刷新令牌，说明可能是访问令牌过期了
       if (!isRefreshToken) {
         isRefreshToken = true
@@ -243,18 +244,22 @@ const handleError = (status : number, data) => {
   switch (status) {
 
     case 401: // 401: 未登录状态，跳转登录页
+      // debugger
       ElMessage.warning(msg)
       resetRouter() // 重置静态路由表
       deleteUserCache() // 删除用户缓存
       removeToken()
       isRelogin.show = false
       // 干掉token后再走一次路由让它过router.beforeEach的校验
-      window.location.href = window.location.href
+      // window.location.href = window.location.href
+      // router.replace({path: '/login'})
+      window.location.reload();
       break
 
     case 403: // 403 token过期 清除token并跳转登录页
       ElMessage.warning(msg)
-      router.replace({path: '/login'})
+      // router.replace({path: '/login'})
+      window.location.reload();
       break
 
     // case 404: // 404请求不存在
