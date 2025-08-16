@@ -39,7 +39,7 @@
 | 安全/授权框架      | Spring Security + OAuth2.0                         |
 | 工作流框架        | Flowable 6.8.0                                     |
 | 数据库/持久层/自动生成 | Mysql5.7 + Mybatis plus、 Velocity                  |
-| 分布式事务        | Seata (待续)                                         |
+| 分布式事务        | Seata                                              |
 | 缓存           | Ehcache、 Redis                                     |
 | 搜索引擎         | ElasticSearch (待续)                                 |
 | 消息队列框架       | RocketMQ (待续)                                      |
