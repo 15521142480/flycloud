@@ -44,8 +44,8 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
               // 授权服务
               ['/flycloud-auth']: {
                 // target: env.VITE_BASE_URL + '/' + env.VITE_AUTH_SERVER,
-                // target: 'http://localhost:8080/flycloud-auth',
-                target: 'http://101.34.33.33:8080/flycloud-auth',
+                target: 'http://localhost:8080/flycloud-auth',
+                // target: 'http://101.34.33.33:8080/flycloud-auth',
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-auth`), ''),
@@ -53,16 +53,16 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
 
               // 系统服务
               ['/flycloud-system']: {
-                // target: 'http://localhost:8080/flycloud-system',
-                target: 'http://101.34.33.33:8080/flycloud-system',
+                target: 'http://localhost:8080/flycloud-system',
+                // target: 'http://101.34.33.33:8080/flycloud-system',
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-system`), ''),
               },
               // 系统服务
               ['/bpm/manager/flycloud-system']: {
-                // target: 'http://localhost:8080/flycloud-system',
-                target: 'http://101.34.33.33:8080/flycloud-system',
+                target: 'http://localhost:8080/flycloud-system',
+                // target: 'http://101.34.33.33:8080/flycloud-system',
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/bpm/manager/flycloud-system`), ''),
@@ -70,17 +70,16 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
 
               // 工作流服务
               ['/flycloud-bpm']: {
-                // target: 'http://localhost:8080/flycloud-bpm',
-                target: 'http://101.34.33.33:8080/flycloud-bpm',
+                target: 'http://localhost:8080/flycloud-bpm',
+                // target: 'http://101.34.33.33:8080/flycloud-bpm',
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-bpm`), ''),
               },
-
               // 工作流服务
               ['/bpm/manager/flycloud-bpm']: {
-                // target: 'http://localhost:8080/flycloud-bpm',
-                target: 'http://101.34.33.33:8080/flycloud-bpm',
+                target: 'http://localhost:8080/flycloud-bpm',
+                // target: 'http://101.34.33.33:8080/flycloud-bpm',
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/bpm/manager/flycloud-bpm`), ''),

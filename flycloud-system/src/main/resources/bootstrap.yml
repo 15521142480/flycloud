@@ -10,6 +10,10 @@ spring:
   profiles:
     active: @profiles.active@
 
+  main:
+    allow-circular-references: true # 允许循环依赖 (多层架构下无法避免这个情况)
+    allow-bean-definition-overriding: true # 允许 Bean 覆盖 (如 Feign 等会存在重复定义的服务)
+
   cloud:
     nacos:
 

@@ -21,6 +21,12 @@ public interface BpmFeignApiConstants {
     String PROVIDER_INSTANCE_CREATE = PROVIDER + "/instance/create";
 
 
+    /**
+     * seata test
+     */
+    String PROVIDER_TEST_SEATA = PROVIDER + "/test/seata";
+
+
 
 
 }

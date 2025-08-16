@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fly.test.mapper.TestMapper2">
+
+    <insert id="insertTestData">
+        insert into test(user_id, order_id) values ('fly-001', 'fly-001');
+    </insert>
+
+
+</mapper>

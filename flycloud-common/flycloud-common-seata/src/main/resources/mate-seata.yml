@@ -3,26 +3,26 @@
 seata:
 
   enabled: true
+  tx-service-group: fly_tx_group  # default_tx_group、fsp_tx_group，这里每个服务都是对应不同的映射名,在配置中心可以看到
 
-  application-id: account-service # Seata 应用编号，默认为 ${spring.application.name}
-  tx-service-group: my_test_tx_group # Seata 事务组编号，用于 TC 集群名
-
-  config:
+  config: # 配置seata的配置中心
     type: nacos
     nacos:
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      username: nacos
+      password: nacos
       group: SEATA_GROUP
-      namespace:
-      server-addr: ${spring.cloud.nacos.discovery.server-addr} # Nacos 服务地址
+#      data-id: seataServer.properties
+
+  registry: # 配置seata的注册中心， 告诉seata client 怎么去访问seata server(TC)
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}  # seata server 所在的nacos服务地址
+      application: seata-server    # seata server 的服务名seata-server ，如果没有修改可以不配
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP          # seata server 所在的组，默认就是SEATA_GROUP，没有改也可以不配
 
   service:
-    # 虚拟组和分组的映射
     vgroup-mapping:
-      my_test_tx_group: default
-
-  registry:
-    type: nacos # 注册中心类型，默认为 file
-    nacos:
-      cluster: default # 使用的 Seata 分组
-      namespace: # Nacos 命名空间
-      serverAddr: ${spring.cloud.nacos.discovery.server-addr} # Nacos 服务地址
-
+      fsp_tx_group: default

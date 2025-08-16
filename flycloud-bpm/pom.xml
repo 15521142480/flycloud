@@ -52,12 +52,11 @@
             <version>${revision}</version>
         </dependency>
 
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.flycloud</groupId>-->
-        <!--            <artifactId>flycloud-common-seata</artifactId>-->
-        <!--            <version>${revision}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-seata</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <!-- Flowable 工作流相关 -->
         <dependency>
