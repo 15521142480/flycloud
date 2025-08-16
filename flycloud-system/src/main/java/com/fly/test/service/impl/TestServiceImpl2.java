@@ -38,7 +38,7 @@ public class TestServiceImpl2 implements ITestService {
         log.info("=== 插入第二个数据库返回:{}", JsonUtils.toJsonString(insertTwoResult));
 
         if (isRollback == 1) {
-            throw new RuntimeException("异常啦:请检查各库的test表是否有数据！");
+            throw new RuntimeException("回滚测试，已手工异常，请检查各库的test表是否有数据！");
         }
 
         return 1;
