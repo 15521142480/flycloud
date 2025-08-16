@@ -20,7 +20,7 @@
         <module>flycloud-common-database</module>
         <module>flycloud-common-security</module>
         <module>flycloud-common-doc</module>
-<!--        <module>flycloud-common-seata</module>-->
+        <module>flycloud-common-seata</module>
         <module>flycloud-common-redis</module>
         <module>flycloud-common-elasticsearch</module>
         <module>flycloud-common-feign</module>
