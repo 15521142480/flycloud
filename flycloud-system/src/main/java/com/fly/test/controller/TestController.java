@@ -27,7 +27,9 @@ public class TestController {
     private final ITestService testService;
 
 
-
+    /**
+     * seata测试
+     */
     @GetMapping("/seataTest/{isRollback}")
     public R<Void> seataTest(@NotNull(message = "isRollback（是否回滚）不能为空") @PathVariable Integer isRollback) {
         return R.ok(testService.seataTest(isRollback));
