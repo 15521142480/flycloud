@@ -1,3 +1,6 @@
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+#    com.fly.commom.elasticsearch.config.ActuatorEnvironmentPostProcessor,\
+#    com.fly.commom.elasticsearch.config.EasyEsConfiguration
+
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.fly.commom.elasticsearch.config.ActuatorEnvironmentPostProcessor,\
-    com.fly.commom.elasticsearch.config.EasyEsConfiguration
+    com.fly.commom.elasticsearch.config.ElasticsearchConfig

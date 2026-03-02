@@ -1,0 +1,9 @@
+
+#spring:
+
+elasticsearch:
+  rest:
+    uris: 101.34.33.33:9200
+    protocol: http
+    username:
+    password:

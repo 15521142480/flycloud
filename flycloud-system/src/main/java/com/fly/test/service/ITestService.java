@@ -1,5 +1,7 @@
 package com.fly.test.service;
 
+import java.io.IOException;
+
 /**
  * test
  *
@@ -16,4 +18,8 @@ public interface ITestService {
     */
     int seataTest(Integer isRollback);
 
+    /**
+     * 测试es
+     */
+    int esTest(Integer type, String indexName) throws IOException;
 }

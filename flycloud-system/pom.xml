@@ -61,6 +61,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-elasticsearch</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
 
         <!--注册中心客户端-->
         <dependency>
