@@ -37,7 +37,7 @@
     <el-form-item label="原因" prop="reason">
       <el-input v-model="formData.reason" placeholder="请输请假原因" type="textarea" />
     </el-form-item>
-    <el-col v-if="startUserSelectTasks.length > 0">
+    <el-col v-if="startUserSelectTasks && startUserSelectTasks.length > 0">
       <el-card class="mb-10px">
         <template #header>指定审批人</template>
         <el-form
@@ -149,16 +149,17 @@ onMounted(async () => {
   }
   startUserSelectTasks.value = processDefinitionDetail.startUserSelectTasks
   // 设置指定审批人
-  if (startUserSelectTasks.value?.length > 0) {
-    // 设置校验规则
-    for (const userTask of startUserSelectTasks.value) {
-      startUserSelectAssignees.value[userTask.id] = []
-      startUserSelectAssigneesFormRules.value[userTask.id] = [
-        { required: true, message: '请选择审批人', trigger: 'blur' }
-      ]
-    }
-    // 加载用户列表
-    userList.value = await UserApi.getSimpleUserList()
-  }
+  // todo 有bug，待调整
+  // if (startUserSelectTasks.value?.length > 0) {
+  //   // 设置校验规则
+  //   for (const userTask of startUserSelectTasks.value) {
+  //     startUserSelectAssignees.value[userTask.id] = []
+  //     startUserSelectAssigneesFormRules.value[userTask.id] = [
+  //       { required: true, message: '请选择审批人', trigger: 'blur' }
+  //     ]
+  //   }
+  //   // 加载用户列表
+  //   userList.value = await UserApi.getSimpleUserList()
+  // }
 })
 </script>
