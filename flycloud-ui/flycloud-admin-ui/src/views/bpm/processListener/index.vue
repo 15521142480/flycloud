@@ -48,18 +48,18 @@
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" height="calc(100vh - 310px)">
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="名字" align="center" prop="name" />
-      <el-table-column label="类型" align="center" prop="type">
+      <el-table-column label="类型" align="center" prop="type" width="110px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_LISTENER_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="状态" align="center" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="事件" align="center" prop="event" />
-      <el-table-column label="值类型" align="center" prop="valueType">
+      <el-table-column label="事件" align="center" prop="event" width="100px"/>
+      <el-table-column label="值类型" align="center" prop="valueType" width="110px">
         <template #default="scope">
           <dict-tag
             :type="DICT_TYPE.BPM_PROCESS_LISTENER_VALUE_TYPE"

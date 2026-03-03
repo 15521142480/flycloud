@@ -83,5 +83,10 @@ public class BpmOaLeaveVo implements Serializable {
     @ExcelProperty(value = "是否删除")
     private Integer isDeleted;
 
+    /**
+     * 创建时间
+     */
+    @ExcelProperty(value = "创建时间")
+    private Date createTime;
 
 }

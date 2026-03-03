@@ -33,7 +33,7 @@ public interface IBpmOaLeaveService {
     List<BpmOaLeaveVo> queryList(BpmOaLeaveBo bo);
 
     /**
-     * 修改OA 请假申请
+     * 新增OA 请假申请
      */
     Boolean insertByBo(BpmOALeaveCreateBo bo);
 
@@ -41,6 +41,14 @@ public interface IBpmOaLeaveService {
      * 修改OA 请假申请
      */
     Boolean updateByBo(BpmOaLeaveBo bo);
+
+    /**
+     * 更新请假申请的状态
+     *
+     * @param id 编号
+     * @param status 结果
+     */
+    void updateLeaveStatus(Long id, Integer status);
 
     /**
      * 校验并批量删除OA 请假申请信息

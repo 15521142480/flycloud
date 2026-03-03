@@ -22,6 +22,7 @@ import com.fly.bpm.api.domain.BpmOaLeave;
 import com.fly.bpm.common.mapper.BpmOaLeaveMapper;
 import com.fly.bpm.oa.service.IBpmOaLeaveService;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,9 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
         lqw.eq(bo.getStatus() != null, BpmOaLeave::getStatus, bo.getStatus());
         lqw.eq(StringUtils.isNotBlank(bo.getProcessInstanceId()), BpmOaLeave::getProcessInstanceId, bo.getProcessInstanceId());
         lqw.eq(bo.getIsDeleted() != null, BpmOaLeave::getIsDeleted, bo.getIsDeleted());
+
+        lqw.orderByDesc(BpmOaLeave::getCreateTime);
+
         return lqw;
     }
 
@@ -113,6 +117,8 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
         add.setUserId(curUserId);
         add.setDay((int) day);
         add.setStatus(BpmTaskStatusEnum.RUNNING.getStatus());
+        add.setCreateBy(String.valueOf(curUserId));
+        add.setCreateTime(LocalDateTime.now());
         boolean flag = baseMapper.insert(add) > 0;
 
         // 2. 发起 BPM 流程
@@ -141,6 +147,13 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
         BpmOaLeave update = BeanUtil.toBean(bo, BpmOaLeave.class);
         validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
+    }
+
+
+    @Override
+    public void updateLeaveStatus(Long id, Integer status) {
+
+        baseMapper.updateById(new BpmOaLeave().setId(id).setStatus(status));
     }
 
 
