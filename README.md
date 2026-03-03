@@ -83,7 +83,7 @@ flycloud
 └─flycloud-system           -- 平台服务
 └─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-ui               -- 系统的ui前端模块
-│  ├─flycloud-admin-ui                  -- 文件管理后台ui (新, vue3)
+│  ├─flycloud-admin-ui                  -- 平台管理后台ui (新, vue3)
 │  ├─flycloud-file-admin-ui             -- 文件管理后台ui
 │  ├─flycloud-platform-admin-ui         -- 平台管理后台ui (旧, vue2)
 └─logs     -- 系统日志 
