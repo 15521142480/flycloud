@@ -96,10 +96,10 @@ const submitForm = async () => {
   try {
     const data = formData.value as unknown as PostApi.PostVO
     if (formType.value === 'create') {
-      await PostApi.createPost(data)
+      await PostApi.saveOrUpdate(data)
       message.success(t('common.createSuccess'))
     } else {
-      await PostApi.updatePost(data)
+      await PostApi.saveOrUpdate(data)
       message.success(t('common.updateSuccess'))
     }
     dialogVisible.value = false

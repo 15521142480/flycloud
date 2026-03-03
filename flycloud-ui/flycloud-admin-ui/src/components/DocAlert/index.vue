@@ -1,9 +1,11 @@
 <template>
-  <el-alert v-if="getEnable()" type="success" show-icon>
-    <template #title>
-      <div @click="goToUrl">{{ '【' + title + '】文档地址：' + url }}</div>
-    </template>
-  </el-alert>
+  <div>
+<!--    <el-alert v-if="getEnable()" type="success" show-icon>-->
+<!--      <template #title>-->
+<!--        <div @click="goToUrl">{{ '【' + title + '】文档地址：' + url }}</div>-->
+<!--      </template>-->
+<!--    </el-alert>-->
+  </div>
 </template>
 <script setup lang="tsx">
 import { propTypes } from '@/utils/propTypes'

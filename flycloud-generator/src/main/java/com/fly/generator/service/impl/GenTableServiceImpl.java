@@ -46,6 +46,24 @@ public class GenTableServiceImpl implements IGenTableService {
     private final IdentifierGenerator identifierGenerator;
 
 
+
+    @Override
+    public boolean isExistTable(String[] tableNames) {
+
+        boolean isExist = true;
+
+        // postgresql 写法
+//        List<GenTable> genTableList = baseMapper.selectDbTableListByNames(tableNames, isBlank(GenConfig.getSchemaName()) ? "public" : GenConfig.getSchemaName());
+
+        List<GenTable> genTableList = baseMapper.selectDbTableListByNames(tableNames);
+        if (genTableList.size() < 1) {
+            log.error("=====表不存在!{}", Arrays.toString(tableNames));
+            isExist = false;
+        }
+
+        return isExist;
+    }
+
     /**
      * 根据表生成代码
      */

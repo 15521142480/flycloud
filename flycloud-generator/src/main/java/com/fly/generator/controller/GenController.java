@@ -5,13 +5,16 @@ import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.domain.model.R;
+import com.fly.common.utils.StringUtils;
 import com.fly.generator.service.IGenTableService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -31,12 +34,20 @@ public class GenController extends BaseController {
     /**
      * 根据表生成代码 (tables参数规则: table1,table2,...  默认生成在当前项目的根目录)
      */
-    @GetMapping("/generatorCode")
-    public R<Boolean> generatorCode(String tables) {
+    @PreAuthorize("@pms.hasPermission('infra:generator:generatorCode')")
+    @GetMapping("/generatorCode/{tables}")
+    public R<Boolean> generatorCode(@NotNull(message = "tables不能为空") @PathVariable String tables) {
 
+        if (StringUtils.isBlank(tables)) {
+            return R.failed("tables不能为空");
+        }
         log.info("===即将生成表("+ JSONObject.toJSONString(tables) +")信息...");
         String[] tableNames = Convert.toStrArray(tables);
         log.info("===即将生成表("+ JSONObject.toJSONString(tables) +")结束");
+
+        if (!genTableService.isExistTable(tableNames)) {
+            return R.failed("表["+tables+"]不存在");
+        }
 
         return R.ok(genTableService.generatorCode(tableNames));
     }

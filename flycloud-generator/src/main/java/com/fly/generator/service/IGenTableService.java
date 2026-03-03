@@ -10,6 +10,15 @@ import java.util.Map;
  */
 public interface IGenTableService {
 
+
+
+    /**
+     * 表是否存在
+     */
+    boolean isExistTable(String[] tableNames);
+
+
+
     /**
      * 根据表生成代码
      */

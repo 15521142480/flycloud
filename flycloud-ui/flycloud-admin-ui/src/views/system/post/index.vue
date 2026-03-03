@@ -47,15 +47,15 @@
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
-        <el-button
-          type="success"
-          plain
-          @click="handleExport"
-          :loading="exportLoading"
-          v-hasPermi="['sys:post:download']"
-        >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
-        </el-button>
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          @click="handleExport"-->
+<!--          :loading="exportLoading"-->
+<!--          v-hasPermi="['sys:post:download']"-->
+<!--        >-->
+<!--          <Icon icon="ep:download" class="mr-5px" /> 导出-->
+<!--        </el-button>-->
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -66,7 +66,7 @@
       <el-table-column label="岗位编号" align="center" prop="id" />
       <el-table-column label="岗位名称" align="center" prop="name" />
       <el-table-column label="岗位编码" align="center" prop="code" />
-      <el-table-column label="岗位顺序" align="center" prop="sort" />
+      <el-table-column label="岗位顺序" width="80" align="center" prop="sort" />
       <el-table-column label="岗位备注" align="center" prop="remark" />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
