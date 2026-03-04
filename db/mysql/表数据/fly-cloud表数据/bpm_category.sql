@@ -1,0 +1,1 @@
+INSERT INTO `fly-cloud`.bpm_category (id, name, code, description, status, sort, create_by, create_time, update_by, update_time, is_deleted) VALUES (1862751448371204098, '测试', 'test', '', 0, 1, null, null, null, null, false);

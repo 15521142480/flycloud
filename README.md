@@ -132,24 +132,26 @@ flycloud
   ![img.png](doc/img/bpm2.png)
 
 ### 8、es索引引擎说明:
->   elasticsearch 版本为: 7.17.7
->   <br> elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
+-   elasticsearch 版本为: 7.17.7
+-   <br> elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
 
 
 ### 9、generator自动生成代码说明:
->   有两种生成方式两种:
->   <br> 第一种: 通过后台管理生成
->   <br> 第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
+-   有两种生成方式两种:
+-   第一种: 通过后台管理生成，生成后位置在后端部署的根目录下的src文件夹；
+-   第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)]
 
+![img.png](doc/img/gen3.png)
+![img.png](doc/img/gen1.png)
+![img.png](doc/img/gen2.png)
 
 ### 10、Swagger文档说明:
 -  本系统使用的是 Spring doc
->  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
-> | ![输入图片说明](https://github.com/15521142480/flycloud/blob/7996bf17103b53774015b516e2c55edf13ee3cee/doc/swagger/img.png "屏幕截图") |
+-  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
 
+![img.png](doc/img/swagger.png)
 
 ### 11、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
 >   <br> VO -> 客户端(页面)展示的数据, 通常以json存在的形式
-
 

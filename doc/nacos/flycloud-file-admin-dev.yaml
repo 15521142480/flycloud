@@ -1,0 +1,56 @@
+
+spring:
+  datasource:
+    dynamic:
+      # 设置默认的数据源或者数据源组,默认值即为 master
+      primary: master
+      datasource:
+        # 主库数据源
+        master:
+          type: ${spring.datasource.type}
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: ${datasource.system-master.url}
+          username: ${datasource.system-master.username}
+          password: ${datasource.system-master.password}
+
+
+#       其他数据库系统-参数说明:          
+#        oracle:
+#          type: ${spring.datasource.type}
+#          driverClassName: oracle.jdbc.OracleDriver
+#          url: ${datasource.system-oracle.url}
+#          username: ${datasource.system-oracle.username}
+#          password: ${datasource.system-oracle.password}
+#          hikari:
+#            connectionTestQuery: SELECT 1 FROM DUAL
+
+#        postgres:
+#          type: ${spring.datasource.type}
+#          driverClassName: org.postgresql.Driver
+#          url: ${datasource.system-postgres.url}
+#          username: ${datasource.system-postgres.username}
+#          password: ${datasource.system-postgres.password}
+
+
+
+# 服务资源安全配置
+server:
+  resource:
+    security:
+
+      # 客户端标识 ID
+      client-id: fly
+
+      # 客户端安全码
+      client-secret: fly_secret
+
+      # 客户端访问范围
+      scopes:
+
+      # 白名单 (对外直接暴露服务资源的URL)
+      ignore-urls:
+        # - /v3/api-docs/**   
+        # - /provider/**
+
+
+

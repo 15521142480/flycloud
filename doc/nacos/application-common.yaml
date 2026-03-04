@@ -1,0 +1,108 @@
+
+# spring 配置
+spring:
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: i18n/messages
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 1000MB
+      # 设置总上传的文件大小
+      max-request-size: 5000MB
+
+  # bean重名覆盖
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+
+  # Jackson 配置项
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true # 设置 LocalDateTime 的格式，使用时间戳
+      write-date-timestamps-as-nanoseconds: false # 设置不使用 nanoseconds 的格式。例如说 1611460870.401，而是直接 1611460870401
+      write-durations-as-timestamps: true # 设置 Duration 的格式，使用时间戳
+      fail-on-empty-beans: false # 允许序列化无属性的 Bean
+
+
+  cloud:
+    # sentinel 配置
+    # sentinel:
+    #   # sentinel 开关
+    #   enabled: true
+    #   # 取消控制台懒加载
+    #   eager: true
+    #   transport:
+    #     # dashboard控制台服务名 用于服务发现
+    #     # 如无此配置将默认使用下方 dashboard 配置直接注册
+    #     server-name: ruoyi-sentinel-dashboard
+    #     # 客户端指定注册的ip 用于多网卡ip不稳点使用
+    #     # client-ip:
+    #     # 控制台地址 从1.3.0开始使用 server-name 注册
+    #     # dashboard: localhost:8718
+
+  # redis 通用配置 子服务可以自行配置进行覆盖
+  redis:
+    host: 39.98.125.88
+    port: 6379
+    # 密码(如没有密码请注释掉password字段)
+    password: wW257007
+    database: 0
+    timeout: 30s
+    ssl: false
+
+
+# redisson 配置
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: ${spring.application.name}
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+
+
+# springdoc 配置
+springdoc:
+  api-docs:
+    # 是否开启接口文档
+    enabled: true
+  swagger-ui:
+    # 持久化认证数据
+    persistAuthorization: true
+
+
+# swagger 配置
+swagger:
+  enabled: true
+  title: Fly Swagger API
+  gateway: http://localhost:8080
+  token-url: ${swagger.gateway}/auth/oauth/token
+  scope: server
+  services:
+    flycloud-gateway: flycloud-gateway
+    flycloud-system: flycloud-system
+    flycloud-mall: flycloud-mall
+    flycloud-music: flycloud-music
+    flycloud-generator: flycloud-generator
+    flycloud-job: flycloud-job
+    flycloud-test: flycloud-test

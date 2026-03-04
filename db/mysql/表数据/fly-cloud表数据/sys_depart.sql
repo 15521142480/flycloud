@@ -1,0 +1,5 @@
+INSERT INTO `fly-cloud`.sys_depart (id, name, sort, create_by, update_by, create_time, update_time, is_deleted, parent_id) VALUES (1, '开发部', 0, null, null, '2020-06-27 15:30:50', '2020-07-01 20:49:08', '0', -1);
+INSERT INTO `fly-cloud`.sys_depart (id, name, sort, create_by, update_by, create_time, update_time, is_deleted, parent_id) VALUES (2, '开发分部', 0, null, null, '2020-06-29 11:14:37', null, '0', 1);
+INSERT INTO `fly-cloud`.sys_depart (id, name, sort, create_by, update_by, create_time, update_time, is_deleted, parent_id) VALUES (3, '开发二部', 1, null, null, '2020-06-29 15:54:27', null, '0', 1);
+INSERT INTO `fly-cloud`.sys_depart (id, name, sort, create_by, update_by, create_time, update_time, is_deleted, parent_id) VALUES (4, '产品部', 1, null, null, '2020-06-29 07:58:54', '2020-08-17 06:53:59', '0', -1);
+INSERT INTO `fly-cloud`.sys_depart (id, name, sort, create_by, update_by, create_time, update_time, is_deleted, parent_id) VALUES (5, '产品一部', 1, null, null, '2020-06-29 15:59:14', null, '0', 4);

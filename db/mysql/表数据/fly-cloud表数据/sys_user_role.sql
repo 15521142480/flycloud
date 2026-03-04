@@ -1,0 +1,15 @@
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1, 2, 1);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (2, 9, 1);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1830626013030752257, 23, 1);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1830626086464626690, 1830270155591622657, 1830131679634132993);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1830626241783898114, 3, 1830131679634132993);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1830626287975768066, 4, 2);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1830629589769625601, 6, 1830131679634132993);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1831212911997341698, 9, 1830633472852074498);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1831340364368732162, 1830258070073729026, 1830787389479833602);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1921604645844537345, 1921534940421054466, 1830633472852074498);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1921604715100884993, 1921526787881062401, 2);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1921604752715403265, 1830273797430288386, 1830787389479833602);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1922902199110578178, 1830639207036055553, 1830787389479833602);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (1952013363825946626, 1952013067926188034, 1830787389479833602);
+INSERT INTO `fly-cloud`.sys_user_role (id, user_id, role_id) VALUES (2028774497458380802, 5, 1);

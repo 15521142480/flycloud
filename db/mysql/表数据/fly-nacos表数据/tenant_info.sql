@@ -1,0 +1,4 @@
+INSERT INTO nacos.tenant_info (id, kp, tenant_id, tenant_name, tenant_desc, create_source, gmt_create, gmt_modified) VALUES (2, '1', '98fa7b23-cac3-4eb5-9b3f-0b40b7cb8aa2', 'test', '仿真环境', 'nacos', 1682047760861, 1682047760861);
+INSERT INTO nacos.tenant_info (id, kp, tenant_id, tenant_name, tenant_desc, create_source, gmt_create, gmt_modified) VALUES (3, '1', 'c5ab8826-7c54-44ee-a089-49a3dd530652', 'prod', '生产环境', 'nacos', 1682047777279, 1682047777279);
+INSERT INTO nacos.tenant_info (id, kp, tenant_id, tenant_name, tenant_desc, create_source, gmt_create, gmt_modified) VALUES (4, '1', 'a1abaca0-e226-4d3a-a8fc-edffbea89ce4', 'dev', '测试环境', 'nacos', 1723292355912, 1723292355912);
+INSERT INTO nacos.tenant_info (id, kp, tenant_id, tenant_name, tenant_desc, create_source, gmt_create, gmt_modified) VALUES (5, '1', 'a7670b3a-25e9-4f2f-a1fc-a334a84d0e5d', 'fdance', 'fdance', 'nacos', 1723964881164, 1723964881164);

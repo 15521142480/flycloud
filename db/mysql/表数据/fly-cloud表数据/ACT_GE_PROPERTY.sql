@@ -1,0 +1,13 @@
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('batch.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('cfg.execution-related-entities-count', 'true', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('cfg.task-related-entities-count', 'true', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('common.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('entitylink.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('eventsubscription.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('identitylink.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('job.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('next.dbid', '1', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('schema.history', 'create(6.8.0.0)', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('task.schema.version', '6.8.0.0', 1);
+INSERT INTO `fly-cloud`.ACT_GE_PROPERTY (NAME_, VALUE_, REV_) VALUES ('variable.schema.version', '6.8.0.0', 1);
