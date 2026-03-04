@@ -120,23 +120,29 @@ flycloud
 | flycloud-file-admin-ui   文件管理后台ui         | http://127.0.0.1:xxx  |
 
 
-### 7、工作流程说明:
+### 7、系统讲解:
+-   富含后台系统的基本功能，如：用户/菜单/角色、部门/岗位等；其中角色的菜单权限采用自研的新型设计思路来实现权限的可视化！
+-   采用flowable + bpmn.io支撑整个系统的工作流引擎、采用Velocity实现代码的自动生成等；
+
+![img.png](doc/img/roleMenu1.png)
+
+### 8、工作流程说明:
 >   flowable 版本为: 6.8.0
--  流程表单分为 简易表单和自定义表单 两种; 
--  实现工作流的基础与复杂功能, 如：基础审批（通过/拒绝）、转交、抄送、委派、向前加签、向后加签、多人会签、减签、驳回、流程跳转等;
+-  流程表单分为 简易表单和自定义表单 两种;
 -  页面端采用bpmn.io技术方案实现可视化拖拽设计工作流程文件，富含构建工作流的整个功能，如：事件/审批节点、条件网关、打开/下载文件、预览流程图等；
+-  实现工作流的基础与复杂功能, 如：基础审批（通过/拒绝）、转交、抄送、委派、向前加签、向后加签、多人会签、减签、驳回、流程跳转等;
 -  审批节点富含多样功能，如：不同节点不同表单审批、多样审批规则、会签规则、组合监听器、多样表达式、拓展属性、自定义审批配置等;
 
-
-  ![img.png](doc/img/bpm1.png)
   ![img.png](doc/img/bpm2.png)
+  ![img.png](doc/img/bpm1.png)
+  ![img.png](doc/img/bpm3.png)
 
-### 8、es索引引擎说明:
+### 9、es索引引擎说明:
 -   elasticsearch 版本为: 7.17.7
 -   elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
 
 
-### 9、generator自动生成代码说明:
+### 10、generator自动生成代码说明:
 -   有两种生成方式两种:
 -   第一种: 通过后台管理生成，生成后位置在后端部署的根目录下的src文件夹；
 -   第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
@@ -145,13 +151,13 @@ flycloud
 ![img.png](doc/img/gen1.png)
 ![img.png](doc/img/gen2.png)
 
-### 10、Swagger文档说明:
+### 11、Swagger文档说明:
 -  本系统使用的是 Spring doc
 -  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
 
 ![img.png](doc/img/swagger.png)
 
-### 11、实体模型(domain)说明:
+### 12、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
 >   <br> VO -> 客户端(页面)展示的数据, 通常以json存在的形式
 
