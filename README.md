@@ -139,7 +139,7 @@ flycloud
 ### 9、generator自动生成代码说明:
 -   有两种生成方式两种:
 -   第一种: 通过后台管理生成，生成后位置在后端部署的根目录下的src文件夹；
--   第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)]
+-   第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
 
 ![img.png](doc/img/gen3.png)
 ![img.png](doc/img/gen1.png)
