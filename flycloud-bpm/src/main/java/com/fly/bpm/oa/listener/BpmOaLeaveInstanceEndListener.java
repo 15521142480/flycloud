@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 请假单的结果的监听器实现类
+ * 请假流程结束的执行监听器
  *
  * @author: lxs
  * @date: 2026/3/3
