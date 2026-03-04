@@ -1,7 +1,7 @@
 package com.fly.test.service.impl;
 
 import com.fly.bpm.api.feign.ITestApi;
-import com.fly.commom.elasticsearch.service.ElasticSearchService;
+//import com.fly.commom.elasticsearch.service.ElasticSearchService;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.test.mapper.TestMapper2;
@@ -27,7 +27,7 @@ public class TestServiceImpl2 implements ITestService {
 
     private final TestMapper2 testMapper;
     private final ITestApi testApi;
-    private final ElasticSearchService elasticSearchService;
+//    private final ElasticSearchService elasticSearchService;
 
 
 
@@ -55,7 +55,7 @@ public class TestServiceImpl2 implements ITestService {
         // 1到4分别是增删改查
         switch (type) {
             case 1:
-                elasticSearchService.createIndex("testIndex");
+//                elasticSearchService.createIndex("testIndex");
                 break;
             case 2:
                 break;
