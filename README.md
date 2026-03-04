@@ -133,7 +133,7 @@ flycloud
 
 ### 8、es索引引擎说明:
 -   elasticsearch 版本为: 7.17.7
--   <br> elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
+-   elasticsearch 客户端框架为: easy-es; 零成本上手(简单 易用 方便)
 
 
 ### 9、generator自动生成代码说明:
