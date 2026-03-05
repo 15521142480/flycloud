@@ -3,15 +3,16 @@
 - flycloud-server 是一款基于Spring Cloud Alibaba的微服务架构。
 - 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、Flowable 6.8.0 + bpmn.js、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
 - 主要以系统后台功能项目为主，扩展项目为辅的一个飞翔云系统。
+- 开发情况：系统后台开发完毕，拓展业务陆续开发中...
 
 
 ### 2、地址
 
-### 👉 演示地址：http://www.laixueshi.cn  （飞翔云平台系统；业务功能开发中...）
+### 👉 演示地址：http://www.laixueshi.cn  （飞翔云平台系统）
 | 账号        | 密码（使用后台登录用原值，接口调试登录用md5值）                            |
 |-----------|------------------------------------------------------|
-| admin     | md5值：0192023a7bbd73250516f069df18b500 原值：admin123    |
-| fileadmin | md5值：a66abb5684c45962d887564f08346e8d 原值：admin123456 |
+| admin     | 原值：admin123    md5值：0192023a7bbd73250516f069df18b500 |
+| fileadmin | 原值：admin123456 md5值：a66abb5684c45962d887564f08346e8d |
 
 
 ### 👉 项目地址：
@@ -20,7 +21,6 @@
 | https://github.com/15521142480/flycloud   | https://github.com/15521142480/flycloud/tree/master/flycloud-ui 即后端的flycloud-ui模块 |
 
 ### 分支说明：
- 两个主服务分支版本（即auth集成用户查询）
 
 | 分支                     | 说明                       | jdk               |
 |------------------------|--------------------------|-------------------|
