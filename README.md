@@ -1,8 +1,8 @@
 
 ### 1、项目说明:
 - flycloud-server 是一款基于Spring Cloud Alibaba的微服务架构。
-- 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、Flowable 6.8.0、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
-- 主要以商城项目为主，扩展项目为辅的一个飞翔云系统。
+- 目前整合了 Spring Boot 2.7.0、 Spring Cloud 2021、Spring Cloud Alibaba 2021、Nacos2.X、Spring Security Oauth2、Flowable 6.8.0 + bpmn.js、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
+- 主要以系统后台功能项目为主，扩展项目为辅的一个飞翔云系统。
 
 
 ### 2、地址
@@ -37,7 +37,7 @@
 | 微服务          | Spring cloud 2021 Alibaba、Spring cloud Alibaba2021 |
 | 注册和配置中心      | Nacos 2.1.1                                        |
 | 安全/授权框架      | Spring Security + OAuth2.0                         |
-| 工作流框架        | Flowable 6.8.0                                     |
+| 工作流框架        | Flowable 6.8.0  + bpmn.js                          |
 | 数据库/持久层/自动生成 | Mysql5.7 + Mybatis plus、 Velocity                  |
 | 分布式事务        | Seata                                              |
 | 缓存           | Ehcache、 Redis                                     |
@@ -47,10 +47,10 @@
 | 日志框架框架       | Logback                                            |
 
 
-| 前端      | 框架                                                 |
-|---------|----------------------------------------------------|
-| 项目框架    | vue2.0                                             |
-| ui框架    | Element、iview、vant                                 |
+| 前端          | 框架                                 |
+|-------------|------------------------------------|
+| 项目框架        | vue2、vue3                          |
+| ui框架        | Element-ui、Element-plus、iview、vant |
 
 
 ### 4、框架目录结构:
@@ -122,7 +122,7 @@ flycloud
 
 ### 7、系统讲解:
 -   富含后台系统的基本功能，如：用户/菜单/角色、部门/岗位等；其中角色的菜单权限采用自研的新型设计思路来实现权限的可视化！
--   采用flowable + bpmn.io支撑整个系统的工作流引擎、采用Velocity实现代码的自动生成等；
+-   采用flowable + bpmn.js支撑整个系统的工作流引擎、采用Velocity实现代码的自动生成等；
 
 ![img.png](doc/img/roleMenu1.png)
 
