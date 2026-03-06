@@ -28,18 +28,20 @@ export const getCodeApi = () => {
 
 // 登录
 export const login = (data: UserLoginVO) => {
-  data.password = md5(data.password)
+  // const newData = data; // newData 只是 data 的引用（指向同一块内存）
+  const newData = { ...data }; // 浅拷贝
+  newData.password = md5(newData.password)
   const method = 'POST'
   const params = null
   return service({
     url: `${AUTH_BASE_URL}/oauth/token`,
     method: method,
     params: params,
-    data: data,
+    data: newData,
     headers: {
       'Content-Type': 'application/json',
-      'Code-Key': data.codeKey,
-      'Code-Value': data.code,
+      'Code-Key': newData.codeKey,
+      'Code-Value': newData.code,
       'Authorization': `Basic ${Base64.encode(`fly:fly_secret`)}`
     }
   })
