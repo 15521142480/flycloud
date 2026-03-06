@@ -251,23 +251,24 @@ const loading = ref() // ElLoading.service 返回的实例
  * 登录
  */
 const handleLogin = async () => {
+
+  const data = await validForm()
+  if (!data) {
+    return
+  }
   loginLoading.value = true
+  loading.value = ElLoading.service({
+    lock: true,
+    text: '正在加载系统中...',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+
   try {
-    // await getTenantId()
-    const data = await validForm()
-    if (!data) {
-      return
-    }
     const loginDataLoginForm = { ...loginData.loginForm }
     const res = await LoginApi.login(loginDataLoginForm)
     if (!res) {
       return
     }
-    loading.value = ElLoading.service({
-      lock: true,
-      text: '正在加载系统中...',
-      background: 'rgba(0, 0, 0, 0.7)'
-    })
     if (loginDataLoginForm.rememberMe) {
       authUtil.setLoginForm(loginDataLoginForm)
     } else {
@@ -284,6 +285,9 @@ const handleLogin = async () => {
       push({ path: redirect.value || permissionStore.addRouters[0].path })
     }
   } finally {
+    if (!authUtil.getAccessToken()) {
+      await getCode()
+    }
     loginLoading.value = false
     loading.value.close()
   }
