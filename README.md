@@ -79,7 +79,6 @@ flycloud
 ├─flycloud-gateway          -- 网关服务
 ├─flycloud-generator        -- 自动生成代码服务
 └─flycloud-mall             -- 商家服务
-└─flycloud-music            -- 音乐服务
 └─flycloud-system           -- 平台服务
 └─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-ui               -- 系统的ui前端模块
@@ -100,7 +99,6 @@ flycloud
 | 系统业务服务:                           |
 | flycloud-bpm         工作流服务        | http://127.0.0.1:8090 |
 | flycloud-mall        商城服务         | http://127.0.0.1:8081 |
-| flycloud-music       音乐服务         | http://127.0.0.1:8083 |
 | 其他服务:                             |
 | flycloud-generator   自动生成代码服务     | http://127.0.0.1:8089 |
 | flycloud-test        测试服务         | http://127.0.0.1:8099 |
@@ -115,7 +113,6 @@ flycloud
 | flycloud-admin-ui            平台ui (新)     | http://127.0.0.1:7075 |
 | flycloud-platform-admin-ui   平台ui (旧)     | http://127.0.0.1:7075 |
 | flycloud-mall-ui (待续)       商城(后台端/商家端)ui | http://127.0.0.1:xxx  |
-| flycloud-music-ui (待续)      音乐ui          | http://127.0.0.1:xxx  |
 | flycloud-system-ui (待续)     系统后台ui        | http://127.0.0.1:xxx  |
 | flycloud-file-admin-ui   文件管理后台ui         | http://127.0.0.1:xxx  |
 

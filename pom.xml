@@ -21,7 +21,6 @@
         <module>flycloud-gateway</module>
         <module>flycloud-generator</module>
         <module>flycloud-mall</module>
-        <module>flycloud-music</module>
         <module>flycloud-system</module>
         <module>flycloud-test</module>
     </modules>

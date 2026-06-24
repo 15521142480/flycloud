@@ -102,7 +102,6 @@ swagger:
     flycloud-gateway: flycloud-gateway
     flycloud-system: flycloud-system
     flycloud-mall: flycloud-mall
-    flycloud-music: flycloud-music
     flycloud-generator: flycloud-generator
     flycloud-job: flycloud-job
     flycloud-test: flycloud-test
