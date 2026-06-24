@@ -14,7 +14,7 @@ module.exports = {
 
       '/flycloud-auth': {
         target: 'http://localhost:8080/flycloud-auth/',
-        // target: 'http://39.98.125.88:8080/flycloud-auth',
+        // target: 'http://111.228.51.252:8080/flycloud-auth',
         pathRewrite: {
           '^/flycloud-auth': '/'
         }
@@ -23,7 +23,7 @@ module.exports = {
       '/flycloud-file-admin': {
         target: 'http://localhost:8080/flycloud-file-admin/', // 本地
         // target: 'http://localhost:9095/', // 服务的真实端口，适用于授权接口在测试服
-        // target: 'http://39.98.125.88:8080/flycloud-file-admin/',
+        // target: 'http://111.228.51.252:8080/flycloud-file-admin/',
         pathRewrite: {
           '^/flycloud-file-admin': '/'
         }

@@ -619,7 +619,7 @@
                 <profiles.active>dev</profiles.active>
 
                 <!-- nacos注册地址 -->
-                <nacos.server>39.98.125.88:8848</nacos.server>
+                <nacos.server>111.228.51.252:8848</nacos.server>
 
                 <!--
                     nacos命名空间 https://github.com/alibaba/nacos/issues/3460
@@ -642,7 +642,7 @@
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <nacos.server>39.98.125.88:8848</nacos.server>
+                <nacos.server>111.228.51.252:8848</nacos.server>
                 <nacos.namespace>c5ab8826-7c54-44ee-a089-49a3dd530652</nacos.namespace>
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>

@@ -17,6 +17,7 @@ create table config_info
     effect       varchar(64)                            null,
     type         varchar(64)                            null,
     c_schema     text                                   null,
+    encrypted_data_key text                                   null comment '密钥',
     constraint uk_configinfo_datagrouptenant
         unique (data_id, group_id, tenant_id)
 )
@@ -130,6 +131,7 @@ create table his_config_info
     src_user     text                                   null,
     src_ip       varchar(50)                            null,
     op_type      char(10)                               null,
+    encrypted_data_key text                                   null comment '密钥',
     tenant_id    varchar(128) default ''                null comment '租户字段'
 )
     comment '多租户改造' collate = utf8_bin;

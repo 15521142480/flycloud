@@ -48,7 +48,7 @@ spring:
 
   # redis 通用配置 子服务可以自行配置进行覆盖
   redis:
-    host: 39.98.125.88
+    host: 111.228.51.252
     port: 6379
     # 密码(如没有密码请注释掉password字段)
     password: wW257007
@@ -711,7 +711,7 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (132, 'store.db.queryLimit', 'SEATA_GROUP', '100', 'f899139df5e1059396431415e770c6dd', '2024-08-07 10:36:56', '2024-08-07 10:36:56', null, '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', null, null, null, 'text', null);
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (133, 'store.db.lockTable', 'SEATA_GROUP', 'lock_table', '55e0cae3b6dc6696b768db90098b8f2f', '2024-08-07 10:36:56', '2024-08-07 10:36:56', null, '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', null, null, null, 'text', null);
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (134, 'store.db.maxWait', 'SEATA_GROUP', '5000', 'a35fe7f7fe8217b4369a0af4244d1fca', '2024-08-07 10:36:56', '2024-08-07 10:36:56', null, '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', null, null, null, 'text', null);
-INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (135, 'store.redis.host', 'SEATA_GROUP', '39.98.125.88', 'a23de94098343f1cf512ff8bab24b9b7', '2024-08-07 10:36:56', '2024-08-07 11:17:49', 'nacos', '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', '', '', '', 'text', '');
+INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (135, 'store.redis.host', 'SEATA_GROUP', '111.228.51.252', 'a23de94098343f1cf512ff8bab24b9b7', '2024-08-07 10:36:56', '2024-08-07 11:17:49', 'nacos', '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', '', '', '', 'text', '');
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (136, 'store.redis.port', 'SEATA_GROUP', '6379', '92c3b916311a5517d9290576e3ea37ad', '2024-08-07 10:36:56', '2024-08-07 10:36:56', null, '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', null, null, null, 'text', null);
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (137, 'store.redis.maxConn', 'SEATA_GROUP', '10', 'd3d9446802a44259755d38e6d163e820', '2024-08-07 10:36:56', '2024-08-07 10:36:56', null, '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', null, null, null, 'text', null);
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (138, 'store.redis.minConn', 'SEATA_GROUP', '1', 'c4ca4238a0b923820dcc509a6f75849b', '2024-08-07 10:36:56', '2024-08-07 10:36:56', null, '119.34.164.140', '', '98032a7a-cc91-4955-83cd-ba9ae12ad88b', null, null, null, 'text', null);
@@ -756,7 +756,7 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: \'http://39.98.125.88/gitegg-oauth/oauth/public_key\'
+          jwk-set-uri: \'http://111.228.51.252/gitegg-oauth/oauth/public_key\'
   autoconfigure:
     # 动态数据源排除默认配置
     exclude: 
@@ -805,11 +805,11 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
         useGlobalDataSourceStat: true
       datasource: 
         master: 
-          url: jdbc:mysql://39.98.125.88/gitegg_cloud?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://111.228.51.252/gitegg_cloud?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
           username: root
           password: root
         workflow: 
-          url: jdbc:mysql://39.98.125.88/workflow?&nullCatalogMeansCurrent=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://111.228.51.252/workflow?&nullCatalogMeansCurrent=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
           username: root
           password: root
   cloud:
@@ -824,13 +824,13 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
         enabled: true
       transport:
         port: 8719
-        dashboard: 39.98.125.88:8086
+        dashboard: 111.228.51.252:8086
       eager: true
       datasource:
         ds2:
           nacos:
             data-type: json
-            server-addr: 39.98.125.88:8848
+            server-addr: 111.228.51.252:8848
             dataId: ${spring.application.name}-sentinel
             groupId: DEFAULT_GROUP
             rule-type: flow
@@ -980,7 +980,7 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
     #         concurrency: 2 # 初始/最少/空闲时 消费者数量,默认1
   redis:
     database: 1
-    host: 39.98.125.88
+    host: 111.228.51.252
     port: 6379
     password: wW257007
     ssl: false
@@ -1006,7 +1006,7 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
         password: 123456
         subscriptionsPerConnection: 5
         clientName: null
-        address: "redis://39.98.125.88:6379"
+        address: "redis://111.228.51.252:6379"
         subscriptionConnectionMinimumIdleSize: 1
         subscriptionConnectionPoolSize: 50
         connectionMinimumIdleSize: 32
@@ -1080,7 +1080,7 @@ system:
 xxl:
   job:
     admin:
-      addresses: http://39.98.125.88/gitegg-job-admin
+      addresses: http://111.228.51.252/gitegg-job-admin
     accessToken: \'default_token\'
     executor:
       appname: ${spring.application.name}
@@ -1213,7 +1213,7 @@ seata:
     type: nacos
     nacos:
       namespace:
-      serverAddr: 39.98.125.88:8848
+      serverAddr: 111.228.51.252:8848
       group: SEATA_GROUP
       userName: "nacos"
       password: "nacos"
@@ -1222,7 +1222,7 @@ seata:
     nacos:
       #seata服务端(TC)在nacos中的应用名称
       application: seata-server
-      server-addr: 39.98.125.88:8848
+      server-addr: 111.228.51.252:8848
       namespace:
       userName: "nacos"
       password: "nacos"
@@ -1319,12 +1319,12 @@ justauth:
     WECHAT_OPEN:
       client-id: xxxxxxxxxxxxxxxx
       client-secret: xxxxxxxxxxxxxxxxx
-      redirect-uri: http://39.98.125.88:5173/social/wechat_open/callback
+      redirect-uri: http://111.228.51.252:5173/social/wechat_open/callback
       ignore-check-state: false
     WECHAT_MP:
       client-id: xxxxxxxxxxxxxxxx
       client-secret: xxxxxxxxxxxxxxxx
-      redirect-uri: http://39.98.125.88:5173/social/wechat_mp/callback
+      redirect-uri: http://111.228.51.252:5173/social/wechat_mp/callback
       ignore-check-state: false
       # scopes:
       #   - profile
@@ -1335,11 +1335,11 @@ justauth:
     # proxy:
     #   GOOGLE:
     #     type: HTTP
-    #     hostname: 39.98.125.88
+    #     hostname: 111.228.51.252
     #     port: 10080
     #   MYGITLAB:
     #     type: HTTP
-    #     hostname: 39.98.125.88
+    #     hostname: 111.228.51.252
     #     port: 10080
   cache:
     type: Redis
@@ -1843,7 +1843,7 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
   # 配置Redis服务器
   redis:
     # Redis服务器连接IP
-    host: 39.98.125.88
+    host: 111.228.51.252
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
@@ -1870,7 +1870,7 @@ INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, 
     nacos:
       discovery:
         # Nacos服务注册地址
-        server-addr: 39.98.125.88:8848
+        server-addr: 111.228.51.252:8848
         # 是否开启Nacos注册
         enabled: true
 
@@ -2308,12 +2308,12 @@ security:
       - /sms-code', '9516ad3a78803fed64130344424757e4', '2024-08-11 09:05:37', '2024-08-11 09:05:37', null, '61.140.102.249', '', 'b4eaa489-d706-49af-8d67-25a504a6aa58', null, null, null, 'yaml', null);
 INSERT INTO nacos.config_info (id, data_id, group_id, content, md5, gmt_create, gmt_modified, src_user, src_ip, app_name, tenant_id, c_desc, c_use, effect, type, c_schema) VALUES (218, 'youlai-common.yaml', 'DEFAULT_GROUP', '
 redis:
-  host: 39.98.125.88
+  host: 111.228.51.252
   port: 6379
   password: wW257007
   
 mysql:
-  host: 39.98.125.88
+  host: 111.228.51.252
   port: 3306
   username: root
   password: root
@@ -2340,7 +2340,7 @@ minio:
 # Seata的注册和配置中心
 seata:
   nacos: 
-    server-addr: http://39.98.125.88:8848
+    server-addr: http://111.228.51.252:8848
   
 # Sentinel
 sentinel:
@@ -2777,7 +2777,7 @@ spring:
 
   # redis 通用配置 子服务可以自行配置进行覆盖
   redis:
-    host: 39.98.125.88
+    host: 111.228.51.252
     port: 6379
     # 密码(如没有密码请注释掉password字段)
     password: wW257007
@@ -3053,7 +3053,7 @@ spring:
 
   # redis 通用配置 子服务可以自行配置进行覆盖
   redis:
-    host: 39.98.125.88
+    host: 111.228.51.252
     port: 6379
     # 密码(如没有密码请注释掉password字段)
     password: wW257007
@@ -3544,7 +3544,7 @@ store.publicKey=
 store.db.datasource=hikari
 store.db.dbType=mysql
 store.db.driverClassName=com.mysql.cj.jdbc.Driver
-store.db.url=jdbc:mysql://39.98.125.88/fly-seata?useUnicode=true&rewriteBatchedStatements=true
+store.db.url=jdbc:mysql://111.228.51.252/fly-seata?useUnicode=true&rewriteBatchedStatements=true
 store.db.user=root
 store.db.password=root
 store.db.minConn=5

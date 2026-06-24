@@ -50,7 +50,7 @@ export default {
       //   port: '',
       // },
       dataForm: {
-        host: '39.98.125.88',
+        host: '111.228.51.252',
         user: 'root',
         password: 'Wwlxs@#$',
         port: '22'
