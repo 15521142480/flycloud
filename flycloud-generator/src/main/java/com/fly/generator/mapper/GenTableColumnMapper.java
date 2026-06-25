@@ -1,6 +1,6 @@
 package com.fly.generator.mapper;
 
-import com.fly.common.database.web.mapper.BaseMapperPlus;
+import com.fly.common.database.web.support.BaseMapperPlus;
 import com.fly.generator.domain.GenTableColumn;
 
 import java.util.List;

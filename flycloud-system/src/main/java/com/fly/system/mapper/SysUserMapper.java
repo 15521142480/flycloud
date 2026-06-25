@@ -1,7 +1,7 @@
 package com.fly.system.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
-import com.fly.common.database.web.mapper.BaseMapperPlus;
+import com.fly.common.database.web.support.BaseMapperPlus;
 import com.fly.system.api.domain.SysUser;
 import com.fly.system.api.domain.bo.SysUserBo;
 import com.fly.system.api.domain.vo.SysUserVo;

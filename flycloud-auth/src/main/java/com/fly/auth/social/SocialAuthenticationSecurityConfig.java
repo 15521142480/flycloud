@@ -4,6 +4,7 @@ import com.fly.common.security.user.FlyUserDetailsService;
 import com.xkcoding.justauth.AuthRequestFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +25,7 @@ public class SocialAuthenticationSecurityConfig extends SecurityConfigurerAdapte
 	private FlyUserDetailsService userDetailsService;
 
 	@Autowired
-	private AuthRequestFactory authRequestFactory;
+	private ObjectProvider<AuthRequestFactory> authRequestFactoryProvider;
 
 
 
@@ -34,7 +35,7 @@ public class SocialAuthenticationSecurityConfig extends SecurityConfigurerAdapte
 		// 过滤器
 		SocialAuthenticationFilter socialAuthenticationFilter = new SocialAuthenticationFilter();
 		socialAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-		socialAuthenticationFilter.setAuthRequestFactory(authRequestFactory);
+		socialAuthenticationFilter.setAuthRequestFactory(authRequestFactoryProvider.getIfAvailable());
 
 
 		// 获取社交登录提供者

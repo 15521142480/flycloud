@@ -14,7 +14,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.util.Assert;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class SocialAuthenticationFilter extends AbstractAuthenticationProcessing
 	 * 通过构造函数指定该 Filter 要拦截的 url 和 httpMethod
 	 */
 	protected SocialAuthenticationFilter() {
-		super(new AntPathRequestMatcher(SOCIAL_LOGIN_URL, null));
+		super(PathPatternRequestMatcher.withDefaults().matcher(SOCIAL_LOGIN_URL));
 	}
 
 	@Override

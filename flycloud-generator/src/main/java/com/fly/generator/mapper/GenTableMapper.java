@@ -1,7 +1,7 @@
 package com.fly.generator.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fly.common.database.web.mapper.BaseMapperPlus;
+import com.fly.common.database.web.support.BaseMapperPlus;
 import com.fly.generator.domain.GenTable;
 import org.apache.ibatis.annotations.Param;
 

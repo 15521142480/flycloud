@@ -9,6 +9,7 @@ import com.fly.common.security.handler.CustomAuthenticationFailureHandler;
 import com.fly.common.security.handler.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.context.annotation.Bean;
@@ -49,6 +50,7 @@ public class SecurityResourceServerConfig {
      * 放行和认证规则
      */
     @Bean
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity httpSecurity,
                                                                  CustomAuthenticationEntryPoint authenticationEntryPoint,
                                                                  CustomAccessDeniedHandler accessDeniedHandler) throws Exception {

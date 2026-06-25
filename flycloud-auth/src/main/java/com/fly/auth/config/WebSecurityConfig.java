@@ -5,13 +5,13 @@ import com.fly.auth.service.impl.UserDetailsServiceImpl;
 import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +30,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @date 2023/5/3
  */
 @Order(4)
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
@@ -63,28 +64,21 @@ public class WebSecurityConfig {
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(
+                                "/oauth/token",
+                                "/oauth/check_token",
+                                "/oauth/token_key",
+                                "/auth/code",
+                                "/css/**",
+                                "/swagger-ui/index.html",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs"
+                        ).permitAll()
                         .requestMatchers(ignoreUrls).permitAll()
                         .anyRequest().authenticated())
                 .build();
-    }
-
-
-    /**
-     * 不拦截静态资源
-     *
-     * @param web
-     */
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-
-        return web -> web.ignoring().requestMatchers(
-                "/css/**",
-                "/swagger-ui/index.html",
-                "/swagger-ui.html",
-                "/swagger-ui/**",
-                "/v3/api-docs/**",
-                "/v3/api-docs"
-        );
     }
 
 

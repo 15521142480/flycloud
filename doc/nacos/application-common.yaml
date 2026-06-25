@@ -54,7 +54,8 @@ spring:
     password: wW257007
     database: 0
     timeout: 30s
-    ssl: false
+    ssl:
+      enabled: false
 
 
 # redisson 配置

@@ -2,7 +2,7 @@
 # seata 配置
 seata:
 
-  enabled: true
+  enabled: false  # todo 先关闭，dev中
   tx-service-group: fly_tx_group  # default_tx_group、fsp_tx_group，这里每个服务都是对应不同的映射名,在配置中心可以看到
 
   config: # 配置seata的配置中心

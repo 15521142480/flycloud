@@ -1,6 +1,6 @@
 package com.fly.test.mapper;
 
-import com.fly.common.database.web.mapper.BaseMapperPlus;
+import com.fly.common.database.web.support.BaseMapperPlus;
 import com.fly.test.domain.SysUserTest;
 import com.fly.test.domain.vo.SysUserTestVo;
 

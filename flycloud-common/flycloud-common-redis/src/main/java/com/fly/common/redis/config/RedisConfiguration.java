@@ -110,7 +110,8 @@ public class RedisConfiguration {
      *     # 连接超时时间
      *     timeout: 10s
      *     # 是否开启ssl
-     *     ssl: false
+     *     ssl:
+     *       enabled: false
      *
      * redisson:
      *   # 线程池数量

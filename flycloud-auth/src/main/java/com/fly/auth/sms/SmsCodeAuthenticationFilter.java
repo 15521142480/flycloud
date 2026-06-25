@@ -6,8 +6,9 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.util.Assert;
+import org.springframework.http.HttpMethod;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 	private boolean postOnly = true;
 
 	public SmsCodeAuthenticationFilter() {
-		super(new AntPathRequestMatcher(Oauth2Constants.OAUTH_MOBILE, "POST"));
+		super(PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, Oauth2Constants.OAUTH_MOBILE));
 	}
 
 	@Override

@@ -5,10 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerIntercep
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.fly.common.database.interceptor.DataScopeInnerInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.StringUtils;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -22,7 +28,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement(proxyTargetClass = true)
 @AutoConfiguration
 @AutoConfigurationPackage
-@MapperScan("${mybatis-plus.mapperPackage}")
 public class MybatisPlusConfig {
 
     //  todo 扫描mapper接口包有两种:
@@ -30,6 +35,25 @@ public class MybatisPlusConfig {
     //       法2: 手动扫描, 在相关启动配置类(如MybatisPlusConfig)加上@MapperScan("${mybatis-plus.mapperPackage}" 即可
     //       本项目用的是 法2 (因为基本上整个项目的包名前缀都是一样的,除非要注入第三方的bean); 如有需要支持多包可在注解配置 或 提升扫包等级 (例如 com.**.**.mapper)
     //    注意: @MapperScan 和 @Mapper 两者不能同时使用
+
+    @Bean
+    @Conditional(MapperPackageCondition.class)
+    public static MapperScannerConfigurer mapperScannerConfigurer(Environment environment) {
+
+        MapperScannerConfigurer configurer = new MapperScannerConfigurer();
+        configurer.setBasePackage(environment.getProperty("mybatis-plus.mapperPackage"));
+        return configurer;
+    }
+
+    static class MapperPackageCondition implements Condition {
+
+        @Override
+        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+
+            String mapperPackage = context.getEnvironment().getProperty("mybatis-plus.mapperPackage");
+            return StringUtils.hasText(mapperPackage) && !mapperPackage.contains("${");
+        }
+    }
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {

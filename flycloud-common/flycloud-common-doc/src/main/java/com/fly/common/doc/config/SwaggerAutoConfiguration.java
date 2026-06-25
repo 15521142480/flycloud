@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class SwaggerAutoConfiguration {
 
     private final SwaggerProperties swaggerProperties;
 
-    private final ServiceInstance serviceInstance;
+    private final ObjectProvider<ServiceInstance> serviceInstanceProvider;
 
 
 
@@ -66,11 +67,15 @@ public class SwaggerAutoConfiguration {
         openAPI.schemaRequirement(CommonConstants.AUTHORIZATION_KEY, this.securityScheme());
 
         // servers 提供调用的接口地址前缀
-        System.out.println("serviceInstance.getServiceId():" + serviceInstance.getServiceId());
         List<Server> serverList = new ArrayList<>();
         Map<String, String> services = swaggerProperties.getServices();
-        if (services != null && services.containsKey(serviceInstance.getServiceId())) {
-            String path = services.get(serviceInstance.getServiceId());
+        ServiceInstance serviceInstance = serviceInstanceProvider.getIfAvailable();
+        String serviceId = serviceInstance == null ? null : serviceInstance.getServiceId();
+        if (serviceId != null) {
+            System.out.println("serviceInstance.getServiceId():" + serviceId);
+        }
+        if (services != null && serviceId != null && services.containsKey(serviceId)) {
+            String path = services.get(serviceId);
             serverList.add(new Server().url(swaggerProperties.getGateway() + "/" + path));
         } else if (swaggerProperties.getGateway() != null) {
             serverList.add(new Server().url(swaggerProperties.getGateway()));
