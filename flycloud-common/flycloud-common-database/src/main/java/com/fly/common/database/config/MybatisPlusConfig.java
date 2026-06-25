@@ -6,20 +6,21 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.fly.common.database.interceptor.DataScopeInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Mybatis-Plus 配置
  *
- * todo 使用spring.factories文件实现多模块下读取不同包名模块的配置文件, 即实现第三方bean注入spring容器
+ * todo 使用 Spring Boot 自动配置机制实现多模块下第三方 bean 注入 spring 容器
  *
  * @author lxs
  * @date 2023/3/22
  */
 @EnableTransactionManagement(proxyTargetClass = true)
+@AutoConfiguration
 @AutoConfigurationPackage
 @MapperScan("${mybatis-plus.mapperPackage}")
 public class MybatisPlusConfig {

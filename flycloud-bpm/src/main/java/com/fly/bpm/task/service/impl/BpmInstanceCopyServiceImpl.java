@@ -25,7 +25,7 @@ import com.fly.bpm.api.domain.BpmProcessInstanceCopy;
 import com.fly.bpm.task.mapper.BpmProcessInstanceCopyMapper;
 import com.fly.bpm.task.service.IBpmInstanceCopyService;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Collection;
 import java.util.Set;

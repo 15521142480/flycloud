@@ -8,7 +8,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.SpringDocConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * swagger配置
@@ -33,6 +34,7 @@ import java.util.List;
  * @date 2023/4/19
  */
 @RequiredArgsConstructor
+@AutoConfiguration
 @AutoConfigurationPackage
 @EnableConfigurationProperties(SwaggerProperties.class)
 @ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
@@ -64,11 +66,15 @@ public class SwaggerAutoConfiguration {
         openAPI.schemaRequirement(CommonConstants.AUTHORIZATION_KEY, this.securityScheme());
 
         // servers 提供调用的接口地址前缀
-        System.out.println("swaggerProperties.getServices():" + swaggerProperties.getServices().toString());
         System.out.println("serviceInstance.getServiceId():" + serviceInstance.getServiceId());
         List<Server> serverList = new ArrayList<>();
-        String path = swaggerProperties.getServices().get(serviceInstance.getServiceId());
-        serverList.add(new Server().url(swaggerProperties.getGateway() + "/" + path));
+        Map<String, String> services = swaggerProperties.getServices();
+        if (services != null && services.containsKey(serviceInstance.getServiceId())) {
+            String path = services.get(serviceInstance.getServiceId());
+            serverList.add(new Server().url(swaggerProperties.getGateway() + "/" + path));
+        } else if (swaggerProperties.getGateway() != null) {
+            serverList.add(new Server().url(swaggerProperties.getGateway()));
+        }
         openAPI.servers(serverList);
 
         return openAPI;

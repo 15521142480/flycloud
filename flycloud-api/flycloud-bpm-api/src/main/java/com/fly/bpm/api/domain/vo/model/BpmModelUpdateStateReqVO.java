@@ -3,7 +3,7 @@ package com.fly.bpm.api.domain.vo.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Schema(description = "管理后台 - 流程模型更新状态 Request VO")

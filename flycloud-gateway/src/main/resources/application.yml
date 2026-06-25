@@ -1,0 +1,50 @@
+
+# 从Spring Boot 3.x开始对bootstrap.yml和application.yml有所调整，不再先执行bootstrap.yml加载配置中心，而是先执行application.yml引入 spring.config.import的外部配置
+# 总结：application.yml放优先级最高的东西，bootstrap.yml放一些普通配置或者可以删掉了
+# 吐槽：nacos3.x也开始跟风这种设计，抛弃对bootstrap.yml的支持，拥抱application.yml，
+#      但是这样就搞笑了，本来application.yml这种配置就是放在nacos里的，现在项目必须得写死一个application.yml来读取nacos的配置，那你的配置中心不就失去意义了吗？？？
+
+server:
+  port: 8080
+
+spring:
+
+  application:
+    # 应用的名称, 在spring cloud中被用来注册的服务名
+    name: "@artifactId@"
+  profiles:
+    active: @profiles.active@
+  main:
+    web-application-type: reactive
+    # bean重名覆盖
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  cloud:
+    nacos:
+      server-addr: @nacos.server@
+      username: @nacos.username@
+      password: @nacos.password@
+
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: @nacos.username@
+        password: @nacos.password@
+        namespace: "@nacos.namespace@"
+        group: @nacos.discovery.group@
+
+      config:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: @nacos.username@
+        password: @nacos.password@
+        namespace: "@nacos.namespace@"
+        group: @nacos.config.group@
+        file-extension: yaml
+
+  config:
+    import:
+      - optional:nacos:application-common.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
+
+

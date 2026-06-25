@@ -54,7 +54,7 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         beforeReqLog.append("===> {}: {}\n");
 
         // 参数
-        String requestMethod = exchange.getRequest().getMethodValue();
+        String requestMethod = exchange.getRequest().getMethod().name();
         beforeReqArgs.add(requestMethod);
         beforeReqArgs.add(originalRequestUrl);
 

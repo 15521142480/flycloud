@@ -1,12 +1,14 @@
 package com.fly.common.utils.auth;
 
 import com.fly.common.constant.CommonConstants;
-import com.fly.common.constant.Oauth2Constants;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Base64;
+import java.util.Map;
 
 /**
  * Token工具类
@@ -16,6 +18,8 @@ import java.util.Base64;
 public class TokenUtils {
 
 	public static Integer AUTH_LENGTH = 7;
+
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 
 	/**
@@ -43,11 +47,16 @@ public class TokenUtils {
 	 */
 	public static Claims getClaims(String token) {
 
-		String key = "";
 		Claims claims = null;
 		try {
-			key = Base64.getEncoder().encodeToString(Oauth2Constants.SIGN_KEY.getBytes());
-			claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+			String[] parts = token.split("\\.");
+			if (parts.length < 2) {
+				return null;
+			}
+			byte[] payload = Base64.getUrlDecoder().decode(parts[1]);
+			Map<String, Object> values = OBJECT_MAPPER.readValue(payload, new TypeReference<>() {
+			});
+			claims = Jwts.claims(values);
 		} catch (Exception e) {
 			log.error("解析token异常!", e);
 		}

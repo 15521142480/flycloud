@@ -3,8 +3,8 @@ package com.fly.common.validate;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.core.IntArrayValuable;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

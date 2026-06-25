@@ -8,7 +8,7 @@ import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;

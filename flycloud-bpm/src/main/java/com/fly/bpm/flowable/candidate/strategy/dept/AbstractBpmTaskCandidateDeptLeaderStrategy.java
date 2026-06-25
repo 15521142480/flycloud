@@ -8,7 +8,7 @@ import com.fly.system.api.domain.vo.SysUserVo;
 import com.fly.system.api.feign.ISysDeptApi;
 import com.fly.system.api.feign.ISysUserApi;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;

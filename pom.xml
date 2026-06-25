@@ -31,46 +31,44 @@
         <revision>1.0.0</revision>
         <modelVersion>4.0.0</modelVersion>
 
-        <java.version>1.8</java.version>
+        <java.version>21</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.encoding>UTF-8</project.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-resources-plugin.version>UTF-8</maven-resources-plugin.version>
         <spring-javaformat.version>0.0.22</spring-javaformat.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <lombok.version>1.18.24</lombok.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <lombok.version>1.18.38</lombok.version>
 
-<!--        <spring-boot.version>2.6.14</spring-boot.version>-->
-        <spring-boot.version>2.7.18</spring-boot.version>
-        <spring-cloud.version>2021.0.1</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
+        <spring-boot.version>3.5.3</spring-boot.version>
+        <spring-cloud.version>2025.0.3</spring-cloud.version>
+        <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
         <justauth.springboot.version>1.3.3</justauth.springboot.version>
+        <nacos.version>3.0.3</nacos.version>
 
-        <mybatisplus.version>3.5.2</mybatisplus.version>
-<!--        <mybatisplus.version>3.5.7</mybatisplus.version>-->
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <velocity.version>2.3</velocity.version>
 
         <!-- seata版本 -->
-        <seata.version>1.5.2</seata.version>
+        <seata.version>2.5.0</seata.version>
 
         <!-- flowable版本 -->
-        <flowable.version>6.8.0</flowable.version>
+        <flowable.version>7.1.0</flowable.version>
 
         <!-- elasticsearch版本 -->
 <!--        <easy-es.version>1.1.1</easy-es.version>-->
         <elasticsearch.version>7.17.1</elasticsearch.version>
 
-        <springdoc.version>1.6.8</springdoc.version>
-        <swagger-core.version>2.2.8</swagger-core.version>
-        <dynamic-ds.version>3.5.2</dynamic-ds.version>
-<!--        <dynamic-ds.version>3.5.7</dynamic-ds.version>-->
+        <springdoc.version>2.8.17</springdoc.version>
+        <swagger-core.version>2.2.31</swagger-core.version>
+        <knife4j.version>4.5.0</knife4j.version>
+        <dynamic-ds.version>4.3.1</dynamic-ds.version>
+        <druid.version>1.2.25</druid.version>
         <p6spy.version>3.9.1</p6spy.version>
 
         <hutool.version>5.8.15</hutool.version>
         <captcha.version>1.6.2</captcha.version>
         <mapstruct.version>1.6.2</mapstruct.version>
-<!--        <nacos.version>2.1.1</nacos.version>-->
-        <nacos.version>2.0.3</nacos.version>
         <aliyun.oss.version>3.8.0</aliyun.oss.version>
         <aliyun.dysmsapi.version>2.0.18</aliyun.dysmsapi.version>
         <tencentcloud.sdk.version>3.1.574</tencentcloud.sdk.version>
@@ -85,17 +83,16 @@
         <fastjson.version>1.2.67</fastjson.version>
         <jsch.version>0.1.55</jsch.version>
         <fileupload.version>1.3.1</fileupload.version>
-        <redisson.version>3.20.0</redisson.version>
+        <redisson.version>3.50.0</redisson.version>
         <jetcache.version>2.7.3</jetcache.version>
         <lock4j.version>2.2.4</lock4j.version>
         <xxl-job.version>2.3.1</xxl-job.version>
         <spring-oauth.version>2.2.5.RELEASE</spring-oauth.version>
-        <jjwt.version>0.9.1</jjwt.version>
+        <jjwt.version>0.12.6</jjwt.version>
         <easypoi.version>4.4.0</easypoi.version>
 <!--        <easy-captcha.version>1.6.2</easy-captcha.version>-->
         <commons-collections.version>3.2.2</commons-collections.version>
         <transmittable.version>2.14.2</transmittable.version>
-        <mapstruct.version>1.6.2</mapstruct.version>
     </properties>
 
 
@@ -134,13 +131,13 @@
             <!-- mybatis-plus -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatisplus.version}</version>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-extension</artifactId>
-                <version>${mybatisplus.version}</version>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <!-- seata -->
@@ -177,8 +174,13 @@
             <!-- Dynamic DataSource -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
                 <version>${dynamic-ds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
             <!-- sql性能分析插件 -->
             <dependency>
@@ -202,24 +204,23 @@
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webmvc-core</artifactId>
+                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-javadoc</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webflux-ui</artifactId>
+                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-webflux-core</artifactId>
+                <artifactId>springdoc-openapi-starter-webflux-api</artifactId>
                 <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-ui</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <!-- captcha -->
@@ -356,17 +357,6 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.redisson</groupId>
-                        <artifactId>redisson-spring-data-30</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-data-27</artifactId>
-                <version>${redisson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>
@@ -403,7 +393,17 @@
             <!-- JWT工具 -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
 
@@ -525,10 +525,10 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.9.0</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <encoding>${project.build.sourceEncoding}</encoding>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <parameters>true</parameters>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>com.github.therapi</groupId>
@@ -567,8 +567,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>${maven.compiler.release}</release>
+                    <parameters>true</parameters>
                     <encoding>${project.encoding}</encoding>
                 </configuration>
             </plugin>
@@ -613,23 +613,22 @@
         <profile>
             <id>dev</id>
             <properties>
-
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
-
                 <!-- nacos注册地址 -->
-                <nacos.server>111.228.51.252:8848</nacos.server>
-
+                <!-- 111.228.51.252  39.98.125.88  laixueshi.cn  除了项目在服务器上域名可以代替ip；本地运行不行，但可以在host新增域名映射ip可实现 -->
+                <nacos.server>39.98.125.88:8848</nacos.server>
                 <!--
                     nacos命名空间 https://github.com/alibaba/nacos/issues/3460
                     默认的命名空间不要去设置namespace  (命名空间的概念是: 新增命名空间可以实现开发/生产等环境)
                     如有命名空间namespace字段的值必须是命名空间ID
                 -->
                 <nacos.namespace/>
-
                 <!-- nacos分组 (分组的概念是: 两个配置文件名称可以相同,但所属的分组一定要不同) -->
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
+                <nacos.username>nacos</nacos.username>
+                <nacos.password>nacos</nacos.password>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -641,10 +640,12 @@
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <nacos.server>111.228.51.252:8848</nacos.server>
+                <nacos.server>39.98.125.88:8848</nacos.server>
                 <nacos.namespace>c5ab8826-7c54-44ee-a089-49a3dd530652</nacos.namespace>
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
+                <nacos.username>nacos</nacos.username>
+                <nacos.password>nacos</nacos.password>
             </properties>
         </profile>
     </profiles>

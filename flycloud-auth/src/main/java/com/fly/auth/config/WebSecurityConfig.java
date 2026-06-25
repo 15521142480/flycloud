@@ -4,19 +4,20 @@ import cn.hutool.core.convert.Convert;
 import com.fly.auth.service.impl.UserDetailsServiceImpl;
 import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * web安全配置
@@ -31,7 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Order(4)
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo WebSecurityConfigurerAdapter web端的接口切面配置; 用于保护oauth相关的endpoints，同时主要作用于用户的登录(form login,Basic auth)
+public class WebSecurityConfig {
 
 
     private final ServerResourceSecurityProperties serverResourceSecurityProperties;
@@ -54,20 +55,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
      * rememberMe          |   允许通过remember-me登录的用户访问
      * authenticated       |   用户登录后可访问
      */
-    @Override
-    @SneakyThrows
-    public void configure(HttpSecurity httpSecurity) {
+    @Bean
+    public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.headers().frameOptions().disable();
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity.authorizeRequests();
-
-//        securityAuthorizationProperties.getIgnoreUrls().forEach(
-//                url -> registry.antMatchers(url).permitAll()
-//        );
-        registry.antMatchers(Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls())).permitAll();
-
-
-        registry.anyRequest().authenticated().and().csrf().disable();
+        String[] ignoreUrls = Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls());
+        return httpSecurity
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(ignoreUrls).permitAll()
+                        .anyRequest().authenticated())
+                .build();
     }
 
 
@@ -76,10 +74,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
      *
      * @param web
      */
-    @Override
-    public void configure(WebSecurity web) {
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
 
-        web.ignoring().antMatchers(
+        return web -> web.ignoring().requestMatchers(
                 "/css/**",
                 "/swagger-ui/index.html",
                 "/swagger-ui.html",
@@ -93,18 +91,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
     /**
      * 用户自定义和管理身份验证
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.
-                userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
     }
 
 
     /**
      * 重写用户实现
      */
-    @Override
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -150,10 +147,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // todo We
      *
      */
     @Bean
-    @Override
-    @SneakyThrows
-    public AuthenticationManager authenticationManagerBean() {
-        return super.authenticationManagerBean();
+    public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
+        return new ProviderManager(authenticationProvider);
     }
 
 

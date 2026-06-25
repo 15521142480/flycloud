@@ -3,7 +3,7 @@ package com.fly.bpm.api.domain.vo.task;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Collection;
 
 @Schema(description = "管理后台 - 抄送流程任务的 Request VO")

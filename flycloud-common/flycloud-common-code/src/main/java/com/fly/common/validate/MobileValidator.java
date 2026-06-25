@@ -3,8 +3,8 @@ package com.fly.common.validate;
 import cn.hutool.core.util.StrUtil;
 import com.fly.common.utils.validation.ValidationUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class MobileValidator implements ConstraintValidator<Mobile, String> {
 

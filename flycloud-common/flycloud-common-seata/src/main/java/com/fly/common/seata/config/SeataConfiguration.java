@@ -6,12 +6,12 @@ import io.seata.spring.annotation.datasource.EnableAutoDataSourceProxy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
@@ -20,7 +20,7 @@ import java.sql.SQLException;
  *
  * @EnableAutoDataSourceProxy 自动开启代理数据源
  */
-@Configuration
+@AutoConfiguration
 @PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:mate-seata.yml")
 @EnableConfigurationProperties(SeataProperties.class)
 @AllArgsConstructor

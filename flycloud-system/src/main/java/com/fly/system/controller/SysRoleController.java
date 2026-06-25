@@ -22,10 +22,10 @@ import com.fly.system.service.ISysRoleService;
 
 import java.util.List;
 import java.util.Arrays;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 角色控制器

@@ -10,7 +10,7 @@
 //import com.fly.system.api.feign.ISysRoleApi;
 //import org.springframework.stereotype.Component;
 //
-//import javax.annotation.Resource;
+//import jakarta.annotation.Resource;
 //import java.util.Set;
 //
 ///**

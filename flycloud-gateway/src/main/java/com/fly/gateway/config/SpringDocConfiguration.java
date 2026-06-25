@@ -2,12 +2,13 @@ package com.fly.gateway.config;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.SwaggerUiConfigParameters;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -46,14 +47,18 @@ public class SpringDocConfiguration {
     @Bean
     @Lazy(false)
     @ConditionalOnProperty(name = "springdoc.api-docs.enabled", matchIfMissing = true)
-    public List<GroupedOpenApi> apis(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerDocProperties swaggerProperties) {
+    public List<GroupedOpenApi> apis(ObjectProvider<SwaggerUiConfigParameters> swaggerUiConfigParametersProvider,
+                                     SwaggerDocProperties swaggerProperties) {
 
         List<GroupedOpenApi> groups = new ArrayList<>();
         List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
+        SwaggerUiConfigParameters swaggerUiConfigParameters = swaggerUiConfigParametersProvider.getIfAvailable();
 
         // 将每个服务作为一个分组，比如edevp-org ，对应的value是org
-        for (String value : swaggerProperties.getServices().values()) {
-            swaggerUiConfigParameters.addGroup(value);
+        if (swaggerUiConfigParameters != null) {
+            for (String value : swaggerProperties.getServices().values()) {
+                swaggerUiConfigParameters.addGroup(value);
+            }
         }
         return groups;
     }

@@ -12,8 +12,8 @@ import com.fly.common.utils.json.databind.NumberSerializer;
 import com.fly.common.utils.json.databind.TimestampLocalDateTimeDeserializer;
 import com.fly.common.utils.json.databind.TimestampLocalDateTimeSerializer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author lxs
  */
 @Slf4j
-@Configuration
+@AutoConfiguration
 public class JacksonConfig {
 
 

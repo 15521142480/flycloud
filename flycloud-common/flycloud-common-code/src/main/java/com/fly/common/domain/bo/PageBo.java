@@ -5,7 +5,7 @@ import com.fly.common.utils.PrincipalUtils;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Arrays;
 

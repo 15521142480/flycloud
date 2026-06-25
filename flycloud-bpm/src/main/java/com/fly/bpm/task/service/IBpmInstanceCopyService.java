@@ -7,7 +7,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import org.flowable.bpmn.model.FlowNode;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Set;
 

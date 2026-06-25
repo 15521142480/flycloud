@@ -20,9 +20,9 @@ import com.fly.bpm.oa.service.IBpmOaLeaveService;
 
 import java.util.List;
 import java.util.Arrays;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * OA 请假申请控制器

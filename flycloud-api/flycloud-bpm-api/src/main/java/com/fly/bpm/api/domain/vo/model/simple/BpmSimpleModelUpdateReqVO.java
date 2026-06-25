@@ -3,9 +3,9 @@ package com.fly.bpm.api.domain.vo.model.simple;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 // TODO @jason：需要考虑，如果某个节点的配置不正确，需要有提示；具体怎么实现，可以讨论下；

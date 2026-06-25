@@ -8,7 +8,7 @@ import com.fly.system.api.domain.vo.SysDeptVo;
 import com.fly.system.api.feign.ISysDeptApi;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 

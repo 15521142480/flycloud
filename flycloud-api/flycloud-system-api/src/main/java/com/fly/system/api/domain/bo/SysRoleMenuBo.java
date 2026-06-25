@@ -3,7 +3,7 @@ package com.fly.system.api.domain.bo;
 import com.fly.common.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 import com.fly.common.domain.BaseEntity;
 import lombok.experimental.Accessors;

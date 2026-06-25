@@ -1,8 +1,8 @@
 package com.fly.common.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -13,7 +13,7 @@ import org.springframework.web.filter.CorsFilter;
  * @author lxs
  * @date 2023/3/22
  */
-@Configuration
+@AutoConfiguration
 public class CorsConfig {
 
 

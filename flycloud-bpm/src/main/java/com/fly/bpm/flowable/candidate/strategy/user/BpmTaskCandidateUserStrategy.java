@@ -7,7 +7,7 @@ import com.fly.common.utils.StringUtils;
 import com.fly.system.api.feign.ISysUserApi;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.LinkedHashSet;
 
 /**

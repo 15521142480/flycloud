@@ -4,7 +4,7 @@ import com.fly.common.validate.AddGroup;
 import com.fly.common.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 

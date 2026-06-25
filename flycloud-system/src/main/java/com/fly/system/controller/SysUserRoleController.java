@@ -18,9 +18,9 @@ import com.fly.system.service.ISysUserRoleService;
 
 import java.util.List;
 import java.util.Arrays;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 用户角色控制器

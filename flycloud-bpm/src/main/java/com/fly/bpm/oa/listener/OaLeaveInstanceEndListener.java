@@ -9,7 +9,7 @@
 //import org.flowable.engine.delegate.ExecutionListener;
 //import org.springframework.stereotype.Component;
 //
-//import javax.annotation.Resource;
+//import jakarta.annotation.Resource;
 //
 ///**
 // * 请假单的结果的监听器实现类

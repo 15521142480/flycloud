@@ -3,12 +3,11 @@ package com.fly.common.feign.config;
 import com.fly.common.constant.CommonConstants;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * feign客户端token拦截器
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author: lxs
  * @date: 2024/8/13
  */
-@Component
 public class TokenFeignClientInterceptor implements RequestInterceptor {
 
 

@@ -6,7 +6,7 @@ import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenProcessInstanceRejec
 import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenTaskCreatedReqDTO;
 import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenTaskTimeoutReqDTO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * BPM 消息 Service 接口

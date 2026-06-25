@@ -3,8 +3,8 @@ package com.fly.bpm.api.domain.dto.message;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * BPM 发送流程实例被通过 Request DTO

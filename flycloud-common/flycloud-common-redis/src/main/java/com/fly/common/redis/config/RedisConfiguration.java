@@ -7,6 +7,7 @@ import com.fly.common.redis.config.properties.RedisProperties;
 import com.fly.common.redis.utils.RedisLockUtil;
 import com.fly.common.redis.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,8 +26,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  *
  * @author lxs
  */
-@Configuration
-//@EnableConfigurationProperties(RedisProperties.class)
+@AutoConfiguration
 public class RedisConfiguration {
 
 
@@ -79,7 +79,7 @@ public class RedisConfiguration {
     }
     @Bean
     @ConditionalOnBean(name = "redisTemplate")
-    public RedisLockUtil redisLockUtil(RedisTemplate redisTemplate) {
+    public RedisLockUtil redisLockUtil(@Qualifier("redisTemplate") RedisTemplate<String, Object> redisTemplate) {
         return new RedisLockUtil(redisTemplate);
     }
 

@@ -2,17 +2,16 @@ package com.fly.common.config;
 
 import com.fly.common.factory.YamlPropertySourceFactory;
 import com.fly.common.handler.GlobalExceptionHandler;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
  * 统一异常处理配置
  * @author xuzhanfu
  */
-//@AutoConfiguration
-@Configuration
+@AutoConfiguration
 @ComponentScan(value="com.fly.common.handler")
 @PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:common-error.yml")
 public class ExceptionConfiguration {

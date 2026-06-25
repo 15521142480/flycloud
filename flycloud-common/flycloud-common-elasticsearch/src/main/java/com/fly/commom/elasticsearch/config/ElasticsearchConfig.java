@@ -9,9 +9,9 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.PropertySource;
  * @author: lxs
  * @date: 2025/8/21
  */
-@Configuration
+@AutoConfiguration
 @PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:mate-elasticsearch.yml")
 @EnableConfigurationProperties(ElasticsearchProperties.class)
 @AllArgsConstructor
