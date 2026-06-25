@@ -1,0 +1,40 @@
+
+# 商城平台服务
+server:
+  port: 8081
+
+spring:
+
+  application:
+    name: "@artifactId@"
+  profiles:
+    active: @profiles.active@
+
+  cloud:
+    nacos:
+      server-addr: @nacos.server@
+      username: @nacos.username@
+      password: @nacos.password@
+
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: @nacos.username@
+        password: @nacos.password@
+        namespace: "@nacos.namespace@"
+        group: @nacos.discovery.group@
+
+      config:
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: @nacos.username@
+        password: @nacos.password@
+        namespace: "@nacos.namespace@"
+        group: @nacos.config.group@
+        file-extension: yaml
+
+  config:
+    import:
+      - optional:nacos:application-common.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
+
+

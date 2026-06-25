@@ -1,4 +1,5 @@
 
+# 平台服务
 server:
   port: 8085
 
@@ -6,7 +7,6 @@ spring:
 
   application:
     name: "@artifactId@"
-
   profiles:
     active: @profiles.active@
 
@@ -16,33 +16,30 @@ spring:
 
   cloud:
     nacos:
-
-      # nacos 服务地址
       server-addr: @nacos.server@
+      username: @nacos.username@
+      password: @nacos.password@
 
       discovery:
         server-addr: ${spring.cloud.nacos.server-addr}
-        # 注册组
-        group: @nacos.discovery.group@
+        username: @nacos.username@
+        password: @nacos.password@
         namespace: "@nacos.namespace@"
+        group: @nacos.discovery.group@
 
       config:
         server-addr: ${spring.cloud.nacos.server-addr}
-        # 配置组
-        group: @nacos.config.group@
+        username: @nacos.username@
+        password: @nacos.password@
         namespace: "@nacos.namespace@"
+        group: @nacos.config.group@
         file-extension: yaml
 
-        # 指定配置 (优先)
-        extension-configs:
-          - data-id: application-common.yaml
-            refresh: true
-          - data-id: application-datasource.yaml
-            refresh: true
-
-        # 共享配置
-        shared-configs:
-          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  config:
+    import:
+      - optional:nacos:application-common.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
 
 
 client:
