@@ -41,7 +41,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
       {
         path: '/redirect/:path(.*)',
         name: 'Redirect',
-        component: () => import('@/views/Redirect/Redirect.vue'),
+        component: () => import('@/views/redirect/Redirect.vue'),
         meta: {}
       }
     ],
@@ -59,7 +59,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/Home/Index.vue'),
+        component: () => import('@/views/home/Index.vue'),
         name: 'Index',
         meta: {
           title: t('router.home'),
@@ -80,7 +80,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     children: [
       {
         path: 'profile',
-        component: () => import('@/views/Profile/Index.vue'),
+        component: () => import('@/views/profile/Index.vue'),
         name: 'Profile',
         meta: {
           canTo: true,
@@ -176,7 +176,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('@/views/Login/Login.vue'),
+    component: () => import('@/views/login/Login.vue'),
     name: 'Login',
     meta: {
       hidden: true,
@@ -186,7 +186,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/sso',
-    component: () => import('@/views/Login/Login.vue'),
+    component: () => import('@/views/login/Login.vue'),
     name: 'SSOLogin',
     meta: {
       hidden: true,
@@ -196,7 +196,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/social-login',
-    component: () => import('@/views/Login/SocialLogin.vue'),
+    component: () => import('@/views/login/SocialLogin.vue'),
     name: 'SocialLogin',
     meta: {
       hidden: true,
@@ -206,7 +206,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/403',
-    component: () => import('@/views/Error/403.vue'),
+    component: () => import('@/views/error/403.vue'),
     name: 'NoAccess',
     meta: {
       hidden: true,
@@ -216,7 +216,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/404',
-    component: () => import('@/views/Error/404.vue'),
+    component: () => import('@/views/error/404.vue'),
     name: 'NoFound',
     meta: {
       hidden: true,
@@ -226,7 +226,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/500',
-    component: () => import('@/views/Error/500.vue'),
+    component: () => import('@/views/error/500.vue'),
     name: 'Error',
     meta: {
       hidden: true,
@@ -601,7 +601,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/:pathMatch(.*)*',
-    component: () => import('@/views/Error/404.vue'),
+    component: () => import('@/views/error/404.vue'),
     name: '',
     meta: {
       title: '404',
