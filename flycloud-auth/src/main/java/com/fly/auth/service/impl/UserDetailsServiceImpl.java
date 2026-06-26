@@ -105,7 +105,8 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 		log.info("账号：{}", userInfo.getSysUser().getAccount());
 		
 		Collection<? extends GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(Convert.toStrArray(userInfo.getPermissionList()));
-		log.info("权限: {}", authorityList);
+		log.info("权限数量: {}", authorityList.size());
+		log.debug("权限: {}", authorityList);
 
 
 		// todo !!! 把spring security的User字段信息设置上，用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现 !!!

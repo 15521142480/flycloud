@@ -24,6 +24,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Spring Security 6 资源服务 Bearer token 认证过滤器。
@@ -52,8 +54,9 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Claims claims = SecurityUtils.getClaims(token);
-        if (claims == null || !hasToken(token)) {
+        Claims tokenClaims = SecurityUtils.getClaims(token);
+        Map<String, Object> claims = cachedClaims(token);
+        if (tokenClaims == null || claims == null) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -74,9 +77,18 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean hasToken(String token) {
-        return redisUtils.hasKey(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token)
-                || redisUtils.hasKey(AuthConstants.ACCESS_TOKEN_KEY + token);
+    private Map<String, Object> cachedClaims(String token) {
+
+        Object cached = redisUtils.get(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token);
+        if (cached == null) {
+            cached = redisUtils.get(AuthConstants.ACCESS_TOKEN_KEY + token);
+        }
+        if (cached instanceof Map<?, ?> map) {
+            Map<String, Object> claims = new LinkedHashMap<>();
+            map.forEach((key, value) -> claims.put(String.valueOf(key), value));
+            return claims;
+        }
+        return null;
     }
 
     private void refreshTokenExpire(String token) {
@@ -85,7 +97,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, timeout);
     }
 
-    private FlyUser buildPrincipal(Claims claims) {
+    private FlyUser buildPrincipal(Map<String, Object> claims) {
         return new FlyUser(
                 Convert.toLong(claims.get(Oauth2Constants.USER_ID)),
                 Convert.toInt(claims.get(Oauth2Constants.USER_TYPE), 0),
@@ -104,7 +116,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
-    private String[] authorities(Claims claims) {
+    private String[] authorities(Map<String, Object> claims) {
         Object value = claims.get(AuthConstants.AUTHORITIES);
         if (value instanceof Collection<?> collection) {
             return collection.stream()

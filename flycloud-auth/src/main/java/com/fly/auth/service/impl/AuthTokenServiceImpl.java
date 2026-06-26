@@ -215,11 +215,27 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         if (StrUtil.isBlank(refreshToken)) {
             throw new AuthException(CommonConstants.FAIL, "refresh token不能为空");
         }
-        Object cached = redisService.get(AuthConstants.REFRESH_TOKEN_KEY + refreshToken);
-        if (cached == null) {
+        Map<String, Object> nextClaims = cachedClaims(refreshToken);
+        if (nextClaims == null) {
             throw new AuthException(CommonConstants.FAIL, "refresh token无效或已过期");
         }
 
+        return buildTokenResponse(nextClaims);
+    }
+
+    private Map<String, Object> cachedClaims(String refreshToken) {
+
+        Object cached = redisService.get(AuthConstants.REFRESH_TOKEN_KEY + refreshToken);
+        if (cached == null) {
+            return null;
+        }
+        if (cached instanceof Map<?, ?> map) {
+            Map<String, Object> nextClaims = new LinkedHashMap<>();
+            map.forEach((key, value) -> nextClaims.put(String.valueOf(key), value));
+            return nextClaims;
+        }
+
+        // 兼容升级前已签发的 refresh token。
         Claims claims = Jwts.parser()
                 .verifyWith(signingKey())
                 .build()
@@ -236,15 +252,15 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         nextClaims.put(AuthConstants.DEPT_ID, claims.get(AuthConstants.DEPT_ID));
         nextClaims.put(AuthConstants.PHONE, claims.get(AuthConstants.PHONE));
         nextClaims.put(AuthConstants.AUTHORITIES, claims.get(AuthConstants.AUTHORITIES));
-        return buildTokenResponse(nextClaims);
+        return nextClaims;
     }
 
     private Map<String, Object> buildTokenResponse(Map<String, Object> claims) {
         String accessJti = UUID.randomUUID().toString();
         String refreshJti = UUID.randomUUID().toString();
 //        String accessToken = jwt(claims, accessJti, Duration.ofHours(2));
-        String accessToken = jwt(claims, accessJti, authTokenProperties.getLoginTimeout());
-        String refreshToken = jwt(claims, refreshJti, authTokenProperties.getRefreshTokenTimeout());
+        String accessToken = jwt(tokenClaims(claims), accessJti, authTokenProperties.getLoginTimeout());
+        String refreshToken = jwt(tokenClaims(claims), refreshJti, authTokenProperties.getRefreshTokenTimeout());
 
         redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getLoginTimeout());
         redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getLoginTimeout());
@@ -256,6 +272,18 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         resultData.put("jti", accessJti);
         resultData.put("expiresIn", authTokenProperties.getLoginTimeoutSeconds());
         return resultData;
+    }
+
+    private Map<String, Object> tokenClaims(Map<String, Object> claims) {
+
+        Map<String, Object> tokenClaims = new LinkedHashMap<>();
+        tokenClaims.put(Oauth2Constants.USER_ID, claims.get(Oauth2Constants.USER_ID));
+        tokenClaims.put(Oauth2Constants.USER_NAME, claims.get(Oauth2Constants.USER_NAME));
+        tokenClaims.put(Oauth2Constants.USER_TYPE, claims.get(Oauth2Constants.USER_TYPE));
+        tokenClaims.put(Oauth2Constants.LOGIN_TYPE, claims.get(Oauth2Constants.LOGIN_TYPE));
+        tokenClaims.put(Oauth2Constants.ROLE_IDS, claims.get(Oauth2Constants.ROLE_IDS));
+        tokenClaims.put(AuthConstants.DEPT_ID, claims.get(AuthConstants.DEPT_ID));
+        return tokenClaims;
     }
 
     private Map<String, Object> userClaims(FlyUser user) {

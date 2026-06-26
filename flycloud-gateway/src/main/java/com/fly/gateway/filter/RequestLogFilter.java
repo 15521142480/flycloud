@@ -19,6 +19,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +37,15 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
 
     
     private static final String START_TIME = "startTime";
+
+    private static final int MAX_HEADER_VALUE_LENGTH = 256;
+
+    private static final Set<String> SENSITIVE_HEADERS = Set.of(
+            "authorization",
+            "cookie",
+            "set-cookie",
+            "code-value"
+    );
 
     
     @Override
@@ -63,7 +74,7 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         headers.forEach((headerName, headerValue) -> {
             beforeReqLog.append("===Headers===  {}: {}\n");
             beforeReqArgs.add(headerName);
-            beforeReqArgs.add(StringUtils.join(headerValue));
+            beforeReqArgs.add(formatHeaderValue(headerName, headerValue));
         });
 
         beforeReqLog.append("================  Gateway Request End  =================\n");
@@ -158,6 +169,38 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         String path = request.getPath().toString();
 
         return uri + path;
+    }
+
+    private String formatHeaderValue(String headerName, List<String> headerValue) {
+
+        if (SENSITIVE_HEADERS.contains(headerName.toLowerCase(Locale.ROOT))) {
+            return maskHeaderValue(headerValue);
+        }
+
+        String value = StringUtils.join(headerValue);
+        if (value != null && value.length() > MAX_HEADER_VALUE_LENGTH) {
+            return value.substring(0, MAX_HEADER_VALUE_LENGTH) + "...";
+        }
+        return value;
+    }
+
+    private String maskHeaderValue(List<String> headerValue) {
+
+        if (headerValue == null || headerValue.isEmpty()) {
+            return "***";
+        }
+
+        String value = headerValue.get(0);
+        if (value == null) {
+            return "***";
+        }
+        if (value.startsWith("Bearer ")) {
+            return "Bearer ***";
+        }
+        if (value.startsWith("Basic ")) {
+            return "Basic ***";
+        }
+        return "***";
     }
 
 
