@@ -7,6 +7,7 @@ import com.fly.common.security.handler.CustomAccessDeniedHandler;
 import com.fly.common.security.handler.CustomAuthenticationEntryPoint;
 import com.fly.common.security.handler.CustomAuthenticationFailureHandler;
 import com.fly.common.security.handler.CustomAuthenticationSuccessHandler;
+import com.fly.common.security.filter.BearerTokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,6 +21,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * security 资源服务配置
@@ -33,6 +35,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableConfigurationProperties(ServerResourceSecurityProperties.class)
 @Import({
         PermissionService.class,
+        BearerTokenAuthenticationFilter.class,
         CustomAccessDeniedHandler.class,
         CustomAuthenticationEntryPoint.class,
         CustomAuthenticationFailureHandler.class,
@@ -53,7 +56,8 @@ public class SecurityResourceServerConfig {
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity httpSecurity,
                                                                  CustomAuthenticationEntryPoint authenticationEntryPoint,
-                                                                 CustomAccessDeniedHandler accessDeniedHandler) throws Exception {
+                                                                 CustomAccessDeniedHandler accessDeniedHandler,
+                                                                 BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter) throws Exception {
 
         String[] ignoreUrls = Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls());
         return httpSecurity
@@ -63,6 +67,7 @@ public class SecurityResourceServerConfig {
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler))
+                .addFilterBefore(bearerTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers(ignoreUrls).permitAll()
                         .requestMatchers(

@@ -7,6 +7,7 @@ import com.fly.common.exception.CaptchaException;
 import com.fly.common.domain.model.R;
 import com.fly.common.redis.utils.RedisUtils;
 import com.wf.captcha.ArithmeticCaptcha;
+import com.wf.captcha.SpecCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,17 +34,23 @@ public class ValidateServiceImpl implements ValidateService {
 
         Map<String, String> data = new HashMap<>(2);
         String uuid = UUID.randomUUID().toString().replace("-","");
-        //SpecCaptcha captcha = new SpecCaptcha(120, 40);
-        //String text = captcha.text();// 获取运算的结果：5
-        ArithmeticCaptcha captcha = new ArithmeticCaptcha(120, 40);
-        captcha.getArithmeticString();  // 获取运算的公式：3+2=?
-        // 获取运算的结果：5
-        String text = captcha.text();
-        redisService.set(Oauth2Constants.CAPTCHA_KEY + uuid, text, Duration.ofMinutes(30));
+//        ArithmeticCaptcha captcha = new ArithmeticCaptcha(120, 40);
+//        captcha.getArithmeticString();  // 获取运算的公式：3+2=?
+//        String text = captcha.text(); // 获取运算的结果：5
+
+        SpecCaptcha captcha = new SpecCaptcha(120, 40);
+        String text = captcha.text(); // 获取运算的结果：5
+        redisService.set(
+                Oauth2Constants.CAPTCHA_KEY + uuid,
+                text,
+                Duration.ofMinutes(30)
+        );
         data.put("key", uuid);
         data.put("codeUrl", captcha.toBase64());
+
         return R.ok(data);
     }
+
 
 
     @Override

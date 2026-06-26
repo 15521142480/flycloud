@@ -1,5 +1,6 @@
 package com.fly.gateway.filter;
 
+import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.constant.WebConstants;
@@ -83,7 +84,7 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
 
         // 判断token是否存在于redis,对于只允许一台设备场景适用。
         // 如只允许一台设备登录，需要在登录成功后，查询key是否存在，如存在，则删除此key，提供思路。
-        boolean hasKey = redisUtils.hasKey("auth:" + token);
+        boolean hasKey = redisUtils.hasKey(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token);
         log.debug("查询token是否存在: {}", hasKey);
         if (!hasKey) {
             return unAuthorized(response, "登录超时，请重新登录");
