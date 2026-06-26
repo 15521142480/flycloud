@@ -16,14 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * 统一网关的token验证
@@ -39,6 +36,7 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
 
     private final GatewayServerSecurityProperties gatewayServerSecurityProperties;
     private final RedisUtils redisUtils;
+//    private final AuthTokenProperties authTokenProperties;
 
     /**
      * 服务前缀以/flycloud开头，如flycloud-system
@@ -90,6 +88,9 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
             return unAuthorized(response, "登录超时，请重新登录");
         }
 
+        // BearerTokenAuthenticationFilter类的doFilterInternal方法已经有token续期操作了
+//        refreshTokenExpire(token);
+
         return chain.filter(exchange);
     }
 
@@ -126,6 +127,16 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
         }
         return path;
     }
+
+    /**
+     * 接口请求认证成功后，滑动刷新登录态有效期。
+     */
+//    private void refreshTokenExpire(String token) {
+//
+//        long timeout = authTokenProperties.getLoginTimeoutSeconds();
+//        redisUtils.expire(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token, timeout);
+//        redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, timeout);
+//    }
 
 
     /**

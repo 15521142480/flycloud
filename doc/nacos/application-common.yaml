@@ -57,6 +57,13 @@ spring:
     ssl:
       enabled: false
 
+flycloud:
+  auth:
+    token:
+      # 登录态有效期，单位秒；接口请求认证成功后会滑动续期
+      login-timeout-seconds: 7200
+      # refresh token 有效期，单位秒
+      refresh-token-timeout-seconds: 2592000
 
 # redisson 配置
 redisson:

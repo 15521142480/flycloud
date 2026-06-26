@@ -1,6 +1,7 @@
 package com.fly.common.security.config;
 
 import cn.hutool.core.convert.Convert;
+import com.fly.common.security.config.properties.AuthTokenProperties;
 import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
 import com.fly.common.security.component.PermissionService;
 import com.fly.common.security.handler.CustomAccessDeniedHandler;
@@ -32,7 +33,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Order(5)
 @AutoConfiguration
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true) // 激活方法上的@PreAuthorize注解
-@EnableConfigurationProperties(ServerResourceSecurityProperties.class)
+@EnableConfigurationProperties({ServerResourceSecurityProperties.class, AuthTokenProperties.class})
 @Import({
         PermissionService.class,
         BearerTokenAuthenticationFilter.class,

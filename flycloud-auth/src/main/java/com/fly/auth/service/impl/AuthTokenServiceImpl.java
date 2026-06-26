@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.fly.auth.service.AuthTokenService;
 import com.fly.auth.sms.SmsCodeAuthenticationToken;
 import com.fly.auth.social.SocialAuthenticationToken;
+import com.fly.common.security.config.properties.AuthTokenProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
@@ -59,6 +60,8 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
     private final ObjectProvider<AuthRequestFactory> factoryProvider;
 
+    private final AuthTokenProperties authTokenProperties;
+
     @Override
     public Map<String, Object> createToken(Map<String, String> loginParam, HttpServletRequest request) {
         String grantType = loginParam.get(Oauth2Constants.GRANT_TYPE);
@@ -83,9 +86,12 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
     @Override
     public void revokeToken(String token) {
+
         if (StrUtil.isBlank(token)) {
             return;
         }
+        // 只清理redis的token即可；
+        // 无需清理spring-security的上下文， SecurityContextHolder 因为后端是无状态请求，只在当前请求线程里有效，请求结束后就没了
         redisService.del(AuthConstants.ACCESS_TOKEN_KEY + token, AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token);
     }
 
@@ -236,18 +242,19 @@ public class AuthTokenServiceImpl implements AuthTokenService {
     private Map<String, Object> buildTokenResponse(Map<String, Object> claims) {
         String accessJti = UUID.randomUUID().toString();
         String refreshJti = UUID.randomUUID().toString();
-        String accessToken = jwt(claims, accessJti, AuthConstants.ACCESS_TOKEN_TTL);
-        String refreshToken = jwt(claims, refreshJti, AuthConstants.REFRESH_TOKEN_TTL);
+//        String accessToken = jwt(claims, accessJti, Duration.ofHours(2));
+        String accessToken = jwt(claims, accessJti, authTokenProperties.getLoginTimeout());
+        String refreshToken = jwt(claims, refreshJti, authTokenProperties.getRefreshTokenTimeout());
 
-        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, claims, AuthConstants.ACCESS_TOKEN_TTL);
-        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, claims, AuthConstants.ACCESS_TOKEN_TTL);
-        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, claims, AuthConstants.REFRESH_TOKEN_TTL);
+        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getLoginTimeout());
+        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getLoginTimeout());
+        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, claims, authTokenProperties.getRefreshTokenTimeout());
 
         Map<String, Object> resultData = new LinkedHashMap<>(claims);
         resultData.put("accessToken", accessToken);
         resultData.put("refreshToken", refreshToken);
         resultData.put("jti", accessJti);
-        resultData.put("expiresIn", AuthConstants.ACCESS_TOKEN_TTL.toSeconds());
+        resultData.put("expiresIn", authTokenProperties.getLoginTimeoutSeconds());
         return resultData;
     }
 

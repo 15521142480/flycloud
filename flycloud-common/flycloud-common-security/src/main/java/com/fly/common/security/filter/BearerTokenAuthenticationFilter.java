@@ -2,6 +2,7 @@ package com.fly.common.security.filter;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
+import com.fly.common.security.config.properties.AuthTokenProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.redis.utils.RedisUtils;
@@ -32,6 +33,8 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final RedisUtils redisUtils;
 
+    private final AuthTokenProperties authTokenProperties;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -55,12 +58,18 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        // 每次请求刷新token
+        refreshTokenExpire(token);
+
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 buildPrincipal(claims),
                 null,
                 AuthorityUtils.createAuthorityList(authorities(claims))
         );
+
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        // 把当前用户信息放进spring-security的上下文
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
@@ -68,6 +77,12 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
     private boolean hasToken(String token) {
         return redisUtils.hasKey(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token)
                 || redisUtils.hasKey(AuthConstants.ACCESS_TOKEN_KEY + token);
+    }
+
+    private void refreshTokenExpire(String token) {
+        long timeout = authTokenProperties.getLoginTimeoutSeconds();
+        redisUtils.expire(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token, timeout);
+        redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, timeout);
     }
 
     private FlyUser buildPrincipal(Claims claims) {

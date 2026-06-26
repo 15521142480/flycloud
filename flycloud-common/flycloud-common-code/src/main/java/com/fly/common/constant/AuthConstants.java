@@ -1,7 +1,5 @@
 package com.fly.common.constant;
 
-import java.time.Duration;
-
 /**
  * 权限常量
  *
@@ -30,8 +28,4 @@ public interface AuthConstants {
     String DEPT_ID = "deptId";
 
     String PHONE = "phone";
-
-    Duration ACCESS_TOKEN_TTL = Duration.ofHours(2);
-
-    Duration REFRESH_TOKEN_TTL = Duration.ofDays(30);
 }

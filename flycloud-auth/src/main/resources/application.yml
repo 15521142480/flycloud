@@ -41,4 +41,3 @@ spring:
       - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
       - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
 
-
