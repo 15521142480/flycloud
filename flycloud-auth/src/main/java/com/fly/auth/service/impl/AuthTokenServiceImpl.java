@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.fly.auth.service.AuthTokenService;
 import com.fly.auth.sms.SmsCodeAuthenticationToken;
 import com.fly.auth.social.SocialAuthenticationToken;
-import com.fly.common.security.config.properties.AuthTokenProperties;
+import com.fly.common.config.properties.AuthTokenProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;

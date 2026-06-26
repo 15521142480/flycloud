@@ -1,4 +1,4 @@
-package com.fly.common.security.config.properties;
+package com.fly.common.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

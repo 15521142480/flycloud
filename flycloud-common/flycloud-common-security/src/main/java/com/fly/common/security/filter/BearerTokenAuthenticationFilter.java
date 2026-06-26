@@ -2,7 +2,7 @@ package com.fly.common.security.filter;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
-import com.fly.common.security.config.properties.AuthTokenProperties;
+import com.fly.common.config.properties.AuthTokenProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.redis.utils.RedisUtils;
