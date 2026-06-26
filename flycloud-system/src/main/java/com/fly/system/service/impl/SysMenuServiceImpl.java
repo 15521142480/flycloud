@@ -225,6 +225,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 
     private LambdaQueryWrapper<SysMenu> buildQueryWrapper(SysMenuBo bo) {
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysMenu> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getType() != null, SysMenu::getType, bo.getType());
         lqw.like(StringUtils.isNotBlank(bo.getName()), SysMenu::getName, bo.getName());

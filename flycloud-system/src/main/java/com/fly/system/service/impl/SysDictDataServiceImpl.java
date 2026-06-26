@@ -71,6 +71,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataMapper, S
 
     private LambdaQueryWrapper<SysDictData> buildQueryWrapper(SysDictDataBo bo) {
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysDictData> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getSort() != null, SysDictData::getSort, bo.getSort());
         lqw.eq(StringUtils.isNotBlank(bo.getLabel()), SysDictData::getLabel, bo.getLabel());

@@ -66,6 +66,7 @@
 //    }
 //
 //    private LambdaQueryWrapper<SysUserTest> buildQueryWrapper(SysUserTestBo bo) {
+//        bo.setIsDeleted(false);
 //        LambdaQueryWrapper<SysUserTest> lqw = Wrappers.lambdaQuery();
 //        lqw.eq(bo.getDeptId() != null, SysUserTest::getDeptId, bo.getDeptId());
 //        lqw.like(StringUtils.isNotBlank(bo.getUserName()), SysUserTest::getUserName, bo.getUserName());

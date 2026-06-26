@@ -63,7 +63,9 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl<SysRoleMenuMapper, S
     }
 
     private LambdaQueryWrapper<SysRoleMenu> buildQueryWrapper(SysRoleMenuBo bo) {
+
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysRoleMenu> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getRoleId() != null, SysRoleMenu::getRoleId, bo.getRoleId());
         lqw.eq(bo.getMenuId() != null, SysRoleMenu::getMenuId, bo.getMenuId());

@@ -72,7 +72,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
 
     private LambdaQueryWrapper<SysPost> buildQueryWrapper(SysPostBo bo) {
 
-
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysPost> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getCode()), SysPost::getCode, bo.getCode());
         lqw.like(StringUtils.isNotBlank(bo.getName()), SysPost::getName, bo.getName());

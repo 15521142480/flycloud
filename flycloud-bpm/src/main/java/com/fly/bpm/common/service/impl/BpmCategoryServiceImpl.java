@@ -86,7 +86,9 @@ public class BpmCategoryServiceImpl extends BaseServiceImpl<BpmCategoryMapper, B
     }
 
     private LambdaQueryWrapper<BpmCategory> buildQueryWrapper(BpmCategoryBo bo) {
+
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<BpmCategory> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), BpmCategory::getName, bo.getName());
         lqw.eq(StringUtils.isNotBlank(bo.getCode()), BpmCategory::getCode, bo.getCode());

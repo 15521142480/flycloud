@@ -97,6 +97,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
 
     private LambdaQueryWrapper<SysDept> buildQueryWrapper(SysDeptBo bo) {
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysDept> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getCode()), SysDept::getCode, bo.getCode());
         lqw.like(StringUtils.isNotBlank(bo.getName()), SysDept::getName, bo.getName());

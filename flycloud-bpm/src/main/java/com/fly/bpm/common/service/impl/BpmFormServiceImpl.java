@@ -83,7 +83,9 @@ public class BpmFormServiceImpl extends BaseServiceImpl<BpmFormMapper, BpmForm> 
     }
 
     private LambdaQueryWrapper<BpmForm> buildQueryWrapper(BpmFormBo bo) {
+
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<BpmForm> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), BpmForm::getName, bo.getName());
         lqw.eq(bo.getStatus() != null, BpmForm::getStatus, bo.getStatus());

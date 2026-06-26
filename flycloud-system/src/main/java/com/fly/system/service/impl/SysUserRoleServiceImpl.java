@@ -85,7 +85,9 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, S
     }
 
     private LambdaQueryWrapper<SysUserRole> buildQueryWrapper(SysUserRoleBo bo) {
+
         Map<String, Object> params = bo.getParams();
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysUserRole> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getUserId() != null, SysUserRole::getUserId, bo.getUserId());
         lqw.eq(bo.getRoleId() != null, SysUserRole::getRoleId, bo.getRoleId());
