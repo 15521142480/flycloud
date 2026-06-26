@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 
 @Data
+@Accessors(chain = true)
 public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,7 +64,8 @@ public class BaseEntity implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic // 逻辑删除，配置为： 已删除 logicDeleteValue = 1， 未删除 logicNotDeleteValue: 0
+    // NOTE: 弃用逻辑删除方案，一棍子打死不合适实际业务需求
+//    @TableLogic // 逻辑删除; 已删除 isDeleted = 1,  未删除 isDeleted: 0
     private Boolean isDeleted;
 
 

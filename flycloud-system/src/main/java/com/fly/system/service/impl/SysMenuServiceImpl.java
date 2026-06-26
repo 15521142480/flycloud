@@ -292,7 +292,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
             this.handlerMenuIdById(id, resultIds);
             log.info("删除菜单ids为：{}", resultIds);
 
-            baseMapper.deleteBatchIds(resultIds);
+            baseMapper.deleteByIds(resultIds);
         }
 
         return true;

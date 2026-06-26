@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fly.common.utils.validation.RequireUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.domain.bo.SysUserRoleBo;
@@ -151,7 +152,16 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, S
 //            //TODO 做一些业务上的校验,判断是否需要校验
 //        }
 
-        return baseMapper.deleteBatchIds(ids) > 0;
+        // todo 该表没有删除修改时间等字段
+//        for (Long id : ids) {
+//            SysUserRole entity = new
+        // entity.setId(id);
+//            entity.setIsDeleted(true);
+//            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+//            entity.setUpdateTime(LocalDateTime.now());
+//            baseMapper.updateById(entity);
+//        }
+        return true;
     }
 
 }

@@ -2,6 +2,7 @@ package com.fly.common.utils.validation;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import com.fly.common.exception.BusinessException;
 import com.fly.common.utils.spring.SpringUtils;
 import org.springframework.util.StringUtils;
 
@@ -10,6 +11,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**

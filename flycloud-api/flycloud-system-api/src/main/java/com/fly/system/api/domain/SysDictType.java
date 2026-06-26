@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import com.fly.common.domain.BaseEntity;
+import lombok.experimental.Accessors;
 
 /**
  * 字典类型对象 sys_dict_type
@@ -14,6 +15,7 @@ import com.fly.common.domain.BaseEntity;
  * @date 2024-12-08
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_dict_type", autoResultMap = true)
 public class SysDictType extends BaseEntity {

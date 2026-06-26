@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.fly.common.database.handler.CreateOrUpdateMetaObjectHandler;
 import com.fly.common.database.interceptor.DataScopeInnerInterceptor;
+import com.fly.common.database.interceptor.SqlCostInterceptor;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
@@ -27,7 +28,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @AutoConfiguration
 @AutoConfigurationPackage
 @Import({
-        CreateOrUpdateMetaObjectHandler.class
+        CreateOrUpdateMetaObjectHandler.class,
+        SqlCostInterceptor.class
 })
 public class MybatisPlusConfig {
 

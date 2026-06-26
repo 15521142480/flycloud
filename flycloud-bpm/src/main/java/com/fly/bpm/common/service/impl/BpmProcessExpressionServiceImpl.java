@@ -11,6 +11,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.ArrayUtils;
+import com.fly.common.utils.validation.RequireUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.bpm.api.domain.bo.BpmProcessExpressionBo;
@@ -143,7 +144,15 @@ public class BpmProcessExpressionServiceImpl extends BaseServiceImpl<BpmProcessE
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return baseMapper.deleteBatchIds(ids) > 0;
+        for (Long id : ids) {
+            BpmProcessExpression entity = new BpmProcessExpression();
+            entity.setId(id);
+            entity.setIsDeleted(true);
+            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+            entity.setUpdateTime(LocalDateTime.now());
+            baseMapper.updateById(entity);
+        }
+        return true;
     }
 
 }

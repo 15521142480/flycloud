@@ -18,6 +18,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.common.utils.validation.RequireUtils;
 import com.fly.system.api.domain.SysUserRole;
 import com.fly.system.api.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
@@ -300,15 +301,15 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 //            //TODO 做一些业务上的校验,判断是否需要校验
 //        }
 
-//        for (Long id : ids) {
-//            SysUser sysUser = new SysUser();
-//            sysUser.setId(id);
-//            sysUser.setIsDeleted(true);
-//            baseMapper.updateById(sysUser);
-////            baseMapper.updateById(new SysUser().setId(id).setIsDeleted(true));
-//        }
-
-        return baseMapper.deleteBatchIds(ids) > 0; // 使用mybatis的逻辑删除，即字段isDeleted标注为@TableLogic
+        for (Long id : ids) {
+            SysUser entity = new SysUser();
+            entity.setId(id);
+            entity.setIsDeleted(true);
+            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+            entity.setUpdateTime(LocalDateTime.now());
+            baseMapper.updateById(entity);
+        }
+        return true;
     }
 
 

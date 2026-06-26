@@ -11,6 +11,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.domain.bo.SysDictTypeBo;
 import com.fly.system.api.domain.vo.SysDictTypeVo;
@@ -31,6 +32,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, SysDictType> implements ISysDictTypeService {
 
     private final SysDictTypeMapper baseMapper;
@@ -70,6 +72,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, S
 
     private LambdaQueryWrapper<SysDictType> buildQueryWrapper(SysDictTypeBo bo) {
 
+        bo.setIsDeleted(false);
         LambdaQueryWrapper<SysDictType> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getName()), SysDictType::getName, bo.getName());
         lqw.eq(StringUtils.isNotBlank(bo.getType()), SysDictType::getType, bo.getType());
@@ -134,10 +137,21 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, S
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
 
-        if(isValid){
+        if (isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return baseMapper.deleteBatchIds(ids) > 0;
+        // baseMapper.deleteByIds(ids) > 0
+        for (Long id : ids) {
+//            SysDictType entity = RequireUtils.requireById(baseMapper::selectById, id, "字典类型不存在");
+            SysDictType entity = new SysDictType();
+            entity.setId(id);
+            entity.setIsDeleted(true);
+            entity.setDeletedTime(LocalDateTime.now());
+            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+            entity.setUpdateTime(LocalDateTime.now());
+            baseMapper.updateById(entity);
+        }
+        return true;
     }
 
 }

@@ -14,6 +14,7 @@ import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.common.utils.validation.RequireUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.domain.bo.SysDeptBo;
@@ -163,7 +164,15 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return baseMapper.deleteBatchIds(ids) > 0;
+        for (Long id : ids) {
+            SysDept entity = new SysDept();
+            entity.setId(id);
+            entity.setIsDeleted(true);
+            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+            entity.setUpdateTime(LocalDateTime.now());
+            baseMapper.updateById(entity);
+        }
+        return true;
     }
 
     /**

@@ -18,22 +18,23 @@ import java.time.LocalDateTime;
  * @date: 2026/6/26
  */
 @Component
-public class CreateOrUpdateMetaObjectHandler implements MetaObjectHandler {
+public class CreateOrUpdateMetaObjectHandler {
+//public class CreateOrUpdateMetaObjectHandler implements MetaObjectHandler {
 
-
-    @Override
-    public void insertFill(MetaObject metaObject) {
-
-        this.strictInsertFill(metaObject, "createBy", () -> String.valueOf(UserUtils.getCurUserId()), String.class);
-        this.strictInsertFill(metaObject, "createTime", LocalDateTime::now, LocalDateTime.class);
-        this.strictInsertFill(metaObject, "updateBy", () -> String.valueOf(UserUtils.getCurUserId()), String.class);
-        this.strictInsertFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
-    }
-
-    @Override
-    public void updateFill(MetaObject metaObject) {
-
-        this.strictUpdateFill(metaObject, "updateBy", () -> String.valueOf(UserUtils.getCurUserId()), String.class);
-        this.strictUpdateFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
-    }
+    // todo 会有时间字段数据变成 1970-01-01 08:00:00 bug，暂且终止
+//    @Override
+//    public void insertFill(MetaObject metaObject) {
+//
+//        this.strictInsertFill(metaObject, "createBy", () -> String.valueOf(UserUtils.getCurUserId()), String.class);
+//        this.strictInsertFill(metaObject, "createTime", LocalDateTime::now, LocalDateTime.class);
+//        this.strictInsertFill(metaObject, "updateBy", () -> String.valueOf(UserUtils.getCurUserId()), String.class);
+//        this.strictInsertFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
+//    }
+//
+//    @Override
+//    public void updateFill(MetaObject metaObject) {
+//
+//        this.strictUpdateFill(metaObject, "updateBy", () -> String.valueOf(UserUtils.getCurUserId()), String.class);
+//        this.strictUpdateFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
+//    }
 }
