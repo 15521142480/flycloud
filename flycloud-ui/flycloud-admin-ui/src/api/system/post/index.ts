@@ -44,7 +44,7 @@ export const saveOrUpdate = async (data: PostVO) => {
 
 // 删除岗位
 export const deletePost = async (id: number) => {
-  return await request.delete({ url: `/${SYS_BASE_URL}/post/delete` + id })
+  return await request.delete({ url: `/${SYS_BASE_URL}/post/delete/` + id })
 }
 
 // 导出岗位

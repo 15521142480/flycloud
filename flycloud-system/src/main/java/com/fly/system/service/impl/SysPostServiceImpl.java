@@ -95,7 +95,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
 
         if (bo.getId() == null) {  // 新增
 
-            sysPost.setStatus(StatusEnum.ENABLE.getStatus());
+//            sysPost.setStatus(StatusEnum.ENABLE.getStatus());
             sysPost.setCreateBy(flyUser.getId().toString());
             sysPost.setCreateTime(LocalDateTime.now());
             rowBaseCount = baseMapper.insert(sysPost);
