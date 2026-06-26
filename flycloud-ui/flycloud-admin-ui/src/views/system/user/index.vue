@@ -142,54 +142,43 @@
             width="180"
           />
 
-          <el-table-column label="操作" align="center" width="170">
+          <el-table-column label="操作" align="center" width="220" fixed="right">
             <template #default="scope">
-              <div class="flex items-center justify-center">
-                <el-button
-                  type="primary"
-                  link
-                  @click="openForm('update', scope.row.id)"
-                  v-hasPermi="['sys:user:saveOrUpdate']"
-                >
-                  <Icon icon="ep:edit" />修改
-                </el-button>
-                <el-dropdown
-                  @command="(command) => handleCommand(command, scope.row)"
-                  v-hasPermi="[
-                    'sys:user:delete',
-                    'sys:user:restartPassword',
-                    'sys:user:assignRole'
-                  ]"
-                >
-                  <el-button type="primary" link><Icon icon="ep:d-arrow-right" /> 更多</el-button>
-                  <template #dropdown>
-                    <el-dropdown-menu>
+              <el-button
+                type="primary"
+                link
+                @click="openForm('update', scope.row.id)"
+                v-hasPermi="['sys:user:saveOrUpdate']"
+              >
+                <Icon icon="ep:edit" />修改
+              </el-button>
 
-                      <el-dropdown-item
-                        command="handleRole"
-                        v-if="checkPermi(['sys:user:assignRole'])"
-                      >
-                        <Icon icon="ep:circle-check" />分配角色
-                      </el-dropdown-item>
+              <el-button
+                type="primary"
+                link
+                @click="handleRole(scope.row)"
+                v-hasPermi="['sys:user:assignRole']"
+              >
+                <Icon icon="ep:circle-check" />分配角色
+              </el-button>
 
-                      <el-dropdown-item
-                        command="handleResetPwd"
-                        v-if="checkPermi(['sys:user:restartPassword'])"
-                      >
-                        <Icon icon="ep:key" />重置密码
-                      </el-dropdown-item>
+              <el-button
+                type="warning"
+                link
+                @click="handleResetPwd(scope.row)"
+                v-hasPermi="['sys:user:restartPassword']"
+              >
+                <Icon icon="ep:key" />重置密码
+              </el-button>
 
-                      <el-dropdown-item
-                        command="handleDelete"
-                        v-if="checkPermi(['sys:user:delete'])"
-                      >
-                        <Icon icon="ep:delete" />删除
-                      </el-dropdown-item>
-
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-              </div>
+              <el-button
+                type="danger"
+                link
+                @click="handleDelete(scope.row)"
+                v-hasPermi="['sys:user:delete']"
+              >
+                <Icon icon="ep:delete" />删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>

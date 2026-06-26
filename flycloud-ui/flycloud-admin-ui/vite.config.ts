@@ -3,6 +3,7 @@ import type {defineConfig, ConfigEnv, UserConfig} from 'vite'
 import {loadEnv} from 'vite'
 import {createVitePlugins} from './build/vite'
 import {exclude, include} from "./build/vite/optimize"
+import {fileURLToPath, URL} from "node:url";
 
 // 当前执行node命令时文件夹的地址(工作目录)
 const root = process.cwd()
@@ -119,10 +120,10 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
                     find: 'vue-i18n',
                     replacement: 'vue-i18n/dist/vue-i18n.cjs.js'
                 },
-                {
-                    find: /\@\//,
-                    replacement: `${pathResolve('src')}/`
-                }
+              {
+                find: '@',
+                replacement: fileURLToPath(new URL('./src', import.meta.url))
+              }
             ]
         },
 
