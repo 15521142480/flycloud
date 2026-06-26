@@ -40,16 +40,30 @@
         </el-form-item>
       </el-col>
 
+      <!-- 数字字母验证码 -->
+<!--      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">-->
+<!--        <el-form-item prop="code" >-->
+<!--          <el-col :span="16">-->
+<!--            <el-input v-model="loginData.loginForm.code"  :placeholder="t('login.codePlaceholder')" @keyup.enter="handleLogin()"/>-->
+<!--          </el-col>-->
+<!--          <el-col :span="1" style="text-align: center">&nbsp;</el-col>-->
+<!--          <el-col :span="7">-->
+<!--              <img v-if="loginData.loginForm.codeKey" :src="codeUrl" style="cursor: pointer;" @click="getCode" alt=""/>-->
+<!--              <XButton v-else @click="getCode()">{{t('login.getCode')}}</XButton>-->
+<!--          </el-col>-->
+<!--        </el-form-item>-->
+<!--      </el-col>-->
+
+      <!-- 图文点选验证码‌ -->
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
-        <el-form-item prop="code" >
+        <el-form-item>
+          <el-col :span="7" style="margin-right: 7px">
+            <XButton title="安全验证" class="w-[100%]" @click="clickImageTextClickCaptcha" />
+          </el-col>
           <el-col :span="16">
-            <el-input v-model="loginData.loginForm.code"  :placeholder="t('login.codePlaceholder')" @keyup.enter="handleLogin()"/>
+            <el-input v-model="loginData.loginForm.imageTextClickCaptchaValue" placeholder="请点击左边的安全验证" disabled />
           </el-col>
           <el-col :span="1" style="text-align: center">&nbsp;</el-col>
-          <el-col :span="7">
-              <img v-if="loginData.loginForm.codeKey" :src="codeUrl" style="cursor: pointer;" @click="getCode" alt=""/>
-              <XButton v-else @click="getCode()">{{t('login.getCode')}}</XButton>
-          </el-col>
         </el-form-item>
       </el-col>
 
@@ -141,6 +155,15 @@
 <!--      </el-col>-->
 
     </el-row>
+
+    <!-- 图文点选验证码‌弹窗 -->
+    <ImageTextClickCaptcha
+      v-model:imageTextClickCaptchaKey="loginData.loginForm.imageTextClickCaptchaKey"
+      v-model:imageTextClickCaptchaValue="loginData.loginForm.imageTextClickCaptchaValue"
+      ref="imageTextClickCaptchaRef"
+      @success="successImageTextClick"
+    />
+
   </el-form>
 </template>
 <script lang="ts" setup>
@@ -154,6 +177,7 @@ import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
 import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
+import ImageTextClickCaptcha from "./ImageTextClickCaptcha.vue";
 
 defineOptions({ name: 'LoginForm' })
 
@@ -173,6 +197,7 @@ const loginLoading = ref(false)
 // const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 const codeUrl = ref()
+const imageTextClickCaptchaRef = ref()
 
 
 /**
@@ -195,8 +220,10 @@ const loginData = reactive({
     grant_type: 'captcha',
     // grant_type: 'password',
     scope: 'all',
-    codeKey: '', // 验证码key
-    code: '', // 验证码
+    codeKey: '', // 数字字母验证码key
+    code: '', // 数字字母验证码
+    imageTextClickCaptchaKey: '', // 图文点选验证码‌key
+    imageTextClickCaptchaValue: '', // 图文点选验证码‌
     rememberMe: true // 默认记录我。如果不需要，可手动修改
   }
 })
@@ -209,7 +236,7 @@ const socialList = [
 ]
 
 /**
- * 获取验证码
+ * 获取数字字母验证码
  */
 const getCode = async () => {
 
@@ -217,8 +244,8 @@ const getCode = async () => {
   // if (loginData.captchaEnable === 'false') {
   //   await handleLogin({})
   // } else {
-  //   // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
-  //   // 弹出验证码
+  //   // 情况二，已开启：则展示数字字母验证码；只有完成数字字母验证码的情况，才进行登录
+  //   // 弹出数字字母验证码
   //   verify.value.show()
   // }
 
@@ -291,6 +318,23 @@ const handleLogin = async () => {
     loginLoading.value = false
     loading.value.close()
   }
+}
+
+
+/**
+ * 点击_图文点选验证码‌
+ */
+const clickImageTextClickCaptcha = () => {
+  imageTextClickCaptchaRef.value.openImageTextClickCaptchaProp()
+}
+
+/**
+ * 子组件回调_图文点选验证码‌
+ * @param data
+ */
+const successImageTextClick = (data) => {
+  console.log('验证成功：', data)
+  // console.log('当前双向绑定值：', captchaValue.value)
 }
 
 /**

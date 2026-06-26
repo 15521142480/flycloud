@@ -1,6 +1,7 @@
 import request from '@/config/axios'
 import { getRefreshToken } from '@/utils/auth'
 import type { RegisterVO, UserLoginVO } from './types'
+import type { ClickCaptchaVerifyDto } from '@/entity/auth'
 
 import {service} from "@/config/axios/service";
 import { Base64 } from 'js-base64'
@@ -24,6 +25,16 @@ export interface SmsLoginVO {
 // 获取验证码
 export const getCodeApi = () => {
   return request.get({ url: `${AUTH_BASE_URL}/auth/code`})
+}
+
+// 获取图文点选验证码‌
+export const getImageTextClickCaptchaApi = () => {
+  return request.post({ url: `${AUTH_BASE_URL}/auth/getImageTextClickCaptcha`})
+}
+
+// 验证图文点选验证码‌
+export const checkImageTextClickCaptchaApi = (data: ClickCaptchaVerifyDto) => {
+  return request.post({ url: `${AUTH_BASE_URL}/auth/checkGetImageTextClickCaptcha`, data })
 }
 
 // 登录

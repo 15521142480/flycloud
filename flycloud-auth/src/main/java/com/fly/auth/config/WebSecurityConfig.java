@@ -2,7 +2,7 @@ package com.fly.auth.config;
 
 import cn.hutool.core.convert.Convert;
 import com.fly.auth.service.impl.UserDetailsServiceImpl;
-import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
+import com.fly.common.config.properties.AuthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +36,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
 
-    private final ServerResourceSecurityProperties serverResourceSecurityProperties;
+    private final AuthProperties authProperties;
 
 
     /**
@@ -59,7 +59,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain authorizationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        String[] ignoreUrls = Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls());
+        String[] ignoreUrls = Convert.toStrArray(authProperties.getIgnoreUrls());
         return httpSecurity
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .csrf(AbstractHttpConfigurer::disable)

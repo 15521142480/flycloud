@@ -1,8 +1,7 @@
 package com.fly.common.security.config;
 
 import cn.hutool.core.convert.Convert;
-import com.fly.common.config.properties.AuthTokenProperties;
-import com.fly.common.security.config.properties.ServerResourceSecurityProperties;
+import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.security.component.PermissionService;
 import com.fly.common.security.handler.CustomAccessDeniedHandler;
 import com.fly.common.security.handler.CustomAuthenticationEntryPoint;
@@ -12,7 +11,6 @@ import com.fly.common.security.filter.BearerTokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -33,7 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Order(5)
 @AutoConfiguration
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true) // 激活方法上的@PreAuthorize注解
-@EnableConfigurationProperties({ServerResourceSecurityProperties.class})
+//@EnableConfigurationProperties({ServerResourceSecurityProperties.class})
 @Import({
         PermissionService.class,
         BearerTokenAuthenticationFilter.class,
@@ -47,7 +45,7 @@ public class SecurityResourceServerConfig {
 
 
 //    private final SecurityAuthorizationProperties securityAuthorizationProperties;
-    private final ServerResourceSecurityProperties serverResourceSecurityProperties;
+    private final AuthProperties authProperties;
 
 
     /**
@@ -60,7 +58,7 @@ public class SecurityResourceServerConfig {
                                                                  CustomAccessDeniedHandler accessDeniedHandler,
                                                                  BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter) throws Exception {
 
-        String[] ignoreUrls = Convert.toStrArray(serverResourceSecurityProperties.getIgnoreUrls());
+        String[] ignoreUrls = Convert.toStrArray(authProperties.getIgnoreUrls());
         return httpSecurity
                 .headers(headers -> headers.frameOptions(Customizer.withDefaults()).disable())
                 .csrf(AbstractHttpConfigurer::disable)

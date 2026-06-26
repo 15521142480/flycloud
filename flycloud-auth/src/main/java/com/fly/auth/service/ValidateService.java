@@ -1,5 +1,8 @@
 package com.fly.auth.service;
 
+import com.fly.auth.domain.bo.ImageTextClickCaptchaVerifyBo;
+import com.fly.auth.domain.vo.ImageTextClickCaptchaVerifyVo;
+import com.fly.auth.domain.vo.ImageTextClickCaptchaVo;
 import com.fly.common.exception.CaptchaException;
 import com.fly.common.domain.model.R;
 
@@ -17,6 +20,21 @@ public interface ValidateService {
 	 */
 	R<?> getCode();
 
+
+	/**
+	 * 获取图文点选验证码‌
+	 *
+	 */
+	ImageTextClickCaptchaVo createImageTextClickCaptcha();
+
+
+	/**
+	 * 校验图文点选验证码‌
+	 *
+	 */
+	ImageTextClickCaptchaVerifyVo verifyImageTextClickCaptcha(ImageTextClickCaptchaVerifyBo bo);
+
+
 	/**
 	 * 获取短信验证码
 	 *
@@ -33,4 +51,5 @@ public interface ValidateService {
 	 * @throws CaptchaException 验证码异常
 	 */
 	void check(String key, String code) throws CaptchaException;
+
 }

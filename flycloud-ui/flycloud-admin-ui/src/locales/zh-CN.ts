@@ -5,6 +5,7 @@ export default {
     startTimeText: '开始时间',
     endTimeText: '结束时间',
     login: '登录',
+    loading: '加载中',
     required: '该项为必填项',
     loginOut: '退出系统',
     document: '项目文档',
@@ -165,6 +166,14 @@ export default {
     point: '请依次点击',
     success: '验证成功',
     fail: '验证失败'
+  },
+  textCaptcha: {
+    title: '安全验证',
+    imageAlt: '点选验证码',
+    prompt: '请依次点击',
+    passed: '验证通过',
+    loadFailed: '验证码加载失败',
+    invalid: '验证码错误，请重新验证'
   },
   router: {
     login: '登录',

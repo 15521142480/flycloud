@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.fly.auth.service.AuthTokenService;
 import com.fly.auth.sms.SmsCodeAuthenticationToken;
 import com.fly.auth.social.SocialAuthenticationToken;
-import com.fly.common.config.properties.AuthTokenProperties;
+import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
@@ -60,7 +60,7 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
     private final ObjectProvider<AuthRequestFactory> factoryProvider;
 
-    private final AuthTokenProperties authTokenProperties;
+    private final AuthProperties authTokenProperties;
 
     @Override
     public Map<String, Object> createToken(Map<String, String> loginParam, HttpServletRequest request) {
@@ -259,18 +259,18 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         String accessJti = UUID.randomUUID().toString();
         String refreshJti = UUID.randomUUID().toString();
 //        String accessToken = jwt(claims, accessJti, Duration.ofHours(2));
-        String accessToken = jwt(tokenClaims(claims), accessJti, authTokenProperties.getLoginTimeout());
-        String refreshToken = jwt(tokenClaims(claims), refreshJti, authTokenProperties.getRefreshTokenTimeout());
+        String accessToken = jwt(tokenClaims(claims), accessJti, authTokenProperties.getToken().getLoginTimeout());
+        String refreshToken = jwt(tokenClaims(claims), refreshJti, authTokenProperties.getToken().getRefreshTokenTimeout());
 
-        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getLoginTimeout());
-        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getLoginTimeout());
-        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, claims, authTokenProperties.getRefreshTokenTimeout());
+        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, claims, authTokenProperties.getToken().getRefreshTokenTimeout());
 
         Map<String, Object> resultData = new LinkedHashMap<>(claims);
         resultData.put("accessToken", accessToken);
         resultData.put("refreshToken", refreshToken);
         resultData.put("jti", accessJti);
-        resultData.put("expiresIn", authTokenProperties.getLoginTimeoutSeconds());
+        resultData.put("expiresIn", authTokenProperties.getToken().getLoginTimeoutSeconds());
         return resultData;
     }
 

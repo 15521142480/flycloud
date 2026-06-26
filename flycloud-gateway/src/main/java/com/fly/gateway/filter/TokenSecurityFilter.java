@@ -1,5 +1,6 @@
 package com.fly.gateway.filter;
 
+import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
@@ -9,7 +10,7 @@ import com.fly.common.utils.ResponseUtils;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.StringPoolUtils;
 import com.fly.common.utils.auth.TokenUtils;
-import com.fly.gateway.config.properties.GatewayServerSecurityProperties;
+//import com.fly.gateway.config.properties.GatewayServerSecurityProperties;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ import reactor.core.publisher.Mono;
 public class TokenSecurityFilter implements GlobalFilter, Ordered {
 
 
-    private final GatewayServerSecurityProperties gatewayServerSecurityProperties;
+    private final AuthProperties authProperties;
     private final RedisUtils redisUtils;
 //    private final AuthTokenProperties authTokenProperties;
 
@@ -56,7 +57,7 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
         // 如果未启用网关验证，则跳过
-        if (!gatewayServerSecurityProperties.getEnable()) {
+        if (!authProperties.isGatewayEnable()) {
             return chain.filter(exchange);
         }
 
@@ -110,7 +111,7 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
      */
     private boolean ignore(String path) {
 
-        return gatewayServerSecurityProperties.getIgnoreUrls().stream()
+        return authProperties.getIgnoreUrls().stream()
                 .map(url -> url.replace("/**", ""))
                 .anyMatch(path::startsWith);
     }

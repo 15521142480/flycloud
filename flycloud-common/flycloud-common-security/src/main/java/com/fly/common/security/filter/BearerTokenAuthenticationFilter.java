@@ -2,7 +2,7 @@ package com.fly.common.security.filter;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
-import com.fly.common.config.properties.AuthTokenProperties;
+import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.redis.utils.RedisUtils;
@@ -35,7 +35,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final RedisUtils redisUtils;
 
-    private final AuthTokenProperties authTokenProperties;
+    private final AuthProperties authProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -92,7 +92,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void refreshTokenExpire(String token) {
-        long timeout = authTokenProperties.getLoginTimeoutSeconds();
+        long timeout = authProperties.getToken().getLoginTimeoutSeconds();
         redisUtils.expire(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token, timeout);
         redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, timeout);
     }

@@ -1,11 +1,15 @@
 package com.fly.auth.controller;
 
+import com.fly.auth.domain.bo.ImageTextClickCaptchaVerifyBo;
+import com.fly.auth.domain.vo.ImageTextClickCaptchaVerifyVo;
+import com.fly.auth.domain.vo.ImageTextClickCaptchaVo;
 import com.fly.auth.service.ValidateService;
 import com.fly.common.domain.model.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +41,25 @@ public class AuthController {
     public R<?> authCode() {
         return validateService.getCode();
     }
+
+
+    /**
+     * 获取图文点选验证码‌
+     */
+    @Operation(summary = "获取图文点选验证码")
+    @PostMapping("/getImageTextClickCaptcha")
+    public R<ImageTextClickCaptchaVo> createClickCaptcha() {
+        return R.ok(validateService.createImageTextClickCaptcha());
+    }
+
+    /**
+     * 校验图文点选验证码‌
+     */
+    @Operation(summary = "校验图文点选验证码")
+    @PostMapping("/checkGetImageTextClickCaptcha")
+    public R<ImageTextClickCaptchaVerifyVo> verifyClickCaptcha(@Valid @RequestBody ImageTextClickCaptchaVerifyBo verifyDto) {
+        return R.ok(validateService.verifyImageTextClickCaptcha(verifyDto));
+    }
+
 
 }
