@@ -17,19 +17,31 @@ spring:
     allow-bean-definition-overriding: true
     allow-circular-references: true
 
+# security授权公共配置
+security:
+  auth:
+    token:
+      # 登录态有效期，单位秒，默认2小时；接口请求认证成功后会滑动续期
+      login-timeout-seconds: 7200
+      # refresh token 有效期，默认30天，单位秒
+      refresh-token-timeout-seconds: 2592000
+
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
-
-  # Jackson 配置项
+  #jackson配置
   jackson:
+    # 日期格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
     serialization:
-      write-dates-as-timestamps: true # 设置 LocalDateTime 的格式，使用时间戳
-      write-date-timestamps-as-nanoseconds: false # 设置不使用 nanoseconds 的格式。例如说 1611460870.401，而是直接 1611460870401
-      write-durations-as-timestamps: true # 设置 Duration 的格式，使用时间戳
-      fail-on-empty-beans: false # 允许序列化无属性的 Bean
-
-
+      # 格式化输出
+      INDENT_OUTPUT: false
+      # 忽略无法转换的对象
+      fail_on_empty_beans: false
+    deserialization:
+      # 允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
   cloud:
     # sentinel 配置
     # sentinel:
@@ -47,23 +59,18 @@ spring:
     #     # dashboard: localhost:8718
 
   # redis 通用配置 子服务可以自行配置进行覆盖
-  redis:
-    host: 111.228.51.252
-    port: 6379
-    # 密码(如没有密码请注释掉password字段)
-    password: wW257007
-    database: 0
-    timeout: 30s
-    ssl:
-      enabled: false
+  data:
+    redis:
+      # 111.228.51.252  39.98.125.88  laixueshi.cn  除了项目在服务器上域名可以代替ip；本地运行不行，但可以在host新增域名映射ip可实现
+      host: 39.98.125.88
+      port: 6379
+      # 密码(如没有密码请注释掉password字段)
+      password: wW257007
+      database: 0
+      timeout: 18s
+      ssl:
+        enabled: false
 
-flycloud:
-  auth:
-    token:
-      # 登录态有效期，单位秒；接口请求认证成功后会滑动续期
-      login-timeout-seconds: 7200
-      # refresh token 有效期，单位秒
-      refresh-token-timeout-seconds: 2592000
 
 # redisson 配置
 redisson:
@@ -110,6 +117,7 @@ swagger:
     flycloud-gateway: flycloud-gateway
     flycloud-system: flycloud-system
     flycloud-mall: flycloud-mall
+    flycloud-music: flycloud-music
     flycloud-generator: flycloud-generator
     flycloud-job: flycloud-job
     flycloud-test: flycloud-test

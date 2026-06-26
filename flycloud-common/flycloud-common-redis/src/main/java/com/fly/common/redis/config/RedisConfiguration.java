@@ -3,17 +3,13 @@ package com.fly.common.redis.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.common.redis.config.properties.RedisProperties;
 import com.fly.common.redis.utils.RedisLockUtil;
 import com.fly.common.redis.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,9 +25,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @AutoConfiguration
 public class RedisConfiguration {
 
-
-//    @Primary
-//    @Qualifier
     @SuppressWarnings("all")
     @Bean(name = "redisTemplate")
     @ConditionalOnClass(RedisOperations.class)

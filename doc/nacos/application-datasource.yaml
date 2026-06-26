@@ -6,42 +6,43 @@ datasource:
   system-master:
     # jdbc 所有参数配置参考 https://lionli.blog.csdn.net/article/details/122018562
     # rewriteBatchedStatements=true 批处理优化 大幅提升批量插入更新删除性能
-    url: jdbc:mysql://localhost:3306/fly-cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    # 111.228.51.252  39.98.125.88  laixueshi.cn  除了项目在服务器上域名可以代替ip；本地运行不行，但可以在host新增域名映射ip可实现
+    url: jdbc:mysql://39.98.125.88:3306/fly_cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
-    password: root
+    password: wW@@@257007
   # system-slave:
 
   # 工作流模块的-主库数据源 
   bpm-master:
-    url: jdbc:mysql://localhost:3306/fly-cloud?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
-    # url: jdbc:mysql://localhost:3306/fdance_cloud?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true 
+    url: jdbc:mysql://39.98.125.88:3306/fly_cloud?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
+    # url: jdbc:mysql://111.228.51.252:3306/fdance_cloud?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true 
     username: root
-    password: root
+    password: wW@@@257007
   # bpm-slave:
 
   # 商城模块的-主库数据源
   mall-master:
-    url: jdbc:mysql://localhost:3306/fly-cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    url: jdbc:mysql://39.98.125.88:3306/fly_cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
-    password: root
+    password: wW@@@257007
 
   # 音乐模块的-主库数据源
   music-master:
-    url: jdbc:mysql://localhost:3306/fly-music?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    url: jdbc:mysql://39.98.125.88:3306/fly_music?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
-    password: root
+    password: wW@@@257007
 
   # 定时任务数据库
   job:
-    url: jdbc:mysql://localhost:3306/fly-job?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    url: jdbc:mysql://39.98.125.88:3306/fly_job?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
-    password: root
+    password: wW@@@257007
 
   # 自动生成数据库说明: 由于要自动生成某个数据库的表信息, 所以只需要指向你要生成的已经在使用的数据库即可
   gen:
-    url: jdbc:mysql://localhost:3306/fly-cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    url: jdbc:mysql://39.98.125.88:3306/fly_cloud?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
-    password: root
+    password: wW@@@257007
     
 #  其他数据库系统说明
 #  system-oracle:

@@ -586,6 +586,11 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <!-- 关闭过滤 (解决打包后mybatis-plus配置读取不了xml问题) -->
+                <excludes>
+                    <exclude>application*</exclude>
+                    <exclude>bootstrap*</exclude>
+                    <exclude>logback*</exclude>
+                </excludes>
                 <filtering>false</filtering>
             </resource>
             <resource>
