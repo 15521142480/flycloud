@@ -1,11 +1,11 @@
 <template>
-  <div class="process-panel__container" :style="{ width: `${width}px`,maxHeight: '700px' }">
+  <div class="process-panel__container" :style="{ width: `${width}px`, maxHeight: '700px' }">
     <el-collapse v-model="activeTab">
       <el-collapse-item name="base">
         <!-- class="panel-tab__title" -->
         <template #title>
           <Icon icon="ep:info-filled" />
-          常规</template
+          {{ t('extra.k59da8261') }}</template
         >
         <ElementBaseInfo
           :id-edit-disabled="idEditDisabled"
@@ -15,7 +15,11 @@
         />
       </el-collapse-item>
       <el-collapse-item name="condition" v-if="elementType === 'Process'" key="message">
-        <template #title><Icon icon="ep:comment" />消息与信号</template>
+        <template #title
+          ><Icon icon="ep:comment" />{{
+            t('auto.components.bpmnProcessDesigner.package.penal.PropertiesPanel.k1e2fd7cb')
+          }}</template
+        >
         <signal-and-massage />
       </el-collapse-item>
       <el-collapse-item name="condition" v-if="conditionFormVisible" key="condition">
@@ -54,7 +58,11 @@
         <template #title><Icon icon="ep:promotion" />其他</template>
         <element-other-config :id="elementId" />
       </el-collapse-item>
-      <el-collapse-item name="customConfig" v-if="elementType.indexOf('Task') !== -1" key="customConfig">
+      <el-collapse-item
+        name="customConfig"
+        v-if="elementType.indexOf('Task') !== -1"
+        key="customConfig"
+      >
         <template #title><Icon icon="ep:circle-plus-filled" />自定义配置</template>
         <element-custom-config :id="elementId" :type="elementType" />
       </el-collapse-item>
@@ -72,7 +80,7 @@ import ElementListeners from './listeners/ElementListeners.vue'
 import ElementProperties from './properties/ElementProperties.vue'
 // import ElementForm from './form/ElementForm.vue'
 import UserTaskListeners from './listeners/UserTaskListeners.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'MyPropertiesPanel' })
 
 /**
@@ -119,11 +127,11 @@ const unwatchBpmn = watch(
   () => {
     // 避免加载时 流程图 并未加载完成
     if (!props.bpmnModeler) {
-      console.log('缺少props.bpmnModeler')
+      console.log(t('auto.components.bpmnProcessDesigner.package.penal.PropertiesPanel.k29b1a78c'))
       return
     }
 
-    console.log('props.bpmnModeler 有值了！！！')
+    console.log(t('auto.components.bpmnProcessDesigner.package.penal.PropertiesPanel.kf496032e'))
     const w = window as any
     w.bpmnInstances = {
       modeler: props.bpmnModeler,

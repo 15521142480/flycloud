@@ -1,8 +1,10 @@
 import { generateUUID } from '@/utils'
 import { localeProps, makeRequiredRule } from '@/components/FormCreate/src/utils'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export const useEditorRule = () => {
-  const label = '富文本'
+  const label = t('auto.components.FormCreate.src.config.useEditorRule.k8368f027')
   const name = 'Editor'
   return {
     icon: 'icon-editor',
@@ -23,9 +25,13 @@ export const useEditorRule = () => {
         {
           type: 'input',
           field: 'height',
-          title: '高度'
+          title: t('auto.components.FormCreate.src.config.useEditorRule.keea51aa4')
         },
-        { type: 'switch', field: 'readonly', title: '是否只读' }
+        {
+          type: 'switch',
+          field: 'readonly',
+          title: t('auto.components.FormCreate.src.config.useEditorRule.k7fc66b85')
+        }
       ])
     }
   }

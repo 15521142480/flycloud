@@ -3,7 +3,9 @@
     <el-collapse v-model="activeNames">
       <el-collapse-item name="basicInfo">
         <template #title>
-          <span class="text-base font-bold">基本信息</span>
+          <span class="text-base font-bold">{{
+            t('auto.views.crm.receivable.detail.ReceivableDetailsInfo.kb122f813')
+          }}</span>
         </template>
         <el-descriptions :column="4">
           <el-descriptions-item label="回款编号">{{ receivable.no }}</el-descriptions-item>
@@ -52,7 +54,7 @@ import * as ReceivableApi from '@/api/crm/receivable'
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import { erpPriceInputFormatter } from '@/utils'
-
+const { t } = useI18n()
 const { receivable } = defineProps<{
   receivable: ReceivableApi.ReceivableVO
 }>()

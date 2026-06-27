@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="产品名称" min-width="180">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.crm.business.components.BusinessProductForm.kabc0ac79')"
+        min-width="180"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productId`" :rules="formRules.productId" class="mb-0px!">
             <el-select
@@ -18,7 +21,7 @@
               clearable
               filterable
               @change="onChangeProduct($event, row)"
-              placeholder="请选择产品"
+              :placeholder="t('auto.views.crm.business.components.BusinessProductForm.k59a0d3d1')"
             >
               <el-option
                 v-for="item in productList"
@@ -97,7 +100,7 @@
 import * as ProductApi from '@/api/crm/product'
 import { erpPriceInputFormatter, erpPriceMultiply } from '@/utils'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 const props = defineProps<{
   products: undefined
   disabled: false
@@ -105,9 +108,27 @@ const props = defineProps<{
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  productId: [{ required: true, message: '产品不能为空', trigger: 'blur' }],
-  businessPrice: [{ required: true, message: '合同价格不能为空', trigger: 'blur' }],
-  count: [{ required: true, message: '产品数量不能为空', trigger: 'blur' }]
+  productId: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.components.BusinessProductForm.k0b3cde2b'),
+      trigger: 'blur'
+    }
+  ],
+  businessPrice: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.components.BusinessProductForm.kb1188606'),
+      trigger: 'blur'
+    }
+  ],
+  count: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.components.BusinessProductForm.k55ce5fbe'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const productList = ref<ProductApi.ProductVO[]>([]) // 产品列表

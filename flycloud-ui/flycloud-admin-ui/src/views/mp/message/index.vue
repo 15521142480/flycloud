@@ -8,11 +8,15 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.message.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
-      <el-form-item label="消息类型" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择消息类型" class="!w-240px">
+      <el-form-item :label="t('auto.views.mp.message.index.k15218877')" prop="type">
+        <el-select
+          v-model="queryParams.type"
+          :placeholder="t('auto.views.mp.message.index.k48d631c6')"
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.MP_MESSAGE_TYPE)"
             :key="dict.value"
@@ -21,24 +25,24 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="用户标识" prop="openid">
+      <el-form-item :label="t('auto.views.mp.message.index.k24afcd30')" prop="openid">
         <el-input
           v-model="queryParams.openid"
-          placeholder="请输入用户标识"
+          :placeholder="t('auto.views.mp.message.index.kf8c5daed')"
           clearable
           :v-on="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           style="width: 240px"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mp.message.index.k1f291968')"
+          :end-placeholder="t('auto.views.mp.message.index.kf4b9b2b5')"
           :default-time="['00:00:00', '23:59:59']"
           class="!w-240px"
         />
@@ -46,11 +50,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon icon="ep:search" class="mr-5px" />
-          搜索
+          {{ t('extra.k4ec05ab7') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon icon="ep:refresh" class="mr-5px" />
-          重置
+          {{ t('extra.kbaa9bdb4') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -70,7 +74,7 @@
 
   <!-- 发送消息的弹窗 -->
   <el-dialog
-    title="粉丝消息列表"
+    :title="t('auto.views.mp.message.index.k773af35a')"
     v-model="messageBox.show"
     @click="messageBox.show = true"
     width="50%"
@@ -87,7 +91,7 @@ import MessageTable from './MessageTable.vue'
 import { DICT_TYPE, getStrDictOptions } from '@/utils/dict'
 import { MsgType } from '@/views/mp/components/wx-msg/types'
 import type { FormInstance } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpMessage' })
 
 const loading = ref(false)

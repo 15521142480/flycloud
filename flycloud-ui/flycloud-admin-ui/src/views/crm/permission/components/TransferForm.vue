@@ -8,7 +8,10 @@
       :rules="formRules"
       label-width="150px"
     >
-      <el-form-item label="选择新负责人" prop="newOwnerUserId">
+      <el-form-item
+        :label="t('auto.views.crm.permission.components.TransferForm.k48815c2c')"
+        prop="newOwnerUserId"
+      >
         <el-select v-model="formData.newOwnerUserId">
           <el-option
             v-for="item in userOptions"
@@ -18,13 +21,21 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="老负责人">
+      <el-form-item :label="t('auto.views.crm.permission.components.TransferForm.k6c6c2af1')">
         <el-radio-group v-model="oldOwnerHandler" @change="handleOwnerChange">
-          <el-radio :value="false" size="large">移除</el-radio>
-          <el-radio :value="true" size="large">加入团队</el-radio>
+          <el-radio :value="false" size="large">{{
+            t('auto.views.crm.permission.components.TransferForm.k2f752c00')
+          }}</el-radio>
+          <el-radio :value="true" size="large">{{
+            t('auto.views.crm.permission.components.TransferForm.kce28cea8')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="oldOwnerHandler" label="老负责人权限级别" prop="oldOwnerPermissionLevel">
+      <el-form-item
+        v-if="oldOwnerHandler"
+        :label="t('auto.views.crm.permission.components.TransferForm.k57239086')"
+        prop="oldOwnerPermissionLevel"
+      >
         <el-radio-group v-model="formData.oldOwnerPermissionLevel">
           <template
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_PERMISSION_LEVEL)"
@@ -59,7 +70,7 @@ import * as CustomerApi from '@/api/crm/customer'
 import * as ContractApi from '@/api/crm/contract'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { BizTypeEnum, PermissionLevelEnum, TransferReqVO } from '@/api/crm/permission'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmTransferForm' })
 
 const props = defineProps<{
@@ -74,9 +85,19 @@ const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 const oldOwnerHandler = ref(false) // 老负责人的处理方式
 const formData = ref<TransferReqVO>({} as TransferReqVO)
 const formRules = reactive({
-  newOwnerUserId: [{ required: true, message: '新负责人不能为空', trigger: 'blur' }],
+  newOwnerUserId: [
+    {
+      required: true,
+      message: t('auto.views.crm.permission.components.TransferForm.k3823a21a'),
+      trigger: 'blur'
+    }
+  ],
   oldOwnerPermissionLevel: [
-    { required: true, message: '老负责人加入团队后的权限级别不能为空', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.crm.permission.components.TransferForm.kb6ec39f5'),
+      trigger: 'blur'
+    }
   ]
 })
 const formRef = ref() // 表单 Ref
@@ -108,7 +129,7 @@ const submitForm = async () => {
   try {
     const data = formData.value
     await transfer(unref(data))
-    message.success(dialogTitle.value + '成功')
+    message.success(dialogTitle.value + t('common.success'))
     dialogVisible.value = false
     // 发送操作成功的事件
     emit('success')
@@ -129,24 +150,24 @@ const transfer = async (data: TransferReqVO) => {
     case BizTypeEnum.CRM_CONTRACT:
       return await ContractApi.transferContract(data)
     default:
-      message.error('【转移失败】没有转移接口')
-      throw new Error('【转移失败】没有转移接口')
+      message.error(t('auto.views.crm.permission.components.TransferForm.k26a92b2a'))
+      throw new Error(t('auto.views.crm.permission.components.TransferForm.k26a92b2a'))
   }
 }
 const getDialogTitle = () => {
   switch (props.bizType) {
     case BizTypeEnum.CRM_CLUE:
-      return '线索转移'
+      return t('auto.views.crm.permission.components.TransferForm.k6bb9168c')
     case BizTypeEnum.CRM_CUSTOMER:
-      return '客户转移'
+      return t('auto.views.crm.permission.components.TransferForm.kbe1ca1b5')
     case BizTypeEnum.CRM_CONTACT:
-      return '联系人转移'
+      return t('auto.views.crm.permission.components.TransferForm.kf1a1fe35')
     case BizTypeEnum.CRM_BUSINESS:
-      return '商机转移'
+      return t('auto.views.crm.permission.components.TransferForm.k1abd432f')
     case BizTypeEnum.CRM_CONTRACT:
-      return '合同转移'
+      return t('auto.views.crm.permission.components.TransferForm.k532b1bf1')
     default:
-      return '转移'
+      return t('auto.views.crm.permission.components.TransferForm.k25e7ae11')
   }
 }
 

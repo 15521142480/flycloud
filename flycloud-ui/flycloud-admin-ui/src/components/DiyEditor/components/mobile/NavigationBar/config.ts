@@ -1,6 +1,8 @@
 import { DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 顶部导航栏属性 */
+const { t } = useI18n()
+
 export interface NavigationBarProperty {
   // 背景类型
   bgType: 'color' | 'img'
@@ -54,7 +56,7 @@ export interface NavigationBarCellProperty {
 // 定义组件
 export const component = {
   id: 'NavigationBar',
-  name: '顶部导航栏',
+  name: t('auto.components.DiyEditor.components.mobile.NavigationBar.config.k221c1723'),
   icon: 'tabler:layout-navbar',
   property: {
     bgType: 'color',

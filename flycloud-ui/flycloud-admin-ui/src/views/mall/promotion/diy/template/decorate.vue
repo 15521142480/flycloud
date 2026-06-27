@@ -33,16 +33,16 @@ import * as DiyPageApi from '@/api/mall/promotion/diy/page'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { DiyComponentLibrary, PAGE_LIBS } from '@/components/DiyEditor/util' // 商城的 DIY 组件，在 DiyEditor 目录下
 import { toNumber } from 'lodash-es'
-
 /** 装修模板表单 */
+const { t } = useI18n()
 defineOptions({ name: 'DiyTemplateDecorate' })
 
 // 左上角工具栏操作按钮
 const selectedTemplateItem = ref(0)
 const templateItems = reactive([
-  { name: '基础设置', icon: 'ep:iphone' },
-  { name: '首页', icon: 'ep:home-filled' },
-  { name: '我的', icon: 'ep:user-filled' }
+  { name: t('auto.views.mall.promotion.diy.template.decorate.k35ff7705'), icon: 'ep:iphone' },
+  { name: t('auto.views.mall.promotion.diy.template.decorate.kff93ad0e'), icon: 'ep:home-filled' },
+  { name: t('auto.views.mall.promotion.diy.template.decorate.ka82c993d'), icon: 'ep:user-filled' }
 ])
 
 const message = useMessage() // 消息弹窗
@@ -104,7 +104,7 @@ const submitForm = async () => {
       // 提交页面属性
       await DiyPageApi.updateDiyPageProperty(unref(currentFormData)!)
     }
-    message.success('保存成功')
+    message.success(t('auto.views.mall.promotion.diy.template.decorate.k7e68eb62'))
   } finally {
     formLoading.value = false
   }
@@ -154,7 +154,7 @@ const { delView } = useTagsViewStore() // 视图操作
 onMounted(async () => {
   resetForm()
   if (!currentRoute.value.params.id) {
-    message.warning('参数错误，页面编号不能为空！')
+    message.warning(t('auto.views.mall.promotion.diy.template.decorate.kbfcbf524'))
     delView(unref(currentRoute))
     return
   }

@@ -22,7 +22,7 @@ import Left from './components/Left.vue'
 import Right from './components/Right.vue'
 import { WriteApi, WriteVO } from '@/api/ai/write'
 import { WriteExample } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 const message = useMessage()
 
 const writeResult = ref('') // 写作结果
@@ -46,7 +46,7 @@ const submit = (data: WriteVO) => {
     onMessage: async (res) => {
       const { code, data, msg } = JSON.parse(res.data)
       if (code !== 0) {
-        message.alert(`写作异常! ${msg}`)
+        message.alert(t('extra.k2fc2ab33', { p0: msg }))
         stopStream()
         return
       }
@@ -58,7 +58,7 @@ const submit = (data: WriteVO) => {
     ctrl: abortController.value,
     onClose: stopStream,
     onError: (...err) => {
-      console.error('写作异常', ...err)
+      console.error(t('auto.views.ai.write.index.index.k0c22b8da'), ...err)
       stopStream()
     }
   })

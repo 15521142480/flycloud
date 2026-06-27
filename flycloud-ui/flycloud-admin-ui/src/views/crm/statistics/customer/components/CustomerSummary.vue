@@ -10,16 +10,36 @@
   <!-- 统计列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="序号" align="center" type="index" width="80" fixed="left" />
-      <el-table-column label="员工姓名" prop="ownerUserName" min-width="100" fixed="left" />
       <el-table-column
-        label="新增客户数"
+        :label="t('common.index')"
+        align="center"
+        type="index"
+        width="80"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerSummary.k78bd0d05')"
+        prop="ownerUserName"
+        min-width="100"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerSummary.kbeb168b5')"
         align="right"
         prop="customerCreateCount"
         min-width="200"
       />
-      <el-table-column label="成交客户数" align="right" prop="customerDealCount" min-width="200" />
-      <el-table-column label="客户成交率(%)" align="right" min-width="200">
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerSummary.k8e16e0d0')"
+        align="right"
+        prop="customerDealCount"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerSummary.k397c2db5')"
+        align="right"
+        min-width="200"
+      >
         <template #default="scope">
           {{ erpCalculatePercentage(scope.row.customerDealCount, scope.row.customerCreateCount) }}
         </template>
@@ -59,7 +79,7 @@ import {
 } from '@/api/crm/statistics/customer'
 import { EChartsOption } from 'echarts'
 import { erpCalculatePercentage, erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerSummary' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -78,13 +98,13 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '新增客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerSummary.kbeb168b5'),
       type: 'bar',
       yAxisIndex: 0,
       data: []
     },
     {
-      name: '成交客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerSummary.k8e16e0d0'),
       type: 'bar',
       yAxisIndex: 1,
       data: []
@@ -98,7 +118,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '客户总量分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.customer.components.CustomerSummary.ke6a3379c')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -110,13 +133,13 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '新增客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerSummary.kbeb168b5'),
       min: 0,
       minInterval: 1 // 显示整数刻度
     },
     {
       type: 'value',
-      name: '成交客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerSummary.k8e16e0d0'),
       min: 0,
       minInterval: 1, // 显示整数刻度
       splitLine: {
@@ -129,7 +152,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.customer.components.CustomerSummary.kb6fed9af'),
     data: []
   }
 }) as EChartsOption

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 
 export function hasRole(app: App<Element>) {
   app.directive('hasRole', (el, binding) => {

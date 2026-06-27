@@ -3,14 +3,19 @@
   <el-row justify="end">
     <el-button @click="openForm">
       <Icon class="mr-5px" icon="clarity:contract-line" />
-      创建合同
+      {{ t('extra.k9c95cb9e') }}
     </el-button>
   </el-row>
 
   <!-- 列表 -->
   <ContentWrap class="mt-10px">
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="合同名称" fixed="left" align="center" prop="name">
+      <el-table-column
+        :label="t('auto.views.crm.contract.components.ContractList.kb8fbf277')"
+        fixed="left"
+        align="center"
+        prop="name"
+      >
         <template #default="scope">
           <el-link type="primary" :underline="false" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -64,7 +69,7 @@ import { BizTypeEnum } from '@/api/crm/permission'
 import { dateFormatter } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContractList' })
 const props = defineProps<{
   bizType: number // 业务类型

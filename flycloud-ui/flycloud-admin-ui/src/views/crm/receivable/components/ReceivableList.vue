@@ -3,24 +3,41 @@
   <el-row justify="end">
     <el-button @click="openForm('create')">
       <Icon class="mr-5px" icon="icon-park:income-one" />
-      创建回款
+      {{ t('extra.kb187131f') }}
     </el-button>
   </el-row>
 
   <!-- 列表 -->
   <ContentWrap class="mt-10px">
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" label="回款编号" prop="no" />
-      <el-table-column align="center" label="客户" prop="customerName" />
-      <el-table-column align="center" label="合同" prop="contract.no" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.components.ReceivableList.k89c860f8')"
+        prop="no"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.components.ReceivableList.kf2068706')"
+        prop="customerName"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.components.ReceivableList.k59404d40')"
+        prop="contract.no"
+      />
       <el-table-column
         :formatter="dateFormatter2"
         align="center"
-        label="回款日期"
+        :label="t('auto.views.crm.receivable.components.ReceivableList.kd0132503')"
         prop="returnTime"
         width="150px"
       />
-      <el-table-column align="center" label="回款方式" prop="returnType" width="130px">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.components.ReceivableList.k6c0d9ca0')"
+        prop="returnType"
+        width="130px"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_RECEIVABLE_RETURN_TYPE" :value="scope.row.returnType" />
         </template>
@@ -73,7 +90,7 @@ import ReceivableForm from './../ReceivableForm.vue'
 import { dateFormatter2 } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmReceivableList' })
 const props = defineProps<{
   customerId?: number // 客户编号
@@ -81,7 +98,6 @@ const props = defineProps<{
 }>()
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据

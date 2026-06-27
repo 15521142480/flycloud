@@ -1,7 +1,9 @@
 <!-- 待回款提醒 -->
 <template>
   <ContentWrap>
-    <div class="pb-5 text-xl">待回款提醒</div>
+    <div class="pb-5 text-xl">{{
+      t('auto.views.crm.backlog.components.ReceivablePlanRemindList.kd40192ef')
+    }}</div>
     <!-- 搜索工作栏 -->
     <el-form
       ref="queryFormRef"
@@ -10,11 +12,14 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="合同状态" prop="remindType">
+      <el-form-item
+        :label="t('auto.views.crm.backlog.components.ReceivablePlanRemindList.keb5aba97')"
+        prop="remindType"
+      >
         <el-select
           v-model="queryParams.remindType"
           class="!w-240px"
-          placeholder="状态"
+          :placeholder="t('common.status')"
           @change="handleQuery"
         >
           <el-option
@@ -30,7 +35,13 @@
 
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column align="center" fixed="left" label="客户名称" prop="customerName" width="150">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.ReceivablePlanRemindList.ke941d410')"
+        prop="customerName"
+        width="150"
+      >
         <template #default="scope">
           <el-link
             :underline="false"
@@ -160,7 +171,7 @@ import * as ReceivablePlanApi from '@/api/crm/receivable/plan'
 import { RECEIVABLE_REMIND_TYPE } from './common'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import ReceivableForm from '@/views/crm/receivable/ReceivableForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'ReceivablePlanRemindList' })
 
 const loading = ref(true) // 列表的加载中

@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="销售单据编号" min-width="200">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.erp.finance.receipt.components.FinanceReceiptItemForm.kc20a3f14')"
+        min-width="200"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.bizNo" />
@@ -75,7 +78,7 @@ import SaleReturnRefundEnableList from '@/views/erp/sale/return/components/SaleR
 import { SaleOutVO } from '@/api/erp/sale/out'
 import { ErpBizType } from '@/utils/constants'
 import { SaleReturnVO } from '@/api/erp/sale/return'
-
+const { t } = useI18n()
 const props = defineProps<{
   items: undefined
   customerId: undefined
@@ -86,7 +89,13 @@ const message = useMessage()
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  receiptPrice: [{ required: true, message: '本次收款不能为空', trigger: 'blur' }]
+  receiptPrice: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.receipt.components.FinanceReceiptItemForm.kbc16d4c5'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const productList = ref<ProductVO[]>([]) // 产品列表
@@ -106,7 +115,7 @@ const getSummaries = (param: SummaryMethodProps) => {
   const sums: string[] = []
   columns.forEach((column, index: number) => {
     if (index === 0) {
-      sums[index] = '合计'
+      sums[index] = t('auto.views.erp.finance.receipt.components.FinanceReceiptItemForm.k92bcbf71')
       return
     }
     if (['totalPrice', 'receiptedPrice', 'receiptPrice'].includes(column.property)) {
@@ -123,7 +132,7 @@ const getSummaries = (param: SummaryMethodProps) => {
 const saleOutReceiptEnableListRef = ref()
 const handleOpenSaleOut = () => {
   if (!props.customerId) {
-    message.error('请选择客户')
+    message.error(t('auto.views.erp.finance.receipt.components.FinanceReceiptItemForm.k6bdb05d6'))
     return
   }
   saleOutReceiptEnableListRef.value.open(props.customerId)
@@ -145,7 +154,7 @@ const handleAddSaleOut = (rows: SaleOutVO[]) => {
 const saleReturnRefundEnableListRef = ref()
 const handleOpenSaleReturn = () => {
   if (!props.customerId) {
-    message.error('请选择客户')
+    message.error(t('auto.views.erp.finance.receipt.components.FinanceReceiptItemForm.k6bdb05d6'))
     return
   }
   saleReturnRefundEnableListRef.value.open(props.customerId)

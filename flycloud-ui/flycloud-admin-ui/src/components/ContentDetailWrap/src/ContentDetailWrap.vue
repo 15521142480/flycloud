@@ -1,11 +1,8 @@
 <script lang="ts" setup>
 import { propTypes } from '@/utils/propTypes'
 import { useDesign } from '@/hooks/web/useDesign'
-
-defineOptions({ name: 'ContentDetailWrap' })
-
 const { t } = useI18n()
-
+defineOptions({ name: 'ContentDetailWrap' })
 const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('content-detail-wrap')

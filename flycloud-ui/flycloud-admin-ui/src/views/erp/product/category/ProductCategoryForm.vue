@@ -7,26 +7,44 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="上级编号" prop="parentId">
+      <el-form-item
+        :label="t('auto.views.erp.product.category.ProductCategoryForm.k42694a81')"
+        prop="parentId"
+      >
         <el-tree-select
           v-model="formData.parentId"
           :data="productCategoryTree"
           :props="defaultProps"
           check-strictly
           default-expand-all
-          placeholder="请选择上级编号"
+          :placeholder="t('auto.views.erp.product.category.ProductCategoryForm.kaf764b39')"
         />
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名称" />
+      <el-form-item
+        :label="t('auto.views.erp.product.category.ProductCategoryForm.k1be7ae4f')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.erp.product.category.ProductCategoryForm.kc2afb255')"
+        />
       </el-form-item>
-      <el-form-item label="编码" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入编码" />
+      <el-form-item
+        :label="t('auto.views.erp.product.category.ProductCategoryForm.kc94faa71')"
+        prop="code"
+      >
+        <el-input
+          v-model="formData.code"
+          :placeholder="t('auto.views.erp.product.category.ProductCategoryForm.k76745b52')"
+        />
       </el-form-item>
-      <el-form-item label="排序" prop="sort">
-        <el-input v-model="formData.sort" placeholder="请输入排序" />
+      <el-form-item :label="t('common.sort')" prop="sort">
+        <el-input
+          v-model="formData.sort"
+          :placeholder="t('auto.views.erp.product.category.ProductCategoryForm.k242d8da1')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -39,8 +57,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.erp.product.category.ProductCategoryForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.product.category.ProductCategoryForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -51,9 +73,8 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** ERP 产品分类 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProductCategoryForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -69,11 +90,41 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  parentId: [{ required: true, message: '上级编号不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-  code: [{ required: true, message: '编码不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  parentId: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.category.ProductCategoryForm.ka92d1f5b'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.category.ProductCategoryForm.kca898456'),
+      trigger: 'blur'
+    }
+  ],
+  code: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.category.ProductCategoryForm.k7af6a3ed'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.category.ProductCategoryForm.k3218602a'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.category.ProductCategoryForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const productCategoryTree = ref() // 树形结构
@@ -138,7 +189,11 @@ const resetForm = () => {
 const getProductCategoryTree = async () => {
   productCategoryTree.value = []
   const data = await ProductCategoryApi.getProductCategoryList()
-  const root: Tree = { id: 0, name: '顶级产品分类', children: [] }
+  const root: Tree = {
+    id: 0,
+    name: t('auto.views.erp.product.category.ProductCategoryForm.k0bff7b6b'),
+    children: []
+  }
   root.children = handleTree(data, 'id', 'parentId')
   productCategoryTree.value.push(root)
 }

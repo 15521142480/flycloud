@@ -8,7 +8,11 @@
     max-height="500"
     size="small"
   >
-    <el-table-column align="center" label="图片" min-width="65">
+    <el-table-column
+      align="center"
+      :label="t('auto.views.mall.product.spu.components.SkuList.kbe8da62e')"
+      min-width="65"
+    >
       <template #default="{ row }">
         <UploadImg v-model="row.picUrl" height="50px" width="50px" />
       </template>
@@ -293,7 +297,7 @@ import { RuleConfig } from '@/views/mall/product/spu/components/index'
 import { PropertyAndValues } from './index'
 import { ElTable } from 'element-plus'
 import { isEmpty } from '@/utils/is'
-
+const { t } = useI18n()
 defineOptions({ name: 'SkuList' })
 const message = useMessage() // 消息弹窗
 
@@ -349,7 +353,7 @@ const batchAdd = () => {
 /** 校验商品属性属性值 */
 const validateProperty = () => {
   // 校验商品属性属性值是否为空，有一个为空都不给过
-  const warningInfo = '存在属性属性值为空，请先检查完善属性值后重试！！！'
+  const warningInfo = t('auto.views.mall.product.spu.components.SkuList.k5dad0ff4')
   for (const item of props.propertyList) {
     if (!item.values || isEmpty(item.values)) {
       message.warning(warningInfo)
@@ -371,7 +375,7 @@ const tableHeaders = ref<{ prop: string; label: string }[]>([]) // 多属性表�
  */
 const validateSku = () => {
   validateProperty()
-  let warningInfo = '请检查商品各行相关属性配置，'
+  let warningInfo = t('auto.views.mall.product.spu.components.SkuList.ka00b5e54')
   let validate = true // 默认通过
   for (const sku of formData.value!.skus!) {
     // 作为活动组件的校验

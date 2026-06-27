@@ -1,10 +1,13 @@
 <template>
-  <doc-alert title="自动回复" url="https://doc.iocoder.cn/mp/auto-reply/" />
+  <doc-alert
+    :title="t('auto.views.mp.autoReply.index.k0d874949')"
+    url="https://doc.iocoder.cn/mp/auto-reply/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form class="-mb-15px" :model="queryParams" :inline="true" label-width="68px">
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.autoReply.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
     </el-form>
@@ -23,14 +26,17 @@
             v-hasPermi="['mp:auto-reply:create']"
             v-if="msgType !== MsgType.Follow || list.length <= 0"
           >
-            <Icon icon="ep:plus" />新增
+            <Icon icon="ep:plus" />{{ t('extra.k002217aa') }}
           </el-button>
         </el-col>
       </el-row>
       <!-- tab 项 -->
       <el-tab-pane :name="MsgType.Follow">
         <template #label>
-          <el-row align="middle"><Icon icon="ep:star" class="mr-2px" /> 关注时回复</el-row>
+          <el-row align="middle"
+            ><Icon icon="ep:star" class="mr-2px" />
+            {{ t('auto.views.mp.autoReply.index.kd2417aec') }}</el-row
+          >
         </template>
       </el-tab-pane>
       <el-tab-pane :name="MsgType.Message">
@@ -76,7 +82,7 @@ import { ContentWrap } from '@/components/ContentWrap'
 import type { TabPaneName } from 'element-plus'
 import ReplyTable from './components/ReplyTable.vue'
 import { MsgType } from './components/types'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpAutoReply' })
 
 const message = useMessage() // 消息
@@ -185,10 +191,10 @@ const onUpdate = async (id: number) => {
 
 /** 删除按钮操作 */
 const onDelete = async (id: number) => {
-  await message.confirm('是否确认删除此数据?')
+  await message.confirm(t('auto.views.mp.autoReply.index.k6d15311a'))
   await MpAutoReplyApi.deleteAutoReply(id)
   await getList()
-  message.success('删除成功')
+  message.success(t('auto.views.mp.autoReply.index.k86e8d12a'))
 }
 
 const onSubmit = async () => {
@@ -210,10 +216,10 @@ const onSubmit = async () => {
 
   if (replyForm.value.id !== undefined) {
     await MpAutoReplyApi.updateAutoReply(submitForm)
-    message.success('修改成功')
+    message.success(t('auto.views.mp.autoReply.index.kf8913eb4'))
   } else {
     await MpAutoReplyApi.createAutoReply(submitForm)
-    message.success('新增成功')
+    message.success(t('auto.views.mp.autoReply.index.kcbdbd295'))
   }
 
   showDialog.value = false

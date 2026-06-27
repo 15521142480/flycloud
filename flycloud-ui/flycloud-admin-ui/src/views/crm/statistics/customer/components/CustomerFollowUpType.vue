@@ -10,8 +10,13 @@
   <!-- 统计列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="序号" align="center" type="index" width="80" />
-      <el-table-column label="跟进方式" align="center" prop="followUpType" min-width="200">
+      <el-table-column :label="t('common.index')" align="center" type="index" width="80" />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerFollowUpType.k90924195')"
+        align="center"
+        prop="followUpType"
+        min-width="200"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_FOLLOW_UP_TYPE" :value="scope.row.followUpType" />
         </template>
@@ -30,7 +35,7 @@ import { EChartsOption } from 'echarts'
 import { sumBy } from 'lodash-es'
 import { DICT_TYPE, getDictLabel } from '@/utils/dict'
 import { erpCalculatePercentage } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerFollowupType' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -41,7 +46,7 @@ const list = ref<CrmStatisticsFollowUpSummaryByTypeRespVO[]>([]) // 列表的数
 /** 饼图配置 */
 const echartsOption = reactive<EChartsOption>({
   title: {
-    text: '客户跟进方式分析',
+    text: t('auto.views.crm.statistics.customer.components.CustomerFollowUpType.k1a06d31e'),
     left: 'center'
   },
   legend: {
@@ -54,12 +59,15 @@ const echartsOption = reactive<EChartsOption>({
   },
   toolbox: {
     feature: {
-      saveAsImage: { show: true, name: '客户跟进方式分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpType.k1a06d31e')
+      } // 保存为图片
     }
   },
   series: [
     {
-      name: '跟进方式',
+      name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpType.k90924195'),
       type: 'pie',
       radius: '50%',
       data: [],

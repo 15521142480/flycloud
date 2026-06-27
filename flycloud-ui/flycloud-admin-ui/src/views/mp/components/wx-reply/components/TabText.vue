@@ -1,8 +1,14 @@
 <template>
-  <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="content" />
+  <el-input
+    type="textarea"
+    :rows="5"
+    :placeholder="t('auto.views.mp.components.wx_reply.components.TabText.kac962cb9')"
+    v-model="content"
+  />
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 const props = defineProps<{
   modelValue?: string | null
 }>()

@@ -1,5 +1,8 @@
 <template>
-  <Dialog title="关联商机" v-model="dialogVisible">
+  <Dialog
+    :title="t('auto.views.crm.business.components.BusinessListModal.k0b77721e')"
+    v-model="dialogVisible"
+  >
     <!-- 搜索工作栏 -->
     <ContentWrap>
       <el-form
@@ -9,20 +12,27 @@
         :inline="true"
         label-width="68px"
       >
-        <el-form-item label="商机名称" prop="name">
+        <el-form-item
+          :label="t('auto.views.crm.business.components.BusinessListModal.k84b59248')"
+          prop="name"
+        >
           <el-input
             v-model="queryParams.name"
-            placeholder="请输入商机名称"
+            :placeholder="t('auto.views.crm.business.components.BusinessListModal.k258a412f')"
             clearable
             @keyup.enter="handleQuery"
             class="!w-240px"
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-          <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+          <el-button @click="handleQuery"
+            ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+          >
+          <el-button @click="resetQuery"
+            ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+          >
           <el-button type="primary" @click="openForm()" v-hasPermi="['crm:business:create']">
-            <Icon icon="ep:plus" class="mr-5px" /> 新增
+            <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke34f6c01') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -38,7 +48,12 @@
         :show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column label="商机名称" fixed="left" align="center" prop="name">
+        <el-table-column
+          :label="t('auto.views.crm.business.components.BusinessListModal.k84b59248')"
+          fixed="left"
+          align="center"
+          prop="name"
+        >
           <template #default="scope">
             <el-link type="primary" :underline="false" @click="openDetail(scope.row.id)">
               {{ scope.row.name }}
@@ -76,7 +91,7 @@
 import * as BusinessApi from '@/api/crm/business'
 import BusinessForm from '../BusinessForm.vue'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const props = defineProps<{
   customerId: number
@@ -142,7 +157,7 @@ const submitForm = async () => {
     .getSelectionRows()
     .map((row: BusinessApi.BusinessVO) => row.id)
   if (businessIds.length === 0) {
-    return message.error('未选择商机')
+    return message.error(t('auto.views.crm.business.components.BusinessListModal.ka4eef8ff'))
   }
   dialogVisible.value = false
   emit('success', businessIds, businessRef.value.getSelectionRows())

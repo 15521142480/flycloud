@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,11 +8,14 @@
       class="-mb-15px"
       label-width="80px"
     >
-      <el-form-item label="文章分类" prop="categoryId">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.article.index.k8b397ec2')"
+        prop="categoryId"
+      >
         <el-select
           v-model="queryParams.categoryId"
           class="!w-240px"
-          placeholder="全部"
+          :placeholder="t('auto.views.mall.promotion.article.index.k778fc8f9')"
           @keyup.enter="handleQuery"
         >
           <el-option
@@ -24,17 +26,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="文章标题" prop="title">
+      <el-form-item :label="t('auto.views.mall.promotion.article.index.kce8733b4')" prop="title">
         <el-input
           v-model="queryParams.title"
           class="!w-240px"
           clearable
-          placeholder="请输入文章标题"
+          :placeholder="t('auto.views.mall.promotion.article.index.k06ba23b7')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="请选择状态">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.mall.promotion.article.index.kdba277df')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -43,13 +50,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.mall.promotion.article.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.mall.promotion.article.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -57,11 +64,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.kbfd7542b') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kbba7883a') }}
         </el-button>
         <el-button
           v-hasPermi="['promotion:article:create']"
@@ -70,7 +77,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.kec7f1754') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -79,7 +86,12 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" label="封面" min-width="80" prop="picUrl">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.promotion.article.index.kb8bb31e1')"
+        min-width="80"
+        prop="picUrl"
+      >
         <template #default="{ row }">
           <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
         </template>
@@ -148,11 +160,10 @@ import ArticleForm from './ArticleForm.vue'
 import * as ArticleCategoryApi from '@/api/mall/promotion/articleCategory'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { createImageViewer } from '@/components/ImageViewer'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionArticle' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

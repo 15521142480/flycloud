@@ -41,7 +41,7 @@
         <el-form-item prop="username">
           <el-input
             v-model="registerData.registerForm.name"
-            placeholder="昵称"
+            :placeholder="t('auto.views.login.components.RegisterForm.k25124ed7')"
             size="large"
             :prefix-icon="iconAvatar"
           />
@@ -84,19 +84,19 @@
           />
         </el-form-item>
       </el-col>
-<!--      <Verify-->
-<!--        ref="verify"-->
-<!--        :captchaType="captchaType"-->
-<!--        :imgSize="{ width: '400px', height: '200px' }"-->
-<!--        mode="pop"-->
-<!--        @success="handleRegister"-->
-<!--      />-->
+      <!--      <Verify-->
+      <!--        ref="verify"-->
+      <!--        :captchaType="captchaType"-->
+      <!--        :imgSize="{ width: '400px', height: '200px' }"-->
+      <!--        mode="pop"-->
+      <!--        @success="handleRegister"-->
+      <!--      />-->
     </el-row>
     <XButton :title="t('login.hasUser')" class="w-[100%]" @click="handleBackLogin()" />
   </el-form>
 </template>
 <script lang="ts" setup>
-import {ElLoading, ElMessage} from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
 import LoginFormTitle from './LoginFormTitle.vue'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { useIcon } from '@/hooks/web/useIcon'
@@ -104,10 +104,8 @@ import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
 import { LoginStateEnum, useLoginState } from './useLogin'
-
-defineOptions({ name: 'RegisterForm' })
-
 const { t } = useI18n()
+defineOptions({ name: 'RegisterForm' })
 const iconHouse = useIcon({ icon: 'ep:house' })
 const iconAvatar = useIcon({ icon: 'ep:avatar' })
 const iconLock = useIcon({ icon: 'ep:lock' })
@@ -124,7 +122,7 @@ const getShow = computed(() => unref(getLoginState) === LoginStateEnum.REGISTER)
 
 const equalToPassword = (rule, value, callback) => {
   if (registerData.registerForm.password !== value) {
-    callback(new Error('两次输入的密码不一致'))
+    callback(new Error(t('auto.views.login.components.RegisterForm.k3e2b222d')))
   } else {
     callback()
   }
@@ -132,24 +130,68 @@ const equalToPassword = (rule, value, callback) => {
 
 const registerRules = {
   tenantName: [
-    { required: true, trigger: 'blur', message: '请输入您所属的租户' },
-    { min: 2, max: 20, message: '租户账号长度必须介于 2 和 20 之间', trigger: 'blur' }
+    {
+      required: true,
+      trigger: 'blur',
+      message: t('auto.views.login.components.RegisterForm.k67cc21f9')
+    },
+    {
+      min: 2,
+      max: 20,
+      message: t('auto.views.login.components.RegisterForm.k41e1ad78'),
+      trigger: 'blur'
+    }
   ],
   username: [
-    { required: true, trigger: 'blur', message: '请输入您的账号' },
-    { min: 4, max: 30, message: '用户账号长度必须介于 4 和 30 之间', trigger: 'blur' }
+    {
+      required: true,
+      trigger: 'blur',
+      message: t('auto.views.login.components.RegisterForm.k9ce25b70')
+    },
+    {
+      min: 4,
+      max: 30,
+      message: t('auto.views.login.components.RegisterForm.k46617d2a'),
+      trigger: 'blur'
+    }
   ],
   name: [
-    { required: true, trigger: 'blur', message: '请输入您的昵称' },
-    { min: 0, max: 30, message: '昵称长度必须介于 0 和 30 之间', trigger: 'blur' }
+    {
+      required: true,
+      trigger: 'blur',
+      message: t('auto.views.login.components.RegisterForm.k5375e715')
+    },
+    {
+      min: 0,
+      max: 30,
+      message: t('auto.views.login.components.RegisterForm.k6fe364b6'),
+      trigger: 'blur'
+    }
   ],
   password: [
-    { required: true, trigger: 'blur', message: '请输入您的密码' },
-    { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' },
-    { pattern: /^[^<>"'|\\]+$/, message: '不能包含非法字符：< > " \' \\\ |', trigger: 'blur' }
+    {
+      required: true,
+      trigger: 'blur',
+      message: t('auto.views.login.components.RegisterForm.k5358b49e')
+    },
+    {
+      min: 5,
+      max: 20,
+      message: t('auto.views.login.components.RegisterForm.k5449dc89'),
+      trigger: 'blur'
+    },
+    {
+      pattern: /^[^<>"'|\\]+$/,
+      message: t('auto.views.login.components.RegisterForm.kf268de4d'),
+      trigger: 'blur'
+    }
   ],
   confirmPassword: [
-    { required: true, trigger: 'blur', message: '请再次输入您的密码' },
+    {
+      required: true,
+      trigger: 'blur',
+      message: t('auto.views.login.components.RegisterForm.k744e18b2')
+    },
     { required: true, validator: equalToPassword, trigger: 'blur' }
   ]
 }
@@ -183,7 +225,7 @@ const handleRegister = async (params: any) => {
     }
 
     // todo 外部注册待开发，先用内部注册
-    ElMessage.warning("请登录后在 系统管理>用户管理 注册新用户！")
+    ElMessage.warning(t('auto.views.login.components.RegisterForm.kbd3292f6'))
     return
 
     // const res = await LoginApi.register(registerData.registerForm)

@@ -36,7 +36,7 @@
     </defs>
 
     <!-- 审批记录 -->
-    <el-dialog :title="dialogTitle || '审批记录'" v-model="dialogVisible" width="1000px">
+    <el-dialog ::title="t('extra.ka40ac3cf')" v-model="dialogVisible" width="1000px">
       <el-row>
         <el-table
           :data="selectTasks"
@@ -45,14 +45,16 @@
           header-cell-class-name="table-header-gray"
         >
           <el-table-column
-            label="序号"
+            :label="t('common.index')"
             header-align="center"
             align="center"
             type="index"
             width="50"
           />
           <el-table-column
-            label="审批人"
+            :label="
+              t('auto.components.bpmnProcessDesigner.package.designer.ProcessViewer.k9b446de3')
+            "
             min-width="100"
             align="center"
             v-if="selectActivityType === 'bpmn:UserTask'"
@@ -144,7 +146,7 @@ import { ZoomOut, ZoomIn, ScaleToOriginal } from '@element-plus/icons-vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter, formatPast2 } from '@/utils/formatTime'
 import { BpmProcessInstanceStatus } from '@/utils/constants'
-
+const { t } = useI18n()
 const props = defineProps({
   xml: {
     type: String,
@@ -235,7 +237,9 @@ const onSelectElement = (element: any) => {
     selectTasks.value = tasks.value.filter((item: any) => item?.taskDefinitionKey === element.id)
     dialogVisible.value = true
   } else if (activityType === 'bpmn:EndEvent' || activityType === 'bpmn:StartEvent') {
-    dialogTitle.value = '审批信息'
+    dialogTitle.value = t(
+      'auto.components.bpmnProcessDesigner.package.designer.ProcessViewer.kd7fd2db8'
+    )
     selectTasks.value = [
       {
         assigneeUser: processInstance.value.startUser,

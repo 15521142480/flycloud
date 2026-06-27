@@ -14,19 +14,20 @@
     <el-icon>
       <Icon v-if="playing !== true" icon="ep:video-play" :size="32" />
       <Icon v-else icon="ep:video-pause" :size="32" />
-      <span class="amr-duration" v-if="duration">{{ duration }} 秒</span>
+      <span class="amr-duration" v-if="duration">{{ t('extra.k0538a9e2', { p0: duration }) }}</span>
     </el-icon>
     <div v-if="content">
-      <el-tag type="success" size="small">语音识别</el-tag>
+      <el-tag type="success" size="small">{{
+        t('auto.views.mp.components.wx_voice_play.main.kdf3dd6ab')
+      }}</el-tag>
       {{ content }}
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-// 因为微信语音是 amr 格式，所以需要用到 amr 解码器：https://www.npmjs.com/package/benz-amr-recorder
 import BenzAMRRecorder from 'benz-amr-recorder'
-
+const { t } = useI18n()
 defineOptions({ name: 'WxVoicePlayer' })
 
 const props = defineProps({

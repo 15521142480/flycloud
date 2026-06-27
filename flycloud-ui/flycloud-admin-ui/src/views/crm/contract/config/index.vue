@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <el-form
       ref="formRef"
@@ -12,9 +11,9 @@
         <!-- 操作 -->
         <template #header>
           <div class="flex items-center justify-between">
-            <CardTitle title="合同配置设置" />
+            <CardTitle :title="t('auto.views.crm.contract.config.index.k73e70892')" />
             <el-button type="primary" @click="onSubmit" v-hasPermi="['crm:contract-config:update']">
-              保存
+              {{ t('extra.kc56b2e2d') }}
             </el-button>
           </div>
         </template>
@@ -41,11 +40,10 @@
 <script setup lang="ts">
 import * as ContractConfigApi from '@/api/crm/contract/config'
 import { CardTitle } from '@/components/Card'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContractConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const formLoading = ref(false)
 const formData = ref({

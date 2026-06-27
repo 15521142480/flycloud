@@ -9,12 +9,18 @@
     >
       <el-row>
         <el-col :span="8">
-          <el-form-item label="商机名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入商机名称" />
+          <el-form-item :label="t('auto.views.crm.business.BusinessForm.k84b59248')" prop="name">
+            <el-input
+              v-model="formData.name"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k258a412f')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="负责人" prop="ownerUserId">
+          <el-form-item
+            :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+            prop="ownerUserId"
+          >
             <el-select
               v-model="formData.ownerUserId"
               :disabled="formType !== 'create'"
@@ -30,11 +36,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="客户名称" prop="customerId">
+          <el-form-item
+            :label="t('auto.views.crm.business.BusinessForm.ke941d410')"
+            prop="customerId"
+          >
             <el-select
               :disabled="formData.customerDefault"
               v-model="formData.customerId"
-              placeholder="请选择客户"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k6bdb05d6')"
               class="w-1/1"
             >
               <el-option
@@ -49,10 +58,13 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="商机状态组" prop="statusTypeId">
+          <el-form-item
+            :label="t('auto.views.crm.business.BusinessForm.k9d0edbd1')"
+            prop="statusTypeId"
+          >
             <el-select
               v-model="formData.statusTypeId"
-              placeholder="请选择商机状态组"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k7e86c742')"
               clearable
               class="w-1/1"
               :disabled="formType !== 'create'"
@@ -67,26 +79,33 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="预计成交日期" prop="dealTime">
+          <el-form-item
+            :label="t('auto.views.crm.business.BusinessForm.k491e6c11')"
+            prop="dealTime"
+          >
             <el-date-picker
               v-model="formData.dealTime"
               type="date"
               value-format="x"
-              placeholder="选择预计成交日期"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k1dc2b723')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="备注" prop="remark">
-            <el-input type="textarea" v-model="formData.remark" placeholder="请输入备注" />
+          <el-form-item :label="t('common.remark')" prop="remark">
+            <el-input
+              type="textarea"
+              v-model="formData.remark"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k57e709d9')"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <!-- 子表的表单 -->
       <ContentWrap>
         <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-          <el-tab-pane label="产品清单" name="product">
+          <el-tab-pane :label="t('auto.views.crm.business.BusinessForm.k24e46854')" name="product">
             <BusinessProductForm
               ref="productFormRef"
               :products="formData.products"
@@ -97,7 +116,10 @@
       </ContentWrap>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="产品总金额" prop="totalProductPrice">
+          <el-form-item
+            :label="t('auto.views.crm.business.BusinessForm.k59f8bec2')"
+            prop="totalProductPrice"
+          >
             <el-input
               disabled
               v-model="formData.totalProductPrice"
@@ -106,10 +128,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="整单折扣（%）" prop="discountPercent">
+          <el-form-item
+            :label="t('auto.views.crm.business.BusinessForm.kf5c8d166')"
+            prop="discountPercent"
+          >
             <el-input-number
               v-model="formData.discountPercent"
-              placeholder="请输入整单折扣"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k91dc03bd')"
               controls-position="right"
               :min="0"
               :precision="2"
@@ -118,11 +143,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="折扣后金额" prop="price">
+          <el-form-item :label="t('auto.views.crm.business.BusinessForm.kead5100b')" prop="price">
             <el-input
               disabled
               v-model="formData.totalPrice"
-              placeholder="请输入商机金额"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k044d4ce2')"
               :formatter="erpPriceTableColumnFormatter"
             />
           </el-form-item>
@@ -130,8 +155,12 @@
       </el-row>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.crm.business.BusinessForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.business.BusinessForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -143,8 +172,7 @@ import * as UserApi from '@/api/system/user'
 import { useUserStore } from '@/store/modules/user'
 import BusinessProductForm from './components/BusinessProductForm.vue'
 import { erpPriceMultiply, erpPriceTableColumnFormatter } from '@/utils'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -167,10 +195,34 @@ const formData = ref({
   customerDefault: false
 })
 const formRules = reactive({
-  name: [{ required: true, message: '商机名称不能为空', trigger: 'blur' }],
-  customerId: [{ required: true, message: '客户不能为空', trigger: 'blur' }],
-  ownerUserId: [{ required: true, message: '负责人不能为空', trigger: 'blur' }],
-  statusTypeId: [{ required: true, message: '商机状态组不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.BusinessForm.k3339b9f8'),
+      trigger: 'blur'
+    }
+  ],
+  customerId: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.BusinessForm.k920199e1'),
+      trigger: 'blur'
+    }
+  ],
+  ownerUserId: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.BusinessForm.kc40a3652'),
+      trigger: 'blur'
+    }
+  ],
+  statusTypeId: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.BusinessForm.k0f5a3fc1'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表

@@ -1,5 +1,7 @@
 <template>
-  <el-button class="ml-10px" type="text" @click="selectCoupon">添加优惠劵</el-button>
+  <el-button class="ml-10px" type="text" @click="selectCoupon">{{
+    t('auto.views.mall.promotion.rewardActivity.components.RewardRuleCouponSelect.kd6ac9789')
+  }}</el-button>
 
   <div
     v-for="(item, index) in list"
@@ -7,22 +9,24 @@
     class="coupon-list-item p-x-10px mb-10px flex justify-between"
   >
     <div class="coupon-list-item-left flex items-center flex-wrap">
-      <div class="mr-10px"> 优惠券名称：{{ item.name }}</div>
+      <div class="mr-10px">{{ t('extra.k4c5ecb7c', { p0: item.name }) }}</div>
       <div class="mr-10px">
-        范围：
+        {{ t('extra.kd5641bee') }}
         <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="item.productScope" />
       </div>
       <div class="flex items-center">
-        优惠：
+        {{ t('extra.k74b838c7') }}
         <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="item.discountType" />
         {{ discountFormat(item) }}
       </div>
     </div>
     <div class="coupon-list-item-right">
-      送
+      {{ t('extra.k95d3bcf4') }}
       <el-input v-model="item.giveCount" class="w-150px! p-x-20px!" placeholder="" type="number" />
-      张
-      <el-button class="ml-20px" link type="danger" @click="deleteCoupon(index)">删除</el-button>
+      {{ t('extra.kc30cb0c6') }}
+      <el-button class="ml-20px" link type="danger" @click="deleteCoupon(index)">{{
+        t('common.delete')
+      }}</el-button>
     </div>
   </div>
 
@@ -43,7 +47,7 @@ import { CouponTemplateTakeTypeEnum } from '@/utils/constants'
 import { discountFormat } from '@/views/mall/promotion/coupon/formatter'
 import { isEmpty } from '@/utils/is'
 import { useVModel } from '@vueuse/core'
-
+const { t } = useI18n()
 defineOptions({ name: 'RewardRuleCouponSelect' })
 
 const props = defineProps<{

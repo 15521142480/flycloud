@@ -1,29 +1,46 @@
 <template>
-  <doc-alert title="【交易】快递发货" url="https://doc.iocoder.cn/mall/trade-delivery-express/" />
+  <doc-alert
+    :title="t('auto.views.mall.trade.delivery.pickUpStore.index.k13435b1a')"
+    url="https://doc.iocoder.cn/mall/trade-delivery-express/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form ref="queryFormRef" :inline="true" :model="queryParams" class="-mb-15px">
-      <el-form-item label="门店手机" prop="phone">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.index.kd25150b2')"
+        prop="phone"
+      >
         <el-input
           v-model="queryParams.phone"
           class="!w-240px"
           clearable
-          placeholder="请输门店手机"
+          :placeholder="t('auto.views.mall.trade.delivery.pickUpStore.index.k96651c34')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="门店名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.index.k7bfb547b')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输门店名称"
+          :placeholder="t('auto.views.mall.trade.delivery.pickUpStore.index.k33434707')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="门店状态" prop="status">
-        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="门店状态">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.index.k6016f100')"
+        prop="status"
+      >
+        <el-select
+          v-model="queryParams.status"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.mall.trade.delivery.pickUpStore.index.k6016f100')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -32,12 +49,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.mall.trade.delivery.pickUpStore.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.mall.trade.delivery.pickUpStore.index.k1f291968')"
           type="datetimerange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -45,11 +62,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k44a85076') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k07371200') }}
         </el-button>
         <el-button
           v-hasPermi="['trade:delivery:pick-up-store:create']"
@@ -58,7 +75,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.kca61db51') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -67,10 +84,23 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" min-width="80" prop="id" />
-      <el-table-column label="门店 logo" min-width="100" prop="logo">
+      <el-table-column
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.index.k9f42dac6')"
+        min-width="80"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.index.k92ac903c')"
+        min-width="100"
+        prop="logo"
+      >
         <template #default="scope">
-          <img v-if="scope.row.logo" :src="scope.row.logo" alt="门店 logo" class="h-50px" />
+          <img
+            v-if="scope.row.logo"
+            :src="scope.row.logo"
+            :alt="t('auto.views.mall.trade.delivery.pickUpStore.index.k92ac903c')"
+            class="h-50px"
+          />
         </template>
       </el-table-column>
       <el-table-column label="门店名称" min-width="150" prop="name" />
@@ -123,9 +153,8 @@ import * as DeliveryPickUpStoreApi from '@/api/mall/trade/delivery/pickUpStore'
 import DeliveryPickUpStoreForm from './PickUpStoreForm.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const total = ref(0) // 列表的总页数
 const loading = ref(true) // 列表的加载中

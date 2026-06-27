@@ -10,8 +10,22 @@
   <!-- 统计列表 -->
   <el-card class="mt-16px" shadow="never">
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" fixed="left" label="序号" type="index" width="80" />
-      <el-table-column align="center" fixed="left" label="商机名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('common.index')"
+        type="index"
+        width="80"
+      />
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="
+          t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.k84b59248')
+        "
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -107,7 +121,7 @@ import {
 import { EChartsOption } from 'echarts'
 import { erpCalculatePercentage, erpPriceTableColumnFormatter } from '@/utils'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'BusinessSummary' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -143,7 +157,11 @@ const echartsOption = reactive<EChartsOption>({
     }
   },
   legend: {
-    data: ['赢单转化率', '商机总数', '赢单商机数'],
+    data: [
+      t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.ke5d41bf1'),
+      t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.k1a61cef8'),
+      t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.k1c3db37b')
+    ],
     bottom: '0px',
     itemWidth: 14
   },
@@ -178,7 +196,7 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '赢单转化率',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.ke5d41bf1'),
       axisTick: {
         alignWithLabel: true,
         lineStyle: { width: 0 }
@@ -197,14 +215,16 @@ const echartsOption = reactive<EChartsOption>({
     },
     {
       type: 'value',
-      name: '商机数',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.kf6b4649f'),
       axisTick: {
         alignWithLabel: true,
         lineStyle: { width: 0 }
       },
       axisLabel: {
         color: '#BDBDBD',
-        formatter: '{value}个'
+        formatter: t(
+          'auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.k068efbf5'
+        )
       },
       /** 坐标轴轴线相关设置 */
       axisLine: {
@@ -217,20 +237,20 @@ const echartsOption = reactive<EChartsOption>({
   ],
   series: [
     {
-      name: '赢单转化率',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.ke5d41bf1'),
       type: 'line',
       yAxisIndex: 0,
       data: []
     },
     {
-      name: '商机总数',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.k1a61cef8'),
       type: 'bar',
       yAxisIndex: 1,
       barWidth: 15,
       data: []
     },
     {
-      name: '赢单商机数',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.k1c3db37b'),
       type: 'bar',
       yAxisIndex: 1,
       barWidth: 15,

@@ -2,16 +2,20 @@
   <div class="upload-container">
     <!-- 标题 -->
     <div class="title">
-      <div>选择数据源</div>
+      <div>{{ t('auto.views.knowledge.dataset_form.form_step1.k422b9e31') }}</div>
     </div>
 
     <!-- 数据源选择 -->
-    <div class="resource-btn" >导入已有文本</div>
+    <div class="resource-btn">{{
+      t('auto.views.knowledge.dataset_form.form_step1.k1fbbcfcb')
+    }}</div>
 
     <!-- 上传文件区域 -->
     <el-form>
       <div class="upload-section">
-        <div class="upload-label">上传文本文件</div>
+        <div class="upload-label">{{
+          t('auto.views.knowledge.dataset_form.form_step1.k63b5e7b1')
+        }}</div>
         <el-upload
           class="upload-area"
           action="#"
@@ -22,29 +26,36 @@
           drag
         >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">拖拽文件至此，或者 <em>选择文件</em></div>
+          <div class="el-upload__text"
+            >{{ t('auto.views.knowledge.dataset_form.form_step1.k38a45f41') }}
+            <em>{{ t('auto.views.knowledge.dataset_form.form_step1.k21a6f5a8') }}</em></div
+          >
           <div class="el-upload__tip">
-            已支持 TXT、MARKDOWN、PDF、HTML、XLSX、XLS、DOCX、CSV、EML、MSG、PPTX、PPT、XML、EPUB，每个文件不超过 15MB。
+            {{ t('extra.kdb956b18') }}
           </div>
         </el-upload>
       </div>
 
       <!-- 下一步按钮 -->
       <div class="next-button">
-        <el-button type="primary" :disabled="!fileList.length">下一步</el-button>
+        <el-button type="primary" :disabled="!fileList.length">{{
+          t('auto.views.knowledge.dataset_form.form_step1.kea0ef2ae')
+        }}</el-button>
       </div>
     </el-form>
 
     <!-- 知识库创建 -->
     <div class="create-knowledge">
-      <el-link type="primary" underline>创建一个空知识库</el-link>
+      <el-link type="primary" underline>{{
+        t('auto.views.knowledge.dataset_form.form_step1.k98293631')
+      }}</el-link>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-
+const { t } = useI18n()
 const fileList = ref([])
 
 const handleRemove = (file, fileList) => {

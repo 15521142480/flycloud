@@ -9,12 +9,12 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="产品" prop="productId">
+      <el-form-item :label="t('auto.views.erp.stock.stock.index.k6cc98552')" prop="productId">
         <el-select
           v-model="queryParams.productId"
           clearable
           filterable
-          placeholder="请选择产品"
+          :placeholder="t('auto.views.erp.stock.stock.index.k59a0d3d1')"
           class="!w-240px"
         >
           <el-option
@@ -25,12 +25,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="仓库" prop="warehouseId">
+      <el-form-item :label="t('auto.views.erp.stock.stock.index.k55914e1c')" prop="warehouseId">
         <el-select
           v-model="queryParams.warehouseId"
           clearable
           filterable
-          placeholder="请选择仓库"
+          :placeholder="t('auto.views.erp.stock.stock.index.k7aaa3bbb')"
           class="!w-240px"
         >
           <el-option
@@ -42,15 +42,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:stock:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1f42eba7') }}
         </el-button>
         <el-button
           type="success"
@@ -59,7 +63,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:stock:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kaec9c9c3') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -68,16 +72,32 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="产品单位" align="center" prop="unitName" />
-      <el-table-column label="产品分类" align="center" prop="categoryName" />
       <el-table-column
-        label="库存量"
+        :label="t('auto.views.erp.stock.stock.index.kabc0ac79')"
+        align="center"
+        prop="productName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.stock.index.k298ff4b9')"
+        align="center"
+        prop="unitName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.stock.index.k5bda0e7d')"
+        align="center"
+        prop="categoryName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.stock.index.k71c2a10c')"
         align="center"
         prop="count"
         :formatter="erpCountTableColumnFormatter"
       />
-      <el-table-column label="仓库" align="center" prop="warehouseName" />
+      <el-table-column
+        :label="t('auto.views.erp.stock.stock.index.k55914e1c')"
+        align="center"
+        prop="warehouseName"
+      />
     </el-table>
     <!-- 分页 -->
     <Pagination
@@ -97,10 +117,10 @@ import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 import { erpCountTableColumnFormatter } from '@/utils'
 
 /** ERP 产品库存列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpStock' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<StockVO[]>([]) // 列表的数据
@@ -167,7 +187,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockApi.exportStock(queryParams)
-    download.excel(data, '产品库存.xls')
+    download.excel(data, t('auto.views.erp.stock.stock.index.k2458d0e1'))
   } catch {
   } finally {
     exportLoading.value = false

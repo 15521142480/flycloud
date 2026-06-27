@@ -7,27 +7,48 @@
       label-width="120px"
       v-loading="formLoading"
     >
-      <el-form-item label="秒杀时段名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入秒杀时段名称" />
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kb4a36dd0')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kc30b664c')"
+        />
       </el-form-item>
-      <el-form-item label="开始时间点" prop="startTime">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k871bfb38')"
+        prop="startTime"
+      >
         <el-time-picker
           v-model="formData.startTime"
           value-format="HH:mm:ss"
-          placeholder="选择开始时间点"
+          :placeholder="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k551c417e')"
         />
       </el-form-item>
-      <el-form-item label="结束时间点" prop="endTime">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k52b5e70f')"
+        prop="endTime"
+      >
         <el-time-picker
           v-model="formData.endTime"
           value-format="HH:mm:ss"
-          placeholder="选择结束时间点"
+          :placeholder="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kb3dfa641')"
         />
       </el-form-item>
-      <el-form-item label="秒杀轮播图" prop="sliderPicUrls">
-        <UploadImgs v-model="formData.sliderPicUrls" placeholder="请输入秒杀轮播图" />
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kc00cb496')"
+        prop="sliderPicUrls"
+      >
+        <UploadImgs
+          v-model="formData.sliderPicUrls"
+          :placeholder="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kdab23eeb')"
+        />
       </el-form-item>
-      <el-form-item label="活动状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k65a972d7')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -40,8 +61,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -51,9 +76,8 @@ import { SeckillConfigApi, SeckillConfigVO } from '@/api/mall/promotion/seckill/
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** 秒杀时段 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'SeckillConfigForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -69,10 +93,34 @@ const formData = ref({
   status: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '秒杀时段名称不能为空', trigger: 'blur' }],
-  startTime: [{ required: true, message: '开始时间点不能为空', trigger: 'blur' }],
-  endTime: [{ required: true, message: '结束时间点不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '活动状态不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k4a906aec'),
+      trigger: 'blur'
+    }
+  ],
+  startTime: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k3f858729'),
+      trigger: 'blur'
+    }
+  ],
+  endTime: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.k38496b12'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.seckill.config.SeckillConfigForm.kdbb0aa70'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

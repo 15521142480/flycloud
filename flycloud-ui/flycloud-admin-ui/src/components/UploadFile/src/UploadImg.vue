@@ -53,7 +53,7 @@ import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { createImageViewer } from '@/components/ImageViewer'
 import { useUpload } from '@/components/UploadFile/src/useUpload'
-
+const { t } = useI18n()
 defineOptions({ name: 'UploadImg' })
 
 type FileTypes =
@@ -81,7 +81,6 @@ const props = defineProps({
   showDelete: propTypes.bool.def(true), // 是否显示删除按钮
   showBtnText: propTypes.bool.def(true) // 是否显示按钮文字
 })
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 // 生成组件唯一id
 const uuid = ref('id-' + generateUUID())
@@ -110,20 +109,20 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize
   const imgType = props.fileType
   if (!imgType.includes(rawFile.type as FileTypes))
-    message.notifyWarning('上传图片不符合所需的格式！')
-  if (!imgSize) message.notifyWarning(`上传图片大小不能超过 ${props.fileSize}M！`)
+    message.notifyWarning(t('auto.components.UploadFile.src.UploadImg.k4e46f515'))
+  if (!imgSize) message.notifyWarning(t('extra.k450ec046', { p0: props.fileSize }))
   return imgType.includes(rawFile.type as FileTypes) && imgSize
 }
 
 // 图片上传成功提示
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  message.success('上传成功')
+  message.success(t('auto.components.UploadFile.src.UploadImg.kea9f9179'))
   emit('update:modelValue', res.data)
 }
 
 // 图片上传错误提示
 const uploadError = () => {
-  message.notifyError('图片上传失败，请您重新上传！')
+  message.notifyError(t('auto.components.UploadFile.src.UploadImg.k3d25606c'))
 }
 </script>
 <style lang="scss" scoped>

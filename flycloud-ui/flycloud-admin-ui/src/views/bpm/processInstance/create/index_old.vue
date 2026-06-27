@@ -1,5 +1,4 @@
 <template>
-
   <!-- 第一步，通过流程定义的列表，选择对应的流程 -->
   <ContentWrap v-if="!selectProcessDefinition" v-loading="loading">
     <el-tabs tab-position="left" v-model="categoryActive">
@@ -100,7 +99,7 @@ import ProcessInstanceBpmnViewer from '../detail/ProcessInstanceBpmnViewer.vue'
 import { CategoryApi } from '@/api/bpm/category'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as UserApi from '@/api/system/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessInstanceCreate' })
 
 const route = useRoute() // 路由
@@ -132,14 +131,14 @@ const getList = async () => {
     if (processInstanceId?.length > 0) {
       const processInstance = await ProcessInstanceApi.getProcessInstance(processInstanceId)
       if (!processInstance) {
-        message.error('重新发起流程失败，原因：流程实例不存在')
+        message.error(t('auto.views.bpm.processInstance.create.index_old.k018fc382'))
         return
       }
       const processDefinition = processDefinitionList.value.find(
         (item) => item.key == processInstance.processDefinition?.key
       )
       if (!processDefinition) {
-        message.error('重新发起流程失败，原因：流程定义不存在')
+        message.error(t('auto.views.bpm.processInstance.create.index_old.k552d3b29'))
         return
       }
       await handleSelect(processDefinition, processInstance.formVariables)
@@ -206,14 +205,18 @@ const handleSelect = async (row, formVariables) => {
         detailForm.value.rule.push({
           type: 'startUserSelect',
           props: {
-            title: '指定审批人'
+            title: t('auto.views.bpm.processInstance.create.index_old.k9f4b1131')
           }
         })
         // 设置校验规则
         for (const userTask of startUserSelectTasks.value) {
           startUserSelectAssignees.value[userTask.id] = []
           startUserSelectAssigneesFormRules.value[userTask.id] = [
-            { required: true, message: '请选择审批人', trigger: 'blur' }
+            {
+              required: true,
+              message: t('auto.views.bpm.processInstance.create.index_old.k263670a1'),
+              trigger: 'blur'
+            }
           ]
         }
         // 加载用户列表
@@ -248,7 +251,7 @@ const submitForm = async (formData) => {
       startUserSelectAssignees: startUserSelectAssignees.value
     })
     // 提示
-    message.success('发起流程成功')
+    message.success(t('auto.views.bpm.processInstance.create.index_old.kdba2137f'))
     // 跳转回去
     delView(unref(currentRoute))
     await push({

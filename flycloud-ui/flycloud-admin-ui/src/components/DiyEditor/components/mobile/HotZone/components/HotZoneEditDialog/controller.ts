@@ -1,7 +1,8 @@
 import { HotZoneItemProperty } from '@/components/DiyEditor/components/mobile/HotZone/config'
 import { StyleValue } from 'vue'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 热区的最小宽高
 export const HOT_ZONE_MIN_SIZE = 100
 
 // 控制的类型
@@ -22,7 +23,7 @@ export interface ControlDot {
 // 热区的8个控制点
 export const CONTROL_DOT_LIST = [
   {
-    position: '左上角',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.k2acda7f9'),
     types: [
       CONTROL_TYPE_ENUM.LEFT,
       CONTROL_TYPE_ENUM.TOP,
@@ -32,37 +33,37 @@ export const CONTROL_DOT_LIST = [
     style: { left: '-5px', top: '-5px', cursor: 'nwse-resize' }
   },
   {
-    position: '上方中间',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.k5a237980'),
     types: [CONTROL_TYPE_ENUM.TOP, CONTROL_TYPE_ENUM.HEIGHT],
     style: { left: '50%', top: '-5px', cursor: 'n-resize', transform: 'translateX(-50%)' }
   },
   {
-    position: '右上角',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.k88f9a10c'),
     types: [CONTROL_TYPE_ENUM.TOP, CONTROL_TYPE_ENUM.WIDTH, CONTROL_TYPE_ENUM.HEIGHT],
     style: { right: '-5px', top: '-5px', cursor: 'nesw-resize' }
   },
   {
-    position: '右侧中间',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.k6ad35705'),
     types: [CONTROL_TYPE_ENUM.WIDTH],
     style: { right: '-5px', top: '50%', cursor: 'e-resize', transform: 'translateX(-50%)' }
   },
   {
-    position: '右下角',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.k0f1904a7'),
     types: [CONTROL_TYPE_ENUM.WIDTH, CONTROL_TYPE_ENUM.HEIGHT],
     style: { right: '-5px', bottom: '-5px', cursor: 'nwse-resize' }
   },
   {
-    position: '下方中间',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.kb3c656cc'),
     types: [CONTROL_TYPE_ENUM.HEIGHT],
     style: { left: '50%', bottom: '-5px', cursor: 's-resize', transform: 'translateX(-50%)' }
   },
   {
-    position: '左下角',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.k2ce9bcda'),
     types: [CONTROL_TYPE_ENUM.LEFT, CONTROL_TYPE_ENUM.WIDTH, CONTROL_TYPE_ENUM.HEIGHT],
     style: { left: '-5px', bottom: '-5px', cursor: 'nesw-resize' }
   },
   {
-    position: '左侧中间',
+    position: t('auto.components.DiyEditor.components.mobile.HotZone.components.kec5ee968'),
     types: [CONTROL_TYPE_ENUM.LEFT, CONTROL_TYPE_ENUM.WIDTH],
     style: { left: '-5px', top: '50%', cursor: 'w-resize', transform: 'translateX(-50%)' }
   }

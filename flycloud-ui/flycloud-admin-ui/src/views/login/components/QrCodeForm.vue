@@ -21,10 +21,8 @@ import logoImg from '@/assets/svgs/login-ball.jpg'
 
 import LoginFormTitle from './LoginFormTitle.vue'
 import { LoginStateEnum, useLoginState } from './useLogin'
-
-defineOptions({ name: 'QrCodeForm' })
-
 const { t } = useI18n()
+defineOptions({ name: 'QrCodeForm' })
 const { handleBackLogin, getLoginState } = useLoginState()
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.QR_CODE)
 </script>

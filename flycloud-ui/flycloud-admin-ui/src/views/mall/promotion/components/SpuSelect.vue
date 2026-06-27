@@ -7,7 +7,7 @@
             v-model="queryParams.name"
             class="!w-240px"
             clearable
-            placeholder="请输入商品名称"
+            :placeholder="t('auto.views.mall.promotion.components.SpuSelect.k5c6bf9b9')"
             @keyup.enter="handleQuery"
           />
         </el-col>
@@ -19,7 +19,7 @@
             check-strictly
             class="w-1/1"
             node-key="id"
-            placeholder="请选择商品分类"
+            :placeholder="t('auto.views.mall.promotion.components.SpuSelect.ke71fcc11')"
           />
         </el-col>
         <el-col :span="6">
@@ -27,8 +27,8 @@
             v-model="queryParams.createTime"
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-240px"
-            end-placeholder="结束日期"
-            start-placeholder="开始日期"
+            :end-placeholder="t('auto.views.mall.promotion.components.SpuSelect.kf4b9b2b5')"
+            :start-placeholder="t('auto.views.mall.promotion.components.SpuSelect.k1f291968')"
             type="daterange"
             value-format="YYYY-MM-DD HH:mm:ss"
           />
@@ -36,11 +36,11 @@
         <el-col :span="6">
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            搜索
+            {{ t('extra.k7e756702') }}
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            重置
+            {{ t('extra.k23d15c25') }}
           </el-button>
         </el-col>
       </el-row>
@@ -121,7 +121,7 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import * as ProductCategoryApi from '@/api/mall/product/category'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { propTypes } from '@/utils/propTypes'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionSpuSelect' })
 
 const props = defineProps({
@@ -158,7 +158,7 @@ const selectedSkuIds = ref<number[]>([]) // 选中的商品 skuIds
 const selectSku = (val: ProductSpuApi.Sku[]) => {
   const skuTable = skuListRef.value?.getSkuTableRef()
   if (selectedSpuId.value === 0) {
-    message.warning('请先选择商品再选择相应的规格！！！')
+    message.warning(t('auto.views.mall.promotion.components.SpuSelect.k8ecf7bc6'))
     skuTable?.clearSelection()
     return
   }
@@ -209,7 +209,7 @@ const expandChange = async (row: ProductSpuApi.Spu, expandedRows?: ProductSpuApi
   // 目的防止误选 sku
   if (selectedSpuId.value !== 0) {
     if (row.id !== selectedSpuId.value) {
-      message.warning('你已选择商品请先取消')
+      message.warning(t('auto.views.mall.promotion.components.SpuSelect.kdf4117d8'))
       expandRowKeys.value = [selectedSpuId.value]
       return
     }
@@ -243,11 +243,11 @@ const emits = defineEmits<{
  */
 const confirm = () => {
   if (selectedSpuId.value === 0) {
-    message.warning('没有选择任何商品')
+    message.warning(t('auto.views.mall.promotion.components.SpuSelect.kc0839af8'))
     return
   }
   if (props.isSelectSku && selectedSkuIds.value.length === 0) {
-    message.warning('没有选择任何商品属性')
+    message.warning(t('auto.views.mall.promotion.components.SpuSelect.k0eb93e7e'))
     return
   }
   // 返回各自 id 列表
@@ -262,7 +262,7 @@ const confirm = () => {
 
 /** 打开弹窗 */
 const open = () => {
-  dialogTitle.value = '商品选择'
+  dialogTitle.value = t('auto.views.mall.promotion.components.SpuSelect.kfc01fcbb')
   dialogVisible.value = true
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗

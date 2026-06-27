@@ -1,7 +1,11 @@
 <template>
   <el-table :data="socialUsers" :show-header="false">
-    <el-table-column fixed="left" title="序号" type="seq" width="60" />
-    <el-table-column align="left" label="社交平台" width="120">
+    <el-table-column fixed="left" :title="t('common.index')" type="seq" width="60" />
+    <el-table-column
+      align="left"
+      :label="t('auto.views.profile.components.UserSocial.kf6445550')"
+      width="120"
+    >
       <template #default="{ row }">
         <img :src="row.img" alt="" class="h-5 align-middle" />
         <p class="mr-5">{{ row.title }}</p>
@@ -25,7 +29,7 @@
 import { SystemUserSocialTypeEnum } from '@/utils/constants'
 import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
 import { socialAuthRedirect, socialBind, socialUnbind } from '@/api/system/user/socialUser'
-
+const { t } = useI18n()
 defineOptions({ name: 'UserSocial' })
 defineProps<{
   activeName: string
@@ -64,7 +68,7 @@ const bindSocial = () => {
     return
   }
   socialBind(type, code, state).then(() => {
-    message.success('绑定成功')
+    message.success(t('auto.views.profile.components.UserSocial.k758d5462'))
     emit('update:activeName', 'userSocial')
   })
 }
@@ -88,7 +92,7 @@ const unbind = async (row) => {
   if (res) {
     row.openid = undefined
   }
-  message.success('解绑成功')
+  message.success(t('auto.views.profile.components.UserSocial.kaf5da097'))
 }
 
 onMounted(async () => {

@@ -13,7 +13,10 @@
         </div>
       </el-tooltip>
     </div>
-    <el-tooltip content="选择商品" v-if="canAdd">
+    <el-tooltip
+      :content="t('auto.views.mall.product.spu.components.SpuShowcase.kf4d8d03c')"
+      v-if="canAdd"
+    >
       <div class="select-box" @click="openSpuTableSelect">
         <Icon icon="ep:plus" />
       </div>
@@ -31,6 +34,7 @@ import { isArray } from '@/utils/is'
 
 // 商品橱窗，一般用于与商品建立关系时使用
 // 提供功能：展示商品列表、添加商品、移除商品
+const { t } = useI18n()
 defineOptions({ name: 'SpuShowcase' })
 
 const props = defineProps({

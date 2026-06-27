@@ -8,17 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名字" prop="name">
+      <el-form-item :label="t('auto.views.infra.demo.demo01.index.k364bd1bf')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名字"
+          :placeholder="t('auto.views.infra.demo.demo01.index.k010c1585')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
-        <el-select v-model="queryParams.sex" placeholder="请选择性别" clearable class="!w-240px">
+      <el-form-item :label="t('auto.views.infra.demo.demo01.index.kfe8aa4ef')" prop="sex">
+        <el-select
+          v-model="queryParams.sex"
+          :placeholder="t('auto.views.infra.demo.demo01.index.k9362948f')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
             :key="dict.value"
@@ -27,27 +32,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.demo.demo01.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.demo.demo01.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['infra:demo01-contact:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k470bca93') }}
         </el-button>
         <el-button
           type="success"
@@ -56,7 +65,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:demo01-contact:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k6b5ee8a0') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -65,9 +74,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="名字" align="center" prop="name" />
-      <el-table-column label="性别" align="center" prop="sex">
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo01.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo01.index.k364bd1bf')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo01.index.kfe8aa4ef')"
+        align="center"
+        prop="sex"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_USER_SEX" :value="scope.row.sex" />
         </template>
@@ -128,11 +149,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as Demo01ContactApi from '@/api/infra/demo/demo01'
 import Demo01ContactForm from './Demo01ContactForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'Demo01Contact' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据
@@ -198,7 +218,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await Demo01ContactApi.exportDemo01Contact(queryParams)
-    download.excel(data, '示例联系人.xls')
+    download.excel(data, t('auto.views.infra.demo.demo01.index.kb3dd02d2'))
   } catch {
   } finally {
     exportLoading.value = false

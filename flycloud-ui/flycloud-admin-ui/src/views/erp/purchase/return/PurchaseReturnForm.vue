@@ -10,27 +10,40 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="退货单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item
+            :label="t('auto.views.erp.purchase.return.PurchaseReturnForm.k227ee7e4')"
+            prop="no"
+          >
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.purchase.return.PurchaseReturnForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="退货时间" prop="returnTime">
+          <el-form-item
+            :label="t('auto.views.erp.purchase.return.PurchaseReturnForm.k11f23e81')"
+            prop="returnTime"
+          >
             <el-date-picker
               v-model="formData.returnTime"
               type="date"
               value-format="x"
-              placeholder="选择退货时间"
+              :placeholder="t('auto.views.erp.purchase.return.PurchaseReturnForm.kd0cae6f5')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="关联订单" prop="orderNo">
+          <el-form-item
+            :label="t('auto.views.erp.purchase.return.PurchaseReturnForm.k969d961c')"
+            prop="orderNo"
+          >
             <el-input v-model="formData.orderNo" readonly>
               <template #append>
                 <el-button @click="openPurchaseOrderReturnEnableList">
-                  <Icon icon="ep:search" /> 选择
+                  <Icon icon="ep:search" /> {{ t('extra.k67f1bc76') }}
                 </el-button>
               </template>
             </el-input>
@@ -176,9 +189,8 @@ import { PurchaseOrderVO } from '@/api/erp/purchase/order'
 import * as UserApi from '@/api/system/user'
 
 /** ERP 采购退货表单 */
+const { t } = useI18n()
 defineOptions({ name: 'PurchaseReturnForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -201,8 +213,20 @@ const formData = ref({
   no: undefined // 退货单号，后端返回
 })
 const formRules = reactive({
-  supplierId: [{ required: true, message: '供应商不能为空', trigger: 'blur' }],
-  returnTime: [{ required: true, message: '退货时间不能为空', trigger: 'blur' }]
+  supplierId: [
+    {
+      required: true,
+      message: t('auto.views.erp.purchase.return.PurchaseReturnForm.k725399d9'),
+      trigger: 'blur'
+    }
+  ],
+  returnTime: [
+    {
+      required: true,
+      message: t('auto.views.erp.purchase.return.PurchaseReturnForm.kbfb08d5e'),
+      trigger: 'blur'
+    }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

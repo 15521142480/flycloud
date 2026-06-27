@@ -10,33 +10,43 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="盘点单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.erp.stock.check.StockCheckForm.k5fb8acef')" prop="no">
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.stock.check.StockCheckForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="盘点时间" prop="checkTime">
+          <el-form-item
+            :label="t('auto.views.erp.stock.check.StockCheckForm.kb7ac7e81')"
+            prop="checkTime"
+          >
             <el-date-picker
               v-model="formData.checkTime"
               type="date"
               value-format="x"
-              placeholder="选择盘点时间"
+              :placeholder="t('auto.views.erp.stock.check.StockCheckForm.k22bcc95d')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.remark')" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
               :rows="1"
-              placeholder="请输入备注"
+              :placeholder="t('auto.views.erp.stock.check.StockCheckForm.k57e709d9')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item
+            :label="t('auto.views.erp.stock.check.StockCheckForm.k99f6fe6c')"
+            prop="fileUrl"
+          >
             <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
           </el-form-item>
         </el-col>
@@ -45,16 +55,18 @@
     <!-- 子表的表单 -->
     <ContentWrap>
       <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-        <el-tab-pane label="盘点产品清单" name="item">
+        <el-tab-pane :label="t('auto.views.erp.stock.check.StockCheckForm.k47163316')" name="item">
           <StockCheckItemForm ref="itemFormRef" :items="formData.items" :disabled="disabled" />
         </el-tab-pane>
       </el-tabs>
     </ContentWrap>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading" v-if="!disabled">
-        确 定
+        {{ t('extra.k32845a62') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.stock.check.StockCheckForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -63,9 +75,8 @@ import { StockCheckApi, StockCheckVO } from '@/api/erp/stock/check'
 import StockCheckItemForm from './components/StockCheckItemForm.vue'
 
 /** ERP 其它盘点单表单 */
+const { t } = useI18n()
 defineOptions({ name: 'StockCheckForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -81,7 +92,13 @@ const formData = ref({
   items: []
 })
 const formRules = reactive({
-  checkTime: [{ required: true, message: '盘点时间不能为空', trigger: 'blur' }]
+  checkTime: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.check.StockCheckForm.kf9cb4af3'),
+      trigger: 'blur'
+    }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

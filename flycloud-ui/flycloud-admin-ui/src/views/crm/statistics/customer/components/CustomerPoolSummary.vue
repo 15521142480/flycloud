@@ -10,16 +10,27 @@
   <!-- 统计列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="序号" align="center" type="index" width="80" fixed="left" />
-      <el-table-column label="员工姓名" prop="ownerUserName" min-width="100" fixed="left" />
       <el-table-column
-        label="进入公海客户数"
+        :label="t('common.index')"
+        align="center"
+        type="index"
+        width="80"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.k78bd0d05')"
+        prop="ownerUserName"
+        min-width="100"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.k75feec1c')"
         align="right"
         prop="customerPutCount"
         min-width="200"
       />
       <el-table-column
-        label="公海领取客户数"
+        :label="t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.kaf8297db')"
         align="right"
         prop="customerTakeCount"
         min-width="200"
@@ -34,7 +45,7 @@ import {
   CrmStatisticsPoolSummaryByUserRespVO
 } from '@/api/crm/statistics/customer'
 import { EChartsOption } from 'echarts'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerPoolSummary' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -53,13 +64,13 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '进入公海客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.k75feec1c'),
       type: 'bar',
       yAxisIndex: 0,
       data: []
     },
     {
-      name: '公海领取客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.kaf8297db'),
       type: 'bar',
       yAxisIndex: 1,
       data: []
@@ -73,7 +84,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '公海客户分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.kf667cfa3')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -85,13 +99,13 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '进入公海客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.k75feec1c'),
       min: 0,
       minInterval: 1 // 显示整数刻度
     },
     {
       type: 'value',
-      name: '公海领取客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.kaf8297db'),
       min: 0,
       minInterval: 1, // 显示整数刻度
       splitLine: {
@@ -104,7 +118,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.customer.components.CustomerPoolSummary.kb6fed9af'),
     data: []
   }
 }) as EChartsOption

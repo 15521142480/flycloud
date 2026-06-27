@@ -1,7 +1,8 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter2 } from '@/utils/formatTime'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 表单校验
 export const rules = reactive({
   name: [required],
   totalLimitCount: [required],
@@ -16,7 +17,7 @@ export const rules = reactive({
 // CrudSchema https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: '拼团名称',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kc64794f3'),
     field: 'name',
     isSearch: true,
     isTable: false,
@@ -27,7 +28,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动开始时间',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.k658b1a2e'),
     field: 'startTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -50,7 +51,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动结束时间',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kcdd4e446'),
     field: 'endTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -73,30 +74,36 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '参与人数',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kf2f555f3'),
     field: 'userSize',
     isSearch: false,
     form: {
       component: 'InputNumber',
-      labelMessage: '参与人数不能少于两人',
+      labelMessage: t(
+        'auto.views.mall.promotion.combination.activity.combinationActivity_data.kf414e85e'
+      ),
       value: 2
     }
   },
   {
-    label: '限制时长',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kc2746f69'),
     field: 'limitDuration',
     isSearch: false,
     isTable: false,
     form: {
       component: 'InputNumber',
-      labelMessage: '限制时长(小时)',
+      labelMessage: t(
+        'auto.views.mall.promotion.combination.activity.combinationActivity_data.k52d6bbca'
+      ),
       componentProps: {
-        placeholder: '请输入限制时长(小时)'
+        placeholder: t(
+          'auto.views.mall.promotion.combination.activity.combinationActivity_data.kfedaaaab'
+        )
       }
     }
   },
   {
-    label: '总限购数量',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kc71a1741'),
     field: 'totalLimitCount',
     isSearch: false,
     isTable: false,
@@ -106,7 +113,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '单次限购数量',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.k3719b703'),
     field: 'singleLimitCount',
     isSearch: false,
     isTable: false,
@@ -116,7 +123,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '虚拟成团',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.k0faadec1'),
     field: 'virtualGroup',
     dictType: DICT_TYPE.INFRA_BOOLEAN_STRING,
     dictClass: 'boolean',
@@ -127,7 +134,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '拼团商品',
+    label: t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kcc137447'),
     field: 'spuId',
     isSearch: false,
     form: {

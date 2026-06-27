@@ -1,6 +1,8 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 拼团属性 */
+const { t } = useI18n()
+
 export interface PromotionCombinationProperty {
   // 布局类型：单列 | 三列
   layoutType: 'oneColBigImg' | 'oneColSmallImg' | 'twoCol'
@@ -62,7 +64,7 @@ export interface PromotionCombinationFieldProperty {
 // 定义组件
 export const component = {
   id: 'PromotionCombination',
-  name: '拼团',
+  name: t('auto.components.DiyEditor.components.mobile.PromotionCombination.config.k5d63e132'),
   icon: 'mdi:account-group',
   property: {
     layoutType: 'oneColBigImg',
@@ -77,7 +79,7 @@ export const component = {
     badge: { show: false, imgUrl: '' },
     btnBuy: {
       type: 'text',
-      text: '去拼团',
+      text: t('auto.components.DiyEditor.components.mobile.PromotionCombination.config.k7ae20173'),
       bgBeginColor: '#FF6000',
       bgEndColor: '#FE832A',
       imgUrl: ''

@@ -1,10 +1,21 @@
 <template>
-  <Dialog v-model="dialogVisible" title="助力列表">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.promotion.bargain.record.BargainRecordListDialog.k9d43d7d1')"
+  >
     <!-- 列表 -->
     <ContentWrap>
       <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-        <el-table-column label="用户编号" prop="userId" min-width="80px" />
-        <el-table-column label="用户头像" prop="avatar" min-width="80px">
+        <el-table-column
+          :label="t('auto.views.mall.promotion.bargain.record.BargainRecordListDialog.kec750ef6')"
+          prop="userId"
+          min-width="80px"
+        />
+        <el-table-column
+          :label="t('auto.views.mall.promotion.bargain.record.BargainRecordListDialog.k2b78f76f')"
+          prop="avatar"
+          min-width="80px"
+        >
           <template #default="scope">
             <el-avatar :src="scope.row.avatar" />
           </template>
@@ -39,8 +50,8 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as BargainHelpApi from '@/api/mall/promotion/bargain/bargainHelp'
 import { fenToYuanFormat } from '@/utils/formatter'
-
 /** 助力列表 */
+const { t } = useI18n()
 defineOptions({ name: 'BargainRecordListDialog' })
 
 const message = useMessage() // 消息弹窗

@@ -46,7 +46,7 @@
         @click.stop="updateConversationPinned(true)"
       >
         <Icon class="mr-5px" icon="ep:top" />
-        置顶会话
+        {{ t('extra.k8d0b7884') }}
       </li>
       <li
         v-show="rightClickConversation.adminPinned"
@@ -54,15 +54,15 @@
         @click.stop="updateConversationPinned(false)"
       >
         <Icon class="mr-5px" icon="ep:bottom" />
-        取消置顶
+        {{ t('extra.ka42394ff') }}
       </li>
       <li class="flex items-center" @click.stop="deleteConversation">
         <Icon class="mr-5px" color="red" icon="ep:delete" />
-        删除会话
+        {{ t('extra.kc0f8bd0e') }}
       </li>
       <li class="flex items-center" @click.stop="closeRightMenu">
         <Icon class="mr-5px" color="red" icon="ep:close" />
-        取消
+        {{ t('extra.k9c9b86a3') }}
       </li>
     </ul>
   </div>
@@ -74,7 +74,7 @@ import { useEmoji } from './tools/emoji'
 import { formatPast } from '@/utils/formatTime'
 import { KeFuMessageContentTypeEnum } from './tools/constants'
 import { useAppStore } from '@/store/modules/app'
-
+const { t } = useI18n()
 defineOptions({ name: 'KeFuConversationList' })
 
 const message = useMessage() // 消息弹窗
@@ -106,17 +106,17 @@ const getConversationDisplayText = computed(
   () => (lastMessageContentType: number, lastMessageContent: string) => {
     switch (lastMessageContentType) {
       case KeFuMessageContentTypeEnum.SYSTEM:
-        return '[系统消息]'
+        return t('auto.views.mall.promotion.kefu.components.KeFuConversationList.k116e4e13')
       case KeFuMessageContentTypeEnum.VIDEO:
-        return '[视频消息]'
+        return t('auto.views.mall.promotion.kefu.components.KeFuConversationList.k99775067')
       case KeFuMessageContentTypeEnum.IMAGE:
-        return '[图片消息]'
+        return t('auto.views.mall.promotion.kefu.components.KeFuConversationList.k35d5d8be')
       case KeFuMessageContentTypeEnum.PRODUCT:
-        return '[商品消息]'
+        return t('auto.views.mall.promotion.kefu.components.KeFuConversationList.kb2508701')
       case KeFuMessageContentTypeEnum.ORDER:
-        return '[订单消息]'
+        return t('auto.views.mall.promotion.kefu.components.KeFuConversationList.k02c354b9')
       case KeFuMessageContentTypeEnum.VOICE:
-        return '[语音消息]'
+        return t('auto.views.mall.promotion.kefu.components.KeFuConversationList.k18af0b38')
       case KeFuMessageContentTypeEnum.TEXT:
         return replaceEmoji(lastMessageContent)
       default:
@@ -152,7 +152,11 @@ const updateConversationPinned = async (adminPinned: boolean) => {
     id: rightClickConversation.value.id,
     adminPinned
   })
-  message.notifySuccess(adminPinned ? '置顶成功' : '取消置顶成功')
+  message.notifySuccess(
+    adminPinned
+      ? t('auto.views.mall.promotion.kefu.components.KeFuConversationList.kc08c5890')
+      : t('auto.views.mall.promotion.kefu.components.KeFuConversationList.kc1bc6666')
+  )
   // 2. 关闭右键菜单，更新会话列表
   closeRightMenu()
   await getConversationList()
@@ -161,7 +165,9 @@ const updateConversationPinned = async (adminPinned: boolean) => {
 /** 删除会话 */
 const deleteConversation = async () => {
   // 1. 删除会话
-  await message.confirm('您确定要删除该会话吗？')
+  await message.confirm(
+    t('auto.views.mall.promotion.kefu.components.KeFuConversationList.k5960666c')
+  )
   await KeFuConversationApi.deleteConversation(rightClickConversation.value.id)
   // 2. 关闭右键菜单，更新会话列表
   closeRightMenu()

@@ -12,10 +12,14 @@
       <div v-loading="loading"></div>
       <div v-if="!loading">
         <div class="el-table__empty-block" v-if="hasMore" @click="loadMore"
-          ><span class="el-table__empty-text">点击加载更多</span></div
+          ><span class="el-table__empty-text">{{
+            t('auto.views.mp.components.wx_msg.main.k8cdff5a6')
+          }}</span></div
         >
         <div class="el-table__empty-block" v-if="!hasMore"
-          ><span class="el-table__empty-text">没有更多了</span></div
+          ><span class="el-table__empty-text">{{
+            t('auto.views.mp.components.wx_msg.main.k57178227')
+          }}</span></div
         >
       </div>
 
@@ -25,7 +29,9 @@
 
     <div class="msg-send" v-loading="sendLoading">
       <WxReplySelect ref="replySelectRef" v-model="reply" />
-      <el-button type="success" class="send-but" @click="sendMsg">发送(S)</el-button>
+      <el-button type="success" class="send-but" @click="sendMsg">{{
+        t('auto.views.mp.components.wx_msg.main.k596cf57b')
+      }}</el-button>
     </div>
   </ContentWrap>
 </template>
@@ -37,7 +43,7 @@ import { getMessagePage, sendMessage } from '@/api/mp/message'
 import { getUser } from '@/api/mp/user'
 import profile from '@/assets/imgs/profile.jpg'
 import { User } from './types'
-
+const { t } = useI18n()
 defineOptions({ name: 'WxMsg' })
 
 const message = useMessage() // 消息弹窗
@@ -61,7 +67,7 @@ const queryParams = reactive({
 
 // 由于微信不再提供昵称，直接使用“用户”展示
 const user: User = reactive({
-  name: '用户',
+  name: t('auto.views.mp.components.wx_msg.main.k9ba763ea'),
   avatar: profile,
   accountId: accountId // 公众号账号编号
 })
@@ -101,7 +107,7 @@ const sendMsg = async () => {
     reply.value.articles.length > 1
   ) {
     reply.value.articles = [reply.value.articles[0]]
-    message.success('图文消息条数限制在 1 条以内，已默认发送第一条')
+    message.success(t('auto.views.mp.components.wx_msg.main.kc00e7f55'))
   }
 
   const data = await sendMessage({ userId: props.userId, ...reply.value })

@@ -9,7 +9,7 @@
             type="primary"
             @click="openForm('create', undefined, 0)"
           >
-            新增一级菜单
+            {{ t('extra.k91f7e670') }}
           </el-button>
         </div>
       </el-col>
@@ -17,7 +17,7 @@
       <el-col :span="12">
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k0f82221e') }}
         </el-button>
       </el-col>
     </el-row>
@@ -58,8 +58,8 @@
             inline-prompt
             :active-value="0"
             :inactive-value="1"
-            active-text="已启"
-            inactive-text="已禁"
+            :active-text="t('extra.kf5e3b8ac')"
+            :inactive-text="t('extra.k1a41240c')"
             @change="handleStatusChange(data)"
           />
           <el-button
@@ -88,11 +88,10 @@ import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
 import { CirclePlus, Delete, Edit, Plus } from '@element-plus/icons-vue'
 import { checkPermi } from '@/utils/permission'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMenu' })
 
 const { wsCache } = useCache()
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const loading = ref(true) // 列表的加载中
@@ -114,8 +113,14 @@ const props = {
 }
 
 const treeData = ref([
-  { label: '一级 1', children: [{ label: '二级 1-1' }] },
-  { label: '一级 2', children: [{ label: '二级 2-1' }] }
+  {
+    label: t('auto.views.system.menu.index.kf6aecd5f'),
+    children: [{ label: t('auto.views.system.menu.index.k52adfdba') }]
+  },
+  {
+    label: t('auto.views.system.menu.index.k0bb97c90'),
+    children: [{ label: t('auto.views.system.menu.index.k389b0adf') }]
+  }
 ])
 
 /** 查询列表 */
@@ -155,8 +160,15 @@ const openForm = (type: string, id?: number, parentId?: number) => {
 const handleStatusChange = async (data: MenuVO) => {
   try {
     // 修改状态的二次确认
-    const text = data.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
-    await message.confirm('确认要"' + text + '"【' + data.name + '】菜单吗?')
+    const text =
+      data.status === CommonStatusEnum.ENABLE ? t('common.enabled') : t('common.disabled')
+    await message.confirm(
+      t('auto.views.system.menu.index.ka4db1fb1') +
+        text +
+        '"【' +
+        data.name +
+        t('auto.views.system.menu.index.k057bc7b9')
+    )
     // 发起修改状态
     await MenuApi.updateStatus(data.id, data.status)
     // 刷新列表
@@ -177,8 +189,12 @@ const deleteMenu = async (data: object) => {
     // 删除的二次确认
     // await message.delConfirm()
     const text = data.children
-      ? '确认删除【' + data.name + '】菜单以及其下所有菜单吗'
-      : '确认删除【' + data.name + '】菜单吗'
+      ? t('auto.views.system.menu.index.k8fb3140d') +
+        data.name +
+        t('auto.views.system.menu.index.ke8421874')
+      : t('auto.views.system.menu.index.k8fb3140d') +
+        data.name +
+        t('auto.views.system.menu.index.k8be4905e')
     await message.confirm(text)
     // 发起删除
     await MenuApi.deleteMenu(data.id)
@@ -200,7 +216,10 @@ const toggleExpandAll = () => {
 /** 刷新菜单缓存按钮操作 */
 const refreshMenu = async () => {
   try {
-    await message.confirm('即将更新缓存刷新浏览器！', '刷新菜单缓存')
+    await message.confirm(
+      t('auto.views.system.menu.index.k42ce1004'),
+      t('auto.views.system.menu.index.k9476c72d')
+    )
     // 清空，从而触发刷新
     wsCache.delete(CACHE_KEY.USER)
     wsCache.delete(CACHE_KEY.ROLE_ROUTERS)

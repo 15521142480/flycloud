@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,28 +8,28 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="流程标识" prop="key">
+      <el-form-item :label="t('auto.views.bpm.model.index_old.k11c83e06')" prop="key">
         <el-input
           v-model="queryParams.key"
-          placeholder="请输入流程标识"
+          :placeholder="t('auto.views.bpm.model.index_old.kaee78752')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="流程名称" prop="name">
+      <el-form-item :label="t('auto.views.bpm.model.index_old.k323a8305')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入流程名称"
+          :placeholder="t('auto.views.bpm.model.index_old.ke9399a13')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="流程分类" prop="category">
+      <el-form-item :label="t('auto.views.bpm.model.index_old.k8377bb01')" prop="category">
         <el-select
           v-model="queryParams.category"
-          placeholder="请选择流程分类"
+          :placeholder="t('auto.views.bpm.model.index_old.k8c96f9ce')"
           clearable
           class="!w-240px"
         >
@@ -43,15 +42,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['bpm:model:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新建
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k99418085') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -60,8 +63,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="流程名称" align="center" prop="name" min-width="200" />
-      <el-table-column label="流程图标" align="center" prop="icon" min-width="100">
+      <el-table-column
+        :label="t('auto.views.bpm.model.index_old.k323a8305')"
+        align="center"
+        prop="name"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.model.index_old.kb46a9bd4')"
+        align="center"
+        prop="icon"
+        min-width="100"
+      >
         <template #default="scope">
           <el-image :src="scope.row.icon" class="h-32px w-32px" />
         </template>
@@ -220,11 +233,10 @@ import { CategoryApi } from '@/api/bpm/category'
 import { BpmModelType } from '@/utils/constants'
 import { checkPermi } from '@/utils/permission'
 import { useUserStoreWithOut } from '@/store/modules/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmModel' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 const { push } = useRouter() // 路由
 const userStore = useUserStoreWithOut() // 用户信息缓存
 
@@ -309,12 +321,17 @@ const handleChangeState = async (row: any) => {
     // 修改状态的二次确认
     const id = row.id
     debugger
-    const statusState = state === 1 ? '停用' : '启用'
-    const content = '是否确认' + statusState + '流程名字为"' + row.name + '"的数据项?'
+    const statusState = state === 1 ? t('common.disabled') : t('common.enabled')
+    const content =
+      t('auto.views.bpm.model.index_old.k9fc01381') +
+      statusState +
+      t('auto.views.bpm.model.index_old.k18795f9e') +
+      row.name +
+      t('auto.views.bpm.model.index_old.kc87f4c07')
     await message.confirm(content)
     // 发起修改状态
     await ModelApi.updateModelState(id, newState)
-    message.success(statusState + '成功')
+    message.success(statusState + t('common.success'))
     // 刷新列表
     await getList()
   } catch {}
@@ -343,10 +360,10 @@ const handleDesign = (row: any) => {
 const handleDeploy = async (row: any) => {
   try {
     // 删除的二次确认
-    await message.confirm('是否部署该流程！！')
+    await message.confirm(t('auto.views.bpm.model.index_old.k35018faa'))
     // 发起部署
     await ModelApi.deployModel(row.id)
-    message.success(t('部署成功'))
+    message.success(t(t('auto.views.bpm.model.index_old.k48388beb')))
     // 刷新列表
     await getList()
   } catch {}

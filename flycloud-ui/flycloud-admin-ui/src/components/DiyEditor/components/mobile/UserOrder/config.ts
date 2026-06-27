@@ -1,6 +1,8 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 用户订单属性 */
+const { t } = useI18n()
+
 export interface UserOrderProperty {
   // 组件样式
   style: ComponentStyle
@@ -9,7 +11,7 @@ export interface UserOrderProperty {
 // 定义组件
 export const component = {
   id: 'UserOrder',
-  name: '用户订单',
+  name: t('auto.components.DiyEditor.components.mobile.UserOrder.config.ka332d0e6'),
   icon: 'ep:list',
   property: {
     style: {

@@ -7,11 +7,24 @@
       :rules="formRules"
       label-width="130px"
     >
-      <el-form-item label="短信签名" prop="signature">
-        <el-input v-model="formData.signature" placeholder="请输入短信签名" />
+      <el-form-item
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.kf57fae84')"
+        prop="signature"
+      >
+        <el-input
+          v-model="formData.signature"
+          :placeholder="t('auto.views.system.sms.channel.SmsChannelForm.k41738330')"
+        />
       </el-form-item>
-      <el-form-item label="渠道编码" prop="code">
-        <el-select v-model="formData.code" clearable placeholder="请选择渠道编码">
+      <el-form-item
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.k82233330')"
+        prop="code"
+      >
+        <el-select
+          v-model="formData.code"
+          clearable
+          :placeholder="t('auto.views.system.sms.channel.SmsChannelForm.k8e6c552b')"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE)"
             :key="dict.value"
@@ -20,7 +33,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="启用状态">
+      <el-form-item :label="t('auto.views.system.sms.channel.SmsChannelForm.k5691b379')">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -31,22 +44,47 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.system.sms.channel.SmsChannelForm.k57e709d9')"
+        />
       </el-form-item>
-      <el-form-item label="短信 API 的账号" prop="apiKey">
-        <el-input v-model="formData.apiKey" placeholder="请输入短信 API 的账号" />
+      <el-form-item
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.k4df60a58')"
+        prop="apiKey"
+      >
+        <el-input
+          v-model="formData.apiKey"
+          :placeholder="t('auto.views.system.sms.channel.SmsChannelForm.k2e483068')"
+        />
       </el-form-item>
-      <el-form-item label="短信 API 的密钥" prop="apiSecret">
-        <el-input v-model="formData.apiSecret" placeholder="请输入短信 API 的密钥" />
+      <el-form-item
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.kae001512')"
+        prop="apiSecret"
+      >
+        <el-input
+          v-model="formData.apiSecret"
+          :placeholder="t('auto.views.system.sms.channel.SmsChannelForm.k971dddcf')"
+        />
       </el-form-item>
-      <el-form-item label="短信发送回调 URL" prop="callbackUrl">
-        <el-input v-model="formData.callbackUrl" placeholder="请输入短信发送回调 URL" />
+      <el-form-item
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.kbe9e0cf3')"
+        prop="callbackUrl"
+      >
+        <el-input
+          v-model="formData.callbackUrl"
+          :placeholder="t('auto.views.system.sms.channel.SmsChannelForm.k015a2ff7')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.sms.channel.SmsChannelForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.sms.channel.SmsChannelForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -54,10 +92,8 @@
 import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
 import * as SmsChannelApi from '@/api/system/sms/smsChannel'
 import { CommonStatusEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemSmsChannelForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -75,10 +111,34 @@ const formData = ref({
   callbackUrl: ''
 })
 const formRules = reactive({
-  signature: [{ required: true, message: '短信签名不能为空', trigger: 'blur' }],
-  code: [{ required: true, message: '渠道编码不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '启用状态不能为空', trigger: 'blur' }],
-  apiKey: [{ required: true, message: '短信 API 的账号不能为空', trigger: 'blur' }]
+  signature: [
+    {
+      required: true,
+      message: t('auto.views.system.sms.channel.SmsChannelForm.k7347d5bb'),
+      trigger: 'blur'
+    }
+  ],
+  code: [
+    {
+      required: true,
+      message: t('auto.views.system.sms.channel.SmsChannelForm.k080ef4cf'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.sms.channel.SmsChannelForm.k09f77553'),
+      trigger: 'blur'
+    }
+  ],
+  apiKey: [
+    {
+      required: true,
+      message: t('auto.views.system.sms.channel.SmsChannelForm.kf58009f8'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

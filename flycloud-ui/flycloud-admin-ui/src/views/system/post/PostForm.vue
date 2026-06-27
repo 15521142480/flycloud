@@ -7,17 +7,30 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="岗位标题" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入岗位标题" />
+      <el-form-item :label="t('auto.views.system.post.PostForm.kb14e72fe')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.post.PostForm.ka4cf1105')"
+        />
       </el-form-item>
-      <el-form-item label="岗位编码" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入岗位编码" />
+      <el-form-item :label="t('auto.views.system.post.PostForm.k0fc3644a')" prop="code">
+        <el-input
+          v-model="formData.code"
+          :placeholder="t('auto.views.system.post.PostForm.k6524110e')"
+        />
       </el-form-item>
-      <el-form-item label="岗位顺序" prop="sort">
-        <el-input v-model="formData.sort" placeholder="请输入岗位顺序" />
+      <el-form-item :label="t('auto.views.system.post.PostForm.k4d834af1')" prop="sort">
+        <el-input
+          v-model="formData.sort"
+          :placeholder="t('auto.views.system.post.PostForm.k3f86b6b0')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="formData.status" clearable placeholder="请选择状态">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="formData.status"
+          clearable
+          :placeholder="t('auto.views.system.post.PostForm.kdba277df')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -26,13 +39,21 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输备注" type="textarea" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.system.post.PostForm.k582cc3a4')"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.post.PostForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.post.PostForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -40,10 +61,8 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as PostApi from '@/api/system/post'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemPostForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -59,10 +78,18 @@ const formData = ref({
   remark: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '岗位标题不能为空', trigger: 'blur' }],
-  code: [{ required: true, message: '岗位编码不能为空', trigger: 'change' }],
-  status: [{ required: true, message: '岗位状态不能为空', trigger: 'change' }],
-  remark: [{ required: false, message: '岗位内容不能为空', trigger: 'blur' }]
+  name: [
+    { required: true, message: t('auto.views.system.post.PostForm.k3cd5be5d'), trigger: 'blur' }
+  ],
+  code: [
+    { required: true, message: t('auto.views.system.post.PostForm.k0ba179b0'), trigger: 'change' }
+  ],
+  status: [
+    { required: true, message: t('auto.views.system.post.PostForm.kb024347c'), trigger: 'change' }
+  ],
+  remark: [
+    { required: false, message: t('auto.views.system.post.PostForm.k762804b2'), trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

@@ -1,22 +1,42 @@
 <template>
   <div class="panel-tab__content">
     <el-table :data="elementListenersList" size="small" border>
-      <el-table-column label="序号" width="50px" type="index" />
-      <el-table-column label="事件类型" min-width="100px" prop="event" />
+      <el-table-column :label="t('common.index')" width="50px" type="index" />
       <el-table-column
-        label="监听器类型"
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.k5b2d75aa'
+          )
+        "
+        min-width="100px"
+        prop="event"
+      />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kff6c93d9'
+          )
+        "
         min-width="100px"
         show-overflow-tooltip
         :formatter="(row) => listenerTypeObject[row.listenerType]"
       />
-      <el-table-column label="操作" width="100px">
+      <el-table-column :label="t('common.operation')" width="100px">
         <template #default="scope">
-          <el-button size="small" link @click="openListenerForm(scope.row, scope.$index)"
-            >编辑</el-button
-          >
+          <el-button size="small" link @click="openListenerForm(scope.row, scope.$index)">{{
+            t('common.edit')
+          }}</el-button>
           <el-divider direction="vertical" />
-          <el-button size="small" link style="color: #ff4d4f" @click="removeListener(scope.$index)"
-            >移除</el-button
+          <el-button
+            size="small"
+            link
+            style="color: #ff4d4f"
+            @click="removeListener(scope.$index)"
+            >{{
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.k2f752c00'
+              )
+            }}</el-button
           >
         </template>
       </el-table-column>
@@ -263,7 +283,7 @@ import {
   initListenerForm2
 } from './utilSelf'
 import ProcessListenerDialog from './ProcessListenerDialog.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'ElementListeners' })
 
 const props = defineProps({
@@ -358,23 +378,43 @@ const saveListenerFiled = async () => {
 // 移除监听器字段
 const removeListenerField = (index) => {
   // debugger
-  ElMessageBox.confirm('确认移除该字段吗？', '提示', {
-    confirmButtonText: '确 认',
-    cancelButtonText: '取 消'
-  })
+  ElMessageBox.confirm(
+    t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.k34c6d4f6'),
+    t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kab3656a9'),
+    {
+      confirmButtonText: t(
+        'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kee629375'
+      ),
+      cancelButtonText: t(
+        'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kd54aeadc'
+      )
+    }
+  )
     .then(() => {
       fieldsListOfListener.value.splice(index, 1)
       listenerForm.value.fields.splice(index, 1)
     })
-    .catch(() => console.info('操作取消'))
+    .catch(() =>
+      console.info(
+        t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kbb2a8620')
+      )
+    )
 }
 // 移除监听器
 const removeListener = (index) => {
   debugger
-  ElMessageBox.confirm('确认移除该监听器吗？', '提示', {
-    confirmButtonText: '确 认',
-    cancelButtonText: '取 消'
-  })
+  ElMessageBox.confirm(
+    t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.k4cce1b6a'),
+    t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kab3656a9'),
+    {
+      confirmButtonText: t(
+        'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kee629375'
+      ),
+      cancelButtonText: t(
+        'auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kd54aeadc'
+      )
+    }
+  )
     .then(() => {
       bpmnElementListeners.value.splice(index, 1)
       elementListenersList.value.splice(index, 1)
@@ -383,7 +423,11 @@ const removeListener = (index) => {
         otherExtensionList.value.concat(bpmnElementListeners.value)
       )
     })
-    .catch(() => console.info('操作取消'))
+    .catch(() =>
+      console.info(
+        t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kbb2a8620')
+      )
+    )
 }
 // 保存监听器配置
 const saveListenerConfig = async () => {

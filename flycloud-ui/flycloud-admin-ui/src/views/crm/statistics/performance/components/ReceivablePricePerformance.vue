@@ -30,7 +30,7 @@ import {
   StatisticsPerformanceApi,
   StatisticsPerformanceRespVO
 } from '@/api/crm/statistics/performance'
-
+const { t } = useI18n()
 defineOptions({ name: 'ContractPricePerformance' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -48,28 +48,38 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '当月回款金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k0e29294b'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '上月回款金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k9347ea79'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '去年同月回款金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k65591da7'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '环比增长率（%）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k31271e3b'
+      ),
       type: 'line',
       yAxisIndex: 1,
       data: []
     },
     {
-      name: '同比增长率（%）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k6ab6aea3'
+      ),
       type: 'line',
       yAxisIndex: 1,
       data: []
@@ -83,7 +93,12 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '客户总量分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t(
+          'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.ke6a3379c'
+        )
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -95,7 +110,9 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.kbced9ce8'
+      ),
       axisTick: {
         show: false
       },
@@ -145,7 +162,9 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.kb6fed9af'
+    ),
     data: []
   }
 }) as EChartsOption
@@ -197,16 +216,41 @@ const loadData = async () => {
 // 初始化数据
 const columnsData = reactive([])
 const tableData = reactive([
-  { title: '当月回款金额统计（元）' },
-  { title: '上月回款金额统计（元）' },
-  { title: '去年当月回款金额统计（元）' },
-  { title: '环比增长率（%）' },
-  { title: '同比增长率（%）' }
+  {
+    title: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k17f7152b'
+    )
+  },
+  {
+    title: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.kc86e86ca'
+    )
+  },
+  {
+    title: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.kea0f3c5d'
+    )
+  },
+  {
+    title: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k31271e3b'
+    )
+  },
+  {
+    title: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.k6ab6aea3'
+    )
+  }
 ])
 
 // 定义 init 方法
 const convertListData = () => {
-  const columnObj = { label: '日期', prop: 'title' }
+  const columnObj = {
+    label: t(
+      'auto.views.crm.statistics.performance.components.ReceivablePricePerformance.kb6fed9af'
+    ),
+    prop: 'title'
+  }
   columnsData.splice(0, columnsData.length) //清空数组
   columnsData.push(columnObj)
 

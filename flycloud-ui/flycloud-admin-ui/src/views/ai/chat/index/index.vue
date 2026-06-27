@@ -12,9 +12,9 @@
     <!-- 右侧：对话详情 -->
     <el-container class="detail-container">
       <el-header class="header">
-        <div class="title">
-          {{ activeConversation?.title ? activeConversation?.title : '对话' }}
-          <span v-if="activeMessageList.length">({{ activeMessageList.length }})</span>
+        <div class="title"
+          >{{ activeConversation?.title ? activeConversation?.title : t('extra.k1ad345c8')
+          }}<span v-if="activeMessageList.length">({{ activeMessageList.length }})</span>
         </div>
         <div class="btns" v-if="activeConversation">
           <el-button type="primary" bg plain size="small" @click="openChatConversationUpdateForm">
@@ -73,12 +73,14 @@
             @input="handlePromptInput"
             @compositionstart="onCompositionstart"
             @compositionend="onCompositionend"
-            placeholder="问我任何问题...（Shift+Enter 换行，按下 Enter 发送）"
+            :placeholder="t('auto.views.ai.chat.index.index.k1149d082')"
           ></textarea>
           <div class="prompt-btns">
             <div>
               <el-switch v-model="enableContext" />
-              <span class="ml-5px text-14px text-#8f8f8f">上下文</span>
+              <span class="ml-5px text-14px text-#8f8f8f">{{
+                t('auto.views.ai.chat.index.index.kd9aa9fe0')
+              }}</span>
             </div>
             <el-button
               type="primary"
@@ -86,16 +88,15 @@
               @click="handleSendByButton"
               :loading="conversationInProgress"
               v-if="conversationInProgress == false"
+              >{{ conversationInProgress ? t('extra.ka4648e60') : t('extra.kfcb0ef48') }}</el-button
             >
-              {{ conversationInProgress ? '进行中' : '发送' }}
-            </el-button>
             <el-button
               type="danger"
               size="default"
               @click="stopStream()"
               v-if="conversationInProgress == true"
             >
-              停止
+              {{ t('extra.k345f084c') }}
             </el-button>
           </div>
         </form>
@@ -119,8 +120,8 @@ import MessageList from './components/message/MessageList.vue'
 import MessageListEmpty from './components/message/MessageListEmpty.vue'
 import MessageLoading from './components/message/MessageLoading.vue'
 import MessageNewConversation from './components/message/MessageNewConversation.vue'
-
 /** AI 聊天对话 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'AiChat' })
 
 const route = useRoute() // 路由
@@ -175,7 +176,7 @@ const getConversation = async (id: number | null) => {
 const handleConversationClick = async (conversation: ChatConversationVO) => {
   // 对话进行中，不允许切换
   if (conversationInProgress.value) {
-    message.alert('对话中，不允许切换!')
+    message.alert(t('auto.views.ai.chat.index.index.kd3ca4eed'))
     return false
   }
 
@@ -202,7 +203,7 @@ const handlerConversationDelete = async (delConversation: ChatConversationVO) =>
 const handleConversationClear = async () => {
   // 对话进行中，不允许切换
   if (conversationInProgress.value) {
-    message.alert('对话中，不允许切换!')
+    message.alert(t('auto.views.ai.chat.index.index.kd3ca4eed'))
     return false
   }
   activeConversationId.value = null
@@ -287,7 +288,7 @@ const messageList = computed(() => {
 /** 处理删除 message 消息 */
 const handleMessageDelete = () => {
   if (conversationInProgress.value) {
-    message.alert('回答中，不能删除!')
+    message.alert(t('auto.views.ai.chat.index.index.k85dfef0d'))
     return
   }
   // 刷新 message 列表
@@ -301,7 +302,7 @@ const handlerMessageClear = async () => {
   }
   try {
     // 确认提示
-    await message.delConfirm('确认清空对话消息？')
+    await message.delConfirm(t('auto.views.ai.chat.index.index.kd4ec62c7'))
     // 清空对话
     await ChatMessageApi.deleteByConversationId(activeConversationId.value)
     // 刷新 message 列表
@@ -379,11 +380,11 @@ const onCompositionend = () => {
 const doSendMessage = async (content: string) => {
   // 校验
   if (content.length < 1) {
-    message.error('发送失败，原因：内容为空！')
+    message.error(t('auto.views.ai.chat.index.index.k7bb79fd8'))
     return
   }
   if (activeConversationId.value == null) {
-    message.error('还没创建对话，不能发送!')
+    message.error(t('auto.views.ai.chat.index.index.kb725019c'))
     return
   }
   // 清空输入框
@@ -417,7 +418,7 @@ const doSendMessageStream = async (userMessage: ChatMessageVO) => {
       id: -2,
       conversationId: activeConversationId.value,
       type: 'assistant',
-      content: '思考中...',
+      content: t('auto.views.ai.chat.index.index.k7f318ca4'),
       createTime: new Date()
     } as ChatMessageVO)
     // 1.2 滚动到最下面
@@ -436,7 +437,7 @@ const doSendMessageStream = async (userMessage: ChatMessageVO) => {
       async (res) => {
         const { code, data, msg } = JSON.parse(res.data)
         if (code !== 0) {
-          message.alert(`对话异常! ${msg}`)
+          message.alert(t('extra.kf05f82f6', { p0: msg }))
           return
         }
 
@@ -460,7 +461,7 @@ const doSendMessageStream = async (userMessage: ChatMessageVO) => {
         await scrollToBottom()
       },
       (error) => {
-        message.alert(`对话异常! ${error}`)
+        message.alert(t('extra.kf05f82f6', { p0: error }))
         stopStream()
       },
       () => {

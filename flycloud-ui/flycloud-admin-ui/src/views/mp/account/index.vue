@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="公众号接入" url="https://doc.iocoder.cn/mp/account/" />
+  <doc-alert
+    :title="t('auto.views.mp.account.index.k3c9c2677')"
+    url="https://doc.iocoder.cn/mp/account/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,20 +13,24 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="t('auto.views.mp.account.index.k1be7ae4f')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          :placeholder="t('auto.views.mp.account.index.kc2afb255')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" />搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" />重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" />{{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" />{{ t('common.reset') }}</el-button
+        >
         <el-button type="primary" @click="openForm('create')" v-hasPermi="['mp:account:create']">
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf6e9f8c0') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -32,10 +39,24 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="微信号" align="center" prop="account" width="180" />
+      <el-table-column
+        :label="t('auto.views.mp.account.index.k1be7ae4f')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.mp.account.index.kec63fe9c')"
+        align="center"
+        prop="account"
+        width="180"
+      />
       <el-table-column label="appId" align="center" prop="appId" width="180" />
-      <el-table-column label="服务器地址(URL)" align="center" prop="appId" width="360">
+      <el-table-column
+        :label="t('auto.views.mp.account.index.k71562d6c')"
+        align="center"
+        prop="appId"
+        width="360"
+      >
         <template #default="scope">
           {{ 'http://服务端地址/admin-api/mp/open/' + scope.row.appId }}
         </template>
@@ -103,11 +124,10 @@
 <script lang="ts" setup>
 import * as AccountApi from '@/api/mp/account'
 import AccountForm from './AccountForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpAccount' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -168,10 +188,14 @@ const handleDelete = async (id) => {
 const handleGenerateQrCode = async (row) => {
   try {
     // 生成二维码的二次确认
-    await message.confirm('是否确认生成公众号账号编号为"' + row.name + '"的二维码?')
+    await message.confirm(
+      t('auto.views.mp.account.index.k6a4b1ec6') +
+        row.name +
+        t('auto.views.mp.account.index.k48c75591')
+    )
     // 发起生成二维码
     await AccountApi.generateAccountQrCode(row.id)
-    message.success('生成二维码成功')
+    message.success(t('auto.views.mp.account.index.k8e5759bc'))
     // 刷新列表
     await getList()
   } catch {}
@@ -181,10 +205,14 @@ const handleGenerateQrCode = async (row) => {
 const handleCleanQuota = async (row) => {
   try {
     // 清空 API 配额的二次确认
-    await message.confirm('是否确认清空生成公众号账号编号为"' + row.name + '"的 API 配额?')
+    await message.confirm(
+      t('auto.views.mp.account.index.k0dac8bf8') +
+        row.name +
+        t('auto.views.mp.account.index.k4485fd38')
+    )
     // 发起清空 API 配额
     await AccountApi.clearAccountQuota(row.id)
-    message.success('清空 API 配额成功')
+    message.success(t('auto.views.mp.account.index.k583ea0e1'))
   } catch {}
 }
 

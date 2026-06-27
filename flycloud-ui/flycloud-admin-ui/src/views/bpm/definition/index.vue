@@ -1,9 +1,18 @@
 <template>
-
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="定义编号" align="center" prop="id" width="400" />
-      <el-table-column label="流程名称" align="center" prop="name" width="200">
+      <el-table-column
+        :label="t('auto.views.bpm.definition.index.k41fad255')"
+        align="center"
+        prop="id"
+        width="400"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.definition.index.k323a8305')"
+        align="center"
+        prop="name"
+        width="200"
+      >
         <template #default="scope">
           <el-button type="primary" link @click="handleBpmnDetail(scope.row)">
             <span>{{ scope.row.name }}</span>
@@ -78,7 +87,7 @@ import { dateFormatter } from '@/utils/formatTime'
 import { MyProcessViewer } from '@/components/bpmnProcessDesigner/package'
 import * as DefinitionApi from '@/api/bpm/definition'
 import { setConfAndFields2 } from '@/utils/formCreate'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessDefinition' })
 
 const { push } = useRouter() // 路由

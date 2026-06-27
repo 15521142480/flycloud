@@ -1,5 +1,8 @@
 <template>
-  <Dialog title="设定" v-model="dialogVisible">
+  <Dialog
+    :title="t('auto.views.ai.chat.index.components.conversation.ka570c03b')"
+    v-model="dialogVisible"
+  >
     <el-form
       ref="formRef"
       :model="formData"
@@ -7,16 +10,25 @@
       label-width="130px"
       v-loading="formLoading"
     >
-      <el-form-item label="角色设定" prop="systemMessage">
+      <el-form-item
+        :label="t('auto.views.ai.chat.index.components.conversation.k338affe3')"
+        prop="systemMessage"
+      >
         <el-input
           type="textarea"
           v-model="formData.systemMessage"
           rows="4"
-          placeholder="请输入角色设定"
+          :placeholder="t('auto.views.ai.chat.index.components.conversation.kbb91e9c0')"
         />
       </el-form-item>
-      <el-form-item label="模型" prop="modelId">
-        <el-select v-model="formData.modelId" placeholder="请选择模型">
+      <el-form-item
+        :label="t('auto.views.ai.chat.index.components.conversation.k98fd0cbd')"
+        prop="modelId"
+      >
+        <el-select
+          v-model="formData.modelId"
+          :placeholder="t('auto.views.ai.chat.index.components.conversation.k7330bf23')"
+        >
           <el-option
             v-for="chatModel in chatModelList"
             :key="chatModel.id"
@@ -25,35 +37,48 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="温度参数" prop="temperature">
+      <el-form-item
+        :label="t('auto.views.ai.chat.index.components.conversation.k80a0d1e0')"
+        prop="temperature"
+      >
         <el-input-number
           v-model="formData.temperature"
-          placeholder="请输入温度参数"
+          :placeholder="t('auto.views.ai.chat.index.components.conversation.ka09e02d5')"
           :min="0"
           :max="2"
           :precision="2"
         />
       </el-form-item>
-      <el-form-item label="回复数 Token 数" prop="maxTokens">
+      <el-form-item
+        :label="t('auto.views.ai.chat.index.components.conversation.kd27629ce')"
+        prop="maxTokens"
+      >
         <el-input-number
           v-model="formData.maxTokens"
-          placeholder="请输入回复数 Token 数"
+          :placeholder="t('auto.views.ai.chat.index.components.conversation.kbf01445b')"
           :min="0"
           :max="4096"
         />
       </el-form-item>
-      <el-form-item label="上下文数量" prop="maxContexts">
+      <el-form-item
+        :label="t('auto.views.ai.chat.index.components.conversation.k3f4045aa')"
+        prop="maxContexts"
+      >
         <el-input-number
           v-model="formData.maxContexts"
-          placeholder="请输入上下文数量"
+          :placeholder="t('auto.views.ai.chat.index.components.conversation.k1da1d932')"
           :min="0"
           :max="20"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.ai.chat.index.components.conversation.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.ai.chat.index.components.conversation.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -61,8 +86,8 @@
 import { CommonStatusEnum } from '@/utils/constants'
 import { ChatModelApi, ChatModelVO } from '@/api/ai/model/chatModel'
 import { ChatConversationApi, ChatConversationVO } from '@/api/ai/chat/conversation'
-
 /** AI 聊天对话的更新表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ChatConversationUpdateForm' })
 
 const message = useMessage() // 消息弹窗
@@ -78,11 +103,41 @@ const formData = ref({
   maxContexts: undefined
 })
 const formRules = reactive({
-  modelId: [{ required: true, message: '模型不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
-  temperature: [{ required: true, message: '温度参数不能为空', trigger: 'blur' }],
-  maxTokens: [{ required: true, message: '回复数 Token 数不能为空', trigger: 'blur' }],
-  maxContexts: [{ required: true, message: '上下文数量不能为空', trigger: 'blur' }]
+  modelId: [
+    {
+      required: true,
+      message: t('auto.views.ai.chat.index.components.conversation.kbe9ab121'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.ai.chat.index.components.conversation.k1318b551'),
+      trigger: 'blur'
+    }
+  ],
+  temperature: [
+    {
+      required: true,
+      message: t('auto.views.ai.chat.index.components.conversation.k63a4c535'),
+      trigger: 'blur'
+    }
+  ],
+  maxTokens: [
+    {
+      required: true,
+      message: t('auto.views.ai.chat.index.components.conversation.kd31fefed'),
+      trigger: 'blur'
+    }
+  ],
+  maxContexts: [
+    {
+      required: true,
+      message: t('auto.views.ai.chat.index.components.conversation.k04095b73'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const chatModelList = ref([] as ChatModelVO[]) // 聊天模型列表
@@ -121,7 +176,7 @@ const submitForm = async () => {
   try {
     const data = formData.value as unknown as ChatConversationVO
     await ChatConversationApi.updateChatConversationMy(data)
-    message.success('对话配置已更新')
+    message.success(t('auto.views.ai.chat.index.components.conversation.k2bd33532'))
     dialogVisible.value = false
     // 发送操作成功的事件
     emit('success')

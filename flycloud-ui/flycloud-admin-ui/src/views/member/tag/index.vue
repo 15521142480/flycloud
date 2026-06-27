@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="会员用户、标签、分组" url="https://doc.iocoder.cn/member/user/" />
+  <doc-alert
+    :title="t('auto.views.member.tag.index.kedefead1')"
+    url="https://doc.iocoder.cn/member/user/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,31 +13,35 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="标签名称" prop="name">
+      <el-form-item :label="t('auto.views.member.tag.index.k182295d4')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入标签名称"
+          :placeholder="t('auto.views.member.tag.index.k8e1f344c')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.member.tag.index.k1f291968')"
+          :end-placeholder="t('auto.views.member.tag.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button type="primary" @click="openForm('create')" v-hasPermi="['member:tag:create']">
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k74ef9618') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -43,16 +50,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" width="150px" />
-      <el-table-column label="标签名称" align="center" prop="name" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.member.tag.index.k9f42dac6')"
+        align="center"
+        prop="id"
+        width="150px"
+      />
+      <el-table-column
+        :label="t('auto.views.member.tag.index.k182295d4')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="150px">
+      <el-table-column :label="t('common.operation')" align="center" width="150px">
         <template #default="scope">
           <el-button
             link
@@ -60,7 +76,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['member:tag:update']"
           >
-            编辑
+            {{ t('extra.kdea2067f') }}
           </el-button>
           <el-button
             link
@@ -68,7 +84,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['member:tag:delete']"
           >
-            删除
+            {{ t('extra.kd4063061') }}
           </el-button>
         </template>
       </el-table-column>
@@ -91,8 +107,8 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as TagApi from '@/api/member/tag'
 import TagForm from './TagForm.vue'
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

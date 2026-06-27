@@ -1,8 +1,16 @@
 <template>
   <div>
     <el-row>
-      <el-input v-model="reply.title" class="input-margin-bottom" placeholder="请输入标题" />
-      <el-input class="input-margin-bottom" v-model="reply.description" placeholder="请输入描述" />
+      <el-input
+        v-model="reply.title"
+        class="input-margin-bottom"
+        :placeholder="t('auto.views.mp.components.wx_reply.components.TabVideo.k901722e5')"
+      />
+      <el-input
+        class="input-margin-bottom"
+        v-model="reply.description"
+        :placeholder="t('auto.views.mp.components.wx_reply.components.TabVideo.kcb869887')"
+      />
       <el-row class="ope-row" justify="center">
         <WxVideoPlayer v-if="reply.url" :url="reply.url" />
       </el-row>
@@ -11,10 +19,10 @@
           <!-- 选择素材 -->
           <el-col :span="12">
             <el-button type="success" @click="showDialog = true">
-              素材库选择 <Icon icon="ep:circle-check" />
+              {{ t('extra.k02fb7196') }} <Icon icon="ep:circle-check" />
             </el-button>
             <el-dialog
-              title="选择视频"
+              :title="t('auto.views.mp.components.wx_reply.components.TabVideo.kf6bc7748')"
               v-model="showDialog"
               width="90%"
               append-to-body
@@ -39,7 +47,10 @@
               :before-upload="beforeVideoUpload"
               :on-success="onUploadSuccess"
             >
-              <el-button type="primary">新建视频 <Icon icon="ep:upload" /></el-button>
+              <el-button type="primary"
+                >{{ t('auto.views.mp.components.wx_reply.components.TabVideo.kcb725a4b') }}
+                <Icon icon="ep:upload"
+              /></el-button>
             </el-upload>
           </el-col>
         </el-row>
@@ -55,7 +66,7 @@ import type { UploadRawFile } from 'element-plus'
 import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
 import { getAccessToken } from '@/utils/auth'
 import { Reply } from './types'
-
+const { t } = useI18n()
 const message = useMessage()
 
 const UPLOAD_URL = import.meta.env.VITE_BASE_URL + '/admin-api/mp/material/upload-temporary'
@@ -85,7 +96,7 @@ const beforeVideoUpload = (rawFile: UploadRawFile) => useBeforeUpload(UploadType
 
 const onUploadSuccess = (res: any) => {
   if (res.code !== 0) {
-    message.error('上传出错：' + res.msg)
+    message.error(t('auto.views.mp.components.wx_reply.components.TabVideo.kea0f7067') + res.msg)
     return false
   }
 

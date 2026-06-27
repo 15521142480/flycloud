@@ -1,18 +1,18 @@
 <template>
   <ReceivableDetailsHeader v-loading="loading" :receivable="receivable">
     <el-button v-if="permissionListRef?.validateWrite" @click="openForm('update', receivable.id)">
-      编辑
+      {{ t('extra.k68e85d15') }}
     </el-button>
   </ReceivableDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="详细资料">
+      <el-tab-pane :label="t('auto.views.crm.receivable.detail.index.kbf455584')">
         <ReceivableDetailsInfo :receivable="receivable" />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.receivable.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.receivable.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="receivable.id!"
@@ -37,7 +37,7 @@ import { BizTypeEnum } from '@/api/crm/permission'
 import { OperateLogVO } from '@/api/system/operatelog'
 import { getOperateLogPage } from '@/api/crm/operateLog'
 import ReceivableForm from '@/views/crm/receivable/ReceivableForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmReceivablePlanDetail' })
 const props = defineProps<{ id?: number }>()
 
@@ -90,7 +90,7 @@ const { params } = useRoute()
 onMounted(async () => {
   const id = props.id || route.params.id
   if (!id) {
-    message.warning('参数错误，回款不能为空！')
+    message.warning(t('auto.views.crm.receivable.detail.index.k2b708526'))
     close()
     return
   }

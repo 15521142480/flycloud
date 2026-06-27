@@ -8,20 +8,32 @@
       @click="openForm('create')"
     >
       <Icon class="mr-5px" icon="ep:plus" />
-      新增
+      {{ t('extra.k81016846') }}
     </el-button>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" label="编号" prop="id" />
-      <el-table-column align="center" label="名字" prop="name" />
-      <el-table-column align="center" label="分数" prop="score" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo03.erp.components.k9f42dac6')"
+        prop="id"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo03.erp.components.k364bd1bf')"
+        prop="name"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo03.erp.components.kda335e20')"
+        prop="score"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['infra:demo03-student:update']"
@@ -29,7 +41,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('extra.k7f15a2ee') }}
           </el-button>
           <el-button
             v-hasPermi="['infra:demo03-student:delete']"
@@ -37,7 +49,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('extra.ke5fb2ac5') }}
           </el-button>
         </template>
       </el-table-column>
@@ -58,8 +70,7 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/erp'
 import Demo03CourseForm from './Demo03CourseForm.vue'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const props = defineProps<{
@@ -109,7 +120,7 @@ const handleQuery = () => {
 const formRef = ref()
 const openForm = (type: string, id?: number) => {
   if (!props.studentId) {
-    message.error('请选择一个学生')
+    message.error(t('auto.views.infra.demo.demo03.erp.components.k3606495e'))
     return
   }
   formRef.value.open(type, id, props.studentId)

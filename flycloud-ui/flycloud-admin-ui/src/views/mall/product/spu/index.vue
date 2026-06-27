@@ -1,6 +1,5 @@
 <!-- 商品中心 - 商品列表  -->
 <template>
-
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form
@@ -10,16 +9,16 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="商品名称" prop="name">
+      <el-form-item :label="t('auto.views.mall.product.spu.index.k47b74133')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入商品名称"
+          :placeholder="t('auto.views.mall.product.spu.index.k5c6bf9b9')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商品分类" prop="categoryId">
+      <el-form-item :label="t('auto.views.mall.product.spu.index.k09482df6')" prop="categoryId">
         <el-cascader
           v-model="queryParams.categoryId"
           :options="categoryList"
@@ -27,16 +26,16 @@
           class="w-1/1"
           clearable
           filterable
-          placeholder="请选择商品分类"
+          :placeholder="t('auto.views.mall.product.spu.index.ke71fcc11')"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.mall.product.spu.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.mall.product.spu.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -44,11 +43,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k521a6146') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kf4ea13c8') }}
         </el-button>
         <el-button
           v-hasPermi="['product:spu:create']"
@@ -57,7 +56,7 @@
           @click="openForm(undefined)"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k0d3de2ef') }}
         </el-button>
         <el-button
           v-hasPermi="['product:spu:export']"
@@ -67,7 +66,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.kbc722a36') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -91,17 +90,17 @@
               <el-col :span="24">
                 <el-row>
                   <el-col :span="8">
-                    <el-form-item label="商品分类:">
+                    <el-form-item :label="t('auto.views.mall.product.spu.index.kadbecb26')">
                       <span>{{ formatCategoryName(row.categoryId) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="市场价:">
+                    <el-form-item :label="t('auto.views.mall.product.spu.index.ka3cb52fb')">
                       <span>{{ fenToYuan(row.marketPrice) }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="成本价:">
+                    <el-form-item :label="t('auto.views.mall.product.spu.index.k41ae3c6f')">
                       <span>{{ fenToYuan(row.costPrice) }}</span>
                     </el-form-item>
                   </el-col>
@@ -112,12 +111,12 @@
               <el-col :span="24">
                 <el-row>
                   <el-col :span="8">
-                    <el-form-item label="浏览量:">
+                    <el-form-item :label="t('auto.views.mall.product.spu.index.k85510483')">
                       <span>{{ row.browseCount }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="虚拟销量:">
+                    <el-form-item :label="t('auto.views.mall.product.spu.index.kb3e02ccf')">
                       <span>{{ row.virtualSalesCount }}</span>
                     </el-form-item>
                   </el-col>
@@ -239,12 +238,11 @@ import { fenToYuan } from '@/utils'
 import download from '@/utils/download'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import * as ProductCategoryApi from '@/api/mall/product/category'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductSpu' })
 
 const message = useMessage() // 消息弹窗
 const route = useRoute() // 路由
-const { t } = useI18n() // 国际化
 const { push } = useRouter() // 路由跳转
 
 const loading = ref(false) // 列表的加载中
@@ -254,27 +252,27 @@ const list = ref<ProductSpuApi.Spu[]>([]) // 列表的数据
 // tabs 数据
 const tabsData = ref([
   {
-    name: '出售中',
+    name: t('auto.views.mall.product.spu.index.k653e1ce3'),
     type: 0,
     count: 0
   },
   {
-    name: '仓库中',
+    name: t('auto.views.mall.product.spu.index.kd41514ce'),
     type: 1,
     count: 0
   },
   {
-    name: '已售罄',
+    name: t('auto.views.mall.product.spu.index.ka0805966'),
     type: 2,
     count: 0
   },
   {
-    name: '警戒库存',
+    name: t('auto.views.mall.product.spu.index.k036c890f'),
     type: 3,
     count: 0
   },
   {
-    name: '回收站',
+    name: t('auto.views.mall.product.spu.index.k64ea8751'),
     type: 4,
     count: 0
   }
@@ -320,11 +318,14 @@ const getTabsCount = async () => {
 const handleStatus02Change = async (row: any, newStatus: number) => {
   try {
     // 二次确认
-    const text = newStatus === ProductSpuStatusEnum.RECYCLE.status ? '加入到回收站' : '恢复到仓库'
-    await message.confirm(`确认要"${row.name}"${text}吗？`)
+    const text =
+      newStatus === ProductSpuStatusEnum.RECYCLE.status
+        ? t('auto.views.mall.product.spu.index.kdca8b0c3')
+        : t('auto.views.mall.product.spu.index.k340907ee')
+    await message.confirm(t('extra.kad7d354d', { p0: row.name, p1: text }))
     // 发起修改
     await ProductSpuApi.updateStatus({ id: row.id, status: newStatus })
-    message.success(text + '成功')
+    message.success(text + t('common.success'))
     // 刷新 tabs 数据
     await getTabsCount()
     // 刷新列表
@@ -336,11 +337,13 @@ const handleStatus02Change = async (row: any, newStatus: number) => {
 const handleStatusChange = async (row: any) => {
   try {
     // 二次确认
-    const text = row.status ? '上架' : '下架'
-    await message.confirm(`确认要${text}"${row.name}"吗？`)
+    const text = row.status
+      ? t('auto.views.mall.product.spu.index.kddc61d57')
+      : t('auto.views.mall.product.spu.index.ka2698bcf')
+    await message.confirm(t('extra.k455f96ce', { p0: text, p1: row.name }))
     // 发起修改
     await ProductSpuApi.updateStatus({ id: row.id, status: row.status })
-    message.success(text + '成功')
+    message.success(text + t('common.success'))
     // 刷新 tabs 数据
     await getTabsCount()
     // 刷新列表
@@ -411,7 +414,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductSpuApi.exportSpu(queryParams)
-    download.excel(data, '商品列表.xls')
+    download.excel(data, t('auto.views.mall.product.spu.index.k04388bd0'))
   } catch {
   } finally {
     exportLoading.value = false

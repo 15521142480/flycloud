@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,30 +8,30 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="客户名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.customer.index.ke941d410')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入客户名称"
+          :placeholder="t('auto.views.crm.customer.index.kf6b3ea8b')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机" prop="mobile">
+      <el-form-item :label="t('auto.views.crm.customer.index.k9c01ad09')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
           class="!w-240px"
           clearable
-          placeholder="请输入手机"
+          :placeholder="t('auto.views.crm.customer.index.k55a7cb25')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所属行业" prop="industryId">
+      <el-form-item :label="t('auto.views.crm.customer.index.k51c763cf')" prop="industryId">
         <el-select
           v-model="queryParams.industryId"
           class="!w-240px"
           clearable
-          placeholder="请选择所属行业"
+          :placeholder="t('auto.views.crm.customer.index.k0ca49bed')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_CUSTOMER_INDUSTRY)"
@@ -42,12 +41,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户级别" prop="level">
+      <el-form-item :label="t('auto.views.crm.customer.index.kbb7208b8')" prop="level">
         <el-select
           v-model="queryParams.level"
           class="!w-240px"
           clearable
-          placeholder="请选择客户级别"
+          :placeholder="t('auto.views.crm.customer.index.k5da4f85f')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_CUSTOMER_LEVEL)"
@@ -57,12 +56,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户来源" prop="source">
+      <el-form-item :label="t('auto.views.crm.customer.index.kb805cdaa')" prop="source">
         <el-select
           v-model="queryParams.source"
           class="!w-240px"
           clearable
-          placeholder="请选择客户来源"
+          :placeholder="t('auto.views.crm.customer.index.ke5ca47c0')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_CUSTOMER_SOURCE)"
@@ -75,19 +74,19 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k227576d5') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kbf326abe') }}
         </el-button>
         <el-button v-hasPermi="['crm:customer:create']" type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k7275ee16') }}
         </el-button>
         <el-button v-hasPermi="['crm:customer:import']" plain type="warning" @click="handleImport">
           <Icon icon="ep:upload" />
-          导入
+          {{ t('extra.k6cac2ab3') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:customer:export']"
@@ -97,7 +96,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k850c3fad') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -106,12 +105,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="我参与的" name="2" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.customer.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.customer.index.k1640a0ff')" name="2" />
+      <el-tab-pane :label="t('auto.views.crm.customer.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="客户名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.customer.index.ke941d410')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -226,11 +231,10 @@ import * as CustomerApi from '@/api/crm/customer'
 import CustomerForm from './CustomerForm.vue'
 import CustomerImportForm from './CustomerImportForm.vue'
 import { TabsPaneContext } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmCustomer' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -319,7 +323,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await CustomerApi.exportCustomer(queryParams)
-    download.excel(data, '客户.xls')
+    download.excel(data, t('auto.views.crm.customer.index.k3c095595'))
   } catch {
   } finally {
     exportLoading.value = false

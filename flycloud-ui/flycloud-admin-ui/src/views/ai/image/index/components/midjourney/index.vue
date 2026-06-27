@@ -1,22 +1,24 @@
 <!-- dall3 -->
 <template>
   <div class="prompt">
-    <el-text tag="b">画面描述</el-text>
-    <el-text tag="p">建议使用“形容词+动词+风格”的格式，使用“，”隔开.</el-text>
+    <el-text tag="b">{{ t('auto.views.ai.image.index.components.midjourney.k1813eae1') }}</el-text>
+    <el-text tag="p">{{ t('auto.views.ai.image.index.components.midjourney.k774e356c') }}</el-text>
     <el-input
       v-model="prompt"
       maxlength="1024"
       rows="5"
       class="w-100% mt-15px"
       input-style="border-radius: 7px;"
-      placeholder="例如：童话里的小屋应该是什么样子？"
+      :placeholder="t('auto.views.ai.image.index.components.midjourney.k379873d7')"
       show-word-limit
       type="textarea"
     />
   </div>
   <div class="hot-words">
     <div>
-      <el-text tag="b">随机热词</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.midjourney.k21b37b6a')
+      }}</el-text>
     </div>
     <el-space wrap class="word-list">
       <el-button
@@ -33,7 +35,9 @@
   </div>
   <div class="image-size">
     <div>
-      <el-text tag="b">尺寸</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.midjourney.k94a6711f')
+      }}</el-text>
     </div>
     <el-space wrap class="size-list">
       <div
@@ -53,7 +57,9 @@
   </div>
   <div class="model">
     <div>
-      <el-text tag="b">模型</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.midjourney.k98fd0cbd')
+      }}</el-text>
     </div>
     <el-space wrap class="model-list">
       <div
@@ -68,14 +74,16 @@
   </div>
   <div class="version">
     <div>
-      <el-text tag="b">版本</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.midjourney.k989d1aff')
+      }}</el-text>
     </div>
     <el-space wrap class="version-list">
       <el-select
         v-model="selectVersion"
         class="version-select !w-350px"
         clearable
-        placeholder="请选择版本"
+        :placeholder="t('auto.views.ai.image.index.components.midjourney.kf7dc468f')"
       >
         <el-option
           v-for="item in versionList"
@@ -88,16 +96,18 @@
   </div>
   <div class="model">
     <div>
-      <el-text tag="b">参考图</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.midjourney.k5149ae9c')
+      }}</el-text>
     </div>
     <el-space wrap class="model-list">
       <UploadImg v-model="referImageUrl" height="120px" width="120px" />
     </el-space>
   </div>
   <div class="btns">
-    <el-button type="primary" size="large" round @click="handleGenerateImage">
-      {{ drawIn ? '生成中' : '生成内容' }}
-    </el-button>
+    <el-button type="primary" size="large" round @click="handleGenerateImage">{{
+      drawIn ? t('extra.kaa157fe2') : t('extra.k1f4b2c66')
+    }}</el-button>
   </div>
 </template>
 <script setup lang="ts">
@@ -112,7 +122,7 @@ import {
   MidjourneyVersions,
   NijiVersionList
 } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 // 定义属性
@@ -159,7 +169,7 @@ const handleModelClick = async (model: ImageModelVO) => {
 /** 图片生成 */
 const handleGenerateImage = async () => {
   // 二次确认
-  await message.confirm(`确认生成内容?`)
+  await message.confirm(t('auto.views.ai.image.index.components.midjourney.k47808f71'))
   try {
     // 加载中
     drawIn.value = true

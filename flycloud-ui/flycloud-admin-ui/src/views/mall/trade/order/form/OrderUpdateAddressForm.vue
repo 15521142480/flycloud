@@ -1,13 +1,23 @@
 <template>
-  <Dialog v-model="dialogVisible" title="修改订单收货地址" width="35%">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.k88a3032c')"
+    width="35%"
+  >
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="120px">
-      <el-form-item label="收件人">
-        <el-input v-model="formData.receiverName" placeholder="请输入收件人名称" />
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.k529414cf')">
+        <el-input
+          v-model="formData.receiverName"
+          :placeholder="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.kc6610d3c')"
+        />
       </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="formData.receiverMobile" placeholder="请输入收件人手机号" />
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.k5a9cc5e8')">
+        <el-input
+          v-model="formData.receiverMobile"
+          :placeholder="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.k33ff7c57')"
+        />
       </el-form-item>
-      <el-form-item label="所在地">
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.kfe837ba6')">
         <el-tree-select
           v-model="formData.receiverAreaId"
           :data="areaList"
@@ -15,18 +25,22 @@
           :render-after-expand="true"
         />
       </el-form-item>
-      <el-form-item label="详细地址">
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.kab09453d')">
         <el-input
           v-model="formData.receiverDetailAddress"
           :rows="3"
-          placeholder="请输入收件人详细地址"
+          :placeholder="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.ka1e0d5a8')"
           type="textarea"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -35,10 +49,8 @@ import * as TradeOrderApi from '@/api/mall/trade/order'
 import { getAreaTree } from '@/api/system/area'
 import { copyValueToTarget } from '@/utils'
 import { defaultProps } from '@/utils/tree'
-
+const { t } = useI18n()
 defineOptions({ name: 'OrderUpdateAddressForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示

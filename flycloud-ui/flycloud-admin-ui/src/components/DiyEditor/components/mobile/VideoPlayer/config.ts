@@ -1,6 +1,8 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 视频播放属性 */
+const { t } = useI18n()
+
 export interface VideoPlayerProperty {
   // 视频链接
   videoUrl: string
@@ -21,7 +23,7 @@ export interface VideoPlayerStyle extends ComponentStyle {
 // 定义组件
 export const component = {
   id: 'VideoPlayer',
-  name: '视频播放',
+  name: t('auto.components.DiyEditor.components.mobile.VideoPlayer.config.k6ae20950'),
   icon: 'ep:video-play',
   property: {
     videoUrl: '',

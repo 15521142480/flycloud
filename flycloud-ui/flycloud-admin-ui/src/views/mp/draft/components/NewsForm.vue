@@ -87,15 +87,18 @@
       <div v-if="newsList.length > 0">
         <!-- 标题、作者、原文地址 -->
         <el-row :gutter="20">
-          <el-input v-model="activeNewsItem.title" placeholder="请输入标题（必填）" />
+          <el-input
+            v-model="activeNewsItem.title"
+            :placeholder="t('auto.views.mp.draft.components.NewsForm.k6b9e25de')"
+          />
           <el-input
             v-model="activeNewsItem.author"
-            placeholder="请输入作者"
+            :placeholder="t('auto.views.mp.draft.components.NewsForm.k57706c16')"
             style="margin-top: 5px"
           />
           <el-input
             v-model="activeNewsItem.contentSourceUrl"
-            placeholder="请输入原文地址"
+            :placeholder="t('auto.views.mp.draft.components.NewsForm.k7d3c471d')"
             style="margin-top: 5px"
           />
         </el-row>
@@ -105,12 +108,12 @@
             <CoverSelect v-model="activeNewsItem" :is-first="activeNewsIndex === 0" />
           </el-col>
           <el-col :span="12">
-            <p>摘要:</p>
+            <p>{{ t('auto.views.mp.draft.components.NewsForm.k997f3365') }}</p>
             <el-input
               :rows="8"
               type="textarea"
               v-model="activeNewsItem.digest"
-              placeholder="请输入摘要"
+              :placeholder="t('auto.views.mp.draft.components.NewsForm.ka1fef183')"
               class="digest"
               maxlength="120"
             />
@@ -130,7 +133,7 @@ import { Editor } from '@/components/Editor'
 import { createEditorConfig } from '../editor-config'
 import CoverSelect from './CoverSelect.vue'
 import { type NewsItem, createEmptyNewsItem } from './types'
-
+const { t } = useI18n()
 defineOptions({ name: 'NewsForm' })
 
 const message = useMessage()
@@ -181,7 +184,7 @@ const moveUpNews = (index: number) => {
 // 删除指定 index 的图文
 const removeNews = async (index: number) => {
   try {
-    await message.confirm('确定删除该图文吗?')
+    await message.confirm(t('auto.views.mp.draft.components.NewsForm.k824c0836'))
     newsList.value.splice(index, 1)
     if (activeNewsIndex.value === index) {
       activeNewsIndex.value = 0

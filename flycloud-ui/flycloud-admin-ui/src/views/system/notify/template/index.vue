@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="站内信配置" url="https://doc.iocoder.cn/notify/" />
+  <doc-alert
+    :title="t('auto.views.system.notify.template.index.k182bebee')"
+    url="https://doc.iocoder.cn/notify/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,28 +13,28 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="模板名称" prop="name">
+      <el-form-item :label="t('auto.views.system.notify.template.index.kbbc511d0')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入模板名称"
+          :placeholder="t('auto.views.system.notify.template.index.k86bd4450')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="模板编号" prop="code">
+      <el-form-item :label="t('auto.views.system.notify.template.index.k3fa1ce06')" prop="code">
         <el-input
           v-model="queryParams.code"
-          placeholder="请输入模版编码"
+          :placeholder="t('auto.views.system.notify.template.index.k457d3fed')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择开启状态"
+          :placeholder="t('auto.views.system.notify.template.index.k312f5310')"
           clearable
           class="!w-240px"
         >
@@ -43,27 +46,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.notify.template.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.notify.template.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['system:notify-template:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" />新增
+          <Icon icon="ep:plus" class="mr-5px" />{{ t('extra.kefe6cbbb') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -73,20 +80,24 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column
-        label="模板编码"
+        :label="t('auto.views.system.notify.template.index.k5695a649')"
         align="center"
         prop="code"
         width="120"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="模板名称"
+        :label="t('auto.views.system.notify.template.index.kbbc511d0')"
         align="center"
         prop="name"
         width="120"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="类型" align="center" prop="type">
+      <el-table-column
+        :label="t('auto.views.system.notify.template.index.ke4e46c72')"
+        align="center"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_NOTIFY_TEMPLATE_TYPE" :value="scope.row.type" />
         </template>
@@ -161,7 +172,7 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as NotifyTemplateApi from '@/api/system/notify/template'
 import NotifyTemplateForm from './NotifyTemplateForm.vue'
 import NotifyTemplateSendForm from './NotifyTemplateSendForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'NotifySmsTemplate' })
 
 const message = useMessage() // 消息弹窗
@@ -216,7 +227,7 @@ const handleDelete = async (id: number) => {
     await message.delConfirm()
     // 发起删除
     await NotifyTemplateApi.deleteNotifyTemplate(id)
-    message.success('删除成功')
+    message.success(t('auto.views.system.notify.template.index.k86e8d12a'))
     // 刷新列表
     await getList()
   } catch {}

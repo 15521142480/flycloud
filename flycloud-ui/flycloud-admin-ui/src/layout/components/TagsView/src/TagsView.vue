@@ -12,13 +12,10 @@ import { useDesign } from '@/hooks/web/useDesign'
 import { useTemplateRefsList } from '@vueuse/core'
 import { ElScrollbar } from 'element-plus'
 import { useScrollTo } from '@/hooks/event/useScrollTo'
-
+const { t } = useI18n()
 const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('tags-view')
-
-const { t } = useI18n()
-
 const { currentRoute, push, replace } = useRouter()
 
 const permissionStore = usePermissionStore()

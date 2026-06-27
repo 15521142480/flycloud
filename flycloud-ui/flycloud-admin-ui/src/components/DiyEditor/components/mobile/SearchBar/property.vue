@@ -2,10 +2,19 @@
   <ComponentContainerProperty v-model="formData.style">
     <!-- 表单 -->
     <el-form label-width="80px" :model="formData" class="m-t-8px">
-      <el-card header="搜索热词" class="property-group" shadow="never">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.SearchBar.property.k4b08247d')"
+        class="property-group"
+        shadow="never"
+      >
         <Draggable v-model="formData.hotKeywords" :empty-item="''">
           <template #default="{ index }">
-            <el-input v-model="formData.hotKeywords[index]" placeholder="请输入热词" />
+            <el-input
+              v-model="formData.hotKeywords[index]"
+              :placeholder="
+                t('auto.components.DiyEditor.components.mobile.SearchBar.property.k0b34c52b')
+              "
+            />
           </template>
         </Draggable>
       </el-card>
@@ -61,8 +70,8 @@
 <script setup lang="ts">
 import { usePropertyForm } from '@/components/DiyEditor/util'
 import { SearchProperty } from '@/components/DiyEditor/components/mobile/SearchBar/config'
-
 /** 搜索框属性面板 */
+const { t } = useI18n()
 defineOptions({ name: 'SearchProperty' })
 
 const props = defineProps<{ modelValue: SearchProperty }>()

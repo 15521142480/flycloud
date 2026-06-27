@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,43 +8,47 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="t('auto.views.erp.finance.account.index.k1be7ae4f')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          :placeholder="t('auto.views.erp.finance.account.index.kc2afb255')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="编码" prop="no">
+      <el-form-item :label="t('auto.views.erp.finance.account.index.kc94faa71')" prop="no">
         <el-input
           v-model="queryParams.no"
-          placeholder="请输入编码"
+          :placeholder="t('auto.views.erp.finance.account.index.k76745b52')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item :label="t('common.remark')" prop="remark">
         <el-input
           v-model="queryParams.remark"
-          placeholder="请输入备注"
+          :placeholder="t('auto.views.erp.finance.account.index.k57e709d9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:account:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k03fa6f86') }}
         </el-button>
         <el-button
           type="success"
@@ -54,7 +57,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:account:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k1a4f35a6') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -63,10 +66,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="编码" align="center" prop="no" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.erp.finance.account.index.k1be7ae4f')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.finance.account.index.kc94faa71')"
+        align="center"
+        prop="no"
+      />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -131,10 +142,10 @@ import { AccountApi, AccountVO } from '@/api/erp/finance/account'
 import AccountForm from './AccountForm.vue'
 
 /** ERP 结算账户 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpAccount' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<AccountVO[]>([]) // 列表的数据
@@ -197,8 +208,16 @@ const handleDelete = async (id: number) => {
 const handleDefaultStatusChange = async (row: WarehouseVO) => {
   try {
     // 修改状态的二次确认
-    const text = row.defaultStatus ? '设置' : '取消'
-    await message.confirm('确认要' + text + '"' + row.name + '"默认吗?')
+    const text = row.defaultStatus
+      ? t('auto.views.erp.finance.account.index.k7debf9cb')
+      : t('common.cancel')
+    await message.confirm(
+      t('auto.views.erp.finance.account.index.k2be38185') +
+        text +
+        '"' +
+        row.name +
+        t('auto.views.erp.finance.account.index.k02c8bacb')
+    )
     // 发起修改状态
     await AccountApi.updateAccountDefaultStatus(row.id, row.defaultStatus)
     // 刷新列表
@@ -217,7 +236,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await AccountApi.exportAccount(queryParams)
-    download.excel(data, 'ERP 结算账户.xls')
+    download.excel(data, t('auto.views.erp.finance.account.index.k14e2226e'))
   } catch {
   } finally {
     exportLoading.value = false

@@ -1,10 +1,34 @@
 <!-- 执行器选择 -->
 <template>
-  <Dialog title="请选择监听器" v-model="dialogVisible" width="1024px">
+  <Dialog
+    :title="
+      t(
+        'auto.components.bpmnProcessDesigner.package.penal.listeners.ProcessListenerDialog.k18d4412f'
+      )
+    "
+    v-model="dialogVisible"
+    width="1024px"
+  >
     <ContentWrap>
       <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-        <el-table-column label="名字" align="center" prop="name" />
-        <el-table-column label="类型" align="center" prop="type">
+        <el-table-column
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.listeners.ProcessListenerDialog.k364bd1bf'
+            )
+          "
+          align="center"
+          prop="name"
+        />
+        <el-table-column
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.listeners.ProcessListenerDialog.ke4e46c72'
+            )
+          "
+          align="center"
+          prop="type"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.BPM_PROCESS_LISTENER_TYPE" :value="scope.row.type" />
           </template>
@@ -39,8 +63,8 @@
 import { ProcessListenerApi, ProcessListenerVO } from '@/api/bpm/processListener'
 import { DICT_TYPE } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
-
 /** BPM 流程 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProcessListenerDialog' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

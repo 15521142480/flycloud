@@ -8,30 +8,30 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="字典名称" prop="name">
+      <el-form-item :label="t('auto.views.system.dict.index_old.k32bc8312')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入字典名称"
+          :placeholder="t('auto.views.system.dict.index_old.ka33e8748')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="字典类型" prop="type">
+      <el-form-item :label="t('auto.views.system.dict.index_old.k6dde52f3')" prop="type">
         <el-input
           v-model="queryParams.type"
           class="!w-240px"
           clearable
-          placeholder="请输入字典类型"
+          :placeholder="t('auto.views.system.dict.index_old.k579d4241')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          placeholder="请选择字典状态"
+          :placeholder="t('auto.views.system.dict.index_old.kcdbbb6c4')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -41,13 +41,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.system.dict.index_old.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.system.dict.index_old.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -55,11 +55,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k2cfcd18d') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k32bfb39a') }}
         </el-button>
         <el-button
           v-hasPermi="['sys:dict:saveOrUpdate']"
@@ -68,7 +68,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.kbc9d740c') }}
         </el-button>
         <el-button
           v-hasPermi="['sys:dict:download']"
@@ -78,7 +78,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.kf954e559') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -87,10 +87,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" height="calc(100vh - 355px)">
-      <el-table-column align="center" label="字典编号" prop="id" width="150px" />
-      <el-table-column align="center" label="字典名称" prop="name" show-overflow-tooltip />
-      <el-table-column align="center" label="字典类型" prop="type" width="300" />
-      <el-table-column align="center" label="状态" prop="status" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.dict.index_old.k1e7a21f4')"
+        prop="id"
+        width="150px"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.dict.index_old.k32bc8312')"
+        prop="name"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.dict.index_old.k6dde52f3')"
+        prop="type"
+        width="300"
+      />
+      <el-table-column align="center" :label="t('common.status')" prop="status" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -146,11 +161,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as DictTypeApi from '@/api/system/dict/dict.type'
 import DictTypeForm from './DictTypeForm.vue'
 import download from '@/utils/download'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemDictType' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -217,7 +231,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await DictTypeApi.exportDictType(queryParams)
-    download.excel(data, '字典类型.xls')
+    download.excel(data, t('auto.views.system.dict.index_old.k07a730dd'))
   } catch {
   } finally {
     exportLoading.value = false

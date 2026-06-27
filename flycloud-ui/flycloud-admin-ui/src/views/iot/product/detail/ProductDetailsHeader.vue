@@ -15,7 +15,7 @@
           v-hasPermi="['iot:product:update']"
           v-if="product.status === 0"
         >
-          编辑
+          {{ t('extra.k929d7448') }}
         </el-button>
         <el-button
           type="primary"
@@ -23,7 +23,7 @@
           v-hasPermi="['iot:product:update']"
           v-if="product.status === 0"
         >
-          发布
+          {{ t('extra.kb464b4af') }}
         </el-button>
         <el-button
           type="danger"
@@ -31,7 +31,7 @@
           v-hasPermi="['iot:product:update']"
           v-if="product.status === 1"
         >
-          撤销发布
+          {{ t('extra.k23fca5ce') }}
         </el-button>
       </div>
     </div>
@@ -40,13 +40,17 @@
     <el-descriptions :column="5" direction="horizontal">
       <el-descriptions-item label="ProductKey">
         {{ product.productKey }}
-        <el-button @click="copyToClipboard(product.productKey)">复制</el-button>
+        <el-button @click="copyToClipboard(product.productKey)">{{ t('common.copy') }}</el-button>
       </el-descriptions-item>
     </el-descriptions>
     <el-descriptions :column="5" direction="horizontal">
-      <el-descriptions-item label="设备数">
+      <el-descriptions-item
+        :label="t('auto.views.iot.product.detail.ProductDetailsHeader.k7beb4b6b')"
+      >
         {{ product.deviceCount }}
-        <el-button @click="goToManagement(product.id)">前往管理</el-button>
+        <el-button @click="goToManagement(product.id)">{{
+          t('auto.views.iot.product.detail.ProductDetailsHeader.kd96d992a')
+        }}</el-button>
       </el-descriptions-item>
     </el-descriptions>
   </ContentWrap>
@@ -56,7 +60,7 @@
 <script setup lang="ts">
 import ProductForm from '@/views/iot/product/ProductForm.vue'
 import { ProductApi, ProductVO } from '@/api/iot/product'
-
+const { t } = useI18n()
 const message = useMessage()
 
 const { product } = defineProps<{ product: ProductVO }>() // 定义 Props
@@ -64,7 +68,7 @@ const { product } = defineProps<{ product: ProductVO }>() // 定义 Props
 /** 处理复制 */
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
-    message.success('复制成功')
+    message.success(t('auto.views.iot.product.detail.ProductDetailsHeader.kc1ef062e'))
   })
 }
 
@@ -83,21 +87,21 @@ const openForm = (type: string, id?: number) => {
 const confirmPublish = async (id: number) => {
   try {
     await ProductApi.updateProductStatus(id, 1)
-    message.success('发布成功')
+    message.success(t('auto.views.iot.product.detail.ProductDetailsHeader.kec002336'))
     formRef.value.close() // 关闭弹框
     emit('refresh')
   } catch (error) {
-    message.error('发布失败')
+    message.error(t('auto.views.iot.product.detail.ProductDetailsHeader.k7e7f5d44'))
   }
 }
 const confirmUnpublish = async (id: number) => {
   try {
     await ProductApi.updateProductStatus(id, 0)
-    message.success('撤销发布成功')
+    message.success(t('auto.views.iot.product.detail.ProductDetailsHeader.kfd4c4060'))
     formRef.value.close() // 关闭弹框
     emit('refresh')
   } catch (error) {
-    message.error('撤销发布失败')
+    message.error(t('auto.views.iot.product.detail.ProductDetailsHeader.k30a18583'))
   }
 }
 </script>

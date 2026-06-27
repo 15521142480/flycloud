@@ -1,7 +1,9 @@
 <!-- 待审核合同 -->
 <template>
   <ContentWrap>
-    <div class="pb-5 text-xl">待审核合同</div>
+    <div class="pb-5 text-xl">{{
+      t('auto.views.crm.backlog.components.ContractAuditList.kd891945c')
+    }}</div>
     <!-- 搜索工作栏 -->
     <el-form
       ref="queryFormRef"
@@ -10,11 +12,14 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="合同状态" prop="auditStatus">
+      <el-form-item
+        :label="t('auto.views.crm.backlog.components.ContractAuditList.keb5aba97')"
+        prop="auditStatus"
+      >
         <el-select
           v-model="queryParams.auditStatus"
           class="!w-240px"
-          placeholder="状态"
+          :placeholder="t('common.status')"
           @change="handleQuery"
         >
           <el-option
@@ -30,8 +35,20 @@
 
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="合同编号" prop="no" width="180" />
-      <el-table-column align="center" fixed="left" label="合同名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.ContractAuditList.k17b34173')"
+        prop="no"
+        width="180"
+      />
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.ContractAuditList.kb8fbf277')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -177,7 +194,7 @@ import * as ContractApi from '@/api/crm/contract'
 import { DICT_TYPE } from '@/utils/dict'
 import { AUDIT_STATUS } from './common'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据

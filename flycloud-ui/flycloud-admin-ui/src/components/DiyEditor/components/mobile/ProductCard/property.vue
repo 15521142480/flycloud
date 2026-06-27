@@ -1,73 +1,133 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <el-form label-width="80px" :model="formData">
-      <el-card header="商品列表" class="property-group" shadow="never">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k44544d21')"
+        class="property-group"
+        shadow="never"
+      >
         <SpuShowcase v-model="formData.spuIds" />
       </el-card>
-      <el-card header="商品样式" class="property-group" shadow="never">
-        <el-form-item label="布局" prop="type">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.ProductCard.property.ka9d65e39')"
+        class="property-group"
+        shadow="never"
+      >
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kb0961e17')"
+          prop="type"
+        >
           <el-radio-group v-model="formData.layoutType">
-            <el-tooltip class="item" content="单列大图" placement="bottom">
+            <el-tooltip
+              class="item"
+              :content="
+                t('auto.components.DiyEditor.components.mobile.ProductCard.property.kcfd4ceae')
+              "
+              placement="bottom"
+            >
               <el-radio-button value="oneColBigImg">
                 <Icon icon="fluent:text-column-one-24-filled" />
               </el-radio-button>
             </el-tooltip>
-            <el-tooltip class="item" content="单列小图" placement="bottom">
+            <el-tooltip
+              class="item"
+              :content="
+                t('auto.components.DiyEditor.components.mobile.ProductCard.property.k13c7ca06')
+              "
+              placement="bottom"
+            >
               <el-radio-button value="oneColSmallImg">
                 <Icon icon="fluent:text-column-two-left-24-filled" />
               </el-radio-button>
             </el-tooltip>
-            <el-tooltip class="item" content="双列" placement="bottom">
+            <el-tooltip
+              class="item"
+              :content="
+                t('auto.components.DiyEditor.components.mobile.ProductCard.property.k677628f2')
+              "
+              placement="bottom"
+            >
               <el-radio-button value="twoCol">
                 <Icon icon="fluent:text-column-two-24-filled" />
               </el-radio-button>
             </el-tooltip>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="商品名称" prop="fields.name.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
+          prop="fields.name.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.name.color" />
             <el-checkbox v-model="formData.fields.name.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品简介" prop="fields.introduction.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.ke50db553')"
+          prop="fields.introduction.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.introduction.color" />
             <el-checkbox v-model="formData.fields.introduction.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品价格" prop="fields.price.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k41f54c30')"
+          prop="fields.price.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.price.color" />
             <el-checkbox v-model="formData.fields.price.show" />
           </div>
         </el-form-item>
-        <el-form-item label="市场价" prop="fields.marketPrice.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kfaeb45bc')"
+          prop="fields.marketPrice.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.marketPrice.color" />
             <el-checkbox v-model="formData.fields.marketPrice.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品销量" prop="fields.salesCount.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k99911c5b')"
+          prop="fields.salesCount.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.salesCount.color" />
             <el-checkbox v-model="formData.fields.salesCount.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品库存" prop="fields.stock.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k9d0fd20c')"
+          prop="fields.stock.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.stock.color" />
             <el-checkbox v-model="formData.fields.stock.show" />
           </div>
         </el-form-item>
       </el-card>
-      <el-card header="角标" class="property-group" shadow="never">
-        <el-form-item label="角标" prop="badge.show">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kc7919508')"
+        class="property-group"
+        shadow="never"
+      >
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kc7919508')"
+          prop="badge.show"
+        >
           <el-switch v-model="formData.badge.show" />
         </el-form-item>
-        <el-form-item label="角标" prop="badge.imgUrl" v-if="formData.badge.show">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kc7919508')"
+          prop="badge.imgUrl"
+          v-if="formData.badge.show"
+        >
           <UploadImg v-model="formData.badge.imgUrl" height="44px" width="72px">
-            <template #tip> 建议尺寸：36 * 22 </template>
+            <template #tip>
+              {{ t('auto.components.DiyEditor.components.mobile.ProductCard.property.k5bba7969') }}
+            </template>
           </UploadImg>
         </el-form-item>
       </el-card>
@@ -137,8 +197,7 @@
 import { ProductCardProperty } from './config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
 import SpuShowcase from '@/views/mall/product/spu/components/SpuShowcase.vue'
-
-// 商品卡片属性面板
+const { t } = useI18n()
 defineOptions({ name: 'ProductCardProperty' })
 
 const props = defineProps<{ modelValue: ProductCardProperty }>()

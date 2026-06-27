@@ -7,10 +7,19 @@
       :rules="formRules"
       label-width="120px"
     >
-      <el-form-item label="应用名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入应用名" />
+      <el-form-item
+        :label="t('auto.views.system.social.client.SocialClientForm.k6c19fe01')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.social.client.SocialClientForm.k445d8859')"
+        />
       </el-form-item>
-      <el-form-item label="社交平台" prop="socialType">
+      <el-form-item
+        :label="t('auto.views.system.social.client.SocialClientForm.kf6445550')"
+        prop="socialType"
+      >
         <el-radio-group v-model="formData.socialType">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_SOCIAL_TYPE)"
@@ -21,7 +30,10 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="用户类型" prop="userType">
+      <el-form-item
+        :label="t('auto.views.system.social.client.SocialClientForm.k31ab92d1')"
+        prop="userType"
+      >
         <el-radio-group v-model="formData.userType">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.USER_TYPE)"
@@ -32,19 +44,31 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="客户端编号" prop="clientId">
-        <el-input v-model="formData.clientId" placeholder="请输入客户端编号,对应各平台的appKey" />
+      <el-form-item
+        :label="t('auto.views.system.social.client.SocialClientForm.k090a075b')"
+        prop="clientId"
+      >
+        <el-input
+          v-model="formData.clientId"
+          :placeholder="t('auto.views.system.social.client.SocialClientForm.ka83317c3')"
+        />
       </el-form-item>
-      <el-form-item label="客户端密钥" prop="clientSecret">
+      <el-form-item
+        :label="t('auto.views.system.social.client.SocialClientForm.k65f8d895')"
+        prop="clientSecret"
+      >
         <el-input
           v-model="formData.clientSecret"
-          placeholder="请输入客户端密钥,对应各平台的appSecret"
+          :placeholder="t('auto.views.system.social.client.SocialClientForm.ka24d5197')"
         />
       </el-form-item>
       <el-form-item label="agentId" prop="agentId" v-if="formData!.socialType === 30">
-        <el-input v-model="formData.agentId" placeholder="授权方的网页应用 ID，有则填" />
+        <el-input
+          v-model="formData.agentId"
+          :placeholder="t('auto.views.system.social.client.SocialClientForm.kc1e77ed0')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -57,16 +81,19 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.social.client.SocialClientForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.social.client.SocialClientForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as SocialClientApi from '@/api/system/social/client'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -84,12 +111,48 @@ const formData = ref({
   status: 0
 })
 const formRules = reactive({
-  name: [{ required: true, message: '应用名不能为空', trigger: 'blur' }],
-  socialType: [{ required: true, message: '社交平台不能为空', trigger: 'blur' }],
-  userType: [{ required: true, message: '用户类型不能为空', trigger: 'blur' }],
-  clientId: [{ required: true, message: '客户端编号不能为空', trigger: 'blur' }],
-  clientSecret: [{ required: true, message: '客户端密钥不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.system.social.client.SocialClientForm.kf6f9e61d'),
+      trigger: 'blur'
+    }
+  ],
+  socialType: [
+    {
+      required: true,
+      message: t('auto.views.system.social.client.SocialClientForm.k8f85997a'),
+      trigger: 'blur'
+    }
+  ],
+  userType: [
+    {
+      required: true,
+      message: t('auto.views.system.social.client.SocialClientForm.kcd6bbda4'),
+      trigger: 'blur'
+    }
+  ],
+  clientId: [
+    {
+      required: true,
+      message: t('auto.views.system.social.client.SocialClientForm.kd6a54298'),
+      trigger: 'blur'
+    }
+  ],
+  clientSecret: [
+    {
+      required: true,
+      message: t('auto.views.system.social.client.SocialClientForm.k2de1c4e8'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.social.client.SocialClientForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

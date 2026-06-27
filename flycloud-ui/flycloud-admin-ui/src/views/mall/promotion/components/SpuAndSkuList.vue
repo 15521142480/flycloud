@@ -47,7 +47,7 @@ import { createImageViewer } from '@/components/ImageViewer'
 import { Spu } from '@/api/mall/product/spu'
 import { RuleConfig, SkuList } from '@/views/mall/product/spu/components'
 import { SpuProperty } from '@/views/mall/promotion/components/index'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionSpuAndSkuList' })
 
 const message = useMessage() // 消息弹窗
@@ -97,7 +97,11 @@ const emits = defineEmits<{
 
 /** 多选时可以删除 SPU **/
 const deleteSpu = async (spuId: number) => {
-  await message.confirm('是否删除商品编号为' + spuId + '的数据？')
+  await message.confirm(
+    t('auto.views.mall.promotion.components.SpuAndSkuList.k80abf794') +
+      spuId +
+      t('auto.views.mall.promotion.components.SpuAndSkuList.ka33abd13')
+  )
   const index = spuData.value.findIndex((item) => item.id == spuId)
   spuData.value.splice(index, 1)
   emits('delete', spuId)

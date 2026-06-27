@@ -10,31 +10,54 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入名称" />
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k1be7ae4f')"
+            prop="name"
+          >
+            <el-input
+              v-model="formData.name"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.kc2afb255')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="条码" prop="barCode">
-            <el-input v-model="formData.barCode" placeholder="请输入条码" />
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.kb1085310')"
+            prop="barCode"
+          >
+            <el-input
+              v-model="formData.barCode"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.kb1efb2f5')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="分类" prop="categoryId">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k435c5259')"
+            prop="categoryId"
+          >
             <el-tree-select
               v-model="formData.categoryId"
               :data="categoryList"
               :props="defaultProps"
               check-strictly
               default-expand-all
-              placeholder="请选择分类"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.k84037620')"
               class="w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="单位" prop="unitId">
-            <el-select v-model="formData.unitId" clearable placeholder="请选择单位" class="w-1/1">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k8ec8c8c7')"
+            prop="unitId"
+          >
+            <el-select
+              v-model="formData.unitId"
+              clearable
+              :placeholder="t('auto.views.erp.product.product.ProductForm.kb6a42312')"
+              class="w-1/1"
+            >
               <el-option
                 v-for="unit in unitList"
                 :key="unit.id"
@@ -45,7 +68,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.status')" prop="status">
             <el-radio-group v-model="formData.status">
               <el-radio
                 v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -58,15 +81,24 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="规格" prop="standard">
-            <el-input v-model="formData.standard" placeholder="请输入规格" />
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k53af00e1')"
+            prop="standard"
+          >
+            <el-input
+              v-model="formData.standard"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.kd4f2c343')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="保质期天数" prop="expiryDay">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k5d6e2204')"
+            prop="expiryDay"
+          >
             <el-input-number
               v-model="formData.expiryDay"
-              placeholder="请输入保质期天数"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.kfe41a848')"
               :min="0"
               :precision="0"
               class="!w-1/1"
@@ -74,20 +106,26 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="重量（kg）" prop="weight">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k97921672')"
+            prop="weight"
+          >
             <el-input-number
               v-model="formData.weight"
-              placeholder="请输入重量（kg）"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.k975e9aa1')"
               :min="0"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="采购价格" prop="purchasePrice">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k23c5b674')"
+            prop="purchasePrice"
+          >
             <el-input-number
               v-model="formData.purchasePrice"
-              placeholder="请输入采购价格，单位：元"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.k719df3c4')"
               :min="0"
               :precision="2"
               class="!w-1/1"
@@ -95,10 +133,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="销售价格" prop="salePrice">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k5b26b853')"
+            prop="salePrice"
+          >
             <el-input-number
               v-model="formData.salePrice"
-              placeholder="请输入销售价格，单位：元"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.kb1292fa0')"
               :min="0"
               :precision="2"
               class="!w-1/1"
@@ -106,10 +147,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="最低价格" prop="minPrice">
+          <el-form-item
+            :label="t('auto.views.erp.product.product.ProductForm.k6c760d86')"
+            prop="minPrice"
+          >
             <el-input-number
               v-model="formData.minPrice"
-              placeholder="请输入最低价格，单位：元"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.k9de22fe4')"
               :min="0"
               :precision="2"
               class="!w-1/1"
@@ -117,15 +161,23 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
-            <el-input type="textarea" v-model="formData.remark" placeholder="请输入备注" />
+          <el-form-item :label="t('common.remark')" prop="remark">
+            <el-input
+              type="textarea"
+              v-model="formData.remark"
+              :placeholder="t('auto.views.erp.product.product.ProductForm.k57e709d9')"
+            />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.erp.product.product.ProductForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.product.product.ProductForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -138,9 +190,8 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 
 /** ERP 产品 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProductForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -163,11 +214,41 @@ const formData = ref({
   minPrice: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
-  barCode: [{ required: true, message: '产品条码不能为空', trigger: 'blur' }],
-  categoryId: [{ required: true, message: '产品分类编号不能为空', trigger: 'blur' }],
-  unitId: [{ required: true, message: '单位编号不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '产品状态不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.product.ProductForm.kcbfa98d4'),
+      trigger: 'blur'
+    }
+  ],
+  barCode: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.product.ProductForm.k909ab2be'),
+      trigger: 'blur'
+    }
+  ],
+  categoryId: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.product.ProductForm.k2ec46e5e'),
+      trigger: 'blur'
+    }
+  ],
+  unitId: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.product.ProductForm.k897fe419'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.product.ProductForm.k5b278370'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const categoryList = ref<ProductCategoryVO[]>([]) // 产品分类列表

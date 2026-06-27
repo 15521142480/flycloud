@@ -2,10 +2,10 @@
   <ProductDetailsHeader :loading="loading" :product="product" @refresh="getProductData(id)" />
   <el-col>
     <el-tabs>
-      <el-tab-pane label="详细资料">
+      <el-tab-pane :label="t('auto.views.crm.product.detail.index.kbf455584')">
         <ProductDetailsInfo :product="product" />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.product.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
     </el-tabs>
@@ -19,7 +19,7 @@ import ProductDetailsHeader from '@/views/crm/product/detail/ProductDetailsHeade
 import ProductDetailsInfo from '@/views/crm/product/detail/ProductDetailsInfo.vue'
 import { BizTypeEnum } from '@/api/crm/permission'
 import { getOperateLogPage } from '@/api/crm/operateLog'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmProductDetail' })
 
 const route = useRoute()
@@ -57,7 +57,7 @@ const { delView } = useTagsViewStore() // 视图操作
 const { currentRoute } = useRouter() // 路由
 onMounted(async () => {
   if (!id) {
-    message.warning('参数错误，产品不能为空！')
+    message.warning(t('auto.views.crm.product.detail.index.k07573642'))
     delView(unref(currentRoute))
     return
   }

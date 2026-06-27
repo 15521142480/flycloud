@@ -12,7 +12,10 @@
     <!-- 类型 1：文本 -->
     <el-tab-pane :name="ReplyType.Text">
       <template #label>
-        <el-row align="middle"><Icon icon="ep:document" /> 文本</el-row>
+        <el-row align="middle"
+          ><Icon icon="ep:document" />
+          {{ t('auto.views.mp.components.wx_reply.main.kf1926e9b') }}</el-row
+        >
       </template>
       <TabText v-model="reply.content" />
     </el-tab-pane>
@@ -67,7 +70,7 @@ import TabVoice from './components/TabVoice.vue'
 import TabVideo from './components/TabVideo.vue'
 import TabNews from './components/TabNews.vue'
 import TabMusic from './components/TabMusic.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'WxReplySelect' })
 
 interface Props {

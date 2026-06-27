@@ -10,28 +10,38 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="出库单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.erp.stock.out.StockOutForm.k76097d27')" prop="no">
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.stock.out.StockOutForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="出库时间" prop="outTime">
+          <el-form-item
+            :label="t('auto.views.erp.stock.out.StockOutForm.kd9a6d1b0')"
+            prop="outTime"
+          >
             <el-date-picker
               v-model="formData.outTime"
               type="date"
               value-format="x"
-              placeholder="选择出库时间"
+              :placeholder="t('auto.views.erp.stock.out.StockOutForm.k86df4f2c')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="客户" prop="customerId">
+          <el-form-item
+            :label="t('auto.views.erp.stock.out.StockOutForm.kf2068706')"
+            prop="customerId"
+          >
             <el-select
               v-model="formData.customerId"
               clearable
               filterable
-              placeholder="请选择客户"
+              :placeholder="t('auto.views.erp.stock.out.StockOutForm.k6bdb05d6')"
               class="!w-1/1"
             >
               <el-option
@@ -44,17 +54,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.remark')" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
               :rows="1"
-              placeholder="请输入备注"
+              :placeholder="t('auto.views.erp.stock.out.StockOutForm.k57e709d9')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item
+            :label="t('auto.views.erp.stock.out.StockOutForm.k99f6fe6c')"
+            prop="fileUrl"
+          >
             <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
           </el-form-item>
         </el-col>
@@ -63,16 +76,18 @@
     <!-- 子表的表单 -->
     <ContentWrap>
       <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-        <el-tab-pane label="出库产品清单" name="item">
+        <el-tab-pane :label="t('auto.views.erp.stock.out.StockOutForm.k8b3df882')" name="item">
           <StockOutItemForm ref="itemFormRef" :items="formData.items" :disabled="disabled" />
         </el-tab-pane>
       </el-tabs>
     </ContentWrap>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading" v-if="!disabled">
-        确 定
+        {{ t('extra.kc6a00fe9') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.stock.out.StockOutForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -82,9 +97,8 @@ import StockOutItemForm from './components/StockOutItemForm.vue'
 import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'
 
 /** ERP 其它出库单表单 */
+const { t } = useI18n()
 defineOptions({ name: 'StockOutForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -100,7 +114,13 @@ const formData = ref({
   items: []
 })
 const formRules = reactive({
-  outTime: [{ required: true, message: '出库时间不能为空', trigger: 'blur' }]
+  outTime: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.out.StockOutForm.k2612cd85'),
+      trigger: 'blur'
+    }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

@@ -7,10 +7,21 @@
       label-width="80px"
       v-loading="formLoading"
     >
-      <el-form-item label="模板名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入模板名称" />
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kbbc511d0')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="
+            t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k86bd4450')
+          "
+        />
       </el-form-item>
-      <el-form-item label="计费方式" prop="chargeMode">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k459460d6')"
+        prop="chargeMode"
+      >
         <el-radio-group v-model="formData.chargeMode" @change="changeChargeMode">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.EXPRESS_CHARGE_MODE)"
@@ -21,9 +32,18 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="运费" prop="charges">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.keb1ae86c')"
+        prop="charges"
+      >
         <el-table border style="width: 100%" :data="formData.charges">
-          <el-table-column align="center" label="区域" width="360">
+          <el-table-column
+            align="center"
+            :label="
+              t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k17fc93c9')
+            "
+            width="360"
+          >
             <template #default="{ row }">
               <el-cascader
                 v-model="row.areaIds"
@@ -31,7 +51,9 @@
                 :props="defaultProps2"
                 class="w-1/1"
                 clearable
-                placeholder="请选择地区"
+                :placeholder="
+                  t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kb4407498')
+                "
                 filterable
                 collapse-tags
               />
@@ -136,7 +158,7 @@ import * as AreaApi from '@/api/system/area'
 import { defaultProps } from '@/utils/tree'
 import { yuanToFen, fenToYuan } from '@/utils'
 import { cloneDeep } from 'lodash-es'
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const defaultProps2 = {
@@ -158,14 +180,36 @@ const formData = ref({
 })
 const columnTitleMap = new Map()
 const columnTitle = ref({
-  startCountTitle: '首件',
-  extraCountTitle: '续件',
-  freeCountTitle: '包邮件数'
+  startCountTitle: t(
+    'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k750f7c5f'
+  ),
+  extraCountTitle: t(
+    'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k26ba72bc'
+  ),
+  freeCountTitle: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kec243680')
 })
 const formRules = reactive({
-  name: [{ required: true, message: '模板名称不能为空', trigger: 'blur' }],
-  chargeMode: [{ required: true, message: '配送计费方式不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '分类排序不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k15011507'),
+      trigger: 'blur'
+    }
+  ],
+  chargeMode: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k0bcfe7ce'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k331d6aa3'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -262,19 +306,37 @@ const areaTree = ref([])
 const initData = async () => {
   // 表头标题和计费方式的映射
   columnTitleMap.set(1, {
-    startCountTitle: '首件',
-    extraCountTitle: '续件',
-    freeCountTitle: '包邮件数'
+    startCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k750f7c5f'
+    ),
+    extraCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k26ba72bc'
+    ),
+    freeCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kec243680'
+    )
   })
   columnTitleMap.set(2, {
-    startCountTitle: '首件重量(kg)',
-    extraCountTitle: '续件重量(kg)',
-    freeCountTitle: '包邮重量(kg)'
+    startCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k0c31896e'
+    ),
+    extraCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kd3a8a11d'
+    ),
+    freeCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k2a051efa'
+    )
   })
   columnTitleMap.set(3, {
-    startCountTitle: '首件体积(m³)',
-    extraCountTitle: '续件体积(m³)',
-    freeCountTitle: '包邮体积(m³)'
+    startCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kc15f5541'
+    ),
+    extraCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k6d9bbfbd'
+    ),
+    freeCountTitle: t(
+      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k5e727017'
+    )
   })
   // 加载区域数据
   areaTree.value = await AreaApi.getAreaTree()

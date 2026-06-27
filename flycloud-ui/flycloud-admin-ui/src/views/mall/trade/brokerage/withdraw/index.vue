@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【交易】分销返佣" url="https://doc.iocoder.cn/mall/trade-brokerage/" />
+  <doc-alert
+    :title="t('auto.views.mall.trade.brokerage.withdraw.index.k50f5e3f4')"
+    url="https://doc.iocoder.cn/mall/trade-brokerage/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,25 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.kec750ef6')"
+        prop="userId"
+      >
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kb719fb8a')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="提现类型" prop="type">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.ke756194f')"
+        prop="type"
+      >
         <el-select
           v-model="queryParams.type"
-          placeholder="请选择提现类型"
+          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.ke4bc442b')"
           clearable
           class="!w-240px"
         >
@@ -34,19 +43,25 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="账号" prop="accountNo">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k90138491')"
+        prop="accountNo"
+      >
         <el-input
           v-model="queryParams.accountNo"
-          placeholder="请输入账号"
+          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kdfcc8446')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="提现银行" prop="bankName">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k641a9208')"
+        prop="bankName"
+      >
         <el-select
           v-model="queryParams.bankName"
-          placeholder="请选择提现银行"
+          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kadfde72c')"
           clearable
           class="!w-240px"
         >
@@ -58,8 +73,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.BROKERAGE_WITHDRAW_STATUS)"
             :key="dict.value"
@@ -68,20 +88,27 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="申请时间" prop="createTime">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.ke85ad6ea')"
+        prop="createTime"
+      >
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -89,11 +116,20 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="left" prop="id" min-width="60px" />
-      <el-table-column label="用户信息" align="left" min-width="120px">
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k9f42dac6')"
+        align="left"
+        prop="id"
+        min-width="60px"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k55c26aba')"
+        align="left"
+        min-width="120px"
+      >
         <template #default="scope">
-          <div>编号：{{ scope.row.userId }}</div>
-          <div>昵称：{{ scope.row.userNickname }}</div>
+          <div>{{ t('extra.k35a4edf3', { p0: scope.row.userId }) }}</div>
+          <div>{{ t('extra.k0b53584e', { p0: scope.row.userNickname }) }}</div>
         </template>
       </el-table-column>
       <el-table-column label="提现金额" align="left" prop="price" min-width="80px">
@@ -194,10 +230,8 @@ import BrokerageWithdrawRejectForm from './BrokerageWithdrawRejectForm.vue'
 import { BrokerageWithdrawStatusEnum, BrokerageWithdrawTypeEnum } from '@/utils/constants'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { fenToYuan } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'BrokerageWithdraw' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -252,7 +286,7 @@ const openForm = (id: number) => {
 const handleApprove = async (id: number) => {
   try {
     loading.value = true
-    await message.confirm('确定要审核通过吗？')
+    await message.confirm(t('auto.views.mall.trade.brokerage.withdraw.index.k2aeb21c7'))
     await BrokerageWithdrawApi.approveBrokerageWithdraw(id)
     await message.success(t('common.success'))
     await getList()

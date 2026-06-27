@@ -7,12 +7,24 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="状态组名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入状态组名" />
+      <el-form-item
+        :label="t('auto.views.crm.business.status.BusinessStatusForm.k3fe211b1')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.crm.business.status.BusinessStatusForm.k5439e6a6')"
+        />
       </el-form-item>
-      <el-form-item label="应用部门" prop="deptIds">
+      <el-form-item
+        :label="t('auto.views.crm.business.status.BusinessStatusForm.k21b65f45')"
+        prop="deptIds"
+      >
         <template #label>
-          <Tooltip message="不选择部门时，默认全公司生效" title="应用部门" />
+          <Tooltip
+            :message="t('extra.keb7c08a4')"
+            :title="t('auto.views.crm.business.status.BusinessStatusForm.k21b65f45')"
+          />
         </template>
         <el-tree
           ref="treeRef"
@@ -91,8 +103,7 @@
 import * as BusinessStatusApi from '@/api/crm/business/status'
 import { defaultProps, handleTree } from '@/utils/tree'
 import * as DeptApi from '@/api/system/dept'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -106,7 +117,13 @@ const formData = ref({
   statuses: []
 })
 const formRules = reactive({
-  name: [{ required: true, message: '状态组名不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.status.BusinessStatusForm.k9dbc1486'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const deptList = ref<Tree[]>([]) // 树形结构

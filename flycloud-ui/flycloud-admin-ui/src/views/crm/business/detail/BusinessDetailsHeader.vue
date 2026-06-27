@@ -16,13 +16,24 @@
   </div>
   <ContentWrap class="mt-10px">
     <el-descriptions :column="5" direction="vertical">
-      <el-descriptions-item label="客户名称">{{ business.customerName }}</el-descriptions-item>
-      <el-descriptions-item label="商机金额（元）">
+      <el-descriptions-item
+        :label="t('auto.views.crm.business.detail.BusinessDetailsHeader.ke941d410')"
+        >{{ business.customerName }}</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="t('auto.views.crm.business.detail.BusinessDetailsHeader.k9ee5e0c1')"
+      >
         {{ erpPriceInputFormatter(business.totalPrice) }}
       </el-descriptions-item>
-      <el-descriptions-item label="商机组">{{ business.statusTypeName }}</el-descriptions-item>
-      <el-descriptions-item label="负责人">{{ business.ownerUserName }}</el-descriptions-item>
-      <el-descriptions-item label="创建时间">
+      <el-descriptions-item
+        :label="t('auto.views.crm.business.detail.BusinessDetailsHeader.k949cacee')"
+        >{{ business.statusTypeName }}</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="t('auto.views.crm.business.detail.BusinessDetailsHeader.k974d383f')"
+        >{{ business.ownerUserName }}</el-descriptions-item
+      >
+      <el-descriptions-item :label="t('common.createTime')">
         {{ formatDate(business.createTime) }}
       </el-descriptions-item>
     </el-descriptions>
@@ -32,6 +43,6 @@
 import * as BusinessApi from '@/api/crm/business'
 import { formatDate } from '@/utils/formatTime'
 import { erpPriceInputFormatter } from '@/utils'
-
+const { t } = useI18n()
 const { business } = defineProps<{ business: BusinessApi.BusinessVO }>()
 </script>

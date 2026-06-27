@@ -1,8 +1,10 @@
 import { generateUUID } from '@/utils'
 import { localeProps, makeRequiredRule } from '@/components/FormCreate/src/utils'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export const useUploadImgsRule = () => {
-  const label = '多图上传'
+  const label = t('auto.components.FormCreate.src.config.useUploadImgsRule.kac4790e7')
   const name = 'UploadImgs'
   return {
     icon: 'icon-upload',
@@ -23,13 +25,13 @@ export const useUploadImgsRule = () => {
         {
           type: 'switch',
           field: 'drag',
-          title: '拖拽上传',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.kb5aa6b9f'),
           value: false
         },
         {
           type: 'select',
           field: 'fileType',
-          title: '图片类型限制',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.kf7ccb3bb'),
           value: ['image/jpeg', 'image/png', 'image/gif'],
           options: [
             { label: 'image/apng', value: 'image/apng' },
@@ -49,33 +51,33 @@ export const useUploadImgsRule = () => {
         {
           type: 'inputNumber',
           field: 'fileSize',
-          title: '大小限制(MB)',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.k55eeefd7'),
           value: 5,
           props: { min: 0 }
         },
         {
           type: 'inputNumber',
           field: 'limit',
-          title: '数量限制',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.kd79419e2'),
           value: 5,
           props: { min: 0 }
         },
         {
           type: 'input',
           field: 'height',
-          title: '组件高度',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.kced5a328'),
           value: '150px'
         },
         {
           type: 'input',
           field: 'width',
-          title: '组件宽度',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.k58bab27d'),
           value: '150px'
         },
         {
           type: 'input',
           field: 'borderradius',
-          title: '组件边框圆角',
+          title: t('auto.components.FormCreate.src.config.useUploadImgsRule.k4dde50a6'),
           value: '8px'
         }
       ])

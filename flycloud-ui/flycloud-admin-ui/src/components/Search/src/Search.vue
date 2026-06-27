@@ -6,11 +6,8 @@ import { useForm } from '@/hooks/web/useForm'
 import { findIndex } from '@/utils'
 import { cloneDeep } from 'lodash-es'
 import { FormSchema } from '@/types/form'
-
-defineOptions({ name: 'Search' })
-
 const { t } = useI18n()
-
+defineOptions({ name: 'Search' })
 const props = defineProps({
   // 生成Form的布局结构数组
   schema: {

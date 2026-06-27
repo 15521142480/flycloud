@@ -8,12 +8,16 @@
         :rules="formRules"
         label-width="120px"
       >
-        <el-form-item label="渠道费率" label-width="180px" prop="feeRate">
+        <el-form-item
+          :label="t('auto.views.pay.app.components.channel.WeixinChannelForm.k149ebd50')"
+          label-width="180px"
+          prop="feeRate"
+        >
           <el-input
             v-model="formData.feeRate"
             :style="{ width: '100%' }"
             clearable
-            placeholder="请输入渠道费率"
+            :placeholder="t('auto.views.pay.app.components.channel.WeixinChannelForm.k60d14a2c')"
           >
             <template #append>%</template>
           </el-input>
@@ -139,10 +143,8 @@
 import { CommonStatusEnum } from '@/utils/constants'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import * as ChannelApi from '@/api/pay/channel'
-
+const { t } = useI18n()
 defineOptions({ name: 'WeixinChannelForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -166,20 +168,76 @@ const formData = ref<any>({
   }
 })
 const formRules = {
-  feeRate: [{ required: true, message: '请输入渠道费率', trigger: 'blur' }],
-  status: [{ required: true, message: '渠道状态不能为空', trigger: 'blur' }],
-  'config.mchId': [{ required: true, message: '请传入商户号', trigger: 'blur' }],
-  'config.appId': [{ required: true, message: '请输入公众号APPID', trigger: 'blur' }],
-  'config.apiVersion': [{ required: true, message: 'API版本不能为空', trigger: 'blur' }],
-  'config.mchKey': [{ required: true, message: '请输入商户密钥', trigger: 'blur' }],
+  feeRate: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k60d14a2c'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.kefb5407a'),
+      trigger: 'blur'
+    }
+  ],
+  'config.mchId': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k59e35bda'),
+      trigger: 'blur'
+    }
+  ],
+  'config.appId': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k1e3c79bd'),
+      trigger: 'blur'
+    }
+  ],
+  'config.apiVersion': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k94e30282'),
+      trigger: 'blur'
+    }
+  ],
+  'config.mchKey': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.kbe4e5ad2'),
+      trigger: 'blur'
+    }
+  ],
   'config.keyContent': [
-    { required: true, message: '请上传 apiclient_cert.p12 证书', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k8a6c69ca'),
+      trigger: 'blur'
+    }
   ],
   'config.privateKeyContent': [
-    { required: true, message: '请上传 apiclient_key.pem 证书', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k8b5e5fbf'),
+      trigger: 'blur'
+    }
   ],
-  'config.certSerialNo': [{ required: true, message: '请输入证书序列号', trigger: 'blur' }],
-  'config.apiV3Key': [{ required: true, message: '请上传 api V3 密钥值', trigger: 'blur' }]
+  'config.certSerialNo': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k87068712'),
+      trigger: 'blur'
+    }
+  ],
+  'config.apiV3Key': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.WeixinChannelForm.k587d3f0d'),
+      trigger: 'blur'
+    }
+  ]
 }
 const formRef = ref() // 表单 Ref
 
@@ -195,7 +253,9 @@ const open = async (appId, code) => {
       formData.value = data
       formData.value.config = JSON.parse(data.config)
     }
-    dialogTitle.value = !formData.value.id ? '创建支付渠道' : '编辑支付渠道'
+    dialogTitle.value = !formData.value.id
+      ? t('auto.views.pay.app.components.channel.WeixinChannelForm.k590f5fde')
+      : t('auto.views.pay.app.components.channel.WeixinChannelForm.k7d8bedec')
   } finally {
     formLoading.value = false
   }
@@ -258,12 +318,16 @@ const fileBeforeUpload = (file, fileAccept) => {
   let format = '.' + file.name.split('.')[1]
   if (format !== fileAccept) {
     debugger
-    message.error('请上传指定格式"' + fileAccept + '"文件')
+    message.error(
+      t('auto.views.pay.app.components.channel.WeixinChannelForm.kca63d699') +
+        fileAccept +
+        t('auto.views.pay.app.components.channel.WeixinChannelForm.k218f61aa')
+    )
     return false
   }
   let isRightSize = file.size / 1024 / 1024 < 2
   if (!isRightSize) {
-    message.error('文件大小超过 2MB')
+    message.error(t('auto.views.pay.app.components.channel.WeixinChannelForm.kb3d76ed4'))
   }
   return isRightSize
 }

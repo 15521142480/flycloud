@@ -7,20 +7,40 @@
       label-width="120px"
       v-loading="formLoading"
     >
-      <el-form-item label="公司编码" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入快递编码" />
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.express.ExpressForm.kdb6d81d4')"
+        prop="code"
+      >
+        <el-input
+          v-model="formData.code"
+          :placeholder="t('auto.views.mall.trade.delivery.express.ExpressForm.ke15d8351')"
+        />
       </el-form-item>
-      <el-form-item label="公司名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入快递名称" />
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.express.ExpressForm.k94c4852f')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.trade.delivery.express.ExpressForm.kb810cb0d')"
+        />
       </el-form-item>
-      <el-form-item label="公司 logo" prop="logo">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.express.ExpressForm.k74d69958')"
+        prop="logo"
+      >
         <UploadImg v-model="formData.logo" :limit="1" :is-show-tip="false" />
-        <div style="font-size: 10px" class="pl-10px">推荐 180x180 图片分辨率</div>
+        <div style="font-size: 10px" class="pl-10px">{{
+          t('auto.views.mall.trade.delivery.express.ExpressForm.k0fe3d1b5')
+        }}</div>
       </el-form-item>
-      <el-form-item label="排序" prop="sort">
+      <el-form-item :label="t('common.sort')" prop="sort">
         <el-input-number v-model="formData.sort" controls-position="right" :min="0" />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.express.ExpressForm.k6bbda1b1')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -33,8 +53,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.mall.trade.delivery.express.ExpressForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.trade.delivery.express.ExpressForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -42,10 +66,8 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as DeliveryExpressApi from '@/api/mall/trade/delivery/express'
-
+const { t } = useI18n()
 defineOptions({ name: 'ExpressForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -61,11 +83,41 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  code: [{ required: true, message: '快递编码不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '分类名称不能为空', trigger: 'blur' }],
-  logo: [{ required: true, message: '分类图片不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '分类排序不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }]
+  code: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.express.ExpressForm.k8d2c6e44'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.express.ExpressForm.ka1a3f673'),
+      trigger: 'blur'
+    }
+  ],
+  logo: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.express.ExpressForm.k14a20fa3'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.express.ExpressForm.k331d6aa3'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.express.ExpressForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

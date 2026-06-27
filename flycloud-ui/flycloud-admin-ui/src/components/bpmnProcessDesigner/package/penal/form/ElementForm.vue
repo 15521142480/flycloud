@@ -1,43 +1,45 @@
 <template>
   <div class="panel-tab__content">
     <el-form label-width="80px">
-      <el-form-item label="流程表单">
+      <el-form-item
+        :label="t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kb928cc5c')"
+      >
         <!--        <el-input v-model="formKey" clearable @change="updateElementFormKey" />-->
         <el-select v-model="formKey" clearable @change="updateElementFormKey">
           <el-option v-for="form in formList" :key="form.id" :label="form.name" :value="form.id" />
         </el-select>
       </el-form-item>
-      <!--      <el-form-item label="业务标识">-->
+      <!--      <el-form-item :label="t('extra.k4b5e26e0')">-->
       <!--        <el-select v-model="businessKey" @change="updateElementBusinessKey">-->
       <!--          <el-option v-for="i in fieldList" :key="i.id" :value="i.id" :label="i.label" />-->
-      <!--          <el-option label="无" value="" />-->
+      <!--          <el-option :label="t('extra.kadb3d23e')" value="" />-->
       <!--        </el-select>-->
       <!--      </el-form-item>-->
     </el-form>
 
     <!--字段列表-->
     <!--    <div class="element-property list-property">-->
-    <!--      <el-divider><Icon icon="ep:coin" /> 表单字段</el-divider>-->
+    <!--      <el-divider><Icon icon="ep:coin" /> {{ t('extra.k8d46a2fa') }}</el-divider>-->
     <!--      <el-table :data="fieldList" max-height="240" fit border>-->
-    <!--        <el-table-column label="序号" type="index" width="50px" />-->
-    <!--        <el-table-column label="字段名称" prop="label" min-width="80px" show-overflow-tooltip />-->
+    <!--        <el-table-column :label="t('extra.k09b02772')" type="index" width="50px" />-->
+    <!--        <el-table-column :label="t('extra.kb81e9b9c')" prop="label" min-width="80px" show-overflow-tooltip />-->
     <!--        <el-table-column-->
-    <!--          label="字段类型"-->
+    <!--          :label="t('extra.k7f3a2fb2')"-->
     <!--          prop="type"-->
     <!--          min-width="80px"-->
     <!--          :formatter="(row) => fieldType[row.type] || row.type"-->
     <!--          show-overflow-tooltip-->
     <!--        />-->
     <!--        <el-table-column-->
-    <!--          label="默认值"-->
+    <!--          :label="t('extra.k4d8d59af')"-->
     <!--          prop="defaultValue"-->
     <!--          min-width="80px"-->
     <!--          show-overflow-tooltip-->
     <!--        />-->
-    <!--        <el-table-column label="操作" width="90px">-->
+    <!--        <el-table-column :label="t('extra.ke6414e93')" width="90px">-->
     <!--          <template #default="scope">-->
     <!--            <el-button type="primary" link @click="openFieldForm(scope, scope.$index)"-->
-    <!--              >编辑</el-button-->
+    <!--              >{{ t('extra.k95fc51be') }}</el-button-->
     <!--            >-->
     <!--            <el-divider direction="vertical" />-->
     <!--            <el-button-->
@@ -45,7 +47,7 @@
     <!--              link-->
     <!--              style="color: #ff4d4f"-->
     <!--              @click="removeField(scope, scope.$index)"-->
-    <!--              >移除</el-button-->
+    <!--              >{{ t('extra.k907d2b16') }}</el-button-->
     <!--            >-->
     <!--          </template>-->
     <!--        </el-table-column>-->
@@ -227,7 +229,7 @@
 
 <script lang="ts" setup>
 import * as FormApi from '@/api/bpm/form'
-
+const { t } = useI18n()
 defineOptions({ name: 'ElementForm' })
 
 const props = defineProps({
@@ -243,12 +245,12 @@ const optionModelTitle = ref('')
 const fieldList = ref<any[]>([])
 const formFieldForm = ref<any>({})
 const fieldType = ref({
-  long: '长整型',
-  string: '字符串',
-  boolean: '布尔类',
-  date: '日期类',
-  enum: '枚举类',
-  custom: '自定义类型'
+  long: t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kc6b29828'),
+  string: t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.k4dc9621a'),
+  boolean: t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.k7fec63dd'),
+  date: t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.k55600d49'),
+  enum: t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kfd73054a'),
+  custom: t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kb1fdceec')
 })
 const formFieldIndex = ref(-1) // 编辑中的字段， -1 为新增
 const formFieldOptionIndex = ref(-1) // 编辑中的字段配置项， -1 为新增
@@ -346,14 +348,20 @@ const openFieldOptionForm = (option, index, type) => {
   formFieldOptionIndex.value = index
   if (type === 'property') {
     fieldOptionForm.value = option ? JSON.parse(JSON.stringify(option)) : {}
-    return (optionModelTitle.value = '属性配置')
+    return (optionModelTitle.value = t(
+      'auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kff9d15d6'
+    ))
   }
   if (type === 'enum') {
     fieldOptionForm.value = option ? JSON.parse(JSON.stringify(option)) : {}
-    return (optionModelTitle.value = '枚举值配置')
+    return (optionModelTitle.value = t(
+      'auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kd356362a'
+    ))
   }
   fieldOptionForm.value = option ? JSON.parse(JSON.stringify(option)) : {}
-  return (optionModelTitle.value = '约束条件配置')
+  return (optionModelTitle.value = t(
+    'auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.k724ff63b'
+  ))
 }
 
 // 保存字段 某个 配置项

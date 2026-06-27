@@ -1,7 +1,7 @@
 <template>
   <BusinessDetailsHeader v-loading="loading" :business="business">
     <el-button v-if="permissionListRef?.validateWrite" @click="openForm('update', business.id)">
-      编辑
+      {{ t('extra.k5e40e164') }}
     </el-button>
     <el-button
       v-if="permissionListRef?.validateWrite"
@@ -9,21 +9,21 @@
       type="success"
       @click="openStatusForm()"
     >
-      变更商机状态
+      {{ t('extra.ke20bf80d') }}
     </el-button>
     <el-button v-if="permissionListRef?.validateOwnerUser" type="primary" @click="transfer">
-      转移
+      {{ t('extra.k6add6d79') }}
     </el-button>
   </BusinessDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="跟进记录">
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.k4d7216f5')">
         <FollowUpList :biz-id="businessId" :biz-type="BizTypeEnum.CRM_BUSINESS" />
       </el-tab-pane>
-      <el-tab-pane label="详细资料">
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.kbf455584')">
         <BusinessDetailsInfo :business="business" />
       </el-tab-pane>
-      <el-tab-pane label="联系人" lazy>
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.k2425bd4b')" lazy>
         <ContactList
           :biz-id="business.id!"
           :biz-type="BizTypeEnum.CRM_BUSINESS"
@@ -31,16 +31,16 @@
           :customer-id="business.customerId"
         />
       </el-tab-pane>
-      <el-tab-pane label="产品">
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.k6cc98552')">
         <BusinessProductList :business="business" />
       </el-tab-pane>
-      <el-tab-pane label="合同" lazy>
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.k59404d40')" lazy>
         <ContractList :biz-id="business.id!" :biz-type="BizTypeEnum.CRM_BUSINESS" />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.business.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="business.id!"
@@ -73,7 +73,7 @@ import ContactList from '@/views/crm/contact/components/ContactList.vue'
 import BusinessUpdateStatusForm from '@/views/crm/business/BusinessUpdateStatusForm.vue'
 import ContractList from '@/views/crm/contract/components/ContractList.vue'
 import BusinessProductList from '@/views/crm/business/detail/BusinessProductList.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmBusinessDetail' })
 
 const message = useMessage()
@@ -136,7 +136,7 @@ const close = () => {
 const { params } = useRoute()
 onMounted(async () => {
   if (!params.id) {
-    message.warning('参数错误，商机不能为空！')
+    message.warning(t('auto.views.crm.business.detail.index.k705b5d6a'))
     close()
     return
   }

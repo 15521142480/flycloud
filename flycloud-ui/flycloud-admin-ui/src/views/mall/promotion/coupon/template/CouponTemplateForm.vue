@@ -7,10 +7,19 @@
       :rules="formRules"
       label-width="140px"
     >
-      <el-form-item label="优惠券名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入优惠券名称" />
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k040f6dcf')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k5138a851')"
+        />
       </el-form-item>
-      <el-form-item label="优惠券描述" prop="description">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kdd8b60e2')"
+        prop="description"
+      >
         <el-input
           v-model="formData.description"
           :autosize="{ minRows: 2, maxRows: 2 }"
@@ -18,11 +27,14 @@
           :show-word-limit="true"
           class="w-1/1!"
           maxlength="512"
-          placeholder="请输入优惠券描述"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.ka5af3093')"
           type="textarea"
         />
       </el-form-item>
-      <el-form-item label="优惠劵类型" prop="productScope">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kc802352e')"
+        prop="productScope"
+      >
         <el-radio-group v-model="formData.productScope">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_PRODUCT_SCOPE)"
@@ -35,19 +47,22 @@
       </el-form-item>
       <el-form-item
         v-if="formData.productScope === PromotionProductScopeEnum.SPU.scope"
-        label="商品"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k00492206')"
         prop="productSpuIds"
       >
         <SpuShowcase v-model="formData.productSpuIds" />
       </el-form-item>
       <el-form-item
         v-if="formData.productScope === PromotionProductScopeEnum.CATEGORY.scope"
-        label="分类"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k435c5259')"
         prop="productCategoryIds"
       >
         <ProductCategorySelect v-model="formData.productCategoryIds" />
       </el-form-item>
-      <el-form-item label="优惠类型" prop="discountType">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k1b05dd75')"
+        prop="discountType"
+      >
         <el-radio-group v-model="formData.discountType">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_DISCOUNT_TYPE)"
@@ -60,7 +75,7 @@
       </el-form-item>
       <el-form-item
         v-if="formData.discountType === PromotionDiscountTypeEnum.PRICE.type"
-        label="优惠券面额"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k4fca0bc2')"
         prop="discountPrice"
       >
         <el-input-number
@@ -68,13 +83,13 @@
           :min="0"
           :precision="2"
           class="mr-2 !w-400px"
-          placeholder="请输入优惠金额，单位：元"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k06ab884a')"
         />
-        元
+        {{ t('extra.k2d94e2e7') }}
       </el-form-item>
       <el-form-item
         v-if="formData.discountType === PromotionDiscountTypeEnum.PERCENT.type"
-        label="优惠券折扣"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.ka61e5a7e')"
         prop="discountPercent"
       >
         <el-input-number
@@ -83,13 +98,13 @@
           :min="1"
           :precision="1"
           class="mr-2 !w-400px"
-          placeholder="优惠券折扣不能小于 1 折，且不可大于 9.9 折"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.keffc79ef')"
         />
-        折
+        {{ t('extra.ke3804420') }}
       </el-form-item>
       <el-form-item
         v-if="formData.discountType === PromotionDiscountTypeEnum.PERCENT.type"
-        label="最多优惠"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k425b61d5')"
         prop="discountLimitPrice"
       >
         <el-input-number
@@ -97,48 +112,71 @@
           :min="0"
           :precision="2"
           class="mr-2 !w-400px"
-          placeholder="请输入最多优惠"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k6608d167')"
         />
-        元
+        {{ t('extra.k2d94e2e7') }}
       </el-form-item>
-      <el-form-item label="满多少元可以使用" prop="usePrice">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kdf5d4e33')"
+        prop="usePrice"
+      >
         <el-input-number
           v-model="formData.usePrice"
           :min="0"
           :precision="2"
           class="mr-2 !w-400px"
-          placeholder="无门槛请设为 0"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.ke712b1ff')"
         />
-        元
+        {{ t('extra.k2d94e2e7') }}
       </el-form-item>
-      <el-form-item label="领取方式" prop="takeType">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k1527d9df')"
+        prop="takeType"
+      >
         <el-radio-group v-model="formData.takeType">
-          <el-radio :key="1" :value="1">直接领取</el-radio>
-          <el-radio :key="2" :value="2">指定发放</el-radio>
-          <el-radio :key="2" :value="3">新人劵</el-radio>
+          <el-radio :key="1" :value="1">{{
+            t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k72e180ef')
+          }}</el-radio>
+          <el-radio :key="2" :value="2">{{
+            t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kf27beb7d')
+          }}</el-radio>
+          <el-radio :key="2" :value="3">{{
+            t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kce0b86eb')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="formData.takeType === 1" label="发放数量" prop="totalCount">
+      <el-form-item
+        v-if="formData.takeType === 1"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k54d6b5f2')"
+        prop="totalCount"
+      >
         <el-input-number
           v-model="formData.totalCount"
           :min="-1"
           :precision="0"
           class="mr-2 !w-400px"
-          placeholder="发放数量，没有之后不能领取或发放，-1 为不限制"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.ke3f1d6e7')"
         />
-        张
+        {{ t('extra.kdb72abc6') }}
       </el-form-item>
-      <el-form-item v-if="formData.takeType === 1" label="每人限领个数" prop="takeLimitCount">
+      <el-form-item
+        v-if="formData.takeType === 1"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k79c38625')"
+        prop="takeLimitCount"
+      >
         <el-input-number
           v-model="formData.takeLimitCount"
           :min="-1"
           :precision="0"
           class="mr-2 !w-400px"
-          placeholder="设置为 -1 时，可无限领取"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k938b1ffb')"
         />
-        张
+        {{ t('extra.kdb72abc6') }}
       </el-form-item>
-      <el-form-item label="有效期类型" prop="validityType">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k3924f50a')"
+        prop="validityType"
+      >
         <el-radio-group v-model="formData.validityType">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_COUPON_TEMPLATE_VALIDITY_TYPE)"
@@ -151,7 +189,7 @@
       </el-form-item>
       <el-form-item
         v-if="formData.validityType === CouponTemplateValidityTypeEnum.DATE.type"
-        label="固定日期"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k25bcee4f')"
         prop="validTimes"
       >
         <el-date-picker
@@ -163,31 +201,35 @@
       </el-form-item>
       <el-form-item
         v-if="formData.validityType === CouponTemplateValidityTypeEnum.TERM.type"
-        label="领取日期"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k2c2db8ef')"
         prop="fixedStartTerm"
       >
-        第
+        {{ t('extra.k881e9d99') }}
         <el-input-number
           v-model="formData.fixedStartTerm"
           :min="0"
           :precision="0"
           class="mx-2"
-          placeholder="0 为今天生效"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kfd6fcdfa')"
         />
-        至
+        {{ t('extra.k3e290e21') }}
         <el-input-number
           v-model="formData.fixedEndTerm"
           :min="0"
           :precision="0"
           class="mx-2"
-          placeholder="请输入结束天数"
+          :placeholder="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k2a9ed46a')"
         />
-        天有效
+        {{ t('extra.k2d891ffe') }}
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -202,10 +244,8 @@ import {
 import SpuShowcase from '@/views/mall/product/spu/components/SpuShowcase.vue'
 import ProductCategorySelect from '@/views/mall/product/category/components/ProductCategorySelect.vue'
 import { convertToInteger, formatToFraction } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CouponTemplateForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -236,22 +276,118 @@ const formData = ref({
   productSpuIds: [] // 仅用于表单，不提交
 })
 const formRules = reactive({
-  name: [{ required: true, message: '优惠券名称不能为空', trigger: 'blur' }],
-  discountType: [{ required: true, message: '优惠券类型不能为空', trigger: 'change' }],
-  discountPrice: [{ required: true, message: '优惠券面额不能为空', trigger: 'blur' }],
-  discountPercent: [{ required: true, message: '优惠券折扣不能为空', trigger: 'blur' }],
-  discountLimitPrice: [{ required: true, message: '最多优惠不能为空', trigger: 'blur' }],
-  usePrice: [{ required: true, message: '满多少元可以使用不能为空', trigger: 'blur' }],
-  takeType: [{ required: true, message: '领取方式不能为空', trigger: 'change' }],
-  totalCount: [{ required: true, message: '发放数量不能为空', trigger: 'blur' }],
-  takeLimitCount: [{ required: true, message: '每人限领个数不能为空', trigger: 'blur' }],
-  validityType: [{ required: true, message: '有效期类型不能为空', trigger: 'change' }],
-  validTimes: [{ required: true, message: '固定日期不能为空', trigger: 'change' }],
-  fixedStartTerm: [{ required: true, message: '开始领取天数不能为空', trigger: 'blur' }],
-  fixedEndTerm: [{ required: true, message: '开始领取天数不能为空', trigger: 'blur' }],
-  productScope: [{ required: true, message: '商品范围不能为空', trigger: 'blur' }],
-  productSpuIds: [{ required: true, message: '商品不能为空', trigger: 'blur' }],
-  productCategoryIds: [{ required: true, message: '分类不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kb1ec42cb'),
+      trigger: 'blur'
+    }
+  ],
+  discountType: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kff6d27ae'),
+      trigger: 'change'
+    }
+  ],
+  discountPrice: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kd77207a0'),
+      trigger: 'blur'
+    }
+  ],
+  discountPercent: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.keb7c0e4f'),
+      trigger: 'blur'
+    }
+  ],
+  discountLimitPrice: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k824d77f5'),
+      trigger: 'blur'
+    }
+  ],
+  usePrice: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k50422144'),
+      trigger: 'blur'
+    }
+  ],
+  takeType: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k5d877cd4'),
+      trigger: 'change'
+    }
+  ],
+  totalCount: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.ke28146d7'),
+      trigger: 'blur'
+    }
+  ],
+  takeLimitCount: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k07cff42f'),
+      trigger: 'blur'
+    }
+  ],
+  validityType: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.ka221442e'),
+      trigger: 'change'
+    }
+  ],
+  validTimes: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.keb4fc351'),
+      trigger: 'change'
+    }
+  ],
+  fixedStartTerm: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kd5a95604'),
+      trigger: 'blur'
+    }
+  ],
+  fixedEndTerm: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kd5a95604'),
+      trigger: 'blur'
+    }
+  ],
+  productScope: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.kc6fd641f'),
+      trigger: 'blur'
+    }
+  ],
+  productSpuIds: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k6d53e872'),
+      trigger: 'blur'
+    }
+  ],
+  productCategoryIds: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k6dede8e8'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

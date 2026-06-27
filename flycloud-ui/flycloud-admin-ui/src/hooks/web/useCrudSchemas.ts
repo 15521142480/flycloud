@@ -11,6 +11,8 @@ import { ComponentOptions, ComponentProps } from '@/types/components'
 import { DictTag } from '@/components/DictTag'
 import { cloneDeep, merge } from 'lodash-es'
 
+const { t } = useI18n()
+
 export type CrudSchema = Omit<TableColumn, 'children'> & {
   isSearch?: boolean // 是否在查询显示
   search?: CrudSearchParams // 查询的详细配置
@@ -60,10 +62,6 @@ interface AllSchemas {
   formSchema: FormSchema[]
   detailSchema: DescriptionsSchema[]
 }
-
-const { t } = useI18n()
-
-// 过滤所有结构
 export const useCrudSchemas = (
   crudSchema: CrudSchema[]
 ): {
@@ -107,7 +105,10 @@ const filterSearchSchema = (crudSchema: CrudSchema[], allSchemas: AllSchemas): F
       const options: ComponentOptions[] = []
       let comonentProps: ComponentProps = {}
       if (schemaItem.dictType) {
-        const allOptions: ComponentOptions = { label: '全部', value: '' }
+        const allOptions: ComponentOptions = {
+          label: t('auto.hooks.web.useCrudSchemas.k778fc8f9'),
+          value: ''
+        }
         options.push(allOptions)
         getDictOptions(schemaItem.dictType).forEach((dict) => {
           options.push(dict)

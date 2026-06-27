@@ -2,24 +2,24 @@
 <template>
   <ContractDetailsHeader v-loading="loading" :contract="contract">
     <el-button v-if="permissionListRef?.validateWrite" @click="openForm('update', contract.id)">
-      编辑
+      {{ t('extra.k5e7a4518') }}
     </el-button>
     <el-button v-if="permissionListRef?.validateOwnerUser" type="primary" @click="transferContract">
-      转移
+      {{ t('extra.ka7f69cf1') }}
     </el-button>
   </ContractDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="跟进记录">
+      <el-tab-pane :label="t('auto.views.crm.contract.detail.index.k4d7216f5')">
         <FollowUpList :biz-id="contract.id" :biz-type="BizTypeEnum.CRM_CONTRACT" />
       </el-tab-pane>
-      <el-tab-pane label="基本信息">
+      <el-tab-pane :label="t('auto.views.crm.contract.detail.index.kb122f813')">
         <ContractDetailsInfo :contract="contract" />
       </el-tab-pane>
-      <el-tab-pane label="产品">
+      <el-tab-pane :label="t('auto.views.crm.contract.detail.index.k6cc98552')">
         <ContractProductList :contract="contract" />
       </el-tab-pane>
-      <el-tab-pane label="回款">
+      <el-tab-pane :label="t('auto.views.crm.contract.detail.index.k50b07f3d')">
         <ReceivablePlanList
           :contract-id="contract.id!"
           :customer-id="contract.customerId"
@@ -31,7 +31,7 @@
           :customer-id="contract.customerId"
         />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.contract.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="contract.id!"
@@ -40,7 +40,7 @@
           @quit-team="close"
         />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.contract.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
     </el-tabs>
@@ -65,7 +65,7 @@ import PermissionList from '@/views/crm/permission/components/PermissionList.vue
 import FollowUpList from '@/views/crm/followup/index.vue'
 import ReceivableList from '@/views/crm/receivable/components/ReceivableList.vue'
 import ReceivablePlanList from '@/views/crm/receivable/plan/components/ReceivablePlanList.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContractDetail' })
 const props = defineProps<{ id?: number }>()
 
@@ -129,7 +129,7 @@ const close = () => {
 onMounted(async () => {
   const id = props.id || route.params.id
   if (!id) {
-    message.warning('参数错误，合同不能为空！')
+    message.warning(t('auto.views.crm.contract.detail.index.k00906da4'))
     close()
     return
   }

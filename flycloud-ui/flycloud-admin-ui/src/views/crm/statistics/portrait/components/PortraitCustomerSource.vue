@@ -19,8 +19,13 @@
   <!-- 统计列表 -->
   <el-card class="mt-16px" shadow="never">
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="序号" type="index" width="80" />
-      <el-table-column align="center" label="客户来源" prop="source" width="100">
+      <el-table-column align="center" :label="t('common.index')" type="index" width="80" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.kb805cdaa')"
+        prop="source"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_SOURCE" :value="scope.row.source" />
         </template>
@@ -41,7 +46,7 @@ import { EChartsOption } from 'echarts'
 import { DICT_TYPE, getDictLabel } from '@/utils/dict'
 import { isEmpty } from '@/utils/is'
 import { erpCalculatePercentage, getSumValue } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'PortraitCustomerSource' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -51,7 +56,7 @@ const list = ref<CrmStatisticCustomerSourceRespVO[]>([]) // 列表的数据
 /** 饼图配置（全部客户） */
 const echartsOption = reactive<EChartsOption>({
   title: {
-    text: '全部客户',
+    text: t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.kc83c7ab1'),
     left: 'center'
   },
   tooltip: {
@@ -63,12 +68,15 @@ const echartsOption = reactive<EChartsOption>({
   },
   toolbox: {
     feature: {
-      saveAsImage: { show: true, name: '全部客户' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.kc83c7ab1')
+      } // 保存为图片
     }
   },
   series: [
     {
-      name: '全部客户',
+      name: t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.kc83c7ab1'),
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
@@ -99,7 +107,7 @@ const echartsOption = reactive<EChartsOption>({
 /** 饼图配置（成交客户） */
 const echartsOption2 = reactive<EChartsOption>({
   title: {
-    text: '成交客户',
+    text: t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.k486a5a89'),
     left: 'center'
   },
   tooltip: {
@@ -111,12 +119,15 @@ const echartsOption2 = reactive<EChartsOption>({
   },
   toolbox: {
     feature: {
-      saveAsImage: { show: true, name: '成交客户' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.k486a5a89')
+      } // 保存为图片
     }
   },
   series: [
     {
-      name: '成交客户',
+      name: t('auto.views.crm.statistics.portrait.components.PortraitCustomerSource.k486a5a89'),
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,

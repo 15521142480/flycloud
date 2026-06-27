@@ -1,18 +1,19 @@
 import dayjs from 'dayjs'
 import type { TableColumnCtx } from 'element-plus'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  * 日期快捷选项适用于 el-date-picker
  */
+const { t } = useI18n()
 export const defaultShortcuts = [
   {
-    text: '今天',
+    text: t('auto.utils.formatTime.k17e83cc2'),
     value: () => {
       return new Date()
     }
   },
   {
-    text: '昨天',
+    text: t('auto.utils.formatTime.k59c4fcb0'),
     value: () => {
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24)
@@ -20,7 +21,7 @@ export const defaultShortcuts = [
     }
   },
   {
-    text: '最近七天',
+    text: t('auto.utils.formatTime.k4fe604ff'),
     value: () => {
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
@@ -28,7 +29,7 @@ export const defaultShortcuts = [
     }
   },
   {
-    text: '最近 30 天',
+    text: t('auto.utils.formatTime.k279e4c24'),
     value: () => {
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24 * 30)
@@ -36,7 +37,7 @@ export const defaultShortcuts = [
     }
   },
   {
-    text: '本月',
+    text: t('auto.utils.formatTime.k389f0007'),
     value: () => {
       const date = new Date()
       date.setDate(1) // 设置为当前月的第一天
@@ -44,7 +45,7 @@ export const defaultShortcuts = [
     }
   },
   {
-    text: '今年',
+    text: t('auto.utils.formatTime.kfe9ea3f0'),
     value: () => {
       const date = new Date()
       return [new Date(`${date.getFullYear()}-01-01`), date]
@@ -121,23 +122,23 @@ export function formatPast(param: string | Date, format = 'YYYY-MM-DD HH:mm:ss')
   time = Number.parseInt(`${time - t}`)
   if (time < 10000) {
     // 10秒内
-    return '刚刚'
+    return t('auto.utils.formatTime.k9e636642')
   } else if (time < 60000 && time >= 10000) {
     // 超过10秒少于1分钟内
     s = Math.floor(time / 1000)
-    return `${s}秒前`
+    return t('extra.ke5f80f46', { p0: s })
   } else if (time < 3600000 && time >= 60000) {
     // 超过1分钟少于1小时
     s = Math.floor(time / 60000)
-    return `${s}分钟前`
+    return t('extra.kc965fc8e', { p0: s })
   } else if (time < 86400000 && time >= 3600000) {
     // 超过1小时少于24小时
     s = Math.floor(time / 3600000)
-    return `${s}小时前`
+    return t('extra.kc2d7fe1e', { p0: s })
   } else if (time < 259200000 && time >= 86400000) {
     // 超过1天少于3天内
     s = Math.floor(time / 86400000)
-    return `${s}天前`
+    return t('extra.k5a48432c', { p0: s })
   } else {
     // 超过3天
     const date = typeof param === 'string' || 'object' ? new Date(param) : param
@@ -153,14 +154,14 @@ export function formatPast(param: string | Date, format = 'YYYY-MM-DD HH:mm:ss')
  */
 export function formatAxis(param: Date): string {
   const hour: number = new Date(param).getHours()
-  if (hour < 6) return '凌晨好'
-  else if (hour < 9) return '早上好'
-  else if (hour < 12) return '上午好'
-  else if (hour < 14) return '中午好'
-  else if (hour < 17) return '下午好'
-  else if (hour < 19) return '傍晚好'
-  else if (hour < 22) return '晚上好'
-  else return '夜里好'
+  if (hour < 6) return t('auto.utils.formatTime.k1577f6c0')
+  else if (hour < 9) return t('auto.utils.formatTime.ke548bb9f')
+  else if (hour < 12) return t('auto.utils.formatTime.kcd88885e')
+  else if (hour < 14) return t('auto.utils.formatTime.k73873269')
+  else if (hour < 17) return t('auto.utils.formatTime.k38fbe77e')
+  else if (hour < 19) return t('auto.utils.formatTime.k3c256165')
+  else if (hour < 22) return t('auto.utils.formatTime.k509f35e0')
+  else return t('auto.utils.formatTime.k18a0a8a6')
 }
 
 /**
@@ -175,18 +176,27 @@ export function formatPast2(ms: number): string {
   const minute = Math.floor(ms / (60 * 1000) - day * 24 * 60 - hour * 60)
   const second = Math.floor(ms / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60)
   if (day > 0) {
-    return day + ' 天' + hour + ' 小时 ' + minute + ' 分钟'
+    return (
+      day +
+      t('auto.utils.formatTime.kc3304d1e') +
+      hour +
+      t('auto.utils.formatTime.k99f6904f') +
+      minute +
+      t('auto.utils.formatTime.k28bf227b')
+    )
   }
   if (hour > 0) {
-    return hour + ' 小时 ' + minute + ' 分钟'
+    return (
+      hour + t('auto.utils.formatTime.k99f6904f') + minute + t('auto.utils.formatTime.k28bf227b')
+    )
   }
   if (minute > 0) {
-    return minute + ' 分钟'
+    return minute + t('auto.utils.formatTime.k28bf227b')
   }
   if (second > 0) {
-    return second + ' 秒'
+    return second + t('auto.utils.formatTime.keb6aaba1')
   } else {
-    return 0 + ' 秒'
+    return 0 + t('auto.utils.formatTime.keb6aaba1')
   }
 }
 

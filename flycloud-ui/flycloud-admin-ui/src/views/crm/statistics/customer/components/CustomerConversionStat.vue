@@ -10,30 +10,46 @@
   <!-- 统计列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="序号" align="center" type="index" width="80" fixed="left" />
       <el-table-column
-        label="客户名称"
+        :label="t('common.index')"
+        align="center"
+        type="index"
+        width="80"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerConversionStat.ke941d410')"
         align="center"
         prop="customerName"
         min-width="200"
         fixed="left"
       />
-      <el-table-column label="合同名称" align="center" prop="contractName" min-width="200" />
       <el-table-column
-        label="合同总金额"
+        :label="t('auto.views.crm.statistics.customer.components.CustomerConversionStat.kb8fbf277')"
+        align="center"
+        prop="contractName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.customer.components.CustomerConversionStat.k887e974e')"
         align="center"
         prop="totalPrice"
         min-width="200"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="回款金额"
+        :label="t('auto.views.crm.statistics.customer.components.CustomerConversionStat.kc60d7ff5')"
         align="center"
         prop="receivablePrice"
         min-width="200"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column align="center" label="客户来源" prop="source" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.customer.components.CustomerConversionStat.kb805cdaa')"
+        prop="source"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_SOURCE" :value="scope.row.source" />
         </template>
@@ -72,7 +88,7 @@ import { EChartsOption } from 'echarts'
 import { dateFormatter } from '@/utils/formatTime'
 import { erpPriceTableColumnFormatter } from '@/utils'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerConversionStat' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -91,7 +107,7 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '客户转化率',
+      name: t('auto.views.crm.statistics.customer.components.CustomerConversionStat.kbe0f1da6'),
       type: 'line',
       data: []
     }
@@ -104,7 +120,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '客户转化率分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.customer.components.CustomerConversionStat.kfe9dc381')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -115,11 +134,11 @@ const echartsOption = reactive<EChartsOption>({
   },
   yAxis: {
     type: 'value',
-    name: '转化率(%)'
+    name: t('auto.views.crm.statistics.customer.components.CustomerConversionStat.k93b12c78')
   },
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.customer.components.CustomerConversionStat.kb6fed9af'),
     data: []
   }
 }) as EChartsOption

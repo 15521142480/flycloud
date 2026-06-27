@@ -1,6 +1,8 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 搜索框属性 */
+const { t } = useI18n()
+
 export interface SearchProperty {
   height: number // 搜索栏高度
   showScan: boolean // 显示扫一扫
@@ -19,13 +21,13 @@ export type PlaceholderPosition = 'left' | 'center'
 // 定义组件
 export const component = {
   id: 'SearchBar',
-  name: '搜索框',
+  name: t('auto.components.DiyEditor.components.mobile.SearchBar.config.k44d7587d'),
   icon: 'ep:search',
   property: {
     height: 28,
     showScan: false,
     borderRadius: 0,
-    placeholder: '搜索商品',
+    placeholder: t('auto.components.DiyEditor.components.mobile.SearchBar.config.k81447af6'),
     placeholderPosition: 'left',
     backgroundColor: 'rgb(238, 238, 238)',
     textColor: 'rgb(150, 151, 153)',

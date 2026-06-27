@@ -3,7 +3,9 @@
     <template #header>
       <!-- 标题 -->
       <div class="flex flex-row items-center justify-between">
-        <CardTitle title="商品排行" />
+        <CardTitle
+          :title="t('auto.views.mall.statistics.product.components.ProductRank.k38754fec')"
+        />
         <!-- 查询条件 -->
         <ShortcutDateRangePicker ref="shortcutDateRangePicker" @change="handleDateRangeChange" />
       </div>
@@ -52,6 +54,7 @@ import { CardTitle } from '@/components/Card'
 import { buildSortingField } from '@/utils'
 
 /** 商品排行 */
+const { t } = useI18n()
 defineOptions({ name: 'ProductRank' })
 
 // 格式化：访客-支付转化率

@@ -1,8 +1,10 @@
 import { generateUUID } from '@/utils'
 import { localeProps, makeRequiredRule } from '@/components/FormCreate/src/utils'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export const useUploadFileRule = () => {
-  const label = '文件上传'
+  const label = t('auto.components.FormCreate.src.config.useUploadFileRule.k39c04b3d')
   const name = 'UploadFile'
   return {
     icon: 'icon-upload',
@@ -23,7 +25,7 @@ export const useUploadFileRule = () => {
         {
           type: 'select',
           field: 'fileType',
-          title: '文件类型',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.ka5998b46'),
           value: ['doc', 'xls', 'ppt', 'txt', 'pdf'],
           options: [
             { label: 'doc', value: 'doc' },
@@ -39,39 +41,39 @@ export const useUploadFileRule = () => {
         {
           type: 'switch',
           field: 'autoUpload',
-          title: '是否在选取文件后立即进行上传',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.k82c7234f'),
           value: true
         },
         {
           type: 'switch',
           field: 'drag',
-          title: '拖拽上传',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.kb5aa6b9f'),
           value: false
         },
         {
           type: 'switch',
           field: 'isShowTip',
-          title: '是否显示提示',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.k6cf5213b'),
           value: true
         },
         {
           type: 'inputNumber',
           field: 'fileSize',
-          title: '大小限制(MB)',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.k55eeefd7'),
           value: 5,
           props: { min: 0 }
         },
         {
           type: 'inputNumber',
           field: 'limit',
-          title: '数量限制',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.kd79419e2'),
           value: 5,
           props: { min: 0 }
         },
         {
           type: 'switch',
           field: 'disabled',
-          title: '是否禁用',
+          title: t('auto.components.FormCreate.src.config.useUploadFileRule.k9858a9a3'),
           value: false
         }
       ])

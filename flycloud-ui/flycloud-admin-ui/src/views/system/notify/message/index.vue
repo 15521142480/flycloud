@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="站内信配置" url="https://doc.iocoder.cn/notify/" />
+  <doc-alert
+    :title="t('auto.views.system.notify.message.index.k182bebee')"
+    url="https://doc.iocoder.cn/notify/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item :label="t('auto.views.system.notify.message.index.kec750ef6')" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.system.notify.message.index.kb719fb8a')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="用户类型" prop="userType">
+      <el-form-item :label="t('auto.views.system.notify.message.index.k31ab92d1')" prop="userType">
         <el-select
           v-model="queryParams.userType"
-          placeholder="请选择用户类型"
+          :placeholder="t('auto.views.system.notify.message.index.k8d91841e')"
           clearable
           class="!w-240px"
         >
@@ -34,19 +37,25 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="模板编码" prop="templateCode">
+      <el-form-item
+        :label="t('auto.views.system.notify.message.index.k5695a649')"
+        prop="templateCode"
+      >
         <el-input
           v-model="queryParams.templateCode"
-          placeholder="请输入模板编码"
+          :placeholder="t('auto.views.system.notify.message.index.kefa5df04')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="模版类型" prop="templateType">
+      <el-form-item
+        :label="t('auto.views.system.notify.message.index.k653d8b5b')"
+        prop="templateType"
+      >
         <el-select
           v-model="queryParams.templateType"
-          placeholder="请选择模版类型"
+          :placeholder="t('auto.views.system.notify.message.index.kb51a336c')"
           clearable
           class="!w-240px"
         >
@@ -58,20 +67,24 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.notify.message.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.notify.message.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -79,8 +92,16 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="用户类型" align="center" prop="userType">
+      <el-table-column
+        :label="t('auto.views.system.notify.message.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.system.notify.message.index.k31ab92d1')"
+        align="center"
+        prop="userType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
@@ -158,7 +179,7 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'
 import NotifyMessageDetail from './NotifyMessageDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemNotifyMessage' })
 
 const loading = ref(true) // 列表的加载中

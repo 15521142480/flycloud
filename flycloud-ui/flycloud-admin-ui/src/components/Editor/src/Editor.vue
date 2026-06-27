@@ -8,7 +8,7 @@ import { ElMessage } from 'element-plus'
 import { useLocaleStore } from '@/store/modules/locale'
 import { getAccessToken, getTenantId } from '@/utils/auth'
 import { getUploadUrl } from '@/components/UploadFile/src/useUpload'
-
+const { t } = useI18n()
 defineOptions({ name: 'Editor' })
 
 type InsertFnType = (url: string, alt: string, href: string) => void
@@ -64,7 +64,7 @@ const handleCreated = (editor: IDomEditor) => {
 const editorConfig = computed((): IEditorConfig => {
   return Object.assign(
     {
-      placeholder: '请输入内容...',
+      placeholder: t('auto.components.Editor.src.Editor.ke708d913'),
       readOnly: props.readonly,
       customAlert: (s: string, t: string) => {
         switch (t) {

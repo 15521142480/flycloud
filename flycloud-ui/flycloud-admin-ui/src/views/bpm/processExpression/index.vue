@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,17 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名字" prop="name">
+      <el-form-item :label="t('auto.views.bpm.processExpression.index.k364bd1bf')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名字"
+          :placeholder="t('auto.views.bpm.processExpression.index.k010c1585')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.bpm.processExpression.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -28,27 +32,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.bpm.processExpression.index.k1f291968')"
+          :end-placeholder="t('auto.views.bpm.processExpression.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['bpm:manage:expression:saveOrUpdate']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k4bf39807') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -56,10 +64,24 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" height="calc(100vh - 310px)">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="名字" align="center" prop="name" />
-      <el-table-column label="状态" align="center" prop="status">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      :stripe="true"
+      :show-overflow-tooltip="true"
+      height="calc(100vh - 310px)"
+    >
+      <el-table-column
+        :label="t('auto.views.bpm.processExpression.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processExpression.index.k364bd1bf')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -113,10 +135,10 @@ import { ProcessExpressionApi, ProcessExpressionVO } from '@/api/bpm/processExpr
 import ProcessExpressionForm from './ProcessExpressionForm.vue'
 
 /** BPM 流程表达式列表 */
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessExpression' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProcessExpressionVO[]>([]) // 列表的数据

@@ -21,7 +21,9 @@
                   :on-success="onUploadSuccess"
                 >
                   <template #trigger>
-                    <el-button type="primary" link>本地上传</el-button>
+                    <el-button type="primary" link>{{
+                      t('auto.views.mp.components.wx_reply.components.TabMusic.k16367f3d')
+                    }}</el-button>
                   </template>
                   <el-button type="primary" link @click="showDialog = true" style="margin-left: 5px"
                     >素材库选择
@@ -64,7 +66,7 @@ import type { UploadRawFile } from 'element-plus'
 import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
 import { getAccessToken } from '@/utils/auth'
 import { Reply } from './types'
-
+const { t } = useI18n()
 const message = useMessage()
 
 const UPLOAD_URL = import.meta.env.VITE_BASE_URL + '/admin-api/mp/material/upload-temporary'
@@ -94,7 +96,7 @@ const beforeImageUpload = (rawFile: UploadRawFile) => useBeforeUpload(UploadType
 
 const onUploadSuccess = (res: any) => {
   if (res.code !== 0) {
-    message.error('上传出错：' + res.msg)
+    message.error(t('auto.views.mp.components.wx_reply.components.TabMusic.kea0f7067') + res.msg)
     return false
   }
 

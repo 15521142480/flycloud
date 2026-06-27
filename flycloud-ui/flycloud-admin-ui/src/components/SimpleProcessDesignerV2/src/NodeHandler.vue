@@ -13,31 +13,41 @@
             <div class="approve handler-item-icon">
               <span class="iconfont icon-approve icon-size"></span>
             </div>
-            <div class="handler-item-text">审批人</div>
+            <div class="handler-item-text">{{
+              t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k9b446de3')
+            }}</div>
           </div>
           <div class="handler-item" @click="addNode(NodeType.COPY_TASK_NODE)">
             <div class="handler-item-icon copy">
               <span class="iconfont icon-size icon-copy"></span>
             </div>
-            <div class="handler-item-text">抄送</div>
+            <div class="handler-item-text">{{
+              t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k48a091c0')
+            }}</div>
           </div>
           <div class="handler-item" @click="addNode(NodeType.CONDITION_BRANCH_NODE)">
             <div class="handler-item-icon condition">
               <span class="iconfont icon-size icon-exclusive"></span>
             </div>
-            <div class="handler-item-text">条件分支</div>
+            <div class="handler-item-text">{{
+              t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k315a7ec1')
+            }}</div>
           </div>
           <div class="handler-item" @click="addNode(NodeType.PARALLEL_BRANCH_NODE)">
             <div class="handler-item-icon parallel">
               <span class="iconfont icon-size icon-parallel"></span>
             </div>
-            <div class="handler-item-text">并行分支</div>
+            <div class="handler-item-text">{{
+              t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k033713cb')
+            }}</div>
           </div>
           <div class="handler-item" @click="addNode(NodeType.INCLUSIVE_BRANCH_NODE)">
             <div class="handler-item-icon inclusive">
               <span class="iconfont icon-size icon-inclusive"></span>
             </div>
-            <div class="handler-item-text">包容分支</div>
+            <div class="handler-item-text">{{
+              t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k98cae0bd')
+            }}</div>
           </div>
         </div>
         <template #reference>
@@ -59,7 +69,7 @@ import {
   SimpleFlowNode
 } from './consts'
 import { generateUUID } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({
   name: 'NodeHandler'
 })
@@ -89,7 +99,7 @@ const addNode = (type: number) => {
       props.currentNode?.type
     )
   ) {
-    message.error('条件分支、包容分支后面，不允许直接添加并行分支')
+    message.error(t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k45032df2'))
     return
   }
 
@@ -129,14 +139,14 @@ const addNode = (type: number) => {
   }
   if (type === NodeType.CONDITION_BRANCH_NODE) {
     const data: SimpleFlowNode = {
-      name: '条件分支',
+      name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k315a7ec1'),
       type: NodeType.CONDITION_BRANCH_NODE,
       id: 'GateWay_' + generateUUID(),
       childNode: props.childNode,
       conditionNodes: [
         {
           id: 'Flow_' + generateUUID(),
-          name: '条件1',
+          name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.kd610f7ab'),
           showText: '',
           type: NodeType.CONDITION_NODE,
           childNode: undefined,
@@ -145,8 +155,8 @@ const addNode = (type: number) => {
         },
         {
           id: 'Flow_' + generateUUID(),
-          name: '其它情况',
-          showText: '未满足其它条件时，将进入此分支',
+          name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.kc9cada3e'),
+          showText: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k0f9db0ca'),
           type: NodeType.CONDITION_NODE,
           childNode: undefined,
           conditionType: undefined,
@@ -158,22 +168,22 @@ const addNode = (type: number) => {
   }
   if (type === NodeType.PARALLEL_BRANCH_NODE) {
     const data: SimpleFlowNode = {
-      name: '并行分支',
+      name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k033713cb'),
       type: NodeType.PARALLEL_BRANCH_NODE,
       id: 'GateWay_' + generateUUID(),
       childNode: props.childNode,
       conditionNodes: [
         {
           id: 'Flow_' + generateUUID(),
-          name: '并行1',
-          showText: '无需配置条件同时执行',
+          name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k40a78ead'),
+          showText: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k68614ac3'),
           type: NodeType.CONDITION_NODE,
           childNode: undefined
         },
         {
           id: 'Flow_' + generateUUID(),
-          name: '并行2',
-          showText: '无需配置条件同时执行',
+          name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k309959f5'),
+          showText: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k68614ac3'),
           type: NodeType.CONDITION_NODE,
           childNode: undefined
         }
@@ -183,14 +193,14 @@ const addNode = (type: number) => {
   }
   if (type === NodeType.INCLUSIVE_BRANCH_NODE) {
     const data: SimpleFlowNode = {
-      name: '包容分支',
+      name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k98cae0bd'),
       type: NodeType.INCLUSIVE_BRANCH_NODE,
       id: 'GateWay_' + generateUUID(),
       childNode: props.childNode,
       conditionNodes: [
         {
           id: 'Flow_' + generateUUID(),
-          name: '包容条件1',
+          name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k5a0bdfe5'),
           showText: '',
           type: NodeType.CONDITION_NODE,
           childNode: undefined,
@@ -198,8 +208,8 @@ const addNode = (type: number) => {
         },
         {
           id: 'Flow_' + generateUUID(),
-          name: '其它情况',
-          showText: '未满足其它条件时，将进入此分支',
+          name: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.kc9cada3e'),
+          showText: t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k0f9db0ca'),
           type: NodeType.CONDITION_NODE,
           childNode: undefined,
           defaultFlow: true

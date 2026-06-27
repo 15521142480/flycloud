@@ -1,7 +1,8 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter2 } from '@/utils/formatTime'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 表单校验
 export const rules = reactive({
   name: [required],
   startTime: [required],
@@ -12,7 +13,7 @@ export const rules = reactive({
 // CrudSchema https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: '活动名称',
+    label: t('auto.views.mall.promotion.discountActivity.discountActivity_data.k2b020286'),
     field: 'name',
     isSearch: true,
     form: {
@@ -25,7 +26,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动开始时间',
+    label: t('auto.views.mall.promotion.discountActivity.discountActivity_data.k658b1a2e'),
     field: 'startTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -48,7 +49,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动结束时间',
+    label: t('auto.views.mall.promotion.discountActivity.discountActivity_data.kcdd4e446'),
     field: 'endTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -71,7 +72,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动商品',
+    label: t('auto.views.mall.promotion.discountActivity.discountActivity_data.k443e5aec'),
     field: 'spuId',
     isTable: true,
     isSearch: false,
@@ -85,7 +86,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '备注',
+    label: t('common.remark'),
     field: 'remark',
     isSearch: false,
     form: {

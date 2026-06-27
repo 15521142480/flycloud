@@ -8,7 +8,7 @@
           :src="auditIconsMap[processInstance.status]"
           alt=""
         />
-        <div class="text-#878c93 h-15px">编号：{{ id }}</div>
+        <div class="text-#878c93 h-15px">{{ t('extra.k66fd6b75', { p0: id }) }}</div>
         <el-divider class="!my-8px" />
         <div class="flex items-center gap-5 mb-10px h-40px">
           <div class="text-26px font-bold mb-5px">{{ processInstance.name }}</div>
@@ -33,12 +33,17 @@
             </el-avatar>
             {{ processInstance?.startUser?.name }}
           </div>
-          <div class="text-#878c93"> {{ formatDate(processInstance.startTime) }} 提交 </div>
+          <div class="text-#878c93">{{
+            t('extra.kc84f5765', { p0: formatDate(processInstance.startTime) })
+          }}</div>
         </div>
 
         <el-tabs v-model="activeTab">
           <!-- 表单信息 -->
-          <el-tab-pane label="审批详情" name="form">
+          <el-tab-pane
+            :label="t('auto.views.bpm.processInstance.detail.index.kfb1567f6')"
+            name="form"
+          >
             <div class="form-scroll-area">
               <el-scrollbar>
                 <el-row>
@@ -73,7 +78,10 @@
           </el-tab-pane>
 
           <!-- 流程图 -->
-          <el-tab-pane label="流程图" name="diagram">
+          <el-tab-pane
+            :label="t('auto.views.bpm.processInstance.detail.index.k3bffba42')"
+            name="diagram"
+          >
             <div class="form-scroll-area">
               <ProcessInstanceSimpleViewer
                 v-show="
@@ -93,7 +101,10 @@
           </el-tab-pane>
 
           <!-- 流转记录 -->
-          <el-tab-pane label="流转记录" name="record">
+          <el-tab-pane
+            :label="t('auto.views.bpm.processInstance.detail.index.kac37c619')"
+            name="record"
+          >
             <div class="form-scroll-area">
               <el-scrollbar>
                 <ProcessInstanceTaskList :loading="processInstanceLoading" :id="id" />
@@ -102,9 +113,15 @@
           </el-tab-pane>
 
           <!-- 流转评论 TODO 待开发 -->
-          <el-tab-pane label="流转评论" name="comment" v-if="false">
+          <el-tab-pane
+            :label="t('auto.views.bpm.processInstance.detail.index.kaecaaf58')"
+            name="comment"
+            v-if="false"
+          >
             <div class="form-scroll-area">
-              <el-scrollbar> 流转评论 </el-scrollbar>
+              <el-scrollbar>
+                {{ t('auto.views.bpm.processInstance.detail.index.kaecaaf58') }}
+              </el-scrollbar>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -143,7 +160,7 @@ import runningSvg from '@/assets/svgs/bpm/running.svg'
 import approveSvg from '@/assets/svgs/bpm/approve.svg'
 import rejectSvg from '@/assets/svgs/bpm/reject.svg'
 import cancelSvg from '@/assets/svgs/bpm/cancel.svg'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessInstanceDetail' })
 const props = defineProps<{
   id: string // 流程实例的编号
@@ -191,11 +208,11 @@ const getApprovalDetail = async () => {
     }
     const data = await ProcessInstanceApi.getApprovalDetail(param)
     if (!data) {
-      message.error('查询不到审批详情信息！')
+      message.error(t('auto.views.bpm.processInstance.detail.index.kd9dfddde'))
       return
     }
     if (!data.processDefinition || !data.processInstance) {
-      message.error('查询不到流程信息！')
+      message.error(t('auto.views.bpm.processInstance.detail.index.k921bf91e'))
       return
     }
     processInstance.value = data.processInstance

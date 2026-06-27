@@ -8,17 +8,22 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="名字" prop="name">
+      <el-form-item :label="t('auto.views.infra.demo.demo03.erp.index.k364bd1bf')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入名字"
+          :placeholder="t('auto.views.infra.demo.demo03.erp.index.k010c1585')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
-        <el-select v-model="queryParams.sex" class="!w-240px" clearable placeholder="请选择性别">
+      <el-form-item :label="t('auto.views.infra.demo.demo03.erp.index.kfe8aa4ef')" prop="sex">
+        <el-select
+          v-model="queryParams.sex"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.infra.demo.demo03.erp.index.k9362948f')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
             :key="dict.value"
@@ -27,13 +32,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.infra.demo.demo03.erp.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.infra.demo.demo03.erp.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -41,11 +46,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k63f58ff1') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k160d505d') }}
         </el-button>
         <el-button
           v-hasPermi="['infra:demo03-student:create']"
@@ -54,7 +59,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k4e42aff3') }}
         </el-button>
         <el-button
           v-hasPermi="['infra:demo03-student:export']"
@@ -64,7 +69,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k79253590') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -80,9 +85,21 @@
       highlight-current-row
       @current-change="handleCurrentChange"
     >
-      <el-table-column align="center" label="编号" prop="id" />
-      <el-table-column align="center" label="名字" prop="name" />
-      <el-table-column align="center" label="性别" prop="sex">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo03.erp.index.k9f42dac6')"
+        prop="id"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo03.erp.index.k364bd1bf')"
+        prop="name"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo03.erp.index.kfe8aa4ef')"
+        prop="sex"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_USER_SEX" :value="scope.row.sex" />
         </template>
@@ -155,11 +172,10 @@ import * as Demo03StudentApi from '@/api/infra/demo/demo03/erp'
 import Demo03StudentForm from './Demo03StudentForm.vue'
 import Demo03CourseList from './components/Demo03CourseList.vue'
 import Demo03GradeList from './components/Demo03GradeList.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'Demo03Student' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据
@@ -226,7 +242,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await Demo03StudentApi.exportDemo03Student(queryParams)
-    download.excel(data, '学生.xls')
+    download.excel(data, t('auto.views.infra.demo.demo03.erp.index.k45c1e118'))
   } catch {
   } finally {
     exportLoading.value = false

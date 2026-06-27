@@ -1,20 +1,34 @@
 <template>
-  <Dialog title="发起转账" v-model="dialogVisible" width="800px">
+  <Dialog
+    :title="t('auto.views.pay.transfer.CreatePayTransfer.k208ab1da')"
+    v-model="dialogVisible"
+    width="800px"
+  >
     <el-card style="margin-top: 10px">
-      <el-descriptions title="转账信息" :column="2" border>
-        <el-descriptions-item label="转账类型">
+      <el-descriptions
+        :title="t('auto.views.pay.transfer.CreatePayTransfer.ke4635ff9')"
+        :column="2"
+        border
+      >
+        <el-descriptions-item :label="t('auto.views.pay.transfer.CreatePayTransfer.k297a5897')">
           {{ typeName }}
         </el-descriptions-item>
-        <el-descriptions-item label="转账金额(元)">
+        <el-descriptions-item :label="t('auto.views.pay.transfer.CreatePayTransfer.kcab82f68')">
           ￥{{ (transfer.price / 100.0).toFixed(2) }}
         </el-descriptions-item>
-        <el-descriptions-item label="收款人姓名">
+        <el-descriptions-item :label="t('auto.views.pay.transfer.CreatePayTransfer.kad69bce0')">
           {{ transfer.userName }}
         </el-descriptions-item>
-        <el-descriptions-item label="支付宝登录账号" v-if="transfer.type === 1">
+        <el-descriptions-item
+          :label="t('auto.views.pay.transfer.CreatePayTransfer.k6605bf8f')"
+          v-if="transfer.type === 1"
+        >
           {{ transfer.alipayLogonId }}
         </el-descriptions-item>
-        <el-descriptions-item label="微信 openid" v-if="transfer.type === 2">
+        <el-descriptions-item
+          :label="t('auto.views.pay.transfer.CreatePayTransfer.kc6eb425b')"
+          v-if="transfer.type === 2"
+        >
           {{ transfer.openid }}
         </el-descriptions-item>
       </el-descriptions>
@@ -22,7 +36,7 @@
     <el-card style="margin-top: 20px">
       <template #header>
         <div class="card-header">
-          <span>选择转账渠道</span>
+          <span>{{ t('auto.views.pay.transfer.CreatePayTransfer.k0be418be') }}</span>
         </div>
       </template>
       <div>
@@ -58,7 +72,7 @@ import { DICT_TYPE, getDictLabel } from '@/utils/dict'
 import svg_alipay_app from '@/assets/svgs/pay/icon/alipay_app.svg'
 import svg_wx_app from '@/assets/svgs/pay/icon/wx_app.svg'
 import { yuanToFen } from '@/utils'
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const formLoading = ref(false) // 提交的按钮禁用
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
@@ -116,7 +130,7 @@ const submitForm = async () => {
   try {
     submitTransferData.channelCode = channelCode.value
     await PayTransferApi.createTransfer(submitTransferData)
-    message.success('发起转账成功. 是否转账成功,以转账订单状态为准')
+    message.success(t('auto.views.pay.transfer.CreatePayTransfer.k00cefa46'))
     // 发送操作成功的事件
     emit('success')
     dialogVisible.value = false

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,12 +8,12 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="请假类型" prop="type">
+      <el-form-item :label="t('auto.views.bpm.oa.leave.index.k1509ea5a')" prop="type">
         <el-select
           v-model="queryParams.type"
           class="!w-240px"
           clearable
-          placeholder="请选择请假类型"
+          :placeholder="t('auto.views.bpm.oa.leave.index.k770d5b5d')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.BPM_OA_LEAVE_TYPE)"
@@ -24,23 +23,23 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="申请时间" prop="createTime">
+      <el-form-item :label="t('auto.views.bpm.oa.leave.index.ke85ad6ea')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.bpm.oa.leave.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.bpm.oa.leave.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="审批结果" prop="status">
+      <el-form-item :label="t('auto.views.bpm.oa.leave.index.k3fbd0491')" prop="status">
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          placeholder="请选择审批结果"
+          :placeholder="t('auto.views.bpm.oa.leave.index.k4d553a63')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.BPM_PROCESS_INSTANCE_STATUS)"
@@ -50,27 +49,32 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="原因" prop="reason">
+      <el-form-item :label="t('auto.views.bpm.oa.leave.index.k1ff9c3d0')" prop="reason">
         <el-input
           v-model="queryParams.reason"
           class="!w-240px"
           clearable
-          placeholder="请输入原因"
+          :placeholder="t('auto.views.bpm.oa.leave.index.k6faa6ebc')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k530e3c18') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k6fdfb376') }}
         </el-button>
-        <el-button v-hasPermi="['bpm:oa:leave:create']" plain type="primary" @click="handleCreate()">
+        <el-button
+          v-hasPermi="['bpm:oa:leave:create']"
+          plain
+          type="primary"
+          @click="handleCreate()"
+        >
           <Icon class="mr-5px" icon="ep:plus" />
-          发起请假
+          {{ t('extra.k5a0cca71') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -79,8 +83,12 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="申请编号" prop="id" />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.oa.leave.index.k4d2ae683')"
+        prop="id"
+      />
+      <el-table-column align="center" :label="t('common.status')" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_INSTANCE_STATUS" :value="scope.row.status" />
         </template>
@@ -155,12 +163,11 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as LeaveApi from '@/api/bpm/leave'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmOALeave' })
 
 const message = useMessage() // 消息弹窗
 const router = useRouter() // 路由
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -217,15 +224,19 @@ const handleDetail = (row: LeaveApi.LeaveVO) => {
 /** 取消请假操作 */
 const cancelLeave = async (row) => {
   // 二次确认
-  const { value } = await ElMessageBox.prompt('请输入取消原因', '取消流程', {
-    confirmButtonText: t('common.ok'),
-    cancelButtonText: t('common.cancel'),
-    inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
-    inputErrorMessage: '取消原因不能为空'
-  })
+  const { value } = await ElMessageBox.prompt(
+    t('auto.views.bpm.oa.leave.index.kd878c25a'),
+    t('auto.views.bpm.oa.leave.index.kef368da8'),
+    {
+      confirmButtonText: t('common.ok'),
+      cancelButtonText: t('common.cancel'),
+      inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
+      inputErrorMessage: t('auto.views.bpm.oa.leave.index.k6a6cf9af')
+    }
+  )
   // 发起取消
   await ProcessInstanceApi.cancelProcessInstanceByStartUser(row.id, value)
-  message.success('取消成功')
+  message.success(t('auto.views.bpm.oa.leave.index.k24a1c71e'))
   // 刷新列表
   await getList()
 }

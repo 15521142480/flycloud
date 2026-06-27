@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,20 +8,20 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="回款编号" prop="no">
+      <el-form-item :label="t('auto.views.crm.receivable.index.k89c860f8')" prop="no">
         <el-input
           v-model="queryParams.no"
           class="!w-240px"
           clearable
-          placeholder="请输入回款编号"
+          :placeholder="t('auto.views.crm.receivable.index.kd4d051d6')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="客户名称" prop="customerId">
+      <el-form-item :label="t('auto.views.crm.receivable.index.ke941d410')" prop="customerId">
         <el-select
           v-model="queryParams.customerId"
           class="!w-240px"
-          placeholder="请选择客户"
+          :placeholder="t('auto.views.crm.receivable.index.k6bdb05d6')"
           @keyup.enter="handleQuery"
         >
           <el-option
@@ -36,11 +35,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.kc217462d') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k252a41f2') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:receivable:create']"
@@ -49,7 +48,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k9cdea0f4') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:receivable:export']"
@@ -59,7 +58,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k1b7477e6') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -68,12 +67,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="我参与的" name="2" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.receivable.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.receivable.index.k1640a0ff')" name="2" />
+      <el-tab-pane :label="t('auto.views.crm.receivable.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="回款编号" prop="no" width="180">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.receivable.index.k89c860f8')"
+        prop="no"
+        width="180"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.no }}
@@ -211,11 +216,10 @@ import ReceivableForm from './ReceivableForm.vue'
 import * as CustomerApi from '@/api/crm/customer'
 import { TabsPaneContext } from 'element-plus'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'Receivable' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据
@@ -282,9 +286,9 @@ const handleDelete = async (id: number) => {
 
 /** 提交审核 **/
 const handleSubmit = async (row: ReceivableApi.ReceivableVO) => {
-  await message.confirm(`您确定提交编号为【${row.no}】的回款审核吗？`)
+  await message.confirm(t('extra.k6f991214', { p0: row.no }))
   await ReceivableApi.submitReceivable(row.id)
-  message.success('提交审核成功！')
+  message.success(t('auto.views.crm.receivable.index.k7165ee3f'))
   await getList()
 }
 
@@ -317,7 +321,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ReceivableApi.exportReceivable(queryParams)
-    download.excel(data, '回款.xls')
+    download.excel(data, t('auto.views.crm.receivable.index.k855d0cca'))
   } catch {
   } finally {
     exportLoading.value = false

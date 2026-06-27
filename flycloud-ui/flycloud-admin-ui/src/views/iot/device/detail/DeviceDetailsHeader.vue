@@ -15,19 +15,21 @@
           v-hasPermi="['iot:device:update']"
           v-if="product.status === 0"
         >
-          编辑
+          {{ t('extra.k165d95ac') }}
         </el-button>
       </div>
     </div>
   </div>
   <ContentWrap class="mt-10px">
     <el-descriptions :column="5" direction="horizontal">
-      <el-descriptions-item label="产品">
+      <el-descriptions-item
+        :label="t('auto.views.iot.device.detail.DeviceDetailsHeader.k6cc98552')"
+      >
         <el-link @click="goToProductDetail(product.id)">{{ product.name }}</el-link>
       </el-descriptions-item>
       <el-descriptions-item label="ProductKey">
         {{ product.productKey }}
-        <el-button @click="copyToClipboard(product.productKey)">复制</el-button>
+        <el-button @click="copyToClipboard(product.productKey)">{{ t('common.copy') }}</el-button>
       </el-descriptions-item>
     </el-descriptions>
   </ContentWrap>
@@ -40,7 +42,7 @@ import DeviceForm from '@/views/iot/device/DeviceForm.vue'
 import { ProductVO } from '@/api/iot/product'
 import { DeviceVO } from '@/api/iot/device'
 import { useRouter } from 'vue-router'
-
+const { t } = useI18n()
 const message = useMessage()
 const router = useRouter()
 
@@ -61,7 +63,7 @@ const emit = defineEmits(['refresh'])
 const copyToClipboard = (text: string) => {
   // TODO @haohao：可以考虑用 await 异步转同步哈
   navigator.clipboard.writeText(text).then(() => {
-    message.success('复制成功')
+    message.success(t('auto.views.iot.device.detail.DeviceDetailsHeader.kc1ef062e'))
   })
 }
 

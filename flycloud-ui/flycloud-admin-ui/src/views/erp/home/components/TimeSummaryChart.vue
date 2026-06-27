@@ -14,6 +14,7 @@ import { CardTitle } from '@/components/Card'
 import { propTypes } from '@/utils/propTypes'
 
 /** 会员用户统计卡片 */
+const { t } = useI18n()
 defineOptions({ name: 'MemberStatisticsCard' })
 
 const props = defineProps({
@@ -37,7 +38,14 @@ const lineChartOptions = reactive<EChartsOption>({
   legend: {
     top: 50
   },
-  series: [{ name: '金额', type: 'line', smooth: true, areaStyle: {} }],
+  series: [
+    {
+      name: t('auto.views.erp.home.components.TimeSummaryChart.k34943c40'),
+      type: 'line',
+      smooth: true,
+      areaStyle: {}
+    }
+  ],
   toolbox: {
     feature: {
       // 数据区域缩放

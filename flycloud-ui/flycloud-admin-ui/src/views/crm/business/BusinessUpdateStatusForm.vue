@@ -1,5 +1,9 @@
 <template>
-  <Dialog title="变更商机状态" v-model="dialogVisible" width="400">
+  <Dialog
+    :title="t('auto.views.crm.business.BusinessUpdateStatusForm.kca44e801')"
+    v-model="dialogVisible"
+    width="400"
+  >
     <el-form
       ref="formRef"
       :model="formData"
@@ -7,34 +11,44 @@
       label-width="80px"
       v-loading="formLoading"
     >
-      <el-form-item label="商机阶段" prop="status">
-        <el-select v-model="formData.status" placeholder="请选择商机阶段" class="w-1/1">
+      <el-form-item
+        :label="t('auto.views.crm.business.BusinessUpdateStatusForm.kc0a20f9a')"
+        prop="status"
+      >
+        <el-select
+          v-model="formData.status"
+          :placeholder="t('auto.views.crm.business.BusinessUpdateStatusForm.k01e5c356')"
+          class="w-1/1"
+        >
           <el-option
             v-for="item in statusList"
             :key="item.id"
-            :label="item.name + '(赢单率：' + item.percent + '%)'"
+            :label="item.name + t('extra.k43923921') + item.percent + '%)'"
             :value="item.id"
           />
           <el-option
             v-for="item in BusinessStatusApi.DEFAULT_STATUSES"
             :key="item.endStatus"
-            :label="item.name + '(赢单率：' + item.percent + '%)'"
+            :label="item.name + t('extra.k43923921') + item.percent + '%)'"
             :value="-item.endStatus"
           />
         </el-select>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.crm.business.BusinessUpdateStatusForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.business.BusinessUpdateStatusForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script setup lang="ts">
 import * as BusinessApi from '@/api/crm/business'
 import * as BusinessStatusApi from '@/api/crm/business/status'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -46,7 +60,13 @@ const formData = ref({
   status: undefined
 })
 const formRules = reactive({
-  status: [{ required: true, message: '商机阶段不能为空', trigger: 'blur' }]
+  status: [
+    {
+      required: true,
+      message: t('auto.views.crm.business.BusinessUpdateStatusForm.k11298f9b'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const statusList = ref([]) // 商机状态列表
@@ -86,7 +106,7 @@ const submitForm = async () => {
       statusId: formData.value.status > 0 ? formData.value.status : undefined,
       endStatus: formData.value.status < 0 ? -formData.value.status : undefined
     })
-    message.success('更新商机状态成功')
+    message.success(t('auto.views.crm.business.BusinessUpdateStatusForm.k37f656ba'))
     dialogVisible.value = false
     // 发送操作成功的事件
     emit('success')

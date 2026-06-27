@@ -20,10 +20,8 @@ import type { FormInstance, FormRules } from 'element-plus'
 
 import { InputPassword } from '@/components/InputPassword'
 import { updateUserPassword } from '@/api/system/user/profile'
-
-defineOptions({ name: 'ResetPwd' })
-
 const { t } = useI18n()
+defineOptions({ name: 'ResetPwd' })
 const message = useMessage()
 const formRef = ref<FormInstance>()
 const password = reactive({

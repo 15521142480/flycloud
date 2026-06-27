@@ -19,12 +19,14 @@ import { deleteUserCache } from '@/hooks/web/useCache'
 // import {useUserStore} from "@/store/modules/user";
 // const userStore = useUserStore()
 
+const { t } = useI18n()
+
 const { result_code, base_url, request_timeout } = config
 
 // 需要忽略的提示。忽略后，自动 Promise.reject('error')
 const ignoreMsgs = [
-  '无效的刷新令牌', // 刷新令牌被删除时，不用提示
-  '刷新令牌已过期' // 使用刷新令牌，刷新获取新的访问令牌时，结果因为过期失败，此时需要忽略。否则，会导致继续 401，无法跳转到登出界面
+  t('auto.config.axios.service.k6a0a80cf'), // 刷新令牌被删除时，不用提示
+  t('auto.config.axios.service.k464111e9') // 使用刷新令牌，刷新获取新的访问令牌时，结果因为过期失败，此时需要忽略。否则，会导致继续 401，无法跳转到登出界面
 ]
 
 // 是否显示重新登录
@@ -40,12 +42,10 @@ let isRefreshToken = false
 // 请求白名单，无须token的接口
 const whiteList: string[] = ['/auth/code', '/login', '/refresh-token']
 
-
 /**
  * 创建axios实例
  */
 const service: AxiosInstance = axios.create({
-
   // todo 忽略,目前使用代理方式
   // baseURL: base_url, // api 的 base_url
 
@@ -53,13 +53,11 @@ const service: AxiosInstance = axios.create({
   withCredentials: false // 禁用 Cookie 等信息
 })
 
-
 /**
  * request拦截器
  */
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-
     // 是否需要设置 token
     let isToken = (config!.headers || {}).isToken === false
     whiteList.some((v) => {
@@ -71,7 +69,7 @@ service.interceptors.request.use(
 
     // 每个请求加上授权token
     if (getAccessToken() && !isToken) {
-      (config as Recordable).headers.Authorization = 'Bearer ' + getAccessToken()
+      ;(config as Recordable).headers.Authorization = 'Bearer ' + getAccessToken()
     }
 
     const params = config.params || {}
@@ -100,23 +98,18 @@ service.interceptors.request.use(
   }
 )
 
-
 /**
  * response 拦截器
  */
 service.interceptors.response.use(
-
   // 响应为成功(200)的情况
   async (response: AxiosResponse<any>) => {
-
     let { data } = response
     const config = response.config
     if (!data) {
       // 返回“[HTTP]请求没有返回值”;
       throw new Error()
     }
-    const { t } = useI18n()
-    // 未设置状态码则默认成功状态
     // 二进制数据则直接返回，例如说 Excel 导出
     if (
       response.request.responseType === 'blob' ||
@@ -187,13 +180,13 @@ service.interceptors.response.use(
           t('sys.api.errMsg901') +
           '</div>' +
           '<div> &nbsp; </div>' +
-          '<div>参考 https://doc.iocoder.cn/ 教程</div>' +
+          t('auto.config.axios.service.kb42e1af2') +
           '<div> &nbsp; </div>' +
-          '<div>5 分钟搭建本地环境</div>'
+          t('auto.config.axios.service.ka5daecc6')
       })
       return Promise.reject(new Error(msg))
     } else if (code !== 200) {
-      if (msg === '无效的刷新令牌') {
+      if (msg === t('auto.config.axios.service.k6a0a80cf')) {
         // hard coding：忽略这个提示，直接登出
         console.log(msg)
         return handleAuthorized()
@@ -208,16 +201,13 @@ service.interceptors.response.use(
 
   // 响应为错误的情况
   (error: AxiosError) => {
-
     console.log('err' + error)
     const { response } = error
     const status: number = response!.status
     if (status === 401 || status === 403) {
       handleError(response!.status, response!.data as object)
     } else {
-
       let { message } = error
-      const { t } = useI18n()
       if (message === 'Network Error') {
         message = t('sys.api.errorMessage')
       } else if (message.includes('timeout')) {
@@ -232,17 +222,14 @@ service.interceptors.response.use(
   }
 )
 
-
 /**
  * 处理错误的响应
  * @param status
  * @param data
  */
-const handleError = (status : number, data) => {
-
+const handleError = (status: number, data) => {
   const { msg } = data
   switch (status) {
-
     case 401: // 401: 未登录状态，跳转登录页
       // debugger
       ElMessage.warning(msg)
@@ -253,13 +240,13 @@ const handleError = (status : number, data) => {
       // 干掉token后再走一次路由让它过router.beforeEach的校验
       // window.location.href = window.location.href
       // router.replace({path: '/login'})
-      window.location.reload();
+      window.location.reload()
       break
 
     case 403: // 403 token过期 清除token并跳转登录页
       ElMessage.warning(msg)
       // router.replace({path: '/login'})
-      window.location.reload();
+      window.location.reload()
       break
 
     // case 404: // 404请求不存在
@@ -271,7 +258,6 @@ const handleError = (status : number, data) => {
   }
 }
 
-
 /**
  * 刷新token
  */
@@ -279,12 +265,10 @@ const refreshToken = async () => {
   return await axios.post(base_url + '/system/auth/refresh-token?refreshToken=' + getRefreshToken())
 }
 
-
 /**
  * 处理登录超时
  */
 const handleAuthorized = () => {
-  const { t } = useI18n()
   if (!isRelogin.show) {
     isRelogin.show = true
     ElMessageBox.confirm(t('sys.api.timeoutMessage'), t('common.confirmTitle'), {
@@ -305,6 +289,5 @@ const handleAuthorized = () => {
   }
   return Promise.reject(t('sys.api.timeoutMessage'))
 }
-
 
 export { service }

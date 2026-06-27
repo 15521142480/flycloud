@@ -7,20 +7,51 @@
       label-width="140px"
       v-loading="formLoading"
     >
-      <el-form-item label="模版编码" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入模版编码" />
+      <el-form-item
+        :label="t('auto.views.system.notify.template.NotifyTemplateForm.k9c0cf0a4')"
+        prop="code"
+      >
+        <el-input
+          v-model="formData.code"
+          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.k457d3fed')"
+        />
       </el-form-item>
-      <el-form-item label="模板名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入模版名称" />
+      <el-form-item
+        :label="t('auto.views.system.notify.template.NotifyTemplateForm.kbbc511d0')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.k359c9c67')"
+        />
       </el-form-item>
-      <el-form-item label="发件人名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入发件人名称" />
+      <el-form-item
+        :label="t('auto.views.system.notify.template.NotifyTemplateForm.k389b3376')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.k7afd6071')"
+        />
       </el-form-item>
-      <el-form-item label="模板内容" prop="content">
-        <el-input type="textarea" v-model="formData.content" placeholder="请输入模板内容" />
+      <el-form-item
+        :label="t('auto.views.system.notify.template.NotifyTemplateForm.kdc362463')"
+        prop="content"
+      >
+        <el-input
+          type="textarea"
+          v-model="formData.content"
+          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.kb8138d5e')"
+        />
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-select v-model="formData.type" placeholder="请选择类型">
+      <el-form-item
+        :label="t('auto.views.system.notify.template.NotifyTemplateForm.ke4e46c72')"
+        prop="type"
+      >
+        <el-select
+          v-model="formData.type"
+          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.k97f47b78')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_NOTIFY_TEMPLATE_TYPE)"
             :key="dict.value"
@@ -29,7 +60,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.system.notify.template.NotifyTemplateForm.k6bbda1b1')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -40,13 +74,20 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.k57e709d9')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.system.notify.template.NotifyTemplateForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.notify.template.NotifyTemplateForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -54,6 +95,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as NotifyTemplateApi from '@/api/system/notify/template'
 import { CommonStatusEnum } from '@/utils/constants'
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -72,12 +114,48 @@ const formData = ref<NotifyTemplateApi.NotifyTemplateVO>({
   remark: ''
 })
 const formRules = reactive({
-  type: [{ required: true, message: '消息类型不能为空', trigger: 'change' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }],
-  code: [{ required: true, message: '模板编码不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '模板名称不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '发件人姓名不能为空', trigger: 'blur' }],
-  content: [{ required: true, message: '模板内容不能为空', trigger: 'blur' }]
+  type: [
+    {
+      required: true,
+      message: t('auto.views.system.notify.template.NotifyTemplateForm.k47a82cae'),
+      trigger: 'change'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.notify.template.NotifyTemplateForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ],
+  code: [
+    {
+      required: true,
+      message: t('auto.views.system.notify.template.NotifyTemplateForm.kef6969d9'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.system.notify.template.NotifyTemplateForm.k15011507'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.system.notify.template.NotifyTemplateForm.kd8c3db1e'),
+      trigger: 'blur'
+    }
+  ],
+  content: [
+    {
+      required: true,
+      message: t('auto.views.system.notify.template.NotifyTemplateForm.k901576f7'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -111,10 +189,10 @@ const submitForm = async () => {
     const data = formData.value as unknown as NotifyTemplateApi.NotifyTemplateVO
     if (formType.value === 'create') {
       await NotifyTemplateApi.createNotifyTemplate(data)
-      message.success('新增成功')
+      message.success(t('auto.views.system.notify.template.NotifyTemplateForm.kcbdbd295'))
     } else {
       await NotifyTemplateApi.updateNotifyTemplate(data)
-      message.success('修改成功')
+      message.success(t('auto.views.system.notify.template.NotifyTemplateForm.kf8913eb4'))
     }
     dialogVisible.value = false
     // 发送操作成功的事件

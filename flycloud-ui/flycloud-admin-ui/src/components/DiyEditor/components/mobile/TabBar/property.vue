@@ -2,7 +2,10 @@
   <div class="tab-bar">
     <!-- 表单 -->
     <el-form :model="formData" label-width="80px">
-      <el-form-item label="主题" prop="theme">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.TabBar.property.ke848ddd4')"
+        prop="theme"
+      >
         <el-select v-model="formData!.theme" @change="handleThemeChange">
           <el-option
             v-for="(theme, index) in THEME_LIST"
@@ -81,7 +84,7 @@
 <script setup lang="ts">
 import { TabBarProperty, component, THEME_LIST } from './config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
-// 底部导航栏
+const { t } = useI18n()
 defineOptions({ name: 'TabBarProperty' })
 
 const props = defineProps<{ modelValue: TabBarProperty }>()

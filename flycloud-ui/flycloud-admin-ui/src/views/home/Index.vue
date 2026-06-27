@@ -61,7 +61,7 @@
       <el-card shadow="never">
         <template #header>
           <div class="h-3 flex justify-between">
-            <span>作者地址</span>
+            <span>{{ t('auto.views.home.Index.k134b78b4') }}</span>
             <el-link
               type="primary"
               :underline="false"
@@ -74,10 +74,7 @@
         </template>
         <el-skeleton :loading="loading" animated>
           <el-row>
-            <el-col
-              v-for="(item, index) in projects"
-              :key="`card-${index}`"
-            >
+            <el-col v-for="(item, index) in projects" :key="`card-${index}`">
               <el-card shadow="hover" class="mr-5px mt-5px">
                 <div class="flex items-center">
                   <Icon :icon="item.icon" :size="25" class="mr-8px" />
@@ -143,11 +140,11 @@
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
-          <div v-for="(item, index) in notice" :key="`dynamics-${index}`"  style="margin-left: 10px">
+          <div v-for="(item, index) in notice" :key="`dynamics-${index}`" style="margin-left: 10px">
             <div class="flex items-center">
-<!--              <el-avatar :src="avatar" :size="35" class="mr-16px">-->
-<!--                <img src="@/assets/imgs/avatar.gif" alt=""/>-->
-<!--              </el-avatar>-->
+              <!--              <el-avatar :src="avatar" :size="35" class="mr-16px">-->
+              <!--                <img src="@/assets/imgs/avatar.gif" alt=""/>-->
+              <!--              </el-avatar>-->
               <div>
                 <div class="text-14px">
                   <Highlight :keys="item.keys.map((v) => t(v))">
@@ -176,10 +173,8 @@ import { useWatermark } from '@/hooks/web/useWatermark'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
 import avatarImg from '@/assets/imgs/avatar.gif'
-
-defineOptions({ name: 'Home' })
-
 const { t } = useI18n()
+defineOptions({ name: 'Home' })
 const userStore = useUserStore()
 const { setWatermark } = useWatermark()
 const loading = ref(true)
@@ -211,7 +206,7 @@ const getProject = async () => {
       name: 'flycloud',
       icon: 'akar-icons:github-fill',
       message: 'https://github.com/15521142480/flycloud/',
-      personal: 'Spring Cloud 微服务架构',
+      personal: t('auto.views.home.Index.k7d560b6f'),
       time: new Date()
     }
   ]
@@ -223,15 +218,28 @@ let notice = reactive<Notice[]>([])
 const getNotice = async () => {
   const data = [
     {
-      title: '系统采用 JDK 21、Vue 3、Spring Boot 3.5.3、Spring Cloud Alibaba 2025、Nacos 3.0.3、Spring Security、Flowable 7.1、mysql 8.4、Seata 等技术架构',
-      type: '公告',
-      keys: ['公告', 'JDK', 'Spring Cloud', 'Nacos', 'Spring Security', 'Flowable', 'Seata'],
+      title: t('auto.views.home.Index.k571e41b1'),
+      type: t('auto.views.home.Index.k3f956953'),
+      keys: [
+        t('auto.views.home.Index.k3f956953'),
+        'JDK',
+        'Spring Cloud',
+        'Nacos',
+        'Spring Security',
+        'Flowable',
+        'Seata'
+      ],
       date: new Date()
     },
     {
-      title: '马斯克提出【殖民火星计划】；在未来15年到20年，美国SpaceX公司计划将8万名地球人送往火星殖民，他们将在火星上过上自给自足的生活，并在火星上休养生息，繁衍后代。每位火星“殖民先驱”都必须为这趟火星之旅支付50万美元的“旅费”。第一批火星探险者将不会超过10人，他们的任务是在充满灰尘的火星荒漠上建立一个密封透明的穹顶形大型增压建筑。马斯克称，8万人殖民火星计划如同给地球上的所有生命买了一个意外灾难“人寿保险”',
-      type: '通知',
-      keys: ['通知', '马斯克', '殖民火星计划', '火星'],
+      title: t('auto.views.home.Index.k34bc00eb'),
+      type: t('auto.views.home.Index.k7a66c0d0'),
+      keys: [
+        t('auto.views.home.Index.k7a66c0d0'),
+        t('auto.views.home.Index.kc5a32f4c'),
+        t('auto.views.home.Index.kf4b6da57'),
+        t('auto.views.home.Index.k79d91579')
+      ],
       date: new Date()
     }
   ]

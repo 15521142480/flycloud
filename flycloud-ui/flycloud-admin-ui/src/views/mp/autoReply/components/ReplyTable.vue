@@ -1,19 +1,19 @@
 <template>
   <el-table v-loading="props.loading" :data="props.list">
     <el-table-column
-      label="请求消息类型"
+      :label="t('auto.views.mp.autoReply.components.ReplyTable.k1d415d8a')"
       align="center"
       prop="requestMessageType"
       v-if="msgType === MsgType.Message"
     />
     <el-table-column
-      label="关键词"
+      :label="t('auto.views.mp.autoReply.components.ReplyTable.kcc1b21e8')"
       align="center"
       prop="requestKeyword"
       v-if="msgType === MsgType.Keyword"
     />
     <el-table-column
-      label="匹配类型"
+      :label="t('auto.views.mp.autoReply.components.ReplyTable.k575d0d32')"
       align="center"
       prop="requestMatch"
       v-if="msgType === MsgType.Keyword"
@@ -101,7 +101,7 @@ import WxNews from '@/views/mp/components/wx-news'
 import { dateFormatter } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { MsgType } from './types'
-
+const { t } = useI18n()
 const props = defineProps<{
   loading: boolean
   list: any[]

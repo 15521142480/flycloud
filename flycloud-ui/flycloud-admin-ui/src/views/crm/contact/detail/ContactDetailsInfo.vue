@@ -3,7 +3,9 @@
     <el-collapse v-model="activeNames">
       <el-collapse-item name="basicInfo">
         <template #title>
-          <span class="text-base font-bold">基本信息</span>
+          <span class="text-base font-bold">{{
+            t('auto.views.crm.contact.detail.ContactDetailsInfo.kb122f813')
+          }}</span>
         </template>
         <el-descriptions :column="4">
           <el-descriptions-item label="姓名">{{ contact.name }}</el-descriptions-item>
@@ -59,7 +61,7 @@
 import * as ContactApi from '@/api/crm/contact'
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
-
+const { t } = useI18n()
 const { contact } = defineProps<{
   contact: ContactApi.ContactVO
 }>()

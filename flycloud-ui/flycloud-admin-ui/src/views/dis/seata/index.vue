@@ -6,12 +6,16 @@
         <div style="margin-left: 30px; margin-top: 35px">
           <el-row>
             <el-col>
-              <el-button @click="seataTest(0)" style="margin-bottom: 10px"> 不回滚测试 </el-button>
+              <el-button @click="seataTest(0)" style="margin-bottom: 10px">
+                {{ t('auto.views.dis.seata.index.k12a6778a') }}
+              </el-button>
             </el-col>
           </el-row>
           <el-row>
             <el-col>
-              <el-button type="primary" @click="seataTest(1)"> 回滚测试 </el-button>
+              <el-button type="primary" @click="seataTest(1)">
+                {{ t('auto.views.dis.seata.index.kbed4c98e') }}
+              </el-button>
             </el-col>
           </el-row>
         </div>
@@ -19,13 +23,13 @@
 
       <el-col :span="20">
         <div style="margin-top: 6px; line-height: 30px">
-          不回滚测试为无异常，回滚测试则在最后有异常。
+          {{ t('extra.kbdeb2eea') }}
           <br />
-          1、分布式事务，采用seata的AT模式方案。 <br />
-          2、测试接口为: 系统服务flycloud-system的 /test/seataTest。 <br />
-          3、测试时请在nacos的application-datasource.yaml检查各系统是否连接不同的数据库，如没有则修改为不同库。
+          {{ t('extra.k2fb71000') }} <br />
+          {{ t('extra.kf0f0d734') }} <br />
+          {{ t('extra.kd8370bd5') }}
           <br />
-          本案例为system-master、bpm-master, 对应库为fly-cloud、fdance_cloud，对应表都为test。
+          {{ t('extra.k9b3e87cf') }}
         </div>
       </el-col>
     </el-row>
@@ -37,7 +41,7 @@
 <script lang="ts" setup>
 import * as SeataApi from '@/api/dis/seata'
 // import {CirclePlus, Delete, Edit, Plus} from "@element-plus/icons-vue";
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMenu' })
 
 // const { wsCache } = useCache()
@@ -51,10 +55,13 @@ const message = useMessage() // 消息弹窗
 const seataTest = async (isRollback: number) => {
   // loading.value = true
   try {
-    const text = isRollback == 0 ? '确认进行【不回滚测试】吗' : '确认进行【回滚测试】吗'
+    const text =
+      isRollback == 0
+        ? t('auto.views.dis.seata.index.kbeb513d1')
+        : t('auto.views.dis.seata.index.k62995029')
     await message.confirm(text)
     await SeataApi.seataTestApi(isRollback)
-    message.success('测试成功')
+    message.success(t('auto.views.dis.seata.index.k94b6e63d'))
   } finally {
     // loading.value = false
   }

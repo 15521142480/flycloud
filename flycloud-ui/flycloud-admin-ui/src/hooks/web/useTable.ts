@@ -5,8 +5,8 @@ import { computed, nextTick, reactive, ref, unref, watch } from 'vue'
 import type { TableProps } from '@/components/Table/src/types'
 
 import { TableSetPropsType } from '@/types/table'
-
 const { t } = useI18n()
+
 interface ResponseType<T = any> {
   list: T[]
   total?: number

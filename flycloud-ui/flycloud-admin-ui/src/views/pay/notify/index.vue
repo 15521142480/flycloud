@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="支付功能开启" url="https://doc.iocoder.cn/pay/build/" />
+  <doc-alert
+    :title="t('auto.views.pay.notify.index.kbacecf2d')"
+    url="https://doc.iocoder.cn/pay/build/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,10 +13,10 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item label="应用编号" prop="appId">
+      <el-form-item :label="t('auto.views.pay.notify.index.k396d9d78')" prop="appId">
         <el-select
           v-model="queryParams.appId"
-          placeholder="请选择应用信息"
+          :placeholder="t('auto.views.pay.notify.index.kb926b59e')"
           clearable
           filterable
           class="!w-240px"
@@ -21,10 +24,10 @@
           <el-option v-for="item in appList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="通知类型" prop="type">
+      <el-form-item :label="t('auto.views.pay.notify.index.k1cf9ae8f')" prop="type">
         <el-select
           v-model="queryParams.type"
-          placeholder="请选择通知类型"
+          :placeholder="t('auto.views.pay.notify.index.ka66c882c')"
           clearable
           class="!w-240px"
         >
@@ -36,19 +39,19 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="关联编号" prop="dataId">
+      <el-form-item :label="t('auto.views.pay.notify.index.k8913e0a8')" prop="dataId">
         <el-input
           v-model="queryParams.dataId"
-          placeholder="请输入关联编号"
+          :placeholder="t('auto.views.pay.notify.index.ke9506984')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="通知状态" prop="status">
+      <el-form-item :label="t('auto.views.pay.notify.index.kcca88a70')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择通知状态"
+          :placeholder="t('auto.views.pay.notify.index.kc818af38')"
           clearable
           class="!w-240px"
         >
@@ -60,31 +63,35 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="商户订单编号" prop="merchantOrderId">
+      <el-form-item :label="t('auto.views.pay.notify.index.kf51b03a6')" prop="merchantOrderId">
         <el-input
           v-model="queryParams.merchantOrderId"
-          placeholder="请输入商户订单编号"
+          :placeholder="t('auto.views.pay.notify.index.k6b6fdbe7')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           style="width: 240px"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.pay.notify.index.k1f291968')"
+          :end-placeholder="t('auto.views.pay.notify.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -92,10 +99,26 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="任务编号" align="center" prop="id" />
-      <el-table-column label="应用编号" align="center" prop="appName" />
-      <el-table-column label="商户订单编号" align="center" prop="merchantOrderId" />
-      <el-table-column label="通知类型" align="center" prop="type">
+      <el-table-column
+        :label="t('auto.views.pay.notify.index.k017af56c')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.notify.index.k396d9d78')"
+        align="center"
+        prop="appName"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.notify.index.kf51b03a6')"
+        align="center"
+        prop="merchantOrderId"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.notify.index.k1cf9ae8f')"
+        align="center"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_NOTIFY_TYPE" :value="scope.row.type" />
         </template>
@@ -159,7 +182,7 @@ import * as PayAppApi from '@/api/pay/app'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import NotifyDetail from './NotifyDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'PayNotify' })
 
 const loading = ref(true) // 列表的加载中

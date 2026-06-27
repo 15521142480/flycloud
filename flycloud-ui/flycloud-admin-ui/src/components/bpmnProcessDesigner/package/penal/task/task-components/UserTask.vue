@@ -1,6 +1,9 @@
 <template>
   <el-form label-width="100px">
-    <el-form-item label="规则类型" prop="candidateStrategy">
+    <el-form-item
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k7655f477')"
+      prop="candidateStrategy"
+    >
       <el-select
         v-model="userTaskForm.candidateStrategy"
         clearable
@@ -17,7 +20,7 @@
     </el-form-item>
     <el-form-item
       v-if="userTaskForm.candidateStrategy == 10"
-      label="指定角色"
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.kf0b09386')"
       prop="candidateParam"
     >
       <el-select
@@ -32,7 +35,7 @@
     </el-form-item>
     <el-form-item
       v-if="userTaskForm.candidateStrategy == 20 || userTaskForm.candidateStrategy == 21"
-      label="指定部门"
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.kf14ac805')"
       prop="candidateParam"
       span="24"
     >
@@ -41,7 +44,9 @@
         v-model="userTaskForm.candidateParam"
         :data="deptTreeOptions"
         :props="defaultProps"
-        empty-text="加载中，请稍后"
+        :empty-text="
+          t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k29a4e57b')
+        "
         multiple
         node-key="id"
         show-checkbox
@@ -50,7 +55,7 @@
     </el-form-item>
     <el-form-item
       v-if="userTaskForm.candidateStrategy == 22"
-      label="指定岗位"
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k5e4b64cd')"
       prop="candidateParam"
       span="24"
     >
@@ -66,7 +71,7 @@
     </el-form-item>
     <el-form-item
       v-if="userTaskForm.candidateStrategy == 30"
-      label="指定用户"
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k100f9964')"
       prop="candidateParam"
       span="24"
     >
@@ -77,17 +82,12 @@
         style="width: 100%"
         @change="updateElementTask"
       >
-        <el-option
-          v-for="item in userOptions"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        />
+        <el-option v-for="item in userOptions" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
     <el-form-item
       v-if="userTaskForm.candidateStrategy === 40"
-      label="指定用户组"
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k1ac78c11')"
       prop="candidateParam"
     >
       <el-select
@@ -107,7 +107,7 @@
     </el-form-item>
     <el-form-item
       v-if="userTaskForm.candidateStrategy === 60"
-      label="流程表达式"
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.kb86130ce')"
       prop="candidateParam"
     >
       <el-input
@@ -117,9 +117,9 @@
         style="width: 72%"
         @change="updateElementTask"
       />
-      <el-button class="ml-5px" size="small" type="success" @click="openProcessExpressionDialog"
-        >选择表达式</el-button
-      >
+      <el-button class="ml-5px" size="small" type="success" @click="openProcessExpressionDialog">{{
+        t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k296be80b')
+      }}</el-button>
       <!-- 选择弹窗 -->
       <ProcessExpressionDialog ref="processExpressionDialogRef" @select="selectProcessExpression" />
     </el-form-item>
@@ -136,7 +136,7 @@ import * as UserApi from '@/api/system/user'
 import * as UserGroupApi from '@/api/bpm/userGroup'
 import ProcessExpressionDialog from './ProcessExpressionDialog.vue'
 import { ProcessExpressionVO } from '@/api/bpm/processExpression'
-
+const { t } = useI18n()
 defineOptions({ name: 'UserTask' })
 const props = defineProps({
   id: String,

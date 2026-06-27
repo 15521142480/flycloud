@@ -7,7 +7,7 @@ import { useDesign } from '@/hooks/web/useDesign'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useUserStore } from '@/store/modules/user'
 import avatarImg from '@/assets/imgs/avatar.gif'
-
+const { t } = useI18n()
 const tagsViewStore = useTagsViewStore()
 
 const { replace } = useRouter()
@@ -28,10 +28,6 @@ const userName = computed(() => userStore.user.name ?? 'Admin')
 const lockStore = useLockStore()
 
 const { hour, month, minute, meridiem, year, day, week } = useNow(true)
-
-const { t } = useI18n()
-
-// 解锁
 async function unLock() {
   if (!password.value) {
     return

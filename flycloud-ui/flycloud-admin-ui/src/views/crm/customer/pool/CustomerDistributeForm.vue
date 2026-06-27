@@ -1,5 +1,8 @@
 <template>
-  <Dialog v-model="dialogVisible" title="分配客户">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.crm.customer.pool.CustomerDistributeForm.k01ae1bb2')"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,7 +10,10 @@
       :rules="formRules"
       label-width="100px"
     >
-      <el-form-item label="负责人" prop="ownerUserId">
+      <el-form-item
+        :label="t('auto.views.crm.customer.pool.CustomerDistributeForm.k974d383f')"
+        prop="ownerUserId"
+      >
         <el-select v-model="formData.ownerUserId" class="w-1/1">
           <el-option
             v-for="item in userOptions"
@@ -19,8 +25,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.crm.customer.pool.CustomerDistributeForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.customer.pool.CustomerDistributeForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -28,8 +38,7 @@
 import * as CustomerApi from '@/api/crm/customer'
 import * as UserApi from '@/api/system/user'
 import { distributeCustomer } from '@/api/crm/customer'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -40,7 +49,13 @@ const formData = ref({
   ownerUserId: undefined
 })
 const formRules = reactive({
-  ownerUserId: [{ required: true, message: '负责人不能为空', trigger: 'blur' }]
+  ownerUserId: [
+    {
+      required: true,
+      message: t('auto.views.crm.customer.pool.CustomerDistributeForm.kc40a3652'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -65,7 +80,7 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     await CustomerApi.distributeCustomer([formData.value.id], formData.value.ownerUserId)
-    message.success('分配客户成功')
+    message.success(t('auto.views.crm.customer.pool.CustomerDistributeForm.k014df8b1'))
     dialogVisible.value = false
     // 发送操作成功的事件
     emit('success')

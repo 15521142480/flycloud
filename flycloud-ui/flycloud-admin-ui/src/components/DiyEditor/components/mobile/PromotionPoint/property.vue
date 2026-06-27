@@ -1,96 +1,176 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <el-form :model="formData" label-width="80px">
-      <el-card class="property-group" header="积分商城活动" shadow="never">
+      <el-card
+        class="property-group"
+        :header="t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k929ca2dd')"
+        shadow="never"
+      >
         <PointShowcase v-model="formData.activityIds" />
       </el-card>
-      <el-card class="property-group" header="商品样式" shadow="never">
-        <el-form-item label="布局" prop="type">
+      <el-card
+        class="property-group"
+        :header="t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.ka9d65e39')"
+        shadow="never"
+      >
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.kb0961e17')
+          "
+          prop="type"
+        >
           <el-radio-group v-model="formData.layoutType">
-            <el-tooltip class="item" content="单列大图" placement="bottom">
+            <el-tooltip
+              class="item"
+              :content="
+                t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.kcfd4ceae')
+              "
+              placement="bottom"
+            >
               <el-radio-button value="oneColBigImg">
                 <Icon icon="fluent:text-column-one-24-filled" />
               </el-radio-button>
             </el-tooltip>
-            <el-tooltip class="item" content="单列小图" placement="bottom">
+            <el-tooltip
+              class="item"
+              :content="
+                t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k13c7ca06')
+              "
+              placement="bottom"
+            >
               <el-radio-button value="oneColSmallImg">
                 <Icon icon="fluent:text-column-two-left-24-filled" />
               </el-radio-button>
             </el-tooltip>
-            <el-tooltip class="item" content="双列" placement="bottom">
+            <el-tooltip
+              class="item"
+              :content="
+                t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k677628f2')
+              "
+              placement="bottom"
+            >
               <el-radio-button value="twoCol">
                 <Icon icon="fluent:text-column-two-24-filled" />
               </el-radio-button>
             </el-tooltip>
-            <!--<el-tooltip class="item" content="三列" placement="bottom">
+            <!--<el-tooltip class="item" :content="t('extra.k2d69d155')" placement="bottom">
               <el-radio-button value="threeCol">
                 <Icon icon="fluent:text-column-three-24-filled" />
               </el-radio-button>
             </el-tooltip>-->
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="商品名称" prop="fields.name.show">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k47b74133')
+          "
+          prop="fields.name.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.name.color" />
             <el-checkbox v-model="formData.fields.name.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品简介" prop="fields.introduction.show">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.ke50db553')
+          "
+          prop="fields.introduction.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.introduction.color" />
             <el-checkbox v-model="formData.fields.introduction.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品价格" prop="fields.price.show">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k41f54c30')
+          "
+          prop="fields.price.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.price.color" />
             <el-checkbox v-model="formData.fields.price.show" />
           </div>
         </el-form-item>
-        <el-form-item label="市场价" prop="fields.marketPrice.show">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.kfaeb45bc')
+          "
+          prop="fields.marketPrice.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.marketPrice.color" />
             <el-checkbox v-model="formData.fields.marketPrice.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品销量" prop="fields.salesCount.show">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k99911c5b')
+          "
+          prop="fields.salesCount.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.salesCount.color" />
             <el-checkbox v-model="formData.fields.salesCount.show" />
           </div>
         </el-form-item>
-        <el-form-item label="商品库存" prop="fields.stock.show">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k9d0fd20c')
+          "
+          prop="fields.stock.show"
+        >
           <div class="flex gap-8px">
             <ColorInput v-model="formData.fields.stock.color" />
             <el-checkbox v-model="formData.fields.stock.show" />
           </div>
         </el-form-item>
       </el-card>
-      <el-card class="property-group" header="角标" shadow="never">
-        <el-form-item label="角标" prop="badge.show">
+      <el-card
+        class="property-group"
+        :header="t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.kc7919508')"
+        shadow="never"
+      >
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.kc7919508')
+          "
+          prop="badge.show"
+        >
           <el-switch v-model="formData.badge.show" />
         </el-form-item>
-        <el-form-item v-if="formData.badge.show" label="角标" prop="badge.imgUrl">
+        <el-form-item
+          v-if="formData.badge.show"
+          :label="
+            t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.kc7919508')
+          "
+          prop="badge.imgUrl"
+        >
           <UploadImg v-model="formData.badge.imgUrl" height="44px" width="72px">
-            <template #tip> 建议尺寸：36 * 22</template>
+            <template #tip>
+              {{
+                t('auto.components.DiyEditor.components.mobile.PromotionPoint.property.k5bba7969')
+              }}</template
+            >
           </UploadImg>
         </el-form-item>
       </el-card>
-      <el-card class="property-group" header="按钮" shadow="never">
-        <el-form-item label="按钮类型" prop="btnBuy.type">
+      <el-card class="property-group" :header="t('extra.k3cdbab81')" shadow="never">
+        <el-form-item :label="t('extra.kd0c33412')" prop="btnBuy.type">
           <el-radio-group v-model="formData.btnBuy.type">
-            <el-radio-button value="text">文字</el-radio-button>
-            <el-radio-button value="img">图片</el-radio-button>
+            <el-radio-button value="text">{{ t('extra.k99e832f9') }}</el-radio-button>
+            <el-radio-button value="img">{{ t('extra.k3b9e2563') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <template v-if="formData.btnBuy.type === 'text'">
-          <el-form-item label="按钮文字" prop="btnBuy.text">
+          <el-form-item :label="t('extra.k1102b12a')" prop="btnBuy.text">
             <el-input v-model="formData.btnBuy.text" />
           </el-form-item>
-          <el-form-item label="左侧背景" prop="btnBuy.bgBeginColor">
+          <el-form-item :label="t('extra.ka28fd4ad')" prop="btnBuy.bgBeginColor">
             <ColorInput v-model="formData.btnBuy.bgBeginColor" />
           </el-form-item>
-          <el-form-item label="右侧背景" prop="btnBuy.bgEndColor">
+          <el-form-item :label="t('extra.k55328e6a')" prop="btnBuy.bgEndColor">
             <ColorInput v-model="formData.btnBuy.bgEndColor" />
           </el-form-item>
         </template>
@@ -144,6 +224,7 @@ import { usePropertyForm } from '@/components/DiyEditor/util'
 import PointShowcase from '@/views/mall/promotion/point/components/PointShowcase.vue'
 
 // 秒杀属性面板
+const { t } = useI18n()
 defineOptions({ name: 'PromotionPointProperty' })
 
 const props = defineProps<{ modelValue: PromotionPointProperty }>()

@@ -2,7 +2,7 @@
   <el-card class="my-card h-full flex-grow">
     <template #header>
       <h3 class="m-0 px-7 shrink-0 flex items-center justify-between">
-        <span>思维导图预览</span>
+        <span>{{ t('auto.views.ai.mindmap.index.components.Right.k5befd63d') }}</span>
         <!-- 展示在右上角 -->
         <el-button v-show="isEnd" size="small" type="primary" @click="downloadImage">
           <template #icon>
@@ -33,7 +33,7 @@ import { Transformer } from 'markmap-lib'
 import { Toolbar } from 'markmap-toolbar'
 import markdownit from 'markdown-it'
 import download from '@/utils/download'
-
+const { t } = useI18n()
 const md = markdownit()
 const message = useMessage() // 消息弹窗
 
@@ -62,7 +62,7 @@ onMounted(() => {
     toolBarRef.value?.append(el)
     nextTick(update)
   } catch (e) {
-    message.error('思维导图初始化失败')
+    message.error(t('auto.views.ai.mindmap.index.components.Right.k7bbf4dfa'))
   }
 })
 

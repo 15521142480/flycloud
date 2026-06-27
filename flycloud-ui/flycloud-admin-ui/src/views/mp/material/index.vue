@@ -2,7 +2,7 @@
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form class="-mb-15px" :inline="true" label-width="68px">
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.material.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
     </el-form>
@@ -13,7 +13,9 @@
       <!-- tab 1：图片  -->
       <el-tab-pane :name="UploadType.Image">
         <template #label>
-          <el-row align="middle"> <Icon icon="ep:picture" />图片 </el-row>
+          <el-row align="middle">
+            <Icon icon="ep:picture" />{{ t('auto.views.mp.material.index.kbe8da62e') }}
+          </el-row>
         </template>
         <UploadFile
           v-hasPermi="['mp:material:upload-permanent']"
@@ -92,6 +94,7 @@ import UploadFile from './components/UploadFile.vue'
 import UploadVideo from './components/UploadVideo.vue'
 import { UploadType } from './components/upload'
 import * as MpMaterialApi from '@/api/mp/material'
+const { t } = useI18n()
 const message = useMessage() // 消息
 
 const type = ref<UploadType>(UploadType.Image) // 素材类型
@@ -151,8 +154,8 @@ const onTabChange = () => {
 
 /** 处理删除操作 */
 const handleDelete = async (id: number) => {
-  await message.confirm('此操作将永久删除该文件, 是否继续?')
+  await message.confirm(t('auto.views.mp.material.index.k3fa63288'))
   await MpMaterialApi.deletePermanentMaterial(id)
-  message.alertSuccess('删除成功')
+  message.alertSuccess(t('auto.views.mp.material.index.k86e8d12a'))
 }
 </script>

@@ -9,32 +9,36 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="时间范围" prop="orderDate">
+      <el-form-item :label="t('auto.views.crm.statistics.rank.index.k2be90408')" prop="orderDate">
         <el-date-picker
           v-model="queryParams.times"
           :shortcuts="defaultShortcuts"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.crm.statistics.rank.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.crm.statistics.rank.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
         />
       </el-form-item>
-      <el-form-item label="归属部门" prop="deptId">
+      <el-form-item :label="t('auto.views.crm.statistics.rank.index.k22a05484')" prop="deptId">
         <el-tree-select
           v-model="queryParams.deptId"
           :data="deptList"
           :props="defaultProps"
           check-strictly
           node-key="id"
-          placeholder="请选择归属部门"
+          :placeholder="t('auto.views.crm.statistics.rank.index.k197cefba')"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -43,35 +47,67 @@
   <el-col>
     <el-tabs v-model="activeTab">
       <!-- 合同金额排行 -->
-      <el-tab-pane label="合同金额排行" name="contractPriceRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.k5cf4954f')"
+        name="contractPriceRank"
+        lazy
+      >
         <ContractPriceRank :query-params="queryParams" ref="contractPriceRankRef" />
       </el-tab-pane>
       <!-- 回款金额排行 -->
-      <el-tab-pane label="回款金额排行" name="receivablePriceRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.kf846f381')"
+        name="receivablePriceRank"
+        lazy
+      >
         <ReceivablePriceRank :query-params="queryParams" ref="receivablePriceRankRef" />
       </el-tab-pane>
       <!-- 签约合同排行 -->
-      <el-tab-pane label="签约合同排行" name="contractCountRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.k962e7650')"
+        name="contractCountRank"
+        lazy
+      >
         <ContractCountRank :query-params="queryParams" ref="contractCountRankRef" />
       </el-tab-pane>
       <!-- 产品销量排行 -->
-      <el-tab-pane label="产品销量排行" name="productSalesRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.k174e9b9f')"
+        name="productSalesRank"
+        lazy
+      >
         <ProductSalesRank :query-params="queryParams" ref="productSalesRankRef" />
       </el-tab-pane>
       <!-- 新增客户数排行 -->
-      <el-tab-pane label="新增客户数排行" name="customerCountRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.k3e521c72')"
+        name="customerCountRank"
+        lazy
+      >
         <CustomerCountRank :query-params="queryParams" ref="customerCountRankRef" />
       </el-tab-pane>
       <!-- 新增联系人数排行 -->
-      <el-tab-pane label="新增联系人数排行" name="contactCountRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.kc5331573')"
+        name="contactCountRank"
+        lazy
+      >
         <ContactCountRank :query-params="queryParams" ref="contactCountRankRef" />
       </el-tab-pane>
       <!-- 跟进次数排行 -->
-      <el-tab-pane label="跟进次数排行" name="followCountRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.k51c76fed')"
+        name="followCountRank"
+        lazy
+      >
         <FollowCountRank :query-params="queryParams" ref="followCountRankRef" />
       </el-tab-pane>
       <!-- 跟进客户数排行 -->
-      <el-tab-pane label="跟进客户数排行" name="followCustomerCountRank" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.rank.index.kb5a7beac')"
+        name="followCustomerCountRank"
+        lazy
+      >
         <FollowCustomerCountRank :query-params="queryParams" ref="followCustomerCountRankRef" />
       </el-tab-pane>
     </el-tabs>
@@ -90,7 +126,7 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import * as DeptApi from '@/api/system/dept'
 import { beginOfDay, defaultShortcuts, endOfDay, formatDate } from '@/utils/formatTime'
 import { useUserStore } from '@/store/modules/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmStatisticsRank' })
 
 const queryParams = reactive({

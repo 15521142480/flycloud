@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="短信配置" url="https://doc.iocoder.cn/sms/" />
+  <doc-alert
+    :title="t('auto.views.system.sms.template.index.k7168c04b')"
+    url="https://doc.iocoder.cn/sms/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,10 +13,10 @@
       :inline="true"
       label-width="150px"
     >
-      <el-form-item label="短信类型" prop="type">
+      <el-form-item :label="t('auto.views.system.sms.template.index.k7599547f')" prop="type">
         <el-select
           v-model="queryParams.type"
-          placeholder="请选择短信类型"
+          :placeholder="t('auto.views.system.sms.template.index.k4c7b42da')"
           clearable
           class="!w-240px"
         >
@@ -25,10 +28,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item :label="t('auto.views.system.sms.template.index.k6bbda1b1')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择开启状态"
+          :placeholder="t('auto.views.system.sms.template.index.k312f5310')"
           clearable
           class="!w-240px"
         >
@@ -40,28 +43,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="模板编码" prop="code">
+      <el-form-item :label="t('auto.views.system.sms.template.index.k5695a649')" prop="code">
         <el-input
           v-model="queryParams.code"
-          placeholder="请输入模板编码"
+          :placeholder="t('auto.views.system.sms.template.index.kefa5df04')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="短信 API 的模板编号" prop="apiTemplateId">
+      <el-form-item
+        :label="t('auto.views.system.sms.template.index.kb7e5b1c6')"
+        prop="apiTemplateId"
+      >
         <el-input
           v-model="queryParams.apiTemplateId"
-          placeholder="请输入短信 API 的模板编号"
+          :placeholder="t('auto.views.system.sms.template.index.k7edd038f')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="短信渠道" prop="channelId">
+      <el-form-item :label="t('auto.views.system.sms.template.index.k7575f737')" prop="channelId">
         <el-select
           v-model="queryParams.channelId"
-          placeholder="请选择短信渠道"
+          :placeholder="t('auto.views.system.sms.template.index.k00492a8c')"
           clearable
           class="!w-240px"
         >
@@ -76,27 +82,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           style="width: 240px"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.sms.template.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.sms.template.index.kf4b9b2b5')"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['system:sms-template:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" />新增
+          <Icon icon="ep:plus" class="mr-5px" />{{ t('extra.k95792bc9') }}
         </el-button>
         <el-button
           type="success"
@@ -105,7 +115,7 @@
           :loading="exportLoading"
           v-hasPermi="['system:sms-template:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kf58b26fe') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -115,27 +125,31 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column
-        label="模板编码"
+        :label="t('auto.views.system.sms.template.index.k5695a649')"
         align="center"
         prop="code"
         width="120"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="模板名称"
+        :label="t('auto.views.system.sms.template.index.kbbc511d0')"
         align="center"
         prop="name"
         width="120"
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="模板内容"
+        :label="t('auto.views.system.sms.template.index.kdc362463')"
         align="center"
         prop="content"
         width="200"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="短信类型" align="center" prop="type">
+      <el-table-column
+        :label="t('auto.views.system.sms.template.index.k7599547f')"
+        align="center"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_TEMPLATE_TYPE" :value="scope.row.type" />
         </template>
@@ -219,11 +233,10 @@ import * as SmsChannelApi from '@/api/system/sms/smsChannel'
 import download from '@/utils/download'
 import SmsTemplateForm from './SmsTemplateForm.vue'
 import SmsTemplateSendForm from './SmsTemplateSendForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemSmsTemplate' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(false) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -300,7 +313,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SmsTemplateApi.exportSmsTemplate(queryParams)
-    download.excel(data, '短信模板.xls')
+    download.excel(data, t('auto.views.system.sms.template.index.k7cab7b6c'))
   } catch {
   } finally {
     exportLoading.value = false

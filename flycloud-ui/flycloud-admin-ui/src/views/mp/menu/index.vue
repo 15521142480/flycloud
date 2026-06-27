@@ -1,9 +1,12 @@
 <template>
-  <doc-alert title="公众号菜单" url="https://doc.iocoder.cn/mp/menu/" />
+  <doc-alert
+    :title="t('auto.views.mp.menu.index.k0b3aa4ea')"
+    url="https://doc.iocoder.cn/mp/menu/"
+  />
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form class="-mb-15px" ref="queryFormRef" :inline="true" label-width="68px">
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.menu.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
     </el-form>
@@ -27,11 +30,19 @@
           />
         </div>
         <div class="save_div">
-          <el-button class="save_btn" type="success" @click="onSave" v-hasPermi="['mp:menu:save']"
-            >保存并发布菜单</el-button
+          <el-button
+            class="save_btn"
+            type="success"
+            @click="onSave"
+            v-hasPermi="['mp:menu:save']"
+            >{{ t('auto.views.mp.menu.index.kb6e9f748') }}</el-button
           >
-          <el-button class="save_btn" type="danger" @click="onClear" v-hasPermi="['mp:menu:delete']"
-            >清空菜单</el-button
+          <el-button
+            class="save_btn"
+            type="danger"
+            @click="onClear"
+            v-hasPermi="['mp:menu:delete']"
+            >{{ t('auto.views.mp.menu.index.kd00f0c15') }}</el-button
           >
         </div>
       </div>
@@ -46,7 +57,7 @@
       </div>
       <!-- 一进页面就显示的默认页面，当点击左边按钮的时候，就不显示了-->
       <div v-else class="right">
-        <p>请选择菜单配置</p>
+        <p>{{ t('auto.views.mp.menu.index.k88dcb7a6') }}</p>
       </div>
     </div>
   </ContentWrap>
@@ -59,7 +70,7 @@ import MenuPreviewer from './components/MenuPreviewer.vue'
 import * as MpMenuApi from '@/api/mp/menu'
 import * as UtilsTree from '@/utils/tree'
 import { RawMenu, Menu } from './components/types'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpMenu' })
 
 const message = useMessage() // 消息
@@ -202,7 +213,7 @@ const subMenuClicked = (child: Menu, x: number, y: number) => {
 // 删除当前菜单
 const onDeleteMenu = async () => {
   try {
-    await message.confirm('确定要删除吗?')
+    await message.confirm(t('auto.views.mp.menu.index.k50b5cbb1'))
     if (tempSelfObj.value.grand === Level.Parent) {
       // 一级菜单的删除方法
       menuList.value.splice(tempSelfObj.value.x, 1)
@@ -211,7 +222,7 @@ const onDeleteMenu = async () => {
       menuList.value[tempSelfObj.value.x].children?.splice(tempSelfObj.value.y, 1)
     }
     // 提示
-    message.notifySuccess('删除成功')
+    message.notifySuccess(t('auto.views.mp.menu.index.k86e8d12a'))
 
     // 处理菜单的选中
     activeMenu.value = {}
@@ -223,11 +234,11 @@ const onDeleteMenu = async () => {
 // ======================== 菜单编辑 ========================
 const onSave = async () => {
   try {
-    await message.confirm('确定要保存吗?')
+    await message.confirm(t('auto.views.mp.menu.index.k72943484'))
     loading.value = true
     await MpMenuApi.saveMenu(accountId.value, menuListToBackend())
     getList()
-    message.notifySuccess('发布成功')
+    message.notifySuccess(t('auto.views.mp.menu.index.kec002336'))
   } finally {
     loading.value = false
   }
@@ -235,11 +246,11 @@ const onSave = async () => {
 
 const onClear = async () => {
   try {
-    await message.confirm('确定要删除吗?')
+    await message.confirm(t('auto.views.mp.menu.index.k50b5cbb1'))
     loading.value = true
     await MpMenuApi.deleteMenu(accountId.value)
     handleQuery()
-    message.notifySuccess('清空成功')
+    message.notifySuccess(t('auto.views.mp.menu.index.kbc14d54e'))
   } finally {
     loading.value = false
   }

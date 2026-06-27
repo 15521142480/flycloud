@@ -1,3 +1,6 @@
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
 export default {
   list: [
     {
@@ -5,10 +8,10 @@ export default {
       content: {
         newsItem: [
           {
-            title: '我是标题（OOO）',
-            author: '我是作者',
-            digest: '我是摘要',
-            content: '我是内容',
+            title: t('auto.views.mp.draft.mock.k51fbfe4d'),
+            author: t('auto.views.mp.draft.mock.kea167f52'),
+            digest: t('auto.views.mp.draft.mock.kbe06a9d2'),
+            content: t('auto.views.mp.draft.mock.k57368f98'),
             contentSourceUrl: 'https://www.iocoder.cn',
             thumbMediaId: 'r6ryvl6LrxBU0miaST4Y-pIcmK-zAAId-9TGgy-DrSLhjVuWbuT3ZBjk9K1yQ0Dn',
             showCoverPic: 0,
@@ -19,10 +22,10 @@ export default {
               'http://test.yudao.iocoder.cn/r6ryvl6LrxBU0miaST4Y-pIcmK-zAAId-9TGgy-DrSLhjVuWbuT3ZBjk9K1yQ0Dn.png'
           },
           {
-            title: '我是标题（XXX）',
-            author: '我是作者',
-            digest: '我是摘要',
-            content: '我是内容',
+            title: t('auto.views.mp.draft.mock.ke1879938'),
+            author: t('auto.views.mp.draft.mock.kea167f52'),
+            digest: t('auto.views.mp.draft.mock.kbe06a9d2'),
+            content: t('auto.views.mp.draft.mock.k57368f98'),
             contentSourceUrl: 'https://www.iocoder.cn',
             thumbMediaId: 'r6ryvl6LrxBU0miaST4Y-pIcmK-zAAId-9TGgy-DrSLhjVuWbuT3ZBjk9K1yQ0Dn',
             showCoverPic: 0,
@@ -41,10 +44,10 @@ export default {
       content: {
         newsItem: [
           {
-            title: '我是标题（修改）',
-            author: '我是作者',
-            digest: '我是摘要',
-            content: '我是内容',
+            title: t('auto.views.mp.draft.mock.kb272cfd7'),
+            author: t('auto.views.mp.draft.mock.kea167f52'),
+            digest: t('auto.views.mp.draft.mock.kbe06a9d2'),
+            content: t('auto.views.mp.draft.mock.k57368f98'),
             contentSourceUrl: 'https://www.iocoder.cn',
             thumbMediaId: 'r6ryvl6LrxBU0miaST4Y-pIcmK-zAAId-9TGgy-DrSLhjVuWbuT3ZBjk9K1yQ0Dn',
             showCoverPic: 0,
@@ -129,10 +132,10 @@ export default {
       content: {
         newsItem: [
           {
-            title: '我是标题',
-            author: '我是作者',
-            digest: '我是摘要',
-            content: '我是内容',
+            title: t('auto.views.mp.draft.mock.k5c583e7d'),
+            author: t('auto.views.mp.draft.mock.kea167f52'),
+            digest: t('auto.views.mp.draft.mock.kbe06a9d2'),
+            content: t('auto.views.mp.draft.mock.k57368f98'),
             contentSourceUrl: 'https://www.iocoder.cn',
             thumbMediaId: 'r6ryvl6LrxBU0miaST4Y-pIcmK-zAAId-9TGgy-DrSLhjVuWbuT3ZBjk9K1yQ0Dn',
             showCoverPic: 0,

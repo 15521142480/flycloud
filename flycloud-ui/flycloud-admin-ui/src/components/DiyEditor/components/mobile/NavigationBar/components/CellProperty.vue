@@ -12,19 +12,38 @@
   </div>
   <template v-for="(cell, cellIndex) in cellList" :key="cellIndex">
     <template v-if="selectedHotAreaIndex === cellIndex">
-      <el-form-item label="类型" :prop="`cell[${cellIndex}].type`">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.NavigationBar.components.ke4e46c72')"
+        :prop="`cell[${cellIndex}].type`"
+      >
         <el-radio-group v-model="cell.type">
-          <el-radio value="text">文字</el-radio>
-          <el-radio value="image">图片</el-radio>
-          <el-radio value="search">搜索框</el-radio>
+          <el-radio value="text">{{
+            t('auto.components.DiyEditor.components.mobile.NavigationBar.components.kf4d3dab8')
+          }}</el-radio>
+          <el-radio value="image">{{
+            t('auto.components.DiyEditor.components.mobile.NavigationBar.components.kbe8da62e')
+          }}</el-radio>
+          <el-radio value="search">{{
+            t('auto.components.DiyEditor.components.mobile.NavigationBar.components.k44d7587d')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <!-- 1. 文字 -->
       <template v-if="cell.type === 'text'">
-        <el-form-item label="内容" :prop="`cell[${cellIndex}].text`">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.NavigationBar.components.k163aec91')
+          "
+          :prop="`cell[${cellIndex}].text`"
+        >
           <el-input v-model="cell!.text" maxlength="10" show-word-limit />
         </el-form-item>
-        <el-form-item label="颜色" :prop="`cell[${cellIndex}].text`">
+        <el-form-item
+          :label="
+            t('auto.components.DiyEditor.components.mobile.NavigationBar.components.k8ef48860')
+          "
+          :prop="`cell[${cellIndex}].text`"
+        >
           <ColorInput v-model="cell!.textColor" />
         </el-form-item>
       </template>
@@ -62,7 +81,7 @@
 <script setup lang="ts">
 import { NavigationBarCellProperty } from '../config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
-// 导航栏属性面板
+const { t } = useI18n()
 defineOptions({ name: 'NavigationBarCellProperty' })
 
 const props = defineProps<{

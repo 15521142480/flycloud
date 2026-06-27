@@ -7,10 +7,13 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名称" />
+      <el-form-item :label="t('auto.views.member.group.GroupForm.k1be7ae4f')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.member.group.GroupForm.kc2afb255')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -21,13 +24,21 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" type="textarea" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          type="textarea"
+          :placeholder="t('auto.views.member.group.GroupForm.k57e709d9')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.member.group.GroupForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.group.GroupForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -35,8 +46,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as GroupApi from '@/api/member/group'
 import { CommonStatusEnum } from '@/utils/constants'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -50,8 +60,12 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  name: [
+    { required: true, message: t('auto.views.member.group.GroupForm.kca898456'), trigger: 'blur' }
+  ],
+  status: [
+    { required: true, message: t('auto.views.member.group.GroupForm.k1318b551'), trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

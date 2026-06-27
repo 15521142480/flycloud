@@ -3,7 +3,7 @@
     <el-table :data="contract.products" :stripe="true" :show-overflow-tooltip="true">
       <el-table-column
         align="center"
-        label="产品名称"
+        :label="t('auto.views.crm.contract.detail.ContractProductList.kabc0ac79')"
         fixed="left"
         prop="productName"
         min-width="160"
@@ -59,7 +59,7 @@
 import * as ContractApi from '@/api/crm/contract'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 const { contract } = defineProps<{
   contract: ContractApi.ContractVO
 }>()

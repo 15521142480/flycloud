@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,11 +8,11 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="客户名称" prop="customerId">
+      <el-form-item :label="t('auto.views.crm.receivable.plan.index.ke941d410')" prop="customerId">
         <el-select
           v-model="queryParams.customerId"
           class="!w-240px"
-          placeholder="请选择客户"
+          :placeholder="t('auto.views.crm.receivable.plan.index.k6bdb05d6')"
           @keyup.enter="handleQuery"
         >
           <el-option
@@ -24,23 +23,23 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="合同编号" prop="contractNo">
+      <el-form-item :label="t('auto.views.crm.receivable.plan.index.k17b34173')" prop="contractNo">
         <el-input
           v-model="queryParams.contractNo"
           class="!w-240px"
           clearable
-          placeholder="请输入合同编号"
+          :placeholder="t('auto.views.crm.receivable.plan.index.kae0dd683')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.kcdd45a29') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k007ed55c') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:receivable-plan:create']"
@@ -49,7 +48,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k9f4c1afe') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:receivable-plan:export']"
@@ -59,7 +58,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k660206a7') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -68,11 +67,17 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.receivable.plan.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.receivable.plan.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="客户名称" prop="customerName" width="150">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.receivable.plan.index.ke941d410')"
+        prop="customerName"
+        width="150"
+      >
         <template #default="scope">
           <el-link
             :underline="false"
@@ -222,11 +227,10 @@ import * as CustomerApi from '@/api/crm/customer'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { TabsPaneContext } from 'element-plus'
 import ReceivableForm from '@/views/crm/receivable/ReceivableForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'ReceivablePlan' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -306,7 +310,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ReceivablePlanApi.exportReceivablePlan(queryParams)
-    download.excel(data, '回款计划.xls')
+    download.excel(data, t('auto.views.crm.receivable.plan.index.ka2a0dff5'))
   } catch {
   } finally {
     exportLoading.value = false

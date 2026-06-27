@@ -1,6 +1,8 @@
 <template>
   <div style="margin-top: 16px">
-    <el-form-item label="消息实例">
+    <el-form-item
+      :label="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.ke9aad903')"
+    >
       <div
         style="
           display: flex;
@@ -28,27 +30,38 @@
     <el-dialog
       v-model="messageModelVisible"
       :close-on-click-modal="false"
-      title="创建新消息"
+      :title="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k79761d76')"
       width="400px"
       append-to-body
       destroy-on-close
     >
       <el-form :model="newMessageForm" size="small" label-width="90px">
-        <el-form-item label="消息ID">
+        <el-form-item
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.ka751d495')
+          "
+        >
           <el-input v-model="newMessageForm.id" clearable />
         </el-form-item>
-        <el-form-item label="消息名称">
+        <el-form-item
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k45229f4b')
+          "
+        >
           <el-input v-model="newMessageForm.name" clearable />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button size="small" type="primary" @click="createNewMessage">确 认</el-button>
+        <el-button size="small" type="primary" @click="createNewMessage">{{
+          t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.kee629375')
+        }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 defineOptions({ name: 'ReceiveTask' })
 const props = defineProps({
   id: String,
@@ -76,7 +89,9 @@ const openMessageModel = () => {
 }
 const createNewMessage = () => {
   if (messageMap.value[newMessageForm.value.id]) {
-    message.error('该消息已存在，请修改id后重新保存')
+    message.error(
+      t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.ke7070e6b')
+    )
     return
   }
   const newMessage = bpmnInstances().moddle.create('bpmn:Message', newMessageForm.value)
@@ -106,7 +121,9 @@ onMounted(() => {
       bpmnMessageRefsMap.value[m.id] = m
       messageMap.value[m.id] = m.name
     })
-  messageMap.value['-1'] = '无'
+  messageMap.value['-1'] = t(
+    'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k72077749'
+  )
 })
 
 onBeforeUnmount(() => {

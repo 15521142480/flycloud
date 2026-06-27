@@ -6,7 +6,7 @@
       v-model="queryParams.prompt"
       style="width: 100%; margin-bottom: 20px"
       size="large"
-      placeholder="请输入要搜索的内容"
+      :placeholder="t('auto.views.ai.image.square.index.kd64a92ff')"
       :suffix-icon="Search"
       @keyup.enter="handleQuery"
     />
@@ -29,8 +29,7 @@
 <script setup lang="ts">
 import { ImageApi, ImageVO } from '@/api/ai/image'
 import { Search } from '@element-plus/icons-vue'
-
-// TODO @fan：加个 loading 加载中的状态
+const { t } = useI18n()
 const loading = ref(true) // 列表的加载中
 const list = ref<ImageVO[]>([]) // 列表的数据
 const total = ref(0) // 列表的总页数

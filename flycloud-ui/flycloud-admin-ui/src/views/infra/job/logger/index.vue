@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,40 +8,40 @@
       :inline="true"
       label-width="120px"
     >
-      <el-form-item label="处理器的名字" prop="handlerName">
+      <el-form-item :label="t('auto.views.infra.job.logger.index.kec311980')" prop="handlerName">
         <el-input
           v-model="queryParams.handlerName"
-          placeholder="请输入处理器的名字"
+          :placeholder="t('auto.views.infra.job.logger.index.kec878692')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="开始执行时间" prop="beginTime">
+      <el-form-item :label="t('auto.views.infra.job.logger.index.k9052df91')" prop="beginTime">
         <el-date-picker
           v-model="queryParams.beginTime"
           type="date"
           value-format="YYYY-MM-DD HH:mm:ss"
-          placeholder="选择开始执行时间"
+          :placeholder="t('auto.views.infra.job.logger.index.k43112ae9')"
           clearable
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="结束执行时间" prop="endTime">
+      <el-form-item :label="t('auto.views.infra.job.logger.index.k2d4848eb')" prop="endTime">
         <el-date-picker
           v-model="queryParams.endTime"
           type="date"
           value-format="YYYY-MM-DD HH:mm:ss"
-          placeholder="选择结束执行时间"
+          :placeholder="t('auto.views.infra.job.logger.index.k656d9dce')"
           clearable
           :default-time="new Date('1 23:59:59')"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="任务状态" prop="status">
+      <el-form-item :label="t('auto.views.infra.job.logger.index.kb7d4128d')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择任务状态"
+          :placeholder="t('auto.views.infra.job.logger.index.kf8aa9ccb')"
           clearable
           class="!w-240px"
         >
@@ -55,8 +54,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -64,7 +67,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:job:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k85e7bca0') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -73,12 +76,36 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="日志编号" align="center" prop="id" />
-      <el-table-column label="任务编号" align="center" prop="jobId" />
-      <el-table-column label="处理器的名字" align="center" prop="handlerName" />
-      <el-table-column label="处理器的参数" align="center" prop="handlerParam" />
-      <el-table-column label="第几次执行" align="center" prop="executeIndex" />
-      <el-table-column label="执行时间" align="center" width="170s">
+      <el-table-column
+        :label="t('auto.views.infra.job.logger.index.k8cac83c8')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.logger.index.k017af56c')"
+        align="center"
+        prop="jobId"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.logger.index.kec311980')"
+        align="center"
+        prop="handlerName"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.logger.index.kddc1dd16')"
+        align="center"
+        prop="handlerParam"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.logger.index.k038b052f')"
+        align="center"
+        prop="executeIndex"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.logger.index.k68f17a6c')"
+        align="center"
+        width="170s"
+      >
         <template #default="scope">
           <span>{{ formatDate(scope.row.beginTime) + ' ~ ' + formatDate(scope.row.endTime) }}</span>
         </template>
@@ -124,7 +151,7 @@ import { formatDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import JobLogDetail from './JobLogDetail.vue'
 import * as JobLogApi from '@/api/infra/jobLog'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraJobLog' })
 
 const message = useMessage() // 消息弹窗
@@ -183,7 +210,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await JobLogApi.exportJobLog(queryParams)
-    download.excel(data, '定时任务执行日志.xls')
+    download.excel(data, t('auto.views.infra.job.logger.index.k15c526c1'))
   } catch {
   } finally {
     exportLoading.value = false

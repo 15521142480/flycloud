@@ -1,15 +1,27 @@
 <template>
-  <Dialog v-model="dialogVisible" title="订单发货" width="25%">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.trade.order.form.OrderDeliveryForm.k86af656b')"
+    width="25%"
+  >
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item label="发货方式">
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderDeliveryForm.k8dfd8081')">
         <el-radio-group v-model="expressType">
-          <el-radio border value="express">快递物流</el-radio>
-          <el-radio border value="none">无需发货</el-radio>
+          <el-radio border value="express">{{
+            t('auto.views.mall.trade.order.form.OrderDeliveryForm.ke34c306f')
+          }}</el-radio>
+          <el-radio border value="none">{{
+            t('auto.views.mall.trade.order.form.OrderDeliveryForm.kdccf6b59')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <template v-if="expressType === 'express'">
-        <el-form-item label="物流公司">
-          <el-select v-model="formData.logisticsId" placeholder="请选择" style="width: 100%">
+        <el-form-item :label="t('auto.views.mall.trade.order.form.OrderDeliveryForm.k788dbbc5')">
+          <el-select
+            v-model="formData.logisticsId"
+            :placeholder="t('auto.views.mall.trade.order.form.OrderDeliveryForm.k382f4b55')"
+            style="width: 100%"
+          >
             <el-option
               v-for="item in deliveryExpressList"
               :key="item.id"
@@ -18,7 +30,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="物流单号">
+        <el-form-item :label="t('auto.views.mall.trade.order.form.OrderDeliveryForm.kc2ece89c')">
           <el-input v-model="formData.logisticsNo" />
         </el-form-item>
       </template>
@@ -33,10 +45,8 @@
 import * as DeliveryExpressApi from '@/api/mall/trade/delivery/express'
 import * as TradeOrderApi from '@/api/mall/trade/order'
 import { copyValueToTarget } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'OrderDeliveryForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示

@@ -1,7 +1,7 @@
 <!-- 可退款的采购退货单列表 -->
 <template>
   <Dialog
-    title="选择采购退货（仅展示可退款）"
+    :title="t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k64234b46')"
     v-model="dialogVisible"
     :appendToBody="true"
     :scroll="true"
@@ -16,21 +16,39 @@
         :inline="true"
         label-width="68px"
       >
-        <el-form-item label="退货单号" prop="no">
+        <el-form-item
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k227ee7e4')
+          "
+          prop="no"
+        >
           <el-input
             v-model="queryParams.no"
-            placeholder="请输入退货单号"
+            :placeholder="
+              t(
+                'auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k5f251d68'
+              )
+            "
             clearable
             @keyup.enter="handleQuery"
             class="!w-160px"
           />
         </el-form-item>
-        <el-form-item label="产品" prop="productId">
+        <el-form-item
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k6cc98552')
+          "
+          prop="productId"
+        >
           <el-select
             v-model="queryParams.productId"
             clearable
             filterable
-            placeholder="请选择产品"
+            :placeholder="
+              t(
+                'auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k59a0d3d1'
+              )
+            "
             class="!w-160px"
           >
             <el-option
@@ -41,20 +59,37 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="退货时间" prop="orderTime">
+        <el-form-item
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k11f23e81')
+          "
+          prop="orderTime"
+        >
           <el-date-picker
             v-model="queryParams.returnTime"
             value-format="YYYY-MM-DD HH:mm:ss"
             type="daterange"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="
+              t(
+                'auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k1f291968'
+              )
+            "
+            :end-placeholder="
+              t(
+                'auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.kf4b9b2b5'
+              )
+            "
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-160px"
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-          <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+          <el-button @click="handleQuery"
+            ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+          >
+          <el-button @click="resetQuery"
+            ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+          >
         </el-form-item>
       </el-form>
     </ContentWrap>
@@ -67,31 +102,74 @@
         :stripe="true"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column width="30" label="选择" type="selection" />
-        <el-table-column min-width="180" label="退货单号" align="center" prop="no" />
-        <el-table-column label="供应商" align="center" prop="supplierName" />
-        <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
         <el-table-column
-          label="退货时间"
+          width="30"
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k70b20820')
+          "
+          type="selection"
+        />
+        <el-table-column
+          min-width="180"
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k227ee7e4')
+          "
+          align="center"
+          prop="no"
+        />
+        <el-table-column
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k703c9eb0')
+          "
+          align="center"
+          prop="supplierName"
+        />
+        <el-table-column
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k90095856')
+          "
+          align="center"
+          prop="productNames"
+          min-width="200"
+        />
+        <el-table-column
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k11f23e81')
+          "
           align="center"
           prop="returnTime"
           :formatter="dateFormatter2"
           width="120px"
         />
-        <el-table-column label="创建人" align="center" prop="creatorName" />
         <el-table-column
-          label="应退金额"
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.k787ad1de')
+          "
+          align="center"
+          prop="creatorName"
+        />
+        <el-table-column
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.kde1d144b')
+          "
           align="center"
           prop="totalPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
         <el-table-column
-          label="已退金额"
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.ke626b428')
+          "
           align="center"
           prop="refundPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
-        <el-table-column label="未退金额" align="center">
+        <el-table-column
+          :label="
+            t('auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.kfff7e95a')
+          "
+          align="center"
+        >
           <template #default="scope">
             <span v-if="scope.row.refundPrice === scope.row.totalPrice">0</span>
             <el-tag type="danger" v-else>
@@ -123,7 +201,7 @@ import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { PurchaseReturnApi, PurchaseReturnVO } from '@/api/erp/purchase/return'
 import { SaleReturnVO } from '@/api/erp/sale/return'
-
+const { t } = useI18n()
 defineOptions({ name: 'PurchaseInPaymentEnableList' })
 
 const list = ref<PurchaseReturnVO[]>([]) // 列表的数据

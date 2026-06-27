@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,32 +8,32 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="收款单号" prop="no">
+      <el-form-item :label="t('auto.views.erp.finance.receipt.index.kd3f55bbe')" prop="no">
         <el-input
           v-model="queryParams.no"
-          placeholder="请输入收款单号"
+          :placeholder="t('auto.views.erp.finance.receipt.index.k514c275f')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="收款时间" prop="receiptTime">
+      <el-form-item :label="t('auto.views.erp.finance.receipt.index.k0d20172e')" prop="receiptTime">
         <el-date-picker
           v-model="queryParams.receiptTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.erp.finance.receipt.index.k1f291968')"
+          :end-placeholder="t('auto.views.erp.finance.receipt.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="供应商" prop="supplierId">
+      <el-form-item :label="t('auto.views.erp.finance.receipt.index.k703c9eb0')" prop="supplierId">
         <el-select
           v-model="queryParams.supplierId"
           clearable
           filterable
-          placeholder="请选择供供应商"
+          :placeholder="t('auto.views.erp.finance.receipt.index.kdbd21f67')"
           class="!w-240px"
         >
           <el-option
@@ -45,44 +44,37 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建人" prop="creator">
+      <el-form-item :label="t('auto.views.erp.finance.receipt.index.k787ad1de')" prop="creator">
         <el-select
           v-model="queryParams.creator"
           clearable
           filterable
-          placeholder="请选择创建人"
+          :placeholder="t('auto.views.erp.finance.receipt.index.k953a49d5')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="财务人员" prop="financeUserId">
+      <el-form-item
+        :label="t('auto.views.erp.finance.receipt.index.kb385b17a')"
+        prop="financeUserId"
+      >
         <el-select
           v-model="queryParams.financeUserId"
           clearable
           filterable
-          placeholder="请选择财务人员"
+          :placeholder="t('auto.views.erp.finance.receipt.index.k31b8c129')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="收款账户" prop="accountId">
+      <el-form-item :label="t('auto.views.erp.finance.receipt.index.k49a5d541')" prop="accountId">
         <el-select
           v-model="queryParams.accountId"
           clearable
           filterable
-          placeholder="请选择收款账户"
+          :placeholder="t('auto.views.erp.finance.receipt.index.kb31ce3f5')"
           class="!w-240px"
         >
           <el-option
@@ -93,8 +85,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.erp.finance.receipt.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.ERP_AUDIT_STATUS)"
             :key="dict.value"
@@ -103,34 +100,38 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item :label="t('common.remark')" prop="remark">
         <el-input
           v-model="queryParams.remark"
-          placeholder="请输入备注"
+          :placeholder="t('auto.views.erp.finance.receipt.index.k57e709d9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="采购单号" prop="bizNo">
+      <el-form-item :label="t('auto.views.erp.finance.receipt.index.kedfd7658')" prop="bizNo">
         <el-input
           v-model="queryParams.bizNo"
-          placeholder="请输入采购单号"
+          :placeholder="t('auto.views.erp.finance.receipt.index.k39bf13ae')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:finance-receipt:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k7f5feabc') }}
         </el-button>
         <el-button
           type="success"
@@ -139,7 +140,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:finance-receipt:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k8b0937c4') }}
         </el-button>
         <el-button
           type="danger"
@@ -148,7 +149,7 @@
           v-hasPermi="['erp:finance-receipt:delete']"
           :disabled="selectionList.length === 0"
         >
-          <Icon icon="ep:delete" class="mr-5px" /> 删除
+          <Icon icon="ep:delete" class="mr-5px" /> {{ t('extra.k85084ca5') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -163,38 +164,69 @@
       :show-overflow-tooltip="true"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="收款单号" align="center" prop="no" />
-      <el-table-column label="供应商" align="center" prop="supplierName" />
       <el-table-column
-        label="收款时间"
+        width="30"
+        :label="t('auto.views.erp.finance.receipt.index.k70b20820')"
+        type="selection"
+      />
+      <el-table-column
+        min-width="180"
+        :label="t('auto.views.erp.finance.receipt.index.kd3f55bbe')"
+        align="center"
+        prop="no"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.finance.receipt.index.k703c9eb0')"
+        align="center"
+        prop="supplierName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.finance.receipt.index.k0d20172e')"
         align="center"
         prop="receiptTime"
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
-      <el-table-column label="财务人员" align="center" prop="financeUserName" />
-      <el-table-column label="收款账户" align="center" prop="accountName" />
       <el-table-column
-        label="合计收款"
+        :label="t('auto.views.erp.finance.receipt.index.k787ad1de')"
+        align="center"
+        prop="creatorName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.finance.receipt.index.kb385b17a')"
+        align="center"
+        prop="financeUserName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.finance.receipt.index.k49a5d541')"
+        align="center"
+        prop="accountName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.finance.receipt.index.k928f57f3')"
         align="center"
         prop="totalPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="优惠金额"
+        :label="t('auto.views.erp.finance.receipt.index.kaab4abdb')"
         align="center"
         prop="discountPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="实际收款"
+        :label="t('auto.views.erp.finance.receipt.index.k7996c569')"
         align="center"
         prop="receiptPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
+      <el-table-column
+        :label="t('common.status')"
+        align="center"
+        fixed="right"
+        width="90"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.ERP_AUDIT_STATUS" :value="scope.row.status" />
         </template>
@@ -272,10 +304,10 @@ import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
 
 /** ERP 收款单列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpPurchaseOrder' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<FinanceReceiptVO[]>([]) // 列表的数据
@@ -347,10 +379,24 @@ const handleDelete = async (ids: number[]) => {
 const handleUpdateStatus = async (id: number, status: number) => {
   try {
     // 审批的二次确认
-    await message.confirm(`确定${status === 20 ? '审批' : '反审批'}该收款单吗？`)
+    await message.confirm(
+      t('extra.kdf185cba', {
+        p0:
+          status === 20
+            ? t('auto.views.erp.finance.receipt.index.k5ce60cb7')
+            : t('auto.views.erp.finance.receipt.index.k5e6e19f7')
+      })
+    )
     // 发起审批
     await FinanceReceiptApi.updateFinanceReceiptStatus(id, status)
-    message.success(`${status === 20 ? '审批' : '反审批'}成功`)
+    message.success(
+      t('extra.k912ae108', {
+        p0:
+          status === 20
+            ? t('auto.views.erp.finance.receipt.index.k5ce60cb7')
+            : t('auto.views.erp.finance.receipt.index.k5e6e19f7')
+      })
+    )
     // 刷新列表
     await getList()
   } catch {}
@@ -364,7 +410,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await FinanceReceiptApi.exportFinanceReceipt(queryParams)
-    download.excel(data, '收款单.xls')
+    download.excel(data, t('auto.views.erp.finance.receipt.index.ke63c5e63'))
   } catch {
   } finally {
     exportLoading.value = false

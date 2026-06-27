@@ -1,6 +1,8 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 商品卡片属性 */
+const { t } = useI18n()
+
 export interface ProductCardProperty {
   // 布局类型：单列大图 | 单列小图 | 双列
   layoutType: 'oneColBigImg' | 'oneColSmallImg' | 'twoCol'
@@ -61,7 +63,7 @@ export interface ProductCardFieldProperty {
 // 定义组件
 export const component = {
   id: 'ProductCard',
-  name: '商品卡片',
+  name: t('auto.components.DiyEditor.components.mobile.ProductCard.config.kae1ea1d0'),
   icon: 'fluent:text-column-two-left-24-filled',
   property: {
     layoutType: 'oneColBigImg',
@@ -76,7 +78,7 @@ export const component = {
     badge: { show: false, imgUrl: '' },
     btnBuy: {
       type: 'text',
-      text: '立即购买',
+      text: t('auto.components.DiyEditor.components.mobile.ProductCard.config.k1314a1e1'),
       // todo: @owen 根据主题色配置
       bgBeginColor: '#FF6000',
       bgEndColor: '#FE832A',

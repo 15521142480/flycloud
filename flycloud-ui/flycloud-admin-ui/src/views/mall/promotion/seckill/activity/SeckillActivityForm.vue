@@ -9,14 +9,20 @@
     >
       <!-- 先选择 -->
       <template #spuId>
-        <el-button @click="spuSelectRef.open()">选择商品</el-button>
+        <el-button @click="spuSelectRef.open()">{{
+          t('auto.views.mall.promotion.seckill.activity.SeckillActivityForm.kf4d8d03c')
+        }}</el-button>
         <SpuAndSkuList
           ref="spuAndSkuListRef"
           :rule-config="ruleConfig"
           :spu-list="spuList"
           :spu-property-list-p="spuPropertyList"
         >
-          <el-table-column align="center" label="秒杀库存" min-width="168">
+          <el-table-column
+            align="center"
+            :label="t('auto.views.mall.promotion.seckill.activity.SeckillActivityForm.k0842ce87')"
+            min-width="168"
+          >
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.stock" :min="0" class="w-100%" />
             </template>
@@ -52,10 +58,8 @@ import { SeckillProductVO } from '@/api/mall/promotion/seckill/seckillActivity'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { getPropertyList, RuleConfig } from '@/views/mall/product/spu/components'
 import { convertToInteger, formatToFraction } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionSeckillActivityForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -72,12 +76,12 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'productConfig.stock',
     rule: (arg) => arg >= 1,
-    message: '商品秒杀库存必须大于等于 1 ！！！'
+    message: t('auto.views.mall.promotion.seckill.activity.SeckillActivityForm.k9ffacf43')
   },
   {
     name: 'productConfig.seckillPrice',
     rule: (arg) => arg >= 0.01,
-    message: '商品秒杀价格必须大于等于 0.01 ！！！'
+    message: t('auto.views.mall.promotion.seckill.activity.SeckillActivityForm.k925d1e78')
   }
 ]
 const spuList = ref<SeckillActivityApi.SpuExtension[]>([]) // 选择的 spu
@@ -144,7 +148,11 @@ const open = async (type: string, id?: number) => {
       const data = (await SeckillActivityApi.getSeckillActivity(
         id
       )) as SeckillActivityApi.SeckillActivityVO
-      await getSpuDetails(data.spuId!, data.products?.map((sku) => sku.skuId), data.products)
+      await getSpuDetails(
+        data.spuId!,
+        data.products?.map((sku) => sku.skuId),
+        data.products
+      )
       formRef.value.setValues(data)
     } finally {
       formLoading.value = false

@@ -1,6 +1,11 @@
 <template>
   <el-table :data="contacts" :show-overflow-tooltip="true" :stripe="true" height="150">
-    <el-table-column label="姓名" fixed="left" align="center" prop="name">
+    <el-table-column
+      :label="t('auto.views.crm.followup.components.FollowUpRecordContactForm.kbe4c2616')"
+      fixed="left"
+      align="center"
+      prop="name"
+    >
       <template #default="scope">
         <el-link type="primary" :underline="false" @click="openDetail(scope.row.id)">
           {{ scope.row.name }}
@@ -25,7 +30,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 const props = defineProps<{
   contacts: undefined
 }>()

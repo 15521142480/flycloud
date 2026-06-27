@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,28 +8,28 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="分类名" prop="name">
+      <el-form-item :label="t('auto.views.bpm.category.index.k72a5ce04')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入分类名"
+          :placeholder="t('auto.views.bpm.category.index.kdb2ed286')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="分类标志" prop="code">
+      <el-form-item :label="t('auto.views.bpm.category.index.k2908a7c9')" prop="code">
         <el-input
           v-model="queryParams.code"
-          placeholder="请输入分类标志"
+          :placeholder="t('auto.views.bpm.category.index.k21711601')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="分类状态" prop="status">
+      <el-form-item :label="t('auto.views.bpm.category.index.k155818e5')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择分类状态"
+          :placeholder="t('auto.views.bpm.category.index.k656e5dfe')"
           clearable
           class="!w-240px"
         >
@@ -42,27 +41,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.bpm.category.index.k1f291968')"
+          :end-placeholder="t('auto.views.bpm.category.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['bpm:manage:category:saveOrUpdate']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k84341c19') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -70,12 +73,38 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" height="calc(100vh - 360px)">
-      <el-table-column label="分类编号" align="center" prop="id" />
-      <el-table-column label="分类名" align="center" prop="name" />
-      <el-table-column label="分类标志" align="center" prop="code" />
-      <el-table-column label="分类描述" align="center" prop="description" />
-      <el-table-column label="分类状态" align="center" prop="status">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      :stripe="true"
+      :show-overflow-tooltip="true"
+      height="calc(100vh - 360px)"
+    >
+      <el-table-column
+        :label="t('auto.views.bpm.category.index.k4a88b7aa')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.category.index.k72a5ce04')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.category.index.k2908a7c9')"
+        align="center"
+        prop="code"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.category.index.k7d11fd74')"
+        align="center"
+        prop="description"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.category.index.k155818e5')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -129,10 +158,10 @@ import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import CategoryForm from './CategoryForm.vue'
 
 /** BPM 流程分类 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'BpmCategory' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<CategoryVO[]>([]) // 列表的数据

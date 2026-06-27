@@ -1,7 +1,9 @@
 <!-- 待审核回款 -->
 <template>
   <ContentWrap>
-    <div class="pb-5 text-xl"> 待审核回款 </div>
+    <div class="pb-5 text-xl">
+      {{ t('auto.views.crm.backlog.components.ReceivableAuditList.kda707675') }}
+    </div>
     <!-- 搜索工作栏 -->
     <el-form
       class="-mb-15px"
@@ -10,11 +12,14 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="合同状态" prop="auditStatus">
+      <el-form-item
+        :label="t('auto.views.crm.backlog.components.ReceivableAuditList.keb5aba97')"
+        prop="auditStatus"
+      >
         <el-select
           v-model="queryParams.auditStatus"
           class="!w-240px"
-          placeholder="状态"
+          :placeholder="t('common.status')"
           @change="handleQuery"
         >
           <el-option
@@ -30,7 +35,13 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column align="center" fixed="left" label="回款编号" prop="no" width="180">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.ReceivableAuditList.k89c860f8')"
+        prop="no"
+        width="180"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.no }}
@@ -137,7 +148,7 @@ import { dateFormatter, dateFormatter2 } from '@/utils/formatTime'
 import * as ReceivableApi from '@/api/crm/receivable'
 import { AUDIT_STATUS } from './common'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmReceivableAuditList' })
 
 const loading = ref(true) // 列表的加载中

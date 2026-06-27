@@ -1,20 +1,30 @@
 <template>
-  <Dialog v-model="dialogVisible" title="订单调价" width="25%">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k62d23172')"
+    width="25%"
+  >
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="100px">
-      <el-form-item label="应付金额(总)">
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.kf0e3ba5c')">
         <el-input v-model="formData.payPrice" disabled />
       </el-form-item>
-      <el-form-item label="订单调价">
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k62d23172')">
         <el-input-number v-model="formData.adjustPrice" :precision="2" :step="0.1" class="w-100%" />
-        <el-tag class="ml-10px" type="warning">订单调价。 正数，加价；负数，减价</el-tag>
+        <el-tag class="ml-10px" type="warning">{{
+          t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k4cc37c50')
+        }}</el-tag>
       </el-form-item>
-      <el-form-item label="调价后">
+      <el-form-item :label="t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k40e373d6')">
         <el-input v-model="formData.newPayPrice" disabled />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -22,10 +32,8 @@
 import * as TradeOrderApi from '@/api/mall/trade/order'
 import { convertToInteger, floatToFixed2, formatToFraction } from '@/utils'
 import { cloneDeep } from 'lodash-es'
-
+const { t } = useI18n()
 defineOptions({ name: 'OrderUpdatePriceForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -43,7 +51,9 @@ watch(
     if (numMatch) {
       const payPriceNum = parseFloat(numMatch[0])
       adjustPrice = typeof adjustPrice === 'string' ? parseFloat(adjustPrice) : adjustPrice
-      formData.value.newPayPrice = (payPriceNum + adjustPrice).toFixed(2) + '元'
+      formData.value.newPayPrice =
+        (payPriceNum + adjustPrice).toFixed(2) +
+        t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k622f3c5a')
     }
   }
 )
@@ -56,7 +66,9 @@ const open = async (row: TradeOrderApi.OrderVO) => {
   formData.value.id = row.id!
   // 设置数据
   formData.value.adjustPrice = formatToFraction(row.adjustPrice!)
-  formData.value.payPrice = floatToFixed2(row.payPrice!) + '元'
+  formData.value.payPrice =
+    floatToFixed2(row.payPrice!) +
+    t('auto.views.mall.trade.order.form.OrderUpdatePriceForm.k622f3c5a')
   formData.value.newPayPrice = formData.value.payPrice
   dialogVisible.value = true
 }

@@ -13,10 +13,10 @@
       <!-- 选择素材 -->
       <el-col :span="12" class="col-select">
         <el-button type="success" @click="showDialog = true">
-          素材库选择<Icon icon="ep:circle-check" />
+          {{ t('extra.k9a261c8f') }}<Icon icon="ep:circle-check" />
         </el-button>
         <el-dialog
-          title="选择语音"
+          :title="t('auto.views.mp.components.wx_reply.components.TabVoice.kf6f7ced6')"
           v-model="showDialog"
           width="90%"
           append-to-body
@@ -41,10 +41,12 @@
           :before-upload="beforeVoiceUpload"
           :on-success="onUploadSuccess"
         >
-          <el-button type="primary">点击上传</el-button>
+          <el-button type="primary">{{
+            t('auto.views.mp.components.wx_reply.components.TabVoice.k69aaf1d5')
+          }}</el-button>
           <template #tip>
             <div class="el-upload__tip">
-              格式支持 mp3/wma/wav/amr，文件大小不超过 2M，播放长度不超过 60s
+              {{ t('extra.kd161d68a') }}
             </div>
           </template>
         </el-upload>
@@ -59,6 +61,7 @@ import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
 import type { UploadRawFile } from 'element-plus'
 import { getAccessToken } from '@/utils/auth'
 import { Reply } from './types'
+const { t } = useI18n()
 const message = useMessage()
 
 const UPLOAD_URL = import.meta.env.VITE_BASE_URL + '/admin-api/mp/material/upload-temporary'
@@ -88,7 +91,7 @@ const beforeVoiceUpload = (rawFile: UploadRawFile) => useBeforeUpload(UploadType
 
 const onUploadSuccess = (res: any) => {
   if (res.code !== 0) {
-    message.error('上传出错：' + res.msg)
+    message.error(t('auto.views.mp.components.wx_reply.components.TabVoice.kea0f7067') + res.msg)
     return false
   }
 

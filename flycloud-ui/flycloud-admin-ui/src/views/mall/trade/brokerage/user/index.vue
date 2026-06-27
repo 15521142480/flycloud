@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【交易】分销返佣" url="https://doc.iocoder.cn/mall/trade-brokerage/" />
+  <doc-alert
+    :title="t('auto.views.mall.trade.brokerage.user.index.k50f5e3f4')"
+    url="https://doc.iocoder.cn/mall/trade-brokerage/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,40 +13,56 @@
       :inline="true"
       label-width="85px"
     >
-      <el-form-item label="推广员编号" prop="bindUserId">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.user.index.k4f34fd64')"
+        prop="bindUserId"
+      >
         <el-input
           v-model="queryParams.bindUserId"
-          placeholder="请输入推广员编号"
+          :placeholder="t('auto.views.mall.trade.brokerage.user.index.k9c7d84ed')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="推广资格" prop="brokerageEnabled">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.user.index.k95774950')"
+        prop="brokerageEnabled"
+      >
         <el-select
           v-model="queryParams.brokerageEnabled"
           class="!w-240px"
           clearable
-          placeholder="请选择推广资格"
+          :placeholder="t('auto.views.mall.trade.brokerage.user.index.kd7294eea')"
         >
-          <el-option label="有" :value="true" />
-          <el-option label="无" :value="false" />
+          <el-option
+            :label="t('auto.views.mall.trade.brokerage.user.index.kfbd5b750')"
+            :value="true"
+          />
+          <el-option
+            :label="t('auto.views.mall.trade.brokerage.user.index.k72077749')"
+            :value="false"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.trade.brokerage.user.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.trade.brokerage.user.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -51,8 +70,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="用户编号" align="center" prop="id" min-width="80px" />
-      <el-table-column label="头像" align="center" prop="avatar" width="70px">
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.user.index.kec750ef6')"
+        align="center"
+        prop="id"
+        min-width="80px"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.user.index.k4ceeeb31')"
+        align="center"
+        prop="avatar"
+        width="70px"
+      >
         <template #default="scope">
           <el-avatar :src="scope.row.avatar" />
         </template>
@@ -194,7 +223,7 @@ import { fenToYuanFormat } from '@/utils/formatter'
 import UpdateBindUserForm from '@/views/mall/trade/brokerage/user/UpdateBindUserForm.vue'
 import BrokerageUserListDialog from '@/views/mall/trade/brokerage/user/BrokerageUserListDialog.vue'
 import BrokerageOrderListDialog from '@/views/mall/trade/brokerage/user/BrokerageOrderListDialog.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'TradeBrokerageUser' })
 
 const message = useMessage() // 消息弹窗
@@ -274,10 +303,10 @@ const openUpdateBindUserForm = (row: BrokerageUserApi.BrokerageUserVO) => {
 const handleClearBindUser = async (row: BrokerageUserApi.BrokerageUserVO) => {
   try {
     // 二次确认
-    await message.confirm(`确认要清除"${row.name}"的上级推广人吗？`)
+    await message.confirm(t('extra.k5ddef612', { p0: row.name }))
     // 发起修改
     await BrokerageUserApi.clearBindUser({ id: row.id })
-    message.success('清除成功')
+    message.success(t('auto.views.mall.trade.brokerage.user.index.k994b7aa4'))
     // 刷新列表
     await getList()
   } catch {}
@@ -287,11 +316,13 @@ const handleClearBindUser = async (row: BrokerageUserApi.BrokerageUserVO) => {
 const handleBrokerageEnabledChange = async (row: BrokerageUserApi.BrokerageUserVO) => {
   try {
     // 二次确认
-    const text = row.brokerageEnabled ? '开通' : '关闭'
-    await message.confirm(`确认要${text}"${row.name}"的推广资格吗？`)
+    const text = row.brokerageEnabled
+      ? t('auto.views.mall.trade.brokerage.user.index.ka2094955')
+      : t('common.close')
+    await message.confirm(t('extra.k6fdd9ff6', { p0: text, p1: row.name }))
     // 发起修改
     await BrokerageUserApi.updateBrokerageEnabled({ id: row.id, enabled: row.brokerageEnabled })
-    message.success(text + '成功')
+    message.success(text + t('common.success'))
     // 刷新列表
     await getList()
   } catch {

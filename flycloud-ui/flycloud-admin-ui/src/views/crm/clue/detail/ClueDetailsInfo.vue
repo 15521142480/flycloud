@@ -3,7 +3,9 @@
     <el-collapse v-model="activeNames" class="">
       <el-collapse-item name="basicInfo">
         <template #title>
-          <span class="text-base font-bold">基本信息</span>
+          <span class="text-base font-bold">{{
+            t('auto.views.crm.clue.detail.ClueDetailsInfo.kb122f813')
+          }}</span>
         </template>
         <el-descriptions :column="4">
           <el-descriptions-item label="线索名称">
@@ -61,7 +63,7 @@
 import * as ClueApi from '@/api/crm/clue'
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmClueDetailsInfo' })
 const { clue } = defineProps<{
   clue: ClueApi.ClueVO // 线索明细

@@ -1,7 +1,16 @@
 <template>
   <el-table :data="tasks" border header-cell-class-name="table-header-gray">
-    <el-table-column label="审批节点" prop="name" min-width="120" align="center" />
-    <el-table-column label="审批人" min-width="100" align="center">
+    <el-table-column
+      :label="t('auto.views.bpm.processInstance.detail.ProcessInstanceTaskList.kdce0dc69')"
+      prop="name"
+      min-width="120"
+      align="center"
+    />
+    <el-table-column
+      :label="t('auto.views.bpm.processInstance.detail.ProcessInstanceTaskList.k9b446de3')"
+      min-width="100"
+      align="center"
+    >
       <template #default="scope">
         {{ scope.row.assigneeUser?.name || scope.row.ownerUser?.name }}
       </template>
@@ -62,7 +71,7 @@ import { DICT_TYPE } from '@/utils/dict'
 import type { ApiAttrs } from '@form-create/element-ui/types/config'
 import { setConfAndFields2 } from '@/utils/formCreate'
 import * as TaskApi from '@/api/bpm/task'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessInstanceTaskList' })
 
 const props = defineProps({

@@ -2,8 +2,8 @@ import { CouponTemplateValidityTypeEnum, PromotionDiscountTypeEnum } from '@/uti
 import { formatDate } from '@/utils/formatTime'
 import { CouponTemplateVO } from '@/api/mall/promotion/coupon/couponTemplate'
 import { floatToFixed2 } from '@/utils'
-
-// 格式化【优惠金额/折扣】
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 export const discountFormat = (row: CouponTemplateVO) => {
   if (row.discountType === PromotionDiscountTypeEnum.PRICE.type) {
     return `￥${floatToFixed2(row.discountPrice)}`
@@ -11,16 +11,16 @@ export const discountFormat = (row: CouponTemplateVO) => {
   if (row.discountType === PromotionDiscountTypeEnum.PERCENT.type) {
     return `${row.discountPercent}%`
   }
-  return '未知【' + row.discountType + '】'
+  return t('auto.views.mall.promotion.coupon.formatter.kb583b1a0') + row.discountType + '】'
 }
 
 // 格式化【领取上限】
 export const takeLimitCountFormat = (row: CouponTemplateVO) => {
   if (row.takeLimitCount) {
     if (row.takeLimitCount === -1) {
-      return '无领取限制'
+      return t('auto.views.mall.promotion.coupon.formatter.k0b063143')
     }
-    return `${row.takeLimitCount} 张/人`
+    return t('extra.kb3fb5cb1', { p0: row.takeLimitCount })
   } else {
     return ' '
   }
@@ -29,18 +29,21 @@ export const takeLimitCountFormat = (row: CouponTemplateVO) => {
 // 格式化【有效期限】
 export const validityTypeFormat = (row: CouponTemplateVO) => {
   if (row.validityType === CouponTemplateValidityTypeEnum.DATE.type) {
-    return `${formatDate(row.validStartTime)} 至 ${formatDate(row.validEndTime)}`
+    return t('extra.ka28cc5cb', {
+      p0: formatDate(row.validStartTime),
+      p1: formatDate(row.validEndTime)
+    })
   }
   if (row.validityType === CouponTemplateValidityTypeEnum.TERM.type) {
-    return `领取后第 ${row.fixedStartTerm} - ${row.fixedEndTerm} 天内可用`
+    return t('extra.k29762443', { p0: row.fixedStartTerm, p1: row.fixedEndTerm })
   }
-  return '未知【' + row.validityType + '】'
+  return t('auto.views.mall.promotion.coupon.formatter.kb583b1a0') + row.validityType + '】'
 }
 
 // 格式化【totalCount】
 export const totalCountFormat = (row: CouponTemplateVO) => {
   if (row.totalCount === -1) {
-    return '不限制'
+    return t('auto.views.mall.promotion.coupon.formatter.k204f25ff')
   }
   return row.totalCount
 }
@@ -48,7 +51,7 @@ export const totalCountFormat = (row: CouponTemplateVO) => {
 // 格式化【剩余数量】
 export const remainedCountFormat = (row: CouponTemplateVO) => {
   if (row.totalCount === -1) {
-    return '不限制'
+    return t('auto.views.mall.promotion.coupon.formatter.k204f25ff')
   }
   return row.totalCount - row.takeCount
 }

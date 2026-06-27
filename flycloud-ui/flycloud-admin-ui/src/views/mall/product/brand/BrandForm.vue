@@ -7,16 +7,19 @@
       label-width="80px"
       v-loading="formLoading"
     >
-      <el-form-item label="品牌名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入品牌名称" />
+      <el-form-item :label="t('auto.views.mall.product.brand.BrandForm.kaa073c76')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.product.brand.BrandForm.kfae6109b')"
+        />
       </el-form-item>
-      <el-form-item label="品牌图片" prop="picUrl">
+      <el-form-item :label="t('auto.views.mall.product.brand.BrandForm.k8ac21a67')" prop="picUrl">
         <UploadImg v-model="formData.picUrl" :limit="1" :is-show-tip="false" />
       </el-form-item>
-      <el-form-item label="品牌排序" prop="sort">
+      <el-form-item :label="t('auto.views.mall.product.brand.BrandForm.kbd611ebc')" prop="sort">
         <el-input-number v-model="formData.sort" controls-position="right" :min="0" />
       </el-form-item>
-      <el-form-item label="品牌状态" prop="status">
+      <el-form-item :label="t('auto.views.mall.product.brand.BrandForm.k82629cda')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -27,13 +30,21 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="品牌描述">
-        <el-input v-model="formData.description" type="textarea" placeholder="请输入品牌描述" />
+      <el-form-item :label="t('auto.views.mall.product.brand.BrandForm.kd5b08c94')">
+        <el-input
+          v-model="formData.description"
+          type="textarea"
+          :placeholder="t('auto.views.mall.product.brand.BrandForm.kc29415f3')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.mall.product.brand.BrandForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.product.brand.BrandForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -41,10 +52,8 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as ProductBrandApi from '@/api/mall/product/brand'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductBrandForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -59,9 +68,27 @@ const formData = ref({
   description: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '品牌名称不能为空', trigger: 'blur' }],
-  picUrl: [{ required: true, message: '品牌图片不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '品牌排序不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.brand.BrandForm.k114d5ec4'),
+      trigger: 'blur'
+    }
+  ],
+  picUrl: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.brand.BrandForm.kb44568fc'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.brand.BrandForm.kd97ade74'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

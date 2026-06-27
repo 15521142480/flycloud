@@ -9,7 +9,7 @@
           @click="openForm('create')"
           v-hasPermi="['infra:data-source-config:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k45083681') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -18,18 +18,35 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="主键编号" align="center" prop="id" />
-      <el-table-column label="数据源名称" align="center" prop="name" />
-      <el-table-column label="数据源连接" align="center" prop="url" :show-overflow-tooltip="true" />
-      <el-table-column label="用户名" align="center" prop="username" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.infra.dataSourceConfig.index.kfe2678c5')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.dataSourceConfig.index.kd716d61b')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.dataSourceConfig.index.k06589cdc')"
+        align="center"
+        prop="url"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.dataSourceConfig.index.ka1aaf352')"
+        align="center"
+        prop="username"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -38,7 +55,7 @@
             v-hasPermi="['infra:data-source-config:update']"
             :disabled="scope.row.id === 0"
           >
-            编辑
+            {{ t('extra.kf776bedb') }}
           </el-button>
           <el-button
             link
@@ -47,7 +64,7 @@
             v-hasPermi="['infra:data-source-config:delete']"
             :disabled="scope.row.id === 0"
           >
-            删除
+            {{ t('extra.kcc66a14f') }}
           </el-button>
         </template>
       </el-table-column>
@@ -61,11 +78,10 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as DataSourceConfigApi from '@/api/infra/dataSourceConfig'
 import DataSourceConfigForm from './DataSourceConfigForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraDataSourceConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据

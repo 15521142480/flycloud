@@ -83,14 +83,14 @@ export default {
     message: '锁屏密码错误'
   },
   error: {
-    noPermission: `抱歉，您无权访问此页面。`,
+    noPermission: '抱歉，您无权访问此页面。',
     pageError: '抱歉，您访问的页面不存在。',
     networkError: '抱歉，服务器报告错误。',
     returnToHome: '返回首页'
   },
   permission: {
-    hasPermission: `请设置操作权限标签值`,
-    hasRole: `请设置角色权限标签值`
+    hasPermission: '请设置操作权限标签值',
+    hasRole: '请设置角色权限标签值'
   },
   setting: {
     projectSetting: '项目配置',
@@ -567,16 +567,14 @@ export default {
       signInTitle: '开箱即用的中后台管理系统',
       signInDesc: '输入您的个人详细信息开始使用！',
       policy: '我同意xxx隐私政策',
-      scanSign: `扫码后点击"确认"，即可完成登录`,
+      scanSign: '扫码后点击"确认"，即可完成登录',
       loginButton: '登录',
       registerButton: '注册',
       rememberMe: '记住我',
       forgetPassword: '忘记密码?',
       otherSignIn: '其他登录方式',
-      // notify
       loginSuccessTitle: '登录成功',
       loginSuccessDesc: '欢迎回来',
-      // placeholder
       accountPlaceholder: '请输入账号',
       passwordPlaceholder: '请输入密码',
       smsPlaceholder: '请输入验证码',
@@ -644,5 +642,5 @@ export default {
     btn_zoom_out: '缩小',
     preview: '预览'
   },
-  'OAuth 2.0': 'OAuth 2.0' // 避免菜单名是 OAuth 2.0 时，一直 warn 报错
+  'OAuth 2.0': 'OAuth 2.0'
 }

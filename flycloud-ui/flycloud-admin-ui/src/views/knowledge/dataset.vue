@@ -4,25 +4,29 @@
       <el-card class="create-card" shadow="hover">
         <div class="create-content">
           <el-icon class="create-icon"><Plus /></el-icon>
-          <span class="create-text">创建知识库</span>
+          <span class="create-text">{{ t('auto.views.knowledge.dataset.k02191960') }}</span>
         </div>
         <div class="create-footer">
-          导入您自己的文本数据或通过 Webhook 实时写入数据以增强 LLM 的上下文。
+          {{ t('extra.k252f9ef0') }}
         </div>
       </el-card>
 
       <el-card class="document-card" shadow="hover" v-for="index in 4" :key="index">
         <div class="document-header">
           <el-icon><Folder /></el-icon>
-          <span>接口鉴权示例代码.md</span>
+          <span>{{ t('auto.views.knowledge.dataset.kc1bc8b92') }}</span>
         </div>
         <div class="document-info">
-          <el-tag size="small">1 文档</el-tag>
-          <el-tag size="small" type="info">5 千字符</el-tag>
-          <el-tag size="small" type="warning">0 关联应用</el-tag>
+          <el-tag size="small">{{ t('auto.views.knowledge.dataset.k905bf498') }}</el-tag>
+          <el-tag size="small" type="info">{{
+            t('auto.views.knowledge.dataset.k57c79448')
+          }}</el-tag>
+          <el-tag size="small" type="warning">{{
+            t('auto.views.knowledge.dataset.kfa91b8af')
+          }}</el-tag>
         </div>
         <p class="document-description">
-          useful for when you want to answer queries about the 接口鉴权示例代码.md
+          {{ t('extra.kd67953e8') }}
         </p>
       </el-card>
     </div>
@@ -47,23 +51,24 @@
 <script setup>
 import { ref } from 'vue'
 import { Folder, Plus } from '@element-plus/icons-vue'
-
+const { t } = useI18n()
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(100) // 假设总共有100条数据
 
 const handleSizeChange = (val) => {
-  console.log(`每页 ${val} 条`)
+  console.log(t('extra.k899dbb1f', { p0: val }))
 }
 
 const handleCurrentChange = (val) => {
-  console.log(`当前页: ${val}`)
+  console.log(t('extra.kf8c3b7f2', { p0: val }))
 }
 </script>
 
 <style scoped>
 .knowledge-base-container {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    '微软雅黑', Arial, sans-serif;
   position: absolute;
   padding: 20px;
   margin: 0 auto;
@@ -81,7 +86,8 @@ const handleCurrentChange = (val) => {
   margin-bottom: auto; /* Pushes pagination to the bottom */
 }
 
-.create-card, .document-card {
+.create-card,
+.document-card {
   flex: 1 1 360px; /* Allow cards to grow and shrink */
   min-width: 0;
   max-width: 400px;
@@ -105,7 +111,7 @@ const handleCurrentChange = (val) => {
 
 .create-icon {
   font-size: 24px;
-  color: #409EFF;
+  color: #409eff;
 }
 
 .create-text {

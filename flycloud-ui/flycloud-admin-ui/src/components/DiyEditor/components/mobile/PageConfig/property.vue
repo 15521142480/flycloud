@@ -1,18 +1,31 @@
 <template>
   <el-form label-width="80px" :model="formData" :rules="rules">
-    <el-form-item label="页面描述" prop="description">
+    <el-form-item
+      :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k5d4f9172')"
+      prop="description"
+    >
       <el-input
         type="textarea"
         v-model="formData!.description"
-        placeholder="用户通过微信分享给朋友时，会自动显示页面描述"
+        :placeholder="
+          t('auto.components.DiyEditor.components.mobile.PageConfig.property.kb105a0df')
+        "
       />
     </el-form-item>
-    <el-form-item label="背景颜色" prop="backgroundColor">
+    <el-form-item
+      :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k4a2d8a28')"
+      prop="backgroundColor"
+    >
       <ColorInput v-model="formData!.backgroundColor" />
     </el-form-item>
-    <el-form-item label="背景图片" prop="backgroundImage">
+    <el-form-item
+      :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k8c841866')"
+      prop="backgroundImage"
+    >
       <UploadImg v-model="formData!.backgroundImage" :limit="1">
-        <template #tip>建议宽度 750px</template>
+        <template #tip>{{
+          t('auto.components.DiyEditor.components.mobile.PageConfig.property.k54614dc3')
+        }}</template>
       </UploadImg>
     </el-form-item>
   </el-form>
@@ -21,7 +34,7 @@
 <script setup lang="ts">
 import { PageConfigProperty } from './config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
-// 导航栏属性面板
+const { t } = useI18n()
 defineOptions({ name: 'PageConfigProperty' })
 // 表单校验
 const rules = {}

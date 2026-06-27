@@ -8,13 +8,28 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="仓库名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入仓库名称" />
+      <el-form-item
+        :label="t('auto.views.erp.stock.warehouse.WarehouseForm.k6f55a5a5')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.k2c2b2339')"
+        />
       </el-form-item>
-      <el-form-item label="仓库地址" prop="address">
-        <el-input v-model="formData.address" placeholder="请输入仓库地址" />
+      <el-form-item
+        :label="t('auto.views.erp.stock.warehouse.WarehouseForm.k6b470c46')"
+        prop="address"
+      >
+        <el-input
+          v-model="formData.address"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.k0532511a')"
+        />
       </el-form-item>
-      <el-form-item label="仓库状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.erp.stock.warehouse.WarehouseForm.kc89e2565')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -25,42 +40,62 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="仓储费" prop="warehousePrice">
+      <el-form-item
+        :label="t('auto.views.erp.stock.warehouse.WarehouseForm.kf8c432d9')"
+        prop="warehousePrice"
+      >
         <el-input-number
           v-model="formData.warehousePrice"
-          placeholder="请输入仓储费，单位：元/天/KG"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.k0f007fe5')"
           :min="0"
           :precision="2"
           class="!w-1/1"
         />
       </el-form-item>
-      <el-form-item label="搬运费" prop="truckagePrice">
+      <el-form-item
+        :label="t('auto.views.erp.stock.warehouse.WarehouseForm.k2a8526e4')"
+        prop="truckagePrice"
+      >
         <el-input-number
           v-model="formData.truckagePrice"
-          placeholder="请输入搬运费，单位：元"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.kaf029e4c')"
           :min="0"
           :precision="2"
           class="!w-1/1"
         />
       </el-form-item>
-      <el-form-item label="负责人" prop="principal">
-        <el-input v-model="formData.principal" placeholder="请输入负责人" />
+      <el-form-item
+        :label="t('auto.views.erp.stock.warehouse.WarehouseForm.k974d383f')"
+        prop="principal"
+      >
+        <el-input
+          v-model="formData.principal"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.k38ed47bf')"
+        />
       </el-form-item>
-      <el-form-item label="排序" prop="sort">
+      <el-form-item :label="t('common.sort')" prop="sort">
         <el-input-number
           v-model="formData.sort"
-          placeholder="请输入排序"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.k242d8da1')"
           :precision="0"
           class="!w-1/1"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input type="textarea" v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          type="textarea"
+          v-model="formData.remark"
+          :placeholder="t('auto.views.erp.stock.warehouse.WarehouseForm.k57e709d9')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.erp.stock.warehouse.WarehouseForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.stock.warehouse.WarehouseForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -70,9 +105,8 @@ import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** ERP 仓库表单 */
+const { t } = useI18n()
 defineOptions({ name: 'WarehouseForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -91,9 +125,27 @@ const formData = ref({
   status: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '仓库名称不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.warehouse.WarehouseForm.kbee7258b'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.warehouse.WarehouseForm.k3218602a'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.warehouse.WarehouseForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

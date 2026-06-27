@@ -6,9 +6,9 @@
         <UserBasicInfo :user="user">
           <template #header>
             <div class="card-header">
-              <CardTitle title="基本信息" />
+              <CardTitle :title="t('auto.views.member.user.detail.index.kb122f813')" />
               <el-button size="small" text type="primary" @click="openForm('update')">
-                编辑
+                {{ t('extra.k7ab5e727') }}
               </el-button>
             </div>
           </template>
@@ -87,7 +87,7 @@ import UserAfterSaleList from './UserAftersaleList.vue'
 import UserBalanceList from './UserBalanceList.vue'
 import { CardTitle } from '@/components/Card/index'
 import { ElMessage } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'MemberDetail' })
 
 const loading = ref(true) // 加载中
@@ -134,7 +134,7 @@ const getUserWallet = async () => {
 
 onMounted(() => {
   if (!id) {
-    ElMessage.warning('参数错误，会员编号不能为空！')
+    ElMessage.warning(t('auto.views.member.user.detail.index.k5386b7eb'))
     delView(unref(currentRoute))
     return
   }

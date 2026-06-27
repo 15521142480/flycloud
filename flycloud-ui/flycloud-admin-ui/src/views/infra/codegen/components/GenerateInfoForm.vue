@@ -2,7 +2,10 @@
   <el-form ref="formRef" :model="formData" :rules="rules" label-width="150px">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="生成模板" prop="templateType">
+        <el-form-item
+          :label="t('auto.views.infra.codegen.components.GenerateInfoForm.k4f981957')"
+          prop="templateType"
+        >
           <el-select v-model="formData.templateType">
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.INFRA_CODEGEN_TEMPLATE_TYPE)"
@@ -14,7 +17,10 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="前端类型" prop="frontType">
+        <el-form-item
+          :label="t('auto.views.infra.codegen.components.GenerateInfoForm.k8cb22782')"
+          prop="frontType"
+        >
           <el-select v-model="formData.frontType">
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.INFRA_CODEGEN_FRONT_TYPE)"
@@ -27,7 +33,10 @@
       </el-col>
 
       <el-col :span="12">
-        <el-form-item label="生成场景" prop="scene">
+        <el-form-item
+          :label="t('auto.views.infra.codegen.components.GenerateInfoForm.k3af1a4f4')"
+          prop="scene"
+        >
           <el-select v-model="formData.scene">
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.INFRA_CODEGEN_SCENE)"
@@ -42,8 +51,11 @@
         <el-form-item>
           <template #label>
             <span>
-              上级菜单
-              <el-tooltip content="分配到指定菜单下，例如 系统管理" placement="top">
+              {{ t('extra.kda19f113') }}
+              <el-tooltip
+                :content="t('auto.views.infra.codegen.components.GenerateInfoForm.kb3988be5')"
+                placement="top"
+              >
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
@@ -299,7 +311,7 @@ import { handleTree } from '@/utils/tree'
 import * as CodegenApi from '@/api/infra/codegen'
 import * as MenuApi from '@/api/system/menu'
 import { PropType } from 'vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraCodegenGenerateInfoForm' })
 
 const message = useMessage() // 消息弹窗

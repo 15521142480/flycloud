@@ -2,17 +2,20 @@
   <ProductDetailsHeader :loading="loading" :product="product" @refresh="() => getProductData(id)" />
   <el-col>
     <el-tabs v-model="activeTab">
-      <el-tab-pane label="产品信息" name="info">
+      <el-tab-pane :label="t('auto.views.iot.product.detail.index.k90095856')" name="info">
         <ProductDetailsInfo v-if="activeTab === 'info'" :product="product" />
       </el-tab-pane>
-      <el-tab-pane label="Topic 类列表" name="topic">
+      <el-tab-pane :label="t('auto.views.iot.product.detail.index.k25c4668a')" name="topic">
         <ProductTopic v-if="activeTab === 'topic'" :product="product" />
       </el-tab-pane>
-      <el-tab-pane label="功能定义" name="function">
+      <el-tab-pane :label="t('auto.views.iot.product.detail.index.kcf6091a6')" name="function">
         <ThinkModelFunction v-if="activeTab === 'function'" :product="product" />
       </el-tab-pane>
-      <el-tab-pane label="消息解析" name="message" />
-      <el-tab-pane label="服务端订阅" name="subscription" />
+      <el-tab-pane :label="t('auto.views.iot.product.detail.index.k27c0f91e')" name="message" />
+      <el-tab-pane
+        :label="t('auto.views.iot.product.detail.index.k0431306e')"
+        name="subscription"
+      />
     </el-tabs>
   </el-col>
 </template>
@@ -25,7 +28,7 @@ import ProductTopic from '@/views/iot/product/detail/ProductTopic.vue'
 import ThinkModelFunction from '@/views/iot/product/detail/ThinkModelFunction.vue'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useRouter } from 'vue-router'
-
+const { t } = useI18n()
 defineOptions({ name: 'IoTProductDetail' })
 
 const { delView } = useTagsViewStore() // 视图操作
@@ -64,7 +67,7 @@ const getDeviceCount = async (productId: number) => {
 /** 初始化 */
 onMounted(async () => {
   if (!id) {
-    message.warning('参数错误，产品不能为空！')
+    message.warning(t('auto.views.iot.product.detail.index.k07573642'))
     delView(unref(currentRoute))
     return
   }

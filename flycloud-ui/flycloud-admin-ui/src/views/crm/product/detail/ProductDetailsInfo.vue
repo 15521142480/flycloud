@@ -3,7 +3,9 @@
     <el-collapse v-model="activeNames">
       <el-collapse-item name="basicInfo">
         <template #title>
-          <span class="text-base font-bold">基本信息</span>
+          <span class="text-base font-bold">{{
+            t('auto.views.crm.product.detail.ProductDetailsInfo.kb122f813')
+          }}</span>
         </template>
         <el-descriptions :column="4">
           <el-descriptions-item label="产品名称">{{ product.name }}</el-descriptions-item>
@@ -28,7 +30,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import * as ProductApi from '@/api/crm/product'
 import { erpPriceInputFormatter } from '@/utils'
-
+const { t } = useI18n()
 const { product } = defineProps<{
   product: ProductApi.ProductVO
 }>()

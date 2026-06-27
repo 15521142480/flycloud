@@ -8,21 +8,21 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="入库单号" prop="no">
+      <el-form-item :label="t('auto.views.erp.stock.in.index.ka9f67da2')" prop="no">
         <el-input
           v-model="queryParams.no"
-          placeholder="请输入入库单号"
+          :placeholder="t('auto.views.erp.stock.in.index.keb25b35c')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="产品" prop="productId">
+      <el-form-item :label="t('auto.views.erp.stock.in.index.k6cc98552')" prop="productId">
         <el-select
           v-model="queryParams.productId"
           clearable
           filterable
-          placeholder="请选择产品"
+          :placeholder="t('auto.views.erp.stock.in.index.k59a0d3d1')"
           class="!w-240px"
         >
           <el-option
@@ -33,23 +33,23 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="入库时间" prop="inTime">
+      <el-form-item :label="t('auto.views.erp.stock.in.index.k661cec87')" prop="inTime">
         <el-date-picker
           v-model="queryParams.inTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.erp.stock.in.index.k1f291968')"
+          :end-placeholder="t('auto.views.erp.stock.in.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="供应商" prop="supplierId">
+      <el-form-item :label="t('auto.views.erp.stock.in.index.k703c9eb0')" prop="supplierId">
         <el-select
           v-model="queryParams.supplierId"
           clearable
           filterable
-          placeholder="请选择供应商"
+          :placeholder="t('auto.views.erp.stock.in.index.k38eae8d5')"
           class="!w-240px"
         >
           <el-option
@@ -60,12 +60,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="仓库" prop="warehouseId">
+      <el-form-item :label="t('auto.views.erp.stock.in.index.k55914e1c')" prop="warehouseId">
         <el-select
           v-model="queryParams.warehouseId"
           clearable
           filterable
-          placeholder="请选择仓库"
+          :placeholder="t('auto.views.erp.stock.in.index.k7aaa3bbb')"
           class="!w-240px"
         >
           <el-option
@@ -76,24 +76,24 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建人" prop="creator">
+      <el-form-item :label="t('auto.views.erp.stock.in.index.k787ad1de')" prop="creator">
         <el-select
           v-model="queryParams.creator"
           clearable
           filterable
-          placeholder="请选择创建人"
+          :placeholder="t('auto.views.erp.stock.in.index.k953a49d5')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.erp.stock.in.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.ERP_AUDIT_STATUS)"
             :key="dict.value"
@@ -102,25 +102,29 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item :label="t('common.remark')" prop="remark">
         <el-input
           v-model="queryParams.remark"
-          placeholder="请输入备注"
+          :placeholder="t('auto.views.erp.stock.in.index.k57e709d9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:stock-in:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kcf91256d') }}
         </el-button>
         <el-button
           type="success"
@@ -129,7 +133,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:stock-in:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k5b612852') }}
         </el-button>
         <el-button
           type="danger"
@@ -138,7 +142,7 @@
           v-hasPermi="['erp:stock-in:delete']"
           :disabled="selectionList.length === 0"
         >
-          <Icon icon="ep:delete" class="mr-5px" /> 删除
+          <Icon icon="ep:delete" class="mr-5px" /> {{ t('extra.k6cb1551a') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -153,31 +157,59 @@
       :show-overflow-tooltip="true"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="入库单号" align="center" prop="no" />
-      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
-      <el-table-column label="供应商" align="center" prop="supplierName" />
       <el-table-column
-        label="入库时间"
+        width="30"
+        :label="t('auto.views.erp.stock.in.index.k70b20820')"
+        type="selection"
+      />
+      <el-table-column
+        min-width="180"
+        :label="t('auto.views.erp.stock.in.index.ka9f67da2')"
+        align="center"
+        prop="no"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.in.index.k90095856')"
+        align="center"
+        prop="productNames"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.in.index.k703c9eb0')"
+        align="center"
+        prop="supplierName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.in.index.k661cec87')"
         align="center"
         prop="inTime"
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
       <el-table-column
-        label="数量"
+        :label="t('auto.views.erp.stock.in.index.k787ad1de')"
+        align="center"
+        prop="creatorName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.in.index.kb9ae8931')"
         align="center"
         prop="totalCount"
         :formatter="erpCountTableColumnFormatter"
       />
       <el-table-column
-        label="金额"
+        :label="t('auto.views.erp.stock.in.index.k34943c40')"
         align="center"
         prop="totalPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="状态" align="center" fixed="right" width="90" prop="status">
+      <el-table-column
+        :label="t('common.status')"
+        align="center"
+        fixed="right"
+        width="90"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.ERP_AUDIT_STATUS" :value="scope.row.status" />
         </template>
@@ -256,10 +288,10 @@ import * as UserApi from '@/api/system/user'
 import { erpCountTableColumnFormatter, erpPriceTableColumnFormatter } from '@/utils'
 
 /** ERP 其它入库单列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpStockIn' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<StockInVO[]>([]) // 列表的数据
@@ -330,10 +362,24 @@ const handleDelete = async (ids: number[]) => {
 const handleUpdateStatus = async (id: number, status: number) => {
   try {
     // 审批的二次确认
-    await message.confirm(`确定${status === 20 ? '审批' : '反审批'}该入库单吗？`)
+    await message.confirm(
+      t('extra.kc7385830', {
+        p0:
+          status === 20
+            ? t('auto.views.erp.stock.in.index.k5ce60cb7')
+            : t('auto.views.erp.stock.in.index.k5e6e19f7')
+      })
+    )
     // 发起审批
     await StockInApi.updateStockInStatus(id, status)
-    message.success(`${status === 20 ? '审批' : '反审批'}成功`)
+    message.success(
+      t('extra.k8818ed38', {
+        p0:
+          status === 20
+            ? t('auto.views.erp.stock.in.index.k5ce60cb7')
+            : t('auto.views.erp.stock.in.index.k5e6e19f7')
+      })
+    )
     // 刷新列表
     await getList()
   } catch {}
@@ -347,7 +393,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockInApi.exportStockIn(queryParams)
-    download.excel(data, '其它入库单.xls')
+    download.excel(data, t('auto.views.erp.stock.in.index.k49bfa705'))
   } catch {
   } finally {
     exportLoading.value = false

@@ -1,12 +1,12 @@
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 
-const { t } = useI18n() // 国际化
-
 /**
  * 字符权限校验
  * @param {Array} value 校验值
  * @returns {Boolean}
  */
+const { t } = useI18n()
+
 export function checkPermi(value: string[]) {
   if (value && value instanceof Array && value.length > 0) {
     const { wsCache } = useCache()

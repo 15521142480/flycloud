@@ -17,7 +17,10 @@
         </div>
       </el-tooltip>
     </div>
-    <el-tooltip content="选择活动" v-if="canAdd">
+    <el-tooltip
+      :content="t('auto.views.mall.promotion.seckill.components.SeckillShowcase.k9669b876')"
+      v-if="canAdd"
+    >
       <div class="select-box" @click="openSeckillActivityTableSelect">
         <Icon icon="ep:plus" />
       </div>
@@ -39,6 +42,7 @@ import SeckillTableSelect from '@/views/mall/promotion/seckill/components/Seckil
 
 // 活动橱窗，一般用于装修时使用
 // 提供功能：展示活动列表、添加活动、删除活动
+const { t } = useI18n()
 defineOptions({ name: 'SeckillShowcase' })
 
 const props = defineProps({

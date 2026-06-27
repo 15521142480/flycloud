@@ -1,22 +1,22 @@
 <!-- dall3 -->
 <template>
   <div class="prompt">
-    <el-text tag="b">画面描述</el-text>
-    <el-text tag="p">建议使用“形容词+动词+风格”的格式，使用“，”隔开</el-text>
+    <el-text tag="b">{{ t('auto.views.ai.image.index.components.dall3.k1813eae1') }}</el-text>
+    <el-text tag="p">{{ t('auto.views.ai.image.index.components.dall3.kcf07e703') }}</el-text>
     <el-input
       v-model="prompt"
       maxlength="1024"
       rows="5"
       class="w-100% mt-15px"
       input-style="border-radius: 7px;"
-      placeholder="例如：童话里的小屋应该是什么样子？"
+      :placeholder="t('auto.views.ai.image.index.components.dall3.k379873d7')"
       show-word-limit
       type="textarea"
     />
   </div>
   <div class="hot-words">
     <div>
-      <el-text tag="b">随机热词</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.dall3.k21b37b6a') }}</el-text>
     </div>
     <el-space wrap class="word-list">
       <el-button
@@ -33,7 +33,7 @@
   </div>
   <div class="model">
     <div>
-      <el-text tag="b">模型选择</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.dall3.k61921f83') }}</el-text>
     </div>
     <el-space wrap class="model-list">
       <div
@@ -48,7 +48,7 @@
   </div>
   <div class="image-style">
     <div>
-      <el-text tag="b">风格选择</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.dall3.k6fe75ac9') }}</el-text>
     </div>
     <el-space wrap class="image-style-list">
       <div
@@ -63,7 +63,7 @@
   </div>
   <div class="image-size">
     <div>
-      <el-text tag="b">画面比例</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.dall3.kf07fc510') }}</el-text>
     </div>
     <el-space wrap class="size-list">
       <div
@@ -82,9 +82,9 @@
     </el-space>
   </div>
   <div class="btns">
-    <el-button type="primary" size="large" round :loading="drawIn" @click="handleGenerateImage">
-      {{ drawIn ? '生成中' : '生成内容' }}
-    </el-button>
+    <el-button type="primary" size="large" round :loading="drawIn" @click="handleGenerateImage">{{
+      drawIn ? t('extra.k3d1d763b') : t('extra.kd56b923a')
+    }}</el-button>
   </div>
 </template>
 <script setup lang="ts">
@@ -97,7 +97,7 @@ import {
   ImageModelVO,
   AiPlatformEnum
 } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 // 定义属性
@@ -141,7 +141,7 @@ const handleSizeClick = async (imageSize: ImageSizeVO) => {
 /**  图片生产  */
 const handleGenerateImage = async () => {
   // 二次确认
-  await message.confirm(`确认生成内容?`)
+  await message.confirm(t('auto.views.ai.image.index.components.dall3.k47808f71'))
   try {
     // 加载中
     drawIn.value = true

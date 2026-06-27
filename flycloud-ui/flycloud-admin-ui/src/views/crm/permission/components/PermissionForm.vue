@@ -7,7 +7,11 @@
       :rules="formRules"
       label-width="100px"
     >
-      <el-form-item v-if="formType === 'create'" label="选择人员" prop="userId">
+      <el-form-item
+        v-if="formType === 'create'"
+        :label="t('auto.views.crm.permission.components.PermissionForm.k2f9b624b')"
+        prop="userId"
+      >
         <el-select v-model="formData.userId">
           <el-option
             v-for="item in userOptions"
@@ -17,7 +21,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="权限级别" prop="level">
+      <el-form-item
+        :label="t('auto.views.crm.permission.components.PermissionForm.k7e6fe7f2')"
+        prop="level"
+      >
         <el-radio-group v-model="formData.level">
           <template
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_PERMISSION_LEVEL)"
@@ -51,10 +58,8 @@ import * as UserApi from '@/api/system/user'
 import * as PermissionApi from '@/api/crm/permission'
 import { BizTypeEnum, PermissionLevelEnum } from '@/api/crm/permission'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmPermissionForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -64,15 +69,28 @@ const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 const formData = ref<PermissionApi.PermissionVO>({} as PermissionApi.PermissionVO)
 const formRules = reactive({
-  userId: [{ required: true, message: '人员不能为空', trigger: 'blur' }],
-  level: [{ required: true, message: '权限级别不能为空', trigger: 'blur' }]
+  userId: [
+    {
+      required: true,
+      message: t('auto.views.crm.permission.components.PermissionForm.kf6d68959'),
+      trigger: 'blur'
+    }
+  ],
+  level: [
+    {
+      required: true,
+      message: t('auto.views.crm.permission.components.PermissionForm.k86b09233'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
 const open = async (type: 'create' | 'update', bizType: number, bizId: number, ids?: number[]) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type) + '团队成员'
+  dialogTitle.value =
+    t('action.' + type) + t('auto.views.crm.permission.components.PermissionForm.k7de0251f')
   formType.value = type
   resetForm(bizType, bizId)
   // 修改时，设置数据
@@ -89,7 +107,8 @@ const open0 = async (
   level: number
 ) => {
   dialogVisible.value = true
-  dialogTitle.value = t('action.' + type) + '团队成员'
+  dialogTitle.value =
+    t('action.' + type) + t('auto.views.crm.permission.components.PermissionForm.k7de0251f')
   formType.value = type
   resetForm(bizType, bizId)
   // 修改时，设置数据

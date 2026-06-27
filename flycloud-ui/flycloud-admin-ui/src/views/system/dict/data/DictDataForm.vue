@@ -7,23 +7,29 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="字典类型" prop="type">
+      <el-form-item :label="t('auto.views.system.dict.data.DictDataForm.k6dde52f3')" prop="type">
         <el-input
           v-model="formData.dictType"
           :disabled="typeof formData.id !== 'undefined'"
-          placeholder="请输入参数名称"
+          :placeholder="t('auto.views.system.dict.data.DictDataForm.k6d4589a3')"
         />
       </el-form-item>
-      <el-form-item label="数据标签" prop="label">
-        <el-input v-model="formData.label" placeholder="请输入数据标签" />
+      <el-form-item :label="t('auto.views.system.dict.data.DictDataForm.k193d6348')" prop="label">
+        <el-input
+          v-model="formData.label"
+          :placeholder="t('auto.views.system.dict.data.DictDataForm.kc2aaf712')"
+        />
       </el-form-item>
-      <el-form-item label="数据键值" prop="value">
-        <el-input v-model="formData.value" placeholder="请输入数据键值" />
+      <el-form-item :label="t('auto.views.system.dict.data.DictDataForm.k09e02709')" prop="value">
+        <el-input
+          v-model="formData.value"
+          :placeholder="t('auto.views.system.dict.data.DictDataForm.kb4b45e95')"
+        />
       </el-form-item>
-      <el-form-item label="显示排序" prop="sort">
+      <el-form-item :label="t('auto.views.system.dict.data.DictDataForm.k424aaf17')" prop="sort">
         <el-input-number v-model="formData.sort" :min="0" controls-position="right" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -34,7 +40,10 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="颜色类型" prop="colorType">
+      <el-form-item
+        :label="t('auto.views.system.dict.data.DictDataForm.k34f38f1f')"
+        prop="colorType"
+      >
         <el-select v-model="formData.colorType">
           <el-option
             v-for="item in colorTypeOptions"
@@ -45,15 +54,26 @@
         </el-select>
       </el-form-item>
       <el-form-item label="CSS Class" prop="cssClass">
-        <el-input v-model="formData.cssClass" placeholder="请输入 CSS Class" />
+        <el-input
+          v-model="formData.cssClass"
+          :placeholder="t('auto.views.system.dict.data.DictDataForm.k26176263')"
+        />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入内容" type="textarea" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.system.dict.data.DictDataForm.kac962cb9')"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.dict.data.DictDataForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.dict.data.DictDataForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -61,11 +81,9 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as DictDataApi from '@/api/system/dict/dict.data'
 import { CommonStatusEnum } from '@/utils/constants'
-import {saveOrUpdate} from "@/api/system/dict/dict.data";
-
+import { saveOrUpdate } from '@/api/system/dict/dict.data'
+const { t } = useI18n()
 defineOptions({ name: 'SystemDictDataForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -84,10 +102,34 @@ const formData = ref({
   remark: ''
 })
 const formRules = reactive({
-  label: [{ required: true, message: '数据标签不能为空', trigger: 'blur' }],
-  value: [{ required: true, message: '数据键值不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '数据顺序不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'change' }]
+  label: [
+    {
+      required: true,
+      message: t('auto.views.system.dict.data.DictDataForm.k3de0a313'),
+      trigger: 'blur'
+    }
+  ],
+  value: [
+    {
+      required: true,
+      message: t('auto.views.system.dict.data.DictDataForm.kf8bc34d3'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.system.dict.data.DictDataForm.k509522ff'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.dict.data.DictDataForm.k1318b551'),
+      trigger: 'change'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -95,27 +137,27 @@ const formRef = ref() // 表单 Ref
 const colorTypeOptions = readonly([
   {
     value: 'default',
-    label: '默认'
+    label: t('auto.views.system.dict.data.DictDataForm.kc8d09cf9')
   },
   {
     value: 'primary',
-    label: '主要'
+    label: t('auto.views.system.dict.data.DictDataForm.kfc90df66')
   },
   {
     value: 'success',
-    label: '成功'
+    label: t('common.success')
   },
   {
     value: 'info',
-    label: '信息'
+    label: t('auto.views.system.dict.data.DictDataForm.k2da40f40')
   },
   {
     value: 'warning',
-    label: '警告'
+    label: t('auto.views.system.dict.data.DictDataForm.k5521e368')
   },
   {
     value: 'danger',
-    label: '危险'
+    label: t('auto.views.system.dict.data.DictDataForm.k627037fb')
   }
 ])
 

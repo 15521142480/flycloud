@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="产品名称" min-width="180">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.erp.sale.order.components.SaleOrderItemForm.kabc0ac79')"
+        min-width="180"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productId`" :rules="formRules.productId" class="mb-0px!">
             <el-select
@@ -18,7 +21,7 @@
               clearable
               filterable
               @change="onChangeProduct($event, row)"
-              placeholder="请选择产品"
+              :placeholder="t('auto.views.erp.sale.order.components.SaleOrderItemForm.k59a0d3d1')"
             >
               <el-option
                 v-for="item in productList"
@@ -144,7 +147,7 @@ import {
   erpPriceMultiply,
   getSumValue
 } from '@/utils'
-
+const { t } = useI18n()
 const props = defineProps<{
   items: undefined
   disabled: false
@@ -152,8 +155,20 @@ const props = defineProps<{
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  productId: [{ required: true, message: '产品不能为空', trigger: 'blur' }],
-  count: [{ required: true, message: '产品数量不能为空', trigger: 'blur' }]
+  productId: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.order.components.SaleOrderItemForm.k0b3cde2b'),
+      trigger: 'blur'
+    }
+  ],
+  count: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.order.components.SaleOrderItemForm.k55ce5fbe'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const productList = ref<ProductVO[]>([]) // 产品列表
@@ -194,7 +209,7 @@ const getSummaries = (param: SummaryMethodProps) => {
   const sums: string[] = []
   columns.forEach((column, index: number) => {
     if (index === 0) {
-      sums[index] = '合计'
+      sums[index] = t('auto.views.erp.sale.order.components.SaleOrderItemForm.k92bcbf71')
       return
     }
     if (['count', 'totalProductPrice', 'taxPrice', 'totalPrice'].includes(column.property)) {

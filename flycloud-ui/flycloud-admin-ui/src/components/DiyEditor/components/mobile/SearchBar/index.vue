@@ -21,7 +21,7 @@
         }"
       >
         <Icon icon="ep:search" />
-        <span>{{ property.placeholder || '搜索商品' }}</span>
+        <span>{{ property.placeholder || t('extra.k10622e3e') }}</span>
       </div>
       <div class="right">
         <!-- 搜索热词 -->
@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import { SearchProperty } from './config'
 /** 搜索框 */
+const { t } = useI18n()
 defineOptions({ name: 'SearchBar' })
 defineProps<{ property: SearchProperty }>()
 </script>

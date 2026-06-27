@@ -1,6 +1,9 @@
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
 export default {
-  '401': '认证失败，无法访问系统资源',
-  '403': '当前操作没有权限',
-  '404': '访问资源不存在',
-  default: '系统未知错误，请反馈给管理员'
+  '401': t('auto.config.axios.errorCode.k9634da8a'),
+  '403': t('auto.config.axios.errorCode.kf71e0bd7'),
+  '404': t('auto.config.axios.errorCode.k3c7cac81'),
+  default: t('auto.config.axios.errorCode.kf188fb0e')
 }

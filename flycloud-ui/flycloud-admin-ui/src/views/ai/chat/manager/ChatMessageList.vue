@@ -8,44 +8,49 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="对话编号" prop="conversationId">
+      <el-form-item
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.k2e064cf1')"
+        prop="conversationId"
+      >
         <el-input
           v-model="queryParams.conversationId"
-          placeholder="请输入对话编号"
+          :placeholder="t('auto.views.ai.chat.manager.ChatMessageList.k82db5534')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.kec750ef6')"
+        prop="userId"
+      >
         <el-select
           v-model="queryParams.userId"
           clearable
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.ai.chat.manager.ChatMessageList.kb719fb8a')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.ai.chat.manager.ChatMessageList.k1f291968')"
+          :end-placeholder="t('auto.views.ai.chat.manager.ChatMessageList.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -53,15 +58,26 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="消息编号" align="center" prop="id" width="180" fixed="left" />
       <el-table-column
-        label="对话编号"
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.kbaa5619d')"
+        align="center"
+        prop="id"
+        width="180"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.k2e064cf1')"
         align="center"
         prop="conversationId"
         width="180"
         fixed="left"
       />
-      <el-table-column label="用户" align="center" prop="userId" width="180">
+      <el-table-column
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.k9ba763ea')"
+        align="center"
+        prop="userId"
+        width="180"
+      >
         <template #default="scope">
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
@@ -111,9 +127,8 @@ import { dateFormatter } from '@/utils/formatTime'
 import { ChatMessageApi, ChatMessageVO } from '@/api/ai/chat/message'
 import * as UserApi from '@/api/system/user'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ChatMessageVO[]>([]) // 列表的数据

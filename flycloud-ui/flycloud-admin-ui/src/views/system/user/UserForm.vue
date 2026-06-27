@@ -89,8 +89,8 @@
           </el-form-item>
         </el-col>
         <!--        <el-col :span="12">-->
-        <!--          <el-form-item label="岗位">-->
-        <!--            <el-select v-model="formData.postIds" multiple placeholder="请选择">-->
+        <!--          <el-form-item :label="t('extra.k06ba448d')">-->
+        <!--            <el-select v-model="formData.postIds" multiple :placeholder="t('extra.k15cfe2ff')">-->
         <!--              <el-option-->
         <!--                v-for="item in postList"-->
         <!--                :key="item.id"-->
@@ -129,10 +129,8 @@ import * as PostApi from '@/api/system/post'
 import * as DeptApi from '@/api/system/dept'
 import * as UserApi from '@/api/system/user'
 import { FormRules } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemUserForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示

@@ -3,18 +3,18 @@
   <el-row v-if="showAction" justify="end">
     <el-button v-if="validateOwnerUser" type="primary" @click="openForm">
       <Icon class="mr-5px" icon="ep:plus" />
-      新增
+      {{ t('extra.k755b7016') }}
     </el-button>
     <el-button v-if="validateOwnerUser" @click="handleUpdate">
       <Icon class="mr-5px" icon="ep:edit" />
-      编辑
+      {{ t('extra.k32eb4354') }}
     </el-button>
     <el-button v-if="validateOwnerUser" @click="handleDelete">
       <Icon class="mr-5px" icon="ep:delete" />
-      移除
+      {{ t('extra.k90890c4b') }}
     </el-button>
     <el-button v-if="!validateOwnerUser && list.length > 0" type="danger" @click="handleQuit">
-      退出团队
+      {{ t('extra.k1b46385d') }}
     </el-button>
   </el-row>
   <!-- 团队成员展示 -->
@@ -28,10 +28,26 @@
     @selection-change="handleSelectionChange"
   >
     <el-table-column type="selection" width="55" />
-    <el-table-column align="center" label="姓名" prop="name" />
-    <el-table-column align="center" label="部门" prop="deptName" />
-    <el-table-column align="center" label="岗位" prop="postNames" />
-    <el-table-column align="center" label="权限级别" prop="level">
+    <el-table-column
+      align="center"
+      :label="t('auto.views.crm.permission.components.PermissionList.kbe4c2616')"
+      prop="name"
+    />
+    <el-table-column
+      align="center"
+      :label="t('auto.views.crm.permission.components.PermissionList.k91061a56')"
+      prop="deptName"
+    />
+    <el-table-column
+      align="center"
+      :label="t('auto.views.crm.permission.components.PermissionList.kf0f3e908')"
+      prop="postNames"
+    />
+    <el-table-column
+      align="center"
+      :label="t('auto.views.crm.permission.components.PermissionList.k7e6fe7f2')"
+      prop="level"
+    >
       <template #default="{ row }">
         <dict-tag :type="DICT_TYPE.CRM_PERMISSION_LEVEL" :value="row.level" />
       </template>
@@ -49,7 +65,7 @@ import * as PermissionApi from '@/api/crm/permission'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import CrmPermissionForm from './PermissionForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmPermissionList' })
 
 const message = useMessage() // 消息
@@ -91,7 +107,7 @@ const multipleSelection = ref<PermissionApi.PermissionVO[]>([]) // 选择的团�
 const elTableRef = ref<InstanceType<typeof ElTable>>()
 const handleSelectionChange = (val: PermissionApi.PermissionVO[]) => {
   if (val.findIndex((item) => item.level === PermissionApi.PermissionLevelEnum.OWNER) !== -1) {
-    message.warning('不能选择负责人！')
+    message.warning(t('auto.views.crm.permission.components.PermissionList.k9fad60d3'))
     elTableRef.value?.clearSelection()
     return
   }
@@ -102,11 +118,11 @@ const handleSelectionChange = (val: PermissionApi.PermissionVO[]) => {
 const formRef = ref<InstanceType<typeof CrmPermissionForm>>() // 权限表单 Ref
 const handleUpdate = () => {
   if (multipleSelection.value?.length === 0) {
-    message.warning('请先选择团队成员后操作！')
+    message.warning(t('auto.views.crm.permission.components.PermissionList.ke835ef59'))
     return
   }
   if (multipleSelection.value?.length > 1) {
-    message.warning('编辑团队成员时只能选择一个！')
+    message.warning(t('auto.views.crm.permission.components.PermissionList.k68b52676'))
     return
   }
   formRef.value?.open0(
@@ -121,13 +137,13 @@ const handleUpdate = () => {
 /** 移除团队成员 */
 const handleDelete = async () => {
   if (multipleSelection.value?.length === 0) {
-    message.warning('请先选择团队成员后操作！')
+    message.warning(t('auto.views.crm.permission.components.PermissionList.ke835ef59'))
     return
   }
   await message.delConfirm()
   const ids = multipleSelection.value?.map((item) => item.id) as unknown as number[]
   await PermissionApi.deletePermissionBatch(ids)
-  message.success('移除团队成员成功！')
+  message.success(t('auto.views.crm.permission.components.PermissionList.kc37a09a0'))
   await getList()
 }
 
@@ -181,7 +197,7 @@ const handleQuit = async () => {
       item.userId === userStore.getUser.id && item.level === PermissionApi.PermissionLevelEnum.OWNER
   )
   if (permission) {
-    message.warning('负责人不能退出团队！')
+    message.warning(t('auto.views.crm.permission.components.PermissionList.kd0d7a39e'))
     return
   }
   const userPermission = list.value.find((item) => item.userId === userStore.getUser.id)
@@ -189,7 +205,7 @@ const handleQuit = async () => {
     return
   }
   await PermissionApi.deleteSelfPermission(userPermission.id!)
-  message.success('退出团队成员成功！')
+  message.success(t('auto.views.crm.permission.components.PermissionList.k2d0aed44'))
   emits('quitTeam')
 }
 

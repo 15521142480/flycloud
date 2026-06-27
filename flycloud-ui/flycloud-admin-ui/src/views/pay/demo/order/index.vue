@@ -1,23 +1,53 @@
 <template>
-  <doc-alert title="支付宝支付接入" url="https://doc.iocoder.cn/pay/alipay-pay-demo/" />
-  <doc-alert title="支付宝、微信退款接入" url="https://doc.iocoder.cn/pay/refund-demo/" />
-  <doc-alert title="微信公众号支付接入" url="https://doc.iocoder.cn/pay/wx-pub-pay-demo/" />
-  <doc-alert title="微信小程序支付接入" url="https://doc.iocoder.cn/pay/wx-lite-pay-demo/" />
+  <doc-alert
+    :title="t('auto.views.pay.demo.order.index.k1637286a')"
+    url="https://doc.iocoder.cn/pay/alipay-pay-demo/"
+  />
+  <doc-alert
+    :title="t('auto.views.pay.demo.order.index.ka8355392')"
+    url="https://doc.iocoder.cn/pay/refund-demo/"
+  />
+  <doc-alert
+    :title="t('auto.views.pay.demo.order.index.k5028fc5c')"
+    url="https://doc.iocoder.cn/pay/wx-pub-pay-demo/"
+  />
+  <doc-alert
+    :title="t('auto.views.pay.demo.order.index.k6cbc9bd1')"
+    url="https://doc.iocoder.cn/pay/wx-lite-pay-demo/"
+  />
 
   <!-- 操作工具栏 -->
   <el-row :gutter="10" class="mb8">
     <el-col :span="1.5">
-      <el-button type="primary" plain @click="openForm"><Icon icon="ep:plus" />发起订单</el-button>
+      <el-button type="primary" plain @click="openForm"
+        ><Icon icon="ep:plus" />{{ t('auto.views.pay.demo.order.index.k9f9650e9') }}</el-button
+      >
     </el-col>
   </el-row>
 
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="订单编号" align="center" prop="id" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
-      <el-table-column label="商品名字" align="center" prop="spuName" />
-      <el-table-column label="支付价格" align="center" prop="price">
+      <el-table-column
+        :label="t('auto.views.pay.demo.order.index.k8c60a237')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.demo.order.index.kec750ef6')"
+        align="center"
+        prop="userId"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.demo.order.index.k51d3495d')"
+        align="center"
+        prop="spuName"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.demo.order.index.k63e60f59')"
+        align="center"
+        prop="price"
+      >
         <template #default="scope">
           <span>￥{{ (scope.row.price / 100.0).toFixed(2) }}</span>
         </template>
@@ -113,8 +143,7 @@
 import * as PayDemoApi from '@/api/pay/demo'
 import { dateFormatter, formatDate } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const router = useRouter() // 路由对象
 const message = useMessage() // 消息弹窗
 
@@ -156,10 +185,14 @@ const handlePay = (row: any) => {
 const handleRefund = async (row: any) => {
   const id = row.id
   try {
-    await message.confirm('是否确认退款编号为"' + id + '"的示例订单?')
+    await message.confirm(
+      t('auto.views.pay.demo.order.index.kbe56fc88') +
+        id +
+        t('auto.views.pay.demo.order.index.k33dc8ec4')
+    )
     await PayDemoApi.refundDemoOrder(id)
     await getList()
-    message.success('发起退款成功！')
+    message.success(t('auto.views.pay.demo.order.index.kca0a5b81'))
   } catch {}
 }
 
@@ -169,27 +202,27 @@ const handleRefund = async (row: any) => {
 const spus = ref([
   {
     id: 1,
-    name: '华为手机',
+    name: t('auto.views.pay.demo.order.index.ka3f59436'),
     price: 1
   },
   {
     id: 2,
-    name: '小米电视',
+    name: t('auto.views.pay.demo.order.index.kf56a19fa'),
     price: 10
   },
   {
     id: 3,
-    name: '苹果手表',
+    name: t('auto.views.pay.demo.order.index.k27f30118'),
     price: 100
   },
   {
     id: 4,
-    name: '华硕笔记本',
+    name: t('auto.views.pay.demo.order.index.ke1198b03'),
     price: 1000
   },
   {
     id: 5,
-    name: '蔚来汽车',
+    name: t('auto.views.pay.demo.order.index.k384220de'),
     price: 200000
   }
 ])
@@ -198,7 +231,9 @@ const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中
 const formData = ref<any>({}) // 表单数据
 const formRules = {
-  spuId: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }]
+  spuId: [
+    { required: true, message: t('auto.views.pay.demo.order.index.kd6bdaab2'), trigger: 'blur' }
+  ]
 }
 
 /** 表单重置 */

@@ -8,7 +8,11 @@
         :rules="formRules"
         label-width="100px"
       >
-        <el-form-item label="渠道状态" label-width="180px" prop="status">
+        <el-form-item
+          :label="t('auto.views.pay.app.components.channel.MockChannelForm.k88965a11')"
+          label-width="180px"
+          prop="status"
+        >
           <el-radio-group v-model="formData.status">
             <el-radio
               v-for="dict in getDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -19,13 +23,17 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="备注" label-width="180px" prop="remark">
+        <el-form-item :label="t('common.remark')" label-width="180px" prop="remark">
           <el-input v-model="formData.remark" :style="{ width: '100%' }" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+          t('auto.views.pay.app.components.channel.MockChannelForm.k31f9d856')
+        }}</el-button>
+        <el-button @click="dialogVisible = false">{{
+          t('auto.views.pay.app.components.channel.MockChannelForm.kd54aeadc')
+        }}</el-button>
       </template>
     </Dialog>
   </div>
@@ -34,10 +42,8 @@
 import { CommonStatusEnum } from '@/utils/constants'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import * as ChannelApi from '@/api/pay/channel'
-
+const { t } = useI18n()
 defineOptions({ name: 'MockChannelForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -54,7 +60,13 @@ const formData = ref<any>({
   }
 })
 const formRules = {
-  status: [{ required: true, message: '渠道状态不能为空', trigger: 'blur' }]
+  status: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.MockChannelForm.kefb5407a'),
+      trigger: 'blur'
+    }
+  ]
 }
 const formRef = ref() // 表单 Ref
 
@@ -71,7 +83,9 @@ const open = async (appId, code) => {
       formData.value = data
       formData.value.config = JSON.parse(data.config)
     }
-    dialogTitle.value = !formData.value.id ? '创建支付渠道' : '编辑支付渠道'
+    dialogTitle.value = !formData.value.id
+      ? t('auto.views.pay.app.components.channel.MockChannelForm.k590f5fde')
+      : t('auto.views.pay.app.components.channel.MockChannelForm.k7d8bedec')
   } finally {
     formLoading.value = false
   }

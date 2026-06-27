@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" title="测试">
+  <Dialog v-model="dialogVisible" :title="t('action.test')">
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,33 +7,46 @@
       :rules="formRules"
       label-width="120px"
     >
-      <el-form-item label="模板内容" prop="content">
+      <el-form-item
+        :label="t('auto.views.system.mail.template.MailTemplateSendForm.kdc362463')"
+        prop="content"
+      >
         <Editor :model-value="formData.content" height="150px" readonly />
       </el-form-item>
-      <el-form-item label="收件邮箱" prop="mail">
-        <el-input v-model="formData.mail" placeholder="请输入收件邮箱" />
+      <el-form-item
+        :label="t('auto.views.system.mail.template.MailTemplateSendForm.k66104df4')"
+        prop="mail"
+      >
+        <el-input
+          v-model="formData.mail"
+          :placeholder="t('auto.views.system.mail.template.MailTemplateSendForm.k1c2199fc')"
+        />
       </el-form-item>
       <el-form-item
         v-for="param in formData.params"
         :key="param"
-        :label="'参数 {' + param + '}'"
+        :label="t('extra.kaf885fc6') + param + '}'"
         :prop="'templateParams.' + param"
       >
         <el-input
           v-model="formData.templateParams[param]"
-          :placeholder="'请输入 ' + param + ' 参数'"
+          :placeholder="t('extra.k552727bf') + param + t('extra.k4a07b109')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.mail.template.MailTemplateSendForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.mail.template.MailTemplateSendForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as MailTemplateApi from '@/api/system/mail/template'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMailTemplateSendForm' })
 
 const message = useMessage() // 消息弹窗
@@ -48,8 +61,20 @@ const formData = ref({
   templateParams: new Map()
 })
 const formRules = reactive({
-  mail: [{ required: true, message: '邮箱不能为空', trigger: 'blur' }],
-  templateCode: [{ required: true, message: '模版编号不能为空', trigger: 'blur' }],
+  mail: [
+    {
+      required: true,
+      message: t('auto.views.system.mail.template.MailTemplateSendForm.kcfe01235'),
+      trigger: 'blur'
+    }
+  ],
+  templateCode: [
+    {
+      required: true,
+      message: t('auto.views.system.mail.template.MailTemplateSendForm.k7b044c3f'),
+      trigger: 'blur'
+    }
+  ],
   templateParams: {}
 })
 const formRef = ref() // 表单 Ref
@@ -71,7 +96,14 @@ const open = async (id: number) => {
       return obj
     }, {})
     formRules.templateParams = data.params.reduce((obj, item) => {
-      obj[item] = { required: true, message: '参数 ' + item + ' 不能为空', trigger: 'blur' }
+      obj[item] = {
+        required: true,
+        message:
+          t('auto.views.system.mail.template.MailTemplateSendForm.k749d7652') +
+          item +
+          t('auto.views.system.mail.template.MailTemplateSendForm.k44fa2a2c'),
+        trigger: 'blur'
+      }
       return obj
     }, {})
   } finally {
@@ -92,7 +124,7 @@ const submitForm = async () => {
     const data = formData.value as MailTemplateApi.MailSendReqVO
     const logId = await MailTemplateApi.sendMail(data)
     if (logId) {
-      message.success('提交发送成功！发送结果，见发送日志编号：' + logId)
+      message.success(t('auto.views.system.mail.template.MailTemplateSendForm.kcb30ccb4') + logId)
     }
     dialogVisible.value = false
   } finally {

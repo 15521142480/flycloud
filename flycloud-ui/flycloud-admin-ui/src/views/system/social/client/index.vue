@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="三方登录" url="https://doc.iocoder.cn/social-user/" />
+  <doc-alert
+    :title="t('auto.views.system.social.client.index.ke3469914')"
+    url="https://doc.iocoder.cn/social-user/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,21 +13,21 @@
       class="-mb-15px"
       label-width="130px"
     >
-      <el-form-item label="应用名" prop="name">
+      <el-form-item :label="t('auto.views.system.social.client.index.k6c19fe01')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入应用名"
+          :placeholder="t('auto.views.system.social.client.index.k445d8859')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="社交平台" prop="socialType">
+      <el-form-item :label="t('auto.views.system.social.client.index.kf6445550')" prop="socialType">
         <el-select
           v-model="queryParams.socialType"
           class="!w-240px"
           clearable
-          placeholder="请选择社交平台"
+          :placeholder="t('auto.views.system.social.client.index.k5ff0db53')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_SOCIAL_TYPE)"
@@ -34,12 +37,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="用户类型" prop="userType">
+      <el-form-item :label="t('auto.views.system.social.client.index.k31ab92d1')" prop="userType">
         <el-select
           v-model="queryParams.userType"
           class="!w-240px"
           clearable
-          placeholder="请选择用户类型"
+          :placeholder="t('auto.views.system.social.client.index.k8d91841e')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.USER_TYPE)"
@@ -49,17 +52,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户端编号" prop="clientId">
+      <el-form-item :label="t('auto.views.system.social.client.index.k090a075b')" prop="clientId">
         <el-input
           v-model="queryParams.clientId"
           class="!w-240px"
           clearable
-          placeholder="请输入客户端编号"
+          :placeholder="t('auto.views.system.social.client.index.k146a2f93')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="请选择状态">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.system.social.client.index.kdba277df')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -71,11 +79,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k60ae0148') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k79f4d7aa') }}
         </el-button>
         <el-button
           v-hasPermi="['system:social-client:create']"
@@ -84,7 +92,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k158c52a8') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -93,9 +101,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" label="编号" prop="id" />
-      <el-table-column align="center" label="应用名" prop="name" />
-      <el-table-column align="center" label="社交平台" prop="socialType">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.social.client.index.k9f42dac6')"
+        prop="id"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.social.client.index.k6c19fe01')"
+        prop="name"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.social.client.index.kf6445550')"
+        prop="socialType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_SOCIAL_TYPE" :value="scope.row.socialType" />
         </template>
@@ -157,11 +177,10 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as SocialClientApi from '@/api/system/social/client'
 import SocialClientForm from './SocialClientForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SocialClient' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

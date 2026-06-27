@@ -23,7 +23,7 @@ import Left from './components/Left.vue'
 import Right from './components/Right.vue'
 import { AiMindMapApi, AiMindMapGenerateReqVO } from '@/api/ai/mindmap'
 import { MindMapContentExample } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 defineOptions({
   name: 'AiMindMap'
 })
@@ -64,7 +64,7 @@ const submit = (data: AiMindMapGenerateReqVO) => {
     onMessage: async (res) => {
       const { code, data, msg } = JSON.parse(res.data)
       if (code !== 0) {
-        message.alert(`生成思维导图异常! ${msg}`)
+        message.alert(t('extra.kf738ca95', { p0: msg }))
         stopStream()
         return
       }
@@ -78,7 +78,7 @@ const submit = (data: AiMindMapGenerateReqVO) => {
       stopStream()
     },
     onError(err) {
-      console.error('生成思维导图失败', err)
+      console.error(t('auto.views.ai.mindmap.index.index.kef770717'), err)
       stopStream()
     },
     ctrl: ctrl.value

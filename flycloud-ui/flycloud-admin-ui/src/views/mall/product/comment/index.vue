@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,43 +8,49 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="回复状态" prop="replyStatus">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.index.kfde2b56a')"
+        prop="replyStatus"
+      >
         <el-select v-model="queryParams.replyStatus" class="!w-240px">
-          <el-option label="已回复" :value="true" />
-          <el-option label="未回复" :value="false" />
+          <el-option :label="t('auto.views.mall.product.comment.index.kae980f6f')" :value="true" />
+          <el-option :label="t('auto.views.mall.product.comment.index.k3c9becfc')" :value="false" />
         </el-select>
       </el-form-item>
-      <el-form-item label="商品名称" prop="spuName">
+      <el-form-item :label="t('auto.views.mall.product.comment.index.k47b74133')" prop="spuName">
         <el-input
           v-model="queryParams.spuName"
-          placeholder="请输入商品名称"
+          :placeholder="t('auto.views.mall.product.comment.index.k5c6bf9b9')"
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="用户名称" prop="userNickname">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.index.ka311ed74')"
+        prop="userNickname"
+      >
         <el-input
           v-model="queryParams.userNickname"
-          placeholder="请输入用户名称"
+          :placeholder="t('auto.views.mall.product.comment.index.k15762992')"
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="订单编号" prop="orderId">
+      <el-form-item :label="t('auto.views.mall.product.comment.index.k8c60a237')" prop="orderId">
         <el-input
           v-model="queryParams.orderId"
-          placeholder="请输入订单编号"
+          :placeholder="t('auto.views.mall.product.comment.index.k703bbdd7')"
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="评论时间" prop="createTime">
+      <el-form-item :label="t('auto.views.mall.product.comment.index.k49a47b72')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.product.comment.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.product.comment.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
@@ -53,11 +58,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon icon="ep:search" class="mr-5px" />
-          搜索
+          {{ t('extra.k9e5a77db') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon icon="ep:refresh" class="mr-5px" />
-          重置
+          {{ t('extra.kd0f3e2f6') }}
         </el-button>
         <el-button
           type="primary"
@@ -66,7 +71,7 @@
           v-hasPermi="['product:comment:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
-          添加虚拟评论
+          {{ t('extra.k0d2b7985') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -75,8 +80,17 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="false">
-      <el-table-column label="评论编号" align="center" prop="id" min-width="80" />
-      <el-table-column label="商品信息" align="center" min-width="400">
+      <el-table-column
+        :label="t('auto.views.mall.product.comment.index.ke8b034f2')"
+        align="center"
+        prop="id"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.product.comment.index.k751c5853')"
+        align="center"
+        min-width="400"
+      >
         <template #default="scope">
           <div class="row flex items-center gap-x-4px">
             <el-image
@@ -174,11 +188,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as CommentApi from '@/api/mall/product/comment'
 import CommentForm from './CommentForm.vue'
 import ReplyForm from './ReplyForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductComment' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -243,7 +256,11 @@ const handleVisibleChange = async (row: CommentApi.CommentVO) => {
   }
   let changedValue = row.visible
   try {
-    await message.confirm(changedValue ? '是否显示评论？' : '是否隐藏评论？')
+    await message.confirm(
+      changedValue
+        ? t('auto.views.mall.product.comment.index.k0a4a6910')
+        : t('auto.views.mall.product.comment.index.k1e3f768b')
+    )
     await CommentApi.updateCommentVisible({ id: row.id, visible: changedValue })
     await getList()
   } catch {

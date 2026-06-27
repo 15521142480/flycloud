@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,27 +8,27 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="商机名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.business.index.k84b59248')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入商机名称"
+          :placeholder="t('auto.views.crm.business.index.k258a412f')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k0b032ab0') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k93babe95') }}
         </el-button>
         <el-button v-hasPermi="['crm:business:create']" type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.kfdc95d4f') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:business:export']"
@@ -39,7 +38,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k760d6856') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -48,12 +47,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="我参与的" name="2" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.business.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.business.index.k1640a0ff')" name="2" />
+      <el-tab-pane :label="t('auto.views.crm.business.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="商机名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.business.index.k84b59248')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -172,11 +177,10 @@ import * as BusinessApi from '@/api/crm/business'
 import BusinessForm from './BusinessForm.vue'
 import { erpPriceTableColumnFormatter } from '@/utils'
 import { TabsPaneContext } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmBusiness' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -259,7 +263,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await BusinessApi.exportBusiness(queryParams)
-    download.excel(data, '商机.xls')
+    download.excel(data, t('auto.views.crm.business.index.k38858e81'))
   } catch {
   } finally {
     exportLoading.value = false

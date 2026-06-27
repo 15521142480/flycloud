@@ -4,20 +4,47 @@
       <slot name="control-header"></slot>
       <template v-if="!$slots['control-header']">
         <ElButtonGroup key="file-control">
-          <XButton preIcon="ep:folder-opened" title="打开文件" @click="refFile.click()" />
+          <XButton
+            preIcon="ep:folder-opened"
+            :title="
+              t('auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.k38820b3d')
+            "
+            @click="refFile.click()"
+          />
           <el-tooltip effect="light" placement="bottom">
             <template #content>
               <div style="color: #409eff">
-                <!-- <el-button link @click="downloadProcessAsXml()">下载为XML文件</el-button> -->
-                <XTextButton title="下载为XML文件" @click="downloadProcessAsXml()" />
+                <!-- <el-button link @click="downloadProcessAsXml()">{{ t('extra.k1dff17bf') }}</el-button> -->
+                <XTextButton
+                  :title="
+                    t(
+                      'auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.kf973c5af'
+                    )
+                  "
+                  @click="downloadProcessAsXml()"
+                />
                 <br />
 
-                <!-- <el-button link @click="downloadProcessAsSvg()">下载为SVG文件</el-button> -->
-                <XTextButton title="下载为SVG文件" @click="downloadProcessAsSvg()" />
+                <!-- <el-button link @click="downloadProcessAsSvg()">{{ t('extra.k0ce5de06') }}</el-button> -->
+                <XTextButton
+                  :title="
+                    t(
+                      'auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.k3f879d98'
+                    )
+                  "
+                  @click="downloadProcessAsSvg()"
+                />
                 <br />
 
-                <!-- <el-button link @click="downloadProcessAsBpmn()">下载为BPMN文件</el-button> -->
-                <XTextButton title="下载为BPMN文件" @click="downloadProcessAsBpmn()" />
+                <!-- <el-button link @click="downloadProcessAsBpmn()">{{ t('extra.ke43443d8') }}</el-button> -->
+                <XTextButton
+                  :title="
+                    t(
+                      'auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.k492ceedc'
+                    )
+                  "
+                  @click="downloadProcessAsBpmn()"
+                />
               </div>
             </template>
             <XButton title="下载文件" preIcon="ep:download" />
@@ -207,7 +234,6 @@
 </template>
 
 <script lang="ts" setup>
-// import 'bpmn-js/dist/assets/diagram-js.css' // 左边工具栏以及编辑节点的样式
 // import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css'
 // import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css'
 // import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
@@ -244,7 +270,7 @@ import { XmlNode, XmlNodeType, parseXmlString } from 'steady-xml'
 // const eventName = reactive({
 //   name: ''
 // })
-
+const { t } = useI18n()
 defineOptions({ name: 'MyProcessDesigner' })
 
 const bpmnCanvas = ref()
@@ -481,7 +507,7 @@ const createNewDiagram = async (xml) => {
   console.log(xml, 'xml')
   // 将字符串转换成图显示出来
   let newId = props.processId || `Process_${new Date().getTime()}`
-  let newName = props.processName || `业务流程_${new Date().getTime()}`
+  let newName = props.processName || t('extra.k6d21bbb7', { p0: new Date().getTime() })
   let xmlString = xml || DefaultEmptyXML(newId, newName, props.prefix)
   try {
     // console.log(xmlString, 'xmlString')
@@ -616,15 +642,21 @@ const elementsAlign = (align) => {
   const Selection = bpmnModeler.get('selection')
   const SelectedElements = Selection.get()
   if (!SelectedElements || SelectedElements.length <= 1) {
-    ElMessage.warning('请按住 Shift 键选择多个元素对齐')
+    ElMessage.warning(
+      t('auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.k997d4c13')
+    )
     // alert('请按住 Ctrl 键选择多个元素对齐
     return
   }
-  ElMessageBox.confirm('自动对齐可能造成图形变形，是否继续？', '警告', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
+  ElMessageBox.confirm(
+    t('auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.kd19b6481'),
+    t('auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.k5521e368'),
+    {
+      confirmButtonText: t('common.ok'),
+      cancelButtonText: t('common.cancel'),
+      type: 'warning'
+    }
+  ).then(() => {
     Align.trigger(SelectedElements, align)
   })
 }
@@ -673,7 +705,7 @@ const processSave = async () => {
   // 读取异常时抛出异常
   if (err) {
     // this.$modal.msgError('保存模型失败，请重试！')
-    alert('保存模型失败，请重试！')
+    alert(t('auto.components.bpmnProcessDesigner.package.designer.ProcessDesigner.k8951ddf0'))
     return
   }
   // 触发 save 事件

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,22 +8,22 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="任务名称" prop="name">
+      <el-form-item :label="t('auto.views.bpm.task.todo.index.k2e304698')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入任务名称"
+          :placeholder="t('auto.views.bpm.task.todo.index.k5169b9ec')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.bpm.task.todo.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.bpm.task.todo.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -32,11 +31,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k9d955c5e') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kfadbed1c') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -45,33 +44,59 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="流程" prop="processInstance.name" width="180" />
       <el-table-column
         align="center"
-        label="发起人"
+        :label="t('auto.views.bpm.task.todo.index.k09d316b9')"
+        prop="processInstance.name"
+        width="180"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.task.todo.index.k89d282d2')"
         prop="processInstance.startUser.name"
         width="100"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="发起时间"
+        :label="t('auto.views.bpm.task.todo.index.k44042ce0')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="当前任务" prop="name" width="180" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.task.todo.index.ke94d4252')"
+        prop="name"
+        width="180"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="任务时间"
+        :label="t('auto.views.bpm.task.todo.index.k425b5d5c')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="流程编号" prop="id" :show-overflow-tooltip="true" />
-      <el-table-column align="center" label="任务编号" prop="id" :show-overflow-tooltip="true" />
-      <el-table-column align="center" label="操作" fixed="right" width="80">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.task.todo.index.ka11dfb55')"
+        prop="id"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.task.todo.index.k017af56c')"
+        prop="id"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column align="center" :label="t('common.operation')" fixed="right" width="80">
         <template #default="scope">
-          <el-button v-hasPermi="['bpm:audit:todo:doit']" link type="primary" @click="handleAudit(scope.row)">办理</el-button>
+          <el-button
+            v-hasPermi="['bpm:audit:todo:doit']"
+            link
+            type="primary"
+            @click="handleAudit(scope.row)"
+            >{{ t('auto.views.bpm.task.todo.index.k5159733b') }}</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -88,7 +113,7 @@
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as TaskApi from '@/api/bpm/task'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmTodoTask' })
 
 const { push } = useRouter() // 路由

@@ -8,7 +8,7 @@
         <template #handle>
           <el-button size="small" type="success" plain @click="handleSave">
             <Icon class="mr-5px" icon="ep:plus" />
-            保存
+            {{ t('extra.k101cb0fd') }}
           </el-button>
         </template>
       </fc-designer>
@@ -50,10 +50,8 @@ import FcDesigner from '@form-create/designer'
 import { encodeConf, encodeFields, setConfAndFields } from '@/utils/formCreate'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useFormCreateDesigner } from '@/components/FormCreate'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmFormEditor' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息
 const { push, currentRoute } = useRouter() // 路由
 const { query } = useRoute() // 路由信息
@@ -98,8 +96,12 @@ const formData = ref({
   remark: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '表单名不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }]
+  name: [
+    { required: true, message: t('auto.views.bpm.form.editor.index.ke18a9398'), trigger: 'blur' }
+  ],
+  status: [
+    { required: true, message: t('auto.views.bpm.form.editor.index.k03991f81'), trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

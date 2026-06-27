@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【营销】限时折扣" url="https://doc.iocoder.cn/mall/promotion-discount/" />
+  <doc-alert
+    :title="t('auto.views.mall.promotion.discountActivity.index.k9397115d')"
+    url="https://doc.iocoder.cn/mall/promotion-discount/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,25 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="活动名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.discountActivity.index.k2b020286')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入活动名称"
+          :placeholder="t('auto.views.mall.promotion.discountActivity.index.ka90d22e9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="活动状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.discountActivity.index.k65a972d7')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择活动状态"
+          :placeholder="t('auto.views.mall.promotion.discountActivity.index.k4b6989d1')"
           clearable
           class="!w-240px"
         >
@@ -34,27 +43,34 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="活动时间" prop="activeTime">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.discountActivity.index.kabe0ecdb')"
+        prop="activeTime"
+      >
         <el-date-picker
           v-model="queryParams.activeTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.promotion.discountActivity.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.promotion.discountActivity.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:discount-activity:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增活动
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kbf9686ba') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -62,25 +78,36 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="活动编号" prop="id" min-width="80" />
-      <el-table-column label="活动名称" prop="name" min-width="140" />
-      <el-table-column label="活动时间" min-width="210">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.discountActivity.index.k32261198')"
+        prop="id"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.discountActivity.index.k2b020286')"
+        prop="name"
+        min-width="140"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.discountActivity.index.kabe0ecdb')"
+        min-width="210"
+      >
         <template #default="scope">
           {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
         </template>
       </el-table-column>
-<!--      <el-table-column label="商品图片" prop="spuName" min-width="80">-->
-<!--        <template #default="scope">-->
-<!--          <el-image-->
-<!--            :src="scope.row.picUrl"-->
-<!--            class="h-40px w-40px"-->
-<!--            :preview-src-list="[scope.row.picUrl]"-->
-<!--            preview-teleported-->
-<!--          />-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="商品标题" prop="spuName" min-width="300" />-->
+      <!--      <el-table-column label="商品图片" prop="spuName" min-width="80">-->
+      <!--        <template #default="scope">-->
+      <!--          <el-image-->
+      <!--            :src="scope.row.picUrl"-->
+      <!--            class="h-40px w-40px"-->
+      <!--            :preview-src-list="[scope.row.picUrl]"-->
+      <!--            preview-teleported-->
+      <!--          />-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
+      <!--      <el-table-column label="商品标题" prop="spuName" min-width="300" />-->
       <el-table-column label="活动状态" align="center" prop="status" min-width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
@@ -144,11 +171,10 @@ import DiscountActivityForm from './DiscountActivityForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { fenToYuan } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'DiscountActivity' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -197,10 +223,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm('确认关闭该限时折扣活动吗？')
+    await message.confirm(t('auto.views.mall.promotion.discountActivity.index.k7ea73eb8'))
     // 发起关闭
     await DiscountActivity.closeDiscountActivity(id)
-    message.success('关闭成功')
+    message.success(t('auto.views.mall.promotion.discountActivity.index.kf3cf9e86'))
     // 刷新列表
     await getList()
   } catch {}

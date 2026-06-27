@@ -22,10 +22,8 @@ import {
   UserProfileUpdateReqVO
 } from '@/api/system/user/profile'
 import { useUserStore } from '@/store/modules/user'
-
-defineOptions({ name: 'BasicInfo' })
-
 const { t } = useI18n()
+defineOptions({ name: 'BasicInfo' })
 const message = useMessage() // 消息弹窗
 const userStore = useUserStore()
 // 表单校验

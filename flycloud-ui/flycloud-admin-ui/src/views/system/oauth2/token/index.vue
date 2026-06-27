@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="OAuth 2.0（SSO 单点登录)" url="https://doc.iocoder.cn/oauth2/" />
+  <doc-alert
+    :title="t('auto.views.system.oauth2.token.index.kcf78c257')"
+    url="https://doc.iocoder.cn/oauth2/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="90px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item :label="t('auto.views.system.oauth2.token.index.kec750ef6')" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.system.oauth2.token.index.kb719fb8a')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="用户类型" prop="userType">
+      <el-form-item :label="t('auto.views.system.oauth2.token.index.k31ab92d1')" prop="userType">
         <el-select
           v-model="queryParams.userType"
-          placeholder="请选择用户类型"
+          :placeholder="t('auto.views.system.oauth2.token.index.k8d91841e')"
           clearable
           class="!w-240px"
         >
@@ -34,18 +37,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户端编号" prop="clientId">
+      <el-form-item :label="t('auto.views.system.oauth2.token.index.k090a075b')" prop="clientId">
         <el-input
           v-model="queryParams.clientId"
-          placeholder="请输入客户端编号"
+          :placeholder="t('auto.views.system.oauth2.token.index.k146a2f93')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -53,10 +60,28 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="访问令牌" align="center" prop="accessToken" width="300" />
-      <el-table-column label="刷新令牌" align="center" prop="refreshToken" width="300" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
-      <el-table-column label="用户类型" align="center" prop="userType">
+      <el-table-column
+        :label="t('auto.views.system.oauth2.token.index.k73bf8411')"
+        align="center"
+        prop="accessToken"
+        width="300"
+      />
+      <el-table-column
+        :label="t('auto.views.system.oauth2.token.index.kf4a36e0d')"
+        align="center"
+        prop="refreshToken"
+        width="300"
+      />
+      <el-table-column
+        :label="t('auto.views.system.oauth2.token.index.kec750ef6')"
+        align="center"
+        prop="userId"
+      />
+      <el-table-column
+        :label="t('auto.views.system.oauth2.token.index.k31ab92d1')"
+        align="center"
+        prop="userType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
@@ -102,11 +127,10 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as OAuth2AccessTokenApi from '@/api/system/oauth2/token'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemTokenClient' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -148,7 +172,7 @@ const resetQuery = () => {
 const handleForceLogout = async (accessToken: string) => {
   try {
     // 删除的二次确认
-    await message.confirm('是否要强制退出用户')
+    await message.confirm(t('auto.views.system.oauth2.token.index.k924e081c'))
     // 发起删除
     await OAuth2AccessTokenApi.deleteAccessToken(accessToken)
     message.success(t('common.success'))

@@ -8,8 +8,16 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="订单状态" prop="status">
-        <el-select v-model="queryParams.status" class="!w-280px" clearable placeholder="全部">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserOrderList.k4e4ca9ca')"
+        prop="status"
+      >
+        <el-select
+          v-model="queryParams.status"
+          class="!w-280px"
+          clearable
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_ORDER_STATUS)"
             :key="dict.value"
@@ -18,12 +26,15 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="支付方式" prop="payChannelCode">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserOrderList.ka870784d')"
+        prop="payChannelCode"
+      >
         <el-select
           v-model="queryParams.payChannelCode"
           class="!w-280px"
           clearable
-          placeholder="全部"
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
         >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.PAY_CHANNEL_CODE)"
@@ -33,19 +44,27 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-280px"
-          end-placeholder="自定义时间"
-          start-placeholder="自定义时间"
+          :end-placeholder="t('auto.views.member.user.detail.UserOrderList.k935f547a')"
+          :start-placeholder="t('auto.views.member.user.detail.UserOrderList.k935f547a')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="订单来源" prop="terminal">
-        <el-select v-model="queryParams.terminal" class="!w-280px" clearable placeholder="全部">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserOrderList.k83ecd478')"
+        prop="terminal"
+      >
+        <el-select
+          v-model="queryParams.terminal"
+          class="!w-280px"
+          clearable
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TERMINAL)"
             :key="dict.value"
@@ -54,8 +73,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="订单类型" prop="type">
-        <el-select v-model="queryParams.type" class="!w-280px" clearable placeholder="全部">
+      <el-form-item :label="t('auto.views.member.user.detail.UserOrderList.ka1d4eaf1')" prop="type">
+        <el-select
+          v-model="queryParams.type"
+          class="!w-280px"
+          clearable
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_ORDER_TYPE)"
             :key="dict.value"
@@ -64,8 +88,16 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="配送方式" prop="deliveryType">
-        <el-select v-model="queryParams.deliveryType" class="!w-280px" clearable placeholder="全部">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserOrderList.kaa419646')"
+        prop="deliveryType"
+      >
+        <el-select
+          v-model="queryParams.deliveryType"
+          class="!w-280px"
+          clearable
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_DELIVERY_TYPE)"
             :key="dict.value"
@@ -76,10 +108,15 @@
       </el-form-item>
       <el-form-item
         v-if="queryParams.deliveryType === DeliveryTypeEnum.EXPRESS.type"
-        label="快递公司"
+        :label="t('auto.views.member.user.detail.UserOrderList.k158720a2')"
         prop="logisticsId"
       >
-        <el-select v-model="queryParams.logisticsId" class="!w-280px" clearable placeholder="全部">
+        <el-select
+          v-model="queryParams.logisticsId"
+          class="!w-280px"
+          clearable
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
+        >
           <el-option
             v-for="item in deliveryExpressList"
             :key="item.id"
@@ -90,7 +127,7 @@
       </el-form-item>
       <el-form-item
         v-if="queryParams.deliveryType === DeliveryTypeEnum.PICK_UP.type"
-        label="自提门店"
+        :label="t('auto.views.member.user.detail.UserOrderList.k7d250a8d')"
         prop="pickUpStoreId"
       >
         <el-select
@@ -98,7 +135,7 @@
           class="!w-280px"
           clearable
           multiple
-          placeholder="全部"
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
         >
           <el-option
             v-for="item in pickUpStoreList"
@@ -110,31 +147,31 @@
       </el-form-item>
       <el-form-item
         v-if="queryParams.deliveryType === DeliveryTypeEnum.PICK_UP.type"
-        label="核销码"
+        :label="t('auto.views.member.user.detail.UserOrderList.k270938f1')"
         prop="pickUpVerifyCode"
       >
         <el-input
           v-model="queryParams.pickUpVerifyCode"
           class="!w-280px"
           clearable
-          placeholder="请输入自提核销码"
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k1572eb0d')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="聚合搜索">
+      <el-form-item :label="t('auto.views.member.user.detail.UserOrderList.k2798e98a')">
         <el-input
           v-show="true"
           v-model="queryParams[queryType.queryParam]"
           class="!w-280px"
           clearable
-          placeholder="请输入"
+          :placeholder="t('auto.views.member.user.detail.UserOrderList.k601816e1')"
         >
           <template #prepend>
             <el-select
               v-model="queryType.queryParam"
               class="!w-110px"
               clearable
-              placeholder="全部"
+              :placeholder="t('auto.views.member.user.detail.UserOrderList.k778fc8f9')"
               @change="inputChangeSelect"
             >
               <el-option
@@ -190,7 +227,7 @@ import * as DeliveryExpressApi from '@/api/mall/trade/delivery/express'
 import { FormInstance } from 'element-plus'
 import { OrderTableColumn } from '@/views/mall/trade/order/components'
 import { DeliveryTypeEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 const { push } = useRouter() // 路由跳转
 
 const { userId } = defineProps<{
@@ -222,9 +259,9 @@ const queryType = reactive({ queryParam: '' }) // 订单搜索类型 queryParam
 
 // 订单聚合搜索 select 类型配置（动态搜索）
 const dynamicSearchList = ref([
-  { value: 'no', label: '订单号' },
-  { value: 'userNickname', label: '用户昵称' },
-  { value: 'userMobile', label: '用户电话' }
+  { value: 'no', label: t('auto.views.member.user.detail.UserOrderList.k459868e5') },
+  { value: 'userNickname', label: t('auto.views.member.user.detail.UserOrderList.k90542e0a') },
+  { value: 'userMobile', label: t('auto.views.member.user.detail.UserOrderList.kf1f95d00') }
 ])
 /**
  * 聚合搜索切换查询对象时触发

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,26 +8,31 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="角色名称" prop="name">
+      <el-form-item :label="t('auto.views.system.role.index.k3aa1f085')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入角色名称"
+          :placeholder="t('auto.views.system.role.index.kb7c17b9e')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="角色标识" prop="code">
+      <el-form-item :label="t('auto.views.system.role.index.k07f826b6')" prop="code">
         <el-input
           v-model="queryParams.code"
           class="!w-240px"
           clearable
-          placeholder="请输入角色标识"
+          :placeholder="t('auto.views.system.role.index.kc22e9173')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="请选择状态">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.system.role.index.kdba277df')"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -37,13 +41,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.system.role.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.system.role.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -51,11 +55,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k67d60983') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kac9b7228') }}
         </el-button>
         <el-button
           v-hasPermi="['sys:role:saveOrUpdate']"
@@ -64,7 +68,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.ka4c9936b') }}
         </el-button>
         <el-button
           v-hasPermi="['sys:role:download']"
@@ -74,7 +78,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k82cb7a76') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -83,9 +87,22 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" height="calc(100vh - 355px)">
-      <el-table-column align="center" label="角色编号" prop="id" />
-      <el-table-column align="center" label="角色名称" prop="name" width="170"/>
-      <el-table-column label="角色类型" align="center" prop="type">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.role.index.k7c187097')"
+        prop="id"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.role.index.k3aa1f085')"
+        prop="name"
+        width="170"
+      />
+      <el-table-column
+        :label="t('auto.views.system.role.index.kcb232261')"
+        align="center"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_TYPE" :value="scope.row.type" />
         </template>
@@ -170,11 +187,10 @@ import * as RoleApi from '@/api/system/role'
 import RoleForm from './RoleForm.vue'
 import RoleAssignMenuForm from './RoleAssignMenuForm.vue'
 import RoleDataPermissionForm from './RoleDataPermissionForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemRole' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -253,7 +269,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await RoleApi.exportRole(queryParams)
-    download.excel(data, '角色列表.xls')
+    download.excel(data, t('auto.views.system.role.index.k32417c86'))
   } catch {
   } finally {
     exportLoading.value = false

@@ -18,6 +18,8 @@ import {
   ProcessVariableEnum
 } from './consts'
 import { parseFormFields } from '@/components/FormCreate/src/utils/index'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 export function useWatchNode(props: { flowNode: SimpleFlowNode }): Ref<SimpleFlowNode> {
   const node = ref<SimpleFlowNode>(props.flowNode)
   watch(
@@ -40,7 +42,7 @@ const parseFormCreateFields = (formFields?: string[]) => {
   // 固定添加发起人 ID 字段
   result.unshift({
     field: ProcessVariableEnum.START_USER_ID,
-    title: '发起人',
+    title: t('auto.components.SimpleProcessDesignerV2.src.node.k89d282d2'),
     type: 'UserSelect',
     required: true
   })
@@ -179,7 +181,7 @@ export function useNodeForm(nodeType: NodeType) {
             candidateNames.push(item.name)
           }
         })
-        showText = `指定成员：${candidateNames.join(',')}`
+        showText = t('extra.k21cc5074', { p0: candidateNames.join(',') })
       }
     }
     // 指定角色
@@ -191,7 +193,7 @@ export function useNodeForm(nodeType: NodeType) {
             candidateNames.push(item.name)
           }
         })
-        showText = `指定角色：${candidateNames.join(',')}`
+        showText = t('extra.k506a2acc', { p0: candidateNames.join(',') })
       }
     }
     // 指定部门
@@ -208,11 +210,11 @@ export function useNodeForm(nodeType: NodeType) {
           }
         })
         if (configForm.value.candidateStrategy === CandidateStrategy.DEPT_MEMBER) {
-          showText = `部门成员：${candidateNames.join(',')}`
+          showText = t('extra.k6d422b52', { p0: candidateNames.join(',') })
         } else if (configForm.value.candidateStrategy === CandidateStrategy.DEPT_LEADER) {
-          showText = `部门的负责人：${candidateNames.join(',')}`
+          showText = t('extra.k74144771', { p0: candidateNames.join(',') })
         } else {
-          showText = `多级部门的负责人：${candidateNames.join(',')}`
+          showText = t('extra.k77fc6314', { p0: candidateNames.join(',') })
         }
       }
     }
@@ -226,7 +228,7 @@ export function useNodeForm(nodeType: NodeType) {
             candidateNames.push(item.name)
           }
         })
-        showText = `指定岗位: ${candidateNames.join(',')}`
+        showText = t('extra.k9f8cbe13', { p0: candidateNames.join(',') })
       }
     }
     // 指定用户组
@@ -238,7 +240,7 @@ export function useNodeForm(nodeType: NodeType) {
             candidateNames.push(item.name)
           }
         })
-        showText = `指定用户组: ${candidateNames.join(',')}`
+        showText = t('extra.kd8aa064f', { p0: candidateNames.join(',') })
       }
     }
 
@@ -246,35 +248,35 @@ export function useNodeForm(nodeType: NodeType) {
     if (configForm.value?.candidateStrategy === CandidateStrategy.FORM_USER) {
       const formFieldOptions = parseFormCreateFields(unref(formFields))
       const item = formFieldOptions.find((item) => item.field === configForm.value?.formUser)
-      showText = `表单用户：${item?.title}`
+      showText = t('extra.kfd6cb987', { p0: item?.title })
     }
 
     // 表单内部门负责人
     if (configForm.value?.candidateStrategy === CandidateStrategy.FORM_DEPT_LEADER) {
-      showText = `表单内部门负责人`
+      showText = t('auto.components.SimpleProcessDesignerV2.src.node.k69389a79')
     }
 
     // 发起人自选
     if (configForm.value?.candidateStrategy === CandidateStrategy.START_USER_SELECT) {
-      showText = `发起人自选`
+      showText = t('auto.components.SimpleProcessDesignerV2.src.node.k63f1f84d')
     }
     // 发起人自己
     if (configForm.value?.candidateStrategy === CandidateStrategy.START_USER) {
-      showText = `发起人自己`
+      showText = t('auto.components.SimpleProcessDesignerV2.src.node.kb428eed5')
     }
     // 发起人的部门负责人
     if (configForm.value?.candidateStrategy === CandidateStrategy.START_USER_DEPT_LEADER) {
-      showText = `发起人的部门负责人`
+      showText = t('auto.components.SimpleProcessDesignerV2.src.node.kab28aead')
     }
     // 发起人的部门负责人
     if (
       configForm.value?.candidateStrategy === CandidateStrategy.START_USER_MULTI_LEVEL_DEPT_LEADER
     ) {
-      showText = `发起人连续部门负责人`
+      showText = t('auto.components.SimpleProcessDesignerV2.src.node.k3ee19e36')
     }
     // 流程表达式
     if (configForm.value?.candidateStrategy === CandidateStrategy.EXPRESSION) {
-      showText = `流程表达式：${configForm.value.expression}`
+      showText = t('extra.kefb4929f', { p0: configForm.value.expression })
     }
     return showText
   }

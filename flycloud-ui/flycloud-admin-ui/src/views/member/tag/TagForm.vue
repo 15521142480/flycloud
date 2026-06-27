@@ -7,20 +7,26 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="标签名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入标签名称" />
+      <el-form-item :label="t('auto.views.member.tag.TagForm.k182295d4')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.member.tag.TagForm.k8e1f344c')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.member.tag.TagForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.tag.TagForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script setup lang="ts">
 import * as TagApi from '@/api/member/tag'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -32,7 +38,7 @@ const formData = ref({
   name: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '标签名称不能为空', trigger: 'blur' }]
+  name: [{ required: true, message: t('auto.views.member.tag.TagForm.kf82dc762'), trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 

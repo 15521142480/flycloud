@@ -1,11 +1,12 @@
 import { toNumber } from 'lodash-es'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  *
  * @param component 需要注册的组件
  * @param alias 组件别名
  * @returns any
  */
+const { t } = useI18n()
 export const withInstall = <T>(component: T, alias?: string) => {
   const comp = component as any
   comp.install = (app: any) => {
@@ -429,11 +430,11 @@ export const areaReplace = (areaName: string) => {
     return areaName
   }
   return areaName
-    .replace('维吾尔自治区', '')
-    .replace('壮族自治区', '')
-    .replace('回族自治区', '')
-    .replace('自治区', '')
-    .replace('省', '')
+    .replace(t('auto.utils.index.k4dcedaca'), '')
+    .replace(t('auto.utils.index.k7d754840'), '')
+    .replace(t('auto.utils.index.k0a75ed3e'), '')
+    .replace(t('auto.utils.index.k0a248b01'), '')
+    .replace(t('auto.utils.index.k45ad4f70'), '')
 }
 
 /**
@@ -445,7 +446,7 @@ export function jsonParse(str: string) {
   try {
     return JSON.parse(str)
   } catch (e) {
-    console.error(`str[${str}] 不是一个 JSON 字符串`)
+    console.error(t('extra.k76c9b6dd', { p0: str }))
     return ''
   }
 }

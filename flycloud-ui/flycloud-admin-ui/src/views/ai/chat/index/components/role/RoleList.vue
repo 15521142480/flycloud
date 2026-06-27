@@ -13,10 +13,10 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item :command="['edit', role]">
-                  <Icon icon="ep:edit" color="#787878" />编辑
+                  <Icon icon="ep:edit" color="#787878" />{{ t('extra.ke6b8410e') }}
                 </el-dropdown-item>
                 <el-dropdown-item :command="['delete', role]" style="color: red">
-                  <Icon icon="ep:delete" color="red" />删除
+                  <Icon icon="ep:delete" color="red" />{{ t('extra.kdc3a2c3b') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -41,10 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import {ChatRoleVO} from '@/api/ai/model/chatRole'
-import {PropType, ref} from 'vue'
-import {More} from '@element-plus/icons-vue'
+import { ChatRoleVO } from '@/api/ai/model/chatRole'
+import { PropType, ref } from 'vue'
+import { More } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const tabsRef = ref<any>() // tabs ref
 
 // 定义属性

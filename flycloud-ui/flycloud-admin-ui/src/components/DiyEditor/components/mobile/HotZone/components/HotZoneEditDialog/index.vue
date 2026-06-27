@@ -1,5 +1,10 @@
 <template>
-  <Dialog v-model="dialogVisible" title="设置热区" width="780" @close="handleClose">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.components.DiyEditor.components.mobile.HotZone.components.k51c58b78')"
+    width="780"
+    @close="handleClose"
+  >
     <div ref="container" class="relative h-full w-750px">
       <el-image :src="imgUrl" class="pointer-events-none h-full w-750px select-none" />
       <div
@@ -15,7 +20,7 @@
         @mousedown="handleMove(item, $event)"
         @dblclick="handleShowAppLinkDialog(item)"
       >
-        <span class="pointer-events-none select-none">{{ item.name || '双击选择链接' }}</span>
+        <span class="pointer-events-none select-none">{{ item.name || t('extra.k0898574e') }}</span>
         <Icon icon="ep:close" class="delete" :size="14" @click="handleRemove(item)" />
 
         <!-- 8个控制点 -->
@@ -31,11 +36,11 @@
     <template #footer>
       <el-button @click="handleAdd" type="primary" plain>
         <Icon icon="ep:plus" class="mr-5px" />
-        添加热区
+        {{ t('extra.kc3dcee03') }}
       </el-button>
       <el-button @click="handleSubmit" type="primary" plain>
         <Icon icon="ep:check" class="mr-5px" />
-        确定
+        {{ t('extra.k89710fa0') }}
       </el-button>
     </template>
   </Dialog>
@@ -56,8 +61,8 @@ import {
 } from './controller'
 import { AppLink } from '@/components/AppLinkInput/data'
 import { remove } from 'lodash-es'
-
 /** 热区编辑对话框 */
+const { t } = useI18n()
 defineOptions({ name: 'HotZoneEditDialog' })
 
 // 定义属性

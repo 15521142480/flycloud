@@ -3,21 +3,21 @@
   <el-row justify="end">
     <el-button @click="openForm">
       <Icon class="mr-5px" icon="ep:opportunity" />
-      创建商机
+      {{ t('extra.kc133a503') }}
     </el-button>
     <el-button
       @click="openBusinessModal"
       v-hasPermi="['crm:contact:create-business']"
       v-if="queryParams.contactId"
     >
-      <Icon class="mr-5px" icon="ep:circle-plus" />关联
+      <Icon class="mr-5px" icon="ep:circle-plus" />{{ t('extra.k2601537a') }}
     </el-button>
     <el-button
       @click="deleteContactBusinessList"
       v-hasPermi="['crm:contact:delete-business']"
       v-if="queryParams.contactId"
     >
-      <Icon class="mr-5px" icon="ep:remove" />解除关联
+      <Icon class="mr-5px" icon="ep:remove" />{{ t('extra.kc5bc15d9') }}
     </el-button>
   </el-row>
 
@@ -31,7 +31,12 @@
       :show-overflow-tooltip="true"
     >
       <el-table-column type="selection" width="55" v-if="queryParams.contactId" />
-      <el-table-column label="商机名称" fixed="left" align="center" prop="name">
+      <el-table-column
+        :label="t('auto.views.crm.business.components.BusinessList.k84b59248')"
+        fixed="left"
+        align="center"
+        prop="name"
+      >
         <template #default="scope">
           <el-link type="primary" :underline="false" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -73,7 +78,7 @@ import BusinessForm from './../BusinessForm.vue'
 import { BizTypeEnum } from '@/api/crm/permission'
 import BusinessListModal from './BusinessListModal.vue'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 const message = useMessage() // 消息
 
 defineOptions({ name: 'CrmBusinessList' })
@@ -155,7 +160,7 @@ const createContactBusinessList = async (businessIds: number[]) => {
   })
   await ContactApi.createContactBusinessList(data)
   // 刷新列表
-  message.success('关联商机成功')
+  message.success(t('auto.views.crm.business.components.BusinessList.k26a2a7e2'))
   handleQuery()
 }
 
@@ -167,11 +172,11 @@ const deleteContactBusinessList = async () => {
     businessIds: businessRef.value.getSelectionRows().map((row: BusinessApi.BusinessVO) => row.id)
   } as ContactApi.ContactBusinessReqVO
   if (data.businessIds.length === 0) {
-    return message.error('未选择商机')
+    return message.error(t('auto.views.crm.business.components.BusinessList.ka4eef8ff'))
   }
   await ContactApi.deleteContactBusinessList(data)
   // 刷新列表
-  message.success('取关商机成功')
+  message.success(t('auto.views.crm.business.components.BusinessList.kc561acbc'))
   handleQuery()
 }
 

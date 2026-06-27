@@ -1,7 +1,7 @@
 <!-- 可付款的采购入库单列表 -->
 <template>
   <Dialog
-    title="选择采购入库（仅展示可付款）"
+    :title="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k317b0f11')"
     v-model="dialogVisible"
     :appendToBody="true"
     :scroll="true"
@@ -16,21 +16,31 @@
         :inline="true"
         label-width="68px"
       >
-        <el-form-item label="入库单号" prop="no">
+        <el-form-item
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.ka9f67da2')"
+          prop="no"
+        >
           <el-input
             v-model="queryParams.no"
-            placeholder="请输入入库单号"
+            :placeholder="
+              t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.keb25b35c')
+            "
             clearable
             @keyup.enter="handleQuery"
             class="!w-160px"
           />
         </el-form-item>
-        <el-form-item label="产品" prop="productId">
+        <el-form-item
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k6cc98552')"
+          prop="productId"
+        >
           <el-select
             v-model="queryParams.productId"
             clearable
             filterable
-            placeholder="请选择产品"
+            :placeholder="
+              t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k59a0d3d1')
+            "
             class="!w-160px"
           >
             <el-option
@@ -41,20 +51,31 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="入库时间" prop="orderTime">
+        <el-form-item
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k661cec87')"
+          prop="orderTime"
+        >
           <el-date-picker
             v-model="queryParams.inTime"
             value-format="YYYY-MM-DD HH:mm:ss"
             type="daterange"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="
+              t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k1f291968')
+            "
+            :end-placeholder="
+              t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.kf4b9b2b5')
+            "
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-160px"
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-          <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+          <el-button @click="handleQuery"
+            ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+          >
+          <el-button @click="resetQuery"
+            ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+          >
         </el-form-item>
       </el-form>
     </ContentWrap>
@@ -67,31 +88,56 @@
         :stripe="true"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column width="30" label="选择" type="selection" />
-        <el-table-column min-width="180" label="入库单号" align="center" prop="no" />
-        <el-table-column label="供应商" align="center" prop="supplierName" />
-        <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
         <el-table-column
-          label="入库时间"
+          width="30"
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k70b20820')"
+          type="selection"
+        />
+        <el-table-column
+          min-width="180"
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.ka9f67da2')"
+          align="center"
+          prop="no"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k703c9eb0')"
+          align="center"
+          prop="supplierName"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k90095856')"
+          align="center"
+          prop="productNames"
+          min-width="200"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k661cec87')"
           align="center"
           prop="inTime"
           :formatter="dateFormatter2"
           width="120px"
         />
-        <el-table-column label="创建人" align="center" prop="creatorName" />
         <el-table-column
-          label="应付金额"
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k787ad1de')"
+          align="center"
+          prop="creatorName"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k20104358')"
           align="center"
           prop="totalPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
         <el-table-column
-          label="已付金额"
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k986c161f')"
           align="center"
           prop="paymentPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
-        <el-table-column label="未付金额" align="center">
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k3ddc8eaa')"
+          align="center"
+        >
           <template #default="scope">
             <span v-if="scope.row.paymentPrice === scope.row.totalPrice">0</span>
             <el-tag type="danger" v-else>
@@ -122,7 +168,7 @@ import { dateFormatter2 } from '@/utils/formatTime'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { PurchaseInApi, PurchaseInVO } from '@/api/erp/purchase/in'
-
+const { t } = useI18n()
 defineOptions({ name: 'PurchaseInPaymentEnableList' })
 
 const list = ref<PurchaseInVO[]>([]) // 列表的数据

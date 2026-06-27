@@ -1,5 +1,10 @@
 <template>
-  <Dialog v-model="dialogVisible" :appendToBody="true" title="选择活动" width="70%">
+  <Dialog
+    v-model="dialogVisible"
+    :appendToBody="true"
+    :title="t('auto.views.mall.promotion.point.components.PointTableSelect.k9669b876')"
+    width="70%"
+  >
     <ContentWrap>
       <!-- 搜索工作栏 -->
       <el-form
@@ -9,12 +14,17 @@
         class="-mb-15px"
         label-width="68px"
       >
-        <el-form-item label="活动状态" prop="status">
+        <el-form-item
+          :label="t('auto.views.mall.promotion.point.components.PointTableSelect.k65a972d7')"
+          prop="status"
+        >
           <el-select
             v-model="queryParams.status"
             class="!w-240px"
             clearable
-            placeholder="请选择活动状态"
+            :placeholder="
+              t('auto.views.mall.promotion.point.components.PointTableSelect.k4b6989d1')
+            "
           >
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -27,11 +37,11 @@
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            搜索
+            {{ t('extra.k1010c255') }}
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            重置
+            {{ t('extra.kb68c8fb1') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -138,6 +148,7 @@ import { dateFormatter } from '@/utils/formatTime'
  *    2.3 点击右下角的确定按钮时，结束选择，关闭对话框
  *    2.4 再次打开时，保持选中状态
  */
+const { t } = useI18n()
 defineOptions({ name: 'PointTableSelect' })
 
 defineProps({

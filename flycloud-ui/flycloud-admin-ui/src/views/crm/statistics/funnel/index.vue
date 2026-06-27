@@ -9,24 +9,24 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="时间范围" prop="orderDate">
+      <el-form-item :label="t('auto.views.crm.statistics.funnel.index.k2be90408')" prop="orderDate">
         <el-date-picker
           v-model="queryParams.times"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           :shortcuts="defaultShortcuts"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.crm.statistics.funnel.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.crm.statistics.funnel.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
           @change="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="时间间隔" prop="interval">
+      <el-form-item :label="t('auto.views.crm.statistics.funnel.index.kc31851a4')" prop="interval">
         <el-select
           v-model="queryParams.interval"
           class="!w-240px"
-          placeholder="间隔类型"
+          :placeholder="t('auto.views.crm.statistics.funnel.index.k713759ae')"
           @change="handleQuery"
         >
           <el-option
@@ -37,7 +37,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="归属部门" prop="deptId">
+      <el-form-item :label="t('auto.views.crm.statistics.funnel.index.k22a05484')" prop="deptId">
         <el-tree-select
           v-model="queryParams.deptId"
           :data="deptList"
@@ -45,16 +45,16 @@
           check-strictly
           class="!w-240px"
           node-key="id"
-          placeholder="请选择归属部门"
+          :placeholder="t('auto.views.crm.statistics.funnel.index.k197cefba')"
           @change="(queryParams.userId = undefined), handleQuery()"
         />
       </el-form-item>
-      <el-form-item label="员工" prop="userId">
+      <el-form-item :label="t('auto.views.crm.statistics.funnel.index.k9834f85d')" prop="userId">
         <el-select
           v-model="queryParams.userId"
           class="!w-240px"
           clearable
-          placeholder="员工"
+          :placeholder="t('auto.views.crm.statistics.funnel.index.k9834f85d')"
           @change="handleQuery"
         >
           <el-option
@@ -68,11 +68,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          查询
+          {{ t('extra.k4718c5ae') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k761862e7') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -81,13 +81,25 @@
   <!-- 客户统计 -->
   <el-col>
     <el-tabs v-model="activeTab">
-      <el-tab-pane label="销售漏斗分析" lazy name="funnelRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.funnel.index.k8655e701')"
+        lazy
+        name="funnelRef"
+      >
         <FunnelBusiness ref="funnelRef" :query-params="queryParams" />
       </el-tab-pane>
-      <el-tab-pane label="新增商机分析" lazy name="businessSummaryRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.funnel.index.kfe9fba01')"
+        lazy
+        name="businessSummaryRef"
+      >
         <BusinessSummary ref="businessSummaryRef" :query-params="queryParams" />
       </el-tab-pane>
-      <el-tab-pane label="商机转化率分析" lazy name="businessInversionRateSummaryRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.funnel.index.k5a082531')"
+        lazy
+        name="businessInversionRateSummaryRef"
+      >
         <BusinessInversionRateSummary
           ref="businessInversionRateSummaryRef"
           :query-params="queryParams"
@@ -107,7 +119,7 @@ import FunnelBusiness from './components/FunnelBusiness.vue'
 import BusinessSummary from './components/BusinessSummary.vue'
 import BusinessInversionRateSummary from './components/BusinessInversionRateSummary.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmStatisticsFunnel' })
 
 const queryParams = reactive({

@@ -15,11 +15,15 @@
     <!-- 提示 -->
     <div>
       <Icon icon="ep:video-play" :size="32" class="mr-5px" />
-      <p class="text-sm">点击播放视频</p>
+      <p class="text-sm">{{ t('auto.views.mp.components.wx_video_play.main.k8e5ea283') }}</p>
     </div>
 
     <!-- 弹窗播放 -->
-    <el-dialog v-model="dialogVideo" title="视频播放" append-to-body>
+    <el-dialog
+      v-model="dialogVideo"
+      :title="t('auto.views.mp.components.wx_video_play.main.k6ae20950')"
+      append-to-body
+    >
       <video-player
         v-if="dialogVideo"
         class="video-player vjs-big-play-centered"
@@ -51,7 +55,7 @@
 <script lang="ts" setup>
 import 'video.js/dist/video-js.css'
 import { VideoPlayer } from '@videojs-player/vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'WxVideoPlayer' })
 
 const props = defineProps({

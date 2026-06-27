@@ -1,6 +1,5 @@
 <!-- ERP 产品列表 -->
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -10,36 +9,40 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="t('auto.views.erp.product.product.index.k1be7ae4f')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          :placeholder="t('auto.views.erp.product.product.index.kc2afb255')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="分类" prop="categoryId">
+      <el-form-item :label="t('auto.views.erp.product.product.index.k435c5259')" prop="categoryId">
         <el-tree-select
           v-model="queryParams.categoryId"
           :data="categoryList"
           :props="defaultProps"
           check-strictly
           default-expand-all
-          placeholder="请输入分类"
+          :placeholder="t('auto.views.erp.product.product.index.k9ba55f96')"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:product:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k317340f4') }}
         </el-button>
         <el-button
           type="success"
@@ -48,7 +51,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:product:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k8370a672') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -57,30 +60,50 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="条码" align="center" prop="barCode" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="规格" align="center" prop="standard" />
-      <el-table-column label="分类" align="center" prop="categoryName" />
-      <el-table-column label="单位" align="center" prop="unitName" />
       <el-table-column
-        label="采购价格"
+        :label="t('auto.views.erp.product.product.index.kb1085310')"
+        align="center"
+        prop="barCode"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.product.product.index.k1be7ae4f')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.product.product.index.k53af00e1')"
+        align="center"
+        prop="standard"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.product.product.index.k435c5259')"
+        align="center"
+        prop="categoryName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.product.product.index.k8ec8c8c7')"
+        align="center"
+        prop="unitName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.product.product.index.k23c5b674')"
         align="center"
         prop="purchasePrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="销售价格"
+        :label="t('auto.views.erp.product.product.index.k5b26b853')"
         align="center"
         prop="salePrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="最低价格"
+        :label="t('auto.views.erp.product.product.index.k6c760d86')"
         align="center"
         prop="minPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -137,10 +160,10 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import { erpPriceTableColumnFormatter } from '@/utils'
 
 /** ERP 产品列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpProduct' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProductVO[]>([]) // 列表的数据
@@ -206,7 +229,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductApi.exportProduct(queryParams)
-    download.excel(data, '产品.xls')
+    download.excel(data, t('auto.views.erp.product.product.index.k02eb085b'))
   } catch {
   } finally {
     exportLoading.value = false

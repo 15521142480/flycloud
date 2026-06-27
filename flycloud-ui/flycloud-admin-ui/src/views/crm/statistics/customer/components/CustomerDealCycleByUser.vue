@@ -10,15 +10,31 @@
   <!-- 统计列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="序号" align="center" type="index" width="80" />
-      <el-table-column label="日期" align="center" prop="ownerUserName" min-width="200" />
+      <el-table-column :label="t('common.index')" align="center" type="index" width="80" />
       <el-table-column
-        label="成交周期(天)"
+        :label="
+          t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.kb6fed9af')
+        "
+        align="center"
+        prop="ownerUserName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="
+          t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.k2a46ac43')
+        "
         align="center"
         prop="customerDealCycle"
         min-width="200"
       />
-      <el-table-column label="成交客户数" align="center" prop="customerDealCount" min-width="200" />
+      <el-table-column
+        :label="
+          t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.k8e16e0d0')
+        "
+        align="center"
+        prop="customerDealCount"
+        min-width="200"
+      />
     </el-table>
   </el-card>
 </template>
@@ -29,7 +45,7 @@ import {
   CrmStatisticsCustomerSummaryByDateRespVO
 } from '@/api/crm/statistics/customer'
 import { EChartsOption } from 'echarts'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerDealCycleByUser' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -48,13 +64,13 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '成交周期(天)',
+      name: t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.k2a46ac43'),
       type: 'bar',
       data: [],
       yAxisIndex: 0
     },
     {
-      name: '成交客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.k8e16e0d0'),
       type: 'bar',
       data: [],
       yAxisIndex: 1
@@ -68,7 +84,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '成交周期分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.kd20ef81b')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -80,13 +99,13 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '成交周期(天)',
+      name: t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.k2a46ac43'),
       min: 0,
       minInterval: 1 // 显示整数刻度
     },
     {
       type: 'value',
-      name: '成交客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.k8e16e0d0'),
       min: 0,
       minInterval: 1, // 显示整数刻度
       splitLine: {
@@ -99,7 +118,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.customer.components.CustomerDealCycleByUser.kb6fed9af'),
     data: []
   }
 }) as EChartsOption

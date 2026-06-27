@@ -17,19 +17,29 @@
   </div>
   <ContentWrap class="mt-10px">
     <el-descriptions :column="5" direction="vertical">
-      <el-descriptions-item label="客户名称">
+      <el-descriptions-item
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.ke941d410')"
+      >
         {{ contract.customerName }}
       </el-descriptions-item>
-      <el-descriptions-item label="合同金额（元）">
+      <el-descriptions-item
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k4687c195')"
+      >
         {{ erpPriceInputFormatter(contract.totalPrice) }}
       </el-descriptions-item>
-      <el-descriptions-item label="下单时间">
+      <el-descriptions-item
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k01f1aece')"
+      >
         {{ formatDate(contract.orderDate) }}
       </el-descriptions-item>
-      <el-descriptions-item label="回款金额（元）">
+      <el-descriptions-item
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.kfe6b09b9')"
+      >
         {{ erpPriceInputFormatter(contract.totalReceivablePrice) }}
       </el-descriptions-item>
-      <el-descriptions-item label="负责人">
+      <el-descriptions-item
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k974d383f')"
+      >
         {{ contract.ownerUserName }}
       </el-descriptions-item>
     </el-descriptions>
@@ -39,7 +49,7 @@
 import * as ContractApi from '@/api/crm/contract'
 import { formatDate } from '@/utils/formatTime'
 import { erpPriceInputFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'ContractDetailsHeader' })
 defineProps<{ contract: ContractApi.ContractVO }>()
 </script>

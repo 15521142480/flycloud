@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="支付功能开启" url="https://doc.iocoder.cn/pay/build/" />
+  <doc-alert
+    :title="t('auto.views.pay.app.index.kbacecf2d')"
+    url="https://doc.iocoder.cn/pay/build/"
+  />
   <!-- 搜索 -->
   <ContentWrap>
     <el-form
@@ -9,21 +12,21 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="应用名" prop="name">
+      <el-form-item :label="t('auto.views.pay.app.index.k6c19fe01')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入应用名"
+          :placeholder="t('auto.views.pay.app.index.k445d8859')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item :label="t('auto.views.pay.app.index.k6bbda1b1')" prop="status">
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          placeholder="请选择开启状态"
+          :placeholder="t('auto.views.pay.app.index.k312f5310')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -33,13 +36,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.pay.app.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.pay.app.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -47,15 +50,15 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k406b6afe') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kf2fd414e') }}
         </el-button>
         <el-button v-hasPermi="['pay:app:create']" plain type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.kc401653a') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -64,9 +67,22 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="应用标识" prop="appKey" />
-      <el-table-column align="center" label="应用名" min-width="90" prop="name" />
-      <el-table-column align="center" label="开启状态" prop="status">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.pay.app.index.k38f2da34')"
+        prop="appKey"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.pay.app.index.k6c19fe01')"
+        min-width="90"
+        prop="name"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.pay.app.index.k6bbda1b1')"
+        prop="status"
+      >
         <template #default="scope">
           <el-switch
             v-model="scope.row.status"
@@ -228,11 +244,10 @@ import AlipayChannelForm from './components/channel/AlipayChannelForm.vue'
 import WeixinChannelForm from './components/channel/WeixinChannelForm.vue'
 import MockChannelForm from './components/channel/MockChannelForm.vue'
 import WalletChannelForm from './components/channel/WalletChannelForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'PayApp' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -292,11 +307,17 @@ const resetQuery = () => {
 
 /** 应用状态修改 */
 const handleStatusChange = async (row: any) => {
-  let text = row.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
+  let text = row.status === CommonStatusEnum.ENABLE ? t('common.enabled') : t('common.disabled')
   try {
-    await message.confirm('确认要"' + text + '""' + row.name + '"应用吗?')
+    await message.confirm(
+      t('auto.views.pay.app.index.ka4db1fb1') +
+        text +
+        '""' +
+        row.name +
+        t('auto.views.pay.app.index.ka05f75f5')
+    )
     await AppApi.changeAppStatus({ id: row.id, status: row.status })
-    message.success(text + '成功')
+    message.success(text + t('common.success'))
   } catch {
     row.status =
       row.status === CommonStatusEnum.ENABLE ? CommonStatusEnum.DISABLE : CommonStatusEnum.ENABLE

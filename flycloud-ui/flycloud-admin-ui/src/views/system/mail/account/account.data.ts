@@ -1,8 +1,9 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter } from '@/utils/formatTime'
-const { t } = useI18n() // 国际化
 
 // 表单校验
+const { t } = useI18n()
+
 export const rules = reactive({
   mail: [
     { required: true, message: t('profile.rules.mail'), trigger: 'blur' },
@@ -23,7 +24,7 @@ export const rules = reactive({
 // CrudSchema：https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: '邮箱',
+    label: t('auto.views.system.mail.account.account_data.k9ed627bc'),
     field: 'mail',
     isSearch: true,
     search: {
@@ -35,7 +36,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '用户名',
+    label: t('auto.views.system.mail.account.account_data.ka1aaf352'),
     field: 'username',
     isSearch: true,
     search: {
@@ -47,16 +48,16 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '密码',
+    label: t('auto.views.system.mail.account.account_data.kc839a8ff'),
     field: 'password',
     isTable: false
   },
   {
-    label: 'SMTP 服务器域名',
+    label: t('auto.views.system.mail.account.account_data.k67500f39'),
     field: 'host'
   },
   {
-    label: 'SMTP 服务器端口',
+    label: t('auto.views.system.mail.account.account_data.kb2757fdd'),
     field: 'port',
     form: {
       component: 'InputNumber',
@@ -64,7 +65,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '是否开启 SSL',
+    label: t('auto.views.system.mail.account.account_data.k83228f16'),
     field: 'sslEnable',
     dictType: DICT_TYPE.INFRA_BOOLEAN_STRING,
     dictClass: 'boolean',
@@ -73,7 +74,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '是否开启 STARTTLS',
+    label: t('auto.views.system.mail.account.account_data.k8f99daea'),
     field: 'starttlsEnable',
     dictType: DICT_TYPE.INFRA_BOOLEAN_STRING,
     dictClass: 'boolean',
@@ -82,7 +83,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '创建时间',
+    label: t('common.createTime'),
     field: 'createTime',
     isForm: false,
     formatter: dateFormatter,
@@ -91,7 +92,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '操作',
+    label: t('common.operation'),
     field: 'action',
     isForm: false,
     isDetail: false

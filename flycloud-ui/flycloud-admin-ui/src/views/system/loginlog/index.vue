@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="系统日志" url="https://doc.iocoder.cn/system-log/" />
+  <doc-alert
+    :title="t('auto.views.system.loginlog.index.k096733f9')"
+    url="https://doc.iocoder.cn/system-log/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,38 +13,42 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户名称" prop="username">
+      <el-form-item :label="t('auto.views.system.loginlog.index.ka311ed74')" prop="username">
         <el-input
           v-model="queryParams.username"
-          placeholder="请输入用户名称"
+          :placeholder="t('auto.views.system.loginlog.index.k15762992')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="登录地址" prop="userIp">
+      <el-form-item :label="t('auto.views.system.loginlog.index.k84dd1c57')" prop="userIp">
         <el-input
           v-model="queryParams.userIp"
-          placeholder="请输入登录地址"
+          :placeholder="t('auto.views.system.loginlog.index.kf21e6957')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="登录日期" prop="createTime">
+      <el-form-item :label="t('auto.views.system.loginlog.index.k3e890a22')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.loginlog.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.loginlog.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -49,7 +56,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:login-log:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k63b2a94e') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -58,8 +65,16 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="日志编号" align="center" prop="id" />
-      <el-table-column label="操作类型" align="center" prop="logType">
+      <el-table-column
+        :label="t('auto.views.system.loginlog.index.k8cac83c8')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.system.loginlog.index.k19e41f1b')"
+        align="center"
+        prop="logType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_TYPE" :value="scope.row.logType" />
         </template>
@@ -110,7 +125,7 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as LoginLogApi from '@/api/system/loginLog'
 import LoginLogDetail from './LoginLogDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemLoginLog' })
 
 const message = useMessage() // 消息弹窗
@@ -166,7 +181,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await LoginLogApi.exportLoginLog(queryParams)
-    download.excel(data, '登录日志.xls')
+    download.excel(data, t('auto.views.system.loginlog.index.kae3381c6'))
   } catch {
   } finally {
     exportLoading.value = false

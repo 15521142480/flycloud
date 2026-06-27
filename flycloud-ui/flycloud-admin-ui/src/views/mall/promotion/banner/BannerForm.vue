@@ -9,27 +9,42 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form-item label="标题" prop="title">
-            <el-input v-model="formData.title" placeholder="请输入 Banner 标题" />
+          <el-form-item
+            :label="t('auto.views.mall.promotion.banner.BannerForm.k748d7dc7')"
+            prop="title"
+          >
+            <el-input
+              v-model="formData.title"
+              :placeholder="t('auto.views.mall.promotion.banner.BannerForm.k57b8a602')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="图片" prop="picUrl">
+          <el-form-item
+            :label="t('auto.views.mall.promotion.banner.BannerForm.kbe8da62e')"
+            prop="picUrl"
+          >
             <UploadImg v-model="formData.picUrl" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="跳转地址" prop="url">
-            <el-input v-model="formData.url" placeholder="请输入跳转地址" />
+          <el-form-item
+            :label="t('auto.views.mall.promotion.banner.BannerForm.k25d61a1c')"
+            prop="url"
+          >
+            <el-input
+              v-model="formData.url"
+              :placeholder="t('auto.views.mall.promotion.banner.BannerForm.k6bfca292')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="排序" prop="sort">
+          <el-form-item :label="t('common.sort')" prop="sort">
             <el-input-number v-model="formData.sort" :min="0" clearable controls-position="right" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.status')" prop="status">
             <el-radio-group v-model="formData.status">
               <el-radio
                 v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -42,7 +57,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="位置" prop="position">
+          <el-form-item
+            :label="t('auto.views.mall.promotion.banner.BannerForm.k88c34452')"
+            prop="position"
+          >
             <el-radio-group v-model="formData.position">
               <el-radio
                 v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_BANNER_POSITION)"
@@ -55,23 +73,33 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="描述" prop="memo">
-            <el-input v-model="formData.memo" placeholder="请输入描述" type="textarea" />
+          <el-form-item
+            :label="t('auto.views.mall.promotion.banner.BannerForm.k412f54dc')"
+            prop="memo"
+          >
+            <el-input
+              v-model="formData.memo"
+              :placeholder="t('auto.views.mall.promotion.banner.BannerForm.kcb869887')"
+              type="textarea"
+            />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.promotion.banner.BannerForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.promotion.banner.BannerForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as BannerApi from '@/api/mall/market/banner'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -89,12 +117,48 @@ const formData = ref({
   memo: undefined
 })
 const formRules = reactive({
-  title: [{ required: true, message: 'Banner 标题不能为空', trigger: 'blur' }],
-  picUrl: [{ required: true, message: '图片 URL 不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '活动状态不能为空', trigger: 'blur' }],
-  position: [{ required: true, message: '位置不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-  url: [{ required: true, message: '跳转地址不能为空', trigger: 'blur' }]
+  title: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.banner.BannerForm.kc1284045'),
+      trigger: 'blur'
+    }
+  ],
+  picUrl: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.banner.BannerForm.kf40d58a1'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.banner.BannerForm.kdbb0aa70'),
+      trigger: 'blur'
+    }
+  ],
+  position: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.banner.BannerForm.k8ff85847'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.banner.BannerForm.k3218602a'),
+      trigger: 'blur'
+    }
+  ],
+  url: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.banner.BannerForm.k12ada323'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

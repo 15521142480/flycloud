@@ -1,24 +1,24 @@
 <template>
   <ContactDetailsHeader v-loading="loading" :contact="contact">
     <el-button v-if="permissionListRef?.validateWrite" @click="openForm('update', contact.id)">
-      编辑
+      {{ t('extra.k748f61b1') }}
     </el-button>
     <el-button v-if="permissionListRef?.validateOwnerUser" type="primary" @click="transfer">
-      转移
+      {{ t('extra.k030f0f84') }}
     </el-button>
   </ContactDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="跟进记录">
+      <el-tab-pane :label="t('auto.views.crm.contact.detail.index.k4d7216f5')">
         <FollowUpList :biz-id="contactId" :biz-type="BizTypeEnum.CRM_CONTACT" />
       </el-tab-pane>
-      <el-tab-pane label="详细资料">
+      <el-tab-pane :label="t('auto.views.crm.contact.detail.index.kbf455584')">
         <ContactDetailsInfo :contact="contact" />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.contact.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.contact.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="contact.id!"
@@ -27,7 +27,7 @@
           @quit-team="close"
         />
       </el-tab-pane>
-      <el-tab-pane label="商机" lazy>
+      <el-tab-pane :label="t('auto.views.crm.contact.detail.index.kc4beee85')" lazy>
         <BusinessList
           :biz-id="contact.id!"
           :biz-type="BizTypeEnum.CRM_CONTACT"
@@ -54,7 +54,7 @@ import { getOperateLogPage } from '@/api/crm/operateLog'
 import ContactForm from '@/views/crm/contact/ContactForm.vue'
 import CrmTransferForm from '@/views/crm/permission/components/TransferForm.vue'
 import FollowUpList from '@/views/crm/followup/index.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContactDetail' })
 
 const message = useMessage()
@@ -111,7 +111,7 @@ const close = () => {
 const { params } = useRoute()
 onMounted(async () => {
   if (!params.id) {
-    message.warning('参数错误，联系人不能为空！')
+    message.warning(t('auto.views.crm.contact.detail.index.kae57fb13'))
     close()
     return
   }

@@ -1,5 +1,5 @@
 <template>
-  <doc-alert title="公众号标签" url="https://doc.iocoder.cn/mp/tag/" />
+  <doc-alert :title="t('auto.views.mp.tag.index.k4bac1943')" url="https://doc.iocoder.cn/mp/tag/" />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,7 +10,7 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.tag.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
       <el-form-item>
@@ -21,7 +21,7 @@
           v-hasPermi="['mp:tag:create']"
           :disabled="queryParams.accountId === 0"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke9c5073c') }}
         </el-button>
         <el-button
           type="success"
@@ -30,7 +30,7 @@
           v-hasPermi="['mp:tag:sync']"
           :disabled="queryParams.accountId === 0"
         >
-          <Icon icon="ep:refresh" class="mr-5px" /> 同步
+          <Icon icon="ep:refresh" class="mr-5px" /> {{ t('extra.k7ca6f5d0') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -39,17 +39,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="标签名称" align="center" prop="name" />
-      <el-table-column label="粉丝数" align="center" prop="count" />
+      <el-table-column :label="t('auto.views.mp.tag.index.k9f42dac6')" align="center" prop="id" />
+      <el-table-column :label="t('auto.views.mp.tag.index.k182295d4')" align="center" prop="name" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.mp.tag.index.k799620a8')"
+        align="center"
+        prop="count"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -57,7 +61,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['mp:tag:update']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             link
@@ -65,7 +69,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['mp:tag:delete']"
           >
-            删除
+            {{ t('extra.k3250aea3') }}
           </el-button>
         </template>
       </el-table-column>
@@ -87,11 +91,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as MpTagApi from '@/api/mp/tag'
 import TagForm from './TagForm.vue'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpTag' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -145,9 +148,9 @@ const handleDelete = async (id: number) => {
 /** 同步操作 */
 const handleSync = async () => {
   try {
-    await message.confirm('是否确认同步标签？')
+    await message.confirm(t('auto.views.mp.tag.index.k40108ee3'))
     await MpTagApi.syncTag(queryParams.accountId as number)
-    message.success('同步标签成功')
+    message.success(t('auto.views.mp.tag.index.k8850c001'))
     await getList()
   } catch {}
 }

@@ -25,7 +25,7 @@ import {
   StatisticsPortraitApi
 } from '@/api/crm/statistics/portrait'
 import { areaReplace } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'PortraitCustomerArea' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -38,7 +38,7 @@ const areaStatisticsList = ref<CrmStatisticCustomerAreaRespVO[]>([]) // 列表�
 /** 地图配置（全部客户） */
 const echartsOption = reactive<EChartsOption>({
   title: {
-    text: '全部客户',
+    text: t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.kc83c7ab1'),
     left: 'center'
   },
   tooltip: {
@@ -47,7 +47,10 @@ const echartsOption = reactive<EChartsOption>({
     transitionDuration: 0.2
   },
   visualMap: {
-    text: ['高', '低'],
+    text: [
+      t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.kb096b3f5'),
+      t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.kb9ee259b')
+    ],
     realtime: false,
     calculable: true,
     top: 'middle',
@@ -57,7 +60,7 @@ const echartsOption = reactive<EChartsOption>({
   },
   series: [
     {
-      name: '客户地域分布',
+      name: t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.k91d23d82'),
       type: 'map',
       map: 'china',
       roam: false,
@@ -70,7 +73,7 @@ const echartsOption = reactive<EChartsOption>({
 /** 地图配置（成交客户） */
 const echartsOption2 = reactive<EChartsOption>({
   title: {
-    text: '成交客户',
+    text: t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.k486a5a89'),
     left: 'center'
   },
   tooltip: {
@@ -79,7 +82,10 @@ const echartsOption2 = reactive<EChartsOption>({
     transitionDuration: 0.2
   },
   visualMap: {
-    text: ['高', '低'],
+    text: [
+      t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.kb096b3f5'),
+      t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.kb9ee259b')
+    ],
     realtime: false,
     calculable: true,
     top: 'middle',
@@ -89,7 +95,7 @@ const echartsOption2 = reactive<EChartsOption>({
   },
   series: [
     {
-      name: '客户地域分布',
+      name: t('auto.views.crm.statistics.portrait.components.PortraitCustomerArea.k91d23d82'),
       type: 'map',
       map: 'china',
       roam: false,

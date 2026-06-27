@@ -1,10 +1,19 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <el-form label-width="85px" :model="formData" :rules="rules">
-      <el-card header="风格" class="property-group" shadow="never">
-        <el-form-item label="背景图片" prop="bgImgUrl">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.TitleBar.property.ka4ce420c')"
+        class="property-group"
+        shadow="never"
+      >
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.TitleBar.property.k8c841866')"
+          prop="bgImgUrl"
+        >
           <UploadImg v-model="formData.bgImgUrl" width="100%" height="40px">
-            <template #tip>建议尺寸 750*80</template>
+            <template #tip>{{
+              t('auto.components.DiyEditor.components.mobile.TitleBar.property.ka13ca032')
+            }}</template>
           </UploadImg>
         </el-form-item>
         <el-form-item label="标题位置" prop="textAlign">
@@ -107,7 +116,7 @@
 <script setup lang="ts">
 import { TitleBarProperty } from './config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
-// 导航栏属性面板
+const { t } = useI18n()
 defineOptions({ name: 'TitleBarProperty' })
 
 const props = defineProps<{ modelValue: TitleBarProperty }>()

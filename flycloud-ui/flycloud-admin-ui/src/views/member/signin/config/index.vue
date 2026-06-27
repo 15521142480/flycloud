@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="会员等级、积分、签到" url="https://doc.iocoder.cn/member/level/" />
+  <doc-alert
+    :title="t('auto.views.member.signin.config.index.k1bee1a27')"
+    url="https://doc.iocoder.cn/member/level/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -9,7 +12,7 @@
       @click="openForm('create')"
       v-hasPermi="['point:sign-in-config:create']"
     >
-      <Icon icon="ep:plus" class="mr-5px" /> 新增
+      <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kc8aafb1f') }}
     </el-button>
   </ContentWrap>
 
@@ -17,14 +20,24 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column
-        label="签到天数"
+        :label="t('auto.views.member.signin.config.index.kdf7d081d')"
         align="center"
         prop="day"
-        :formatter="(_, __, cellValue) => ['第', cellValue, '天'].join(' ')"
+        :formatter="
+          (_, __, cellValue) => [t('extra.k3cbbb760'), cellValue, t('extra.k5aa4f226')].join(' ')
+        "
       />
-      <el-table-column label="奖励积分" align="center" prop="point" />
-      <el-table-column label="奖励经验" align="center" prop="experience" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.member.signin.config.index.k85ff3713')"
+        align="center"
+        prop="point"
+      />
+      <el-table-column
+        :label="t('auto.views.member.signin.config.index.k093f75ac')"
+        align="center"
+        prop="experience"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -59,11 +72,10 @@
 import * as SignInConfigApi from '@/api/member/signin/config'
 import SignInConfigForm from './SignInConfigForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'SignInConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据

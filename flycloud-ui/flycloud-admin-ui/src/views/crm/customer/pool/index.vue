@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,30 +8,30 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="客户名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.customer.pool.index.ke941d410')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入客户名称"
+          :placeholder="t('auto.views.crm.customer.pool.index.kf6b3ea8b')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机" prop="mobile">
+      <el-form-item :label="t('auto.views.crm.customer.pool.index.k9c01ad09')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
           class="!w-240px"
           clearable
-          placeholder="请输入手机"
+          :placeholder="t('auto.views.crm.customer.pool.index.k55a7cb25')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所属行业" prop="industryId">
+      <el-form-item :label="t('auto.views.crm.customer.pool.index.k51c763cf')" prop="industryId">
         <el-select
           v-model="queryParams.industryId"
           class="!w-240px"
           clearable
-          placeholder="请选择所属行业"
+          :placeholder="t('auto.views.crm.customer.pool.index.k0ca49bed')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_CUSTOMER_INDUSTRY)"
@@ -42,12 +41,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户级别" prop="level">
+      <el-form-item :label="t('auto.views.crm.customer.pool.index.kbb7208b8')" prop="level">
         <el-select
           v-model="queryParams.level"
           class="!w-240px"
           clearable
-          placeholder="请选择客户级别"
+          :placeholder="t('auto.views.crm.customer.pool.index.k5da4f85f')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_CUSTOMER_LEVEL)"
@@ -57,12 +56,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户来源" prop="source">
+      <el-form-item :label="t('auto.views.crm.customer.pool.index.kb805cdaa')" prop="source">
         <el-select
           v-model="queryParams.source"
           class="!w-240px"
           clearable
-          placeholder="请选择客户来源"
+          :placeholder="t('auto.views.crm.customer.pool.index.ke5ca47c0')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_CUSTOMER_SOURCE)"
@@ -75,11 +74,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.kcf330ba5') }}
         </el-button>
         <el-button @click="resetQuery(undefined)">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kf4e71536') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:customer:export']"
@@ -89,7 +88,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.kb6dfd26d') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -98,7 +97,13 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" label="客户名称" fixed="left" prop="name" width="160">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.customer.pool.index.ke941d410')"
+        fixed="left"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -175,7 +180,7 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as CustomerApi from '@/api/crm/customer'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmCustomerPool' })
 
 const message = useMessage() // 消息弹窗
@@ -246,7 +251,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await CustomerApi.exportCustomer(queryParams.value)
-    download.excel(data, '客户公海.xls')
+    download.excel(data, t('auto.views.crm.customer.pool.index.kced88533'))
   } catch {
   } finally {
     exportLoading.value = false

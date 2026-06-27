@@ -39,7 +39,7 @@ import Dall3 from './components/dall3/index.vue'
 import Midjourney from './components/midjourney/index.vue'
 import StableDiffusion from './components/stableDiffusion/index.vue'
 import Other from './components/other/index.vue'
-
+const { t } = useI18n()
 const imageListRef = ref<any>() // image 列表 ref
 const dall3Ref = ref<any>() // dall3(openai) ref
 const midjourneyRef = ref<any>() // midjourney ref
@@ -50,11 +50,11 @@ const otherRef = ref<any>() // stable diffusion ref
 const selectPlatform = ref(AiPlatformEnum.MIDJOURNEY)
 const platformOptions = [
   {
-    label: 'DALL3 绘画',
+    label: t('auto.views.ai.image.index.index.k0f247325'),
     value: AiPlatformEnum.OPENAI
   },
   {
-    label: 'MJ 绘画',
+    label: t('auto.views.ai.image.index.index.k2dd98bfa'),
     value: AiPlatformEnum.MIDJOURNEY
   },
   {
@@ -62,7 +62,7 @@ const platformOptions = [
     value: AiPlatformEnum.STABLE_DIFFUSION
   },
   {
-    label: '其它',
+    label: t('auto.views.ai.image.index.index.k295c71ff'),
     value: 'other'
   }
 ]

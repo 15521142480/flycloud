@@ -7,19 +7,31 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="签到天数" prop="day">
+      <el-form-item
+        :label="t('auto.views.member.signin.config.SignInConfigForm.kdf7d081d')"
+        prop="day"
+      >
         <el-input-number v-model="formData.day" :min="1" :max="7" :precision="0" />
         <el-text class="mx-1" style="margin-left: 10px" type="danger">
-          只允许设置 1-7，默认签到 7 天为一个周期
+          {{ t('extra.k7abbc9bc') }}
         </el-text>
       </el-form-item>
-      <el-form-item label="奖励积分" prop="point">
+      <el-form-item
+        :label="t('auto.views.member.signin.config.SignInConfigForm.k85ff3713')"
+        prop="point"
+      >
         <el-input-number v-model="formData.point" :min="0" :precision="0" />
       </el-form-item>
-      <el-form-item label="奖励经验" prop="experience">
+      <el-form-item
+        :label="t('auto.views.member.signin.config.SignInConfigForm.k093f75ac')"
+        prop="experience"
+      >
         <el-input-number v-model="formData.experience" :min="0" :precision="0" />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.member.signin.config.SignInConfigForm.k6bbda1b1')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -32,8 +44,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.member.signin.config.SignInConfigForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.signin.config.SignInConfigForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -41,8 +57,7 @@
 import * as SignInConfigApi from '@/api/member/signin/config'
 import { CommonStatusEnum } from '@/utils/constants'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -53,7 +68,7 @@ const formData = ref<SignInConfigApi.SignInConfigVO>({} as SignInConfigApi.SignI
 // 奖励校验规则
 const awardValidator = (rule: any, _value: any, callback: any) => {
   if (!formData.value.point && !formData.value.experience) {
-    callback(new Error('奖励积分与奖励经验至少配置一个'))
+    callback(new Error(t('auto.views.member.signin.config.SignInConfigForm.k92ce83e2')))
     return
   }
 
@@ -63,13 +78,27 @@ const awardValidator = (rule: any, _value: any, callback: any) => {
   callback()
 }
 const formRules = reactive({
-  day: [{ required: true, message: '签到天数不能空', trigger: 'blur' }],
+  day: [
+    {
+      required: true,
+      message: t('auto.views.member.signin.config.SignInConfigForm.k1d826744'),
+      trigger: 'blur'
+    }
+  ],
   point: [
-    { required: true, message: '奖励积分不能空', trigger: 'blur' },
+    {
+      required: true,
+      message: t('auto.views.member.signin.config.SignInConfigForm.k07f3eb34'),
+      trigger: 'blur'
+    },
     { validator: awardValidator, trigger: 'blur' }
   ],
   experience: [
-    { required: true, message: '奖励经验不能空', trigger: 'blur' },
+    {
+      required: true,
+      message: t('auto.views.member.signin.config.SignInConfigForm.k26ec84d5'),
+      trigger: 'blur'
+    },
     { validator: awardValidator, trigger: 'blur' }
   ]
 })

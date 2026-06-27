@@ -1,56 +1,66 @@
 <template>
   <ContentWrap>
     <!-- 订单信息 -->
-    <el-descriptions title="订单信息">
-      <el-descriptions-item label="订单号: ">{{ formData.orderNo }}</el-descriptions-item>
-      <el-descriptions-item label="配送方式: ">
+    <el-descriptions :title="t('auto.views.mall.trade.afterSale.detail.index.k43b06de2')">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k9820edd2')">{{
+        formData.orderNo
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k8e7a820e')">
         <dict-tag :type="DICT_TYPE.TRADE_DELIVERY_TYPE" :value="formData.order.deliveryType" />
       </el-descriptions-item>
-      <el-descriptions-item label="订单类型: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kccc1043a')">
         <dict-tag :type="DICT_TYPE.TRADE_ORDER_TYPE" :value="formData.order.type" />
       </el-descriptions-item>
-      <el-descriptions-item label="收货人: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k022b027f')">
         {{ formData.order.receiverName }}
       </el-descriptions-item>
-      <el-descriptions-item label="买家留言: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.ke3fabec0')">
         {{ formData.order.userRemark }}
       </el-descriptions-item>
-      <el-descriptions-item label="订单来源: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k6c8104c1')">
         <dict-tag :type="DICT_TYPE.TERMINAL" :value="formData.order.terminal" />
       </el-descriptions-item>
-      <el-descriptions-item label="联系电话: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.ka90ca165')">
         {{ formData.order.receiverMobile }}
       </el-descriptions-item>
-      <el-descriptions-item label="商家备注: ">{{ formData.order.remark }}</el-descriptions-item>
-      <el-descriptions-item label="支付单号: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k6718a4d1')">{{
+        formData.order.remark
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kfa7bd390')">
         {{ formData.order.payOrderId }}
       </el-descriptions-item>
-      <el-descriptions-item label="付款方式: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k835299d9')">
         <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="formData.order.payChannelCode" />
       </el-descriptions-item>
-      <el-descriptions-item label="买家: ">{{ formData?.user?.name }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k2a120ba7')">{{
+        formData?.user?.name
+      }}</el-descriptions-item>
     </el-descriptions>
 
     <!-- 售后信息 -->
-    <el-descriptions title="售后信息">
-      <el-descriptions-item label="退款编号: ">{{ formData.no }}</el-descriptions-item>
-      <el-descriptions-item label="申请时间: ">
+    <el-descriptions :title="t('auto.views.mall.trade.afterSale.detail.index.k18e5909d')">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kbe0b3129')">{{
+        formData.no
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kba6b1f3f')">
         {{ formatDate(formData.auditTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="售后类型: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kecc3b8d1')">
         <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_TYPE" :value="formData.type" />
       </el-descriptions-item>
-      <el-descriptions-item label="售后方式: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kdda7dde9')">
         <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_WAY" :value="formData.way" />
       </el-descriptions-item>
-      <el-descriptions-item label="退款金额: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k14fd98b9')">
         {{ fenToYuan(formData.refundPrice) }}
       </el-descriptions-item>
-      <el-descriptions-item label="退款原因: ">{{ formData.applyReason }}</el-descriptions-item>
-      <el-descriptions-item label="补充描述: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kdb1dc7b8')">{{
+        formData.applyReason
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k6994971e')">
         {{ formData.applyDescription }}
       </el-descriptions-item>
-      <el-descriptions-item label="凭证图片: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.ke683f045')">
         <el-image
           v-for="(item, index) in formData.applyPicUrls"
           :key="index"
@@ -62,36 +72,49 @@
     </el-descriptions>
 
     <!-- 退款状态 -->
-    <el-descriptions :column="1" title="退款状态">
-      <el-descriptions-item label="退款状态: ">
+    <el-descriptions
+      :column="1"
+      :title="t('auto.views.mall.trade.afterSale.detail.index.k7d1f4b47')"
+    >
+      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.kbef630bd')">
         <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_STATUS" :value="formData.status" />
       </el-descriptions-item>
       <el-descriptions-item label-class-name="no-colon">
-        <el-button v-if="formData.status === 10" type="primary" @click="agree">同意售后</el-button>
+        <el-button v-if="formData.status === 10" type="primary" @click="agree">{{
+          t('auto.views.mall.trade.afterSale.detail.index.ka068fe4d')
+        }}</el-button>
         <el-button v-if="formData.status === 10" type="primary" @click="disagree">
-          拒绝售后
+          {{ t('extra.k168e8c06') }}
         </el-button>
         <el-button v-if="formData.status === 30" type="primary" @click="receive">
-          确认收货
+          {{ t('extra.k1a177309') }}
         </el-button>
-        <el-button v-if="formData.status === 30" type="primary" @click="refuse">拒绝收货</el-button>
-        <el-button v-if="formData.status === 40" type="primary" @click="refund">确认退款</el-button>
+        <el-button v-if="formData.status === 30" type="primary" @click="refuse">{{
+          t('auto.views.mall.trade.afterSale.detail.index.k45189b49')
+        }}</el-button>
+        <el-button v-if="formData.status === 40" type="primary" @click="refund">{{
+          t('auto.views.mall.trade.afterSale.detail.index.k75452d6d')
+        }}</el-button>
       </el-descriptions-item>
       <el-descriptions-item>
-        <template #label><span style="color: red">提醒: </span></template>
-        如果未发货，请点击同意退款给买家。<br />
-        如果实际已发货，请主动与买家联系。<br />
-        如果订单整体退款后，优惠券和余额会退还给买家.
+        <template #label
+          ><span style="color: red"
+            >{{ t('auto.views.mall.trade.afterSale.detail.index.ka2af2599') }}
+          </span></template
+        >
+        {{ t('extra.k60167873') }}<br />
+        {{ t('extra.k678cfc90') }}<br />
+        {{ t('extra.k4b72e03e') }}
       </el-descriptions-item>
     </el-descriptions>
 
     <!-- 商品信息 -->
-    <el-descriptions title="商品信息">
+    <el-descriptions :title="t('extra.k9df39a91')">
       <el-descriptions-item labelClassName="no-colon">
         <el-row :gutter="20">
           <el-col :span="15">
             <el-table :data="[formData.orderItem]" border>
-              <el-table-column label="商品" prop="spuName" width="auto">
+              <el-table-column :label="t('extra.kf8353994')" prop="spuName" width="auto">
                 <template #default="{ row }">
                   {{ row.spuName }}
                   <el-tag v-for="property in row.properties" :key="property.propertyId">
@@ -152,10 +175,8 @@ import UpdateAuditReasonForm from '@/views/mall/trade/afterSale/form/AfterSaleDi
 import { createImageViewer } from '@/components/ImageViewer'
 import { isArray } from '@/utils/is'
 import { useTagsViewStore } from '@/store/modules/tagsView'
-
+const { t } = useI18n()
 defineOptions({ name: 'TradeAfterSaleDetail' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const { params } = useRoute() // 查询参数
 const { push, currentRoute } = useRouter() // 路由
@@ -188,7 +209,7 @@ const getDetail = async () => {
     const res = await AfterSaleApi.getAfterSale(id)
     // 没有表单信息则关闭页面返回
     if (res == null) {
-      message.notifyError('售后订单不存在')
+      message.notifyError(t('auto.views.mall.trade.afterSale.detail.index.k442c0159'))
       close()
     }
     formData.value = res
@@ -199,7 +220,7 @@ const getDetail = async () => {
 const agree = async () => {
   try {
     // 二次确认
-    await message.confirm('是否同意售后？')
+    await message.confirm(t('auto.views.mall.trade.afterSale.detail.index.kcfaa5627'))
     await AfterSaleApi.agree(formData.value.id)
     // 提示成功
     message.success(t('common.success'))
@@ -216,7 +237,7 @@ const disagree = async () => {
 const receive = async () => {
   try {
     // 二次确认
-    await message.confirm('是否确认收货？')
+    await message.confirm(t('auto.views.mall.trade.afterSale.detail.index.k9718c06a'))
     await AfterSaleApi.receive(formData.value.id)
     // 提示成功
     message.success(t('common.success'))
@@ -228,7 +249,7 @@ const receive = async () => {
 const refuse = async () => {
   try {
     // 二次确认
-    await message.confirm('是否拒绝收货？')
+    await message.confirm(t('auto.views.mall.trade.afterSale.detail.index.ke36db97e'))
     await AfterSaleApi.refuse(formData.value.id)
     // 提示成功
     message.success(t('common.success'))
@@ -240,7 +261,7 @@ const refuse = async () => {
 const refund = async () => {
   try {
     // 二次确认
-    await message.confirm('是否确认退款？')
+    await message.confirm(t('auto.views.mall.trade.afterSale.detail.index.k97798334'))
     await AfterSaleApi.refund(formData.value.id)
     // 提示成功
     message.success(t('common.success'))

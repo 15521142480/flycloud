@@ -1,7 +1,9 @@
 <!-- 待进入公海的客户 -->
 <template>
   <ContentWrap>
-    <div class="pb-5 text-xl"> 待进入公海的客户 </div>
+    <div class="pb-5 text-xl">
+      {{ t('auto.views.crm.backlog.components.CustomerPutPoolRemindList.k55fd4a69') }}
+    </div>
     <!-- 搜索工作栏 -->
     <el-form
       ref="queryFormRef"
@@ -10,11 +12,14 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="归属" prop="sceneType">
+      <el-form-item
+        :label="t('auto.views.crm.backlog.components.CustomerPutPoolRemindList.keee0f5ae')"
+        prop="sceneType"
+      >
         <el-select
           v-model="queryParams.sceneType"
           class="!w-240px"
-          placeholder="归属"
+          :placeholder="t('auto.views.crm.backlog.components.CustomerPutPoolRemindList.keee0f5ae')"
           @change="handleQuery"
         >
           <el-option
@@ -29,7 +34,13 @@
   </ContentWrap>
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" label="客户名称" fixed="left" prop="name" width="160">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.backlog.components.CustomerPutPoolRemindList.ke941d410')"
+        fixed="left"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -117,7 +128,7 @@ import * as CustomerApi from '@/api/crm/customer'
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { SCENE_TYPES } from './common'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmCustomerPutPoolRemindList' })
 
 const loading = ref(true) // 列表的加载中

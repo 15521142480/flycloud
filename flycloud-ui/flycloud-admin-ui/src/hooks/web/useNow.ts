@@ -1,6 +1,8 @@
 import { dateUtil } from '@/utils/dateUtil'
 import { reactive, toRefs } from 'vue'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/core'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export const useNow = (immediate = true) => {
   let timer: IntervalHandle
@@ -25,7 +27,17 @@ export const useNow = (immediate = true) => {
 
     state.year = now.get('y')
     state.month = now.get('M') + 1
-    state.week = '星期' + ['日', '一', '二', '三', '四', '五', '六'][now.day()]
+    state.week =
+      t('auto.hooks.web.useNow.ke3526937') +
+      [
+        t('auto.hooks.web.useNow.k15917f3b'),
+        t('auto.hooks.web.useNow.kd274eee8'),
+        t('auto.hooks.web.useNow.k1d5639f7'),
+        t('auto.hooks.web.useNow.k49ddb069'),
+        t('auto.hooks.web.useNow.k4f88740b'),
+        t('auto.hooks.web.useNow.k8f07f53d'),
+        t('auto.hooks.web.useNow.k3d72c724')
+      ][now.day()]
     state.day = now.get('date')
     state.hour = h
     state.minute = m

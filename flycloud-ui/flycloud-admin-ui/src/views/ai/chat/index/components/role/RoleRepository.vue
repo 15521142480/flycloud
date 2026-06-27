@@ -3,7 +3,7 @@
   <el-container class="role-container">
     <ChatRoleForm ref="formRef" @success="handlerAddRoleSuccess" />
     <!-- header  -->
-    <RoleHeader title="角色仓库" class="relative" />
+    <RoleHeader :title="t('auto.views.ai.chat.index.components.role.kd92b5239')" class="relative" />
     <!--  main  -->
     <el-main class="role-main">
       <div class="search-container">
@@ -13,7 +13,7 @@
           v-model="search"
           class="search-input"
           size="default"
-          placeholder="请输入搜索的内容"
+          :placeholder="t('auto.views.ai.chat.index.components.role.k50771129')"
           :suffix-icon="Search"
           @change="getActiveTabsRole"
         />
@@ -23,13 +23,17 @@
           @click="handlerAddRole"
           class="ml-20px"
         >
-          <Icon icon="ep:user" style="margin-right: 5px;" />
-          添加角色
+          <Icon icon="ep:user" style="margin-right: 5px" />
+          {{ t('extra.k96ab4ce4') }}
         </el-button>
       </div>
       <!-- tabs -->
       <el-tabs v-model="activeTab" class="tabs" @tab-click="handleTabsClick">
-        <el-tab-pane class="role-pane" label="我的角色" name="my-role">
+        <el-tab-pane
+          class="role-pane"
+          :label="t('auto.views.ai.chat.index.components.role.k243d2318')"
+          name="my-role"
+        >
           <RoleList
             :loading="loading"
             :role-list="myRoleList"
@@ -41,7 +45,10 @@
             class="mt-20px"
           />
         </el-tab-pane>
-        <el-tab-pane label="公共角色" name="public-role">
+        <el-tab-pane
+          :label="t('auto.views.ai.chat.index.components.role.kf993a476')"
+          name="public-role"
+        >
           <RoleCategoryList
             class="role-category-list"
             :category-list="categoryList"
@@ -64,16 +71,16 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 import RoleHeader from './RoleHeader.vue'
 import RoleList from './RoleList.vue'
 import ChatRoleForm from '@/views/ai/model/chatRole/ChatRoleForm.vue'
 import RoleCategoryList from './RoleCategoryList.vue'
-import {ChatRoleApi, ChatRolePageReqVO, ChatRoleVO} from '@/api/ai/model/chatRole'
-import {ChatConversationApi, ChatConversationVO} from '@/api/ai/chat/conversation'
-import {Search} from '@element-plus/icons-vue'
-import {TabsPaneContext} from 'element-plus'
-
+import { ChatRoleApi, ChatRolePageReqVO, ChatRoleVO } from '@/api/ai/model/chatRole'
+import { ChatConversationApi, ChatConversationVO } from '@/api/ai/chat/conversation'
+import { Search } from '@element-plus/icons-vue'
+import { TabsPaneContext } from 'element-plus'
+const { t } = useI18n()
 const router = useRouter() // 路由对象
 
 // 属性定义
@@ -90,7 +97,7 @@ const publicRoleParams = reactive({
   pageSize: 50
 })
 const publicRoleList = ref<ChatRoleVO[]>([]) // public 分页大小
-const activeCategory = ref<string>('全部') // 选择中的分类
+const activeCategory = ref<string>(t('auto.views.ai.chat.index.components.role.k778fc8f9')) // 选择中的分类
 const categoryList = ref<string[]>([]) // 角色分类类别
 
 /** tabs 点击 */
@@ -120,7 +127,10 @@ const getMyRole = async (append?: boolean) => {
 const getPublicRole = async (append?: boolean) => {
   const params: ChatRolePageReqVO = {
     ...publicRoleParams,
-    category: activeCategory.value === '全部' ? '' : activeCategory.value,
+    category:
+      activeCategory.value === t('auto.views.ai.chat.index.components.role.k778fc8f9')
+        ? ''
+        : activeCategory.value,
     name: search.value,
     publicStatus: true
   }
@@ -145,7 +155,10 @@ const getActiveTabsRole = async () => {
 
 /** 获取角色分类列表 */
 const getRoleCategoryList = async () => {
-  categoryList.value = ['全部', ...(await ChatRoleApi.getCategoryList())]
+  categoryList.value = [
+    t('auto.views.ai.chat.index.components.role.k778fc8f9'),
+    ...(await ChatRoleApi.getCategoryList())
+  ]
 }
 
 /** 处理分类点击 */
@@ -159,11 +172,11 @@ const handlerCategoryClick = async (category: string) => {
 /** 添加/修改操作 */
 const formRef = ref()
 const handlerAddRole = async () => {
-  formRef.value.open('my-create', null, '添加角色')
+  formRef.value.open('my-create', null, t('auto.views.ai.chat.index.components.role.ka02d1c92'))
 }
 /** 编辑角色 */
 const handlerCardEdit = async (role) => {
-  formRef.value.open('my-update', role.id, '编辑角色')
+  formRef.value.open('my-update', role.id, t('auto.views.ai.chat.index.components.role.kb9dcd82a'))
 }
 
 /** 添加角色成功 */

@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【营销】满减送" url="https://doc.iocoder.cn/mall/promotion-record/" />
+  <doc-alert
+    :title="t('auto.views.mall.promotion.rewardActivity.index.k8c9d26ac')"
+    url="https://doc.iocoder.cn/mall/promotion-record/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,21 +13,27 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="活动名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.index.k2b020286')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入活动名称"
+          :placeholder="t('auto.views.mall.promotion.rewardActivity.index.ka90d22e9')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="活动状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.index.k65a972d7')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          placeholder="请选择活动状态"
+          :placeholder="t('auto.views.mall.promotion.rewardActivity.index.k4b6989d1')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -34,13 +43,16 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="活动时间" prop="createTime">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.index.kabe0ecdb')"
+        prop="createTime"
+      >
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="活动结束日期"
-          start-placeholder="活动开始日期"
+          :end-placeholder="t('auto.views.mall.promotion.rewardActivity.index.kfb582984')"
+          :start-placeholder="t('auto.views.mall.promotion.rewardActivity.index.kd8e8ee4c')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -48,11 +60,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k29055e95') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k1710c1e1') }}
         </el-button>
         <el-button
           v-hasPermi="['promotion:reward-activity:create']"
@@ -61,7 +73,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k58bff045') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -70,8 +82,14 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" default-expand-all row-key="id">
-      <el-table-column label="活动名称" prop="name" />
-      <el-table-column label="活动范围" prop="productScope" >
+      <el-table-column
+        :label="t('auto.views.mall.promotion.rewardActivity.index.k2b020286')"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.rewardActivity.index.k0e49ed99')"
+        prop="productScope"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="scope.row.productScope" />
         </template>
@@ -147,11 +165,10 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as RewardActivityApi from '@/api/mall/promotion/reward/rewardActivity'
 import RewardForm from './RewardForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionRewardActivity' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -198,10 +215,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm('确认关闭该满减活动吗？')
+    await message.confirm(t('auto.views.mall.promotion.rewardActivity.index.k613b3a06'))
     // 发起关闭
     await RewardActivityApi.closeRewardActivity(id)
-    message.success('关闭成功')
+    message.success(t('auto.views.mall.promotion.rewardActivity.index.kf3cf9e86'))
     // 刷新列表
     await getList()
   } catch {}

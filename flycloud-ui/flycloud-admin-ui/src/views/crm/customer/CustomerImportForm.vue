@@ -1,15 +1,14 @@
 <!-- 客户导入窗口 -->
 <template>
-  <Dialog v-model="dialogVisible" title="客户导入" width="400">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.crm.customer.CustomerImportForm.kc7f15709')"
+    width="400"
+  >
     <div class="flex items-center my-10px">
-      <span class="mr-10px">负责人</span>
+      <span class="mr-10px">{{ t('auto.views.crm.customer.CustomerImportForm.k974d383f') }}</span>
       <el-select v-model="ownerUserId" class="!w-240px" clearable>
-        <el-option
-          v-for="item in userOptions"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        />
+        <el-option v-for="item in userOptions" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </div>
     <el-upload
@@ -24,21 +23,24 @@
       drag
     >
       <Icon icon="ep:upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text"
+        >{{ t('auto.views.crm.customer.CustomerImportForm.ke0f5f44d')
+        }}<em>{{ t('auto.views.crm.customer.CustomerImportForm.k69aaf1d5') }}</em></div
+      >
       <template #tip>
         <div class="el-upload__tip text-center">
           <div class="el-upload__tip">
             <el-checkbox v-model="updateSupport" />
-            是否更新已经存在的客户数据（“客户名称”重复）
+            {{ t('extra.kf606a5f3') }}
           </div>
-          <span>仅允许导入 xls、xlsx 格式文件。</span>
+          <span>{{ t('auto.views.crm.customer.CustomerImportForm.kd1a2a456') }}</span>
           <el-link
             :underline="false"
             style="font-size: 12px; vertical-align: baseline"
             type="primary"
             @click="importTemplate"
           >
-            下载模板
+            {{ t('extra.k0d5a627a') }}
           </el-link>
         </div>
       </template>
@@ -55,7 +57,7 @@ import download from '@/utils/download'
 import type { UploadUserFile } from 'element-plus'
 import * as UserApi from '@/api/system/user'
 import { useUserStore } from '@/store/modules/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemUserImportForm' })
 
 const message = useMessage() // 消息弹窗
@@ -81,7 +83,7 @@ defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 /** 提交表单 */
 const submitForm = async () => {
   if (fileList.value.length == 0) {
-    message.error('请上传文件')
+    message.error(t('auto.views.crm.customer.CustomerImportForm.kc7de0f24'))
     return
   }
 
@@ -110,15 +112,24 @@ const submitFormSuccess = (response: any) => {
   }
   // 拼接提示语
   const data = response.data
-  let text = '上传成功数量：' + data.createCustomerNames.length + ';'
+  let text =
+    t('auto.views.crm.customer.CustomerImportForm.k93096dee') +
+    data.createCustomerNames.length +
+    ';'
   for (let customerName of data.createCustomerNames) {
     text += '< ' + customerName + ' >'
   }
-  text += '更新成功数量：' + data.updateCustomerNames.length + ';'
+  text +=
+    t('auto.views.crm.customer.CustomerImportForm.ke1c4795a') +
+    data.updateCustomerNames.length +
+    ';'
   for (const customerName of data.updateCustomerNames) {
     text += '< ' + customerName + ' >'
   }
-  text += '更新失败数量：' + Object.keys(data.failureCustomerNames).length + ';'
+  text +=
+    t('auto.views.crm.customer.CustomerImportForm.k13bea901') +
+    Object.keys(data.failureCustomerNames).length +
+    ';'
   for (const customerName in data.failureCustomerNames) {
     text += '< ' + customerName + ': ' + data.failureCustomerNames[customerName] + ' >'
   }
@@ -131,7 +142,7 @@ const submitFormSuccess = (response: any) => {
 
 /** 上传错误提示 */
 const submitFormError = (): void => {
-  message.error('上传失败，请您重新上传！')
+  message.error(t('auto.views.crm.customer.CustomerImportForm.kf76afca2'))
   formLoading.value = false
 }
 
@@ -147,12 +158,12 @@ const resetForm = async () => {
 
 /** 文件数超出提示 */
 const handleExceed = (): void => {
-  message.error('最多只能上传一个文件！')
+  message.error(t('auto.views.crm.customer.CustomerImportForm.k708ffe38'))
 }
 
 /** 下载模板操作 */
 const importTemplate = async () => {
   const res = await CustomerApi.importCustomerTemplate()
-  download.excel(res, '客户导入模版.xls')
+  download.excel(res, t('auto.views.crm.customer.CustomerImportForm.kb1c1aecd'))
 }
 </script>

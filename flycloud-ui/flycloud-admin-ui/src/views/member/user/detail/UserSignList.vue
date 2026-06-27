@@ -8,38 +8,45 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="签到用户" prop="name">
+      <el-form-item :label="t('auto.views.member.user.detail.UserSignList.kb864e7d5')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入签到用户"
+          :placeholder="t('auto.views.member.user.detail.UserSignList.kccc2513f')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="签到天数" prop="day">
+      <el-form-item :label="t('auto.views.member.user.detail.UserSignList.kdf7d081d')" prop="day">
         <el-input
           v-model="queryParams.day"
-          placeholder="请输入签到天数"
+          :placeholder="t('auto.views.member.user.detail.UserSignList.ke60c000c')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="签到时间" prop="createTime">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserSignList.ke7653484')"
+        prop="createTime"
+      >
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.member.user.detail.UserSignList.k1f291968')"
+          :end-placeholder="t('auto.views.member.user.detail.UserSignList.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -47,14 +54,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column
-        label="签到天数"
+        :label="t('auto.views.member.user.detail.UserSignList.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserSignList.kdf7d081d')"
         align="center"
         prop="day"
-        :formatter="(_, __, cellValue) => ['第', cellValue, '天'].join(' ')"
+        :formatter="
+          (_, __, cellValue) => [t('extra.k0c88f9c5'), cellValue, t('extra.k0ed895b2')].join(' ')
+        "
       />
-      <el-table-column label="获得积分" align="center" prop="point" width="100">
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserSignList.kdd63f6c0')"
+        align="center"
+        prop="point"
+        width="100"
+      >
         <template #default="scope">
           <el-tag v-if="scope.row.point > 0" class="ml-2" type="success" effect="dark">
             +{{ scope.row.point }}
@@ -82,7 +100,7 @@
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as SignInRecordApi from '@/api/member/signin/record'
-
+const { t } = useI18n()
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据

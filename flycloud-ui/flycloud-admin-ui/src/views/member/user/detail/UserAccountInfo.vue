@@ -2,7 +2,10 @@
   <el-descriptions :column="2">
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="svg-icon:member_level" label=" 等级 " />
+        <descriptions-item-label
+          icon="svg-icon:member_level"
+          :label="t('auto.views.member.user.detail.UserAccountInfo.k5c42c048')"
+        />
       </template>
       {{ user.levelName || '无' }}
     </el-descriptions-item>
@@ -49,7 +52,7 @@ import { DescriptionsItemLabel } from '@/components/Descriptions'
 import * as UserApi from '@/api/member/user'
 import * as WalletApi from '@/api/pay/wallet/balance'
 import { fenToYuan } from '@/utils'
-
+const { t } = useI18n()
 defineProps<{ user: UserApi.UserVO; wallet: WalletApi.WalletVO }>() // 用户信息
 </script>
 <style lang="scss" scoped>

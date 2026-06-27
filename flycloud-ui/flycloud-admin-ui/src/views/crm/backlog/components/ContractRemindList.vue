@@ -1,7 +1,9 @@
 <!-- 即将到期的合同 -->
 <template>
   <ContentWrap>
-    <div class="pb-5 text-xl"> 即将到期的合同 </div>
+    <div class="pb-5 text-xl">
+      {{ t('auto.views.crm.backlog.components.ContractRemindList.k9c295b69') }}
+    </div>
     <!-- 搜索工作栏 -->
     <el-form
       class="-mb-15px"
@@ -10,11 +12,14 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="到期状态" prop="expiryType">
+      <el-form-item
+        :label="t('auto.views.crm.backlog.components.ContractRemindList.kc411b3ba')"
+        prop="expiryType"
+      >
         <el-select
           v-model="queryParams.expiryType"
           class="!w-240px"
-          placeholder="状态"
+          :placeholder="t('common.status')"
           @change="handleQuery"
         >
           <el-option
@@ -30,8 +35,20 @@
 
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="合同编号" prop="no" width="180" />
-      <el-table-column align="center" fixed="left" label="合同名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.ContractRemindList.k17b34173')"
+        prop="no"
+        width="180"
+      />
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.ContractRemindList.kb8fbf277')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -178,7 +195,7 @@ import { fenToYuanFormat } from '@/utils/formatter'
 import { DICT_TYPE } from '@/utils/dict'
 import { CONTRACT_EXPIRY_TYPE } from './common'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据

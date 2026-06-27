@@ -165,10 +165,8 @@ import { LocaleDropdown } from '@/layout/components/LocaleDropdown'
 import { LoginStateEnum, useFormValid, useLoginState } from './components/useLogin'
 import LoginFormTitle from './components/LoginFormTitle.vue'
 import router from '@/router'
-
-defineOptions({ name: 'SocialLogin' })
-
 const { t } = useI18n()
+defineOptions({ name: 'SocialLogin' })
 const route = useRoute()
 
 const appStore = useAppStore()
@@ -198,7 +196,7 @@ const loginData = reactive({
   captchaEnable: import.meta.env.VITE_APP_CAPTCHA_ENABLE !== 'false',
   tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE !== 'false',
   loginForm: {
-    tenantName: '芋道源码',
+    tenantName: t('auto.views.login.SocialLogin.ke2d27f2f'),
     username: 'admin',
     password: 'admin123',
     captchaVerification: '',
@@ -292,7 +290,7 @@ const handleLogin = async (params) => {
     }
     loading.value = ElLoading.service({
       lock: true,
-      text: '正在加载系统中...',
+      text: t('auto.views.login.SocialLogin.k259acf4a'),
       background: 'rgba(0, 0, 0, 0.7)'
     })
     if (loginDataLoginForm.rememberMe) {

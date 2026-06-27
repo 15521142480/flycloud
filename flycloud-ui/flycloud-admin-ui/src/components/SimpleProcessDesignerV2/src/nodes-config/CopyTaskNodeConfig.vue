@@ -134,7 +134,7 @@
                   :key="idx"
                   :label="item.title"
                   :value="item.field"
-                  :disabled ="!item.required"
+                  :disabled="!item.required"
                 />
               </el-select>
             </el-form-item>
@@ -149,7 +149,7 @@
                   :key="idx"
                   :label="item.title"
                   :value="item.field"
-                  :disabled ="!item.required"
+                  :disabled="!item.required"
                 />
               </el-select>
             </el-form-item>
@@ -264,6 +264,7 @@ import {
   CopyTaskFormType
 } from '../node'
 import { defaultProps } from '@/utils/tree'
+const { t } = useI18n()
 defineOptions({
   name: 'CopyTaskNodeConfig'
 })
@@ -274,11 +275,17 @@ const props = defineProps({
   }
 })
 const deptLevelLabel = computed(() => {
-  let label = '部门负责人来源'
+  let label = t(
+    'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k668b54fc'
+  )
   if (configForm.value.candidateStrategy == CandidateStrategy.MULTI_LEVEL_DEPT_LEADER) {
-    label = label + '(指定部门向上)'
+    label =
+      label +
+      t('auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.kb8be08b6')
   } else {
-    label = label + '(发起人部门向上)'
+    label =
+      label +
+      t('auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.kd074b032')
   }
   return label
 })
@@ -305,15 +312,87 @@ const deptFieldOnFormOptions = computed(() => {
 const formRef = ref() // 表单 Ref
 // 表单校验规则
 const formRules = reactive({
-  candidateStrategy: [{ required: true, message: '抄送人设置不能为空', trigger: 'change' }],
-  userIds: [{ required: true, message: '用户不能为空', trigger: 'change' }],
-  roleIds: [{ required: true, message: '角色不能为空', trigger: 'change' }],
-  deptIds: [{ required: true, message: '部门不能为空', trigger: 'change' }],
-  userGroups: [{ required: true, message: '用户组不能为空', trigger: 'change' }],
-  postIds: [{ required: true, message: '岗位不能为空', trigger: 'change' }],
-  formUser: [{ required: true, message: '表单内用户字段不能为空', trigger: 'change' }],
-  formDept: [{ required: true, message: '表单内部门字段不能为空', trigger: 'change' }],
-  expression: [{ required: true, message: '流程表达式不能为空', trigger: 'blur' }]
+  candidateStrategy: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k7cea145b'
+      ),
+      trigger: 'change'
+    }
+  ],
+  userIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k824f0073'
+      ),
+      trigger: 'change'
+    }
+  ],
+  roleIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k9f61235b'
+      ),
+      trigger: 'change'
+    }
+  ],
+  deptIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.kf84a9d4a'
+      ),
+      trigger: 'change'
+    }
+  ],
+  userGroups: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.kb67d3ebe'
+      ),
+      trigger: 'change'
+    }
+  ],
+  postIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k4136020d'
+      ),
+      trigger: 'change'
+    }
+  ],
+  formUser: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.ka9e02991'
+      ),
+      trigger: 'change'
+    }
+  ],
+  formDept: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k6007e3e3'
+      ),
+      trigger: 'change'
+    }
+  ],
+  expression: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.CopyTaskNodeConfig.k8661997b'
+      ),
+      trigger: 'blur'
+    }
+  ]
 })
 
 const {

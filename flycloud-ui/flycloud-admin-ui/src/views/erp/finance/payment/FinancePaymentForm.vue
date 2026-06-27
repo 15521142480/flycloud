@@ -10,28 +10,41 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="付款单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.k9d7a3f87')"
+            prop="no"
+          >
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="付款时间" prop="paymentTime">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.k334ddb69')"
+            prop="paymentTime"
+          >
             <el-date-picker
               v-model="formData.paymentTime"
               type="date"
               value-format="x"
-              placeholder="选择付款时间"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.kab9c7e35')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="供应商" prop="supplierId">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.k703c9eb0')"
+            prop="supplierId"
+          >
             <el-select
               v-model="formData.supplierId"
               clearable
               filterable
-              placeholder="请选择供应商"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.k38eae8d5')"
               class="!w-1/1"
             >
               <el-option
@@ -44,12 +57,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="财务人员" prop="financeUserId">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.kb385b17a')"
+            prop="financeUserId"
+          >
             <el-select
               v-model="formData.financeUserId"
               clearable
               filterable
-              placeholder="请选择财务人员"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.k31b8c129')"
               class="!w-1/1"
             >
               <el-option
@@ -62,17 +78,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.remark')" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
               :rows="1"
-              placeholder="请输入备注"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.k57e709d9')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.k99f6fe6c')"
+            prop="fileUrl"
+          >
             <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
           </el-form-item>
         </el-col>
@@ -80,7 +99,10 @@
       <!-- 子表的表单 -->
       <ContentWrap>
         <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-          <el-tab-pane label="采购入库、退货单" name="item">
+          <el-tab-pane
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.k0721c0df')"
+            name="item"
+          >
             <FinancePaymentItemForm
               ref="itemFormRef"
               :supplier-id="formData.supplierId"
@@ -92,12 +114,15 @@
       </ContentWrap>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="付款账户" prop="accountId">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.k48eb67df')"
+            prop="accountId"
+          >
             <el-select
               v-model="formData.accountId"
               clearable
               filterable
-              placeholder="请选择结算账户"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.k0cf19ca0')"
               class="!w-1/1"
             >
               <el-option
@@ -110,23 +135,29 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="合计付款" prop="totalPrice">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.kfa52376e')"
+            prop="totalPrice"
+          >
             <el-input disabled v-model="formData.totalPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="优惠金额" prop="discountPrice">
+          <el-form-item
+            :label="t('auto.views.erp.finance.payment.FinancePaymentForm.kaab4abdb')"
+            prop="discountPrice"
+          >
             <el-input-number
               v-model="formData.discountPrice"
               controls-position="right"
               :precision="2"
-              placeholder="请输入优惠金额"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.k94da91dd')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="实际付款">
+          <el-form-item :label="t('auto.views.erp.finance.payment.FinancePaymentForm.kecd8db17')">
             <el-input
               disabled
               v-model="formData.paymentPrice"
@@ -138,9 +169,11 @@
     </el-form>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading" v-if="!disabled">
-        确 定
+        {{ t('extra.k4db65c96') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.finance.payment.FinancePaymentForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -153,9 +186,8 @@ import * as UserApi from '@/api/system/user'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
 
 /** ERP 付款单表单 */
+const { t } = useI18n()
 defineOptions({ name: 'FinancePaymentForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -177,8 +209,20 @@ const formData = ref({
   no: undefined // 订单单号，后端返回
 })
 const formRules = reactive({
-  supplierId: [{ required: true, message: '供应商不能为空', trigger: 'blur' }],
-  paymentTime: [{ required: true, message: '订单时间不能为空', trigger: 'blur' }]
+  supplierId: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.payment.FinancePaymentForm.k725399d9'),
+      trigger: 'blur'
+    }
+  ],
+  paymentTime: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.payment.FinancePaymentForm.kfa68bbd8'),
+      trigger: 'blur'
+    }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

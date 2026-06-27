@@ -53,22 +53,21 @@
     @find:return-task-nodes="findReturnTaskNodes"
   />
   <!-- 审批记录 -->
-  <el-dialog
-    :title="dialogTitle || '审批记录'"
-    v-model="dialogVisible"
-    width="1000px"
-    append-to-body
-  >
+  <el-dialog ::title="t('extra.k0375e453')" v-model="dialogVisible" width="1000px" append-to-body>
     <el-row>
       <el-table :data="selectTasks" size="small" border header-cell-class-name="table-header-gray">
         <el-table-column
-          label="序号"
+          :label="t('common.index')"
           header-align="center"
           align="center"
           type="index"
           width="50"
         />
-        <el-table-column label="审批人" min-width="100" align="center">
+        <el-table-column
+          :label="t('auto.components.SimpleProcessDesignerV2.src.nodes.UserTaskNode.k9b446de3')"
+          min-width="100"
+          align="center"
+        >
           <template #default="scope">
             {{ scope.row.assigneeUser?.name || scope.row.ownerUser?.name }}
           </template>
@@ -115,6 +114,7 @@ import NodeHandler from '../NodeHandler.vue'
 import UserTaskNodeConfig from '../nodes-config/UserTaskNodeConfig.vue'
 import { dateFormatter, formatPast2 } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
+const { t } = useI18n()
 defineOptions({
   name: 'UserTaskNode'
 })

@@ -8,20 +8,31 @@
     :rules="rules"
     label-width="120px"
   >
-    <el-form-item label="分销类型" props="subCommissionType">
+    <el-form-item
+      :label="t('auto.views.mall.product.spu.form.SkuForm.k6f988de9')"
+      props="subCommissionType"
+    >
       <el-radio-group
         v-model="formData.subCommissionType"
         class="w-80"
         @change="changeSubCommissionType"
       >
-        <el-radio :value="false">默认设置</el-radio>
-        <el-radio :value="true" class="radio">单独设置</el-radio>
+        <el-radio :value="false">{{
+          t('auto.views.mall.product.spu.form.SkuForm.ka885efb4')
+        }}</el-radio>
+        <el-radio :value="true" class="radio">{{
+          t('auto.views.mall.product.spu.form.SkuForm.k927aa674')
+        }}</el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="商品规格" props="specType">
+    <el-form-item :label="t('auto.views.mall.product.spu.form.SkuForm.k893a3a33')" props="specType">
       <el-radio-group v-model="formData.specType" class="w-80" @change="onChangeSpec">
-        <el-radio :value="false" class="radio">单规格</el-radio>
-        <el-radio :value="true">多规格</el-radio>
+        <el-radio :value="false" class="radio">{{
+          t('auto.views.mall.product.spu.form.SkuForm.ked5e5fbb')
+        }}</el-radio>
+        <el-radio :value="true">{{
+          t('auto.views.mall.product.spu.form.SkuForm.kd9d61602')
+        }}</el-radio>
       </el-radio-group>
     </el-form-item>
     <!-- 多规格添加-->
@@ -33,8 +44,13 @@
         :rule-config="ruleConfig"
       />
     </el-form-item>
-    <el-form-item v-if="formData.specType" label="商品属性">
-      <el-button class="mb-10px mr-15px" @click="attributesAddFormRef.open">添加属性</el-button>
+    <el-form-item
+      v-if="formData.specType"
+      :label="t('auto.views.mall.product.spu.form.SkuForm.kca215e9a')"
+    >
+      <el-button class="mb-10px mr-15px" @click="attributesAddFormRef.open">{{
+        t('auto.views.mall.product.spu.form.SkuForm.k5a551cbe')
+      }}</el-button>
       <ProductAttributes
         :is-detail="isDetail"
         :property-list="propertyList"
@@ -42,10 +58,13 @@
       />
     </el-form-item>
     <template v-if="formData.specType && propertyList.length > 0">
-      <el-form-item v-if="!isDetail" label="批量设置">
+      <el-form-item
+        v-if="!isDetail"
+        :label="t('auto.views.mall.product.spu.form.SkuForm.kb0cd4f28')"
+      >
         <SkuList :is-batch="true" :prop-form-data="formData" :property-list="propertyList" />
       </el-form-item>
-      <el-form-item label="规格列表">
+      <el-form-item :label="t('auto.views.mall.product.spu.form.SkuForm.k79d86280')">
         <SkuList
           ref="skuListRef"
           :is-detail="isDetail"
@@ -73,7 +92,7 @@ import {
 import ProductAttributes from './ProductAttributes.vue'
 import ProductPropertyAddForm from './ProductPropertyAddForm.vue'
 import type { Spu } from '@/api/mall/product/spu'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductSpuSkuForm' })
 
 // sku 相关属性校验规则
@@ -81,22 +100,22 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'stock',
     rule: (arg) => arg >= 0,
-    message: '商品库存必须大于等于 1 ！！！'
+    message: t('auto.views.mall.product.spu.form.SkuForm.k43442ade')
   },
   {
     name: 'price',
     rule: (arg) => arg >= 0.01,
-    message: '商品销售价格必须大于等于 0.01 元！！！'
+    message: t('auto.views.mall.product.spu.form.SkuForm.kc32f0da9')
   },
   {
     name: 'marketPrice',
     rule: (arg) => arg >= 0.01,
-    message: '商品市场价格必须大于等于 0.01 元！！！'
+    message: t('auto.views.mall.product.spu.form.SkuForm.k76b618d6')
   },
   {
     name: 'costPrice',
     rule: (arg) => arg >= 0.01,
-    message: '商品成本价格必须大于等于 0.00 元！！！'
+    message: t('auto.views.mall.product.spu.form.SkuForm.k17ae4663')
   }
 ]
 
@@ -150,7 +169,7 @@ const validate = async () => {
     // 校验通过更新数据
     Object.assign(props.propFormData, formData)
   } catch (e) {
-    message.error('【库存价格】不完善，请填写相关信息')
+    message.error(t('auto.views.mall.product.spu.form.SkuForm.k30cb7ed8'))
     emit('update:activeName', 'sku')
     throw e // 目的截断之后的校验
   }

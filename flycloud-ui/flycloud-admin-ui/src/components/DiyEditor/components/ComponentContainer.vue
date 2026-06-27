@@ -15,22 +15,28 @@
       <!-- 右侧：组件操作工具栏 -->
       <div class="component-toolbar" v-if="showToolbar && component.name && active">
         <VerticalButtonGroup type="primary">
-          <el-tooltip content="上移" placement="right">
+          <el-tooltip
+            :content="t('auto.components.DiyEditor.components.ComponentContainer.k8a0c8397')"
+            placement="right"
+          >
             <el-button :disabled="!canMoveUp" @click.stop="handleMoveComponent(-1)">
               <Icon icon="ep:arrow-up" />
             </el-button>
           </el-tooltip>
-          <el-tooltip content="下移" placement="right">
+          <el-tooltip
+            :content="t('auto.components.DiyEditor.components.ComponentContainer.k05c46fa3')"
+            placement="right"
+          >
             <el-button :disabled="!canMoveDown" @click.stop="handleMoveComponent(1)">
               <Icon icon="ep:arrow-down" />
             </el-button>
           </el-tooltip>
-          <el-tooltip content="复制" placement="right">
+          <el-tooltip :content="t('common.copy')" placement="right">
             <el-button @click.stop="handleCopyComponent()">
               <Icon icon="ep:copy-document" />
             </el-button>
           </el-tooltip>
-          <el-tooltip content="删除" placement="right">
+          <el-tooltip :content="t('common.delete')" placement="right">
             <el-button @click.stop="handleDeleteComponent()">
               <Icon icon="ep:delete" />
             </el-button>
@@ -52,11 +58,11 @@ export default {
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
 import { propTypes } from '@/utils/propTypes'
 import { object } from 'vue-types'
-
 /**
  * 组件容器：目前在中间部分
  * 用于包裹组件，为组件提供 背景、外边距、内边距、边框等样式
  */
+const { t } = useI18n()
 defineOptions({ name: 'ComponentContainer' })
 
 type DiyComponentWithStyle = DiyComponent<any> & { property: { style?: ComponentStyle } }

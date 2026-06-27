@@ -1,3 +1,4 @@
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  * Created by 芋道源码
  *
@@ -10,6 +11,7 @@
 /**
  * AI 平台的枚举
  */
+const { t } = useI18n()
 export const AiPlatformEnum = {
   TONG_YI: 'TongYi', // 阿里
   YI_YAN: 'YiYan', // 百度
@@ -26,15 +28,15 @@ export const AiPlatformEnum = {
 export const OtherPlatformEnum: ImageModelVO[] = [
   {
     key: AiPlatformEnum.TONG_YI,
-    name: '通义万相'
+    name: t('auto.views.ai.utils.constants.kd628b987')
   },
   {
     key: AiPlatformEnum.YI_YAN,
-    name: '百度千帆'
+    name: t('auto.views.ai.utils.constants.k746b2682')
   },
   {
     key: AiPlatformEnum.ZHI_PU,
-    name: '智谱 AI'
+    name: t('auto.views.ai.utils.constants.k48ddc766')
   }
 ]
 
@@ -66,19 +68,19 @@ export enum AiWriteTypeEnum {
 
 // 表格展示对照map
 export const AiWriteTypeTableRender = {
-  [AiWriteTypeEnum.WRITING]: '撰写',
-  [AiWriteTypeEnum.REPLY]: '回复'
+  [AiWriteTypeEnum.WRITING]: t('auto.views.ai.utils.constants.kf90124c8'),
+  [AiWriteTypeEnum.REPLY]: t('auto.views.ai.utils.constants.kffc78509')
 }
 
 // ========== 【图片 UI】相关的枚举 ==========
 
 export const ImageHotWords = [
-  '中国旗袍',
-  '古装美女',
-  '卡通头像',
-  '机甲战士',
-  '童话小屋',
-  '中国长城'
+  t('auto.views.ai.utils.constants.kfdd5721b'),
+  t('auto.views.ai.utils.constants.k529a16ca'),
+  t('auto.views.ai.utils.constants.kaf9f994a'),
+  t('auto.views.ai.utils.constants.k198e08fc'),
+  t('auto.views.ai.utils.constants.ked18e123'),
+  t('auto.views.ai.utils.constants.k981d9119')
 ] // 图片热词
 
 export const ImageHotEnglishWords = [
@@ -283,12 +285,12 @@ export const Dall3Models: ImageModelVO[] = [
 export const Dall3StyleList: ImageModelVO[] = [
   {
     key: 'vivid',
-    name: '清晰',
+    name: t('auto.views.ai.utils.constants.k18a72ea0'),
     image: `/src/assets/ai/qingxi.jpg`
   },
   {
     key: 'natural',
-    name: '自然',
+    name: t('auto.views.ai.utils.constants.kd63f6199'),
     image: `/src/assets/ai/ziran.jpg`
   }
 ]
@@ -407,75 +409,16 @@ export const NijiVersionList = [
 export const WriteExample = {
   write: {
     prompt: 'vue',
-    data: 'Vue.js 是一种用于构建用户界面的渐进式 JavaScript 框架。它的核心库只关注视图层，易于上手，同时也便于与其他库或已有项目整合。\n\nVue.js 的特点包括：\n- 响应式的数据绑定：Vue.js 会自动将数据与 DOM 同步，使得状态管理变得更加简单。\n- 组件化：Vue.js 允许开发者通过小型、独立和通常可复用的组件构建大型应用。\n- 虚拟 DOM：Vue.js 使用虚拟 DOM 实现快速渲染，提高了性能。\n\n在 Vue.js 中，一个典型的应用结构可能包括：\n1. 根实例：每个 Vue 应用都需要一个根实例作为入口点。\n2. 组件系统：可以创建自定义的可复用组件。\n3. 指令：特殊的带有前缀 v- 的属性，为 DOM 元素提供特殊的行为。\n4. 插值：用于文本内容，将数据动态地插入到 HTML。\n5. 计算属性和侦听器：用于处理数据的复杂逻辑和响应数据变化。\n6. 条件渲染：根据条件决定元素的渲染。\n7. 列表渲染：用于显示列表数据。\n8. 事件处理：响应用户交互。\n9. 表单输入绑定：处理表单输入和验证。\n10. 组件生命周期钩子：在组件的不同阶段执行特定的函数。\n\nVue.js 还提供了官方的路由器 Vue Router 和状态管理库 Vuex，以支持构建复杂的单页应用（SPA）。\n\n在开发过程中，开发者通常会使用 Vue CLI，这是一个强大的命令行工具，用于快速生成 Vue 项目脚手架，集成了诸如 Babel、Webpack 等现代前端工具，以及热重载、代码检测等开发体验优化功能。\n\nVue.js 的生态系统还包括大量的第三方库和插件，如 Vuetify（UI 组件库）、Vue Test Utils（测试工具）等，这些都极大地丰富了 Vue.js 的开发生态。\n\n总的来说，Vue.js 是一个灵活、高效的前端框架，适合从小型项目到大型企业级应用的开发。它的易用性、灵活性和强大的社区支持使其成为许多开发者的首选框架之一。'
+    data: t('extra.k31c1dc82')
   },
   reply: {
-    originalContent: '领导，我想请假',
-    prompt: '不批',
-    data: '您的请假申请已收悉，经核实和考虑，暂时无法批准您的请假申请。\n\n如有特殊情况或紧急事务，请及时与我联系。\n\n祝工作顺利。\n\n谢谢。'
+    originalContent: t('auto.views.ai.utils.constants.k42d32dc8'),
+    prompt: t('auto.views.ai.utils.constants.k8c19bb77'),
+    data: t('extra.k3ceabbd6')
   }
 }
 
 // ========== 【思维导图 UI】相关的枚举 ==========
 
 /** 思维导图已有内容生成示例 **/
-export const MindMapContentExample = `# Java 技术栈
-
-## 核心技术
-### Java SE
-### Java EE
-
-## 框架
-### Spring
-#### Spring Boot
-#### Spring MVC
-#### Spring Data
-### Hibernate
-### MyBatis
-
-## 构建工具
-### Maven
-### Gradle
-
-## 版本控制
-### Git
-### SVN
-
-## 测试工具
-### JUnit
-### Mockito
-### Selenium
-
-## 应用服务器
-### Tomcat
-### Jetty
-### WildFly
-
-## 数据库
-### MySQL
-### PostgreSQL
-### Oracle
-### MongoDB
-
-## 消息队列
-### Kafka
-### RabbitMQ
-### ActiveMQ
-
-## 微服务
-### Spring Cloud
-### Dubbo
-
-## 容器化
-### Docker
-### Kubernetes
-
-## 云服务
-### AWS
-### Azure
-### Google Cloud
-
-## 开发工具
-### IntelliJ IDEA
-### Eclipse
-### Visual Studio Code`
+export const MindMapContentExample = t('extra.kd22e4bc1')

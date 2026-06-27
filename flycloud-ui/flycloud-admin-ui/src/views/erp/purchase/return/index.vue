@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,21 +8,21 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="退货单号" prop="no">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k227ee7e4')" prop="no">
         <el-input
           v-model="queryParams.no"
-          placeholder="请输入退货单号"
+          :placeholder="t('auto.views.erp.purchase.return.index.k5f251d68')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="产品" prop="productId">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k6cc98552')" prop="productId">
         <el-select
           v-model="queryParams.productId"
           clearable
           filterable
-          placeholder="请选择产品"
+          :placeholder="t('auto.views.erp.purchase.return.index.k59a0d3d1')"
           class="!w-240px"
         >
           <el-option
@@ -34,23 +33,23 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="退货时间" prop="inTime">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k11f23e81')" prop="inTime">
         <el-date-picker
           v-model="queryParams.inTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.erp.purchase.return.index.k1f291968')"
+          :end-placeholder="t('auto.views.erp.purchase.return.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="供应商" prop="supplierId">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k703c9eb0')" prop="supplierId">
         <el-select
           v-model="queryParams.supplierId"
           clearable
           filterable
-          placeholder="请选择供供应商"
+          :placeholder="t('auto.views.erp.purchase.return.index.kdbd21f67')"
           class="!w-240px"
         >
           <el-option
@@ -61,12 +60,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="仓库" prop="warehouseId">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k55914e1c')" prop="warehouseId">
         <el-select
           v-model="queryParams.warehouseId"
           clearable
           filterable
-          placeholder="请选择仓库"
+          :placeholder="t('auto.views.erp.purchase.return.index.k7aaa3bbb')"
           class="!w-240px"
         >
           <el-option
@@ -77,37 +76,32 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建人" prop="creator">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k787ad1de')" prop="creator">
         <el-select
           v-model="queryParams.creator"
           clearable
           filterable
-          placeholder="请选择创建人"
+          :placeholder="t('auto.views.erp.purchase.return.index.k953a49d5')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="关联订单" prop="orderNo">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k969d961c')" prop="orderNo">
         <el-input
           v-model="queryParams.orderNo"
-          placeholder="请输入关联订单"
+          :placeholder="t('auto.views.erp.purchase.return.index.k58b223d6')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="结算账户" prop="accountId">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.k573e8d23')" prop="accountId">
         <el-select
           v-model="queryParams.accountId"
           clearable
           filterable
-          placeholder="请选择结算账户"
+          :placeholder="t('auto.views.erp.purchase.return.index.k0cf19ca0')"
           class="!w-240px"
         >
           <el-option
@@ -118,22 +112,25 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="退款状态" prop="refundStatus">
+      <el-form-item
+        :label="t('auto.views.erp.purchase.return.index.k7d1f4b47')"
+        prop="refundStatus"
+      >
         <el-select
           v-model="queryParams.refundStatus"
-          placeholder="请选择退款状态"
+          :placeholder="t('auto.views.erp.purchase.return.index.k4d97c509')"
           clearable
           class="!w-240px"
         >
-          <el-option label="未退款" value="0" />
-          <el-option label="部分退款" value="1" />
-          <el-option label="全部退款" value="2" />
+          <el-option :label="t('auto.views.erp.purchase.return.index.kbbd1ee81')" value="0" />
+          <el-option :label="t('auto.views.erp.purchase.return.index.kbe707265')" value="1" />
+          <el-option :label="t('auto.views.erp.purchase.return.index.ka95437c8')" value="2" />
         </el-select>
       </el-form-item>
-      <el-form-item label="审核状态" prop="status">
+      <el-form-item :label="t('auto.views.erp.purchase.return.index.ka62215e6')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择审核状态"
+          :placeholder="t('auto.views.erp.purchase.return.index.k630ed508')"
           clearable
           class="!w-240px"
         >
@@ -145,25 +142,29 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item :label="t('common.remark')" prop="remark">
         <el-input
           v-model="queryParams.remark"
-          placeholder="请输入备注"
+          :placeholder="t('auto.views.erp.purchase.return.index.k57e709d9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:purchase-return:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k8c82b535') }}
         </el-button>
         <el-button
           type="success"
@@ -172,7 +173,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:purchase-return:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k055d4d5b') }}
         </el-button>
         <el-button
           type="danger"
@@ -181,7 +182,7 @@
           v-hasPermi="['erp:purchase-return:delete']"
           :disabled="selectionList.length === 0"
         >
-          <Icon icon="ep:delete" class="mr-5px" /> 删除
+          <Icon icon="ep:delete" class="mr-5px" /> {{ t('extra.k21cd98df') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -196,37 +197,59 @@
       :show-overflow-tooltip="true"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column width="30" label="选择" type="selection" />
-      <el-table-column min-width="180" label="退货单号" align="center" prop="no" />
-      <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
-      <el-table-column label="供应商" align="center" prop="supplierName" />
       <el-table-column
-        label="退货时间"
+        width="30"
+        :label="t('auto.views.erp.purchase.return.index.k70b20820')"
+        type="selection"
+      />
+      <el-table-column
+        min-width="180"
+        :label="t('auto.views.erp.purchase.return.index.k227ee7e4')"
+        align="center"
+        prop="no"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.return.index.k90095856')"
+        align="center"
+        prop="productNames"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.return.index.k703c9eb0')"
+        align="center"
+        prop="supplierName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.return.index.k11f23e81')"
         align="center"
         prop="returnTime"
         :formatter="dateFormatter2"
         width="120px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" />
       <el-table-column
-        label="总数量"
+        :label="t('auto.views.erp.purchase.return.index.k787ad1de')"
+        align="center"
+        prop="creatorName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.return.index.kc2bdcf08')"
         align="center"
         prop="totalCount"
         :formatter="erpCountTableColumnFormatter"
       />
       <el-table-column
-        label="应退金额"
+        :label="t('auto.views.erp.purchase.return.index.kde1d144b')"
         align="center"
         prop="totalPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="已退金额"
+        :label="t('auto.views.erp.purchase.return.index.ke626b428')"
         align="center"
         prop="refundPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="未退金额" align="center">
+      <el-table-column :label="t('auto.views.erp.purchase.return.index.kfff7e95a')" align="center">
         <template #default="scope">
           <span v-if="scope.row.refundPrice === scope.row.totalPrice">0</span>
           <el-tag type="danger" v-else>
@@ -318,10 +341,10 @@ import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
 
 /** ERP 采购退货列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpPurchaseReturn' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<PurchaseReturnVO[]>([]) // 列表的数据
@@ -397,10 +420,24 @@ const handleDelete = async (ids: number[]) => {
 const handleUpdateStatus = async (id: number, status: number) => {
   try {
     // 审批的二次确认
-    await message.confirm(`确定${status === 20 ? '审批' : '反审批'}该退货吗？`)
+    await message.confirm(
+      t('extra.k2a1e7db5', {
+        p0:
+          status === 20
+            ? t('auto.views.erp.purchase.return.index.k5ce60cb7')
+            : t('auto.views.erp.purchase.return.index.k5e6e19f7')
+      })
+    )
     // 发起审批
     await PurchaseReturnApi.updatePurchaseReturnStatus(id, status)
-    message.success(`${status === 20 ? '审批' : '反审批'}成功`)
+    message.success(
+      t('extra.k0cb617d8', {
+        p0:
+          status === 20
+            ? t('auto.views.erp.purchase.return.index.k5ce60cb7')
+            : t('auto.views.erp.purchase.return.index.k5e6e19f7')
+      })
+    )
     // 刷新列表
     await getList()
   } catch {}
@@ -414,7 +451,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await PurchaseReturnApi.exportPurchaseReturn(queryParams)
-    download.excel(data, '采购退货.xls')
+    download.excel(data, t('auto.views.erp.purchase.return.index.kecd176a1'))
   } catch {
   } finally {
     exportLoading.value = false

@@ -8,10 +8,13 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="业务类型" prop="bizType">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserPointList.k2268f2d5')"
+        prop="bizType"
+      >
         <el-select
           v-model="queryParams.bizType"
-          placeholder="请选择业务类型"
+          :placeholder="t('auto.views.member.user.detail.UserPointList.kb6423b8b')"
           clearable
           class="!w-240px"
         >
@@ -23,22 +26,28 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="积分标题" prop="title">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserPointList.k8a90add2')"
+        prop="title"
+      >
         <el-input
           v-model="queryParams.title"
-          placeholder="请输入积分标题"
+          :placeholder="t('auto.views.member.user.detail.UserPointList.k70e186ff')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="获得时间" prop="createDate">
+      <el-form-item
+        :label="t('auto.views.member.user.detail.UserPointList.k350cb33c')"
+        prop="createDate"
+      >
         <el-date-picker
           v-model="queryParams.createDate"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.member.user.detail.UserPointList.k1f291968')"
+          :end-placeholder="t('auto.views.member.user.detail.UserPointList.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
@@ -46,11 +55,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon icon="ep:search" class="mr-5px" />
-          搜索
+          {{ t('extra.k68728cda') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon icon="ep:refresh" class="mr-5px" />
-          重置
+          {{ t('extra.kac217246') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -59,15 +68,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="180" />
       <el-table-column
-        label="获得时间"
+        :label="t('auto.views.member.user.detail.UserPointList.k9f42dac6')"
+        align="center"
+        prop="id"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserPointList.k350cb33c')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180"
       />
-      <el-table-column label="获得积分" align="center" prop="point" width="100">
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserPointList.kdd63f6c0')"
+        align="center"
+        prop="point"
+        width="100"
+      >
         <template #default="scope">
           <el-tag v-if="scope.row.point > 0" class="ml-2" type="success" effect="dark">
             +{{ scope.row.point }}
@@ -99,7 +118,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as RecordApi from '@/api//member/point/record'
-
+const { t } = useI18n()
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据

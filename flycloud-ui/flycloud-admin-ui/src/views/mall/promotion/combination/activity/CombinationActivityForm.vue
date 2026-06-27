@@ -9,14 +9,22 @@
       class="mt-10px"
     >
       <template #spuId>
-        <el-button @click="spuSelectRef.open()">选择商品</el-button>
+        <el-button @click="spuSelectRef.open()">{{
+          t('auto.views.mall.promotion.combination.activity.CombinationActivityForm.kf4d8d03c')
+        }}</el-button>
         <SpuAndSkuList
           ref="spuAndSkuListRef"
           :rule-config="ruleConfig"
           :spu-list="spuList"
           :spu-property-list-p="spuPropertyList"
         >
-          <el-table-column align="center" label="拼团价格(元)" min-width="168">
+          <el-table-column
+            align="center"
+            :label="
+              t('auto.views.mall.promotion.combination.activity.CombinationActivityForm.k1b1331f2')
+            "
+            min-width="168"
+          >
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.combinationPrice"
@@ -46,10 +54,8 @@ import { getPropertyList, RuleConfig } from '@/views/mall/product/spu/components
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { convertToInteger, formatToFraction } from '@/utils'
 import { cloneDeep } from 'lodash-es'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionCombinationActivityForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -68,7 +74,7 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'productConfig.combinationPrice',
     rule: (arg) => arg >= 0.01,
-    message: '商品拼团价格不能小于0.01 ！！！'
+    message: t('auto.views.mall.promotion.combination.activity.CombinationActivityForm.kee6191ab')
   }
 ]
 const selectSpu = (spuId: number, skuIds: number[]) => {
@@ -135,7 +141,11 @@ const open = async (type: string, id?: number) => {
       const data = (await CombinationActivityApi.getCombinationActivity(
         id
       )) as CombinationActivityApi.CombinationActivityVO
-      await getSpuDetails(data.spuId!, data.products?.map((sku) => sku.skuId), data.products)
+      await getSpuDetails(
+        data.spuId!,
+        data.products?.map((sku) => sku.skuId),
+        data.products
+      )
       formRef.value.setValues(data)
     } finally {
       formLoading.value = false

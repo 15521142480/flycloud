@@ -1,5 +1,5 @@
 <template>
-<!--  <doc-alert title="报表设计器" url="https://doc.iocoder.cn/report/" />-->
+  <!--  <doc-alert :title="t('extra.kdc8c9c36')" url="https://doc.iocoder.cn/report/" />-->
 
   <ContentWrap :bodyStyle="{ padding: '0px' }" class="!mb-0">
     <IFrame :src="src" />
@@ -8,6 +8,7 @@
 <script lang="ts" setup>
 import { getRefreshToken } from '@/utils/auth'
 
+const { t } = useI18n()
 defineOptions({ name: 'JimuReport' })
 
 // 使用 getRefreshToken() 方法，而不使用 getAccessToken() 方法的原因：积木报表无法方便的刷新访问令牌

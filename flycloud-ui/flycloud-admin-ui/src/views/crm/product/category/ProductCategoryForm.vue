@@ -7,9 +7,19 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="父级分类" prop="parentId">
-        <el-select v-model="formData.parentId" placeholder="请选择上级分类">
-          <el-option :key="0" label="顶级分类" :value="0" />
+      <el-form-item
+        :label="t('auto.views.crm.product.category.ProductCategoryForm.k86b363d8')"
+        prop="parentId"
+      >
+        <el-select
+          v-model="formData.parentId"
+          :placeholder="t('auto.views.crm.product.category.ProductCategoryForm.k3ba62bd1')"
+        >
+          <el-option
+            :key="0"
+            :label="t('auto.views.crm.product.category.ProductCategoryForm.k419eab88')"
+            :value="0"
+          />
           <el-option
             v-for="item in productCategoryList"
             :key="item.id"
@@ -18,22 +28,30 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名称" />
+      <el-form-item
+        :label="t('auto.views.crm.product.category.ProductCategoryForm.k1be7ae4f')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.crm.product.category.ProductCategoryForm.kc2afb255')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.crm.product.category.ProductCategoryForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.product.category.ProductCategoryForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script setup lang="ts">
 import * as ProductCategoryApi from '@/api/crm/product/category'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmProductCategoryForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -46,8 +64,20 @@ const formData = ref({
   parentId: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-  parentId: [{ required: true, message: '父级分类不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.crm.product.category.ProductCategoryForm.kca898456'),
+      trigger: 'blur'
+    }
+  ],
+  parentId: [
+    {
+      required: true,
+      message: t('auto.views.crm.product.category.ProductCategoryForm.k5ac5a400'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const productCategoryList = ref<any[]>([]) // 产品分类树

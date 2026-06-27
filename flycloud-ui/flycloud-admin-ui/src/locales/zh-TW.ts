@@ -83,14 +83,14 @@ export default {
     message: '鎖屏密碼錯誤'
   },
   error: {
-    noPermission: `抱歉，您無權訪問此頁面。`,
+    noPermission: '抱歉，您無權訪問此頁面。',
     pageError: '抱歉，您訪問的頁面不存在。',
     networkError: '抱歉，伺服器回報錯誤。',
     returnToHome: '返回首頁'
   },
   permission: {
-    hasPermission: `請設定操作權限標籤值`,
-    hasRole: `請設定角色權限標籤值`
+    hasPermission: '請設定操作權限標籤值',
+    hasRole: '請設定角色權限標籤值'
   },
   setting: {
     projectSetting: '專案配置',
@@ -567,16 +567,14 @@ export default {
       signInTitle: '開箱即用的中後台管理系統',
       signInDesc: '輸入您的個人详细信息開始使用！',
       policy: '我同意xxx隱私政策',
-      scanSign: `掃碼後點擊"確認"，即可完成登入`,
+      scanSign: '掃碼後點擊"確認"，即可完成登入',
       loginButton: '登入',
       registerButton: '註冊',
       rememberMe: '記住我',
       forgetPassword: '忘記密碼?',
       otherSignIn: '其他登入方式',
-      // notify
       loginSuccessTitle: '登入成功',
       loginSuccessDesc: '歡迎回來',
-      // placeholder
       accountPlaceholder: '請輸入帳號',
       passwordPlaceholder: '請輸入密碼',
       smsPlaceholder: '請輸入驗證碼',
@@ -644,5 +642,5 @@ export default {
     btn_zoom_out: '縮小',
     preview: '預覽'
   },
-  'OAuth 2.0': 'OAuth 2.0' // 避免選單名是 OAuth 2.0 時，一直 warn 报錯
+  'OAuth 2.0': 'OAuth 2.0'
 }

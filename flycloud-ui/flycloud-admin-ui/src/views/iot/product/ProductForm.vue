@@ -7,14 +7,17 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="产品名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入产品名称" />
+      <el-form-item :label="t('auto.views.iot.product.ProductForm.kabc0ac79')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.iot.product.ProductForm.k8d76e9ae')"
+        />
       </el-form-item>
 
-      <el-form-item label="设备类型" prop="deviceType">
+      <el-form-item :label="t('auto.views.iot.product.ProductForm.k47a991d1')" prop="deviceType">
         <el-select
           v-model="formData.deviceType"
-          placeholder="请选择设备类型"
+          :placeholder="t('auto.views.iot.product.ProductForm.kd3646054')"
           :disabled="formType === 'update'"
         >
           <el-option
@@ -28,12 +31,12 @@
 
       <el-form-item
         v-if="formData.deviceType === 0 || formData.deviceType === 2"
-        label="联网方式"
+        :label="t('auto.views.iot.product.ProductForm.k17878d79')"
         prop="netType"
       >
         <el-select
           v-model="formData.netType"
-          placeholder="请选择联网方式"
+          :placeholder="t('auto.views.iot.product.ProductForm.k8fbc7ed8')"
           :disabled="formType === 'update'"
         >
           <el-option
@@ -45,10 +48,14 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item v-if="formData.deviceType === 1" label="接入网关协议" prop="protocolType">
+      <el-form-item
+        v-if="formData.deviceType === 1"
+        :label="t('auto.views.iot.product.ProductForm.k7eabdba0')"
+        prop="protocolType"
+      >
         <el-select
           v-model="formData.protocolType"
-          placeholder="请选择接入网关协议"
+          :placeholder="t('auto.views.iot.product.ProductForm.k9a0bb9c7')"
           :disabled="formType === 'update'"
         >
           <el-option
@@ -60,10 +67,10 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="数据格式" prop="dataFormat">
+      <el-form-item :label="t('auto.views.iot.product.ProductForm.k44f68d95')" prop="dataFormat">
         <el-select
           v-model="formData.dataFormat"
-          placeholder="请选择接数据格式"
+          :placeholder="t('auto.views.iot.product.ProductForm.kb7e1dd81')"
           :disabled="formType === 'update'"
         >
           <el-option
@@ -75,7 +82,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="数据校验级别" prop="validateType">
+      <el-form-item :label="t('auto.views.iot.product.ProductForm.kf151fa68')" prop="validateType">
         <el-radio-group v-model="formData.validateType" :disabled="formType === 'update'">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.IOT_VALIDATE_TYPE)"
@@ -87,14 +94,22 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="产品描述" prop="description">
-        <el-input type="textarea" v-model="formData.description" placeholder="请输入产品描述" />
+      <el-form-item :label="t('auto.views.iot.product.ProductForm.k03917006')" prop="description">
+        <el-input
+          type="textarea"
+          v-model="formData.description"
+          :placeholder="t('auto.views.iot.product.ProductForm.k886d8ca8')"
+        />
       </el-form-item>
     </el-form>
 
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.iot.product.ProductForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.iot.product.ProductForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -102,10 +117,8 @@
 <script setup lang="ts">
 import { ProductApi, ProductVO } from '@/api/iot/product'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-
-defineOptions({ name: 'IoTProductForm' })
-
 const { t } = useI18n()
+defineOptions({ name: 'IoTProductForm' })
 const message = useMessage()
 
 const dialogVisible = ref(false)
@@ -127,21 +140,45 @@ const formData = ref({
   dataFormat: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
-  deviceType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
+  name: [
+    { required: true, message: t('auto.views.iot.product.ProductForm.kcbfa98d4'), trigger: 'blur' }
+  ],
+  deviceType: [
+    {
+      required: true,
+      message: t('auto.views.iot.product.ProductForm.k2203061c'),
+      trigger: 'change'
+    }
+  ],
   netType: [
     {
       // TODO @haohao：0、1、/2 最好前端也枚举下；另外，这里的 required 可以直接设置为 true。然后表单那些 v-if。只要不存在，它自动就不校验了哈
       required: formData.deviceType === 0 || formData.deviceType === 2,
-      message: '联网方式不能为空',
+      message: t('auto.views.iot.product.ProductForm.kb6216470'),
       trigger: 'change'
     }
   ],
   protocolType: [
-    { required: formData.deviceType === 1, message: '接入网关协议不能为空', trigger: 'change' }
+    {
+      required: formData.deviceType === 1,
+      message: t('auto.views.iot.product.ProductForm.kc3412822'),
+      trigger: 'change'
+    }
   ],
-  dataFormat: [{ required: true, message: '数据格式不能为空', trigger: 'change' }],
-  validateType: [{ required: true, message: '数据校验级别不能为空', trigger: 'change' }]
+  dataFormat: [
+    {
+      required: true,
+      message: t('auto.views.iot.product.ProductForm.k52032ef9'),
+      trigger: 'change'
+    }
+  ],
+  validateType: [
+    {
+      required: true,
+      message: t('auto.views.iot.product.ProductForm.k61458e83'),
+      trigger: 'change'
+    }
+  ]
 })
 const formRef = ref()
 

@@ -7,13 +7,19 @@
       :rules="formRules"
       label-width="160px"
     >
-      <el-form-item label="应用名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入应用名" />
+      <el-form-item :label="t('auto.views.pay.app.components.AppForm.k6c19fe01')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.pay.app.components.AppForm.k445d8859')"
+        />
       </el-form-item>
-      <el-form-item label="应用标识" prop="name">
-        <el-input v-model="formData.appKey" placeholder="请输入应用标识" />
+      <el-form-item :label="t('auto.views.pay.app.components.AppForm.k38f2da34')" prop="name">
+        <el-input
+          v-model="formData.appKey"
+          :placeholder="t('auto.views.pay.app.components.AppForm.k7ad675b4')"
+        />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item :label="t('auto.views.pay.app.components.AppForm.k6bbda1b1')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -24,19 +30,38 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="支付结果的回调地址" prop="orderNotifyUrl">
-        <el-input v-model="formData.orderNotifyUrl" placeholder="请输入支付结果的回调地址" />
+      <el-form-item
+        :label="t('auto.views.pay.app.components.AppForm.k5eecce52')"
+        prop="orderNotifyUrl"
+      >
+        <el-input
+          v-model="formData.orderNotifyUrl"
+          :placeholder="t('auto.views.pay.app.components.AppForm.kf2c2bae6')"
+        />
       </el-form-item>
-      <el-form-item label="退款结果的回调地址" prop="refundNotifyUrl">
-        <el-input v-model="formData.refundNotifyUrl" placeholder="请输入退款结果的回调地址" />
+      <el-form-item
+        :label="t('auto.views.pay.app.components.AppForm.k038f38e3')"
+        prop="refundNotifyUrl"
+      >
+        <el-input
+          v-model="formData.refundNotifyUrl"
+          :placeholder="t('auto.views.pay.app.components.AppForm.k912ea508')"
+        />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.pay.app.components.AppForm.k57e709d9')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.pay.app.components.AppForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.pay.app.components.AppForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -45,10 +70,8 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as AppApi from '@/api/pay/app'
 import { CommonStatusEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'PayAppForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -65,11 +88,41 @@ const formData = ref({
   refundNotifyUrl: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '应用名不能为空', trigger: 'blur' }],
-  appKey: [{ required: true, message: '应用标识不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }],
-  orderNotifyUrl: [{ required: true, message: '支付结果的回调地址不能为空', trigger: 'blur' }],
-  refundNotifyUrl: [{ required: true, message: '退款结果的回调地址不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.AppForm.kf6f9e61d'),
+      trigger: 'blur'
+    }
+  ],
+  appKey: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.AppForm.k8186d52a'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.AppForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ],
+  orderNotifyUrl: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.AppForm.k8de05039'),
+      trigger: 'blur'
+    }
+  ],
+  refundNotifyUrl: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.AppForm.k35a5b2a2'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

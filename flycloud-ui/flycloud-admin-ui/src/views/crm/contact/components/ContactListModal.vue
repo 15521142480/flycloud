@@ -1,5 +1,8 @@
 <template>
-  <Dialog v-model="dialogVisible" title="关联联系人">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.crm.contact.components.ContactListModal.k15581973')"
+  >
     <!-- 搜索工作栏 -->
     <ContentWrap>
       <el-form
@@ -9,27 +12,30 @@
         class="-mb-15px"
         label-width="90px"
       >
-        <el-form-item label="联系人名称" prop="name">
+        <el-form-item
+          :label="t('auto.views.crm.contact.components.ContactListModal.ke34804e8')"
+          prop="name"
+        >
           <el-input
             v-model="queryParams.name"
             class="!w-240px"
             clearable
-            placeholder="请输入联系人名称"
+            :placeholder="t('auto.views.crm.contact.components.ContactListModal.kc5ffefd5')"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            搜索
+            {{ t('extra.k8314a980') }}
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            重置
+            {{ t('extra.k4e2cb309') }}
           </el-button>
           <el-button v-hasPermi="['crm:business:create']" type="primary" @click="openForm()">
             <Icon class="mr-5px" icon="ep:plus" />
-            新增
+            {{ t('extra.k3e388810') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -45,7 +51,12 @@
         :stripe="true"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column align="center" fixed="left" label="姓名" prop="name">
+        <el-table-column
+          align="center"
+          fixed="left"
+          :label="t('auto.views.crm.contact.components.ContactListModal.kbe4c2616')"
+          prop="name"
+        >
           <template #default="scope">
             <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
               {{ scope.row.name }}
@@ -82,7 +93,7 @@
 import * as ContactApi from '@/api/crm/contact'
 import ContactForm from '../ContactForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const props = defineProps<{
   customerId: number
@@ -146,7 +157,7 @@ const contactRef = ref()
 const submitForm = async () => {
   const contactIds = contactRef.value.getSelectionRows().map((row: ContactApi.ContactVO) => row.id)
   if (contactIds.length === 0) {
-    return message.error('未选择联系人')
+    return message.error(t('auto.views.crm.contact.components.ContactListModal.k58768a54'))
   }
   dialogVisible.value = false
   emit('success', contactIds, contactRef.value.getSelectionRows())

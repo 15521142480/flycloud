@@ -8,23 +8,23 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item :label="t('auto.views.ai.image.manager.index.kec750ef6')" prop="userId">
         <el-select
           v-model="queryParams.userId"
           clearable
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.ai.image.manager.index.kb719fb8a')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="平台" prop="platform">
-        <el-select v-model="queryParams.status" placeholder="请选择平台" clearable class="!w-240px">
+      <el-form-item :label="t('auto.views.ai.image.manager.index.ke4b9d694')" prop="platform">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.ai.image.manager.index.ke8fbea8b')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.AI_PLATFORM)"
             :key="dict.value"
@@ -33,10 +33,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="绘画状态" prop="status">
+      <el-form-item :label="t('auto.views.ai.image.manager.index.kd85ef5d7')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择绘画状态"
+          :placeholder="t('auto.views.ai.image.manager.index.k9d44fdb2')"
           clearable
           class="!w-240px"
         >
@@ -48,10 +48,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="是否发布" prop="publicStatus">
+      <el-form-item :label="t('auto.views.ai.image.manager.index.k4c44200c')" prop="publicStatus">
         <el-select
           v-model="queryParams.publicStatus"
-          placeholder="请选择是否发布"
+          :placeholder="t('auto.views.ai.image.manager.index.kff9fc4c5')"
           clearable
           class="!w-240px"
         >
@@ -63,20 +63,24 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.ai.image.manager.index.k1f291968')"
+          :end-placeholder="t('auto.views.ai.image.manager.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -84,8 +88,20 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" width="180" fixed="left" />
-      <el-table-column label="图片" align="center" prop="picUrl" width="110px" fixed="left">
+      <el-table-column
+        :label="t('auto.views.ai.image.manager.index.k9f42dac6')"
+        align="center"
+        prop="id"
+        width="180"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.image.manager.index.kbe8da62e')"
+        align="center"
+        prop="picUrl"
+        width="110px"
+        fixed="left"
+      >
         <template #default="{ row }">
           <el-image
             class="h-80px w-80px"
@@ -168,10 +184,10 @@ import * as UserApi from '@/api/system/user'
 import { AiImageStatusEnum } from '@/views/ai/utils/constants'
 
 /** AI 绘画 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'AiImageManager' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ImageVO[]>([]) // 列表的数据
@@ -229,8 +245,14 @@ const handleDelete = async (id: number) => {
 const handleUpdatePublicStatusChange = async (row: ImageVO) => {
   try {
     // 修改状态的二次确认
-    const text = row.publicStatus ? '公开' : '私有'
-    await message.confirm('确认要"' + text + '"该图片吗?')
+    const text = row.publicStatus
+      ? t('auto.views.ai.image.manager.index.kdfe5a318')
+      : t('auto.views.ai.image.manager.index.k6858674b')
+    await message.confirm(
+      t('auto.views.ai.image.manager.index.ka4db1fb1') +
+        text +
+        t('auto.views.ai.image.manager.index.k6676ed44')
+    )
     // 发起修改状态
     await ImageApi.updateImage({
       id: row.id,

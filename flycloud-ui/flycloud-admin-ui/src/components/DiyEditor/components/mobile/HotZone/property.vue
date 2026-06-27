@@ -2,10 +2,17 @@
   <ComponentContainerProperty v-model="formData.style">
     <!-- 表单 -->
     <el-form label-width="80px" :model="formData" class="m-t-8px">
-      <el-form-item label="上传图片" prop="imgUrl">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.HotZone.property.k59b308c8')"
+        prop="imgUrl"
+      >
         <UploadImg v-model="formData.imgUrl" height="50px" width="auto" class="min-w-80px">
           <template #tip>
-            <el-text type="info" size="small"> 推荐宽度 750</el-text>
+            <el-text type="info" size="small">
+              {{
+                t('auto.components.DiyEditor.components.mobile.HotZone.property.k585d7c56')
+              }}</el-text
+            >
           </template>
         </UploadImg>
       </el-form-item>
@@ -23,8 +30,8 @@
 import { usePropertyForm } from '@/components/DiyEditor/util'
 import { HotZoneProperty } from '@/components/DiyEditor/components/mobile/HotZone/config'
 import HotZoneEditDialog from './components/HotZoneEditDialog/index.vue'
-
 /** 热区属性面板 */
+const { t } = useI18n()
 defineOptions({ name: 'HotZoneProperty' })
 
 const props = defineProps<{ modelValue: HotZoneProperty }>()

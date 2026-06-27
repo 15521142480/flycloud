@@ -1,16 +1,61 @@
 <template>
   <div class="panel-tab__content">
     <el-form label-width="90px">
-      <el-form-item label="快捷配置">
-        <el-button size="small" @click="changeConfig('依次审批')">依次审批</el-button>
-        <el-button size="small" @click="changeConfig('会签')">会签</el-button>
-        <el-button size="small" @click="changeConfig('或签')">或签</el-button>
+      <el-form-item
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.kb92f175d'
+          )
+        "
+      >
+        <el-button size="small" @click="changeConfig(t('extra.k9d854906'))">{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k54b1efda'
+          )
+        }}</el-button>
+        <el-button size="small" @click="changeConfig(t('extra.kc76fd22d'))">{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k7d5b59e6'
+          )
+        }}</el-button>
+        <el-button size="small" @click="changeConfig(t('extra.k81155aa0'))">{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k321f5ef4'
+          )
+        }}</el-button>
       </el-form-item>
-      <el-form-item label="会签类型">
+      <el-form-item
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.kc6b53a52'
+          )
+        "
+      >
         <el-select v-model="loopCharacteristics" @change="changeLoopCharacteristicsType">
-          <el-option label="并行多重事件" value="ParallelMultiInstance" />
-          <el-option label="时序多重事件" value="SequentialMultiInstance" />
-          <el-option label="无" value="Null" />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k92992114'
+              )
+            "
+            value="ParallelMultiInstance"
+          />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k8cfd32e6'
+              )
+            "
+            value="SequentialMultiInstance"
+          />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k72077749'
+              )
+            "
+            value="Null"
+          />
         </el-select>
       </el-form-item>
       <template
@@ -19,21 +64,51 @@
           loopCharacteristics === 'SequentialMultiInstance'
         "
       >
-        <el-form-item label="循环数量" key="loopCardinality">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.kcdb88206'
+            )
+          "
+          key="loopCardinality"
+        >
           <el-input
             v-model="loopInstanceForm.loopCardinality"
             clearable
             @change="updateLoopCardinality"
           />
         </el-form-item>
-        <el-form-item label="集合" key="collection" v-show="false">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.kf8dd3e84'
+            )
+          "
+          key="collection"
+          v-show="false"
+        >
           <el-input v-model="loopInstanceForm.collection" clearable @change="updateLoopBase" />
         </el-form-item>
         <!-- add by 芋艿：由于「元素变量」暂时用不到，所以这里 display 为 none -->
-        <el-form-item label="元素变量" key="elementVariable" style="display: none">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k7c0116b0'
+            )
+          "
+          key="elementVariable"
+          style="display: none"
+        >
           <el-input v-model="loopInstanceForm.elementVariable" clearable @change="updateLoopBase" />
         </el-form-item>
-        <el-form-item label="完成条件" key="completionCondition">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k04d7bd91'
+            )
+          "
+          key="completionCondition"
+        >
           <el-input
             v-model="loopInstanceForm.completionCondition"
             clearable
@@ -41,29 +116,53 @@
           />
         </el-form-item>
         <!-- add by 芋艿：由于「异步状态」暂时用不到，所以这里 display 为 none -->
-        <el-form-item label="异步状态" key="async" style="display: none">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.kf4dfa6f9'
+            )
+          "
+          key="async"
+          style="display: none"
+        >
           <el-checkbox
             v-model="loopInstanceForm.asyncBefore"
-            label="异步前"
-            value="异步前"
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k027f21ce'
+              )
+            "
+            :value="t('extra.k1350bd82')"
             @change="updateLoopAsync('asyncBefore')"
           />
           <el-checkbox
             v-model="loopInstanceForm.asyncAfter"
-            label="异步后"
-            value="异步后"
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k02e94833'
+              )
+            "
+            :value="t('extra.k468517fd')"
             @change="updateLoopAsync('asyncAfter')"
           />
           <el-checkbox
             v-model="loopInstanceForm.exclusive"
             v-if="loopInstanceForm.asyncAfter || loopInstanceForm.asyncBefore"
-            label="排除"
-            value="排除"
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k7b37cc8d'
+              )
+            "
+            :value="t('extra.kc3cf6505')"
             @change="updateLoopAsync('exclusive')"
           />
         </el-form-item>
         <el-form-item
-          label="重试周期"
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k616f3448'
+            )
+          "
           prop="timeCycle"
           v-if="loopInstanceForm.asyncAfter || loopInstanceForm.asyncBefore"
           key="timeCycle"
@@ -76,6 +175,7 @@
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 defineOptions({ name: 'ElementMultiInstance' })
 
 const props = defineProps({
@@ -254,14 +354,29 @@ const updateLoopAsync = (key) => {
 }
 
 const changeConfig = (config) => {
-  if (config === '依次审批') {
+  if (
+    config ===
+    t(
+      'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k54b1efda'
+    )
+  ) {
     changeLoopCharacteristicsType('SequentialMultiInstance')
     updateLoopCardinality('1')
     updateLoopCondition('${ nrOfCompletedInstances >= nrOfInstances }')
-  } else if (config === '会签') {
+  } else if (
+    config ===
+    t(
+      'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k7d5b59e6'
+    )
+  ) {
     changeLoopCharacteristicsType('ParallelMultiInstance')
     updateLoopCondition('${ nrOfCompletedInstances >= nrOfInstances }')
-  } else if (config === '或签') {
+  } else if (
+    config ===
+    t(
+      'auto.components.bpmnProcessDesigner.package.penal.multi_instance.ElementMultiInstance.k321f5ef4'
+    )
+  ) {
     changeLoopCharacteristicsType('ParallelMultiInstance')
     updateLoopCondition('${ nrOfCompletedInstances > 0 }')
   }

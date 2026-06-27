@@ -5,6 +5,7 @@ import { propTypes } from '@/utils/propTypes'
 import { useDesign } from '@/hooks/web/useDesign'
 import { ElementPlusSize } from '@/types/elementPlus'
 
+const { t } = useI18n()
 defineOptions({ name: 'SizeDropdown' })
 
 const { getPrefixCls } = useDesign()
@@ -14,9 +15,6 @@ const prefixCls = getPrefixCls('size-dropdown')
 defineProps({
   color: propTypes.string.def('')
 })
-
-const { t } = useI18n()
-
 const appStore = useAppStore()
 
 const sizeMap = computed(() => appStore.sizeMap)

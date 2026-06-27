@@ -5,7 +5,11 @@
 -->
 <template>
   <div class="panel-tab__content">
-    <el-divider content-position="left">审批人拒绝时</el-divider>
+    <el-divider content-position="left">{{
+      t(
+        'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k7d327c88'
+      )
+    }}</el-divider>
     <el-form-item prop="rejectHandlerType">
       <el-radio-group
         v-model="rejectHandlerType"
@@ -21,7 +25,11 @@
     </el-form-item>
     <el-form-item
       v-if="rejectHandlerType == RejectHandlerType.RETURN_USER_TASK"
-      label="驳回节点"
+      :label="
+        t(
+          'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k3403e72d'
+        )
+      "
       prop="returnNodeId"
     >
       <el-select v-model="returnNodeId" clearable style="width: 100%" @change="updateReturnNodeId">
@@ -34,7 +42,11 @@
       </el-select>
     </el-form-item>
 
-    <el-divider content-position="left">审批人为空时</el-divider>
+    <el-divider content-position="left">{{
+      t(
+        'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k83842213'
+      )
+    }}</el-divider>
     <el-form-item prop="assignEmptyHandlerType">
       <el-radio-group v-model="assignEmptyHandlerType" @change="updateAssignEmptyHandlerType">
         <div class="flex-col">
@@ -46,7 +58,11 @@
     </el-form-item>
     <el-form-item
       v-if="assignEmptyHandlerType == AssignEmptyHandlerType.ASSIGN_USER"
-      label="指定用户"
+      :label="
+        t(
+          'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k100f9964'
+        )
+      "
       prop="assignEmptyHandlerUserIds"
       span="24"
     >
@@ -57,16 +73,15 @@
         style="width: 100%"
         @change="updateAssignEmptyUserIds"
       >
-        <el-option
-          v-for="item in userOptions"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        />
+        <el-option v-for="item in userOptions" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
 
-    <el-divider content-position="left">审批人与提交人为同一人时</el-divider>
+    <el-divider content-position="left">{{
+      t(
+        'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.kda019550'
+      )
+    }}</el-divider>
     <el-radio-group v-model="assignStartUserHandlerType" @change="updateAssignStartUserHandlerType">
       <div class="flex-col">
         <div v-for="(item, index) in ASSIGN_START_USER_HANDLER_TYPES" :key="index">
@@ -87,6 +102,7 @@ import {
 } from '@/components/SimpleProcessDesignerV2/src/consts'
 import * as UserApi from '@/api/system/user'
 
+const { t } = useI18n()
 defineOptions({ name: 'ElementCustomConfig' })
 const props = defineProps({
   id: String,

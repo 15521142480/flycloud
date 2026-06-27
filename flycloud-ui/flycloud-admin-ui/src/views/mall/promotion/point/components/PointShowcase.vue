@@ -17,7 +17,10 @@
         </div>
       </el-tooltip>
     </div>
-    <el-tooltip v-if="canAdd" content="选择活动">
+    <el-tooltip
+      v-if="canAdd"
+      :content="t('auto.views.mall.promotion.point.components.PointShowcase.k9669b876')"
+    >
       <div class="select-box" @click="openSeckillActivityTableSelect">
         <Icon icon="ep:plus" />
       </div>
@@ -39,6 +42,7 @@ import { isArray } from '@/utils/is'
 
 // 活动橱窗，一般用于装修时使用
 // 提供功能：展示活动列表、添加活动、删除活动
+const { t } = useI18n()
 defineOptions({ name: 'PointShowcase' })
 
 const props = defineProps({

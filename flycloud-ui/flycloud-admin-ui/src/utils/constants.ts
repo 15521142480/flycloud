@@ -1,3 +1,4 @@
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  * Created by 芋道源码
  *
@@ -6,6 +7,8 @@
 
 // ========== COMMON 模块 ==========
 // 全局通用状态枚举
+const { t } = useI18n()
+
 export const CommonStatusEnum = {
   ENABLE: 0, // 开启
   DISABLE: 1 // 禁用
@@ -33,7 +36,7 @@ export const SystemTypeEnum = {
  * 角色标识
  */
 export const RoleEnum = {
-  SUPER_ADMIN: 'super_admin', // 平台管理系统
+  SUPER_ADMIN: 'super_admin' // 平台管理系统
 }
 
 /**
@@ -69,13 +72,13 @@ export const SystemDataScopeEnum = {
  */
 export const SystemUserSocialTypeEnum = {
   DINGTALK: {
-    title: '钉钉',
+    title: t('auto.utils.constants.k32f35a70'),
     type: 20,
     source: 'dingtalk',
     img: 'https://s1.ax1x.com/2022/05/22/OzMDRs.png'
   },
   WECHAT_ENTERPRISE: {
-    title: '企业微信',
+    title: t('auto.utils.constants.kc1983c6d'),
     type: 30,
     source: 'wechat_enterprise',
     img: 'https://s1.ax1x.com/2022/05/22/OzMrzn.png'
@@ -117,55 +120,55 @@ export const InfraApiErrorLogProcessStatusEnum = {
 export const PayChannelEnum = {
   WX_PUB: {
     code: 'wx_pub',
-    name: '微信 JSAPI 支付'
+    name: t('auto.utils.constants.ka11438a9')
   },
   WX_LITE: {
     code: 'wx_lite',
-    name: '微信小程序支付'
+    name: t('auto.utils.constants.k787e4e5c')
   },
   WX_APP: {
     code: 'wx_app',
-    name: '微信 APP 支付'
+    name: t('auto.utils.constants.k1be0105c')
   },
   WX_NATIVE: {
     code: 'wx_native',
-    name: '微信 Native 支付'
+    name: t('auto.utils.constants.ke17527c2')
   },
   WX_WAP: {
     code: 'wx_wap',
-    name: '微信 WAP 网站支付'
+    name: t('auto.utils.constants.k1749d062')
   },
   WX_BAR: {
     code: 'wx_bar',
-    name: '微信条码支付'
+    name: t('auto.utils.constants.k2eb2da22')
   },
   ALIPAY_PC: {
     code: 'alipay_pc',
-    name: '支付宝 PC 网站支付'
+    name: t('auto.utils.constants.kdff9b7f7')
   },
   ALIPAY_WAP: {
     code: 'alipay_wap',
-    name: '支付宝 WAP 网站支付'
+    name: t('auto.utils.constants.ke6c0682c')
   },
   ALIPAY_APP: {
     code: 'alipay_app',
-    name: '支付宝 APP 支付'
+    name: t('auto.utils.constants.k7a8b6179')
   },
   ALIPAY_QR: {
     code: 'alipay_qr',
-    name: '支付宝扫码支付'
+    name: t('auto.utils.constants.ka3178821')
   },
   ALIPAY_BAR: {
     code: 'alipay_bar',
-    name: '支付宝条码支付'
+    name: t('auto.utils.constants.ke6558bef')
   },
   WALLET: {
     code: 'wallet',
-    name: '钱包支付'
+    name: t('auto.utils.constants.k659bba3a')
   },
   MOCK: {
     code: 'mock',
-    name: '模拟支付'
+    name: t('auto.utils.constants.kbf4800c0')
   }
 }
 
@@ -205,15 +208,15 @@ export const PayType = {
 export const PayOrderStatusEnum = {
   WAITING: {
     status: 0,
-    name: '未支付'
+    name: t('auto.utils.constants.k5a565427')
   },
   SUCCESS: {
     status: 10,
-    name: '已支付'
+    name: t('auto.utils.constants.k2a3603c4')
   },
   CLOSED: {
     status: 20,
-    name: '未支付'
+    name: t('auto.utils.constants.k5a565427')
   }
 }
 
@@ -224,15 +227,15 @@ export const PayOrderStatusEnum = {
 export const ProductSpuStatusEnum = {
   RECYCLE: {
     status: -1,
-    name: '回收站'
+    name: t('auto.utils.constants.k64ea8751')
   },
   DISABLE: {
     status: 0,
-    name: '下架'
+    name: t('auto.utils.constants.ka2698bcf')
   },
   ENABLE: {
     status: 1,
-    name: '上架'
+    name: t('auto.utils.constants.kddc61d57')
   }
 }
 
@@ -243,11 +246,11 @@ export const ProductSpuStatusEnum = {
 export const CouponTemplateValidityTypeEnum = {
   DATE: {
     type: 1,
-    name: '固定日期可用'
+    name: t('auto.utils.constants.kc016a5ce')
   },
   TERM: {
     type: 2,
-    name: '领取之后可用'
+    name: t('auto.utils.constants.ka3cfafb7')
   }
 }
 
@@ -257,15 +260,15 @@ export const CouponTemplateValidityTypeEnum = {
 export const CouponTemplateTakeTypeEnum = {
   USER: {
     type: 1,
-    name: '直接领取'
+    name: t('auto.utils.constants.k72e180ef')
   },
   ADMIN: {
     type: 2,
-    name: '指定发放'
+    name: t('auto.utils.constants.kf27beb7d')
   },
   REGISTER: {
     type: 3,
-    name: '新人券'
+    name: t('auto.utils.constants.k0242561b')
   }
 }
 
@@ -275,15 +278,15 @@ export const CouponTemplateTakeTypeEnum = {
 export const PromotionProductScopeEnum = {
   ALL: {
     scope: 1,
-    name: '通用劵'
+    name: t('auto.utils.constants.kd0e90d4d')
   },
   SPU: {
     scope: 2,
-    name: '商品劵'
+    name: t('auto.utils.constants.k4946245f')
   },
   CATEGORY: {
     scope: 3,
-    name: '品类劵'
+    name: t('auto.utils.constants.k724e35c4')
   }
 }
 
@@ -293,11 +296,11 @@ export const PromotionProductScopeEnum = {
 export const PromotionConditionTypeEnum = {
   PRICE: {
     type: 10,
-    name: '满 N 元'
+    name: t('auto.utils.constants.ka5c1e674')
   },
   COUNT: {
     type: 20,
-    name: '满 N 件'
+    name: t('auto.utils.constants.kab859662')
   }
 }
 
@@ -307,11 +310,11 @@ export const PromotionConditionTypeEnum = {
 export const PromotionDiscountTypeEnum = {
   PRICE: {
     type: 1,
-    name: '满减'
+    name: t('auto.utils.constants.k8b27cd6b')
   },
   PERCENT: {
     type: 2,
-    name: '折扣'
+    name: t('auto.utils.constants.kb167c8f7')
   }
 }
 
@@ -322,15 +325,15 @@ export const PromotionDiscountTypeEnum = {
 export const BrokerageBindModeEnum = {
   ANYTIME: {
     mode: 1,
-    name: '首次绑定'
+    name: t('auto.utils.constants.ka0124a75')
   },
   REGISTER: {
     mode: 2,
-    name: '注册绑定'
+    name: t('auto.utils.constants.k19dae694')
   },
   OVERRIDE: {
     mode: 3,
-    name: '覆盖绑定'
+    name: t('auto.utils.constants.ka42341fe')
   }
 }
 /**
@@ -339,11 +342,11 @@ export const BrokerageBindModeEnum = {
 export const BrokerageEnabledConditionEnum = {
   ALL: {
     condition: 1,
-    name: '人人分销'
+    name: t('auto.utils.constants.k010060e3')
   },
   ADMIN: {
     condition: 2,
-    name: '指定分销'
+    name: t('auto.utils.constants.k4088c831')
   }
 }
 /**
@@ -352,11 +355,11 @@ export const BrokerageEnabledConditionEnum = {
 export const BrokerageRecordBizTypeEnum = {
   ORDER: {
     type: 1,
-    name: '获得推广佣金'
+    name: t('auto.utils.constants.k09ca2e77')
   },
   WITHDRAW: {
     type: 2,
-    name: '提现申请'
+    name: t('auto.utils.constants.k0b403e3e')
   }
 }
 /**
@@ -365,23 +368,23 @@ export const BrokerageRecordBizTypeEnum = {
 export const BrokerageWithdrawStatusEnum = {
   AUDITING: {
     status: 0,
-    name: '审核中'
+    name: t('auto.utils.constants.kfe58c849')
   },
   AUDIT_SUCCESS: {
     status: 10,
-    name: '审核通过'
+    name: t('auto.utils.constants.k637104b3')
   },
   AUDIT_FAIL: {
     status: 20,
-    name: '审核不通过'
+    name: t('auto.utils.constants.k436557bf')
   },
   WITHDRAW_SUCCESS: {
     status: 11,
-    name: '提现成功'
+    name: t('auto.utils.constants.k8de86d88')
   },
   WITHDRAW_FAIL: {
     status: 21,
-    name: '提现失败'
+    name: t('auto.utils.constants.kd9348c3e')
   }
 }
 /**
@@ -390,19 +393,19 @@ export const BrokerageWithdrawStatusEnum = {
 export const BrokerageWithdrawTypeEnum = {
   WALLET: {
     type: 1,
-    name: '钱包'
+    name: t('auto.utils.constants.kc02d6976')
   },
   BANK: {
     type: 2,
-    name: '银行卡'
+    name: t('auto.utils.constants.k0be83ef1')
   },
   WECHAT: {
     type: 3,
-    name: '微信'
+    name: t('auto.utils.constants.k68406df3')
   },
   ALIPAY: {
     type: 4,
-    name: '支付宝'
+    name: t('auto.utils.constants.k66f1177d')
   }
 }
 
@@ -412,11 +415,11 @@ export const BrokerageWithdrawTypeEnum = {
 export const DeliveryTypeEnum = {
   EXPRESS: {
     type: 1,
-    name: '快递发货'
+    name: t('auto.utils.constants.k7b1ede77')
   },
   PICK_UP: {
     type: 2,
-    name: '到店自提'
+    name: t('auto.utils.constants.ke4ef9c8a')
   }
 }
 /**
@@ -425,23 +428,23 @@ export const DeliveryTypeEnum = {
 export const TradeOrderStatusEnum = {
   UNPAID: {
     status: 0,
-    name: '待支付'
+    name: t('auto.utils.constants.k3840a0a2')
   },
   UNDELIVERED: {
     status: 10,
-    name: '待发货'
+    name: t('auto.utils.constants.k2dd7fc21')
   },
   DELIVERED: {
     status: 20,
-    name: '已发货'
+    name: t('auto.utils.constants.k43409596')
   },
   COMPLETED: {
     status: 30,
-    name: '已完成'
+    name: t('auto.utils.constants.ke99b48a2')
   },
   CANCELED: {
     status: 40,
-    name: '已取消'
+    name: t('auto.utils.constants.ka5ffdc95')
   }
 }
 

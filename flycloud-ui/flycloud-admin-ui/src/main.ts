@@ -41,8 +41,9 @@ import '@/plugins/tongji' // 百度统计
 import Logger from '@/utils/Logger'
 
 import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐患
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 创建实例
 const setupAll = async () => {
   const app = createApp(App)
 
@@ -71,4 +72,4 @@ const setupAll = async () => {
 
 setupAll()
 
-Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
+Logger.prettyPrimary(t('auto.main.kb85e4e6d'), import.meta.env.VITE_APP_TITLE)

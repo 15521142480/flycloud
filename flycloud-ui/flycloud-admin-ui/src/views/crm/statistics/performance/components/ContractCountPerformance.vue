@@ -30,7 +30,7 @@ import {
   StatisticsPerformanceApi,
   StatisticsPerformanceRespVO
 } from '@/api/crm/statistics/performance'
-
+const { t } = useI18n()
 defineOptions({ name: 'ContractCountPerformance' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -48,28 +48,38 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '当月合同数量（个）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractCountPerformance.kffbc9ae9'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '上月合同数量（个）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractCountPerformance.k716b6035'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '去年同月合同数量（个）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractCountPerformance.k9b23423d'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '环比增长率（%）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractCountPerformance.k31271e3b'
+      ),
       type: 'line',
       yAxisIndex: 1,
       data: []
     },
     {
-      name: '同比增长率（%）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractCountPerformance.k6ab6aea3'
+      ),
       type: 'line',
       yAxisIndex: 1,
       data: []
@@ -83,7 +93,12 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '客户总量分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t(
+          'auto.views.crm.statistics.performance.components.ContractCountPerformance.ke6a3379c'
+        )
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -95,7 +110,9 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '数量（个）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractCountPerformance.k2b7c7acf'
+      ),
       axisTick: {
         show: false
       },
@@ -145,7 +162,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.kb6fed9af'),
     data: []
   }
 }) as EChartsOption
@@ -197,16 +214,29 @@ const loadData = async () => {
 // 初始化数据
 const columnsData = reactive([])
 const tableData = reactive([
-  { title: '当月合同数量统计（个）' },
-  { title: '上月合同数量统计（个）' },
-  { title: '去年当月合同数量统计（个）' },
-  { title: '环比增长率（%）' },
-  { title: '同比增长率（%）' }
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.k5832d491')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.k4ab2c6ee')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.k9c0df775')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.k31271e3b')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.k6ab6aea3')
+  }
 ])
 
 // 定义 convertListData 方法，数据行列转置，展示每月数据
 const convertListData = () => {
-  const columnObj = { label: '日期', prop: 'title' }
+  const columnObj = {
+    label: t('auto.views.crm.statistics.performance.components.ContractCountPerformance.kb6fed9af'),
+    prop: 'title'
+  }
   columnsData.splice(0, columnsData.length) //清空数组
   columnsData.push(columnObj)
 

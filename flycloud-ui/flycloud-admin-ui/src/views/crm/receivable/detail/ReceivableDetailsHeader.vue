@@ -16,19 +16,29 @@
   </div>
   <ContentWrap class="mt-10px">
     <el-descriptions :column="5" direction="vertical">
-      <el-descriptions-item label="客户名称">
+      <el-descriptions-item
+        :label="t('auto.views.crm.receivable.detail.ReceivableDetailsHeader.ke941d410')"
+      >
         {{ receivable.customerName }}
       </el-descriptions-item>
-      <el-descriptions-item label="合同金额">
+      <el-descriptions-item
+        :label="t('auto.views.crm.receivable.detail.ReceivableDetailsHeader.k75e856a1')"
+      >
         {{ erpPriceInputFormatter(receivable.contract?.totalPrice) }}
       </el-descriptions-item>
-      <el-descriptions-item label="回款日期">
+      <el-descriptions-item
+        :label="t('auto.views.crm.receivable.detail.ReceivableDetailsHeader.kd0132503')"
+      >
         {{ formatDate(receivable.returnTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="回款金额">
+      <el-descriptions-item
+        :label="t('auto.views.crm.receivable.detail.ReceivableDetailsHeader.kc60d7ff5')"
+      >
         {{ erpPriceInputFormatter(receivable.price) }}
       </el-descriptions-item>
-      <el-descriptions-item label="负责人">
+      <el-descriptions-item
+        :label="t('auto.views.crm.receivable.detail.ReceivableDetailsHeader.k974d383f')"
+      >
         {{ receivable.ownerUserName }}
       </el-descriptions-item>
     </el-descriptions>
@@ -38,6 +48,6 @@
 import * as ReceivableApi from '@/api/crm/receivable'
 import { formatDate } from '@/utils/formatTime'
 import { erpPriceInputFormatter } from '@/utils'
-
+const { t } = useI18n()
 const { receivable } = defineProps<{ receivable: ReceivableApi.ReceivableVO }>()
 </script>

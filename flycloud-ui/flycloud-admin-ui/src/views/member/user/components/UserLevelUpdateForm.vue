@@ -1,5 +1,9 @@
 <template>
-  <Dialog title="修改用户等级" v-model="dialogVisible" width="600">
+  <Dialog
+    :title="t('auto.views.member.user.components.UserLevelUpdateForm.k5dc73aac')"
+    v-model="dialogVisible"
+    width="600"
+  >
     <el-form
       ref="formRef"
       :model="formData"
@@ -7,35 +11,59 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="用户编号" prop="id">
-        <el-input v-model="formData.id" placeholder="请输入用户昵称" class="!w-240px" disabled />
-      </el-form-item>
-      <el-form-item label="用户昵称" prop="name">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserLevelUpdateForm.kec750ef6')"
+        prop="id"
+      >
         <el-input
-          v-model="formData.name"
-          placeholder="请输入用户昵称"
+          v-model="formData.id"
+          :placeholder="t('auto.views.member.user.components.UserLevelUpdateForm.k359da8d3')"
           class="!w-240px"
           disabled
         />
       </el-form-item>
-      <el-form-item label="用户等级" prop="levelId">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserLevelUpdateForm.k90542e0a')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.member.user.components.UserLevelUpdateForm.k359da8d3')"
+          class="!w-240px"
+          disabled
+        />
+      </el-form-item>
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserLevelUpdateForm.kfa7e14df')"
+        prop="levelId"
+      >
         <MemberLevelSelect v-model="formData.levelId" />
       </el-form-item>
-      <el-form-item label="修改原因" prop="reason">
-        <el-input type="textarea" v-model="formData.reason" placeholder="请输入修改原因" />
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserLevelUpdateForm.k3423d1f1')"
+        prop="reason"
+      >
+        <el-input
+          type="textarea"
+          v-model="formData.reason"
+          :placeholder="t('auto.views.member.user.components.UserLevelUpdateForm.kb89c7bb9')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.member.user.components.UserLevelUpdateForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.user.components.UserLevelUpdateForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script setup lang="ts">
 import * as UserApi from '@/api/member/user'
 import MemberLevelSelect from '@/views/member/level/components/MemberLevelSelect.vue'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -47,7 +75,13 @@ const formData = ref({
   reason: undefined
 })
 const formRules = reactive({
-  reason: [{ required: true, message: '修改原因不能为空', trigger: 'blur' }]
+  reason: [
+    {
+      required: true,
+      message: t('auto.views.member.user.components.UserLevelUpdateForm.kc7feaf6b'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

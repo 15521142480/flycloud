@@ -1,6 +1,10 @@
 <!-- 跟进记录的添加表单弹窗 -->
 <template>
-  <Dialog v-model="dialogVisible" title="添加跟进记录" width="50%">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.crm.followup.FollowUpRecordForm.kea8b3f54')"
+    width="50%"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -10,8 +14,14 @@
     >
       <el-row>
         <el-col :span="12">
-          <el-form-item label="跟进类型" prop="type">
-            <el-select v-model="formData.type" placeholder="请选择跟进类型">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.kd1ac0fc8')"
+            prop="type"
+          >
+            <el-select
+              v-model="formData.type"
+              :placeholder="t('auto.views.crm.followup.FollowUpRecordForm.k813693dc')"
+            >
               <el-option
                 v-for="dict in getIntDictOptions(DICT_TYPE.CRM_FOLLOW_UP_TYPE)"
                 :key="dict.value"
@@ -22,44 +32,62 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="下次联系时间" prop="nextTime">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.k8e1beb13')"
+            prop="nextTime"
+          >
             <el-date-picker
               v-model="formData.nextTime"
-              placeholder="选择下次联系时间"
+              :placeholder="t('auto.views.crm.followup.FollowUpRecordForm.k0f0ca712')"
               type="date"
               value-format="x"
             />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="跟进内容" prop="content">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.kab264d91')"
+            prop="content"
+          >
             <el-input v-model="formData.content" :rows="3" type="textarea" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="图片" prop="picUrls">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.kbe8da62e')"
+            prop="picUrls"
+          >
             <UploadImgs v-model="formData.picUrls" class="min-w-80px" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="附件" prop="fileUrls">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.k99f6fe6c')"
+            prop="fileUrls"
+          >
             <UploadFile v-model="formData.fileUrls" class="min-w-80px" />
           </el-form-item>
         </el-col>
         <el-col :span="24" v-if="formData.bizType == BizTypeEnum.CRM_CUSTOMER">
-          <el-form-item label="关联联系人" prop="contactIds">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.k15581973')"
+            prop="contactIds"
+          >
             <el-button @click="handleOpenContact">
               <Icon class="mr-5px" icon="ep:plus" />
-              添加联系人
+              {{ t('extra.k0981929a') }}
             </el-button>
             <FollowUpRecordContactForm :contacts="formData.contacts" />
           </el-form-item>
         </el-col>
         <el-col :span="24" v-if="formData.bizType == BizTypeEnum.CRM_CUSTOMER">
-          <el-form-item label="关联商机" prop="businessIds">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.k0b77721e')"
+            prop="businessIds"
+          >
             <el-button @click="handleOpenBusiness">
               <Icon class="mr-5px" icon="ep:plus" />
-              添加商机
+              {{ t('extra.k20f9ccd7') }}
             </el-button>
             <FollowUpRecordBusinessForm :businesses="formData.businesses" />
           </el-form-item>
@@ -67,8 +95,12 @@
       </el-row>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.crm.followup.FollowUpRecordForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.followup.FollowUpRecordForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 
@@ -94,10 +126,8 @@ import BusinessListModal from '@/views/crm/business/components/BusinessListModal
 import * as BusinessApi from '@/api/crm/business'
 import ContactListModal from '@/views/crm/contact/components/ContactListModal.vue'
 import * as ContactApi from '@/api/crm/contact'
-
+const { t } = useI18n()
 defineOptions({ name: 'FollowUpRecordForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -110,9 +140,27 @@ const formData = ref({
   contacts: []
 })
 const formRules = reactive({
-  type: [{ required: true, message: '跟进类型不能为空', trigger: 'change' }],
-  content: [{ required: true, message: '跟进内容不能为空', trigger: 'blur' }],
-  nextTime: [{ required: true, message: '下次联系时间不能为空', trigger: 'blur' }]
+  type: [
+    {
+      required: true,
+      message: t('auto.views.crm.followup.FollowUpRecordForm.kdb22f60b'),
+      trigger: 'change'
+    }
+  ],
+  content: [
+    {
+      required: true,
+      message: t('auto.views.crm.followup.FollowUpRecordForm.kb7cfc877'),
+      trigger: 'blur'
+    }
+  ],
+  nextTime: [
+    {
+      required: true,
+      message: t('auto.views.crm.followup.FollowUpRecordForm.kbc47324e'),
+      trigger: 'blur'
+    }
+  ]
 })
 
 const formRef = ref() // 表单 Ref

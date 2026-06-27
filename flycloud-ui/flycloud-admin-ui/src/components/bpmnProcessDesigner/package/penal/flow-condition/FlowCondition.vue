@@ -1,21 +1,74 @@
 <template>
   <div class="panel-tab__content">
     <el-form :model="flowConditionForm" label-width="90px" size="small">
-      <el-form-item label="流转类型">
+      <el-form-item
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k07e2f0dd'
+          )
+        "
+      >
         <el-select v-model="flowConditionForm.type" @change="updateFlowType">
-          <el-option label="普通流转路径" value="normal" />
-          <el-option label="默认流转路径" value="default" />
-          <el-option label="条件流转路径" value="condition" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="条件格式" v-if="flowConditionForm.type === 'condition'" key="condition">
-        <el-select v-model="flowConditionForm.conditionType">
-          <el-option label="表达式" value="expression" />
-          <el-option label="脚本" value="script" />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k14815ebe'
+              )
+            "
+            value="normal"
+          />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k0e815a86'
+              )
+            "
+            value="default"
+          />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k30f54d36'
+              )
+            "
+            value="condition"
+          />
         </el-select>
       </el-form-item>
       <el-form-item
-        label="表达式"
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k26011766'
+          )
+        "
+        v-if="flowConditionForm.type === 'condition'"
+        key="condition"
+      >
+        <el-select v-model="flowConditionForm.conditionType">
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k513c1c63'
+              )
+            "
+            value="expression"
+          />
+          <el-option
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k7fbccbeb'
+              )
+            "
+            value="script"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k513c1c63'
+          )
+        "
         v-if="flowConditionForm.conditionType && flowConditionForm.conditionType === 'expression'"
         key="express"
       >
@@ -29,17 +82,49 @@
       <template
         v-if="flowConditionForm.conditionType && flowConditionForm.conditionType === 'script'"
       >
-        <el-form-item label="脚本语言" key="language">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k2bfb89de'
+            )
+          "
+          key="language"
+        >
           <el-input v-model="flowConditionForm.language" clearable @change="updateFlowCondition" />
         </el-form-item>
-        <el-form-item label="脚本类型" key="scriptType">
+        <el-form-item
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.kf1574ac4'
+            )
+          "
+          key="scriptType"
+        >
           <el-select v-model="flowConditionForm.scriptType">
-            <el-option label="内联脚本" value="inlineScript" />
-            <el-option label="外部脚本" value="externalScript" />
+            <el-option
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k95a5d467'
+                )
+              "
+              value="inlineScript"
+            />
+            <el-option
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k1725e40e'
+                )
+              "
+              value="externalScript"
+            />
           </el-select>
         </el-form-item>
         <el-form-item
-          label="脚本"
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k7fbccbeb'
+            )
+          "
           v-if="flowConditionForm.scriptType === 'inlineScript'"
           key="body"
         >
@@ -51,7 +136,11 @@
           />
         </el-form-item>
         <el-form-item
-          label="资源地址"
+          :label="
+            t(
+              'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k25622755'
+            )
+          "
           v-if="flowConditionForm.scriptType === 'externalScript'"
           key="resource"
         >
@@ -63,6 +152,7 @@
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 defineOptions({ name: 'FlowCondition' })
 
 const props = defineProps({

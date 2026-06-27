@@ -9,37 +9,76 @@
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入名称" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k1be7ae4f')"
+            prop="name"
+          >
+            <el-input
+              v-model="formData.name"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.kc2afb255')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系人" prop="contact">
-            <el-input v-model="formData.contact" placeholder="请输入联系人" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k2425bd4b')"
+            prop="contact"
+          >
+            <el-input
+              v-model="formData.contact"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k9feabe27')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="手机号码" prop="mobile">
-            <el-input v-model="formData.mobile" placeholder="请输入手机号码" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k9f6834dc')"
+            prop="mobile"
+          >
+            <el-input
+              v-model="formData.mobile"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k4f0c3a4e')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系电话" prop="telephone">
-            <el-input v-model="formData.telephone" placeholder="请输入联系电话" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.ke02f6e57')"
+            prop="telephone"
+          >
+            <el-input
+              v-model="formData.telephone"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k4597687d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="电子邮箱" prop="email">
-            <el-input v-model="formData.email" placeholder="请输入电子邮箱" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.ka7a315b8')"
+            prop="email"
+          >
+            <el-input
+              v-model="formData.email"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k704aa1ff')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="传真" prop="fax">
-            <el-input v-model="formData.fax" placeholder="请输入传真" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.kd1dc1f81')"
+            prop="fax"
+          >
+            <el-input
+              v-model="formData.fax"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k6d91e7b3')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="开启状态" prop="status">
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k6bbda1b1')"
+            prop="status"
+          >
             <el-radio-group v-model="formData.status">
               <el-radio
                 v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -52,56 +91,91 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="排序" prop="sort">
+          <el-form-item :label="t('common.sort')" prop="sort">
             <el-input-number
               v-model="formData.sort"
-              placeholder="请输入排序"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k242d8da1')"
               class="!w-1/1"
               :precision="0"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="纳税人识别号" prop="taxNo">
-            <el-input v-model="formData.taxNo" placeholder="请输入纳税人识别号" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.kc237c1b3')"
+            prop="taxNo"
+          >
+            <el-input
+              v-model="formData.taxNo"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.keb2373c8')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="税率(%)" prop="taxPercent">
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k04ab4761')"
+            prop="taxPercent"
+          >
             <el-input-number
               v-model="formData.taxPercent"
               :min="0"
               :precision="2"
-              placeholder="请输入税率"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.kf3db9d64')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="开户行" prop="bankName">
-            <el-input v-model="formData.bankName" placeholder="请输入开户行" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k48a64eb4')"
+            prop="bankName"
+          >
+            <el-input
+              v-model="formData.bankName"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k1b4c8d98')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="开户账号" prop="bankAccount">
-            <el-input v-model="formData.bankAccount" placeholder="请输入开户账号" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.k0b959af0')"
+            prop="bankAccount"
+          >
+            <el-input
+              v-model="formData.bankAccount"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k9fad3c04')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="开户地址" prop="bankAddress">
-            <el-input v-model="formData.bankAddress" placeholder="请输入开户地址" />
+          <el-form-item
+            :label="t('auto.views.erp.sale.customer.CustomerForm.ka7f215bd')"
+            prop="bankAddress"
+          >
+            <el-input
+              v-model="formData.bankAddress"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.kf298f36e')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
-            <el-input type="textarea" v-model="formData.remark" placeholder="请输入备注" />
+          <el-form-item :label="t('common.remark')" prop="remark">
+            <el-input
+              type="textarea"
+              v-model="formData.remark"
+              :placeholder="t('auto.views.erp.sale.customer.CustomerForm.k57e709d9')"
+            />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.erp.sale.customer.CustomerForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.sale.customer.CustomerForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -111,9 +185,8 @@ import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** ERP 客户 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'CustomerForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -138,9 +211,27 @@ const formData = ref({
   bankAddress: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '客户名称不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.customer.CustomerForm.k009abeb7'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.customer.CustomerForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.customer.CustomerForm.k3218602a'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

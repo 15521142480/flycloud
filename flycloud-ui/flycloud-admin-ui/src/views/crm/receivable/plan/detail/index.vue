@@ -4,18 +4,18 @@
       v-if="permissionListRef?.validateWrite"
       @click="openForm('update', receivablePlan.id)"
     >
-      编辑
+      {{ t('extra.kbb16f31d') }}
     </el-button>
   </ReceivablePlanDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="详细资料">
+      <el-tab-pane :label="t('auto.views.crm.receivable.plan.detail.index.kbf455584')">
         <ReceivablePlanDetailsInfo :receivable-plan="receivablePlan" />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.receivable.plan.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.receivable.plan.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="receivablePlan.id!"
@@ -40,7 +40,7 @@ import { BizTypeEnum } from '@/api/crm/permission'
 import { OperateLogVO } from '@/api/system/operatelog'
 import { getOperateLogPage } from '@/api/crm/operateLog'
 import ReceivablePlanForm from '@/views/crm/receivable/plan/ReceivablePlanForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmReceivablePlanDetail' })
 
 const message = useMessage()
@@ -93,7 +93,7 @@ const close = () => {
 const { params } = useRoute()
 onMounted(async () => {
   if (!params.id) {
-    message.warning('参数错误，回款计划不能为空！')
+    message.warning(t('auto.views.crm.receivable.plan.detail.index.k88095162'))
     close()
     return
   }

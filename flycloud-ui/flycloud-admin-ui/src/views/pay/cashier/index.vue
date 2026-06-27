@@ -1,26 +1,36 @@
 <template>
   <!-- 支付信息 -->
   <el-card v-loading="loading">
-    <el-descriptions title="支付信息" :column="3" border>
-      <el-descriptions-item label="支付单号">{{ payOrder.id }}</el-descriptions-item>
-      <el-descriptions-item label="商品标题">{{ payOrder.subject }}</el-descriptions-item>
-      <el-descriptions-item label="商品内容">{{ payOrder.body }}</el-descriptions-item>
-      <el-descriptions-item label="支付金额">
+    <el-descriptions :title="t('auto.views.pay.cashier.index.k84a5a94e')" :column="3" border>
+      <el-descriptions-item :label="t('auto.views.pay.cashier.index.k956bb6be')">{{
+        payOrder.id
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.cashier.index.kd415beac')">{{
+        payOrder.subject
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.cashier.index.k84edad36')">{{
+        payOrder.body
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.cashier.index.kb579703e')">
         ￥{{ (payOrder.price / 100.0).toFixed(2) }}
       </el-descriptions-item>
-      <el-descriptions-item label="创建时间">
+      <el-descriptions-item :label="t('common.createTime')">
         {{ formatDate(payOrder.createTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="过期时间">
+      <el-descriptions-item :label="t('auto.views.pay.cashier.index.k27aefecf')">
         {{ formatDate(payOrder.expireTime) }}
       </el-descriptions-item>
     </el-descriptions>
   </el-card>
 
   <!-- 支付选择框 -->
-  <el-card style="margin-top: 10px" v-loading="submitLoading" element-loading-text="提交支付中...">
+  <el-card
+    style="margin-top: 10px"
+    v-loading="submitLoading"
+    :element-loading-text="t('extra.k392bd663')"
+  >
     <!-- 支付宝 -->
-    <el-descriptions title="选择支付宝支付" />
+    <el-descriptions :title="t('auto.views.pay.cashier.index.k2dbafd81')" />
     <div class="pay-channel-container">
       <div
         class="box"
@@ -33,7 +43,10 @@
       </div>
     </div>
     <!-- 微信支付 -->
-    <el-descriptions title="选择微信支付" style="margin-top: 20px" />
+    <el-descriptions
+      :title="t('auto.views.pay.cashier.index.kc11e1c71')"
+      style="margin-top: 20px"
+    />
     <div class="pay-channel-container">
       <div
         class="box"
@@ -46,7 +59,10 @@
       </div>
     </div>
     <!-- 其它支付 -->
-    <el-descriptions title="选择其它支付" style="margin-top: 20px" />
+    <el-descriptions
+      :title="t('auto.views.pay.cashier.index.kc0d1cdb7')"
+      style="margin-top: 20px"
+    />
     <div class="pay-channel-container">
       <div
         class="box"
@@ -82,21 +98,25 @@
     <el-form ref="form" label-width="80px">
       <el-row>
         <el-col :span="24">
-          <el-form-item label="条形码" prop="name">
-            <el-input v-model="barCode.value" placeholder="请输入条形码" required />
+          <el-form-item :label="t('auto.views.pay.cashier.index.ka35d7201')" prop="name">
+            <el-input
+              v-model="barCode.value"
+              :placeholder="t('auto.views.pay.cashier.index.k6674df23')"
+              required
+            />
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <div style="text-align: right">
-            或使用
+            {{ t('extra.kad404410') }}
             <el-link
               type="danger"
               target="_blank"
               href="https://baike.baidu.com/item/条码支付/10711903"
             >
-              (扫码枪/扫码盒)
+              {{ t('extra.kda0b369e') }}
             </el-link>
-            扫码
+            {{ t('extra.k209c3d7b') }}
           </div>
         </el-col>
       </el-row>
@@ -107,9 +127,11 @@
         @click="submit0(barCode.channelCode)"
         :disabled="barCode.value.length === 0"
       >
-        确认支付
+        {{ t('extra.kd695ba85') }}
       </el-button>
-      <el-button @click="barCode.visible = false">取 消</el-button>
+      <el-button @click="barCode.visible = false">{{
+        t('auto.views.pay.cashier.index.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -133,7 +155,7 @@ import svg_wx_app from '@/assets/svgs/pay/icon/wx_app.svg'
 import svg_wx_native from '@/assets/svgs/pay/icon/wx_native.svg'
 import svg_wx_bar from '@/assets/svgs/pay/icon/wx_bar.svg'
 import svg_mock from '@/assets/svgs/pay/icon/mock.svg'
-
+const { t } = useI18n()
 defineOptions({ name: 'PayCashier' })
 
 const message = useMessage() // 消息弹窗
@@ -147,61 +169,61 @@ const loading = ref(false) // 支付信息的 loading
 const payOrder = ref({}) // 支付信息
 const channelsAlipay = [
   {
-    name: '支付宝 PC 网站支付',
+    name: t('auto.views.pay.cashier.index.kdff9b7f7'),
     icon: svg_alipay_pc,
     code: 'alipay_pc'
   },
   {
-    name: '支付宝 Wap 网站支付',
+    name: t('auto.views.pay.cashier.index.k7fcabd95'),
     icon: svg_alipay_wap,
     code: 'alipay_wap'
   },
   {
-    name: '支付宝 App 网站支付',
+    name: t('auto.views.pay.cashier.index.kc5dc3cd3'),
     icon: svg_alipay_app,
     code: 'alipay_app'
   },
   {
-    name: '支付宝扫码支付',
+    name: t('auto.views.pay.cashier.index.ka3178821'),
     icon: svg_alipay_qr,
     code: 'alipay_qr'
   },
   {
-    name: '支付宝条码支付',
+    name: t('auto.views.pay.cashier.index.ke6558bef'),
     icon: svg_alipay_bar,
     code: 'alipay_bar'
   }
 ]
 const channelsWechat = [
   {
-    name: '微信公众号支付',
+    name: t('auto.views.pay.cashier.index.k1a085e6b'),
     icon: svg_wx_pub,
     code: 'wx_pub'
   },
   {
-    name: '微信小程序支付',
+    name: t('auto.views.pay.cashier.index.k787e4e5c'),
     icon: svg_wx_lite,
     code: 'wx_lite'
   },
   {
-    name: '微信 App 支付',
+    name: t('auto.views.pay.cashier.index.kce24cee7'),
     icon: svg_wx_app,
     code: 'wx_app'
   },
   {
-    name: '微信扫码支付',
+    name: t('auto.views.pay.cashier.index.kc8715f38'),
     icon: svg_wx_native,
     code: 'wx_native'
   },
   {
-    name: '微信条码支付',
+    name: t('auto.views.pay.cashier.index.k2eb2da22'),
     icon: svg_wx_bar,
     code: 'wx_bar'
   }
 ]
 const channelsMock = [
   {
-    name: '模拟支付',
+    name: t('auto.views.pay.cashier.index.kbf4800c0'),
     icon: svg_mock,
     code: 'mock'
   }
@@ -227,7 +249,7 @@ const barCode = ref({
 const getDetail = async () => {
   // 1.1 未传递订单编号
   if (!id.value) {
-    message.error('未传递支付单号，无法查看对应的支付信息')
+    message.error(t('auto.views.pay.cashier.index.kda35f731'))
     goReturnUrl('cancel')
     return
   }
@@ -235,17 +257,17 @@ const getDetail = async () => {
   payOrder.value = data
   // 1.2 无法查询到支付信息
   if (!data) {
-    message.error('支付订单不存在，请检查！')
+    message.error(t('auto.views.pay.cashier.index.k98dd3b0b'))
     goReturnUrl('cancel')
     return
   }
   // 1.3 如果已支付、或者已关闭，则直接跳转
   if (data.status === PayOrderStatusEnum.SUCCESS.status) {
-    message.success('支付成功')
+    message.success(t('auto.views.pay.cashier.index.k31a7e8ae'))
     goReturnUrl('success')
     return
   } else if (data.status === PayOrderStatusEnum.CLOSED.status) {
-    message.error('无法支付，原因：订单已关闭')
+    message.error(t('auto.views.pay.cashier.index.k607e21df'))
     goReturnUrl('close')
     return
   }
@@ -258,7 +280,7 @@ const submit = (channelCode) => {
     barCode.value = {
       channelCode: channelCode,
       value: '',
-      title: '“支付宝”条码支付',
+      title: t('auto.views.pay.cashier.index.k8997fe6b'),
       visible: true
     }
     return
@@ -267,7 +289,7 @@ const submit = (channelCode) => {
     barCode.value = {
       channelCode: channelCode,
       value: '',
-      title: '“微信”条码支付',
+      title: t('auto.views.pay.cashier.index.kd6b8aac3'),
       visible: true
     }
     return
@@ -275,11 +297,11 @@ const submit = (channelCode) => {
 
   // 微信公众号、小程序支付，无法在 PC 网页中进行
   if (channelCode === PayChannelEnum.WX_PUB.code) {
-    message.error('微信公众号支付：不支持 PC 网站')
+    message.error(t('auto.views.pay.cashier.index.kcd10fb95'))
     return
   }
   if (channelCode === PayChannelEnum.WX_LITE.code) {
-    message.error('微信小程序：不支持 PC 网站')
+    message.error(t('auto.views.pay.cashier.index.k0837801c'))
     return
   }
 
@@ -300,7 +322,7 @@ const submit0 = async (channelCode) => {
     // 直接返回已支付的情况，例如说扫码支付
     if (data.status === PayOrderStatusEnum.SUCCESS.status) {
       clearQueryInterval()
-      message.success('支付成功！')
+      message.success(t('auto.views.pay.cashier.index.kc0f333a9'))
       goReturnUrl('success')
       return
     }
@@ -350,13 +372,13 @@ const displayUrl = (_channelCode, data) => {
 
 /** 提交支付后（扫码支付） */
 const displayQrCode = (channelCode, data) => {
-  let title = '请使用手机浏览器“扫一扫”'
+  let title = t('auto.views.pay.cashier.index.k7514ad22')
   if (channelCode === PayChannelEnum.ALIPAY_WAP.code) {
     // 考虑到 WAP 测试，所以引导手机浏览器搞
   } else if (channelCode.indexOf('alipay_') === 0) {
-    title = '请使用支付宝“扫一扫”扫码支付'
+    title = t('auto.views.pay.cashier.index.k205bfc82')
   } else if (channelCode.indexOf('wx_') === 0) {
-    title = '请使用微信“扫一扫”扫码支付'
+    title = t('auto.views.pay.cashier.index.ke66b2bab')
   }
   qrCode.value = {
     title: title,
@@ -369,10 +391,10 @@ const displayQrCode = (channelCode, data) => {
 /** 提交支付后（App） */
 const displayApp = (channelCode) => {
   if (channelCode === PayChannelEnum.ALIPAY_APP.code) {
-    message.error('支付宝 App 支付：无法在网页支付！')
+    message.error(t('auto.views.pay.cashier.index.k0de4d29c'))
   }
   if (channelCode === PayChannelEnum.WX_APP.code) {
-    message.error('微信 App 支付：无法在网页支付！')
+    message.error(t('auto.views.pay.cashier.index.ka3f5306e'))
   }
   submitLoading.value = false
 }
@@ -387,13 +409,13 @@ const createQueryInterval = () => {
     // 已支付
     if (data.status === PayOrderStatusEnum.SUCCESS.status) {
       clearQueryInterval()
-      message.success('支付成功！')
+      message.success(t('auto.views.pay.cashier.index.kc0f333a9'))
       goReturnUrl('success')
     }
     // 已取消
     if (data.status === PayOrderStatusEnum.CLOSED.status) {
       clearQueryInterval()
-      message.error('支付已关闭！')
+      message.error(t('auto.views.pay.cashier.index.k7480667e'))
       goReturnUrl('close')
     }
   }, 1000 * 2)

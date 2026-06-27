@@ -7,10 +7,16 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名字" />
+      <el-form-item
+        :label="t('auto.views.bpm.processExpression.ProcessExpressionForm.k364bd1bf')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.bpm.processExpression.ProcessExpressionForm.k010c1585')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -21,13 +27,24 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="表达式" prop="expression">
-        <el-input type="textarea" v-model="formData.expression" placeholder="请输入表达式" />
+      <el-form-item
+        :label="t('auto.views.bpm.processExpression.ProcessExpressionForm.k513c1c63')"
+        prop="expression"
+      >
+        <el-input
+          type="textarea"
+          v-model="formData.expression"
+          :placeholder="t('auto.views.bpm.processExpression.ProcessExpressionForm.k7634dc77')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.bpm.processExpression.ProcessExpressionForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.bpm.processExpression.ProcessExpressionForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -37,9 +54,8 @@ import { ProcessExpressionApi, ProcessExpressionVO } from '@/api/bpm/processExpr
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** BPM 流程 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProcessExpressionForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -53,9 +69,27 @@ const formData = ref({
   expression: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
-  expression: [{ required: true, message: '表达式不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processExpression.ProcessExpressionForm.k46f3776c'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processExpression.ProcessExpressionForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ],
+  expression: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processExpression.ProcessExpressionForm.kbc499844'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

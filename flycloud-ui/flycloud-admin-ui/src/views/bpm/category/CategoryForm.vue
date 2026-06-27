@@ -7,13 +7,19 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="分类名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入分类名" />
+      <el-form-item :label="t('auto.views.bpm.category.CategoryForm.k72a5ce04')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.bpm.category.CategoryForm.kdb2ed286')"
+        />
       </el-form-item>
-      <el-form-item label="分类标志" prop="code">
-        <el-input v-model="formData.code" placeholder="请输入分类标志" />
+      <el-form-item :label="t('auto.views.bpm.category.CategoryForm.k2908a7c9')" prop="code">
+        <el-input
+          v-model="formData.code"
+          :placeholder="t('auto.views.bpm.category.CategoryForm.k21711601')"
+        />
       </el-form-item>
-      <el-form-item label="分类状态" prop="status">
+      <el-form-item :label="t('auto.views.bpm.category.CategoryForm.k155818e5')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -24,18 +30,22 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="分类排序" prop="sort">
+      <el-form-item :label="t('auto.views.bpm.category.CategoryForm.k2b77925f')" prop="sort">
         <el-input-number
           v-model="formData.sort"
-          placeholder="请输入分类排序"
+          :placeholder="t('auto.views.bpm.category.CategoryForm.kb01ad622')"
           class="!w-1/1"
           :precision="0"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.bpm.category.CategoryForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.bpm.category.CategoryForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -45,9 +55,8 @@ import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** BPM 流程分类 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'CategoryForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -62,10 +71,34 @@ const formData = ref({
   sort: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '分类名不能为空', trigger: 'blur' }],
-  code: [{ required: true, message: '分类标志不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '分类状态不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '分类排序不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.bpm.category.CategoryForm.k4ed5a332'),
+      trigger: 'blur'
+    }
+  ],
+  code: [
+    {
+      required: true,
+      message: t('auto.views.bpm.category.CategoryForm.k0557a246'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.bpm.category.CategoryForm.kcbb13bf5'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.bpm.category.CategoryForm.k331d6aa3'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

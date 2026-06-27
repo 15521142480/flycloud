@@ -1,4 +1,6 @@
-// APP 链接分组
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
 export interface AppLinkGroup {
   // 分组名称
   name: string
@@ -45,190 +47,190 @@ export const enum APP_LINK_TYPE_ENUM {
 // APP 链接列表（做一下持久化？）
 export const APP_LINK_GROUP_LIST = [
   {
-    name: '商城',
+    name: t('auto.components.AppLinkInput.data.kc0745f30'),
     links: [
       {
-        name: '首页',
+        name: t('auto.components.AppLinkInput.data.kff93ad0e'),
         path: '/pages/index/index'
       },
       {
-        name: '商品分类',
+        name: t('auto.components.AppLinkInput.data.k09482df6'),
         path: '/pages/index/category',
         type: APP_LINK_TYPE_ENUM.PRODUCT_CATEGORY_LIST
       },
       {
-        name: '购物车',
+        name: t('auto.components.AppLinkInput.data.k5c81c6bc'),
         path: '/pages/index/cart'
       },
       {
-        name: '个人中心',
+        name: t('auto.components.AppLinkInput.data.k1d23b8a4'),
         path: '/pages/index/user'
       },
       {
-        name: '商品搜索',
+        name: t('auto.components.AppLinkInput.data.k7a933923'),
         path: '/pages/index/search'
       },
       {
-        name: '自定义页面',
+        name: t('auto.components.AppLinkInput.data.k245b9602'),
         path: '/pages/index/page',
         type: APP_LINK_TYPE_ENUM.DIY_PAGE_DETAIL
       },
       {
-        name: '客服',
+        name: t('auto.components.AppLinkInput.data.kb8649fa6'),
         path: '/pages/chat/index'
       },
       {
-        name: '系统设置',
+        name: t('auto.components.AppLinkInput.data.ke976eab5'),
         path: '/pages/public/setting'
       },
       {
-        name: '常见问题',
+        name: t('auto.components.AppLinkInput.data.k0adb1147'),
         path: '/pages/public/faq'
       }
     ]
   },
   {
-    name: '商品',
+    name: t('auto.components.AppLinkInput.data.k00492206'),
     links: [
       {
-        name: '商品列表',
+        name: t('auto.components.AppLinkInput.data.k44544d21'),
         path: '/pages/goods/list',
         type: APP_LINK_TYPE_ENUM.PRODUCT_LIST
       },
       {
-        name: '商品详情',
+        name: t('auto.components.AppLinkInput.data.kad98c017'),
         path: '/pages/goods/index',
         type: APP_LINK_TYPE_ENUM.PRODUCT_DETAIL_NORMAL
       },
       {
-        name: '拼团商品详情',
+        name: t('auto.components.AppLinkInput.data.k12501a47'),
         path: '/pages/goods/groupon',
         type: APP_LINK_TYPE_ENUM.PRODUCT_DETAIL_COMBINATION
       },
       {
-        name: '秒杀商品详情',
+        name: t('auto.components.AppLinkInput.data.kaf31b1bd'),
         path: '/pages/goods/seckill',
         type: APP_LINK_TYPE_ENUM.PRODUCT_DETAIL_SECKILL
       }
     ]
   },
   {
-    name: '营销活动',
+    name: t('auto.components.AppLinkInput.data.kb61413c3'),
     links: [
       {
-        name: '拼团订单',
+        name: t('auto.components.AppLinkInput.data.kab704166'),
         path: '/pages/activity/groupon/order'
       },
       {
-        name: '营销商品',
+        name: t('auto.components.AppLinkInput.data.kaca75406'),
         path: '/pages/activity/index'
       },
       {
-        name: '拼团活动',
+        name: t('auto.components.AppLinkInput.data.kf68ed13e'),
         path: '/pages/activity/groupon/list',
         type: APP_LINK_TYPE_ENUM.ACTIVITY_COMBINATION
       },
       {
-        name: '秒杀活动',
+        name: t('auto.components.AppLinkInput.data.ka7605a08'),
         path: '/pages/activity/seckill/list',
         type: APP_LINK_TYPE_ENUM.ACTIVITY_SECKILL
       },
       {
-        name: '积分商城活动',
+        name: t('auto.components.AppLinkInput.data.k929ca2dd'),
         path: '/pages/activity/point/list',
         type: APP_LINK_TYPE_ENUM.ACTIVITY_POINT
       },
       {
-        name: '签到中心',
+        name: t('auto.components.AppLinkInput.data.k2ff5eba2'),
         path: '/pages/app/sign'
       },
       {
-        name: '优惠券中心',
+        name: t('auto.components.AppLinkInput.data.k388dcfbc'),
         path: '/pages/coupon/list'
       },
       {
-        name: '优惠券详情',
+        name: t('auto.components.AppLinkInput.data.k6710a9f8'),
         path: '/pages/coupon/detail',
         type: APP_LINK_TYPE_ENUM.COUPON_DETAIL
       },
       {
-        name: '文章详情',
+        name: t('auto.components.AppLinkInput.data.k1fae1943'),
         path: '/pages/public/richtext',
         type: APP_LINK_TYPE_ENUM.ARTICLE_DETAIL
       }
     ]
   },
   {
-    name: '分销商城',
+    name: t('auto.components.AppLinkInput.data.k4b96bab5'),
     links: [
       {
-        name: '分销中心',
+        name: t('auto.components.AppLinkInput.data.k1c26146a'),
         path: '/pages/commission/index'
       },
       {
-        name: '推广商品',
+        name: t('auto.components.AppLinkInput.data.kb605cb8d'),
         path: '/pages/commission/goods'
       },
       {
-        name: '分销订单',
+        name: t('auto.components.AppLinkInput.data.k88ee5014'),
         path: '/pages/commission/order'
       },
       {
-        name: '我的团队',
+        name: t('auto.components.AppLinkInput.data.ka321e3cc'),
         path: '/pages/commission/team'
       }
     ]
   },
   {
-    name: '支付',
+    name: t('auto.components.AppLinkInput.data.k9a2dba3c'),
     links: [
       {
-        name: '充值余额',
+        name: t('auto.components.AppLinkInput.data.kb237b1d2'),
         path: '/pages/pay/recharge'
       },
       {
-        name: '充值记录',
+        name: t('auto.components.AppLinkInput.data.ka497a2ca'),
         path: '/pages/pay/recharge-log'
       }
     ]
   },
   {
-    name: '用户中心',
+    name: t('auto.components.AppLinkInput.data.k37a7a8fb'),
     links: [
       {
-        name: '用户信息',
+        name: t('auto.components.AppLinkInput.data.k55c26aba'),
         path: '/pages/user/info'
       },
       {
-        name: '用户订单',
+        name: t('auto.components.AppLinkInput.data.ka332d0e6'),
         path: '/pages/order/list'
       },
       {
-        name: '售后订单',
+        name: t('auto.components.AppLinkInput.data.kc7ed8519'),
         path: '/pages/order/aftersale/list'
       },
       {
-        name: '商品收藏',
+        name: t('auto.components.AppLinkInput.data.k7e59637e'),
         path: '/pages/user/goods-collect'
       },
       {
-        name: '浏览记录',
+        name: t('auto.components.AppLinkInput.data.kf69150fb'),
         path: '/pages/user/goods-log'
       },
       {
-        name: '地址管理',
+        name: t('auto.components.AppLinkInput.data.k045c2d92'),
         path: '/pages/user/address/list'
       },
       {
-        name: '用户佣金',
+        name: t('auto.components.AppLinkInput.data.k9250afab'),
         path: '/pages/user/wallet/commission'
       },
       {
-        name: '用户余额',
+        name: t('auto.components.AppLinkInput.data.k10ee39ca'),
         path: '/pages/user/wallet/money'
       },
       {
-        name: '用户积分',
+        name: t('auto.components.AppLinkInput.data.k9898a752'),
         path: '/pages/user/wallet/score'
       }
     ]

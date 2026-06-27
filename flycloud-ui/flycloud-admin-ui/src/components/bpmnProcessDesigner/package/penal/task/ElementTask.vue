@@ -2,24 +2,27 @@
   <div class="panel-tab__content">
     <el-form size="small" label-width="90px">
       <!-- add by 芋艿：由于「异步延续」暂时用不到，所以这里 display 为 none -->
-      <el-form-item label="异步延续" style="display: none">
+      <el-form-item
+        :label="t('auto.components.bpmnProcessDesigner.package.penal.task.ElementTask.k02bcd55a')"
+        style="display: none"
+      >
         <el-checkbox
           v-model="taskConfigForm.asyncBefore"
-          label="异步前"
-          value="异步前"
+          :label="t('auto.components.bpmnProcessDesigner.package.penal.task.ElementTask.k027f21ce')"
+          :value="t('extra.ka28cefd2')"
           @change="changeTaskAsync"
         />
         <el-checkbox
           v-model="taskConfigForm.asyncAfter"
-          label="异步后"
-          value="异步后"
+          :label="t('auto.components.bpmnProcessDesigner.package.penal.task.ElementTask.k02e94833')"
+          :value="t('extra.ke08ba045')"
           @change="changeTaskAsync"
         />
         <el-checkbox
           v-model="taskConfigForm.exclusive"
           v-if="taskConfigForm.asyncAfter || taskConfigForm.asyncBefore"
-          label="排除"
-          value="排除"
+          :label="t('auto.components.bpmnProcessDesigner.package.penal.task.ElementTask.k7b37cc8d')"
+          :value="t('extra.kcff6d49a')"
           @change="changeTaskAsync"
         />
       </el-form-item>
@@ -32,7 +35,7 @@
 import UserTask from './task-components/UserTask.vue'
 import ScriptTask from './task-components/ScriptTask.vue'
 import ReceiveTask from './task-components/ReceiveTask.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'ElementTaskConfig' })
 
 const props = defineProps({

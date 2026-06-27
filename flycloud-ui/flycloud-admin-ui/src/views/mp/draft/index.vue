@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="公众号图文" url="https://doc.iocoder.cn/mp/article/" />
+  <doc-alert
+    :title="t('auto.views.mp.draft.index.k4288e135')"
+    url="https://doc.iocoder.cn/mp/article/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,7 +13,7 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.draft.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
       <el-form-item>
@@ -21,7 +24,7 @@
           v-hasPermi="['mp:draft:create']"
           :disabled="accountId === 0"
         >
-          <Icon icon="ep:plus" />新增
+          <Icon icon="ep:plus" />{{ t('extra.k1528bd8b') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -47,7 +50,7 @@
 
   <!-- 添加或修改草稿对话框 -->
   <el-dialog
-    :title="isCreating ? '新建图文' : '修改图文'"
+    :title="isCreating ? t('extra.k30fce09a') : t('extra.k5cf15de0')"
     width="80%"
     v-model="showDialog"
     :before-close="onBeforeDialogClose"
@@ -55,8 +58,12 @@
   >
     <NewsForm v-model="newsList" v-loading="isSubmitting" :is-creating="isCreating" />
     <template #footer>
-      <el-button @click="showDialog = false">取 消</el-button>
-      <el-button type="primary" @click="onSubmitNewsItem">提 交</el-button>
+      <el-button @click="showDialog = false">{{
+        t('auto.views.mp.draft.index.kd54aeadc')
+      }}</el-button>
+      <el-button type="primary" @click="onSubmitNewsItem">{{
+        t('auto.views.mp.draft.index.k729bc2ba')
+      }}</el-button>
     </template>
   </el-dialog>
 </template>
@@ -73,7 +80,7 @@ import {
   createEmptyNewsItem
 } from './components/'
 // import drafts from './mock' // 可以用改本地数据模拟，避免API调用超限
-
+const { t } = useI18n()
 defineOptions({ name: 'MpDraft' })
 
 const message = useMessage() // 消息
@@ -108,7 +115,7 @@ const onAccountChanged = (id: number) => {
 // 关闭弹窗
 const onBeforeDialogClose = async (onDone: () => {}) => {
   try {
-    await message.confirm('修改内容可能还未保存，确定关闭吗?')
+    await message.confirm(t('auto.views.mp.draft.index.kb6b053fe'))
     onDone()
   } catch {}
 }
@@ -155,10 +162,10 @@ const onSubmitNewsItem = async () => {
   try {
     if (isCreating.value) {
       await MpDraftApi.createDraft(accountId.value, newsList.value)
-      message.notifySuccess('新增成功')
+      message.notifySuccess(t('auto.views.mp.draft.index.kcbdbd295'))
     } else {
       await MpDraftApi.updateDraft(accountId.value, mediaId.value, newsList.value)
-      message.notifySuccess('更新成功')
+      message.notifySuccess(t('auto.views.mp.draft.index.ke2cff773'))
     }
   } finally {
     showDialog.value = false
@@ -171,13 +178,13 @@ const onSubmitNewsItem = async () => {
 const onPublish = async (item: Article) => {
   const mediaId = item.mediaId
   const content =
-    '你正在通过发布的方式发表内容。 发布不占用群发次数，一天可多次发布。' +
-    '已发布内容不会推送给用户，也不会展示在公众号主页中。 ' +
-    '发布后，你可以前往发表记录获取链接，也可以将发布内容添加到自定义菜单、自动回复、话题和页面模板中。'
+    t('auto.views.mp.draft.index.k74786ee1') +
+    t('auto.views.mp.draft.index.k710345de') +
+    t('auto.views.mp.draft.index.k6ff099e3')
   try {
     await message.confirm(content)
     await MpFreePublishApi.submitFreePublish(accountId.value, mediaId)
-    message.notifySuccess('发布成功')
+    message.notifySuccess(t('auto.views.mp.draft.index.kec002336'))
     await getList()
   } catch {}
 }
@@ -186,9 +193,9 @@ const onPublish = async (item: Article) => {
 const onDelete = async (item: Article) => {
   const mediaId = item.mediaId
   try {
-    await message.confirm('此操作将永久删除该草稿, 是否继续?')
+    await message.confirm(t('auto.views.mp.draft.index.k316ad0be'))
     await MpDraftApi.deleteDraft(accountId.value, mediaId)
-    message.notifySuccess('删除成功')
+    message.notifySuccess(t('auto.views.mp.draft.index.k86e8d12a'))
     await getList()
   } catch {}
 }

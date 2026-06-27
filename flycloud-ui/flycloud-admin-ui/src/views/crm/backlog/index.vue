@@ -1,5 +1,4 @@
 <template>
-
   <el-row :gutter="20">
     <el-col :span="4" class="min-w-[200px]">
       <div class="side-item-list">
@@ -42,7 +41,7 @@ import * as ClueApi from '@/api/crm/clue'
 import * as ContractApi from '@/api/crm/contract'
 import * as ReceivableApi from '@/api/crm/receivable'
 import * as ReceivablePlanApi from '@/api/crm/receivable/plan'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmBacklog' })
 
 const leftMenu = ref('customerTodayContact')
@@ -58,42 +57,42 @@ const receivablePlanRemindCount = ref(0)
 
 const leftSides = ref([
   {
-    name: '今日需联系客户',
+    name: t('auto.views.crm.backlog.index.ka90fcead'),
     menu: 'customerTodayContact',
     count: customerTodayContactCount
   },
   {
-    name: '分配给我的线索',
+    name: t('auto.views.crm.backlog.index.k330a38c5'),
     menu: 'clueFollow',
     count: clueFollowCount
   },
   {
-    name: '分配给我的客户',
+    name: t('auto.views.crm.backlog.index.kbd907d44'),
     menu: 'customerFollow',
     count: customerFollowCount
   },
   {
-    name: '待进入公海的客户',
+    name: t('auto.views.crm.backlog.index.k55fd4a69'),
     menu: 'customerPutPoolRemind',
     count: customerPutPoolRemindCount
   },
   {
-    name: '待审核合同',
+    name: t('auto.views.crm.backlog.index.kd891945c'),
     menu: 'contractAudit',
     count: contractAuditCount
   },
   {
-    name: '待审核回款',
+    name: t('auto.views.crm.backlog.index.kda707675'),
     menu: 'receivableAudit',
     count: receivableAuditCount
   },
   {
-    name: '待回款提醒',
+    name: t('auto.views.crm.backlog.index.kd40192ef'),
     menu: 'receivablePlanRemind',
     count: receivablePlanRemindCount
   },
   {
-    name: '即将到期的合同',
+    name: t('auto.views.crm.backlog.index.k9c295b69'),
     menu: 'contractRemind',
     count: contractRemindCount
   }

@@ -1,6 +1,12 @@
 <template>
-  <doc-alert title="【交易】交易订单" url="https://doc.iocoder.cn/mall/trade-order/" />
-  <doc-alert title="【交易】购物车" url="https://doc.iocoder.cn/mall/trade-cart/" />
+  <doc-alert
+    :title="t('auto.views.mall.trade.delivery.pickUpOrder.index.k1daebace')"
+    url="https://doc.iocoder.cn/mall/trade-order/"
+  />
+  <doc-alert
+    :title="t('auto.views.mall.trade.delivery.pickUpOrder.index.k4c3890b5')"
+    url="https://doc.iocoder.cn/mall/trade-cart/"
+  />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -11,24 +17,27 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-280px"
-          end-placeholder="自定义时间"
-          start-placeholder="自定义时间"
+          :end-placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k935f547a')"
+          :start-placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k935f547a')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="自提门店" prop="pickUpStoreId">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k7d250a8d')"
+        prop="pickUpStoreId"
+      >
         <el-select
           v-model="queryParams.pickUpStoreId"
           class="!w-280px"
           clearable
           multiple
-          placeholder="全部"
+          :placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k778fc8f9')"
         >
           <el-option
             v-for="item in pickUpStoreList"
@@ -38,20 +47,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="聚合搜索">
+      <el-form-item :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k2798e98a')">
         <el-input
           v-show="true"
           v-model="queryParams[queryType.queryParam]"
           class="!w-280px"
           clearable
-          placeholder="请输入"
+          :placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k601816e1')"
           :type="queryType.queryParam === 'userId' ? 'number' : 'text'"
         >
           <template #prepend>
             <el-select
               v-model="queryType.queryParam"
               class="!w-110px"
-              placeholder="全部"
+              :placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k778fc8f9')"
               @change="inputChangeSelect"
             >
               <el-option
@@ -216,7 +225,7 @@ import { DeliveryTypeEnum } from '@/utils/constants'
 import { TradeOrderSummaryRespVO } from '@/api/mall/trade/order'
 import { DeliveryPickUpStoreVO } from '@/api/mall/trade/delivery/pickUpStore'
 import OrderPickUpForm from '@/views/mall/trade/order/form/OrderPickUpForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'PickUpOrder' })
 
 // 列表的加载中
@@ -249,10 +258,10 @@ const summary = ref<TradeOrderSummaryRespVO>()
 
 // 订单聚合搜索 select 类型配置（动态搜索）
 const dynamicSearchList = ref([
-  { value: 'no', label: '订单号' },
-  { value: 'userId', label: '用户UID' },
-  { value: 'userNickname', label: '用户昵称' },
-  { value: 'userMobile', label: '用户电话' }
+  { value: 'no', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.k459868e5') },
+  { value: 'userId', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.kc643dec1') },
+  { value: 'userNickname', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.k90542e0a') },
+  { value: 'userMobile', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.kf1f95d00') }
 ])
 /**
  * 聚合搜索切换查询对象时触发

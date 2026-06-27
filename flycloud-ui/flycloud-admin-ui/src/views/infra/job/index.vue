@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,19 +8,19 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item label="任务名称" prop="name">
+      <el-form-item :label="t('auto.views.infra.job.index.k2e304698')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入任务名称"
+          :placeholder="t('auto.views.infra.job.index.k5169b9ec')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="任务状态" prop="status">
+      <el-form-item :label="t('auto.views.infra.job.index.kb7d4128d')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择任务状态"
+          :placeholder="t('auto.views.infra.job.index.kf8aa9ccb')"
           clearable
           class="!w-240px"
         >
@@ -33,25 +32,29 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="处理器的名字" prop="handlerName">
+      <el-form-item :label="t('auto.views.infra.job.index.kec311980')" prop="handlerName">
         <el-input
           v-model="queryParams.handlerName"
-          placeholder="请输入处理器的名字"
+          :placeholder="t('auto.views.infra.job.index.kec878692')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['infra:job:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1e136e95') }}
         </el-button>
         <el-button
           type="success"
@@ -60,10 +63,10 @@
           :loading="exportLoading"
           v-hasPermi="['infra:job:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kb3081d0c') }}
         </el-button>
         <el-button type="info" plain @click="handleJobLog()" v-hasPermi="['infra:job:query']">
-          <Icon icon="ep:zoom-in" class="mr-5px" /> 执行日志
+          <Icon icon="ep:zoom-in" class="mr-5px" /> {{ t('extra.k9a8378ea') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -72,9 +75,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="任务编号" align="center" prop="id" />
-      <el-table-column label="任务名称" align="center" prop="name" />
-      <el-table-column label="任务状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.infra.job.index.k017af56c')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.index.k2e304698')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.index.kb7d4128d')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_JOB_STATUS" :value="scope.row.status" />
         </template>
@@ -152,10 +167,8 @@ import JobDetail from './JobDetail.vue'
 import download from '@/utils/download'
 import * as JobApi from '@/api/infra/job'
 import { InfraJobStatusEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraJob' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const { push } = useRouter() // 路由
 
@@ -204,7 +217,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await JobApi.exportJob(queryParams)
-    download.excel(data, '定时任务.xls')
+    download.excel(data, t('auto.views.infra.job.index.k9ecd6f11'))
   } catch {
   } finally {
     exportLoading.value = false
@@ -221,15 +234,22 @@ const openForm = (type: string, id?: number) => {
 const handleChangeStatus = async (row: JobApi.JobVO) => {
   try {
     // 修改状态的二次确认
-    const text = row.status === InfraJobStatusEnum.STOP ? '开启' : '关闭'
+    const text =
+      row.status === InfraJobStatusEnum.STOP
+        ? t('auto.views.infra.job.index.k256783b7')
+        : t('common.close')
     await message.confirm(
-      '确认要' + text + '定时任务编号为"' + row.id + '"的数据项?',
+      t('auto.views.infra.job.index.k2be38185') +
+        text +
+        t('auto.views.infra.job.index.k1203af22') +
+        row.id +
+        t('auto.views.infra.job.index.kc87f4c07'),
       t('common.reminder')
     )
     const status =
       row.status === InfraJobStatusEnum.STOP ? InfraJobStatusEnum.NORMAL : InfraJobStatusEnum.STOP
     await JobApi.updateJobStatus(row.id, status)
-    message.success(text + '成功')
+    message.success(text + t('common.success'))
     // 刷新列表
     await getList()
   } catch {}
@@ -269,10 +289,13 @@ const handleCommand = (command, row) => {
 const handleRun = async (row: JobApi.JobVO) => {
   try {
     // 二次确认
-    await message.confirm('确认要立即执行一次' + row.name + '?', t('common.reminder'))
+    await message.confirm(
+      t('auto.views.infra.job.index.k8e35da48') + row.name + '?',
+      t('common.reminder')
+    )
     // 提交执行
     await JobApi.runJob(row.id)
-    message.success('执行成功')
+    message.success(t('auto.views.infra.job.index.k6c189aad'))
     // 刷新列表
     await getList()
   } catch {}

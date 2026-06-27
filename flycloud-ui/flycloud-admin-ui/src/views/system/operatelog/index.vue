@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="系统日志" url="https://doc.iocoder.cn/system-log/" />
+  <doc-alert
+    :title="t('auto.views.system.operatelog.index.k096733f9')"
+    url="https://doc.iocoder.cn/system-log/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,72 +13,71 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="操作人" prop="userId">
+      <el-form-item :label="t('auto.views.system.operatelog.index.k06858dfb')" prop="userId">
         <el-select
           v-model="queryParams.userId"
           clearable
           filterable
-          placeholder="请输入操作人员"
+          :placeholder="t('auto.views.system.operatelog.index.kdc7915c4')"
           class="!w-240px"
         >
-          <el-option
-            v-for="user in userList"
-            :key="user.id"
-            :label="user.name"
-            :value="user.id"
-          />
+          <el-option v-for="user in userList" :key="user.id" :label="user.name" :value="user.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="操作模块" prop="type">
+      <el-form-item :label="t('auto.views.system.operatelog.index.k301c995f')" prop="type">
         <el-input
           v-model="queryParams.type"
-          placeholder="请输入操作模块"
+          :placeholder="t('auto.views.system.operatelog.index.k36de5bc7')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="操作名" prop="subType">
+      <el-form-item :label="t('auto.views.system.operatelog.index.k6116e6e0')" prop="subType">
         <el-input
           v-model="queryParams.subType"
-          placeholder="请输入操作名"
+          :placeholder="t('auto.views.system.operatelog.index.k7fc0171e')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="操作内容" prop="action">
+      <el-form-item :label="t('auto.views.system.operatelog.index.k33089c48')" prop="action">
         <el-input
           v-model="queryParams.action"
-          placeholder="请输入操作名"
+          :placeholder="t('auto.views.system.operatelog.index.k7fc0171e')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="操作时间" prop="createTime">
+      <el-form-item :label="t('auto.views.system.operatelog.index.kc7fc0c4d')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.operatelog.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.operatelog.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="业务编号" prop="bizId">
+      <el-form-item :label="t('auto.views.system.operatelog.index.k9c5f5763')" prop="bizId">
         <el-input
           v-model="queryParams.bizId"
-          placeholder="请输入业务编号"
+          :placeholder="t('auto.views.system.operatelog.index.k6a439c83')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -83,7 +85,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:operate-log:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kd1f35d89') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -92,21 +94,55 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="日志编号" align="center" prop="id" width="100" />
-      <el-table-column label="操作人" align="center" prop="userName" width="120" />
-      <el-table-column label="操作模块" align="center" prop="type" width="120" />
-      <el-table-column label="操作名" align="center" prop="subType" width="160" />
-      <el-table-column label="操作内容" align="center" prop="action" />
       <el-table-column
-        label="操作时间"
+        :label="t('auto.views.system.operatelog.index.k8cac83c8')"
+        align="center"
+        prop="id"
+        width="100"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.k06858dfb')"
+        align="center"
+        prop="userName"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.k301c995f')"
+        align="center"
+        prop="type"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.k6116e6e0')"
+        align="center"
+        prop="subType"
+        width="160"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.k33089c48')"
+        align="center"
+        prop="action"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.kc7fc0c4d')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="业务编号" align="center" prop="bizId" width="120" />
-      <el-table-column label="操作 IP" align="center" prop="userIp" width="120" />
-      <el-table-column label="操作" align="center" fixed="right" width="60">
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.k9c5f5763')"
+        align="center"
+        prop="bizId"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.ke95a2168')"
+        align="center"
+        prop="userIp"
+        width="120"
+      />
+      <el-table-column :label="t('common.operation')" align="center" fixed="right" width="60">
         <template #default="scope">
           <el-button
             link
@@ -114,7 +150,7 @@
             @click="openDetail(scope.row)"
             v-hasPermi="['infra:operate-log:query']"
           >
-            详情
+            {{ t('extra.kea731f93') }}
           </el-button>
         </template>
       </el-table-column>
@@ -137,6 +173,7 @@ import download from '@/utils/download'
 import * as OperateLogApi from '@/api/system/operatelog'
 import OperateLogDetail from './OperateLogDetail.vue'
 import * as UserApi from '@/api/system/user'
+const { t } = useI18n()
 const userList = ref<UserApi.UserVO[]>([]) // 用户列表
 
 defineOptions({ name: 'SystemOperateLog' })
@@ -197,7 +234,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await OperateLogApi.exportOperateLog(queryParams)
-    download.excel(data, '操作日志.xls')
+    download.excel(data, t('auto.views.system.operatelog.index.k2f3447ea'))
   } catch {
   } finally {
     exportLoading.value = false

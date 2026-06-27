@@ -8,9 +8,9 @@
       >
         <span class="iconfont icon-exclusive icon-size condition"></span>
       </div>
-      <el-button v-else class="branch-node-add" color="#67c23a" @click="addCondition" plain
-        >添加条件</el-button
-      >
+      <el-button v-else class="branch-node-add" color="#67c23a" @click="addCondition" plain>{{
+        t('auto.components.SimpleProcessDesignerV2.src.nodes.ExclusiveNode.kcf97988a')
+      }}</el-button>
 
       <div
         class="branch-node-item"
@@ -113,6 +113,7 @@ import { getDefaultConditionNodeName } from '../utils'
 import { useTaskStatusClass } from '../node'
 import { generateUUID } from '@/utils'
 import ConditionNodeConfig from '../nodes-config/ConditionNodeConfig.vue'
+const { t } = useI18n()
 const { proxy } = getCurrentInstance() as any
 defineOptions({
   name: 'ExclusiveNode'
@@ -173,7 +174,7 @@ const addCondition = () => {
     let lastIndex = len - 1
     const conditionData: SimpleFlowNode = {
       id: 'Flow_' + generateUUID(),
-      name: '条件' + len,
+      name: t('auto.components.SimpleProcessDesignerV2.src.nodes.ExclusiveNode.k72f1cf75') + len,
       showText: '',
       type: NodeType.CONDITION_NODE,
       childNode: undefined,

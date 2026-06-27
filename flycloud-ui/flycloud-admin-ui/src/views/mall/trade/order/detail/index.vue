@@ -1,29 +1,42 @@
 <template>
   <ContentWrap>
     <!-- 订单信息 -->
-    <el-descriptions title="订单信息">
-      <el-descriptions-item label="订单号: ">{{ formData.no }}</el-descriptions-item>
-      <el-descriptions-item label="买家: ">{{ formData?.user?.name }}</el-descriptions-item>
-      <el-descriptions-item label="订单类型: ">
+    <el-descriptions :title="t('auto.views.mall.trade.order.detail.index.k43b06de2')">
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k9820edd2')">{{
+        formData.no
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k2a120ba7')">{{
+        formData?.user?.name
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.kccc1043a')">
         <dict-tag :type="DICT_TYPE.TRADE_ORDER_TYPE" :value="formData.type!" />
       </el-descriptions-item>
-      <el-descriptions-item label="订单来源: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k6c8104c1')">
         <dict-tag :type="DICT_TYPE.TERMINAL" :value="formData.terminal!" />
       </el-descriptions-item>
-      <el-descriptions-item label="买家留言: ">{{ formData.userRemark }}</el-descriptions-item>
-      <el-descriptions-item label="商家备注: ">{{ formData.remark }}</el-descriptions-item>
-      <el-descriptions-item label="支付单号: ">{{ formData.payOrderId }}</el-descriptions-item>
-      <el-descriptions-item label="付款方式: ">
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.ke3fabec0')">{{
+        formData.userRemark
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k6718a4d1')">{{
+        formData.remark
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.kfa7bd390')">{{
+        formData.payOrderId
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k835299d9')">
         <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="formData.payChannelCode!" />
       </el-descriptions-item>
-      <el-descriptions-item v-if="formData.brokerageUser" label="推广用户: ">
+      <el-descriptions-item
+        v-if="formData.brokerageUser"
+        :label="t('auto.views.mall.trade.order.detail.index.kb0521549')"
+      >
         {{ formData.brokerageUser?.name }}
       </el-descriptions-item>
     </el-descriptions>
 
     <!-- 订单状态 -->
-    <el-descriptions :column="1" title="订单状态">
-      <el-descriptions-item label="订单状态: ">
+    <el-descriptions :column="1" :title="t('auto.views.mall.trade.order.detail.index.k4e4ca9ca')">
+      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k9d97842b')">
         <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="formData.status!" />
       </el-descriptions-item>
       <el-descriptions-item v-hasPermi="['trade:order:update']" label-class-name="no-colon">
@@ -32,9 +45,9 @@
           type="primary"
           @click="updatePrice"
         >
-          调整价格
+          {{ t('extra.k8ca82085') }}
         </el-button>
-        <el-button type="primary" @click="remark">备注</el-button>
+        <el-button type="primary" @click="remark">{{ t('common.remark') }}</el-button>
         <!-- 待发货 -->
         <template v-if="formData.status! === TradeOrderStatusEnum.UNDELIVERED.status">
           <!-- 快递发货 -->
@@ -43,14 +56,14 @@
             type="primary"
             @click="delivery"
           >
-            发货
+            {{ t('extra.k3ddeb39f') }}
           </el-button>
           <el-button
             v-if="formData.deliveryType === DeliveryTypeEnum.EXPRESS.type"
             type="primary"
             @click="updateAddress"
           >
-            修改地址
+            {{ t('extra.k1dfdf0dc') }}
           </el-button>
           <!-- 到店自提 -->
           <el-button
@@ -58,7 +71,7 @@
             type="primary"
             @click="handlePickUp"
           >
-            核销
+            {{ t('extra.k1f9adbed') }}
           </el-button>
         </template>
       </el-descriptions-item>
@@ -236,7 +249,7 @@ import { useTagsViewStore } from '@/store/modules/tagsView'
 import { DeliveryTypeEnum, TradeOrderStatusEnum } from '@/utils/constants'
 import * as DeliveryPickUpStoreApi from '@/api/mall/trade/delivery/pickUpStore'
 import { propTypes } from '@/utils/propTypes'
-
+const { t } = useI18n()
 defineOptions({ name: 'TradeOrderDetail' })
 
 const message = useMessage() // 消息弹窗
@@ -284,10 +297,10 @@ const updatePrice = () => {
 const handlePickUp = async () => {
   try {
     // 二次确认
-    await message.confirm('确认核销订单吗？')
+    await message.confirm(t('auto.views.mall.trade.order.detail.index.k4fcfc596'))
     // 提交
     await TradeOrderApi.pickUpOrder(formData.value.id!)
-    message.success('核销成功')
+    message.success(t('auto.views.mall.trade.order.detail.index.k6a980a8c'))
     // 刷新列表
     await getDetail()
   } catch {}
@@ -305,7 +318,7 @@ const getDetail = async () => {
     const res = (await TradeOrderApi.getOrder(id)) as TradeOrderApi.OrderVO
     // 没有表单信息则关闭页面返回
     if (!res) {
-      message.error('交易订单不存在')
+      message.error(t('auto.views.mall.trade.order.detail.index.kd639df2e'))
       close()
     }
     formData.value = res
@@ -322,7 +335,7 @@ const close = () => {
 
 /** 复制 */
 const clipboardSuccess = () => {
-  message.success('复制成功')
+  message.success(t('auto.views.mall.trade.order.detail.index.kc1ef062e'))
 }
 
 /** 初始化 **/

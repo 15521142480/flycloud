@@ -26,19 +26,13 @@
       </div>
     </template>
     <div>
-      <div class="mb-3 font-size-16px" v-if="currentNode.defaultFlow">未满足其它条件时，将进入此分支（该分支不可编辑和删除）</div>
+      <div class="mb-3 font-size-16px" v-if="currentNode.defaultFlow"
+        >未满足其它条件时，将进入此分支（该分支不可编辑和删除）</div
+      >
       <div v-else>
-        <el-form
-          ref="formRef"
-          :model="currentNode"
-          :rules="formRules"
-          label-position="top"
-        >
+        <el-form ref="formRef" :model="currentNode" :rules="formRules" label-position="top">
           <el-form-item label="配置方式" prop="conditionType">
-            <el-radio-group
-              v-model="currentNode.conditionType"
-              @change="changeConditionType"
-            >
+            <el-radio-group v-model="currentNode.conditionType" @change="changeConditionType">
               <el-radio
                 v-for="(dict, index) in conditionConfigTypes"
                 :key="index"
@@ -169,6 +163,7 @@ import {
 } from '../consts'
 import { getDefaultConditionNodeName } from '../utils'
 import { useFormFields } from '../node'
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 defineOptions({
   name: 'ConditionNodeConfig'
@@ -244,8 +239,24 @@ const handleClose = async (done: (cancel?: boolean) => void) => {
 }
 // 表单校验规则
 const formRules = reactive({
-  conditionType: [{ required: true, message: '配置方式不能为空', trigger: 'blur' }],
-  conditionExpression: [{ required: true, message: '条件表达式不能为空', trigger: 'blur' }]
+  conditionType: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k83215445'
+      ),
+      trigger: 'blur'
+    }
+  ],
+  conditionExpression: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k743c1281'
+      ),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -276,7 +287,7 @@ const getShowText = (): string => {
   let showText = ''
   if (currentNode.value.conditionType === ConditionType.EXPRESSION) {
     if (currentNode.value.conditionExpression) {
-      showText = `表达式：${currentNode.value.conditionExpression}`
+      showText = t('extra.k8318a89a', { p0: currentNode.value.conditionExpression })
     }
   }
   if (currentNode.value.conditionType === ConditionType.RULE) {
@@ -294,11 +305,21 @@ const getShowText = (): string => {
               )
             } else {
               // 有一条规则不完善。提示错误
-              warningMesg = '请完善条件规则'
+              warningMesg = t(
+                'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k9525d987'
+              )
               return ''
             }
           })
-          .join(item.and ? ' 且 ' : ' 或 ') +
+          .join(
+            item.and
+              ? t(
+                  'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k0b2c440d'
+                )
+              : t(
+                  'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k30f4d7cf'
+                )
+          ) +
         ' ) '
       )
     })
@@ -306,7 +327,15 @@ const getShowText = (): string => {
       message.warning(warningMesg)
       showText = ''
     } else {
-      showText = conditionGroup.join(groupAnd ? ' 且 ' : ' 或 ')
+      showText = conditionGroup.join(
+        groupAnd
+          ? t(
+              'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k0b2c440d'
+            )
+          : t(
+              'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k30f4d7cf'
+            )
+      )
     }
   }
   return showText
@@ -323,7 +352,9 @@ const conditionGroups = ref<ConditionGroup>({
       rules: [
         {
           type: 1,
-          opName: '等于',
+          opName: t(
+            'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.kbd0f3091'
+          ),
           opCode: '==',
           leftSide: '',
           rightSide: ''
@@ -339,7 +370,9 @@ const addConditionGroup = () => {
     rules: [
       {
         type: 1,
-        opName: '等于',
+        opName: t(
+          'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.kbd0f3091'
+        ),
         opCode: '==',
         leftSide: '',
         rightSide: ''
@@ -357,7 +390,9 @@ const deleteConditionGroup = (idx: number) => {
 const addConditionRule = (condition: Condition, idx: number) => {
   const rule: ConditionRule = {
     type: 1,
-    opName: '等于',
+    opName: t(
+      'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.kbd0f3091'
+    ),
     opCode: '==',
     leftSide: '',
     rightSide: ''

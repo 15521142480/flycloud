@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,17 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名字" prop="name">
+      <el-form-item :label="t('auto.views.infra.demo.demo03.inner.index.k364bd1bf')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名字"
+          :placeholder="t('auto.views.infra.demo.demo03.inner.index.k010c1585')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
-        <el-select v-model="queryParams.sex" placeholder="请选择性别" clearable class="!w-240px">
+      <el-form-item :label="t('auto.views.infra.demo.demo03.inner.index.kfe8aa4ef')" prop="sex">
+        <el-select
+          v-model="queryParams.sex"
+          :placeholder="t('auto.views.infra.demo.demo03.inner.index.k9362948f')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
             :key="dict.value"
@@ -28,27 +32,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.demo.demo03.inner.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.demo.demo03.inner.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['infra:demo03-student:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf57bf304') }}
         </el-button>
         <el-button
           type="success"
@@ -57,7 +65,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:demo03-student:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kaa51b91e') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -70,10 +78,16 @@
       <el-table-column type="expand">
         <template #default="scope">
           <el-tabs model-value="demo03Course">
-            <el-tab-pane label="学生课程" name="demo03Course">
+            <el-tab-pane
+              :label="t('auto.views.infra.demo.demo03.inner.index.kbb3dc762')"
+              name="demo03Course"
+            >
               <Demo03CourseList :student-id="scope.row.id" />
             </el-tab-pane>
-            <el-tab-pane label="学生班级" name="demo03Grade">
+            <el-tab-pane
+              :label="t('auto.views.infra.demo.demo03.inner.index.k2d98447b')"
+              name="demo03Grade"
+            >
               <Demo03GradeList :student-id="scope.row.id" />
             </el-tab-pane>
           </el-tabs>
@@ -143,11 +157,10 @@ import * as Demo03StudentApi from '@/api/infra/demo/demo03/inner'
 import Demo03StudentForm from './Demo03StudentForm.vue'
 import Demo03CourseList from './components/Demo03CourseList.vue'
 import Demo03GradeList from './components/Demo03GradeList.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'Demo03Student' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据
@@ -214,7 +227,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await Demo03StudentApi.exportDemo03Student(queryParams)
-    download.excel(data, '学生.xls')
+    download.excel(data, t('auto.views.infra.demo.demo03.inner.index.k45c1e118'))
   } catch {
   } finally {
     exportLoading.value = false

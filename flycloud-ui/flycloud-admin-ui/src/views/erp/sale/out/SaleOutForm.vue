@@ -10,27 +10,31 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="出库单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.erp.sale.out.SaleOutForm.k76097d27')" prop="no">
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.sale.out.SaleOutForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="出库时间" prop="outTime">
+          <el-form-item :label="t('auto.views.erp.sale.out.SaleOutForm.kd9a6d1b0')" prop="outTime">
             <el-date-picker
               v-model="formData.outTime"
               type="date"
               value-format="x"
-              placeholder="选择出库时间"
+              :placeholder="t('auto.views.erp.sale.out.SaleOutForm.k86df4f2c')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="关联订单" prop="orderNo">
+          <el-form-item :label="t('auto.views.erp.sale.out.SaleOutForm.k969d961c')" prop="orderNo">
             <el-input v-model="formData.orderNo" readonly>
               <template #append>
                 <el-button @click="openSaleOrderOutEnableList">
-                  <Icon icon="ep:search" /> 选择
+                  <Icon icon="ep:search" /> {{ t('extra.k01216f50') }}
                 </el-button>
               </template>
             </el-input>
@@ -187,9 +191,8 @@ import { SaleOrderVO } from '@/api/erp/sale/order'
 import * as UserApi from '@/api/system/user'
 
 /** ERP 销售出库表单 */
+const { t } = useI18n()
 defineOptions({ name: 'SaleOutForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -213,8 +216,12 @@ const formData = ref({
   no: undefined // 出库单号，后端返回
 })
 const formRules = reactive({
-  customerId: [{ required: true, message: '客户不能为空', trigger: 'blur' }],
-  outTime: [{ required: true, message: '出库时间不能为空', trigger: 'blur' }]
+  customerId: [
+    { required: true, message: t('auto.views.erp.sale.out.SaleOutForm.k920199e1'), trigger: 'blur' }
+  ],
+  outTime: [
+    { required: true, message: t('auto.views.erp.sale.out.SaleOutForm.k2612cd85'), trigger: 'blur' }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

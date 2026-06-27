@@ -8,8 +8,16 @@
         :rules="formRules"
         label-width="100px"
       >
-        <el-form-item label="渠道费率" label-width="180px" prop="feeRate">
-          <el-input v-model="formData.feeRate" clearable placeholder="请输入渠道费率">
+        <el-form-item
+          :label="t('auto.views.pay.app.components.channel.AlipayChannelForm.k149ebd50')"
+          label-width="180px"
+          prop="feeRate"
+        >
+          <el-input
+            v-model="formData.feeRate"
+            clearable
+            :placeholder="t('auto.views.pay.app.components.channel.AlipayChannelForm.k60d14a2c')"
+          >
             <template #append>%</template>
           </el-input>
         </el-form-item>
@@ -191,10 +199,8 @@
 import { CommonStatusEnum } from '@/utils/constants'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import * as ChannelApi from '@/api/pay/channel'
-
+const { t } = useI18n()
 defineOptions({ name: 'AlipayChannelForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -221,22 +227,90 @@ const formData = ref<any>({
   }
 })
 const formRules = {
-  feeRate: [{ required: true, message: '请输入渠道费率', trigger: 'blur' }],
-  status: [{ required: true, message: '渠道状态不能为空', trigger: 'blur' }],
-  'config.appId': [{ required: true, message: '请输入开放平台上创建的应用的 ID', trigger: 'blur' }],
-  'config.serverUrl': [{ required: true, message: '请传入网关地址', trigger: 'blur' }],
-  'config.signType': [{ required: true, message: '请传入签名算法类型', trigger: 'blur' }],
-  'config.mode': [{ required: true, message: '公钥类型不能为空', trigger: 'blur' }],
-  'config.privateKey': [{ required: true, message: '请输入商户私钥', trigger: 'blur' }],
+  feeRate: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k60d14a2c'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.kefb5407a'),
+      trigger: 'blur'
+    }
+  ],
+  'config.appId': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k1062ae56'),
+      trigger: 'blur'
+    }
+  ],
+  'config.serverUrl': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.kcf0b28ee'),
+      trigger: 'blur'
+    }
+  ],
+  'config.signType': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k1bcb82f9'),
+      trigger: 'blur'
+    }
+  ],
+  'config.mode': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.kf2971432'),
+      trigger: 'blur'
+    }
+  ],
+  'config.privateKey': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.kdd9c65bb'),
+      trigger: 'blur'
+    }
+  ],
   'config.alipayPublicKey': [
-    { required: true, message: '请输入支付宝公钥字符串', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k6e418e7e'),
+      trigger: 'blur'
+    }
   ],
-  'config.appCertContent': [{ required: true, message: '请上传商户公钥应用证书', trigger: 'blur' }],
+  'config.appCertContent': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k685c8573'),
+      trigger: 'blur'
+    }
+  ],
   'config.alipayPublicCertContent': [
-    { required: true, message: '请上传支付宝公钥证书', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k0d1d866d'),
+      trigger: 'blur'
+    }
   ],
-  'config.rootCertContent': [{ required: true, message: '请上传指定根证书', trigger: 'blur' }],
-  'config.encryptKey': [{ required: true, message: '请输入接口内容加密密钥', trigger: 'blur' }]
+  'config.rootCertContent': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.kead78efa'),
+      trigger: 'blur'
+    }
+  ],
+  'config.encryptKey': [
+    {
+      required: true,
+      message: t('auto.views.pay.app.components.channel.AlipayChannelForm.k2108123f'),
+      trigger: 'blur'
+    }
+  ]
 }
 const fileAccept = '.crt'
 const formRef = ref() // 表单 Ref
@@ -253,7 +327,9 @@ const open = async (appId, code) => {
       formData.value = data
       formData.value.config = JSON.parse(data.config)
     }
-    dialogTitle.value = !formData.value.id ? '创建支付渠道' : '编辑支付渠道'
+    dialogTitle.value = !formData.value.id
+      ? t('auto.views.pay.app.components.channel.AlipayChannelForm.k590f5fde')
+      : t('auto.views.pay.app.components.channel.AlipayChannelForm.k7d8bedec')
   } finally {
     formLoading.value = false
   }
@@ -315,12 +391,12 @@ const resetForm = (appId, code) => {
 const fileBeforeUpload = (file) => {
   let format = '.' + file.name.split('.')[1]
   if (format !== fileAccept) {
-    message.error(`请上传指定格式"${fileAccept}"文件`)
+    message.error(t('extra.k05c5a0a8', { p0: fileAccept }))
     return false
   }
   let isRightSize = file.size / 1024 / 1024 < 2
   if (!isRightSize) {
-    message.error('文件大小超过 2MB')
+    message.error(t('auto.views.pay.app.components.channel.AlipayChannelForm.kb3d76ed4'))
   }
   return isRightSize
 }

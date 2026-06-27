@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="采购单据编号" min-width="200">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k0dbf919b')"
+        min-width="200"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.bizNo" />
@@ -81,7 +84,7 @@ import PurchaseReturnRefundEnableList from '@/views/erp/purchase/return/componen
 import { PurchaseInVO } from '@/api/erp/purchase/in'
 import { ErpBizType } from '@/utils/constants'
 import { PurchaseReturnVO } from '@/api/erp/purchase/return'
-
+const { t } = useI18n()
 const props = defineProps<{
   items: undefined
   supplierId: undefined
@@ -92,7 +95,13 @@ const message = useMessage()
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  paymentPrice: [{ required: true, message: '本次付款不能为空', trigger: 'blur' }]
+  paymentPrice: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k2257eae5'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const productList = ref<ProductVO[]>([]) // 产品列表
@@ -112,7 +121,7 @@ const getSummaries = (param: SummaryMethodProps) => {
   const sums: string[] = []
   columns.forEach((column, index: number) => {
     if (index === 0) {
-      sums[index] = '合计'
+      sums[index] = t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k92bcbf71')
       return
     }
     if (['totalPrice', 'paidPrice', 'paymentPrice'].includes(column.property)) {
@@ -129,7 +138,7 @@ const getSummaries = (param: SummaryMethodProps) => {
 const purchaseInPaymentEnableListRef = ref()
 const handleOpenPurchaseIn = () => {
   if (!props.supplierId) {
-    message.error('请选择供应商')
+    message.error(t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k38eae8d5'))
     return
   }
   purchaseInPaymentEnableListRef.value.open(props.supplierId)
@@ -151,7 +160,7 @@ const handleAddPurchaseIn = (rows: PurchaseInVO[]) => {
 const purchaseReturnRefundEnableListRef = ref()
 const handleOpenPurchaseReturn = () => {
   if (!props.supplierId) {
-    message.error('请选择供应商')
+    message.error(t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k38eae8d5'))
     return
   }
   purchaseReturnRefundEnableListRef.value.open(props.supplierId)

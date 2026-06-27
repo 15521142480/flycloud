@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <CardTitle title="运营数据" />
+      <CardTitle :title="t('auto.views.mall.home.components.OperationDataCard.k45b9d122')" />
     </template>
     <div class="flex flex-row flex-wrap items-center gap-8 p-4">
       <div
@@ -28,21 +28,50 @@ import * as PayStatisticsApi from '@/api/mall/statistics/pay'
 import { CardTitle } from '@/components/Card'
 
 /** 运营数据卡片 */
+const { t } = useI18n()
 defineOptions({ name: 'OperationDataCard' })
 
 const router = useRouter() // 路由
 
 /** 数据 */
 const data = reactive({
-  orderUndelivered: { name: '待发货订单', value: 9, routerName: 'TradeOrder' },
-  orderAfterSaleApply: { name: '退款中订单', value: 4, routerName: 'TradeAfterSale' },
-  orderWaitePickUp: { name: '待核销订单', value: 0, routerName: 'TradeOrder' },
-  productAlertStock: { name: '库存预警', value: 0, routerName: 'ProductSpu' },
-  productForSale: { name: '上架商品', value: 0, routerName: 'ProductSpu' },
-  productInWarehouse: { name: '仓库商品', value: 0, routerName: 'ProductSpu' },
-  withdrawAuditing: { name: '提现待审核', value: 0, routerName: 'TradeBrokerageWithdraw' },
+  orderUndelivered: {
+    name: t('auto.views.mall.home.components.OperationDataCard.kc1d9820f'),
+    value: 9,
+    routerName: 'TradeOrder'
+  },
+  orderAfterSaleApply: {
+    name: t('auto.views.mall.home.components.OperationDataCard.k8c6a48f8'),
+    value: 4,
+    routerName: 'TradeAfterSale'
+  },
+  orderWaitePickUp: {
+    name: t('auto.views.mall.home.components.OperationDataCard.k65b5072d'),
+    value: 0,
+    routerName: 'TradeOrder'
+  },
+  productAlertStock: {
+    name: t('auto.views.mall.home.components.OperationDataCard.ke8ee7bca'),
+    value: 0,
+    routerName: 'ProductSpu'
+  },
+  productForSale: {
+    name: t('auto.views.mall.home.components.OperationDataCard.kc6a49d3a'),
+    value: 0,
+    routerName: 'ProductSpu'
+  },
+  productInWarehouse: {
+    name: t('auto.views.mall.home.components.OperationDataCard.k70b85c3d'),
+    value: 0,
+    routerName: 'ProductSpu'
+  },
+  withdrawAuditing: {
+    name: t('auto.views.mall.home.components.OperationDataCard.kd85c40da'),
+    value: 0,
+    routerName: 'TradeBrokerageWithdraw'
+  },
   rechargePrice: {
-    name: '账户充值',
+    name: t('auto.views.mall.home.components.OperationDataCard.k46c2558a'),
     value: 0.0,
     prefix: '￥',
     decimals: 2,

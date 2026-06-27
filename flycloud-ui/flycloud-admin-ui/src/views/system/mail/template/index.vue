@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="邮件配置" url="https://doc.iocoder.cn/mail" />
+  <doc-alert
+    :title="t('auto.views.system.mail.template.index.k19d12783')"
+    url="https://doc.iocoder.cn/mail"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -12,7 +15,7 @@
           @click="openForm('create')"
           v-hasPermi="['system:mail-template:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k77b780c6') }}
         </el-button>
       </template>
     </Search>
@@ -70,7 +73,7 @@ import { allSchemas } from './template.data'
 import * as MailTemplateApi from '@/api/system/mail/template'
 import MailTemplateForm from './MailTemplateForm.vue'
 import MailTemplateSendForm from './MailTemplateSendForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMailTemplate' })
 
 // tableObject：表格的属性对象，可获得分页大小、条数等属性

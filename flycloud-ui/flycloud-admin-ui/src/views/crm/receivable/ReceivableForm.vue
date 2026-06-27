@@ -9,12 +9,19 @@
     >
       <el-row>
         <el-col :span="12">
-          <el-form-item label="回款编号" prop="no">
-            <el-input v-model="formData.no" disabled placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.crm.receivable.ReceivableForm.k89c860f8')" prop="no">
+            <el-input
+              v-model="formData.no"
+              disabled
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="负责人" prop="ownerUserId">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.k974d383f')"
+            prop="ownerUserId"
+          >
             <el-select
               v-model="formData.ownerUserId"
               :disabled="formType !== 'create'"
@@ -32,13 +39,16 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="客户名称" prop="customerId">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.ke941d410')"
+            prop="customerId"
+          >
             <el-select
               v-model="formData.customerId"
               :disabled="formType !== 'create'"
               class="w-1/1"
               filterable
-              placeholder="请选择客户"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.k6bdb05d6')"
               @change="handleCustomerChange"
             >
               <el-option
@@ -51,13 +61,16 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="合同名称" prop="contractId">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.kb8fbf277')"
+            prop="contractId"
+          >
             <el-select
               v-model="formData.contractId"
               :disabled="formType !== 'create' || !formData.customerId"
               class="w-1/1"
               filterable
-              placeholder="请选择合同"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.kde1ab089')"
               @change="handleContractChange"
             >
               <el-option
@@ -73,27 +86,37 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="回款期数" prop="planId">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.kcaff0fdf')"
+            prop="planId"
+          >
             <el-select
               v-model="formData.planId"
               :disabled="formType !== 'create' || !formData.contractId"
               class="!w-1/1"
-              placeholder="请选择回款期数"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.k07180071')"
               @change="handleReceivablePlanChange"
             >
               <el-option
                 v-for="data in receivablePlanList"
                 :key="data.id"
                 :disabled="data.receivableId"
-                :label="'第 ' + data.period + ' 期'"
+                :label="t('extra.k50cb6af8') + data.period + t('extra.k6289ac17')"
                 :value="data.id!"
               />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="回款方式" prop="returnType">
-            <el-select v-model="formData.returnType" class="w-1/1" placeholder="请选择回款方式">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.k6c0d9ca0')"
+            prop="returnType"
+          >
+            <el-select
+              v-model="formData.returnType"
+              class="w-1/1"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.kc813ab05')"
+            >
               <el-option
                 v-for="dict in getIntDictOptions(DICT_TYPE.CRM_RECEIVABLE_RETURN_TYPE)"
                 :key="dict.value"
@@ -106,22 +129,28 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="回款金额" prop="price">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.kc60d7ff5')"
+            prop="price"
+          >
             <el-input-number
               v-model="formData.price"
               :min="0.01"
               :precision="2"
               class="!w-100%"
               controls-position="right"
-              placeholder="请输入回款金额"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.k43183e2c')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="回款日期" prop="returnTime">
+          <el-form-item
+            :label="t('auto.views.crm.receivable.ReceivableForm.kd0132503')"
+            prop="returnTime"
+          >
             <el-date-picker
               v-model="formData.returnTime"
-              placeholder="选择回款日期"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.kc7d198c1')"
               type="date"
               value-format="x"
               class="!w-100%"
@@ -131,15 +160,23 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="formData.remark" placeholder="请输入备注" type="textarea" />
+          <el-form-item :label="t('common.remark')" prop="remark">
+            <el-input
+              v-model="formData.remark"
+              :placeholder="t('auto.views.crm.receivable.ReceivableForm.k57e709d9')"
+              type="textarea"
+            />
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.crm.receivable.ReceivableForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.receivable.ReceivableForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -152,8 +189,7 @@ import * as CustomerApi from '@/api/crm/customer'
 import * as ContractApi from '@/api/crm/contract'
 import { useUserStore } from '@/store/modules/user'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -162,10 +198,34 @@ const formLoading = ref(false) // 表单的加载中：1）修改时的数据加
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref<ReceivableApi.ReceivableVO>({} as ReceivableApi.ReceivableVO)
 const formRules = reactive({
-  customerId: [{ required: true, message: '客户不能为空', trigger: 'blur' }],
-  contractId: [{ required: true, message: '合同不能为空', trigger: 'blur' }],
-  returnTime: [{ required: true, message: '回款日期不能为空', trigger: 'blur' }],
-  price: [{ required: true, message: '回款金额不能为空', trigger: 'blur' }]
+  customerId: [
+    {
+      required: true,
+      message: t('auto.views.crm.receivable.ReceivableForm.k920199e1'),
+      trigger: 'blur'
+    }
+  ],
+  contractId: [
+    {
+      required: true,
+      message: t('auto.views.crm.receivable.ReceivableForm.k0772264d'),
+      trigger: 'blur'
+    }
+  ],
+  returnTime: [
+    {
+      required: true,
+      message: t('auto.views.crm.receivable.ReceivableForm.k0eaf1600'),
+      trigger: 'blur'
+    }
+  ],
+  price: [
+    {
+      required: true,
+      message: t('auto.views.crm.receivable.ReceivableForm.k01be6f58'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const customerList = ref<CustomerApi.CustomerVO[]>([]) // 客户列表

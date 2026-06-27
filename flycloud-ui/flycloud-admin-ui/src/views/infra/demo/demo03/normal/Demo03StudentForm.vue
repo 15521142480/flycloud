@@ -7,10 +7,19 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名字" />
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k364bd1bf')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k010c1585')"
+        />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.kfe8aa4ef')"
+        prop="sex"
+      >
         <el-radio-group v-model="formData.sex">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
@@ -21,30 +30,46 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="出生日期" prop="birthday">
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.ka1cd13bc')"
+        prop="birthday"
+      >
         <el-date-picker
           v-model="formData.birthday"
           type="date"
           value-format="x"
-          placeholder="选择出生日期"
+          :placeholder="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.ka38f2f3a')"
         />
       </el-form-item>
-      <el-form-item label="简介" prop="description">
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k5ea2e0cd')"
+        prop="description"
+      >
         <Editor v-model="formData.description" height="150px" />
       </el-form-item>
     </el-form>
     <!-- 子表的表单 -->
     <el-tabs v-model="subTabsName">
-      <el-tab-pane label="学生课程" name="demo03Course">
+      <el-tab-pane
+        :label="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.kbb3dc762')"
+        name="demo03Course"
+      >
         <Demo03CourseForm ref="demo03CourseFormRef" :student-id="formData.id" />
       </el-tab-pane>
-      <el-tab-pane label="学生班级" name="demo03Grade">
+      <el-tab-pane
+        :label="t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k2d98447b')"
+        name="demo03Grade"
+      >
         <Demo03GradeForm ref="demo03GradeFormRef" :student-id="formData.id" />
       </el-tab-pane>
     </el-tabs>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -53,8 +78,7 @@ import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/normal'
 import Demo03CourseForm from './components/Demo03CourseForm.vue'
 import Demo03GradeForm from './components/Demo03GradeForm.vue'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -69,10 +93,34 @@ const formData = ref({
   description: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
-  sex: [{ required: true, message: '性别不能为空', trigger: 'blur' }],
-  birthday: [{ required: true, message: '出生日期不能为空', trigger: 'blur' }],
-  description: [{ required: true, message: '简介不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k46f3776c'),
+      trigger: 'blur'
+    }
+  ],
+  sex: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k2b07e8d6'),
+      trigger: 'blur'
+    }
+  ],
+  birthday: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.ke55ac24b'),
+      trigger: 'blur'
+    }
+  ],
+  description: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.normal.Demo03StudentForm.k8803d8fa'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

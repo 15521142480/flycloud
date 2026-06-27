@@ -1,10 +1,29 @@
 <template>
   <el-table :data="props.list" stripe border v-loading="props.loading" style="margin-top: 10px">
-    <el-table-column label="编号" align="center" prop="mediaId" />
-    <el-table-column label="文件名" align="center" prop="name" />
-    <el-table-column label="标题" align="center" prop="title" />
-    <el-table-column label="介绍" align="center" prop="introduction" />
-    <el-table-column label="视频" align="center">
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VideoTable.k9f42dac6')"
+      align="center"
+      prop="mediaId"
+    />
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VideoTable.k1275f6fe')"
+      align="center"
+      prop="name"
+    />
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VideoTable.k748d7dc7')"
+      align="center"
+      prop="title"
+    />
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VideoTable.k45fa4e00')"
+      align="center"
+      prop="introduction"
+    />
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VideoTable.kfa4e33b6')"
+      align="center"
+    >
       <template #default="scope">
         <WxVideoPlayer v-if="scope.row.url" :url="scope.row.url" />
       </template>
@@ -41,7 +60,7 @@
 <script lang="ts" setup>
 import WxVideoPlayer from '@/views/mp/components/wx-video-play'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 const props = defineProps<{
   list: any[]
   loading: boolean

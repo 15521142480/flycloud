@@ -1,7 +1,8 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter2 } from '@/utils/formatTime'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 表单校验
 export const rules = reactive({
   name: [required],
   startTime: [required],
@@ -14,7 +15,7 @@ export const rules = reactive({
 // CrudSchema https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: '砍价活动名称',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k90ffb5db'),
     field: 'name',
     isSearch: true,
     isTable: false,
@@ -25,7 +26,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动开始时间',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k658b1a2e'),
     field: 'startTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -48,7 +49,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '活动结束时间',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kcdd4e446'),
     field: 'endTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -71,37 +72,37 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '砍价人数',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.ke22d41fa'),
     field: 'helpMaxCount',
     isSearch: false,
     form: {
       component: 'InputNumber',
-      labelMessage: '参与人数不能少于两人',
+      labelMessage: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kf414e85e'),
       value: 2
     }
   },
   {
-    label: '最大帮砍次数',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kf87d008f'),
     field: 'bargainCount',
     isSearch: false,
     form: {
       component: 'InputNumber',
-      labelMessage: '参与人数不能少于两人',
+      labelMessage: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kf414e85e'),
       value: 2
     }
   },
   {
-    label: '总限购数量',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kc71a1741'),
     field: 'totalLimitCount',
     isSearch: false,
     form: {
       component: 'InputNumber',
-      labelMessage: '用户最大能发起砍价的次数',
+      labelMessage: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kf9bb3cb2'),
       value: 0
     }
   },
   {
-    label: '砍价的最小金额',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k406431e6'),
     field: 'randomMinPrice',
     isSearch: false,
     isTable: false,
@@ -112,12 +113,12 @@ const crudSchemas = reactive<CrudSchema[]>([
         precision: 2,
         step: 0.1
       },
-      labelMessage: '用户每次砍价的最小金额',
+      labelMessage: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k4f028baf'),
       value: 0
     }
   },
   {
-    label: '砍价的最大金额',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k256f3f0e'),
     field: 'randomMaxPrice',
     isSearch: false,
     isTable: false,
@@ -128,12 +129,12 @@ const crudSchemas = reactive<CrudSchema[]>([
         precision: 2,
         step: 0.1
       },
-      labelMessage: '用户每次砍价的最大金额',
+      labelMessage: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k9b5c6f39'),
       value: 0
     }
   },
   {
-    label: '砍价商品',
+    label: t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.ka2bb9357'),
     field: 'spuId',
     isSearch: false,
     form: {

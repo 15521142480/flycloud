@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="配置中心" url="https://doc.iocoder.cn/config-center/" />
+  <doc-alert
+    :title="t('auto.views.infra.config.index.kf9538635')"
+    url="https://doc.iocoder.cn/config-center/"
+  />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -10,28 +13,28 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="参数名称" prop="name">
+      <el-form-item :label="t('auto.views.infra.config.index.k480d10db')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入参数名称"
+          :placeholder="t('auto.views.infra.config.index.k6d4589a3')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="参数键名" prop="key">
+      <el-form-item :label="t('auto.views.infra.config.index.k1d474e55')" prop="key">
         <el-input
           v-model="queryParams.key"
-          placeholder="请输入参数键名"
+          :placeholder="t('auto.views.infra.config.index.k03ca4e81')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="系统内置" prop="type">
+      <el-form-item :label="t('auto.views.infra.config.index.kae8da0a6')" prop="type">
         <el-select
           v-model="queryParams.type"
-          placeholder="请选择系统内置"
+          :placeholder="t('auto.views.infra.config.index.k28e819cd')"
           clearable
           class="!w-240px"
         >
@@ -43,27 +46,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.config.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.config.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['infra:config:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k6641ff23') }}
         </el-button>
         <el-button
           type="success"
@@ -72,7 +79,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:config:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k644389b0') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -81,12 +88,38 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="参数主键" align="center" prop="id" />
-      <el-table-column label="参数分类" align="center" prop="category" />
-      <el-table-column label="参数名称" align="center" prop="name" :show-overflow-tooltip="true" />
-      <el-table-column label="参数键名" align="center" prop="key" :show-overflow-tooltip="true" />
-      <el-table-column label="参数键值" align="center" prop="value" />
-      <el-table-column label="是否可见" align="center" prop="visible">
+      <el-table-column
+        :label="t('auto.views.infra.config.index.k3088678b')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.config.index.kbccaaf74')"
+        align="center"
+        prop="category"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.config.index.k480d10db')"
+        align="center"
+        prop="name"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.config.index.k1d474e55')"
+        align="center"
+        prop="key"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.config.index.k5d50206a')"
+        align="center"
+        prop="value"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.config.index.kb23168b4')"
+        align="center"
+        prop="visible"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.visible" />
         </template>
@@ -143,11 +176,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as ConfigApi from '@/api/infra/config'
 import ConfigForm from './ConfigForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -214,7 +246,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ConfigApi.exportConfig(queryParams)
-    download.excel(data, '参数配置.xls')
+    download.excel(data, t('auto.views.infra.config.index.k4918157b'))
   } catch {
   } finally {
     exportLoading.value = false

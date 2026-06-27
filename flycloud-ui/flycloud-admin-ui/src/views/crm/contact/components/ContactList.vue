@@ -3,7 +3,7 @@
   <el-row justify="end">
     <el-button @click="openForm">
       <Icon class="mr-5px" icon="system-uicons:contacts" />
-      创建联系人
+      {{ t('extra.k887e156a') }}
     </el-button>
     <el-button
       v-if="queryParams.businessId"
@@ -11,7 +11,7 @@
       @click="openBusinessModal"
     >
       <Icon class="mr-5px" icon="ep:circle-plus" />
-      关联
+      {{ t('extra.k7d9412bc') }}
     </el-button>
     <el-button
       v-if="queryParams.businessId"
@@ -19,7 +19,7 @@
       @click="deleteContactBusinessList"
     >
       <Icon class="mr-5px" icon="ep:remove" />
-      解除关联
+      {{ t('extra.kd7399cd6') }}
     </el-button>
   </el-row>
 
@@ -33,7 +33,12 @@
       :stripe="true"
     >
       <el-table-column v-if="queryParams.businessId" type="selection" width="55" />
-      <el-table-column align="center" fixed="left" label="姓名" prop="name">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.contact.components.ContactList.kbe4c2616')"
+        prop="name"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -74,7 +79,7 @@ import ContactForm from './../ContactForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { BizTypeEnum } from '@/api/crm/permission'
 import ContactListModal from './ContactListModal.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContactList' })
 const props = defineProps<{
   bizType: number // 业务类型
@@ -154,7 +159,7 @@ const createContactBusinessList = async (contactIds: number[]) => {
   })
   await ContactApi.createContactBusinessList2(data)
   // 刷新列表
-  message.success('关联联系人成功')
+  message.success(t('auto.views.crm.contact.components.ContactList.ke65a1cd0'))
   handleQuery()
 }
 
@@ -166,11 +171,11 @@ const deleteContactBusinessList = async () => {
     contactIds: contactRef.value.getSelectionRows().map((row: ContactApi.ContactVO) => row.id)
   } as ContactApi.ContactBusiness2ReqVO
   if (data.contactIds.length === 0) {
-    return message.error('未选择联系人')
+    return message.error(t('auto.views.crm.contact.components.ContactList.k58768a54'))
   }
   await ContactApi.deleteContactBusinessList2(data)
   // 刷新列表
-  message.success('取关联系人成功')
+  message.success(t('auto.views.crm.contact.components.ContactList.k9f17d61a'))
   handleQuery()
 }
 

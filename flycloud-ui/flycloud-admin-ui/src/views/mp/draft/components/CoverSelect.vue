@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>封面:</p>
+    <p>{{ t('auto.views.mp.draft.components.CoverSelect.k4347da22') }}</p>
     <div class="thumb-div">
       <el-image
         v-if="newsItem.thumbUrl"
@@ -27,7 +27,9 @@
           :on-success="onUploadSuccess"
         >
           <template #trigger>
-            <el-button size="small" type="primary">本地上传</el-button>
+            <el-button size="small" type="primary">{{
+              t('auto.views.mp.draft.components.CoverSelect.k16367f3d')
+            }}</el-button>
           </template>
           <el-button
             size="small"
@@ -65,6 +67,7 @@ import { getAccessToken } from '@/utils/auth'
 import type { UploadFiles, UploadProps, UploadRawFile } from 'element-plus'
 import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
 import { NewsItem } from './types'
+const { t } = useI18n()
 const message = useMessage()
 
 const UPLOAD_URL = import.meta.env.VITE_BASE_URL + '/admin-api/mp/material/upload-permanent' // 上传永久素材的地址
@@ -112,7 +115,7 @@ const onBeforeUpload: UploadProps['beforeUpload'] = (rawFile: UploadRawFile) =>
 
 const onUploadSuccess: UploadProps['onSuccess'] = (res: any) => {
   if (res.code !== 0) {
-    message.error('上传出错：' + res.msg)
+    message.error(t('auto.views.mp.draft.components.CoverSelect.kea0f7067') + res.msg)
     return false
   }
 
@@ -125,7 +128,7 @@ const onUploadSuccess: UploadProps['onSuccess'] = (res: any) => {
 }
 
 const onUploadError = (err: Error) => {
-  message.error('上传失败: ' + err.message)
+  message.error(t('auto.views.mp.draft.components.CoverSelect.kb6017477') + err.message)
 }
 </script>
 

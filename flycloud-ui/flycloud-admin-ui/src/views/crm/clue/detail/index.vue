@@ -6,29 +6,31 @@
       type="primary"
       @click="openForm"
     >
-      编辑
+      {{ t('extra.k7f2302c5') }}
     </el-button>
     <el-button v-if="permissionListRef?.validateOwnerUser" type="primary" @click="transfer">
-      转移
+      {{ t('extra.k487e90dc') }}
     </el-button>
     <el-button
       v-if="permissionListRef?.validateOwnerUser && !clue.transformStatus"
       type="success"
       @click="handleTransform"
     >
-      转化为客户
+      {{ t('extra.k1fcf119f') }}
     </el-button>
-    <el-button v-else disabled type="success">已转化客户</el-button>
+    <el-button v-else disabled type="success">{{
+      t('auto.views.crm.clue.detail.index.k5c7d32d5')
+    }}</el-button>
   </ClueDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="跟进记录">
+      <el-tab-pane :label="t('auto.views.crm.clue.detail.index.k4d7216f5')">
         <FollowUpList :biz-id="clueId" :biz-type="BizTypeEnum.CRM_CLUE" />
       </el-tab-pane>
-      <el-tab-pane label="基本信息">
+      <el-tab-pane :label="t('auto.views.crm.clue.detail.index.kb122f813')">
         <ClueDetailsInfo :clue="clue" />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.clue.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="clue.id!"
@@ -37,7 +39,7 @@
           @quit-team="close"
         />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.clue.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
     </el-tabs>
@@ -59,7 +61,7 @@ import FollowUpList from '@/views/crm/followup/index.vue'
 import { BizTypeEnum } from '@/api/crm/permission'
 import type { OperateLogVO } from '@/api/system/operatelog'
 import { getOperateLogPage } from '@/api/crm/operateLog'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmClueDetail' })
 
 const clueId = ref(0) // 线索编号
@@ -96,9 +98,9 @@ const transfer = () => {
 
 /** 转化为客户 */
 const handleTransform = async () => {
-  await message.confirm(`确定将【${clue.value.name}】转化为客户吗？`)
+  await message.confirm(t('extra.k73d6d025', { p0: clue.value.name }))
   await ClueApi.transformClue(clueId.value)
-  message.success(`转化客户【${clue.value.name}】成功`)
+  message.success(t('extra.kbe173e9b', { p0: clue.value.name }))
   await getClue()
 }
 
@@ -120,7 +122,7 @@ const close = () => {
 const { params } = useRoute()
 onMounted(() => {
   if (!params.id) {
-    message.warning('参数错误，线索不能为空！')
+    message.warning(t('auto.views.crm.clue.detail.index.k565b5b80'))
     close()
     return
   }

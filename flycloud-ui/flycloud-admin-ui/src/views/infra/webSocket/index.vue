@@ -1,12 +1,15 @@
 <template>
-  <doc-alert title="WebSocket 实时通信" url="https://doc.iocoder.cn/websocket/" />
+  <doc-alert
+    :title="t('auto.views.infra.webSocket.index.ke9c3ceb7')"
+    url="https://doc.iocoder.cn/websocket/"
+  />
 
   <div class="flex">
     <!-- 左侧：建立连接、发送消息 -->
     <el-card :gutter="12" class="w-1/2" shadow="always">
       <template #header>
         <div class="card-header">
-          <span>连接</span>
+          <span>{{ t('auto.views.infra.webSocket.index.k7328deeb') }}</span>
         </div>
       </template>
       <div class="flex items-center">
@@ -34,12 +37,7 @@
       />
       <el-select v-model="sendUserId" class="mt-4" placeholder="请选择发送人">
         <el-option key="" label="所有人" value="" />
-        <el-option
-          v-for="user in userList"
-          :key="user.id"
-          :label="user.name"
-          :value="user.id"
-        />
+        <el-option v-for="user in userList" :key="user.id" :label="user.name" :value="user.id" />
       </el-select>
       <el-button :disabled="!getIsOpen" block class="ml-2 mt-4" type="primary" @click="handlerSend">
         发送
@@ -73,7 +71,7 @@ import { formatDate } from '@/utils/formatTime'
 import { useWebSocket } from '@vueuse/core'
 import { getRefreshToken } from '@/utils/auth'
 import * as UserApi from '@/api/system/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraWebSocket' })
 
 const message = useMessage() // 消息弹窗
@@ -114,7 +112,7 @@ watchEffect(() => {
     const type = jsonMessage.type
     const content = JSON.parse(jsonMessage.content)
     if (!type) {
-      message.error('未知的消息类型：' + data.value)
+      message.error(t('auto.views.infra.webSocket.index.k76335b33') + data.value)
       return
     }
     // 2.2 消息类型：demo-message-receive
@@ -122,12 +120,12 @@ watchEffect(() => {
       const single = content.single
       if (single) {
         messageList.value.push({
-          text: `【单发】用户编号(${content.fromUserId})：${content.text}`,
+          text: t('extra.k2fe9be2e', { p0: content.fromUserId, p1: content.text }),
           time: new Date().getTime()
         })
       } else {
         messageList.value.push({
-          text: `【群发】用户编号(${content.fromUserId})：${content.text}`,
+          text: t('extra.k2455ff8a', { p0: content.fromUserId, p1: content.text }),
           time: new Date().getTime()
         })
       }
@@ -136,14 +134,14 @@ watchEffect(() => {
     // 2.3 消息类型：notice-push
     if (type === 'notice-push') {
       messageList.value.push({
-        text: `【系统通知】：${content.title}`,
+        text: t('extra.k51af183c', { p0: content.title }),
         time: new Date().getTime()
       })
       return
     }
-    message.error('未处理消息：' + data.value)
+    message.error(t('auto.views.infra.webSocket.index.kc78a33da') + data.value)
   } catch (error) {
-    message.error('处理消息发生异常：' + data.value)
+    message.error(t('auto.views.infra.webSocket.index.k20eb7224') + data.value)
     console.error(error)
   }
 })

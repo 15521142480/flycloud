@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="仓库名字" min-width="125">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.erp.stock.check.components.StockCheckItemForm.kc9084dc8')"
+        min-width="125"
+      >
         <template #default="{ row, $index }">
           <el-form-item
             :prop="`${$index}.warehouseId`"
@@ -21,7 +24,7 @@
               v-model="row.warehouseId"
               clearable
               filterable
-              placeholder="请选择仓库名字"
+              :placeholder="t('auto.views.erp.stock.check.components.StockCheckItemForm.kf2f948fa')"
               @change="onChangeWarehouse($event, row)"
             >
               <el-option
@@ -151,7 +154,7 @@ import {
   erpPriceMultiply,
   getSumValue
 } from '@/utils'
-
+const { t } = useI18n()
 const props = defineProps<{
   items: undefined
   disabled: false
@@ -159,10 +162,34 @@ const props = defineProps<{
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  inId: [{ required: true, message: '盘点编号不能为空', trigger: 'blur' }],
-  warehouseId: [{ required: true, message: '仓库名字不能为空', trigger: 'blur' }],
-  productId: [{ required: true, message: '产品不能为空', trigger: 'blur' }],
-  count: [{ required: true, message: '产品数量不能为空', trigger: 'blur' }]
+  inId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.check.components.StockCheckItemForm.kb6185f3a'),
+      trigger: 'blur'
+    }
+  ],
+  warehouseId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.check.components.StockCheckItemForm.k7f4d1c67'),
+      trigger: 'blur'
+    }
+  ],
+  productId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.check.components.StockCheckItemForm.k0b3cde2b'),
+      trigger: 'blur'
+    }
+  ],
+  count: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.check.components.StockCheckItemForm.k55ce5fbe'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const productList = ref<ProductVO[]>([]) // 产品列表
@@ -204,7 +231,7 @@ const getSummaries = (param: SummaryMethodProps) => {
   const sums: string[] = []
   columns.forEach((column, index) => {
     if (index === 0) {
-      sums[index] = '合计'
+      sums[index] = t('auto.views.erp.stock.check.components.StockCheckItemForm.k92bcbf71')
       return
     }
     if (['count', 'totalPrice'].includes(column.property)) {

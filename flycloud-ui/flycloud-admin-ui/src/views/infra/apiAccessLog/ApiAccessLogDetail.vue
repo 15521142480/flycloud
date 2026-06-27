@@ -1,51 +1,88 @@
 <template>
-  <Dialog v-model="dialogVisible" :max-height="500" :scroll="true" title="详情" width="800">
+  <Dialog
+    v-model="dialogVisible"
+    :max-height="500"
+    :scroll="true"
+    :title="t('action.detail')"
+    width="800"
+  >
     <el-descriptions :column="1" border>
-      <el-descriptions-item label="日志主键" min-width="120">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k4215760e')"
+        min-width="120"
+      >
         {{ detailData.id }}
       </el-descriptions-item>
-      <el-descriptions-item label="链路追踪">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k71654a4d')"
+      >
         {{ detailData.traceId }}
       </el-descriptions-item>
-      <el-descriptions-item label="应用名">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k6c19fe01')"
+      >
         {{ detailData.applicationName }}
       </el-descriptions-item>
-      <el-descriptions-item label="用户信息">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k55c26aba')"
+      >
         {{ detailData.userId }}
         <dict-tag :type="DICT_TYPE.USER_TYPE" :value="detailData.userType" />
       </el-descriptions-item>
-      <el-descriptions-item label="用户 IP">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.kcde99f33')"
+      >
         {{ detailData.userIp }}
       </el-descriptions-item>
-      <el-descriptions-item label="用户 UA">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k8a041575')"
+      >
         {{ detailData.userAgent }}
       </el-descriptions-item>
-      <el-descriptions-item label="请求信息">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.ke0d15ee3')"
+      >
         {{ detailData.requestMethod }} {{ detailData.requestUrl }}
       </el-descriptions-item>
-      <el-descriptions-item label="请求参数">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k1f9ac54b')"
+      >
         {{ detailData.requestParams }}
       </el-descriptions-item>
-      <el-descriptions-item label="请求结果">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k93f50e28')"
+      >
         {{ detailData.responseBody }}
       </el-descriptions-item>
-      <el-descriptions-item label="请求时间">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.ke8b5eda0')"
+      >
         {{ formatDate(detailData.beginTime) }} ~ {{ formatDate(detailData.endTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="请求耗时">{{ detailData.duration }} ms</el-descriptions-item>
-      <el-descriptions-item label="操作结果">
-        <div v-if="detailData.resultCode === 0">正常</div>
-        <div v-else-if="detailData.resultCode > 0">
-          失败 | {{ detailData.resultCode }} | {{ detailData.resultMsg }}
-        </div>
+      <el-descriptions-item :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k94b035f8')"
+        >{{ detailData.duration }} ms</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k99d2f412')"
+      >
+        <div v-if="detailData.resultCode === 0">{{ t('common.normal') }}</div>
+        <div v-else-if="detailData.resultCode > 0">{{
+          t('extra.k9b4b4ef1', { p0: detailData.resultCode, p1: detailData.resultMsg })
+        }}</div>
       </el-descriptions-item>
-      <el-descriptions-item label="操作模块">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k301c995f')"
+      >
         {{ detailData.operateModule }}
       </el-descriptions-item>
-      <el-descriptions-item label="操作名">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k6116e6e0')"
+      >
         {{ detailData.operateName }}
       </el-descriptions-item>
-      <el-descriptions-item label="操作名">
+      <el-descriptions-item
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k6116e6e0')"
+      >
         <dict-tag :type="DICT_TYPE.INFRA_OPERATE_TYPE" :value="detailData.operateType" />
       </el-descriptions-item>
     </el-descriptions>
@@ -56,7 +93,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as ApiAccessLog from '@/api/infra/apiAccessLog'
-
+const { t } = useI18n()
 defineOptions({ name: 'ApiAccessLogDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

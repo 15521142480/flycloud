@@ -79,7 +79,7 @@
 import { aesEncrypt } from './../utils/ase'
 import { resetSize } from './../utils/util'
 import { getCode, reqCheck } from '@/api/login'
-
+const { t } = useI18n()
 const props = defineProps({
   captchaType: {
     type: String
@@ -129,8 +129,6 @@ const props = defineProps({
     }
   }
 })
-
-const { t } = useI18n()
 const { mode, captchaType, type, blockSize, explain } = toRefs(props)
 const { proxy } = getCurrentInstance()
 let secretKey = ref(''), //后端返回的ase加密秘钥

@@ -7,10 +7,16 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="单位名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入单位名字" />
+      <el-form-item :label="t('auto.views.erp.product.unit.ProductUnitForm.k3493aba3')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.erp.product.unit.ProductUnitForm.k3562b1b6')"
+        />
       </el-form-item>
-      <el-form-item label="单位状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.erp.product.unit.ProductUnitForm.k7ba2b46f')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -23,8 +29,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.erp.product.unit.ProductUnitForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.product.unit.ProductUnitForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -34,9 +44,8 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** ERP 产品单位表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProductUnitForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -49,8 +58,20 @@ const formData = ref({
   status: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '单位名字不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '单位状态不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.unit.ProductUnitForm.k323d3f02'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.erp.product.unit.ProductUnitForm.k5f39d7b6'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

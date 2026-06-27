@@ -1,13 +1,31 @@
 <template>
   <div class="panel-tab__content">
     <el-table :data="elementPropertyList" max-height="240" fit border>
-      <el-table-column label="序号" width="50px" type="index" />
-      <el-table-column label="属性名" prop="name" min-width="100px" show-overflow-tooltip />
-      <el-table-column label="属性值" prop="value" min-width="100px" show-overflow-tooltip />
-      <el-table-column label="操作" width="110px">
+      <el-table-column :label="t('common.index')" width="50px" type="index" />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.kf18a118e'
+          )
+        "
+        prop="name"
+        min-width="100px"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.k4f7517f1'
+          )
+        "
+        prop="value"
+        min-width="100px"
+        show-overflow-tooltip
+      />
+      <el-table-column :label="t('common.operation')" width="110px">
         <template #default="scope">
           <el-button link @click="openAttributesForm(scope.row, scope.$index)" size="small">
-            编辑
+            {{ t('extra.k2a2c7447') }}
           </el-button>
           <el-divider direction="vertical" />
           <el-button
@@ -16,7 +34,7 @@
             style="color: #ff4d4f"
             @click="removeAttributes(scope.row, scope.$index)"
           >
-            移除
+            {{ t('extra.k825389c5') }}
           </el-button>
         </template>
       </el-table-column>
@@ -55,6 +73,7 @@
 
 <script lang="ts" setup>
 import { ElMessageBox } from 'element-plus'
+const { t } = useI18n()
 defineOptions({ name: 'ElementProperties' })
 const props = defineProps({
   id: String,
@@ -105,10 +124,18 @@ const openAttributesForm = (attr, index) => {
 }
 const removeAttributes = (attr, index) => {
   console.log(attr, 'attr')
-  ElMessageBox.confirm('确认移除该属性吗？', '提示', {
-    confirmButtonText: '确 认',
-    cancelButtonText: '取 消'
-  })
+  ElMessageBox.confirm(
+    t('auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.k1fd5adeb'),
+    t('auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.kab3656a9'),
+    {
+      confirmButtonText: t(
+        'auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.kee629375'
+      ),
+      cancelButtonText: t(
+        'auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.kd54aeadc'
+      )
+    }
+  )
     .then(() => {
       elementPropertyList.value.splice(index, 1)
       bpmnElementPropertyList.value.splice(index, 1)
@@ -119,7 +146,13 @@ const removeAttributes = (attr, index) => {
       updateElementExtensions(propertiesObject)
       resetAttributesList()
     })
-    .catch(() => console.info('操作取消'))
+    .catch(() =>
+      console.info(
+        t(
+          'auto.components.bpmnProcessDesigner.package.penal.properties.ElementProperties.kbb2a8620'
+        )
+      )
+    )
 }
 const saveAttribute = () => {
   console.log(propertyForm.value, 'propertyForm.value')

@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【营销】积分商城活动" url="https://doc.iocoder.cn/mall/promotion-point/" />
+  <doc-alert
+    :title="t('auto.views.mall.promotion.point.activity.index.keb67b9a0')"
+    url="https://doc.iocoder.cn/mall/promotion-point/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,12 +13,15 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="活动状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.point.activity.index.k65a972d7')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          placeholder="请选择活动状态"
+          :placeholder="t('auto.views.mall.promotion.point.activity.index.k4b6989d1')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -28,11 +34,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.kf1b9aa37') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k09ce5509') }}
         </el-button>
         <el-button
           v-hasPermi="['promotion:point-activity:create']"
@@ -41,7 +47,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.kacb8af35') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -50,8 +56,16 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column label="活动编号" min-width="80" prop="id" />
-      <el-table-column label="商品图片" min-width="80" prop="spuName">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.point.activity.index.k32261198')"
+        min-width="80"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
+        min-width="80"
+        prop="spuName"
+      >
         <template #default="scope">
           <el-image
             :preview-src-list="[scope.row.picUrl]"
@@ -138,11 +152,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import PointActivityForm from './PointActivityForm.vue'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { PointActivityApi } from '@/api/mall/promotion/point'
-
+const { t } = useI18n()
 defineOptions({ name: 'PointActivity' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -190,10 +203,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm('确认关闭该积分商城活动吗？')
+    await message.confirm(t('auto.views.mall.promotion.point.activity.index.kb815e4df'))
     // 发起关闭
     await PointActivityApi.closePointActivity(id)
-    message.success('关闭成功')
+    message.success(t('auto.views.mall.promotion.point.activity.index.kf3cf9e86'))
     // 刷新列表
     await getList()
   } catch {}

@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="系统日志" url="https://doc.iocoder.cn/system-log/" />
+  <doc-alert
+    :title="t('auto.views.infra.apiErrorLog.index.k096733f9')"
+    url="https://doc.iocoder.cn/system-log/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item :label="t('auto.views.infra.apiErrorLog.index.kec750ef6')" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.infra.apiErrorLog.index.kb719fb8a')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="用户类型" prop="userType">
+      <el-form-item :label="t('auto.views.infra.apiErrorLog.index.k31ab92d1')" prop="userType">
         <el-select
           v-model="queryParams.userType"
-          placeholder="请选择用户类型"
+          :placeholder="t('auto.views.infra.apiErrorLog.index.k8d91841e')"
           clearable
           class="!w-240px"
         >
@@ -34,30 +37,33 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="应用名" prop="applicationName">
+      <el-form-item
+        :label="t('auto.views.infra.apiErrorLog.index.k6c19fe01')"
+        prop="applicationName"
+      >
         <el-input
           v-model="queryParams.applicationName"
-          placeholder="请输入应用名"
+          :placeholder="t('auto.views.infra.apiErrorLog.index.k445d8859')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="异常时间" prop="exceptionTime">
+      <el-form-item :label="t('auto.views.infra.apiErrorLog.index.kdf79ec03')" prop="exceptionTime">
         <el-date-picker
           v-model="queryParams.exceptionTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.apiErrorLog.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.apiErrorLog.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="处理状态" prop="processStatus">
+      <el-form-item :label="t('auto.views.infra.apiErrorLog.index.k8542beb9')" prop="processStatus">
         <el-select
           v-model="queryParams.processStatus"
-          placeholder="请选择处理状态"
+          :placeholder="t('auto.views.infra.apiErrorLog.index.k8cda1014')"
           clearable
           class="!w-240px"
         >
@@ -70,8 +76,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -79,7 +89,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:api-error-log:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k33e922a5') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -88,9 +98,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="日志编号" align="center" prop="id" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
-      <el-table-column label="用户类型" align="center" prop="userType">
+      <el-table-column
+        :label="t('auto.views.infra.apiErrorLog.index.k8cac83c8')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.apiErrorLog.index.kec750ef6')"
+        align="center"
+        prop="userId"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.apiErrorLog.index.k31ab92d1')"
+        align="center"
+        prop="userType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
@@ -165,7 +187,7 @@ import download from '@/utils/download'
 import * as ApiErrorLogApi from '@/api/infra/apiErrorLog'
 import ApiErrorLogDetail from './ApiErrorLogDetail.vue'
 import { InfraApiErrorLogProcessStatusEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraApiErrorLog' })
 
 const message = useMessage() // 消息弹窗
@@ -220,8 +242,11 @@ const openDetail = (data: ApiErrorLogApi.ApiErrorLogVO) => {
 const handleProcess = async (id: number, processStatus: number) => {
   try {
     // 操作的二次确认
-    const type = processStatus === InfraApiErrorLogProcessStatusEnum.DONE ? '已处理' : '已忽略'
-    await message.confirm('确认标记为' + type + '?')
+    const type =
+      processStatus === InfraApiErrorLogProcessStatusEnum.DONE
+        ? t('auto.views.infra.apiErrorLog.index.k219bde30')
+        : t('auto.views.infra.apiErrorLog.index.kbd172c8d')
+    await message.confirm(t('auto.views.infra.apiErrorLog.index.kdf80698f') + type + '?')
     // 执行操作
     await ApiErrorLogApi.updateApiErrorLogPage(id, processStatus)
     await message.success(type)
@@ -238,7 +263,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ApiErrorLogApi.exportApiErrorLog(queryParams)
-    download.excel(data, '异常日志.xls')
+    download.excel(data, t('auto.views.infra.apiErrorLog.index.k7a9c0e67'))
   } catch {
   } finally {
     exportLoading.value = false

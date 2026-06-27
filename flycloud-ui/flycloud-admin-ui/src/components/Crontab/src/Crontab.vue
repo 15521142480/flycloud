@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import { PropType } from 'vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'Crontab' })
 
 interface shortcutsType {
@@ -179,31 +179,31 @@ const data = reactive({
   week: [
     {
       value: '1',
-      label: '周日'
+      label: t('auto.components.Crontab.src.Crontab.kc3405710')
     },
     {
       value: '2',
-      label: '周一'
+      label: t('auto.components.Crontab.src.Crontab.k792c34e7')
     },
     {
       value: '3',
-      label: '周二'
+      label: t('auto.components.Crontab.src.Crontab.k8f03441d')
     },
     {
       value: '4',
-      label: '周三'
+      label: t('auto.components.Crontab.src.Crontab.k25455673')
     },
     {
       value: '5',
-      label: '周四'
+      label: t('auto.components.Crontab.src.Crontab.k18f1fd9e')
     },
     {
       value: '6',
-      label: '周五'
+      label: t('auto.components.Crontab.src.Crontab.k4344fc13')
     },
     {
       value: '7',
-      label: '周六'
+      label: t('auto.components.Crontab.src.Crontab.kf0c6199a')
     }
   ],
   year: getYear()
@@ -364,7 +364,7 @@ const set = () => {
   let arr = (props.modelValue || '* * * * * ?').split(' ')
   //简单检查
   if (arr.length < 6) {
-    ElMessage.warning('cron表达式错误，已转换为默认表达式')
+    ElMessage.warning(t('auto.components.Crontab.src.Crontab.k530260c2'))
     arr = '* * * * * ?'.split(' ')
   }
 
@@ -511,20 +511,42 @@ const inputChange = () => {
 <template>
   <el-input v-model="defaultValue" class="input-with-select" v-bind="$attrs" @input="inputChange">
     <template #append>
-      <el-select v-model="select" placeholder="生成器" style="width: 115px">
-        <el-option label="每分钟" value="0 * * * * ?" />
-        <el-option label="每小时" value="0 0 * * * ?" />
-        <el-option label="每天零点" value="0 0 0 * * ?" />
-        <el-option label="每月一号零点" value="0 0 0 1 * ?" />
-        <el-option label="每月最后一天零点" value="0 0 0 L * ?" />
-        <el-option label="每周星期日零点" value="0 0 0 ? * 1" />
+      <el-select
+        v-model="select"
+        :placeholder="t('auto.components.Crontab.src.Crontab.kc2b02423')"
+        style="width: 115px"
+      >
+        <el-option
+          :label="t('auto.components.Crontab.src.Crontab.kaf874698')"
+          value="0 * * * * ?"
+        />
+        <el-option
+          :label="t('auto.components.Crontab.src.Crontab.k73f8f537')"
+          value="0 0 * * * ?"
+        />
+        <el-option
+          :label="t('auto.components.Crontab.src.Crontab.kbd041f61')"
+          value="0 0 0 * * ?"
+        />
+        <el-option
+          :label="t('auto.components.Crontab.src.Crontab.k11df85b9')"
+          value="0 0 0 1 * ?"
+        />
+        <el-option
+          :label="t('auto.components.Crontab.src.Crontab.k25b9a0c2')"
+          value="0 0 0 L * ?"
+        />
+        <el-option
+          :label="t('auto.components.Crontab.src.Crontab.k2e95ae58')"
+          value="0 0 0 ? * 1"
+        />
         <el-option
           v-for="(item, index) in shortcuts"
           :key="index"
           :label="item.text"
           :value="item.value"
         />
-        <el-option label="自定义" value="custom" />
+        <el-option :label="t('auto.components.Crontab.src.Crontab.kc493338e')" value="custom" />
       </el-select>
     </template>
   </el-input>

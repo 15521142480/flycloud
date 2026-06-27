@@ -9,7 +9,10 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="选择年份" prop="orderDate">
+      <el-form-item
+        :label="t('auto.views.crm.statistics.performance.index.k9b1d5326')"
+        prop="orderDate"
+      >
         <el-date-picker
           v-model="queryParams.times[0]"
           class="!w-240px"
@@ -18,7 +21,10 @@
           :default-time="[new Date().getFullYear()]"
         />
       </el-form-item>
-      <el-form-item label="归属部门" prop="deptId">
+      <el-form-item
+        :label="t('auto.views.crm.statistics.performance.index.k22a05484')"
+        prop="deptId"
+      >
         <el-tree-select
           v-model="queryParams.deptId"
           class="!w-240px"
@@ -26,12 +32,20 @@
           :props="defaultProps"
           check-strictly
           node-key="id"
-          placeholder="请选择归属部门"
+          :placeholder="t('auto.views.crm.statistics.performance.index.k197cefba')"
           @change="queryParams.userId = undefined"
         />
       </el-form-item>
-      <el-form-item label="员工" prop="userId">
-        <el-select v-model="queryParams.userId" class="!w-240px" placeholder="员工" clearable>
+      <el-form-item
+        :label="t('auto.views.crm.statistics.performance.index.k9834f85d')"
+        prop="userId"
+      >
+        <el-select
+          v-model="queryParams.userId"
+          class="!w-240px"
+          :placeholder="t('auto.views.crm.statistics.performance.index.k9834f85d')"
+          clearable
+        >
           <el-option
             v-for="(user, index) in userListByDeptId"
             :label="user.name"
@@ -41,8 +55,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"> <Icon icon="ep:search" class="mr-5px" /> 搜索 </el-button>
-        <el-button @click="resetQuery"> <Icon icon="ep:refresh" class="mr-5px" /> 重置 </el-button>
+        <el-button @click="handleQuery">
+          <Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}
+        </el-button>
+        <el-button @click="resetQuery">
+          <Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}
+        </el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -51,15 +69,27 @@
   <el-col>
     <el-tabs v-model="activeTab">
       <!-- 员工合同统计 -->
-      <el-tab-pane label="员工合同数量统计" name="ContractCountPerformance" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.performance.index.k78c3fc3a')"
+        name="ContractCountPerformance"
+        lazy
+      >
         <ContractCountPerformance :query-params="queryParams" ref="ContractCountPerformanceRef" />
       </el-tab-pane>
       <!-- 员工合同金额统计 -->
-      <el-tab-pane label="员工合同金额统计" name="ContractPricePerformance" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.performance.index.k85026693')"
+        name="ContractPricePerformance"
+        lazy
+      >
         <ContractPricePerformance :query-params="queryParams" ref="ContractPricePerformanceRef" />
       </el-tab-pane>
       <!-- 员工回款金额统计 -->
-      <el-tab-pane label="员工回款金额统计" name="ReceivablePricePerformance" lazy>
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.performance.index.k8cc87094')"
+        name="ReceivablePricePerformance"
+        lazy
+      >
         <ReceivablePricePerformance
           :query-params="queryParams"
           ref="ReceivablePricePerformanceRef"
@@ -78,7 +108,7 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import ContractCountPerformance from './components/ContractCountPerformance.vue'
 import ContractPricePerformance from './components/ContractPricePerformance.vue'
 import ReceivablePricePerformance from './components/ReceivablePricePerformance.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmStatisticsCustomer' })
 
 const queryParams = reactive({

@@ -2,19 +2,35 @@
   <ComponentContainerProperty v-model="formData.style">
     <!-- 表单 -->
     <el-form label-width="80px" :model="formData" class="m-t-8px">
-      <el-form-item label="每行数量" prop="column">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.MenuGrid.property.k6a553efa')"
+        prop="column"
+      >
         <el-radio-group v-model="formData.column">
-          <el-radio :value="3">3个</el-radio>
-          <el-radio :value="4">4个</el-radio>
+          <el-radio :value="3">{{
+            t('auto.components.DiyEditor.components.mobile.MenuGrid.property.kf1ffe416')
+          }}</el-radio>
+          <el-radio :value="4">{{
+            t('auto.components.DiyEditor.components.mobile.MenuGrid.property.k758a56d5')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
 
-      <el-card header="菜单设置" class="property-group" shadow="never">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.MenuGrid.property.ka76df3b0')"
+        class="property-group"
+        shadow="never"
+      >
         <Draggable v-model="formData.list" :empty-item="EMPTY_MENU_GRID_ITEM_PROPERTY">
           <template #default="{ element }">
-            <el-form-item label="图标" prop="iconUrl">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.MenuGrid.property.k1f24c1e5')"
+              prop="iconUrl"
+            >
               <UploadImg v-model="element.iconUrl" height="80px" width="80px">
-                <template #tip> 建议尺寸：44 * 44 </template>
+                <template #tip>
+                  {{ t('auto.components.DiyEditor.components.mobile.MenuGrid.property.kc9250c21') }}
+                </template>
               </UploadImg>
             </el-form-item>
             <el-form-item label="标题" prop="title">
@@ -55,6 +71,7 @@ import {
 } from '@/components/DiyEditor/components/mobile/MenuGrid/config'
 
 /** 宫格导航属性面板 */
+const { t } = useI18n()
 defineOptions({ name: 'MenuGridProperty' })
 
 const props = defineProps<{ modelValue: MenuGridProperty }>()

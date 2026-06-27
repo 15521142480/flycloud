@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="上传下载" url="https://doc.iocoder.cn/file/" />
+  <doc-alert
+    :title="t('auto.views.infra.file.index.ka534f64e')"
+    url="https://doc.iocoder.cn/file/"
+  />
   <!-- 搜索 -->
   <ContentWrap>
     <el-form
@@ -9,40 +12,44 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="文件路径" prop="path">
+      <el-form-item :label="t('auto.views.infra.file.index.k0fd3a9b4')" prop="path">
         <el-input
           v-model="queryParams.path"
-          placeholder="请输入文件路径"
+          :placeholder="t('auto.views.infra.file.index.k02cc93dc')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="文件类型" prop="type" width="80">
+      <el-form-item :label="t('auto.views.infra.file.index.ka5998b46')" prop="type" width="80">
         <el-input
           v-model="queryParams.type"
-          placeholder="请输入文件类型"
+          :placeholder="t('auto.views.infra.file.index.k3d1b8693')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.file.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.file.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button type="primary" plain @click="openForm">
-          <Icon icon="ep:upload" class="mr-5px" /> 上传文件
+          <Icon icon="ep:upload" class="mr-5px" /> {{ t('extra.kfaf54262') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -51,18 +58,38 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="文件名" align="center" prop="name" :show-overflow-tooltip="true" />
-      <el-table-column label="文件路径" align="center" prop="path" :show-overflow-tooltip="true" />
+      <el-table-column
+        :label="t('auto.views.infra.file.index.k1275f6fe')"
+        align="center"
+        prop="name"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.file.index.k0fd3a9b4')"
+        align="center"
+        prop="path"
+        :show-overflow-tooltip="true"
+      />
       <el-table-column label="URL" align="center" prop="url" :show-overflow-tooltip="true" />
       <el-table-column
-        label="文件大小"
+        :label="t('auto.views.infra.file.index.k2ad8b0b9')"
         align="center"
         prop="size"
         width="120"
         :formatter="fileSizeFormatter"
       />
-      <el-table-column label="文件类型" align="center" prop="type" width="180px" />
-      <el-table-column label="文件内容" align="center" prop="url" width="110px">
+      <el-table-column
+        :label="t('auto.views.infra.file.index.ka5998b46')"
+        align="center"
+        prop="type"
+        width="180px"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.file.index.k4704bfc1')"
+        align="center"
+        prop="url"
+        width="110px"
+      >
         <template #default="{ row }">
           <el-image
             v-if="row.type.includes('image')"
@@ -79,10 +106,16 @@
             :href="row.url"
             :underline="false"
             target="_blank"
-            >预览</el-link
+            >{{ t('action.preview') }}</el-link
           >
-          <el-link v-else type="primary" download :href="row.url" :underline="false" target="_blank"
-            >下载</el-link
+          <el-link
+            v-else
+            type="primary"
+            download
+            :href="row.url"
+            :underline="false"
+            target="_blank"
+            >{{ t('auto.views.infra.file.index.k2b9d0131') }}</el-link
           >
         </template>
       </el-table-column>
@@ -123,11 +156,10 @@ import { fileSizeFormatter } from '@/utils'
 import { dateFormatter } from '@/utils/formatTime'
 import * as FileApi from '@/api/infra/file'
 import FileForm from './FileForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraFile' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

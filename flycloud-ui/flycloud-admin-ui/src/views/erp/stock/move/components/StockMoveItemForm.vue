@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="调出仓库" min-width="125">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.erp.stock.move.components.StockMoveItemForm.k2f75066b')"
+        min-width="125"
+      >
         <template #default="{ row, $index }">
           <el-form-item
             :prop="`${$index}.fromWarehouseId`"
@@ -21,7 +24,7 @@
               v-model="row.fromWarehouseId"
               clearable
               filterable
-              placeholder="请选择调出仓库"
+              :placeholder="t('auto.views.erp.stock.move.components.StockMoveItemForm.kd248bc9d')"
               @change="onChangeWarehouse($event, row)"
             >
               <el-option
@@ -159,7 +162,7 @@ import {
   erpPriceMultiply,
   getSumValue
 } from '@/utils'
-
+const { t } = useI18n()
 const props = defineProps<{
   items: undefined
   disabled: false
@@ -167,11 +170,41 @@ const props = defineProps<{
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  inId: [{ required: true, message: '调度编号不能为空', trigger: 'blur' }],
-  fromWarehouseId: [{ required: true, message: '调出仓库不能为空', trigger: 'blur' }],
-  toWarehouseId: [{ required: true, message: '调入仓库不能为空', trigger: 'blur' }],
-  productId: [{ required: true, message: '产品不能为空', trigger: 'blur' }],
-  count: [{ required: true, message: '产品数量不能为空', trigger: 'blur' }]
+  inId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.move.components.StockMoveItemForm.keee69bfa'),
+      trigger: 'blur'
+    }
+  ],
+  fromWarehouseId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.move.components.StockMoveItemForm.k228f99c3'),
+      trigger: 'blur'
+    }
+  ],
+  toWarehouseId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.move.components.StockMoveItemForm.k685c093b'),
+      trigger: 'blur'
+    }
+  ],
+  productId: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.move.components.StockMoveItemForm.k0b3cde2b'),
+      trigger: 'blur'
+    }
+  ],
+  count: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.move.components.StockMoveItemForm.k55ce5fbe'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const productList = ref<ProductVO[]>([]) // 产品列表
@@ -208,7 +241,7 @@ const getSummaries = (param: SummaryMethodProps) => {
   const sums: string[] = []
   columns.forEach((column, index) => {
     if (index === 0) {
-      sums[index] = '合计'
+      sums[index] = t('auto.views.erp.stock.move.components.StockMoveItemForm.k92bcbf71')
       return
     }
     if (['count', 'totalPrice'].includes(column.property)) {

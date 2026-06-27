@@ -6,6 +6,8 @@ import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { ElementPlusSize } from '@/types/elementPlus'
 import { LayoutType } from '@/types/layout'
 import { ThemeTypes } from '@/types/theme'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 const { wsCache } = useCache()
 
@@ -237,7 +239,7 @@ export const useAppStore = defineStore('app', {
     },
     setLayout(layout: LayoutType) {
       if (this.mobile && layout !== 'classic') {
-        ElMessage.warning('移动端模式下不支持切换其他布局')
+        ElMessage.warning(t('auto.store.modules.app.k33ca6b0e'))
         return
       }
       this.layout = layout

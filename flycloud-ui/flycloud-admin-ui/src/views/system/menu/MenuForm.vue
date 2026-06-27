@@ -4,11 +4,12 @@
     :title="dialogTitle"
     width="80%"
     top="4vh"
-    style="height:94%; margin-bottom: -80px"
+    style="height: 94%; margin-bottom: -80px"
   >
-
     <el-divider content-position="right" style="margin: -5px 0 20px 0">
-      <el-button :disabled="formLoading" type="primary" round @click="submitForm">确 定</el-button>
+      <el-button :disabled="formLoading" type="primary" round @click="submitForm">{{
+        t('auto.views.system.menu.MenuForm.k31f9d856')
+      }}</el-button>
     </el-divider>
 
     <el-row style="margin-left: 15px">
@@ -16,7 +17,7 @@
         <el-card>
           <template #header>
             <div class="card-header" style="text-align: center">
-              <span>基础信息</span>
+              <span>{{ t('auto.views.system.menu.MenuForm.k41654e02') }}</span>
             </div>
           </template>
           <el-form
@@ -25,7 +26,7 @@
             :model="formData"
             :rules="formRules"
             label-width="100px"
-            style="height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;"
+            style="height: calc(100vh - 240px); overflow-y: auto; overflow-x: hidden"
           >
             <el-form-item label="上级菜单">
               <el-tree-select
@@ -61,7 +62,11 @@
                   title="菜单权限"
                 />
               </template>
-              <el-input v-model="formData.permission" clearable placeholder="如：一级菜单【系统管理】为 sys，二级菜单【用户管理】为sys:user" />
+              <el-input
+                v-model="formData.permission"
+                clearable
+                placeholder="如：一级菜单【系统管理】为 sys，二级菜单【用户管理】为sys:user"
+              />
             </el-form-item>
             <el-form-item label="路由地址" prop="path">
               <template #label>
@@ -73,22 +78,35 @@
               <el-input v-model="formData.path" clearable placeholder="请输入路由地址" />
             </el-form-item>
             <el-form-item label="组件地址" prop="component">
-              <el-input v-model="formData.component" clearable placeholder="例如说：system/user/index" />
+              <el-input
+                v-model="formData.component"
+                clearable
+                placeholder="例如说：system/user/index"
+              />
             </el-form-item>
             <el-form-item label="组件名字" prop="componentName">
-              <el-input v-model="formData.componentName" clearable placeholder="例如说：SystemUser" />
+              <el-input
+                v-model="formData.componentName"
+                clearable
+                placeholder="例如说：SystemUser"
+              />
             </el-form-item>
-<!--            <el-form-item label="权限标识" prop="permission">-->
-<!--              <template #label>-->
-<!--                <Tooltip-->
-<!--                  message="Controller 方法上的权限字符，如：@PreAuthorize(`@ss.hasPermission('system:user:list')`)"-->
-<!--                  title="权限标识"-->
-<!--                />-->
-<!--              </template>-->
-<!--              <el-input v-model="formData.permission" clearable placeholder="请输入权限标识" />-->
-<!--            </el-form-item>-->
+            <!--            <el-form-item label="权限标识" prop="permission">-->
+            <!--              <template #label>-->
+            <!--                <Tooltip-->
+            <!--                  message="Controller 方法上的权限字符，如：@PreAuthorize(`@ss.hasPermission('system:user:list')`)"-->
+            <!--                  title="权限标识"-->
+            <!--                />-->
+            <!--              </template>-->
+            <!--              <el-input v-model="formData.permission" clearable placeholder="请输入权限标识" />-->
+            <!--            </el-form-item>-->
             <el-form-item label="显示排序" prop="sort">
-              <el-input-number v-model="formData.sort" :min="0" clearable controls-position="right" />
+              <el-input-number
+                v-model="formData.sort"
+                :min="0"
+                clearable
+                controls-position="right"
+              />
             </el-form-item>
             <el-form-item label="菜单状态" prop="status">
               <el-radio-group v-model="formData.status">
@@ -103,7 +121,10 @@
             </el-form-item>
             <el-form-item label="显示状态" prop="visible">
               <template #label>
-                <Tooltip message="选择隐藏时，路由将不会出现在侧边栏，但仍然可以访问" title="显示状态" />
+                <Tooltip
+                  message="选择隐藏时，路由将不会出现在侧边栏，但仍然可以访问"
+                  title="显示状态"
+                />
               </template>
               <el-radio-group v-model="formData.visible">
                 <el-radio key="true" :value="1" border>显示</el-radio>
@@ -146,23 +167,37 @@
             </div>
           </template>
 
-<!--          <div style="height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;">-->
-<!--            <div>123</div>-->
-<!--            <div>123</div>-->
-<!--          </div>-->
-          <el-button type="primary" plain @click="openBtnForm(false)" > <!-- v-hasPermi="['system:menu:create']" -->
+          <!--          <div style="height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;">-->
+          <!--            <div>123</div>-->
+          <!--            <div>123</div>-->
+          <!--          </div>-->
+          <el-button type="primary" plain @click="openBtnForm(false)">
+            <!-- v-hasPermi="['system:menu:create']" -->
             <Icon icon="ep:plus" /> 新增
           </el-button>
-          <el-table :data="buttonPermissionList" style="width: 100%; height: calc(100vh - 240px); overflow-y:auto; overflow-x:hidden;">
+          <el-table
+            :data="buttonPermissionList"
+            style="width: 100%; height: calc(100vh - 240px); overflow-y: auto; overflow-x: hidden"
+          >
             <el-table-column fixed align="center" prop="btnName" label="名称" />
             <el-table-column align="center" prop="btnPermission" label="权限" />
 
             <el-table-column fixed="right" align="center" label="操作" min-width="100">
               <template #default="scope">
-                <el-button link type="primary" size="small" @click.prevent="openBtnForm(true, scope.row, scope.$index)">
+                <el-button
+                  link
+                  type="primary"
+                  size="small"
+                  @click.prevent="openBtnForm(true, scope.row, scope.$index)"
+                >
                   修改
                 </el-button>
-                <el-button link type="primary" size="small" @click.prevent="deleteRow(scope.$index)">
+                <el-button
+                  link
+                  type="primary"
+                  size="small"
+                  @click.prevent="deleteRow(scope.$index)"
+                >
                   删除
                 </el-button>
               </template>
@@ -172,9 +207,9 @@
       </el-col>
     </el-row>
 
-  <!--  按钮权限弹窗  -->
-    <Dialog v-model="btnDialogVisible" :title="btnDialogTitle" width="30%" >
-      <el-form ref="btnFormRef" :model="btnFormData" >
+    <!--  按钮权限弹窗  -->
+    <Dialog v-model="btnDialogVisible" :title="btnDialogTitle" width="30%">
+      <el-form ref="btnFormRef" :model="btnFormData">
         <el-form-item label="按钮名称">
           <el-input v-model="btnFormData.btnName" />
         </el-form-item>
@@ -188,23 +223,22 @@
       </template>
     </Dialog>
 
-<!--    <template #footer>-->
-<!--      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>-->
-<!--      <el-button @click="dialogVisible = false">取 消</el-button>-->
-<!--    </template>-->
+    <!--    <template #footer>-->
+    <!--      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>-->
+    <!--      <el-button @click="dialogVisible = false">取 消</el-button>-->
+    <!--    </template>-->
   </ElDialog>
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as MenuApi from '@/api/system/menu'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
-import {CommonStatusEnum, SystemMenuTypeEnum, SystemTypeEnum} from '@/utils/constants'
+import { CommonStatusEnum, SystemMenuTypeEnum, SystemTypeEnum } from '@/utils/constants'
 import { defaultProps, handleTree } from '@/utils/tree'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMenuForm' })
 
 const { wsCache } = useCache()
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -237,18 +271,27 @@ const btnFormData = ref({
   btnPermission: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '菜单名称不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '菜单顺序不能为空', trigger: 'blur' }],
-  path: [{ required: true, message: '路由地址不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
-  permission: [{ required: true, message: '菜单权限不能为空', trigger: 'blur' }]
+  name: [
+    { required: true, message: t('auto.views.system.menu.MenuForm.k272fb99e'), trigger: 'blur' }
+  ],
+  sort: [
+    { required: true, message: t('auto.views.system.menu.MenuForm.k70c49ab5'), trigger: 'blur' }
+  ],
+  path: [
+    { required: true, message: t('auto.views.system.menu.MenuForm.kacc757c7'), trigger: 'blur' }
+  ],
+  status: [
+    { required: true, message: t('auto.views.system.menu.MenuForm.k1318b551'), trigger: 'blur' }
+  ],
+  permission: [
+    { required: true, message: t('auto.views.system.menu.MenuForm.k3f381f7f'), trigger: 'blur' }
+  ]
 })
 
 const formRef = ref() // 表单 Ref
 const buttonPermissionList = ref<any>([]) // 按钮权限列表
 
 const dialogHeight = window.innerHeight
-
 
 /** 打开弹窗 */
 const open = async (type: string, id?: number, parentId?: number) => {
@@ -326,15 +369,13 @@ const submitForm = async () => {
 /** 获取下拉框[上级菜单]的数据  */
 const menuTree = ref<Tree[]>([]) // 树形结构
 
-
 const getTree = async () => {
-
   menuTree.value = []
   let queryParam = {
     searchStatusAll: true
   }
   const res = await MenuApi.getMenuTreeList(queryParam)
-  let menu: Tree = { id: 0, name: '主类目', children: [] }
+  let menu: Tree = { id: 0, name: t('auto.views.system.menu.MenuForm.k3eaad510'), children: [] }
   // menu.children = handleTree(res)
   menu.children = res
   menuTree.value.push(menu)
@@ -374,7 +415,9 @@ const isExternal = (path: string) => {
  */
 const openBtnForm = (isUpdate: boolean, btnData: object, updateIndex: number) => {
   btnSaveTypeIsUpdate.value = isUpdate
-  btnDialogTitle.value = isUpdate ? '修改按钮权限' : '新增按钮权限'
+  btnDialogTitle.value = isUpdate
+    ? t('auto.views.system.menu.MenuForm.k32bacf76')
+    : t('auto.views.system.menu.MenuForm.kfbce260e')
   btnFormData.value = {
     btnName: '',
     btnPermission: ''
@@ -391,7 +434,7 @@ const openBtnForm = (isUpdate: boolean, btnData: object, updateIndex: number) =>
  */
 const btnSubmitForm = () => {
   if (!btnFormData.value.btnName || !btnFormData.value.btnPermission) {
-    message.error('请填写完【按钮名称】和【按钮权限】')
+    message.error(t('auto.views.system.menu.MenuForm.kb68a072c'))
     return
   }
   if (btnSaveTypeIsUpdate.value) {
@@ -409,6 +452,4 @@ const btnSubmitForm = () => {
 const deleteRow = (index: number) => {
   buttonPermissionList.value.splice(index, 1)
 }
-
-
 </script>

@@ -3,7 +3,9 @@
     <template #header>
       <!-- 标题 -->
       <div class="flex flex-row items-center justify-between">
-        <CardTitle title="商品概况" />
+        <CardTitle
+          :title="t('auto.views.mall.statistics.product.components.ProductSummary.k42e2eb89')"
+        />
         <!-- 查询条件 -->
         <ShortcutDateRangePicker ref="shortcutDateRangePicker" @change="getProductTrendData">
           <el-button
@@ -12,7 +14,7 @@
             :loading="exportLoading"
             v-hasPermi="['statistics:product:export']"
           >
-            <Icon icon="ep:download" class="mr-1" />导出
+            <Icon icon="ep:download" class="mr-1" />{{ t('extra.k429291e5') }}
           </el-button>
         </ShortcutDateRangePicker>
       </div>
@@ -146,6 +148,7 @@ import * as DateUtil from '@/utils/formatTime'
 import dayjs from 'dayjs'
 
 /** 商品概况 */
+const { t } = useI18n()
 defineOptions({ name: 'ProductSummary' })
 
 const message = useMessage() // 消息弹窗
@@ -172,10 +175,32 @@ const lineChartOptions = reactive<EChartsOption>({
     top: 50
   },
   series: [
-    { name: '商品浏览量', type: 'line', smooth: true, itemStyle: { color: '#B37FEB' } },
-    { name: '商品访客数', type: 'line', smooth: true, itemStyle: { color: '#FFAB2B' } },
-    { name: '支付金额', type: 'bar', smooth: true, yAxisIndex: 1, itemStyle: { color: '#1890FF' } },
-    { name: '退款金额', type: 'bar', smooth: true, yAxisIndex: 1, itemStyle: { color: '#00C050' } }
+    {
+      name: t('auto.views.mall.statistics.product.components.ProductSummary.k9956958d'),
+      type: 'line',
+      smooth: true,
+      itemStyle: { color: '#B37FEB' }
+    },
+    {
+      name: t('auto.views.mall.statistics.product.components.ProductSummary.k5dbb88ed'),
+      type: 'line',
+      smooth: true,
+      itemStyle: { color: '#FFAB2B' }
+    },
+    {
+      name: t('auto.views.mall.statistics.product.components.ProductSummary.kb579703e'),
+      type: 'bar',
+      smooth: true,
+      yAxisIndex: 1,
+      itemStyle: { color: '#1890FF' }
+    },
+    {
+      name: t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2'),
+      type: 'bar',
+      smooth: true,
+      yAxisIndex: 1,
+      itemStyle: { color: '#00C050' }
+    }
   ],
   toolbox: {
     feature: {
@@ -186,7 +211,10 @@ const lineChartOptions = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '商品状况' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.mall.statistics.product.components.ProductSummary.k61817214')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -206,7 +234,7 @@ const lineChartOptions = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '金额',
+      name: t('auto.views.mall.statistics.product.components.ProductSummary.k34943c40'),
       axisLine: {
         show: false
       },
@@ -227,7 +255,7 @@ const lineChartOptions = reactive<EChartsOption>({
     },
     {
       type: 'value',
-      name: '数量',
+      name: t('auto.views.mall.statistics.product.components.ProductSummary.kb9ae8931'),
       axisLine: {
         show: false
       },
@@ -294,7 +322,10 @@ const handleExport = async () => {
     exportLoading.value = true
     const times = shortcutDateRangePicker.value.times
     const data = await ProductStatisticsApi.exportProductStatisticsExcel({ times })
-    download.excel(data, '商品状况.xls')
+    download.excel(
+      data,
+      t('auto.views.mall.statistics.product.components.ProductSummary.k9d62242a')
+    )
   } catch {
   } finally {
     exportLoading.value = false

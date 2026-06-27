@@ -48,11 +48,10 @@
 import * as UserApi from '@/api/system/user'
 import { getAccessToken, getTenantId } from '@/utils/auth'
 import download from '@/utils/download'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemUserImportForm' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中

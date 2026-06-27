@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,30 +8,30 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="合同编号" prop="no">
+      <el-form-item :label="t('auto.views.crm.contract.index.k17b34173')" prop="no">
         <el-input
           v-model="queryParams.no"
           class="!w-240px"
           clearable
-          placeholder="请输入合同编号"
+          :placeholder="t('auto.views.crm.contract.index.kae0dd683')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="合同名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.contract.index.kb8fbf277')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入合同名称"
+          :placeholder="t('auto.views.crm.contract.index.kd336a47f')"
           @keyup.enter="handleQuery"
         />
-        <el-form-item label="客户" prop="customerId">
+        <el-form-item :label="t('auto.views.crm.contract.index.kf2068706')" prop="customerId">
           <el-select
             v-model="queryParams.customerId"
             class="!w-240px"
             clearable
             lable-key="name"
-            placeholder="请选择客户"
+            :placeholder="t('auto.views.crm.contract.index.k6bdb05d6')"
             value-key="id"
             @keyup.enter="handleQuery"
           >
@@ -48,15 +47,15 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k508c1a32') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kc5217b66') }}
         </el-button>
         <el-button v-hasPermi="['crm:contract:create']" type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.ka93aca74') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:contract:export']"
@@ -66,7 +65,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k282cf4aa') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -75,13 +74,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="我参与的" name="2" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.contract.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.contract.index.k1640a0ff')" name="2" />
+      <el-tab-pane :label="t('auto.views.crm.contract.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="合同编号" prop="no" width="180" />
-      <el-table-column align="center" fixed="left" label="合同名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.contract.index.k17b34173')"
+        prop="no"
+        width="180"
+      />
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.contract.index.kb8fbf277')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -267,11 +278,10 @@ import { DICT_TYPE } from '@/utils/dict'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import * as CustomerApi from '@/api/crm/customer'
 import { TabsPaneContext } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContract' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -347,7 +357,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ContractApi.exportContract(queryParams)
-    download.excel(data, '合同.xls')
+    download.excel(data, t('auto.views.crm.contract.index.kd0ef23ec'))
   } catch {
   } finally {
     exportLoading.value = false
@@ -356,9 +366,9 @@ const handleExport = async () => {
 
 /** 提交审核 **/
 const handleSubmit = async (row: ContractApi.ContractVO) => {
-  await message.confirm(`您确定提交【${row.name}】审核吗？`)
+  await message.confirm(t('extra.k54cbe02f', { p0: row.name }))
   await ContractApi.submitContract(row.id)
-  message.success('提交审核成功！')
+  message.success(t('auto.views.crm.contract.index.k7165ee3f'))
   await getList()
 }
 

@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="上传下载" url="https://doc.iocoder.cn/file/" />
+  <doc-alert
+    :title="t('auto.views.infra.fileConfig.index.ka534f64e')"
+    url="https://doc.iocoder.cn/file/"
+  />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="配置名" prop="name">
+      <el-form-item :label="t('auto.views.infra.fileConfig.index.kf0020751')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入配置名"
+          :placeholder="t('auto.views.infra.fileConfig.index.k0b5e6a5c')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="存储器" prop="storage">
+      <el-form-item :label="t('auto.views.infra.fileConfig.index.k620f816b')" prop="storage">
         <el-select
           v-model="queryParams.storage"
-          placeholder="请选择存储器"
+          :placeholder="t('auto.views.infra.fileConfig.index.k92c2f199')"
           clearable
           class="!w-240px"
         >
@@ -34,27 +37,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.fileConfig.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.fileConfig.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['infra:file-config:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1c7d3e6e') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -63,9 +70,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="配置名" align="center" prop="name" />
-      <el-table-column label="存储器" align="center" prop="storage">
+      <el-table-column
+        :label="t('auto.views.infra.fileConfig.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.fileConfig.index.kf0020751')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.fileConfig.index.k620f816b')"
+        align="center"
+        prop="storage"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_FILE_STORAGE" :value="scope.row.storage" />
         </template>
@@ -131,11 +150,10 @@ import * as FileConfigApi from '@/api/infra/fileConfig'
 import FileConfigForm from './FileConfigForm.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraFileConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -195,7 +213,11 @@ const handleDelete = async (id: number) => {
 /** 主配置按钮操作 */
 const handleMaster = async (id) => {
   try {
-    await message.confirm('是否确认修改配置编号为"' + id + '"的数据项为主配置?')
+    await message.confirm(
+      t('auto.views.infra.fileConfig.index.keec2f1d8') +
+        id +
+        t('auto.views.infra.fileConfig.index.kd23be7ae')
+    )
     await FileConfigApi.updateFileConfigMaster(id)
     message.success(t('common.updateSuccess'))
     await getList()
@@ -206,7 +228,10 @@ const handleMaster = async (id) => {
 const handleTest = async (id) => {
   try {
     const response = await FileConfigApi.testFileConfig(id)
-    await message.confirm('是否要访问该文件？', '测试上传成功')
+    await message.confirm(
+      t('auto.views.infra.fileConfig.index.kab1997c0'),
+      t('auto.views.infra.fileConfig.index.k64b28e69')
+    )
     window.open(response, '_blank')
   } catch {}
 }

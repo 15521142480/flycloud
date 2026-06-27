@@ -1,67 +1,85 @@
 <template>
-  <Dialog v-model="dialogVisible" title="订单详情" width="700px">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.pay.order.OrderDetail.kdea71f6f')"
+    width="700px"
+  >
     <el-descriptions :column="2" label-class-name="desc-label">
-      <el-descriptions-item label="商户单号">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k3dc2266a')">
         <el-tag size="small">{{ detailData.merchantOrderId }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="支付单号">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k956bb6be')">
         <el-tag type="warning" size="small" v-if="detailData.no">{{ detailData.no }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="应用编号">{{ detailData.appId }}</el-descriptions-item>
-      <el-descriptions-item label="应用名称">{{ detailData.appName }}</el-descriptions-item>
-      <el-descriptions-item label="支付状态">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k396d9d78')">{{
+        detailData.appId
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k2d87d518')">{{
+        detailData.appName
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.kb9f11a33')">
         <dict-tag :type="DICT_TYPE.PAY_ORDER_STATUS" :value="detailData.status" size="small" />
       </el-descriptions-item>
-      <el-descriptions-item label="支付金额">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.kb579703e')">
         <el-tag type="success" size="small">￥{{ (detailData.price / 100.0).toFixed(2) }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="手续费">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k307d6667')">
         <el-tag type="warning" size="small">
           ￥{{ (detailData.channelFeePrice / 100.0).toFixed(2) }}
         </el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="手续费比例">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.ka0757b4b')">
         {{ (detailData.channelFeeRate / 100.0).toFixed(2) }}%
       </el-descriptions-item>
-      <el-descriptions-item label="支付时间">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.kd4c9603f')">
         {{ formatDate(detailData.successTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="失效时间">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k5892dd47')">
         {{ formatDate(detailData.expireTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="创建时间">
+      <el-descriptions-item :label="t('common.createTime')">
         {{ formatDate(detailData.createTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="更新时间">
+      <el-descriptions-item :label="t('common.updateTime')">
         {{ formatDate(detailData.updateTime) }}
       </el-descriptions-item>
     </el-descriptions>
     <!-- 分割线 -->
     <el-divider />
     <el-descriptions :column="2" label-class-name="desc-label">
-      <el-descriptions-item label="商品标题">{{ detailData.subject }}</el-descriptions-item>
-      <el-descriptions-item label="商品描述">{{ detailData.body }}</el-descriptions-item>
-      <el-descriptions-item label="支付渠道">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.kd415beac')">{{
+        detailData.subject
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k8f1a3358')">{{
+        detailData.body
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k88b37342')">
         <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="detailData.channelCode" />
       </el-descriptions-item>
-      <el-descriptions-item label="支付 IP">{{ detailData.userIp }}</el-descriptions-item>
-      <el-descriptions-item label="渠道单号">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k60c8c7a4')">{{
+        detailData.userIp
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.ke551deaa')">
         <el-tag size="mini" type="success" v-if="detailData.channelOrderNo">
           {{ detailData.channelOrderNo }}
         </el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="渠道用户">{{ detailData.channelUserId }}</el-descriptions-item>
-      <el-descriptions-item label="退款金额">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k3915600b')">{{
+        detailData.channelUserId
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.kf243aec2')">
         <el-tag size="mini" type="danger">
           ￥{{ (detailData.refundPrice / 100.0).toFixed(2) }}
         </el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="通知 URL">{{ detailData.notifyUrl }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k9fb2a0ae')">{{
+        detailData.notifyUrl
+      }}</el-descriptions-item>
     </el-descriptions>
     <!-- 分割线 -->
     <el-divider />
     <el-descriptions :column="1" label-class-name="desc-label" direction="vertical" border>
-      <el-descriptions-item label="支付通道异步回调内容">
+      <el-descriptions-item :label="t('auto.views.pay.order.OrderDetail.k1b23b403')">
         <el-text style="white-space: pre-wrap; word-break: break-word">
           {{ detailData.extension.channelNotifyData }}
         </el-text>
@@ -73,7 +91,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import * as OrderApi from '@/api/pay/order'
 import { formatDate } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'PayOrderDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

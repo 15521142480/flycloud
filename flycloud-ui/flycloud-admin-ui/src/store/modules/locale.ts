@@ -33,7 +33,7 @@ export const useLocaleStore = defineStore('locales', {
         },
         {
           lang: 'zh-TW',
-          name: '中文繁体'
+          name: '中文繁體'
         },
         {
           lang: 'en',

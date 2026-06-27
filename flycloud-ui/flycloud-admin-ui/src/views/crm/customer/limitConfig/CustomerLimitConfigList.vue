@@ -1,12 +1,15 @@
 <template>
-  <el-button plain @click="handleQuery"> <Icon icon="ep:refresh" class="mr-5px" /> 刷新 </el-button>
+  <el-button plain @click="handleQuery">
+    <Icon icon="ep:refresh" class="mr-5px" />
+    {{ t('auto.views.crm.customer.limitConfig.CustomerLimitConfigList.k38108eaa') }}
+  </el-button>
   <el-button
     type="primary"
     plain
     @click="openForm('create')"
     v-hasPermi="['crm:customer-limit-config:create']"
   >
-    <Icon icon="ep:plus" class="mr-5px" /> 新增
+    <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ka30e2f1d') }}
   </el-button>
   <el-table
     v-loading="loading"
@@ -15,27 +18,33 @@
     :show-overflow-tooltip="true"
     class="mt-4"
   >
-    <el-table-column label="编号" align="center" prop="id" />
     <el-table-column
-      label="规则适用人群"
+      :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigList.k9f42dac6')"
+      align="center"
+      prop="id"
+    />
+    <el-table-column
+      :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigList.kc4698aef')"
       align="center"
       :formatter="(row) => row.users?.map((user: any) => user.name).join('，')"
     />
     <el-table-column
-      label="规则适用部门"
+      :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigList.kcfcb34f1')"
       align="center"
       :formatter="(row) => row.depts?.map((dept: any) => dept.name).join('，')"
     />
     <el-table-column
       :label="
-        confType === LimitConfType.CUSTOMER_QUANTITY_LIMIT ? '拥有客户数上限' : '锁定客户数上限'
+        confType === LimitConfType.CUSTOMER_QUANTITY_LIMIT
+          ? t('extra.kb0786d6f')
+          : t('extra.k7f98a6f4')
       "
       align="center"
       prop="maxCount"
     />
     <el-table-column
       v-if="confType === LimitConfType.CUSTOMER_QUANTITY_LIMIT"
-      label="成交客户是否占用拥有客户数"
+      :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigList.k4531f29a')"
       align="center"
       prop="dealCountEnabled"
       min-width="100"
@@ -89,11 +98,10 @@ import * as CustomerLimitConfigApi from '@/api/crm/customer/limitConfig'
 import CustomerLimitConfigForm from './CustomerLimitConfigForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { LimitConfType } from '@/api/crm/customer/limitConfig'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerLimitConfigList' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const { confType } = defineProps<{ confType: LimitConfType }>()
 

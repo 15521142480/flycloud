@@ -7,9 +7,19 @@
       label-width="120px"
       v-loading="formLoading"
     >
-      <el-form-item label="上级分类" prop="parentId">
-        <el-select v-model="formData.parentId" placeholder="请选择上级分类">
-          <el-option :key="0" label="顶级分类" :value="0" />
+      <el-form-item
+        :label="t('auto.views.mall.product.category.CategoryForm.k0cacc9c3')"
+        prop="parentId"
+      >
+        <el-select
+          v-model="formData.parentId"
+          :placeholder="t('auto.views.mall.product.category.CategoryForm.k3ba62bd1')"
+        >
+          <el-option
+            :key="0"
+            :label="t('auto.views.mall.product.category.CategoryForm.k419eab88')"
+            :value="0"
+          />
           <el-option
             v-for="item in categoryList"
             :key="item.id"
@@ -18,17 +28,34 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="分类名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入分类名称" />
+      <el-form-item
+        :label="t('auto.views.mall.product.category.CategoryForm.k3fc30355')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.product.category.CategoryForm.k56e43e46')"
+        />
       </el-form-item>
-      <el-form-item label="移动端分类图" prop="picUrl">
+      <el-form-item
+        :label="t('auto.views.mall.product.category.CategoryForm.k48d796b0')"
+        prop="picUrl"
+      >
         <UploadImg v-model="formData.picUrl" :limit="1" :is-show-tip="false" />
-        <div style="font-size: 10px" class="pl-10px">推荐 180x180 图片分辨率</div>
+        <div style="font-size: 10px" class="pl-10px">{{
+          t('auto.views.mall.product.category.CategoryForm.k0fe3d1b5')
+        }}</div>
       </el-form-item>
-      <el-form-item label="分类排序" prop="sort">
+      <el-form-item
+        :label="t('auto.views.mall.product.category.CategoryForm.k2b77925f')"
+        prop="sort"
+      >
         <el-input-number v-model="formData.sort" controls-position="right" :min="0" />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.product.category.CategoryForm.k6bbda1b1')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -41,8 +68,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.mall.product.category.CategoryForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.product.category.CategoryForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -50,10 +81,8 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as ProductCategoryApi from '@/api/mall/product/category'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductCategory' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -67,11 +96,41 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  parentId: [{ required: true, message: '请选择上级分类', trigger: 'blur' }],
-  name: [{ required: true, message: '分类名称不能为空', trigger: 'blur' }],
-  picUrl: [{ required: true, message: '分类图片不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '分类排序不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }]
+  parentId: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.category.CategoryForm.k3ba62bd1'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.category.CategoryForm.ka1a3f673'),
+      trigger: 'blur'
+    }
+  ],
+  picUrl: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.category.CategoryForm.k14a20fa3'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.category.CategoryForm.k331d6aa3'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.category.CategoryForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const categoryList = ref<any[]>([]) // 分类树

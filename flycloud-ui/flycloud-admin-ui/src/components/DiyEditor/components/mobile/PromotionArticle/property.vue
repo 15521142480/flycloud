@@ -1,10 +1,17 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <el-form label-width="40px" :model="formData">
-      <el-form-item label="文章" prop="id">
+      <el-form-item
+        :label="
+          t('auto.components.DiyEditor.components.mobile.PromotionArticle.property.kad3fd0f4')
+        "
+        prop="id"
+      >
         <el-select
           v-model="formData.id"
-          placeholder="请选择文章"
+          :placeholder="
+            t('auto.components.DiyEditor.components.mobile.PromotionArticle.property.kb44b07a8')
+          "
           class="w-full"
           filterable
           remote
@@ -27,8 +34,7 @@
 import { PromotionArticleProperty } from './config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
 import * as ArticleApi from '@/api/mall/promotion/article/index'
-
-// 营销文章属性面板
+const { t } = useI18n()
 defineOptions({ name: 'PromotionArticleProperty' })
 
 const props = defineProps<{ modelValue: PromotionArticleProperty }>()

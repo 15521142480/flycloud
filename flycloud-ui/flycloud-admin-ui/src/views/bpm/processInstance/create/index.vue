@@ -4,7 +4,7 @@
     <el-input
       v-model="searchName"
       class="!w-50% mb-15px"
-      placeholder="请输入流程名称"
+      :placeholder="t('auto.views.bpm.processInstance.create.index.ke9399a13')"
       clearable
       @input="handleQuery"
       @clear="handleQuery"
@@ -88,7 +88,7 @@ import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import ProcessDefinitionDetail from './ProcessDefinitionDetail.vue'
 import { groupBy } from 'lodash-es'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessInstanceCreate' })
 
 const { proxy } = getCurrentInstance() as any
@@ -115,14 +115,14 @@ const getList = async () => {
     if (processInstanceId?.length > 0) {
       const processInstance = await ProcessInstanceApi.getProcessInstance(processInstanceId)
       if (!processInstance) {
-        message.error('重新发起流程失败，原因：流程实例不存在')
+        message.error(t('auto.views.bpm.processInstance.create.index.k018fc382'))
         return
       }
       const processDefinition = processDefinitionList.value.find(
         (item: any) => item.key == processInstance.processDefinition?.key
       )
       if (!processDefinition) {
-        message.error('重新发起流程失败，原因：流程定义不存在')
+        message.error(t('auto.views.bpm.processInstance.create.index.k552d3b29'))
         return
       }
       await handleSelect(processDefinition, processInstance.formVariables)

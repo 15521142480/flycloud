@@ -1,5 +1,5 @@
 <template>
-  <el-text type="info" size="small"> 拖动左上角的小圆点可对其排序 </el-text>
+  <el-text type="info" size="small"> {{ t('auto.components.Draggable.index.ke276701a') }} </el-text>
   <VueDraggable
     :list="formData"
     :force-fallback="true"
@@ -13,11 +13,18 @@
         class="mb-4px flex flex-col gap-4px border border-gray-2 border-rounded rounded border-solid p-8px"
       >
         <!-- 操作按钮区 -->
-        <div class="m--8px m-b-4px flex flex-row items-center justify-between p-8px" style="background-color: var(--app-content-bg-color);">
-          <el-tooltip content="拖动排序">
-            <Icon icon="ic:round-drag-indicator" class="drag-icon cursor-move" style="color: #8a909c;" />
+        <div
+          class="m--8px m-b-4px flex flex-row items-center justify-between p-8px"
+          style="background-color: var(--app-content-bg-color)"
+        >
+          <el-tooltip :content="t('auto.components.Draggable.index.k2980f293')">
+            <Icon
+              icon="ic:round-drag-indicator"
+              class="drag-icon cursor-move"
+              style="color: #8a909c"
+            />
           </el-tooltip>
-          <el-tooltip content="删除">
+          <el-tooltip :content="t('common.delete')">
             <Icon
               icon="ep:delete"
               class="cursor-pointer text-red-5"
@@ -51,8 +58,7 @@ import { usePropertyForm } from '@/components/DiyEditor/util'
 import { any, array } from 'vue-types'
 import { propTypes } from '@/utils/propTypes'
 import { cloneDeep } from 'lodash-es'
-
-// 拖拽组件封装
+const { t } = useI18n()
 defineOptions({ name: 'Draggable' })
 
 // 定义属性

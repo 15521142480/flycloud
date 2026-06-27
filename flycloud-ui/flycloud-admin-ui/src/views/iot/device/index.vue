@@ -8,10 +8,10 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="产品" prop="productId">
+      <el-form-item :label="t('auto.views.iot.device.index.k6cc98552')" prop="productId">
         <el-select
           v-model="queryParams.productId"
-          placeholder="请选择产品"
+          :placeholder="t('auto.views.iot.device.index.k59a0d3d1')"
           clearable
           class="!w-240px"
         >
@@ -26,25 +26,25 @@
       <el-form-item label="DeviceName" prop="deviceName">
         <el-input
           v-model="queryParams.deviceName"
-          placeholder="请输入 DeviceName"
+          :placeholder="t('auto.views.iot.device.index.k58560dae')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="备注名称" prop="name">
+      <el-form-item :label="t('auto.views.iot.device.index.k90f8a65c')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入备注名称"
+          :placeholder="t('auto.views.iot.device.index.k8167b2a5')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="设备类型" prop="deviceType">
+      <el-form-item :label="t('auto.views.iot.device.index.k47a991d1')" prop="deviceType">
         <el-select
           v-model="queryParams.deviceType"
-          placeholder="请选择设备类型"
+          :placeholder="t('auto.views.iot.device.index.kd3646054')"
           clearable
           class="!w-240px"
         >
@@ -56,10 +56,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="设备状态" prop="status">
+      <el-form-item :label="t('auto.views.iot.device.index.k567a4c84')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择设备状态"
+          :placeholder="t('auto.views.iot.device.index.k60e6fb6a')"
           clearable
           class="!w-240px"
         >
@@ -74,11 +74,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon icon="ep:search" class="mr-5px" />
-          搜索
+          {{ t('extra.ka73f5111') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon icon="ep:refresh" class="mr-5px" />
-          重置
+          {{ t('extra.kfb222501') }}
         </el-button>
         <el-button
           type="primary"
@@ -87,7 +87,7 @@
           v-hasPermi="['iot:device:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
-          新增
+          {{ t('extra.kbd17ec6a') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -174,10 +174,10 @@ import DeviceForm from './DeviceForm.vue'
 import { ProductApi } from '@/api/iot/product'
 
 /** IoT 设备 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'IoTDevice' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<DeviceVO[]>([]) // 列表的数据

@@ -144,7 +144,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { debounce } from 'lodash-es'
 import { jsonParse } from '@/utils'
-
+const { t } = useI18n()
 dayjs.extend(relativeTime)
 
 defineOptions({ name: 'KeFuMessageList' })
@@ -265,7 +265,9 @@ const handleSendPicture = async (picUrl: string) => {
 const handleSendMessage = async () => {
   // 1. 校验消息是否为空
   if (isEmpty(unref(message.value))) {
-    messageTool.notifyWarning('请输入消息后再发送哦！')
+    messageTool.notifyWarning(
+      t('auto.views.mall.promotion.kefu.components.KeFuMessageList.k0d2ecb7b')
+    )
     return
   }
   // 2. 组织发送消息

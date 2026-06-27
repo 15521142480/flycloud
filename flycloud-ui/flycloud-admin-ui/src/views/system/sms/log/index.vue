@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="短信配置" url="https://doc.iocoder.cn/sms/" />
+  <doc-alert
+    :title="t('auto.views.system.sms.log.index.k7168c04b')"
+    url="https://doc.iocoder.cn/sms/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item label="手机号" prop="mobile">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k5a9cc5e8')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
-          placeholder="请输入手机号"
+          :placeholder="t('auto.views.system.sms.log.index.k5ecce333')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="短信渠道" prop="channelId">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k7575f737')" prop="channelId">
         <el-select
           v-model="queryParams.channelId"
-          placeholder="请选择短信渠道"
+          :placeholder="t('auto.views.system.sms.log.index.k00492a8c')"
           clearable
           class="!w-240px"
         >
@@ -37,19 +40,19 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="模板编号" prop="templateId">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k3fa1ce06')" prop="templateId">
         <el-input
           v-model="queryParams.templateId"
-          placeholder="请输入模板编号"
+          :placeholder="t('auto.views.system.sms.log.index.k52848084')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="发送状态" prop="sendStatus">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k9fa54101')" prop="sendStatus">
         <el-select
           v-model="queryParams.sendStatus"
-          placeholder="请选择发送状态"
+          :placeholder="t('auto.views.system.sms.log.index.kcd9518bd')"
           clearable
           class="!w-240px"
         >
@@ -61,20 +64,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="发送时间" prop="sendTime">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k98c64dd6')" prop="sendTime">
         <el-date-picker
           v-model="queryParams.sendTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.sms.log.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.sms.log.index.kf4b9b2b5')"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="接收状态" prop="receiveStatus">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k6eafa91f')" prop="receiveStatus">
         <el-select
           v-model="queryParams.receiveStatus"
-          placeholder="请选择接收状态"
+          :placeholder="t('auto.views.system.sms.log.index.k51323de7')"
           clearable
           class="!w-240px"
         >
@@ -86,19 +89,23 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="接收时间" prop="receiveTime">
+      <el-form-item :label="t('auto.views.system.sms.log.index.k407c9467')" prop="receiveTime">
         <el-date-picker
           v-model="queryParams.receiveTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.sms.log.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.sms.log.index.kf4b9b2b5')"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -106,7 +113,7 @@
           :loading="exportLoading"
           v-hasPermi="['system:sms-log:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kac7ffd2f') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -115,15 +122,24 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.system.sms.log.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="手机号" align="center" prop="mobile" width="120">
+      <el-table-column
+        :label="t('auto.views.system.sms.log.index.k5a9cc5e8')"
+        align="center"
+        prop="mobile"
+        width="120"
+      >
         <template #default="scope">
           <div>{{ scope.row.mobile }}</div>
           <div v-if="scope.row.userType && scope.row.userId">
@@ -191,7 +207,7 @@ import download from '@/utils/download'
 import * as SmsChannelApi from '@/api/system/sms/smsChannel'
 import * as SmsLogApi from '@/api/system/sms/smsLog'
 import SmsLogDetail from './SmsLogDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemSmsLog' })
 
 const message = useMessage() // 消息弹窗
@@ -246,7 +262,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SmsLogApi.exportSmsLog(queryParams)
-    download.excel(data, '短信日志.xls')
+    download.excel(data, t('auto.views.system.sms.log.index.k678d02b5'))
   } catch {
   } finally {
     exportLoading.value = false

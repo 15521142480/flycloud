@@ -8,26 +8,31 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="岗位名称" prop="name">
+      <el-form-item :label="t('auto.views.system.post.index.kf7e2b452')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入岗位名称"
+          :placeholder="t('auto.views.system.post.index.ka1330101')"
           clearable
           class="!w-240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="岗位编码" prop="code">
+      <el-form-item :label="t('auto.views.system.post.index.k0fc3644a')" prop="code">
         <el-input
           v-model="queryParams.code"
-          placeholder="请输入岗位编码"
+          :placeholder="t('auto.views.system.post.index.k6524110e')"
           clearable
           class="!w-240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.system.post.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -37,25 +42,29 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['sys:post:saveOrUpdate']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kaa946f09') }}
         </el-button>
-<!--        <el-button-->
-<!--          type="success"-->
-<!--          plain-->
-<!--          @click="handleExport"-->
-<!--          :loading="exportLoading"-->
-<!--          v-hasPermi="['sys:post:download']"-->
-<!--        >-->
-<!--          <Icon icon="ep:download" class="mr-5px" /> 导出-->
-<!--        </el-button>-->
+        <!--        <el-button-->
+        <!--          type="success"-->
+        <!--          plain-->
+        <!--          @click="handleExport"-->
+        <!--          :loading="exportLoading"-->
+        <!--          v-hasPermi="['sys:post:download']"-->
+        <!--        >-->
+        <!--          <Icon icon="ep:download" class="mr-5px" /> 导出-->
+        <!--        </el-button>-->
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -63,12 +72,33 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="岗位编号" align="center" prop="id" />
-      <el-table-column label="岗位名称" align="center" prop="name" />
-      <el-table-column label="岗位编码" align="center" prop="code" />
-      <el-table-column label="岗位顺序" width="80" align="center" prop="sort" />
-      <el-table-column label="岗位备注" align="center" prop="remark" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.system.post.index.kcbef772a')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.system.post.index.kf7e2b452')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.system.post.index.k0fc3644a')"
+        align="center"
+        prop="code"
+      />
+      <el-table-column
+        :label="t('auto.views.system.post.index.k4d834af1')"
+        width="80"
+        align="center"
+        prop="sort"
+      />
+      <el-table-column
+        :label="t('auto.views.system.post.index.ka6e9cffc')"
+        align="center"
+        prop="remark"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -119,11 +149,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as PostApi from '@/api/system/post'
 import PostForm from './PostForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemPost' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -189,7 +218,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await PostApi.exportPost(queryParams)
-    download.excel(data, '岗位列表.xls')
+    download.excel(data, t('auto.views.system.post.index.k21223665'))
   } catch {
   } finally {
     exportLoading.value = false

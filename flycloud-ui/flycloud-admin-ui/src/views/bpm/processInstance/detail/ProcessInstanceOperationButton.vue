@@ -494,7 +494,7 @@ import {
   OPERATION_BUTTON_NAME
 } from '@/components/SimpleProcessDesignerV2/src/consts'
 import { BpmProcessInstanceStatus } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProcessInstanceBtnContainer' })
 
 const router = useRouter() // 路由
@@ -530,15 +530,69 @@ const approveForm = ref<any>({}) // 审批通过时，额外的补充信息
 const approveFormFApi = ref<any>({}) // approveForms 的 fAPi
 const formRef = ref()
 const genericRule = reactive({
-  reason: [{ required: true, message: '审批意见不能为空', trigger: 'blur' }],
-  returnReason: [{ required: true, message: '退回理由不能为空', trigger: 'blur' }],
-  cancelReason: [{ required: true, message: '取消理由不能为空', trigger: 'blur' }],
-  copyUserIds: [{ required: true, message: '抄送人不能为空', trigger: 'change' }],
-  assigneeUserId: [{ required: true, message: '新审批人不能为空', trigger: 'change' }],
-  delegateUserId: [{ required: true, message: '接收人不能为空', trigger: 'change' }],
-  addSignUserIds: [{ required: true, message: '加签处理人不能为空', trigger: 'change' }],
-  deleteSignTaskId: [{ required: true, message: '减签人员不能为空', trigger: 'change' }],
-  targetTaskDefinitionKey: [{ required: true, message: '退回节点不能为空', trigger: 'change' }]
+  reason: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kb07b5494'),
+      trigger: 'blur'
+    }
+  ],
+  returnReason: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kad746a7d'),
+      trigger: 'blur'
+    }
+  ],
+  cancelReason: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k962a3b95'),
+      trigger: 'blur'
+    }
+  ],
+  copyUserIds: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kd57a604b'),
+      trigger: 'change'
+    }
+  ],
+  assigneeUserId: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kc815a78f'),
+      trigger: 'change'
+    }
+  ],
+  delegateUserId: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k6495510a'),
+      trigger: 'change'
+    }
+  ],
+  addSignUserIds: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k2b5baa3f'),
+      trigger: 'change'
+    }
+  ],
+  deleteSignTaskId: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.keba60aa5'),
+      trigger: 'change'
+    }
+  ],
+  targetTaskDefinitionKey: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kc2c67d5a'),
+      trigger: 'change'
+    }
+  ]
 }) // 表单校验规则
 
 /** 监听 approveFormFApis，实现它对应的 form-create 初始化后，隐藏掉对应的表单提交按钮 */
@@ -557,7 +611,9 @@ watch(
 const openReturnPopover = async () => {
   returnList.value = await TaskApi.getTaskListByReturn(runningTask.value.id)
   if (returnList.value.length === 0) {
-    message.warning('当前没有可退回的节点')
+    message.warning(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kb347049d')
+    )
     return
   }
   await openPopover('return')
@@ -598,11 +654,15 @@ const handleAudit = async (pass: boolean) => {
       }
       await TaskApi.approveTask(data)
       popOverVisible.value.approve = false
-      message.success('审批通过成功')
+      message.success(
+        t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kcdc55743')
+      )
     } else {
       await TaskApi.rejectTask(data)
       popOverVisible.value.reject = false
-      message.success('审批不通过成功')
+      message.success(
+        t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k6666bf90')
+      )
     }
     // 2.2 加载最新数据
     reload()
@@ -629,7 +689,9 @@ const handleCopy = async () => {
     }
     await TaskApi.copyTask(data)
     popOverVisible.value.copy = false
-    message.success('操作成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k3c5be5f2')
+    )
   } finally {
     formLoading.value = false
   }
@@ -654,7 +716,9 @@ const handleTransfer = async () => {
 
     await TaskApi.transferTask(data)
     popOverVisible.value.transfer = false
-    message.success('操作成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k3c5be5f2')
+    )
     // 2. 加载最新数据
     reload()
   } finally {
@@ -681,7 +745,9 @@ const handleDelegate = async () => {
 
     await TaskApi.delegateTask(data)
     popOverVisible.value.delegate = false
-    message.success('操作成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k3c5be5f2')
+    )
     // 2. 加载最新数据
     reload()
   } finally {
@@ -707,7 +773,9 @@ const handlerAddSign = async (type: string) => {
       userIds: genericForm.value.addSignUserIds
     }
     await TaskApi.signCreateTask(data)
-    message.success('操作成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k3c5be5f2')
+    )
     popOverVisible.value.addSign = false
     // 2 加载最新数据
     reload()
@@ -735,7 +803,9 @@ const handleReturn = async () => {
 
     await TaskApi.returnTask(data)
     popOverVisible.value.return = false
-    message.success('操作成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k3c5be5f2')
+    )
     // 2 重新加载数据
     reload()
   } finally {
@@ -759,7 +829,9 @@ const handleCancel = async () => {
       genericForm.value.cancelReason
     )
     popOverVisible.value.return = false
-    message.success('操作成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.k3c5be5f2')
+    )
     // 2 重新加载数据
     reload()
   } finally {
@@ -780,7 +852,7 @@ const handleReCreate = async () => {
 const getDeleteSignUserLabel = (task: any): string => {
   const deptName = task?.assigneeUser?.deptName || task?.ownerUser?.deptName
   const name = task?.assigneeUser?.name || task?.ownerUser?.name
-  return `${name} ( 所属部门：${deptName} )`
+  return t('extra.k4d11f6e2', { p0: name, p1: deptName })
 }
 /** 处理减签 */
 const handlerDeleteSign = async () => {
@@ -798,7 +870,9 @@ const handlerDeleteSign = async () => {
       reason: genericForm.value.reason
     }
     await TaskApi.signDeleteTask(data)
-    message.success('减签成功')
+    message.success(
+      t('auto.views.bpm.processInstance.detail.ProcessInstanceOperationButton.kd192b1af')
+    )
     popOverVisible.value.deleteSign = false
     // 2 加载最新数据
     reload()

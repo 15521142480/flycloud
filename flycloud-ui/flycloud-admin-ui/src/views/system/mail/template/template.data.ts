@@ -2,8 +2,9 @@ import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter } from '@/utils/formatTime'
 import { TableColumn } from '@/types/table'
 import * as MailAccountApi from '@/api/system/mail/account'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 邮箱账号的列表
 const accountList = await MailAccountApi.getSimpleMailAccountList()
 
 // 表单校验
@@ -20,7 +21,7 @@ export const rules = reactive({
 // CrudSchema：https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: '模板编码',
+    label: t('auto.views.system.mail.template.template_data.k5695a649'),
     field: 'code',
     isSearch: true,
     search: {
@@ -32,7 +33,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '模板名称',
+    label: t('auto.views.system.mail.template.template_data.kbbc511d0'),
     field: 'name',
     isSearch: true,
     search: {
@@ -44,11 +45,11 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '模板标题',
+    label: t('auto.views.system.mail.template.template_data.k778d92f7'),
     field: 'title'
   },
   {
-    label: '模板内容',
+    label: t('auto.views.system.mail.template.template_data.kdc362463'),
     field: 'content',
     form: {
       component: 'Editor',
@@ -59,7 +60,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '邮箱账号',
+    label: t('auto.views.system.mail.template.template_data.kfa8cbad2'),
     field: 'accountId',
     width: '200px',
     formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
@@ -91,11 +92,11 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '发送人名称',
+    label: t('auto.views.system.mail.template.template_data.k008bf359'),
     field: 'name'
   },
   {
-    label: '开启状态',
+    label: t('auto.views.system.mail.template.template_data.k6bbda1b1'),
     field: 'status',
     isSearch: true,
     dictType: DICT_TYPE.COMMON_STATUS,
@@ -109,12 +110,12 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '备注',
+    label: t('common.remark'),
     field: 'remark',
     isTable: false
   },
   {
-    label: '创建时间',
+    label: t('common.createTime'),
     field: 'createTime',
     isForm: false,
     formatter: dateFormatter,
@@ -132,7 +133,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: '操作',
+    label: t('common.operation'),
     field: 'action',
     isForm: false
   }

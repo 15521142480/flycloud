@@ -1,6 +1,4 @@
 import { Layout } from '@/utils/routerHelper'
-
-const { t } = useI18n()
 /**
  * redirect: noredirect        当设置 noredirect 的时候该路由在面包屑导航中不可被点击
  * name:'router-name'          设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
@@ -62,7 +60,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/home/Index.vue'),
         name: 'Index',
         meta: {
-          title: t('router.home'),
+          title: 'router.home',
           icon: 'ep:home-filled',
           noCache: false,
           affix: true
@@ -87,7 +85,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           noTagsView: false,
           icon: 'ep:user',
-          title: t('common.profile')
+          title: 'common.profile'
         }
       },
       {
@@ -99,7 +97,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           noTagsView: false,
           icon: 'ep:message',
-          title: '我的站内信'
+          title: 'auto.router.modules.remaining.k77e7ae0c'
         }
       }
     ]
@@ -117,7 +115,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/system/dict/data/index.vue'),
         name: 'SystemDictData',
         meta: {
-          title: '字典数据',
+          title: 'auto.router.modules.remaining.k01fabb56',
           noCache: true,
           hidden: true,
           canTo: true,
@@ -145,7 +143,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: '修改生成配置',
+          title: 'auto.router.modules.remaining.k2825f79c',
           activeMenu: 'infra/codegen/index'
         }
       }
@@ -168,7 +166,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: '调度日志',
+          title: 'auto.router.modules.remaining.ka3756839',
           activeMenu: 'infra/job/index'
         }
       }
@@ -180,7 +178,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     name: 'Login',
     meta: {
       hidden: true,
-      title: t('router.login'),
+      title: 'router.login',
       noTagsView: true
     }
   },
@@ -190,7 +188,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     name: 'SSOLogin',
     meta: {
       hidden: true,
-      title: t('router.login'),
+      title: 'router.login',
       noTagsView: true
     }
   },
@@ -200,7 +198,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     name: 'SocialLogin',
     meta: {
       hidden: true,
-      title: t('router.socialLogin'),
+      title: 'router.socialLogin',
       noTagsView: true
     }
   },
@@ -250,7 +248,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '设计流程表单',
+          title: 'auto.router.modules.remaining.k23577ff1',
           activeMenu: '/bpm/manager/form'
         }
       },
@@ -262,7 +260,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '设计流程',
+          title: 'auto.router.modules.remaining.kae3d7440',
           activeMenu: '/bpm/manager/model'
         }
       },
@@ -274,7 +272,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '仿钉钉设计流程',
+          title: 'auto.router.modules.remaining.k782f5842',
           activeMenu: '/bpm/manager/model'
         }
       },
@@ -286,7 +284,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '流程定义',
+          title: 'auto.router.modules.remaining.kc6983fb9',
           activeMenu: '/bpm/manager/model'
         }
       },
@@ -298,7 +296,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '流程详情',
+          title: 'auto.router.modules.remaining.kd157b8ac',
           activeMenu: '/bpm/task/my'
         },
         props: (route) => ({
@@ -315,7 +313,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '发起 OA 请假',
+          title: 'auto.router.modules.remaining.k11b2c19b',
           activeMenu: '/bpm/oa/leave'
         }
       },
@@ -327,7 +325,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '查看 OA 请假',
+          title: 'auto.router.modules.remaining.k0a4c23b1',
           activeMenu: '/bpm/oa/leave'
         }
       }
@@ -350,7 +348,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: '商品添加',
+          title: 'auto.router.modules.remaining.kc2728137',
           activeMenu: '/mall/product/spu'
         }
       },
@@ -363,7 +361,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: '商品编辑',
+          title: 'auto.router.modules.remaining.k00809ec8',
           activeMenu: '/mall/product/spu'
         }
       },
@@ -376,7 +374,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:view',
-          title: '商品详情',
+          title: 'auto.router.modules.remaining.kad98c017',
           activeMenu: '/mall/product/spu'
         }
       },
@@ -389,7 +387,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:view',
-          title: '商品属性值',
+          title: 'auto.router.modules.remaining.kb2fa49b8',
           activeMenu: '/product/property'
         }
       }
@@ -407,13 +405,21 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'order/detail/:id(\\d+)',
         component: () => import('@/views/mall/trade/order/detail/index.vue'),
         name: 'TradeOrderDetail',
-        meta: { title: '订单详情', icon: 'ep:view', activeMenu: '/mall/trade/order' }
+        meta: {
+          title: 'auto.router.modules.remaining.kdea71f6f',
+          icon: 'ep:view',
+          activeMenu: '/mall/trade/order'
+        }
       },
       {
         path: 'after-sale/detail/:id(\\d+)',
         component: () => import('@/views/mall/trade/afterSale/detail/index.vue'),
         name: 'TradeAfterSaleDetail',
-        meta: { title: '退款详情', icon: 'ep:view', activeMenu: '/mall/trade/after-sale' }
+        meta: {
+          title: 'auto.router.modules.remaining.k372e055c',
+          icon: 'ep:view',
+          activeMenu: '/mall/trade/after-sale'
+        }
       }
     ]
   },
@@ -427,7 +433,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'user/detail/:id',
         name: 'MemberUserDetail',
         meta: {
-          title: '会员详情',
+          title: 'auto.router.modules.remaining.kebc068a6',
           noCache: true,
           hidden: true
         },
@@ -445,7 +451,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'cashier',
         name: 'PayCashier',
         meta: {
-          title: '收银台',
+          title: 'auto.router.modules.remaining.k22c38833',
           noCache: true,
           hidden: true
         },
@@ -463,7 +469,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'template/decorate/:id',
         name: 'DiyTemplateDecorate',
         meta: {
-          title: '模板装修',
+          title: 'auto.router.modules.remaining.k393ed7d4',
           noCache: true,
           hidden: true,
           activeMenu: '/mall/promotion/diy/template'
@@ -474,7 +480,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'page/decorate/:id',
         name: 'DiyPageDecorate',
         meta: {
-          title: '页面装修',
+          title: 'auto.router.modules.remaining.k91f15a38',
           noCache: true,
           hidden: true,
           activeMenu: '/mall/promotion/diy/page'
@@ -493,7 +499,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'clue/detail/:id',
         name: 'CrmClueDetail',
         meta: {
-          title: '线索详情',
+          title: 'auto.router.modules.remaining.kd8e33fc6',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/clue'
@@ -504,7 +510,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'customer/detail/:id',
         name: 'CrmCustomerDetail',
         meta: {
-          title: '客户详情',
+          title: 'auto.router.modules.remaining.kccd01125',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/customer'
@@ -515,7 +521,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'business/detail/:id',
         name: 'CrmBusinessDetail',
         meta: {
-          title: '商机详情',
+          title: 'auto.router.modules.remaining.k620f4ee9',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/business'
@@ -526,7 +532,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'contract/detail/:id',
         name: 'CrmContractDetail',
         meta: {
-          title: '合同详情',
+          title: 'auto.router.modules.remaining.kc9f5bb18',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/contract'
@@ -537,7 +543,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'receivable-plan/detail/:id',
         name: 'CrmReceivablePlanDetail',
         meta: {
-          title: '回款计划详情',
+          title: 'auto.router.modules.remaining.kdfebfb9e',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/receivable-plan'
@@ -548,7 +554,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'receivable/detail/:id',
         name: 'CrmReceivableDetail',
         meta: {
-          title: '回款详情',
+          title: 'auto.router.modules.remaining.k7da02c89',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/receivable'
@@ -559,7 +565,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'contact/detail/:id',
         name: 'CrmContactDetail',
         meta: {
-          title: '联系人详情',
+          title: 'auto.router.modules.remaining.k47bb5a44',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/contact'
@@ -570,7 +576,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'product/detail/:id',
         name: 'CrmProductDetail',
         meta: {
-          title: '产品详情',
+          title: 'auto.router.modules.remaining.kd54d2698',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/product'
@@ -592,7 +598,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/ai/image/square/index.vue'),
         name: 'AiImageSquare',
         meta: {
-          title: '绘图作品',
+          title: 'auto.router.modules.remaining.k85439d81',
           icon: 'ep:home-filled',
           noCache: false
         }
@@ -621,7 +627,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'product/detail/:id',
         name: 'IoTProductDetail',
         meta: {
-          title: '产品详情',
+          title: 'auto.router.modules.remaining.kd54d2698',
           noCache: true,
           hidden: true,
           activeMenu: '/iot/product'
@@ -632,7 +638,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'device/detail/:id',
         name: 'IoTDeviceDetail',
         meta: {
-          title: '设备详情',
+          title: 'auto.router.modules.remaining.k050563c4',
           noCache: true,
           hidden: true,
           activeMenu: '/iot/device'

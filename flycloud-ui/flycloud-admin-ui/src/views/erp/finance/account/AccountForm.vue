@@ -7,16 +7,25 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名称" />
+      <el-form-item :label="t('auto.views.erp.finance.account.AccountForm.k1be7ae4f')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.erp.finance.account.AccountForm.kc2afb255')"
+        />
       </el-form-item>
-      <el-form-item label="编码" prop="no">
-        <el-input v-model="formData.no" placeholder="请输入编码" />
+      <el-form-item :label="t('auto.views.erp.finance.account.AccountForm.kc94faa71')" prop="no">
+        <el-input
+          v-model="formData.no"
+          :placeholder="t('auto.views.erp.finance.account.AccountForm.k76745b52')"
+        />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.erp.finance.account.AccountForm.k57e709d9')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -27,13 +36,20 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="排序" prop="sort">
-        <el-input v-model="formData.sort" placeholder="请输入排序" />
+      <el-form-item :label="t('common.sort')" prop="sort">
+        <el-input
+          v-model="formData.sort"
+          :placeholder="t('auto.views.erp.finance.account.AccountForm.k242d8da1')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.erp.finance.account.AccountForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.finance.account.AccountForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -42,9 +58,8 @@ import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'
 
 /** ERP 结算 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'AccountForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -61,9 +76,27 @@ const formData = ref({
   defaultStatus: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.account.AccountForm.kca898456'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.account.AccountForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.erp.finance.account.AccountForm.k3218602a'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

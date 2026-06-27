@@ -2,7 +2,8 @@ import request from '@/config/axios'
 import { isEmpty } from '@/utils/is'
 import { ApiSelectProps } from '@/components/FormCreate/src/type'
 import { jsonParse } from '@/utils'
-
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 export const useApiSelect = (option: ApiSelectProps) => {
   return defineComponent({
     name: option.name,
@@ -105,9 +106,7 @@ export const useApiSelect = (option: ApiSelectProps) => {
           return
         }
         // 情况三：不是 yudao-vue-pro 标准返回
-        console.warn(
-          `接口[${props.url}] 返回结果不是 yudao-vue-pro 标准返回建议采用自定义解析函数处理`
-        )
+        console.warn(t('extra.k2485dd7c', { p0: props.url }))
       }
 
       function parseOptions0(data: any[]) {
@@ -118,7 +117,7 @@ export const useApiSelect = (option: ApiSelectProps) => {
           }))
           return
         }
-        console.warn(`接口[${props.url}] 返回结果不是一个数组`)
+        console.warn(t('extra.ke9ba3ae0', { p0: props.url }))
       }
 
       function parseFunc() {
@@ -142,9 +141,7 @@ export const useApiSelect = (option: ApiSelectProps) => {
           // expr 是匹配到的 ${} 内的表达式（这里是属性名），从 data 中获取对应的值
           const result = data[expr.trim()] // 去除前后空白，以防用户输入带空格的属性名
           if (!result) {
-            console.warn(
-              `接口选择器选项模版[${template}][${expr.trim()}] 解析值失败结果为[${result}], 请检查属性名称是否存在于接口返回值中,存在则忽略此条！！！`
-            )
+            console.warn(t('extra.kd4924e75', { p0: template, p1: expr.trim(), p2: result }))
           }
           return result
         })
@@ -202,8 +199,14 @@ export const useApiSelect = (option: ApiSelectProps) => {
       const buildCheckbox = () => {
         if (isEmpty(options.value)) {
           options.value = [
-            { label: '选项1', value: '选项1' },
-            { label: '选项2', value: '选项2' }
+            {
+              label: t('auto.components.FormCreate.src.components.useApiSelect.k090a26d2'),
+              value: t('auto.components.FormCreate.src.components.useApiSelect.k090a26d2')
+            },
+            {
+              label: t('auto.components.FormCreate.src.components.useApiSelect.k7c88c855'),
+              value: t('auto.components.FormCreate.src.components.useApiSelect.k7c88c855')
+            }
           ]
         }
         return (
@@ -217,8 +220,14 @@ export const useApiSelect = (option: ApiSelectProps) => {
       const buildRadio = () => {
         if (isEmpty(options.value)) {
           options.value = [
-            { label: '选项1', value: '选项1' },
-            { label: '选项2', value: '选项2' }
+            {
+              label: t('auto.components.FormCreate.src.components.useApiSelect.k090a26d2'),
+              value: t('auto.components.FormCreate.src.components.useApiSelect.k090a26d2')
+            },
+            {
+              label: t('auto.components.FormCreate.src.components.useApiSelect.k7c88c855'),
+              value: t('auto.components.FormCreate.src.components.useApiSelect.k7c88c855')
+            }
           ]
         }
         return (

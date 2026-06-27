@@ -3,7 +3,7 @@
     <el-table :data="business.products" :stripe="true" :show-overflow-tooltip="true">
       <el-table-column
         align="center"
-        label="产品名称"
+        :label="t('auto.views.crm.business.detail.BusinessProductList.kabc0ac79')"
         fixed="left"
         prop="productName"
         min-width="160"
@@ -59,7 +59,7 @@
 import * as BusinessApi from '@/api/crm/business'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 const { business } = defineProps<{
   business: BusinessApi.BusinessVO
 }>()

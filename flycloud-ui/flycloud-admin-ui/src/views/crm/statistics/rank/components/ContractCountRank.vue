@@ -10,10 +10,30 @@
   <!-- 排行列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="公司排名" align="center" type="index" width="80" />
-      <el-table-column label="签订人" align="center" prop="name" min-width="200" />
-      <el-table-column label="部门" align="center" prop="deptName" min-width="200" />
-      <el-table-column label="签约合同数（个）" align="center" prop="count" min-width="200" />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ContractCountRank.k92040fc1')"
+        align="center"
+        type="index"
+        width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ContractCountRank.ka2f30c0a')"
+        align="center"
+        prop="name"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ContractCountRank.k91061a56')"
+        align="center"
+        prop="deptName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ContractCountRank.k9fb3d08f')"
+        align="center"
+        prop="count"
+        min-width="200"
+      />
     </el-table>
   </el-card>
 </template>
@@ -21,7 +41,7 @@
 import { StatisticsRankApi, StatisticsRankRespVO } from '@/api/crm/statistics/rank'
 import { EChartsOption } from 'echarts'
 import { clone } from 'lodash-es'
-
+const { t } = useI18n()
 defineOptions({ name: 'ContractCountRank' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -45,7 +65,7 @@ const echartsOption = reactive<EChartsOption>({
   },
   series: [
     {
-      name: '签约合同排行',
+      name: t('auto.views.crm.statistics.rank.components.ContractCountRank.k962e7650'),
       type: 'bar'
     }
   ],
@@ -57,7 +77,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '签约合同排行' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.rank.components.ContractCountRank.k962e7650')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -68,11 +91,11 @@ const echartsOption = reactive<EChartsOption>({
   },
   xAxis: {
     type: 'value',
-    name: '签约合同数（个）'
+    name: t('auto.views.crm.statistics.rank.components.ContractCountRank.k9fb3d08f')
   },
   yAxis: {
     type: 'category',
-    name: '签订人'
+    name: t('auto.views.crm.statistics.rank.components.ContractCountRank.ka2f30c0a')
   }
 }) as EChartsOption
 

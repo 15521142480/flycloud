@@ -86,7 +86,7 @@
 <script setup lang="ts">
 import { SimpleFlowNode, NodeType, FieldPermissionType, START_USER_BUTTON_SETTING } from '../consts'
 import { useWatchNode, useDrawer, useNodeName, useFormFieldsPermission } from '../node'
-
+const { t } = useI18n()
 defineOptions({
   name: 'StartUserNodeConfig'
 })
@@ -114,7 +114,9 @@ const saveConfig = async () => {
   activeTabName.value = 'user'
   currentNode.value.name = nodeName.value!
   // TODO 暂时写死。后续可以显示谁有权限可以发起
-  currentNode.value.showText = '已设置'
+  currentNode.value.showText = t(
+    'auto.components.SimpleProcessDesignerV2.src.nodes_config.StartUserNodeConfig.kc7424765'
+  )
   // 设置表单权限
   currentNode.value.fieldsPermission = fieldsPermissionConfig.value
   // 设置发起人的按钮权限

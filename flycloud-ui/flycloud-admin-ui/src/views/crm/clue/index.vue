@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,44 +8,48 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="线索名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.clue.index.k733eabce')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入线索名称"
+          :placeholder="t('auto.views.crm.clue.index.kcafc53c2')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="转化状态" prop="transformStatus">
+      <el-form-item :label="t('auto.views.crm.clue.index.kec35bcb8')" prop="transformStatus">
         <el-select v-model="queryParams.transformStatus" class="!w-240px">
-          <el-option :value="false" label="未转化" />
-          <el-option :value="true" label="已转化" />
+          <el-option :value="false" :label="t('auto.views.crm.clue.index.kc55bee51')" />
+          <el-option :value="true" :label="t('auto.views.crm.clue.index.k88592f25')" />
         </el-select>
       </el-form-item>
-      <el-form-item label="手机号" prop="mobile">
+      <el-form-item :label="t('auto.views.crm.clue.index.k5a9cc5e8')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
-          placeholder="请输入手机号"
+          :placeholder="t('auto.views.crm.clue.index.k5ecce333')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="电话" prop="telephone">
+      <el-form-item :label="t('auto.views.crm.clue.index.kf39c6b62')" prop="telephone">
         <el-input
           v-model="queryParams.telephone"
-          placeholder="请输入电话"
+          :placeholder="t('auto.views.crm.clue.index.k902a7fb3')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button type="primary" @click="openForm('create')" v-hasPermi="['crm:clue:create']">
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke5c77d7a') }}
         </el-button>
         <el-button
           type="success"
@@ -55,7 +58,7 @@
           :loading="exportLoading"
           v-hasPermi="['crm:clue:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k13ce82dc') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -64,12 +67,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="我参与的" name="2" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.clue.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.clue.index.k1640a0ff')" name="2" />
+      <el-tab-pane :label="t('auto.views.crm.clue.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="线索名称" align="center" prop="name" fixed="left" width="160">
+      <el-table-column
+        :label="t('auto.views.crm.clue.index.k733eabce')"
+        align="center"
+        prop="name"
+        fixed="left"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -169,11 +178,10 @@ import download from '@/utils/download'
 import * as ClueApi from '@/api/crm/clue'
 import ClueForm from './ClueForm.vue'
 import { TabsPaneContext } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmClue' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -254,7 +262,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ClueApi.exportClue(queryParams)
-    download.excel(data, '线索.xls')
+    download.excel(data, t('auto.views.crm.clue.index.k548e597d'))
   } catch {
   } finally {
     exportLoading.value = false

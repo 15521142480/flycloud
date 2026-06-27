@@ -9,19 +9,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="仓库名称" prop="name">
+      <el-form-item :label="t('auto.views.erp.stock.warehouse.index.k6f55a5a5')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入仓库名称"
+          :placeholder="t('auto.views.erp.stock.warehouse.index.k2c2b2339')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="仓库状态" prop="status">
+      <el-form-item :label="t('auto.views.erp.stock.warehouse.index.kc89e2565')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择仓库状态"
+          :placeholder="t('auto.views.erp.stock.warehouse.index.k9ce39923')"
           clearable
           class="!w-240px"
         >
@@ -34,15 +34,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:warehouse:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k085ab298') }}
         </el-button>
         <el-button
           type="success"
@@ -51,7 +55,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:warehouse:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k08bf21ea') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -60,24 +64,36 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="仓库名称" align="center" prop="name" />
-      <el-table-column label="仓库地址" align="center" prop="address" />
       <el-table-column
-        label="仓储费"
+        :label="t('auto.views.erp.stock.warehouse.index.k6f55a5a5')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.warehouse.index.k6b470c46')"
+        align="center"
+        prop="address"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.warehouse.index.kf8c432d9')"
         align="center"
         prop="warehousePrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="搬运费"
+        :label="t('auto.views.erp.stock.warehouse.index.k2a8526e4')"
         align="center"
         prop="truckagePrice"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="负责人" align="center" prop="principal" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.erp.stock.warehouse.index.k974d383f')"
+        align="center"
+        prop="principal"
+      />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="t('common.sort')" align="center" prop="sort" />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -142,10 +158,10 @@ import WarehouseForm from './WarehouseForm.vue'
 import { erpPriceTableColumnFormatter } from '@/utils'
 
 /** ERP 仓库列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpWarehouse' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<WarehouseVO[]>([]) // 列表的数据
@@ -206,8 +222,16 @@ const handleDelete = async (id: number) => {
 const handleDefaultStatusChange = async (row: WarehouseVO) => {
   try {
     // 修改状态的二次确认
-    const text = row.defaultStatus ? '设置' : '取消'
-    await message.confirm('确认要' + text + '"' + row.name + '"默认吗?')
+    const text = row.defaultStatus
+      ? t('auto.views.erp.stock.warehouse.index.k7debf9cb')
+      : t('common.cancel')
+    await message.confirm(
+      t('auto.views.erp.stock.warehouse.index.k2be38185') +
+        text +
+        '"' +
+        row.name +
+        t('auto.views.erp.stock.warehouse.index.k02c8bacb')
+    )
     // 发起修改状态
     await WarehouseApi.updateWarehouseDefaultStatus(row.id, row.defaultStatus)
     // 刷新列表
@@ -226,7 +250,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await WarehouseApi.exportWarehouse(queryParams)
-    download.excel(data, '仓库.xls')
+    download.excel(data, t('auto.views.erp.stock.warehouse.index.kfffba64a'))
   } catch {
   } finally {
     exportLoading.value = false

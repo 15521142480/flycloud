@@ -1,6 +1,5 @@
 import { useI18n } from '@/hooks/web/useI18n'
 import { FormItemRule } from 'element-plus'
-
 const { t } = useI18n()
 
 interface LengthRange {

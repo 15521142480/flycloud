@@ -9,13 +9,21 @@
     >
       <el-row>
         <el-col :span="12">
-          <el-form-item label="门店 logo" prop="logo">
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k92ac903c')"
+            prop="logo"
+          >
             <UploadImg v-model="formData.logo" :limit="1" :is-show-tip="false" />
-            <div style="font-size: 10px" class="pl-10px">推荐 180x180 图片分辨率</div>
+            <div style="font-size: 10px" class="pl-10px">{{
+              t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k0fe3d1b5')
+            }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="门店状态" prop="status">
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k6016f100')"
+            prop="status"
+          >
             <el-radio-group v-model="formData.status">
               <el-radio
                 v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -30,43 +38,78 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="门店名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入门店名称" />
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k7bfb547b')"
+            prop="name"
+          >
+            <el-input
+              v-model="formData.name"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kc49dba6d')
+              "
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="门店手机" prop="phone">
-            <el-input v-model="formData.phone" placeholder="请输入门店手机" />
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kd25150b2')"
+            prop="phone"
+          >
+            <el-input
+              v-model="formData.phone"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k551750a6')
+              "
+            />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="门店简介" prop="introduction">
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k0d5301e0')"
+        prop="introduction"
+      >
         <el-input
           v-model="formData.introduction"
           :rows="3"
           type="textarea"
-          placeholder="请输入门店简介"
+          :placeholder="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kde3777b7')"
         />
       </el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="门店所在地区" prop="areaId">
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kddddd3ab')"
+            prop="areaId"
+          >
             <el-cascader v-model="formData.areaId" :options="areaList" :props="defaultProps" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="门店详细地址" prop="detailAddress">
-            <el-input v-model="formData.detailAddress" placeholder="请输入门店详细地址" />
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.ke1b4f251')"
+            prop="detailAddress"
+          >
+            <el-input
+              v-model="formData.detailAddress"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k308632ab')
+              "
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="营业开始时间" prop="openingTime">
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kfff7bee9')"
+            prop="openingTime"
+          >
             <el-time-select
               v-model="formData.openingTime"
               :max-time="formData.closingTime"
-              placeholder="开始时间"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.ke8868af6')
+              "
               start="08:30"
               step="00:15"
               end="23:30"
@@ -74,11 +117,16 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="营业结束时间" prop="closingTime">
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k1861b3a3')"
+            prop="closingTime"
+          >
             <el-time-select
               v-model="formData.closingTime"
               :min-time="formData.openingTime"
-              placeholder="结束时间"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.ka0bb9f49')
+              "
               start="08:30"
               step="00:15"
               end="23:30"
@@ -88,23 +136,47 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="经度" prop="longitude">
-            <el-input v-model="formData.longitude" placeholder="请输入门店经度" />
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k7cfa2fed')"
+            prop="longitude"
+          >
+            <el-input
+              v-model="formData.longitude"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kef0b5e71')
+              "
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="纬度" prop="latitude">
-            <el-input v-model="formData.latitude" placeholder="请输入门店纬度" />
+          <el-form-item
+            :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k7e9f7787')"
+            prop="latitude"
+          >
+            <el-input
+              v-model="formData.latitude"
+              :placeholder="
+                t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kd7bd387e')
+              "
+            />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="获取经纬度">
-        <el-button type="primary" @click="mapDialogVisible = true">获取</el-button>
+      <el-form-item
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kebba50ad')"
+      >
+        <el-button type="primary" @click="mapDialogVisible = true">{{
+          t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k5f49c1c3')
+        }}</el-button>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kd54aeadc')
+      }}</el-button>
     </template>
     <el-dialog v-model="mapDialogVisible" title="获取经纬度" append-to-body>
       <IFrame class="h-609px" :src="tencentLbsUrl" />
@@ -118,7 +190,7 @@ import { CommonStatusEnum } from '@/utils/constants'
 import { defaultProps } from '@/utils/tree'
 import { getAreaTree } from '@/api/system/area'
 import * as ConfigApi from '@/api/mall/trade/config'
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -141,19 +213,81 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  name: [{ required: true, message: '门店名称不能为空', trigger: 'blur' }],
-  logo: [{ required: true, message: '门店 logo 不能为空', trigger: 'blur' }],
-  phone: [
-    { required: true, message: '门店手机不能为空', trigger: 'blur' },
-    { pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号码', trigger: 'blur' }
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k59c67cb2'),
+      trigger: 'blur'
+    }
   ],
-  areaId: [{ required: true, message: '门店所在区域不能为空', trigger: 'blur' }],
-  detailAddress: [{ required: true, message: '门店详细地址不能为空', trigger: 'blur' }],
-  openingTime: [{ required: true, message: '营业开始时间不能为空', trigger: 'blur' }],
-  closingTime: [{ required: true, message: '营业结束时间不能为空', trigger: 'blur' }],
-  latitude: [{ required: true, message: '纬度不能为空', trigger: 'blur' }],
-  longitude: [{ required: true, message: '经度不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '开启状态不能为空', trigger: 'blur' }]
+  logo: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kdf909856'),
+      trigger: 'blur'
+    }
+  ],
+  phone: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kd85eee2c'),
+      trigger: 'blur'
+    },
+    {
+      pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k36d2ca22'),
+      trigger: 'blur'
+    }
+  ],
+  areaId: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k0f695798'),
+      trigger: 'blur'
+    }
+  ],
+  detailAddress: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k56bd2d9c'),
+      trigger: 'blur'
+    }
+  ],
+  openingTime: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k93c5f3fc'),
+      trigger: 'blur'
+    }
+  ],
+  closingTime: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k39ed2f8d'),
+      trigger: 'blur'
+    }
+  ],
+  latitude: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.ke1e3f792'),
+      trigger: 'blur'
+    }
+  ],
+  longitude: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k2abf335e'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k03991f81'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const areaList = ref() // 区域树

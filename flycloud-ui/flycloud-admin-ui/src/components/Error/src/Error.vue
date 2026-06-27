@@ -3,7 +3,7 @@ import pageError from '@/assets/svgs/404.svg'
 import networkError from '@/assets/svgs/500.svg'
 import noPermission from '@/assets/svgs/403.svg'
 import { propTypes } from '@/utils/propTypes'
-
+const { t } = useI18n()
 defineOptions({ name: 'Error' })
 
 interface ErrorMap {
@@ -11,9 +11,6 @@ interface ErrorMap {
   message: string
   buttonText: string
 }
-
-const { t } = useI18n()
-
 const errorMap: {
   [key: string]: ErrorMap
 } = {

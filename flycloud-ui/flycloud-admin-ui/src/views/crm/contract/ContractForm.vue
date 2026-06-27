@@ -9,17 +9,27 @@
     >
       <el-row>
         <el-col :span="8">
-          <el-form-item label="合同编号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.crm.contract.ContractForm.k17b34173')" prop="no">
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.crm.contract.ContractForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="合同名称" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入合同名称" />
+          <el-form-item :label="t('auto.views.crm.contract.ContractForm.kb8fbf277')" prop="name">
+            <el-input
+              v-model="formData.name"
+              :placeholder="t('auto.views.crm.contract.ContractForm.kd336a47f')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="负责人" prop="ownerUserId">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.k974d383f')"
+            prop="ownerUserId"
+          >
             <el-select
               v-model="formData.ownerUserId"
               :disabled="formType !== 'create'"
@@ -37,10 +47,13 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="客户名称" prop="customerId">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.ke941d410')"
+            prop="customerId"
+          >
             <el-select
               v-model="formData.customerId"
-              placeholder="请选择客户"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k6bdb05d6')"
               class="w-1/1"
               @change="handleCustomerChange"
             >
@@ -54,7 +67,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="商机名称" prop="businessId">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.k84b59248')"
+            prop="businessId"
+          >
             <el-select
               @change="handleBusinessChange"
               :disabled="!formData.customerId"
@@ -73,10 +89,13 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="下单日期" prop="orderDate">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.kd5ba9518')"
+            prop="orderDate"
+          >
             <el-date-picker
               v-model="formData.orderDate"
-              placeholder="选择下单日期"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k8e851352')"
               type="date"
               value-format="x"
               class="!w-1/1"
@@ -84,10 +103,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="开始时间" prop="startTime">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.ke8868af6')"
+            prop="startTime"
+          >
             <el-date-picker
               v-model="formData.startTime"
-              placeholder="选择开始时间"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k668822a2')"
               type="date"
               value-format="x"
               class="!w-1/1"
@@ -95,10 +117,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="结束时间" prop="endTime">
+          <el-form-item :label="t('auto.views.crm.contract.ContractForm.ka0bb9f49')" prop="endTime">
             <el-date-picker
               v-model="formData.endTime"
-              placeholder="选择结束时间"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k6438a97e')"
               type="date"
               value-format="x"
               class="!w-1/1"
@@ -108,7 +130,10 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="公司签约人" prop="signUserId">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.kcc2b34c1')"
+            prop="signUserId"
+          >
             <el-select v-model="formData.signUserId" class="w-1/1">
               <el-option
                 v-for="item in userOptions"
@@ -120,7 +145,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="客户签约人" prop="signContactId">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.kbebe405e')"
+            prop="signContactId"
+          >
             <el-select
               v-model="formData.signContactId"
               :disabled="!formData.customerId"
@@ -136,15 +164,19 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="formData.remark" placeholder="请输入备注" type="textarea" />
+          <el-form-item :label="t('common.remark')" prop="remark">
+            <el-input
+              v-model="formData.remark"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k57e709d9')"
+              type="textarea"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <!-- 子表的表单 -->
       <ContentWrap>
         <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-          <el-tab-pane label="产品清单" name="product">
+          <el-tab-pane :label="t('auto.views.crm.contract.ContractForm.k24e46854')" name="product">
             <ContractProductForm
               ref="productFormRef"
               :products="formData.products"
@@ -155,7 +187,10 @@
       </ContentWrap>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="产品总金额" prop="totalProductPrice">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.k59f8bec2')"
+            prop="totalProductPrice"
+          >
             <el-input
               disabled
               v-model="formData.totalProductPrice"
@@ -164,10 +199,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="整单折扣（%）" prop="discountPercent">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.kf5c8d166')"
+            prop="discountPercent"
+          >
             <el-input-number
               v-model="formData.discountPercent"
-              placeholder="请输入整单折扣"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k91dc03bd')"
               controls-position="right"
               :min="0"
               :precision="2"
@@ -176,11 +214,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="折扣后金额" prop="totalPrice">
+          <el-form-item
+            :label="t('auto.views.crm.contract.ContractForm.kead5100b')"
+            prop="totalPrice"
+          >
             <el-input
               disabled
               v-model="formData.totalPrice"
-              placeholder="请输入商机金额"
+              :placeholder="t('auto.views.crm.contract.ContractForm.k044d4ce2')"
               :formatter="erpPriceTableColumnFormattere"
             />
           </el-form-item>
@@ -188,8 +229,12 @@
       </el-row>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">保存</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('common.save')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.contract.ContractForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -202,8 +247,7 @@ import * as BusinessApi from '@/api/crm/business'
 import { erpPriceMultiply, erpPriceTableColumnFormatter } from '@/utils'
 import { useUserStore } from '@/store/modules/user'
 import ContractProductForm from '@/views/crm/contract/components/ContractProductForm.vue'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -228,10 +272,34 @@ const formData = ref({
   products: []
 })
 const formRules = reactive({
-  name: [{ required: true, message: '合同名称不能为空', trigger: 'blur' }],
-  customerId: [{ required: true, message: '客户不能为空', trigger: 'blur' }],
-  orderDate: [{ required: true, message: '下单日期不能为空', trigger: 'blur' }],
-  ownerUserId: [{ required: true, message: '负责人不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.crm.contract.ContractForm.k61cbcf56'),
+      trigger: 'blur'
+    }
+  ],
+  customerId: [
+    {
+      required: true,
+      message: t('auto.views.crm.contract.ContractForm.k920199e1'),
+      trigger: 'blur'
+    }
+  ],
+  orderDate: [
+    {
+      required: true,
+      message: t('auto.views.crm.contract.ContractForm.kd0624e36'),
+      trigger: 'blur'
+    }
+  ],
+  ownerUserId: [
+    {
+      required: true,
+      message: t('auto.views.crm.contract.ContractForm.kc40a3652'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表

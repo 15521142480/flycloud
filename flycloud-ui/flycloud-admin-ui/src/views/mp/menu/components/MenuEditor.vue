@@ -4,32 +4,37 @@
       <div class="delete_btn">
         <el-button type="danger" @click="emit('delete')">
           <Icon icon="ep:delete" />
-          删除当前菜单
+          {{ t('extra.kf3e83159') }}
         </el-button>
       </div>
       <div>
-        <span>菜单名称：</span>
+        <span>{{ t('auto.views.mp.menu.components.MenuEditor.k10e37c60') }}</span>
         <el-input
           class="input_width"
           v-model="menu.name"
-          placeholder="请输入菜单名称"
+          :placeholder="t('auto.views.mp.menu.components.MenuEditor.k2bde7388')"
           :maxlength="isParent ? 4 : 7"
           clearable
         />
       </div>
       <div v-if="isLeave">
         <div class="menu_content">
-          <span>菜单标识：</span>
+          <span>{{ t('auto.views.mp.menu.components.MenuEditor.k328a5834') }}</span>
           <el-input
             class="input_width"
             v-model="menu.menuKey"
-            placeholder="请输入菜单 KEY"
+            :placeholder="t('auto.views.mp.menu.components.MenuEditor.k9c24f922')"
             clearable
           />
         </div>
         <div class="menu_content">
-          <span>菜单内容：</span>
-          <el-select v-model="menu.type" clearable placeholder="请选择" class="menu_option">
+          <span>{{ t('auto.views.mp.menu.components.MenuEditor.ka20938e5') }}</span>
+          <el-select
+            v-model="menu.type"
+            clearable
+            :placeholder="t('auto.views.mp.menu.components.MenuEditor.k382f4b55')"
+            class="menu_option"
+          >
             <el-option
               v-for="item in menuOptions"
               :label="item.label"
@@ -39,38 +44,43 @@
           </el-select>
         </div>
         <div class="configur_content" v-if="menu.type === 'view'">
-          <span>跳转链接：</span>
-          <el-input class="input_width" v-model="menu.url" placeholder="请输入链接" clearable />
+          <span>{{ t('auto.views.mp.menu.components.MenuEditor.ke3e9fab6') }}</span>
+          <el-input
+            class="input_width"
+            v-model="menu.url"
+            :placeholder="t('auto.views.mp.menu.components.MenuEditor.kc553197d')"
+            clearable
+          />
         </div>
         <div class="configur_content" v-if="menu.type === 'miniprogram'">
           <div class="applet">
-            <span>小程序的 appid ：</span>
+            <span>{{ t('auto.views.mp.menu.components.MenuEditor.k6158af3c') }}</span>
             <el-input
               class="input_width"
               v-model="menu.miniProgramAppId"
-              placeholder="请输入小程序的appid"
+              :placeholder="t('auto.views.mp.menu.components.MenuEditor.k3ca6d57e')"
               clearable
             />
           </div>
           <div class="applet">
-            <span>小程序的页面路径：</span>
+            <span>{{ t('auto.views.mp.menu.components.MenuEditor.kab004b7f') }}</span>
             <el-input
               class="input_width"
               v-model="menu.miniProgramPagePath"
-              placeholder="请输入小程序的页面路径，如：pages/index"
+              :placeholder="t('auto.views.mp.menu.components.MenuEditor.k2e1448ae')"
               clearable
             />
           </div>
           <div class="applet">
-            <span>小程序的备用网页：</span>
+            <span>{{ t('auto.views.mp.menu.components.MenuEditor.kf3346f6c') }}</span>
             <el-input
               class="input_width"
               v-model="menu.url"
-              placeholder="不支持小程序的老版本客户端将打开本网页"
+              :placeholder="t('auto.views.mp.menu.components.MenuEditor.k0c0270f4')"
               clearable
             />
           </div>
-          <p class="blue">tips:需要和公众号进行关联才可以把小程序绑定带微信菜单上哟！</p>
+          <p class="blue">{{ t('auto.views.mp.menu.components.MenuEditor.kcb1d592a') }}</p>
         </div>
         <div class="configur_content" v-if="menu.type === 'article_view_limited'">
           <el-row>
@@ -86,13 +96,18 @@
               <el-row justify="center">
                 <el-col :span="24" style="text-align: center">
                   <el-button type="success" @click="showNewsDialog = true">
-                    素材库选择
+                    {{ t('extra.kfd1d1685') }}
                     <Icon icon="ep:circle-check" />
                   </el-button>
                 </el-col>
               </el-row>
             </div>
-            <el-dialog title="选择图文" v-model="showNewsDialog" width="80%" destroy-on-close>
+            <el-dialog
+              :title="t('auto.views.mp.menu.components.MenuEditor.k85ef3b3f')"
+              v-model="showNewsDialog"
+              width="80%"
+              destroy-on-close
+            >
               <WxMaterialSelect
                 type="news"
                 :account-id="props.accountId"
@@ -117,7 +132,7 @@ import WxReplySelect from '@/views/mp/components/wx-reply'
 import WxNews from '@/views/mp/components/wx-news'
 import WxMaterialSelect from '@/views/mp/components/wx-material-select'
 import menuOptions from './menuOptions'
-
+const { t } = useI18n()
 const message = useMessage()
 
 const props = defineProps<{
@@ -156,7 +171,7 @@ const selectMaterial = (item: any) => {
   const articles = item.content.newsItem
   // 提示，针对多图文
   if (articles.length > 1) {
-    message.alertWarning('您选择的是多图文，将默认跳转第一篇')
+    message.alertWarning(t('auto.views.mp.menu.components.MenuEditor.k67245d11'))
   }
   showNewsDialog.value = false
 

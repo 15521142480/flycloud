@@ -2,7 +2,7 @@
   <el-card shadow="never">
     <template #header>
       <div class="flex flex-row items-center justify-between">
-        <CardTitle title="交易量趋势" />
+        <CardTitle :title="t('auto.views.mall.home.components.TradeTrendCard.k566a298b')" />
         <!-- 查询条件 -->
         <div class="flex flex-row items-center gap-2">
           <el-radio-group v-model="timeRangeType" @change="handleTimeRangeTypeChange">
@@ -26,6 +26,7 @@ import { formatDate } from '@/utils/formatTime'
 import { CardTitle } from '@/components/Card'
 
 /** 交易量趋势 */
+const { t } = useI18n()
 defineOptions({ name: 'TradeTrendCard' })
 
 enum TimeRangeTypeEnum {
@@ -39,37 +40,107 @@ const loading = ref(true) // 加载中
 // 时间范围 Map
 const timeRange = new Map()
   .set(TimeRangeTypeEnum.DAY30, {
-    name: '30天',
+    name: t('auto.views.mall.home.components.TradeTrendCard.kff788b37'),
     series: [
-      { name: '订单金额', type: 'bar', smooth: true, data: [] },
-      { name: '订单数量', type: 'line', smooth: true, data: [] }
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.kd98167d3'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k85cf1931'),
+        type: 'line',
+        smooth: true,
+        data: []
+      }
     ]
   })
   .set(TimeRangeTypeEnum.WEEK, {
-    name: '周',
+    name: t('auto.views.mall.home.components.TradeTrendCard.k451b8670'),
     series: [
-      { name: '上周金额', type: 'bar', smooth: true, data: [] },
-      { name: '本周金额', type: 'bar', smooth: true, data: [] },
-      { name: '上周数量', type: 'line', smooth: true, data: [] },
-      { name: '本周数量', type: 'line', smooth: true, data: [] }
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k1287e47c'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k09d12c67'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.kfe855cd4'),
+        type: 'line',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k4e4fd964'),
+        type: 'line',
+        smooth: true,
+        data: []
+      }
     ]
   })
   .set(TimeRangeTypeEnum.MONTH, {
-    name: '月',
+    name: t('auto.views.mall.home.components.TradeTrendCard.kd9b59879'),
     series: [
-      { name: '上月金额', type: 'bar', smooth: true, data: [] },
-      { name: '本月金额', type: 'bar', smooth: true, data: [] },
-      { name: '上月数量', type: 'line', smooth: true, data: [] },
-      { name: '本月数量', type: 'line', smooth: true, data: [] }
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k5e1c1355'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k982c90db'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.kf7e620ab'),
+        type: 'line',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k62d96fb3'),
+        type: 'line',
+        smooth: true,
+        data: []
+      }
     ]
   })
   .set(TimeRangeTypeEnum.YEAR, {
-    name: '年',
+    name: t('auto.views.mall.home.components.TradeTrendCard.k6f14c264'),
     series: [
-      { name: '去年金额', type: 'bar', smooth: true, data: [] },
-      { name: '今年金额', type: 'bar', smooth: true, data: [] },
-      { name: '去年数量', type: 'line', smooth: true, data: [] },
-      { name: '今年数量', type: 'line', smooth: true, data: [] }
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k602cb197'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k6af8e5fa'),
+        type: 'bar',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k43e2a7d1'),
+        type: 'line',
+        smooth: true,
+        data: []
+      },
+      {
+        name: t('auto.views.mall.home.components.TradeTrendCard.k62ea2093'),
+        type: 'line',
+        smooth: true,
+        data: []
+      }
     ]
   })
 /** 图表配置 */
@@ -95,7 +166,10 @@ const eChartOptions = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '订单量趋势' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.mall.home.components.TradeTrendCard.kabd4fc6c')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -120,12 +194,15 @@ const eChartOptions = reactive<EChartsOption>({
             return formatDate(date, 'MM-DD')
           case TimeRangeTypeEnum.WEEK:
             let weekDay = formatDate(date, 'ddd')
-            if (weekDay == '0') weekDay = '日'
-            return '周' + weekDay
+            if (weekDay == '0')
+              weekDay = t('auto.views.mall.home.components.TradeTrendCard.k15917f3b')
+            return t('auto.views.mall.home.components.TradeTrendCard.k451b8670') + weekDay
           case TimeRangeTypeEnum.MONTH:
             return formatDate(date, 'D')
           case TimeRangeTypeEnum.YEAR:
-            return formatDate(date, 'M') + '月'
+            return (
+              formatDate(date, 'M') + t('auto.views.mall.home.components.TradeTrendCard.kd9b59879')
+            )
           default:
             return date
         }

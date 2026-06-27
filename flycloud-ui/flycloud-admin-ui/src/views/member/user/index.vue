@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="会员用户、标签、分组" url="https://doc.iocoder.cn/member/user/" />
+  <doc-alert
+    :title="t('auto.views.member.user.index.kedefead1')"
+    url="https://doc.iocoder.cn/member/user/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,65 +13,67 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="用户昵称" prop="name">
+      <el-form-item :label="t('auto.views.member.user.index.k90542e0a')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入用户昵称"
+          :placeholder="t('auto.views.member.user.index.k359da8d3')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机号" prop="mobile">
+      <el-form-item :label="t('auto.views.member.user.index.k5a9cc5e8')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
           class="!w-240px"
           clearable
-          placeholder="请输入手机号"
+          :placeholder="t('auto.views.member.user.index.k5ecce333')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="注册时间" prop="createTime">
+      <el-form-item :label="t('auto.views.member.user.index.k525ad5e2')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.member.user.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.member.user.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="登录时间" prop="loginDate">
+      <el-form-item :label="t('auto.views.member.user.index.k570df2c0')" prop="loginDate">
         <el-date-picker
           v-model="queryParams.loginDate"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.member.user.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.member.user.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="用户标签" prop="tagIds">
+      <el-form-item :label="t('auto.views.member.user.index.k53ea20a0')" prop="tagIds">
         <MemberTagSelect v-model="queryParams.tagIds" />
       </el-form-item>
-      <el-form-item label="用户等级" prop="levelId">
+      <el-form-item :label="t('auto.views.member.user.index.kfa7e14df')" prop="levelId">
         <MemberLevelSelect v-model="queryParams.levelId" />
       </el-form-item>
-      <el-form-item label="用户分组" prop="groupId">
+      <el-form-item :label="t('auto.views.member.user.index.k137bc66f')" prop="groupId">
         <MemberGroupSelect v-model="queryParams.groupId" />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k9c81c98f') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k045a2d5d') }}
         </el-button>
-        <el-button v-hasPermi="['promotion:coupon:send']" @click="openCoupon">发送优惠券</el-button>
+        <el-button v-hasPermi="['promotion:coupon:send']" @click="openCoupon">{{
+          t('auto.views.member.user.index.k54e73df1')
+        }}</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -83,8 +88,18 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" />
-      <el-table-column align="center" label="用户编号" prop="id" width="120px" />
-      <el-table-column align="center" label="头像" prop="avatar" width="80px">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.member.user.index.kec750ef6')"
+        prop="id"
+        width="120px"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.member.user.index.k4ceeeb31')"
+        prop="avatar"
+        width="80px"
+      >
         <template #default="scope">
           <img :src="scope.row.avatar" style="width: 40px" />
         </template>
@@ -214,7 +229,7 @@ import UserPointUpdateForm from './components/UserPointUpdateForm.vue'
 import UserBalanceUpdateForm from './components/UserBalanceUpdateForm.vue'
 import { CouponSendForm } from '@/views/mall/promotion/coupon/components'
 import { checkPermi } from '@/utils/permission'
-
+const { t } = useI18n()
 defineOptions({ name: 'MemberUser' })
 
 const message = useMessage() // 消息弹窗
@@ -284,7 +299,7 @@ const handleSelectionChange = (rows: UserApi.UserVO[]) => {
 const couponSendFormRef = ref()
 const openCoupon = () => {
   if (selectedIds.value.length === 0) {
-    message.warning('请选择要发送优惠券的用户')
+    message.warning(t('auto.views.member.user.index.kec6d59b2'))
     return
   }
   couponSendFormRef.value.open(selectedIds.value)

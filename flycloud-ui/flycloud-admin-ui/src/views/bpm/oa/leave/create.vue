@@ -6,8 +6,12 @@
     :rules="formRules"
     label-width="80px"
   >
-    <el-form-item label="请假类型" prop="type">
-      <el-select v-model="formData.type" clearable placeholder="请选择请假类型">
+    <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1509ea5a')" prop="type">
+      <el-select
+        v-model="formData.type"
+        clearable
+        :placeholder="t('auto.views.bpm.oa.leave.create.k770d5b5d')"
+      >
         <el-option
           v-for="dict in getIntDictOptions(DICT_TYPE.BPM_OA_LEAVE_TYPE)"
           :key="dict.value"
@@ -16,30 +20,34 @@
         />
       </el-select>
     </el-form-item>
-    <el-form-item label="开始时间" prop="startTime">
+    <el-form-item :label="t('auto.views.bpm.oa.leave.create.ke8868af6')" prop="startTime">
       <el-date-picker
         v-model="formData.startTime"
         clearable
-        placeholder="请选择开始时间"
+        :placeholder="t('auto.views.bpm.oa.leave.create.k96870563')"
         type="datetime"
         value-format="x"
       />
     </el-form-item>
-    <el-form-item label="结束时间" prop="endTime">
+    <el-form-item :label="t('auto.views.bpm.oa.leave.create.ka0bb9f49')" prop="endTime">
       <el-date-picker
         v-model="formData.endTime"
         clearable
-        placeholder="请选择结束时间"
+        :placeholder="t('auto.views.bpm.oa.leave.create.k53579ed9')"
         type="datetime"
         value-format="x"
       />
     </el-form-item>
-    <el-form-item label="原因" prop="reason">
-      <el-input v-model="formData.reason" placeholder="请输请假原因" type="textarea" />
+    <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1ff9c3d0')" prop="reason">
+      <el-input
+        v-model="formData.reason"
+        :placeholder="t('auto.views.bpm.oa.leave.create.kc04d049a')"
+        type="textarea"
+      />
     </el-form-item>
     <el-col v-if="startUserSelectTasks && startUserSelectTasks.length > 0">
       <el-card class="mb-10px">
-        <template #header>指定审批人</template>
+        <template #header>{{ t('auto.views.bpm.oa.leave.create.k9f4b1131') }}</template>
         <el-form
           :model="startUserSelectAssignees"
           :rules="startUserSelectAssigneesFormRules"
@@ -78,7 +86,7 @@ import * as LeaveApi from '@/api/bpm/leave'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as DefinitionApi from '@/api/bpm/definition'
 import * as UserApi from '@/api/system/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmOALeaveCreate' })
 
 const message = useMessage() // 消息弹窗
@@ -93,10 +101,18 @@ const formData = ref({
   endTime: undefined
 })
 const formRules = reactive({
-  type: [{ required: true, message: '请假类型不能为空', trigger: 'blur' }],
-  reason: [{ required: true, message: '请假原因不能为空', trigger: 'change' }],
-  startTime: [{ required: true, message: '请假开始时间不能为空', trigger: 'change' }],
-  endTime: [{ required: true, message: '请假结束时间不能为空', trigger: 'change' }]
+  type: [
+    { required: true, message: t('auto.views.bpm.oa.leave.create.kc93c600b'), trigger: 'blur' }
+  ],
+  reason: [
+    { required: true, message: t('auto.views.bpm.oa.leave.create.kdb707f56'), trigger: 'change' }
+  ],
+  startTime: [
+    { required: true, message: t('auto.views.bpm.oa.leave.create.kf689cb99'), trigger: 'change' }
+  ],
+  endTime: [
+    { required: true, message: t('auto.views.bpm.oa.leave.create.kad8ac951'), trigger: 'change' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -128,7 +144,7 @@ const submitForm = async () => {
       data.startUserSelectAssignees = startUserSelectAssignees.value
     }
     await LeaveApi.createLeave(data)
-    message.success('发起成功')
+    message.success(t('auto.views.bpm.oa.leave.create.ka3b6e3e0'))
     // 关闭当前 Tab
     delView(unref(currentRoute))
     await push({ name: 'BpmOALeave' })
@@ -144,7 +160,7 @@ onMounted(async () => {
     processDefineKey
   )
   if (!processDefinitionDetail) {
-    message.error('OA 请假的流程模型未配置，请检查！')
+    message.error(t('auto.views.bpm.oa.leave.create.k77a77e1d'))
     return
   }
   startUserSelectTasks.value = processDefinitionDetail.startUserSelectTasks

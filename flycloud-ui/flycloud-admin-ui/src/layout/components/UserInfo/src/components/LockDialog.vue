@@ -4,14 +4,11 @@ import { useDesign } from '@/hooks/web/useDesign'
 import { useLockStore } from '@/store/modules/lock'
 import avatarImg from '@/assets/imgs/avatar.gif'
 import { useUserStore } from '@/store/modules/user'
-
+const { t } = useI18n()
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('lock-dialog')
 
 const { required } = useValidator()
-
-const { t } = useI18n()
-
 const lockStore = useLockStore()
 
 const props = defineProps({
@@ -77,7 +74,7 @@ const handleLock = async () => {
         <el-input
           type="password"
           v-model="formData.password"
-          :placeholder="'请输入' + t('lock.lockPassword')"
+          :placeholder="t('extra.k801f1c02') + t('lock.lockPassword')"
           clearable
           show-password
         />

@@ -69,7 +69,7 @@ import { ChatConversationVO } from '@/api/ai/chat/conversation'
 import { useUserStore } from '@/store/modules/user'
 import userAvatarDefaultImg from '@/assets/imgs/avatar.gif'
 import roleAvatarDefaultImg from '@/assets/ai/gpt.svg'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const { copy } = useClipboard() // 初始化 copy 到粘贴板
 const userStore = useUserStore()
@@ -142,14 +142,14 @@ defineExpose({ scrollToBottom, handlerGoTop }) // 提供方法给 parent 调用
 /** 复制 */
 const copyContent = async (content) => {
   await copy(content)
-  message.success('复制成功！')
+  message.success(t('auto.views.ai.chat.index.components.message.k81149554'))
 }
 
 /** 删除 */
 const onDelete = async (id) => {
   // 删除 message
   await ChatMessageApi.deleteChatMessage(id)
-  message.success('删除成功！')
+  message.success(t('auto.views.ai.chat.index.components.message.k775ed9d8'))
   // 回调
   emits('onDeleteSuccess')
 }

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,25 +8,29 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.product.category.index.k1be7ae4f')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          :placeholder="t('auto.views.crm.product.category.index.kc2afb255')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['crm:product-category:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k59f59aaa') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -36,16 +39,24 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" row-key="id" default-expand-all>
-      <el-table-column label="分类编号" align="center" prop="id" />
-      <el-table-column label="分类名称" align="center" prop="name" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.crm.product.category.index.k4a88b7aa')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.product.category.index.k3fc30355')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -53,7 +64,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['crm:product-category:update']"
           >
-            编辑
+            {{ t('extra.k0fbe61e1') }}
           </el-button>
           <el-button
             link
@@ -61,7 +72,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['crm:product-category:delete']"
           >
-            删除
+            {{ t('extra.kf08a17ce') }}
           </el-button>
         </template>
       </el-table-column>
@@ -77,11 +88,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as ProductCategoryApi from '@/api/crm/product/category'
 import ProductCategoryForm from './ProductCategoryForm.vue'
 import { handleTree } from '@/utils/tree'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmProductCategory' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<any[]>([]) // 列表的数据

@@ -1,10 +1,18 @@
 <!-- 目录是不是叫 member 好点。然后这个组件是 MemberInfo，里面有浏览足迹 -->
 <template>
   <div v-show="!isEmpty(conversation)" class="kefu">
-    <div class="header-title h-60px flex justify-center items-center">他的足迹</div>
+    <div class="header-title h-60px flex justify-center items-center">{{
+      t('auto.views.mall.promotion.kefu.components.history.k2931130e')
+    }}</div>
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-      <el-tab-pane label="最近浏览" name="a" />
-      <el-tab-pane label="订单列表" name="b" />
+      <el-tab-pane
+        :label="t('auto.views.mall.promotion.kefu.components.history.k0f3e2222')"
+        name="a"
+      />
+      <el-tab-pane
+        :label="t('auto.views.mall.promotion.kefu.components.history.kcbbcc98b')"
+        name="b"
+      />
     </el-tabs>
     <div>
       <el-scrollbar ref="scrollbarRef" always height="calc(115vh - 400px)" @scroll="handleScroll">
@@ -15,7 +23,7 @@
       </el-scrollbar>
     </div>
   </div>
-  <el-empty v-show="isEmpty(conversation)" description="请选择左侧的一个会话后开始" />
+  <el-empty v-show="isEmpty(conversation)" :description="t('extra.k8bcfee7f')" />
 </template>
 
 <script lang="ts" setup>
@@ -26,7 +34,7 @@ import { KeFuConversationRespVO } from '@/api/mall/promotion/kefu/conversation'
 import { isEmpty } from '@/utils/is'
 import { debounce } from 'lodash-es'
 import { ElScrollbar as ElScrollbarType } from 'element-plus/es/components/scrollbar/index'
-
+const { t } = useI18n()
 defineOptions({ name: 'MemberBrowsingHistory' })
 
 const activeName = ref('a')

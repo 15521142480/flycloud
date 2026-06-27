@@ -9,12 +9,12 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="产品" prop="productId">
+      <el-form-item :label="t('auto.views.erp.stock.record.index.k6cc98552')" prop="productId">
         <el-select
           v-model="queryParams.productId"
           clearable
           filterable
-          placeholder="请选择产品"
+          :placeholder="t('auto.views.erp.stock.record.index.k59a0d3d1')"
           class="!w-240px"
         >
           <el-option
@@ -25,12 +25,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="仓库" prop="warehouseId">
+      <el-form-item :label="t('auto.views.erp.stock.record.index.k55914e1c')" prop="warehouseId">
         <el-select
           v-model="queryParams.warehouseId"
           clearable
           filterable
-          placeholder="请选择仓库"
+          :placeholder="t('auto.views.erp.stock.record.index.k7aaa3bbb')"
           class="!w-240px"
         >
           <el-option
@@ -41,10 +41,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="类型" prop="bizType">
+      <el-form-item :label="t('auto.views.erp.stock.record.index.ke4e46c72')" prop="bizType">
         <el-select
           v-model="queryParams.bizType"
-          placeholder="请选择类型"
+          :placeholder="t('auto.views.erp.stock.record.index.k97f47b78')"
           clearable
           class="!w-240px"
         >
@@ -56,36 +56,40 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="业务单号" prop="bizNo">
+      <el-form-item :label="t('auto.views.erp.stock.record.index.kc2d90628')" prop="bizNo">
         <el-input
           v-model="queryParams.bizNo"
-          placeholder="请输入业务单号"
+          :placeholder="t('auto.views.erp.stock.record.index.k49a88e57')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.erp.stock.record.index.k1f291968')"
+          :end-placeholder="t('auto.views.erp.stock.record.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:stock-record:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k21f98e16') }}
         </el-button>
         <el-button
           type="success"
@@ -94,7 +98,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:stock-record:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k5c1cf775') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -103,11 +107,32 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="产品分类" align="center" prop="categoryName" />
-      <el-table-column label="产品单位" align="center" prop="unitName" />
-      <el-table-column label="仓库编号" align="center" prop="warehouseName" />
-      <el-table-column label="类型" align="center" prop="bizType" min-width="100">
+      <el-table-column
+        :label="t('auto.views.erp.stock.record.index.kabc0ac79')"
+        align="center"
+        prop="productName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.record.index.k5bda0e7d')"
+        align="center"
+        prop="categoryName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.record.index.k298ff4b9')"
+        align="center"
+        prop="unitName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.record.index.ka20d7bf8')"
+        align="center"
+        prop="warehouseName"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.stock.record.index.ke4e46c72')"
+        align="center"
+        prop="bizType"
+        min-width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.ERP_STOCK_RECORD_BIZ_TYPE" :value="scope.row.bizType" />
         </template>
@@ -154,10 +179,10 @@ import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
 import { erpCountTableColumnFormatter } from '@/utils'
 
 /** ERP 产品库存明细列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpStockRecord' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<StockRecordVO[]>([]) // 列表的数据
@@ -227,7 +252,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await StockRecordApi.exportStockRecord(queryParams)
-    download.excel(data, '产品库存明细.xls')
+    download.excel(data, t('auto.views.erp.stock.record.index.k343957a7'))
   } catch {
   } finally {
     exportLoading.value = false

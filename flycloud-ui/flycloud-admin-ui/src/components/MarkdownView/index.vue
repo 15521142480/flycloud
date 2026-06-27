@@ -7,8 +7,7 @@ import { useClipboard } from '@vueuse/core'
 import MarkdownIt from 'markdown-it'
 import 'highlight.js/styles/vs2015.min.css'
 import hljs from 'highlight.js'
-
-// 定义组件属性
+const { t } = useI18n()
 const props = defineProps({
   content: {
     type: String,
@@ -24,7 +23,7 @@ const md = new MarkdownIt({
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
-        const copyHtml = `<div id="copy" data-copy='${str}' style="position: absolute; right: 10px; top: 5px; color: #fff;cursor: pointer;">复制</div>`
+        const copyHtml = t('extra.k91883214', { p0: str })
         return `<pre style="position: relative;">${copyHtml}<code class="hljs">${hljs.highlight(lang, str, true).value}</code></pre>`
       } catch (__) {}
     }
@@ -43,7 +42,7 @@ onMounted(async () => {
   contentRef.value.addEventListener('click', (e: any) => {
     if (e.target.id === 'copy') {
       copy(e.target?.dataset?.copy)
-      message.success('复制成功!')
+      message.success(t('auto.components.MarkdownView.index.k14f6df79'))
     }
   })
 })

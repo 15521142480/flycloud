@@ -7,32 +7,65 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="功能类型" prop="type">
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.ke18bdddb')"
+        prop="type"
+      >
         <el-radio-group v-model="formData.type">
-          <el-radio-button value="1"> 属性 </el-radio-button>
-          <el-radio-button value="2"> 服务 </el-radio-button>
-          <el-radio-button value="3"> 事件 </el-radio-button>
+          <el-radio-button value="1">
+            {{ t('auto.views.iot.product.detail.ThinkModelFunctionForm.k7d3c35c2') }}
+          </el-radio-button>
+          <el-radio-button value="2">
+            {{ t('auto.views.iot.product.detail.ThinkModelFunctionForm.k4b81846f') }}
+          </el-radio-button>
+          <el-radio-button value="3">
+            {{ t('auto.views.iot.product.detail.ThinkModelFunctionForm.k550e3280') }}
+          </el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="功能名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入功能名称" />
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k785d1756')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k9cf7d887')"
+        />
       </el-form-item>
-      <el-form-item label="标识符" prop="identifier">
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k85803da5')"
+        prop="identifier"
+      >
         <el-input
           v-model="formData.identifier"
-          placeholder="请输入标识符"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kbbe78bf6')"
           :disabled="formType === 'update'"
         />
       </el-form-item>
-      <el-form-item label="数据类型" prop="type">
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kb031dc9a')"
+        prop="type"
+      >
         <el-select
           v-model="formData.property.dataType.type"
-          placeholder="请选择数据类型"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.ke7555c5f')"
           :disabled="formType === 'update'"
         >
-          <el-option key="int" label="int32 (整数型)" value="int" />
-          <el-option key="float" label="float (单精度浮点型)" value="float" />
-          <el-option key="double" label="double (双精度浮点型)" value="double" />
+          <el-option
+            key="int"
+            :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k87542693')"
+            value="int"
+          />
+          <el-option
+            key="float"
+            :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k1095236e')"
+            value="float"
+          />
+          <el-option
+            key="double"
+            :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kcd570ebe')"
+            value="double"
+          />
           <!--          <el-option key="text" label="text (文本型)" value="text" />-->
           <!--          <el-option key="date" label="date (日期型)" value="date" />-->
           <!--          <el-option key="bool" label="bool (布尔型)" value="bool" />-->
@@ -41,35 +74,70 @@
           <!--          <el-option key="array" label="array (数组)" value="array" />-->
         </el-select>
       </el-form-item>
-      <el-form-item label="取值范围" prop="max">
-        <el-input v-model="formData.property.dataType.specs.min" placeholder="请输入最小值" />
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k472d7868')"
+        prop="max"
+      >
+        <el-input
+          v-model="formData.property.dataType.specs.min"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.ka3ff4b04')"
+        />
         <span class="mx-2">~</span>
-        <el-input v-model="formData.property.dataType.specs.max" placeholder="请输入最大值" />
+        <el-input
+          v-model="formData.property.dataType.specs.max"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kd4b337db')"
+        />
       </el-form-item>
-      <el-form-item label="步长" prop="step">
-        <el-input v-model="formData.property.dataType.specs.step" placeholder="请输入步长" />
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kac69f596')"
+        prop="step"
+      >
+        <el-input
+          v-model="formData.property.dataType.specs.step"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k8bd93b1f')"
+        />
       </el-form-item>
-      <el-form-item label="单位" prop="unit">
-        <el-input v-model="formData.property.dataType.specs.unit" placeholder="请输入单位" />
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k8ec8c8c7')"
+        prop="unit"
+      >
+        <el-input
+          v-model="formData.property.dataType.specs.unit"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kc3d7ef42')"
+        />
       </el-form-item>
-      <el-form-item label="读写类型" prop="accessMode">
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k3b90c744')"
+        prop="accessMode"
+      >
         <el-radio-group v-model="formData.property.accessMode">
-          <el-radio label="rw">读写</el-radio>
-          <el-radio label="r">只读</el-radio>
+          <el-radio label="rw">{{
+            t('auto.views.iot.product.detail.ThinkModelFunctionForm.k9400a0af')
+          }}</el-radio>
+          <el-radio label="r">{{
+            t('auto.views.iot.product.detail.ThinkModelFunctionForm.kffc1d065')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="属性描述" prop="property.description">
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k6652941e')"
+        prop="property.description"
+      >
         <el-input
           type="textarea"
           v-model="formData.property.description"
-          placeholder="请输入属性描述"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunctionForm.kb741724d')"
         />
       </el-form-item>
     </el-form>
 
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.iot.product.detail.ThinkModelFunctionForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.iot.product.detail.ThinkModelFunctionForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -77,12 +145,10 @@
 <script setup lang="ts">
 import { ProductVO } from '@/api/iot/product'
 import { ThinkModelFunctionApi, ThinkModelFunctionVO } from '@/api/iot/thinkmodelfunction'
-
+const { t } = useI18n()
 const props = defineProps<{ product: ProductVO }>()
 
 defineOptions({ name: 'ThinkModelFunctionForm' })
-
-const { t } = useI18n()
 const message = useMessage()
 
 const dialogVisible = ref(false)
@@ -116,31 +182,40 @@ const formData = ref({
 })
 const formRules = reactive({
   name: [
-    { required: true, message: '功能名称不能为空', trigger: 'blur' },
+    {
+      required: true,
+      message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.ka389c3a1'),
+      trigger: 'blur'
+    },
     {
       pattern: /^[\u4e00-\u9fa5a-zA-Z0-9][\u4e00-\u9fa5a-zA-Z0-9\-_/\.]{0,29}$/,
-      message:
-        '支持中文、大小写字母、日文、数字、短划线、下划线、斜杠和小数点，必须以中文、英文或数字开头，不超过 30 个字符',
+      message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.k7b1ca970'),
       trigger: 'blur'
     }
   ],
-  type: [{ required: true, message: '功能类型不能为空', trigger: 'blur' }],
+  type: [
+    {
+      required: true,
+      message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.ka1f77aa8'),
+      trigger: 'blur'
+    }
+  ],
   identifier: [
-    { required: true, message: '标识符不能为空', trigger: 'blur' },
+    {
+      required: true,
+      message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.k1c51b41a'),
+      trigger: 'blur'
+    },
     {
       pattern: /^[a-zA-Z0-9_]{1,50}$/,
-      message: '支持大小写字母、数字和下划线，不超过 50 个字符',
+      message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.kb968d57e'),
       trigger: 'blur'
     },
     {
       validator: (rule, value, callback) => {
         const reservedKeywords = ['set', 'get', 'post', 'property', 'event', 'time', 'value']
         if (reservedKeywords.includes(value)) {
-          callback(
-            new Error(
-              'set, get, post, property, event, time, value 是系统保留字段，不能用于标识符定义'
-            )
-          )
+          callback(new Error(t('auto.views.iot.product.detail.ThinkModelFunctionForm.k9f3b3d00')))
         } else {
           callback()
         }
@@ -150,9 +225,21 @@ const formRules = reactive({
   ],
   property: {
     dataType: {
-      type: [{ required: true, message: '数据类型不能为空', trigger: 'blur' }]
+      type: [
+        {
+          required: true,
+          message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.k9ba77a24'),
+          trigger: 'blur'
+        }
+      ]
     },
-    accessMode: [{ required: true, message: '读写类型不能为空', trigger: 'blur' }]
+    accessMode: [
+      {
+        required: true,
+        message: t('auto.views.iot.product.detail.ThinkModelFunctionForm.k80e06b06'),
+        trigger: 'blur'
+      }
+    ]
   }
 })
 const formRef = ref()

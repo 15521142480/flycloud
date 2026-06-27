@@ -1,42 +1,45 @@
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
 export default [
   {
     value: 'view',
-    label: '跳转网页'
+    label: t('auto.views.mp.menu.components.menuOptions.k84b03977')
   },
   {
     value: 'miniprogram',
-    label: '跳转小程序'
+    label: t('auto.views.mp.menu.components.menuOptions.kd09c167a')
   },
   {
     value: 'click',
-    label: '点击回复'
+    label: t('auto.views.mp.menu.components.menuOptions.k21894a68')
   },
   {
     value: 'article_view_limited',
-    label: '跳转图文消息'
+    label: t('auto.views.mp.menu.components.menuOptions.k0f8230be')
   },
   {
     value: 'scancode_push',
-    label: '扫码直接返回结果'
+    label: t('auto.views.mp.menu.components.menuOptions.k5d4c96cb')
   },
   {
     value: 'scancode_waitmsg',
-    label: '扫码回复'
+    label: t('auto.views.mp.menu.components.menuOptions.k03862403')
   },
   {
     value: 'pic_sysphoto',
-    label: '系统拍照发图'
+    label: t('auto.views.mp.menu.components.menuOptions.kc7872609')
   },
   {
     value: 'pic_photo_or_album',
-    label: '拍照或者相册'
+    label: t('auto.views.mp.menu.components.menuOptions.kc0edb9c1')
   },
   {
     value: 'pic_weixin',
-    label: '微信相册'
+    label: t('auto.views.mp.menu.components.menuOptions.kaffa37d3')
   },
   {
     value: 'location_select',
-    label: '选择地理位置'
+    label: t('auto.views.mp.menu.components.menuOptions.ke3a6570e')
   }
 ]

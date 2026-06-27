@@ -1,25 +1,28 @@
 <template>
-  <Dialog v-model="dialogVisible" title="详情" width="800">
+  <Dialog v-model="dialogVisible" :title="t('action.detail')" width="800">
     <el-descriptions :column="1" border>
-      <el-descriptions-item label="日志编号" min-width="120">
+      <el-descriptions-item
+        :label="t('auto.views.system.loginlog.LoginLogDetail.k8cac83c8')"
+        min-width="120"
+      >
         {{ detailData.id }}
       </el-descriptions-item>
-      <el-descriptions-item label="操作类型">
+      <el-descriptions-item :label="t('auto.views.system.loginlog.LoginLogDetail.k19e41f1b')">
         <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_TYPE" :value="detailData.logType" />
       </el-descriptions-item>
-      <el-descriptions-item label="用户名称">
+      <el-descriptions-item :label="t('auto.views.system.loginlog.LoginLogDetail.ka311ed74')">
         {{ detailData.username }}
       </el-descriptions-item>
-      <el-descriptions-item label="登录地址">
+      <el-descriptions-item :label="t('auto.views.system.loginlog.LoginLogDetail.k84dd1c57')">
         {{ detailData.userIp }}
       </el-descriptions-item>
-      <el-descriptions-item label="浏览器">
+      <el-descriptions-item :label="t('auto.views.system.loginlog.LoginLogDetail.k88d650dd')">
         {{ detailData.userAgent }}
       </el-descriptions-item>
-      <el-descriptions-item label="登陆结果">
+      <el-descriptions-item :label="t('auto.views.system.loginlog.LoginLogDetail.k5ba4da17')">
         <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_RESULT" :value="detailData.result" />
       </el-descriptions-item>
-      <el-descriptions-item label="登录日期">
+      <el-descriptions-item :label="t('auto.views.system.loginlog.LoginLogDetail.k3e890a22')">
         {{ formatDate(detailData.createTime) }}
       </el-descriptions-item>
     </el-descriptions>
@@ -29,7 +32,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as LoginLogApi from '@/api/system/loginLog'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemLoginLogDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

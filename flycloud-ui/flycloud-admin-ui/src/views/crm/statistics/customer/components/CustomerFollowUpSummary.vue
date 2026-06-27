@@ -10,11 +10,27 @@
   <!-- 统计列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="序号" align="center" type="index" width="80" />
-      <el-table-column label="员工姓名" align="center" prop="ownerUserName" min-width="200" />
-      <el-table-column label="跟进次数" align="right" prop="followUpRecordCount" min-width="200" />
+      <el-table-column :label="t('common.index')" align="center" type="index" width="80" />
       <el-table-column
-        label="跟进客户数"
+        :label="
+          t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k78bd0d05')
+        "
+        align="center"
+        prop="ownerUserName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="
+          t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k1d3354c3')
+        "
+        align="right"
+        prop="followUpRecordCount"
+        min-width="200"
+      />
+      <el-table-column
+        :label="
+          t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k5a0bbff6')
+        "
         align="right"
         prop="followUpCustomerCount"
         min-width="200"
@@ -30,7 +46,7 @@ import {
 } from '@/api/crm/statistics/customer'
 import Echart from '@/components/Echart/src/Echart.vue'
 import { EChartsOption } from 'echarts'
-
+const { t } = useI18n()
 defineOptions({ name: 'CustomerFollowupSummary' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -49,13 +65,13 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '跟进客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k5a0bbff6'),
       type: 'bar',
       yAxisIndex: 0,
       data: []
     },
     {
-      name: '跟进次数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k1d3354c3'),
       type: 'bar',
       yAxisIndex: 1,
       data: []
@@ -69,7 +85,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '客户跟进次数分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k16dcf2b2')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -81,13 +100,13 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '跟进客户数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k5a0bbff6'),
       min: 0,
       minInterval: 1 // 显示整数刻度
     },
     {
       type: 'value',
-      name: '跟进次数',
+      name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.k1d3354c3'),
       min: 0,
       minInterval: 1, // 显示整数刻度
       splitLine: {
@@ -100,7 +119,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.customer.components.CustomerFollowUpSummary.kb6fed9af'),
     axisTick: {
       alignWithLabel: true
     },

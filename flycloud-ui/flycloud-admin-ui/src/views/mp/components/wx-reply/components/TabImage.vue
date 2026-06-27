@@ -15,10 +15,10 @@
       <!-- 选择素材 -->
       <el-col :span="12" class="col-select">
         <el-button type="success" @click="showDialog = true">
-          素材库选择 <Icon icon="ep:circle-check" />
+          {{ t('extra.ke705023d') }} <Icon icon="ep:circle-check" />
         </el-button>
         <el-dialog
-          title="选择图片"
+          :title="t('auto.views.mp.components.wx_reply.components.TabImage.k18104edf')"
           v-model="showDialog"
           width="90%"
           append-to-body
@@ -43,10 +43,14 @@
           :before-upload="beforeImageUpload"
           :on-success="onUploadSuccess"
         >
-          <el-button type="primary">上传图片</el-button>
+          <el-button type="primary">{{
+            t('auto.views.mp.components.wx_reply.components.TabImage.k59b308c8')
+          }}</el-button>
           <template #tip>
             <span>
-              <div class="el-upload__tip">支持 bmp/png/jpeg/jpg/gif 格式，大小不超过 2M</div>
+              <div class="el-upload__tip">{{
+                t('auto.views.mp.components.wx_reply.components.TabImage.kd2ee2686')
+              }}</div>
             </span>
           </template>
         </el-upload>
@@ -61,6 +65,7 @@ import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
 import type { UploadRawFile } from 'element-plus'
 import { getAccessToken } from '@/utils/auth'
 import { Reply } from './types'
+const { t } = useI18n()
 const message = useMessage()
 
 const UPLOAD_URL = import.meta.env.VITE_BASE_URL + '/admin-api/mp/material/upload-temporary'
@@ -90,7 +95,7 @@ const beforeImageUpload = (rawFile: UploadRawFile) => useBeforeUpload(UploadType
 
 const onUploadSuccess = (res: any) => {
   if (res.code !== 0) {
-    message.error('上传出错：' + res.msg)
+    message.error(t('auto.views.mp.components.wx_reply.components.TabImage.kea0f7067') + res.msg)
     return false
   }
 

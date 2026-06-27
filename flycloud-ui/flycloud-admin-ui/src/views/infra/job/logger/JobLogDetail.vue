@@ -1,31 +1,38 @@
 <template>
-  <Dialog v-model="dialogVisible" title="任务详细" width="700px">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.infra.job.logger.JobLogDetail.kcb1587a2')"
+    width="700px"
+  >
     <el-descriptions :column="1" border>
-      <el-descriptions-item label="日志编号" min-width="60">
+      <el-descriptions-item
+        :label="t('auto.views.infra.job.logger.JobLogDetail.k8cac83c8')"
+        min-width="60"
+      >
         {{ detailData.id }}
       </el-descriptions-item>
-      <el-descriptions-item label="任务编号">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.k017af56c')">
         {{ detailData.jobId }}
       </el-descriptions-item>
-      <el-descriptions-item label="处理器的名字">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.kec311980')">
         {{ detailData.handlerName }}
       </el-descriptions-item>
-      <el-descriptions-item label="处理器的参数">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.kddc1dd16')">
         {{ detailData.handlerParam }}
       </el-descriptions-item>
-      <el-descriptions-item label="第几次执行">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.k038b052f')">
         {{ detailData.executeIndex }}
       </el-descriptions-item>
-      <el-descriptions-item label="执行时间">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.k68f17a6c')">
         {{ formatDate(detailData.beginTime) + ' ~ ' + formatDate(detailData.endTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="执行时长">
-        {{ detailData.duration + ' 毫秒' }}
-      </el-descriptions-item>
-      <el-descriptions-item label="任务状态">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.kf74f1dd2')">{{
+        detailData.duration + t('extra.k46fc7bd3')
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.kb7d4128d')">
         <dict-tag :type="DICT_TYPE.INFRA_JOB_LOG_STATUS" :value="detailData.status" />
       </el-descriptions-item>
-      <el-descriptions-item label="执行结果">
+      <el-descriptions-item :label="t('auto.views.infra.job.logger.JobLogDetail.k1b213f40')">
         {{ detailData.result }}
       </el-descriptions-item>
     </el-descriptions>
@@ -35,7 +42,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as JobLogApi from '@/api/infra/jobLog'
-
+const { t } = useI18n()
 defineOptions({ name: 'JobLogDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

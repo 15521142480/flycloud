@@ -1,12 +1,12 @@
 <template>
-  <Dialog v-model="dialogVisible" title="详情">
+  <Dialog v-model="dialogVisible" :title="t('action.detail')">
     <Descriptions :data="detailData" :schema="allSchemas.detailSchema" />
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as MailAccountApi from '@/api/system/mail/account'
 import { allSchemas } from './account.data'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMailAccountDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

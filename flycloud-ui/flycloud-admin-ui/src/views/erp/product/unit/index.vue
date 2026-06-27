@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,19 +8,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="单位名字" prop="name">
+      <el-form-item :label="t('auto.views.erp.product.unit.index.k3493aba3')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入单位名字"
+          :placeholder="t('auto.views.erp.product.unit.index.k3562b1b6')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="单位状态" prop="status">
+      <el-form-item :label="t('auto.views.erp.product.unit.index.k7ba2b46f')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择单位状态"
+          :placeholder="t('auto.views.erp.product.unit.index.k4160db91')"
           clearable
           class="!w-240px"
         >
@@ -34,15 +33,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:product-unit:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.keaedbf5e') }}
         </el-button>
         <el-button
           type="success"
@@ -51,7 +54,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:product-unit:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k784e2671') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -60,8 +63,12 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="名字" align="center" prop="name" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.erp.product.unit.index.k364bd1bf')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -115,10 +122,10 @@ import ProductUnitForm from './ProductUnitForm.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 
 /** ERP 产品单位列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpProductUnit' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProductUnitVO[]>([]) // 列表的数据
@@ -183,7 +190,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductUnitApi.exportProductUnit(queryParams)
-    download.excel(data, '产品单位.xls')
+    download.excel(data, t('auto.views.erp.product.unit.index.kc14c1774'))
   } catch {
   } finally {
     exportLoading.value = false

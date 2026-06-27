@@ -7,19 +7,35 @@
       :rules="formRules"
       label-width="100px"
     >
-      <el-form-item label="页面名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入页面名称" />
+      <el-form-item
+        :label="t('auto.views.mall.promotion.diy.page.DiyPageForm.k4a2d79ff')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.promotion.diy.page.DiyPageForm.ke41e27e6')"
+        />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.mall.promotion.diy.page.DiyPageForm.k57e709d9')"
+        />
       </el-form-item>
-      <el-form-item label="预览图" prop="previewPicUrls">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.diy.page.DiyPageForm.k81946fbf')"
+        prop="previewPicUrls"
+      >
         <UploadImgs v-model="formData.previewPicUrls" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.promotion.diy.page.DiyPageForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.promotion.diy.page.DiyPageForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -27,9 +43,8 @@
 import * as DiyPageApi from '@/api/mall/promotion/diy/page'
 
 /** 装修页面表单 */
+const { t } = useI18n()
 defineOptions({ name: 'DiyPageForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -43,7 +58,13 @@ const formData = ref({
   previewPicUrls: []
 })
 const formRules = reactive({
-  name: [{ required: true, message: '页面名称不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.diy.page.DiyPageForm.k29ea947c'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

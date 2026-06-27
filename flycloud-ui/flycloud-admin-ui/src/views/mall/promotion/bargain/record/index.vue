@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,10 +8,13 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="砍价状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.bargain.record.index.k97d483a4')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择砍价状态"
+          :placeholder="t('auto.views.mall.promotion.bargain.record.index.k6ddf0908')"
           clearable
           class="!w-240px"
         >
@@ -24,27 +26,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.promotion.bargain.record.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.promotion.bargain.record.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:bargain-record:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k36db83d4') }}
         </el-button>
         <el-button
           type="success"
@@ -53,7 +59,7 @@
           :loading="exportLoading"
           v-hasPermi="['promotion:bargain-record:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k980ea7fb') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -62,8 +68,15 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" min-width="50" prop="id" />
-      <el-table-column label="发起用户" min-width="120">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.record.index.k9f42dac6')"
+        min-width="50"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.record.index.k5db42b79')"
+        min-width="120"
+      >
         <template #default="scope">
           <el-image
             :src="scope.row.avatar"
@@ -141,11 +154,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as BargainRecordApi from '@/api/mall/promotion/bargain/bargainRecord'
 import { fenToYuanFormat } from '@/utils/formatter'
 import BargainRecordListDialog from './BargainRecordListDialog.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionBargainRecord' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

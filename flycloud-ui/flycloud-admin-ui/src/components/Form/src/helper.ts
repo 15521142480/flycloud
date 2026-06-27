@@ -10,8 +10,9 @@ import { ColProps } from '@/types/components'
  * @returns 返回提示信息对象
  * @description 用于自动设置placeholder
  */
+const { t } = useI18n()
+
 export const setTextPlaceholder = (schema: FormSchema): PlaceholderModel => {
-  const { t } = useI18n()
   const textMap = ['Input', 'Autocomplete', 'InputNumber', 'InputPassword']
   const selectMap = ['Select', 'SelectV2', 'TimePicker', 'DatePicker', 'TimeSelect', 'TimeSelect']
   if (textMap.includes(schema?.component as string)) {

@@ -66,7 +66,7 @@ import { resetSize } from './../utils/util'
 import { aesEncrypt } from './../utils/ase'
 import { getCode, reqCheck } from '@/api/login'
 import { getCurrentInstance, nextTick, onMounted, reactive, ref, toRefs } from 'vue'
-
+const { t } = useI18n()
 const props = defineProps({
   //弹出式pop，固定fixed
   mode: {
@@ -100,8 +100,6 @@ const props = defineProps({
     }
   }
 })
-
-const { t } = useI18n()
 const { mode, captchaType } = toRefs(props)
 const { proxy } = getCurrentInstance()
 let secretKey = ref(''), //后端返回的ase加密秘钥

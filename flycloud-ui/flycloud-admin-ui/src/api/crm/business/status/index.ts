@@ -1,4 +1,6 @@
 import request from '@/config/axios'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export interface BusinessStatusTypeVO {
   id: number
@@ -14,20 +16,20 @@ export interface BusinessStatusTypeVO {
 export const DEFAULT_STATUSES = [
   {
     endStatus: 1,
-    key: '结束',
-    name: '赢单',
+    key: t('auto.api.crm.business.status.index.k76b98808'),
+    name: t('auto.api.crm.business.status.index.ke65d23dd'),
     percent: 100
   },
   {
     endStatus: 2,
-    key: '结束',
-    name: '输单',
+    key: t('auto.api.crm.business.status.index.k76b98808'),
+    name: t('auto.api.crm.business.status.index.k5375e3d6'),
     percent: 0
   },
   {
     endStatus: 3,
-    key: '结束',
-    name: '无效',
+    key: t('auto.api.crm.business.status.index.k76b98808'),
+    name: t('auto.api.crm.business.status.index.keb645ab4'),
     percent: 0
   }
 ]

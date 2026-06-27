@@ -31,7 +31,7 @@ import CustomContentPadProvider from '@/components/bpmnProcessDesigner/package/d
 // 自定义左侧菜单（修改 默认任务 为 用户任务）
 import CustomPaletteProvider from '@/components/bpmnProcessDesigner/package/designer/plugins/palette'
 import * as ModelApi from '@/api/bpm/model'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmModelEditor' })
 
 const router = useRouter() // 路由
@@ -66,10 +66,10 @@ const save = async (bpmnXml: string) => {
   // 提交
   if (data.id) {
     await ModelApi.updateModelBpmn(data)
-    message.success('修改成功')
+    message.success(t('auto.views.bpm.model.editor.index.kf8913eb4'))
   } else {
     await ModelApi.updateModelBpmn(data)
-    message.success('新增成功')
+    message.success(t('auto.views.bpm.model.editor.index.kcbdbd295'))
   }
   // 跳转回去
   close()
@@ -84,7 +84,7 @@ const close = () => {
 onMounted(async () => {
   const modelId = query.modelId as unknown as number
   if (!modelId) {
-    message.error('缺少模型 modelId 编号')
+    message.error(t('auto.views.bpm.model.editor.index.kfc1baec9'))
     return
   }
   // 查询模型

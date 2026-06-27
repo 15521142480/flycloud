@@ -19,7 +19,7 @@
       <div class="upload-empty">
         <slot name="empty">
           <Icon icon="ep:plus" />
-          <!-- <span>请上传图片</span> -->
+          <!-- <span>{{ t('extra.k957bcf8b') }}</span> -->
         </slot>
       </div>
       <template #file="{ file }">
@@ -27,11 +27,11 @@
         <div class="upload-handle" @click.stop>
           <div class="handle-icon" @click="imagePreview(file.url!)">
             <Icon icon="ep:zoom-in" />
-            <span>查看</span>
+            <span>{{ t('auto.components.UploadFile.src.UploadImgs.kf7acefd2') }}</span>
           </div>
           <div v-if="!disabled" class="handle-icon" @click="handleRemove(file)">
             <Icon icon="ep:delete" />
-            <span>删除</span>
+            <span>{{ t('common.delete') }}</span>
           </div>
         </div>
       </template>
@@ -48,7 +48,7 @@ import { createImageViewer } from '@/components/ImageViewer'
 
 import { propTypes } from '@/utils/propTypes'
 import { useUpload } from '@/components/UploadFile/src/useUpload'
-
+const { t } = useI18n()
 defineOptions({ name: 'UploadImgs' })
 
 const message = useMessage() // 消息弹窗
@@ -98,14 +98,14 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   const imgType = props.fileType
   if (!imgType.includes(rawFile.type as FileTypes))
     ElNotification({
-      title: '温馨提示',
-      message: '上传图片不符合所需的格式！',
+      title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
+      message: t('auto.components.UploadFile.src.UploadImgs.k4e46f515'),
       type: 'warning'
     })
   if (!imgSize)
     ElNotification({
-      title: '温馨提示',
-      message: `上传图片大小不能超过 ${props.fileSize}M！`,
+      title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
+      message: t('extra.kcd0a2974', { p0: props.fileSize }),
       type: 'warning'
     })
   uploadNumber.value++
@@ -119,7 +119,7 @@ interface UploadEmits {
 
 const emit = defineEmits<UploadEmits>()
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  message.success('上传成功')
+  message.success(t('auto.components.UploadFile.src.UploadImgs.kea9f9179'))
   // 删除自身
   const index = fileList.value.findIndex((item) => item.response?.data === res.data)
   fileList.value.splice(index, 1)
@@ -167,8 +167,8 @@ const handleRemove = (uploadFile: UploadFile) => {
 // 图片上传错误提示
 const uploadError = () => {
   ElNotification({
-    title: '温馨提示',
-    message: '图片上传失败，请您重新上传！',
+    title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
+    message: t('auto.components.UploadFile.src.UploadImgs.k3d25606c'),
     type: 'error'
   })
 }
@@ -176,8 +176,8 @@ const uploadError = () => {
 // 文件数超出提示
 const handleExceed = () => {
   ElNotification({
-    title: '温馨提示',
-    message: `当前最多只能上传 ${props.limit} 张图片，请移除后上传！`,
+    title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
+    message: t('extra.kb2b4387a', { p0: props.limit }),
     type: 'warning'
   })
 }

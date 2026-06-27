@@ -1,7 +1,16 @@
 <template>
-  <doc-alert title="支付宝支付接入" url="https://doc.iocoder.cn/pay/alipay-pay-demo/" />
-  <doc-alert title="微信公众号支付接入" url="https://doc.iocoder.cn/pay/wx-pub-pay-demo/" />
-  <doc-alert title="微信小程序支付接入" url="https://doc.iocoder.cn/pay/wx-lite-pay-demo/" />
+  <doc-alert
+    :title="t('auto.views.pay.order.index.k1637286a')"
+    url="https://doc.iocoder.cn/pay/alipay-pay-demo/"
+  />
+  <doc-alert
+    :title="t('auto.views.pay.order.index.k5028fc5c')"
+    url="https://doc.iocoder.cn/pay/wx-pub-pay-demo/"
+  />
+  <doc-alert
+    :title="t('auto.views.pay.order.index.k6cbc9bd1')"
+    url="https://doc.iocoder.cn/pay/wx-lite-pay-demo/"
+  />
 
   <ContentWrap>
     <el-form
@@ -11,20 +20,20 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item label="应用编号" prop="appId">
+      <el-form-item :label="t('auto.views.pay.order.index.k396d9d78')" prop="appId">
         <el-select
           clearable
           v-model="queryParams.appId"
-          placeholder="请选择应用信息"
+          :placeholder="t('auto.views.pay.order.index.kb926b59e')"
           class="!w-240px"
         >
           <el-option v-for="item in appList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="支付渠道" prop="channelCode">
+      <el-form-item :label="t('auto.views.pay.order.index.k88b37342')" prop="channelCode">
         <el-select
           v-model="queryParams.channelCode"
-          placeholder="请选择支付渠道"
+          :placeholder="t('auto.views.pay.order.index.kf9bee2a2')"
           clearable
           class="!w-240px"
         >
@@ -36,37 +45,37 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="商户单号" prop="merchantOrderId">
+      <el-form-item :label="t('auto.views.pay.order.index.k3dc2266a')" prop="merchantOrderId">
         <el-input
           v-model="queryParams.merchantOrderId"
-          placeholder="请输入商户单号"
+          :placeholder="t('auto.views.pay.order.index.k7c0615c3')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="支付单号" prop="no">
+      <el-form-item :label="t('auto.views.pay.order.index.k956bb6be')" prop="no">
         <el-input
           v-model="queryParams.no"
-          placeholder="请输入支付单号"
+          :placeholder="t('auto.views.pay.order.index.ka3e1d5db')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="渠道单号" prop="channelOrderNo">
+      <el-form-item :label="t('auto.views.pay.order.index.ke551deaa')" prop="channelOrderNo">
         <el-input
           v-model="queryParams.channelOrderNo"
-          placeholder="请输入渠道单号"
+          :placeholder="t('auto.views.pay.order.index.k2836b261')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="支付状态" prop="status">
+      <el-form-item :label="t('auto.views.pay.order.index.kb9f11a33')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择支付状态"
+          :placeholder="t('auto.views.pay.order.index.kd505bfd1')"
           clearable
           class="!w-240px"
         >
@@ -78,20 +87,24 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.pay.order.index.k1f291968')"
+          :end-placeholder="t('auto.views.pay.order.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -99,7 +112,7 @@
           :loading="exportLoading"
           v-hasPermi="['system:tenant:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kbb762561') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -108,15 +121,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="80" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.pay.order.index.k9f42dac6')"
+        align="center"
+        prop="id"
+        width="80"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="支付金额" align="center" prop="price" width="100">
+      <el-table-column
+        :label="t('auto.views.pay.order.index.kb579703e')"
+        align="center"
+        prop="price"
+        width="100"
+      >
         <template #default="scope"> ￥{{ parseFloat(scope.row.price / 100).toFixed(2) }} </template>
       </el-table-column>
       <el-table-column label="退款金额" align="center" prop="refundPrice" width="100">
@@ -192,7 +215,7 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as OrderApi from '@/api/pay/order'
 import OrderDetail from './OrderDetail.vue'
 import download from '@/utils/download'
-
+const { t } = useI18n()
 defineOptions({ name: 'PayOrder' })
 
 const message = useMessage() // 消息弹窗
@@ -247,7 +270,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await OrderApi.exportOrder(queryParams)
-    download.excel(data, '支付订单.xls')
+    download.excel(data, t('auto.views.pay.order.index.k8e9584f0'))
   } catch {
   } finally {
     exportLoading.value = false

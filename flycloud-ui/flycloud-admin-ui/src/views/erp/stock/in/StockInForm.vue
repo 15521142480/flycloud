@@ -10,28 +10,35 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="入库单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.erp.stock.in.StockInForm.ka9f67da2')" prop="no">
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.stock.in.StockInForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="入库时间" prop="inTime">
+          <el-form-item :label="t('auto.views.erp.stock.in.StockInForm.k661cec87')" prop="inTime">
             <el-date-picker
               v-model="formData.inTime"
               type="date"
               value-format="x"
-              placeholder="选择入库时间"
+              :placeholder="t('auto.views.erp.stock.in.StockInForm.ka2e7fbdf')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="供应商" prop="supplierId">
+          <el-form-item
+            :label="t('auto.views.erp.stock.in.StockInForm.k703c9eb0')"
+            prop="supplierId"
+          >
             <el-select
               v-model="formData.supplierId"
               clearable
               filterable
-              placeholder="请选择供应商"
+              :placeholder="t('auto.views.erp.stock.in.StockInForm.k38eae8d5')"
               class="!w-1/1"
             >
               <el-option
@@ -44,17 +51,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.remark')" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
               :rows="1"
-              placeholder="请输入备注"
+              :placeholder="t('auto.views.erp.stock.in.StockInForm.k57e709d9')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item :label="t('auto.views.erp.stock.in.StockInForm.k99f6fe6c')" prop="fileUrl">
             <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
           </el-form-item>
         </el-col>
@@ -63,16 +70,18 @@
     <!-- 子表的表单 -->
     <ContentWrap>
       <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-        <el-tab-pane label="入库产品清单" name="item">
+        <el-tab-pane :label="t('auto.views.erp.stock.in.StockInForm.kbec8c542')" name="item">
           <StockInItemForm ref="itemFormRef" :items="formData.items" :disabled="disabled" />
         </el-tab-pane>
       </el-tabs>
     </ContentWrap>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading" v-if="!disabled">
-        确 定
+        {{ t('extra.kb32af617') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.stock.in.StockInForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -82,9 +91,8 @@ import StockInItemForm from './components/StockInItemForm.vue'
 import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'
 
 /** ERP 其它入库单 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'StockInForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -100,7 +108,9 @@ const formData = ref({
   items: []
 })
 const formRules = reactive({
-  inTime: [{ required: true, message: '入库时间不能为空', trigger: 'blur' }]
+  inTime: [
+    { required: true, message: t('auto.views.erp.stock.in.StockInForm.kfc16d70e'), trigger: 'blur' }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

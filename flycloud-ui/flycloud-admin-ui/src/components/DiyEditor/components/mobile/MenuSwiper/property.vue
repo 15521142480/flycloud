@@ -2,32 +2,68 @@
   <ComponentContainerProperty v-model="formData.style">
     <!-- 表单 -->
     <el-form label-width="80px" :model="formData" class="m-t-8px">
-      <el-form-item label="布局" prop="layout">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.kb0961e17')"
+        prop="layout"
+      >
         <el-radio-group v-model="formData.layout">
-          <el-radio value="iconText">图标+文字</el-radio>
-          <el-radio value="icon">仅图标</el-radio>
+          <el-radio value="iconText">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.kaaa7ad7e')
+          }}</el-radio>
+          <el-radio value="icon">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k94d888ec')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="行数" prop="row">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k579f280b')"
+        prop="row"
+      >
         <el-radio-group v-model="formData.row">
-          <el-radio :value="1">1行</el-radio>
-          <el-radio :value="2">2行</el-radio>
+          <el-radio :value="1">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k6bb47749')
+          }}</el-radio>
+          <el-radio :value="2">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.kbfb8ca14')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="列数" prop="column">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k067f80c3')"
+        prop="column"
+      >
         <el-radio-group v-model="formData.column">
-          <el-radio :value="3">3列</el-radio>
-          <el-radio :value="4">4列</el-radio>
-          <el-radio :value="5">5列</el-radio>
+          <el-radio :value="3">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.ka9909c08')
+          }}</el-radio>
+          <el-radio :value="4">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k904f39d1')
+          }}</el-radio>
+          <el-radio :value="5">{{
+            t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k1d38b523')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
 
-      <el-card header="菜单设置" class="property-group" shadow="never">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.ka76df3b0')"
+        class="property-group"
+        shadow="never"
+      >
         <Draggable v-model="formData.list" :empty-item="cloneDeep(EMPTY_MENU_SWIPER_ITEM_PROPERTY)">
           <template #default="{ element }">
-            <el-form-item label="图标" prop="iconUrl">
+            <el-form-item
+              :label="
+                t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k1f24c1e5')
+              "
+              prop="iconUrl"
+            >
               <UploadImg v-model="element.iconUrl" height="80px" width="80px">
-                <template #tip> 建议尺寸：98 * 98 </template>
+                <template #tip>
+                  {{
+                    t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k5026223e')
+                  }}
+                </template>
               </UploadImg>
             </el-form-item>
             <el-form-item label="标题" prop="title">
@@ -64,8 +100,8 @@ import {
   MenuSwiperProperty
 } from '@/components/DiyEditor/components/mobile/MenuSwiper/config'
 import { cloneDeep } from 'lodash-es'
-
 /** 菜单导航属性面板 */
+const { t } = useI18n()
 defineOptions({ name: 'MenuSwiperProperty' })
 
 const props = defineProps<{ modelValue: MenuSwiperProperty }>()

@@ -4,7 +4,7 @@
   <el-row class="mb-10px" justify="end">
     <el-button @click="openForm">
       <Icon class="mr-5px" icon="ep:edit" />
-      写跟进
+      {{ t('extra.ke2726fa9') }}
     </el-button>
   </el-row>
   <!-- 列表 -->
@@ -13,12 +13,20 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="跟进人" prop="creatorName" />
-      <el-table-column align="center" label="跟进类型" prop="type">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.followup.index.k76ffbf9a')"
+        prop="creatorName"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.followup.index.kd1ac0fc8')"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_FOLLOW_UP_TYPE" :value="scope.row.type" />
         </template>
@@ -96,13 +104,13 @@ import FollowUpRecordForm from './FollowUpRecordForm.vue'
 import { BizTypeEnum } from '@/api/crm/permission'
 
 /** 跟进记录列表 */
+const { t } = useI18n()
 defineOptions({ name: 'FollowUpRecord' })
 const props = defineProps<{
   bizType: number
   bizId: number
 }>()
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<FollowUpRecordVO[]>([]) // 列表的数据

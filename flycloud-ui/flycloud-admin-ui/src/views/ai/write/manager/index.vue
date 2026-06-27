@@ -8,25 +8,20 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item :label="t('auto.views.ai.write.manager.index.kec750ef6')" prop="userId">
         <el-select
           v-model="queryParams.userId"
           clearable
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.ai.write.manager.index.kb719fb8a')"
           class="!w-240px"
         >
-          <el-option
-            v-for="item in userList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="写作类型" prop="type">
+      <el-form-item :label="t('auto.views.ai.write.manager.index.k2e533a22')" prop="type">
         <el-select
           v-model="queryParams.type"
-          placeholder="请选择写作类型"
+          :placeholder="t('auto.views.ai.write.manager.index.kd22a1228')"
           clearable
           class="!w-240px"
         >
@@ -38,8 +33,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="平台" prop="platform">
-        <el-select v-model="queryParams.platform" placeholder="请选择平台" clearable class="!w-240px">
+      <el-form-item :label="t('auto.views.ai.write.manager.index.ke4b9d694')" prop="platform">
+        <el-select
+          v-model="queryParams.platform"
+          :placeholder="t('auto.views.ai.write.manager.index.ke8fbea8b')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.AI_PLATFORM)"
             :key="dict.value"
@@ -48,27 +48,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.ai.write.manager.index.k1f291968')"
+          :end-placeholder="t('auto.views.ai.write.manager.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['ai:write:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k632d8e98') }}
         </el-button>
         <!-- TODO @YunaiV  目前没有导出接口，需要导出吗 -->
         <el-button
@@ -78,7 +82,7 @@
           :loading="exportLoading"
           v-hasPermi="['ai:write:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k3686a969') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -87,8 +91,19 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" width="120" fixed="left" />
-      <el-table-column label="用户" align="center" prop="userId" width="180">
+      <el-table-column
+        :label="t('auto.views.ai.write.manager.index.k9f42dac6')"
+        align="center"
+        prop="id"
+        width="120"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.write.manager.index.k9ba763ea')"
+        align="center"
+        prop="userId"
+        width="180"
+      >
         <template #default="scope">
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
@@ -143,7 +158,7 @@
       <el-table-column label="错误信息" align="center" prop="errorMessage" />
       <el-table-column label="操作" align="center">
         <template #default="scope">
-<!--          TODO @YunaiV 目前没有修改接口，写作要可以更改吗-->
+          <!--          TODO @YunaiV 目前没有修改接口，写作要可以更改吗-->
           <el-button
             link
             type="primary"
@@ -181,10 +196,10 @@ import { WriteApi, AiWritePageReqVO, AiWriteRespVo } from '@/api/ai/write'
 import * as UserApi from '@/api/system/user'
 
 /** AI 写作列表 */
+const { t } = useI18n()
 defineOptions({ name: 'AiWriteManager' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 const router = useRouter() // 路由
 
 const loading = ref(true) // 列表的加载中

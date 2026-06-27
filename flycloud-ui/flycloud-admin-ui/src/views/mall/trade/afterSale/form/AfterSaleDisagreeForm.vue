@@ -1,27 +1,35 @@
 <template>
-  <Dialog v-model="dialogVisible" title="拒绝售后" width="45%">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.trade.afterSale.form.AfterSaleDisagreeForm.kdb9109aa')"
+    width="45%"
+  >
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item label="审批备注">
+      <el-form-item
+        :label="t('auto.views.mall.trade.afterSale.form.AfterSaleDisagreeForm.kd9ba8a3f')"
+      >
         <el-input
           v-model="formData.auditReason"
           :rows="3"
-          placeholder="请输入审批备注"
+          :placeholder="t('auto.views.mall.trade.afterSale.form.AfterSaleDisagreeForm.k5560f847')"
           type="textarea"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.trade.afterSale.form.AfterSaleDisagreeForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.trade.afterSale.form.AfterSaleDisagreeForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as AfterSaleApi from '@/api/mall/trade/afterSale/index'
-
+const { t } = useI18n()
 defineOptions({ name: 'AfterSaleDisagreeForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示

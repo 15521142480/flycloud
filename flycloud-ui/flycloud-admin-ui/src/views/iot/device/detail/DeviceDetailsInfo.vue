@@ -1,44 +1,68 @@
 <template>
   <ContentWrap>
     <el-collapse v-model="activeNames">
-      <el-descriptions :column="3" title="设备信息">
-        <el-descriptions-item label="产品名称">{{ product.name }}</el-descriptions-item>
+      <el-descriptions
+        :column="3"
+        :title="t('auto.views.iot.device.detail.DeviceDetailsInfo.kb6f86d39')"
+      >
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.kabc0ac79')"
+          >{{ product.name }}</el-descriptions-item
+        >
         <el-descriptions-item label="ProductKey">
           {{ product.productKey }}
-          <el-button @click="copyToClipboard(product.productKey)">复制</el-button>
+          <el-button @click="copyToClipboard(product.productKey)">{{ t('common.copy') }}</el-button>
         </el-descriptions-item>
-        <el-descriptions-item label="设备类型">
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k47a991d1')"
+        >
           <dict-tag :type="DICT_TYPE.IOT_PRODUCT_DEVICE_TYPE" :value="product.deviceType" />
         </el-descriptions-item>
         <el-descriptions-item label="DeviceName">
           {{ device.deviceName }}
-          <el-button @click="copyToClipboard(device.deviceName)">复制</el-button>
+          <el-button @click="copyToClipboard(device.deviceName)">{{ t('common.copy') }}</el-button>
         </el-descriptions-item>
-        <el-descriptions-item label="备注名称">{{ device.name }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k90f8a65c')"
+          >{{ device.name }}</el-descriptions-item
+        >
+        <el-descriptions-item :label="t('common.createTime')">
           {{ formatDate(device.createTime) }}
         </el-descriptions-item>
-        <el-descriptions-item label="激活时间">
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.kaa327d00')"
+        >
           {{ formatDate(device.activeTime) }}
         </el-descriptions-item>
-        <el-descriptions-item label="最后上线时间">
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k450b4a74')"
+        >
           {{ formatDate(device.lastOnlineTime) }}
         </el-descriptions-item>
-        <el-descriptions-item label="当前状态">
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k045859e7')"
+        >
           <dict-tag :type="DICT_TYPE.IOT_DEVICE_STATUS" :value="device.status" />
         </el-descriptions-item>
-        <el-descriptions-item label="最后离线时间" :span="3">
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k9621c8bd')"
+          :span="3"
+        >
           {{ formatDate(device.lastOfflineTime) }}
         </el-descriptions-item>
-        <el-descriptions-item label="MQTT 连接参数">
-          <el-button type="primary" @click="openMqttParams">查看</el-button>
+        <el-descriptions-item
+          :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k8141fed4')"
+        >
+          <el-button type="primary" @click="openMqttParams">{{
+            t('auto.views.iot.device.detail.DeviceDetailsInfo.kf7acefd2')
+          }}</el-button>
         </el-descriptions-item>
       </el-descriptions>
     </el-collapse>
 
     <!-- MQTT 连接参数弹框 -->
     <Dialog
-      title="MQTT 连接参数"
+      :title="t('auto.views.iot.device.detail.DeviceDetailsInfo.k8141fed4')"
       v-model="mqttDialogVisible"
       width="50%"
       :before-close="handleCloseMqttDialog"
@@ -84,7 +108,7 @@ import { DICT_TYPE } from '@/utils/dict'
 import { ProductVO } from '@/api/iot/product'
 import { formatDate } from '@/utils/formatTime'
 import { DeviceVO } from '@/api/iot/device'
-
+const { t } = useI18n()
 const message = useMessage() // 消息提示
 
 const { product, device } = defineProps<{ product: ProductVO; device: DeviceVO }>() // 定义 Props
@@ -102,7 +126,7 @@ const mqttParams = ref({
 /** 复制到剪贴板方法 */
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
-    message.success('复制成功')
+    message.success(t('auto.views.iot.device.detail.DeviceDetailsInfo.kc1ef062e'))
   })
 }
 

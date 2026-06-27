@@ -1,7 +1,7 @@
 <template>
   <ContentWrap>
     <el-tabs>
-      <el-tab-pane label="基础通信 Topic">
+      <el-tab-pane :label="t('auto.views.iot.product.detail.ProductTopic.k12040114')">
         <Table
           :columns="columns1"
           :data="data1"
@@ -11,7 +11,7 @@
           border="true"
         />
       </el-tab-pane>
-      <el-tab-pane label="物模型通信 Topic">
+      <el-tab-pane :label="t('auto.views.iot.product.detail.ProductTopic.k81b3a222')">
         <Table
           :columns="columns2"
           :data="data2"
@@ -26,22 +26,46 @@
 </template>
 <script setup lang="ts">
 import { ProductVO } from '@/api/iot/product'
-
+const { t } = useI18n()
 const props = defineProps<{ product: ProductVO }>()
 
 // 定义列
 const columns1 = reactive([
-  { label: '功能', field: 'function', width: 150 },
-  { label: 'Topic 类', field: 'topicClass', width: 800 },
-  { label: '操作权限', field: 'operationPermission', width: 100 },
-  { label: '描述', field: 'description' }
+  {
+    label: t('auto.views.iot.product.detail.ProductTopic.k4e1ff3eb'),
+    field: 'function',
+    width: 150
+  },
+  {
+    label: t('auto.views.iot.product.detail.ProductTopic.k81bf1cb1'),
+    field: 'topicClass',
+    width: 800
+  },
+  {
+    label: t('auto.views.iot.product.detail.ProductTopic.k11899ced'),
+    field: 'operationPermission',
+    width: 100
+  },
+  { label: t('auto.views.iot.product.detail.ProductTopic.k412f54dc'), field: 'description' }
 ])
 
 const columns2 = reactive([
-  { label: '功能', field: 'function', width: 150 },
-  { label: 'Topic 类', field: 'topicClass', width: 800 },
-  { label: '操作权限', field: 'operationPermission', width: 100 },
-  { label: '描述', field: 'description' }
+  {
+    label: t('auto.views.iot.product.detail.ProductTopic.k4e1ff3eb'),
+    field: 'function',
+    width: 150
+  },
+  {
+    label: t('auto.views.iot.product.detail.ProductTopic.k81bf1cb1'),
+    field: 'topicClass',
+    width: 800
+  },
+  {
+    label: t('auto.views.iot.product.detail.ProductTopic.k11899ced'),
+    field: 'operationPermission',
+    width: 100
+  },
+  { label: t('auto.views.iot.product.detail.ProductTopic.k412f54dc'), field: 'description' }
 ])
 
 // TODO @haohao：这个，有没可能写到一个枚举里，方便后续维护？ /Users/yunai/Java/yudao-ui-admin-vue3/src/views/ai/utils/constants.ts
@@ -49,100 +73,100 @@ const data1 = computed(() => {
   if (!props.product || !props.product.productKey) return []
   return [
     {
-      function: 'OTA 升级',
+      function: t('auto.views.iot.product.detail.ProductTopic.kbdb9a2fa'),
       topicClass: `/ota/device/inform/${props.product.productKey}/\${deviceName}`,
-      operationPermission: '发布',
-      description: '设备上报固件升级信息'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.kb4f7a33a')
     },
     {
-      function: 'OTA 升级',
+      function: t('auto.views.iot.product.detail.ProductTopic.kbdb9a2fa'),
       topicClass: `/ota/device/upgrade/${props.product.productKey}/\${deviceName}`,
-      operationPermission: '订阅',
-      description: '固件升级信息下行'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k199f974b')
     },
     {
-      function: 'OTA 升级',
+      function: t('auto.views.iot.product.detail.ProductTopic.kbdb9a2fa'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/ota/firmware/get`,
-      operationPermission: '发布',
-      description: '设备上报固件升级进度'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.kffe9395a')
     },
     {
-      function: 'OTA 升级',
+      function: t('auto.views.iot.product.detail.ProductTopic.kbdb9a2fa'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/ota/firmware/get`,
-      operationPermission: '发布',
-      description: '设备主动拉取固件升级信息'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k5a4a4847')
     },
     {
-      function: '设备标签',
+      function: t('auto.views.iot.product.detail.ProductTopic.kf2a614a5'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/deviceinfo/update`,
-      operationPermission: '发布',
-      description: '设备上报标签数据'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.kba9c4b08')
     },
     {
-      function: '设备标签',
+      function: t('auto.views.iot.product.detail.ProductTopic.kf2a614a5'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/deviceinfo/update_reply`,
-      operationPermission: '订阅',
-      description: '云端响应标签上报'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k41fd0907')
     },
     {
-      function: '设备标签',
+      function: t('auto.views.iot.product.detail.ProductTopic.kf2a614a5'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/deviceinfo/delete`,
-      operationPermission: '订阅',
-      description: '设备删除标签信息'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k4082767a')
     },
     {
-      function: '设备标签',
+      function: t('auto.views.iot.product.detail.ProductTopic.kf2a614a5'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/deviceinfo/delete_reply`,
-      operationPermission: '订阅',
-      description: '云端响应标签删除'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.ke3ea3a2c')
     },
     {
-      function: '时钟同步',
+      function: t('auto.views.iot.product.detail.ProductTopic.k8eda19c2'),
       topicClass: `/ext/ntp/${props.product.productKey}/\${deviceName}/request`,
-      operationPermission: '发布',
-      description: 'NTP 时钟同步请求'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k92d1d54f')
     },
     {
-      function: '时钟同步',
+      function: t('auto.views.iot.product.detail.ProductTopic.k8eda19c2'),
       topicClass: `/ext/ntp/${props.product.productKey}/\${deviceName}/response`,
-      operationPermission: '订阅',
-      description: 'NTP 时钟同步响应'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k0321aa1f')
     },
     {
-      function: '设备影子',
+      function: t('auto.views.iot.product.detail.ProductTopic.kad225e47'),
       topicClass: `/shadow/update/${props.product.productKey}/\${deviceName}`,
-      operationPermission: '发布',
-      description: '设备影子发布'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k6b517c32')
     },
     {
-      function: '设备影子',
+      function: t('auto.views.iot.product.detail.ProductTopic.kad225e47'),
       topicClass: `/shadow/get/${props.product.productKey}/\${deviceName}`,
-      operationPermission: '订阅',
-      description: '设备接收影子变更'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.ke45a45b1')
     },
     {
-      function: '配置更新',
+      function: t('auto.views.iot.product.detail.ProductTopic.k0a8d80c2'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/config/push`,
-      operationPermission: '订阅',
-      description: '云端主动下推配置信息'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.kf90d6c1e')
     },
     {
-      function: '配置更新',
+      function: t('auto.views.iot.product.detail.ProductTopic.k0a8d80c2'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/config/get`,
-      operationPermission: '发布',
-      description: '设备端查询配置信息'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k9e2babee')
     },
     {
-      function: '配置更新',
+      function: t('auto.views.iot.product.detail.ProductTopic.k0a8d80c2'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/config/get_reply`,
-      operationPermission: '订阅',
-      description: '云端响应配置信息'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k2184bb8f')
     },
     {
-      function: '广播',
+      function: t('auto.views.iot.product.detail.ProductTopic.k8b24aab4'),
       topicClass: `/broadcast/${props.product.productKey}/\${identifier}`,
-      operationPermission: '订阅',
-      description: '广播 Topic，identifier 为用户自定义字符串'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k463e697f')
     }
   ]
 })
@@ -151,46 +175,46 @@ const data2 = computed(() => {
   if (!props.product || !props.product.productKey) return []
   return [
     {
-      function: '属性上报',
+      function: t('auto.views.iot.product.detail.ProductTopic.k4f8940cf'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/event/property/post`,
-      operationPermission: '发布',
-      description: '设备属性上报'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k15d1cb9f')
     },
     {
-      function: '属性上报',
+      function: t('auto.views.iot.product.detail.ProductTopic.k4f8940cf'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/event/property/post_reply`,
-      operationPermission: '订阅',
-      description: '云端响应属性上报'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k60659b25')
     },
     {
-      function: '属性设置',
+      function: t('auto.views.iot.product.detail.ProductTopic.k7289c9f0'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/service/property/set`,
-      operationPermission: '订阅',
-      description: '设备属性设置'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k8d241a26')
     },
     {
-      function: '事件上报',
+      function: t('auto.views.iot.product.detail.ProductTopic.k73f76a73'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/event/\${tsl.event.identifier}/post`,
-      operationPermission: '发布',
-      description: '设备事件上报'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k1fed85fa')
     },
     {
-      function: '事件上报',
+      function: t('auto.views.iot.product.detail.ProductTopic.k73f76a73'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/event/\${tsl.event.identifier}/post_reply`,
-      operationPermission: '订阅',
-      description: '云端响应事件上报'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.kcb205e2d')
     },
     {
-      function: '服务调用',
+      function: t('auto.views.iot.product.detail.ProductTopic.kb798b2c1'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/service/\${tsl.service.identifier}`,
-      operationPermission: '订阅',
-      description: '设备服务调用'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k5319af76'),
+      description: t('auto.views.iot.product.detail.ProductTopic.kc9f36aa4')
     },
     {
-      function: '服务调用',
+      function: t('auto.views.iot.product.detail.ProductTopic.kb798b2c1'),
       topicClass: `/sys/${props.product.productKey}/\${deviceName}/thing/service/\${tsl.service.identifier}_reply`,
-      operationPermission: '发布',
-      description: '设备端响应服务调用'
+      operationPermission: t('auto.views.iot.product.detail.ProductTopic.k94f172d0'),
+      description: t('auto.views.iot.product.detail.ProductTopic.k87d133be')
     }
   ]
 })

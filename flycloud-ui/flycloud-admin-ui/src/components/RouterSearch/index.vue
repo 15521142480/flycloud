@@ -1,10 +1,15 @@
 <template>
-  <ElDialog v-if="isModal" v-model="showSearch" :show-close="false" title="菜单搜索">
+  <ElDialog
+    v-if="isModal"
+    v-model="showSearch"
+    :show-close="false"
+    :title="t('auto.components.RouterSearch.index.k8af587c3')"
+  >
     <el-select
       filterable
       :reserve-keyword="false"
       remote
-      placeholder="请输入菜单内容"
+      :placeholder="t('auto.components.RouterSearch.index.kace55e30')"
       :remote-method="remoteMethod"
       style="width: 100%"
       @change="handleChange"
@@ -24,7 +29,7 @@
       filterable
       :reserve-keyword="false"
       remote
-      placeholder="请输入菜单内容"
+      :placeholder="t('auto.components.RouterSearch.index.kace55e30')"
       :remote-method="remoteMethod"
       class="overflow-hidden transition-all-600"
       :class="showTopSearch ? '!w-220px ml2' : '!w-0'"
@@ -41,6 +46,7 @@
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 defineProps({
   isModal: {
     type: Boolean,

@@ -1,12 +1,11 @@
 <template>
-
   <div class="flex flex-col">
     <!-- 数据对照 -->
     <el-row :gutter="16" class="row">
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          tag="今日"
-          title="销售额"
+          :tag="t('extra.k9abb8c5e')"
+          :title="t('auto.views.mall.home.index.k1002a2a0')"
           prefix="￥"
           :decimals="2"
           :value="fenToYuan(orderComparison?.value?.orderPayPrice || 0)"
@@ -15,24 +14,24 @@
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          tag="今日"
-          title="用户访问量"
+          :tag="t('extra.k9abb8c5e')"
+          :title="t('auto.views.mall.home.index.k3fd75ad7')"
           :value="userComparison?.value?.visitUserCount || 0"
           :reference="userComparison?.reference?.visitUserCount || 0"
         />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          tag="今日"
-          title="订单量"
+          :tag="t('extra.k9abb8c5e')"
+          :title="t('auto.views.mall.home.index.k59a40702')"
           :value="orderComparison?.value?.orderPayCount || 0"
           :reference="orderComparison?.reference?.orderPayCount || 0"
         />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          tag="今日"
-          title="新增用户"
+          :tag="t('extra.k9abb8c5e')"
+          :title="t('auto.views.mall.home.index.k6153a08d')"
           :value="userComparison?.value?.registerUserCount || 0"
           :reference="userComparison?.reference?.registerUserCount || 0"
         />
@@ -80,6 +79,7 @@ import MemberTerminalCard from '@/views/mall/statistics/member/components/Member
 import MemberFunnelCard from '@/views/mall/statistics/member/components/MemberFunnelCard.vue'
 
 /** 商城首页 */
+const { t } = useI18n()
 defineOptions({ name: 'MallHome' })
 
 const loading = ref(true) // 加载中

@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" title="修改">
+  <Dialog v-model="dialogVisible" :title="t('auto.views.mp.user.UserForm.kc9c77517')">
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,14 +7,25 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="昵称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入昵称" />
+      <el-form-item :label="t('auto.views.mp.user.UserForm.k25124ed7')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mp.user.UserForm.k5dbe6b07')"
+        />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.mp.user.UserForm.k57e709d9')"
+        />
       </el-form-item>
-      <el-form-item label="标签" prop="tagIds">
-        <el-select v-model="formData.tagIds" clearable multiple placeholder="请选择标签">
+      <el-form-item :label="t('auto.views.mp.user.UserForm.kae0a7afe')" prop="tagIds">
+        <el-select
+          v-model="formData.tagIds"
+          clearable
+          multiple
+          :placeholder="t('auto.views.mp.user.UserForm.kcd71ef8f')"
+        >
           <el-option
             v-for="item in tagList"
             :key="item.tagId"
@@ -25,18 +36,20 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mp.user.UserForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mp.user.UserForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as MpTagApi from '@/api/mp/tag'
 import * as MpUserApi from '@/api/mp/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpUserForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示

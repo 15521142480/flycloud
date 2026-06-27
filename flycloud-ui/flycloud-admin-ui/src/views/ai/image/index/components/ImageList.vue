@@ -1,9 +1,11 @@
 <template>
   <el-card class="dr-task" body-class="task-card" shadow="never">
     <template #header>
-      绘画任务
+      {{ t('extra.kff91a47e') }}
       <!-- TODO @fan：看看，怎么优化下这个样子哈。 -->
-      <el-button @click="handleViewPublic">绘画作品</el-button>
+      <el-button @click="handleViewPublic">{{
+        t('auto.views.ai.image.index.components.ImageList.k0cb93d19')
+      }}</el-button>
     </template>
     <!-- 图片列表 -->
     <div class="task-image-list" ref="imageListRef">
@@ -44,7 +46,7 @@ import ImageCard from './ImageCard.vue'
 import { ElLoading, LoadingOptionsResolved } from 'element-plus'
 import { AiImageStatusEnum } from '@/views/ai/utils/constants'
 import download from '@/utils/download'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const router = useRouter() // 路由
 
@@ -87,7 +89,7 @@ const getImageList = async () => {
     // 1. 加载图片列表
     imageListLoadingInstance.value = ElLoading.service({
       target: imageListRef.value,
-      text: '加载中...'
+      text: t('auto.views.ai.image.index.components.ImageList.k514c33af')
     } as LoadingOptionsResolved)
     const { list, total } = await ImageApi.getImagePageMy(queryParams)
     imageList.value = list
@@ -142,10 +144,10 @@ const handleImageButtonClick = async (type: string, imageDetail: ImageVO) => {
   }
   // 删除
   if (type === 'delete') {
-    await message.confirm(`是否删除照片?`)
+    await message.confirm(t('auto.views.ai.image.index.components.ImageList.k0c823fd5'))
     await ImageApi.deleteImageMy(imageDetail.id)
     await getImageList()
-    message.success('删除成功!')
+    message.success(t('auto.views.ai.image.index.components.ImageList.k782d8e2d'))
     return
   }
   // 下载

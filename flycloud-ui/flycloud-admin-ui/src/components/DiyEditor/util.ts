@@ -2,8 +2,9 @@ import { ref, Ref } from 'vue'
 import { PageConfigProperty } from '@/components/DiyEditor/components/mobile/PageConfig/config'
 import { NavigationBarProperty } from '@/components/DiyEditor/components/mobile/NavigationBar/config'
 import { TabBarProperty } from '@/components/DiyEditor/components/mobile/TabBar/config'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
-// 页面装修组件
 export interface DiyComponent<T> {
   // 用于区分同一种组件的不同实例
   uid?: number
@@ -109,7 +110,7 @@ export function usePropertyForm<T>(modelValue: T, emit: Function): { formData: R
 // 页面组件库
 export const PAGE_LIBS = [
   {
-    name: '基础组件',
+    name: t('auto.components.DiyEditor.util.k35d9aa1a'),
     extended: true,
     components: [
       'SearchBar',
@@ -122,7 +123,7 @@ export const PAGE_LIBS = [
     ]
   },
   {
-    name: '图文组件',
+    name: t('auto.components.DiyEditor.util.k34b36418'),
     extended: true,
     components: [
       'ImageBar',
@@ -134,14 +135,18 @@ export const PAGE_LIBS = [
       'HotZone'
     ]
   },
-  { name: '商品组件', extended: true, components: ['ProductCard', 'ProductList'] },
   {
-    name: '用户组件',
+    name: t('auto.components.DiyEditor.util.k5beb7081'),
+    extended: true,
+    components: ['ProductCard', 'ProductList']
+  },
+  {
+    name: t('auto.components.DiyEditor.util.k9979f1d6'),
     extended: true,
     components: ['UserCard', 'UserOrder', 'UserWallet', 'UserCoupon']
   },
   {
-    name: '营销组件',
+    name: t('auto.components.DiyEditor.util.k20dd5fbc'),
     extended: true,
     components: [
       'PromotionCombination',

@@ -8,28 +8,28 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="角色名称" prop="name">
+      <el-form-item :label="t('auto.views.ai.model.chatRole.index.k3aa1f085')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入角色名称"
+          :placeholder="t('auto.views.ai.model.chatRole.index.kb7c17b9e')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="角色类别" prop="category">
+      <el-form-item :label="t('auto.views.ai.model.chatRole.index.kcda79ba6')" prop="category">
         <el-input
           v-model="queryParams.category"
-          placeholder="请输入角色类别"
+          :placeholder="t('auto.views.ai.model.chatRole.index.k8343a95c')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="是否公开" prop="publicStatus">
+      <el-form-item :label="t('auto.views.ai.model.chatRole.index.k5857cbaf')" prop="publicStatus">
         <el-select
           v-model="queryParams.publicStatus"
-          placeholder="请选择是否公开"
+          :placeholder="t('auto.views.ai.model.chatRole.index.k94b52191')"
           clearable
           class="!w-240px"
         >
@@ -42,15 +42,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['ai:chat-role:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kd4e1f008') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -59,9 +63,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="角色名称" align="center" prop="name" />
-      <el-table-column label="绑定模型" align="center" prop="modelName" />
-      <el-table-column label="角色头像" align="center" prop="avatar">
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.index.k3aa1f085')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.index.k5b7d951b')"
+        align="center"
+        prop="modelName"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.index.k9b7423ef')"
+        align="center"
+        prop="avatar"
+      >
         <template #default="scope">
           <el-image :src="scope?.row.avatar" class="w-32px h-32px" />
         </template>
@@ -120,10 +136,10 @@ import { ChatRoleApi, ChatRoleVO } from '@/api/ai/model/chatRole'
 import ChatRoleForm from './ChatRoleForm.vue'
 
 /** AI 聊天角色 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'AiChatRole' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ChatRoleVO[]>([]) // 列表的数据

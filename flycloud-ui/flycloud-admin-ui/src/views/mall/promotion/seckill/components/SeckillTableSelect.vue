@@ -1,5 +1,10 @@
 <template>
-  <Dialog v-model="dialogVisible" :appendToBody="true" title="选择活动" width="70%">
+  <Dialog
+    v-model="dialogVisible"
+    :appendToBody="true"
+    :title="t('auto.views.mall.promotion.seckill.components.SeckillTableSelect.k9669b876')"
+    width="70%"
+  >
     <ContentWrap>
       <!-- 搜索工作栏 -->
       <el-form
@@ -9,19 +14,29 @@
         class="-mb-15px"
         label-width="68px"
       >
-        <el-form-item label="活动名称" prop="name">
+        <el-form-item
+          :label="t('auto.views.mall.promotion.seckill.components.SeckillTableSelect.k2b020286')"
+          prop="name"
+        >
           <el-input
             v-model="queryParams.name"
-            placeholder="请输入活动名称"
+            :placeholder="
+              t('auto.views.mall.promotion.seckill.components.SeckillTableSelect.ka90d22e9')
+            "
             clearable
             @keyup.enter="handleQuery"
             class="!w-240px"
           />
         </el-form-item>
-        <el-form-item label="活动状态" prop="status">
+        <el-form-item
+          :label="t('auto.views.mall.promotion.seckill.components.SeckillTableSelect.k65a972d7')"
+          prop="status"
+        >
           <el-select
             v-model="queryParams.status"
-            placeholder="请选择活动状态"
+            :placeholder="
+              t('auto.views.mall.promotion.seckill.components.SeckillTableSelect.k4b6989d1')
+            "
             clearable
             class="!w-240px"
           >
@@ -36,11 +51,11 @@
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            搜索
+            {{ t('extra.k87dc3109') }}
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            重置
+            {{ t('extra.k5915270a') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -146,7 +161,7 @@ import { fenToYuanFormat } from '@/utils/formatter'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter, formatDate } from '@/utils/formatTime'
 import { fenToYuan } from '@/utils'
-
+const { t } = useI18n()
 type SeckillActivityVO = Required<SeckillActivityApi.SeckillActivityVO>
 
 /**

@@ -1,10 +1,13 @@
 <template>
-  <doc-alert title="地区 & IP" url="https://doc.iocoder.cn/area-and-ip/" />
+  <doc-alert
+    :title="t('auto.views.system.area.index.k455e8046')"
+    url="https://doc.iocoder.cn/area-and-ip/"
+  />
 
   <!-- 操作栏 -->
   <ContentWrap>
     <el-button type="primary" plain @click="openForm()">
-      <Icon icon="ep:plus" class="mr-5px" /> IP 查询
+      <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1164c2ce') }}
     </el-button>
   </ContentWrap>
 
@@ -34,21 +37,21 @@
 import type { Column } from 'element-plus'
 import AreaForm from './AreaForm.vue'
 import * as AreaApi from '@/api/system/area'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemArea' })
 
 // 表格的 column 字段
 const columns: Column[] = [
   {
     dataKey: 'id', // 需要渲染当前列的数据字段。例如说：{id:9527, name:'Mike'}，则填 id
-    title: '编号', // 显示在单元格表头的文本
+    title: t('auto.views.system.area.index.k9f42dac6'), // 显示在单元格表头的文本
     width: 400, // 当前列的宽度，必须设置
     fixed: true, // 是否固定列
     key: 'id' // 树形展开对应的 key
   },
   {
     dataKey: 'name',
-    title: '地名',
+    title: t('auto.views.system.area.index.k320af86a'),
     width: 200
   }
 ]

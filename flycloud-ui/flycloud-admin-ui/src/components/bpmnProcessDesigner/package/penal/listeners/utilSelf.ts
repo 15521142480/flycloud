@@ -1,4 +1,6 @@
-// 初始化表单数据
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
 export function initListenerForm(listener) {
   let self = {
     ...listener
@@ -64,26 +66,36 @@ export function initListenerForm2(processListener) {
       fields: []
     }
   }
-  throw new Error('未知的监听器类型')
+  throw new Error(
+    t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k846ff3ab')
+  )
 }
 
 export const listenerType = {
-  classListener: 'Java 类',
-  expressionListener: '表达式',
-  delegateExpressionListener: '代理表达式',
-  scriptListener: '脚本'
+  classListener: t(
+    'auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k385d4569'
+  ),
+  expressionListener: t(
+    'auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k513c1c63'
+  ),
+  delegateExpressionListener: t(
+    'auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.kf5ed3fb9'
+  ),
+  scriptListener: t(
+    'auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k7fbccbeb'
+  )
 }
 
 export const eventType = {
-  create: '创建',
-  assignment: '指派',
-  complete: '完成',
-  delete: '删除',
-  update: '更新',
-  timeout: '超时'
+  create: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.kfcbd0932'),
+  assignment: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k5c9aebfa'),
+  complete: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k33246f6a'),
+  delete: t('common.delete'),
+  update: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.kd9db02d0'),
+  timeout: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.kff06c243')
 }
 
 export const fieldType = {
-  string: '字符串',
-  expression: '表达式'
+  string: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k4dc9621a'),
+  expression: t('auto.components.bpmnProcessDesigner.package.penal.listeners.utilSelf.k513c1c63')
 }

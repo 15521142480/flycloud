@@ -1,46 +1,53 @@
 <template>
   <div>
     <div v-if="item.event === 'subscribe'">
-      <el-tag type="success">关注</el-tag>
+      <el-tag type="success">{{
+        t('auto.views.mp.components.wx_msg.components.MsgEvent.k7ac0d5c9')
+      }}</el-tag>
     </div>
     <div v-else-if="item.event === 'unsubscribe'">
-      <el-tag type="danger">取消关注</el-tag>
+      <el-tag type="danger">{{
+        t('auto.views.mp.components.wx_msg.components.MsgEvent.kbff57650')
+      }}</el-tag>
     </div>
     <div v-else-if="item.event === 'CLICK'">
-      <el-tag>点击菜单</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.kaba076ee') }}</el-tag>
       【{{ item.eventKey }}】
     </div>
     <div v-else-if="item.event === 'VIEW'">
-      <el-tag>点击菜单链接</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.k449230ce') }}</el-tag>
       【{{ item.eventKey }}】
     </div>
     <div v-else-if="item.event === 'scancode_waitmsg'">
-      <el-tag>扫码结果</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.k29a8c73c') }}</el-tag>
       【{{ item.eventKey }}】
     </div>
     <div v-else-if="item.event === 'scancode_push'">
-      <el-tag>扫码结果</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.k29a8c73c') }}</el-tag>
       【{{ item.eventKey }}】
     </div>
     <div v-else-if="item.event === 'pic_sysphoto'">
-      <el-tag>系统拍照发图</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.kc7872609') }}</el-tag>
     </div>
     <div v-else-if="item.event === 'pic_photo_or_album'">
-      <el-tag>拍照或者相册</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.kc0edb9c1') }}</el-tag>
     </div>
     <div v-else-if="item.event === 'pic_weixin'">
-      <el-tag>微信相册</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.kaffa37d3') }}</el-tag>
     </div>
     <div v-else-if="item.event === 'location_select'">
-      <el-tag>选择地理位置</el-tag>
+      <el-tag>{{ t('auto.views.mp.components.wx_msg.components.MsgEvent.ke3a6570e') }}</el-tag>
     </div>
     <div v-else>
-      <el-tag type="danger">未知事件类型</el-tag>
+      <el-tag type="danger">{{
+        t('auto.views.mp.components.wx_msg.components.MsgEvent.ke9246f17')
+      }}</el-tag>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 const props = defineProps<{
   item: any
 }>()

@@ -2,11 +2,14 @@
   <el-table ref="dragTable" :data="formData" :max-height="tableHeight" row-key="columnId">
     <el-table-column
       :show-overflow-tooltip="true"
-      label="字段列名"
+      :label="t('auto.views.infra.codegen.components.ColumInfoForm.k24d998a8')"
       min-width="10%"
       prop="columnName"
     />
-    <el-table-column label="字段描述" min-width="10%">
+    <el-table-column
+      :label="t('auto.views.infra.codegen.components.ColumInfoForm.k805453de')"
+      min-width="10%"
+    >
       <template #default="scope">
         <el-input v-model="scope.row.columnComment" />
       </template>
@@ -116,7 +119,7 @@
 import { PropType } from 'vue'
 import * as CodegenApi from '@/api/infra/codegen'
 import * as DictDataApi from '@/api/system/dict/dict.type'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraCodegenColumInfoForm' })
 
 const props = defineProps({

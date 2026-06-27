@@ -7,8 +7,12 @@
       label-width="120px"
       v-loading="formLoading"
     >
-      <el-form-item label="所属平台" prop="platform">
-        <el-select v-model="formData.platform" placeholder="请输入平台" clearable>
+      <el-form-item :label="t('auto.views.ai.model.apiKey.ApiKeyForm.k275b3ed8')" prop="platform">
+        <el-select
+          v-model="formData.platform"
+          :placeholder="t('auto.views.ai.model.apiKey.ApiKeyForm.ke0377170')"
+          clearable
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.AI_PLATFORM)"
             :key="dict.value"
@@ -17,16 +21,25 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名称" />
+      <el-form-item :label="t('auto.views.ai.model.apiKey.ApiKeyForm.k1be7ae4f')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.ai.model.apiKey.ApiKeyForm.kc2afb255')"
+        />
       </el-form-item>
-      <el-form-item label="密钥" prop="apiKey">
-        <el-input v-model="formData.apiKey" placeholder="请输入密钥" />
+      <el-form-item :label="t('auto.views.ai.model.apiKey.ApiKeyForm.k0d1965e1')" prop="apiKey">
+        <el-input
+          v-model="formData.apiKey"
+          :placeholder="t('auto.views.ai.model.apiKey.ApiKeyForm.k9a7744ec')"
+        />
       </el-form-item>
-      <el-form-item label="自定义 API URL" prop="url">
-        <el-input v-model="formData.url" placeholder="请输入自定义 API URL" />
+      <el-form-item :label="t('auto.views.ai.model.apiKey.ApiKeyForm.kc1d074da')" prop="url">
+        <el-input
+          v-model="formData.url"
+          :placeholder="t('auto.views.ai.model.apiKey.ApiKeyForm.k7a6f2ddf')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -39,8 +52,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.ai.model.apiKey.ApiKeyForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.ai.model.apiKey.ApiKeyForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -50,9 +67,8 @@ import { ApiKeyApi, ApiKeyVO } from '@/api/ai/model/apiKey'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** AI API 密钥 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ApiKeyForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -68,10 +84,34 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-  apiKey: [{ required: true, message: '密钥不能为空', trigger: 'blur' }],
-  platform: [{ required: true, message: '平台不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.apiKey.ApiKeyForm.kca898456'),
+      trigger: 'blur'
+    }
+  ],
+  apiKey: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.apiKey.ApiKeyForm.k45bebb39'),
+      trigger: 'blur'
+    }
+  ],
+  platform: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.apiKey.ApiKeyForm.kacb834db'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.apiKey.ApiKeyForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

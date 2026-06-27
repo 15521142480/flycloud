@@ -3,7 +3,9 @@
     <el-collapse v-model="activeNames" class="">
       <el-collapse-item name="basicInfo">
         <template #title>
-          <span class="text-base font-bold">基本信息</span>
+          <span class="text-base font-bold">{{
+            t('auto.views.crm.customer.detail.CustomerDetailsInfo.kb122f813')
+          }}</span>
         </template>
         <el-descriptions :column="4">
           <el-descriptions-item label="客户名称">
@@ -61,7 +63,7 @@
 import * as CustomerApi from '@/api/crm/customer'
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmCustomerDetailsInfo' })
 const { customer } = defineProps<{
   customer: CustomerApi.CustomerVO // 客户明细

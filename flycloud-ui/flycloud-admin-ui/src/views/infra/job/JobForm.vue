@@ -7,50 +7,61 @@
       label-width="120px"
       v-loading="formLoading"
     >
-      <el-form-item label="任务名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入任务名称" />
+      <el-form-item :label="t('auto.views.infra.job.JobForm.k2e304698')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.infra.job.JobForm.k5169b9ec')"
+        />
       </el-form-item>
-      <el-form-item label="处理器的名字" prop="handlerName">
+      <el-form-item :label="t('auto.views.infra.job.JobForm.kec311980')" prop="handlerName">
         <el-input
           :readonly="formData.id !== undefined"
           v-model="formData.handlerName"
-          placeholder="请输入处理器的名字"
+          :placeholder="t('auto.views.infra.job.JobForm.kec878692')"
         />
       </el-form-item>
-      <el-form-item label="处理器的参数" prop="handlerParam">
-        <el-input v-model="formData.handlerParam" placeholder="请输入处理器的参数" />
+      <el-form-item :label="t('auto.views.infra.job.JobForm.kddc1dd16')" prop="handlerParam">
+        <el-input
+          v-model="formData.handlerParam"
+          :placeholder="t('auto.views.infra.job.JobForm.k906243e5')"
+        />
       </el-form-item>
-      <el-form-item label="CRON 表达式" prop="cronExpression">
+      <el-form-item :label="t('auto.views.infra.job.JobForm.kf6b43ffc')" prop="cronExpression">
         <crontab v-model="formData.cronExpression" />
       </el-form-item>
-      <el-form-item label="重试次数" prop="retryCount">
+      <el-form-item :label="t('auto.views.infra.job.JobForm.k7a35a7d3')" prop="retryCount">
         <el-input
           v-model="formData.retryCount"
-          placeholder="请输入重试次数。设置为 0 时，不进行重试"
+          :placeholder="t('auto.views.infra.job.JobForm.k90627d66')"
         />
       </el-form-item>
-      <el-form-item label="重试间隔" prop="retryInterval">
+      <el-form-item :label="t('auto.views.infra.job.JobForm.kf86d661b')" prop="retryInterval">
         <el-input
           v-model="formData.retryInterval"
-          placeholder="请输入重试间隔，单位：毫秒。设置为 0 时，无需间隔"
+          :placeholder="t('auto.views.infra.job.JobForm.k7370c353')"
         />
       </el-form-item>
-      <el-form-item label="监控超时时间" prop="monitorTimeout">
-        <el-input v-model="formData.monitorTimeout" placeholder="请输入监控超时时间，单位：毫秒" />
+      <el-form-item :label="t('auto.views.infra.job.JobForm.k4bdf128c')" prop="monitorTimeout">
+        <el-input
+          v-model="formData.monitorTimeout"
+          :placeholder="t('auto.views.infra.job.JobForm.k4cbb677f')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button type="primary" @click="submitForm" :loading="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="submitForm" :loading="formLoading">{{
+        t('auto.views.infra.job.JobForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.infra.job.JobForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as JobApi from '@/api/infra/job'
-
+const { t } = useI18n()
 defineOptions({ name: 'JobForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -68,11 +79,19 @@ const formData = ref({
   monitorTimeout: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '任务名称不能为空', trigger: 'blur' }],
-  handlerName: [{ required: true, message: '处理器的名字不能为空', trigger: 'blur' }],
-  cronExpression: [{ required: true, message: 'CRON 表达式不能为空', trigger: 'blur' }],
-  retryCount: [{ required: true, message: '重试次数不能为空', trigger: 'blur' }],
-  retryInterval: [{ required: true, message: '重试间隔不能为空', trigger: 'blur' }]
+  name: [{ required: true, message: t('auto.views.infra.job.JobForm.kd6e6aac0'), trigger: 'blur' }],
+  handlerName: [
+    { required: true, message: t('auto.views.infra.job.JobForm.kf015bf26'), trigger: 'blur' }
+  ],
+  cronExpression: [
+    { required: true, message: t('auto.views.infra.job.JobForm.kf04b3f74'), trigger: 'blur' }
+  ],
+  retryCount: [
+    { required: true, message: t('auto.views.infra.job.JobForm.k8e23c67d'), trigger: 'blur' }
+  ],
+  retryInterval: [
+    { required: true, message: t('auto.views.infra.job.JobForm.kc21f2129'), trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

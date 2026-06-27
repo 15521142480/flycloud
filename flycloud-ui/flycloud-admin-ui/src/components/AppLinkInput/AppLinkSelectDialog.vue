@@ -1,5 +1,9 @@
 <template>
-  <Dialog v-model="dialogVisible" title="选择链接" width="65%">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.components.AppLinkInput.AppLinkSelectDialog.kc8789de4')"
+    width="65%"
+  >
     <div class="h-500px flex gap-8px">
       <!-- 左侧分组列表 -->
       <el-scrollbar wrap-class="h-full" ref="groupScrollbar" view-class="flex flex-col">
@@ -44,8 +48,12 @@
     </div>
     <!-- 底部对话框操作按钮 -->
     <template #footer>
-      <el-button type="primary" @click="handleSubmit">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handleSubmit">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
   <Dialog v-model="detailSelectDialog.visible" title="" width="50%">
@@ -71,6 +79,7 @@ import ProductCategorySelect from '@/views/mall/product/category/components/Prod
 import { getUrlNumberValue } from '@/utils'
 
 // APP 链接选择弹框
+const { t } = useI18n()
 defineOptions({ name: 'AppLinkSelectDialog' })
 // 选中的分组，默认选中第一个
 const activeGroup = ref(APP_LINK_GROUP_LIST[0].name)

@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="公众号粉丝" url="https://doc.iocoder.cn/mp/user/" />
+  <doc-alert
+    :title="t('auto.views.mp.user.index.kfb1bfabc')"
+    url="https://doc.iocoder.cn/mp/user/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,30 +13,34 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.user.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
-      <el-form-item label="用户标识" prop="openid">
+      <el-form-item :label="t('auto.views.mp.user.index.k24afcd30')" prop="openid">
         <el-input
           v-model="queryParams.openid"
-          placeholder="请输入用户标识"
+          :placeholder="t('auto.views.mp.user.index.kf8c5daed')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="昵称" prop="name">
+      <el-form-item :label="t('auto.views.mp.user.index.k25124ed7')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入昵称"
+          :placeholder="t('auto.views.mp.user.index.k5dbe6b07')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"> <Icon icon="ep:search" />搜索 </el-button>
-        <el-button @click="resetQuery"> <Icon icon="ep:refresh" />重置 </el-button>
+        <el-button @click="handleQuery">
+          <Icon icon="ep:search" />{{ t('common.search') }}
+        </el-button>
+        <el-button @click="resetQuery">
+          <Icon icon="ep:refresh" />{{ t('common.reset') }}
+        </el-button>
         <el-button
           type="success"
           plain
@@ -41,7 +48,7 @@
           v-hasPermi="['mp:user:sync']"
           :disabled="queryParams.accountId === 0"
         >
-          <Icon icon="ep:refresh" class="mr-5px" /> 同步
+          <Icon icon="ep:refresh" class="mr-5px" /> {{ t('extra.k386c777d') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -50,11 +57,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="用户标识" align="center" prop="openid" width="260" />
-      <el-table-column label="昵称" align="center" prop="name" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="标签" align="center" prop="tagIds" width="200">
+      <el-table-column :label="t('auto.views.mp.user.index.k9f42dac6')" align="center" prop="id" />
+      <el-table-column
+        :label="t('auto.views.mp.user.index.k24afcd30')"
+        align="center"
+        prop="openid"
+        width="260"
+      />
+      <el-table-column
+        :label="t('auto.views.mp.user.index.k25124ed7')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column
+        :label="t('auto.views.mp.user.index.kae0a7afe')"
+        align="center"
+        prop="tagIds"
+        width="200"
+      >
         <template #default="scope">
           <span v-for="(tagId, index) in scope.row.tagIds" :key="index">
             <el-tag>{{ tagList.find((tag) => tag.tagId === tagId)?.name }} </el-tag>&nbsp;
@@ -106,7 +127,7 @@ import * as MpTagApi from '@/api/mp/tag'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'
 import type { FormInstance } from 'element-plus'
 import UserForm from './UserForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpUser' })
 
 const message = useMessage() // 消息
@@ -167,9 +188,9 @@ const openForm = (id: number) => {
 /** 同步标签 */
 const handleSync = async () => {
   try {
-    await message.confirm('是否确认同步粉丝？')
+    await message.confirm(t('auto.views.mp.user.index.k217ad3b7'))
     await MpUserApi.syncUser(queryParams.accountId)
-    message.success('开始从微信公众号同步粉丝信息，同步需要一段时间，建议稍后再查询')
+    message.success(t('auto.views.mp.user.index.ke0f4231f'))
     await getList()
   } catch {}
 }

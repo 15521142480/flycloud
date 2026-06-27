@@ -29,7 +29,7 @@ import Msg from './Msg.vue'
 import { formatDate } from '@/utils/formatTime'
 import { User } from '../types'
 import avatarWechat from '@/assets/imgs/wechat.png'
-
+const { t } = useI18n()
 defineOptions({ name: 'MsgList' })
 
 const props = defineProps<{
@@ -47,7 +47,9 @@ const getAvatar = (sendFrom: SendFrom) =>
   sendFrom === SendFrom.User ? props.user.avatar : avatarWechat
 
 const getNickname = (sendFrom: SendFrom) =>
-  sendFrom === SendFrom.User ? props.user.name : '公众号'
+  sendFrom === SendFrom.User
+    ? props.user.name
+    : t('auto.views.mp.components.wx_msg.components.MsgList.ke48fc0ee')
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,7 @@
     v-model="dialogVisible"
     align-center
     class="app-infra-codegen-preview-container"
-    title="代码预览"
+    :title="t('auto.views.infra.codegen.PreviewCode.k41e1026b')"
     width="80%"
   >
     <div class="flex">
@@ -12,7 +12,7 @@
         v-loading="loading"
         :gutter="12"
         class="w-1/3"
-        element-loading-text="生成文件目录中..."
+        :element-loading-text="t('extra.kf41c5c51')"
         shadow="hover"
       >
         <el-scrollbar height="calc(100vh - 88px - 40px)">
@@ -32,7 +32,7 @@
         v-loading="loading"
         :gutter="12"
         class="ml-3 w-2/3"
-        element-loading-text="加载代码中..."
+        :element-loading-text="t('extra.k10769748')"
         shadow="hover"
       >
         <el-tabs v-model="preview.activeName">
@@ -66,10 +66,8 @@ import xml from 'highlight.js/lib/languages/java'
 import javascript from 'highlight.js/lib/languages/javascript'
 import sql from 'highlight.js/lib/languages/sql'
 import typescript from 'highlight.js/lib/languages/typescript'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraCodegenPreviewCode' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示

@@ -1,5 +1,9 @@
 <template>
-  <Dialog v-model="dialogVisible" title="修改用户余额" width="600">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.member.user.components.UserBalanceUpdateForm.k5111941e')"
+    width="600"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,22 +11,41 @@
       :rules="formRules"
       label-width="130px"
     >
-      <el-form-item label="用户编号" prop="id">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserBalanceUpdateForm.kec750ef6')"
+        prop="id"
+      >
         <el-input v-model="formData.id" class="!w-240px" disabled />
       </el-form-item>
-      <el-form-item label="用户昵称" prop="name">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserBalanceUpdateForm.k90542e0a')"
+        prop="name"
+      >
         <el-input v-model="formData.name" class="!w-240px" disabled />
       </el-form-item>
-      <el-form-item label="变动前余额(元)" prop="balance">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserBalanceUpdateForm.k1ba6c9e6')"
+        prop="balance"
+      >
         <el-input :model-value="formData.balance" class="!w-240px" disabled />
       </el-form-item>
-      <el-form-item label="变动类型" prop="changeType">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserBalanceUpdateForm.k85e327a1')"
+        prop="changeType"
+      >
         <el-radio-group v-model="formData.changeType">
-          <el-radio :label="1">增加</el-radio>
-          <el-radio :label="-1">减少</el-radio>
+          <el-radio :label="1">{{
+            t('auto.views.member.user.components.UserBalanceUpdateForm.k605806b6')
+          }}</el-radio>
+          <el-radio :label="-1">{{
+            t('auto.views.member.user.components.UserBalanceUpdateForm.kfe43f157')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="变动余额(元)" prop="changeBalance">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserBalanceUpdateForm.kf49635d8')"
+        prop="changeBalance"
+      >
         <el-input-number
           v-model="formData.changeBalance"
           :min="0"
@@ -31,13 +54,17 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="变动后余额(元)">
+      <el-form-item :label="t('auto.views.member.user.components.UserBalanceUpdateForm.kd3370a49')">
         <el-input :model-value="balanceResult" class="!w-240px" disabled />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.member.user.components.UserBalanceUpdateForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.user.components.UserBalanceUpdateForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -47,9 +74,8 @@ import * as WalletApi from '@/api/pay/wallet/balance'
 import { convertToInteger, formatToFraction } from '@/utils'
 
 /** 修改用户余额表单 */
+const { t } = useI18n()
 defineOptions({ name: 'UpdateBalanceForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -62,7 +88,13 @@ const formData = ref({
   changeType: 1
 })
 const formRules = reactive({
-  changeBalance: [{ required: true, message: '变动余额不能为空', trigger: 'blur' }]
+  changeBalance: [
+    {
+      required: true,
+      message: t('auto.views.member.user.components.UserBalanceUpdateForm.kb6dc6bc9'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -97,11 +129,11 @@ const submitForm = async () => {
   if (!valid) return
 
   if (formData.value.changeBalance <= 0) {
-    message.error('变动余额不能为零')
+    message.error(t('auto.views.member.user.components.UserBalanceUpdateForm.k397a6b8d'))
     return
   }
   if (convertToInteger(balanceResult.value) < 0) {
-    message.error('变动后的余额不能小于 0')
+    message.error(t('auto.views.member.user.components.UserBalanceUpdateForm.k75496128'))
     return
   }
 

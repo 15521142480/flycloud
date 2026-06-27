@@ -2,7 +2,7 @@
   <el-card class="my-card h-full">
     <template #header>
       <h3 class="m-0 px-7 shrink-0 flex items-center justify-between">
-        <span>预览</span>
+        <span>{{ t('action.preview') }}</span>
         <!-- 展示在右上角 -->
         <el-button color="#846af7" v-show="showCopy" @click="copyContent" size="small">
           <template #icon>
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const { copied, copy } = useClipboard() // 粘贴板
 
@@ -89,7 +89,7 @@ const copyContent = () => {
 /** 复制成功的时候 copied.value 为 true */
 watch(copied, (val) => {
   if (val) {
-    message.success('复制成功')
+    message.success(t('auto.views.ai.write.index.components.Right.kc1ef062e'))
   }
 })
 </script>

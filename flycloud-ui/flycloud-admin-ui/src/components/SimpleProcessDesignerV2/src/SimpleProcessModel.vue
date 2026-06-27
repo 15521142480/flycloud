@@ -15,7 +15,9 @@
           type="primary"
           :icon="Select"
           @click="saveSimpleFlowModel"
-          >保存模型</el-button
+          >{{
+            t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessModel.k5db70c89')
+          }}</el-button
         >
       </el-row>
     </div>
@@ -23,8 +25,15 @@
       <ProcessNodeTree v-if="processNodeTree" v-model:flow-node="processNodeTree" />
     </div>
   </div>
-  <Dialog v-model="errorDialogVisible" title="保存失败" width="400" :fullscreen="false">
-    <div class="mb-2">以下节点内容不完善，请修改后保存</div>
+  <Dialog
+    v-model="errorDialogVisible"
+    :title="t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessModel.k40525a73')"
+    width="400"
+    :fullscreen="false"
+  >
+    <div class="mb-2">{{
+      t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessModel.k312358bb')
+    }}</div>
     <div
       class="mb-3 b-rounded-1 bg-gray-100 p-2 line-height-normal"
       v-for="(item, index) in errorNodes"
@@ -33,7 +42,9 @@
       {{ item.name }} : {{ NODE_DEFAULT_TEXT.get(item.type) }}
     </div>
     <template #footer>
-      <el-button type="primary" @click="errorDialogVisible = false">知道了</el-button>
+      <el-button type="primary" @click="errorDialogVisible = false">{{
+        t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessModel.kcb63c62e')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -43,6 +54,7 @@ import ProcessNodeTree from './ProcessNodeTree.vue'
 import { SimpleFlowNode, NodeType, NODE_DEFAULT_TEXT } from './consts'
 import { useWatchNode } from './node'
 import { Select, ZoomOut, ZoomIn, ScaleToOriginal } from '@element-plus/icons-vue'
+const { t } = useI18n()
 defineOptions({
   name: 'SimpleProcessModel'
 })
@@ -59,7 +71,7 @@ const props = defineProps({
   }
 })
 const emits = defineEmits<{
-  'save': [node: SimpleFlowNode | undefined]
+  save: [node: SimpleFlowNode | undefined]
 }>()
 
 const processNodeTree = useWatchNode(props)

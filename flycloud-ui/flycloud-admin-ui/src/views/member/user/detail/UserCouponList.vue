@@ -8,20 +8,24 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.member.user.detail.UserCouponList.k1f291968')"
+          :end-placeholder="t('auto.views.member.user.detail.UserCouponList.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"> <Icon icon="ep:search" class="mr-5px" />搜索 </el-button>
-        <el-button @click="resetQuery"> <Icon icon="ep:refresh" class="mr-5px" />重置 </el-button>
+        <el-button @click="handleQuery">
+          <Icon icon="ep:search" class="mr-5px" />{{ t('common.search') }}
+        </el-button>
+        <el-button @click="resetQuery">
+          <Icon icon="ep:refresh" class="mr-5px" />{{ t('common.reset') }}
+        </el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -39,8 +43,16 @@
 
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="优惠劵" align="center" prop="name" />
-      <el-table-column label="优惠券类型" align="center" prop="discountType">
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserCouponList.k338d0ddd')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserCouponList.kc8d290b1')"
+        align="center"
+        prop="discountType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="scope.row.discountType" />
         </template>
@@ -96,7 +108,7 @@
 import { deleteCoupon, getCouponPage } from '@/api/mall/promotion/coupon/coupon'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'UserCouponList' })
 
 const { userId }: { userId: number } = defineProps({
@@ -124,7 +136,7 @@ const queryFormRef = ref() // 搜索的表单
 const activeTab = ref('all') // Tab 筛选
 const statusTabs = reactive([
   {
-    label: '全部',
+    label: t('auto.views.member.user.detail.UserCouponList.k778fc8f9'),
     value: 'all'
   }
 ])
@@ -159,12 +171,10 @@ const resetQuery = () => {
 const handleDelete = async (id: number) => {
   try {
     // 二次确认
-    await message.confirm(
-      '回收将会收回会员领取的待使用的优惠券，已使用的将无法回收，确定要回收所选优惠券吗？'
-    )
+    await message.confirm(t('auto.views.member.user.detail.UserCouponList.k62865160'))
     // 发起删除
     await deleteCoupon(id)
-    message.notifySuccess('回收成功')
+    message.notifySuccess(t('auto.views.member.user.detail.UserCouponList.kc6670066'))
     // 重新加载列表
     await getList()
   } catch {}

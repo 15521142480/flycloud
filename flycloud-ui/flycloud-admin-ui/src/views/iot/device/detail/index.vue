@@ -7,12 +7,12 @@
   />
   <el-col>
     <el-tabs>
-      <el-tab-pane label="设备信息">
+      <el-tab-pane :label="t('auto.views.iot.device.detail.index.kb6f86d39')">
         <DeviceDetailsInfo :product="product" :device="device" />
       </el-tab-pane>
-      <el-tab-pane label="Topic 列表" />
-      <el-tab-pane label="物模型数据" />
-      <el-tab-pane label="子设备管理" />
+      <el-tab-pane :label="t('auto.views.iot.device.detail.index.k40ec7e68')" />
+      <el-tab-pane :label="t('auto.views.iot.device.detail.index.k0ebd2981')" />
+      <el-tab-pane :label="t('auto.views.iot.device.detail.index.k1a307d6f')" />
     </el-tabs>
   </el-col>
 </template>
@@ -22,7 +22,7 @@ import { DeviceApi, DeviceVO } from '@/api/iot/device'
 import { ProductApi, ProductVO } from '@/api/iot/product'
 import DeviceDetailsHeader from '@/views/iot/device/detail/DeviceDetailsHeader.vue'
 import DeviceDetailsInfo from '@/views/iot/device/detail/DeviceDetailsInfo.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'IoTDeviceDetail' })
 
 const route = useRoute()
@@ -57,7 +57,7 @@ const { delView } = useTagsViewStore() // 视图操作
 const { currentRoute } = useRouter() // 路由
 onMounted(async () => {
   if (!id) {
-    message.warning('参数错误，产品不能为空！')
+    message.warning(t('auto.views.iot.device.detail.index.k07573642'))
     delView(unref(currentRoute))
     return
   }

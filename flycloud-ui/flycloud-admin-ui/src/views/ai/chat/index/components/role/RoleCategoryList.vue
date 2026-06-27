@@ -15,8 +15,6 @@
 </template>
 <script setup lang="ts">
 import { PropType } from 'vue'
-
-// 定义属性
 defineProps({
   categoryList: {
     type: Array as PropType<string[]>,
@@ -25,7 +23,7 @@ defineProps({
   active: {
     type: String,
     required: false,
-    default: '全部'
+    default: ''
   }
 })
 

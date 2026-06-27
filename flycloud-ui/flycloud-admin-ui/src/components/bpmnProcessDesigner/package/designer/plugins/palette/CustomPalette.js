@@ -1,5 +1,7 @@
 import PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider'
 import { assign } from 'min-dash'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export default function CustomPalette(
   palette,
@@ -93,7 +95,7 @@ F.prototype.getPaletteEntries = function () {
     'hand-tool': {
       group: 'tools',
       className: 'bpmn-icon-hand-tool',
-      title: '激活抓手工具',
+      title: t('auto.components.bpmnProcessDesigner.package.designer.plugins.palette.k8f9b1c6d'),
       // title: translate("Activate the hand tool"),
       action: {
         click: function (event) {

@@ -6,8 +6,15 @@
       :readonly="false"
       @save="saveSimpleFlowModel"
     />
-    <Dialog v-model="errorDialogVisible" title="保存失败" width="400" :fullscreen="false">
-      <div class="mb-2">以下节点内容不完善，请修改后保存</div>
+    <Dialog
+      v-model="errorDialogVisible"
+      :title="t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k40525a73')"
+      width="400"
+      :fullscreen="false"
+    >
+      <div class="mb-2">{{
+        t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k312358bb')
+      }}</div>
       <div
         class="mb-3 b-rounded-1 bg-gray-100 p-2 line-height-normal"
         v-for="(item, index) in errorNodes"
@@ -16,7 +23,9 @@
         {{ item.name }} : {{ NODE_DEFAULT_TEXT.get(item.type) }}
       </div>
       <template #footer>
-        <el-button type="primary" @click="errorDialogVisible = false">知道了</el-button>
+        <el-button type="primary" @click="errorDialogVisible = false">{{
+          t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.kcb63c62e')
+        }}</el-button>
       </template>
     </Dialog>
   </div>
@@ -34,7 +43,7 @@ import * as DeptApi from '@/api/system/dept'
 import * as PostApi from '@/api/system/post'
 import * as UserApi from '@/api/system/user'
 import * as UserGroupApi from '@/api/bpm/userGroup'
-
+const { t } = useI18n()
 defineOptions({
   name: 'SimpleProcessDesigner'
 })
@@ -71,7 +80,7 @@ const errorDialogVisible = ref(false)
 let errorNodes: SimpleFlowNode[] = []
 const saveSimpleFlowModel = async (simpleModelNode: SimpleFlowNode) => {
   if (!simpleModelNode) {
-    message.error('模型数据为空')
+    message.error(t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k1d811a51'))
     return
   }
   try {
@@ -82,10 +91,14 @@ const saveSimpleFlowModel = async (simpleModelNode: SimpleFlowNode) => {
     }
     const result = await updateBpmSimpleModel(data)
     if (result) {
-      message.success('修改成功')
+      message.success(
+        t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.kf8913eb4')
+      )
       emits('success')
     } else {
-      message.alert('修改失败')
+      message.alert(
+        t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k9abb4650')
+      )
     }
   } finally {
     loading.value = false
@@ -162,12 +175,12 @@ onMounted(async () => {
     } else {
       // 初始值
       processNodeTree.value = {
-        name: '发起人',
+        name: t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k89d282d2'),
         type: NodeType.START_USER_NODE,
         id: NodeId.START_USER_NODE_ID,
         childNode: {
           id: NodeId.END_EVENT_NODE_ID,
-          name: '结束',
+          name: t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k76b98808'),
           type: NodeType.END_EVENT_NODE
         }
       }

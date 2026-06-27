@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="邮件配置" url="https://doc.iocoder.cn/mail" />
+  <doc-alert
+    :title="t('auto.views.system.mail.log.index.k19d12783')"
+    url="https://doc.iocoder.cn/mail"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -25,7 +28,7 @@
           @click="openDetail(row.id)"
           v-hasPermi="['system:mail-log:query']"
         >
-          详情
+          {{ t('extra.k8357c03b') }}
         </el-button>
       </template>
     </Table>
@@ -38,7 +41,7 @@
 import { allSchemas } from './log.data'
 import * as MailLogApi from '@/api/system/mail/log'
 import MailLogDetail from './MailLogDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMailLog' })
 
 // tableObject：表格的属性对象，可获得分页大小、条数等属性

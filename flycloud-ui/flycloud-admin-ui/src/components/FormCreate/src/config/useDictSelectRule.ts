@@ -3,12 +3,14 @@ import * as DictDataApi from '@/api/system/dict/dict.type'
 import { localeProps, makeRequiredRule } from '@/components/FormCreate/src/utils'
 import { selectRule } from '@/components/FormCreate/src/config/selectRule'
 import { cloneDeep } from 'lodash-es'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  * 字典选择器规则，如果规则使用到动态数据则需要单独配置不能使用 useSelectRule
  */
+const { t } = useI18n()
+
 export const useDictSelectRule = () => {
-  const label = '字典选择器'
+  const label = t('auto.components.FormCreate.src.config.useDictSelectRule.k091e85ed')
   const name = 'DictSelect'
   const rules = cloneDeep(selectRule)
   const dictOptions = ref<{ label: string; value: string }[]>([]) // 字典类型下拉数据
@@ -42,19 +44,28 @@ export const useDictSelectRule = () => {
         {
           type: 'select',
           field: 'dictType',
-          title: '字典类型',
+          title: t('auto.components.FormCreate.src.config.useDictSelectRule.k6dde52f3'),
           value: '',
           options: dictOptions.value
         },
         {
           type: 'select',
           field: 'valueType',
-          title: '字典值类型',
+          title: t('auto.components.FormCreate.src.config.useDictSelectRule.ke6d8c68f'),
           value: 'str',
           options: [
-            { label: '数字', value: 'int' },
-            { label: '字符串', value: 'str' },
-            { label: '布尔值', value: 'bool' }
+            {
+              label: t('auto.components.FormCreate.src.config.useDictSelectRule.k7a4dc825'),
+              value: 'int'
+            },
+            {
+              label: t('auto.components.FormCreate.src.config.useDictSelectRule.k4dc9621a'),
+              value: 'str'
+            },
+            {
+              label: t('auto.components.FormCreate.src.config.useDictSelectRule.k642a2c8a'),
+              value: 'bool'
+            }
           ]
         },
         ...rules

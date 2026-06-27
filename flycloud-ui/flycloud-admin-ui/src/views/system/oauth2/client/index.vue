@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="OAuth 2.0（SSO 单点登录)" url="https://doc.iocoder.cn/oauth2/" />
+  <doc-alert
+    :title="t('auto.views.system.oauth2.client.index.kcf78c257')"
+    url="https://doc.iocoder.cn/oauth2/"
+  />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -10,17 +13,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="应用名" prop="name">
+      <el-form-item :label="t('auto.views.system.oauth2.client.index.k6c19fe01')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入应用名"
+          :placeholder="t('auto.views.system.oauth2.client.index.k445d8859')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.system.oauth2.client.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -30,15 +38,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           plain
           type="primary"
           @click="openForm('create')"
           v-hasPermi="['system:oauth2-client:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k7c50bf93') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -47,10 +59,26 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="客户端编号" align="center" prop="clientId" />
-      <el-table-column label="客户端密钥" align="center" prop="secret" />
-      <el-table-column label="应用名" align="center" prop="name" />
-      <el-table-column label="应用图标" align="center" prop="logo">
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.index.k090a075b')"
+        align="center"
+        prop="clientId"
+      />
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.index.k65f8d895')"
+        align="center"
+        prop="secret"
+      />
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.index.k6c19fe01')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.index.kf93d423d')"
+        align="center"
+        prop="logo"
+      >
         <template #default="scope">
           <img width="40px" height="40px" :src="scope.row.logo" />
         </template>
@@ -124,11 +152,10 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ClientApi from '@/api/system/oauth2/client'
 import ClientForm from './ClientForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemOAuth2Client' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

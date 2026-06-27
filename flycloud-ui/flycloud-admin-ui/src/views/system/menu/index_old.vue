@@ -1,5 +1,4 @@
 <template>
-
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form
@@ -9,21 +8,21 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="菜单名称" prop="name">
+      <el-form-item :label="t('auto.views.system.menu.index_old.k2637dede')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入菜单名称"
+          :placeholder="t('auto.views.system.menu.index_old.k2bde7388')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          placeholder="请选择菜单状态"
+          :placeholder="t('auto.views.system.menu.index_old.kf815ae6d')"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -36,11 +35,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k2c893648') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k8e9e63df') }}
         </el-button>
         <el-button
           v-hasPermi="['system:menu:create']"
@@ -49,15 +48,15 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k7bb7a691') }}
         </el-button>
         <el-button plain type="danger" @click="toggleExpandAll">
           <Icon class="mr-5px" icon="ep:sort" />
-          展开/折叠
+          {{ t('extra.k3cd3f26c') }}
         </el-button>
         <el-button plain @click="refreshMenu">
           <Icon class="mr-5px" icon="ep:refresh" />
-          刷新菜单缓存
+          {{ t('extra.k9330851b') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -72,8 +71,18 @@
       :default-expand-all="isExpandAll"
       row-key="id"
     >
-      <el-table-column :show-overflow-tooltip="true" label="菜单名称" prop="name" width="250" />
-      <el-table-column align="center" label="图标" prop="icon" width="100">
+      <el-table-column
+        :show-overflow-tooltip="true"
+        :label="t('auto.views.system.menu.index_old.k2637dede')"
+        prop="name"
+        width="250"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.menu.index_old.k1f24c1e5')"
+        prop="icon"
+        width="100"
+      >
         <template #default="scope">
           <Icon :icon="scope.row.icon" />
         </template>
@@ -137,11 +146,10 @@ import { MenuVO } from '@/api/system/menu'
 import MenuForm from './MenuForm.vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMenu' })
 
 const { wsCache } = useCache()
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const loading = ref(true) // 列表的加载中
@@ -194,7 +202,10 @@ const toggleExpandAll = () => {
 /** 刷新菜单缓存按钮操作 */
 const refreshMenu = async () => {
   try {
-    await message.confirm('即将更新缓存刷新浏览器！', '刷新菜单缓存')
+    await message.confirm(
+      t('auto.views.system.menu.index_old.k42ce1004'),
+      t('auto.views.system.menu.index_old.k9476c72d')
+    )
     // 清空，从而触发刷新
     wsCache.delete(CACHE_KEY.USER)
     wsCache.delete(CACHE_KEY.ROLE_ROUTERS)

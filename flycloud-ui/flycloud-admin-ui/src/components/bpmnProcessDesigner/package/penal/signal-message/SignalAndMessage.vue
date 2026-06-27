@@ -1,25 +1,91 @@
 <template>
   <div class="panel-tab__content">
     <div class="panel-tab__content--title">
-      <span><Icon icon="ep:menu" style="margin-right: 8px; color: #555" />消息列表</span>
-      <XButton type="primary" title="创建新消息" preIcon="ep:plus" @click="openModel('message')" />
+      <span
+        ><Icon icon="ep:menu" style="margin-right: 8px; color: #555" />{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k45073998'
+          )
+        }}</span
+      >
+      <XButton
+        type="primary"
+        :title="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k79761d76'
+          )
+        "
+        preIcon="ep:plus"
+        @click="openModel('message')"
+      />
     </div>
     <el-table :data="messageList" border>
-      <el-table-column type="index" label="序号" width="60px" />
-      <el-table-column label="消息ID" prop="id" max-width="300px" show-overflow-tooltip />
-      <el-table-column label="消息名称" prop="name" max-width="300px" show-overflow-tooltip />
+      <el-table-column type="index" :label="t('common.index')" width="60px" />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.ka751d495'
+          )
+        "
+        prop="id"
+        max-width="300px"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k45229f4b'
+          )
+        "
+        prop="name"
+        max-width="300px"
+        show-overflow-tooltip
+      />
     </el-table>
     <div
       class="panel-tab__content--title"
       style="padding-top: 8px; margin-top: 8px; border-top: 1px solid #eee"
     >
-      <span><Icon icon="ep:menu" style="margin-right: 8px; color: #555" />信号列表</span>
-      <XButton type="primary" title="创建新信号" preIcon="ep:plus" @click="openModel('signal')" />
+      <span
+        ><Icon icon="ep:menu" style="margin-right: 8px; color: #555" />{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k51df48d8'
+          )
+        }}</span
+      >
+      <XButton
+        type="primary"
+        :title="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.kc723fc3d'
+          )
+        "
+        preIcon="ep:plus"
+        @click="openModel('signal')"
+      />
     </div>
     <el-table :data="signalList" border>
-      <el-table-column type="index" label="序号" width="60px" />
-      <el-table-column label="信号ID" prop="id" max-width="300px" show-overflow-tooltip />
-      <el-table-column label="信号名称" prop="name" max-width="300px" show-overflow-tooltip />
+      <el-table-column type="index" :label="t('common.index')" width="60px" />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.kd9f90cf0'
+          )
+        "
+        prop="id"
+        max-width="300px"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        :label="
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k7d130b60'
+          )
+        "
+        prop="name"
+        max-width="300px"
+        show-overflow-tooltip
+      />
     </el-table>
 
     <el-dialog
@@ -39,13 +105,22 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addNewObject">保 存</el-button>
+        <el-button @click="dialogVisible = false">{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.kd54aeadc'
+          )
+        }}</el-button>
+        <el-button type="primary" @click="addNewObject">{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.ka36a1b46'
+          )
+        }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
+const { t } = useI18n()
 defineOptions({ name: 'SignalAndMassage' })
 
 const message = useMessage()
@@ -59,9 +134,29 @@ const messageIdMap = ref()
 const signalIdMap = ref()
 const modelConfig = computed(() => {
   if (modelType.value === 'message') {
-    return { title: '创建消息', idLabel: '消息ID', nameLabel: '消息名称' }
+    return {
+      title: t(
+        'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k68b097b3'
+      ),
+      idLabel: t(
+        'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.ka751d495'
+      ),
+      nameLabel: t(
+        'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k45229f4b'
+      )
+    }
   } else {
-    return { title: '创建信号', idLabel: '信号ID', nameLabel: '信号名称' }
+    return {
+      title: t(
+        'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.kaf6fa56e'
+      ),
+      idLabel: t(
+        'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.kd9f90cf0'
+      ),
+      nameLabel: t(
+        'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k7d130b60'
+      )
+    }
   }
 })
 const bpmnInstances = () => (window as any)?.bpmnInstances
@@ -92,13 +187,21 @@ const openModel = (type) => {
 const addNewObject = () => {
   if (modelType.value === 'message') {
     if (messageIdMap.value[modelObjectForm.value.id]) {
-      message.error('该消息已存在，请修改id后重新保存')
+      message.error(
+        t(
+          'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.ke7070e6b'
+        )
+      )
     }
     const messageRef = bpmnInstances().moddle.create('bpmn:Message', modelObjectForm.value)
     rootElements.value.push(messageRef)
   } else {
     if (signalIdMap.value[modelObjectForm.value.id]) {
-      message.error('该信号已存在，请修改id后重新保存')
+      message.error(
+        t(
+          'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.k48f39b26'
+        )
+      )
     }
     const signalRef = bpmnInstances().moddle.create('bpmn:Signal', modelObjectForm.value)
     rootElements.value.push(signalRef)

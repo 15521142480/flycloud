@@ -30,7 +30,7 @@ import {
   StatisticsPerformanceApi,
   StatisticsPerformanceRespVO
 } from '@/api/crm/statistics/performance'
-
+const { t } = useI18n()
 defineOptions({ name: 'ContractPricePerformance' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -48,28 +48,38 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '当月合同金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractPricePerformance.k61383ef8'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '上月合同金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractPricePerformance.k4175c868'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '去年同月合同金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractPricePerformance.k49a577b6'
+      ),
       type: 'line',
       data: []
     },
     {
-      name: '环比增长率（%）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractPricePerformance.k31271e3b'
+      ),
       type: 'line',
       yAxisIndex: 1,
       data: []
     },
     {
-      name: '同比增长率（%）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractPricePerformance.k6ab6aea3'
+      ),
       type: 'line',
       yAxisIndex: 1,
       data: []
@@ -83,7 +93,12 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '客户总量分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t(
+          'auto.views.crm.statistics.performance.components.ContractPricePerformance.ke6a3379c'
+        )
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -95,7 +110,9 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '金额（元）',
+      name: t(
+        'auto.views.crm.statistics.performance.components.ContractPricePerformance.kbced9ce8'
+      ),
       axisTick: {
         show: false
       },
@@ -145,7 +162,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.kb6fed9af'),
     data: []
   }
 }) as EChartsOption
@@ -197,16 +214,29 @@ const loadData = async () => {
 // 初始化数据
 const columnsData = reactive([])
 const tableData = reactive([
-  { title: '当月合同金额统计（元）' },
-  { title: '上月合同金额统计（元）' },
-  { title: '去年当月合同金额统计（元）' },
-  { title: '环比增长率（%）' },
-  { title: '同比增长率（%）' }
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.kfb5a2504')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.kad941d1a')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.kb230a797')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.k31271e3b')
+  },
+  {
+    title: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.k6ab6aea3')
+  }
 ])
 
 // 定义 init 方法
 const convertListData = () => {
-  const columnObj = { label: '日期', prop: 'title' }
+  const columnObj = {
+    label: t('auto.views.crm.statistics.performance.components.ContractPricePerformance.kb6fed9af'),
+    prop: 'title'
+  }
   columnsData.splice(0, columnsData.length) //清空数组
   columnsData.push(columnObj)
 

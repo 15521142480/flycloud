@@ -7,22 +7,41 @@
       :rules="formRules"
       label-width="160px"
     >
-      <el-form-item label="客户端编号" prop="secret">
-        <el-input v-model="formData.clientId" placeholder="请输入客户端编号" />
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k090a075b')"
+        prop="secret"
+      >
+        <el-input
+          v-model="formData.clientId"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k146a2f93')"
+        />
       </el-form-item>
-      <el-form-item label="客户端密钥" prop="secret">
-        <el-input v-model="formData.secret" placeholder="请输入客户端密钥" />
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k65f8d895')"
+        prop="secret"
+      >
+        <el-input
+          v-model="formData.secret"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k3da81e00')"
+        />
       </el-form-item>
-      <el-form-item label="应用名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入应用名" />
+      <el-form-item :label="t('auto.views.system.oauth2.client.ClientForm.k6c19fe01')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k445d8859')"
+        />
       </el-form-item>
-      <el-form-item label="应用图标">
+      <el-form-item :label="t('auto.views.system.oauth2.client.ClientForm.kf93d423d')">
         <UploadImg v-model="formData.logo" :limit="1" />
       </el-form-item>
-      <el-form-item label="应用描述">
-        <el-input v-model="formData.description" placeholder="请输入应用名" type="textarea" />
+      <el-form-item :label="t('auto.views.system.oauth2.client.ClientForm.k92dad4cc')">
+        <el-input
+          v-model="formData.description"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k445d8859')"
+          type="textarea"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -33,18 +52,33 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="访问令牌的有效期" prop="accessTokenValiditySeconds">
-        <el-input-number v-model="formData.accessTokenValiditySeconds" placeholder="单位：秒" />
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.kaa4907c8')"
+        prop="accessTokenValiditySeconds"
+      >
+        <el-input-number
+          v-model="formData.accessTokenValiditySeconds"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.ka8be7968')"
+        />
       </el-form-item>
-      <el-form-item label="刷新令牌的有效期" prop="refreshTokenValiditySeconds">
-        <el-input-number v-model="formData.refreshTokenValiditySeconds" placeholder="单位：秒" />
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k904a9d49')"
+        prop="refreshTokenValiditySeconds"
+      >
+        <el-input-number
+          v-model="formData.refreshTokenValiditySeconds"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.ka8be7968')"
+        />
       </el-form-item>
-      <el-form-item label="授权类型" prop="authorizedGrantTypes">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k3006e441')"
+        prop="authorizedGrantTypes"
+      >
         <el-select
           v-model="formData.authorizedGrantTypes"
           filterable
           multiple
-          placeholder="请输入授权类型"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k7564cd28')"
           style="width: 500px"
         >
           <el-option
@@ -55,36 +89,45 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="授权范围" prop="scopes">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k00e778c5')"
+        prop="scopes"
+      >
         <el-select
           v-model="formData.scopes"
           filterable
           multiple
           allow-create
-          placeholder="请输入授权范围"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k2e110e3a')"
           style="width: 500px"
         >
           <el-option v-for="scope in formData.scopes" :key="scope" :label="scope" :value="scope" />
         </el-select>
       </el-form-item>
-      <el-form-item label="自动授权范围" prop="autoApproveScopes">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k8f13730a')"
+        prop="autoApproveScopes"
+      >
         <el-select
           v-model="formData.autoApproveScopes"
           filterable
           multiple
-          placeholder="请输入授权范围"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k2e110e3a')"
           style="width: 500px"
         >
           <el-option v-for="scope in formData.scopes" :key="scope" :label="scope" :value="scope" />
         </el-select>
       </el-form-item>
-      <el-form-item label="可重定向的 URI 地址" prop="redirectUris">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k3c3c5137')"
+        prop="redirectUris"
+      >
         <el-select
           v-model="formData.redirectUris"
           allow-create
           filterable
           multiple
-          placeholder="请输入可重定向的 URI 地址"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k68c23ca3')"
           style="width: 500px"
         >
           <el-option
@@ -95,13 +138,16 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="权限" prop="authorities">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.k560165a6')"
+        prop="authorities"
+      >
         <el-select
           v-model="formData.authorities"
           allow-create
           filterable
           multiple
-          placeholder="请输入权限"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k3b039a4c')"
           style="width: 500px"
         >
           <el-option
@@ -112,13 +158,16 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="资源" prop="resourceIds">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.kc5ca3950')"
+        prop="resourceIds"
+      >
         <el-select
           v-model="formData.resourceIds"
           allow-create
           filterable
           multiple
-          placeholder="请输入资源"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k5405c1e9')"
           style="width: 500px"
         >
           <el-option
@@ -129,17 +178,24 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="附加信息" prop="additionalInformation">
+      <el-form-item
+        :label="t('auto.views.system.oauth2.client.ClientForm.kb14734ef')"
+        prop="additionalInformation"
+      >
         <el-input
           v-model="formData.additionalInformation"
-          placeholder="请输入附加信息，JSON 格式数据"
+          :placeholder="t('auto.views.system.oauth2.client.ClientForm.k613d70a7')"
           type="textarea"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.oauth2.client.ClientForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.oauth2.client.ClientForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -147,10 +203,8 @@
 import { DICT_TYPE, getDictOptions, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as ClientApi from '@/api/system/oauth2/client'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemOAuth2ClientForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -176,19 +230,69 @@ const formData = ref({
   additionalInformation: undefined
 })
 const formRules = reactive({
-  clientId: [{ required: true, message: '客户端编号不能为空', trigger: 'blur' }],
-  secret: [{ required: true, message: '客户端密钥不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '应用名不能为空', trigger: 'blur' }],
-  logo: [{ required: true, message: '应用图标不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
+  clientId: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.kd6a54298'),
+      trigger: 'blur'
+    }
+  ],
+  secret: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.k2de1c4e8'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.kf6f9e61d'),
+      trigger: 'blur'
+    }
+  ],
+  logo: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.k0e5034e1'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ],
   accessTokenValiditySeconds: [
-    { required: true, message: '访问令牌的有效期不能为空', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.k2e56aa3e'),
+      trigger: 'blur'
+    }
   ],
   refreshTokenValiditySeconds: [
-    { required: true, message: '刷新令牌的有效期不能为空', trigger: 'blur' }
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.k4b515ea9'),
+      trigger: 'blur'
+    }
   ],
-  redirectUris: [{ required: true, message: '可重定向的 URI 地址不能为空', trigger: 'blur' }],
-  authorizedGrantTypes: [{ required: true, message: '授权类型不能为空', trigger: 'blur' }]
+  redirectUris: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.kc0939763'),
+      trigger: 'blur'
+    }
+  ],
+  authorizedGrantTypes: [
+    {
+      required: true,
+      message: t('auto.views.system.oauth2.client.ClientForm.kda4052ca'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

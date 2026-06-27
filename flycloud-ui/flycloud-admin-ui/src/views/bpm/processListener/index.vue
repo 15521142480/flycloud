@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,17 +8,22 @@
       :inline="true"
       label-width="85px"
     >
-      <el-form-item label="名字" prop="name">
+      <el-form-item :label="t('auto.views.bpm.processListener.index.k364bd1bf')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名字"
+          :placeholder="t('auto.views.bpm.processListener.index.k010c1585')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择类型" clearable class="!w-240px">
+      <el-form-item :label="t('auto.views.bpm.processListener.index.ke4e46c72')" prop="type">
+        <el-select
+          v-model="queryParams.type"
+          :placeholder="t('auto.views.bpm.processListener.index.k97f47b78')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.BPM_PROCESS_LISTENER_TYPE)"
             :key="dict.value"
@@ -29,15 +33,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['bpm:manage:listener:saveOrUpdate']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k6250ed32') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -45,10 +53,29 @@
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" height="calc(100vh - 310px)">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="名字" align="center" prop="name" />
-      <el-table-column label="类型" align="center" prop="type" width="110px">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      :stripe="true"
+      :show-overflow-tooltip="true"
+      height="calc(100vh - 310px)"
+    >
+      <el-table-column
+        :label="t('auto.views.bpm.processListener.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processListener.index.k364bd1bf')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processListener.index.ke4e46c72')"
+        align="center"
+        prop="type"
+        width="110px"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_LISTENER_TYPE" :value="scope.row.type" />
         </template>
@@ -58,7 +85,7 @@
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="事件" align="center" prop="event" width="100px"/>
+      <el-table-column label="事件" align="center" prop="event" width="100px" />
       <el-table-column label="值类型" align="center" prop="valueType" width="110px">
         <template #default="scope">
           <dict-tag
@@ -116,10 +143,10 @@ import { ProcessListenerApi, ProcessListenerVO } from '@/api/bpm/processListener
 import ProcessListenerForm from './ProcessListenerForm.vue'
 
 /** BPM 流程 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessListener' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProcessListenerVO[]>([]) // 列表的数据

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <el-form
       ref="formRef"
@@ -12,13 +11,13 @@
         <!-- 操作 -->
         <template #header>
           <div class="flex items-center justify-between">
-            <CardTitle title="客户公海规则设置" />
+            <CardTitle :title="t('auto.views.crm.customer.poolConfig.index.k8980fac2')" />
             <el-button
               type="primary"
               @click="onSubmit"
               v-hasPermi="['crm:customer-pool-config:update']"
             >
-              保存
+              {{ t('extra.k792def23') }}
             </el-button>
           </div>
         </template>
@@ -59,11 +58,10 @@
 <script setup lang="ts">
 import * as CustomerPoolConfigApi from '@/api/crm/customer/poolConfig'
 import { CardTitle } from '@/components/Card'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmCustomerPoolConfig' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const formLoading = ref(false)
 const formData = ref({
@@ -74,7 +72,13 @@ const formData = ref({
   notifyDays: undefined
 })
 const formRules = reactive({
-  enabled: [{ required: true, message: '是否启用客户公海不能为空', trigger: 'blur' }]
+  enabled: [
+    {
+      required: true,
+      message: t('auto.views.crm.customer.poolConfig.index.k47762e80'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

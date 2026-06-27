@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="站内信配置" url="https://doc.iocoder.cn/notify/" />
+  <doc-alert
+    :title="t('auto.views.system.notify.my.index.k182bebee')"
+    url="https://doc.iocoder.cn/notify/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,10 +13,10 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="是否已读" prop="readStatus">
+      <el-form-item :label="t('auto.views.system.notify.my.index.kbfc6b329')" prop="readStatus">
         <el-select
           v-model="queryParams.readStatus"
-          placeholder="请选择状态"
+          :placeholder="t('auto.views.system.notify.my.index.kdba277df')"
           clearable
           class="!w-240px"
         >
@@ -25,25 +28,29 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="发送时间" prop="createTime">
+      <el-form-item :label="t('auto.views.system.notify.my.index.k98c64dd6')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.notify.my.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.notify.my.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button @click="handleUpdateList">
-          <Icon icon="ep:reading" class="mr-5px" /> 标记已读
+          <Icon icon="ep:reading" class="mr-5px" /> {{ t('extra.k9e8f0b79') }}
         </el-button>
         <el-button @click="handleUpdateAll">
-          <Icon icon="ep:reading" class="mr-5px" /> 全部已读
+          <Icon icon="ep:reading" class="mr-5px" /> {{ t('extra.kaa3612f1') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -59,15 +66,25 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" :selectable="selectable" :reserve-selection="true" />
-      <el-table-column label="发送人" align="center" prop="templateNickname" width="180" />
       <el-table-column
-        label="发送时间"
+        :label="t('auto.views.system.notify.my.index.k3bc6e681')"
+        align="center"
+        prop="templateNickname"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.system.notify.my.index.k98c64dd6')"
         align="center"
         prop="createTime"
         width="200"
         :formatter="dateFormatter"
       />
-      <el-table-column label="类型" align="center" prop="templateType" width="180">
+      <el-table-column
+        :label="t('auto.views.system.notify.my.index.ke4e46c72')"
+        align="center"
+        prop="templateType"
+        width="180"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_NOTIFY_TEMPLATE_TYPE" :value="scope.row.templateType" />
         </template>
@@ -120,7 +137,7 @@ import { DICT_TYPE, getBoolDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'
 import MyNotifyMessageDetail from './MyNotifyMessageDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMyNotify' })
 
 const message = useMessage() // 消息
@@ -181,7 +198,7 @@ const handleReadOne = async (id) => {
 /** 标记全部站内信已读 **/
 const handleUpdateAll = async () => {
   await NotifyMessageApi.updateAllNotifyMessageRead()
-  message.success('全部已读成功！')
+  message.success(t('auto.views.system.notify.my.index.k4e12619e'))
   tableRef.value.clearSelection()
   await getList()
 }
@@ -192,7 +209,7 @@ const handleUpdateList = async () => {
     return
   }
   await NotifyMessageApi.updateNotifyMessageRead(selectedIds.value)
-  message.success('批量已读成功！')
+  message.success(t('auto.views.system.notify.my.index.k649aac3c'))
   tableRef.value.clearSelection()
   await getList()
 }

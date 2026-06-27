@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,17 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="产品名称" prop="name">
+      <el-form-item :label="t('auto.views.crm.product.index.kabc0ac79')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入产品名称"
+          :placeholder="t('auto.views.crm.product.index.k8d76e9ae')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.crm.product.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.CRM_PRODUCT_STATUS)"
             :key="dict.value"
@@ -29,10 +33,14 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"> <Icon icon="ep:search" class="mr-5px" /> 搜索 </el-button>
-        <el-button @click="resetQuery"> <Icon icon="ep:refresh" class="mr-5px" /> 重置 </el-button>
+        <el-button @click="handleQuery">
+          <Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}
+        </el-button>
+        <el-button @click="resetQuery">
+          <Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}
+        </el-button>
         <el-button type="primary" @click="openForm('create')" v-hasPermi="['crm:product:create']">
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k88e0cc73') }}
         </el-button>
         <el-button
           type="success"
@@ -42,7 +50,7 @@
           v-hasPermi="['crm:product:export']"
         >
           <Icon icon="ep:download" class="mr-5px" />
-          导出
+          {{ t('extra.k67f0095a') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -51,7 +59,12 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="产品名称" align="center" prop="name" width="160">
+      <el-table-column
+        :label="t('auto.views.crm.product.index.kabc0ac79')"
+        align="center"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -135,11 +148,10 @@ import download from '@/utils/download'
 import * as ProductApi from '@/api/crm/product'
 import ProductForm from './ProductForm.vue'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmProduct' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -210,7 +222,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductApi.exportProduct(queryParams)
-    download.excel(data, '产品.xls')
+    download.excel(data, t('auto.views.crm.product.index.k02eb085b'))
   } catch {
   } finally {
     exportLoading.value = false

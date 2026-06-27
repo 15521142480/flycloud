@@ -7,31 +7,43 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名字" />
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo02.Demo02CategoryForm.k364bd1bf')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.infra.demo.demo02.Demo02CategoryForm.k010c1585')"
+        />
       </el-form-item>
-      <el-form-item label="父级编号" prop="parentId">
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo02.Demo02CategoryForm.kf4bbdb1f')"
+        prop="parentId"
+      >
         <el-tree-select
           v-model="formData.parentId"
           :data="demo02CategoryTree"
           :props="defaultProps"
           check-strictly
           default-expand-all
-          placeholder="请选择父级编号"
+          :placeholder="t('auto.views.infra.demo.demo02.Demo02CategoryForm.k6d19be2a')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.infra.demo.demo02.Demo02CategoryForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.infra.demo.demo02.Demo02CategoryForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script setup lang="ts">
 import * as Demo02CategoryApi from '@/api/infra/demo/demo02'
 import { defaultProps, handleTree } from '@/utils/tree'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -44,8 +56,20 @@ const formData = ref({
   parentId: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
-  parentId: [{ required: true, message: '父级编号不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo02.Demo02CategoryForm.k46f3776c'),
+      trigger: 'blur'
+    }
+  ],
+  parentId: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo02.Demo02CategoryForm.k3bf73b47'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const demo02CategoryTree = ref() // 树形结构
@@ -107,7 +131,11 @@ const resetForm = () => {
 const getDemo02CategoryTree = async () => {
   demo02CategoryTree.value = []
   const data = await Demo02CategoryApi.getDemo02CategoryList()
-  const root: Tree = { id: 0, name: '顶级示例分类', children: [] }
+  const root: Tree = {
+    id: 0,
+    name: t('auto.views.infra.demo.demo02.Demo02CategoryForm.kd666fa34'),
+    children: []
+  }
   root.children = handleTree(data, 'id', 'parentId')
   demo02CategoryTree.value.push(root)
 }

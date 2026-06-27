@@ -3,28 +3,28 @@
     <template #header>
       <div class="flex items-center" style="width: 100%">
         <div :style="{ width: orderTableHeadWidthList[0] + 'px' }" class="flex justify-center">
-          商品信息
+          {{ t('extra.k7519f060') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[1] + 'px' }" class="flex justify-center">
-          单价(元)/数量
+          {{ t('extra.kb6d2f20e') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[2] + 'px' }" class="flex justify-center">
-          售后状态
+          {{ t('extra.k81df0241') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[3] + 'px' }" class="flex justify-center">
-          实付金额(元)
+          {{ t('extra.k20c122c4') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[4] + 'px' }" class="flex justify-center">
-          买家/收货人
+          {{ t('extra.kd573ba88') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[5] + 'px' }" class="flex justify-center">
-          配送方式
+          {{ t('extra.k09ada78b') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[6] + 'px' }" class="flex justify-center">
-          订单状态
+          {{ t('extra.k7617e1bf') }}
         </div>
         <div :style="{ width: orderTableHeadWidthList[7] + 'px' }" class="flex justify-center">
-          操作
+          {{ t('extra.k9ab0bdab') }}
         </div>
       </div>
     </template>
@@ -176,6 +176,7 @@ import type { TableColumnCtx, TableInstance } from 'element-plus'
 import { createImageViewer } from '@/components/ImageViewer'
 import type { DeliveryPickUpStoreVO } from '@/api/mall/trade/delivery/pickUpStore'
 
+const { t } = useI18n()
 defineOptions({ name: 'OrderTableColumn' })
 
 const props = defineProps<{

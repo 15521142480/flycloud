@@ -1,6 +1,9 @@
 <!-- 商品发布 - 库存价格 - 添加属性 -->
 <template>
-  <Dialog v-model="dialogVisible" title="添加商品属性">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.product.spu.form.ProductPropertyAddForm.k2e898bab')"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -9,7 +12,10 @@
       label-width="80px"
       @keydown.enter.prevent="submitForm"
     >
-      <el-form-item label="属性名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.product.spu.form.ProductPropertyAddForm.k604e8442')"
+        prop="name"
+      >
         <el-select
           v-model="formData.name"
           :reserve-keyword="false"
@@ -17,7 +23,7 @@
           class="!w-360px"
           default-first-option
           filterable
-          placeholder="请选择属性名称。如果不存在，可手动输入选择"
+          :placeholder="t('auto.views.mall.product.spu.form.ProductPropertyAddForm.k98c55f7e')"
         >
           <el-option
             v-for="item in attributeOptions"
@@ -29,17 +35,19 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.product.spu.form.ProductPropertyAddForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.product.spu.form.ProductPropertyAddForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as PropertyApi from '@/api/mall/product/property'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductPropertyForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -48,7 +56,13 @@ const formData = ref({
   name: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.spu.form.ProductPropertyAddForm.kca898456'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const attributeList = ref([]) // 商品属性列表
@@ -86,7 +100,7 @@ const submitForm = async () => {
   // 1.1 重复添加校验
   for (const attrItem of attributeList.value) {
     if (attrItem.name === formData.value.name) {
-      return message.error('该属性已存在，请勿重复添加')
+      return message.error(t('auto.views.mall.product.spu.form.ProductPropertyAddForm.k7b01006d'))
     }
   }
   // 1.2 校验表单

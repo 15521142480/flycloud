@@ -8,19 +8,19 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item label="转账单号" prop="no">
+      <el-form-item :label="t('auto.views.pay.transfer.index.kd3f2bbea')" prop="no">
         <el-input
           v-model="queryParams.no"
-          placeholder="请输入转账单号"
+          :placeholder="t('auto.views.pay.transfer.index.kff2bf104')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="转账渠道" prop="channelCode">
+      <el-form-item :label="t('auto.views.pay.transfer.index.kb358c815')" prop="channelCode">
         <el-select
           v-model="queryParams.channelCode"
-          placeholder="请选择支付渠道"
+          :placeholder="t('auto.views.pay.transfer.index.kf9bee2a2')"
           clearable
           class="!w-240px"
         >
@@ -32,17 +32,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="商户单号" prop="merchantTransferId">
+      <el-form-item :label="t('auto.views.pay.transfer.index.k3dc2266a')" prop="merchantTransferId">
         <el-input
           v-model="queryParams.merchantTransferId"
-          placeholder="请输入商户单号"
+          :placeholder="t('auto.views.pay.transfer.index.k7c0615c3')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择类型" clearable class="!w-240px">
+      <el-form-item :label="t('auto.views.pay.transfer.index.ke4e46c72')" prop="type">
+        <el-select
+          v-model="queryParams.type"
+          :placeholder="t('auto.views.pay.transfer.index.k97f47b78')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.PAY_TRANSFER_TYPE)"
             :key="dict.value"
@@ -51,10 +56,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="转账状态" prop="status">
+      <el-form-item :label="t('auto.views.pay.transfer.index.k1a3ddc07')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择转账状态"
+          :placeholder="t('auto.views.pay.transfer.index.k8dd46b56')"
           clearable
           class="!w-240px"
         >
@@ -67,38 +72,42 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="收款人姓名" prop="userName">
+      <el-form-item :label="t('auto.views.pay.transfer.index.kad69bce0')" prop="userName">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入收款人姓名"
+          :placeholder="t('auto.views.pay.transfer.index.k9d80ad0f')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="渠道单号" prop="channelTransferNo">
+      <el-form-item :label="t('auto.views.pay.transfer.index.ke551deaa')" prop="channelTransferNo">
         <el-input
           v-model="queryParams.channelTransferNo"
-          placeholder="渠道单号"
+          :placeholder="t('auto.views.pay.transfer.index.ke551deaa')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.pay.transfer.index.k1f291968')"
+          :end-placeholder="t('auto.views.pay.transfer.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -106,16 +115,29 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.pay.transfer.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="应用编号" align="center" prop="appId" />
-      <el-table-column label="类型" align="center" prop="type" width="120">
+      <el-table-column
+        :label="t('auto.views.pay.transfer.index.k396d9d78')"
+        align="center"
+        prop="appId"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.transfer.index.ke4e46c72')"
+        align="center"
+        prop="type"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_TRANSFER_TYPE" :value="scope.row.type" />
         </template>
@@ -194,10 +216,10 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as TransferApi from '@/api/pay/transfer'
 import { DICT_TYPE, getStrDictOptions } from '@/utils/dict'
 import TransferDetail from './TransferDetail.vue'
+const { t } = useI18n()
 defineOptions({ name: 'PayTransfer' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

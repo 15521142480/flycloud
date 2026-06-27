@@ -9,19 +9,22 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="时间范围" prop="orderDate">
+      <el-form-item
+        :label="t('auto.views.crm.statistics.portrait.index.k2be90408')"
+        prop="orderDate"
+      >
         <el-date-picker
           v-model="queryParams.times"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           :shortcuts="defaultShortcuts"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.crm.statistics.portrait.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.crm.statistics.portrait.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="归属部门" prop="deptId">
+      <el-form-item :label="t('auto.views.crm.statistics.portrait.index.k22a05484')" prop="deptId">
         <el-tree-select
           v-model="queryParams.deptId"
           :data="deptList"
@@ -29,12 +32,17 @@
           check-strictly
           class="!w-240px"
           node-key="id"
-          placeholder="请选择归属部门"
+          :placeholder="t('auto.views.crm.statistics.portrait.index.k197cefba')"
           @change="queryParams.userId = undefined"
         />
       </el-form-item>
-      <el-form-item label="员工" prop="userId">
-        <el-select v-model="queryParams.userId" class="!w-240px" clearable placeholder="员工">
+      <el-form-item :label="t('auto.views.crm.statistics.portrait.index.k9834f85d')" prop="userId">
+        <el-select
+          v-model="queryParams.userId"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.crm.statistics.portrait.index.k9834f85d')"
+        >
           <el-option
             v-for="(user, index) in userListByDeptId"
             :key="index"
@@ -46,11 +54,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k997ca1c6') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k3af8eaef') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -60,19 +68,35 @@
   <el-col>
     <el-tabs v-model="activeTab">
       <!-- 城市分布分析 -->
-      <el-tab-pane label="城市分布分析" lazy name="areaRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.portrait.index.k164edb42')"
+        lazy
+        name="areaRef"
+      >
         <PortraitCustomerArea ref="areaRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 客户级别分析 -->
-      <el-tab-pane label="客户级别分析" lazy name="levelRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.portrait.index.k0a949eec')"
+        lazy
+        name="levelRef"
+      >
         <PortraitCustomerLevel ref="levelRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 客户来源分析 -->
-      <el-tab-pane label="客户来源分析" lazy name="sourceRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.portrait.index.k8e9f5f65')"
+        lazy
+        name="sourceRef"
+      >
         <PortraitCustomerSource ref="sourceRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 客户行业分析 -->
-      <el-tab-pane label="客户行业分析" lazy name="industryRef">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.portrait.index.ka7a25667')"
+        lazy
+        name="industryRef"
+      >
         <PortraitCustomerIndustry ref="industryRef" :query-params="queryParams" />
       </el-tab-pane>
     </el-tabs>
@@ -89,7 +113,7 @@ import PortraitCustomerArea from './components/PortraitCustomerArea.vue'
 import PortraitCustomerIndustry from './components/PortraitCustomerIndustry.vue'
 import PortraitCustomerSource from './components/PortraitCustomerSource.vue'
 import PortraitCustomerLevel from './components/PortraitCustomerLevel.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmStatisticsPortrait' })
 
 const queryParams = reactive({

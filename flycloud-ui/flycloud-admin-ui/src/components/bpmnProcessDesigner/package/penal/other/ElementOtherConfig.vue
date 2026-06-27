@@ -1,7 +1,9 @@
 <template>
   <div class="panel-tab__content">
     <div class="element-property input-property">
-      <div class="element-property__label">元素文档：</div>
+      <div class="element-property__label">{{
+        t('auto.components.bpmnProcessDesigner.package.penal.other.ElementOtherConfig.kce7cf58f')
+      }}</div>
       <div class="element-property__value">
         <el-input
           type="textarea"
@@ -17,6 +19,7 @@
 </template>
 
 <script lang="ts" setup>
+const { t } = useI18n()
 defineOptions({ name: 'ElementOtherConfig' })
 const props = defineProps({
   id: String

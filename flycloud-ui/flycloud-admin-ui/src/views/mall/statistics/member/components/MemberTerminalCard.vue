@@ -1,7 +1,9 @@
 <template>
   <el-card shadow="never" v-loading="loading">
     <template #header>
-      <CardTitle title="会员终端" />
+      <CardTitle
+        :title="t('auto.views.mall.statistics.member.components.MemberTerminalCard.k4067b526')"
+      />
     </template>
     <Echart :height="300" :options="terminalChartOptions" />
   </el-card>
@@ -14,6 +16,7 @@ import { DICT_TYPE, DictDataType, getIntDictOptions } from '@/utils/dict'
 import { CardTitle } from '@/components/Card'
 
 /** 会员终端卡片 */
+const { t } = useI18n()
 defineOptions({ name: 'MemberTerminalCard' })
 
 const loading = ref(true) // 加载中
@@ -32,7 +35,7 @@ const terminalChartOptions = reactive<EChartsOption>({
   roseType: 'area',
   series: [
     {
-      name: '会员终端',
+      name: t('auto.views.mall.statistics.member.components.MemberTerminalCard.k4067b526'),
       type: 'pie',
       label: {
         show: false

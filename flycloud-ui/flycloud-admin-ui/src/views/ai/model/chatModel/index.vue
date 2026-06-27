@@ -8,43 +8,47 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="模型名字" prop="name">
+      <el-form-item :label="t('auto.views.ai.model.chatModel.index.ka11691fb')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入模型名字"
+          :placeholder="t('auto.views.ai.model.chatModel.index.k02d5516c')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="模型标识" prop="model">
+      <el-form-item :label="t('auto.views.ai.model.chatModel.index.k3a818387')" prop="model">
         <el-input
           v-model="queryParams.model"
-          placeholder="请输入模型标识"
+          :placeholder="t('auto.views.ai.model.chatModel.index.kf34bb3b2')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="模型平台" prop="platform">
+      <el-form-item :label="t('auto.views.ai.model.chatModel.index.kc5e0b6d6')" prop="platform">
         <el-input
           v-model="queryParams.platform"
-          placeholder="请输入模型平台"
+          :placeholder="t('auto.views.ai.model.chatModel.index.k816470ea')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['ai:chat-model:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf201d37c') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -53,7 +57,11 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="所属平台" align="center" prop="platform">
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.index.k275b3ed8')"
+        align="center"
+        prop="platform"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_PLATFORM" :value="scope.row.platform" />
         </template>
@@ -115,10 +123,10 @@ import { DICT_TYPE } from '@/utils/dict'
 import { ApiKeyApi, ApiKeyVO } from '@/api/ai/model/apiKey'
 
 /** API 聊天模型 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'AiChatModel' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ChatModelVO[]>([]) // 列表的数据

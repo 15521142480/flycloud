@@ -1,5 +1,9 @@
 <template>
-  <Dialog v-model="dialogVisible" title="人员选择" width="800">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.components.UserSelectForm.index.kdf5d6d68')"
+    width="800"
+  >
     <el-row class="gap2" v-loading="formLoading">
       <el-col :span="6">
         <ContentWrap class="h-1/1">
@@ -18,9 +22,9 @@
       <el-col :span="17">
         <el-transfer
           v-model="selectedUserIdList"
-          :titles="['未选', '已选']"
+          :titles="[t('extra.k5684ce39'), t('extra.k136a790c')]"
           filterable
-          filter-placeholder="搜索成员"
+          :filter-placeholder="t('extra.kcc7786e9')"
           :data="transferUserList"
           :props="{ label: 'name', key: 'id' }"
         />
@@ -32,9 +36,11 @@
         type="primary"
         @click="submitForm"
       >
-        确 定
+        {{ t('extra.kef9f2836') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.UserSelectForm.index.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -42,12 +48,11 @@
 import { defaultProps, findTreeNode, handleTree } from '@/utils/tree'
 import * as DeptApi from '@/api/system/dept'
 import * as UserApi from '@/api/system/user'
-
+const { t } = useI18n()
 defineOptions({ name: 'UserSelectForm' })
 const emit = defineEmits<{
   confirm: [id: any, userList: any[]]
 }>()
-const { t } = useI18n() // 国际
 const message = useMessage() // 消息弹窗
 const deptTree = ref<Tree[]>([]) // 部门树形结构化
 const userList = ref<UserApi.UserVO[]>([]) // 所有用户列表

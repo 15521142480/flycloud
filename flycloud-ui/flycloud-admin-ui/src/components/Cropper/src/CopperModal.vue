@@ -120,7 +120,7 @@ import { useI18n } from 'vue-i18n'
 import type { CropendResult, Cropper } from './types'
 import { propTypes } from '@/utils/propTypes'
 import { CropperImage } from '@/components/Cropper'
-
+const { t } = useI18n()
 defineOptions({ name: 'CopperModal' })
 
 const props = defineProps({
@@ -128,7 +128,6 @@ const props = defineProps({
   circled: propTypes.bool.def(true)
 })
 const emit = defineEmits(['uploadSuccess'])
-const { t } = useI18n()
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('cropper-am')
 

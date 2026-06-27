@@ -1,22 +1,40 @@
 <template>
-  <Dialog v-model="dialogVisible" :max-height="500" :scroll="true" title="消息详情">
+  <Dialog
+    v-model="dialogVisible"
+    :max-height="500"
+    :scroll="true"
+    :title="t('auto.views.system.notify.my.MyNotifyMessageDetail.k9574fa1e')"
+  >
     <el-descriptions :column="1" border>
-      <el-descriptions-item label="发送人">
+      <el-descriptions-item
+        :label="t('auto.views.system.notify.my.MyNotifyMessageDetail.k3bc6e681')"
+      >
         {{ detailData.templateNickname }}
       </el-descriptions-item>
-      <el-descriptions-item label="发送时间">
+      <el-descriptions-item
+        :label="t('auto.views.system.notify.my.MyNotifyMessageDetail.k98c64dd6')"
+      >
         {{ formatDate(detailData.createTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="消息类型">
+      <el-descriptions-item
+        :label="t('auto.views.system.notify.my.MyNotifyMessageDetail.k15218877')"
+      >
         <dict-tag :type="DICT_TYPE.SYSTEM_NOTIFY_TEMPLATE_TYPE" :value="detailData.templateType" />
       </el-descriptions-item>
-      <el-descriptions-item label="是否已读">
+      <el-descriptions-item
+        :label="t('auto.views.system.notify.my.MyNotifyMessageDetail.kbfc6b329')"
+      >
         <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="detailData.readStatus" />
       </el-descriptions-item>
-      <el-descriptions-item v-if="detailData.readStatus" label="阅读时间">
+      <el-descriptions-item
+        v-if="detailData.readStatus"
+        :label="t('auto.views.system.notify.my.MyNotifyMessageDetail.k9af1a262')"
+      >
         {{ formatDate(detailData.readTime) }}
       </el-descriptions-item>
-      <el-descriptions-item label="内容">
+      <el-descriptions-item
+        :label="t('auto.views.system.notify.my.MyNotifyMessageDetail.k163aec91')"
+      >
         {{ detailData.templateContent }}
       </el-descriptions-item>
     </el-descriptions>
@@ -26,7 +44,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'
-
+const { t } = useI18n()
 defineOptions({ name: 'MyNotifyMessageDetailDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

@@ -8,11 +8,8 @@ import { useUserStore } from '@/store/modules/user'
 import LockDialog from './components/LockDialog.vue'
 import LockPage from './components/LockPage.vue'
 import { useLockStore } from '@/store/modules/lock'
-
-defineOptions({ name: 'UserInfo' })
-
 const { t } = useI18n()
-
+defineOptions({ name: 'UserInfo' })
 const { push, replace } = useRouter()
 
 const userStore = useUserStore()

@@ -9,7 +9,7 @@ import {
 import { Ref } from 'vue'
 import { Menu } from '@/components/FormCreate/src/type'
 import { apiSelectRule } from '@/components/FormCreate/src/config/selectRule'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  * 表单设计器增强 hook
  * 新增
@@ -21,6 +21,8 @@ import { apiSelectRule } from '@/components/FormCreate/src/config/selectRule'
  * - 部门选择器
  * - 富文本
  */
+const { t } = useI18n()
+
 export const useFormCreateDesigner = async (designer: Ref) => {
   const editorRule = useEditorRule()
   const uploadFileRule = useUploadFileRule()
@@ -50,18 +52,18 @@ export const useFormCreateDesigner = async (designer: Ref) => {
 
   const userSelectRule = useSelectRule({
     name: 'UserSelect',
-    label: '用户选择器',
+    label: t('auto.components.FormCreate.src.useFormCreateDesigner.k6372ac95'),
     icon: 'icon-user-o'
   })
   const deptSelectRule = useSelectRule({
     name: 'DeptSelect',
-    label: '部门选择器',
+    label: t('auto.components.FormCreate.src.useFormCreateDesigner.kf1494fc9'),
     icon: 'icon-address-card-o'
   })
   const dictSelectRule = useDictSelectRule()
   const apiSelectRule0 = useSelectRule({
     name: 'ApiSelect',
-    label: '接口选择器',
+    label: t('auto.components.FormCreate.src.useFormCreateDesigner.k1445320e'),
     icon: 'icon-server',
     props: [...apiSelectRule]
   })
@@ -77,7 +79,7 @@ export const useFormCreateDesigner = async (designer: Ref) => {
     const components = [userSelectRule, deptSelectRule, dictSelectRule, apiSelectRule0]
     const menu: Menu = {
       name: 'system',
-      title: '系统字段',
+      title: t('auto.components.FormCreate.src.useFormCreateDesigner.kef07a451'),
       list: components.map((component) => {
         // 插入组件规则
         designer.value?.addComponent(component)

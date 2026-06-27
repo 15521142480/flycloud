@@ -8,10 +8,10 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="产品名称" prop="name">
+      <el-form-item :label="t('auto.views.iot.product.index.kabc0ac79')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入产品名称"
+          :placeholder="t('auto.views.iot.product.index.k8d76e9ae')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
@@ -20,22 +20,26 @@
       <el-form-item label="ProductKey" prop="productKey">
         <el-input
           v-model="queryParams.productKey"
-          placeholder="请输入产品标识"
+          :placeholder="t('auto.views.iot.product.index.k084ecb76')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['iot:product:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kbc001ebb') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -44,7 +48,11 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="产品名称" align="center" prop="name">
+      <el-table-column
+        :label="t('auto.views.iot.product.index.kabc0ac79')"
+        align="center"
+        prop="name"
+      >
         <template #default="scope">
           <el-link @click="openDetail(scope.row.id)">{{ scope.row.name }}</el-link>
         </template>
@@ -109,10 +117,10 @@ import ProductForm from './ProductForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 
 /** iot 产品 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'IoTProduct' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProductVO[]>([]) // 列表的数据

@@ -7,8 +7,15 @@
       label-width="120px"
       v-loading="formLoading"
     >
-      <el-form-item label="所属平台" prop="platform">
-        <el-select v-model="formData.platform" placeholder="请输入平台" clearable>
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k275b3ed8')"
+        prop="platform"
+      >
+        <el-select
+          v-model="formData.platform"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.ke0377170')"
+          clearable
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.AI_PLATFORM)"
             :key="dict.value"
@@ -17,8 +24,15 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="API 秘钥" prop="keyId">
-        <el-select v-model="formData.keyId" placeholder="请选择 API 秘钥" clearable>
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k0b2b2cbe')"
+        prop="keyId"
+      >
+        <el-select
+          v-model="formData.keyId"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.k15ee76c1')"
+          clearable
+        >
           <el-option
             v-for="apiKey in apiKeyList"
             :key="apiKey.id"
@@ -27,16 +41,32 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="模型名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入模型名字" />
+      <el-form-item :label="t('auto.views.ai.model.chatModel.ChatModelForm.ka11691fb')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.k02d5516c')"
+        />
       </el-form-item>
-      <el-form-item label="模型标识" prop="model">
-        <el-input v-model="formData.model" placeholder="请输入模型标识" />
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k3a818387')"
+        prop="model"
+      >
+        <el-input
+          v-model="formData.model"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.kf34bb3b2')"
+        />
       </el-form-item>
-      <el-form-item label="模型排序" prop="sort">
-        <el-input-number v-model="formData.sort" placeholder="请输入模型排序" class="!w-1/1" />
+      <el-form-item :label="t('auto.views.ai.model.chatModel.ChatModelForm.kc155fdb2')" prop="sort">
+        <el-input-number
+          v-model="formData.sort"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.k6618640d')"
+          class="!w-1/1"
+        />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k6bbda1b1')"
+        prop="status"
+      >
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -47,35 +77,48 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="温度参数" prop="temperature">
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k80a0d1e0')"
+        prop="temperature"
+      >
         <el-input-number
           v-model="formData.temperature"
-          placeholder="请输入温度参数"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.ka09e02d5')"
           :min="0"
           :max="2"
           :precision="2"
         />
       </el-form-item>
-      <el-form-item label="回复数 Token 数" prop="maxTokens">
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.kd27629ce')"
+        prop="maxTokens"
+      >
         <el-input-number
           v-model="formData.maxTokens"
-          placeholder="请输入回复数 Token 数"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.kbf01445b')"
           :min="0"
           :max="4096"
         />
       </el-form-item>
-      <el-form-item label="上下文数量" prop="maxContexts">
+      <el-form-item
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k3f4045aa')"
+        prop="maxContexts"
+      >
         <el-input-number
           v-model="formData.maxContexts"
-          placeholder="请输入上下文数量"
+          :placeholder="t('auto.views.ai.model.chatModel.ChatModelForm.k1da1d932')"
           :min="0"
           :max="20"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.ai.model.chatModel.ChatModelForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.ai.model.chatModel.ChatModelForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -86,9 +129,8 @@ import { CommonStatusEnum } from '@/utils/constants'
 import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
 
 /** API 聊天模型 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ChatModelForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -108,12 +150,48 @@ const formData = ref({
   maxContexts: undefined
 })
 const formRules = reactive({
-  keyId: [{ required: true, message: 'API 秘钥不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '模型名字不能为空', trigger: 'blur' }],
-  model: [{ required: true, message: '模型标识不能为空', trigger: 'blur' }],
-  platform: [{ required: true, message: '所属平台不能为空', trigger: 'blur' }],
-  sort: [{ required: true, message: '排序不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  keyId: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.chatModel.ChatModelForm.k89b701f6'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.chatModel.ChatModelForm.k59d6e625'),
+      trigger: 'blur'
+    }
+  ],
+  model: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.chatModel.ChatModelForm.kf1181405'),
+      trigger: 'blur'
+    }
+  ],
+  platform: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.chatModel.ChatModelForm.kab2643c9'),
+      trigger: 'blur'
+    }
+  ],
+  sort: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.chatModel.ChatModelForm.k3218602a'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.ai.model.chatModel.ChatModelForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const apiKeyList = ref([] as ApiKeyVO[]) // API 密钥列表

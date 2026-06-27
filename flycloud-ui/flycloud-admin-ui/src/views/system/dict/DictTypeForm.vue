@@ -7,17 +7,20 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="字典名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入字典名称" />
+      <el-form-item :label="t('auto.views.system.dict.DictTypeForm.k32bc8312')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.dict.DictTypeForm.ka33e8748')"
+        />
       </el-form-item>
-      <el-form-item label="字典类型" prop="type">
+      <el-form-item :label="t('auto.views.system.dict.DictTypeForm.k6dde52f3')" prop="type">
         <el-input
           v-model="formData.type"
           :disabled="typeof formData.id !== 'undefined'"
-          placeholder="请输入参数名称"
+          :placeholder="t('auto.views.system.dict.DictTypeForm.k6d4589a3')"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -28,13 +31,21 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入内容" type="textarea" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.system.dict.DictTypeForm.kac962cb9')"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.dict.DictTypeForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.dict.DictTypeForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -42,11 +53,9 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as DictTypeApi from '@/api/system/dict/dict.type'
 import { CommonStatusEnum } from '@/utils/constants'
-import {saveOrUpdate} from "@/api/system/dict/dict.type";
-
+import { saveOrUpdate } from '@/api/system/dict/dict.type'
+const { t } = useI18n()
 defineOptions({ name: 'SystemDictTypeForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -61,9 +70,19 @@ const formData = ref({
   remark: ''
 })
 const formRules = reactive({
-  name: [{ required: true, message: '字典名称不能为空', trigger: 'blur' }],
-  type: [{ required: true, message: '字典类型不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'change' }]
+  name: [
+    { required: true, message: t('auto.views.system.dict.DictTypeForm.k0ab545c1'), trigger: 'blur' }
+  ],
+  type: [
+    { required: true, message: t('auto.views.system.dict.DictTypeForm.k8295d679'), trigger: 'blur' }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.dict.DictTypeForm.k1318b551'),
+      trigger: 'change'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

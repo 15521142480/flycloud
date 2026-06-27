@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="系统日志" url="https://doc.iocoder.cn/system-log/" />
+  <doc-alert
+    :title="t('auto.views.infra.apiAccessLog.index.k096733f9')"
+    url="https://doc.iocoder.cn/system-log/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户编号" prop="userId">
+      <el-form-item :label="t('auto.views.infra.apiAccessLog.index.kec750ef6')" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          placeholder="请输入用户编号"
+          :placeholder="t('auto.views.infra.apiAccessLog.index.kb719fb8a')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="用户类型" prop="userType">
+      <el-form-item :label="t('auto.views.infra.apiAccessLog.index.k31ab92d1')" prop="userType">
         <el-select
           v-model="queryParams.userType"
-          placeholder="请选择用户类型"
+          :placeholder="t('auto.views.infra.apiAccessLog.index.k8d91841e')"
           clearable
           class="!w-240px"
         >
@@ -34,47 +37,54 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="应用名" prop="applicationName">
+      <el-form-item
+        :label="t('auto.views.infra.apiAccessLog.index.k6c19fe01')"
+        prop="applicationName"
+      >
         <el-input
           v-model="queryParams.applicationName"
-          placeholder="请输入应用名"
+          :placeholder="t('auto.views.infra.apiAccessLog.index.k445d8859')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="请求时间" prop="beginTime">
+      <el-form-item :label="t('auto.views.infra.apiAccessLog.index.ke8b5eda0')" prop="beginTime">
         <el-date-picker
           v-model="queryParams.beginTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.infra.apiAccessLog.index.k1f291968')"
+          :end-placeholder="t('auto.views.infra.apiAccessLog.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="执行时长" prop="duration">
+      <el-form-item :label="t('auto.views.infra.apiAccessLog.index.kf74f1dd2')" prop="duration">
         <el-input
           v-model="queryParams.duration"
-          placeholder="请输入执行时长"
+          :placeholder="t('auto.views.infra.apiAccessLog.index.k3592b723')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="结果码" prop="resultCode">
+      <el-form-item :label="t('auto.views.infra.apiAccessLog.index.k52f2a6cf')" prop="resultCode">
         <el-input
           v-model="queryParams.resultCode"
-          placeholder="请输入结果码"
+          :placeholder="t('auto.views.infra.apiAccessLog.index.k3c85d6ac')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="success"
           plain
@@ -82,7 +92,7 @@
           :loading="exportLoading"
           v-hasPermi="['infra:api-access-log:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k43c7c60a') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -91,9 +101,23 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="日志编号" align="center" prop="id" width="100" fix="right" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
-      <el-table-column label="用户类型" align="center" prop="userType">
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.index.k8cac83c8')"
+        align="center"
+        prop="id"
+        width="100"
+        fix="right"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.index.kec750ef6')"
+        align="center"
+        prop="userId"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.index.k31ab92d1')"
+        align="center"
+        prop="userType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
@@ -152,7 +176,7 @@ import download from '@/utils/download'
 import { formatDate } from '@/utils/formatTime'
 import * as ApiAccessLogApi from '@/api/infra/apiAccessLog'
 import ApiAccessLogDetail from './ApiAccessLogDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraApiAccessLog' })
 
 const message = useMessage() // 消息弹窗
@@ -212,7 +236,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ApiAccessLogApi.exportApiAccessLog(queryParams)
-    download.excel(data, 'API 访问日志.xls')
+    download.excel(data, t('auto.views.infra.apiAccessLog.index.kd74b5cad'))
   } catch {
   } finally {
     exportLoading.value = false

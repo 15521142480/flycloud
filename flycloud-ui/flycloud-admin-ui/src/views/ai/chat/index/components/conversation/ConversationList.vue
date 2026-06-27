@@ -5,7 +5,7 @@
     <div class="h-100%">
       <el-button class="w-1/1 btn-new-conversation" type="primary" @click="createConversation">
         <Icon icon="ep:plus" class="mr-5px" />
-        新建对话
+        {{ t('extra.k7cf098da') }}
       </el-button>
 
       <!-- 左顶部：搜索对话 -->
@@ -13,7 +13,7 @@
         v-model="searchName"
         size="large"
         class="mt-10px search-input"
-        placeholder="搜索历史记录"
+        :placeholder="t('auto.views.ai.chat.index.components.conversation.k7a688c0a')"
         @keyup="searchConversation"
       >
         <template #prefix>
@@ -98,7 +98,7 @@ import { ChatConversationApi, ChatConversationVO } from '@/api/ai/chat/conversat
 import RoleRepository from '../role/RoleRepository.vue'
 import { Bottom, Top } from '@element-plus/icons-vue'
 import roleAvatarDefaultImg from '@/assets/ai/gpt.svg'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 // 定义属性
@@ -210,22 +210,22 @@ const getConversationGroupByCreateTime = async (list: ChatConversationVO[]) => {
   for (const conversation of list) {
     // 置顶
     if (conversation.pinned) {
-      groupMap['置顶'].push(conversation)
+      groupMap[t('auto.views.ai.chat.index.components.conversation.k7bcf1864')].push(conversation)
       continue
     }
     // 计算时间差（单位：毫秒）
     const diff = now - conversation.createTime
     // 根据时间间隔判断
     if (diff < oneDay) {
-      groupMap['今天'].push(conversation)
+      groupMap[t('auto.views.ai.chat.index.components.conversation.k17e83cc2')].push(conversation)
     } else if (diff < threeDays) {
-      groupMap['一天前'].push(conversation)
+      groupMap[t('auto.views.ai.chat.index.components.conversation.kacc17dd1')].push(conversation)
     } else if (diff < sevenDays) {
-      groupMap['三天前'].push(conversation)
+      groupMap[t('auto.views.ai.chat.index.components.conversation.k683df134')].push(conversation)
     } else if (diff < thirtyDays) {
-      groupMap['七天前'].push(conversation)
+      groupMap[t('auto.views.ai.chat.index.components.conversation.ka1f9fc33')].push(conversation)
     } else {
-      groupMap['三十天前'].push(conversation)
+      groupMap[t('auto.views.ai.chat.index.components.conversation.k43d06b0a')].push(conversation)
     }
   }
   return groupMap
@@ -248,17 +248,20 @@ const createConversation = async () => {
 /** 修改对话的标题 */
 const updateConversationTitle = async (conversation: ChatConversationVO) => {
   // 1. 二次确认
-  const { value } = await ElMessageBox.prompt('修改标题', {
-    inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
-    inputErrorMessage: '标题不能为空',
-    inputValue: conversation.title
-  })
+  const { value } = await ElMessageBox.prompt(
+    t('auto.views.ai.chat.index.components.conversation.k22ad351b'),
+    {
+      inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
+      inputErrorMessage: t('auto.views.ai.chat.index.components.conversation.kf2d8d992'),
+      inputValue: conversation.title
+    }
+  )
   // 2. 发起修改
   await ChatConversationApi.updateChatConversationMy({
     id: conversation.id,
     title: value
   } as ChatConversationVO)
-  message.success('重命名成功')
+  message.success(t('auto.views.ai.chat.index.components.conversation.k92d4e6f8'))
   // 3. 刷新列表
   await getChatConversationList()
   // 4. 过滤当前切换的
@@ -277,10 +280,10 @@ const updateConversationTitle = async (conversation: ChatConversationVO) => {
 const deleteChatConversation = async (conversation: ChatConversationVO) => {
   try {
     // 删除的二次确认
-    await message.delConfirm(`是否确认删除对话 - ${conversation.title}?`)
+    await message.delConfirm(t('extra.kbfc02a59', { p0: conversation.title }))
     // 发起删除
     await ChatConversationApi.deleteChatConversationMy(conversation.id)
-    message.success('对话已删除')
+    message.success(t('auto.views.ai.chat.index.components.conversation.k31ada81e'))
     // 刷新列表
     await getChatConversationList()
     // 回调
@@ -291,10 +294,10 @@ const deleteChatConversation = async (conversation: ChatConversationVO) => {
 /** 清空对话 */
 const handleClearConversation = async () => {
   try {
-    await message.confirm('确认后对话会全部清空，置顶的对话除外。')
+    await message.confirm(t('auto.views.ai.chat.index.components.conversation.k7aa9ae0d'))
     await ChatConversationApi.deleteChatConversationMyByUnpinned()
     ElMessage({
-      message: '操作成功!',
+      message: t('auto.views.ai.chat.index.components.conversation.kb52ea86f'),
       type: 'success'
     })
     // 清空 对话 和 对话内容

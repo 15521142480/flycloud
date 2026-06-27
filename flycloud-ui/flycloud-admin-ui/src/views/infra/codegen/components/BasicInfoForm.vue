@@ -2,22 +2,34 @@
   <el-form ref="formRef" :model="formData" :rules="rules" label-width="120px">
     <el-row>
       <el-col :span="12">
-        <el-form-item label="表名称" prop="tableName">
-          <el-input v-model="formData.tableName" placeholder="请输入仓库名称" />
+        <el-form-item
+          :label="t('auto.views.infra.codegen.components.BasicInfoForm.k4b2d958f')"
+          prop="tableName"
+        >
+          <el-input
+            v-model="formData.tableName"
+            :placeholder="t('auto.views.infra.codegen.components.BasicInfoForm.k2c2b2339')"
+          />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="表描述" prop="tableComment">
-          <el-input v-model="formData.tableComment" placeholder="请输入" />
+        <el-form-item
+          :label="t('auto.views.infra.codegen.components.BasicInfoForm.kdef4ee41')"
+          prop="tableComment"
+        >
+          <el-input
+            v-model="formData.tableComment"
+            :placeholder="t('auto.views.infra.codegen.components.BasicInfoForm.k601816e1')"
+          />
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item prop="className">
           <template #label>
             <span>
-              实体类名称
+              {{ t('extra.k44f2fc44') }}
               <el-tooltip
-                content="默认去除表名的前缀。如果存在重复，则需要手动添加前缀，避免 MyBatis 报 Alias 重复的问题。"
+                :content="t('auto.views.infra.codegen.components.BasicInfoForm.kc18743fe')"
                 placement="top"
               >
                 <Icon class="" icon="ep:question-filled" />
@@ -43,7 +55,7 @@
 <script lang="ts" setup>
 import * as CodegenApi from '@/api/infra/codegen'
 import { PropType } from 'vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraCodegenBasicInfoForm' })
 
 const props = defineProps({

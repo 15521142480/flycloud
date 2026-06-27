@@ -1,12 +1,10 @@
 import type { App } from 'vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 
 export function hasPermi(app: App<Element>) {
-
   app.directive('hasPermi', (el, binding) => {
-
     const { wsCache } = useCache()
     const { value } = binding
     const all_permission = '*:*:*'

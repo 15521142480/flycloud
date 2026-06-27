@@ -7,19 +7,19 @@
       :rules="rules"
       label-width="120px"
     >
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名称" />
+      <el-form-item :label="t('auto.views.mp.account.AccountForm.k1be7ae4f')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mp.account.AccountForm.kc2afb255')"
+        />
       </el-form-item>
-      <el-form-item label="微信号" prop="account">
+      <el-form-item :label="t('auto.views.mp.account.AccountForm.kec63fe9c')" prop="account">
         <template #label>
           <span>
-            <el-tooltip
-              content="在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 账号详情] 中能找到「微信号」"
-              placement="top"
-            >
+            <el-tooltip :content="t('auto.views.mp.account.AccountForm.k741771e7')" placement="top">
               <Icon icon="ep:question-filled" style="vertical-align: middle" />
             </el-tooltip>
-            微信号
+            {{ t('extra.k9919d199') }}
           </span>
         </template>
         <el-input v-model="formData.account" placeholder="请输入微信号" />
@@ -70,10 +70,8 @@
 </template>
 <script lang="ts" setup>
 import * as AccountApi from '@/api/mp/account'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpAccountForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -91,11 +89,21 @@ const formData = ref({
   remark: ''
 })
 const rules = reactive({
-  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-  account: [{ required: true, message: '公众号账号不能为空', trigger: 'blur' }],
-  appId: [{ required: true, message: '公众号 appId 不能为空', trigger: 'blur' }],
-  appSecret: [{ required: true, message: '公众号密钥不能为空', trigger: 'blur' }],
-  token: [{ required: true, message: '公众号 token 不能为空', trigger: 'blur' }]
+  name: [
+    { required: true, message: t('auto.views.mp.account.AccountForm.kca898456'), trigger: 'blur' }
+  ],
+  account: [
+    { required: true, message: t('auto.views.mp.account.AccountForm.k8d014d12'), trigger: 'blur' }
+  ],
+  appId: [
+    { required: true, message: t('auto.views.mp.account.AccountForm.kc155faec'), trigger: 'blur' }
+  ],
+  appSecret: [
+    { required: true, message: t('auto.views.mp.account.AccountForm.kb65c4747'), trigger: 'blur' }
+  ],
+  token: [
+    { required: true, message: t('auto.views.mp.account.AccountForm.k3e9ba158'), trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

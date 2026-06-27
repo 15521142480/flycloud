@@ -2,11 +2,23 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="名字" align="center" prop="name" />
-      <el-table-column label="班主任" align="center" prop="teacher" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.infra.demo.demo03.inner.components.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo03.inner.components.k364bd1bf')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo03.inner.components.k10b965b9')"
+        align="center"
+        prop="teacher"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
@@ -18,8 +30,7 @@
 <script setup lang="ts">
 import { dateFormatter } from '@/utils/formatTime'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/inner'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const props = defineProps<{

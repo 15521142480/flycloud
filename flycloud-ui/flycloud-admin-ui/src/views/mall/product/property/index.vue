@@ -1,5 +1,4 @@
 <template>
-
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form
@@ -9,22 +8,22 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="t('auto.views.mall.product.property.index.k1be7ae4f')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入名称"
+          :placeholder="t('auto.views.mall.product.property.index.kc2afb255')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.mall.product.property.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.mall.product.property.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -32,11 +31,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.kaa6f99c0') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kc21b78ee') }}
         </el-button>
         <el-button
           v-hasPermi="['product:property:create']"
@@ -45,7 +44,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k732ed9e2') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -54,17 +53,32 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="编号" min-width="60" prop="id" />
-      <el-table-column align="center" label="属性名称" prop="name" min-width="150" />
-      <el-table-column :show-overflow-tooltip="true" align="center" label="备注" prop="remark" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.product.property.index.k9f42dac6')"
+        min-width="60"
+        prop="id"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.product.property.index.k604e8442')"
+        prop="name"
+        min-width="150"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        align="center"
+        :label="t('common.remark')"
+        prop="remark"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['product:property:update']"
@@ -72,16 +86,18 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('extra.k7748da7c') }}
           </el-button>
-          <el-button link type="primary" @click="goValueList(scope.row.id)">属性值</el-button>
+          <el-button link type="primary" @click="goValueList(scope.row.id)">{{
+            t('auto.views.mall.product.property.index.k4f7517f1')
+          }}</el-button>
           <el-button
             v-hasPermi="['product:property:delete']"
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('extra.kcc5292ac') }}
           </el-button>
         </template>
       </el-table-column>
@@ -102,13 +118,12 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as PropertyApi from '@/api/mall/product/property'
 import PropertyForm from './PropertyForm.vue'
-
+const { t } = useI18n()
 const { push } = useRouter()
 
 defineOptions({ name: 'ProductProperty' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

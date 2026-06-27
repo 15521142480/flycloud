@@ -1,5 +1,4 @@
 import { EChartsOption } from 'echarts'
-
 const { t } = useI18n()
 
 export const lineOptions: EChartsOption = {

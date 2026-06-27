@@ -148,7 +148,7 @@
                   :key="idx"
                   :label="item.title"
                   :value="item.field"
-                  :disabled ="!item.required"
+                  :disabled="!item.required"
                 />
               </el-select>
             </el-form-item>
@@ -163,7 +163,7 @@
                   :key="idx"
                   :label="item.title"
                   :value="item.field"
-                  :disabled ="!item.required"
+                  :disabled="!item.required"
                 />
               </el-select>
             </el-form-item>
@@ -483,6 +483,7 @@ import {
 import { defaultProps } from '@/utils/tree'
 import { cloneDeep } from 'lodash-es'
 import { convertTimeUnit, getApproveTypeText } from '../utils'
+const { t } = useI18n()
 defineOptions({
   name: 'UserTaskNodeConfig'
 })
@@ -496,13 +497,21 @@ const emits = defineEmits<{
   'find:returnTaskNodes': [nodeList: SimpleFlowNode[]]
 }>()
 const deptLevelLabel = computed(() => {
-  let label = '部门负责人来源'
+  let label = t(
+    'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k668b54fc'
+  )
   if (configForm.value.candidateStrategy == CandidateStrategy.MULTI_LEVEL_DEPT_LEADER) {
-    label = label + '(指定部门向上)'
+    label =
+      label +
+      t('auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.kb8be08b6')
   } else if (configForm.value.candidateStrategy == CandidateStrategy.FORM_DEPT_LEADER) {
-    label = label + '(表单内部门向上)'
+    label =
+      label +
+      t('auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k50d34c88')
   } else {
-    label = label + '(发起人部门向上)'
+    label =
+      label +
+      t('auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.kd074b032')
   }
   return label
 })
@@ -533,24 +542,144 @@ const approveType = ref(ApproveType.USER)
 const formRef = ref() // 表单 Ref
 // 表单校验规则
 const formRules = reactive({
-  candidateStrategy: [{ required: true, message: '审批人设置不能为空', trigger: 'change' }],
-  userIds: [{ required: true, message: '用户不能为空', trigger: 'change' }],
-  roleIds: [{ required: true, message: '角色不能为空', trigger: 'change' }],
-  deptIds: [{ required: true, message: '部门不能为空', trigger: 'change' }],
-  userGroups: [{ required: true, message: '用户组不能为空', trigger: 'change' }],
-  formUser: [{ required: true, message: '表单内用户字段不能为空', trigger: 'change' }],
-  formDept: [{ required: true, message: '表单内部门字段不能为空', trigger: 'change' }],
-  postIds: [{ required: true, message: '岗位不能为空', trigger: 'change' }],
-  expression: [{ required: true, message: '流程表达式不能为空', trigger: 'blur' }],
-  approveMethod: [{ required: true, message: '多人审批方式不能为空', trigger: 'change' }],
-  approveRatio: [{ required: true, message: '通过比例不能为空', trigger: 'blur' }],
-  returnNodeId: [{ required: true, message: '驳回节点不能为空', trigger: 'change' }],
+  candidateStrategy: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k8162205e'
+      ),
+      trigger: 'change'
+    }
+  ],
+  userIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k824f0073'
+      ),
+      trigger: 'change'
+    }
+  ],
+  roleIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k9f61235b'
+      ),
+      trigger: 'change'
+    }
+  ],
+  deptIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.kf84a9d4a'
+      ),
+      trigger: 'change'
+    }
+  ],
+  userGroups: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.kb67d3ebe'
+      ),
+      trigger: 'change'
+    }
+  ],
+  formUser: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.ka9e02991'
+      ),
+      trigger: 'change'
+    }
+  ],
+  formDept: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k6007e3e3'
+      ),
+      trigger: 'change'
+    }
+  ],
+  postIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k4136020d'
+      ),
+      trigger: 'change'
+    }
+  ],
+  expression: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k8661997b'
+      ),
+      trigger: 'blur'
+    }
+  ],
+  approveMethod: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k1594416c'
+      ),
+      trigger: 'change'
+    }
+  ],
+  approveRatio: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k276ad286'
+      ),
+      trigger: 'blur'
+    }
+  ],
+  returnNodeId: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k34afd0a5'
+      ),
+      trigger: 'change'
+    }
+  ],
   timeoutHandlerEnable: [{ required: true }],
   timeoutHandlerType: [{ required: true }],
-  timeDuration: [{ required: true, message: '超时时间不能为空', trigger: 'blur' }],
-  maxRemindCount: [{ required: true, message: '提醒次数不能为空', trigger: 'blur' }],
+  timeDuration: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.kb699ff82'
+      ),
+      trigger: 'blur'
+    }
+  ],
+  maxRemindCount: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k5dbde7b2'
+      ),
+      trigger: 'blur'
+    }
+  ],
   assignEmptyHandlerType: [{ required: true }],
-  assignEmptyHandlerUserIds: [{ required: true, message: '用户不能为空', trigger: 'change' }],
+  assignEmptyHandlerUserIds: [
+    {
+      required: true,
+      message: t(
+        'auto.components.SimpleProcessDesignerV2.src.nodes_config.UserTaskNodeConfig.k824f0073'
+      ),
+      trigger: 'change'
+    }
+  ],
   assignStartUserHandlerType: [{ required: true }]
 })
 

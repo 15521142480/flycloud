@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【营销】秒杀活动" url="https://doc.iocoder.cn/mall/promotion-seckill/" />
+  <doc-alert
+    :title="t('auto.views.mall.promotion.seckill.activity.index.kb4b3d450')"
+    url="https://doc.iocoder.cn/mall/promotion-seckill/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,25 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="活动名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.activity.index.k2b020286')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入活动名称"
+          :placeholder="t('auto.views.mall.promotion.seckill.activity.index.ka90d22e9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="活动状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.seckill.activity.index.k65a972d7')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择活动状态"
+          :placeholder="t('auto.views.mall.promotion.seckill.activity.index.k4b6989d1')"
           clearable
           class="!w-240px"
         >
@@ -35,15 +44,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:seckill-activity:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k0054eb12') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -52,10 +65,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="活动编号" prop="id" min-width="80" />
-      <el-table-column label="活动名称" prop="name" min-width="140" />
       <el-table-column
-        label="秒杀时段"
+        :label="t('auto.views.mall.promotion.seckill.activity.index.k32261198')"
+        prop="id"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.seckill.activity.index.k2b020286')"
+        prop="name"
+        min-width="140"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.seckill.activity.index.kd38ded65')"
         prop="configIds"
         width="220px"
         :show-overflow-tooltip="false"
@@ -162,11 +183,10 @@ import SeckillActivityForm from './SeckillActivityForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { fenToYuan } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'SeckillActivity' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -214,10 +234,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm('确认关闭该秒杀活动吗？')
+    await message.confirm(t('auto.views.mall.promotion.seckill.activity.index.ke3d1d58f'))
     // 发起关闭
     await SeckillActivityApi.closeSeckillActivity(id)
-    message.success('关闭成功')
+    message.success(t('auto.views.mall.promotion.seckill.activity.index.kf3cf9e86'))
     // 刷新列表
     await getList()
   } catch {}

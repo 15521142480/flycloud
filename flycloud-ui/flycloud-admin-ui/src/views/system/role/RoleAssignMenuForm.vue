@@ -1,53 +1,54 @@
 <template>
   <ElDialog
     v-model="dialogVisible"
-    title="菜单权限"
+    :title="t('auto.views.system.role.RoleAssignMenuForm.k270eba34')"
     width="90%"
     top="3vh"
     style="height: 96%; margin-bottom: -80px"
   >
     <el-divider content-position="right" style="margin: -5px 0 20px 0">
-      <el-button :disabled="formLoading" type="primary" round @click="submitForm">确 定</el-button>
+      <el-button :disabled="formLoading" type="primary" round @click="submitForm">{{
+        t('auto.views.system.role.RoleAssignMenuForm.k31f9d856')
+      }}</el-button>
     </el-divider>
 
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
       <el-row>
         <el-col :span="10">
-          <el-form-item label="角色名称">
+          <el-form-item :label="t('auto.views.system.role.RoleAssignMenuForm.k3aa1f085')">
             <el-tag>{{ formData.name }}</el-tag>
           </el-form-item>
         </el-col>
         <el-col :span="14">
-          <el-form-item label="角色标识">
+          <el-form-item :label="t('auto.views.system.role.RoleAssignMenuForm.k07f826b6')">
             <el-tag>{{ formData.code }}</el-tag>
             <span
               v-show="formData.code == RoleEnum.SUPER_ADMIN"
               style="margin-left: 10px; color: red"
-              >{{
-                RoleEnum.SUPER_ADMIN
-              }}
-              为超级管理员角色标识，登录即是所有权限，所以可无需赋权</span
+              >{{ t('extra.k029cc425', { p0: RoleEnum.SUPER_ADMIN }) }}</span
             >
           </el-form-item>
         </el-col>
       </el-row>
 
-      <el-form-item label="菜单权限">
+      <el-form-item :label="t('auto.views.system.role.RoleAssignMenuForm.k270eba34')">
         <el-card class="w-full" shadow="never">
           <template #header>
-            全选/全不选:
+            {{ t('extra.k12c64288') }}
             <el-switch
               v-model="treeNodeAll"
-              active-text="是"
-              inactive-text="否"
+              :active-text="t('extra.k3c670d3e')"
+              :inactive-text="t('extra.ka5776c88')"
               inline-prompt
               @change="handleCheckedTreeNodeAll"
             />
-            <span style="margin-left: 20px">全部展开/折叠: </span>
+            <span style="margin-left: 20px"
+              >{{ t('auto.views.system.role.RoleAssignMenuForm.k15977a09') }}
+            </span>
             <el-switch
               v-model="menuExpand"
-              active-text="展开"
-              inactive-text="折叠"
+              :active-text="t('extra.kf659aaf2')"
+              :inactive-text="t('extra.k74bed25a')"
               inline-prompt
               @change="handleCheckedTreeExpand"
             />
@@ -108,10 +109,8 @@ import * as PermissionApi from '@/api/system/permission'
 import { array } from 'vue-types'
 import { getRoleMenuTreeList, updateMenuPermission } from '@/api/system/role'
 import { RoleEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemRoleAssignMenuForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -195,7 +194,7 @@ const submitForm = async () => {
     }
   })
   if (roleMenuPermissionList.length < 1) {
-    message.error('请至少选择一项菜单或按钮权限！')
+    message.error(t('auto.views.system.role.RoleAssignMenuForm.k8100917b'))
     return
   }
   // 提交请求

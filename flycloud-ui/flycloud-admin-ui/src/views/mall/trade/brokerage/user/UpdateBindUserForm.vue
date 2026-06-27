@@ -1,5 +1,9 @@
 <template>
-  <Dialog v-model="dialogVisible" title="修改上级推广人" width="500">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.ka98a1127')"
+    width="500"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,10 +11,13 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="推广人" prop="bindUserId">
+      <el-form-item
+        :label="t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.kc5885d57')"
+        prop="bindUserId"
+      >
         <el-input
           v-model="formData.bindUserId"
-          placeholder="请输入推广员编号"
+          :placeholder="t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.k9c7d84ed')"
           v-loading="formLoading"
         >
           <template #append>
@@ -44,9 +51,8 @@ import * as BrokerageUserApi from '@/api/mall/trade/brokerage/user'
 import { formatDate } from '@/utils/formatTime'
 
 /** 修改上级推广人表单 */
+const { t } = useI18n()
 defineOptions({ name: 'UpdateBindUserForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -54,7 +60,13 @@ const formLoading = ref(false) // 表单的加载中：1）修改时的数据加
 const formData = ref()
 const formRef = ref() // 表单 Ref
 const formRules = reactive({
-  bindUserId: [{ required: true, message: '推广员人不能为空', trigger: 'blur' }]
+  bindUserId: [
+    {
+      required: true,
+      message: t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.k197d9e21'),
+      trigger: 'blur'
+    }
+  ]
 })
 
 /** 打开弹窗 */
@@ -82,7 +94,7 @@ const submitForm = async () => {
   if (!valid) return
   // 未查找到合适的上级
   if (!bindUser.value) {
-    message.error('请先查询并确认推广人')
+    message.error(t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.k78aa798e'))
     return
   }
 
@@ -114,13 +126,13 @@ const resetForm = () => {
 const bindUser = ref<BrokerageUserApi.BrokerageUserVO>()
 const handleGetUser = async () => {
   if (formData.value.bindUserId == formData.value.id) {
-    message.error('不能绑定自己为推广人')
+    message.error(t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.kc2e070fa'))
     return
   }
   formLoading.value = true
   bindUser.value = await BrokerageUserApi.getBrokerageUser(formData.value.bindUserId)
   if (!bindUser.value) {
-    message.warning('推广员不存在')
+    message.warning(t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.ke814759b'))
   }
   formLoading.value = false
 }

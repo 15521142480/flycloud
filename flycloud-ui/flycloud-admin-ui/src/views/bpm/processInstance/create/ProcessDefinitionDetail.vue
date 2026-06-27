@@ -2,13 +2,18 @@
   <ContentWrap :bodyStyle="{ padding: '10px 20px 0' }">
     <div class="processInstance-wrap-main">
       <el-scrollbar>
-        <div class="text-#878c93 h-15px">流程：{{ selectProcessDefinition.name }}</div>
+        <div class="text-#878c93 h-15px">{{
+          t('extra.kfd35ce08', { p0: selectProcessDefinition.name })
+        }}</div>
         <el-divider class="!my-8px" />
 
         <!-- 中间主要内容 tab 栏 -->
         <el-tabs v-model="activeTab">
           <!-- 表单信息 -->
-          <el-tab-pane label="表单填写" name="form">
+          <el-tab-pane
+            :label="t('auto.views.bpm.processInstance.create.ProcessDefinitionDetail.k406d71ca')"
+            name="form"
+          >
             <div class="form-scroll-area">
               <el-scrollbar>
                 <el-row>
@@ -36,7 +41,10 @@
             </div>
           </el-tab-pane>
           <!-- 流程图 -->
-          <el-tab-pane label="流程图" name="diagram">
+          <el-tab-pane
+            :label="t('auto.views.bpm.processInstance.create.ProcessDefinitionDetail.k3bffba42')"
+            name="diagram"
+          >
             <div class="form-scroll-area">
               <!-- BPMN 流程图预览 -->
               <ProcessInstanceBpmnViewer
@@ -60,11 +68,16 @@
             v-if="activeTab === 'form'"
             class="h-50px bottom-10 text-14px flex items-center color-#32373c dark:color-#fff font-bold btn-container"
           >
-            <el-button plain type="success" v-hasPermi="['bpm:audit:create:create']" @click="submitForm">
-              <Icon icon="ep:select" />&nbsp; 发起
+            <el-button
+              plain
+              type="success"
+              v-hasPermi="['bpm:audit:create:create']"
+              @click="submitForm"
+            >
+              <Icon icon="ep:select" />{{ t('extra.ke857c224') }}
             </el-button>
             <el-button plain type="danger" @click="handleCancel">
-              <Icon icon="ep:close" />&nbsp; 取消
+              <Icon icon="ep:close" />{{ t('extra.kf48b7d8c') }}
             </el-button>
           </div>
         </div>
@@ -84,7 +97,7 @@ import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import * as DefinitionApi from '@/api/bpm/definition'
 import { ApprovalNodeInfo } from '@/api/bpm/processInstance'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProcessDefinitionDetail' })
 const props = defineProps<{
   selectProcessDefinition: any
@@ -154,7 +167,7 @@ const getApprovalDetail = async (row: any) => {
   try {
     const data = await ProcessInstanceApi.getApprovalDetail({ processDefinitionId: row.id })
     if (!data) {
-      message.error('查询不到审批详情信息！')
+      message.error(t('auto.views.bpm.processInstance.create.ProcessDefinitionDetail.kd9dfddde'))
       return
     }
 
@@ -186,7 +199,7 @@ const submitForm = async () => {
         Array.isArray(startUserSelectAssignees.value[userTask.id]) &&
         startUserSelectAssignees.value[userTask.id].length === 0
       )
-        return message.warning(`请选择${userTask.name}的候选人`)
+        return message.warning(t('extra.ked91d26c', { p0: userTask.name }))
     }
   }
 
@@ -199,7 +212,7 @@ const submitForm = async () => {
       startUserSelectAssignees: startUserSelectAssignees.value
     })
     // 提示
-    message.success('发起流程成功')
+    message.success(t('auto.views.bpm.processInstance.create.ProcessDefinitionDetail.kdba2137f'))
     // 跳转回去
     delView(unref(currentRoute))
     await push({

@@ -3,39 +3,69 @@
     <!-- 销售/采购的全局统计 -->
     <el-row :gutter="16" class="row">
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="今日销售" :value="saleSummary?.todayPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.k376a5df6')"
+          :value="saleSummary?.todayPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="昨日销售" :value="saleSummary?.yesterdayPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.k4f276987')"
+          :value="saleSummary?.yesterdayPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="今日采购" :value="purchaseSummary?.todayPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.k1c4afb92')"
+          :value="purchaseSummary?.todayPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="昨日采购" :value="purchaseSummary?.yesterdayPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.k21716476')"
+          :value="purchaseSummary?.yesterdayPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="本月销售" :value="saleSummary?.monthPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.k003c22fa')"
+          :value="saleSummary?.monthPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="今年销售" :value="saleSummary?.yearPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.kcfee3f3b')"
+          :value="saleSummary?.yearPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="本月采购" :value="purchaseSummary?.monthPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.k784c49f9')"
+          :value="purchaseSummary?.monthPrice"
+        />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
-        <SummaryCard title="今年采购" :value="purchaseSummary?.yearPrice" />
+        <SummaryCard
+          :title="t('auto.views.erp.home.index.ka05c8f6b')"
+          :value="purchaseSummary?.yearPrice"
+        />
       </el-col>
     </el-row>
     <!-- 销售/采购的时段统计 -->
     <el-row :gutter="16" class="row">
       <!-- 销售统计 -->
       <el-col :md="12" :sm="12" :xs="24" :loading="loading">
-        <TimeSummaryChart title="销售统计" :value="saleTimeSummaryList" />
+        <TimeSummaryChart
+          :title="t('auto.views.erp.home.index.kd9fe4a0d')"
+          :value="saleTimeSummaryList"
+        />
       </el-col>
       <!-- 采购统计 -->
       <el-col :md="12" :sm="12" :xs="24" :loading="loading">
-        <TimeSummaryChart title="采购统计" :value="purchaseTimeSummaryList" />
+        <TimeSummaryChart
+          :title="t('auto.views.erp.home.index.k3454dbb9')"
+          :value="purchaseTimeSummaryList"
+        />
       </el-col>
     </el-row>
   </div>
@@ -55,6 +85,7 @@ import {
 } from '@/api/erp/statistics/purchase'
 
 /** 商城首页 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpHome' })
 
 const loading = ref(true) // 加载中

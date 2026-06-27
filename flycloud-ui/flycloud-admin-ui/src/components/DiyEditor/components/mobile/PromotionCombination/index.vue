@@ -82,13 +82,14 @@
           <span
             v-if="property.fields.salesCount.show"
             :style="{ color: property.fields.salesCount.color }"
+            >{{
+              t('extra.kd56a44f8', { p0: (spu.salesCount || 0) + (spu.virtualSalesCount || 0) })
+            }}</span
           >
-            已售{{ (spu.salesCount || 0) + (spu.virtualSalesCount || 0) }}件
-          </span>
           <!-- 库存 -->
-          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">
-            库存{{ spu.stock || 0 }}
-          </span>
+          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">{{
+            t('extra.k676bae6c', { p0: spu.stock || 0 })
+          }}</span>
         </div>
       </div>
       <!-- 购买按钮 -->
@@ -119,8 +120,8 @@ import { PromotionCombinationProperty } from './config'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import * as CombinationActivityApi from '@/api/mall/promotion/combination/combinationActivity'
 import { fenToYuan } from '@/utils'
-
 /** 拼团卡片 */
+const { t } = useI18n()
 defineOptions({ name: 'PromotionCombination' })
 // 定义属性
 const props = defineProps<{ property: PromotionCombinationProperty }>()
@@ -161,7 +162,10 @@ watch(
         })
       }
     } catch (error) {
-      console.error('获取拼团活动细节或 SPU 细节时出错:', error)
+      console.error(
+        t('auto.components.DiyEditor.components.mobile.PromotionCombination.index.k8225e1fa'),
+        error
+      )
     }
   },
   {

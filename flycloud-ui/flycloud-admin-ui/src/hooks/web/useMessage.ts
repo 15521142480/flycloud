@@ -1,7 +1,8 @@
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { useI18n } from './useI18n'
+const { t } = useI18n()
+
 export const useMessage = () => {
-  const { t } = useI18n()
   return {
     // 消息提示
     info(content: string) {

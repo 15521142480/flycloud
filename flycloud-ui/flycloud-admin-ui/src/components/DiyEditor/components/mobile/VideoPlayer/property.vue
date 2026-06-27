@@ -1,7 +1,10 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <template #style>
-      <el-form-item label="高度" prop="height">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.VideoPlayer.property.keea51aa4')"
+        prop="height"
+      >
         <el-slider
           v-model="formData.style.height"
           :max="500"
@@ -43,8 +46,7 @@
 <script setup lang="ts">
 import { VideoPlayerProperty } from './config'
 import { usePropertyForm } from '@/components/DiyEditor/util'
-
-// 视频播放属性面板
+const { t } = useI18n()
 defineOptions({ name: 'VideoPlayerProperty' })
 
 const props = defineProps<{ modelValue: VideoPlayerProperty }>()

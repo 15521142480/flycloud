@@ -2,8 +2,17 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column key="id" align="center" label="商品编号" width="180" prop="id" />
-      <el-table-column label="商品图" min-width="80">
+      <el-table-column
+        key="id"
+        align="center"
+        :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
+        width="180"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserFavoriteList.k1b089e84')"
+        min-width="80"
+      >
         <template #default="{ row }">
           <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
         </template>
@@ -41,9 +50,8 @@ import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as FavoriteApi from '@/api/mall/product/favorite'
 import { floatToFixed2 } from '@/utils'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

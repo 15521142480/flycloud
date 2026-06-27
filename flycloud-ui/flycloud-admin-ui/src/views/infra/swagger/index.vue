@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="接口文档" url="https://doc.iocoder.cn/api-doc/" />
+  <doc-alert
+    :title="t('auto.views.infra.swagger.index.kdc0cfd68')"
+    url="https://doc.iocoder.cn/api-doc/"
+  />
 
   <ContentWrap :bodyStyle="{ padding: '0px' }" class="!mb-0">
     <IFrame v-if="!loading" v-loading="loading" :src="src" />
@@ -7,7 +10,7 @@
 </template>
 <script lang="ts" setup>
 import * as ConfigApi from '@/api/infra/config'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraSwagger' })
 
 const loading = ref(true) // 是否加载中

@@ -1,6 +1,5 @@
 <template>
   <div class="">
-
     <!--  图文点选验证码‌  -->
     <el-dialog
       v-model="captchaDialogVisible"
@@ -16,10 +15,20 @@
             <span>{{ t('textCaptcha.prompt') }}：</span>
             <b v-for="word in targetWords" :key="word">{{ word }}</b>
           </div>
-          <el-button :icon="Refresh" text circle :loading="captchaLoading" @click="loadCaptcha" style="font-size: 20px" />
+          <el-button
+            :icon="Refresh"
+            text
+            circle
+            :loading="captchaLoading"
+            @click="loadCaptcha"
+            style="font-size: 20px"
+          />
           <div style="width: 5px"></div>
         </div>
-        <div class="captcha-image-wrap" :class="{ passed: Boolean(props.textCaptchaData.imageTextClickCaptchaSuccessValue) }">
+        <div
+          class="captcha-image-wrap"
+          :class="{ passed: Boolean(props.textCaptchaData.imageTextClickCaptchaSuccessValue) }"
+        >
           <img
             v-if="captchaChallenge"
             ref="captchaImageRef"
@@ -34,9 +43,13 @@
             class="captcha-marker"
             :style="{ left: `${point.displayX}%`, top: `${point.displayY}%` }"
           >
-          {{ index + 1 }}
-        </span>
-          <div v-if="props.textCaptchaData.imageTextClickCaptchaSuccessValue" class="captcha-passed">{{ t('textCaptcha.passed') }}</div>
+            {{ index + 1 }}
+          </span>
+          <div
+            v-if="props.textCaptchaData.imageTextClickCaptchaSuccessValue"
+            class="captcha-passed"
+            >{{ t('textCaptcha.passed') }}</div
+          >
         </div>
       </div>
     </el-dialog>
@@ -46,12 +59,14 @@
 <script setup lang="ts">
 import { useI18n } from '@/hooks/web/useI18n'
 import { Refresh } from '@element-plus/icons-vue'
-const { t } = useI18n()
-import type { ClickCaptchaChallengeVo, ClickCaptchaPointDto, TextCaptchaDataVo } from '@/entity/auth'
+import type {
+  ClickCaptchaChallengeVo,
+  ClickCaptchaPointDto,
+  TextCaptchaDataVo
+} from '@/entity/auth'
 import { getImageTextClickCaptchaApi, checkImageTextClickCaptchaApi } from '@/api/login'
-import {PropType} from "vue";
-
-
+import { PropType } from 'vue'
+const { t } = useI18n()
 const props = defineProps({
   textCaptchaData: {
     type: Object as PropType<TextCaptchaDataVo>,
@@ -80,7 +95,6 @@ const captchaChallenge = ref<ClickCaptchaChallengeVo>()
 const clickPoints = ref<Array<ClickCaptchaPointDto & { displayX: number; displayY: number }>>([])
 const targetWords = computed(() => captchaChallenge.value?.targetText.split('') || [])
 
-
 /**
  * 父组件回调
  */
@@ -91,12 +105,10 @@ const openImageTextClickCaptchaProp = async () => {
 
 defineExpose({ openImageTextClickCaptchaProp })
 
-
 /**
  * 加载图文点选验证码‌
  */
 const loadCaptcha = async () => {
-
   captchaLoading.value = true
   clickPoints.value = []
   resetTextCaptchaData()
@@ -108,7 +120,10 @@ const loadCaptcha = async () => {
       imageTextClickCaptchaKey: captchaChallenge.value?.captchaId ?? ''
     })
   } catch (error) {
-    const message = error instanceof Error ? error.message : '图文点选验证码‌出现未知错误!'
+    const message =
+      error instanceof Error
+        ? error.message
+        : t('auto.views.login.components.ImageTextClickCaptcha.k8ffea958')
     ElMessage.error(message)
   } finally {
     captchaLoading.value = false
@@ -120,8 +135,11 @@ const loadCaptcha = async () => {
  * @param event
  */
 const handleCaptchaClick = async (event: MouseEvent) => {
-
-  if (!captchaChallenge.value || props.textCaptchaData.imageTextClickCaptchaSuccessValue || clickPoints.value.length >= 3) {
+  if (
+    !captchaChallenge.value ||
+    props.textCaptchaData.imageTextClickCaptchaSuccessValue ||
+    clickPoints.value.length >= 3
+  ) {
     return
   }
   const image = captchaImageRef.value
@@ -137,7 +155,7 @@ const handleCaptchaClick = async (event: MouseEvent) => {
   clickPoints.value.push({ x, y, displayX, displayY })
 
   const pointList = clickPoints.value.map(({ x, y }) => ({ x, y }))
-  const pointListStr = pointList.map(item => `${item.x},${item.y}`).join('; ')
+  const pointListStr = pointList.map((item) => `${item.x},${item.y}`).join('; ')
   emit('update:textCaptchaData', {
     ...props.textCaptchaData,
     imageTextClickCaptchaValue: pointListStr
@@ -152,7 +170,6 @@ const handleCaptchaClick = async (event: MouseEvent) => {
  * 验证图文点选验证码‌
  */
 const checkCaptcha = async () => {
-
   if (!captchaChallenge.value) {
     return
   }
@@ -192,20 +209,14 @@ const handleCaptchaClosed = () => {
 }
 
 const resetTextCaptchaData = () => {
-
   emit('update:textCaptchaData', {
     ...props.textCaptchaData,
     imageTextClickCaptchaKey: '',
     imageTextClickCaptchaValue: '',
     imageTextClickCaptchaSuccessValue: ''
   })
-
 }
-
-
 </script>
-
-
 
 <style scoped lang="scss">
 .login-page {

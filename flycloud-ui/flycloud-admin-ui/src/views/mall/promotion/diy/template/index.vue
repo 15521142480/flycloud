@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="【营销】商城装修" url="https://doc.iocoder.cn/mall/diy/" />
+  <doc-alert
+    :title="t('auto.views.mall.promotion.diy.template.index.k5ab6537f')"
+    url="https://doc.iocoder.cn/mall/diy/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,36 +13,43 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="模板名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.diy.template.index.kbbc511d0')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入模板名称"
+          :placeholder="t('auto.views.mall.promotion.diy.template.index.k86bd4450')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.promotion.diy.template.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.promotion.diy.template.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:diy-template:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k19e408b4') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -48,8 +58,16 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="预览图" align="center" prop="previewPicUrls">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.diy.template.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.diy.template.index.k81946fbf')"
+        align="center"
+        prop="previewPicUrls"
+      >
         <template #default="scope">
           <el-image
             class="h-40px max-w-40px"
@@ -142,10 +160,10 @@ import DiyTemplateForm from './DiyTemplateForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 
 /** 装修模板 */
+const { t } = useI18n()
 defineOptions({ name: 'DiyTemplate' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -205,10 +223,10 @@ const handleDelete = async (id: number) => {
 const handleUse = async (row: DiyTemplateApi.DiyTemplateVO) => {
   try {
     // 使用模板的二次确认
-    await message.confirm(`是否使用模板“${row.name}”?`)
+    await message.confirm(t('extra.kae05a21f', { p0: row.name }))
     // 发起删除
     await DiyTemplateApi.useDiyTemplate(row.id!)
-    message.success('使用成功')
+    message.success(t('auto.views.mall.promotion.diy.template.index.kbd1f9ccb'))
     // 刷新列表
     await getList()
   } catch {}

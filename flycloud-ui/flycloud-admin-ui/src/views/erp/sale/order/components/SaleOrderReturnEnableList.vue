@@ -1,7 +1,7 @@
 <!-- 可退货的订单列表 -->
 <template>
   <Dialog
-    title="选择销售订单（仅展示可退货）"
+    :title="t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.kceb406ae')"
     v-model="dialogVisible"
     :appendToBody="true"
     :scroll="true"
@@ -16,21 +16,31 @@
         :inline="true"
         label-width="68px"
       >
-        <el-form-item label="订单单号" prop="no">
+        <el-form-item
+          :label="t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.kdb1e6a3d')"
+          prop="no"
+        >
           <el-input
             v-model="queryParams.no"
-            placeholder="请输入订单单号"
+            :placeholder="
+              t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.k2bafbef9')
+            "
             clearable
             @keyup.enter="handleQuery"
             class="!w-160px"
           />
         </el-form-item>
-        <el-form-item label="产品" prop="productId">
+        <el-form-item
+          :label="t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.k6cc98552')"
+          prop="productId"
+        >
           <el-select
             v-model="queryParams.productId"
             clearable
             filterable
-            placeholder="请选择产品"
+            :placeholder="
+              t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.k59a0d3d1')
+            "
             class="!w-160px"
           >
             <el-option
@@ -41,20 +51,31 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="订单时间" prop="orderTime">
+        <el-form-item
+          :label="t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.kee55d0ad')"
+          prop="orderTime"
+        >
           <el-date-picker
             v-model="queryParams.orderTime"
             value-format="YYYY-MM-DD HH:mm:ss"
             type="daterange"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="
+              t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.k1f291968')
+            "
+            :end-placeholder="
+              t('auto.views.erp.sale.order.components.SaleOrderReturnEnableList.kf4b9b2b5')
+            "
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-160px"
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-          <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+          <el-button @click="handleQuery"
+            ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+          >
+          <el-button @click="resetQuery"
+            ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+          >
         </el-form-item>
       </el-form>
     </ContentWrap>
@@ -135,7 +156,7 @@ import { SaleOrderApi, SaleOrderVO } from '@/api/erp/sale/order'
 import { dateFormatter2 } from '@/utils/formatTime'
 import { erpCountTableColumnFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
-
+const { t } = useI18n()
 defineOptions({ name: 'SaleOrderReturnEnableList' })
 
 const list = ref<SaleOrderVO[]>([]) // 列表的数据

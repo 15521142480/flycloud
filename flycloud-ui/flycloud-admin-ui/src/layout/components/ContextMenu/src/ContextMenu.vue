@@ -6,14 +6,12 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { contextMenuSchema } from '@/types/contextMenu'
 import type { ElDropdown } from 'element-plus'
 
+const { t } = useI18n()
 defineOptions({ name: 'ContextMenu' })
 
 const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('context-menu')
-
-const { t } = useI18n()
-
 const emit = defineEmits(['visibleChange'])
 
 const props = defineProps({

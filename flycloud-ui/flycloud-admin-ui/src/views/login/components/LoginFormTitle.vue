@@ -5,11 +5,8 @@
 </template>
 <script lang="ts" setup>
 import { LoginStateEnum, useLoginState } from './useLogin'
-
-defineOptions({ name: 'LoginFormTitle' })
-
 const { t } = useI18n()
-
+defineOptions({ name: 'LoginFormTitle' })
 const { getLoginState } = useLoginState()
 
 const getFormTitle = computed(() => {

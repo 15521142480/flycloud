@@ -1,13 +1,15 @@
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 const selectRule = [
   {
     type: 'select',
     field: 'selectType',
-    title: '选择器类型',
+    title: t('auto.components.FormCreate.src.config.selectRule.kb83a459d'),
     value: 'select',
     options: [
-      { label: '下拉框', value: 'select' },
-      { label: '单选框', value: 'radio' },
-      { label: '多选框', value: 'checkbox' }
+      { label: t('auto.components.FormCreate.src.config.selectRule.k2c2c1ef2'), value: 'select' },
+      { label: t('auto.components.FormCreate.src.config.selectRule.k95f15ec4'), value: 'radio' },
+      { label: t('auto.components.FormCreate.src.config.selectRule.kf64b2d95'), value: 'checkbox' }
     ],
     // 参考 https://www.form-create.com/v3/guide/control 组件联动，单选框和多选框不需要多选属性
     control: [
@@ -35,59 +37,79 @@ const selectRule = [
   {
     type: 'switch',
     field: 'filterable',
-    title: '是否可搜索'
+    title: t('auto.components.FormCreate.src.config.selectRule.keb4aa6f1')
   },
-  { type: 'switch', field: 'multiple', title: '是否多选' },
+  {
+    type: 'switch',
+    field: 'multiple',
+    title: t('auto.components.FormCreate.src.config.selectRule.kdd177d59')
+  },
   {
     type: 'switch',
     field: 'disabled',
-    title: '是否禁用'
+    title: t('auto.components.FormCreate.src.config.selectRule.k9858a9a3')
   },
-  { type: 'switch', field: 'clearable', title: '是否可以清空选项' },
+  {
+    type: 'switch',
+    field: 'clearable',
+    title: t('auto.components.FormCreate.src.config.selectRule.k152873ef')
+  },
   {
     type: 'switch',
     field: 'collapseTags',
-    title: '多选时是否将选中值按文字的形式展示'
+    title: t('auto.components.FormCreate.src.config.selectRule.k2a50d4ab')
   },
   {
     type: 'inputNumber',
     field: 'multipleLimit',
-    title: '多选时用户最多可以选择的项目数，为 0 则不限制',
+    title: t('auto.components.FormCreate.src.config.selectRule.k4fff277d'),
     props: { min: 0 }
   },
   {
     type: 'input',
     field: 'autocomplete',
-    title: 'autocomplete 属性'
+    title: t('auto.components.FormCreate.src.config.selectRule.k3939b22d')
   },
-  { type: 'input', field: 'placeholder', title: '占位符' },
-  { type: 'switch', field: 'allowCreate', title: '是否允许用户创建新条目' },
+  {
+    type: 'input',
+    field: 'placeholder',
+    title: t('auto.components.FormCreate.src.config.selectRule.ka6ea6403')
+  },
+  {
+    type: 'switch',
+    field: 'allowCreate',
+    title: t('auto.components.FormCreate.src.config.selectRule.ka9f60f79')
+  },
   {
     type: 'input',
     field: 'noMatchText',
-    title: '搜索条件无匹配时显示的文字'
+    title: t('auto.components.FormCreate.src.config.selectRule.k80787d7a')
   },
-  { type: 'input', field: 'noDataText', title: '选项为空时显示的文字' },
+  {
+    type: 'input',
+    field: 'noDataText',
+    title: t('auto.components.FormCreate.src.config.selectRule.k2ae3ba8b')
+  },
   {
     type: 'switch',
     field: 'reserveKeyword',
-    title: '多选且可搜索时，是否在选中一个选项后保留当前的搜索关键词'
+    title: t('auto.components.FormCreate.src.config.selectRule.k150840a1')
   },
   {
     type: 'switch',
     field: 'defaultFirstOption',
-    title: '在输入框按下回车，选择第一个匹配项'
+    title: t('auto.components.FormCreate.src.config.selectRule.k394dd545')
   },
   {
     type: 'switch',
     field: 'popperAppendToBody',
-    title: '是否将弹出框插入至 body 元素',
+    title: t('auto.components.FormCreate.src.config.selectRule.kd9bedfe8'),
     value: true
   },
   {
     type: 'switch',
     field: 'automaticDropdown',
-    title: '对于不可搜索的 Select，是否在输入框获得焦点后自动弹出选项菜单'
+    title: t('auto.components.FormCreate.src.config.selectRule.k0bfe1d3a')
   }
 ]
 
@@ -95,7 +117,7 @@ const apiSelectRule = [
   {
     type: 'input',
     field: 'url',
-    title: 'url 地址',
+    title: t('auto.components.FormCreate.src.config.selectRule.k4ce76c49'),
     props: {
       placeholder: '/system/user/simple-list'
     }
@@ -103,7 +125,7 @@ const apiSelectRule = [
   {
     type: 'select',
     field: 'method',
-    title: '请求类型',
+    title: t('auto.components.FormCreate.src.config.selectRule.k5289f35e'),
     value: 'GET',
     options: [
       { label: 'GET', value: 'GET' },
@@ -118,7 +140,7 @@ const apiSelectRule = [
           {
             type: 'input',
             field: 'data',
-            title: '请求参数 JSON 格式',
+            title: t('auto.components.FormCreate.src.config.selectRule.k1e308214'),
             props: {
               autosize: true,
               type: 'textarea',
@@ -132,8 +154,8 @@ const apiSelectRule = [
   {
     type: 'input',
     field: 'labelField',
-    title: 'label 属性',
-    info: '可以使用 el 表达式：${属性}，来实现复杂数据组合。如：${name}-${id}',
+    title: t('auto.components.FormCreate.src.config.selectRule.k4615ec53'),
+    info: t('auto.components.FormCreate.src.config.selectRule.ka4d987f6'),
     props: {
       placeholder: 'name'
     }
@@ -141,8 +163,8 @@ const apiSelectRule = [
   {
     type: 'input',
     field: 'valueField',
-    title: 'value 属性',
-    info: '可以使用 el 表达式：${属性}，来实现复杂数据组合。如：${name}-${id}',
+    title: t('auto.components.FormCreate.src.config.selectRule.k530c5c7b'),
+    info: t('auto.components.FormCreate.src.config.selectRule.ka4d987f6'),
     props: {
       placeholder: 'id'
     }
@@ -150,9 +172,8 @@ const apiSelectRule = [
   {
     type: 'input',
     field: 'parseFunc',
-    title: '选项解析函数',
-    info: `data 为接口返回值,需要写一个匿名函数解析返回值为选择器 options 列表
-    (data: any)=>{ label: string; value: any }[]`,
+    title: t('auto.components.FormCreate.src.config.selectRule.kac529c19'),
+    info: t('extra.kd975d142'),
     props: {
       autosize: true,
       rows: { minRows: 2, maxRows: 6 },
@@ -167,14 +188,14 @@ const apiSelectRule = [
   {
     type: 'switch',
     field: 'remote',
-    info: '是否可搜索',
-    title: '其中的选项是否从服务器远程加载'
+    info: t('auto.components.FormCreate.src.config.selectRule.keb4aa6f1'),
+    title: t('auto.components.FormCreate.src.config.selectRule.k9e1cd941')
   },
   {
     type: 'input',
     field: 'remoteField',
-    title: '请求参数',
-    info: '远程请求时请求携带的参数名称，如：name'
+    title: t('auto.components.FormCreate.src.config.selectRule.k1f9ac54b'),
+    info: t('auto.components.FormCreate.src.config.selectRule.k841a3395')
   }
 ]
 

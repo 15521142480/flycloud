@@ -9,21 +9,27 @@
         class="-mb-15px"
         label-width="82px"
       >
-        <el-form-item label="优惠券名称" prop="name">
+        <el-form-item
+          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.k040f6dcf')"
+          prop="name"
+        >
           <el-input
             v-model="queryParams.name"
             class="!w-240px"
             clearable
-            placeholder="请输入优惠劵名"
+            :placeholder="t('auto.views.mall.promotion.coupon.components.CouponSelect.k70a14fb5')"
             @keyup="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="优惠类型" prop="discountType">
+        <el-form-item
+          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.k1b05dd75')"
+          prop="discountType"
+        >
           <el-select
             v-model="queryParams.discountType"
             class="!w-240px"
             clearable
-            placeholder="请选择优惠券类型"
+            :placeholder="t('auto.views.mall.promotion.coupon.components.CouponSelect.ka363f12a')"
           >
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_DISCOUNT_TYPE)"
@@ -36,11 +42,11 @@
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            搜索
+            {{ t('extra.kcfbac39f') }}
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            重置
+            {{ t('extra.ked89c360') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -50,8 +56,16 @@
     <ContentWrap>
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
-        <el-table-column label="优惠券名称" min-width="140" prop="name" />
-        <el-table-column label="类型" min-width="80" prop="productScope">
+        <el-table-column
+          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.k040f6dcf')"
+          min-width="140"
+          prop="name"
+        />
+        <el-table-column
+          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.ke4e46c72')"
+          min-width="80"
+          prop="productScope"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="scope.row.productScope" />
           </template>
@@ -117,7 +131,7 @@ import {
 } from '@/views/mall/promotion/coupon/formatter'
 import * as CouponTemplateApi from '@/api/mall/promotion/coupon/couponTemplate'
 import { CouponTemplateTakeTypeEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'CouponSelect' })
 
 const props = defineProps<{
@@ -129,7 +143,7 @@ const emit = defineEmits<{
   (e: 'change', v: CouponTemplateApi.CouponTemplateVO[]): void
 }>()
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref('选择优惠劵') // 弹窗的标题
+const dialogTitle = ref(t('auto.views.mall.promotion.coupon.components.CouponSelect.k3acbce42')) // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

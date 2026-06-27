@@ -7,19 +7,36 @@
       :rules="formRules"
       label-width="100px"
     >
-      <el-form-item label="模板名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入模板名称" />
+      <el-form-item
+        :label="t('auto.views.mall.promotion.diy.template.DiyTemplateForm.kbbc511d0')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.promotion.diy.template.DiyTemplateForm.k86bd4450')"
+        />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" type="textarea" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.mall.promotion.diy.template.DiyTemplateForm.k57e709d9')"
+          type="textarea"
+        />
       </el-form-item>
-      <el-form-item label="预览图" prop="previewPicUrls">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.diy.template.DiyTemplateForm.k81946fbf')"
+        prop="previewPicUrls"
+      >
         <UploadImgs v-model="formData.previewPicUrls" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.promotion.diy.template.DiyTemplateForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.promotion.diy.template.DiyTemplateForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -27,9 +44,8 @@
 import * as DiyTemplateApi from '@/api/mall/promotion/diy/template'
 
 /** 装修模板表单 */
+const { t } = useI18n()
 defineOptions({ name: 'DiyTemplateForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -43,7 +59,13 @@ const formData = ref({
   previewPicUrls: []
 })
 const formRules = reactive({
-  name: [{ required: true, message: '模板名称不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.diy.template.DiyTemplateForm.k15011507'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

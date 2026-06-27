@@ -1,5 +1,10 @@
 <template>
-  <Dialog v-model="dialogVisible" :appendToBody="true" title="选择规格" width="700">
+  <Dialog
+    v-model="dialogVisible"
+    :appendToBody="true"
+    :title="t('auto.views.mall.product.spu.components.SkuTableSelect.kfa5c5a4e')"
+    width="700"
+  >
     <el-table v-loading="loading" :data="list" show-overflow-tooltip>
       <el-table-column label="#" width="55">
         <template #default="{ row }">
@@ -37,7 +42,7 @@ import { ElTable } from 'element-plus'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { propTypes } from '@/utils/propTypes'
 import { fenToYuan } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'SkuTableSelect' })
 
 const props = defineProps({

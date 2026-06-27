@@ -1,6 +1,8 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 轮播图属性 */
+const { t } = useI18n()
+
 export interface CarouselProperty {
   // 类型：默认 | 卡片
   type: 'default' | 'card'
@@ -30,7 +32,7 @@ export interface CarouselItemProperty {
 // 定义组件
 export const component = {
   id: 'Carousel',
-  name: '轮播图',
+  name: t('auto.components.DiyEditor.components.mobile.Carousel.config.k53370a72'),
   icon: 'system-uicons:carousel',
   property: {
     type: 'default',

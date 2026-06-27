@@ -10,7 +10,6 @@
     size="large"
   >
     <el-row style="margin-right: -10px; margin-left: -10px">
-
       <!-- 登录字段 -->
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
@@ -41,27 +40,35 @@
       </el-col>
 
       <!-- 数字字母验证码 -->
-<!--      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">-->
-<!--        <el-form-item prop="code" >-->
-<!--          <el-col :span="16">-->
-<!--            <el-input v-model="loginData.loginForm.code"  :placeholder="t('login.codePlaceholder')" @keyup.enter="handleLogin()"/>-->
-<!--          </el-col>-->
-<!--          <el-col :span="1" style="text-align: center">&nbsp;</el-col>-->
-<!--          <el-col :span="7">-->
-<!--              <img v-if="loginData.loginForm.codeKey" :src="codeUrl" style="cursor: pointer;" @click="getCode" alt=""/>-->
-<!--              <XButton v-else @click="getCode()">{{t('login.getCode')}}</XButton>-->
-<!--          </el-col>-->
-<!--        </el-form-item>-->
-<!--      </el-col>-->
+      <!--      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">-->
+      <!--        <el-form-item prop="code" >-->
+      <!--          <el-col :span="16">-->
+      <!--            <el-input v-model="loginData.loginForm.code"  :placeholder="t('login.codePlaceholder')" @keyup.enter="handleLogin()"/>-->
+      <!--          </el-col>-->
+      <!--          <el-col :span="1" style="text-align: center">&nbsp;</el-col>-->
+      <!--          <el-col :span="7">-->
+      <!--              <img v-if="loginData.loginForm.codeKey" :src="codeUrl" style="cursor: pointer;" @click="getCode" alt=""/>-->
+      <!--              <XButton v-else @click="getCode()">{{t('login.getCode')}}</XButton>-->
+      <!--          </el-col>-->
+      <!--        </el-form-item>-->
+      <!--      </el-col>-->
 
       <!-- 图文点选验证码‌ -->
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
           <el-col :span="7" style="margin-right: 7px">
-            <XButton title="安全验证" class="w-[100%]" @click="clickImageTextClickCaptcha" />
+            <XButton
+              :title="t('auto.views.login.components.LoginForm.ka2ce6ca8')"
+              class="w-[100%]"
+              @click="clickImageTextClickCaptcha"
+            />
           </el-col>
           <el-col :span="16">
-            <el-input v-model="imageTextClickCaptchaValueText" placeholder="请点击左边的安全验证" disabled />
+            <el-input
+              v-model="imageTextClickCaptchaValueText"
+              :placeholder="t('auto.views.login.components.LoginForm.k3c89ee60')"
+              disabled
+            />
           </el-col>
           <el-col :span="1" style="text-align: center">&nbsp;</el-col>
         </el-form-item>
@@ -100,31 +107,31 @@
       </el-col>
 
       <!-- 验证码 -->
-<!--      <Verify-->
-<!--        ref="verify"-->
-<!--        :captchaType="captchaType"-->
-<!--        :imgSize="{ width: '400px', height: '200px' }"-->
-<!--        mode="pop"-->
-<!--        @success="handleLogin"-->
-<!--      />-->
+      <!--      <Verify-->
+      <!--        ref="verify"-->
+      <!--        :captchaType="captchaType"-->
+      <!--        :imgSize="{ width: '400px', height: '200px' }"-->
+      <!--        mode="pop"-->
+      <!--        @success="handleLogin"-->
+      <!--      />-->
 
       <!-- 注册 || 其他登录 -->
       <el-col :span="24" style="padding-right: 10px; padding-left: 10px">
         <el-form-item>
           <el-row :gutter="5" justify="space-between" style="width: 100%">
             <el-col :span="8">
-<!--              <XButton-->
-<!--                :title="t('login.btnMobile')"-->
-<!--                class="w-[100%]"-->
-<!--                @click="setLoginState(LoginStateEnum.MOBILE)"-->
-<!--              />-->
+              <!--              <XButton-->
+              <!--                :title="t('login.btnMobile')"-->
+              <!--                class="w-[100%]"-->
+              <!--                @click="setLoginState(LoginStateEnum.MOBILE)"-->
+              <!--              />-->
             </el-col>
             <el-col :span="8">
-<!--              <XButton-->
-<!--                :title="t('login.btnQRCode')"-->
-<!--                class="w-[100%]"-->
-<!--                @click="setLoginState(LoginStateEnum.QR_CODE)"-->
-<!--              />-->
+              <!--              <XButton-->
+              <!--                :title="t('login.btnQRCode')"-->
+              <!--                class="w-[100%]"-->
+              <!--                @click="setLoginState(LoginStateEnum.QR_CODE)"-->
+              <!--              />-->
             </el-col>
             <el-col :span="8">
               <XButton
@@ -137,23 +144,22 @@
         </el-form-item>
       </el-col>
 
-<!--      <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>-->
-<!--      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">-->
-<!--        <el-form-item>-->
-<!--          <div class="w-[100%] flex justify-between">-->
-<!--            <Icon-->
-<!--              v-for="(item, key) in socialList"-->
-<!--              :key="key"-->
-<!--              :icon="item.icon"-->
-<!--              :size="30"-->
-<!--              class="anticon cursor-pointer"-->
-<!--              color="#999"-->
-<!--              @click="doSocialLogin(item.type)"-->
-<!--            />-->
-<!--          </div>-->
-<!--        </el-form-item>-->
-<!--      </el-col>-->
-
+      <!--      <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>-->
+      <!--      <el-col :span="24" style="padding-right: 10px; padding-left: 10px">-->
+      <!--        <el-form-item>-->
+      <!--          <div class="w-[100%] flex justify-between">-->
+      <!--            <Icon-->
+      <!--              v-for="(item, key) in socialList"-->
+      <!--              :key="key"-->
+      <!--              :icon="item.icon"-->
+      <!--              :size="30"-->
+      <!--              class="anticon cursor-pointer"-->
+      <!--              color="#999"-->
+      <!--              @click="doSocialLogin(item.type)"-->
+      <!--            />-->
+      <!--          </div>-->
+      <!--        </el-form-item>-->
+      <!--      </el-col>-->
     </el-row>
 
     <!-- 图文点选验证码‌弹窗 -->
@@ -162,7 +168,6 @@
       ref="imageTextClickCaptchaRef"
       @success="successImageTextClick"
     />
-
   </el-form>
 </template>
 <script lang="ts" setup>
@@ -176,13 +181,10 @@ import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
 import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
-import ImageTextClickCaptcha from "./ImageTextClickCaptcha.vue";
+import ImageTextClickCaptcha from './ImageTextClickCaptcha.vue'
 import type { TextCaptchaDataVo } from '@/entity/auth'
-
-defineOptions({ name: 'LoginForm' })
-
 const { t } = useI18n()
-// const message = useMessage()
+defineOptions({ name: 'LoginForm' })
 // const iconHouse = useIcon({ icon: 'ep:house' })
 const iconAvatar = useIcon({ icon: 'ep:avatar' })
 const iconLock = useIcon({ icon: 'ep:lock' })
@@ -200,14 +202,13 @@ const codeUrl = ref()
 const imageTextClickCaptchaRef = ref()
 const imageTextClickCaptchaValueText = ref<string>('')
 
-
 /**
  * 验证
  */
 const LoginRules = {
   username: [required],
   password: [required],
-  code: [required],
+  code: [required]
 }
 
 /**
@@ -237,7 +238,6 @@ const textCaptchaData = ref<TextCaptchaDataVo>({
   imageTextClickCaptchaSuccessValue: '' // 图文点选验证码‌_成功的值
 })
 
-
 const socialList = [
   { icon: 'ant-design:wechat-filled', type: 30 },
   { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
@@ -249,7 +249,6 @@ const socialList = [
  * 获取数字字母验证码
  */
 const getCode = async () => {
-
   // // 情况一，未开启：则直接登录
   // if (loginData.captchaEnable === 'false') {
   //   await handleLogin({})
@@ -288,21 +287,23 @@ const loading = ref() // ElLoading.service 返回的实例
  * 登录
  */
 const handleLogin = async () => {
-
   const data = await validForm()
   if (!data) {
     return
   }
 
-  if (!textCaptchaData.value.imageTextClickCaptchaSuccessValue || !loginData.loginForm.imageTextClickCaptchaSuccessValue) {
-    ElMessage.warning('请进行安全验证！')
+  if (
+    !textCaptchaData.value.imageTextClickCaptchaSuccessValue ||
+    !loginData.loginForm.imageTextClickCaptchaSuccessValue
+  ) {
+    ElMessage.warning(t('auto.views.login.components.LoginForm.kbe6f5b7d'))
     return
   }
 
   loginLoading.value = true
   loading.value = ElLoading.service({
     lock: true,
-    text: '正在加载系统中...',
+    text: t('auto.views.login.components.LoginForm.k259acf4a'),
     background: 'rgba(0, 0, 0, 0.7)'
   })
 
@@ -338,7 +339,6 @@ const handleLogin = async () => {
     // loading.value.close()
   }
 }
-
 
 /**
  * 点击_图文点选验证码‌
@@ -407,7 +407,8 @@ watch(
   () => textCaptchaData.value.imageTextClickCaptchaValue,
   (newVal, oldVal) => {
     if (textCaptchaData.value.imageTextClickCaptchaValue) {
-      imageTextClickCaptchaValueText.value = '选择的坐标为: ' + newVal
+      imageTextClickCaptchaValueText.value =
+        t('auto.views.login.components.LoginForm.k2ae2512e') + newVal
     } else {
       imageTextClickCaptchaValueText.value = ''
     }

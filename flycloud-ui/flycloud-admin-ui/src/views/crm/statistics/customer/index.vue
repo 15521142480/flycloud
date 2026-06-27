@@ -9,24 +9,30 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="时间范围" prop="orderDate">
+      <el-form-item
+        :label="t('auto.views.crm.statistics.customer.index.k2be90408')"
+        prop="orderDate"
+      >
         <el-date-picker
           v-model="queryParams.times"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           :shortcuts="defaultShortcuts"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.crm.statistics.customer.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.crm.statistics.customer.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
           @change="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="时间间隔" prop="interval">
+      <el-form-item
+        :label="t('auto.views.crm.statistics.customer.index.kc31851a4')"
+        prop="interval"
+      >
         <el-select
           v-model="queryParams.interval"
           class="!w-240px"
-          placeholder="间隔类型"
+          :placeholder="t('auto.views.crm.statistics.customer.index.k713759ae')"
           @change="handleQuery"
         >
           <el-option
@@ -37,7 +43,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="归属部门" prop="deptId">
+      <el-form-item :label="t('auto.views.crm.statistics.customer.index.k22a05484')" prop="deptId">
         <el-tree-select
           v-model="queryParams.deptId"
           :data="deptList"
@@ -45,16 +51,16 @@
           check-strictly
           class="!w-240px"
           node-key="id"
-          placeholder="请选择归属部门"
+          :placeholder="t('auto.views.crm.statistics.customer.index.k197cefba')"
           @change="(queryParams.userId = undefined), handleQuery()"
         />
       </el-form-item>
-      <el-form-item label="员工" prop="userId">
+      <el-form-item :label="t('auto.views.crm.statistics.customer.index.k9834f85d')" prop="userId">
         <el-select
           v-model="queryParams.userId"
           class="!w-240px"
           clearable
-          placeholder="员工"
+          :placeholder="t('auto.views.crm.statistics.customer.index.k9834f85d')"
           @change="handleQuery"
         >
           <el-option
@@ -68,11 +74,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          查询
+          {{ t('extra.kb710009f') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kad4dca5a') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -82,33 +88,65 @@
   <el-col>
     <el-tabs v-model="activeTab">
       <!-- 客户总量分析 -->
-      <el-tab-pane label="客户总量分析" lazy name="customerSummary">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.ke6a3379c')"
+        lazy
+        name="customerSummary"
+      >
         <CustomerSummary ref="customerSummaryRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 客户跟进次数分析 -->
-      <el-tab-pane label="客户跟进次数分析" lazy name="followUpSummary">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.k16dcf2b2')"
+        lazy
+        name="followUpSummary"
+      >
         <CustomerFollowUpSummary ref="followUpSummaryRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 客户跟进方式分析 -->
-      <el-tab-pane label="客户跟进方式分析" lazy name="followUpType">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.k1a06d31e')"
+        lazy
+        name="followUpType"
+      >
         <CustomerFollowUpType ref="followUpTypeRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 客户转化率分析 -->
-      <el-tab-pane label="客户转化率分析" lazy name="conversionStat">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.kfe9dc381')"
+        lazy
+        name="conversionStat"
+      >
         <CustomerConversionStat ref="conversionStatRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 公海客户分析 -->
-      <el-tab-pane label="公海客户分析" lazy name="poolSummary">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.kf667cfa3')"
+        lazy
+        name="poolSummary"
+      >
         <CustomerPoolSummary ref="customerPoolSummaryRef" :query-params="queryParams" />
       </el-tab-pane>
       <!-- 成交周期分析 -->
-      <el-tab-pane label="员工客户成交周期分析" lazy name="dealCycleByUser">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.kcece0751')"
+        lazy
+        name="dealCycleByUser"
+      >
         <CustomerDealCycleByUser ref="dealCycleByUserRef" :query-params="queryParams" />
       </el-tab-pane>
-      <el-tab-pane label="地区客户成交周期分析" lazy name="dealCycleByArea">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.k1a1074ce')"
+        lazy
+        name="dealCycleByArea"
+      >
         <CustomerDealCycleByArea ref="dealCycleByAreaRef" :query-params="queryParams" />
       </el-tab-pane>
-      <el-tab-pane label="产品客户成交周期分析" lazy name="dealCycleByProduct">
+      <el-tab-pane
+        :label="t('auto.views.crm.statistics.customer.index.kb5619a70')"
+        lazy
+        name="dealCycleByProduct"
+      >
         <CustomerDealCycleByProduct ref="dealCycleByProductRef" :query-params="queryParams" />
       </el-tab-pane>
     </el-tabs>
@@ -130,7 +168,7 @@ import CustomerFollowUpSummary from './components/CustomerFollowUpSummary.vue'
 import CustomerFollowUpType from './components/CustomerFollowUpType.vue'
 import CustomerSummary from './components/CustomerSummary.vue'
 import CustomerPoolSummary from './components/CustomerPoolSummary.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmStatisticsCustomer' })
 
 const queryParams = reactive({

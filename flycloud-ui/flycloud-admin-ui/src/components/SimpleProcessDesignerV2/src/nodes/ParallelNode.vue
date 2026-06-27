@@ -8,9 +8,9 @@
       >
         <span class="iconfont icon-parallel icon-size parallel"></span>
       </div>
-      <el-button v-else class="branch-node-add" color="#626aef" @click="addCondition" plain
-        >添加分支</el-button
-      >
+      <el-button v-else class="branch-node-add" color="#626aef" @click="addCondition" plain>{{
+        t('auto.components.SimpleProcessDesignerV2.src.nodes.ParallelNode.kc06e4283')
+      }}</el-button>
       <div
         class="branch-node-item"
         v-for="(item, index) in currentNode.conditionNodes"
@@ -85,6 +85,7 @@ import ProcessNodeTree from '../ProcessNodeTree.vue'
 import { SimpleFlowNode, NodeType, NODE_DEFAULT_TEXT } from '../consts'
 import { useTaskStatusClass } from '../node'
 import { generateUUID } from '@/utils'
+const { t } = useI18n()
 const { proxy } = getCurrentInstance() as any
 defineOptions({
   name: 'ParallelNode'
@@ -122,7 +123,7 @@ const showInputs = ref<boolean[]>([])
 const blurEvent = (index: number) => {
   showInputs.value[index] = false
   const conditionNode = currentNode.value.conditionNodes?.at(index) as SimpleFlowNode
-  conditionNode.name = conditionNode.name || `并行${index + 1}`
+  conditionNode.name = conditionNode.name || t('extra.k34a7a55f', { p0: index + 1 })
 }
 
 // 点击条件名称
@@ -143,8 +144,8 @@ const addCondition = () => {
     let lastIndex = len - 1
     const conditionData: SimpleFlowNode = {
       id: 'Flow_' + generateUUID(),
-      name: '并行' + len,
-      showText: '无需配置条件同时执行',
+      name: t('auto.components.SimpleProcessDesignerV2.src.nodes.ParallelNode.k090e935d') + len,
+      showText: t('auto.components.SimpleProcessDesignerV2.src.nodes.ParallelNode.k68614ac3'),
       type: NodeType.CONDITION_NODE,
       childNode: undefined,
       conditionNodes: []

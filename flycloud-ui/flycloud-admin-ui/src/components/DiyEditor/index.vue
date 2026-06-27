@@ -10,17 +10,17 @@
       </div>
       <!-- 右侧操作区 -->
       <el-button-group class="header-right">
-        <el-tooltip content="重置">
+        <el-tooltip :content="t('common.reset')">
           <el-button @click="handleReset">
             <Icon icon="system-uicons:reset-alt" :size="24" />
           </el-button>
         </el-tooltip>
-        <el-tooltip content="预览" v-if="previewUrl">
+        <el-tooltip :content="t('action.preview')" v-if="previewUrl">
           <el-button @click="handlePreview">
             <Icon icon="ep:view" :size="24" />
           </el-button>
         </el-tooltip>
-        <el-tooltip content="保存">
+        <el-tooltip :content="t('common.save')">
           <el-button @click="handleSave">
             <Icon icon="ep:check" :size="24" />
           </el-button>
@@ -197,6 +197,7 @@ import { array, oneOfType } from 'vue-types'
 import { propTypes } from '@/utils/propTypes'
 
 /** 页面装修详情页 */
+const { t } = useI18n()
 defineOptions({ name: 'DiyPageDetail' })
 
 // 左侧组件库

@@ -82,14 +82,14 @@ export default {
     message: 'Lock screen password error'
   },
   error: {
-    noPermission: `Sorry, you don't have permission to access this page.`,
+    noPermission: "Sorry, you don't have permission to access this page.",
     pageError: 'Sorry, the page you visited does not exist.',
     networkError: 'Sorry, the server reported an error.',
     returnToHome: 'Return to home'
   },
   permission: {
-    hasPermission: `Please set the operation permission label value`,
-    hasRole: `Please set the role permission tag value`
+    hasPermission: 'Please set the operation permission label value',
+    hasRole: 'Please set the role permission tag value'
   },
   setting: {
     projectSetting: 'Project setting',
@@ -273,7 +273,7 @@ export default {
   workplace: {
     welcome: 'Hello',
     happyDay: 'Wish you happy every day!',
-    toady: `It's sunny today`,
+    toady: "It's sunny today",
     notice: 'Announcement',
     project: 'Project',
     access: 'Project access',
@@ -405,7 +405,6 @@ export default {
       networkException: 'network anomaly',
       networkExceptionMsg:
         'Please check if your network connection is normal! The network is abnormal',
-
       errMsg401: 'The user does not have permission (token, user name, password error)!',
       errMsg403: 'The user is authorized, but access is forbidden!',
       errMsg404: 'Network request error, the resource was not found!',
@@ -449,30 +448,23 @@ export default {
       signInFormTitle: 'Sign in',
       signUpFormTitle: 'Sign up',
       forgetFormTitle: 'Reset password',
-
       signInTitle: 'Backstage management system',
       signInDesc: 'Enter your personal details and get started!',
       policy: 'I agree to the xxx Privacy Policy',
-      scanSign: `scanning the code to complete the login`,
-
+      scanSign: 'scanning the code to complete the login',
       loginButton: 'Sign in',
       registerButton: 'Sign up',
       rememberMe: 'Remember me',
       forgetPassword: 'Forget Password?',
       otherSignIn: 'Sign in with',
-
-      // notify
       loginSuccessTitle: 'Login successful',
       loginSuccessDesc: 'Welcome back',
-
-      // placeholder
       accountPlaceholder: 'Please input username',
       passwordPlaceholder: 'Please input password',
       smsPlaceholder: 'Please input sms code',
       mobilePlaceholder: 'Please input mobile',
       policyPlaceholder: 'Register after checking',
       diffPwd: 'The two passwords are inconsistent',
-
       userName: 'Username',
       password: 'Password',
       confirmPassword: 'Confirm Password',

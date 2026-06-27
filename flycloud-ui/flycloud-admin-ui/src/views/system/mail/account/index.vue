@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="邮件配置" url="https://doc.iocoder.cn/mail" />
+  <doc-alert
+    :title="t('auto.views.system.mail.account.index.k19d12783')"
+    url="https://doc.iocoder.cn/mail"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -12,7 +15,7 @@
           @click="openForm('create')"
           v-hasPermi="['system:mail-account:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke0e62251') }}
         </el-button>
       </template>
     </Search>
@@ -69,7 +72,7 @@ import { allSchemas } from './account.data'
 import * as MailAccountApi from '@/api/system/mail/account'
 import MailAccountForm from './MailAccountForm.vue'
 import MailAccountDetail from './MailAccountDetail.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMailAccount' })
 
 // tableObject：表格的属性对象，可获得分页大小、条数等属性

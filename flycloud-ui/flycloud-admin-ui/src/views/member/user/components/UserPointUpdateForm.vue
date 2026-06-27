@@ -1,5 +1,9 @@
 <template>
-  <Dialog v-model="dialogVisible" title="修改用户积分" width="600">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.member.user.components.UserPointUpdateForm.ka486fac6')"
+    width="600"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,31 +11,54 @@
       :rules="formRules"
       label-width="100px"
     >
-      <el-form-item label="用户编号" prop="id">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserPointUpdateForm.kec750ef6')"
+        prop="id"
+      >
         <el-input v-model="formData.id" class="!w-240px" disabled />
       </el-form-item>
-      <el-form-item label="用户昵称" prop="name">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserPointUpdateForm.k90542e0a')"
+        prop="name"
+      >
         <el-input v-model="formData.name" class="!w-240px" disabled />
       </el-form-item>
-      <el-form-item label="变动前积分" prop="point">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserPointUpdateForm.k4cbc178d')"
+        prop="point"
+      >
         <el-input-number v-model="formData.point" class="!w-240px" disabled />
       </el-form-item>
-      <el-form-item label="变动类型" prop="changeType">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserPointUpdateForm.k85e327a1')"
+        prop="changeType"
+      >
         <el-radio-group v-model="formData.changeType">
-          <el-radio :value="1">增加</el-radio>
-          <el-radio :value="-1">减少</el-radio>
+          <el-radio :value="1">{{
+            t('auto.views.member.user.components.UserPointUpdateForm.k605806b6')
+          }}</el-radio>
+          <el-radio :value="-1">{{
+            t('auto.views.member.user.components.UserPointUpdateForm.kfe43f157')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="变动积分" prop="changePoint">
+      <el-form-item
+        :label="t('auto.views.member.user.components.UserPointUpdateForm.kb2a7df5a')"
+        prop="changePoint"
+      >
         <el-input-number v-model="formData.changePoint" :min="0" :precision="0" class="!w-240px" />
       </el-form-item>
-      <el-form-item label="变动后积分">
+      <el-form-item :label="t('auto.views.member.user.components.UserPointUpdateForm.kd3fbfcfe')">
         <el-input-number v-model="pointResult" class="!w-240px" disabled />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.member.user.components.UserPointUpdateForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.user.components.UserPointUpdateForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -39,9 +66,8 @@
 import * as UserApi from '@/api/member/user'
 
 /** 修改用户积分表单 */
+const { t } = useI18n()
 defineOptions({ name: 'UpdatePointForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -54,7 +80,13 @@ const formData = ref({
   changeType: 1
 })
 const formRules = reactive({
-  changePoint: [{ required: true, message: '变动积分不能为空', trigger: 'blur' }]
+  changePoint: [
+    {
+      required: true,
+      message: t('auto.views.member.user.components.UserPointUpdateForm.k9c031a0d'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 
@@ -85,11 +117,11 @@ const submitForm = async () => {
   if (!valid) return
 
   if (formData.value.changePoint < 1) {
-    message.error('变动积分不能小于 1')
+    message.error(t('auto.views.member.user.components.UserPointUpdateForm.kcaeb3fa0'))
     return
   }
   if (pointResult.value < 0) {
-    message.error('变动后的积分不能小于 0')
+    message.error(t('auto.views.member.user.components.UserPointUpdateForm.k3a65c777'))
     return
   }
 

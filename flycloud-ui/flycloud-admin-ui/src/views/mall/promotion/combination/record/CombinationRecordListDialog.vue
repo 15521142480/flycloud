@@ -1,10 +1,28 @@
 <template>
-  <Dialog v-model="dialogVisible" title="拼团列表" width="950">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.promotion.combination.record.CombinationRecordListDialog.kedf727fa')"
+    width="950"
+  >
     <!-- 列表 -->
     <ContentWrap>
       <el-table v-loading="loading" :data="list">
-        <el-table-column align="center" label="编号" prop="id" min-width="50" />
-        <el-table-column align="center" label="头像" prop="avatar" min-width="80">
+        <el-table-column
+          align="center"
+          :label="
+            t('auto.views.mall.promotion.combination.record.CombinationRecordListDialog.k9f42dac6')
+          "
+          prop="id"
+          min-width="50"
+        />
+        <el-table-column
+          align="center"
+          :label="
+            t('auto.views.mall.promotion.combination.record.CombinationRecordListDialog.k4ceeeb31')
+          "
+          prop="avatar"
+          min-width="80"
+        >
           <template #default="scope">
             <el-avatar :src="scope.row.avatar" />
           </template>
@@ -55,6 +73,7 @@ import * as CombinationRecordApi from '@/api/mall/promotion/combination/combinat
 import { DICT_TYPE } from '@/utils/dict'
 
 /** 助力列表 */
+const { t } = useI18n()
 defineOptions({ name: 'CombinationRecordListDialog' })
 
 const loading = ref(true) // 列表的加载中

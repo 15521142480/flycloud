@@ -12,10 +12,8 @@ import { ThemeSwitch } from '@/layout/components/ThemeSwitch'
 import ColorRadioPicker from './components/ColorRadioPicker.vue'
 import InterfaceDisplay from './components/InterfaceDisplay.vue'
 import LayoutRadioPicker from './components/LayoutRadioPicker.vue'
-
-defineOptions({ name: 'Setting' })
-
 const { t } = useI18n()
+defineOptions({ name: 'Setting' })
 const appStore = useAppStore()
 
 const { getPrefixCls } = useDesign()
@@ -109,75 +107,40 @@ watch(
 // 拷贝
 const copyConfig = async () => {
   const { copy, copied, isSupported } = useClipboard({
-    source: `
-      // 面包屑
-      breadcrumb: ${appStore.getBreadcrumb},
-      // 面包屑图标
-      breadcrumbIcon: ${appStore.getBreadcrumbIcon},
-      // 折叠图标
-      hamburger: ${appStore.getHamburger},
-      // 全屏图标
-      screenfull: ${appStore.getScreenfull},
-      // 尺寸图标
-      size: ${appStore.getSize},
-      // 多语言图标
-      locale: ${appStore.getLocale},
-      // 消息图标
-      message: ${appStore.getMessage},
-      // 标签页
-      tagsView: ${appStore.getTagsView},
-      // 标签页
-      tagsViewImmerse: ${appStore.getTagsViewImmerse},
-      // 标签页图标
-      tagsViewIcon: ${appStore.getTagsViewIcon},
-      // logo
-      logo: ${appStore.getLogo},
-      // 菜单手风琴
-      uniqueOpened: ${appStore.getUniqueOpened},
-      // 固定header
-      fixedHeader: ${appStore.getFixedHeader},
-      // 页脚
-      footer: ${appStore.getFooter},
-      // 灰色模式
-      greyMode: ${appStore.getGreyMode},
-      // layout布局
-      layout: '${appStore.getLayout}',
-      // 暗黑模式
-      isDark: ${appStore.getIsDark},
-      // 组件尺寸
-      currentSize: '${appStore.getCurrentSize}',
-      // 主题相关
-      theme: {
-        // 主题色
-        elColorPrimary: '${appStore.getTheme.elColorPrimary}',
-        // 左侧菜单边框颜色
-        leftMenuBorderColor: '${appStore.getTheme.leftMenuBorderColor}',
-        // 左侧菜单背景颜色
-        leftMenuBgColor: '${appStore.getTheme.leftMenuBgColor}',
-        // 左侧菜单浅色背景颜色
-        leftMenuBgLightColor: '${appStore.getTheme.leftMenuBgLightColor}',
-        // 左侧菜单选中背景颜色
-        leftMenuBgActiveColor: '${appStore.getTheme.leftMenuBgActiveColor}',
-        // 左侧菜单收起选中背景颜色
-        leftMenuCollapseBgActiveColor: '${appStore.getTheme.leftMenuCollapseBgActiveColor}',
-        // 左侧菜单字体颜色
-        leftMenuTextColor: '${appStore.getTheme.leftMenuTextColor}',
-        // 左侧菜单选中字体颜色
-        leftMenuTextActiveColor: '${appStore.getTheme.leftMenuTextActiveColor}',
-        // logo字体颜色
-        logoTitleTextColor: '${appStore.getTheme.logoTitleTextColor}',
-        // logo边框颜色
-        logoBorderColor: '${appStore.getTheme.logoBorderColor}',
-        // 头部背景颜色
-        topHeaderBgColor: '${appStore.getTheme.topHeaderBgColor}',
-        // 头部字体颜色
-        topHeaderTextColor: '${appStore.getTheme.topHeaderTextColor}',
-        // 头部悬停颜色
-        topHeaderHoverColor: '${appStore.getTheme.topHeaderHoverColor}',
-        // 头部边框颜色
-        topToolBorderColor: '${appStore.getTheme.topToolBorderColor}'
-      }
-    `
+    source: t('extra.kdaa382e0', {
+      p0: appStore.getBreadcrumb,
+      p1: appStore.getBreadcrumbIcon,
+      p2: appStore.getHamburger,
+      p3: appStore.getScreenfull,
+      p4: appStore.getSize,
+      p5: appStore.getLocale,
+      p6: appStore.getMessage,
+      p7: appStore.getTagsView,
+      p8: appStore.getTagsViewImmerse,
+      p9: appStore.getTagsViewIcon,
+      p10: appStore.getLogo,
+      p11: appStore.getUniqueOpened,
+      p12: appStore.getFixedHeader,
+      p13: appStore.getFooter,
+      p14: appStore.getGreyMode,
+      p15: appStore.getLayout,
+      p16: appStore.getIsDark,
+      p17: appStore.getCurrentSize,
+      p18: appStore.getTheme.elColorPrimary,
+      p19: appStore.getTheme.leftMenuBorderColor,
+      p20: appStore.getTheme.leftMenuBgColor,
+      p21: appStore.getTheme.leftMenuBgLightColor,
+      p22: appStore.getTheme.leftMenuBgActiveColor,
+      p23: appStore.getTheme.leftMenuCollapseBgActiveColor,
+      p24: appStore.getTheme.leftMenuTextColor,
+      p25: appStore.getTheme.leftMenuTextActiveColor,
+      p26: appStore.getTheme.logoTitleTextColor,
+      p27: appStore.getTheme.logoBorderColor,
+      p28: appStore.getTheme.topHeaderBgColor,
+      p29: appStore.getTheme.topHeaderTextColor,
+      p30: appStore.getTheme.topHeaderHoverColor,
+      p31: appStore.getTheme.topToolBorderColor
+    })
   })
   if (!isSupported) {
     ElMessage.error(t('setting.copyFailed'))

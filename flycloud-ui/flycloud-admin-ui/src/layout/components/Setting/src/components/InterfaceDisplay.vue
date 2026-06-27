@@ -4,10 +4,8 @@ import { setCssVar } from '@/utils'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useWatermark } from '@/hooks/web/useWatermark'
 import { useAppStore } from '@/store/modules/app'
-
-defineOptions({ name: 'InterfaceDisplay' })
-
 const { t } = useI18n()
+defineOptions({ name: 'InterfaceDisplay' })
 const { getPrefixCls } = useDesign()
 const { setWatermark } = useWatermark()
 const prefixCls = getPrefixCls('interface-display')

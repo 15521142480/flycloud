@@ -1,8 +1,11 @@
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
+
 export function makeRequiredRule() {
   return {
     type: 'Required',
     field: 'formCreate$required',
-    title: '是否必填'
+    title: t('auto.components.FormCreate.src.utils.index.k3db509d9')
   }
 }
 
@@ -19,7 +22,7 @@ export const localeProps = (t, prefix, rules) => {
 
 /**
  * 解析表单组件的  field, title 等字段（递归，如果组件包含子组件）
- * 
+ *
  * @param rule  组件的生成规则 https://www.form-create.com/v3/guide/rule
  * @param fields 解析后表单组件字段
  * @param parentTitle  如果是子表单，子表单的标题，默认为空

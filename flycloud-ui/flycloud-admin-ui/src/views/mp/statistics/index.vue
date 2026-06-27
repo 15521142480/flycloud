@@ -2,15 +2,15 @@
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form class="-mb-15px" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.statistics.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
-      <el-form-item label="时间范围" prop="dateRange">
+      <el-form-item :label="t('auto.views.mp.statistics.index.k2be90408')" prop="dateRange">
         <el-date-picker
           v-model="dateRange"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mp.statistics.index.k1f291968')"
+          :end-placeholder="t('auto.views.mp.statistics.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           @change="getSummary"
           class="!w-240px"
@@ -26,7 +26,7 @@
         <el-card>
           <template #header>
             <div>
-              <span>用户增减数据</span>
+              <span>{{ t('auto.views.mp.statistics.index.k3aa25fd7') }}</span>
             </div>
           </template>
           <Echart :options="userSummaryOption" :height="420" />
@@ -70,7 +70,7 @@
 import { formatDate, addTime, betweenDay, beginOfDay, endOfDay } from '@/utils/formatTime'
 import * as StatisticsApi from '@/api/mp/statistics'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpStatistics' })
 
 const message = useMessage() // 消息弹窗
@@ -87,7 +87,10 @@ const xAxisDate = ref([] as any[]) // X 轴的日期范围
 const userSummaryOption = reactive({
   color: ['#67C23A', '#E5323E'],
   legend: {
-    data: ['新增用户', '取消关注的用户']
+    data: [
+      t('auto.views.mp.statistics.index.k6153a08d'),
+      t('auto.views.mp.statistics.index.kd580a883')
+    ]
   },
   tooltip: {},
   xAxis: {
@@ -98,7 +101,7 @@ const userSummaryOption = reactive({
   },
   series: [
     {
-      name: '新增用户',
+      name: t('auto.views.mp.statistics.index.k6153a08d'),
       type: 'bar',
       label: {
         show: true
@@ -107,7 +110,7 @@ const userSummaryOption = reactive({
       data: [] as any[] // 新增用户的数据
     },
     {
-      name: '取消关注的用户',
+      name: t('auto.views.mp.statistics.index.kd580a883'),
       type: 'bar',
       label: {
         show: true
@@ -119,7 +122,7 @@ const userSummaryOption = reactive({
 // 累计用户数据图表配置项
 const userCumulateOption = reactive({
   legend: {
-    data: ['累计用户量']
+    data: [t('auto.views.mp.statistics.index.kaebfc9cd')]
   },
   xAxis: {
     type: 'category',
@@ -130,7 +133,7 @@ const userCumulateOption = reactive({
   },
   series: [
     {
-      name: '累计用户量',
+      name: t('auto.views.mp.statistics.index.kaebfc9cd'),
       data: [] as any[], // 累计用户量的数据
       type: 'line',
       smooth: true,
@@ -144,7 +147,10 @@ const userCumulateOption = reactive({
 const upstreamMessageOption = reactive({
   color: ['#67C23A', '#E5323E'],
   legend: {
-    data: ['用户发送人数', '用户发送条数']
+    data: [
+      t('auto.views.mp.statistics.index.k9e7ce7c0'),
+      t('auto.views.mp.statistics.index.k51be0eb7')
+    ]
   },
   tooltip: {},
   xAxis: {
@@ -155,7 +161,7 @@ const upstreamMessageOption = reactive({
   },
   series: [
     {
-      name: '用户发送人数',
+      name: t('auto.views.mp.statistics.index.k9e7ce7c0'),
       type: 'line',
       smooth: true,
       label: {
@@ -164,7 +170,7 @@ const upstreamMessageOption = reactive({
       data: [] as any[] // 用户发送人数的数据
     },
     {
-      name: '用户发送条数',
+      name: t('auto.views.mp.statistics.index.k51be0eb7'),
       type: 'line',
       smooth: true,
       label: {
@@ -178,7 +184,12 @@ const upstreamMessageOption = reactive({
 const interfaceSummaryOption = reactive({
   color: ['#67C23A', '#E5323E', '#E6A23C', '#409EFF'],
   legend: {
-    data: ['被动回复用户消息的次数', '失败次数', '最大耗时', '总耗时']
+    data: [
+      t('auto.views.mp.statistics.index.k16b68ffc'),
+      t('auto.views.mp.statistics.index.k06b7ab3f'),
+      t('auto.views.mp.statistics.index.k8280efd7'),
+      t('auto.views.mp.statistics.index.k2db420d1')
+    ]
   },
   tooltip: {},
   xAxis: {
@@ -187,7 +198,7 @@ const interfaceSummaryOption = reactive({
   yAxis: {},
   series: [
     {
-      name: '被动回复用户消息的次数',
+      name: t('auto.views.mp.statistics.index.k16b68ffc'),
       type: 'bar',
       label: {
         show: true
@@ -196,7 +207,7 @@ const interfaceSummaryOption = reactive({
       data: [] as any[] // 被动回复用户消息的次数的数据
     },
     {
-      name: '失败次数',
+      name: t('auto.views.mp.statistics.index.k06b7ab3f'),
       type: 'bar',
       label: {
         show: true
@@ -204,7 +215,7 @@ const interfaceSummaryOption = reactive({
       data: [] as any[] // 失败次数的数据
     },
     {
-      name: '最大耗时',
+      name: t('auto.views.mp.statistics.index.k8280efd7'),
       type: 'bar',
       label: {
         show: true
@@ -212,7 +223,7 @@ const interfaceSummaryOption = reactive({
       data: [] as any[] // 最大耗时的数据
     },
     {
-      name: '总耗时',
+      name: t('auto.views.mp.statistics.index.k2db420d1'),
       type: 'bar',
       label: {
         show: true
@@ -232,12 +243,12 @@ const onAccountChanged = (id: number) => {
 const getSummary = () => {
   // 如果没有选中公众号账号，则进行提示。
   if (!accountId) {
-    message.error('未选中公众号，无法统计数据')
+    message.error(t('auto.views.mp.statistics.index.k02d2a3a9'))
     return false
   }
   // 必须选择 7 天内，因为公众号有时间跨度限制为 7
   if (betweenDay(dateRange.value[0], dateRange.value[1]) >= 7) {
-    message.error('时间间隔 7 天以内，请重新选择')
+    message.error(t('auto.views.mp.statistics.index.kca8703dd'))
     return false
   }
   // 清空横坐标日期

@@ -1,22 +1,22 @@
 <!-- dall3 -->
 <template>
   <div class="prompt">
-    <el-text tag="b">画面描述</el-text>
-    <el-text tag="p">建议使用“形容词+动词+风格”的格式，使用“，”隔开</el-text>
+    <el-text tag="b">{{ t('auto.views.ai.image.index.components.other.k1813eae1') }}</el-text>
+    <el-text tag="p">{{ t('auto.views.ai.image.index.components.other.kcf07e703') }}</el-text>
     <el-input
       v-model="prompt"
       maxlength="1024"
       rows="5"
       class="w-100% mt-15px"
       input-style="border-radius: 7px;"
-      placeholder="例如：童话里的小屋应该是什么样子？"
+      :placeholder="t('auto.views.ai.image.index.components.other.k379873d7')"
       show-word-limit
       type="textarea"
     />
   </div>
   <div class="hot-words">
     <div>
-      <el-text tag="b">随机热词</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.other.k21b37b6a') }}</el-text>
     </div>
     <el-space wrap class="word-list">
       <el-button
@@ -33,7 +33,7 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">平台</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.other.ke4b9d694') }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-select
@@ -54,7 +54,7 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">模型</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.other.k98fd0cbd') }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-select v-model="model" placeholder="Select" size="large" class="!w-350px">
@@ -64,17 +64,27 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">图片尺寸</el-text>
+      <el-text tag="b">{{ t('auto.views.ai.image.index.components.other.k85626028') }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
-      <el-input v-model="width" type="number" class="w-170px" placeholder="图片宽度" />
-      <el-input v-model="height" type="number" class="w-170px" placeholder="图片高度" />
+      <el-input
+        v-model="width"
+        type="number"
+        class="w-170px"
+        :placeholder="t('auto.views.ai.image.index.components.other.k5da942a5')"
+      />
+      <el-input
+        v-model="height"
+        type="number"
+        class="w-170px"
+        :placeholder="t('auto.views.ai.image.index.components.other.kf3f33764')"
+      />
     </el-space>
   </div>
   <div class="btns">
-    <el-button type="primary" size="large" round :loading="drawIn" @click="handleGenerateImage">
-      {{ drawIn ? '生成中' : '生成内容' }}
-    </el-button>
+    <el-button type="primary" size="large" round :loading="drawIn" @click="handleGenerateImage">{{
+      drawIn ? t('extra.k80a72054') : t('extra.k7ecb6362')
+    }}</el-button>
   </div>
 </template>
 <script setup lang="ts">
@@ -88,7 +98,7 @@ import {
   QianFanModels,
   TongYiWanXiangModels
 } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 // 定义属性
@@ -120,7 +130,7 @@ const handleHotWordClick = async (hotWord: string) => {
 /** 图片生成 */
 const handleGenerateImage = async () => {
   // 二次确认
-  await message.confirm(`确认生成内容?`)
+  await message.confirm(t('auto.views.ai.image.index.components.other.k47808f71'))
   try {
     // 加载中
     drawIn.value = true

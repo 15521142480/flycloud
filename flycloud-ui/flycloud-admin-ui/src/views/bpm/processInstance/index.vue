@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -12,7 +11,7 @@
       <el-form-item label="" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入流程名称"
+          :placeholder="t('auto.views.bpm.processInstance.index.ke9399a13')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
@@ -20,7 +19,9 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
       </el-form-item>
 
       <!-- TODO @ tuituji：style 可以使用 unocss -->
@@ -28,7 +29,7 @@
         <!-- TODO @tuituji：应该选择好分类，就触发搜索啦。 -->
         <el-select
           v-model="queryParams.category"
-          placeholder="请选择流程分类"
+          :placeholder="t('auto.views.bpm.processInstance.index.k8c96f9ce')"
           clearable
           class="!w-155px"
         >
@@ -45,7 +46,7 @@
       <!-- TODO @ tuituji：style 可以使用 unocss -->
       <el-form-item :style="{ position: 'absolute', right: '0px' }">
         <el-button v-popover="popoverRef" v-click-outside="onClickOutside" :icon="List">
-          高级筛选
+          {{ t('extra.k541a6eb0') }}
         </el-button>
         <el-popover
           ref="popoverRef"
@@ -56,10 +57,15 @@
           :show-arrow="false"
           placement="bottom-end"
         >
-          <el-form-item label="流程发起人" class="bold-label" label-position="top" prop="category">
+          <el-form-item
+            :label="t('auto.views.bpm.processInstance.index.k340010f7')"
+            class="bold-label"
+            label-position="top"
+            prop="category"
+          >
             <el-select
               v-model="queryParams.category"
-              placeholder="请选择流程发起人"
+              :placeholder="t('auto.views.bpm.processInstance.index.k7638b8ab')"
               clearable
               class="!w-390px"
             >
@@ -72,23 +78,28 @@
             </el-select>
           </el-form-item>
           <el-form-item
-            label="所属流程"
+            :label="t('auto.views.bpm.processInstance.index.k3003243e')"
             class="bold-label"
             label-position="top"
             prop="processDefinitionKey"
           >
             <el-input
               v-model="queryParams.processDefinitionKey"
-              placeholder="请输入流程定义的标识"
+              :placeholder="t('auto.views.bpm.processInstance.index.kc1b278c5')"
               clearable
               @keyup.enter="handleQuery"
               class="!w-390px"
             />
           </el-form-item>
-          <el-form-item label="流程状态" class="bold-label" label-position="top" prop="status">
+          <el-form-item
+            :label="t('auto.views.bpm.processInstance.index.k3416ba2b')"
+            class="bold-label"
+            label-position="top"
+            prop="status"
+          >
             <el-select
               v-model="queryParams.status"
-              placeholder="请选择流程状态"
+              :placeholder="t('auto.views.bpm.processInstance.index.k64c1d7f9')"
               clearable
               class="!w-390px"
             >
@@ -100,13 +111,18 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="发起时间" class="bold-label" label-position="top" prop="createTime">
+          <el-form-item
+            :label="t('auto.views.bpm.processInstance.index.k44042ce0')"
+            class="bold-label"
+            label-position="top"
+            prop="createTime"
+          >
             <el-date-picker
               v-model="queryParams.createTime"
               value-format="YYYY-MM-DD HH:mm:ss"
               type="daterange"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="t('auto.views.bpm.processInstance.index.k1f291968')"
+              :end-placeholder="t('auto.views.bpm.processInstance.index.kf4b9b2b5')"
               :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
               class="!w-240px"
             />
@@ -120,9 +136,15 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" height="calc(100vh - 320px)">
-      <el-table-column label="流程名称" align="center" prop="name" min-width="200px" fixed="left" />
       <el-table-column
-        label="流程分类"
+        :label="t('auto.views.bpm.processInstance.index.k323a8305')"
+        align="center"
+        prop="name"
+        min-width="200px"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processInstance.index.k8377bb01')"
         align="center"
         prop="categoryName"
         min-width="100"
@@ -130,7 +152,11 @@
       />
       <!-- TODO ：摘要 -->
       <!-- TODO @tuituji：流程状态。可见需求文档里  -->
-      <el-table-column label="流程状态" prop="status" width="120">
+      <el-table-column
+        :label="t('auto.views.bpm.processInstance.index.k3416ba2b')"
+        prop="status"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_INSTANCE_STATUS" :value="scope.row.status" />
         </template>
@@ -206,12 +232,11 @@ import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import { ProcessInstanceVO } from '@/api/bpm/processInstance'
 import * as DefinitionApi from '@/api/bpm/definition'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessInstanceMy' })
 
 const router = useRouter() // 路由
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -260,7 +285,7 @@ const handleCreate = async (row?: ProcessInstanceVO) => {
       row.processDefinitionId
     )
     if (processDefinitionDetail.formType === 20) {
-      message.error('重新发起流程失败，原因：该流程使用业务表单，不支持重新发起')
+      message.error(t('auto.views.bpm.processInstance.index.k88cb5d12'))
       return
     }
   }
@@ -284,15 +309,19 @@ const handleDetail = (row) => {
 /** 取消按钮操作 */
 const handleCancel = async (row) => {
   // 二次确认
-  const { value } = await ElMessageBox.prompt('请输入取消原因', '取消流程', {
-    confirmButtonText: t('common.ok'),
-    cancelButtonText: t('common.cancel'),
-    inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
-    inputErrorMessage: '取消原因不能为空'
-  })
+  const { value } = await ElMessageBox.prompt(
+    t('auto.views.bpm.processInstance.index.kd878c25a'),
+    t('auto.views.bpm.processInstance.index.kef368da8'),
+    {
+      confirmButtonText: t('common.ok'),
+      cancelButtonText: t('common.cancel'),
+      inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
+      inputErrorMessage: t('auto.views.bpm.processInstance.index.k6a6cf9af')
+    }
+  )
   // 发起取消
   await ProcessInstanceApi.cancelProcessInstanceByStartUser(row.id, value)
-  message.success('取消成功')
+  message.success(t('auto.views.bpm.processInstance.index.k24a1c71e'))
   // 刷新列表
   await getList()
 }

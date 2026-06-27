@@ -27,7 +27,7 @@ import { WebSocketMessageTypeConstants } from './components/tools/constants'
 import { KeFuConversationRespVO } from '@/api/mall/promotion/kefu/conversation'
 import { getRefreshToken } from '@/utils/auth'
 import { useWebSocket } from '@vueuse/core'
-
+const { t } = useI18n()
 defineOptions({ name: 'KeFu' })
 
 const message = useMessage() // 消息弹窗
@@ -60,7 +60,7 @@ watchEffect(() => {
     const jsonMessage = JSON.parse(data.value)
     const type = jsonMessage.type
     if (!type) {
-      message.error('未知的消息类型：' + data.value)
+      message.error(t('auto.views.mall.promotion.kefu.index.k76335b33') + data.value)
       return
     }
     // 2.2 消息类型：KEFU_MESSAGE_TYPE

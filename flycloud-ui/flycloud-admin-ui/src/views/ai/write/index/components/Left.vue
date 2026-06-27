@@ -49,12 +49,16 @@
     >
       <div>
         <template v-if="selectedTab === 1">
-          <ReuseLabel :hint-click="() => example('write')" hint="示例" label="写作内容" />
+          <ReuseLabel
+            :hint-click="() => example('write')"
+            :hint="t('extra.k3f258f5e')"
+            :label="t('auto.views.ai.write.index.components.Left.ka0bf8274')"
+          />
           <el-input
             v-model="formData.prompt"
             :maxlength="500"
             :rows="5"
-            placeholder="请输入写作内容"
+            :placeholder="t('auto.views.ai.write.index.components.Left.k1807fc9e')"
             showWordLimit
             type="textarea"
           />
@@ -108,7 +112,7 @@ import { WriteVO } from '@/api/ai/write'
 import { omit } from 'lodash-es'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { AiWriteTypeEnum, WriteExample } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 type TabType = WriteVO['type']
 
 const message = useMessage() // 消息弹窗
@@ -143,8 +147,11 @@ const tabs: {
   text: string
   value: TabType
 }[] = [
-  { text: '撰写', value: AiWriteTypeEnum.WRITING },
-  { text: '回复', value: AiWriteTypeEnum.REPLY }
+  {
+    text: t('auto.views.ai.write.index.components.Left.kf90124c8'),
+    value: AiWriteTypeEnum.WRITING
+  },
+  { text: t('auto.views.ai.write.index.components.Left.kffc78509'), value: AiWriteTypeEnum.REPLY }
 ]
 const [DefineTab, ReuseTab] = createReusableTemplate<{
   active?: boolean
@@ -196,11 +203,18 @@ const switchTab = (value: TabType) => {
 /** 提交写作 */
 const submit = () => {
   if (selectedTab.value === 2 && !formData.value.originalContent) {
-    message.warning('请输入原文')
+    message.warning(t('auto.views.ai.write.index.components.Left.k685a687d'))
     return
   }
   if (!formData.value.prompt) {
-    message.warning(`请输入${selectedTab.value === 1 ? '写作' : '回复'}内容`)
+    message.warning(
+      t('extra.k23fd5120', {
+        p0:
+          selectedTab.value === 1
+            ? t('auto.views.ai.write.index.components.Left.k2e33ad42')
+            : t('auto.views.ai.write.index.components.Left.kffc78509')
+      })
+    )
     return
   }
   emits('submit', {

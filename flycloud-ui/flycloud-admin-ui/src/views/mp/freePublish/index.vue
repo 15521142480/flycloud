@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="公众号图文" url="https://doc.iocoder.cn/mp/article/" />
+  <doc-alert
+    :title="t('auto.views.mp.freePublish.index.k4288e135')"
+    url="https://doc.iocoder.cn/mp/article/"
+  />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -10,7 +13,7 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="公众号" prop="accountId">
+      <el-form-item :label="t('auto.views.mp.freePublish.index.ke48fc0ee')" prop="accountId">
         <WxAccountSelect @change="onAccountChanged" />
       </el-form-item>
     </el-form>
@@ -52,11 +55,10 @@
 import * as FreePublishApi from '@/api/mp/freePublish'
 import WxNews from '@/views/mp/components/wx-news'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'
-
+const { t } = useI18n()
 defineOptions({ name: 'MpFreePublish' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -91,7 +93,7 @@ const getList = async () => {
 const handleDelete = async (item: any) => {
   try {
     // 删除的二次确认
-    await message.delConfirm('删除后用户将无法访问此页面，确定删除？')
+    await message.delConfirm(t('auto.views.mp.freePublish.index.kfbf86eef'))
     // 发起删除
     await FreePublishApi.deleteFreePublish(queryParams.accountId, item.articleId)
     message.success(t('common.delSuccess'))

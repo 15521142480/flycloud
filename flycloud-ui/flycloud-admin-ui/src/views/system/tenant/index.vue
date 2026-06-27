@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="SaaS 多租户" url="https://doc.iocoder.cn/saas-tenant/" />
+  <doc-alert
+    :title="t('auto.views.system.tenant.index.k145a8328')"
+    url="https://doc.iocoder.cn/saas-tenant/"
+  />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -10,37 +13,37 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="租户名" prop="name">
+      <el-form-item :label="t('auto.views.system.tenant.index.kdca5b241')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入租户名"
+          :placeholder="t('auto.views.system.tenant.index.kc73394f6')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="联系人" prop="contactName">
+      <el-form-item :label="t('auto.views.system.tenant.index.k2425bd4b')" prop="contactName">
         <el-input
           v-model="queryParams.contactName"
-          placeholder="请输入联系人"
+          :placeholder="t('auto.views.system.tenant.index.k9feabe27')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="联系手机" prop="contactMobile">
+      <el-form-item :label="t('auto.views.system.tenant.index.kef5dfe34')" prop="contactMobile">
         <el-input
           v-model="queryParams.contactMobile"
-          placeholder="请输入联系手机"
+          :placeholder="t('auto.views.system.tenant.index.kfd2166a9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="租户状态" prop="status">
+      <el-form-item :label="t('auto.views.system.tenant.index.k5f511c77')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择租户状态"
+          :placeholder="t('auto.views.system.tenant.index.k5c944a70')"
           clearable
           class="!w-240px"
         >
@@ -52,13 +55,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.tenant.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.tenant.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
@@ -67,11 +70,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon icon="ep:search" class="mr-5px" />
-          搜索
+          {{ t('extra.kfa08f988') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon icon="ep:refresh" class="mr-5px" />
-          重置
+          {{ t('extra.k84acc760') }}
         </el-button>
         <el-button
           type="primary"
@@ -80,7 +83,7 @@
           v-hasPermi="['system:tenant:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
-          新增
+          {{ t('extra.k7d731296') }}
         </el-button>
         <el-button
           type="success"
@@ -90,7 +93,7 @@
           v-hasPermi="['system:tenant:export']"
         >
           <Icon icon="ep:download" class="mr-5px" />
-          导出
+          {{ t('extra.k12bef0e1') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -99,11 +102,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="租户编号" align="center" prop="id" />
-      <el-table-column label="租户名" align="center" prop="name" />
-      <el-table-column label="租户套餐" align="center" prop="packageId">
+      <el-table-column
+        :label="t('auto.views.system.tenant.index.k6c6d2de5')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.system.tenant.index.kdca5b241')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.system.tenant.index.k4c33ed75')"
+        align="center"
+        prop="packageId"
+      >
         <template #default="scope">
-          <el-tag v-if="scope.row.packageId === 0" type="danger">系统租户</el-tag>
+          <el-tag v-if="scope.row.packageId === 0" type="danger">{{
+            t('auto.views.system.tenant.index.k1e374c3b')
+          }}</el-tag>
           <template v-else v-for="item in packageList">
             <el-tag type="success" :key="item.id" v-if="item.id === scope.row.packageId">
               {{ item.name }}
@@ -178,11 +195,10 @@ import download from '@/utils/download'
 import * as TenantApi from '@/api/system/tenant'
 import * as TenantPackageApi from '@/api/system/tenantPackage'
 import TenantForm from './TenantForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemTenant' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -251,7 +267,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await TenantApi.exportTenant(queryParams)
-    download.excel(data, '租户列表.xls')
+    download.excel(data, t('auto.views.system.tenant.index.k6930e324'))
   } catch {
   } finally {
     exportLoading.value = false

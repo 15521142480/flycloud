@@ -1,5 +1,9 @@
 <template>
-  <el-dialog title="新建视频" v-model="showDialog" width="600px">
+  <el-dialog
+    :title="t('auto.views.mp.material.components.UploadVideo.kcb725a4b')"
+    v-model="showDialog"
+    width="600px"
+  >
     <el-upload
       :action="UPLOAD_URL"
       :headers="HEADERS"
@@ -15,7 +19,9 @@
       class="mb-5"
     >
       <template #trigger>
-        <el-button type="primary" plain>选择视频</el-button>
+        <el-button type="primary" plain>{{
+          t('auto.views.mp.material.components.UploadVideo.kf6bc7748')
+        }}</el-button>
       </template>
       <template #tip>
         <span class="el-upload__tip" style="margin-left: 10px"
@@ -56,14 +62,26 @@ import type {
   UploadUserFile
 } from 'element-plus'
 import { HEADERS, UploadData, UPLOAD_URL, UploadType, beforeVideoUpload } from './upload'
-
+const { t } = useI18n()
 const message = useMessage()
 
 const accountId = inject<number>('accountId')
 
 const uploadRules: FormRules = {
-  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
-  introduction: [{ required: true, message: '请输入描述', trigger: 'blur' }]
+  title: [
+    {
+      required: true,
+      message: t('auto.views.mp.material.components.UploadVideo.k901722e5'),
+      trigger: 'blur'
+    }
+  ],
+  introduction: [
+    {
+      required: true,
+      message: t('auto.views.mp.material.components.UploadVideo.kcb869887'),
+      trigger: 'blur'
+    }
+  ]
 }
 
 const props = defineProps({
@@ -110,7 +128,7 @@ const submitVideo = () => {
 /** 上传成功处理 */
 const onUploadSuccess: UploadProps['onSuccess'] = (res: any) => {
   if (res.code !== 0) {
-    message.error('上传出错：' + res.msg)
+    message.error(t('auto.views.mp.material.components.UploadVideo.kea0f7067') + res.msg)
     return false
   }
 
@@ -120,10 +138,10 @@ const onUploadSuccess: UploadProps['onSuccess'] = (res: any) => {
   uploadData.introduction = ''
 
   showDialog.value = false
-  message.notifySuccess('上传成功')
+  message.notifySuccess(t('auto.views.mp.material.components.UploadVideo.kea9f9179'))
   emit('uploaded')
 }
 
 /** 上传失败处理 */
-const onUploadError = (err: Error) => message.error(`上传失败: ${err.message}`)
+const onUploadError = (err: Error) => message.error(t('extra.k37ed3670', { p0: err.message }))
 </script>

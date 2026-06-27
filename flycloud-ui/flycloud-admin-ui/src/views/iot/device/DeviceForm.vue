@@ -7,10 +7,10 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="产品" prop="productId">
+      <el-form-item :label="t('auto.views.iot.device.DeviceForm.k6cc98552')" prop="productId">
         <el-select
           v-model="formData.productId"
-          placeholder="请选择产品"
+          :placeholder="t('auto.views.iot.device.DeviceForm.k59a0d3d1')"
           :disabled="formType === 'update'"
           clearable
         >
@@ -25,17 +25,24 @@
       <el-form-item label="DeviceName" prop="deviceName">
         <el-input
           v-model="formData.deviceName"
-          placeholder="请输入 DeviceName"
+          :placeholder="t('auto.views.iot.device.DeviceForm.k58560dae')"
           :disabled="formType === 'update'"
         />
       </el-form-item>
-      <el-form-item label="备注名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入备注名称" />
+      <el-form-item :label="t('auto.views.iot.device.DeviceForm.k90f8a65c')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.iot.device.DeviceForm.k8167b2a5')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.iot.device.DeviceForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.iot.device.DeviceForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -44,9 +51,8 @@ import { DeviceApi, DeviceVO } from '@/api/iot/device'
 import { ProductApi } from '@/api/iot/product'
 
 /** IoT 设备 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'IoTDeviceForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -60,12 +66,13 @@ const formData = ref({
   name: undefined
 })
 const formRules = reactive({
-  productId: [{ required: true, message: '产品不能为空', trigger: 'blur' }],
+  productId: [
+    { required: true, message: t('auto.views.iot.device.DeviceForm.k0b3cde2b'), trigger: 'blur' }
+  ],
   deviceName: [
     {
       pattern: /^[a-zA-Z0-9_.\-:@]{4,32}$/,
-      message:
-        '支持英文字母、数字、下划线（_）、中划线（-）、点号（.）、半角冒号（:）和特殊字符@，长度限制为 4~32 个字符',
+      message: t('auto.views.iot.device.DeviceForm.k0afa8db7'),
       trigger: 'blur'
     }
   ],
@@ -78,9 +85,9 @@ const formRules = reactive({
         }
         const length = value.replace(/[\u4e00-\u9fa5\u3040-\u30ff]/g, 'aa').length
         if (length < 4 || length > 64) {
-          callback(new Error('备注名称长度限制为 4~64 个字符，中文及日文算 2 个字符'))
+          callback(new Error(t('auto.views.iot.device.DeviceForm.k6ad24cc4')))
         } else if (!/^[\u4e00-\u9fa5\u3040-\u30ff_a-zA-Z0-9]+$/.test(value)) {
-          callback(new Error('备注名称只能包含中文、英文字母、日文、数字和下划线（_）'))
+          callback(new Error(t('auto.views.iot.device.DeviceForm.keff06894')))
         } else {
           callback()
         }

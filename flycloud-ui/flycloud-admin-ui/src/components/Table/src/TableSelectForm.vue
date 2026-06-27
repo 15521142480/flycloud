@@ -20,22 +20,26 @@
       @pagination="getList"
     />
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.components.Table.src.TableSelectForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.Table.src.TableSelectForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 
 <script lang="ts" setup>
 import { ElTable } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'TableSelectForm' })
 withDefaults(
   defineProps<{
     modelValue: any[]
     title: string
   }>(),
-  { modelValue: () => [], title: '选择' }
+  { modelValue: () => [], title: t('auto.components.Table.src.TableSelectForm.k70b20820') }
 )
 const list = ref([]) // 列表的数据
 const total = ref(0) // 列表的总页数

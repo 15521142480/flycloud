@@ -8,19 +8,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="公告标题" prop="title">
+      <el-form-item :label="t('auto.views.system.notice.index.k547bc796')" prop="title">
         <el-input
           v-model="queryParams.title"
-          placeholder="请输入公告标题"
+          :placeholder="t('auto.views.system.notice.index.kd2630772')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="公告状态" prop="status">
+      <el-form-item :label="t('auto.views.system.notice.index.kb438dc6b')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择公告状态"
+          :placeholder="t('auto.views.system.notice.index.kf4f9c694')"
           clearable
           class="!w-240px"
         >
@@ -33,15 +33,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['system:notice:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k37369059') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -50,9 +54,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="公告编号" align="center" prop="id" />
-      <el-table-column label="公告标题" align="center" prop="title" />
-      <el-table-column label="公告类型" align="center" prop="type">
+      <el-table-column
+        :label="t('auto.views.system.notice.index.ka0c8eb71')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.system.notice.index.k547bc796')"
+        align="center"
+        prop="title"
+      />
+      <el-table-column
+        :label="t('auto.views.system.notice.index.kcd0d7920')"
+        align="center"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_NOTICE_TYPE" :value="scope.row.type" />
         </template>
@@ -110,11 +126,10 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as NoticeApi from '@/api/system/notice'
 import NoticeForm from './NoticeForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemNotice' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -175,10 +190,10 @@ const handleDelete = async (id: number) => {
 const handlePush = async (id: number) => {
   try {
     // 推送的二次确认
-    await message.confirm('是否推送所选中通知？')
+    await message.confirm(t('auto.views.system.notice.index.kc2a3cdde'))
     // 发起推送
     await NoticeApi.pushNotice(id)
-    message.success(t('推送成功'))
+    message.success(t(t('auto.views.system.notice.index.k6ae7f0c1')))
   } catch {}
 }
 

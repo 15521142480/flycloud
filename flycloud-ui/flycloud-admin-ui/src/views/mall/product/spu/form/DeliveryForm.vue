@@ -1,7 +1,10 @@
 <!-- 商品发布 - 物流设置 -->
 <template>
   <el-form ref="formRef" :model="formData" :rules="rules" label-width="120px" :disabled="isDetail">
-    <el-form-item label="配送方式" prop="deliveryTypes">
+    <el-form-item
+      :label="t('auto.views.mall.product.spu.form.DeliveryForm.kaa419646')"
+      prop="deliveryTypes"
+    >
       <el-checkbox-group v-model="formData.deliveryTypes" class="w-80">
         <el-checkbox
           v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_DELIVERY_TYPE)"
@@ -13,11 +16,15 @@
       </el-checkbox-group>
     </el-form-item>
     <el-form-item
-      label="运费模板"
+      :label="t('auto.views.mall.product.spu.form.DeliveryForm.ke4e0bb27')"
       prop="deliveryTemplateId"
       v-if="formData.deliveryTypes?.includes(DeliveryTypeEnum.EXPRESS.type)"
     >
-      <el-select placeholder="请选择运费模板" v-model="formData.deliveryTemplateId" class="w-80">
+      <el-select
+        :placeholder="t('auto.views.mall.product.spu.form.DeliveryForm.k2e53a83d')"
+        v-model="formData.deliveryTemplateId"
+        class="w-80"
+      >
         <el-option
           v-for="item in deliveryTemplateList"
           :key="item.id"
@@ -36,7 +43,7 @@ import type { Spu } from '@/api/mall/product/spu'
 import * as ExpressTemplateApi from '@/api/mall/trade/delivery/expressTemplate'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { DeliveryTypeEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductDeliveryForm' })
 
 const message = useMessage() // 消息弹窗
@@ -81,7 +88,7 @@ const validate = async () => {
     // 校验通过更新数据
     Object.assign(props.propFormData, formData)
   } catch (e) {
-    message.error('【物流设置】不完善，请填写相关信息')
+    message.error(t('auto.views.mall.product.spu.form.DeliveryForm.k2afdb4e2'))
     emit('update:activeName', 'delivery')
     throw e // 目的截断之后的校验
   }

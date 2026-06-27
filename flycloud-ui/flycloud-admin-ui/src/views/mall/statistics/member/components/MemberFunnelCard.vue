@@ -2,7 +2,9 @@
   <el-card shadow="never">
     <template #header>
       <div class="my--1.5 flex flex-row items-center justify-between">
-        <CardTitle title="会员概览" />
+        <CardTitle
+          :title="t('auto.views.mall.statistics.member.components.MemberFunnelCard.k09005ef0')"
+        />
         <!-- 查询条件 -->
         <ShortcutDateRangePicker @change="handleTimeRangeChange" />
       </div>
@@ -93,6 +95,7 @@ import { MemberAnalyseRespVO } from '@/api/mall/statistics/member'
 import { CardTitle } from '@/components/Card'
 
 /** 会员概览卡片 */
+const { t } = useI18n()
 defineOptions({ name: 'MemberFunnelCard' })
 
 const loading = ref(true) // 加载中

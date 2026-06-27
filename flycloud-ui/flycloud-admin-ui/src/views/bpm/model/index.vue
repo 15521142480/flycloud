@@ -1,7 +1,7 @@
 <template>
   <ContentWrap>
     <div class="flex justify-between pl-20px items-center">
-      <h3 class="font-extrabold">流程模型</h3>
+      <h3 class="font-extrabold">{{ t('auto.views.bpm.model.index.k41663618') }}</h3>
       <!-- 搜索工作栏 -->
       <el-form
         v-if="!isCategorySorting"
@@ -15,7 +15,7 @@
         <el-form-item prop="name" class="ml-auto">
           <el-input
             v-model="queryParams.name"
-            placeholder="搜索流程"
+            :placeholder="t('auto.views.bpm.model.index.kd2bc9ad1')"
             clearable
             @keyup.enter="handleQuery"
             class="!w-240px"
@@ -107,7 +107,7 @@ import ModelForm from './ModelForm.vue'
 import CategoryForm from '../category/CategoryForm.vue'
 import { cloneDeep } from 'lodash-es'
 import CategoryDraggableModel from './CategoryDraggableModel.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmModel' })
 
 const message = useMessage() // 消息弹窗
@@ -179,7 +179,7 @@ const handleCategorySortSubmit = async () => {
   await CategoryApi.updateCategorySortBatch(ids)
   // 刷新列表
   isCategorySorting.value = false
-  message.success('排序分类成功')
+  message.success(t('auto.views.bpm.model.index.kab73dc98'))
   await getList()
 }
 

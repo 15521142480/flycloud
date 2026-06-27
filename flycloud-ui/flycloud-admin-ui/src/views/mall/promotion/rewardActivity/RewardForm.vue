@@ -7,10 +7,19 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="活动名称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入活动名称" />
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.RewardForm.k2b020286')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.mall.promotion.rewardActivity.RewardForm.ka90d22e9')"
+        />
       </el-form-item>
-      <el-form-item label="活动时间" prop="startAndEndTime">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.RewardForm.kabe0ecdb')"
+        prop="startAndEndTime"
+      >
         <el-date-picker
           v-model="formData.startAndEndTime"
           :end-placeholder="t('common.endTimeText')"
@@ -20,7 +29,10 @@
           value-format="x"
         />
       </el-form-item>
-      <el-form-item label="条件类型" prop="conditionType">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.RewardForm.kc2bf6240')"
+        prop="conditionType"
+      >
         <el-radio-group v-model="formData.conditionType">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_CONDITION_TYPE)"
@@ -31,10 +43,13 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="优惠设置">
+      <el-form-item :label="t('auto.views.mall.promotion.rewardActivity.RewardForm.k34b84b4f')">
         <RewardRule ref="rewardRuleRef" v-model="formData" />
       </el-form-item>
-      <el-form-item label="活动范围" prop="productScope">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.rewardActivity.RewardForm.k0e49ed99')"
+        prop="productScope"
+      >
         <el-radio-group v-model="formData.productScope">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_PRODUCT_SCOPE)"
@@ -53,18 +68,25 @@
       </el-form-item>
       <el-form-item
         v-if="formData.productScope === PromotionProductScopeEnum.CATEGORY.scope"
-        label="分类"
+        :label="t('auto.views.mall.promotion.rewardActivity.RewardForm.k435c5259')"
         prop="productCategoryIds"
       >
         <ProductCategorySelect v-model="formData.productCategoryIds" :multiple="true" />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.mall.promotion.rewardActivity.RewardForm.k57e709d9')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.promotion.rewardActivity.RewardForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.promotion.rewardActivity.RewardForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -77,10 +99,8 @@ import { PromotionConditionTypeEnum, PromotionProductScopeEnum } from '@/utils/c
 import ProductCategorySelect from '@/views/mall/product/category/components/ProductCategorySelect.vue'
 import { cloneDeep } from 'lodash-es'
 import { fenToYuan, yuanToFen } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductBrandForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -93,12 +113,48 @@ const formData = ref<RewardActivityApi.RewardActivityVO>({
   rules: []
 } as RewardActivityApi.RewardActivityVO)
 const formRules = reactive({
-  name: [{ required: true, message: '活动名称不能为空', trigger: 'blur' }],
-  startAndEndTime: [{ required: true, message: '活动时间不能为空', trigger: 'blur' }],
-  conditionType: [{ required: true, message: '条件类型不能为空', trigger: 'change' }],
-  productScope: [{ required: true, message: '商品范围不能为空', trigger: 'blur' }],
-  productSpuIds: [{ required: true, message: '商品不能为空', trigger: 'blur' }],
-  productCategoryIds: [{ required: true, message: '商品分类不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.rewardActivity.RewardForm.k41d38959'),
+      trigger: 'blur'
+    }
+  ],
+  startAndEndTime: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.rewardActivity.RewardForm.k869e620d'),
+      trigger: 'blur'
+    }
+  ],
+  conditionType: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.rewardActivity.RewardForm.ka7a14ab2'),
+      trigger: 'change'
+    }
+  ],
+  productScope: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.rewardActivity.RewardForm.kc6fd641f'),
+      trigger: 'blur'
+    }
+  ],
+  productSpuIds: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.rewardActivity.RewardForm.k6d53e872'),
+      trigger: 'blur'
+    }
+  ],
+  productCategoryIds: [
+    {
+      required: true,
+      message: t('auto.views.mall.promotion.rewardActivity.RewardForm.k4a1aa428'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const rewardRuleRef = ref<InstanceType<typeof RewardRule>>() // 活动规则 Ref

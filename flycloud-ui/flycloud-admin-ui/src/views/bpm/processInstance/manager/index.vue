@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,38 +8,49 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="发起人" prop="startUserId">
-        <el-select v-model="queryParams.startUserId" placeholder="请选择发起人" class="!w-240px">
-          <el-option
-            v-for="user in userList"
-            :key="user.id"
-            :label="user.name"
-            :value="user.id"
-          />
+      <el-form-item
+        :label="t('auto.views.bpm.processInstance.manager.index.k89d282d2')"
+        prop="startUserId"
+      >
+        <el-select
+          v-model="queryParams.startUserId"
+          :placeholder="t('auto.views.bpm.processInstance.manager.index.ke8bf8a6f')"
+          class="!w-240px"
+        >
+          <el-option v-for="user in userList" :key="user.id" :label="user.name" :value="user.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="流程名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.bpm.processInstance.manager.index.k323a8305')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入流程名称"
+          :placeholder="t('auto.views.bpm.processInstance.manager.index.ke9399a13')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="所属流程" prop="processDefinitionId">
+      <el-form-item
+        :label="t('auto.views.bpm.processInstance.manager.index.k3003243e')"
+        prop="processDefinitionId"
+      >
         <el-input
           v-model="queryParams.processDefinitionId"
-          placeholder="请输入流程定义的编号"
+          :placeholder="t('auto.views.bpm.processInstance.manager.index.k27f13bc4')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="流程分类" prop="category">
+      <el-form-item
+        :label="t('auto.views.bpm.processInstance.manager.index.k8377bb01')"
+        prop="category"
+      >
         <el-select
           v-model="queryParams.category"
-          placeholder="请选择流程分类"
+          :placeholder="t('auto.views.bpm.processInstance.manager.index.k8c96f9ce')"
           clearable
           class="!w-240px"
         >
@@ -52,10 +62,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="流程状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.bpm.processInstance.manager.index.k3416ba2b')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择流程状态"
+          :placeholder="t('auto.views.bpm.processInstance.manager.index.k64c1d7f9')"
           clearable
           class="!w-240px"
         >
@@ -67,20 +80,27 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="发起时间" prop="createTime">
+      <el-form-item
+        :label="t('auto.views.bpm.processInstance.manager.index.k44042ce0')"
+        prop="createTime"
+      >
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.bpm.processInstance.manager.index.k1f291968')"
+          :end-placeholder="t('auto.views.bpm.processInstance.manager.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -88,17 +108,37 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" height="calc(100vh - 410px)">
-      <el-table-column label="流程名称" align="center" prop="name" min-width="200px" fixed="left" />
       <el-table-column
-        label="流程分类"
+        :label="t('auto.views.bpm.processInstance.manager.index.k323a8305')"
+        align="center"
+        prop="name"
+        min-width="200px"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processInstance.manager.index.k8377bb01')"
         align="center"
         prop="categoryName"
         min-width="100"
         fixed="left"
       />
-      <el-table-column label="流程发起人" align="center" prop="startUser.name" width="120" />
-      <el-table-column label="发起部门" align="center" prop="startUser.deptName" width="120" />
-      <el-table-column label="流程状态" prop="status" width="120">
+      <el-table-column
+        :label="t('auto.views.bpm.processInstance.manager.index.k340010f7')"
+        align="center"
+        prop="startUser.name"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processInstance.manager.index.k3ce6711c')"
+        align="center"
+        prop="startUser.deptName"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processInstance.manager.index.k3416ba2b')"
+        prop="status"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_INSTANCE_STATUS" :value="scope.row.status" />
         </template>
@@ -171,11 +211,11 @@ import * as UserApi from '@/api/system/user'
 import { cancelProcessInstanceByAdmin } from '@/api/bpm/processInstance'
 
 // 它和【我的流程】的差异是，该菜单可以看全部的流程实例
+const { t } = useI18n()
 defineOptions({ name: 'BpmProcessInstanceManager' })
 
 const router = useRouter() // 路由
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -231,15 +271,19 @@ const handleDetail = (row) => {
 /** 取消按钮操作 */
 const handleCancel = async (row) => {
   // 二次确认
-  const { value } = await ElMessageBox.prompt('请输入取消原因', '取消流程', {
-    confirmButtonText: t('common.ok'),
-    cancelButtonText: t('common.cancel'),
-    inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
-    inputErrorMessage: '取消原因不能为空'
-  })
+  const { value } = await ElMessageBox.prompt(
+    t('auto.views.bpm.processInstance.manager.index.kd878c25a'),
+    t('auto.views.bpm.processInstance.manager.index.kef368da8'),
+    {
+      confirmButtonText: t('common.ok'),
+      cancelButtonText: t('common.cancel'),
+      inputPattern: /^[\s\S]*.*\S[\s\S]*$/, // 判断非空，且非空格
+      inputErrorMessage: t('auto.views.bpm.processInstance.manager.index.k6a6cf9af')
+    }
+  )
   // 发起取消
   await ProcessInstanceApi.cancelProcessInstanceByAdmin(row.id, value)
-  message.success('取消成功')
+  message.success(t('auto.views.bpm.processInstance.manager.index.k24a1c71e'))
   // 刷新列表
   await getList()
 }

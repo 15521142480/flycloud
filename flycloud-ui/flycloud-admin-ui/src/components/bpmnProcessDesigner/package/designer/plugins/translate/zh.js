@@ -1,240 +1,592 @@
+import { useI18n } from '@/hooks/web/useI18n'
 /**
  * This is a sample file that should be replaced with the actual translation.
  *
  * Checkout https://github.com/bpmn-io/bpmn-js-i18n for a list of available
  * translations and labels to translate.
  */
+const { t } = useI18n()
+
 export default {
   // 添加部分
-  'Append EndEvent': '追加结束事件',
-  'Append Gateway': '追加网关',
-  'Append Task': '追加任务',
-  'Append Intermediate/Boundary Event': '追加中间抛出事件/边界事件',
+  'Append EndEvent': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2711d7a2'
+  ),
+  'Append Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kac829ca1'
+  ),
+  'Append Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k14613fbf'
+  ),
+  'Append Intermediate/Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb79368ca'
+  ),
 
-  'Activate the global connect tool': '激活全局连接工具',
-  'Append {type}': '添加 {type}',
-  'Add Lane above': '在上面添加道',
-  'Divide into two Lanes': '分割成两个道',
-  'Divide into three Lanes': '分割成三个道',
-  'Add Lane below': '在下面添加道',
-  'Append compensation activity': '追加补偿活动',
-  'Change type': '修改类型',
-  'Connect using Association': '使用关联连接',
-  'Connect using Sequence/MessageFlow or Association': '使用顺序/消息流或者关联连接',
-  'Connect using DataInputAssociation': '使用数据输入关联连接',
-  Remove: '移除',
-  'Activate the hand tool': '激活抓手工具',
-  'Activate the lasso tool': '激活套索工具',
-  'Activate the create/remove space tool': '激活创建/删除空间工具',
-  'Create expanded SubProcess': '创建扩展子过程',
-  'Create IntermediateThrowEvent/BoundaryEvent': '创建中间抛出事件/边界事件',
-  'Create Pool/Participant': '创建池/参与者',
-  'Parallel Multi Instance': '并行多重事件',
-  'Sequential Multi Instance': '时序多重事件',
-  DataObjectReference: '数据对象参考',
-  DataStoreReference: '数据存储参考',
-  Loop: '循环',
-  'Ad-hoc': '即席',
-  'Create {type}': '创建 {type}',
-  Task: '任务',
-  'Send Task': '发送任务',
-  'Receive Task': '接收任务',
-  'User Task': '用户任务',
-  'Manual Task': '手工任务',
-  'Business Rule Task': '业务规则任务',
-  'Service Task': '服务任务',
-  'Script Task': '脚本任务',
-  'Call Activity': '调用活动',
-  'Sub Process (collapsed)': '子流程（折叠的）',
-  'Sub Process (expanded)': '子流程（展开的）',
-  'Start Event': '开始事件',
-  StartEvent: '开始事件',
-  'Intermediate Throw Event': '中间事件',
-  'End Event': '结束事件',
-  EndEvent: '结束事件',
-  'Create StartEvent': '创建开始事件',
-  'Create EndEvent': '创建结束事件',
-  'Create Task': '创建任务',
-  'Create User Task': '创建用户任务',
-  'Create Gateway': '创建网关',
-  'Create DataObjectReference': '创建数据对象',
-  'Create DataStoreReference': '创建数据存储',
-  'Create Group': '创建分组',
-  'Create Intermediate/Boundary Event': '创建中间/边界事件',
-  'Message Start Event': '消息开始事件',
-  'Timer Start Event': '定时开始事件',
-  'Conditional Start Event': '条件开始事件',
-  'Signal Start Event': '信号开始事件',
-  'Error Start Event': '错误开始事件',
-  'Escalation Start Event': '升级开始事件',
-  'Compensation Start Event': '补偿开始事件',
-  'Message Start Event (non-interrupting)': '消息开始事件（非中断）',
-  'Timer Start Event (non-interrupting)': '定时开始事件（非中断）',
-  'Conditional Start Event (non-interrupting)': '条件开始事件（非中断）',
-  'Signal Start Event (non-interrupting)': '信号开始事件（非中断）',
-  'Escalation Start Event (non-interrupting)': '升级开始事件（非中断）',
-  'Message Intermediate Catch Event': '消息中间捕获事件',
-  'Message Intermediate Throw Event': '消息中间抛出事件',
-  'Timer Intermediate Catch Event': '定时中间捕获事件',
-  'Escalation Intermediate Throw Event': '升级中间抛出事件',
-  'Conditional Intermediate Catch Event': '条件中间捕获事件',
-  'Link Intermediate Catch Event': '链接中间捕获事件',
-  'Link Intermediate Throw Event': '链接中间抛出事件',
-  'Compensation Intermediate Throw Event': '补偿中间抛出事件',
-  'Signal Intermediate Catch Event': '信号中间捕获事件',
-  'Signal Intermediate Throw Event': '信号中间抛出事件',
-  'Message End Event': '消息结束事件',
-  'Escalation End Event': '定时结束事件',
-  'Error End Event': '错误结束事件',
-  'Cancel End Event': '取消结束事件',
-  'Compensation End Event': '补偿结束事件',
-  'Signal End Event': '信号结束事件',
-  'Terminate End Event': '终止结束事件',
-  'Message Boundary Event': '消息边界事件',
-  'Message Boundary Event (non-interrupting)': '消息边界事件（非中断）',
-  'Timer Boundary Event': '定时边界事件',
-  'Timer Boundary Event (non-interrupting)': '定时边界事件（非中断）',
-  'Escalation Boundary Event': '升级边界事件',
-  'Escalation Boundary Event (non-interrupting)': '升级边界事件（非中断）',
-  'Conditional Boundary Event': '条件边界事件',
-  'Conditional Boundary Event (non-interrupting)': '条件边界事件（非中断）',
-  'Error Boundary Event': '错误边界事件',
-  'Cancel Boundary Event': '取消边界事件',
-  'Signal Boundary Event': '信号边界事件',
-  'Signal Boundary Event (non-interrupting)': '信号边界事件（非中断）',
-  'Compensation Boundary Event': '补偿边界事件',
-  'Exclusive Gateway': '互斥网关',
-  'Parallel Gateway': '并行网关',
-  'Inclusive Gateway': '相容网关',
-  'Complex Gateway': '复杂网关',
-  'Event based Gateway': '事件网关',
-  Transaction: '转运',
-  'Sub Process': '子流程',
-  'Event Sub Process': '事件子流程',
-  'Collapsed Pool': '折叠池',
-  'Expanded Pool': '展开池',
+  'Activate the global connect tool': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kab3caf57'
+  ),
+  'Append {type}': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb5172781'
+  ),
+  'Add Lane above': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k08b20f04'
+  ),
+  'Divide into two Lanes': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k70626e16'
+  ),
+  'Divide into three Lanes': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k0e8fbbac'
+  ),
+  'Add Lane below': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka38226e3'
+  ),
+  'Append compensation activity': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k562b1628'
+  ),
+  'Change type': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5978e6fe'
+  ),
+  'Connect using Association': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9e03c539'
+  ),
+  'Connect using Sequence/MessageFlow or Association': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9000136a'
+  ),
+  'Connect using DataInputAssociation': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9917c05c'
+  ),
+  Remove: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2f752c00'),
+  'Activate the hand tool': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8f9b1c6d'
+  ),
+  'Activate the lasso tool': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1480b4bf'
+  ),
+  'Activate the create/remove space tool': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kcbcf0a9b'
+  ),
+  'Create expanded SubProcess': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k0c53a1f4'
+  ),
+  'Create IntermediateThrowEvent/BoundaryEvent': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd45e585c'
+  ),
+  'Create Pool/Participant': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9c0d959b'
+  ),
+  'Parallel Multi Instance': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k92992114'
+  ),
+  'Sequential Multi Instance': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8cfd32e6'
+  ),
+  DataObjectReference: t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd996d8bf'
+  ),
+  DataStoreReference: t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd61812fe'
+  ),
+  Loop: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka76d0b30'),
+  'Ad-hoc': t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k736ba63f'),
+  'Create {type}': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kbe6c40b5'
+  ),
+  Task: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k3172b317'),
+  'Send Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k3a16b00f'
+  ),
+  'Receive Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kcbfac830'
+  ),
+  'User Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k457cf445'
+  ),
+  'Manual Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k28b62617'
+  ),
+  'Business Rule Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k63cfa501'
+  ),
+  'Service Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k21cb4a9b'
+  ),
+  'Script Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8108a24e'
+  ),
+  'Call Activity': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k12f317b8'
+  ),
+  'Sub Process (collapsed)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf54ab84a'
+  ),
+  'Sub Process (expanded)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k368469fa'
+  ),
+  'Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka188bf1c'
+  ),
+  StartEvent: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka188bf1c'),
+  'Intermediate Throw Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k41929b21'
+  ),
+  'End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k45b51d20'
+  ),
+  EndEvent: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k45b51d20'),
+  'Create StartEvent': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8acc2e07'
+  ),
+  'Create EndEvent': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8ea82dec'
+  ),
+  'Create Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kcf42fd67'
+  ),
+  'Create User Task': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8ed28eeb'
+  ),
+  'Create Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k890bafb5'
+  ),
+  'Create DataObjectReference': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kc0ec49c6'
+  ),
+  'Create DataStoreReference': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kaa892d38'
+  ),
+  'Create Group': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k23639dcf'
+  ),
+  'Create Intermediate/Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k831cf694'
+  ),
+  'Message Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k83d39090'
+  ),
+  'Timer Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka57685b4'
+  ),
+  'Conditional Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kc0dc4e10'
+  ),
+  'Signal Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k183e64d6'
+  ),
+  'Error Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k84faaeb7'
+  ),
+  'Escalation Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k75eea4d7'
+  ),
+  'Compensation Start Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5d1b3ca1'
+  ),
+  'Message Start Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka64c5076'
+  ),
+  'Timer Start Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k4d5f41aa'
+  ),
+  'Conditional Start Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k578afa4c'
+  ),
+  'Signal Start Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kfbc724f0'
+  ),
+  'Escalation Start Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k4cee507b'
+  ),
+  'Message Intermediate Catch Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7bd3b195'
+  ),
+  'Message Intermediate Throw Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k21f7bb4e'
+  ),
+  'Timer Intermediate Catch Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9ed5e6e6'
+  ),
+  'Escalation Intermediate Throw Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k815f2b35'
+  ),
+  'Conditional Intermediate Catch Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k601a2e8c'
+  ),
+  'Link Intermediate Catch Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k481a7d8d'
+  ),
+  'Link Intermediate Throw Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf52b3db4'
+  ),
+  'Compensation Intermediate Throw Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k99283d58'
+  ),
+  'Signal Intermediate Catch Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kcc5c3b7b'
+  ),
+  'Signal Intermediate Throw Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb1b54539'
+  ),
+  'Message End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf7487d26'
+  ),
+  'Escalation End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1f686dd8'
+  ),
+  'Error End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k327da0f0'
+  ),
+  'Cancel End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k0e0563ae'
+  ),
+  'Compensation End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7725707f'
+  ),
+  'Signal End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k87228ec1'
+  ),
+  'Terminate End Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kdf51e67e'
+  ),
+  'Message Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.keba57661'
+  ),
+  'Message Boundary Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k19cb7b76'
+  ),
+  'Timer Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k79d604b4'
+  ),
+  'Timer Boundary Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k36181fac'
+  ),
+  'Escalation Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8c06c356'
+  ),
+  'Escalation Boundary Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1f47ead7'
+  ),
+  'Conditional Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k62cba2d1'
+  ),
+  'Conditional Boundary Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k3d4e52a9'
+  ),
+  'Error Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2c517505'
+  ),
+  'Cancel Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7dd9790c'
+  ),
+  'Signal Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k94d2e297'
+  ),
+  'Signal Boundary Event (non-interrupting)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kcaeb7c31'
+  ),
+  'Compensation Boundary Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k712d7ba4'
+  ),
+  'Exclusive Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka48460f0'
+  ),
+  'Parallel Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7602be37'
+  ),
+  'Inclusive Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k088102cf'
+  ),
+  'Complex Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5f750c0f'
+  ),
+  'Event based Gateway': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke4978fb1'
+  ),
+  Transaction: t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k163cf2b2'
+  ),
+  'Sub Process': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9a39adca'
+  ),
+  'Event Sub Process': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k05174317'
+  ),
+  'Collapsed Pool': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf38518dd'
+  ),
+  'Expanded Pool': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf7dbf7fb'
+  ),
 
   // Errors
-  'no parent for {element} in {parent}': '在{parent}里，{element}没有父类',
-  'no shape type specified': '没有指定的形状类型',
-  'flow elements must be children of pools/participants': '流元素必须是池/参与者的子类',
+  'no parent for {element} in {parent}': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb84768ce'
+  ),
+  'no shape type specified': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5ccf2fa0'
+  ),
+  'flow elements must be children of pools/participants': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke75f85c3'
+  ),
   'out of bounds release': 'out of bounds release',
-  'more than {count} child lanes': '子道大于{count} ',
-  'element required': '元素不能为空',
-  'diagram not part of bpmn:Definitions': '流程图不符合bpmn规范',
-  'no diagram to display': '没有可展示的流程图',
-  'no process or collaboration to display': '没有可展示的流程/协作',
-  'element {element} referenced by {referenced}#{property} not yet drawn':
-    '由{referenced}#{property}引用的{element}元素仍未绘制',
-  'already rendered {element}': '{element} 已被渲染',
-  'failed to import {element}': '导入{element}失败',
+  'more than {count} child lanes': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k33fa679e'
+  ),
+  'element required': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k43d01167'
+  ),
+  'diagram not part of bpmn:Definitions': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7f0d9a1f'
+  ),
+  'no diagram to display': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9cc18c95'
+  ),
+  'no process or collaboration to display': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke69a5dd3'
+  ),
+  'element {element} referenced by {referenced}#{property} not yet drawn': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k16c55928'
+  ),
+  'already rendered {element}': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1a6fab69'
+  ),
+  'failed to import {element}': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kc5c5a6ea'
+  ),
   //属性面板的参数
-  Id: '编号',
-  Name: '名称',
-  General: '常规',
-  Details: '详情',
-  'Message Name': '消息名称',
-  Message: '消息',
-  Initiator: '创建者',
-  'Asynchronous Continuations': '持续异步',
-  'Asynchronous Before': '异步前',
-  'Asynchronous After': '异步后',
-  'Job Configuration': '工作配置',
-  Exclusive: '排除',
-  'Job Priority': '工作优先级',
-  'Retry Time Cycle': '重试时间周期',
-  Documentation: '文档',
-  'Element Documentation': '元素文档',
-  'History Configuration': '历史配置',
-  'History Time To Live': '历史的生存时间',
-  Forms: '表单',
-  'Form Key': '表单key',
-  'Form Fields': '表单字段',
-  'Business Key': '业务key',
-  'Form Field': '表单字段',
-  ID: '编号',
-  Type: '类型',
-  Label: '名称',
-  'Default Value': '默认值',
-  'Default Flow': '默认流转路径',
-  'Conditional Flow': '条件流转路径',
-  'Sequence Flow': '普通流转路径',
-  Validation: '校验',
-  'Add Constraint': '添加约束',
-  Config: '配置',
-  Properties: '属性',
-  'Add Property': '添加属性',
-  Value: '值',
-  Listeners: '监听器',
-  'Execution Listener': '执行监听',
-  'Event Type': '事件类型',
-  'Listener Type': '监听器类型',
-  'Java Class': 'Java类',
-  Expression: '表达式',
-  'Must provide a value': '必须提供一个值',
-  'Delegate Expression': '代理表达式',
-  Script: '脚本',
-  'Script Format': '脚本格式',
-  'Script Type': '脚本类型',
-  'Inline Script': '内联脚本',
-  'External Script': '外部脚本',
-  Resource: '资源',
-  'Field Injection': '字段注入',
-  Extensions: '扩展',
-  'Input/Output': '输入/输出',
-  'Input Parameters': '输入参数',
-  'Output Parameters': '输出参数',
-  Parameters: '参数',
-  'Output Parameter': '输出参数',
-  'Timer Definition Type': '定时器定义类型',
-  'Timer Definition': '定时器定义',
-  Date: '日期',
-  Duration: '持续',
-  Cycle: '循环',
-  Signal: '信号',
-  'Signal Name': '信号名称',
-  Escalation: '升级',
-  Error: '错误',
-  'Link Name': '链接名称',
-  Condition: '条件名称',
-  'Variable Name': '变量名称',
-  'Variable Event': '变量事件',
-  'Specify more than one variable change event as a comma separated list.':
-    '多个变量事件以逗号隔开',
-  'Wait for Completion': '等待完成',
-  'Activity Ref': '活动参考',
-  'Version Tag': '版本标签',
-  Executable: '可执行文件',
-  'External Task Configuration': '扩展任务配置',
-  'Task Priority': '任务优先级',
-  External: '外部',
-  Connector: '连接器',
-  'Must configure Connector': '必须配置连接器',
-  'Connector Id': '连接器编号',
-  Implementation: '实现方式',
-  'Field Injections': '字段注入',
-  Fields: '字段',
-  'Result Variable': '结果变量',
-  Topic: '主题',
-  'Configure Connector': '配置连接器',
-  'Input Parameter': '输入参数',
-  Assignee: '代理人',
-  'Candidate Users': '候选用户',
-  'Candidate Groups': '候选组',
-  'Due Date': '到期时间',
-  'Follow Up Date': '跟踪日期',
-  Priority: '优先级',
+  Id: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9f42dac6'),
+  Name: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1be7ae4f'),
+  General: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf1484fa7'),
+  Details: t('action.detail'),
+  'Message Name': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k45229f4b'
+  ),
+  Message: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kdc6de3fa'),
+  Initiator: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k40f51f5b'),
+  'Asynchronous Continuations': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka0cf46a0'
+  ),
+  'Asynchronous Before': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k027f21ce'
+  ),
+  'Asynchronous After': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k02e94833'
+  ),
+  'Job Configuration': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9d6718f0'
+  ),
+  Exclusive: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7b37cc8d'),
+  'Job Priority': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke3086209'
+  ),
+  'Retry Time Cycle': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2cd96722'
+  ),
+  Documentation: t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k10691272'
+  ),
+  'Element Documentation': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k49910b08'
+  ),
+  'History Configuration': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9d8fcf86'
+  ),
+  'History Time To Live': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k8ddd96f1'
+  ),
+  Forms: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1f515561'),
+  'Form Key': t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka9a64daf'),
+  'Form Fields': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kda863b55'
+  ),
+  'Business Key': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb751f752'
+  ),
+  'Form Field': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kda863b55'
+  ),
+  ID: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9f42dac6'),
+  Type: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke4e46c72'),
+  Label: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1be7ae4f'),
+  'Default Value': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd93919c3'
+  ),
+  'Default Flow': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k0e815a86'
+  ),
+  'Conditional Flow': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k30f54d36'
+  ),
+  'Sequence Flow': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k14815ebe'
+  ),
+  Validation: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k20feecea'),
+  'Add Constraint': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kff7a2277'
+  ),
+  Config: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd7d7ce79'),
+  Properties: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7d3c35c2'),
+  'Add Property': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5a551cbe'
+  ),
+  Value: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k321b9558'),
+  Listeners: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5a16c0f4'),
+  'Execution Listener': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke0ed7a89'
+  ),
+  'Event Type': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5b2d75aa'
+  ),
+  'Listener Type': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kff6c93d9'
+  ),
+  'Java Class': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kfe551e73'
+  ),
+  Expression: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k513c1c63'),
+  'Must provide a value': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k18bc3bc5'
+  ),
+  'Delegate Expression': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf5ed3fb9'
+  ),
+  Script: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7fbccbeb'),
+  'Script Format': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k360cbaed'
+  ),
+  'Script Type': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf1574ac4'
+  ),
+  'Inline Script': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k95a5d467'
+  ),
+  'External Script': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1725e40e'
+  ),
+  Resource: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kc5ca3950'),
+  'Field Injection': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2f92da0d'
+  ),
+  Extensions: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k17d13aa4'),
+  'Input/Output': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k0eaead9f'
+  ),
+  'Input Parameters': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k56c06ef8'
+  ),
+  'Output Parameters': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k482a3578'
+  ),
+  Parameters: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k749d7652'),
+  'Output Parameter': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k482a3578'
+  ),
+  'Timer Definition Type': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kff177e5e'
+  ),
+  'Timer Definition': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k06c1b598'
+  ),
+  Date: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb6fed9af'),
+  Duration: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k25722a97'),
+  Cycle: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ka76d0b30'),
+  Signal: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k932fcb57'),
+  'Signal Name': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7d130b60'
+  ),
+  Escalation: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2e8e7095'),
+  Error: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb859c7be'),
+  'Link Name': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1f67903a'
+  ),
+  Condition: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k08fa4f1f'),
+  'Variable Name': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke185ca5a'
+  ),
+  'Variable Event': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k4ffd0b9d'
+  ),
+  'Specify more than one variable change event as a comma separated list.': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd7788a2a'
+  ),
+  'Wait for Completion': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd98098b1'
+  ),
+  'Activity Ref': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k689378a6'
+  ),
+  'Version Tag': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k876bb9e5'
+  ),
+  Executable: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k400a45e5'),
+  'External Task Configuration': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k77886150'
+  ),
+  'Task Priority': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9ba8b4d2'
+  ),
+  External: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2ffba3c5'),
+  Connector: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kc2dd0286'),
+  'Must configure Connector': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k96878479'
+  ),
+  'Connector Id': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k05e82c2b'
+  ),
+  Implementation: t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k078ccc64'
+  ),
+  'Field Injections': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k2f92da0d'
+  ),
+  Fields: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k77a49f2c'),
+  'Result Variable': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb7fab12b'
+  ),
+  Topic: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke848ddd4'),
+  'Configure Connector': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb5ebea03'
+  ),
+  'Input Parameter': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k56c06ef8'
+  ),
+  Assignee: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k59d1a806'),
+  'Candidate Users': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kba018018'
+  ),
+  'Candidate Groups': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k6be6b0d1'
+  ),
+  'Due Date': t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k3144a998'),
+  'Follow Up Date': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k0b692497'
+  ),
+  Priority: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7cabe771'),
   'The follow up date as an EL expression (e.g. ${someDate} or an ISO date (e.g. 2015-06-26T09:54:00)':
-    '跟踪日期必须符合EL表达式，如： ${someDate} ,或者一个ISO标准日期，如：2015-06-26T09:54:00',
-  'The due date as an EL expression (e.g. ${someDate} or an ISO date (e.g. 2015-06-26T09:54:00)':
-    '跟踪日期必须符合EL表达式，如： ${someDate} ,或者一个ISO标准日期，如：2015-06-26T09:54:00',
-  Variables: '变量',
-  'Candidate Starter Configuration': '候选人起动器配置',
-  'Candidate Starter Groups': '候选人起动器组',
-  'This maps to the process definition key.': '这映射到流程定义键。',
-  'Candidate Starter Users': '候选人起动器的用户',
-  'Specify more than one user as a comma separated list.': '指定多个用户作为逗号分隔的列表。',
-  'Tasklist Configuration': 'Tasklist配置',
-  Startable: '启动',
-  'Specify more than one group as a comma separated list.': '指定多个组作为逗号分隔的列表。'
+    t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k642a5b72'),
+  'The due date as an EL expression (e.g. ${someDate} or an ISO date (e.g. 2015-06-26T09:54:00)': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k642a5b72'
+  ),
+  Variables: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb418ca60'),
+  'Candidate Starter Configuration': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kd0a9fb3c'
+  ),
+  'Candidate Starter Groups': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kb143fbd3'
+  ),
+  'This maps to the process definition key.': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k6d119e2d'
+  ),
+  'Candidate Starter Users': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1f07f7bd'
+  ),
+  'Specify more than one user as a comma separated list.': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k4305306f'
+  ),
+  'Tasklist Configuration': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.ke6b600ed'
+  ),
+  Startable: t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kebd26da4'),
+  'Specify more than one group as a comma separated list.': t(
+    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.keb87a49a'
+  )
 }

@@ -3,13 +3,13 @@
     <div class="image-operation">
       <div>
         <el-button type="primary" text bg v-if="detail?.status === AiImageStatusEnum.IN_PROGRESS">
-          生成中
+          {{ t('extra.k5767dd0f') }}
         </el-button>
         <el-button text bg v-else-if="detail?.status === AiImageStatusEnum.SUCCESS">
-          已完成
+          {{ t('extra.kef009966') }}
         </el-button>
         <el-button type="danger" text bg v-else-if="detail?.status === AiImageStatusEnum.FAIL">
-          异常
+          {{ t('extra.k08c07048') }}
         </el-button>
       </div>
       <!-- 操作区 -->
@@ -61,7 +61,7 @@ import { ImageVO, ImageMidjourneyButtonsVO } from '@/api/ai/image'
 import { PropType } from 'vue'
 import { ElLoading, LoadingOptionsResolved } from 'element-plus'
 import { AiImageStatusEnum } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 const message = useMessage() // 消息
 
 const props = defineProps({
@@ -82,7 +82,7 @@ const handleButtonClick = async (type, detail: ImageVO) => {
 /** 处理 Midjourney 按钮点击事件  */
 const handleMidjourneyBtnClick = async (button: ImageMidjourneyButtonsVO) => {
   // 确认窗体
-  await message.confirm(`确认操作 "${button.label} ${button.emoji}" ?`)
+  await message.confirm(t('extra.k229d0b69', { p0: button.label, p1: button.emoji }))
   emits('onMjBtnClick', button, props.detail)
 }
 
@@ -100,7 +100,7 @@ const handleLoading = async (status: number) => {
   if (status === AiImageStatusEnum.IN_PROGRESS) {
     cardImageLoadingInstance.value = ElLoading.service({
       target: cardImageRef.value,
-      text: '生成中...'
+      text: t('auto.views.ai.image.index.components.ImageCard.k26eab253')
     } as LoadingOptionsResolved)
     // 情况二：如果已经生成结束，则移除 loading
   } else {

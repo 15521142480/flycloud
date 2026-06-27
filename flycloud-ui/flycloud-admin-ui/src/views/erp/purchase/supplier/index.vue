@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,43 +8,47 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="t('auto.views.erp.purchase.supplier.index.k1be7ae4f')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          :placeholder="t('auto.views.erp.purchase.supplier.index.kc2afb255')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="手机号码" prop="mobile">
+      <el-form-item :label="t('auto.views.erp.purchase.supplier.index.k9f6834dc')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
-          placeholder="请输入手机号码"
+          :placeholder="t('auto.views.erp.purchase.supplier.index.k4f0c3a4e')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="联系电话" prop="telephone">
+      <el-form-item :label="t('auto.views.erp.purchase.supplier.index.ke02f6e57')" prop="telephone">
         <el-input
           v-model="queryParams.telephone"
-          placeholder="请输入联系电话"
+          :placeholder="t('auto.views.erp.purchase.supplier.index.k4597687d')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:supplier:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ka6ce59b5') }}
         </el-button>
         <el-button
           type="success"
@@ -54,7 +57,7 @@
           :loading="exportLoading"
           v-hasPermi="['erp:supplier:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k42955eb3') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -63,14 +66,34 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="联系人" align="center" prop="contact" />
-      <el-table-column label="手机号码" align="center" prop="mobile" />
-      <el-table-column label="联系电话" align="center" prop="telephone" />
-      <el-table-column label="电子邮箱" align="center" prop="email" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.erp.purchase.supplier.index.k1be7ae4f')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.supplier.index.k2425bd4b')"
+        align="center"
+        prop="contact"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.supplier.index.k9f6834dc')"
+        align="center"
+        prop="mobile"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.supplier.index.ke02f6e57')"
+        align="center"
+        prop="telephone"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.purchase.supplier.index.ka7a315b8')"
+        align="center"
+        prop="email"
+      />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="t('common.sort')" align="center" prop="sort" />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -117,10 +140,10 @@ import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'
 import SupplierForm from './SupplierForm.vue'
 
 /** ERP 供应商 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpSupplier' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<SupplierVO[]>([]) // 列表的数据
@@ -186,7 +209,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await SupplierApi.exportSupplier(queryParams)
-    download.excel(data, 'ERP 供应商.xls')
+    download.excel(data, t('auto.views.erp.purchase.supplier.index.k9c89b4ee'))
   } catch {
   } finally {
     exportLoading.value = false

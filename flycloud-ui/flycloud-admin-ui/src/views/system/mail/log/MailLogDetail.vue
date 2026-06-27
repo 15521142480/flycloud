@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" :max-height="500" :scroll="true" title="详情">
+  <Dialog v-model="dialogVisible" :max-height="500" :scroll="true" :title="t('action.detail')">
     <Descriptions :data="detailData" :schema="allSchemas.detailSchema">
       <!-- 展示 HTML 内容 -->
       <template #templateContent="{ row }">
@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 import * as MailLogApi from '@/api/system/mail/log'
 import { allSchemas } from './log.data'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemMailLogDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,19 +8,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="分类名称" prop="name">
+      <el-form-item :label="t('auto.views.erp.product.category.index.k3fc30355')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入分类名称"
+          :placeholder="t('auto.views.erp.product.category.index.k56e43e46')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="开启状态" prop="status">
+      <el-form-item :label="t('auto.views.erp.product.category.index.k6bbda1b1')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择开启状态"
+          :placeholder="t('auto.views.erp.product.category.index.k312f5310')"
           clearable
           class="!w-240px"
         >
@@ -34,15 +33,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['erp:product-category:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke5ac07f0') }}
         </el-button>
         <el-button
           type="success"
@@ -51,10 +54,10 @@
           :loading="exportLoading"
           v-hasPermi="['erp:product-category:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kf351d1b0') }}
         </el-button>
         <el-button type="danger" plain @click="toggleExpandAll">
-          <Icon icon="ep:sort" class="mr-5px" /> 展开/折叠
+          <Icon icon="ep:sort" class="mr-5px" /> {{ t('extra.kcd7f2d11') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -71,10 +74,18 @@
       :default-expand-all="isExpandAll"
       v-if="refreshTable"
     >
-      <el-table-column label="编码" align="center" prop="code" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.erp.product.category.index.kc94faa71')"
+        align="center"
+        prop="code"
+      />
+      <el-table-column
+        :label="t('auto.views.erp.product.category.index.k1be7ae4f')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('common.sort')" align="center" prop="sort" />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -129,10 +140,10 @@ import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/categor
 import ProductCategoryForm from './ProductCategoryForm.vue'
 
 /** ERP 产品分类 列表 */
+const { t } = useI18n()
 defineOptions({ name: 'ErpProductCategory' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProductCategoryVO[]>([]) // 列表的数据
@@ -193,7 +204,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ProductCategoryApi.exportProductCategory(queryParams)
-    download.excel(data, '产品分类.xls')
+    download.excel(data, t('auto.views.erp.product.category.index.k3745e2d2'))
   } catch {
   } finally {
     exportLoading.value = false

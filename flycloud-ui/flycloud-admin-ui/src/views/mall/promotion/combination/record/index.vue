@@ -1,5 +1,4 @@
 <template>
-
   <!-- 统计信息展示 -->
   <el-row :gutter="12">
     <el-col :span="6">
@@ -12,7 +11,9 @@
             <Icon :size="23" icon="fa:user-times" />
           </div>
           <div class="ml-[20px]">
-            <div class="mb-8px text-14px text-gray-400">参与人数(个)</div>
+            <div class="mb-8px text-14px text-gray-400">{{
+              t('auto.views.mall.promotion.combination.record.index.ka21a4af1')
+            }}</div>
             <CountTo
               :duration="2600"
               :end-val="recordSummary.userCount"
@@ -33,7 +34,9 @@
             <Icon :size="23" icon="fa:user-plus" />
           </div>
           <div class="ml-[20px]">
-            <div class="mb-8px text-14px text-gray-400">成团数量(个)</div>
+            <div class="mb-8px text-14px text-gray-400">{{
+              t('auto.views.mall.promotion.combination.record.index.kf09ef214')
+            }}</div>
             <CountTo
               :duration="2600"
               :end-val="recordSummary.successCount"
@@ -54,7 +57,9 @@
             <Icon :size="23" icon="fa:user-plus" />
           </div>
           <div class="ml-[20px]">
-            <div class="mb-8px text-14px text-gray-400">虚拟成团(个)</div>
+            <div class="mb-8px text-14px text-gray-400">{{
+              t('auto.views.mall.promotion.combination.record.index.kdc2b8088')
+            }}</div>
             <CountTo
               :duration="2600"
               :end-val="recordSummary.virtualGroupCount"
@@ -76,19 +81,27 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :shortcuts="defaultShortcuts"
           class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
+          :end-placeholder="t('auto.views.mall.promotion.combination.record.index.kf4b9b2b5')"
+          :start-placeholder="t('auto.views.mall.promotion.combination.record.index.k1f291968')"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="拼团状态" prop="status">
-        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="全部">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.combination.record.index.ke7a33bf4')"
+        prop="status"
+      >
+        <el-select
+          v-model="queryParams.status"
+          class="!w-240px"
+          clearable
+          :placeholder="t('auto.views.mall.promotion.combination.record.index.k778fc8f9')"
+        >
           <el-option
             v-for="(dict, index) in getIntDictOptions(
               DICT_TYPE.PROMOTION_COMBINATION_RECORD_STATUS
@@ -102,11 +115,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k06370992') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k096057db') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -115,8 +128,18 @@
   <!-- 分页列表数据展示 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="pageList">
-      <el-table-column align="center" label="编号" prop="id" min-width="50" />
-      <el-table-column align="center" label="头像" prop="avatar" min-width="80">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.promotion.combination.record.index.k9f42dac6')"
+        prop="id"
+        min-width="50"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.promotion.combination.record.index.k4ceeeb31')"
+        prop="avatar"
+        min-width="80"
+      >
         <template #default="scope">
           <el-avatar :src="scope.row.avatar" />
         </template>
@@ -124,9 +147,7 @@
       <el-table-column align="center" label="昵称" prop="name" min-width="100" />
       <el-table-column align="center" label="开团团长" prop="headId" min-width="100">
         <template #default="{ row }: { row: CombinationRecordApi.CombinationRecordVO }">
-          {{
-            row.headId ? pageList.find((item) => item.id === row.headId)?.name : row.name
-          }}
+          {{ row.headId ? pageList.find((item) => item.id === row.headId)?.name : row.name }}
         </template>
       </el-table-column>
       <el-table-column
@@ -207,7 +228,7 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter, defaultShortcuts } from '@/utils/formatTime'
 import { createImageViewer } from '@/components/ImageViewer'
 import * as CombinationRecordApi from '@/api/mall/promotion/combination/combinationRecord'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionCombinationRecord' })
 
 const queryParams = ref({

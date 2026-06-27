@@ -7,10 +7,16 @@
       label-width="110px"
       v-loading="formLoading"
     >
-      <el-form-item label="名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名字" />
+      <el-form-item
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.k364bd1bf')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.bpm.processListener.ProcessListenerForm.k010c1585')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -21,10 +27,13 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="类型" prop="type">
+      <el-form-item
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.ke4e46c72')"
+        prop="type"
+      >
         <el-select
           v-model="formData.type"
-          placeholder="请选择类型"
+          :placeholder="t('auto.views.bpm.processListener.ProcessListenerForm.k97f47b78')"
           @change="formData.event = undefined"
         >
           <el-option
@@ -35,8 +44,14 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="事件" prop="event">
-        <el-select v-model="formData.event" placeholder="请选择事件">
+      <el-form-item
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.k550e3280')"
+        prop="event"
+      >
+        <el-select
+          v-model="formData.event"
+          :placeholder="t('auto.views.bpm.processListener.ProcessListenerForm.k1f1e1ef2')"
+        >
           <el-option
             v-for="event in formData.type == 'execution'
               ? ['start', 'end']
@@ -47,8 +62,14 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="值类型" prop="valueType">
-        <el-select v-model="formData.valueType" placeholder="请选择值类型">
+      <el-form-item
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.k5d6dd202')"
+        prop="valueType"
+      >
+        <el-select
+          v-model="formData.valueType"
+          :placeholder="t('auto.views.bpm.processListener.ProcessListenerForm.kce72e0df')"
+        >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.BPM_PROCESS_LISTENER_VALUE_TYPE)"
             :key="dict.value"
@@ -57,16 +78,34 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="类路径" prop="value" v-if="formData.type == 'class'">
-        <el-input v-model="formData.value" placeholder="请输入类路径" />
+      <el-form-item
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.kd13531b1')"
+        prop="value"
+        v-if="formData.type == 'class'"
+      >
+        <el-input
+          v-model="formData.value"
+          :placeholder="t('auto.views.bpm.processListener.ProcessListenerForm.k49665ceb')"
+        />
       </el-form-item>
-      <el-form-item label="表达式" prop="value" v-else>
-        <el-input v-model="formData.value" placeholder="请输入表达式" />
+      <el-form-item
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.k513c1c63')"
+        prop="value"
+        v-else
+      >
+        <el-input
+          v-model="formData.value"
+          :placeholder="t('auto.views.bpm.processListener.ProcessListenerForm.k7634dc77')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.bpm.processListener.ProcessListenerForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.bpm.processListener.ProcessListenerForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -76,9 +115,8 @@ import { ProcessListenerApi, ProcessListenerVO } from '@/api/bpm/processListener
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** BPM 流程 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProcessListenerForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -95,12 +133,48 @@ const formData = ref({
   value: undefined
 })
 const formRules = reactive({
-  name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
-  type: [{ required: true, message: '类型不能为空', trigger: 'change' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
-  event: [{ required: true, message: '监听事件不能为空', trigger: 'blur' }],
-  valueType: [{ required: true, message: '值类型不能为空', trigger: 'change' }],
-  value: [{ required: true, message: '值不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processListener.ProcessListenerForm.k46f3776c'),
+      trigger: 'blur'
+    }
+  ],
+  type: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processListener.ProcessListenerForm.kf0a2b424'),
+      trigger: 'change'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processListener.ProcessListenerForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ],
+  event: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processListener.ProcessListenerForm.kad51b76f'),
+      trigger: 'blur'
+    }
+  ],
+  valueType: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processListener.ProcessListenerForm.k9e5998ee'),
+      trigger: 'change'
+    }
+  ],
+  value: [
+    {
+      required: true,
+      message: t('auto.views.bpm.processListener.ProcessListenerForm.k1f88f683'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

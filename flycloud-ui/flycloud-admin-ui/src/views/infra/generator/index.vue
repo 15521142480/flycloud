@@ -1,12 +1,13 @@
 <template>
   <!-- 搜索工作栏 -->
   <ContentWrap>
-
     <el-row style="margin-left: 15px">
       <el-col :span="17">
         <span style="margin-left: 10px; color: red">
-          1、数据库表有多个时用英文,隔开
-          <span style="margin-left: 20px">2、生成后检查后端部署的根目录下的src文件夹是否生成了</span>
+          {{ t('extra.kadf28cb9') }}
+          <span style="margin-left: 20px">{{
+            t('auto.views.infra.generator.index.k9d073aac')
+          }}</span>
         </span>
       </el-col>
     </el-row>
@@ -15,34 +16,37 @@
       <el-col :span="10">
         <el-input
           v-model="queryParams.tables"
-          placeholder="请输入需要生成代码的数据库表"
+          :placeholder="t('auto.views.infra.generator.index.kf4eca7ce')"
           clearable
         />
       </el-col>
 
       <el-col :span="6" style="margin-left: 20px">
-        <el-button v-hasPermi="['infra:generator:generatorCode']" type="primary" @click="handleGeneratorCode" :loading="loading"><Icon class="mr-5px" icon="ep:plus" /> 生成</el-button>
+        <el-button
+          v-hasPermi="['infra:generator:generatorCode']"
+          type="primary"
+          @click="handleGeneratorCode"
+          :loading="loading"
+          ><Icon class="mr-5px" icon="ep:plus" /> {{ t('action.generate') }}</el-button
+        >
       </el-col>
     </el-row>
-
   </ContentWrap>
 
   <!-- 列表 -->
-<!--  <ContentWrap>-->
-<!--    <div>-->
+  <!--  <ContentWrap>-->
+  <!--    <div>-->
 
-<!--    </div>-->
-<!--  </ContentWrap>-->
-
+  <!--    </div>-->
+  <!--  </ContentWrap>-->
 </template>
 <script lang="ts" setup>
 import * as GeneratorApi from '@/api/infra/generator'
-import {object} from "vue-types";
-
+import { object } from 'vue-types'
+const { t } = useI18n()
 defineOptions({ name: 'Generator' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(false) // 列表的加载中
 const queryParams = reactive({
@@ -54,24 +58,30 @@ const queryParams = reactive({
 /** 生成代码 */
 const handleGeneratorCode = async () => {
   if (!queryParams.tables) {
-    message.notifyWarning('请输入需要生成代码的数据库表！')
+    message.notifyWarning(t('auto.views.infra.generator.index.k3aca1275'))
     return
   }
   loading.value = true
   try {
     // 删除的二次确认
-    await message.confirm('确认要生成表[' + queryParams.tables + ']代码吗?')
+    await message.confirm(
+      t('auto.views.infra.generator.index.k14d0c73d') +
+        queryParams.tables +
+        t('auto.views.infra.generator.index.k4d4547cf')
+    )
     const data = await GeneratorApi.handleGeneratorCode(queryParams.tables)
-    message.notifySuccess('生成表[' + queryParams.tables + ']代码成功！')
+    message.notifySuccess(
+      t('auto.views.infra.generator.index.kf6eb64d2') +
+        queryParams.tables +
+        t('auto.views.infra.generator.index.k1a0586ff')
+    )
   } catch (e) {
     // message.notifyError('生成代码失败！' + e.message)
-  }finally {
+  } finally {
     loading.value = false
   }
 }
 
-
 /** 初始化 **/
-onMounted(async () => {
-})
+onMounted(async () => {})
 </script>

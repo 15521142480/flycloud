@@ -7,25 +7,31 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="套餐名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入套餐名" />
+      <el-form-item
+        :label="t('auto.views.system.tenantPackage.TenantPackageForm.kc3313b31')"
+        prop="name"
+      >
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.system.tenantPackage.TenantPackageForm.ke9eeb94f')"
+        />
       </el-form-item>
-      <el-form-item label="菜单权限">
+      <el-form-item :label="t('auto.views.system.tenantPackage.TenantPackageForm.k270eba34')">
         <el-card class="w-full h-400px !overflow-y-scroll" shadow="never">
           <template #header>
-            全选/全不选:
+            {{ t('extra.kb1da6ff4') }}
             <el-switch
               v-model="treeNodeAll"
-              active-text="是"
-              inactive-text="否"
+              :active-text="t('extra.k2335c38d')"
+              :inactive-text="t('extra.ka79c1879')"
               inline-prompt
               @change="handleCheckedTreeNodeAll"
             />
-            全部展开/折叠:
+            {{ t('extra.kd401e3c5') }}
             <el-switch
               v-model="menuExpand"
-              active-text="展开"
-              inactive-text="折叠"
+              :active-text="t('extra.ke4997e0c')"
+              :inactive-text="t('extra.k9709cfd1')"
               inline-prompt
               @change="handleCheckedTreeExpand"
             />
@@ -68,10 +74,8 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import * as TenantPackageApi from '@/api/system/tenantPackage'
 import * as MenuApi from '@/api/system/menu'
 import { ElTree } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemTenantPackageForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -86,9 +90,27 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  name: [{ required: true, message: '套餐名不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
-  menuIds: [{ required: true, message: '关联的菜单编号不能为空', trigger: 'blur' }]
+  name: [
+    {
+      required: true,
+      message: t('auto.views.system.tenantPackage.TenantPackageForm.ked2e662a'),
+      trigger: 'blur'
+    }
+  ],
+  status: [
+    {
+      required: true,
+      message: t('auto.views.system.tenantPackage.TenantPackageForm.k1318b551'),
+      trigger: 'blur'
+    }
+  ],
+  menuIds: [
+    {
+      required: true,
+      message: t('auto.views.system.tenantPackage.TenantPackageForm.k0b749d20'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const menuOptions = ref<any[]>([]) // 树形结构数据

@@ -1,22 +1,43 @@
 import { useTimeAgo as useTimeAgoCore, UseTimeAgoMessages } from '@vueuse/core'
 import { useLocaleStoreWithOut } from '@/store/modules/locale'
-
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 const TIME_AGO_MESSAGE_MAP: {
   'zh-CN': UseTimeAgoMessages
   en: UseTimeAgoMessages
 } = {
   // @ts-ignore
   'zh-CN': {
-    justNow: '刚刚',
-    past: (n) => (n.match(/\d/) ? `${n}前` : n),
-    future: (n) => (n.match(/\d/) ? `${n}后` : n),
-    month: (n, past) => (n === 1 ? (past ? '上个月' : '下个月') : `${n} 个月`),
-    year: (n, past) => (n === 1 ? (past ? '去年' : '明年') : `${n} 年`),
-    day: (n, past) => (n === 1 ? (past ? '昨天' : '明天') : `${n} 天`),
-    week: (n, past) => (n === 1 ? (past ? '上周' : '下周') : `${n} 周`),
-    hour: (n) => `${n} 小时`,
-    minute: (n) => `${n} 分钟`,
-    second: (n) => `${n} 秒`
+    justNow: t('auto.hooks.web.useTimeAgo.k9e636642'),
+    past: (n) => (n.match(/\d/) ? t('extra.k56dc3ba9', { p0: n }) : n),
+    future: (n) => (n.match(/\d/) ? t('extra.k9cc11dd7', { p0: n }) : n),
+    month: (n, past) =>
+      n === 1
+        ? past
+          ? t('auto.hooks.web.useTimeAgo.k69bb1687')
+          : t('auto.hooks.web.useTimeAgo.k8c9b38e2')
+        : t('extra.k7f3d30c6', { p0: n }),
+    year: (n, past) =>
+      n === 1
+        ? past
+          ? t('auto.hooks.web.useTimeAgo.k1fd586b4')
+          : t('auto.hooks.web.useTimeAgo.kc78156bb')
+        : t('extra.k8a4dcd89', { p0: n }),
+    day: (n, past) =>
+      n === 1
+        ? past
+          ? t('auto.hooks.web.useTimeAgo.k59c4fcb0')
+          : t('auto.hooks.web.useTimeAgo.kb76ce230')
+        : t('extra.k725e526e', { p0: n }),
+    week: (n, past) =>
+      n === 1
+        ? past
+          ? t('auto.hooks.web.useTimeAgo.k39678c8d')
+          : t('auto.hooks.web.useTimeAgo.k1b029a74')
+        : t('extra.kcdf09bc8', { p0: n }),
+    hour: (n) => t('extra.k16c7e652', { p0: n }),
+    minute: (n) => t('extra.k6e42750b', { p0: n }),
+    second: (n) => t('extra.k8cffb0cd', { p0: n })
   },
   // @ts-ignore
   en: {

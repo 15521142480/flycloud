@@ -3,7 +3,7 @@
   <div class="chat-empty">
     <!-- title -->
     <div class="center-container">
-      <div class="title">芋道 AI</div>
+      <div class="title">{{ t('auto.views.ai.chat.index.components.message.kd8e3a564') }}</div>
       <div class="role-list">
         <div
           class="role-item"
@@ -18,12 +18,13 @@
   </div>
 </template>
 <script setup lang="ts">
+const { t } = useI18n()
 const promptList = [
   {
-    prompt: '今天气怎么样?'
+    prompt: t('auto.views.ai.chat.index.components.message.k21ff30f0')
   },
   {
-    prompt: '写一首好听的诗歌?'
+    prompt: t('auto.views.ai.chat.index.components.message.kc5dcbcbe')
   }
 ] // prompt 列表
 

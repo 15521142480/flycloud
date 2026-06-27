@@ -1,12 +1,15 @@
 <template>
-  <doc-alert title="【统计】会员、商品、交易统计" url="https://doc.iocoder.cn/mall/statistics/" />
+  <doc-alert
+    :title="t('auto.views.mall.statistics.trade.index.k5bbb4c4a')"
+    url="https://doc.iocoder.cn/mall/statistics/"
+  />
 
   <div class="flex flex-col">
     <el-row :gutter="16" class="summary">
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          tooltip="昨日订单数量"
-          title="昨日订单数量"
+          :tooltip="t('extra.k1411ac23')"
+          :title="t('auto.views.mall.statistics.trade.index.k414751d3')"
           :value="summary?.value?.yesterdayOrderCount || 0"
           :percent="
             calculateRelativeRate(
@@ -18,8 +21,8 @@
       </el-col>
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          tooltip="本月订单数量"
-          title="本月订单数量"
+          :tooltip="t('extra.kaaf0507b')"
+          :title="t('auto.views.mall.statistics.trade.index.kecde0644')"
           :value="summary?.value?.monthOrderCount || 0"
           :percent="
             calculateRelativeRate(
@@ -31,8 +34,8 @@
       </el-col>
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          tooltip="昨日支付金额"
-          title="昨日支付金额"
+          :tooltip="t('extra.k2e4bcf00')"
+          :title="t('auto.views.mall.statistics.trade.index.kd746de70')"
           prefix="￥"
           :decimals="2"
           :value="fenToYuan(summary?.value?.yesterdayPayPrice || 0)"
@@ -46,8 +49,8 @@
       </el-col>
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          tooltip="本月支付金额"
-          title="本月支付金额"
+          :tooltip="t('extra.k9f847939')"
+          :title="t('auto.views.mall.statistics.trade.index.kbf31e7d0')"
           prefix="￥"
           ::decimals="2"
           :value="fenToYuan(summary?.value?.monthPayPrice || 0)"
@@ -61,7 +64,7 @@
       <template #header>
         <!-- 标题 -->
         <div class="flex flex-row items-center justify-between">
-          <CardTitle title="交易状况" />
+          <CardTitle :title="t('auto.views.mall.statistics.trade.index.k27a29e7e')" />
           <!-- 查询条件 -->
           <ShortcutDateRangePicker ref="shortcutDateRangePicker" @change="getTradeTrendData">
             <el-button
@@ -70,7 +73,7 @@
               :loading="exportLoading"
               v-hasPermi="['statistics:trade:export']"
             >
-              <Icon icon="ep:download" class="mr-1" />导出
+              <Icon icon="ep:download" class="mr-1" />{{ t('extra.k59ef74af') }}
             </el-button>
           </ShortcutDateRangePicker>
         </div>
@@ -225,6 +228,7 @@ import * as DateUtil from '@/utils/formatTime'
 import dayjs from 'dayjs'
 
 /** 交易统计 */
+const { t } = useI18n()
 defineOptions({ name: 'TradeStatistics' })
 
 const message = useMessage() // 消息弹窗
@@ -252,10 +256,10 @@ const lineChartOptions = reactive<EChartsOption>({
     top: 50
   },
   series: [
-    { name: '营业额', type: 'line', smooth: true },
-    { name: '商品支付金额', type: 'line', smooth: true },
-    { name: '充值金额', type: 'line', smooth: true },
-    { name: '支出金额', type: 'line', smooth: true }
+    { name: t('auto.views.mall.statistics.trade.index.k20fc2cd1'), type: 'line', smooth: true },
+    { name: t('auto.views.mall.statistics.trade.index.ka2cf72a6'), type: 'line', smooth: true },
+    { name: t('auto.views.mall.statistics.trade.index.kbb535002'), type: 'line', smooth: true },
+    { name: t('auto.views.mall.statistics.trade.index.k41fc3a1c'), type: 'line', smooth: true }
   ],
   toolbox: {
     feature: {
@@ -266,7 +270,7 @@ const lineChartOptions = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '交易状况' } // 保存为图片
+      saveAsImage: { show: true, name: t('auto.views.mall.statistics.trade.index.k27a29e7e') } // 保存为图片
     }
   },
   tooltip: {
@@ -342,7 +346,7 @@ const handleExport = async () => {
     exportLoading.value = true
     const times = shortcutDateRangePicker.value.times
     const data = await TradeStatisticsApi.exportTradeStatisticsExcel({ times })
-    download.excel(data, '交易状况.xls')
+    download.excel(data, t('auto.views.mall.statistics.trade.index.k7dfa3208'))
   } catch {
   } finally {
     exportLoading.value = false

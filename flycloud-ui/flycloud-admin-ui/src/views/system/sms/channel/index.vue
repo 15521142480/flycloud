@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="短信配置" url="https://doc.iocoder.cn/sms/" />
+  <doc-alert
+    :title="t('auto.views.system.sms.channel.index.k7168c04b')"
+    url="https://doc.iocoder.cn/sms/"
+  />
 
   <ContentWrap>
     <el-form
@@ -9,19 +12,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="短信签名" prop="signature">
+      <el-form-item :label="t('auto.views.system.sms.channel.index.kf57fae84')" prop="signature">
         <el-input
           v-model="queryParams.signature"
-          placeholder="请输入短信签名"
+          :placeholder="t('auto.views.system.sms.channel.index.k41738330')"
           clearable
           class="!w-240px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="启用状态" prop="status">
+      <el-form-item :label="t('auto.views.system.sms.channel.index.k5691b379')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择启用状态"
+          :placeholder="t('auto.views.system.sms.channel.index.kcff6b1c1')"
           class="!w-240px"
           clearable
         >
@@ -33,27 +36,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.system.sms.channel.index.k1f291968')"
+          :end-placeholder="t('auto.views.system.sms.channel.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['system:sms-channel:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增</el-button
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('common.create') }}</el-button
         >
       </el-form-item>
     </el-form>
@@ -62,9 +69,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="短信签名" align="center" prop="signature" />
-      <el-table-column label="渠道编码" align="center" prop="code">
+      <el-table-column
+        :label="t('auto.views.system.sms.channel.index.k9f42dac6')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.system.sms.channel.index.kf57fae84')"
+        align="center"
+        prop="signature"
+      />
+      <el-table-column
+        :label="t('auto.views.system.sms.channel.index.k82233330')"
+        align="center"
+        prop="code"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE" :value="scope.row.code" />
         </template>
@@ -141,10 +160,8 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as SmsChannelApi from '@/api/system/sms/smsChannel'
 import SmsChannelForm from './SmsChannelForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemSmsChannel' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const loading = ref(false) // 列表的加载中

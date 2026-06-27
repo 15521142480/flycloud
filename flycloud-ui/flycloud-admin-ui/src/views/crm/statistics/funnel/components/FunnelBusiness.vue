@@ -5,8 +5,12 @@
     <el-row>
       <el-col :span="24">
         <el-button-group class="mb-10px">
-          <el-button type="primary" @click="handleActive(true)">客户视角</el-button>
-          <el-button type="primary" @click="handleActive(false)">动态视角</el-button>
+          <el-button type="primary" @click="handleActive(true)">{{
+            t('auto.views.crm.statistics.funnel.components.FunnelBusiness.kda459ee5')
+          }}</el-button>
+          <el-button type="primary" @click="handleActive(false)">{{
+            t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k752bd7c6')
+          }}</el-button>
         </el-button-group>
         <el-skeleton :loading="loading" animated>
           <Echart :height="500" :options="echartsOption" />
@@ -18,8 +22,13 @@
   <!-- 统计列表 -->
   <el-card class="mt-16px" shadow="never">
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="序号" type="index" width="80" />
-      <el-table-column align="center" label="阶段" prop="endStatus" width="200">
+      <el-table-column align="center" :label="t('common.index')" type="index" width="80" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k4ca39faa')"
+        prop="endStatus"
+        width="200"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_BUSINESS_END_STATUS_TYPE" :value="scope.row.endStatus" />
         </template>
@@ -33,7 +42,7 @@
 import { CrmStatisticFunnelRespVO, StatisticFunnelApi } from '@/api/crm/statistics/funnel'
 import { EChartsOption } from 'echarts'
 import { DICT_TYPE } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'FunnelBusiness' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -44,7 +53,7 @@ const list = ref<CrmStatisticFunnelRespVO[]>([]) // 列表的数据
 /** 销售漏斗 */
 const echartsOption = reactive<EChartsOption>({
   title: {
-    text: '销售漏斗'
+    text: t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k15d3fb6e')
   },
   tooltip: {
     trigger: 'item',
@@ -58,11 +67,15 @@ const echartsOption = reactive<EChartsOption>({
     }
   },
   legend: {
-    data: ['客户', '商机', '赢单']
+    data: [
+      t('auto.views.crm.statistics.funnel.components.FunnelBusiness.kf2068706'),
+      t('auto.views.crm.statistics.funnel.components.FunnelBusiness.kc4beee85'),
+      t('auto.views.crm.statistics.funnel.components.FunnelBusiness.ke65d23dd')
+    ]
   },
   series: [
     {
-      name: '销售漏斗',
+      name: t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k15d3fb6e'),
       type: 'funnel',
       left: '10%',
       top: 60,
@@ -95,9 +108,18 @@ const echartsOption = reactive<EChartsOption>({
         }
       },
       data: [
-        { value: 60, name: '客户-0个' },
-        { value: 40, name: '商机-0个' },
-        { value: 20, name: '赢单-0个' }
+        {
+          value: 60,
+          name: t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k4ebf343d')
+        },
+        {
+          value: 40,
+          name: t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k2c7531d7')
+        },
+        {
+          value: 20,
+          name: t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k5bd12c22')
+        }
       ]
     }
   ]
@@ -125,13 +147,22 @@ const loadData = async () => {
     // tips：写死 value 值是为了保持漏斗顺序不变
     const list: { value: number; name: string }[] = []
     if (active.value) {
-      list.push({ value: 60, name: `客户-${data.customerCount || 0}个` })
-      list.push({ value: 40, name: `商机-${data.businessCount || 0}个` })
-      list.push({ value: 20, name: `赢单-${data.businessWinCount || 0}个` })
+      list.push({ value: 60, name: t('extra.k170f1fff', { p0: data.customerCount || 0 }) })
+      list.push({ value: 40, name: t('extra.k8519c32d', { p0: data.businessCount || 0 }) })
+      list.push({ value: 20, name: t('extra.k1f31e95f', { p0: data.businessWinCount || 0 }) })
     } else {
-      list.push({ value: data.customerCount || 0, name: `客户-${data.customerCount || 0}个` })
-      list.push({ value: data.businessCount || 0, name: `商机-${data.businessCount || 0}个` })
-      list.push({ value: data.businessWinCount || 0, name: `赢单-${data.businessWinCount || 0}个` })
+      list.push({
+        value: data.customerCount || 0,
+        name: t('extra.k170f1fff', { p0: data.customerCount || 0 })
+      })
+      list.push({
+        value: data.businessCount || 0,
+        name: t('extra.k8519c32d', { p0: data.businessCount || 0 })
+      })
+      list.push({
+        value: data.businessWinCount || 0,
+        name: t('extra.k1f31e95f', { p0: data.businessWinCount || 0 })
+      })
     }
 
     echartsOption.series[0]['data'] = list

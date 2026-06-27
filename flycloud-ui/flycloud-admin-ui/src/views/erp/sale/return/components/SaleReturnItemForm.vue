@@ -9,8 +9,11 @@
     :disabled="disabled"
   >
     <el-table :data="formData" show-summary :summary-method="getSummaries" class="-mt-10px">
-      <el-table-column label="序号" type="index" align="center" width="60" />
-      <el-table-column label="仓库名称" min-width="125">
+      <el-table-column :label="t('common.index')" type="index" align="center" width="60" />
+      <el-table-column
+        :label="t('auto.views.erp.sale.return.components.SaleReturnItemForm.k6f55a5a5')"
+        min-width="125"
+      >
         <template #default="{ row, $index }">
           <el-form-item
             :prop="`${$index}.warehouseId`"
@@ -21,7 +24,7 @@
               v-model="row.warehouseId"
               clearable
               filterable
-              placeholder="请选择仓库"
+              :placeholder="t('auto.views.erp.sale.return.components.SaleReturnItemForm.k7aaa3bbb')"
               @change="onChangeWarehouse($event, row)"
             >
               <el-option
@@ -178,7 +181,7 @@ import {
   getSumValue
 } from '@/utils'
 import { WarehouseApi, WarehouseVO } from '@/api/erp/stock/warehouse'
-
+const { t } = useI18n()
 const props = defineProps<{
   items: undefined
   disabled: false
@@ -186,9 +189,27 @@ const props = defineProps<{
 const formLoading = ref(false) // 表单的加载中
 const formData = ref([])
 const formRules = reactive({
-  warehouseId: [{ required: true, message: '仓库不能为空', trigger: 'blur' }],
-  productId: [{ required: true, message: '产品不能为空', trigger: 'blur' }],
-  count: [{ required: true, message: '产品数量不能为空', trigger: 'blur' }]
+  warehouseId: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.return.components.SaleReturnItemForm.k8a307436'),
+      trigger: 'blur'
+    }
+  ],
+  productId: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.return.components.SaleReturnItemForm.k0b3cde2b'),
+      trigger: 'blur'
+    }
+  ],
+  count: [
+    {
+      required: true,
+      message: t('auto.views.erp.sale.return.components.SaleReturnItemForm.k55ce5fbe'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref([]) // 表单 Ref
 const warehouseList = ref<WarehouseVO[]>([]) // 仓库列表
@@ -238,7 +259,7 @@ const getSummaries = (param: SummaryMethodProps) => {
   const sums: string[] = []
   columns.forEach((column, index: number) => {
     if (index === 0) {
-      sums[index] = '合计'
+      sums[index] = t('auto.views.erp.sale.return.components.SaleReturnItemForm.k92bcbf71')
       return
     }
     if (['count', 'totalProductPrice', 'taxPrice', 'totalPrice'].includes(column.property)) {

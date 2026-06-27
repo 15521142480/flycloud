@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -16,7 +15,7 @@
           @click="openForm('create')"
           v-hasPermi="['crm:business-status:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k53823725') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -25,13 +24,21 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="状态组名" align="center" prop="name" />
-      <el-table-column label="应用部门" align="center" prop="deptNames">
+      <el-table-column
+        :label="t('auto.views.crm.business.status.index.k3fe211b1')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.business.status.index.k21b65f45')"
+        align="center"
+        prop="deptNames"
+      >
         <template #default="scope">
           <span v-if="scope.row?.deptNames?.length > 0">
             {{ scope.row.deptNames.join(' ') }}
           </span>
-          <span v-else>全公司</span>
+          <span v-else>{{ t('auto.views.crm.business.status.index.k8da56ada') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建人" align="center" prop="creator" />
@@ -82,11 +89,10 @@ import download from '@/utils/download'
 import * as BusinessStatusApi from '@/api/crm/business/status'
 import BusinessStatusForm from './BusinessStatusForm.vue'
 import { deleteBusinessStatus } from '@/api/crm/business/status'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmBusinessStatus' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据

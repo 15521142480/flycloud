@@ -4,7 +4,9 @@
     <el-collapse v-model="activeNames">
       <el-collapse-item name="contractInfo">
         <template #title>
-          <span class="text-base font-bold">基本信息</span>
+          <span class="text-base font-bold">{{
+            t('auto.views.crm.contract.detail.ContractDetailsInfo.kb122f813')
+          }}</span>
         </template>
         <el-descriptions :column="4">
           <el-descriptions-item label="合同编号">{{ contract.no }}</el-descriptions-item>
@@ -65,7 +67,7 @@ import * as ContractApi from '@/api/crm/contract'
 import { formatDate } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { erpPriceInputFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'ContractDetailsInfo' })
 defineProps<{
   contract: ContractApi.ContractVO

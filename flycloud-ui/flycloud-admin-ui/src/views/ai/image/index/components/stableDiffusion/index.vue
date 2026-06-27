@@ -1,22 +1,28 @@
 <!-- dall3 -->
 <template>
   <div class="prompt">
-    <el-text tag="b">画面描述</el-text>
-    <el-text tag="p">建议使用“形容词+动词+风格”的格式，使用“，”隔开</el-text>
+    <el-text tag="b">{{
+      t('auto.views.ai.image.index.components.stableDiffusion.k1813eae1')
+    }}</el-text>
+    <el-text tag="p">{{
+      t('auto.views.ai.image.index.components.stableDiffusion.kcf07e703')
+    }}</el-text>
     <el-input
       v-model="prompt"
       maxlength="1024"
       rows="5"
       class="w-100% mt-15px"
       input-style="border-radius: 7px;"
-      placeholder="例如：童话里的小屋应该是什么样子？"
+      :placeholder="t('auto.views.ai.image.index.components.stableDiffusion.k379873d7')"
       show-word-limit
       type="textarea"
     />
   </div>
   <div class="hot-words">
     <div>
-      <el-text tag="b">随机热词</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.k21b37b6a')
+      }}</el-text>
     </div>
     <el-space wrap class="word-list">
       <el-button
@@ -33,7 +39,9 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">采样方法</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.k08d226e8')
+      }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-select v-model="sampler" placeholder="Select" size="large" class="!w-350px">
@@ -63,7 +71,9 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">风格</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.ka4ce420c')
+      }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-select v-model="stylePreset" placeholder="Select" size="large" class="!w-350px">
@@ -78,16 +88,28 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">图片尺寸</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.k85626028')
+      }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
-      <el-input v-model="width" class="w-170px" placeholder="图片宽度" />
-      <el-input v-model="height" class="w-170px" placeholder="图片高度" />
+      <el-input
+        v-model="width"
+        class="w-170px"
+        :placeholder="t('auto.views.ai.image.index.components.stableDiffusion.k5da942a5')"
+      />
+      <el-input
+        v-model="height"
+        class="w-170px"
+        :placeholder="t('auto.views.ai.image.index.components.stableDiffusion.kf3f33764')"
+      />
     </el-space>
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">迭代步数</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.k74dc89c5')
+      }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-input
@@ -101,7 +123,9 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">引导系数</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.kc86788d7')
+      }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-input
@@ -115,7 +139,9 @@
   </div>
   <div class="group-item">
     <div>
-      <el-text tag="b">随机因子</el-text>
+      <el-text tag="b">{{
+        t('auto.views.ai.image.index.components.stableDiffusion.k6387e53f')
+      }}</el-text>
     </div>
     <el-space wrap class="group-item-body">
       <el-input
@@ -128,9 +154,9 @@
     </el-space>
   </div>
   <div class="btns">
-    <el-button type="primary" size="large" round :loading="drawIn" @click="handleGenerateImage">
-      {{ drawIn ? '生成中' : '生成内容' }}
-    </el-button>
+    <el-button type="primary" size="large" round :loading="drawIn" @click="handleGenerateImage">{{
+      drawIn ? t('extra.k795ccc64') : t('extra.kcdfb6fdd')
+    }}</el-button>
   </div>
 </template>
 <script setup lang="ts">
@@ -143,7 +169,7 @@ import {
   StableDiffusionSamplers,
   StableDiffusionStylePresets
 } from '@/views/ai/utils/constants'
-
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 // 定义属性
@@ -179,10 +205,10 @@ const handleHotWordClick = async (hotWord: string) => {
 const handleGenerateImage = async () => {
   // 二次确认
   if (hasChinese(prompt.value)) {
-    message.alert('暂不支持中文！')
+    message.alert(t('auto.views.ai.image.index.components.stableDiffusion.ke1bdd3ea'))
     return
   }
-  await message.confirm(`确认生成内容?`)
+  await message.confirm(t('auto.views.ai.image.index.components.stableDiffusion.k47808f71'))
 
   try {
     // 加载中

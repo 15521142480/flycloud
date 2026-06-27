@@ -17,14 +17,16 @@
   </div>
   <ContentWrap class="mt-10px">
     <el-descriptions :column="5" direction="vertical">
-      <el-descriptions-item label="线索来源">
+      <el-descriptions-item :label="t('auto.views.crm.clue.detail.ClueDetailsHeader.k673239bf')">
         <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_SOURCE" :value="clue.source" />
       </el-descriptions-item>
-      <el-descriptions-item label="手机"> {{ clue.mobile }} </el-descriptions-item>
-      <el-descriptions-item label="负责人">
+      <el-descriptions-item :label="t('auto.views.crm.clue.detail.ClueDetailsHeader.k9c01ad09')">
+        {{ clue.mobile }}
+      </el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.crm.clue.detail.ClueDetailsHeader.k974d383f')">
         {{ clue.ownerUserName }}
       </el-descriptions-item>
-      <el-descriptions-item label="创建时间">
+      <el-descriptions-item :label="t('common.createTime')">
         {{ formatDate(clue.createTime) }}
       </el-descriptions-item>
     </el-descriptions>
@@ -34,7 +36,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import * as ClueApi from '@/api/crm/clue'
 import { formatDate } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmClueDetailsHeader' })
 defineProps<{
   clue: ClueApi.ClueVO // 线索信息

@@ -7,10 +7,13 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="手机号" prop="mobile">
-        <el-input v-model="formData.mobile" placeholder="请输入手机号" />
+      <el-form-item :label="t('auto.views.member.user.UserForm.k5a9cc5e8')" prop="mobile">
+        <el-input
+          v-model="formData.mobile"
+          :placeholder="t('auto.views.member.user.UserForm.k5ecce333')"
+        />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -21,16 +24,22 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="用户昵称" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入用户昵称" />
+      <el-form-item :label="t('auto.views.member.user.UserForm.k90542e0a')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.member.user.UserForm.k359da8d3')"
+        />
       </el-form-item>
-      <el-form-item label="头像" prop="avatar">
+      <el-form-item :label="t('auto.views.member.user.UserForm.k4ceeeb31')" prop="avatar">
         <UploadImg v-model="formData.avatar" :limit="1" :is-show-tip="false" />
       </el-form-item>
-      <el-form-item label="真实名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入真实名字" />
+      <el-form-item :label="t('auto.views.member.user.UserForm.kf593a9a9')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.member.user.UserForm.ka3d7a309')"
+        />
       </el-form-item>
-      <el-form-item label="用户性别" prop="sex">
+      <el-form-item :label="t('auto.views.member.user.UserForm.k9227ccfa')" prop="sex">
         <el-radio-group v-model="formData.sex">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
@@ -41,15 +50,15 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="出生日期" prop="birthday">
+      <el-form-item :label="t('auto.views.member.user.UserForm.ka1cd13bc')" prop="birthday">
         <el-date-picker
           v-model="formData.birthday"
           type="date"
           value-format="x"
-          placeholder="选择出生日期"
+          :placeholder="t('auto.views.member.user.UserForm.ka38f2f3a')"
         />
       </el-form-item>
-      <el-form-item label="所在地" prop="areaId">
+      <el-form-item :label="t('auto.views.member.user.UserForm.kfe837ba6')" prop="areaId">
         <el-tree-select
           v-model="formData.areaId"
           :data="areaList"
@@ -57,19 +66,27 @@
           :render-after-expand="true"
         />
       </el-form-item>
-      <el-form-item label="用户标签" prop="tagIds">
+      <el-form-item :label="t('auto.views.member.user.UserForm.k53ea20a0')" prop="tagIds">
         <MemberTagSelect v-model="formData.tagIds" show-add />
       </el-form-item>
-      <el-form-item label="用户分组" prop="groupId">
+      <el-form-item :label="t('auto.views.member.user.UserForm.k137bc66f')" prop="groupId">
         <MemberGroupSelect v-model="formData.groupId" />
       </el-form-item>
-      <el-form-item label="会员备注" prop="mark">
-        <el-input type="textarea" v-model="formData.mark" placeholder="请输入会员备注" />
+      <el-form-item :label="t('auto.views.member.user.UserForm.kb1f5e04c')" prop="mark">
+        <el-input
+          type="textarea"
+          v-model="formData.mark"
+          :placeholder="t('auto.views.member.user.UserForm.k42b623a2')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.member.user.UserForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.member.user.UserForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -80,8 +97,7 @@ import * as AreaApi from '@/api/system/area'
 import { defaultProps } from '@/utils/tree'
 import MemberTagSelect from '@/views/member/tag/components/MemberTagSelect.vue'
 import MemberGroupSelect from '@/views/member/group/components/MemberGroupSelect.vue'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -104,8 +120,12 @@ const formData = ref({
   groupId: undefined
 })
 const formRules = reactive({
-  mobile: [{ required: true, message: '手机号不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+  mobile: [
+    { required: true, message: t('auto.views.member.user.UserForm.ka40faf76'), trigger: 'blur' }
+  ],
+  status: [
+    { required: true, message: t('auto.views.member.user.UserForm.k1318b551'), trigger: 'blur' }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const areaList = ref([]) // 地区列表

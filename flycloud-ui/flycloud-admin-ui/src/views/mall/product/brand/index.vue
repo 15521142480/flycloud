@@ -1,5 +1,4 @@
 <template>
-
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form
@@ -9,17 +8,22 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="品牌名称" prop="name">
+      <el-form-item :label="t('auto.views.mall.product.brand.index.kaa073c76')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入品牌名称"
+          :placeholder="t('auto.views.mall.product.brand.index.kfae6109b')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
+      <el-form-item :label="t('common.status')" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          :placeholder="t('auto.views.mall.product.brand.index.kdba277df')"
+          clearable
+          class="!w-240px"
+        >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -28,27 +32,31 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item :label="t('common.createTime')" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.mall.product.brand.index.k1f291968')"
+          :end-placeholder="t('auto.views.mall.product.brand.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['product:brand:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k5e5cfda8') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -57,10 +65,23 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" row-key="id" default-expand-all>
-      <el-table-column label="品牌名称" prop="name" sortable />
-      <el-table-column label="品牌图片" align="center" prop="picUrl">
+      <el-table-column
+        :label="t('auto.views.mall.product.brand.index.kaa073c76')"
+        prop="name"
+        sortable
+      />
+      <el-table-column
+        :label="t('auto.views.mall.product.brand.index.k8ac21a67')"
+        align="center"
+        prop="picUrl"
+      >
         <template #default="scope">
-          <img v-if="scope.row.picUrl" :src="scope.row.picUrl" alt="品牌图片" class="h-30px" />
+          <img
+            v-if="scope.row.picUrl"
+            :src="scope.row.picUrl"
+            :alt="t('auto.views.mall.product.brand.index.k8ac21a67')"
+            class="h-30px"
+          />
         </template>
       </el-table-column>
       <el-table-column label="品牌排序" align="center" prop="sort" />
@@ -114,11 +135,10 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ProductBrandApi from '@/api/mall/product/brand'
 import BrandForm from './BrandForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'ProductBrand' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

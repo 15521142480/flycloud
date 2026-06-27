@@ -1,6 +1,8 @@
 <template>
   <ContentWrap>
-    <div class="pb-5 text-xl">分配给我的线索</div>
+    <div class="pb-5 text-xl">{{
+      t('auto.views.crm.backlog.components.ClueFollowList.k330a38c5')
+    }}</div>
     <!-- 搜索工作栏 -->
     <el-form
       ref="queryFormRef"
@@ -9,11 +11,11 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="状态" prop="followUpStatus">
+      <el-form-item :label="t('common.status')" prop="followUpStatus">
         <el-select
           v-model="queryParams.followUpStatus"
           class="!w-240px"
-          placeholder="状态"
+          :placeholder="t('common.status')"
           @change="handleQuery"
         >
           <el-option
@@ -29,7 +31,13 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="线索名称" align="center" prop="name" fixed="left" width="160">
+      <el-table-column
+        :label="t('auto.views.crm.backlog.components.ClueFollowList.k733eabce')"
+        align="center"
+        prop="name"
+        fixed="left"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -103,7 +111,7 @@ import * as ClueApi from '@/api/crm/clue'
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { FOLLOWUP_STATUS } from './common'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmClueFollowList' })
 
 const loading = ref(true) // 列表的加载中

@@ -10,8 +10,20 @@
   <!-- 统计列表 -->
   <el-card class="mt-16px" shadow="never">
     <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" fixed="left" label="序号" type="index" width="80" />
-      <el-table-column align="center" fixed="left" label="商机名称" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('common.index')"
+        type="index"
+        width="80"
+      />
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.statistics.funnel.components.BusinessSummary.k84b59248')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -107,7 +119,7 @@ import {
 import { EChartsOption } from 'echarts'
 import { erpPriceTableColumnFormatter } from '@/utils'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'BusinessSummary' })
 
 const props = defineProps<{ queryParams: any }>() // 搜索参数
@@ -143,13 +155,13 @@ const echartsOption = reactive<EChartsOption>({
   legend: {},
   series: [
     {
-      name: '新增商机数量',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessSummary.kc4f73629'),
       type: 'bar',
       yAxisIndex: 0,
       data: []
     },
     {
-      name: '新增商机金额',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessSummary.k1fd1a5bb'),
       type: 'bar',
       yAxisIndex: 1,
       data: []
@@ -163,7 +175,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '新增商机分析' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.funnel.components.BusinessSummary.kfe9fba01')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -175,13 +190,13 @@ const echartsOption = reactive<EChartsOption>({
   yAxis: [
     {
       type: 'value',
-      name: '新增商机数量',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessSummary.kc4f73629'),
       min: 0,
       minInterval: 1 // 显示整数刻度
     },
     {
       type: 'value',
-      name: '新增商机金额',
+      name: t('auto.views.crm.statistics.funnel.components.BusinessSummary.k1fd1a5bb'),
       min: 0,
       minInterval: 1, // 显示整数刻度
       splitLine: {
@@ -194,7 +209,7 @@ const echartsOption = reactive<EChartsOption>({
   ],
   xAxis: {
     type: 'category',
-    name: '日期',
+    name: t('auto.views.crm.statistics.funnel.components.BusinessSummary.kb6fed9af'),
     data: []
   }
 }) as EChartsOption

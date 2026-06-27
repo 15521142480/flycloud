@@ -9,10 +9,14 @@
       label-width="68px"
     >
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button type="primary" plain @click="openForm('create')"
-          ><Icon icon="ep:plus" />创建业务转账单
+          ><Icon icon="ep:plus" />{{ t('extra.k4f7c0181') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -21,8 +25,17 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true">
-      <el-table-column label="订单编号" align="center" prop="id" />
-      <el-table-column label="转账类型" align="center" prop="type" width="120">
+      <el-table-column
+        :label="t('auto.views.pay.demo.transfer.index.k8c60a237')"
+        align="center"
+        prop="id"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.demo.transfer.index.k297a5897')"
+        align="center"
+        prop="type"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_TRANSFER_TYPE" :value="scope.row.type" />
         </template>
@@ -90,8 +103,8 @@ import * as PayTransferApi from '@/api/pay/transfer'
 import DemoTransferForm from './DemoTransferForm.vue'
 import CreatePayTransfer from '../../transfer/CreatePayTransfer.vue'
 import { DICT_TYPE } from '@/utils/dict'
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -148,7 +161,7 @@ const openForm = (type: string) => {
 const handleTransfer = (row: any) => {
   payTransfer = { ...row }
   payTransfer.merchantTransferId = row.id.toString()
-  payTransfer.subject = '示例转账'
+  payTransfer.subject = t('auto.views.pay.demo.transfer.index.kf5f34bdf')
   payTransferRef.value.showPayTransfer(payTransfer)
 }
 

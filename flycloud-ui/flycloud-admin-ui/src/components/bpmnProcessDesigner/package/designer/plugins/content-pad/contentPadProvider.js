@@ -9,7 +9,8 @@ import { isAny } from 'bpmn-js/lib/features/modeling/util/ModelingUtil'
 import { getChildLanes } from 'bpmn-js/lib/features/modeling/util/LaneUtil'
 
 import { hasPrimaryModifier } from 'diagram-js/lib/util/Mouse'
-
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 /**
  * A provider for BPMN 2.0 elements context pad
  */
@@ -321,7 +322,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
       replace: {
         group: 'edit',
         className: 'bpmn-icon-screw-wrench',
-        title: '修改类型',
+        title: t(
+          'auto.components.bpmnProcessDesigner.package.designer.plugins.content_pad.k5978e6fe'
+        ),
         action: {
           click: function (event, element) {
             const position = assign(getReplaceMenuPosition(element), {

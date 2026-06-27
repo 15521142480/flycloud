@@ -16,10 +16,19 @@
   </div>
   <ContentWrap class="mt-10px">
     <el-descriptions :column="5" direction="vertical">
-      <el-descriptions-item label="客户名称">{{ contact.customerName }}</el-descriptions-item>
-      <el-descriptions-item label="职务">{{ contact.post }}</el-descriptions-item>
-      <el-descriptions-item label="手机">{{ contact.mobile }}</el-descriptions-item>
-      <el-descriptions-item label="创建时间">
+      <el-descriptions-item
+        :label="t('auto.views.crm.contact.detail.ContactDetailsHeader.ke941d410')"
+        >{{ contact.customerName }}</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="t('auto.views.crm.contact.detail.ContactDetailsHeader.k4ffe06c7')"
+        >{{ contact.post }}</el-descriptions-item
+      >
+      <el-descriptions-item
+        :label="t('auto.views.crm.contact.detail.ContactDetailsHeader.k9c01ad09')"
+        >{{ contact.mobile }}</el-descriptions-item
+      >
+      <el-descriptions-item :label="t('common.createTime')">
         {{ formatDate(contact.createTime) }}
       </el-descriptions-item>
     </el-descriptions>
@@ -28,6 +37,6 @@
 <script lang="ts" setup>
 import * as ContactApi from '@/api/crm/contact'
 import { formatDate } from '@/utils/formatTime'
-
+const { t } = useI18n()
 const { contact } = defineProps<{ contact: ContactApi.ContactVO }>()
 </script>

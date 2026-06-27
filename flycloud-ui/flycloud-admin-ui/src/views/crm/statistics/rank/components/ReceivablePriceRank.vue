@@ -10,11 +10,26 @@
   <!-- 排行列表 -->
   <el-card shadow="never" class="mt-16px">
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="公司排名" align="center" type="index" width="80" />
-      <el-table-column label="签订人" align="center" prop="name" min-width="200" />
-      <el-table-column label="部门" align="center" prop="deptName" min-width="200" />
       <el-table-column
-        label="回款金额（元）"
+        :label="t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.k92040fc1')"
+        align="center"
+        type="index"
+        width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.ka2f30c0a')"
+        align="center"
+        prop="name"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.k91061a56')"
+        align="center"
+        prop="deptName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.kfe6b09b9')"
         align="center"
         prop="count"
         min-width="200"
@@ -28,7 +43,7 @@ import { StatisticsRankApi, StatisticsRankRespVO } from '@/api/crm/statistics/ra
 import { EChartsOption } from 'echarts'
 import { clone } from 'lodash-es'
 import { erpPriceTableColumnFormatter } from '@/utils'
-
+const { t } = useI18n()
 defineOptions({ name: 'ReceivablePriceRank' })
 const props = defineProps<{ queryParams: any }>() // 搜索参数
 
@@ -52,7 +67,7 @@ const echartsOption = reactive<EChartsOption>({
   },
   series: [
     {
-      name: '回款金额排行',
+      name: t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.kf846f381'),
       type: 'bar'
     }
   ],
@@ -64,7 +79,10 @@ const echartsOption = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: '回款金额排行' } // 保存为图片
+      saveAsImage: {
+        show: true,
+        name: t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.kf846f381')
+      } // 保存为图片
     }
   },
   tooltip: {
@@ -75,11 +93,11 @@ const echartsOption = reactive<EChartsOption>({
   },
   xAxis: {
     type: 'value',
-    name: '回款金额（元）'
+    name: t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.kfe6b09b9')
   },
   yAxis: {
     type: 'category',
-    name: '签订人',
+    name: t('auto.views.crm.statistics.rank.components.ReceivablePriceRank.ka2f30c0a'),
     nameGap: 30
   }
 }) as EChartsOption

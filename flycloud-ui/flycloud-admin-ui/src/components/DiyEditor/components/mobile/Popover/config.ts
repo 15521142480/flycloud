@@ -1,6 +1,8 @@
 import { DiyComponent } from '@/components/DiyEditor/util'
-
+import { useI18n } from '@/hooks/web/useI18n'
 /** 弹窗广告属性 */
+const { t } = useI18n()
+
 export interface PopoverProperty {
   list: PopoverItemProperty[]
 }
@@ -17,7 +19,7 @@ export interface PopoverItemProperty {
 // 定义组件
 export const component = {
   id: 'Popover',
-  name: '弹窗广告',
+  name: t('auto.components.DiyEditor.components.mobile.Popover.config.kefdea874'),
   icon: 'carbon:popup',
   position: 'fixed',
   property: {

@@ -57,9 +57,9 @@
                   >
                     {{ t('login.getSmsCode') }}
                   </span>
-                  <span v-if="mobileCodeTimer > 0" class="getMobileCode" style="cursor: pointer">
-                    {{ mobileCodeTimer }}秒后可重新获取
-                  </span>
+                  <span v-if="mobileCodeTimer > 0" class="getMobileCode" style="cursor: pointer">{{
+                    t('extra.k36d86d45', { p0: mobileCodeTimer })
+                  }}</span>
                 </template>
               </el-input>
               <!-- </el-button> -->
@@ -103,10 +103,8 @@ import { getTenantIdByName, sendSmsCode, smsLogin } from '@/api/login'
 import LoginFormTitle from './LoginFormTitle.vue'
 import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
 import { ElLoading } from 'element-plus'
-
-defineOptions({ name: 'MobileForm' })
-
 const { t } = useI18n()
+defineOptions({ name: 'MobileForm' })
 const message = useMessage()
 const permissionStore = usePermissionStore()
 const { currentRoute, push } = useRouter()
@@ -133,7 +131,7 @@ const loginData = reactive({
   },
   loginForm: {
     uuid: '',
-    tenantName: '芋道源码',
+    tenantName: t('auto.views.login.components.MobileForm.ke2d27f2f'),
     mobileNumber: '',
     code: ''
   }
@@ -188,7 +186,7 @@ const signIn = async () => {
   if (!data) return
   ElLoading.service({
     lock: true,
-    text: '正在加载系统中...',
+    text: t('auto.views.login.components.MobileForm.k259acf4a'),
     background: 'rgba(0, 0, 0, 0.7)'
   })
   loginLoading.value = true

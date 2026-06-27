@@ -10,33 +10,43 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="调度单号" prop="no">
-            <el-input disabled v-model="formData.no" placeholder="保存时自动生成" />
+          <el-form-item :label="t('auto.views.erp.stock.move.StockMoveForm.kead78d91')" prop="no">
+            <el-input
+              disabled
+              v-model="formData.no"
+              :placeholder="t('auto.views.erp.stock.move.StockMoveForm.kf914a47d')"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="调度时间" prop="moveTime">
+          <el-form-item
+            :label="t('auto.views.erp.stock.move.StockMoveForm.k954ee1d7')"
+            prop="moveTime"
+          >
             <el-date-picker
               v-model="formData.moveTime"
               type="date"
               value-format="x"
-              placeholder="选择调度时间"
+              :placeholder="t('auto.views.erp.stock.move.StockMoveForm.k08df642e')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.remark')" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
               :rows="1"
-              placeholder="请输入备注"
+              :placeholder="t('auto.views.erp.stock.move.StockMoveForm.k57e709d9')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item
+            :label="t('auto.views.erp.stock.move.StockMoveForm.k99f6fe6c')"
+            prop="fileUrl"
+          >
             <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
           </el-form-item>
         </el-col>
@@ -45,16 +55,18 @@
     <!-- 子表的表单 -->
     <ContentWrap>
       <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-        <el-tab-pane label="调度产品清单" name="item">
+        <el-tab-pane :label="t('auto.views.erp.stock.move.StockMoveForm.ke4f8c62f')" name="item">
           <StockMoveItemForm ref="itemFormRef" :items="formData.items" :disabled="disabled" />
         </el-tab-pane>
       </el-tabs>
     </ContentWrap>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading" v-if="!disabled">
-        确 定
+        {{ t('extra.kfb51165f') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.erp.stock.move.StockMoveForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -63,9 +75,8 @@ import { StockMoveApi, StockMoveVO } from '@/api/erp/stock/move'
 import StockMoveItemForm from './components/StockMoveItemForm.vue'
 
 /** ERP 库存调度单表单 */
+const { t } = useI18n()
 defineOptions({ name: 'StockMoveForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -81,7 +92,13 @@ const formData = ref({
   items: []
 })
 const formRules = reactive({
-  moveTime: [{ required: true, message: '调度时间不能为空', trigger: 'blur' }]
+  moveTime: [
+    {
+      required: true,
+      message: t('auto.views.erp.stock.move.StockMoveForm.k375f2ad3'),
+      trigger: 'blur'
+    }
+  ]
 })
 const disabled = computed(() => formType.value === 'detail')
 const formRef = ref() // 表单 Ref

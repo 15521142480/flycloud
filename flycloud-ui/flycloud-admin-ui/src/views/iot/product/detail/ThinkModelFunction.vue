@@ -8,10 +8,13 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="功能类型" prop="name">
+      <el-form-item
+        :label="t('auto.views.iot.product.detail.ThinkModelFunction.ke18bdddb')"
+        prop="name"
+      >
         <el-select
           v-model="queryParams.type"
-          placeholder="请选择功能类型"
+          :placeholder="t('auto.views.iot.product.detail.ThinkModelFunction.k0ea12ac9')"
           clearable
           class="!w-240px"
         >
@@ -24,15 +27,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['iot:think-model-function:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 添加功能
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k24fcd440') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -40,7 +47,11 @@
   <ContentWrap>
     <el-tabs>
       <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-        <el-table-column label="功能类型" align="center" prop="type">
+        <el-table-column
+          :label="t('auto.views.iot.product.detail.ThinkModelFunction.ke18bdddb')"
+          align="center"
+          prop="type"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.IOT_PRODUCT_FUNCTION_TYPE" :value="scope.row.type" />
           </template>
@@ -85,10 +96,8 @@ import { ProductVO } from '@/api/iot/product'
 import { ThinkModelFunctionApi, ThinkModelFunctionVO } from '@/api/iot/thinkmodelfunction'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import ThinkModelFunctionForm from '@/views/iot/product/detail/ThinkModelFunctionForm.vue'
-
+const { t } = useI18n()
 const props = defineProps<{ product: ProductVO }>()
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const loading = ref(true) // 列表的加载中

@@ -1,8 +1,19 @@
 <template>
   <el-table :data="props.list" stripe border v-loading="props.loading" style="margin-top: 10px">
-    <el-table-column label="编号" align="center" prop="mediaId" />
-    <el-table-column label="文件名" align="center" prop="name" />
-    <el-table-column label="语音" align="center">
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VoiceTable.k9f42dac6')"
+      align="center"
+      prop="mediaId"
+    />
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VoiceTable.k1275f6fe')"
+      align="center"
+      prop="name"
+    />
+    <el-table-column
+      :label="t('auto.views.mp.material.components.VoiceTable.k7a73e125')"
+      align="center"
+    >
       <template #default="scope">
         <WxVoicePlayer v-if="scope.row.url" :url="scope.row.url" />
       </template>
@@ -39,7 +50,7 @@
 <script lang="ts" setup>
 import WxVoicePlayer from '@/views/mp/components/wx-voice-play'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 const props = defineProps<{
   list: any[]
   loading: boolean

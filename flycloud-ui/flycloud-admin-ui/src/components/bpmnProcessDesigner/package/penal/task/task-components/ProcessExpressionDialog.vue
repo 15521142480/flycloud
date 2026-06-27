@@ -1,13 +1,35 @@
 <!-- 表达式选择 -->
 <template>
-  <Dialog title="请选择表达式" v-model="dialogVisible" width="1024px">
+  <Dialog
+    :title="t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k0a6b5566')"
+    v-model="dialogVisible"
+    width="1024px"
+  >
     <ContentWrap>
       <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-        <el-table-column label="名字" align="center" prop="name" />
-        <el-table-column label="表达式" align="center" prop="expression" />
-        <el-table-column label="操作" align="center">
+        <el-table-column
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k364bd1bf')
+          "
+          align="center"
+          prop="name"
+        />
+        <el-table-column
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k513c1c63')
+          "
+          align="center"
+          prop="expression"
+        />
+        <el-table-column :label="t('common.operation')" align="center">
           <template #default="scope">
-            <el-button link type="primary" @click="select(scope.row)"> 选择 </el-button>
+            <el-button link type="primary" @click="select(scope.row)">
+              {{
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k70b20820'
+                )
+              }}
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -24,8 +46,8 @@
 <script setup lang="ts">
 import { CommonStatusEnum } from '@/utils/constants'
 import { ProcessExpressionApi, ProcessExpressionVO } from '@/api/bpm/processExpression'
-
 /** BPM 流程 表单 */
+const { t } = useI18n()
 defineOptions({ name: 'ProcessExpressionDialog' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

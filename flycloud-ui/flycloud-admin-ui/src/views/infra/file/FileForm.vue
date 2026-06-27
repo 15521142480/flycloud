@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" title="上传文件">
+  <Dialog v-model="dialogVisible" :title="t('auto.views.infra.file.FileForm.k484a03ac')">
     <el-upload
       ref="uploadRef"
       v-model:file-list="fileList"
@@ -17,10 +17,13 @@
       drag
     >
       <i class="el-icon-upload"></i>
-      <div class="el-upload__text"> 将文件拖到此处，或 <em>点击上传</em></div>
+      <div class="el-upload__text">
+        {{ t('auto.views.infra.file.FileForm.ke0f5f44d') }}
+        <em>{{ t('auto.views.infra.file.FileForm.k69aaf1d5') }}</em></div
+      >
       <template #tip>
         <div class="el-upload__tip" style="color: red">
-          提示：仅允许导入 jpg、png、gif 格式文件！
+          {{ t('extra.k50582a6b') }}
         </div>
       </template>
     </el-upload>
@@ -32,10 +35,8 @@
 </template>
 <script lang="ts" setup>
 import { useUpload } from '@/components/UploadFile/src/useUpload'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraFileForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -61,7 +62,7 @@ const handleFileChange = (file) => {
 /** 提交表单 */
 const submitFileForm = () => {
   if (fileList.value.length == 0) {
-    message.error('请上传文件')
+    message.error(t('auto.views.infra.file.FileForm.kc7de0f24'))
     return
   }
   unref(uploadRef)?.submit()
@@ -81,7 +82,7 @@ const submitFormSuccess = () => {
 
 /** 上传错误提示 */
 const submitFormError = (): void => {
-  message.error('上传失败，请您重新上传！')
+  message.error(t('auto.views.infra.file.FileForm.kf76afca2'))
   formLoading.value = false
 }
 
@@ -94,6 +95,6 @@ const resetForm = () => {
 
 /** 文件数超出提示 */
 const handleExceed = (): void => {
-  message.error('最多只能上传一个文件！')
+  message.error(t('auto.views.infra.file.FileForm.k708ffe38'))
 }
 </script>

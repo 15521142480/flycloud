@@ -2,17 +2,31 @@
   <div>
     <el-table v-loading="props.loading" :data="props.list">
       <el-table-column
-        label="发送时间"
+        :label="t('auto.views.mp.message.MessageTable.k98c64dd6')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="消息类型" align="center" prop="type" width="80" />
-      <el-table-column label="发送方" align="center" prop="sendFrom" width="80">
+      <el-table-column
+        :label="t('auto.views.mp.message.MessageTable.k15218877')"
+        align="center"
+        prop="type"
+        width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.mp.message.MessageTable.kdd2e2bfc')"
+        align="center"
+        prop="sendFrom"
+        width="80"
+      >
         <template #default="scope">
-          <el-tag v-if="scope.row.sendFrom === 1" type="success">粉丝</el-tag>
-          <el-tag v-else type="info">公众号</el-tag>
+          <el-tag v-if="scope.row.sendFrom === 1" type="success">{{
+            t('auto.views.mp.message.MessageTable.kf3ff5a7d')
+          }}</el-tag>
+          <el-tag v-else type="info">{{
+            t('auto.views.mp.message.MessageTable.ke48fc0ee')
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="用户标识" align="center" prop="openid" width="300" />
@@ -129,7 +143,7 @@ import WxMusic from '@/views/mp/components/wx-music'
 import WxNews from '@/views/mp/components/wx-news'
 import { dateFormatter } from '@/utils/formatTime'
 import { MsgType } from '@/views/mp/components/wx-msg/types'
-
+const { t } = useI18n()
 const props = defineProps({
   list: {
     type: Array,

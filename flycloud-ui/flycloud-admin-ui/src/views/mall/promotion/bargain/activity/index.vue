@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,19 +8,25 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="活动名称" prop="name">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.bargain.activity.index.k2b020286')"
+        prop="name"
+      >
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入活动名称"
+          :placeholder="t('auto.views.mall.promotion.bargain.activity.index.ka90d22e9')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="活动状态" prop="status">
+      <el-form-item
+        :label="t('auto.views.mall.promotion.bargain.activity.index.k65a972d7')"
+        prop="status"
+      >
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择活动状态"
+          :placeholder="t('auto.views.mall.promotion.bargain.activity.index.k4b6989d1')"
           clearable
           class="!w-240px"
         >
@@ -34,15 +39,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:bargain-activity:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k606804dd') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -51,9 +60,20 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="活动编号" prop="id" min-width="80" />
-      <el-table-column label="活动名称" prop="name" min-width="140" />
-      <el-table-column label="活动时间" min-width="210">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.activity.index.k32261198')"
+        prop="id"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.activity.index.k2b020286')"
+        prop="name"
+        min-width="140"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.activity.index.kabe0ecdb')"
+        min-width="210"
+      >
         <template #default="scope">
           {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
@@ -151,11 +171,10 @@ import BargainActivityForm from './BargainActivityForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { closeBargainActivity } from '@/api/mall/promotion/bargain/bargainActivity'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionBargainActivity' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -204,10 +223,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm('确认关闭该砍价活动吗？')
+    await message.confirm(t('auto.views.mall.promotion.bargain.activity.index.kdb531662'))
     // 发起关闭
     await BargainActivityApi.closeBargainActivity(id)
-    message.success('关闭成功')
+    message.success(t('auto.views.mall.promotion.bargain.activity.index.kf3cf9e86'))
     // 刷新列表
     await getList()
   } catch {}

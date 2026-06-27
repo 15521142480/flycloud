@@ -2,7 +2,10 @@
   <div class="flex items-center h-50px">
     <!-- 头部：分类名 -->
     <div class="flex items-center">
-      <el-tooltip content="拖动排序" v-if="isCategorySorting">
+      <el-tooltip
+        :content="t('auto.views.bpm.model.CategoryDraggableModel.k2980f293')"
+        v-if="isCategorySorting"
+      >
         <Icon
           :size="22"
           icon="ic:round-drag-indicator"
@@ -35,11 +38,11 @@
             @click.stop="handleModelSort"
           >
             <Icon icon="fa:sort-amount-desc" class="mr-5px" />
-            排序
+            {{ t('extra.k8001152f') }}
           </el-button>
           <el-button v-else link type="info" class="mr-20px" @click.stop="openModelForm('create')">
             <Icon icon="fa:plus" class="mr-5px" />
-            新建
+            {{ t('extra.k4513a049') }}
           </el-button>
           <el-dropdown
             @command="(command) => handleCategoryCommand(command, categoryInfo)"
@@ -47,12 +50,16 @@
           >
             <el-button link type="info">
               <Icon icon="ep:setting" class="mr-5px" />
-              分类
+              {{ t('extra.k8c3fa055') }}
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="handleRename"> 重命名 </el-dropdown-item>
-                <el-dropdown-item command="handleDeleteCategory"> 删除该类 </el-dropdown-item>
+                <el-dropdown-item command="handleRename">
+                  {{ t('auto.views.bpm.model.CategoryDraggableModel.k1cd80fd7') }}
+                </el-dropdown-item>
+                <el-dropdown-item command="handleDeleteCategory">
+                  {{ t('auto.views.bpm.model.CategoryDraggableModel.kbb1753f8') }}
+                </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -186,7 +193,11 @@
             <el-dropdown
               class="!align-middle ml-5px"
               @command="(command) => handleModelCommand(command, scope.row)"
-              v-hasPermi="['bpm:manage:model:history', 'bpm:manage:model:enable', 'bpm:manage:model:delete']"
+              v-hasPermi="[
+                'bpm:manage:model:history',
+                'bpm:manage:model:enable',
+                'bpm:manage:model:delete'
+              ]"
             >
               <el-button type="primary" link>更多</el-button>
               <template #dropdown>
@@ -255,7 +266,7 @@ import { checkPermi } from '@/utils/permission'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { useAppStore } from '@/store/modules/app'
 import { cloneDeep } from 'lodash-es'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmModel' })
 
 const props = defineProps({
@@ -264,7 +275,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['success'])
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 const { push } = useRouter() // 路由
 const userStore = useUserStoreWithOut() // 用户信息缓存
 const isDark = computed(() => useAppStore().getIsDark) // 是否黑暗模式
@@ -327,12 +337,17 @@ const handleChangeState = async (row: any) => {
     // 修改状态的二次确认
     const id = row.id
     debugger
-    const statusState = state === 1 ? '停用' : '启用'
-    const content = '是否确认' + statusState + '流程名字为"' + row.name + '"的数据项?'
+    const statusState = state === 1 ? t('common.disabled') : t('common.enabled')
+    const content =
+      t('auto.views.bpm.model.CategoryDraggableModel.k9fc01381') +
+      statusState +
+      t('auto.views.bpm.model.CategoryDraggableModel.k18795f9e') +
+      row.name +
+      t('auto.views.bpm.model.CategoryDraggableModel.kc87f4c07')
     await message.confirm(content)
     // 发起修改状态
     await ModelApi.updateModelState(id, newState)
-    message.success(statusState + '成功')
+    message.success(statusState + t('common.success'))
     // 刷新列表
     emit('success')
   } catch {}
@@ -361,10 +376,10 @@ const handleDesign = (row: any) => {
 const handleDeploy = async (row: any) => {
   try {
     // 删除的二次确认
-    await message.confirm('是否部署该流程！！')
+    await message.confirm(t('auto.views.bpm.model.CategoryDraggableModel.k35018faa'))
     // 发起部署
     await ModelApi.deployModel(row.id)
-    message.success(t('部署成功'))
+    message.success(t(t('auto.views.bpm.model.CategoryDraggableModel.k48388beb')))
     // 刷新列表
     emit('success')
   } catch {}
@@ -421,7 +436,7 @@ const handleModelSortSubmit = async () => {
   await ModelApi.updateModelSortBatch(ids)
   // 刷新列表
   isModelSorting.value = false
-  message.success('排序模型成功')
+  message.success(t('auto.views.bpm.model.CategoryDraggableModel.kb04fee6b'))
   emit('success')
 }
 
@@ -469,11 +484,11 @@ const renameCategoryForm = ref({
 })
 const handleRenameConfirm = async () => {
   if (renameCategoryForm.value?.name.length === 0) {
-    return message.warning('请输入名称')
+    return message.warning(t('auto.views.bpm.model.CategoryDraggableModel.kc2afb255'))
   }
   // 发起修改
   await CategoryApi.updateCategory(renameCategoryForm.value as CategoryVO)
-  message.success('重命名成功')
+  message.success(t('auto.views.bpm.model.CategoryDraggableModel.k92d4e6f8'))
   // 刷新列表
   renameCategoryVisible.value = false
   emit('success')
@@ -483,9 +498,9 @@ const handleRenameConfirm = async () => {
 const handleDeleteCategory = async () => {
   try {
     if (props.categoryInfo.modelList.length > 0) {
-      return message.warning('该分类下仍有流程定义,不允许删除')
+      return message.warning(t('auto.views.bpm.model.CategoryDraggableModel.k790b6c91'))
     }
-    await message.confirm('确认删除分类吗?')
+    await message.confirm(t('auto.views.bpm.model.CategoryDraggableModel.k670d7aaa'))
     // 发起删除
     await CategoryApi.deleteCategory(props.categoryInfo.id)
     message.success(t('common.delSuccess'))

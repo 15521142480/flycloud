@@ -3,18 +3,32 @@
     <el-form label-width="90px" :model="needProps" :rules="rules">
       <div v-if="needProps.type == 'bpmn:Process'">
         <!-- 如果是 Process 信息的时候，使用自定义表单 -->
-        <el-form-item label="流程标识" prop="id">
+        <el-form-item
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k11c83e06')
+          "
+          prop="id"
+        >
           <el-input
             v-model="needProps.id"
-            placeholder="请输入流标标识"
+            :placeholder="
+              t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k4c13de5c')
+            "
             :disabled="needProps.id !== undefined && needProps.id.length > 0"
             @change="handleKeyUpdate"
           />
         </el-form-item>
-        <el-form-item label="流程名称" prop="name">
+        <el-form-item
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k323a8305')
+          "
+          prop="name"
+        >
           <el-input
             v-model="needProps.name"
-            placeholder="请输入流程名称"
+            :placeholder="
+              t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.ke9399a13')
+            "
             clearable
             @change="handleNameUpdate"
           />
@@ -24,7 +38,11 @@
         <el-form-item label="ID">
           <el-input v-model="elementBaseInfo.id" clearable @change="updateBaseInfo('id')" />
         </el-form-item>
-        <el-form-item label="名称">
+        <el-form-item
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k1be7ae4f')
+          "
+        >
           <el-input v-model="elementBaseInfo.name" clearable @change="updateBaseInfo('name')" />
         </el-form-item>
       </div>
@@ -32,6 +50,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+const { t } = useI18n()
 defineOptions({ name: 'ElementBaseInfo' })
 
 const props = defineProps({
@@ -51,8 +70,24 @@ const elementBaseInfo = ref<any>({})
 // const forms = ref([])
 // 流程模型的校验
 const rules = reactive({
-  id: [{ required: true, message: '流程标识不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '流程名称不能为空', trigger: 'blur' }]
+  id: [
+    {
+      required: true,
+      message: t(
+        'auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.kdb0aae73'
+      ),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t(
+        'auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k7a8c4d41'
+      ),
+      trigger: 'blur'
+    }
+  ]
 })
 
 const bpmnInstances = () => (window as any)?.bpmnInstances
@@ -75,10 +110,12 @@ const handleKeyUpdate = (value) => {
     return
   }
   if (!value.match(/[a-zA-Z_][\-_.0-9a-zA-Z$]*/)) {
-    console.log('key 不满足 XML NCName 规则，所以不进行赋值')
+    console.log(
+      t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k1ff187a2')
+    )
     return
   }
-  console.log('key 满足 XML NCName 规则，所以进行赋值')
+  console.log(t('auto.components.bpmnProcessDesigner.package.penal.base.ElementBaseInfo.k8520b973'))
 
   // 在 BPMN 的 XML 中，流程标识 key，其实对应的是 id 节点
   elementBaseInfo.value['id'] = value

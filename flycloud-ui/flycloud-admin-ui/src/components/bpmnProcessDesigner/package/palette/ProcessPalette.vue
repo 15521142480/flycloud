@@ -1,13 +1,15 @@
 <template>
   <div class="my-process-palette">
-    <div class="test-button" @click="addTask" @mousedown="addTask">测试任务</div>
+    <div class="test-button" @click="addTask" @mousedown="addTask">{{
+      t('auto.components.bpmnProcessDesigner.package.palette.ProcessPalette.k8c52738c')
+    }}</div>
     <div class="test-container" id="palette-container">1</div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { assign } from 'min-dash'
-
+const { t } = useI18n()
 defineOptions({ name: 'MyProcessPalette' })
 
 const bpmnInstances = () => (window as any).bpmnInstances

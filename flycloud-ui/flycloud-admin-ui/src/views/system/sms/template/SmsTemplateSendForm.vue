@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" title="测试">
+  <Dialog v-model="dialogVisible" :title="t('action.test')">
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,38 +7,51 @@
       :rules="formRules"
       label-width="140px"
     >
-      <el-form-item label="模板内容" prop="content">
+      <el-form-item
+        :label="t('auto.views.system.sms.template.SmsTemplateSendForm.kdc362463')"
+        prop="content"
+      >
         <el-input
           v-model="formData.content"
-          placeholder="请输入模板内容"
+          :placeholder="t('auto.views.system.sms.template.SmsTemplateSendForm.kb8138d5e')"
           readonly
           type="textarea"
         />
       </el-form-item>
-      <el-form-item label="手机号" prop="mobile">
-        <el-input v-model="formData.mobile" placeholder="请输入手机号" />
+      <el-form-item
+        :label="t('auto.views.system.sms.template.SmsTemplateSendForm.k5a9cc5e8')"
+        prop="mobile"
+      >
+        <el-input
+          v-model="formData.mobile"
+          :placeholder="t('auto.views.system.sms.template.SmsTemplateSendForm.k5ecce333')"
+        />
       </el-form-item>
       <el-form-item
         v-for="param in formData.params"
         :key="param"
-        :label="'参数 {' + param + '}'"
+        :label="t('extra.kd4815e7f') + param + '}'"
         :prop="'templateParams.' + param"
       >
         <el-input
           v-model="formData.templateParams[param]"
-          :placeholder="'请输入 ' + param + ' 参数'"
+          :placeholder="t('extra.ked738f33') + param + t('extra.k596f3e84')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.system.sms.template.SmsTemplateSendForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.system.sms.template.SmsTemplateSendForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as SmsTemplateApi from '@/api/system/sms/smsTemplate'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemSmsTemplateSendForm' })
 
 const message = useMessage() // 消息弹窗
@@ -55,8 +68,20 @@ const formData = ref({
   templateParams: new Map()
 })
 const formRules = reactive({
-  mobile: [{ required: true, message: '手机不能为空', trigger: 'blur' }],
-  templateCode: [{ required: true, message: '模版编码不能为空', trigger: 'blur' }],
+  mobile: [
+    {
+      required: true,
+      message: t('auto.views.system.sms.template.SmsTemplateSendForm.k7a854ebc'),
+      trigger: 'blur'
+    }
+  ],
+  templateCode: [
+    {
+      required: true,
+      message: t('auto.views.system.sms.template.SmsTemplateSendForm.kf8c35b5f'),
+      trigger: 'blur'
+    }
+  ],
   templateParams: {}
 })
 const formRef = ref() // 表单 Ref
@@ -77,7 +102,14 @@ const open = async (id: number) => {
       return obj
     }, {})
     formRules.templateParams = data.params.reduce((obj, item) => {
-      obj[item] = { required: true, message: '参数 ' + item + ' 不能为空', trigger: 'blur' }
+      obj[item] = {
+        required: true,
+        message:
+          t('auto.views.system.sms.template.SmsTemplateSendForm.k749d7652') +
+          item +
+          t('auto.views.system.sms.template.SmsTemplateSendForm.k44fa2a2c'),
+        trigger: 'blur'
+      }
       return obj
     }, {})
   } finally {
@@ -98,7 +130,7 @@ const submitForm = async () => {
     const data = formData.value as SmsTemplateApi.SendSmsReqVO
     const logId = await SmsTemplateApi.sendSms(data)
     if (logId) {
-      message.success('提交发送成功！发送结果，见发送日志编号：' + logId)
+      message.success(t('auto.views.system.sms.template.SmsTemplateSendForm.kcb30ccb4') + logId)
     }
     dialogVisible.value = false
   } finally {

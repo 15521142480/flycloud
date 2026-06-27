@@ -1,5 +1,8 @@
 <template>
-  <Dialog v-model="dialogVisible" title="添加虚拟评论">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.mall.product.comment.CommentForm.kd2d378b5')"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -7,10 +10,17 @@
       :rules="formRules"
       label-width="100px"
     >
-      <el-form-item label="商品" prop="spuId">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.k00492206')"
+        prop="spuId"
+      >
         <SpuShowcase v-model="formData.spuId" :limit="1" />
       </el-form-item>
-      <el-form-item v-if="formData.spuId" label="商品规格" prop="skuId">
+      <el-form-item
+        v-if="formData.spuId"
+        :label="t('auto.views.mall.product.comment.CommentForm.k893a3a33')"
+        prop="skuId"
+      >
         <div class="h-60px w-60px" @click="handleSelectSku">
           <div v-if="skuData && skuData.picUrl">
             <el-image :src="skuData.picUrl" />
@@ -20,28 +30,53 @@
           </div>
         </div>
       </el-form-item>
-      <el-form-item label="用户头像" prop="userAvatar">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.k2b78f76f')"
+        prop="userAvatar"
+      >
         <UploadImg v-model="formData.userAvatar" height="60px" width="60px" />
       </el-form-item>
-      <el-form-item label="用户名称" prop="userNickname">
-        <el-input v-model="formData.userNickname" placeholder="请输入用户名称" />
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.ka311ed74')"
+        prop="userNickname"
+      >
+        <el-input
+          v-model="formData.userNickname"
+          :placeholder="t('auto.views.mall.product.comment.CommentForm.k15762992')"
+        />
       </el-form-item>
-      <el-form-item label="评论内容" prop="content">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.ke25e61db')"
+        prop="content"
+      >
         <el-input v-model="formData.content" type="textarea" />
       </el-form-item>
-      <el-form-item label="描述星级" prop="descriptionScores">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.k21f212c7')"
+        prop="descriptionScores"
+      >
         <el-rate v-model="formData.descriptionScores" />
       </el-form-item>
-      <el-form-item label="服务星级" prop="benefitScores">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.k043f5b0e')"
+        prop="benefitScores"
+      >
         <el-rate v-model="formData.benefitScores" />
       </el-form-item>
-      <el-form-item label="评论图片" prop="picUrls">
+      <el-form-item
+        :label="t('auto.views.mall.product.comment.CommentForm.k3acc0195')"
+        prop="picUrls"
+      >
         <UploadImgs v-model="formData.picUrls" :limit="9" height="60px" width="60px" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('auto.views.mall.product.comment.CommentForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.mall.product.comment.CommentForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
   <SkuTableSelect ref="skuTableSelectRef" :spu-id="formData.spuId" @change="handleSkuChange" />
@@ -51,8 +86,7 @@ import * as CommentApi from '@/api/mall/product/comment'
 import SpuShowcase from '@/views/mall/product/spu/components/SpuShowcase.vue'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import SkuTableSelect from '@/views/mall/product/spu/components/SkuTableSelect.vue'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -72,13 +106,55 @@ const formData = ref({
   picUrls: []
 })
 const formRules = reactive({
-  spuId: [{ required: true, message: '商品不能为空', trigger: 'blur' }],
-  skuId: [{ required: true, message: '规格不能为空', trigger: 'blur' }],
-  userAvatar: [{ required: true, message: '用户头像不能为空', trigger: 'blur' }],
-  userNickname: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
-  content: [{ required: true, message: '评论内容不能为空', trigger: 'blur' }],
-  descriptionScores: [{ required: true, message: '描述星级不能为空', trigger: 'blur' }],
-  benefitScores: [{ required: true, message: '服务星级不能为空', trigger: 'blur' }]
+  spuId: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.k6d53e872'),
+      trigger: 'blur'
+    }
+  ],
+  skuId: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.k17d46dab'),
+      trigger: 'blur'
+    }
+  ],
+  userAvatar: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.k6194e6ad'),
+      trigger: 'blur'
+    }
+  ],
+  userNickname: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.kc3a2f174'),
+      trigger: 'blur'
+    }
+  ],
+  content: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.k23c9d36b'),
+      trigger: 'blur'
+    }
+  ],
+  descriptionScores: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.kfa2387f5'),
+      trigger: 'blur'
+    }
+  ],
+  benefitScores: [
+    {
+      required: true,
+      message: t('auto.views.mall.product.comment.CommentForm.k10413784'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const skuData = ref({

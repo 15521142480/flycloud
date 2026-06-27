@@ -14,7 +14,7 @@
           <p class="item-name">{{ item.name }}</p>
           <el-row class="ope-row">
             <el-button type="success" @click="selectMaterialFun(item)">
-              选择
+              {{ t('extra.kb5d16c21') }}
               <Icon icon="ep:circle-check" />
             </el-button>
           </el-row>
@@ -32,9 +32,20 @@
     <div v-else-if="props.type === 'voice'">
       <!-- 列表 -->
       <el-table v-loading="loading" :data="list">
-        <el-table-column label="编号" align="center" prop="mediaId" />
-        <el-table-column label="文件名" align="center" prop="name" />
-        <el-table-column label="语音" align="center">
+        <el-table-column
+          :label="t('auto.views.mp.components.wx_material_select.main.k9f42dac6')"
+          align="center"
+          prop="mediaId"
+        />
+        <el-table-column
+          :label="t('auto.views.mp.components.wx_material_select.main.k1275f6fe')"
+          align="center"
+          prop="name"
+        />
+        <el-table-column
+          :label="t('auto.views.mp.components.wx_material_select.main.k7a73e125')"
+          align="center"
+        >
           <template #default="scope">
             <WxVoicePlayer :url="scope.row.url" />
           </template>
@@ -140,7 +151,7 @@ import * as MpMaterialApi from '@/api/mp/material'
 import * as MpFreePublishApi from '@/api/mp/freePublish'
 import * as MpDraftApi from '@/api/mp/draft'
 import { dateFormatter } from '@/utils/formatTime'
-
+const { t } = useI18n()
 defineOptions({ name: 'WxMaterialSelect' })
 
 const props = withDefaults(

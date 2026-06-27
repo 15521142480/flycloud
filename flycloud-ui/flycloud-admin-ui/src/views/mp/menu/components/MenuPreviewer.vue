@@ -60,7 +60,7 @@
 <script lang="ts" setup>
 import { Menu } from './types'
 import draggable from 'vuedraggable'
-
+const { t } = useI18n()
 const props = defineProps<{
   modelValue: Menu[]
   activeIndex: string
@@ -83,7 +83,7 @@ const menuList = computed<Menu[]>({
 const addMenu = () => {
   const index = menuList.value.length
   const menu = {
-    name: '菜单名称',
+    name: t('auto.views.mp.menu.components.MenuPreviewer.k2637dede'),
     children: [],
     reply: {
       // 用于存储回复内容
@@ -99,7 +99,7 @@ const addMenu = () => {
 const addSubMenu = (i: number, parent: any) => {
   const subMenuKeyLength = parent.children.length // 获取二级菜单key长度
   const addButton = {
-    name: '子菜单名称',
+    name: t('auto.views.mp.menu.components.MenuPreviewer.k0f656859'),
     reply: {
       // 用于存储回复内容
       type: 'text',

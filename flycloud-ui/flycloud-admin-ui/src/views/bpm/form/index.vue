@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,27 +8,32 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="表单名" prop="name">
+      <el-form-item :label="t('auto.views.bpm.form.index.ke3f3073e')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入表单名"
+          :placeholder="t('auto.views.bpm.form.index.k80f67d59')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.ka8ec6730') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.kb339012c') }}
         </el-button>
-        <el-button v-hasPermi="['bpm:manage:form:saveOrUpdate']" plain type="primary" @click="openForm">
+        <el-button
+          v-hasPermi="['bpm:manage:form:saveOrUpdate']"
+          plain
+          type="primary"
+          @click="openForm"
+        >
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k9ad548c3') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -38,9 +42,13 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" height="calc(100vh - 310px)">
-      <el-table-column align="center" label="编号" prop="id" />
-      <el-table-column align="center" label="表单名" prop="name" />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" :label="t('auto.views.bpm.form.index.k9f42dac6')" prop="id" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.form.index.ke3f3073e')"
+        prop="name"
+      />
+      <el-table-column align="center" :label="t('common.status')" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -62,9 +70,7 @@
           >
             编辑
           </el-button>
-          <el-button link @click="openDetail(scope.row.id)">
-            详情
-          </el-button>
+          <el-button link @click="openDetail(scope.row.id)"> 详情 </el-button>
           <el-button
             v-hasPermi="['bpm:manage:form:delete']"
             link
@@ -96,11 +102,10 @@ import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as FormApi from '@/api/bpm/form'
 import { setConfAndFields2 } from '@/utils/formCreate'
-
+const { t } = useI18n()
 defineOptions({ name: 'BpmForm' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 const { currentRoute, push } = useRouter() // 路由
 
 const loading = ref(true) // 列表的加载中

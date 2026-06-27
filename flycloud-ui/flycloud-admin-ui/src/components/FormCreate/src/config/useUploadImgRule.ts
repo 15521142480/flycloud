@@ -1,8 +1,10 @@
 import { generateUUID } from '@/utils'
 import { localeProps, makeRequiredRule } from '@/components/FormCreate/src/utils'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export const useUploadImgRule = () => {
-  const label = '单图上传'
+  const label = t('auto.components.FormCreate.src.config.useUploadImgRule.kf82eb954')
   const name = 'UploadImg'
   return {
     icon: 'icon-upload',
@@ -23,13 +25,13 @@ export const useUploadImgRule = () => {
         {
           type: 'switch',
           field: 'drag',
-          title: '拖拽上传',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.kb5aa6b9f'),
           value: false
         },
         {
           type: 'select',
           field: 'fileType',
-          title: '图片类型限制',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.kf7ccb3bb'),
           value: ['image/jpeg', 'image/png', 'image/gif'],
           options: [
             { label: 'image/apng', value: 'image/apng' },
@@ -49,38 +51,38 @@ export const useUploadImgRule = () => {
         {
           type: 'inputNumber',
           field: 'fileSize',
-          title: '大小限制(MB)',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.k55eeefd7'),
           value: 5,
           props: { min: 0 }
         },
         {
           type: 'input',
           field: 'height',
-          title: '组件高度',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.kced5a328'),
           value: '150px'
         },
         {
           type: 'input',
           field: 'width',
-          title: '组件宽度',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.k58bab27d'),
           value: '150px'
         },
         {
           type: 'input',
           field: 'borderradius',
-          title: '组件边框圆角',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.k4dde50a6'),
           value: '8px'
         },
         {
           type: 'switch',
           field: 'disabled',
-          title: '是否显示删除按钮',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.k11ae0411'),
           value: true
         },
         {
           type: 'switch',
           field: 'showBtnText',
-          title: '是否显示按钮文字',
+          title: t('auto.components.FormCreate.src.config.useUploadImgRule.kfeef52f4'),
           value: true
         }
       ])

@@ -1,8 +1,15 @@
 <template>
   <div>
     <el-form ref="formRef" :model="replyForm" :rules="rules" label-width="80px">
-      <el-form-item label="消息类型" prop="requestMessageType" v-if="msgType === MsgType.Message">
-        <el-select v-model="replyForm.requestMessageType" placeholder="请选择">
+      <el-form-item
+        :label="t('auto.views.mp.autoReply.components.ReplyForm.k15218877')"
+        prop="requestMessageType"
+        v-if="msgType === MsgType.Message"
+      >
+        <el-select
+          v-model="replyForm.requestMessageType"
+          :placeholder="t('auto.views.mp.autoReply.components.ReplyForm.k382f4b55')"
+        >
           <template v-for="dict in getDictOptions(DICT_TYPE.MP_MESSAGE_TYPE)" :key="dict.value">
             <el-option
               v-if="RequestMessageTypes.includes(dict.value)"
@@ -37,7 +44,7 @@ import WxReplySelect, { type Reply } from '@/views/mp/components/wx-reply'
 import type { FormInstance } from 'element-plus'
 import { MsgType } from './types'
 import { DICT_TYPE, getDictOptions, getIntDictOptions } from '@/utils/dict'
-
+const { t } = useI18n()
 defineOptions({ name: 'ReplyForm' })
 
 const props = defineProps<{
@@ -67,8 +74,20 @@ const RequestMessageTypes = ['text', 'image', 'voice', 'video', 'shortvideo', 'l
 
 // 表单校验
 const rules = {
-  requestKeyword: [{ required: true, message: '请求的关键字不能为空', trigger: 'blur' }],
-  requestMatch: [{ required: true, message: '请求的关键字的匹配不能为空', trigger: 'blur' }]
+  requestKeyword: [
+    {
+      required: true,
+      message: t('auto.views.mp.autoReply.components.ReplyForm.k616666bb'),
+      trigger: 'blur'
+    }
+  ],
+  requestMatch: [
+    {
+      required: true,
+      message: t('auto.views.mp.autoReply.components.ReplyForm.k522b387f'),
+      trigger: 'blur'
+    }
+  ]
 }
 
 defineExpose({

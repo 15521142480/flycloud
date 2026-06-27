@@ -147,10 +147,8 @@ import { EChartsOption } from 'echarts'
 import { useDesign } from '@/hooks/web/useDesign'
 import type { AnalysisTotalTypes } from './types'
 import { barOptions, lineOptions, pieOptions } from './echarts-data'
-
-defineOptions({ name: 'Home2' })
-
 const { t } = useI18n()
+defineOptions({ name: 'Home2' })
 const loading = ref(true)
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('panel')

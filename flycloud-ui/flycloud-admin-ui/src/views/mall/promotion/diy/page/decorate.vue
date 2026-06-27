@@ -11,8 +11,8 @@
 import * as DiyPageApi from '@/api/mall/promotion/diy/page'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { PAGE_LIBS } from '@/components/DiyEditor/util'
-
 /** 装修页面表单 */
+const { t } = useI18n()
 defineOptions({ name: 'DiyPageDecorate' })
 
 const message = useMessage() // 消息弹窗
@@ -39,7 +39,7 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     await DiyPageApi.updateDiyPageProperty(unref(formData)!)
-    message.success('保存成功')
+    message.success(t('auto.views.mall.promotion.diy.page.decorate.k7e68eb62'))
   } finally {
     formLoading.value = false
   }
@@ -65,7 +65,7 @@ const route = useRoute()
 onMounted(() => {
   resetForm()
   if (!route.params.id) {
-    message.warning('参数错误，页面编号不能为空！')
+    message.warning(t('auto.views.mall.promotion.diy.page.decorate.kbfcbf524'))
     delView(unref(currentRoute))
     return
   }

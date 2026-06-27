@@ -7,23 +7,35 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="名字" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入名字" />
+      <el-form-item :label="t('auto.views.infra.demo.demo03.erp.components.k364bd1bf')" prop="name">
+        <el-input
+          v-model="formData.name"
+          :placeholder="t('auto.views.infra.demo.demo03.erp.components.k010c1585')"
+        />
       </el-form-item>
-      <el-form-item label="分数" prop="score">
-        <el-input v-model="formData.score" placeholder="请输入分数" />
+      <el-form-item
+        :label="t('auto.views.infra.demo.demo03.erp.components.kda335e20')"
+        prop="score"
+      >
+        <el-input
+          v-model="formData.score"
+          :placeholder="t('auto.views.infra.demo.demo03.erp.components.kcdc49d02')"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.infra.demo.demo03.erp.components.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.infra.demo.demo03.erp.components.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
 <script setup lang="ts">
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/erp'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -37,9 +49,27 @@ const formData = ref({
   score: undefined
 })
 const formRules = reactive({
-  studentId: [{ required: true, message: '学生编号不能为空', trigger: 'blur' }],
-  name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
-  score: [{ required: true, message: '分数不能为空', trigger: 'blur' }]
+  studentId: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.erp.components.kd16396dc'),
+      trigger: 'blur'
+    }
+  ],
+  name: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.erp.components.k46f3776c'),
+      trigger: 'blur'
+    }
+  ],
+  score: [
+    {
+      required: true,
+      message: t('auto.views.infra.demo.demo03.erp.components.ke012aef4'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 

@@ -1,5 +1,4 @@
 <template>
-
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -9,13 +8,13 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item label="客户" prop="customerId">
+      <el-form-item :label="t('auto.views.crm.contact.index.kf2068706')" prop="customerId">
         <el-select
           v-model="queryParams.customerId"
           class="!w-240px"
           clearable
           lable-key="name"
-          placeholder="请选择客户"
+          :placeholder="t('auto.views.crm.contact.index.k6bdb05d6')"
           value-key="id"
           @keyup.enter="handleQuery"
         >
@@ -27,63 +26,63 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="姓名" prop="name">
+      <el-form-item :label="t('auto.views.crm.contact.index.kbe4c2616')" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          placeholder="请输入姓名"
+          :placeholder="t('auto.views.crm.contact.index.k675b3ee2')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机号" prop="mobile">
+      <el-form-item :label="t('auto.views.crm.contact.index.k5a9cc5e8')" prop="mobile">
         <el-input
           v-model="queryParams.mobile"
           class="!w-240px"
           clearable
-          placeholder="请输入手机号"
+          :placeholder="t('auto.views.crm.contact.index.k5ecce333')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="电话" prop="telephone">
+      <el-form-item :label="t('auto.views.crm.contact.index.kf39c6b62')" prop="telephone">
         <el-input
           v-model="queryParams.telephone"
           class="!w-240px"
           clearable
-          placeholder="请输入电话"
+          :placeholder="t('auto.views.crm.contact.index.k902a7fb3')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="微信" prop="wechat">
+      <el-form-item :label="t('auto.views.crm.contact.index.k68406df3')" prop="wechat">
         <el-input
           v-model="queryParams.wechat"
           class="!w-240px"
           clearable
-          placeholder="请输入微信"
+          :placeholder="t('auto.views.crm.contact.index.k6861083d')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="电子邮箱" prop="email">
+      <el-form-item :label="t('auto.views.crm.contact.index.ka7a315b8')" prop="email">
         <el-input
           v-model="queryParams.email"
           class="!w-240px"
           clearable
-          placeholder="请输入电子邮箱"
+          :placeholder="t('auto.views.crm.contact.index.k704aa1ff')"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          {{ t('extra.k04e3e920') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          {{ t('extra.k389f1be1') }}
         </el-button>
         <el-button v-hasPermi="['crm:contact:create']" type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
-          新增
+          {{ t('extra.k5fd6a763') }}
         </el-button>
         <el-button
           v-hasPermi="['crm:contact:export']"
@@ -93,7 +92,7 @@
           @click="handleExport"
         >
           <Icon class="mr-5px" icon="ep:download" />
-          导出
+          {{ t('extra.k3cca7591') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -102,12 +101,18 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane label="我负责的" name="1" />
-      <el-tab-pane label="我参与的" name="2" />
-      <el-tab-pane label="下属负责的" name="3" />
+      <el-tab-pane :label="t('auto.views.crm.contact.index.k0bbf4db1')" name="1" />
+      <el-tab-pane :label="t('auto.views.crm.contact.index.k1640a0ff')" name="2" />
+      <el-tab-pane :label="t('auto.views.crm.contact.index.k72715f2e')" name="3" />
     </el-tabs>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column align="center" fixed="left" label="联系人姓名" prop="name" width="160">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.contact.index.kd6a91bf5')"
+        prop="name"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.name }}
@@ -222,11 +227,10 @@ import ContactForm from './ContactForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 import * as CustomerApi from '@/api/crm/customer'
 import { TabsPaneContext } from 'element-plus'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmContact' })
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -304,7 +308,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await ContactApi.exportContact(queryParams)
-    download.excel(data, '联系人.xls')
+    download.excel(data, t('auto.views.crm.contact.index.k120441f9'))
   } catch {
   } finally {
     exportLoading.value = false

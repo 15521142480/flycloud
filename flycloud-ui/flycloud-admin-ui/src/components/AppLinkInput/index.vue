@@ -1,7 +1,9 @@
 <template>
-  <el-input v-model="appLink" placeholder="输入或选择链接">
+  <el-input v-model="appLink" :placeholder="t('auto.components.AppLinkInput.index.kec45761a')">
     <template #append>
-      <el-button @click="handleOpenDialog">选择</el-button>
+      <el-button @click="handleOpenDialog">{{
+        t('auto.components.AppLinkInput.index.k70b20820')
+      }}</el-button>
     </template>
   </el-input>
   <AppLinkSelectDialog ref="dialogRef" @change="handleLinkSelected" />
@@ -10,6 +12,7 @@
 import { propTypes } from '@/utils/propTypes'
 
 // APP 链接输入框
+const { t } = useI18n()
 defineOptions({ name: 'AppLinkInput' })
 // 定义属性
 const props = defineProps({

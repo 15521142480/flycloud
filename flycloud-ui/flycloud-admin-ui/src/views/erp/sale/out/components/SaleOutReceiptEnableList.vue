@@ -1,7 +1,7 @@
 <!-- 可收款的销售出库单列表 -->
 <template>
   <Dialog
-    title="选择销售出库（仅展示可收款）"
+    :title="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k9af32556')"
     v-model="dialogVisible"
     :appendToBody="true"
     :scroll="true"
@@ -16,21 +16,31 @@
         :inline="true"
         label-width="68px"
       >
-        <el-form-item label="出库单号" prop="no">
+        <el-form-item
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k76097d27')"
+          prop="no"
+        >
           <el-input
             v-model="queryParams.no"
-            placeholder="请输入出库单号"
+            :placeholder="
+              t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k0135d20c')
+            "
             clearable
             @keyup.enter="handleQuery"
             class="!w-160px"
           />
         </el-form-item>
-        <el-form-item label="产品" prop="productId">
+        <el-form-item
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k6cc98552')"
+          prop="productId"
+        >
           <el-select
             v-model="queryParams.productId"
             clearable
             filterable
-            placeholder="请选择产品"
+            :placeholder="
+              t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k59a0d3d1')
+            "
             class="!w-160px"
           >
             <el-option
@@ -41,20 +51,31 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="出库时间" prop="orderTime">
+        <el-form-item
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.kd9a6d1b0')"
+          prop="orderTime"
+        >
           <el-date-picker
             v-model="queryParams.outTime"
             value-format="YYYY-MM-DD HH:mm:ss"
             type="daterange"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="
+              t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k1f291968')
+            "
+            :end-placeholder="
+              t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.kf4b9b2b5')
+            "
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-160px"
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-          <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+          <el-button @click="handleQuery"
+            ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+          >
+          <el-button @click="resetQuery"
+            ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+          >
         </el-form-item>
       </el-form>
     </ContentWrap>
@@ -67,31 +88,56 @@
         :stripe="true"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column width="30" label="选择" type="selection" />
-        <el-table-column min-width="180" label="出库单号" align="center" prop="no" />
-        <el-table-column label="客户" align="center" prop="customerName" />
-        <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
         <el-table-column
-          label="出库时间"
+          width="30"
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k70b20820')"
+          type="selection"
+        />
+        <el-table-column
+          min-width="180"
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k76097d27')"
+          align="center"
+          prop="no"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.kf2068706')"
+          align="center"
+          prop="customerName"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k90095856')"
+          align="center"
+          prop="productNames"
+          min-width="200"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.kd9a6d1b0')"
           align="center"
           prop="outTime"
           :formatter="dateFormatter2"
           width="120px"
         />
-        <el-table-column label="创建人" align="center" prop="creatorName" />
         <el-table-column
-          label="应收金额"
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k787ad1de')"
+          align="center"
+          prop="creatorName"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k77c1cdd0')"
           align="center"
           prop="totalPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
         <el-table-column
-          label="已收金额"
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.k819f333e')"
           align="center"
           prop="receiptPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
-        <el-table-column label="未收金额" align="center">
+        <el-table-column
+          :label="t('auto.views.erp.sale.out.components.SaleOutReceiptEnableList.kcb3b5cd3')"
+          align="center"
+        >
           <template #default="scope">
             <span v-if="scope.row.receiptPrice === scope.row.totalPrice">0</span>
             <el-tag type="danger" v-else>
@@ -122,7 +168,7 @@ import { dateFormatter2 } from '@/utils/formatTime'
 import { erpPriceInputFormatter, erpPriceTableColumnFormatter } from '@/utils'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { SaleOutApi, SaleOutVO } from '@/api/erp/sale/out'
-
+const { t } = useI18n()
 defineOptions({ name: 'SaleOutReceiptEnableList' })
 
 const list = ref<SaleOutVO[]>([]) // 列表的数据

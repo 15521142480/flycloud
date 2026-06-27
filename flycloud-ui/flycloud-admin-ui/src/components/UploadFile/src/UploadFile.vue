@@ -22,14 +22,15 @@
     >
       <el-button type="primary">
         <Icon icon="ep:upload-filled" />
-        选取文件
+        {{ t('extra.k03a65078') }}
       </el-button>
       <template v-if="isShowTip" #tip>
         <div style="font-size: 8px">
-          大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b>
+          {{ t('extra.k0d9bab6a') }} <b style="color: #f56c6c">{{ fileSize }}MB</b>
         </div>
         <div style="font-size: 8px">
-          格式为 <b style="color: #f56c6c">{{ fileType.join('/') }}</b> 的文件
+          {{ t('extra.kc88ed027') }} <b style="color: #f56c6c">{{ fileType.join('/') }}</b>
+          {{ t('extra.k860b1ece') }}
         </div>
       </template>
       <template #file="row">
@@ -72,7 +73,7 @@ import type { UploadInstance, UploadProps, UploadRawFile, UploadUserFile } from 
 import { isString } from '@/utils/is'
 import { useUpload } from '@/components/UploadFile/src/useUpload'
 import { UploadFile } from 'element-plus/es/components/upload/src/upload'
-
+const { t } = useI18n()
 defineOptions({ name: 'UploadFile' })
 
 const message = useMessage() // 消息弹窗
@@ -100,7 +101,7 @@ const { uploadUrl, httpRequest } = useUpload()
 // 文件上传之前判断
 const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
   if (fileList.value.length >= props.limit) {
-    message.error(`上传文件数量不能超过${props.limit}个!`)
+    message.error(t('extra.k10478e10', { p0: props.limit }))
     return false
   }
   let fileExtension = ''
@@ -113,14 +114,14 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
   })
   const isLimit = file.size < props.fileSize * 1024 * 1024
   if (!isImg) {
-    message.error(`文件格式不正确, 请上传${props.fileType.join('/')}格式!`)
+    message.error(t('extra.k91e59c08', { p0: props.fileType.join('/') }))
     return false
   }
   if (!isLimit) {
-    message.error(`上传文件大小不能超过${props.fileSize}MB!`)
+    message.error(t('extra.ke2f08c1e', { p0: props.fileSize }))
     return false
   }
-  message.success('正在上传文件，请稍候...')
+  message.success(t('auto.components.UploadFile.src.UploadFile.kd7c6f9dc'))
   uploadNumber.value++
 }
 // 处理上传的文件发生变化
@@ -129,7 +130,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
 // }
 // 文件上传成功
 const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  message.success('上传成功')
+  message.success(t('auto.components.UploadFile.src.UploadFile.kea9f9179'))
   // 删除自身
   const index = fileList.value.findIndex((item) => item.response?.data === res.data)
   fileList.value.splice(index, 1)
@@ -143,11 +144,11 @@ const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
 }
 // 文件数超出提示
 const handleExceed: UploadProps['onExceed'] = (): void => {
-  message.error(`上传文件数量不能超过${props.limit}个!`)
+  message.error(t('extra.k10478e10', { p0: props.limit }))
 }
 // 上传错误提示
 const excelUploadError: UploadProps['onError'] = (): void => {
-  message.error('导入数据失败，请您重新上传！')
+  message.error(t('auto.components.UploadFile.src.UploadFile.k580bbde6'))
 }
 // 删除上传文件
 const handleRemove = (file: UploadFile) => {

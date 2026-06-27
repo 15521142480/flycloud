@@ -1,5 +1,8 @@
 <template>
-  <doc-alert title="会员等级、积分、签到" url="https://doc.iocoder.cn/member/level/" />
+  <doc-alert
+    :title="t('auto.views.member.point.record.index.k1bee1a27')"
+    url="https://doc.iocoder.cn/member/level/"
+  />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -10,19 +13,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item label="用户" prop="name">
+      <el-form-item :label="t('auto.views.member.point.record.index.k9ba763ea')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入用户昵称"
+          :placeholder="t('auto.views.member.point.record.index.k359da8d3')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="业务类型" prop="bizType">
+      <el-form-item :label="t('auto.views.member.point.record.index.k2268f2d5')" prop="bizType">
         <el-select
           v-model="queryParams.bizType"
-          placeholder="请选择业务类型"
+          :placeholder="t('auto.views.member.point.record.index.kb6423b8b')"
           clearable
           class="!w-240px"
         >
@@ -34,22 +37,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="积分标题" prop="title">
+      <el-form-item :label="t('auto.views.member.point.record.index.k8a90add2')" prop="title">
         <el-input
           v-model="queryParams.title"
-          placeholder="请输入积分标题"
+          :placeholder="t('auto.views.member.point.record.index.k70e186ff')"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="获得时间" prop="createDate">
+      <el-form-item :label="t('auto.views.member.point.record.index.k350cb33c')" prop="createDate">
         <el-date-picker
           v-model="queryParams.createDate"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="t('auto.views.member.point.record.index.k1f291968')"
+          :end-placeholder="t('auto.views.member.point.record.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
@@ -57,11 +60,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon icon="ep:search" class="mr-5px" />
-          搜索
+          {{ t('extra.k101d96f3') }}
         </el-button>
         <el-button @click="resetQuery">
           <Icon icon="ep:refresh" class="mr-5px" />
-          重置
+          {{ t('extra.ke09065e5') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -70,16 +73,31 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="180" />
       <el-table-column
-        label="获得时间"
+        :label="t('auto.views.member.point.record.index.k9f42dac6')"
+        align="center"
+        prop="id"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.member.point.record.index.k350cb33c')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180"
       />
-      <el-table-column label="用户" align="center" prop="name" width="200" />
-      <el-table-column label="获得积分" align="center" prop="point" width="100">
+      <el-table-column
+        :label="t('auto.views.member.point.record.index.k9ba763ea')"
+        align="center"
+        prop="name"
+        width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.member.point.record.index.kdd63f6c0')"
+        align="center"
+        prop="point"
+        width="100"
+      >
         <template #default="scope">
           <el-tag v-if="scope.row.point > 0" class="ml-2" type="success" effect="dark">
             +{{ scope.row.point }}
@@ -114,7 +132,7 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as RecordApi from '@/api/member/point/record'
-
+const { t } = useI18n()
 defineOptions({ name: 'PointRecord' })
 
 const loading = ref(true) // 列表的加载中

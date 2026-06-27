@@ -9,7 +9,9 @@
     >
       <!-- 先选择 -->
       <template #spuId>
-        <el-button @click="spuSelectRef.open()">选择商品</el-button>
+        <el-button @click="spuSelectRef.open()">{{
+          t('auto.views.mall.promotion.discountActivity.DiscountActivityForm.kf4d8d03c')
+        }}</el-button>
         <SpuAndSkuList
           ref="spuAndSkuListRef"
           :deletable="true"
@@ -18,7 +20,11 @@
           :spu-property-list-p="spuPropertyList"
           @delete="deleteSpu"
         >
-          <el-table-column align="center" label="优惠金额" min-width="168">
+          <el-table-column
+            align="center"
+            :label="t('auto.views.mall.promotion.discountActivity.DiscountActivityForm.kaab4abdb')"
+            min-width="168"
+          >
             <template #default="{ row }">
               <el-input-number
                 v-model="row.productConfig.discountPrice"
@@ -63,10 +69,8 @@ import * as ProductSpuApi from '@/api/mall/product/spu'
 import { getPropertyList, RuleConfig } from '@/views/mall/product/spu/components'
 import { convertToInteger, erpCalculatePercentage, fenToYuan, yuanToFen } from '@/utils'
 import { PromotionDiscountTypeEnum } from '@/utils/constants'
-
+const { t } = useI18n()
 defineOptions({ name: 'PromotionDiscountActivityForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -82,7 +86,7 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'productConfig.discountPrice',
     rule: (arg) => arg > 0,
-    message: '商品优惠金额不能为 0 ！！！'
+    message: t('auto.views.mall.promotion.discountActivity.DiscountActivityForm.kf8e9f888')
   }
 ]
 const spuList = ref<DiscountActivityApi.SpuExtension[]>([]) // 选择的 spu
@@ -103,7 +107,7 @@ const getSpuDetails = async (
   // 如果已经包含 SPU 则跳过
   if (spuIds.value.includes(spuId)) {
     if (type !== 'load') {
-      message.error('数据重复选择！')
+      message.error(t('auto.views.mall.promotion.discountActivity.DiscountActivityForm.k5a1c7d4b'))
     }
     return
   }

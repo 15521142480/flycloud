@@ -1,42 +1,49 @@
 <template>
-  <Dialog v-model="dialogVisible" title="任务详细" width="700px">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.infra.job.JobDetail.kcb1587a2')"
+    width="700px"
+  >
     <el-descriptions :column="1" border>
-      <el-descriptions-item label="任务编号" min-width="60">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.k017af56c')" min-width="60">
         {{ detailData.id }}
       </el-descriptions-item>
-      <el-descriptions-item label="任务名称">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.k2e304698')">
         {{ detailData.name }}
       </el-descriptions-item>
-      <el-descriptions-item label="任务名称">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.k2e304698')">
         <dict-tag :type="DICT_TYPE.INFRA_JOB_STATUS" :value="detailData.status" />
       </el-descriptions-item>
-      <el-descriptions-item label="处理器的名字">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.kec311980')">
         {{ detailData.handlerName }}
       </el-descriptions-item>
-      <el-descriptions-item label="处理器的参数">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.kddc1dd16')">
         {{ detailData.handlerParam }}
       </el-descriptions-item>
-      <el-descriptions-item label="Cron 表达式">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.k6859f82a')">
         {{ detailData.cronExpression }}
       </el-descriptions-item>
-      <el-descriptions-item label="重试次数">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.k7a35a7d3')">
         {{ detailData.retryCount }}
       </el-descriptions-item>
-      <el-descriptions-item label="重试间隔">
-        {{ detailData.retryInterval + ' 毫秒' }}
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.kf86d661b')">{{
+        detailData.retryInterval + t('extra.k1f719018')
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.k4bdf128c')">
+        {{
+          detailData.monitorTimeout > 0
+            ? detailData.monitorTimeout + t('extra.k1f719018')
+            : t('extra.kf2b39a25')
+        }}
       </el-descriptions-item>
-      <el-descriptions-item label="监控超时时间">
-        {{ detailData.monitorTimeout > 0 ? detailData.monitorTimeout + ' 毫秒' : '未开启' }}
-      </el-descriptions-item>
-      <el-descriptions-item label="后续执行时间">
+      <el-descriptions-item :label="t('auto.views.infra.job.JobDetail.kb921a663')">
         <el-timeline>
           <el-timeline-item
             v-for="(nextTime, index) in nextTimes"
             :key="index"
             :timestamp="formatDate(nextTime)"
+            >{{ t('extra.kfda3d6b1', { p0: index + 1 }) }}</el-timeline-item
           >
-            第 {{ index + 1 }} 次
-          </el-timeline-item>
         </el-timeline>
       </el-descriptions-item>
     </el-descriptions>
@@ -46,7 +53,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as JobApi from '@/api/infra/job'
-
+const { t } = useI18n()
 defineOptions({ name: 'InfraJobDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示

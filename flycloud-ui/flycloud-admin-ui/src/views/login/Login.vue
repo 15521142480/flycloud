@@ -19,15 +19,14 @@
             enter-active-class="animate__animated animate__bounceInLeft"
             tag="div"
           >
-<!--            <img key="1" alt="" class="w-350px" src="@/assets/svgs/login-ball.jpg" />-->
-<!--            <div key="2" class="text-3xl text-white">{{ t('login.welcome') }}</div>-->
-<!--            <div key="3" class="mt-5 text-14px font-normal text-white">-->
-<!--              {{ t('login.message') }}-->
-<!--            </div>-->
+            <!--            <img key="1" alt="" class="w-350px" src="@/assets/svgs/login-ball.jpg" />-->
+            <!--            <div key="2" class="text-3xl text-white">{{ t('login.welcome') }}</div>-->
+            <!--            <div key="3" class="mt-5 text-14px font-normal text-white">-->
+            <!--              {{ t('login.message') }}-->
+            <!--            </div>-->
           </TransitionGroup>
         </div>
       </div>
-
 
       <div
         class="relative flex-1 p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden overflow-y-auto"
@@ -35,11 +34,11 @@
         <!-- 右上角的主题、语言选择 -->
         <div
           class="flex items-center justify-between at-2xl:justify-end at-xl:justify-end"
-          style="color: var(--el-text-color-primary);"
+          style="color: var(--el-text-color-primary)"
         >
           <div class="flex items-center at-2xl:hidden at-xl:hidden">
             <img alt="" class="mr-10px h-48px w-48px" src="@/assets/svgs/login-ball.jpg" />
-            <span class="text-20px font-bold" >{{ underlineToHump(appStore.getTitle) }}</span>
+            <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
           </div>
           <div class="flex items-center justify-end space-x-10px h-48px">
             <ThemeSwitch />
@@ -58,14 +57,13 @@
             <RegisterForm class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />
 
             <!-- 手机登录 -->
-<!--            <MobileForm class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />-->
+            <!--            <MobileForm class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />-->
 
             <!-- 二维码登录 -->
-<!--            <QrCodeForm class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />-->
+            <!--            <QrCodeForm class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />-->
 
             <!-- 三方登录 -->
-<!--            <SSOLoginVue class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />-->
-
+            <!--            <SSOLoginVue class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />-->
           </div>
         </Transition>
       </div>
@@ -82,10 +80,8 @@ import { LocaleDropdown } from '@/layout/components/LocaleDropdown'
 
 // import { LoginForm, MobileForm, QrCodeForm, RegisterForm, SSOLoginVue } from './components'
 import { LoginForm, RegisterForm } from './components'
-
-defineOptions({ name: 'Login' })
-
 const { t } = useI18n()
+defineOptions({ name: 'Login' })
 const appStore = useAppStore()
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('login')

@@ -3,7 +3,7 @@
     <div :key="getMessageContent.id" class="order-list-card-box mt-14px">
       <div class="order-card-header flex items-center justify-between p-x-5px">
         <div class="order-no">
-          订单号：
+          {{ t('extra.k36c75109') }}
           <span style="cursor: pointer" @click="openDetail(getMessageContent.id)">
             {{ getMessageContent.no }}
           </span>
@@ -24,9 +24,9 @@
       </div>
       <div class="pay-box flex justify-end pr-5px">
         <div class="flex items-center">
-          <div class="discounts-title pay-color"
-            >共 {{ getMessageContent?.productCount }} 件商品,总金额:
-          </div>
+          <div class="discounts-title pay-color">{{
+            t('extra.kff394279', { p0: getMessageContent?.productCount })
+          }}</div>
           <div class="discounts-money pay-color">
             ￥{{ fenToYuan(getMessageContent?.payPrice) }}
           </div>
@@ -41,7 +41,7 @@ import { fenToYuan, jsonParse } from '@/utils'
 import { KeFuMessageRespVO } from '@/api/mall/promotion/kefu/message'
 import { isObject } from '@/utils/is'
 import ProductItem from '@/views/mall/promotion/kefu/components/message/ProductItem.vue'
-
+const { t } = useI18n()
 const { push } = useRouter()
 
 defineOptions({ name: 'OrderItem' })
@@ -86,24 +86,24 @@ function formatOrderColor(order: any) {
  */
 function formatOrderStatus(order: any) {
   if (order.status === 0) {
-    return '待付款'
+    return t('auto.views.mall.promotion.kefu.components.message.k20825179')
   }
   if (order.status === 10 && order.deliveryType === 1) {
-    return '待发货'
+    return t('auto.views.mall.promotion.kefu.components.message.k2dd7fc21')
   }
   if (order.status === 10 && order.deliveryType === 2) {
-    return '待核销'
+    return t('auto.views.mall.promotion.kefu.components.message.k0ce9663d')
   }
   if (order.status === 20) {
-    return '待收货'
+    return t('auto.views.mall.promotion.kefu.components.message.kd116cd98')
   }
   if (order.status === 30 && !order.commentStatus) {
-    return '待评价'
+    return t('auto.views.mall.promotion.kefu.components.message.k966dce41')
   }
   if (order.status === 30 && order.commentStatus) {
-    return '已完成'
+    return t('auto.views.mall.promotion.kefu.components.message.ke99b48a2')
   }
-  return '已关闭'
+  return t('auto.views.mall.promotion.kefu.components.message.kf628761b')
 }
 </script>
 

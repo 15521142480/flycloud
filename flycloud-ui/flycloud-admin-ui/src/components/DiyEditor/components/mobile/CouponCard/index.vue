@@ -37,7 +37,7 @@
                 background: property.button.bgColor
               }"
             >
-              立即领取
+              {{ t('extra.k01f221c9') }}
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
                 background: property.button.bgColor
               }"
             >
-              立即领取
+              {{ t('extra.k01f221c9') }}
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@
               background: property.button.bgColor
             }"
           >
-            立即领取
+            {{ t('extra.k01f221c9') }}
           </div>
         </div>
       </div>
@@ -92,6 +92,7 @@ import {
 } from '@/components/DiyEditor/components/mobile/CouponCard/component'
 
 /** 商品卡片 */
+const { t } = useI18n()
 defineOptions({ name: 'CouponCard' })
 // 定义属性
 const props = defineProps<{ property: CouponCardProperty }>()

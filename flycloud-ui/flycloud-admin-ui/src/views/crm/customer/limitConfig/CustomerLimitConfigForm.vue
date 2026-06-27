@@ -7,7 +7,10 @@
       label-width="200px"
       v-loading="formLoading"
     >
-      <el-form-item label="规则适用人群" prop="userIds">
+      <el-form-item
+        :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.kc4698aef')"
+        prop="userIds"
+      >
         <el-select multiple filterable v-model="formData.userIds">
           <el-option
             v-for="item in userOptions"
@@ -17,7 +20,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="规则适用部门" prop="deptIds">
+      <el-form-item
+        :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.kcfcb34f1')"
+        prop="deptIds"
+      >
         <el-tree-select
           v-model="formData.deptIds"
           :data="deptTree"
@@ -26,21 +32,24 @@
           filterable
           check-strictly
           node-key="id"
-          placeholder="请选择规则适用部门"
+          :placeholder="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.k73b3f748')"
         />
       </el-form-item>
       <el-form-item
         :label="
           formData.type === LimitConfType.CUSTOMER_QUANTITY_LIMIT
-            ? '拥有客户数上限'
-            : '锁定客户数上限'
+            ? t('extra.k870d4344')
+            : t('extra.ke6543c06')
         "
         prop="maxCount"
       >
-        <el-input-number v-model="formData.maxCount" placeholder="请输入数量上限" />
+        <el-input-number
+          v-model="formData.maxCount"
+          :placeholder="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.k7e528ed0')"
+        />
       </el-form-item>
       <el-form-item
-        label="成交客户是否占用拥有客户数"
+        :label="t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.k4531f29a')"
         v-if="formData.type === LimitConfType.CUSTOMER_QUANTITY_LIMIT"
         prop="dealCountEnabled"
       >
@@ -48,8 +57,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.k31f9d856')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -61,8 +74,7 @@ import * as UserApi from '@/api/system/user'
 import { cloneDeep } from 'lodash-es'
 import { LimitConfType } from '@/api/crm/customer/limitConfig'
 import { aw } from '../../../../../dist-prod/assets/index-9eac537b'
-
-const { t } = useI18n() // 国际化
+const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -78,8 +90,20 @@ const formData = ref({
   dealCountEnabled: false
 })
 const formRules = reactive({
-  type: [{ required: true, message: '规则类型不能为空', trigger: 'change' }],
-  maxCount: [{ required: true, message: '数量上限不能为空', trigger: 'blur' }]
+  type: [
+    {
+      required: true,
+      message: t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.ke3cfccd8'),
+      trigger: 'change'
+    }
+  ],
+  maxCount: [
+    {
+      required: true,
+      message: t('auto.views.crm.customer.limitConfig.CustomerLimitConfigForm.k3966d6b3'),
+      trigger: 'blur'
+    }
+  ]
 })
 const formRef = ref() // 表单 Ref
 const deptTree = ref() // 部门树形结构

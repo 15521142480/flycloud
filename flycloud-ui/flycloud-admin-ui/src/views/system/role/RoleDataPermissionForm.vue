@@ -1,13 +1,17 @@
 <template>
-  <Dialog v-model="dialogVisible" title="数据权限" width="800">
+  <Dialog
+    v-model="dialogVisible"
+    :title="t('auto.views.system.role.RoleDataPermissionForm.kf3d1827b')"
+    width="800"
+  >
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item label="角色名称">
+      <el-form-item :label="t('auto.views.system.role.RoleDataPermissionForm.k3aa1f085')">
         <el-tag>{{ formData.name }}</el-tag>
       </el-form-item>
-      <el-form-item label="角色标识">
+      <el-form-item :label="t('auto.views.system.role.RoleDataPermissionForm.k07f826b6')">
         <el-tag>{{ formData.code }}</el-tag>
       </el-form-item>
-      <el-form-item label="权限范围">
+      <el-form-item :label="t('auto.views.system.role.RoleDataPermissionForm.ke19818a2')">
         <el-select v-model="formData.dataScope">
           <el-option
             v-for="item in getIntDictOptions(DICT_TYPE.SYSTEM_DATA_SCOPE)"
@@ -20,29 +24,34 @@
     </el-form>
     <el-form-item
       v-if="formData.dataScope === SystemDataScopeEnum.DEPT_CUSTOM"
-      label="权限范围"
+      :label="t('auto.views.system.role.RoleDataPermissionForm.ke19818a2')"
       label-width="80px"
     >
       <el-card class="w-full h-400px !overflow-y-scroll" shadow="never">
         <template #header>
-          全选/全不选:
+          {{ t('extra.k1d20ed52') }}
           <el-switch
             v-model="treeNodeAll"
-            active-text="是"
-            inactive-text="否"
+            :active-text="t('extra.k45831684')"
+            :inactive-text="t('extra.k246cadca')"
             inline-prompt
             @change="handleCheckedTreeNodeAll()"
           />
-          全部展开/折叠:
+          {{ t('extra.kb37608ae') }}
           <el-switch
             v-model="deptExpand"
-            active-text="展开"
-            inactive-text="折叠"
+            :active-text="t('extra.ke4c9999e')"
+            :inactive-text="t('extra.k23e5c530')"
             inline-prompt
             @change="handleCheckedTreeExpand"
           />
-          父子联动(选中父节点，自动选择子节点):
-          <el-switch v-model="checkStrictly" active-text="是" inactive-text="否" inline-prompt />
+          {{ t('extra.k882149fd') }}
+          <el-switch
+            v-model="checkStrictly"
+            :active-text="t('extra.k45831684')"
+            :inactive-text="t('extra.k246cadca')"
+            inline-prompt
+          />
         </template>
         <el-tree
           ref="treeRef"
@@ -69,10 +78,8 @@ import { SystemDataScopeEnum } from '@/utils/constants'
 import * as RoleApi from '@/api/system/role'
 import * as DeptApi from '@/api/system/dept'
 import * as PermissionApi from '@/api/system/permission'
-
+const { t } = useI18n()
 defineOptions({ name: 'SystemRoleDataPermissionForm' })
-
-const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -113,7 +120,7 @@ defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 /** 提交表单 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
 const submitForm = async () => {
-  message.warning('待开发')
+  message.warning(t('auto.views.system.role.RoleDataPermissionForm.ke901250b'))
   // formLoading.value = true
   // try {
   //   const data = {

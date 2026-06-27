@@ -6,49 +6,51 @@
       type="primary"
       @click="openForm"
     >
-      编辑
+      {{ t('extra.k8129447f') }}
     </el-button>
     <el-button v-if="permissionListRef?.validateOwnerUser" type="primary" @click="transfer">
-      转移
+      {{ t('extra.k32259d1f') }}
     </el-button>
     <el-button v-if="permissionListRef?.validateWrite" @click="handleUpdateDealStatus">
-      更改成交状态
+      {{ t('extra.k8e0188e9') }}
     </el-button>
     <el-button
       v-if="customer.lockStatus && permissionListRef?.validateOwnerUser"
       @click="handleUnlock"
     >
-      解锁
+      {{ t('extra.kc58d64f2') }}
     </el-button>
     <el-button
       v-if="!customer.lockStatus && permissionListRef?.validateOwnerUser"
       @click="handleLock"
     >
-      锁定
+      {{ t('extra.kea5c44ae') }}
     </el-button>
-    <el-button v-if="!customer.ownerUserId" type="primary" @click="handleReceive"> 领取</el-button>
+    <el-button v-if="!customer.ownerUserId" type="primary" @click="handleReceive">
+      {{ t('auto.views.crm.customer.detail.index.k39d12e73') }}</el-button
+    >
     <el-button v-if="!customer.ownerUserId" type="primary" @click="handleDistributeForm">
-      分配
+      {{ t('extra.k18f54aea') }}
     </el-button>
     <el-button
       v-if="customer.ownerUserId && permissionListRef?.validateOwnerUser"
       @click="handlePutPool"
     >
-      放入公海
+      {{ t('extra.kdb2fb30b') }}
     </el-button>
   </CustomerDetailsHeader>
   <el-col>
     <el-tabs>
-      <el-tab-pane label="跟进记录">
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.k4d7216f5')">
         <FollowUpList :biz-id="customerId" :biz-type="BizTypeEnum.CRM_CUSTOMER" />
       </el-tab-pane>
-      <el-tab-pane label="基本信息">
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.kb122f813')">
         <CustomerDetailsInfo :customer="customer" />
       </el-tab-pane>
-      <el-tab-pane label="联系人" lazy>
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.k2425bd4b')" lazy>
         <ContactList :biz-id="customer.id!" :biz-type="BizTypeEnum.CRM_CUSTOMER" />
       </el-tab-pane>
-      <el-tab-pane label="团队成员">
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.k7de0251f')">
         <PermissionList
           ref="permissionListRef"
           :biz-id="customer.id!"
@@ -57,17 +59,17 @@
           @quit-team="close"
         />
       </el-tab-pane>
-      <el-tab-pane label="商机" lazy>
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.kc4beee85')" lazy>
         <BusinessList :biz-id="customer.id!" :biz-type="BizTypeEnum.CRM_CUSTOMER" />
       </el-tab-pane>
-      <el-tab-pane label="合同" lazy>
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.k59404d40')" lazy>
         <ContractList :biz-id="customer.id!" :biz-type="BizTypeEnum.CRM_CUSTOMER" />
       </el-tab-pane>
-      <el-tab-pane label="回款" lazy>
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.k50b07f3d')" lazy>
         <ReceivablePlanList :customer-id="customer.id!" @create-receivable="createReceivable" />
         <ReceivableList ref="receivableListRef" :customer-id="customer.id!" />
       </el-tab-pane>
-      <el-tab-pane label="操作日志">
+      <el-tab-pane :label="t('auto.views.crm.customer.detail.index.kf4bc877c')">
         <OperateLogV2 :log-list="logList" />
       </el-tab-pane>
     </el-tabs>
@@ -96,7 +98,7 @@ import { BizTypeEnum } from '@/api/crm/permission'
 import type { OperateLogVO } from '@/api/system/operatelog'
 import { getOperateLogPage } from '@/api/crm/operateLog'
 import CustomerDistributeForm from '@/views/crm/customer/pool/CustomerDistributeForm.vue'
-
+const { t } = useI18n()
 defineOptions({ name: 'CrmCustomerDetail' })
 
 const customerId = ref(0) // 客户编号
@@ -130,10 +132,16 @@ const handleUpdateDealStatus = async () => {
   const dealStatus = !customer.value.dealStatus
   try {
     // 更新状态的二次确认
-    await message.confirm(`确定更新成交状态为【${dealStatus ? '已成交' : '未成交'}】吗？`)
+    await message.confirm(
+      t('extra.k2cde6676', {
+        p0: dealStatus
+          ? t('auto.views.crm.customer.detail.index.k5ee400c3')
+          : t('auto.views.crm.customer.detail.index.kd0d104b0')
+      })
+    )
     // 发起更新
     await CustomerApi.updateCustomerDealStatus(customerId.value, dealStatus)
-    message.success(`更新成交状态成功`)
+    message.success(t('auto.views.crm.customer.detail.index.k114a529a'))
     // 刷新数据
     await getCustomer()
   } catch {}
@@ -147,25 +155,25 @@ const transfer = () => {
 
 /** 锁定客户 */
 const handleLock = async () => {
-  await message.confirm(`确定锁定客户【${customer.value.name}】 吗？`)
+  await message.confirm(t('extra.k6b2d0ee8', { p0: customer.value.name }))
   await CustomerApi.lockCustomer(unref(customerId.value), true)
-  message.success(`锁定客户【${customer.value.name}】成功`)
+  message.success(t('extra.kbf99fb61', { p0: customer.value.name }))
   await getCustomer()
 }
 
 /** 解锁客户 */
 const handleUnlock = async () => {
-  await message.confirm(`确定解锁客户【${customer.value.name}】 吗？`)
+  await message.confirm(t('extra.kc220850c', { p0: customer.value.name }))
   await CustomerApi.lockCustomer(unref(customerId.value), false)
-  message.success(`解锁客户【${customer.value.name}】成功`)
+  message.success(t('extra.kc8ee05aa', { p0: customer.value.name }))
   await getCustomer()
 }
 
 /** 领取客户 */
 const handleReceive = async () => {
-  await message.confirm(`确定领取客户【${customer.value.name}】 吗？`)
+  await message.confirm(t('extra.ke3b3bc05', { p0: customer.value.name }))
   await CustomerApi.receiveCustomer([unref(customerId.value)])
-  message.success(`领取客户【${customer.value.name}】成功`)
+  message.success(t('extra.kf34617bf', { p0: customer.value.name }))
   await getCustomer()
 }
 
@@ -177,9 +185,9 @@ const handleDistributeForm = async () => {
 
 /** 客户放入公海 */
 const handlePutPool = async () => {
-  await message.confirm(`确定将客户【${customer.value.name}】放入公海吗？`)
+  await message.confirm(t('extra.kba78bcee', { p0: customer.value.name }))
   await CustomerApi.putCustomerPool(unref(customerId.value))
-  message.success(`客户【${customer.value.name}】放入公海成功`)
+  message.success(t('extra.k0b14abbe', { p0: customer.value.name }))
   // 加载
   close()
 }
@@ -212,7 +220,7 @@ const close = () => {
 const { params } = useRoute()
 onMounted(() => {
   if (!params.id) {
-    message.warning('参数错误，客户不能为空！')
+    message.warning(t('auto.views.crm.customer.detail.index.k9104a6ca'))
     close()
     return
   }
