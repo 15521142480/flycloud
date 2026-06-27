@@ -38,6 +38,11 @@ export const CategoryApi = {
     return await request.put({ url: `/${BPM_BASE_URL}/category/update`, data })
   },
 
+  // 批量修改流程分类排序
+  updateCategorySortBatch: async (ids: number[]) => {
+    return await request.put({ url: `/${BPM_BASE_URL}/category/update-sort-batch`, data: ids })
+  },
+
   // 删除流程分类
   deleteCategory: async (id: number) => {
     return await request.delete({ url: `/${BPM_BASE_URL}/category/delete/` + id })

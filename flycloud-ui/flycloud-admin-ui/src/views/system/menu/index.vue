@@ -1,12 +1,14 @@
 <template>
-
   <!-- 树型 -->
   <ContentWrap style="height: calc(100vh - 160px)">
-
     <el-row>
       <el-col :span="12">
         <div style="margin-left: 30px">
-          <el-button v-hasPermi="['sys:menu:saveOrUpdate']" type="primary" @click="openForm('create', undefined, 0)">
+          <el-button
+            v-hasPermi="['sys:menu:saveOrUpdate']"
+            type="primary"
+            @click="openForm('create', undefined, 0)"
+          >
             新增一级菜单
           </el-button>
         </div>
@@ -30,13 +32,24 @@
         v-loading="loading"
       >
         <template #default="{ node, data }">
-
           <Icon :icon="data.icon" style="margin: 0 12px 0 8px" />
           <span>{{ node.label }}</span>
 
           <span style="margin-left: 50%"></span>
-          <el-button v-hasPermi="['sys:menu:saveOrUpdate']" type="primary" :icon="Plus" circle @click="openForm('create', undefined, data.id)" />
-          <el-button v-hasPermi="['sys:menu:saveOrUpdate']" type="primary" :icon="Edit" circle  @click="openForm('update', data.id)" />
+          <el-button
+            v-hasPermi="['sys:menu:saveOrUpdate']"
+            type="primary"
+            :icon="Plus"
+            circle
+            @click="openForm('create', undefined, data.id)"
+          />
+          <el-button
+            v-hasPermi="['sys:menu:saveOrUpdate']"
+            type="primary"
+            :icon="Edit"
+            circle
+            @click="openForm('update', data.id)"
+          />
           <el-switch
             v-model="data.status"
             :disabled="!checkPermi(['sys:menu:enable'])"
@@ -49,30 +62,32 @@
             inactive-text="已禁"
             @change="handleStatusChange(data)"
           />
-          <el-button v-hasPermi="['sys:menu:delete']" type="danger" :icon="Delete" circle @click="deleteMenu(data)" />
-
+          <el-button
+            v-hasPermi="['sys:menu:delete']"
+            type="danger"
+            :icon="Delete"
+            circle
+            @click="deleteMenu(data)"
+          />
         </template>
       </el-tree>
     </div>
   </ContentWrap>
 
-
   <!-- 表单弹窗：添加/修改 -->
   <MenuForm ref="formRef" @success="getList" />
-
-
 </template>
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { handleTree } from '@/utils/tree'
 import * as MenuApi from '@/api/system/menu'
-import {getMenuPageList, getMenuTreeList, MenuVO, updateStatus} from '@/api/system/menu'
+import { getMenuPageList, getMenuTreeList, MenuVO, updateStatus } from '@/api/system/menu'
 import MenuForm from './MenuForm.vue'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
-import {CirclePlus, Delete, Edit, Plus} from "@element-plus/icons-vue";
-import {checkPermi} from "@/utils/permission";
+import { CirclePlus, Delete, Edit, Plus } from '@element-plus/icons-vue'
+import { checkPermi } from '@/utils/permission'
 
 defineOptions({ name: 'SystemMenu' })
 
@@ -103,10 +118,8 @@ const treeData = ref([
   { label: '一级 2', children: [{ label: '二级 2-1' }] }
 ])
 
-
 /** 查询列表 */
 const getList = async () => {
-
   loading.value = true
   treeHeight.value = window.innerHeight
   try {
@@ -163,7 +176,9 @@ const deleteMenu = async (data: object) => {
   try {
     // 删除的二次确认
     // await message.delConfirm()
-    const text = data.children ? '确认删除【' + data.name + '】菜单以及其下所有菜单吗' : '确认删除【' + data.name + '】菜单吗'
+    const text = data.children
+      ? '确认删除【' + data.name + '】菜单以及其下所有菜单吗'
+      : '确认删除【' + data.name + '】菜单吗'
     await message.confirm(text)
     // 发起删除
     await MenuApi.deleteMenu(data.id)
@@ -172,8 +187,6 @@ const deleteMenu = async (data: object) => {
     handleQuery()
   } catch {}
 }
-
-
 
 /** 展开/折叠操作 */
 const toggleExpandAll = () => {
@@ -230,16 +243,12 @@ onMounted(() => {
 })
 </script>
 
-
 <style lang="scss" scoped>
-
 /* 增大Element Plus Tree组件的行高 */
-:deep .menu-tree .el-tree-node__content {
+:deep(.menu-tree .el-tree-node__content) {
   /*  line-height: 50px;*/
   height: 45px;
   font-size: 16px;
   font-weight: bold;
 }
-
-
 </style>

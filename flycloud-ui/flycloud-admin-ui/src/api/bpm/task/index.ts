@@ -10,10 +10,10 @@ export enum TaskStatusEnum {
    */
   NOT_START = -1,
 
-   /**
+  /**
    * 待审批
    */
-   WAIT = 0,
+  WAIT = 0,
   /**
    * 审批中
    */
@@ -27,7 +27,7 @@ export enum TaskStatusEnum {
    * 审批不通过
    */
   REJECT = 3,
-  
+
   /**
    * 已取消
    */
@@ -43,8 +43,7 @@ export enum TaskStatusEnum {
   /**
    * 审批通过中
    */
-  APPROVING = 7,
-
+  APPROVING = 7
 }
 
 export type TaskVO = {
@@ -79,7 +78,7 @@ export const getTaskListByProcessInstanceId = async (processInstanceId: string) 
 
 // 获取所有可回退的节点
 export const getTaskListByReturn = async (id: string) => {
-  return await request.get({ url: `/${BPM_BASE_URL}/task/listByReturn/${id}`})
+  return await request.get({ url: `/${BPM_BASE_URL}/task/listByReturn/${id}` })
 }
 
 // 回退
@@ -95,6 +94,11 @@ export const delegateTask = async (data: any) => {
 // 转派
 export const transferTask = async (data: any) => {
   return await request.put({ url: `/${BPM_BASE_URL}/task/transfer`, data })
+}
+
+// 抄送
+export const copyTask = async (data: any) => {
+  return await request.put({ url: `/${BPM_BASE_URL}/task/copy`, data })
 }
 
 // 加签

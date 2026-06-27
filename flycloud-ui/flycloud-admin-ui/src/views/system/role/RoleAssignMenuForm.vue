@@ -4,9 +4,8 @@
     title="菜单权限"
     width="90%"
     top="3vh"
-    style="height:96%; margin-bottom: -80px"
+    style="height: 96%; margin-bottom: -80px"
   >
-
     <el-divider content-position="right" style="margin: -5px 0 20px 0">
       <el-button :disabled="formLoading" type="primary" round @click="submitForm">确 定</el-button>
     </el-divider>
@@ -21,7 +20,14 @@
         <el-col :span="14">
           <el-form-item label="角色标识">
             <el-tag>{{ formData.code }}</el-tag>
-            <span v-show="formData.code == RoleEnum.SUPER_ADMIN" style="margin-left: 10px; color: red">{{RoleEnum.SUPER_ADMIN}} 为超级管理员角色标识，登录即是所有权限，所以可无需赋权</span>
+            <span
+              v-show="formData.code == RoleEnum.SUPER_ADMIN"
+              style="margin-left: 10px; color: red"
+              >{{
+                RoleEnum.SUPER_ADMIN
+              }}
+              为超级管理员角色标识，登录即是所有权限，所以可无需赋权</span
+            >
           </el-form-item>
         </el-col>
       </el-row>
@@ -50,7 +56,12 @@
           <el-tree
             class="menu-tree"
             ref="treeRef"
-            style="height: calc(100vh - 280px); overflow-y: scroll; font-size: 16px; font-weight: bold;"
+            style="
+              height: calc(100vh - 280px);
+              overflow-y: scroll;
+              font-size: 16px;
+              font-weight: bold;
+            "
             :data="treeDataList"
             :props="defaultProps"
             node-key="id"
@@ -59,14 +70,17 @@
           >
             <template #default="{ node, data }">
               <div class="custom-tree-node">
-
                 <span>
                   <Icon :icon="data.icon" style="margin: 10px 12px 0 5px" />
                   {{ node.label }}
                 </span>
 
                 <div style="margin-left: 20px">
-                  <span v-show="data.buttonPermission" v-for="(item, index) in rolePermissionMap.get(data.id)"  :key="index">
+                  <span
+                    v-show="data.buttonPermission"
+                    v-for="(item, index) in rolePermissionMap.get(data.id)"
+                    :key="index"
+                  >
                     <span>{{ item.btnName }}</span>
                     <el-switch
                       v-model="item.checked"
@@ -81,7 +95,6 @@
               </div>
             </template>
           </el-tree>
-          
         </el-card>
       </el-form-item>
     </el-form>
@@ -92,9 +105,9 @@ import { defaultProps, handleTree } from '@/utils/tree'
 import * as RoleApi from '@/api/system/role'
 import * as MenuApi from '@/api/system/menu'
 import * as PermissionApi from '@/api/system/permission'
-import {array} from "vue-types";
-import {getRoleMenuTreeList, updateMenuPermission} from "@/api/system/role";
-import {RoleEnum} from '@/utils/constants'
+import { array } from 'vue-types'
+import { getRoleMenuTreeList, updateMenuPermission } from '@/api/system/role'
+import { RoleEnum } from '@/utils/constants'
 
 defineOptions({ name: 'SystemRoleAssignMenuForm' })
 
@@ -115,12 +128,10 @@ const menuExpand = ref(true) // 展开/折叠
 const treeRef = ref() // 菜单树组件 Ref
 const treeNodeAll = ref(false) // 全选/全不选
 // const rolePermissionList = ref(false) // 角色拥有的权限列表
-const rolePermissionMap = ref(new Map<number, any[]>()); // 角色菜单和按钮权限map
-
+const rolePermissionMap = ref(new Map<number, any[]>()) // 角色菜单和按钮权限map
 
 /** 打开弹窗 */
 const open = async (row: RoleApi.RoleVO) => {
-
   // 设置数据
   resetForm()
   formData.id = row.id
@@ -149,9 +160,8 @@ const open = async (row: RoleApi.RoleVO) => {
  * 处理角色菜单数据（把递归数据拆成普通数据，因为按钮权限是自定义独立的）
  * @param resData
  */
-const handleRoleMenuData = (resData: any []) => {
-
-  resData.forEach(item => {
+const handleRoleMenuData = (resData: any[]) => {
+  resData.forEach((item) => {
     if (item.buttonPermission) {
       rolePermissionMap.value.set(item.id, JSON.parse(item.buttonPermission))
       if (item.children) {
@@ -173,7 +183,7 @@ const submitForm = async () => {
   const roleMenuPermissionList = []
   rolePermissionMap.value.forEach((value, key) => {
     if (value) {
-      value.forEach(item => {
+      value.forEach((item) => {
         if (item.checked) {
           const roleMenuPermission = {
             menuId: key,
@@ -221,7 +231,6 @@ const resetForm = () => {
   formRef.value?.resetFields()
 }
 
-
 /**
  * 选择权限
  * @param data
@@ -231,14 +240,13 @@ const handlePermissionChange = (data) => {
   // alert(JSON.stringify(data2))
 }
 
-
 /** 全选/全不选 */
 const handleCheckedTreeNodeAll = (flag) => {
   // treeRef.value.setCheckedNodes(treeNodeAll.value ? treeDataList.value : [])
   if (flag) {
     rolePermissionMap.value.forEach((value, key) => {
       if (value) {
-        value.forEach(item => {
+        value.forEach((item) => {
           item.checked = true
         })
       }
@@ -246,7 +254,7 @@ const handleCheckedTreeNodeAll = (flag) => {
   } else {
     rolePermissionMap.value.forEach((value, key) => {
       if (value) {
-        value.forEach(item => {
+        value.forEach((item) => {
           item.checked = false
         })
       }
@@ -276,7 +284,7 @@ const handleCheckedTreeExpand = () => {
   padding-right: 8px;
 }
 /* 增大Element Plus Tree组件的行高 */
-:deep .menu-tree .el-tree-node__content {
+:deep(.menu-tree .el-tree-node__content) {
   /*  line-height: 50px;*/
   height: 40px;
   font-size: 16px;
