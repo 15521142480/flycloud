@@ -36,6 +36,14 @@ public interface ValidateService {
 
 
 	/**
+	 * 消费_图文点选验证码‌_证码‌信息
+	 *
+	 * 为了使用接口（如登录）不需要再做验证题目、坐标、复杂验证码等步骤，此接口是一次性消费验证，更干净、解耦
+	 *
+	*/
+	void consumeImageTextClickCaptchaVerify(String captchaVerification);
+
+	/**
 	 * 获取短信验证码
 	 *
 	 * @param mobile 手机号码

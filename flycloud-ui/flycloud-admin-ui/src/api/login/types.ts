@@ -3,8 +3,11 @@ export type UserLoginVO = {
   password: string
   grant_type: string,
   scope: string,
+  // 字母数组验证
   code: string
   codeKey: string
+  // 图文点选验证码‌
+  imageTextClickCaptchaSuccessValue: string
   socialType?: string
   socialCode?: string
   socialState?: string

@@ -53,6 +53,7 @@ export const login = (data: UserLoginVO) => {
       'Content-Type': 'application/json',
       'Code-Key': newData.codeKey,
       'Code-Value': newData.code,
+      'ImageTextClickCaptchaSuccessValue': newData.imageTextClickCaptchaSuccessValue,
       'Authorization': `Basic ${Base64.encode(`fly:fly_secret`)}`
     }
   })

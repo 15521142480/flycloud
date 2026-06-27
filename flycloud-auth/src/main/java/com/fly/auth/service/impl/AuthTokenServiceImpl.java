@@ -3,6 +3,7 @@ package com.fly.auth.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.fly.auth.service.AuthTokenService;
+import com.fly.auth.service.ValidateService;
 import com.fly.auth.sms.SmsCodeAuthenticationToken;
 import com.fly.auth.social.SocialAuthenticationToken;
 import com.fly.common.config.properties.AuthProperties;
@@ -62,8 +63,12 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
     private final AuthProperties authTokenProperties;
 
+    private final ValidateService validateService;
+
+
     @Override
     public Map<String, Object> createToken(Map<String, String> loginParam, HttpServletRequest request) {
+
         String grantType = loginParam.get(Oauth2Constants.GRANT_TYPE);
         if (StrUtil.isBlank(grantType)) {
             grantType = Oauth2Constants.PASSWORD;
@@ -95,6 +100,12 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         redisService.del(AuthConstants.ACCESS_TOKEN_KEY + token, AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token);
     }
 
+
+    /**
+     * NOTE 帐号秘密授权方式
+     *
+     * @param loginParam
+    */
     private Authentication authenticatePassword(Map<String, String> loginParam) {
         String username = loginParam.get("username");
         String password = loginParam.get("password");
@@ -102,27 +113,59 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         return doAuthenticate(authentication, loginParam, username);
     }
 
+
+    /**
+     * NOTE 验证码授权方式_字母数字验证
+     *
+     * @param loginParam
+     * @param request
+    */
+//    private Authentication authenticateCaptcha(Map<String, String> loginParam, HttpServletRequest request) {
+//
+//        String key = firstNotBlank(request.getHeader(Oauth2Constants.CAPTCHA_HEADER_KEY),
+//                loginParam.get(Oauth2Constants.VALIDATE_CODE_KEY));
+//        String code = firstNotBlank(request.getHeader(Oauth2Constants.CAPTCHA_HEADER_CODE),
+//                loginParam.get(Oauth2Constants.VALIDATE_CODE_CODE));
+//        Object codeFromRedis = redisService.get(Oauth2Constants.CAPTCHA_KEY + key);
+//
+//        if (StrUtil.isBlank(code)) {
+//            throw new AuthException(CommonConstants.FAIL, "请输入验证码");
+//        }
+//        if (codeFromRedis == null) {
+//            throw new AuthException(CommonConstants.FAIL, "验证码已过期");
+//        }
+//        if (!StrUtil.equalsIgnoreCase(code, codeFromRedis.toString())) {
+//            throw new AuthException(CommonConstants.FAIL, "验证码不正确");
+//        }
+//
+//        redisService.del(Oauth2Constants.CAPTCHA_KEY + key);
+//        return authenticatePassword(loginParam);
+//    }
+
+
+    /**
+     * NOTE 验证码授权方式_图文点选验证
+     *
+     * @param loginParam
+     * @param request
+    */
     private Authentication authenticateCaptcha(Map<String, String> loginParam, HttpServletRequest request) {
-        String key = firstNotBlank(request.getHeader(Oauth2Constants.CAPTCHA_HEADER_KEY),
-                loginParam.get(Oauth2Constants.VALIDATE_CODE_KEY));
-        String code = firstNotBlank(request.getHeader(Oauth2Constants.CAPTCHA_HEADER_CODE),
-                loginParam.get(Oauth2Constants.VALIDATE_CODE_CODE));
-        Object codeFromRedis = redisService.get(Oauth2Constants.CAPTCHA_KEY + key);
 
-        if (StrUtil.isBlank(code)) {
-            throw new AuthException(CommonConstants.FAIL, "请输入验证码");
-        }
-        if (codeFromRedis == null) {
-            throw new AuthException(CommonConstants.FAIL, "验证码已过期");
-        }
-        if (!StrUtil.equalsIgnoreCase(code, codeFromRedis.toString())) {
-            throw new AuthException(CommonConstants.FAIL, "验证码不正确");
-        }
+        String successValue = firstNotBlank(
+                request.getHeader(Oauth2Constants.IMAGE_TEXT_CLICK_CAPTCHA_SUCCESS_VALUE),
+                loginParam.get(Oauth2Constants.IMAGE_TEXT_CLICK_CAPTCHA_SUCCESS_VALUE)
+        );
+        validateService.consumeImageTextClickCaptchaVerify(successValue);
 
-        redisService.del(Oauth2Constants.CAPTCHA_KEY + key);
         return authenticatePassword(loginParam);
     }
 
+
+    /**
+     * NOTE 短信授权方式
+     *
+     * @param loginParam
+    */
     private Authentication authenticateSms(Map<String, String> loginParam) {
         String mobile = loginParam.get(Oauth2Constants.DEFAULT_PARAMETER_NAME_MOBILE);
         String code = loginParam.get(Oauth2Constants.VALIDATE_CODE_CODE);
@@ -143,6 +186,12 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         return doAuthenticate(authentication, loginParam, mobile);
     }
 
+
+    /**
+     * NOTE 第三方授权方式
+     *
+     * @param loginParam
+    */
     private Authentication authenticateSocial(Map<String, String> loginParam) {
         String code = loginParam.get("code");
         String state = loginParam.get("state");

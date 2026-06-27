@@ -172,8 +172,8 @@ const checkCaptcha = async () => {
     ElMessage.success(t('textCaptcha.passed'))
     captchaDialogVisible.value = false
   } catch (error) {
-    const message = error instanceof Error ? error.message : t('textCaptcha.invalid')
-    ElMessage.error(message)
+    // const message = error instanceof Error ? error.message : t('textCaptcha.invalid')
+    // ElMessage.error(message)
     await loadCaptcha()
   } finally {
     captchaLoading.value = false

@@ -131,6 +131,19 @@ public class ValidateServiceImpl implements ValidateService {
 
 
     @Override
+    public void consumeImageTextClickCaptchaVerify(String captchaVerification) {
+
+        if (!StringUtils.hasText(captchaVerification)) {
+            throw new AuthException(CommonConstants.FAIL, "请先完成验证码验证!");
+        }
+        Boolean deleted = redisService.del(AuthConstants.VERIFIED_KEY_PREFIX + captchaVerification);
+        if (!Boolean.TRUE.equals(deleted)) {
+            throw new AuthException(CommonConstants.FAIL, "验证码已过期，请重新验证!");
+        }
+    }
+
+
+    @Override
     public R<?> getSmsCode(String mobile) {
 
         String code = "1188";

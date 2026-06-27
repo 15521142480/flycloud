@@ -32,7 +32,7 @@ public interface AuthConstants {
     /**
      * 图文点选验证码
      */
-    String CHAR_POOL = "春夏秋冬东南西北山河湖海风雨星月天地云竹松梅兰书画茶光影晨暮苹果香蕉西瓜葡萄橘子草莓桃子梨子樱桃柠檬小猫小狗老虎狮子大象猴子兔子熊猫狐狸斑马红色蓝色绿色黄色黑色白色紫色粉色灰色橙色太阳月亮星星云朵雨伞雪花火焰河流大山树木汽车飞机火车轮船手机电脑书包铅笔椅子桌子";
+    String CHAR_POOL = "春夏秋冬东南西北山河湖海风雨星月天地云竹松梅兰书画茶光影晨暮苹果香蕉西瓜葡萄橘子草莓桃子梨子樱桃柠檬小猫小狗老虎狮子大象猴子兔子熊猫狐狸斑马红蓝绿黄黑白紫粉灰橙色太阳月亮星星云朵雨伞雪花火焰河流大山树木汽车飞机火车轮船手机电脑书包铅笔椅子桌子";
     String CHALLENGE_KEY_PREFIX = "captcha:click:challenge:";
     String VERIFIED_KEY_PREFIX = "captcha:click:verified:";
     String DATA_URL_PREFIX = "data:image/png;base64,";

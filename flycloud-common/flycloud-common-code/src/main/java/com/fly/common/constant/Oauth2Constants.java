@@ -127,6 +127,8 @@ public class Oauth2Constants {
 
 	public static final String CAPTCHA_HEADER_KEY = "Code-Key";
 
+	public static final String IMAGE_TEXT_CLICK_CAPTCHA_SUCCESS_VALUE = "ImageTextClickCaptchaSuccessValue";
+
 	public static final String CAPTCHA_HEADER_CODE = "Code-Value";
 
 	/**

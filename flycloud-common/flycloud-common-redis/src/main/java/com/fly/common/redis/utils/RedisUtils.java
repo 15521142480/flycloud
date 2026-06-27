@@ -131,6 +131,9 @@ public class RedisUtils {
             }
         }
     }
+    public Boolean del(String key) {
+        return redisTemplate.delete(key);
+    }
 
     /**
      * 普通缓存获取

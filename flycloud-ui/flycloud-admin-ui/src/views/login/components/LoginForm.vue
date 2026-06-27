@@ -70,7 +70,7 @@
       <!-- 记住我 || 忘记密码 -->
       <el-col
         :span="24"
-        style="padding-right: 10px; padding-left: 10px; margin-top: -20px; margin-bottom: -20px"
+        style="padding-right: 10px; padding-left: 10px; margin-top: -50px; margin-bottom: -20px"
       >
         <el-form-item>
           <el-row justify="space-between" style="width: 100%">
@@ -221,8 +221,11 @@ const loginData = reactive({
     grant_type: 'captcha',
     // grant_type: 'password',
     scope: 'all',
-    codeKey: '', // 数字字母验证码_key
-    code: '', // 数字字母验证码_值
+    // 数字字母验证码_key_值
+    codeKey: '',
+    code: '',
+    // 图文点选验证码‌
+    imageTextClickCaptchaSuccessValue: '',
     rememberMe: true // 默认记录我。如果不需要，可手动修改
   }
 })
@@ -290,6 +293,12 @@ const handleLogin = async () => {
   if (!data) {
     return
   }
+
+  if (!textCaptchaData.value.imageTextClickCaptchaSuccessValue || !loginData.loginForm.imageTextClickCaptchaSuccessValue) {
+    ElMessage.warning('请进行安全验证！')
+    return
+  }
+
   loginLoading.value = true
   loading.value = ElLoading.service({
     lock: true,
@@ -318,12 +327,15 @@ const handleLogin = async () => {
     } else {
       push({ path: redirect.value || permissionStore.addRouters[0].path })
     }
+    await nextTick()
+    loginLoading.value = false
+    loading.value.close()
   } finally {
     if (!authUtil.getAccessToken()) {
       await getCode()
     }
-    loginLoading.value = false
-    loading.value.close()
+    // loginLoading.value = false
+    // loading.value.close()
   }
 }
 
@@ -339,9 +351,8 @@ const clickImageTextClickCaptcha = () => {
  * 子组件回调_图文点选验证码‌
  * @param data
  */
-const successImageTextClick = (data) => {
-  console.log('验证成功：', data)
-  // console.log('当前双向绑定值：', captchaValue.value)
+const successImageTextClick = (data: TextCaptchaDataVo) => {
+  loginData.loginForm.imageTextClickCaptchaSuccessValue = data.imageTextClickCaptchaSuccessValue
 }
 
 /**
