@@ -16,14 +16,15 @@
             <span>{{ t('textCaptcha.prompt') }}：</span>
             <b v-for="word in targetWords" :key="word">{{ word }}</b>
           </div>
-          <el-button :icon="Refresh" text circle :loading="captchaLoading" @click="loadCaptcha" />
+          <el-button :icon="Refresh" text circle :loading="captchaLoading" @click="loadCaptcha" style="font-size: 20px" />
+          <div style="width: 5px"></div>
         </div>
-        <div class="captcha-image-wrap" :class="{ passed: Boolean(props.imageTextClickCaptchaValue) }">
+        <div class="captcha-image-wrap" :class="{ passed: Boolean(props.textCaptchaData.imageTextClickCaptchaSuccessValue) }">
           <img
             v-if="captchaChallenge"
             ref="captchaImageRef"
             :src="captchaChallenge.imageBase64"
-            :alt="t('captcha.imageAlt')"
+            :alt="t('textCaptcha.imageAlt')"
             @click="handleCaptchaClick"
           />
           <div v-else class="captcha-placeholder">{{ t('common.loading') }}</div>
@@ -35,7 +36,7 @@
           >
           {{ index + 1 }}
         </span>
-          <div v-if="props.imageTextClickCaptchaValue" class="captcha-passed">{{ t('textCaptcha.passed') }}</div>
+          <div v-if="props.textCaptchaData.imageTextClickCaptchaSuccessValue" class="captcha-passed">{{ t('textCaptcha.passed') }}</div>
         </div>
       </div>
     </el-dialog>
@@ -46,28 +47,30 @@
 import { useI18n } from '@/hooks/web/useI18n'
 import { Refresh } from '@element-plus/icons-vue'
 const { t } = useI18n()
-import type { ClickCaptchaChallengeVo, ClickCaptchaPointDto } from '@/entity/auth'
+import type { ClickCaptchaChallengeVo, ClickCaptchaPointDto, TextCaptchaDataVo } from '@/entity/auth'
 import { getImageTextClickCaptchaApi, checkImageTextClickCaptchaApi } from '@/api/login'
+import {PropType} from "vue";
 
 
 const props = defineProps({
-  imageTextClickCaptchaKey: {
-    type: String,
-    default: ''
-  },
-  imageTextClickCaptchaValue: {
-    type: String,
-    default: ''
+  textCaptchaData: {
+    type: Object as PropType<TextCaptchaDataVo>,
+    default: () => ({
+      imageTextClickCaptchaKey: '',
+      imageTextClickCaptchaValue: '',
+      imageTextClickCaptchaSuccessValue: ''
+    })
   }
 })
 
-
-const emit = defineEmits([
-  'update:imageTextClickCaptchaKey',
-  'update:imageTextClickCaptchaValue',
-  'success'
-])
-
+// const emit = defineEmits([
+//   'update:imageTextClickCaptchaKey',
+//   'success'
+// ])
+const emit = defineEmits<{
+  (e: 'update:textCaptchaData', value: TextCaptchaDataVo): void
+  (e: 'success', value: TextCaptchaDataVo): void
+}>()
 
 const captchaImageRef = ref<HTMLImageElement>()
 const captchaLoading = ref(false)
@@ -82,28 +85,12 @@ const targetWords = computed(() => captchaChallenge.value?.targetText.split('') 
  * 父组件回调
  */
 const openImageTextClickCaptchaProp = async () => {
-
   captchaDialogVisible.value = true
   await loadCaptcha()
 }
+
 defineExpose({ openImageTextClickCaptchaProp })
 
-
-const loginAfterCaptcha = async () => {
-
-  // loading.value = true
-  try {
-    // await authStore.login(form)
-    ElMessage.success(t('login.success'))
-
-  } catch (error) {
-    const message = error instanceof Error ? error.message : t('')
-    ElMessage.error(message || t('login.accountPasswordError'))
-    emit('update:imageTextClickCaptchaValue', '')
-  } finally {
-    // loading.value = false
-  }
-}
 
 /**
  * 加载图文点选验证码‌
@@ -111,13 +98,17 @@ const loginAfterCaptcha = async () => {
 const loadCaptcha = async () => {
 
   captchaLoading.value = true
-  emit('update:imageTextClickCaptchaKey', '')
-  emit('update:imageTextClickCaptchaValue', '')
   clickPoints.value = []
+  resetTextCaptchaData()
+
   try {
     captchaChallenge.value = await getImageTextClickCaptchaApi()
+    emit('update:textCaptchaData', {
+      ...props.textCaptchaData,
+      imageTextClickCaptchaKey: captchaChallenge.value?.captchaId ?? ''
+    })
   } catch (error) {
-    const message = error instanceof Error ? error.message : '图文点选验证码‌出现未知错误'
+    const message = error instanceof Error ? error.message : '图文点选验证码‌出现未知错误!'
     ElMessage.error(message)
   } finally {
     captchaLoading.value = false
@@ -130,10 +121,9 @@ const loadCaptcha = async () => {
  */
 const handleCaptchaClick = async (event: MouseEvent) => {
 
-  if (!captchaChallenge.value || props.imageTextClickCaptchaValue || clickPoints.value.length >= 3) {
+  if (!captchaChallenge.value || props.textCaptchaData.imageTextClickCaptchaSuccessValue || clickPoints.value.length >= 3) {
     return
   }
-
   const image = captchaImageRef.value
   if (!image) {
     return
@@ -147,9 +137,11 @@ const handleCaptchaClick = async (event: MouseEvent) => {
   clickPoints.value.push({ x, y, displayX, displayY })
 
   const pointList = clickPoints.value.map(({ x, y }) => ({ x, y }))
-  const pointListStr = pointList.map(item => `${item.x},${item.y}`).join(';')
-  emit('update:imageTextClickCaptchaValue', pointListStr)
-
+  const pointListStr = pointList.map(item => `${item.x},${item.y}`).join('; ')
+  emit('update:textCaptchaData', {
+    ...props.textCaptchaData,
+    imageTextClickCaptchaValue: pointListStr
+  })
 
   if (clickPoints.value.length === 3) {
     await checkCaptcha()
@@ -170,12 +162,17 @@ const checkCaptcha = async () => {
       captchaId: captchaChallenge.value.captchaId,
       points: clickPoints.value.map(({ x, y }) => ({ x, y }))
     })
-    emit('update:imageTextClickCaptchaValue', result.captchaVerification)
-    ElMessage.success(t('captcha.passed'))
+    emit('update:textCaptchaData', {
+      ...props.textCaptchaData,
+      imageTextClickCaptchaSuccessValue: result.captchaVerification ?? ''
+    })
+    // jq祖传问题，代码跳开跑，赋值有问题
+    await nextTick()
+    emit('success', props.textCaptchaData)
+    ElMessage.success(t('textCaptcha.passed'))
     captchaDialogVisible.value = false
-    await loginAfterCaptcha()
   } catch (error) {
-    const message = error instanceof Error ? error.message : t('captcha.invalid')
+    const message = error instanceof Error ? error.message : t('textCaptcha.invalid')
     ElMessage.error(message)
     await loadCaptcha()
   } finally {
@@ -183,11 +180,26 @@ const checkCaptcha = async () => {
   }
 }
 
+/**
+ * 关闭弹窗
+ */
 const handleCaptchaClosed = () => {
-  if (!props.imageTextClickCaptchaValue) {
+  if (!props.textCaptchaData.imageTextClickCaptchaSuccessValue) {
     captchaChallenge.value = undefined
     clickPoints.value = []
+    resetTextCaptchaData()
   }
+}
+
+const resetTextCaptchaData = () => {
+
+  emit('update:textCaptchaData', {
+    ...props.textCaptchaData,
+    imageTextClickCaptchaKey: '',
+    imageTextClickCaptchaValue: '',
+    imageTextClickCaptchaSuccessValue: ''
+  })
+
 }
 
 

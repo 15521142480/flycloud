@@ -175,6 +175,7 @@ import { useUserStore } from '@/store/modules/user'
 import { useWatermark } from '@/hooks/web/useWatermark'
 import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
 import { pieOptions, barOptions } from './echarts-data'
+import avatarImg from '@/assets/imgs/avatar.gif'
 
 defineOptions({ name: 'Home' })
 
@@ -182,7 +183,8 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const { setWatermark } = useWatermark()
 const loading = ref(true)
-const avatar = userStore.getUser.avatar
+// const avatar = userStore.getUser.avatar
+const avatar = computed(() => userStore.getUser.avatar || avatarImg)
 const username = userStore.getUser.name
 const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
 // 获取统计数

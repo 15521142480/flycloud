@@ -61,7 +61,7 @@
             <XButton title="安全验证" class="w-[100%]" @click="clickImageTextClickCaptcha" />
           </el-col>
           <el-col :span="16">
-            <el-input v-model="loginData.loginForm.imageTextClickCaptchaValue" placeholder="请点击左边的安全验证" disabled />
+            <el-input v-model="imageTextClickCaptchaValueText" placeholder="请点击左边的安全验证" disabled />
           </el-col>
           <el-col :span="1" style="text-align: center">&nbsp;</el-col>
         </el-form-item>
@@ -158,8 +158,7 @@
 
     <!-- 图文点选验证码‌弹窗 -->
     <ImageTextClickCaptcha
-      v-model:imageTextClickCaptchaKey="loginData.loginForm.imageTextClickCaptchaKey"
-      v-model:imageTextClickCaptchaValue="loginData.loginForm.imageTextClickCaptchaValue"
+      v-model:textCaptchaData="textCaptchaData"
       ref="imageTextClickCaptchaRef"
       @success="successImageTextClick"
     />
@@ -178,6 +177,7 @@ import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
 import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
 import ImageTextClickCaptcha from "./ImageTextClickCaptcha.vue";
+import type { TextCaptchaDataVo } from '@/entity/auth'
 
 defineOptions({ name: 'LoginForm' })
 
@@ -198,6 +198,7 @@ const loginLoading = ref(false)
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 const codeUrl = ref()
 const imageTextClickCaptchaRef = ref()
+const imageTextClickCaptchaValueText = ref<string>('')
 
 
 /**
@@ -220,13 +221,19 @@ const loginData = reactive({
     grant_type: 'captcha',
     // grant_type: 'password',
     scope: 'all',
-    codeKey: '', // 数字字母验证码key
-    code: '', // 数字字母验证码
-    imageTextClickCaptchaKey: '', // 图文点选验证码‌key
-    imageTextClickCaptchaValue: '', // 图文点选验证码‌
+    codeKey: '', // 数字字母验证码_key
+    code: '', // 数字字母验证码_值
     rememberMe: true // 默认记录我。如果不需要，可手动修改
   }
 })
+
+// 图文点选验证码‌
+const textCaptchaData = ref<TextCaptchaDataVo>({
+  imageTextClickCaptchaKey: '', // 图文点选验证码‌_key
+  imageTextClickCaptchaValue: '', // 图文点选验证码‌_坐标信息
+  imageTextClickCaptchaSuccessValue: '' // 图文点选验证码‌_成功的值
+})
+
 
 const socialList = [
   { icon: 'ant-design:wechat-filled', type: 30 },
@@ -384,6 +391,21 @@ watch(
     immediate: true
   }
 )
+
+watch(
+  () => textCaptchaData.value.imageTextClickCaptchaValue,
+  (newVal, oldVal) => {
+    if (textCaptchaData.value.imageTextClickCaptchaValue) {
+      imageTextClickCaptchaValueText.value = '选择的坐标为: ' + newVal
+    } else {
+      imageTextClickCaptchaValueText.value = ''
+    }
+  },
+  {
+    immediate: true
+  }
+)
+
 onMounted(() => {
   getCode()
   getLoginFormCache()
