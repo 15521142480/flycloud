@@ -49,12 +49,10 @@ export const useUserStore = defineStore('admin-user', {
   },
 
   actions: {
-
     /**
      * 设置用户信息
      */
     async setUserInfoAction() {
-
       if (!getAccessToken()) {
         this.resetState()
         return null
@@ -97,10 +95,13 @@ export const useUserStore = defineStore('admin-user', {
      * 退出
      */
     async loginOut() {
-      await loginOut()
-      removeToken()
-      deleteUserCache() // 删除用户缓存
-      this.resetState()
+      try {
+        await loginOut()
+      } finally {
+        removeToken()
+        deleteUserCache() // 删除用户缓存
+        this.resetState()
+      }
     },
 
     /**

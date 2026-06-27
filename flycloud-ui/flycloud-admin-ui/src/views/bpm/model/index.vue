@@ -27,7 +27,11 @@
         </el-form-item>
         <!-- 右上角：新建模型、更多操作 -->
         <el-form-item>
-          <el-button type="primary" @click="openForm('create')" v-hasPermi="['bpm:manage:model:create']">
+          <el-button
+            type="primary"
+            @click="openForm('create')"
+            v-hasPermi="['bpm:manage:model:create']"
+          >
             <Icon icon="ep:plus" class="mr-5px" /> 新建模型
           </el-button>
         </el-form-item>
@@ -60,7 +64,7 @@
     <el-divider />
 
     <!-- 按照分类，展示其所属的模型列表 -->
-    <div class="px-15px">
+    <div v-loading="loading" class="model-list-loading px-15px">
       <draggable
         :disabled="!isCategorySorting"
         v-model="categoryGroup"
@@ -204,6 +208,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.model-list-loading {
+  min-height: 240px;
+}
+
 :deep() {
   .el-table--fit .el-table__inner-wrapper:before {
     height: 0;

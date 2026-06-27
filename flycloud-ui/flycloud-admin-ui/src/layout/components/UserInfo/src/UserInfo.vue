@@ -41,10 +41,17 @@ const loginOut = async () => {
       cancelButtonText: t('common.cancel'),
       type: 'warning'
     })
-    await userStore.loginOut()
-    tagsViewStore.delAllViews()
-    replace('/login?redirect=/index')
-  } catch {}
+  } catch {
+    return
+  }
+  await userStore.loginOut()
+  tagsViewStore.delAllViews()
+  await replace({
+    path: '/login',
+    query: {
+      redirect: '/index'
+    }
+  })
 }
 const toProfile = async () => {
   push('/user/profile')
