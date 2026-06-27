@@ -223,7 +223,7 @@ let notice = reactive<Notice[]>([])
 const getNotice = async () => {
   const data = [
     {
-      title: '系统采用 JDK 8/11、Spring Cloud 2021、Nacos 2.X、Spring Security Oauth2、Flowable6.8、Seata 等技术架构',
+      title: '系统采用 JDK 21、Vue 3、Spring Boot 3.5.3、Spring Cloud Alibaba 2025、Nacos 3.0.3、Spring Security、Flowable 7.1、mysql 8.4、Seata 等技术架构',
       type: '公告',
       keys: ['公告', 'JDK', 'Spring Cloud', 'Nacos', 'Spring Security', 'Flowable', 'Seata'],
       date: new Date()
