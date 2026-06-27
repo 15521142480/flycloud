@@ -3,9 +3,9 @@ import { getRefreshToken } from '@/utils/auth'
 import type { RegisterVO, UserLoginVO } from './types'
 import type { ClickCaptchaVerifyDto } from '@/entity/auth'
 
-import {service} from "@/config/axios/service";
+import { service } from '@/config/axios/service'
 import { Base64 } from 'js-base64'
-import md5 from "js-md5"
+import md5 from 'js-md5'
 
 const AUTH_BASE_URL = import.meta.env.VITE_AUTH_SERVER
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
@@ -24,28 +24,28 @@ export interface SmsLoginVO {
 
 // 获取验证码
 export const getCodeApi = () => {
-  return request.get({ url: `${AUTH_BASE_URL}/auth/code`})
+  return request.get({ url: `/${AUTH_BASE_URL}/auth/code` })
 }
 
 // 获取图文点选验证码‌
 export const getImageTextClickCaptchaApi = () => {
-  return request.post({ url: `${AUTH_BASE_URL}/auth/getImageTextClickCaptcha`})
+  return request.post({ url: `/${AUTH_BASE_URL}/auth/getImageTextClickCaptcha` })
 }
 
 // 验证图文点选验证码‌
 export const checkImageTextClickCaptchaApi = (data: ClickCaptchaVerifyDto) => {
-  return request.post({ url: `${AUTH_BASE_URL}/auth/checkGetImageTextClickCaptcha`, data })
+  return request.post({ url: `/${AUTH_BASE_URL}/auth/checkGetImageTextClickCaptcha`, data })
 }
 
 // 登录
 export const login = (data: UserLoginVO) => {
   // const newData = data; // newData 只是 data 的引用（指向同一块内存）
-  const newData = { ...data }; // 浅拷贝
+  const newData = { ...data } // 浅拷贝
   newData.password = md5(newData.password)
   const method = 'POST'
   const params = null
   return service({
-    url: `${AUTH_BASE_URL}/oauth/token`,
+    url: `/${AUTH_BASE_URL}/oauth/token`,
     method: method,
     params: params,
     data: newData,
@@ -53,15 +53,15 @@ export const login = (data: UserLoginVO) => {
       'Content-Type': 'application/json',
       'Code-Key': newData.codeKey,
       'Code-Value': newData.code,
-      'ImageTextClickCaptchaSuccessValue': newData.imageTextClickCaptchaSuccessValue,
-      'Authorization': `Basic ${Base64.encode(`fly:fly_secret`)}`
+      ImageTextClickCaptchaSuccessValue: newData.imageTextClickCaptchaSuccessValue,
+      Authorization: `Basic ${Base64.encode(`fly:fly_secret`)}`
     }
   })
 }
 
 // 登出
 export const loginOut = () => {
-  return request.post({ url: `${AUTH_BASE_URL}/oauth/logOut` })
+  return request.post({ url: `/${AUTH_BASE_URL}/oauth/logOut` })
 }
 
 // 注册
@@ -70,27 +70,27 @@ export const register = (data: RegisterVO) => {
   return request.post({ url: `/${SYS_BASE_URL}/user/register`, data })
 }
 
-
 // 刷新访问令牌
 export const refreshToken = () => {
-  return request.post({ url: `${AUTH_BASE_URL}/auth/refresh-token?refreshToken=` + getRefreshToken() })
+  return request.post({
+    url: `/${AUTH_BASE_URL}/auth/refresh-token?refreshToken=` + getRefreshToken()
+  })
 }
-
 
 // 获取登录验证码
 export const sendSmsCode = (data: SmsCodeVO) => {
-  return request.post({ url: `${AUTH_BASE_URL}/auth/send-sms-code`, data })
+  return request.post({ url: `/${AUTH_BASE_URL}/auth/send-sms-code`, data })
 }
 
 // 短信验证码登录
 export const smsLogin = (data: SmsLoginVO) => {
-  return request.post({ url: `${AUTH_BASE_URL}/auth/sms-login`, data })
+  return request.post({ url: `/${AUTH_BASE_URL}/auth/sms-login`, data })
 }
 
 // 社交快捷登录，使用 code 授权码
 export function socialLogin(type: string, code: string, state: string) {
   return request.post({
-    url: `${AUTH_BASE_URL}/auth/social-login`,
+    url: `/${AUTH_BASE_URL}/auth/social-login`,
     data: {
       type,
       code,
@@ -102,30 +102,28 @@ export function socialLogin(type: string, code: string, state: string) {
 // 社交授权的跳转
 // export const socialAuthRedirect = (type: number, redirectUri: string) => {
 //   return request.get({
-//     url: `${AUTH_BASE_URL}/auth/social-auth-redirect?type=` + type + '&redirectUri=' + redirectUri
+//     url: `/${AUTH_BASE_URL}/auth/social-auth-redirect?type=` + type + '&redirectUri=' + redirectUri
 //   })
 // }
 
 // 获取验证图片以及 token
 export const getCode = (data) => {
-  return request.postOriginal({ url: `${AUTH_BASE_URL}/captcha/get`, data })
+  return request.postOriginal({ url: `/${AUTH_BASE_URL}/captcha/get`, data })
 }
 
 // 滑动或者点选验证
 export const reqCheck = (data) => {
-  return request.postOriginal({ url: `${AUTH_BASE_URL}/captcha/check`, data })
+  return request.postOriginal({ url: `/${AUTH_BASE_URL}/captcha/check`, data })
 }
-
 
 // ============================================== 用户
 
 // 获取用户信息(基本、权限、菜单)
 export const getUserInfoApi = () => {
-  return request.get({ url: `${SYS_BASE_URL}/user/getUserInfo` })
+  return request.get({ url: `/${SYS_BASE_URL}/user/getUserInfo` })
 }
 
 // 使用租户名，获得租户编号
 export const getTenantIdByName = (name: string) => {
-  return request.get({ url: `${AUTH_BASE_URL}/tenant/get-id-by-name?name=` + name })
+  return request.get({ url: `/${AUTH_BASE_URL}/tenant/get-id-by-name?name=` + name })
 }
-

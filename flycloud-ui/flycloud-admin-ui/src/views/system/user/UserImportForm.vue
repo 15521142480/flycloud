@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" title="用户导入" width="400">
+  <Dialog v-model="dialogVisible" :title="t('system.user.importTitle')" width="400">
     <el-upload
       ref="uploadRef"
       v-model:file-list="fileList"
@@ -15,28 +15,32 @@
       drag
     >
       <Icon icon="ep:upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text">
+        {{ t('system.user.uploadDragText') }}<em>{{ t('system.user.uploadClickText') }}</em>
+      </div>
       <template #tip>
         <div class="el-upload__tip text-center">
           <div class="el-upload__tip">
             <el-checkbox v-model="updateSupport" />
-            是否更新已经存在的用户数据
+            {{ t('system.user.updateSupport') }}
           </div>
-          <span>仅允许导入 xls、xlsx 格式文件。</span>
+          <span>{{ t('system.user.importTip') }}</span>
           <el-link
             :underline="false"
             style="font-size: 12px; vertical-align: baseline"
             type="primary"
             @click="importTemplate"
           >
-            下载模板
+            {{ t('system.user.downloadTemplate') }}
           </el-link>
         </div>
       </template>
     </el-upload>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('common.ok')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{ t('common.cancel') }}</el-button>
     </template>
   </Dialog>
 </template>
@@ -48,6 +52,7 @@ import download from '@/utils/download'
 defineOptions({ name: 'SystemUserImportForm' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中
@@ -70,7 +75,7 @@ defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 /** 提交表单 */
 const submitForm = async () => {
   if (fileList.value.length == 0) {
-    message.error('请上传文件')
+    message.error(t('system.user.uploadRequired'))
     return
   }
   // 提交请求
@@ -92,15 +97,17 @@ const submitFormSuccess = (response: any) => {
   }
   // 拼接提示语
   const data = response.data
-  let text = '上传成功数量：' + data.createUsernames.length + ';'
+  let text = t('system.user.importCreateSuccessCount', { count: data.createUsernames.length }) + ';'
   for (let username of data.createUsernames) {
     text += '< ' + username + ' >'
   }
-  text += '更新成功数量：' + data.updateUsernames.length + ';'
+  text += t('system.user.importUpdateSuccessCount', { count: data.updateUsernames.length }) + ';'
   for (const username of data.updateUsernames) {
     text += '< ' + username + ' >'
   }
-  text += '更新失败数量：' + Object.keys(data.failureUsernames).length + ';'
+  text +=
+    t('system.user.importUpdateFailedCount', { count: Object.keys(data.failureUsernames).length }) +
+    ';'
   for (const username in data.failureUsernames) {
     text += '< ' + username + ': ' + data.failureUsernames[username] + ' >'
   }
@@ -113,7 +120,7 @@ const submitFormSuccess = (response: any) => {
 
 /** 上传错误提示 */
 const submitFormError = (): void => {
-  message.error('上传失败，请您重新上传！')
+  message.error(t('system.user.uploadFailed'))
   formLoading.value = false
 }
 
@@ -127,12 +134,12 @@ const resetForm = async (): Promise<void> => {
 
 /** 文件数超出提示 */
 const handleExceed = (): void => {
-  message.error('最多只能上传一个文件！')
+  message.error(t('system.user.uploadLimit'))
 }
 
 /** 下载模板操作 */
 const importTemplate = async () => {
   const res = await UserApi.importUserTemplate()
-  download.excel(res, '用户导入模版.xls')
+  download.excel(res, t('system.user.importTemplateFileName'))
 }
 </script>

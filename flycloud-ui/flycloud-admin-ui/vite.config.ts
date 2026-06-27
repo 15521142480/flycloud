@@ -60,13 +60,6 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-system`), ''),
               },
-              ['/bpm/manager/flycloud-system']: {
-                target: 'http://localhost:8080/flycloud-system',
-                // target: 'http://101.34.33.33:8080/flycloud-system',
-                ws: false,
-                changeOrigin: true,
-                rewrite: (path) => path.replace(new RegExp(`^/bpm/manager/flycloud-system`), ''),
-              },
 
               // 工作流服务
               ['/flycloud-bpm']: {
@@ -76,13 +69,6 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-bpm`), ''),
               },
-              ['/bpm/manager/flycloud-bpm']: {
-                target: 'http://localhost:8080/flycloud-bpm',
-                // target: 'http://101.34.33.33:8080/flycloud-bpm',
-                ws: false,
-                changeOrigin: true,
-                rewrite: (path) => path.replace(new RegExp(`^/bpm/manager/flycloud-bpm`), ''),
-              },
 
               // 自动生成服务
               ['/flycloud-generator']: {
@@ -91,13 +77,6 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-generator`), ''),
-              },
-              ['/bpm/manager/flycloud-generator']: {
-                target: 'http://localhost:8080/flycloud-generator',
-                // target: 'http://101.34.33.33:8080/flycloud-generator',
-                ws: false,
-                changeOrigin: true,
-                rewrite: (path) => path.replace(new RegExp(`^/bpm/manager/flycloud-generator`), ''),
               },
             },
         },

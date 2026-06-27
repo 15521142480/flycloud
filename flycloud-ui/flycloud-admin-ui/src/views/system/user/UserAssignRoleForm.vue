@@ -1,21 +1,27 @@
 <template>
-  <Dialog v-model="dialogVisible" title="分配角色">
+  <Dialog v-model="dialogVisible" :title="t('system.user.assignRole')">
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item label="账号">
+      <el-form-item :label="t('system.user.account')">
         <el-input v-model="formData.account" :disabled="true" />
       </el-form-item>
-      <el-form-item label="昵称">
+      <el-form-item :label="t('system.user.nickname')">
         <el-input v-model="formData.name" :disabled="true" />
       </el-form-item>
-      <el-form-item label="角色">
-        <el-select v-model="formData.roleIds" multiple placeholder="请选择角色">
+      <el-form-item :label="t('system.user.role')">
+        <el-select
+          v-model="formData.roleIds"
+          multiple
+          :placeholder="t('system.user.rolePlaceholder')"
+        >
           <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('common.ok')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{ t('common.cancel') }}</el-button>
     </template>
   </Dialog>
 </template>

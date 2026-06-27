@@ -14,7 +14,7 @@ export type FormVO = {
 // 获得工作流的表单定义分页
 export const getFormPage = async (params) => {
   return await request.get({
-    url: `${BPM_BASE_URL}/form/page`,
+    url: `/${BPM_BASE_URL}/form/page`,
     params
   })
 }
@@ -22,14 +22,14 @@ export const getFormPage = async (params) => {
 // 获得动态表单的精简列表
 export const getFormSimpleList = async () => {
   return await request.get({
-    url: `${BPM_BASE_URL}/form/list`
+    url: `/${BPM_BASE_URL}/form/list`
   })
 }
 
 // 创建工作流的表单定义
 export const createForm = async (data: FormVO) => {
   return await request.post({
-    url: `${BPM_BASE_URL}/form/create`,
+    url: `/${BPM_BASE_URL}/form/create`,
     data: data
   })
 }
@@ -37,7 +37,7 @@ export const createForm = async (data: FormVO) => {
 // 更新工作流的表单定义
 export const updateForm = async (data: FormVO) => {
   return await request.put({
-    url: `${BPM_BASE_URL}/form/update`,
+    url: `/${BPM_BASE_URL}/form/update`,
     data: data
   })
 }
@@ -45,13 +45,13 @@ export const updateForm = async (data: FormVO) => {
 // 删除工作流的表单定义
 export const deleteForm = async (id: number) => {
   return await request.delete({
-    url: `${BPM_BASE_URL}/form/delete/` + id
+    url: `/${BPM_BASE_URL}/form/delete/` + id
   })
 }
 
 // 获得工作流的表单定义
 export const getForm = async (id: number) => {
   return await request.get({
-    url: `${BPM_BASE_URL}/form/get/` + id
+    url: `/${BPM_BASE_URL}/form/get/` + id
   })
 }

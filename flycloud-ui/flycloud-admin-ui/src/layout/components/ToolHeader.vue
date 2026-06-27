@@ -5,8 +5,7 @@ import { Collapse } from '@/layout/components/Collapse'
 import { UserInfo } from '@/layout/components/UserInfo'
 import { Screenfull } from '@/layout/components/Screenfull'
 import { Breadcrumb } from '@/layout/components/Breadcrumb'
-import { SizeDropdown } from '@/layout/components/SizeDropdown'
-import { LocaleDropdown } from '@/layout/components/LocaleDropdown'
+import { PreferenceDropdown } from '@/layout/components/PreferenceDropdown'
 import RouterSearch from '@/components/RouterSearch/index.vue'
 import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
@@ -29,14 +28,8 @@ const screenfull = computed(() => appStore.getScreenfull)
 // 搜索图片
 const search = computed(() => appStore.search)
 
-// 尺寸图标
-const size = computed(() => appStore.getSize)
-
 // 布局
 const layout = computed(() => appStore.getLayout)
-
-// 多语言图标
-const locale = computed(() => appStore.getLocale)
 
 // 消息图标
 const message = computed(() => appStore.getMessage)
@@ -63,20 +56,22 @@ export default defineComponent({
         ) : undefined}
         <div class="h-full flex items-center">
           {screenfull.value ? (
-            <Screenfull class="custom-hover" color="var(--top-header-text-color)"></Screenfull>
-          ) : undefined}
-          {search.value ? <RouterSearch isModal={false} /> : undefined}
-          {size.value ? (
-            <SizeDropdown class="custom-hover" color="var(--top-header-text-color)"></SizeDropdown>
-          ) : undefined}
-          {locale.value ? (
-            <LocaleDropdown
-              class="custom-hover"
+            <Screenfull
+              class="custom-hover top-icon-action top-icon-action--screenfull"
               color="var(--top-header-text-color)"
-            ></LocaleDropdown>
+            ></Screenfull>
           ) : undefined}
+          {search.value ? (
+            <RouterSearch class="top-icon-action top-icon-action--wide" isModal={false} />
+          ) : undefined}
+          <span class="tool-divider"></span>
+          <PreferenceDropdown color="var(--top-header-text-color)"></PreferenceDropdown>
+          <span class="tool-divider"></span>
           {message.value ? (
-            <Message class="custom-hover" color="var(--top-header-text-color)"></Message>
+            <Message
+              class="custom-hover top-icon-action top-icon-action--wide"
+              color="var(--top-header-text-color)"
+            ></Message>
           ) : undefined}
           <UserInfo></UserInfo>
         </div>
@@ -91,5 +86,28 @@ $prefix-cls: #{$namespace}-tool-header;
 
 .#{$prefix-cls} {
   transition: left var(--transition-time-02);
+}
+
+:deep(.top-icon-action) {
+  min-width: 42px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.top-icon-action--wide) {
+  min-width: 63px;
+}
+
+:deep(.top-icon-action--screenfull) {
+  min-width: 70px;
+}
+
+.tool-divider {
+  width: 1px;
+  height: 24px;
+  margin: 0 8px;
+  background: var(--el-border-color);
 }
 </style>

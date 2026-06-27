@@ -1,12 +1,11 @@
 <template>
-
   <el-row :gutter="20">
     <!-- 左侧部门树 -->
-<!--    <el-col :span="4" :xs="24">-->
-<!--      <ContentWrap class="h-1/1">-->
-<!--        <DeptTree @node-click="handleDeptNodeClick" />-->
-<!--      </ContentWrap>-->
-<!--    </el-col>-->
+    <!--    <el-col :span="4" :xs="24">-->
+    <!--      <ContentWrap class="h-1/1">-->
+    <!--        <DeptTree @node-click="handleDeptNodeClick" />-->
+    <!--      </ContentWrap>-->
+    <!--    </el-col>-->
     <el-col :span="24" :xs="24">
       <!-- 搜索 -->
       <ContentWrap>
@@ -17,28 +16,28 @@
           :inline="true"
           label-width="68px"
         >
-          <el-form-item label="账号" prop="account">
+          <el-form-item :label="t('system.user.account')" prop="account">
             <el-input
               v-model="queryParams.account"
-              placeholder="请输入账号"
+              :placeholder="t('system.user.accountPlaceholder')"
               clearable
               @keyup.enter="handleQuery"
               class="!w-240px"
             />
           </el-form-item>
-          <el-form-item label="手机号码" prop="telephone">
+          <el-form-item :label="t('system.user.phone')" prop="telephone">
             <el-input
               v-model="queryParams.telephone"
-              placeholder="请输入手机号码"
+              :placeholder="t('system.user.phonePlaceholder')"
               clearable
               @keyup.enter="handleQuery"
               class="!w-240px"
             />
           </el-form-item>
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="t('common.status')" prop="status">
             <el-select
               v-model="queryParams.status"
-              placeholder="用户状态"
+              :placeholder="t('system.user.statusPlaceholder')"
               clearable
               class="!w-240px"
             >
@@ -50,26 +49,30 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="创建时间" prop="createTime">
+          <el-form-item :label="t('common.createTime')" prop="createTime">
             <el-date-picker
               v-model="queryParams.createTime"
               value-format="YYYY-MM-DD HH:mm:ss"
               type="datetimerange"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="t('common.startTimeText')"
+              :end-placeholder="t('common.endTimeText')"
               class="!w-240px"
             />
           </el-form-item>
           <el-form-item>
-            <el-button @click="handleQuery"><Icon icon="ep:search" />搜索</el-button>
-            <el-button @click="resetQuery"><Icon icon="ep:refresh" />重置</el-button>
+            <el-button @click="handleQuery"
+              ><Icon icon="ep:search" />{{ t('common.search') }}</el-button
+            >
+            <el-button @click="resetQuery"
+              ><Icon icon="ep:refresh" />{{ t('common.reset') }}</el-button
+            >
             <el-button
               type="primary"
               plain
               @click="openForm('create')"
               v-hasPermi="['sys:user:saveOrUpdate']"
             >
-              <Icon icon="ep:plus" /> 新增
+              <Icon icon="ep:plus" /> {{ t('action.create') }}
             </el-button>
             <el-button
               type="warning"
@@ -77,7 +80,7 @@
               @click="handleImport"
               v-hasPermi="['sys:user:download']"
             >
-              <Icon icon="ep:upload" /> 导入
+              <Icon icon="ep:upload" /> {{ t('action.import') }}
             </el-button>
             <el-button
               type="success"
@@ -86,44 +89,48 @@
               :loading="exportLoading"
               v-hasPermi="['system:user:export']"
             >
-              <Icon icon="ep:download" />导出
+              <Icon icon="ep:download" />{{ t('action.export') }}
             </el-button>
           </el-form-item>
         </el-form>
       </ContentWrap>
 
-
       <ContentWrap>
         <el-table v-loading="loading" :data="list" height="calc(100vh - 355px)">
-          <el-table-column label="用户编号" align="center" key="id" prop="id" />
+          <el-table-column :label="t('system.user.id')" align="center" key="id" prop="id" />
           <el-table-column
-            label="账号"
+            :label="t('system.user.account')"
             align="center"
             prop="account"
             :show-overflow-tooltip="true"
           />
           <el-table-column
-            label="昵称"
+            :label="t('system.user.nickname')"
             align="center"
             prop="name"
             :show-overflow-tooltip="true"
           />
           <el-table-column
-            label="角色"
+            :label="t('system.user.role')"
             align="center"
             key="roleNames"
             prop="roleNames"
             :show-overflow-tooltip="true"
           />
           <el-table-column
-            label="部门"
+            :label="t('system.user.dept')"
             align="center"
             key="deptName"
             prop="deptName"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="手机号码" align="center" prop="telephone" width="120" />
-          <el-table-column label="状态" key="status" width="100">
+          <el-table-column
+            :label="t('system.user.phone')"
+            align="center"
+            prop="telephone"
+            width="120"
+          />
+          <el-table-column :label="t('common.status')" key="status" width="100">
             <template #default="scope">
               <el-switch
                 v-model="scope.row.status"
@@ -135,14 +142,14 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="创建时间"
+            :label="t('common.createTime')"
             align="center"
             prop="createTime"
             :formatter="dateFormatter"
             width="180"
           />
 
-          <el-table-column label="操作" align="center" width="220" fixed="right">
+          <el-table-column :label="t('common.operation')" align="center" width="220" fixed="right">
             <template #default="scope">
               <el-button
                 type="primary"
@@ -150,7 +157,7 @@
                 @click="openForm('update', scope.row.id)"
                 v-hasPermi="['sys:user:saveOrUpdate']"
               >
-                <Icon icon="ep:edit" />修改
+                <Icon icon="ep:edit" />{{ t('action.update') }}
               </el-button>
 
               <el-button
@@ -159,7 +166,7 @@
                 @click="handleRole(scope.row)"
                 v-hasPermi="['sys:user:assignRole']"
               >
-                <Icon icon="ep:circle-check" />分配角色
+                <Icon icon="ep:circle-check" />{{ t('system.user.assignRole') }}
               </el-button>
 
               <el-button
@@ -168,7 +175,7 @@
                 @click="handleResetPwd(scope.row)"
                 v-hasPermi="['sys:user:restartPassword']"
               >
-                <Icon icon="ep:key" />重置密码
+                <Icon icon="ep:key" />{{ t('system.user.resetPassword') }}
               </el-button>
 
               <el-button
@@ -177,7 +184,7 @@
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['sys:user:delete']"
               >
-                <Icon icon="ep:delete" />删除
+                <Icon icon="ep:delete" />{{ t('action.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -276,8 +283,11 @@ const handleImport = () => {
 const handleStatusChange = async (row: UserApi.UserVO) => {
   try {
     // 修改状态的二次确认
-    const text = row.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
-    await message.confirm('确认要"' + text + '""' + row.account + '"用户吗?')
+    const text =
+      row.status === CommonStatusEnum.ENABLE
+        ? t('system.user.enableAction')
+        : t('system.user.disableAction')
+    await message.confirm(t('system.user.statusConfirm', { action: text, account: row.account }))
     // 发起修改状态
     await UserApi.updateUserStatus(row.id, row.status)
     // 刷新列表
@@ -298,7 +308,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await UserApi.exportUser(queryParams)
-    download.excel(data, '用户数据.xls')
+    download.excel(data, t('system.user.exportFileName'))
   } catch {
   } finally {
     exportLoading.value = false
@@ -340,13 +350,13 @@ const handleResetPwd = async (row: UserApi.UserVO) => {
   try {
     // 重置的二次确认
     const result = await message.prompt(
-      '请输入"' + row.account + '"的新密码',
+      t('system.user.resetPasswordPrompt', { account: row.account }),
       t('common.reminder')
     )
     const password = result.value
     // 发起重置
     await UserApi.resetUserPwd(row.id, password)
-    message.success('修改成功，新密码是：' + password)
+    message.success(t('system.user.resetPasswordSuccess', { password }))
   } catch {}
 }
 

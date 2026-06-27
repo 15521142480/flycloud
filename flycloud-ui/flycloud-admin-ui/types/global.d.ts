@@ -12,7 +12,7 @@ declare global {
 
   type ComponentRef<T> = InstanceType<T>
 
-  type LocaleType = 'zh-CN' | 'en'
+  type LocaleType = 'zh-CN' | 'zh-TW' | 'en'
 
   declare type TimeoutHandle = ReturnType<typeof setTimeout>
   declare type IntervalHandle = ReturnType<typeof setInterval>

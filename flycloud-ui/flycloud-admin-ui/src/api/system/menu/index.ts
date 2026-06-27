@@ -35,7 +35,6 @@ export const getMenusList = () => {
   return request.get({ url: `/${SYS_BASE_URL}/menu/getList` })
 }
 
-
 // 获取菜单详情
 export const getMenu = (id: number) => {
   return request.get({ url: `/${SYS_BASE_URL}/menu/get/` + id })
@@ -53,7 +52,7 @@ export const updateMenu = (data: MenuVO) => {
 
 // 修改菜单状态
 export const updateStatus = (id: number, status: number) => {
-  return request.post({ url: `${SYS_BASE_URL}/menu/enable?id=` + id + `&status=` + status})
+  return request.post({ url: `/${SYS_BASE_URL}/menu/enable?id=` + id + `&status=` + status })
 }
 
 // 删除菜单

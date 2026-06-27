@@ -33,19 +33,19 @@ export const getModelList = async (name: string | undefined) => {
 }
 
 export const getModelPage = async (params) => {
-  return await request.get({ url: `${BPM_BASE_URL}/model/page`, params })
+  return await request.get({ url: `/${BPM_BASE_URL}/model/page`, params })
 }
 
 export const getModel = async (id: string) => {
-  return await request.get({ url: `${BPM_BASE_URL}/model/get/` + id })
+  return await request.get({ url: `/${BPM_BASE_URL}/model/get/` + id })
 }
 
 export const updateModel = async (data: ModelVO) => {
-  return await request.put({ url: `${BPM_BASE_URL}/model/update`, data: data })
+  return await request.put({ url: `/${BPM_BASE_URL}/model/update`, data: data })
 }
 
 export const updateModelBpmn = async (data: ModelVO) => {
-  return await request.put({ url: `${BPM_BASE_URL}/model/update-bpmn`, data: data })
+  return await request.put({ url: `/${BPM_BASE_URL}/model/update-bpmn`, data: data })
 }
 
 // 任务状态修改
@@ -54,17 +54,17 @@ export const updateModelState = async (id: number, state: number) => {
     id: id,
     state: state
   }
-  return await request.put({ url: `${BPM_BASE_URL}/model/update-state`, data: data })
+  return await request.put({ url: `/${BPM_BASE_URL}/model/update-state`, data: data })
 }
 
 export const createModel = async (data: ModelVO) => {
-  return await request.post({ url: `${BPM_BASE_URL}/model/create`, data: data })
+  return await request.post({ url: `/${BPM_BASE_URL}/model/create`, data: data })
 }
 
 export const deleteModel = async (id: number) => {
-  return await request.delete({ url: `${BPM_BASE_URL}/model/delete/` + id })
+  return await request.delete({ url: `/${BPM_BASE_URL}/model/delete/` + id })
 }
 
 export const deployModel = async (id: number) => {
-  return await request.post({ url: `${BPM_BASE_URL}/model/deploy/` + id })
+  return await request.post({ url: `/${BPM_BASE_URL}/model/deploy/` + id })
 }
