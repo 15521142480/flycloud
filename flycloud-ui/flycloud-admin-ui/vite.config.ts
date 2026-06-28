@@ -1,5 +1,5 @@
-import {resolve} from 'path'
-import type {defineConfig, ConfigEnv, UserConfig} from 'vite'
+// import {resolve} from 'path'
+import type {ConfigEnv, UserConfig} from 'vite'
 import {loadEnv} from 'vite'
 import {createVitePlugins} from './build/vite'
 import {exclude, include} from "./build/vite/optimize"
@@ -13,9 +13,9 @@ const root = process.cwd()
 // const AUTH_BASE_URL = import.meta.env.VITE_AUTH_SERVER
 
 // 路径查找
-function pathResolve(dir: string) {
-    return resolve(root, '.', dir)
-}
+// function pathResolve(dir: string) {
+//     return resolve(root, '.', dir)
+// }
 
 // export default defineConfig({
 //   base: "./"
