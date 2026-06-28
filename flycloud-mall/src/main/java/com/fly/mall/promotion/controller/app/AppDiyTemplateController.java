@@ -4,7 +4,8 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.domain.promotion.bo.DiyTemplateBo;
-import com.fly.mall.api.domain.promotion.vo.DiyTemplateVo;
+import com.fly.mall.api.domain.promotion.vo.AppDiyTemplatePropertyRespVo;
+import com.fly.mall.api.domain.promotion.vo.DiyTemplateRespVo;
 import com.fly.mall.promotion.service.IDiyTemplateService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -30,35 +31,51 @@ public class AppDiyTemplateController {
     private final IDiyTemplateService diyTemplateService;
 
     /**
+     * 获取移动端正在使用的装修模板。
+     */
+    @GetMapping("/used")
+    public R<AppDiyTemplatePropertyRespVo> used() {
+        return R.ok(diyTemplateService.queryUsedAppTemplateProperty());
+    }
+
+    /**
+     * 获取移动端装修模板详情。
+     */
+    @GetMapping("/get")
+    public R<AppDiyTemplatePropertyRespVo> get(@RequestParam("id") Long id) {
+        return R.ok(diyTemplateService.queryAppPropertyRespById(id));
+    }
+
+    /**
      * 查询移动端装修模板分页列表。
      */
     @GetMapping("/list")
-    public R<PageVo<DiyTemplateVo>> list(DiyTemplateBo bo, PageBo page) {
-        return R.ok(diyTemplateService.queryPageList(bo, page));
+    public R<PageVo<DiyTemplateRespVo>> list(DiyTemplateBo bo, PageBo page) {
+        return R.ok(diyTemplateService.queryRespPageList(bo, page));
     }
 
     /**
      * 获得分页列表。
      */
     @GetMapping("/page")
-    public R<PageVo<DiyTemplateVo>> page(DiyTemplateBo bo, PageBo page) {
-        return R.ok(diyTemplateService.queryPageList(bo, page));
+    public R<PageVo<DiyTemplateRespVo>> page(DiyTemplateBo bo, PageBo page) {
+        return R.ok(diyTemplateService.queryRespPageList(bo, page));
     }
 
     /**
      * 获取移动端装修模板详情。
      */
     @GetMapping("/get/{id}")
-    public R<DiyTemplateVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(diyTemplateService.queryById(id));
+    public R<AppDiyTemplatePropertyRespVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(diyTemplateService.queryAppPropertyRespById(id));
     }
 
     /**
      * 获得详情。
      */
     @GetMapping("/get-detail")
-    public R<DiyTemplateVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(diyTemplateService.queryById(id));
+    public R<AppDiyTemplatePropertyRespVo> getDetail(@RequestParam("id") Long id) {
+        return R.ok(diyTemplateService.queryAppPropertyRespById(id));
     }
 
 }

@@ -15,25 +15,25 @@ import lombok.Data;
 @Data
 public class DiyTemplateBo extends BaseEntity {
 
-    @Schema(description = "id")
+    @Schema(description = "装修模板编号")
     private Long id;
 
-    @Schema(description = "name")
+    @Schema(description = "模板名称")
     private String name;
 
-    @Schema(description = "used")
+    @Schema(description = "是否使用")
     private Boolean used;
 
-    @Schema(description = "usedTime")
+    @Schema(description = "使用时间")
     private LocalDateTime usedTime;
 
-    @Schema(description = "remark")
+    @Schema(description = "备注")
     private String remark;
 
-    @Schema(description = "previewPicUrls")
+    @Schema(description = "预览图地址列表")
     private List<String> previewPicUrls;
 
-    @Schema(description = "property")
+    @Schema(description = "模板属性 JSON")
     private String property;
 
 }

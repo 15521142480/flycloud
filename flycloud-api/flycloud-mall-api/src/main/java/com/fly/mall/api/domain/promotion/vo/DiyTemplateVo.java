@@ -30,6 +30,21 @@ public class DiyTemplateVo implements Serializable {
 
     private String property;
 
+    /**
+     * 模板下的装修页面列表。
+     */
+    private List<DiyPageVo> pages;
+
+    /**
+     * 首页装修属性 JSON。
+     */
+    private String home;
+
+    /**
+     * 我的页面装修属性 JSON。
+     */
+    private String user;
+
     private Boolean isDeleted;
 
     private LocalDateTime createTime;
