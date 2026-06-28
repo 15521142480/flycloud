@@ -12,7 +12,8 @@ export function checkPermi(value: string[]) {
     const { wsCache } = useCache()
     const permissionDatas = value
     const all_permission = '*:*:*'
-    const permissionList = wsCache.get(CACHE_KEY.USER).permissionList
+    const userInfo = wsCache.get(CACHE_KEY.USER)
+    const permissionList = userInfo?.permissionList ?? []
     const hasPermission = permissionList.some((permission) => {
       return all_permission === permission || permissionDatas.includes(permission)
     })
@@ -33,7 +34,8 @@ export function checkRole(value: string[]) {
     const { wsCache } = useCache()
     const permissionRoles = value
     const super_admin = 'admin'
-    const roles = wsCache.get(CACHE_KEY.USER).roles
+    const userInfo = wsCache.get(CACHE_KEY.USER)
+    const roles = userInfo?.roles ?? []
     const hasRole = roles.some((role) => {
       return super_admin === role || permissionRoles.includes(role)
     })
