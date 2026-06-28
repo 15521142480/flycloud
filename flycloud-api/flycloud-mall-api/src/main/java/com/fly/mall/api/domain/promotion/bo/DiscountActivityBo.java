@@ -1,0 +1,35 @@
+package com.fly.mall.api.domain.promotion.bo;
+
+import com.fly.common.domain.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import lombok.Data;
+
+/**
+ * 限时折扣活动 BO。
+ *
+ * @author lxs
+ * @date 2026-06-28
+ */
+@Data
+public class DiscountActivityBo extends BaseEntity {
+
+    @Schema(description = "id")
+    private Long id;
+
+    @Schema(description = "name")
+    private String name;
+
+    @Schema(description = "status")
+    private Integer status;
+
+    @Schema(description = "startTime")
+    private LocalDateTime startTime;
+
+    @Schema(description = "endTime")
+    private LocalDateTime endTime;
+
+    @Schema(description = "remark")
+    private String remark;
+
+}

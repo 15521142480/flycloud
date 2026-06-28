@@ -10,11 +10,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 商城启动类
  *
  * @author lxs
- * @date 2023/2/13
+ * @date 2026/2/13
  */
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.fly.**"})
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { "com.fly.**" })
 @EnableSwaggerDoc
 public class MallApplication {
 

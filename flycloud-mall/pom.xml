@@ -19,6 +19,21 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-mall-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-database</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-feign</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -45,7 +60,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
