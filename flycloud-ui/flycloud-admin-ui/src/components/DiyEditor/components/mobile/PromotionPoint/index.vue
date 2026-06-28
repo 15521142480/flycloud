@@ -66,7 +66,7 @@
             v-if="property.fields.price.show"
             :style="{ color: property.fields.price.color }"
             class="text-16px"
-            >{{ spu.point }}积分
+            >{{ spu.point }}{{ t('extra.k4b7324dd') }}
             {{
               !spu.pointPrice || spu.pointPrice === 0 ? '' : `+${fenToYuan(spu.pointPrice)}元`
             }}</span

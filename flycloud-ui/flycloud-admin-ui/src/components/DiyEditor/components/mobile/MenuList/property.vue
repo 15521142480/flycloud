@@ -21,13 +21,19 @@
               </template>
             </UploadImg>
           </el-form-item>
-          <el-form-item label="标题" prop="title">
+          <el-form-item :label="t('table.title')" prop="title">
             <InputWithColor v-model="element.title" v-model:color="element.titleColor" />
           </el-form-item>
-          <el-form-item label="副标题" prop="subtitle">
+          <el-form-item
+            :label="t('auto.components.DiyEditor.components.mobile.MenuGrid.config.k8344831e')"
+            prop="subtitle"
+          >
             <InputWithColor v-model="element.subtitle" v-model:color="element.subtitleColor" />
           </el-form-item>
-          <el-form-item label="链接" prop="url">
+          <el-form-item
+            :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')"
+            prop="url"
+          >
             <AppLinkInput v-model="element.url" />
           </el-form-item>
         </template>

@@ -45,7 +45,13 @@
                   />
                 </div>
                 <div v-else class="branch-title" @click="clickEvent(index)"> {{ item.name }} </div>
-                <div class="branch-priority"> 优先级{{ index + 1 }} </div>
+                <div class="branch-priority">
+                  {{
+                    t(
+                      'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k7cabe771'
+                    )
+                  }}{{ index + 1 }}
+                </div>
               </div>
               <div class="branch-node-content" @click="conditionNodeConfig(item.id)">
                 <div class="branch-node-text" :title="item.showText" v-if="item.showText">

@@ -107,19 +107,23 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="出生日期"
+        :label="t('auto.views.infra.demo.demo03.erp.Demo03StudentForm.ka1cd13bc')"
         prop="birthday"
         width="180px"
       />
-      <el-table-column align="center" label="简介" prop="description" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k5ea2e0cd')"
+        prop="description"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['infra:demo03-student:update']"
@@ -127,7 +131,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['infra:demo03-student:delete']"
@@ -135,7 +139,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -154,10 +158,16 @@
   <!-- 子表的列表 -->
   <ContentWrap>
     <el-tabs model-value="demo03Course">
-      <el-tab-pane label="学生课程" name="demo03Course">
+      <el-tab-pane
+        :label="t('auto.views.infra.demo.demo03.inner.Demo03StudentForm.kbb3dc762')"
+        name="demo03Course"
+      >
         <Demo03CourseList :student-id="currentRow?.id" />
       </el-tab-pane>
-      <el-tab-pane label="学生班级" name="demo03Grade">
+      <el-tab-pane
+        :label="t('auto.views.infra.demo.demo03.inner.Demo03StudentForm.k2d98447b')"
+        name="demo03Grade"
+      >
         <Demo03GradeList :student-id="currentRow?.id" />
       </el-tab-pane>
     </el-tabs>

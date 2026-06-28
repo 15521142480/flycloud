@@ -71,43 +71,76 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column label="产品类型" align="center" prop="categoryName" width="160" />
-      <el-table-column label="产品单位" align="center" prop="unit">
+      <el-table-column
+        :label="t('auto.views.crm.product.ProductForm.k93b6f015')"
+        align="center"
+        prop="categoryName"
+        width="160"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.product.ProductForm.k298ff4b9')"
+        align="center"
+        prop="unit"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_PRODUCT_UNIT" :value="scope.row.unit" />
         </template>
       </el-table-column>
-      <el-table-column label="产品编码" align="center" prop="no" />
       <el-table-column
-        label="价格（元）"
+        :label="t('auto.views.crm.product.ProductForm.k440ef986')"
+        align="center"
+        prop="no"
+      />
+      <el-table-column
+        :label="t('extra.k3a50fbd4')"
         align="center"
         prop="price"
         :formatter="erpPriceTableColumnFormatter"
         width="100"
       />
-      <el-table-column label="产品描述" align="center" prop="description" width="150" />
-      <el-table-column label="上架状态" align="center" prop="status" width="120">
+      <el-table-column
+        :label="t('auto.views.crm.product.ProductForm.k03917006')"
+        align="center"
+        prop="description"
+        width="150"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.product.ProductForm.k461446e9')"
+        align="center"
+        prop="status"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_PRODUCT_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="负责人" align="center" prop="ownerUserName" width="120" />
       <el-table-column
-        label="更新时间"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        align="center"
+        prop="ownerUserName"
+        width="120"
+      />
+      <el-table-column
+        :label="t('common.updateTime')"
         align="center"
         prop="updateTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="创建人" align="center" prop="creatorName" width="120" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        align="center"
+        prop="creatorName"
+        width="120"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" fixed="right" width="160">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right" width="160">
         <template #default="scope">
           <el-button
             link
@@ -115,7 +148,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['crm:product:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -123,7 +156,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['crm:product:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

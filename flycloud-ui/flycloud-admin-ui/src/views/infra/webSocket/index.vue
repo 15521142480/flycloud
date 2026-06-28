@@ -13,48 +13,48 @@
         </div>
       </template>
       <div class="flex items-center">
-        <span class="mr-4 text-lg font-medium"> 连接状态: </span>
+        <span class="mr-4 text-lg font-medium"> {{ t('extra.k65026c6a') }} </span>
         <el-tag :color="getTagColor">{{ status }}</el-tag>
       </div>
       <hr class="my-4" />
       <div class="flex">
         <el-input v-model="server" disabled>
-          <template #prepend>服务地址</template>
+          <template #prepend>{{ t('extra.kf562f75c') }}</template>
         </el-input>
         <el-button :type="getIsOpen ? 'danger' : 'primary'" @click="toggleConnectStatus">
           {{ getIsOpen ? '关闭连接' : '开启连接' }}
         </el-button>
       </div>
-      <p class="mt-4 text-lg font-medium">消息输入框</p>
+      <p class="mt-4 text-lg font-medium">{{ t('extra.kebd99cb2') }}</p>
       <hr class="my-4" />
       <el-input
         v-model="sendText"
         :autosize="{ minRows: 2, maxRows: 4 }"
         :disabled="!getIsOpen"
         clearable
-        placeholder="请输入你要发送的消息"
+        :placeholder="t('extra.kc4651155')"
         type="textarea"
       />
-      <el-select v-model="sendUserId" class="mt-4" placeholder="请选择发送人">
-        <el-option key="" label="所有人" value="" />
+      <el-select v-model="sendUserId" class="mt-4" :placeholder="t('extra.kef45e0ea')">
+        <el-option key="" :label="t('extra.kdbe48d46')" value="" />
         <el-option v-for="user in userList" :key="user.id" :label="user.name" :value="user.id" />
       </el-select>
       <el-button :disabled="!getIsOpen" block class="ml-2 mt-4" type="primary" @click="handlerSend">
-        发送
+        {{ t('extra.k3eab8c0b') }}
       </el-button>
     </el-card>
     <!-- 右侧：消息记录 -->
     <el-card :gutter="12" class="w-1/2" shadow="always">
       <template #header>
         <div class="card-header">
-          <span>消息记录</span>
+          <span>{{ t('extra.k0468263d') }}</span>
         </div>
       </template>
       <div class="max-h-80 overflow-auto">
         <ul>
           <li v-for="msg in messageReverseList" :key="msg.time" class="mt-2">
             <div class="flex items-center">
-              <span class="text-primary mr-2 font-medium">收到消息:</span>
+              <span class="text-primary mr-2 font-medium">{{ t('extra.k286c4a5e') }}</span>
               <span>{{ formatDate(msg.time) }}</span>
             </div>
             <div>

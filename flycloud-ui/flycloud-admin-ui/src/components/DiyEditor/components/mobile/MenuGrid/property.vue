@@ -33,26 +33,37 @@
                 </template>
               </UploadImg>
             </el-form-item>
-            <el-form-item label="标题" prop="title">
+            <el-form-item :label="t('table.title')" prop="title">
               <InputWithColor v-model="element.title" v-model:color="element.titleColor" />
             </el-form-item>
-            <el-form-item label="副标题" prop="subtitle">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.MenuGrid.config.k8344831e')"
+              prop="subtitle"
+            >
               <InputWithColor v-model="element.subtitle" v-model:color="element.subtitleColor" />
             </el-form-item>
-            <el-form-item label="链接" prop="url">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')"
+              prop="url"
+            >
               <AppLinkInput v-model="element.url" />
             </el-form-item>
-            <el-form-item label="显示角标" prop="badge.show">
+            <el-form-item :label="t('extra.kf9b47e25')" prop="badge.show">
               <el-switch v-model="element.badge.show" />
             </el-form-item>
             <template v-if="element.badge.show">
-              <el-form-item label="角标内容" prop="badge.text">
+              <el-form-item :label="t('extra.k70b4d067')" prop="badge.text">
                 <InputWithColor
                   v-model="element.badge.text"
                   v-model:color="element.badge.textColor"
                 />
               </el-form-item>
-              <el-form-item label="背景颜色" prop="badge.bgColor">
+              <el-form-item
+                :label="
+                  t('auto.components.DiyEditor.components.mobile.NavigationBar.property.k4a2d8a28')
+                "
+                prop="badge.bgColor"
+              >
                 <ColorInput v-model="element.badge.bgColor" />
               </el-form-item>
             </template>

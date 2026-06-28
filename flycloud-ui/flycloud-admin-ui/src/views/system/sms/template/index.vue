@@ -154,20 +154,24 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_TEMPLATE_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status" width="80">
+      <el-table-column :label="t('common.status')" align="center" prop="status" width="80">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
       <el-table-column
-        label="短信 API 的模板编号"
+        :label="t('auto.views.system.sms.template.index.kb7e5b1c6')"
         align="center"
         prop="apiTemplateId"
         width="200"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="短信渠道" align="center" width="120">
+      <el-table-column
+        :label="t('auto.views.system.sms.log.SmsLogDetail.k7575f737')"
+        align="center"
+        width="120"
+      >
         <template #default="scope">
           <div>
             {{ channelList.find((channel) => channel.id === scope.row.channelId)?.signature }}
@@ -176,13 +180,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" width="210" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="210" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -190,7 +194,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['system:sms-template:update']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             link
@@ -198,7 +202,7 @@
             @click="openSendForm(scope.row.id)"
             v-hasPermi="['system:sms-template:send-sms']"
           >
-            测试
+            {{ t('action.test') }}
           </el-button>
           <el-button
             link
@@ -206,7 +210,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:sms-template:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

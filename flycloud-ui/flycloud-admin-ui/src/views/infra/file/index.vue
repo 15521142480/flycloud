@@ -120,13 +120,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="上传时间"
+        :label="t('extra.kcae25527')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -134,7 +134,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['infra:file:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

@@ -106,18 +106,28 @@
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column label="用户编号" align="center" prop="userId" width="80" />
-      <el-table-column label="模板编码" align="center" prop="templateCode" width="80" />
-      <el-table-column label="发送人名称" align="center" prop="templateNickname" width="180" />
+      <el-table-column :label="t('system.user.id')" align="center" prop="userId" width="80" />
       <el-table-column
-        label="模版内容"
+        :label="t('auto.views.system.mail.log.log_data.k5695a649')"
+        align="center"
+        prop="templateCode"
+        width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.system.mail.template.template_data.k008bf359')"
+        align="center"
+        prop="templateNickname"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.k54ebbb0d')"
         align="center"
         prop="templateContent"
         width="200"
         show-overflow-tooltip
       />
       <el-table-column
-        label="模版参数"
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.k59bcfa64')"
         align="center"
         prop="templateParams"
         width="180"
@@ -125,31 +135,41 @@
       >
         <template #default="scope"> {{ scope.row.templateParams }}</template>
       </el-table-column>
-      <el-table-column label="模版类型" align="center" prop="templateType" width="120">
+      <el-table-column
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.k653d8b5b')"
+        align="center"
+        prop="templateType"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_NOTIFY_TEMPLATE_TYPE" :value="scope.row.templateType" />
         </template>
       </el-table-column>
-      <el-table-column label="是否已读" align="center" prop="readStatus" width="100">
+      <el-table-column
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.kbfc6b329')"
+        align="center"
+        prop="readStatus"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.readStatus" />
         </template>
       </el-table-column>
       <el-table-column
-        label="阅读时间"
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.k9af1a262')"
         align="center"
         prop="readTime"
         width="180"
         :formatter="dateFormatter"
       />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -157,7 +177,7 @@
             @click="openDetail(scope.row)"
             v-hasPermi="['system:notify-message:query']"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
         </template>
       </el-table-column>

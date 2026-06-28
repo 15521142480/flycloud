@@ -82,7 +82,11 @@
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
         </template>
       </el-table-column>
-      <el-table-column label="商品图片" min-width="80" prop="spuName">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
+        min-width="80"
+        prop="spuName"
+      >
         <template #default="scope">
           <el-image
             :preview-src-list="[scope.row.picUrl]"
@@ -92,22 +96,31 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" min-width="300" prop="spuName" />
+      <el-table-column
+        :label="t('auto.views.pay.cashier.index.kd415beac')"
+        min-width="300"
+        prop="spuName"
+      />
       <el-table-column
         :formatter="fenToYuanFormat"
-        label="原价"
+        :label="t('extra.k1afdfea7')"
         min-width="100"
         prop="marketPrice"
       />
-      <el-table-column label="拼团价" min-width="100" prop="seckillPrice">
+      <el-table-column :label="t('extra.k35a5764f')" min-width="100" prop="seckillPrice">
         <template #default="scope">
           {{ formatCombinationPrice(scope.row.products) }}
         </template>
       </el-table-column>
-      <el-table-column label="开团组数" min-width="100" prop="groupCount" />
-      <el-table-column label="成团组数" min-width="100" prop="groupSuccessCount" />
-      <el-table-column label="购买次数" min-width="100" prop="recordCount" />
-      <el-table-column align="center" label="活动状态" min-width="100" prop="status">
+      <el-table-column :label="t('extra.kdce0ed5c')" min-width="100" prop="groupCount" />
+      <el-table-column :label="t('extra.k8015f7c6')" min-width="100" prop="groupSuccessCount" />
+      <el-table-column :label="t('extra.kff1e75da')" min-width="100" prop="recordCount" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+        min-width="100"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -115,11 +128,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" fixed="right" label="操作" width="150px">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="150px">
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:combination-activity:update']"
@@ -127,7 +140,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-if="scope.row.status === 0"
@@ -136,7 +149,7 @@
             type="danger"
             @click="handleClose(scope.row.id)"
           >
-            关闭
+            {{ t('common.close') }}
           </el-button>
           <el-button
             v-else
@@ -145,7 +158,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

@@ -141,7 +141,11 @@
                 />
               </el-form-item>
             </template>
-            <el-form-item label="链接" class="m-b-8px!" label-width="40px">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')"
+              class="m-b-8px!"
+              label-width="40px"
+            >
               <AppLinkInput v-model="element.url" />
             </el-form-item>
           </template>

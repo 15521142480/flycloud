@@ -69,7 +69,7 @@
           </el-scrollbar>
         </el-col>
       </el-row>
-      <el-empty class="!py-200px" :image-size="200" description="没有找到搜索结果" v-else />
+      <el-empty class="!py-200px" :image-size="200" :description="t('extra.ka9940e2a')" v-else />
     </ContentWrap>
   </template>
 

@@ -184,12 +184,10 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
-          <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          <Icon class="mr-5px" icon="ep:search" /> {{ t('extra.k04864902') }}
         </el-button>
         <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          <Icon class="mr-5px" icon="ep:refresh" /> {{ t('common.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -208,16 +206,14 @@
               type="primary"
               @click="openDetail(row.id)"
             >
-              <Icon icon="ep:notification" />
-              详情
+              <Icon icon="ep:notification" /> {{ t('action.detail') }}
             </el-button>
             <el-dropdown
               v-hasPermi="['trade:order:update']"
               @command="(command) => handleCommand(command, row)"
             >
               <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" />
-                更多
+                <Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -229,12 +225,10 @@
                     "
                     command="delivery"
                   >
-                    <Icon icon="ep:takeaway-box" />
-                    发货
+                    <Icon icon="ep:takeaway-box" /> {{ t('extra.k3ddeb39f') }}
                   </el-dropdown-item>
                   <el-dropdown-item command="remark">
-                    <Icon icon="ep:chat-line-square" />
-                    备注
+                    <Icon icon="ep:chat-line-square" /> {{ t('common.remark') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>

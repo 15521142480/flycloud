@@ -94,10 +94,10 @@
       </el-col>
     </template>
     <el-col :span="24" class="mt-10px">
-      <el-button type="primary" @click="addRule">添加优惠规则</el-button>
+      <el-button type="primary" @click="addRule">{{ t('extra.k83f158b3') }}</el-button>
     </el-col>
     <el-col :span="24">
-      <el-tag type="warning"> 赠送积分为 0 时不赠送。未选优惠券时不赠送。</el-tag>
+      <el-tag type="warning"> {{ t('extra.kbdf57543') }}</el-tag>
     </el-col>
   </el-row>
 </template>

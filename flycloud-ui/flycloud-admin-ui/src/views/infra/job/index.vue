@@ -94,10 +94,22 @@
           <dict-tag :type="DICT_TYPE.INFRA_JOB_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="处理器的名字" align="center" prop="handlerName" />
-      <el-table-column label="处理器的参数" align="center" prop="handlerParam" />
-      <el-table-column label="CRON 表达式" align="center" prop="cronExpression" />
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column
+        :label="t('auto.views.infra.job.JobDetail.kec311980')"
+        align="center"
+        prop="handlerName"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.JobDetail.kddc1dd16')"
+        align="center"
+        prop="handlerParam"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.job.JobForm.kf6b43ffc')"
+        align="center"
+        prop="cronExpression"
+      />
+      <el-table-column :label="t('common.operation')" align="center" width="200">
         <template #default="scope">
           <el-button
             type="primary"
@@ -105,7 +117,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['infra:job:update']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             type="primary"
@@ -121,23 +133,25 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['infra:job:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
           <el-dropdown
             @command="(command) => handleCommand(command, scope.row)"
             v-hasPermi="['infra:job:trigger', 'infra:job:query']"
           >
-            <el-button type="primary" link><Icon icon="ep:d-arrow-right" /> 更多</el-button>
+            <el-button type="primary" link
+              ><Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}</el-button
+            >
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item command="handleRun" v-if="checkPermi(['infra:job:trigger'])">
-                  执行一次
+                  {{ t('extra.k1bc974f4') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="openDetail" v-if="checkPermi(['infra:job:query'])">
-                  任务详细
+                  {{ t('auto.views.infra.job.JobDetail.kcb1587a2') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="handleJobLog" v-if="checkPermi(['infra:job:query'])">
-                  调度日志
+                  {{ t('auto.router.modules.remaining.ka3756839') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>

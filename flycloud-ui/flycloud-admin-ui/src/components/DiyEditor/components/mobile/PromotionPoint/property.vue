@@ -175,15 +175,19 @@
           </el-form-item>
         </template>
         <template v-else>
-          <el-form-item label="图片" prop="btnBuy.imgUrl">
+          <el-form-item :label="t('extra.k3b9e2563')" prop="btnBuy.imgUrl">
             <UploadImg v-model="formData.btnBuy.imgUrl" height="56px" width="56px">
-              <template #tip> 建议尺寸：56 * 56</template>
+              <template #tip> {{ t('extra.k61b3bf07') }}</template>
             </UploadImg>
           </el-form-item>
         </template>
       </el-card>
-      <el-card class="property-group" header="商品样式" shadow="never">
-        <el-form-item label="上圆角" prop="borderRadiusTop">
+      <el-card
+        class="property-group"
+        :header="t('auto.components.DiyEditor.components.mobile.ProductCard.property.ka9d65e39')"
+        shadow="never"
+      >
+        <el-form-item :label="t('extra.kdb0f024d')" prop="borderRadiusTop">
           <el-slider
             v-model="formData.borderRadiusTop"
             :max="100"
@@ -193,7 +197,7 @@
             show-input
           />
         </el-form-item>
-        <el-form-item label="下圆角" prop="borderRadiusBottom">
+        <el-form-item :label="t('extra.k17430953')" prop="borderRadiusBottom">
           <el-slider
             v-model="formData.borderRadiusBottom"
             :max="100"
@@ -203,7 +207,10 @@
             show-input
           />
         </el-form-item>
-        <el-form-item label="间隔" prop="space">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')"
+          prop="space"
+        >
           <el-slider
             v-model="formData.space"
             :max="100"

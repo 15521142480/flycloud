@@ -90,24 +90,29 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="消息内容"
+        :label="t('extra.kb87b7756')"
         align="center"
         prop="templateContent"
         show-overflow-tooltip
       />
-      <el-table-column label="是否已读" align="center" prop="readStatus" width="160">
+      <el-table-column
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.kbfc6b329')"
+        align="center"
+        prop="readStatus"
+        width="160"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.readStatus" />
         </template>
       </el-table-column>
       <el-table-column
-        label="阅读时间"
+        :label="t('auto.views.system.notify.message.NotifyMessageDetail.k9af1a262')"
         align="center"
         prop="readTime"
         width="200"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" width="160">
+      <el-table-column :label="t('common.operation')" align="center" width="160">
         <template #default="scope">
           <el-button
             link

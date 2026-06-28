@@ -25,7 +25,7 @@
       </div>
     </template>
     <div class="flex flex-items-center mb-3">
-      <span class="font-size-16px mr-3">审批类型 :</span>
+      <span class="font-size-16px mr-3">{{ t('extra.kb794e27c') }}</span>
       <el-radio-group v-model="approveType">
         <el-radio
           v-for="(item, index) in APPROVE_TYPE"
@@ -38,10 +38,13 @@
       </el-radio-group>
     </div>
     <el-tabs type="border-card" v-model="activeTabName" v-if="approveType === ApproveType.USER">
-      <el-tab-pane label="审批人" name="user">
+      <el-tab-pane
+        :label="t('auto.components.SimpleProcessDesignerV2.src.NodeHandler.k9b446de3')"
+        name="user"
+      >
         <div>
           <el-form ref="formRef" :model="configForm" label-position="top" :rules="formRules">
-            <el-form-item label="审批人设置" prop="candidateStrategy">
+            <el-form-item :label="t('extra.k5c54bd9b')" prop="candidateStrategy">
               <el-radio-group
                 v-model="configForm.candidateStrategy"
                 @change="changeCandidateStrategy"
@@ -58,7 +61,7 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy == CandidateStrategy.ROLE"
-              label="指定角色"
+              :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kf0b09386')"
               prop="roleIds"
             >
               <el-select v-model="configForm.roleIds" clearable multiple style="width: 100%">
@@ -76,7 +79,11 @@
                 configForm.candidateStrategy == CandidateStrategy.DEPT_LEADER ||
                 configForm.candidateStrategy == CandidateStrategy.MULTI_LEVEL_DEPT_LEADER
               "
-              label="指定部门"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.kf14ac805'
+                )
+              "
               prop="deptIds"
               span="24"
             >
@@ -85,7 +92,11 @@
                 v-model="configForm.deptIds"
                 :data="deptTreeOptions"
                 :props="defaultProps"
-                empty-text="加载中，请稍后"
+                :empty-text="
+                  t(
+                    'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k29a4e57b'
+                  )
+                "
                 multiple
                 node-key="id"
                 :check-strictly="true"
@@ -95,7 +106,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy == CandidateStrategy.POST"
-              label="指定岗位"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k5e4b64cd'
+                )
+              "
               prop="postIds"
               span="24"
             >
@@ -110,7 +125,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy == CandidateStrategy.USER"
-              label="指定用户"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k100f9964'
+                )
+              "
               prop="userIds"
               span="24"
             >
@@ -125,7 +144,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.USER_GROUP"
-              label="指定用户组"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k1ac78c11'
+                )
+              "
               prop="userGroups"
             >
               <el-select v-model="configForm.userGroups" clearable multiple style="width: 100%">
@@ -139,7 +162,7 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.FORM_USER"
-              label="表单内用户字段"
+              :label="t('auto.components.SimpleProcessDesignerV2.src.consts.k805bd925')"
               prop="formUser"
             >
               <el-select v-model="configForm.formUser" clearable style="width: 100%">
@@ -154,7 +177,7 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.FORM_DEPT_LEADER"
-              label="表单内部门字段"
+              :label="t('extra.k905fc31b')"
               prop="formDept"
             >
               <el-select v-model="configForm.formDept" clearable style="width: 100%">
@@ -191,7 +214,7 @@
             <!-- TODO @jason：后续要支持选择已经存好的表达式 -->
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.EXPRESSION"
-              label="流程表达式"
+              :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kb86130ce')"
               prop="expression"
             >
               <el-input
@@ -201,7 +224,7 @@
                 style="width: 100%"
               />
             </el-form-item>
-            <el-form-item label="多人审批方式" prop="approveMethod">
+            <el-form-item :label="t('extra.ka5e34745')" prop="approveMethod">
               <el-radio-group v-model="configForm.approveMethod" @change="approveMethodChanged">
                 <div class="flex-col">
                   <div
@@ -230,7 +253,11 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-divider content-position="left">审批人拒绝时</el-divider>
+            <el-divider content-position="left">{{
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k7d327c88'
+              )
+            }}</el-divider>
             <el-form-item prop="rejectHandlerType">
               <el-radio-group v-model="configForm.rejectHandlerType">
                 <div class="flex-col">
@@ -242,7 +269,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.rejectHandlerType == RejectHandlerType.RETURN_USER_TASK"
-              label="驳回节点"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k3403e72d'
+                )
+              "
               prop="returnNodeId"
             >
               <el-select v-model="configForm.returnNodeId" clearable style="width: 100%">
@@ -255,17 +286,19 @@
               </el-select>
             </el-form-item>
 
-            <el-divider content-position="left">审批人超时未处理时</el-divider>
-            <el-form-item label="启用开关" prop="timeoutHandlerEnable">
+            <el-divider content-position="left">{{ t('extra.k4f9ca289') }}</el-divider>
+            <el-form-item :label="t('extra.k375d3a23')" prop="timeoutHandlerEnable">
               <el-switch
                 v-model="configForm.timeoutHandlerEnable"
-                active-text="开启"
-                inactive-text="关闭"
+                :active-text="
+                  t('auto.components.DiyEditor.components.mobile.NavigationBar.property.k256783b7')
+                "
+                :inactive-text="t('common.close')"
                 @change="timeoutHandlerChange"
               />
             </el-form-item>
             <el-form-item
-              label="执行动作"
+              :label="t('extra.kd1d90491')"
               prop="timeoutHandlerType"
               v-if="configForm.timeoutHandlerEnable"
             >
@@ -281,8 +314,8 @@
                 />
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="超时时间设置" v-if="configForm.timeoutHandlerEnable">
-              <span class="mr-2">当超过</span>
+            <el-form-item :label="t('extra.kb1807448')" v-if="configForm.timeoutHandlerEnable">
+              <span class="mr-2">{{ t('extra.k888ba3f7') }}</span>
               <el-form-item prop="timeDuration">
                 <el-input-number
                   class="mr-2"
@@ -305,17 +338,21 @@
                   :value="item.value"
                 />
               </el-select>
-              未处理
+              {{ t('extra.k2839c8c8') }}
             </el-form-item>
             <el-form-item
-              label="最大提醒次数"
+              :label="t('extra.ke5172e4b')"
               prop="maxRemindCount"
               v-if="configForm.timeoutHandlerEnable && configForm.timeoutHandlerType === 1"
             >
               <el-input-number v-model="configForm.maxRemindCount" :min="1" :max="10" />
             </el-form-item>
 
-            <el-divider content-position="left">审批人为空时</el-divider>
+            <el-divider content-position="left">{{
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k83842213'
+              )
+            }}</el-divider>
             <el-form-item prop="assignEmptyHandlerType">
               <el-radio-group v-model="configForm.assignEmptyHandlerType">
                 <div class="flex-col">
@@ -327,7 +364,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.assignEmptyHandlerType == AssignEmptyHandlerType.ASSIGN_USER"
-              label="指定用户"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k100f9964'
+                )
+              "
               prop="assignEmptyHandlerUserIds"
               span="24"
             >
@@ -346,7 +387,11 @@
               </el-select>
             </el-form-item>
 
-            <el-divider content-position="left">审批人与提交人为同一人时</el-divider>
+            <el-divider content-position="left">{{
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.kda019550'
+              )
+            }}</el-divider>
             <el-form-item prop="assignStartUserHandlerType">
               <el-radio-group v-model="configForm.assignStartUserHandlerType">
                 <div class="flex-col">
@@ -359,13 +404,13 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="操作按钮设置" name="buttons">
+      <el-tab-pane :label="t('extra.k1ad6e380')" name="buttons">
         <div class="button-setting-pane">
-          <div class="button-setting-desc">操作按钮</div>
+          <div class="button-setting-desc">{{ t('extra.kf4a3780b') }}</div>
           <div class="button-setting-title">
-            <div class="button-title-label">操作按钮</div>
-            <div class="pl-4 button-title-label">显示名称</div>
-            <div class="button-title-label">启用</div>
+            <div class="button-title-label">{{ t('extra.kf4a3780b') }}</div>
+            <div class="pl-4 button-title-label">{{ t('extra.kfdf6f7f6') }}</div>
+            <div class="button-title-label">{{ t('system.user.enableAction') }}</div>
           </div>
           <div class="button-setting-item" v-for="(item, index) in buttonsSetting" :key="index">
             <div class="button-setting-item-label"> {{ OPERATION_BUTTON_NAME.get(item.id) }} </div>
@@ -389,15 +434,17 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="表单字段权限" name="fields" v-if="formType === 10">
+      <el-tab-pane :label="t('extra.ke765ec60')" name="fields" v-if="formType === 10">
         <div class="field-setting-pane">
-          <div class="field-setting-desc">字段权限</div>
+          <div class="field-setting-desc">{{ t('extra.k7c462e44') }}</div>
           <div class="field-permit-title">
-            <div class="setting-title-label first-title"> 字段名称 </div>
+            <div class="setting-title-label first-title"> {{ t('extra.kb81e9b9c') }} </div>
             <div class="other-titles">
-              <span class="setting-title-label">只读</span>
-              <span class="setting-title-label">可编辑</span>
-              <span class="setting-title-label">隐藏</span>
+              <span class="setting-title-label">{{
+                t('auto.views.iot.product.detail.ThinkModelFunctionForm.kffc1d065')
+              }}</span>
+              <span class="setting-title-label">{{ t('extra.ka32b3bf7') }}</span>
+              <span class="setting-title-label">{{ t('system.menu.hidden') }}</span>
             </div>
           </div>
           <div
@@ -439,8 +486,10 @@
     <template #footer>
       <el-divider />
       <div>
-        <el-button type="primary" @click="saveConfig">确 定</el-button>
-        <el-button @click="closeDrawer">取 消</el-button>
+        <el-button type="primary" @click="saveConfig">{{ t('extra.k008b8fcb') }}</el-button>
+        <el-button @click="closeDrawer">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
       </div>
     </template>
   </el-drawer>

@@ -82,9 +82,17 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_SOCIAL_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="社交 openid" prop="openid" />
-      <el-table-column align="center" label="用户昵称" prop="name" />
-      <el-table-column align="center" label="用户头像" prop="avatar">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.social.user.index.k916d3332')"
+        prop="openid"
+      />
+      <el-table-column align="center" :label="t('profile.user.name')" prop="name" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.product.comment.CommentForm.k2b78f76f')"
+        prop="avatar"
+      >
         <template #default="{ row }">
           <el-image :src="row.avatar" class="h-30px w-30px" @click="imagePreview(row.avatar)" />
         </template>
@@ -92,18 +100,18 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="更新时间"
+        :label="t('common.updateTime')"
         prop="updateTime"
         width="180px"
       />
-      <el-table-column align="center" fixed="right" label="操作">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['system:social-user:query']"
@@ -111,7 +119,7 @@
             type="primary"
             @click="openDetail(scope.row.id)"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
         </template>
       </el-table-column>

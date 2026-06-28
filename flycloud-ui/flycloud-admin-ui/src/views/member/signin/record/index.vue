@@ -88,7 +88,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="签到时间"
+        :label="t('auto.views.member.signin.record.index.ke7653484')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"

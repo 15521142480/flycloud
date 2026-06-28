@@ -26,7 +26,7 @@
                     }}</el-button>
                   </template>
                   <el-button type="primary" link @click="showDialog = true" style="margin-left: 5px"
-                    >素材库选择
+                    >{{ t('extra.k02fb7196') }}
                   </el-button>
                 </el-upload>
               </div>
@@ -34,7 +34,7 @@
           </el-col>
         </el-row>
         <el-dialog
-          title="选择图片"
+          :title="t('cropper.selectImage')"
           v-model="showDialog"
           width="80%"
           append-to-body
@@ -48,15 +48,21 @@
         </el-dialog>
       </el-col>
       <el-col :span="18">
-        <el-input v-model="reply.title" placeholder="请输入标题" />
+        <el-input
+          v-model="reply.title"
+          :placeholder="t('auto.views.member.user.detail.UserExperienceRecordList.k901722e5')"
+        />
         <div style="margin: 20px 0"></div>
-        <el-input v-model="reply.description" placeholder="请输入描述" />
+        <el-input
+          v-model="reply.description"
+          :placeholder="t('auto.views.bpm.group.UserGroupForm.kcb869887')"
+        />
       </el-col>
     </el-row>
     <div style="margin: 20px 0"></div>
-    <el-input v-model="reply.musicUrl" placeholder="请输入音乐链接" />
+    <el-input v-model="reply.musicUrl" :placeholder="t('extra.kafb28232')" />
     <div style="margin: 20px 0"></div>
-    <el-input v-model="reply.hqMusicUrl" placeholder="请输入高质量音乐链接" />
+    <el-input v-model="reply.hqMusicUrl" :placeholder="t('extra.k68401a25')" />
   </div>
 </template>
 

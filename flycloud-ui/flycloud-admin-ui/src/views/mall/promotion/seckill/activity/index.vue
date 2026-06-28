@@ -87,13 +87,20 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="活动时间" min-width="210">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.activity.index.kabe0ecdb')"
+        min-width="210"
+      >
         <template #default="scope">
           {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
         </template>
       </el-table-column>
-      <el-table-column label="商品图片" prop="spuName" min-width="80">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
+        prop="spuName"
+        min-width="80"
+      >
         <template #default="scope">
           <el-image
             :src="scope.row.picUrl"
@@ -103,34 +110,48 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" prop="spuName" min-width="300" />
       <el-table-column
-        label="原价"
+        :label="t('auto.views.pay.cashier.index.kd415beac')"
+        prop="spuName"
+        min-width="300"
+      />
+      <el-table-column
+        :label="t('extra.k1afdfea7')"
         prop="marketPrice"
         min-width="100"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="原价" prop="marketPrice" min-width="100" />
-      <el-table-column label="秒杀价" prop="seckillPrice" min-width="100">
+      <el-table-column :label="t('extra.k1afdfea7')" prop="marketPrice" min-width="100" />
+      <el-table-column :label="t('extra.kc0a30e6c')" prop="seckillPrice" min-width="100">
         <template #default="scope">
           {{ formatSeckillPrice(scope.row.products) }}
         </template>
       </el-table-column>
-      <el-table-column label="活动状态" align="center" prop="status" min-width="100">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+        align="center"
+        prop="status"
+        min-width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="库存" align="center" prop="stock" min-width="80" />
-      <el-table-column label="总库存" align="center" prop="totalStock" min-width="80" />
+      <el-table-column :label="t('extra.k0eac8802')" align="center" prop="stock" min-width="80" />
       <el-table-column
-        label="创建时间"
+        :label="t('extra.k9da72dfd')"
+        align="center"
+        prop="totalStock"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="150px" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -138,7 +159,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:seckill-activity:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -147,7 +168,7 @@
             v-if="scope.row.status === 0"
             v-hasPermi="['promotion:seckill-activity:close']"
           >
-            关闭
+            {{ t('common.close') }}
           </el-button>
           <el-button
             link
@@ -156,7 +177,7 @@
             v-else
             v-hasPermi="['promotion:seckill-activity:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

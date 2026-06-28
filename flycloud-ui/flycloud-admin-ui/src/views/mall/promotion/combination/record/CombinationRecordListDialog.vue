@@ -27,8 +27,13 @@
             <el-avatar :src="scope.row.avatar" />
           </template>
         </el-table-column>
-        <el-table-column align="center" label="昵称" prop="name" min-width="100" />
-        <el-table-column align="center" label="开团团长" prop="headId" min-width="100">
+        <el-table-column
+          align="center"
+          :label="t('system.user.nickname')"
+          prop="name"
+          min-width="100"
+        />
+        <el-table-column align="center" :label="t('extra.k2ac0d889')" prop="headId" min-width="100">
           <template #default="{ row }: { row: CombinationRecordApi.CombinationRecordVO }">
             <el-tag> {{ row.headId === 0 ? '团长' : '团员' }} </el-tag>
           </template>
@@ -36,18 +41,23 @@
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          label="参团时间"
+          :label="t('extra.kfc0e0b97')"
           prop="createTime"
           width="180"
         />
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          label="结束时间"
+          :label="t('common.endTimeText')"
           prop="endTime"
           width="180"
         />
-        <el-table-column align="center" label="拼团状态" prop="status" min-width="150">
+        <el-table-column
+          align="center"
+          :label="t('auto.views.mall.promotion.combination.record.index.ke7a33bf4')"
+          prop="status"
+          min-width="150"
+        >
           <template #default="scope">
             <dict-tag
               :type="DICT_TYPE.PROMOTION_COMBINATION_RECORD_STATUS"

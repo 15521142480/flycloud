@@ -88,41 +88,49 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="发起时间"
+        :label="t('auto.views.bpm.processInstance.index.k44042ce0')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="砍价活动" min-width="150" prop="activity.name" />
+      <el-table-column :label="t('extra.keaa70d1b')" min-width="150" prop="activity.name" />
       <el-table-column
-        label="最低价"
+        :label="t('extra.k3d329765')"
         min-width="100"
         prop="activity.bargainMinPrice"
         :formatter="fenToYuanFormat"
       />
       <el-table-column
-        label="当前价"
+        :label="t('extra.k09c7f2e8')"
         min-width="100"
         prop="bargainPrice"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="总砍价次数" min-width="100" prop="activity.helpMaxCount" />
-      <el-table-column label="剩余砍价次数" min-width="100" prop="helpCount" />
-      <el-table-column label="砍价状态" align="center" prop="status">
+      <el-table-column :label="t('extra.kf35f26f2')" min-width="100" prop="activity.helpMaxCount" />
+      <el-table-column :label="t('extra.k444a8236')" min-width="100" prop="helpCount" />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.bargain.record.index.k97d483a4')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_BARGAIN_RECORD_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="结束时间"
+        :label="t('common.endTimeText')"
         align="center"
         prop="endTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="订单编号" align="center" prop="orderId" />
-      <el-table-column label="操作" align="center">
+      <el-table-column
+        :label="t('auto.views.mall.product.comment.index.k8c60a237')"
+        align="center"
+        prop="orderId"
+      />
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -130,7 +138,7 @@
             @click="openRecordListDialog(scope.row.id)"
             v-hasPermi="['promotion:bargain-help:query']"
           >
-            助力
+            {{ t('extra.k151c35af') }}
           </el-button>
         </template>
       </el-table-column>

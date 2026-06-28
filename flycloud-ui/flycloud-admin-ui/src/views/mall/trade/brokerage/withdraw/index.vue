@@ -132,30 +132,44 @@
           <div>{{ t('extra.k0b53584e', { p0: scope.row.userNickname }) }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="提现金额" align="left" prop="price" min-width="80px">
+      <el-table-column :label="t('extra.k292a2899')" align="left" prop="price" min-width="80px">
         <template #default="scope">
-          <div>金　额：￥{{ fenToYuan(scope.row.price) }}</div>
-          <div>手续费：￥{{ fenToYuan(scope.row.feePrice) }}</div>
+          <div>{{ t('extra.k519bc307') }}{{ fenToYuan(scope.row.price) }}</div>
+          <div>{{ t('extra.k20374f83') }}{{ fenToYuan(scope.row.feePrice) }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="提现方式" align="left" prop="type" min-width="120px">
+      <el-table-column
+        :label="t('auto.views.mall.trade.config.index.k9f9ca520')"
+        align="left"
+        prop="type"
+        min-width="120px"
+      >
         <template #default="scope">
-          <div v-if="scope.row.type === BrokerageWithdrawTypeEnum.WALLET.type"> 余额 </div>
+          <div v-if="scope.row.type === BrokerageWithdrawTypeEnum.WALLET.type">
+            {{ t('extra.ke05e6f34') }}
+          </div>
           <div v-else>
             {{ getDictLabel(DICT_TYPE.BROKERAGE_WITHDRAW_TYPE, scope.row.type) }}
-            <span v-if="scope.row.accountNo">账号：{{ scope.row.accountNo }}</span>
+            <span v-if="scope.row.accountNo"
+              >{{ t('extra.kd7a47ec7') }}{{ scope.row.accountNo }}</span
+            >
           </div>
           <template v-if="scope.row.type === BrokerageWithdrawTypeEnum.BANK.type">
-            <div>真实姓名：{{ scope.row.name }}</div>
+            <div>{{ t('extra.kbb099f69') }}{{ scope.row.name }}</div>
             <div>
-              银行名称：
+              {{ t('extra.k60e8fef1') }}
               <dict-tag :type="DICT_TYPE.BROKERAGE_BANK_NAME" :value="scope.row.bankName" />
             </div>
-            <div>开户地址：{{ scope.row.bankAddress }}</div>
+            <div>{{ t('extra.ke5eabe91') }}{{ scope.row.bankAddress }}</div>
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="收款码" align="left" prop="accountQrCodeUrl" min-width="70px">
+      <el-table-column
+        :label="t('extra.kee375a63')"
+        align="left"
+        prop="accountQrCodeUrl"
+        min-width="70px"
+      >
         <template #default="scope">
           <el-image
             v-if="scope.row.accountQrCodeUrl"
@@ -164,29 +178,29 @@
             :preview-src-list="[scope.row.accountQrCodeUrl]"
             preview-teleported
           />
-          <span v-else>无</span>
+          <span v-else>{{ t('extra.kadb3d23e') }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="申请时间"
+        :label="t('auto.views.bpm.oa.leave.index.ke85ad6ea')"
         align="left"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="备注" align="left" prop="remark" />
-      <el-table-column label="状态" align="left" prop="status" min-width="120px">
+      <el-table-column :label="t('common.remark')" align="left" prop="remark" />
+      <el-table-column :label="t('common.status')" align="left" prop="status" min-width="120px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BROKERAGE_WITHDRAW_STATUS" :value="scope.row.status" />
           <div v-if="scope.row.auditTime" class="text-xs">
-            时间：{{ formatDate(scope.row.auditTime) }}
+            {{ t('extra.k14e6d83f') }}{{ formatDate(scope.row.auditTime) }}
           </div>
           <div v-if="scope.row.auditReason" class="text-xs">
-            原因：{{ scope.row.auditReason }}
+            {{ t('extra.k7e87cede') }}{{ scope.row.auditReason }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="left" width="110px" fixed="right">
+      <el-table-column :label="t('common.operation')" align="left" width="110px" fixed="right">
         <template #default="scope">
           <template v-if="scope.row.status === BrokerageWithdrawStatusEnum.AUDITING.status">
             <el-button
@@ -195,7 +209,7 @@
               @click="handleApprove(scope.row.id)"
               v-hasPermi="['trade:brokerage-withdraw:audit']"
             >
-              通过
+              {{ t('auto.components.SimpleProcessDesignerV2.src.consts.kdcc42332') }}
             </el-button>
             <el-button
               link
@@ -203,7 +217,7 @@
               @click="openForm(scope.row.id)"
               v-hasPermi="['trade:brokerage-withdraw:audit']"
             >
-              驳回
+              {{ t('extra.k32525478') }}
             </el-button>
           </template>
         </template>

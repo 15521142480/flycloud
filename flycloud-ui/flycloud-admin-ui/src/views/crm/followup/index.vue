@@ -31,17 +31,21 @@
           <dict-tag :type="DICT_TYPE.CRM_FOLLOW_UP_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="跟进内容" prop="content" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.followup.FollowUpRecordForm.kab264d91')"
+        prop="content"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="下次联系时间"
+        :label="t('auto.views.crm.clue.ClueForm.k8e1beb13')"
         prop="nextTime"
         width="180px"
       />
       <el-table-column
         align="center"
-        label="关联联系人"
+        :label="t('auto.views.crm.contact.components.ContactListModal.k15581973')"
         prop="contactIds"
         v-if="bizType === BizTypeEnum.CRM_CUSTOMER"
       >
@@ -60,7 +64,7 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="关联商机"
+        :label="t('auto.views.crm.business.components.BusinessListModal.k0b77721e')"
         prop="businessIds"
         v-if="bizType === BizTypeEnum.CRM_CUSTOMER"
       >
@@ -77,9 +81,11 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
-          <el-button link type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+          <el-button link type="danger" @click="handleDelete(scope.row.id)">
+            {{ t('common.delete') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

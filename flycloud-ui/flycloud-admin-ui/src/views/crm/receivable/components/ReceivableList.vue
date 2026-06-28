@@ -44,13 +44,17 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="回款金额(元)"
+        :label="t('extra.k5961f09c')"
         prop="price"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column align="center" label="负责人" prop="ownerUserName" />
-      <el-table-column align="center" label="备注" prop="remark" />
-      <el-table-column align="center" fixed="right" label="操作" width="130px">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        prop="ownerUserName"
+      />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" />
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="130px">
         <template #default="scope">
           <el-button
             v-hasPermi="['crm:receivable:update']"
@@ -58,7 +62,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['crm:receivable:delete']"
@@ -66,7 +70,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

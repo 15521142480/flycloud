@@ -1,4 +1,7 @@
 export default {
+  app: {
+    title: '飞翔云管理系统'
+  },
   common: {
     inputText: '请输入',
     selectText: '请选择',
@@ -70,7 +73,10 @@ export default {
     saveSuccess: '保存成功',
     deleteSuccess: '删除成功',
     deleteConfirmTitle: '删除确认',
-    statusConfirmTitle: '状态确认'
+    statusConfirmTitle: '状态确认',
+    lengthRange: '长度在 {min} 到 {max} 个字符',
+    notSpace: '不能包含空格',
+    notSpecialCharacters: '不能包含特殊字符'
   },
   lock: {
     lockScreen: '锁定屏幕',

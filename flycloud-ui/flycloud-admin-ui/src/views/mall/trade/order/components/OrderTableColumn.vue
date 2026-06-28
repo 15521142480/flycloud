@@ -43,22 +43,24 @@
               class="mr-[20px] h-[35px] flex items-center pl-[10px] pr-[10px]"
               style="background-color: var(--app-content-bg-color)"
             >
-              <span class="mr-20px">订单号：{{ scope.row.no }} </span>
-              <span class="mr-20px">下单时间：{{ formatDate(scope.row.createTime) }}</span>
-              <span>订单来源：</span>
+              <span class="mr-20px">{{ t('extra.k36c75109') }}{{ scope.row.no }} </span>
+              <span class="mr-20px"
+                >{{ t('extra.k15f438c5') }}{{ formatDate(scope.row.createTime) }}</span
+              >
+              <span>{{ t('extra.k74885e87') }}</span>
               <dict-tag :type="DICT_TYPE.TERMINAL" :value="scope.row.terminal" class="mr-20px" />
-              <span>支付方式：</span>
+              <span>{{ t('extra.kfc4d648a') }}</span>
               <dict-tag
                 v-if="scope.row.payChannelCode"
                 :type="DICT_TYPE.PAY_CHANNEL_CODE"
                 :value="scope.row.payChannelCode"
                 class="mr-20px"
               />
-              <span v-else class="mr-20px">未支付</span>
+              <span v-else class="mr-20px">{{ t('auto.utils.constants.k5a565427') }}</span>
               <span v-if="scope.row.payTime" class="mr-20px">
-                支付时间：{{ formatDate(scope.row.payTime) }}
+                {{ t('extra.kca25d2fa') }}{{ formatDate(scope.row.payTime) }}
               </span>
-              <span>订单类型：</span>
+              <span>{{ t('extra.k0dc09088') }}</span>
               <dict-tag :type="DICT_TYPE.TRADE_ORDER_TYPE" :value="scope.row.type" />
             </div>
           </template>
@@ -95,12 +97,12 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="商品原价*数量" prop="price" width="150">
+        <el-table-column :label="t('extra.k03e677dd')" prop="price" width="150">
           <template #default="{ row }">
-            {{ floatToFixed2(row.price) }} 元 / {{ row.count }}
+            {{ floatToFixed2(row.price) }} {{ t('extra.k1216a8d4') }} {{ row.count }}
           </template>
         </el-table-column>
-        <el-table-column label="售后状态" prop="afterSaleStatus" width="120">
+        <el-table-column :label="t('extra.k81df0241')" prop="afterSaleStatus" width="120">
           <template #default="{ row }">
             <dict-tag
               :type="DICT_TYPE.TRADE_ORDER_ITEM_AFTER_SALE_STATUS"
@@ -108,22 +110,28 @@
             />
           </template>
         </el-table-column>
-        <el-table-column align="center" label="实际支付" min-width="120" prop="payPrice">
+        <el-table-column
+          align="center"
+          :label="t('extra.k44ae82e9')"
+          min-width="120"
+          prop="payPrice"
+        >
           <template #default>
             {{ floatToFixed2(scope.row.payPrice) + '元' }}
           </template>
         </el-table-column>
-        <el-table-column label="买家/收货人" min-width="160">
+        <el-table-column :label="t('extra.kd573ba88')" min-width="160">
           <template #default>
             <!-- 快递发货  -->
             <div
               v-if="scope.row.deliveryType === DeliveryTypeEnum.EXPRESS.type"
               class="flex flex-col"
             >
-              <span>买家：{{ scope.row.user.name }}</span>
+              <span>{{ t('extra.k60db2a3e') }}{{ scope.row.user.name }}</span>
               <span>
-                收货人：{{ scope.row.receiverName }} {{ scope.row.receiverMobile }}
-                {{ scope.row.receiverAreaName }} {{ scope.row.receiverDetailAddress }}
+                {{ t('extra.k02ddb455') }}{{ scope.row.receiverName }}
+                {{ scope.row.receiverMobile }} {{ scope.row.receiverAreaName }}
+                {{ scope.row.receiverDetailAddress }}
               </span>
             </div>
             <!-- 自提  -->
@@ -132,31 +140,31 @@
               class="flex flex-col"
             >
               <span>
-                门店名称：
+                {{ t('extra.k77a7d219') }}
                 {{ pickUpStoreList.find((p) => p.id === scope.row.pickUpStoreId)?.name }}
               </span>
               <span>
-                门店手机：
+                {{ t('extra.k671e097c') }}
                 {{ pickUpStoreList.find((p) => p.id === scope.row.pickUpStoreId)?.phone }}
               </span>
               <span>
-                自提门店:
+                {{ t('extra.ke01ab7e6') }}
                 {{ pickUpStoreList.find((p) => p.id === scope.row.pickUpStoreId)?.detailAddress }}
               </span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="配送方式" width="120">
+        <el-table-column align="center" :label="t('extra.k09ada78b')" width="120">
           <template #default>
             <dict-tag :type="DICT_TYPE.TRADE_DELIVERY_TYPE" :value="scope.row.deliveryType" />
           </template>
         </el-table-column>
-        <el-table-column align="center" label="订单状态" width="120">
+        <el-table-column align="center" :label="t('extra.k7617e1bf')" width="120">
           <template #default>
             <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column align="center" fixed="right" label="操作" width="160">
+        <el-table-column align="center" fixed="right" :label="t('common.operation')" width="160">
           <template #default>
             <slot :row="scope.row"></slot>
           </template>

@@ -77,16 +77,20 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="页面名称" align="center" prop="name" />
-      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.mall.promotion.diy.page.DiyPageForm.k4a2d79ff')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -94,7 +98,7 @@
             @click="handleDecorate(scope.row.id)"
             v-hasPermi="['promotion:diy-page:update']"
           >
-            装修
+            {{ t('extra.k81b2cb54') }}
           </el-button>
           <el-button
             link
@@ -102,7 +106,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:diy-page:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -110,7 +114,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['promotion:diy-page:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

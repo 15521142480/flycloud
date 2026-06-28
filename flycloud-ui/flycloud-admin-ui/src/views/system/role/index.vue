@@ -107,10 +107,19 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="角色标识" prop="code" />
-      <el-table-column align="center" label="显示顺序" prop="sort" width="90" />
-      <el-table-column align="center" label="备注" prop="remark" />
-      <el-table-column align="center" label="状态" prop="status" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.role.RoleAssignMenuForm.k07f826b6')"
+        prop="code"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.role.RoleForm.k22efafba')"
+        prop="sort"
+        width="90"
+      />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" />
+      <el-table-column align="center" :label="t('common.status')" prop="status" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -118,11 +127,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="120"
       />
-      <el-table-column :width="200" align="center" label="操作">
+      <el-table-column :width="200" align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['sys:role:saveOrUpdate']"
@@ -130,27 +139,27 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['sys:role:menuPermission']"
             link
             preIcon="ep:basketball"
-            title="菜单权限"
+            :title="t('system.role.menuPermissionTitle')"
             type="primary"
             @click="openAssignMenuForm(scope.row)"
           >
-            菜单权限
+            {{ t('system.role.menuPermissionTitle') }}
           </el-button>
           <el-button
             v-hasPermi="['sys:role:dataPermission']"
             link
             preIcon="ep:coin"
-            title="数据权限"
+            :title="t('auto.views.system.role.RoleDataPermissionForm.kf3d1827b')"
             type="primary"
             @click="openDataPermissionForm(scope.row)"
           >
-            数据权限
+            {{ t('auto.views.system.role.RoleDataPermissionForm.kf3d1827b') }}
           </el-button>
           <el-button
             v-hasPermi="['sys:role:delete']"
@@ -158,7 +167,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

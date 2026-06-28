@@ -37,7 +37,10 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="产品名称" min-width="180">
+      <el-table-column
+        :label="t('auto.views.crm.business.components.BusinessProductForm.kabc0ac79')"
+        min-width="180"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productId`" :rules="formRules.productId" class="mb-0px!">
             <el-select
@@ -45,7 +48,7 @@
               clearable
               filterable
               @change="onChangeProduct($event, row)"
-              placeholder="请选择产品"
+              :placeholder="t('auto.views.crm.business.components.BusinessProductForm.k59a0d3d1')"
             >
               <el-option
                 v-for="item in productList"
@@ -57,28 +60,39 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="库存" min-width="100">
+      <el-table-column :label="t('extra.k0eac8802')" min-width="100">
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.stockCount" :formatter="erpCountInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="条码" min-width="150">
+      <el-table-column
+        :label="t('auto.views.erp.product.product.ProductForm.kb1085310')"
+        min-width="150"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.productBarCode" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="单位" min-width="80">
+      <el-table-column
+        :label="t('auto.views.erp.product.product.ProductForm.k8ec8c8c7')"
+        min-width="80"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.productUnitName" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="数量" prop="count" fixed="right" min-width="140">
+      <el-table-column
+        :label="t('auto.views.erp.stock.check.index.kb9ae8931')"
+        prop="count"
+        fixed="right"
+        min-width="140"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.count`" :rules="formRules.count" class="mb-0px!">
             <el-input-number
@@ -91,7 +105,7 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="产品单价" fixed="right" min-width="120">
+      <el-table-column :label="t('extra.ke3fff305')" fixed="right" min-width="120">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.productPrice`" class="mb-0px!">
             <el-input-number
@@ -104,21 +118,29 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="合计金额" prop="totalPrice" fixed="right" min-width="100">
+      <el-table-column
+        :label="t('extra.k21f695cf')"
+        prop="totalPrice"
+        fixed="right"
+        min-width="100"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.totalPrice`" class="mb-0px!">
             <el-input disabled v-model="row.totalPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="备注" min-width="150">
+      <el-table-column :label="t('common.remark')" min-width="150">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.remark`" class="mb-0px!">
-            <el-input v-model="row.remark" placeholder="请输入备注" />
+            <el-input
+              v-model="row.remark"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k57e709d9')"
+            />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="60">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="60">
         <template #default="{ $index }">
           <el-button @click="handleDelete($index)" link>—</el-button>
         </template>
@@ -126,7 +148,7 @@
     </el-table>
   </el-form>
   <el-row justify="center" class="mt-3" v-if="!disabled">
-    <el-button @click="handleAdd" round>+ 添加入库产品</el-button>
+    <el-button @click="handleAdd" round>{{ t('extra.kfc6fa2bf') }}</el-button>
   </el-row>
 </template>
 <script setup lang="ts">

@@ -20,15 +20,15 @@
             <el-avatar :src="scope.row.avatar" />
           </template>
         </el-table-column>
-        <el-table-column label="用户昵称" prop="name" min-width="100px" />
+        <el-table-column :label="t('profile.user.name')" prop="name" min-width="100px" />
         <el-table-column
-          label="砍价金额"
+          :label="t('extra.kcb97a6a0')"
           prop="reducePrice"
           min-width="100px"
           :formatter="fenToYuanFormat"
         />
         <el-table-column
-          label="助力时间"
+          :label="t('extra.kfefba32a')"
           align="center"
           prop="createTime"
           :formatter="dateFormatter"

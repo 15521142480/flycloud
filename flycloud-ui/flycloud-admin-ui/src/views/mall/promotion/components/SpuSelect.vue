@@ -67,30 +67,43 @@
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55" />
-        <el-table-column key="id" align="center" label="商品编号" prop="id" />
-        <el-table-column label="商品图" min-width="80">
+        <el-table-column
+          key="id"
+          align="center"
+          :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
+          prop="id"
+        />
+        <el-table-column
+          :label="t('auto.views.member.user.detail.UserFavoriteList.k1b089e84')"
+          min-width="80"
+        >
           <template #default="{ row }">
             <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
           </template>
         </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
-          label="商品名称"
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
           min-width="300"
           prop="name"
         />
-        <el-table-column align="center" label="商品售价" min-width="90" prop="price">
+        <el-table-column align="center" :label="t('extra.kfb079de8')" min-width="90" prop="price">
           <template #default="{ row }">
             {{ formatToFraction(row.price) }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="销量" min-width="90" prop="salesCount" />
-        <el-table-column align="center" label="库存" min-width="90" prop="stock" />
-        <el-table-column align="center" label="排序" min-width="70" prop="sort" />
+        <el-table-column
+          align="center"
+          :label="t('extra.k44e7ebb4')"
+          min-width="90"
+          prop="salesCount"
+        />
+        <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="90" prop="stock" />
+        <el-table-column align="center" :label="t('common.sort')" min-width="70" prop="sort" />
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          label="创建时间"
+          :label="t('common.createTime')"
           prop="createTime"
           width="180"
         />
@@ -104,8 +117,10 @@
       />
     </ContentWrap>
     <template #footer>
-      <el-button type="primary" @click="confirm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="confirm">{{ t('extra.k008b8fcb') }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

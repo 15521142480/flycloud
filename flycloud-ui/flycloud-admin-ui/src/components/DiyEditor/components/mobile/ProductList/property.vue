@@ -95,8 +95,12 @@
           </UploadImg>
         </el-form-item>
       </el-card>
-      <el-card header="商品样式" class="property-group" shadow="never">
-        <el-form-item label="上圆角" prop="borderRadiusTop">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.ProductCard.property.ka9d65e39')"
+        class="property-group"
+        shadow="never"
+      >
+        <el-form-item :label="t('extra.kdb0f024d')" prop="borderRadiusTop">
           <el-slider
             v-model="formData.borderRadiusTop"
             :max="100"
@@ -106,7 +110,7 @@
             :show-input-controls="false"
           />
         </el-form-item>
-        <el-form-item label="下圆角" prop="borderRadiusBottom">
+        <el-form-item :label="t('extra.k17430953')" prop="borderRadiusBottom">
           <el-slider
             v-model="formData.borderRadiusBottom"
             :max="100"
@@ -116,7 +120,10 @@
             :show-input-controls="false"
           />
         </el-form-item>
-        <el-form-item label="间隔" prop="space">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')"
+          prop="space"
+        >
           <el-slider
             v-model="formData.space"
             :max="100"

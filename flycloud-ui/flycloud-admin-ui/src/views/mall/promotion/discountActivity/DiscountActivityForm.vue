@@ -37,7 +37,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="折扣百分比(%)" min-width="168">
+          <el-table-column align="center" :label="t('extra.k17e34775')" min-width="168">
             <template #default="{ row }">
               <el-input-number
                 v-model="row.productConfig.discountPercent"
@@ -54,8 +54,12 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" @confirm="selectSpu" />

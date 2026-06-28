@@ -26,12 +26,12 @@
       </div>
     </template>
     <div>
-      <div class="mb-3 font-size-16px" v-if="currentNode.defaultFlow"
-        >未满足其它条件时，将进入此分支（该分支不可编辑和删除）</div
-      >
+      <div class="mb-3 font-size-16px" v-if="currentNode.defaultFlow">{{
+        t('extra.k2a1cb562')
+      }}</div>
       <div v-else>
         <el-form ref="formRef" :model="currentNode" :rules="formRules" label-position="top">
-          <el-form-item label="配置方式" prop="conditionType">
+          <el-form-item :label="t('extra.k62382372')" prop="conditionType">
             <el-radio-group v-model="currentNode.conditionType" @change="changeConditionType">
               <el-radio
                 v-for="(dict, index) in conditionConfigTypes"
@@ -46,7 +46,7 @@
 
           <el-form-item
             v-if="currentNode.conditionType === 1"
-            label="条件表达式"
+            :label="t('auto.components.SimpleProcessDesignerV2.src.consts.k25290fa6')"
             prop="conditionExpression"
           >
             <el-input
@@ -56,15 +56,26 @@
               style="width: 100%"
             />
           </el-form-item>
-          <el-form-item v-if="currentNode.conditionType === 2" label="条件规则">
+          <el-form-item
+            v-if="currentNode.conditionType === 2"
+            :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kd92b978a')"
+          >
             <div class="condition-group-tool">
               <div class="flex items-center">
-                <div class="mr-4">条件组关系</div>
+                <div class="mr-4">{{ t('extra.kcc9e0144') }}</div>
                 <el-switch
                   v-model="conditionGroups.and"
                   inline-prompt
-                  active-text="且"
-                  inactive-text="或"
+                  :active-text="
+                    t(
+                      'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k0b2c440d'
+                    )
+                  "
+                  :inactive-text="
+                    t(
+                      'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k30f4d7cf'
+                    )
+                  "
                 />
               </div>
             </div>
@@ -85,14 +96,22 @@
                 </div>
                 <template #header>
                   <div class="flex items-center justify-between">
-                    <div>条件组</div>
+                    <div>{{ t('extra.kc9ee9e43') }}</div>
                     <div class="flex">
-                      <div class="mr-4">规则关系</div>
+                      <div class="mr-4">{{ t('extra.k1fd252c0') }}</div>
                       <el-switch
                         v-model="condition.and"
                         inline-prompt
-                        active-text="且"
-                        inactive-text="或"
+                        :active-text="
+                          t(
+                            'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k0b2c440d'
+                          )
+                        "
+                        :inactive-text="
+                          t(
+                            'auto.components.SimpleProcessDesignerV2.src.nodes_config.ConditionNodeConfig.k30f4d7cf'
+                          )
+                        "
                       />
                     </div>
                   </div>
@@ -135,7 +154,7 @@
                 </div>
               </el-card>
             </el-space>
-            <div title="添加条件组" class="mt-4 cursor-pointer">
+            <div :title="t('extra.kdb208afa')" class="mt-4 cursor-pointer">
               <Icon color="#0089ff" icon="ep:plus" :size="24" @click="addConditionGroup" />
             </div>
           </el-form-item>
@@ -145,8 +164,10 @@
     <template #footer>
       <el-divider />
       <div>
-        <el-button type="primary" @click="saveConfig">确 定</el-button>
-        <el-button @click="closeDrawer">取 消</el-button>
+        <el-button type="primary" @click="saveConfig">{{ t('extra.k008b8fcb') }}</el-button>
+        <el-button @click="closeDrawer">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
       </div>
     </template>
   </el-drawer>

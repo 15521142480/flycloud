@@ -23,7 +23,7 @@
     <el-row :gutter="16">
       <el-col :xl="4" :md="8" :sm="24">
         <SummaryCard
-          title="商品浏览量"
+          :title="t('auto.views.mall.statistics.product.components.ProductSummary.k9956958d')"
           tooltip="在选定条件下，所有商品详情页被访问的次数，一个人在统计时间内访问多次记为多次"
           icon="ep:view"
           icon-color="bg-blue-100"
@@ -41,7 +41,7 @@
       </el-col>
       <el-col :xl="4" :md="8" :sm="24">
         <SummaryCard
-          title="商品访客数"
+          :title="t('auto.views.mall.statistics.product.components.ProductSummary.k5dbb88ed')"
           tooltip="在选定条件下，访问任何商品详情页的人数，一个人在统计时间范围内访问多次只记为一个"
           icon="ep:user-filled"
           icon-color="bg-purple-100"
@@ -59,7 +59,7 @@
       </el-col>
       <el-col :xl="4" :md="8" :sm="24">
         <SummaryCard
-          title="支付件数"
+          :title="t('extra.kbe4e90a9')"
           tooltip="在选定条件下，成功付款订单的商品件数之和"
           icon="fa-solid:money-check-alt"
           icon-color="bg-yellow-100"
@@ -77,7 +77,7 @@
       </el-col>
       <el-col :xl="4" :md="8" :sm="24">
         <SummaryCard
-          title="支付金额"
+          :title="t('auto.views.mall.statistics.product.components.ProductSummary.kb579703e')"
           tooltip="在选定条件下，成功付款订单的商品金额之和"
           icon="ep:warning-filled"
           icon-color="bg-green-100"
@@ -95,7 +95,7 @@
       </el-col>
       <el-col :xl="4" :md="8" :sm="24">
         <SummaryCard
-          title="退款件数"
+          :title="t('extra.k1990ac91')"
           tooltip="在选定条件下，成功退款的商品件数之和"
           icon="fa-solid:wallet"
           icon-color="bg-cyan-100"
@@ -113,7 +113,7 @@
       </el-col>
       <el-col :xl="4" :md="8" :sm="24">
         <SummaryCard
-          title="退款金额"
+          :title="t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2')"
           tooltip="在选定条件下，成功退款的商品金额之和"
           icon="fa-solid:award"
           icon-color="bg-yellow-100"

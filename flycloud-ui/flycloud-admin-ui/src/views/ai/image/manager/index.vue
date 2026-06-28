@@ -114,23 +114,47 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="用户" align="center" prop="userId" width="180">
+      <el-table-column
+        :label="t('auto.views.ai.chat.manager.ChatConversationList.k9ba763ea')"
+        align="center"
+        prop="userId"
+        width="180"
+      >
         <template #default="scope">
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台" align="center" prop="platform" width="120">
+      <el-table-column
+        :label="t('auto.views.ai.image.index.components.other.ke4b9d694')"
+        align="center"
+        prop="platform"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_PLATFORM" :value="scope.row.platform" />
         </template>
       </el-table-column>
-      <el-table-column label="模型" align="center" prop="model" width="180" />
-      <el-table-column label="绘画状态" align="center" prop="status" width="100">
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k98fd0cbd')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.image.manager.index.kd85ef5d7')"
+        align="center"
+        prop="status"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_IMAGE_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="是否发布" align="center" prop="publicStatus">
+      <el-table-column
+        :label="t('auto.views.ai.image.manager.index.k4c44200c')"
+        align="center"
+        prop="publicStatus"
+      >
         <template #default="scope">
           <el-switch
             v-model="scope.row.publicStatus"
@@ -141,19 +165,32 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="提示词" align="center" prop="prompt" width="180" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.ai.image.index.components.ImageDetail.k2f0bb123')"
+        align="center"
+        prop="prompt"
+        width="180"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="宽度" align="center" prop="width" />
-      <el-table-column label="高度" align="center" prop="height" />
-      <el-table-column label="错误信息" align="center" prop="errorMessage" />
-      <el-table-column label="任务编号" align="center" prop="taskId" />
-      <el-table-column label="操作" align="center" width="100" fixed="right">
+      <el-table-column :label="t('extra.kc2847901')" align="center" prop="width" />
+      <el-table-column
+        :label="t('auto.components.DiyEditor.components.mobile.Divider.property.keea51aa4')"
+        align="center"
+        prop="height"
+      />
+      <el-table-column :label="t('extra.k4604d502')" align="center" prop="errorMessage" />
+      <el-table-column
+        :label="t('auto.views.bpm.task.todo.index.k017af56c')"
+        align="center"
+        prop="taskId"
+      />
+      <el-table-column :label="t('common.operation')" align="center" width="100" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -161,7 +198,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:image:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

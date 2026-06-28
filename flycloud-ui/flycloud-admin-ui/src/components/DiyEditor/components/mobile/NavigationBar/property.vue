@@ -86,12 +86,12 @@
     <el-card class="property-group" shadow="never">
       <template #header>
         <div class="flex items-center justify-between">
-          <span>内容（非小程序）</span>
+          <span>{{ t('extra.k29213155') }}</span>
           <el-form-item prop="_local.previewOther" class="m-b-0!">
             <el-checkbox
               v-model="formData._local.previewOther"
               @change="formData._local.previewMp = !formData._local.previewOther"
-              >预览</el-checkbox
+              >{{ t('action.preview') }}</el-checkbox
             >
           </el-form-item>
         </div>

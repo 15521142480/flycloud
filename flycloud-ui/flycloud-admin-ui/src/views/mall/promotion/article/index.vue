@@ -96,17 +96,32 @@
           <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="标题" min-width="180" prop="title" />
-      <el-table-column align="center" label="分类" min-width="180" prop="categoryId">
+      <el-table-column align="center" :label="t('table.title')" min-width="180" prop="title" />
+      <el-table-column
+        align="center"
+        :label="t('extra.k8c3fa055')"
+        min-width="180"
+        prop="categoryId"
+      >
         <template #default="scope">
           {{ categoryList.find((item) => item.id === scope.row.categoryId)?.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="浏览量" min-width="180" prop="browseCount" />
-      <el-table-column align="center" label="作者" min-width="180" prop="author" />
-      <el-table-column align="center" label="文章简介" min-width="250" prop="introduction" />
-      <el-table-column align="center" label="排序" min-width="60" prop="sort" />
-      <el-table-column align="center" label="状态" min-width="60" prop="status">
+      <el-table-column
+        align="center"
+        :label="t('extra.k88bc4d7a')"
+        min-width="180"
+        prop="browseCount"
+      />
+      <el-table-column align="center" :label="t('table.author')" min-width="180" prop="author" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.promotion.article.ArticleForm.k5c86fcd2')"
+        min-width="250"
+        prop="introduction"
+      />
+      <el-table-column align="center" :label="t('common.sort')" min-width="60" prop="sort" />
+      <el-table-column align="center" :label="t('common.status')" min-width="60" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -114,11 +129,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="发布时间"
+        :label="t('extra.kf1f98fb7')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" fixed="right" label="操作" width="120">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="120">
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:article:update']"
@@ -126,7 +141,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['promotion:article:delete']"
@@ -134,7 +149,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

@@ -93,22 +93,37 @@
           <dict-tag :type="DICT_TYPE.BPM_TASK_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="审批建议" prop="reason" min-width="180" />
-      <el-table-column align="center" label="耗时" prop="durationInMillis" width="160">
+      <el-table-column align="center" :label="t('extra.kd2a31c2e')" prop="reason" min-width="180" />
+      <el-table-column
+        align="center"
+        :label="t('extra.k39f1374d')"
+        prop="durationInMillis"
+        width="160"
+      >
         <template #default="scope">
           {{ formatPast2(scope.row.durationInMillis) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="流程编号" prop="id" :show-overflow-tooltip="true" />
-      <el-table-column align="center" label="任务编号" prop="id" :show-overflow-tooltip="true" />
-      <el-table-column align="center" label="操作" fixed="right" width="80">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.task.todo.index.ka11dfb55')"
+        prop="id"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.task.todo.index.k017af56c')"
+        prop="id"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column align="center" :label="t('common.operation')" fixed="right" width="80">
         <template #default="scope">
           <el-button
             v-hasPermi="['bpm:audit:done:history']"
             link
             type="primary"
             @click="handleAudit(scope.row)"
-            >历史</el-button
+            >{{ t('extra.kc827d8db') }}</el-button
           >
         </template>
       </el-table-column>

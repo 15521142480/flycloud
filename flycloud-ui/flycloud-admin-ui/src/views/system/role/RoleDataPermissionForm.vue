@@ -59,15 +59,21 @@
           :data="deptOptions"
           :props="defaultProps"
           default-expand-all
-          empty-text="加载中，请稍后"
+          :empty-text="
+            t('auto.components.bpmnProcessDesigner.package.penal.task.task_components.k29a4e57b')
+          "
           node-key="id"
           show-checkbox
         />
       </el-card>
     </el-form-item>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

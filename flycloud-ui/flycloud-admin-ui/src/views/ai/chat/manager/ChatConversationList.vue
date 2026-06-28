@@ -82,20 +82,34 @@
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色" align="center" prop="roleName" width="180" />
-      <el-table-column label="模型标识" align="center" prop="model" width="180" />
-      <el-table-column label="消息数" align="center" prop="messageCount" />
+      <el-table-column :label="t('system.user.role')" align="center" prop="roleName" width="180" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k3a818387')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column :label="t('extra.k342ceac9')" align="center" prop="messageCount" />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="温度参数" align="center" prop="temperature" />
-      <el-table-column label="回复 Token 数" align="center" prop="maxTokens" width="120" />
-      <el-table-column label="上下文数量" align="center" prop="maxContexts" width="120" />
-      <el-table-column label="操作" align="center" width="180" fixed="right">
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k80a0d1e0')"
+        align="center"
+        prop="temperature"
+      />
+      <el-table-column :label="t('extra.kcd4807f0')" align="center" prop="maxTokens" width="120" />
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k3f4045aa')"
+        align="center"
+        prop="maxContexts"
+        width="120"
+      />
+      <el-table-column :label="t('common.operation')" align="center" width="180" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -103,7 +117,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:chat-conversation:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

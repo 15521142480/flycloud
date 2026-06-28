@@ -87,11 +87,23 @@
           <Icon :icon="scope.row.icon" />
         </template>
       </el-table-column>
-      <el-table-column label="排序" prop="sort" width="60" />
-      <el-table-column :show-overflow-tooltip="true" label="权限标识" prop="permission" />
-      <el-table-column :show-overflow-tooltip="true" label="组件路径" prop="component" />
-      <el-table-column :show-overflow-tooltip="true" label="组件名称" prop="componentName" />
-      <el-table-column label="状态" prop="status">
+      <el-table-column :label="t('common.sort')" prop="sort" width="60" />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        :label="t('extra.k4379f002')"
+        prop="permission"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        :label="t('extra.kf39bf763')"
+        prop="component"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        :label="t('extra.k3791ba5c')"
+        prop="componentName"
+      />
+      <el-table-column :label="t('common.status')" prop="status">
         <template #default="scope">
           <el-switch
             class="ml-4px"
@@ -104,7 +116,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['system:menu:update']"
@@ -112,7 +124,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             v-hasPermi="['system:menu:create']"
@@ -120,7 +132,7 @@
             type="primary"
             @click="openForm('create', undefined, scope.row.id)"
           >
-            新增
+            {{ t('common.create') }}
           </el-button>
           <el-button
             v-hasPermi="['system:menu:delete']"
@@ -128,7 +140,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

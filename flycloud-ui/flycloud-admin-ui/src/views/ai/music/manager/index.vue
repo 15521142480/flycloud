@@ -121,13 +121,27 @@
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="音乐状态" align="center" prop="status" width="100">
+      <el-table-column
+        :label="t('auto.views.ai.music.manager.index.k29939e96')"
+        align="center"
+        prop="status"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_MUSIC_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="模型" align="center" prop="model" width="180" />
-      <el-table-column label="内容" align="center" width="180">
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k98fd0cbd')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k163aec91')"
+        align="center"
+        width="180"
+      >
         <template #default="{ row }">
           <el-link
             v-if="row.audioUrl?.length > 0"
@@ -135,7 +149,7 @@
             :href="row.audioUrl"
             target="_blank"
           >
-            音乐
+            {{ t('extra.k95521bb7') }}
           </el-link>
           <el-link
             v-if="row.videoUrl?.length > 0"
@@ -144,7 +158,7 @@
             target="_blank"
             class="!pl-5px"
           >
-            视频
+            {{ t('auto.components.DiyEditor.components.mobile.Carousel.property.kfa4e33b6') }}
           </el-link>
           <el-link
             v-if="row.imageUrl?.length > 0"
@@ -153,27 +167,51 @@
             target="_blank"
             class="!pl-5px"
           >
-            封面
+            {{ t('auto.components.DiyEditor.components.mobile.Carousel.property.kb8bb31e1') }}
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column label="时长（秒）" align="center" prop="duration" width="100" />
-      <el-table-column label="提示词" align="center" prop="prompt" width="180" />
-      <el-table-column label="歌词" align="center" prop="lyric" width="180" />
-      <el-table-column label="描述" align="center" prop="gptDescriptionPrompt" width="180" />
-      <el-table-column label="生成模式" align="center" prop="generateMode" width="100">
+      <el-table-column :label="t('extra.k439f42b7')" align="center" prop="duration" width="100" />
+      <el-table-column
+        :label="t('auto.views.ai.image.index.components.ImageDetail.k2f0bb123')"
+        align="center"
+        prop="prompt"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.music.index.mode.lyric.k315d810f')"
+        align="center"
+        prop="lyric"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.group.UserGroupForm.k412f54dc')"
+        align="center"
+        prop="gptDescriptionPrompt"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.music.manager.index.kd8c739b9')"
+        align="center"
+        prop="generateMode"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_GENERATE_MODE" :value="scope.row.generateMode" />
         </template>
       </el-table-column>
-      <el-table-column label="风格标签" align="center" prop="tags" width="180">
+      <el-table-column :label="t('extra.k89a6c742')" align="center" prop="tags" width="180">
         <template #default="scope">
           <el-tag v-for="tag in scope.row.tags" :key="tag" round class="ml-2px">
             {{ tag }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="是否发布" align="center" prop="publicStatus">
+      <el-table-column
+        :label="t('auto.views.ai.image.manager.index.k4c44200c')"
+        align="center"
+        prop="publicStatus"
+      >
         <template #default="scope">
           <el-switch
             v-model="scope.row.publicStatus"
@@ -184,16 +222,21 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="任务编号" align="center" prop="taskId" width="180" />
-      <el-table-column label="错误信息" align="center" prop="errorMessage" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.bpm.task.todo.index.k017af56c')"
+        align="center"
+        prop="taskId"
+        width="180"
+      />
+      <el-table-column :label="t('extra.k4604d502')" align="center" prop="errorMessage" />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="100" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="100" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -201,7 +244,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:music:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

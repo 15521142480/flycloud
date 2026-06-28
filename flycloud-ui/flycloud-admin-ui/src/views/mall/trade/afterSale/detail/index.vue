@@ -122,12 +122,26 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column label="商品原价" prop="price" width="150">
-                <template #default="{ row }">{{ fenToYuan(row.price) }} 元</template>
+              <el-table-column :label="t('extra.ke34fd103')" prop="price" width="150">
+                <template #default="{ row }"
+                  >{{ fenToYuan(row.price) }} {{ t('extra.k2d94e2e7') }}</template
+                >
               </el-table-column>
-              <el-table-column label="数量" prop="count" width="100" />
-              <el-table-column label="合计" prop="payPrice" width="150">
-                <template #default="{ row }">{{ fenToYuan(row.payPrice) }} 元</template>
+              <el-table-column
+                :label="t('auto.views.erp.stock.check.index.kb9ae8931')"
+                prop="count"
+                width="100"
+              />
+              <el-table-column
+                :label="
+                  t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k92bcbf71')
+                "
+                prop="payPrice"
+                width="150"
+              >
+                <template #default="{ row }"
+                  >{{ fenToYuan(row.payPrice) }} {{ t('extra.k2d94e2e7') }}</template
+                >
               </el-table-column>
             </el-table>
           </el-col>
@@ -137,7 +151,7 @@
     </el-descriptions>
 
     <!-- 操作日志 -->
-    <el-descriptions title="售后日志">
+    <el-descriptions :title="t('extra.kfb4da8de')">
       <el-descriptions-item labelClassName="no-colon">
         <el-timeline>
           <el-timeline-item

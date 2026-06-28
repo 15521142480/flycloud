@@ -53,14 +53,14 @@
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark" />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['bpm:manage:form:saveOrUpdate']"
@@ -68,16 +68,16 @@
             type="primary"
             @click="openForm(scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
-          <el-button link @click="openDetail(scope.row.id)"> 详情 </el-button>
+          <el-button link @click="openDetail(scope.row.id)"> {{ t('action.detail') }} </el-button>
           <el-button
             v-hasPermi="['bpm:manage:form:delete']"
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -92,7 +92,7 @@
   </ContentWrap>
 
   <!-- 表单详情的弹窗 -->
-  <Dialog v-model="detailVisible" title="表单详情" width="800">
+  <Dialog v-model="detailVisible" :title="t('extra.k216a0b25')" width="800">
     <form-create :option="detailData.option" :rule="detailData.rule" />
   </Dialog>
 </template>

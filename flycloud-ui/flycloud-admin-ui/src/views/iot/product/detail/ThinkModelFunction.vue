@@ -56,9 +56,17 @@
             <dict-tag :type="DICT_TYPE.IOT_PRODUCT_FUNCTION_TYPE" :value="scope.row.type" />
           </template>
         </el-table-column>
-        <el-table-column label="功能名称" align="center" prop="name" />
-        <el-table-column label="标识符" align="center" prop="identifier" />
-        <el-table-column label="操作" align="center">
+        <el-table-column
+          :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k785d1756')"
+          align="center"
+          prop="name"
+        />
+        <el-table-column
+          :label="t('auto.views.iot.product.detail.ThinkModelFunctionForm.k85803da5')"
+          align="center"
+          prop="identifier"
+        />
+        <el-table-column :label="t('common.operation')" align="center">
           <template #default="scope">
             <el-button
               link
@@ -66,7 +74,7 @@
               @click="openForm('update', scope.row.id)"
               v-hasPermi="[`iot:think-model-function:update`]"
             >
-              编辑
+              {{ t('common.edit') }}
             </el-button>
             <el-button
               link
@@ -74,7 +82,7 @@
               @click="handleDelete(scope.row.id)"
               v-hasPermi="['iot:think-model-function:delete']"
             >
-              删除
+              {{ t('common.delete') }}
             </el-button>
           </template>
         </el-table-column>

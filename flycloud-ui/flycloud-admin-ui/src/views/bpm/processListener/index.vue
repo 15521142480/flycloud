@@ -80,13 +80,23 @@
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_LISTENER_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status" width="100px">
+      <el-table-column :label="t('common.status')" align="center" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="事件" align="center" prop="event" width="100px" />
-      <el-table-column label="值类型" align="center" prop="valueType" width="110px">
+      <el-table-column
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.k550e3280')"
+        align="center"
+        prop="event"
+        width="100px"
+      />
+      <el-table-column
+        :label="t('auto.views.bpm.processListener.ProcessListenerForm.k5d6dd202')"
+        align="center"
+        prop="valueType"
+        width="110px"
+      >
         <template #default="scope">
           <dict-tag
             :type="DICT_TYPE.BPM_PROCESS_LISTENER_VALUE_TYPE"
@@ -94,15 +104,21 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="值" align="center" prop="value" />
       <el-table-column
-        label="创建时间"
+        :label="
+          t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k321b9558')
+        "
+        align="center"
+        prop="value"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -110,7 +126,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['bpm:manage:listener:saveOrUpdate']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -118,7 +134,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['bpm:manage:listener:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

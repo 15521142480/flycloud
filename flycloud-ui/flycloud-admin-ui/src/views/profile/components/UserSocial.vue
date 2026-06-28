@@ -11,15 +11,25 @@
         <p class="mr-5">{{ row.title }}</p>
       </template>
     </el-table-column>
-    <el-table-column align="center" label="操作">
+    <el-table-column align="center" :label="t('common.operation')">
       <template #default="{ row }">
         <template v-if="row.openid">
-          已绑定
-          <XTextButton class="mr-5" title="(解绑)" type="primary" @click="unbind(row)" />
+          {{ t('extra.kaa71a61c') }}
+          <XTextButton
+            class="mr-5"
+            :title="t('extra.k0a44f46f')"
+            type="primary"
+            @click="unbind(row)"
+          />
         </template>
         <template v-else>
-          未绑定
-          <XTextButton class="mr-5" title="(绑定)" type="primary" @click="bind(row)" />
+          {{ t('extra.k906ad18b') }}
+          <XTextButton
+            class="mr-5"
+            :title="t('extra.k903751db')"
+            type="primary"
+            @click="bind(row)"
+          />
         </template>
       </template>
     </el-table-column>

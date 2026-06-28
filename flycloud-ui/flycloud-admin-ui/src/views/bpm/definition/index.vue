@@ -19,8 +19,13 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="定义分类" align="center" prop="categoryName" width="100" />
-      <el-table-column label="表单信息" align="center" prop="formType" width="200">
+      <el-table-column
+        :label="t('extra.k92140340')"
+        align="center"
+        prop="categoryName"
+        width="100"
+      />
+      <el-table-column :label="t('extra.k1a946e0f')" align="center" prop="formType" width="200">
         <template #default="scope">
           <el-button
             v-if="scope.row.formType === 10"
@@ -35,27 +40,36 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="流程版本" align="center" prop="processDefinition.version" width="80">
+      <el-table-column
+        :label="t('extra.ke0542d83')"
+        align="center"
+        prop="processDefinition.version"
+        width="80"
+      >
         <template #default="scope">
           <el-tag v-if="scope.row">v{{ scope.row.version }}</el-tag>
-          <el-tag type="warning" v-else>未部署</el-tag>
+          <el-tag type="warning" v-else>{{ t('extra.k647f2223') }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="version" width="80">
+      <el-table-column :label="t('common.status')" align="center" prop="version" width="80">
         <template #default="scope">
-          <el-tag type="success" v-if="scope.row.suspensionState === 1">激活</el-tag>
-          <el-tag type="warning" v-if="scope.row.suspensionState === 2">挂起</el-tag>
+          <el-tag type="success" v-if="scope.row.suspensionState === 1">{{
+            t('extra.k83a991d7')
+          }}</el-tag>
+          <el-tag type="warning" v-if="scope.row.suspensionState === 2">{{
+            t('extra.k65d1ff59')
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="部署时间"
+        :label="t('extra.k66d588da')"
         align="center"
         prop="deploymentTime"
         width="180"
         :formatter="dateFormatter"
       />
       <el-table-column
-        label="定义描述"
+        :label="t('extra.k68622d8f')"
         align="center"
         prop="description"
         width="300"
@@ -72,12 +86,16 @@
   </ContentWrap>
 
   <!-- 弹窗：表单详情 -->
-  <Dialog title="表单详情" v-model="formDetailVisible" width="800">
+  <Dialog :title="t('extra.k216a0b25')" v-model="formDetailVisible" width="800">
     <form-create :rule="formDetailPreview.rule" :option="formDetailPreview.option" />
   </Dialog>
 
   <!-- 弹窗：流程模型图的预览 -->
-  <Dialog title="流程图" v-model="bpmnDetailVisible" width="800">
+  <Dialog
+    :title="t('auto.views.bpm.processInstance.create.ProcessDefinitionDetail.k3bffba42')"
+    v-model="bpmnDetailVisible"
+    width="800"
+  >
     <MyProcessViewer style="height: 700px" key="designer" :xml="bpmnXml" />
   </Dialog>
 </template>

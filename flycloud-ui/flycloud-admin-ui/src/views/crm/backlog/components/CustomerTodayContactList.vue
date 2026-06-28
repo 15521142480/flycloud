@@ -61,20 +61,45 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户来源" prop="source" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.clue.ClueForm.kb805cdaa')"
+        prop="source"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_SOURCE" :value="scope.row.source" />
         </template>
       </el-table-column>
-      <el-table-column label="手机" align="center" prop="mobile" width="120" />
-      <el-table-column label="电话" align="center" prop="telephone" width="130" />
-      <el-table-column label="邮箱" align="center" prop="email" width="180" />
-      <el-table-column align="center" label="客户级别" prop="level" width="135">
+      <el-table-column
+        :label="t('auto.views.crm.clue.ClueForm.k9c01ad09')"
+        align="center"
+        prop="mobile"
+        width="120"
+      />
+      <el-table-column
+        :label="t('system.dept.phone')"
+        align="center"
+        prop="telephone"
+        width="130"
+      />
+      <el-table-column :label="t('system.user.email')" align="center" prop="email" width="180" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.clue.ClueForm.kbb7208b8')"
+        prop="level"
+        width="135"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_LEVEL" :value="scope.row.level" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户行业" prop="industryId" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.clue.ClueForm.k7b39ef2d')"
+        prop="industryId"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_INDUSTRY" :value="scope.row.industryId" />
         </template>
@@ -82,17 +107,21 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="下次联系时间"
+        :label="t('auto.views.crm.clue.ClueForm.k8e1beb13')"
         prop="contactNextTime"
         width="180px"
       />
-      <el-table-column align="center" label="备注" prop="remark" width="200" />
-      <el-table-column align="center" label="锁定状态" prop="lockStatus">
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" width="200" />
+      <el-table-column align="center" :label="t('extra.kf72c2ad9')" prop="lockStatus">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.lockStatus" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成交状态" prop="dealStatus">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.customer.detail.CustomerDetailsHeader.kf3fd0dd7')"
+        prop="dealStatus"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.dealStatus" />
         </template>
@@ -100,32 +129,57 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="最后跟进时间"
+        :label="t('extra.kffa0750f')"
         prop="contactLastTime"
         width="180px"
       />
-      <el-table-column align="center" label="最后跟进记录" prop="contactLastContent" width="200" />
-      <el-table-column label="地址" align="center" prop="detailAddress" width="180" />
-      <el-table-column align="center" label="距离进入公海天数" prop="poolDay" width="140">
-        <template #default="scope"> {{ scope.row.poolDay }} 天</template>
+      <el-table-column
+        align="center"
+        :label="t('extra.k1afb06c4')"
+        prop="contactLastContent"
+        width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.clue.ClueForm.k67d2d797')"
+        align="center"
+        prop="detailAddress"
+        width="180"
+      />
+      <el-table-column align="center" :label="t('extra.k0b51579b')" prop="poolDay" width="140">
+        <template #default="scope"> {{ scope.row.poolDay }} {{ t('extra.k0ed895b2') }}</template>
       </el-table-column>
-      <el-table-column align="center" label="负责人" prop="ownerUserName" width="100px" />
-      <el-table-column align="center" label="所属部门" prop="ownerUserDeptName" width="100px" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        prop="ownerUserName"
+        width="100px"
+      />
+      <el-table-column
+        align="center"
+        :label="t('profile.user.dept')"
+        prop="ownerUserDeptName"
+        width="100px"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="更新时间"
+        :label="t('common.updateTime')"
         prop="updateTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="创建人" prop="creatorName" width="100px" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        prop="creatorName"
+        width="100px"
+      />
     </el-table>
     <!-- 分页 -->
     <Pagination

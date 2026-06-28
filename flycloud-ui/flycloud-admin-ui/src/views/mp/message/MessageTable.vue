@@ -29,52 +29,80 @@
           }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="用户标识" align="center" prop="openid" width="300" />
-      <el-table-column label="内容" prop="content">
+      <el-table-column
+        :label="t('auto.views.mp.message.index.k24afcd30')"
+        align="center"
+        prop="openid"
+        width="300"
+      />
+      <el-table-column
+        :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k163aec91')"
+        prop="content"
+      >
         <template #default="scope">
           <!-- 【事件】区域 -->
           <div v-if="scope.row.type === MsgType.Event && scope.row.event === 'subscribe'">
-            <el-tag type="success">关注</el-tag>
+            <el-tag type="success">{{ t('workplace.follow') }}</el-tag>
           </div>
           <div v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'unsubscribe'">
-            <el-tag type="danger">取消关注</el-tag>
+            <el-tag type="danger">{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.kbff57650')
+            }}</el-tag>
           </div>
           <div v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'CLICK'">
-            <el-tag>点击菜单</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.kaba076ee')
+            }}</el-tag>
             【{{ scope.row.eventKey }}】
           </div>
           <div v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'VIEW'">
-            <el-tag>点击菜单链接</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.k449230ce')
+            }}</el-tag>
             【{{ scope.row.eventKey }}】
           </div>
           <div
             v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'scancode_waitmsg'"
           >
-            <el-tag>扫码结果</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.k29a8c73c')
+            }}</el-tag>
             【{{ scope.row.eventKey }}】
           </div>
           <div v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'scancode_push'">
-            <el-tag>扫码结果</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.k29a8c73c')
+            }}</el-tag>
             【{{ scope.row.eventKey }}】
           </div>
           <div v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'pic_sysphoto'">
-            <el-tag>系统拍照发图</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.kc7872609')
+            }}</el-tag>
           </div>
           <div
             v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'pic_photo_or_album'"
           >
-            <el-tag>拍照或者相册</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.kc0edb9c1')
+            }}</el-tag>
           </div>
           <div v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'pic_weixin'">
-            <el-tag>微信相册</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.kaffa37d3')
+            }}</el-tag>
           </div>
           <div
             v-else-if="scope.row.type === MsgType.Event && scope.row.event === 'location_select'"
           >
-            <el-tag>选择地理位置</el-tag>
+            <el-tag>{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.ke3a6570e')
+            }}</el-tag>
           </div>
           <div v-else-if="scope.row.type === MsgType.Event">
-            <el-tag type="danger">未知事件类型</el-tag>
+            <el-tag type="danger">{{
+              t('auto.views.mp.components.wx_msg.components.MsgEvent.ke9246f17')
+            }}</el-tag>
           </div>
           <!-- 【消息】区域 -->
           <div v-else-if="scope.row.type === MsgType.Text">{{ scope.row.content }}</div>
@@ -90,7 +118,9 @@
             <wx-video-player :url="scope.row.mediaUrl" style="margin-top: 10px" />
           </div>
           <div v-else-if="scope.row.type === MsgType.Link">
-            <el-tag>链接</el-tag>
+            <el-tag>{{
+              t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')
+            }}</el-tag>
             ：
             <a :href="scope.row.url" target="_blank">{{ scope.row.title }}</a>
           </div>
@@ -114,11 +144,15 @@
             <WxNews :articles="scope.row.articles" />
           </div>
           <div v-else>
-            <el-tag type="danger">未知消息类型</el-tag>
+            <el-tag type="danger">{{ t('extra.k6ae181e6') }}</el-tag>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template #default="scope">
           <el-button
             link
@@ -126,7 +160,9 @@
             @click="emit('send', scope.row.userId)"
             v-hasPermi="['mp:message:send']"
           >
-            消息
+            {{
+              t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kdc6de3fa')
+            }}
           </el-button>
         </template>
       </el-table-column>

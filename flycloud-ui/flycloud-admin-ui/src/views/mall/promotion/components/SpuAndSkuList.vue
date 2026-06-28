@@ -15,28 +15,48 @@
         </SkuList>
       </template>
     </el-table-column>
-    <el-table-column key="id" align="center" label="商品编号" prop="id" />
-    <el-table-column label="商品图" min-width="80">
+    <el-table-column
+      key="id"
+      align="center"
+      :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
+      prop="id"
+    />
+    <el-table-column
+      :label="t('auto.views.member.user.detail.UserFavoriteList.k1b089e84')"
+      min-width="80"
+    >
       <template #default="{ row }">
         <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
       </template>
     </el-table-column>
-    <el-table-column :show-overflow-tooltip="true" label="商品名称" min-width="300" prop="name" />
-    <el-table-column align="center" label="商品售价" min-width="90" prop="price">
+    <el-table-column
+      :show-overflow-tooltip="true"
+      :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
+      min-width="300"
+      prop="name"
+    />
+    <el-table-column align="center" :label="t('extra.kfb079de8')" min-width="90" prop="price">
       <template #default="{ row }">
         {{ formatToFraction(row.price) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="销量" min-width="90" prop="salesCount" />
-    <el-table-column align="center" label="库存" min-width="90" prop="stock" />
+    <el-table-column
+      align="center"
+      :label="t('extra.k44e7ebb4')"
+      min-width="90"
+      prop="salesCount"
+    />
+    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="90" prop="stock" />
     <el-table-column
       v-if="spuData.length > 1 && deletable"
       align="center"
-      label="操作"
+      :label="t('common.operation')"
       min-width="90"
     >
       <template #default="scope">
-        <el-button link type="primary" @click="deleteSpu(scope.row.id)"> 删除</el-button>
+        <el-button link type="primary" @click="deleteSpu(scope.row.id)">
+          {{ t('common.delete') }}</el-button
+        >
       </template>
     </el-table-column>
   </el-table>

@@ -68,15 +68,25 @@
           <el-avatar :src="scope.row.avatar" />
         </template>
       </el-table-column>
-      <el-table-column label="昵称" align="center" prop="name" min-width="80px" />
-      <el-table-column label="等级" align="center" prop="level" min-width="80px">
+      <el-table-column
+        :label="t('system.user.nickname')"
+        align="center"
+        prop="name"
+        min-width="80px"
+      />
+      <el-table-column
+        :label="t('auto.views.member.level.LevelForm.k5c42c048')"
+        align="center"
+        prop="level"
+        min-width="80px"
+      >
         <template #default="scope">
-          <el-tag v-if="scope.row.bindUserId === bindUserId">一级</el-tag>
-          <el-tag v-else>二级</el-tag>
+          <el-tag v-if="scope.row.bindUserId === bindUserId">{{ t('extra.k117bf10b') }}</el-tag>
+          <el-tag v-else>{{ t('extra.k301d4db6') }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="绑定时间"
+        :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.kd9bbd388')"
         align="center"
         prop="bindUserTime"
         :formatter="dateFormatter"

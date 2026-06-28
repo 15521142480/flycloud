@@ -1,8 +1,8 @@
 export type UserLoginVO = {
   username: string
   password: string
-  grant_type: string,
-  scope: string,
+  grant_type: string
+  scope: string
   // 字母数组验证
   code: string
   codeKey: string

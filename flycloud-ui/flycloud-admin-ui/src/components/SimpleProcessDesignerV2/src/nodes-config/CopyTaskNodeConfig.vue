@@ -24,10 +24,13 @@
       </div>
     </template>
     <el-tabs type="border-card" v-model="activeTabName">
-      <el-tab-pane label="抄送人" name="user">
+      <el-tab-pane
+        :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kdb9f866c')"
+        name="user"
+      >
         <div>
           <el-form ref="formRef" :model="configForm" label-position="top" :rules="formRules">
-            <el-form-item label="抄送人设置" prop="candidateStrategy">
+            <el-form-item :label="t('extra.k50966a69')" prop="candidateStrategy">
               <el-radio-group
                 v-model="configForm.candidateStrategy"
                 @change="changeCandidateStrategy"
@@ -45,7 +48,7 @@
 
             <el-form-item
               v-if="configForm.candidateStrategy == CandidateStrategy.ROLE"
-              label="指定角色"
+              :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kf0b09386')"
               prop="roleIds"
             >
               <el-select v-model="configForm.roleIds" clearable multiple style="width: 100%">
@@ -63,7 +66,11 @@
                 configForm.candidateStrategy == CandidateStrategy.DEPT_LEADER ||
                 configForm.candidateStrategy == CandidateStrategy.MULTI_LEVEL_DEPT_LEADER
               "
-              label="指定部门"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.kf14ac805'
+                )
+              "
               prop="deptIds"
               span="24"
             >
@@ -72,7 +79,11 @@
                 v-model="configForm.deptIds"
                 :data="deptTreeOptions"
                 :props="defaultProps"
-                empty-text="加载中，请稍后"
+                :empty-text="
+                  t(
+                    'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k29a4e57b'
+                  )
+                "
                 multiple
                 node-key="id"
                 style="width: 100%"
@@ -81,7 +92,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy == CandidateStrategy.POST"
-              label="指定岗位"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k5e4b64cd'
+                )
+              "
               prop="postIds"
               span="24"
             >
@@ -96,7 +111,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy == CandidateStrategy.USER"
-              label="指定用户"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.custom_config.ElementCustomConfig.k100f9964'
+                )
+              "
               prop="userIds"
               span="24"
             >
@@ -111,7 +130,11 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.USER_GROUP"
-              label="指定用户组"
+              :label="
+                t(
+                  'auto.components.bpmnProcessDesigner.package.penal.task.task_components.k1ac78c11'
+                )
+              "
               prop="userGroups"
             >
               <el-select v-model="configForm.userGroups" clearable multiple style="width: 100%">
@@ -125,7 +148,7 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.FORM_USER"
-              label="表单内用户字段"
+              :label="t('auto.components.SimpleProcessDesignerV2.src.consts.k805bd925')"
               prop="formUser"
             >
               <el-select v-model="configForm.formUser" clearable style="width: 100%">
@@ -140,7 +163,7 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.FORM_DEPT_LEADER"
-              label="表单内部门字段"
+              :label="t('extra.k905fc31b')"
               prop="formDept"
             >
               <el-select v-model="configForm.formDept" clearable style="width: 100%">
@@ -176,7 +199,7 @@
             </el-form-item>
             <el-form-item
               v-if="configForm.candidateStrategy === CandidateStrategy.EXPRESSION"
-              label="流程表达式"
+              :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kb86130ce')"
               prop="expression"
             >
               <el-input
@@ -189,15 +212,17 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="表单字段权限" name="fields" v-if="formType === 10">
+      <el-tab-pane :label="t('extra.ke765ec60')" name="fields" v-if="formType === 10">
         <div class="field-setting-pane">
-          <div class="field-setting-desc">字段权限</div>
+          <div class="field-setting-desc">{{ t('extra.k7c462e44') }}</div>
           <div class="field-permit-title">
-            <div class="setting-title-label first-title"> 字段名称 </div>
+            <div class="setting-title-label first-title"> {{ t('extra.kb81e9b9c') }} </div>
             <div class="other-titles">
-              <span class="setting-title-label">只读</span>
-              <span class="setting-title-label">可编辑</span>
-              <span class="setting-title-label">隐藏</span>
+              <span class="setting-title-label">{{
+                t('auto.views.iot.product.detail.ThinkModelFunctionForm.kffc1d065')
+              }}</span>
+              <span class="setting-title-label">{{ t('extra.ka32b3bf7') }}</span>
+              <span class="setting-title-label">{{ t('system.menu.hidden') }}</span>
             </div>
           </div>
           <div
@@ -240,8 +265,10 @@
     <template #footer>
       <el-divider />
       <div>
-        <el-button type="primary" @click="saveConfig">确 定</el-button>
-        <el-button @click="closeDrawer">取 消</el-button>
+        <el-button type="primary" @click="saveConfig">{{ t('extra.k008b8fcb') }}</el-button>
+        <el-button @click="closeDrawer">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
       </div>
     </template>
   </el-drawer>

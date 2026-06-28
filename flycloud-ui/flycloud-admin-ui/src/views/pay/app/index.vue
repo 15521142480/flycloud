@@ -92,7 +92,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="支付宝配置">
+      <el-table-column align="center" :label="t('extra.kcf1facb9')">
         <el-table-column
           v-for="channel in alipayChannels"
           :key="channel.code"
@@ -121,7 +121,7 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column align="center" label="微信配置">
+      <el-table-column align="center" :label="t('extra.kf38b915a')">
         <el-table-column
           v-for="channel in wxChannels"
           :key="channel.code"
@@ -150,7 +150,7 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column align="center" label="钱包支付配置">
+      <el-table-column align="center" :label="t('extra.k7a230011')">
         <el-table-column :label="PayChannelEnum.WALLET.name" align="center">
           <template #default="scope">
             <el-button
@@ -174,7 +174,7 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column align="center" label="模拟支付配置">
+      <el-table-column align="center" :label="t('extra.kc958c0aa')">
         <el-table-column :label="PayChannelEnum.MOCK.name" align="center">
           <template #default="scope">
             <el-button
@@ -198,7 +198,7 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" min-width="110">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" min-width="110">
         <template #default="scope">
           <el-button
             v-hasPermi="['pay:app:update']"
@@ -206,7 +206,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['pay:app:delete']"
@@ -214,7 +214,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

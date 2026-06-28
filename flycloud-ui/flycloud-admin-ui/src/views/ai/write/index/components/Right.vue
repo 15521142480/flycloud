@@ -8,7 +8,7 @@
           <template #icon>
             <Icon icon="ph:copy-bold" />
           </template>
-          复制
+          {{ t('common.copy') }}
         </el-button>
       </h3>
     </template>
@@ -25,7 +25,7 @@
           <template #icon>
             <Icon icon="material-symbols:stop" />
           </template>
-          终止生成
+          {{ t('extra.kfa1bb225') }}
         </el-button>
         <el-input
           id="inputId"
@@ -34,7 +34,7 @@
           autosize
           :input-style="{ boxShadow: 'none' }"
           resize="none"
-          placeholder="生成的内容……"
+          :placeholder="t('extra.k759688ea')"
         />
       </div>
     </div>

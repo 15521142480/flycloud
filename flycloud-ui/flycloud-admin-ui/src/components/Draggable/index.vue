@@ -46,7 +46,7 @@
       :disabled="limit > 0 && formData.length >= limit"
       @click="handleAdd"
     >
-      <Icon icon="ep:plus" /><span>添加</span>
+      <Icon icon="ep:plus" /><span>{{ t('form.add') }}</span>
     </el-button>
   </el-tooltip>
 </template>

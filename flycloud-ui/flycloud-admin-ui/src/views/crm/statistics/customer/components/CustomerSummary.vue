@@ -45,25 +45,25 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="合同总金额"
+        :label="t('auto.views.crm.statistics.customer.components.CustomerConversionStat.k887e974e')"
         align="right"
         prop="contractPrice"
         min-width="200"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="回款金额"
+        :label="t('auto.views.crm.receivable.ReceivableForm.kc60d7ff5')"
         align="right"
         prop="receivablePrice"
         min-width="200"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="未回款金额" align="right" min-width="200">
+      <el-table-column :label="t('extra.k9875650f')" align="right" min-width="200">
         <template #default="scope">
           {{ erpCalculatePercentage(scope.row.receivablePrice, scope.row.contractPrice) }}
         </template>
       </el-table-column>
-      <el-table-column label="回款完成率(%)" align="right" min-width="200" fixed="right">
+      <el-table-column :label="t('extra.ke37495ff')" align="right" min-width="200" fixed="right">
         <template #default="scope">
           {{ erpCalculatePercentage(scope.row.receivablePrice, scope.row.contractPrice) }}
         </template>

@@ -18,46 +18,46 @@
       <el-col :span="10" class="detail-info-item">
         <el-card class="h-full" shadow="never">
           <template #header>
-            <CardTitle title="账户信息" />
+            <CardTitle :title="t('extra.k3ad511e4')" />
           </template>
           <UserAccountInfo :user="user" :wallet="wallet" />
         </el-card>
       </el-col>
       <!-- 下边：账户明细 -->
       <!-- TODO 芋艿：【订单管理】【售后管理】【收藏记录】-->
-      <el-card header="账户明细" shadow="never" style="width: 100%; margin-top: 20px">
+      <el-card :header="t('extra.k5c794c60')" shadow="never" style="width: 100%; margin-top: 20px">
         <template #header>
-          <CardTitle title="账户明细" />
+          <CardTitle :title="t('extra.k5c794c60')" />
         </template>
         <el-tabs>
-          <el-tab-pane label="积分">
+          <el-tab-pane :label="t('extra.k4b7324dd')">
             <UserPointList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="签到" lazy>
+          <el-tab-pane :label="t('extra.kc9da9b59')" lazy>
             <UserSignList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="成长值" lazy>
+          <el-tab-pane :label="t('extra.k4a23832a')" lazy>
             <UserExperienceRecordList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="余额" lazy>
+          <el-tab-pane :label="t('extra.ke05e6f34')" lazy>
             <UserBalanceList :wallet-id="wallet.id" />
           </el-tab-pane>
-          <el-tab-pane label="收货地址" lazy>
+          <el-tab-pane :label="t('extra.k748ea9b7')" lazy>
             <UserAddressList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="订单管理" lazy>
+          <el-tab-pane :label="t('auto.views.mall.home.components.ShortcutCard.k26d8e2fa')" lazy>
             <UserOrderList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="售后管理" lazy>
+          <el-tab-pane :label="t('auto.views.mall.home.components.ShortcutCard.kd7413960')" lazy>
             <UserAfterSaleList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="收藏记录" lazy>
+          <el-tab-pane :label="t('extra.k90ed2fc4')" lazy>
             <UserFavoriteList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="优惠劵" lazy>
+          <el-tab-pane :label="t('auto.views.member.user.detail.UserCouponList.k338d0ddd')" lazy>
             <UserCouponList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane label="推广用户" lazy>
+          <el-tab-pane :label="t('extra.k3b4445f3')" lazy>
             <UserBrokerageList :bind-user-id="id" />
           </el-tab-pane>
         </el-tabs>

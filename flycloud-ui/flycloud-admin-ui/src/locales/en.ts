@@ -1,4 +1,7 @@
 export default {
+  app: {
+    title: 'FlyCloud Admin'
+  },
   common: {
     inputText: 'Please input',
     selectText: 'Please select',
@@ -69,7 +72,11 @@ export default {
     saveSuccess: 'Saved successfully',
     deleteSuccess: 'Deleted successfully',
     deleteConfirmTitle: 'Delete Confirmation',
-    statusConfirmTitle: 'Status Confirmation'
+    statusConfirmTitle: 'Status Confirmation',
+    loading: 'Loading',
+    lengthRange: 'Length must be between {min} and {max} characters',
+    notSpace: 'Spaces are not allowed',
+    notSpecialCharacters: 'Special characters are not allowed'
   },
   lock: {
     lockScreen: 'Lock screen',
@@ -120,7 +127,8 @@ export default {
     uniqueOpened: 'Unique opened',
     tagsViewIcon: 'Tags view icon',
     reExperienced: 'Please exit the login experience again',
-    fixedMenu: 'Fixed menu'
+    fixedMenu: 'Fixed menu',
+    tagsViewImmerse: 'Immersive tags view'
   },
   preference: {
     title: 'Preferences',
@@ -232,6 +240,94 @@ export default {
       importUpdateSuccessCount: 'Updated successfully: {count}',
       importUpdateFailedCount: 'Update failed: {count}',
       importTemplateFileName: 'user-import-template.xls'
+    },
+    role: {
+      title: 'Role Management',
+      add: 'Create Role',
+      name: 'Role Name',
+      code: 'Role Code',
+      createTitle: 'Create Role',
+      editTitle: 'Edit Role',
+      menuPermission: 'Menu Authorization',
+      menuPermissionTitle: 'Menu Permissions',
+      allToggle: 'Select all / Deselect all',
+      expandToggle: 'Expand / Collapse all',
+      yes: 'Yes',
+      no: 'No',
+      expand: 'Expand',
+      collapse: 'Collapse',
+      savePermission: 'Save Authorization',
+      superAdminTip:
+        'super_admin is the super administrator role code. It has all permissions after sign-in, so no permission assignment is required',
+      permissionRequired: 'Please select at least one menu or button permission',
+      permissionSaved: 'Authorization saved',
+      deleteConfirm: 'Confirm delete role {name}?'
+    },
+    dept: {
+      phone: 'Phone'
+    },
+    dict: {
+      title: 'Dictionary Management',
+      addType: 'Create Type',
+      addData: 'Create Data',
+      typeName: 'Dictionary Name',
+      typeCode: 'Dictionary Type',
+      selectType: 'Please select dictionary type',
+      dataLabel: 'Data Label',
+      label: 'Label',
+      value: 'Value',
+      color: 'Color',
+      createTypeTitle: 'Create Dictionary Type',
+      editTypeTitle: 'Edit Dictionary Type',
+      createDataTitle: 'Create Dictionary Data',
+      editDataTitle: 'Edit Dictionary Data',
+      deleteTypeConfirm: 'Confirm delete dictionary type {name}?',
+      deleteDataConfirm: 'Confirm delete dictionary data {name}?'
+    },
+    menu: {
+      title: 'Menu Management',
+      addRoot: 'Create Root Menu',
+      createTitle: 'Create Menu',
+      editTitle: 'Edit Menu',
+      name: 'Menu Name',
+      root: 'Root Category',
+      parent: 'Parent Menu',
+      baseInfo: 'Basic Info',
+      type: 'Menu Type',
+      menuType: 'Menu',
+      dirType: 'Directory',
+      permission: 'Menu Permission',
+      path: 'Route Path',
+      component: 'Component Path',
+      componentName: 'Component Name',
+      icon: 'Menu Icon',
+      displaySort: 'Display Sort',
+      menuStatus: 'Menu Status',
+      visibleStatus: 'Visible Status',
+      visible: 'Show',
+      hidden: 'Hide',
+      alwaysShow: 'Always Show',
+      always: 'Always',
+      notAlways: 'No',
+      cacheStatus: 'Cache Status',
+      cache: 'Cache',
+      noCache: 'No Cache',
+      buttonPermission: 'Button Permission',
+      buttonName: 'Button Name',
+      buttonPermissionCode: 'Button Permission',
+      addButton: 'Create',
+      editButton: 'Edit Button Permission',
+      createButton: 'Create Button Permission',
+      buttonRequired: 'Please enter both button name and button permission',
+      deleteWithChildrenConfirm: 'Confirm delete {name} and all child menus?',
+      deleteConfirm: 'Confirm delete menu {name}?',
+      statusConfirm: 'Confirm to {action} menu {name}?',
+      enableAction: 'Enable',
+      disableAction: 'Disable',
+      nameRequired: 'Menu name is required',
+      permissionRequired: 'Menu permission is required',
+      pathRequired: 'Route path is required',
+      sortRequired: 'Display sort is required'
     }
   },
   analysis: {
@@ -470,7 +566,8 @@ export default {
       confirmPassword: 'Confirm Password',
       email: 'Email',
       smsCode: 'SMS code',
-      mobile: 'Mobile'
+      mobile: 'Mobile',
+      ssoFormTitle: 'Third-party Authorization'
     }
   },
   profile: {
@@ -508,7 +605,8 @@ export default {
       oldPwdMsg: 'Please Enter Old Password',
       newPwdMsg: 'Please Enter New Password',
       cfPwdMsg: 'Please Enter Confirm Password',
-      diffPwd: 'The Passwords Entered Twice No Match'
+      diffPwd: 'The Passwords Entered Twice No Match',
+      pwdRules: 'Length must be 6 to 20 characters'
     }
   },
   cropper: {
@@ -524,5 +622,13 @@ export default {
     btn_zoom_in: 'Zoom in',
     btn_zoom_out: 'Zoom out',
     preview: 'Preivew'
+  },
+  textCaptcha: {
+    title: 'Security Verification',
+    imageAlt: 'Click captcha',
+    prompt: 'Please click in order',
+    passed: 'Verification passed',
+    loadFailed: 'Failed to load captcha',
+    invalid: 'Captcha error, please verify again'
   }
 }

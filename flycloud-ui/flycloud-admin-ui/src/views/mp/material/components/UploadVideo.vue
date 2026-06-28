@@ -24,31 +24,30 @@
         }}</el-button>
       </template>
       <template #tip>
-        <span class="el-upload__tip" style="margin-left: 10px"
-          >格式支持 MP4，文件大小不超过 10MB</span
-        >
+        <span class="el-upload__tip" style="margin-left: 10px">{{ t('extra.k95d5df7f') }}</span>
       </template>
     </el-upload>
     <el-divider />
     <el-form :model="uploadData" :rules="uploadRules" ref="uploadFormRef">
-      <el-form-item label="标题" prop="title">
-        <el-input
-          v-model="uploadData.title"
-          placeholder="标题将展示在相关播放页面，建议填写清晰、准确、生动的标题"
-        />
+      <el-form-item :label="t('table.title')" prop="title">
+        <el-input v-model="uploadData.title" :placeholder="t('extra.k6f5b83b0')" />
       </el-form-item>
-      <el-form-item label="描述" prop="introduction">
+      <el-form-item :label="t('auto.views.bpm.group.UserGroupForm.k412f54dc')" prop="introduction">
         <el-input
           :rows="3"
           type="textarea"
           v-model="uploadData.introduction"
-          placeholder="介绍语将展示在相关播放页面，建议填写简洁明确、有信息量的内容"
+          :placeholder="t('extra.k4feea8fe')"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="showDialog = false">取 消</el-button>
-      <el-button type="primary" @click="submitVideo">提 交</el-button>
+      <el-button @click="showDialog = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
+      <el-button type="primary" @click="submitVideo">{{
+        t('auto.views.mp.draft.index.k729bc2ba')
+      }}</el-button>
     </template>
   </el-dialog>
 </template>

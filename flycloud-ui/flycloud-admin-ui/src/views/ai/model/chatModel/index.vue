@@ -66,23 +66,49 @@
           <dict-tag :type="DICT_TYPE.AI_PLATFORM" :value="scope.row.platform" />
         </template>
       </el-table-column>
-      <el-table-column label="模型名字" align="center" prop="name" />
-      <el-table-column label="模型标识" align="center" prop="model" />
-      <el-table-column label="API 秘钥" align="center" prop="keyId" min-width="140">
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.ka11691fb')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k3a818387')"
+        align="center"
+        prop="model"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k0b2b2cbe')"
+        align="center"
+        prop="keyId"
+        min-width="140"
+      >
         <template #default="scope">
           <span>{{ apiKeyList.find((item) => item.id === scope.row.keyId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="t('common.sort')" align="center" prop="sort" />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="温度参数" align="center" prop="temperature" />
-      <el-table-column label="回复数 Token 数" align="center" prop="maxTokens" min-width="140" />
-      <el-table-column label="上下文数量" align="center" prop="maxContexts" />
-      <el-table-column label="操作" align="center">
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k80a0d1e0')"
+        align="center"
+        prop="temperature"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.kd27629ce')"
+        align="center"
+        prop="maxTokens"
+        min-width="140"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k3f4045aa')"
+        align="center"
+        prop="maxContexts"
+      />
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -90,7 +116,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['ai:chat-model:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -98,7 +124,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:chat-model:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

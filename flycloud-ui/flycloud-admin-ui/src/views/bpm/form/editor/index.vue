@@ -16,12 +16,12 @@
   </ContentWrap>
 
   <!-- 表单保存的弹窗 -->
-  <Dialog v-model="dialogVisible" title="保存表单" width="600">
+  <Dialog v-model="dialogVisible" :title="t('extra.kcf5d4060')" width="600">
     <el-form ref="formRef" :model="formData" :rules="formRules" label-width="80px">
-      <el-form-item label="表单名" prop="name">
-        <el-input v-model="formData.name" placeholder="请输入表单名" />
+      <el-form-item :label="t('auto.views.bpm.form.index.ke3f3073e')" prop="name">
+        <el-input v-model="formData.name" :placeholder="t('auto.views.bpm.form.index.k80f67d59')" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="t('common.status')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -32,13 +32,21 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" type="textarea" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.crm.business.BusinessForm.k57e709d9')"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

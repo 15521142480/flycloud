@@ -63,10 +63,18 @@
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="手机号" prop="mobile" />
-        <el-table-column align="center" label="职位" prop="post" />
-        <el-table-column align="center" label="直属上级" prop="parentName" />
-        <el-table-column align="center" label="是否关键决策人" min-width="100" prop="master">
+        <el-table-column align="center" :label="t('system.user.phone')" prop="mobile" />
+        <el-table-column
+          align="center"
+          :label="t('auto.views.crm.contact.ContactForm.ka2a92e50')"
+          prop="post"
+        />
+        <el-table-column
+          align="center"
+          :label="t('auto.views.crm.contact.ContactForm.kcac16f50')"
+          prop="parentName"
+        />
+        <el-table-column align="center" :label="t('extra.k9d406e6a')" min-width="100" prop="master">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.master" />
           </template>
@@ -81,8 +89,12 @@
       />
     </ContentWrap>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
 
     <!-- 表单弹窗：添加 -->

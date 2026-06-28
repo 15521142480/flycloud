@@ -47,13 +47,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="客户" prop="customerId">
+          <el-form-item :label="t('auto.views.crm.contact.index.kf2068706')" prop="customerId">
             <el-select
               v-model="formData.customerId"
               clearable
               filterable
               disabled
-              placeholder="请选择客户"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k6bdb05d6')"
               class="!w-1/1"
             >
               <el-option
@@ -66,12 +66,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="销售人员" prop="saleUserId">
+          <el-form-item
+            :label="t('auto.views.erp.sale.order.SaleOrderForm.k37bb287d')"
+            prop="saleUserId"
+          >
             <el-select
               v-model="formData.saleUserId"
               clearable
               filterable
-              placeholder="请选择销售人员"
+              :placeholder="t('auto.views.erp.sale.order.SaleOrderForm.k5afcd768')"
               class="!w-1/1"
             >
               <el-option
@@ -84,17 +87,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="16">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="t('common.remark')" prop="remark">
             <el-input
               type="textarea"
               v-model="formData.remark"
               :rows="1"
-              placeholder="请输入备注"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k57e709d9')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="附件" prop="fileUrl">
+          <el-form-item
+            :label="t('auto.views.crm.followup.FollowUpRecordForm.k99f6fe6c')"
+            prop="fileUrl"
+          >
             <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
           </el-form-item>
         </el-col>
@@ -102,26 +108,29 @@
       <!-- 子表的表单 -->
       <ContentWrap>
         <el-tabs v-model="subTabsName" class="-mt-15px -mb-10px">
-          <el-tab-pane label="退货产品清单" name="item">
+          <el-tab-pane :label="t('extra.k6d848c6d')" name="item">
             <SaleReturnItemForm ref="itemFormRef" :items="formData.items" :disabled="disabled" />
           </el-tab-pane>
         </el-tabs>
       </ContentWrap>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="优惠率（%）" prop="discountPercent">
+          <el-form-item
+            :label="t('auto.views.erp.purchase.order.PurchaseOrderForm.k1d042fea')"
+            prop="discountPercent"
+          >
             <el-input-number
               v-model="formData.discountPercent"
               controls-position="right"
               :min="0"
               :precision="2"
-              placeholder="请输入优惠率"
+              :placeholder="t('auto.views.erp.purchase.order.PurchaseOrderForm.kd4a23447')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="退款优惠" prop="discountPrice">
+          <el-form-item :label="t('extra.kff9571d4')" prop="discountPrice">
             <el-input
               disabled
               v-model="formData.discountPrice"
@@ -130,7 +139,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="优惠后金额">
+          <el-form-item :label="t('auto.views.erp.purchase.order.PurchaseOrderForm.ke856231c')">
             <el-input
               disabled
               :model-value="formData.totalPrice - formData.otherPrice"
@@ -139,24 +148,24 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="其它费用" prop="otherPrice">
+          <el-form-item :label="t('extra.k7a75e440')" prop="otherPrice">
             <el-input-number
               v-model="formData.otherPrice"
               controls-position="right"
               :min="0"
               :precision="2"
-              placeholder="请输入其它费用"
+              :placeholder="t('extra.kd345cce3')"
               class="!w-1/1"
             />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="结算账户" prop="accountId">
+          <el-form-item :label="t('auto.views.erp.purchase.in.index.k573e8d23')" prop="accountId">
             <el-select
               v-model="formData.accountId"
               clearable
               filterable
-              placeholder="请选择结算账户"
+              :placeholder="t('auto.views.erp.finance.payment.FinancePaymentForm.k0cf19ca0')"
               class="!w-1/1"
             >
               <el-option
@@ -169,7 +178,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="应退金额" prop="totalPrice">
+          <el-form-item
+            :label="
+              t(
+                'auto.views.erp.purchase.return.components.PurchaseReturnRefundEnableList.kde1d144b'
+              )
+            "
+            prop="totalPrice"
+          >
             <el-input disabled v-model="formData.totalPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </el-col>
@@ -177,9 +193,11 @@
     </el-form>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading" v-if="!disabled">
-        确 定
+        {{ t('extra.k008b8fcb') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 

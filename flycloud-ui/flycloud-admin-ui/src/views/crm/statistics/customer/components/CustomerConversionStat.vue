@@ -54,22 +54,37 @@
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_SOURCE" :value="scope.row.source" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户行业" prop="industryId" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.clue.ClueForm.k7b39ef2d')"
+        prop="industryId"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_INDUSTRY" :value="scope.row.industryId" />
         </template>
       </el-table-column>
-      <el-table-column label="负责人" align="center" prop="ownerUserName" min-width="200" />
-      <el-table-column label="创建人" align="center" prop="creatorUserName" min-width="200" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        align="center"
+        prop="ownerUserName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        align="center"
+        prop="creatorUserName"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         min-width="200"
       />
       <el-table-column
-        label="下单日期"
+        :label="t('auto.views.crm.contract.ContractForm.kd5ba9518')"
         align="center"
         prop="orderDate"
         :formatter="dateFormatter"

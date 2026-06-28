@@ -33,7 +33,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="砍价底价(元)" min-width="168">
+          <el-table-column align="center" :label="t('extra.k303ec66c')" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.bargainMinPrice"
@@ -44,7 +44,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="活动库存" min-width="168">
+          <el-table-column align="center" :label="t('extra.ka43d00bc')" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.stock" class="w-100%" />
             </template>
@@ -53,8 +53,12 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" :radio="true" @confirm="selectSpu" />

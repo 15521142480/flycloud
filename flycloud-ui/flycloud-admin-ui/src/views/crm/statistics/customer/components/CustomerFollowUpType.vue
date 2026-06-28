@@ -21,8 +21,18 @@
           <dict-tag :type="DICT_TYPE.CRM_FOLLOW_UP_TYPE" :value="scope.row.followUpType" />
         </template>
       </el-table-column>
-      <el-table-column label="个数" align="center" prop="followUpRecordCount" min-width="200" />
-      <el-table-column label="占比(%)" align="center" prop="portion" min-width="200" />
+      <el-table-column
+        :label="t('extra.kaaf7e534')"
+        align="center"
+        prop="followUpRecordCount"
+        min-width="200"
+      />
+      <el-table-column
+        :label="t('extra.k6eada8ac')"
+        align="center"
+        prop="portion"
+        min-width="200"
+      />
     </el-table>
   </el-card>
 </template>

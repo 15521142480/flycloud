@@ -98,7 +98,7 @@
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -106,7 +106,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['erp:customer:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -114,7 +114,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['erp:customer:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

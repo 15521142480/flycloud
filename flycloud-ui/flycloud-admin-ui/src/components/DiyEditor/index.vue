@@ -163,14 +163,14 @@
   </el-container>
 
   <!-- 预览弹框 -->
-  <Dialog v-model="previewDialogVisible" title="预览" width="700">
+  <Dialog v-model="previewDialogVisible" :title="t('action.preview')" width="700">
     <div class="flex justify-around">
       <IFrame
         class="w-375px border-4px border-rounded-8px border-solid p-2px h-667px!"
         :src="previewUrl"
       />
       <div class="flex flex-col">
-        <el-text>手机扫码预览</el-text>
+        <el-text>{{ t('extra.kd62c6462') }}</el-text>
         <Qrcode :text="previewUrl" logo="/logo.gif" />
       </div>
     </div>

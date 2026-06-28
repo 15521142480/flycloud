@@ -8,7 +8,7 @@
           <template #icon>
             <Icon icon="ph:copy-bold" />
           </template>
-          下载图片
+          {{ t('extra.kd896dabf') }}
         </el-button>
       </h3>
     </template>

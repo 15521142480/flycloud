@@ -4,7 +4,6 @@ const config: {
   default_headers: AxiosHeaders
   request_timeout: number
 } = {
-
   /**
    * api请求基础路径
    */

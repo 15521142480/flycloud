@@ -108,19 +108,24 @@
       <!--        </template>-->
       <!--      </el-table-column>-->
       <!--      <el-table-column label="商品标题" prop="spuName" min-width="300" />-->
-      <el-table-column label="活动状态" align="center" prop="status" min-width="100">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+        align="center"
+        prop="status"
+        min-width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="150px" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -128,7 +133,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:discount-activity:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -137,7 +142,7 @@
             v-if="scope.row.status === 0"
             v-hasPermi="['promotion:discount-activity:close']"
           >
-            关闭
+            {{ t('common.close') }}
           </el-button>
           <el-button
             link
@@ -146,7 +151,7 @@
             v-else
             v-hasPermi="['promotion:discount-activity:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

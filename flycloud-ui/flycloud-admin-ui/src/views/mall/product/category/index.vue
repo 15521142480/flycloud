@@ -59,20 +59,20 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="排序" align="center" min-width="150" prop="sort" />
-      <el-table-column label="状态" align="center" min-width="150" prop="status">
+      <el-table-column :label="t('common.sort')" align="center" min-width="150" prop="sort" />
+      <el-table-column :label="t('common.status')" align="center" min-width="150" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" min-width="180">
+      <el-table-column :label="t('common.operation')" align="center" min-width="180">
         <template #default="scope">
           <el-button
             link
@@ -80,7 +80,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['product:category:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -89,7 +89,7 @@
             @click="handleViewSpu(scope.row.id)"
             v-hasPermi="['product:spu:query']"
           >
-            查看商品
+            {{ t('extra.kf13684ce') }}
           </el-button>
           <el-button
             link
@@ -97,7 +97,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['product:category:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

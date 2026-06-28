@@ -89,20 +89,24 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="开启状态" align="center" prop="status">
+      <el-table-column :label="t('common.sort')" align="center" prop="sort" />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k6bbda1b1')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -110,7 +114,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['trade:delivery:express:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -118,7 +122,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['trade:delivery:express:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

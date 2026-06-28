@@ -110,17 +110,25 @@
           <span>{{ formatDate(scope.row.beginTime) + ' ~ ' + formatDate(scope.row.endTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="执行时长" align="center" prop="duration">
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.index.kf74f1dd2')"
+        align="center"
+        prop="duration"
+      >
         <template #default="scope">
           <span>{{ scope.row.duration + ' 毫秒' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="任务状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.infra.job.index.kb7d4128d')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_JOB_LOG_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             type="primary"
@@ -128,7 +136,7 @@
             @click="openDetail(scope.row.id)"
             v-hasPermi="['infra:job:query']"
           >
-            详细
+            {{ t('extra.k1f0a3a1c') }}
           </el-button>
         </template>
       </el-table-column>

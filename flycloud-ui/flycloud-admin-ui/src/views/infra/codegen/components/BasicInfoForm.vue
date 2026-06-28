@@ -36,16 +36,16 @@
               </el-tooltip>
             </span>
           </template>
-          <el-input v-model="formData.className" placeholder="请输入" />
+          <el-input v-model="formData.className" :placeholder="t('common.inputText')" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="作者" prop="author">
-          <el-input v-model="formData.author" placeholder="请输入" />
+        <el-form-item :label="t('table.author')" prop="author">
+          <el-input v-model="formData.author" :placeholder="t('common.inputText')" />
         </el-form-item>
       </el-col>
       <el-col :span="24">
-        <el-form-item label="备注" prop="remark">
+        <el-form-item :label="t('common.remark')" prop="remark">
           <el-input v-model="formData.remark" :rows="3" type="textarea" />
         </el-form-item>
       </el-col>

@@ -79,7 +79,11 @@
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
         </template>
       </el-table-column>
-      <el-table-column label="商品图片" prop="spuName" min-width="80">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
+        prop="spuName"
+        min-width="80"
+      >
         <template #default="scope">
           <el-image
             :src="scope.row.picUrl"
@@ -89,37 +93,55 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" prop="spuName" min-width="300" />
       <el-table-column
-        label="起始价格"
+        :label="t('auto.views.pay.cashier.index.kd415beac')"
+        prop="spuName"
+        min-width="300"
+      />
+      <el-table-column
+        :label="t('extra.k15817242')"
         prop="bargainFirstPrice"
         min-width="100"
         :formatter="fenToYuanFormat"
       />
       <el-table-column
-        label="砍价底价"
+        :label="t('extra.kbf6a688e')"
         prop="bargainMinPrice"
         min-width="100"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="总砍价人数" prop="recordUserCount" min-width="100" />
-      <el-table-column label="成功砍价人数" prop="recordSuccessUserCount" min-width="110" />
-      <el-table-column label="助力人数" prop="helpUserCount" min-width="100" />
-      <el-table-column label="活动状态" align="center" prop="status" min-width="100">
+      <el-table-column :label="t('extra.kd30bf783')" prop="recordUserCount" min-width="100" />
+      <el-table-column
+        :label="t('extra.kdf4965e0')"
+        prop="recordSuccessUserCount"
+        min-width="110"
+      />
+      <el-table-column :label="t('extra.kbfea2224')" prop="helpUserCount" min-width="100" />
+      <el-table-column
+        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+        align="center"
+        prop="status"
+        min-width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="库存" align="center" prop="stock" min-width="80" />
-      <el-table-column label="总库存" align="center" prop="totalStock" min-width="80" />
+      <el-table-column :label="t('extra.k0eac8802')" align="center" prop="stock" min-width="80" />
       <el-table-column
-        label="创建时间"
+        :label="t('extra.k9da72dfd')"
+        align="center"
+        prop="totalStock"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="150px" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -127,7 +149,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:bargain-activity:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -136,7 +158,7 @@
             v-if="scope.row.status === 0"
             v-hasPermi="['promotion:bargain-activity:close']"
           >
-            关闭
+            {{ t('common.close') }}
           </el-button>
           <el-button
             link
@@ -145,7 +167,7 @@
             v-else
             v-hasPermi="['promotion:bargain-activity:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

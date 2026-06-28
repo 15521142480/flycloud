@@ -49,21 +49,24 @@
       </template>
       <!-- 2. 图片 -->
       <template v-else-if="cell.type === 'image'">
-        <el-form-item label="图片" :prop="`cell[${cellIndex}].imgUrl`">
+        <el-form-item :label="t('extra.k3b9e2563')" :prop="`cell[${cellIndex}].imgUrl`">
           <UploadImg v-model="cell.imgUrl" :limit="1" height="56px" width="56px">
-            <template #tip>建议尺寸 56*56</template>
+            <template #tip>{{ t('extra.k2fb19cb9') }}</template>
           </UploadImg>
         </el-form-item>
-        <el-form-item label="链接" :prop="`cell[${cellIndex}].url`">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')"
+          :prop="`cell[${cellIndex}].url`"
+        >
           <AppLinkInput v-model="cell.url" />
         </el-form-item>
       </template>
       <!-- 3. 搜索框 -->
       <template v-else>
-        <el-form-item label="提示文字" :prop="`cell[${cellIndex}].placeholder`">
+        <el-form-item :label="t('extra.k9b14c905')" :prop="`cell[${cellIndex}].placeholder`">
           <el-input v-model="cell.placeholder" maxlength="10" show-word-limit />
         </el-form-item>
-        <el-form-item label="圆角" :prop="`cell[${cellIndex}].borderRadius`">
+        <el-form-item :label="t('extra.k0103eb2d')" :prop="`cell[${cellIndex}].borderRadius`">
           <el-slider
             v-model="cell.borderRadius"
             :max="100"

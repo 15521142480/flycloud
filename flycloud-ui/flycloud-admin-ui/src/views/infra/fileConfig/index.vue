@@ -89,20 +89,20 @@
           <dict-tag :type="DICT_TYPE.INFRA_FILE_STORAGE" :value="scope.row.storage" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="主配置" align="center" prop="primary">
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="t('extra.k5fa0fcd9')" align="center" prop="primary">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.master" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" width="240px">
+      <el-table-column :label="t('common.operation')" align="center" width="240px">
         <template #default="scope">
           <el-button
             link
@@ -110,7 +110,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['infra:file-config:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -119,16 +119,18 @@
             @click="handleMaster(scope.row.id)"
             v-hasPermi="['infra:file-config:update']"
           >
-            主配置
+            {{ t('extra.k5fa0fcd9') }}
           </el-button>
-          <el-button link type="primary" @click="handleTest(scope.row.id)"> 测试 </el-button>
+          <el-button link type="primary" @click="handleTest(scope.row.id)">
+            {{ t('action.test') }}
+          </el-button>
           <el-button
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['infra:file-config:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

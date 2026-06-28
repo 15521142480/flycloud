@@ -45,14 +45,14 @@
       <XButton
         type="primary"
         preIcon="ep:plus"
-        title="添加监听器"
+        :title="t('extra.k05f99a22')"
         size="small"
         @click="openListenerForm(null)"
       />
       <XButton
         type="success"
         preIcon="ep:select"
-        title="选择监听器"
+        :title="t('extra.k453c427d')"
         size="small"
         @click="openProcessListenerDialog"
       />
@@ -61,14 +61,16 @@
     <!-- 监听器 编辑/创建 部分 -->
     <el-drawer
       v-model="listenerFormModelVisible"
-      title="执行监听器"
+      :title="t('extra.k97af4eaf')"
       :size="`${width}px`"
       append-to-body
       destroy-on-close
     >
       <el-form :model="listenerForm" label-width="96px" ref="listenerFormRef">
         <el-form-item
-          label="事件类型"
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5b2d75aa')
+          "
           prop="event"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
         >
@@ -78,7 +80,9 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="监听器类型"
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kff6c93d9')
+          "
           prop="listenerType"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
         >
@@ -93,7 +97,9 @@
         </el-form-item>
         <el-form-item
           v-if="listenerForm.listenerType === 'classListener'"
-          label="Java类"
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kfe551e73')
+          "
           prop="class"
           key="listener-class"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
@@ -102,7 +108,9 @@
         </el-form-item>
         <el-form-item
           v-if="listenerForm.listenerType === 'expressionListener'"
-          label="表达式"
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k513c1c63')
+          "
           prop="expression"
           key="listener-expression"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
@@ -111,7 +119,9 @@
         </el-form-item>
         <el-form-item
           v-if="listenerForm.listenerType === 'delegateExpressionListener'"
-          label="代理表达式"
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf5ed3fb9')
+          "
           prop="delegateExpression"
           key="listener-delegate"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
@@ -120,7 +130,9 @@
         </el-form-item>
         <template v-if="listenerForm.listenerType === 'scriptListener'">
           <el-form-item
-            label="脚本格式"
+            :label="
+              t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k360cbaed')
+            "
             prop="scriptFormat"
             key="listener-script-format"
             :rules="{ required: true, trigger: ['blur', 'change'], message: '请填写脚本格式' }"
@@ -128,19 +140,35 @@
             <el-input v-model="listenerForm.scriptFormat" clearable />
           </el-form-item>
           <el-form-item
-            label="脚本类型"
+            :label="
+              t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.kf1574ac4')
+            "
             prop="scriptType"
             key="listener-script-type"
             :rules="{ required: true, trigger: ['blur', 'change'], message: '请选择脚本类型' }"
           >
             <el-select v-model="listenerForm.scriptType">
-              <el-option label="内联脚本" value="inlineScript" />
-              <el-option label="外部脚本" value="externalScript" />
+              <el-option
+                :label="
+                  t(
+                    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k95a5d467'
+                  )
+                "
+                value="inlineScript"
+              />
+              <el-option
+                :label="
+                  t(
+                    'auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1725e40e'
+                  )
+                "
+                value="externalScript"
+              />
             </el-select>
           </el-form-item>
           <el-form-item
             v-if="listenerForm.scriptType === 'inlineScript'"
-            label="脚本内容"
+            :label="t('extra.k7be2dcb0')"
             prop="value"
             key="listener-script"
             :rules="{ required: true, trigger: ['blur', 'change'], message: '请填写脚本内容' }"
@@ -149,7 +177,11 @@
           </el-form-item>
           <el-form-item
             v-if="listenerForm.scriptType === 'externalScript'"
-            label="资源地址"
+            :label="
+              t(
+                'auto.components.bpmnProcessDesigner.package.penal.flow_condition.FlowCondition.k25622755'
+              )
+            "
             prop="resource"
             key="listener-resource"
             :rules="{ required: true, trigger: ['blur', 'change'], message: '请填写资源地址' }"
@@ -160,8 +192,12 @@
       </el-form>
       <el-divider />
       <p class="listener-filed__title">
-        <span><Icon icon="ep:menu" />注入字段：</span>
-        <XButton type="primary" @click="openListenerFieldForm(null)" title="添加字段" />
+        <span><Icon icon="ep:menu" />{{ t('extra.k33d17788') }}</span>
+        <XButton
+          type="primary"
+          @click="openListenerFieldForm(null)"
+          :title="t('extra.k4484fa04')"
+        />
       </p>
       <el-table
         :data="fieldsListOfListener"
@@ -171,46 +207,52 @@
         border
         style="flex: none"
       >
-        <el-table-column label="序号" width="50px" type="index" />
-        <el-table-column label="字段名称" min-width="100px" prop="name" />
+        <el-table-column :label="t('common.index')" width="50px" type="index" />
+        <el-table-column :label="t('extra.kb81e9b9c')" min-width="100px" prop="name" />
         <el-table-column
-          label="字段类型"
+          :label="t('extra.k7f3a2fb2')"
           min-width="80px"
           show-overflow-tooltip
           :formatter="(row) => fieldTypeObject[row.fieldType]"
         />
         <el-table-column
-          label="字段值/表达式"
+          :label="t('extra.k428a0e06')"
           min-width="100px"
           show-overflow-tooltip
           :formatter="(row) => row.string || row.expression"
         />
-        <el-table-column label="操作" width="130px">
+        <el-table-column :label="t('common.operation')" width="130px">
           <template #default="scope">
-            <el-button size="small" link @click="openListenerFieldForm(scope.row, scope.$index)"
-              >编辑</el-button
-            >
+            <el-button size="small" link @click="openListenerFieldForm(scope.row, scope.$index)">{{
+              t('common.edit')
+            }}</el-button>
             <el-divider direction="vertical" />
             <el-button
               size="small"
               link
               style="color: #ff4d4f"
               @click="removeListenerField(scope.$index)"
-              >移除</el-button
+              >{{ t('extra.k825389c5') }}</el-button
             >
           </template>
         </el-table-column>
       </el-table>
 
       <div class="element-drawer__button">
-        <el-button @click="listenerFormModelVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveListenerConfig">保 存</el-button>
+        <el-button @click="listenerFormModelVisible = false">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
+        <el-button type="primary" @click="saveListenerConfig">{{
+          t(
+            'auto.components.bpmnProcessDesigner.package.penal.signal_message.SignalAndMessage.ka36a1b46'
+          )
+        }}</el-button>
       </div>
     </el-drawer>
 
     <!-- 注入西段 编辑/创建 部分 -->
     <el-dialog
-      title="字段配置"
+      :title="t('extra.k5656f19e')"
       v-model="listenerFieldFormModelVisible"
       width="600px"
       append-to-body
@@ -223,14 +265,14 @@
         style="height: 136px"
       >
         <el-form-item
-          label="字段名称："
+          :label="t('extra.kcaaf9a38')"
           prop="name"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
         >
           <el-input v-model="listenerFieldForm.name" clearable />
         </el-form-item>
         <el-form-item
-          label="字段类型："
+          :label="t('extra.k398a7278')"
           prop="fieldType"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
         >
@@ -245,7 +287,7 @@
         </el-form-item>
         <el-form-item
           v-if="listenerFieldForm.fieldType === 'string'"
-          label="字段值："
+          :label="t('extra.kb9e71762')"
           prop="string"
           key="field-string"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
@@ -254,7 +296,7 @@
         </el-form-item>
         <el-form-item
           v-if="listenerFieldForm.fieldType === 'expression'"
-          label="表达式："
+          :label="t('extra.k2d3fc7e4')"
           prop="expression"
           key="field-expression"
           :rules="{ required: true, trigger: ['blur', 'change'] }"
@@ -263,8 +305,12 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button size="small" @click="listenerFieldFormModelVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="saveListenerFiled">确 定</el-button>
+        <el-button size="small" @click="listenerFieldFormModelVisible = false">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
+        <el-button size="small" type="primary" @click="saveListenerFiled">{{
+          t('extra.k008b8fcb')
+        }}</el-button>
       </template>
     </el-dialog>
   </div>

@@ -77,27 +77,39 @@
             <el-avatar :src="scope.row.avatar" />
           </template>
         </el-table-column>
-        <el-table-column label="昵称" align="center" prop="name" min-width="80px" />
         <el-table-column
-          label="推广人数"
+          :label="t('system.user.nickname')"
+          align="center"
+          prop="name"
+          min-width="80px"
+        />
+        <el-table-column
+          :label="t('extra.ka006ed09')"
           align="center"
           prop="brokerageUserCount"
           min-width="80px"
         />
         <el-table-column
-          label="推广订单数量"
+          :label="t('extra.kec878b95')"
           align="center"
           prop="brokerageOrderCount"
           min-width="110px"
         />
-        <el-table-column label="推广资格" align="center" prop="brokerageEnabled" min-width="80px">
+        <el-table-column
+          :label="t('auto.views.mall.trade.brokerage.user.index.k95774950')"
+          align="center"
+          prop="brokerageEnabled"
+          min-width="80px"
+        >
           <template #default="scope">
-            <el-tag v-if="scope.row.brokerageEnabled">有</el-tag>
-            <el-tag v-else type="info">无</el-tag>
+            <el-tag v-if="scope.row.brokerageEnabled">{{
+              t('auto.views.mall.trade.brokerage.user.index.kfbd5b750')
+            }}</el-tag>
+            <el-tag v-else type="info">{{ t('extra.kadb3d23e') }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          label="绑定时间"
+          :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.kd9bbd388')"
           align="center"
           prop="bindUserTime"
           :formatter="dateFormatter"

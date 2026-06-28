@@ -144,33 +144,43 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="发起时间"
+        :label="t('auto.views.bpm.processInstance.index.k44042ce0')"
         align="center"
         prop="startTime"
         width="180"
         :formatter="dateFormatter"
       />
       <el-table-column
-        label="结束时间"
+        :label="t('common.endTimeText')"
         align="center"
         prop="endTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column align="center" label="耗时" prop="durationInMillis" width="169">
+      <el-table-column
+        align="center"
+        :label="t('extra.k39f1374d')"
+        prop="durationInMillis"
+        width="169"
+      >
         <template #default="scope">
           {{ scope.row.durationInMillis > 0 ? formatPast2(scope.row.durationInMillis) : '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="当前审批任务" align="center" prop="tasks" min-width="120px">
+      <el-table-column :label="t('extra.kf2b9e204')" align="center" prop="tasks" min-width="120px">
         <template #default="scope">
           <el-button type="primary" v-for="task in scope.row.tasks" :key="task.id" link>
             <span>{{ task.name }}</span>
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="流程编号" align="center" prop="id" min-width="320px" />
-      <el-table-column label="操作" align="center" fixed="right" width="180">
+      <el-table-column
+        :label="t('auto.views.bpm.task.todo.index.ka11dfb55')"
+        align="center"
+        prop="id"
+        min-width="320px"
+      />
+      <el-table-column :label="t('common.operation')" align="center" fixed="right" width="180">
         <template #default="scope">
           <el-button
             link
@@ -178,7 +188,7 @@
             v-hasPermi="['bpm:manage:instance:detail']"
             @click="handleDetail(scope.row)"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
           <el-button
             link
@@ -187,7 +197,7 @@
             v-hasPermi="['bpm:manage:instance:cancel']"
             @click="handleCancel(scope.row)"
           >
-            取消
+            {{ t('common.cancel') }}
           </el-button>
         </template>
       </el-table-column>

@@ -59,7 +59,7 @@
   <Dialog v-model="detailSelectDialog.visible" title="" width="50%">
     <el-form class="min-h-200px">
       <el-form-item
-        label="选择分类"
+        :label="t('extra.k5fcb1e4d')"
         v-if="detailSelectDialog.type === APP_LINK_TYPE_ENUM.PRODUCT_CATEGORY_LIST"
       >
         <ProductCategorySelect

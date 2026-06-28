@@ -40,7 +40,7 @@
           @click="openSendForm(row.id)"
           v-hasPermi="['system:mail-template:send-mail']"
         >
-          测试
+          {{ t('action.test') }}
         </el-button>
         <el-button
           link
@@ -48,7 +48,7 @@
           @click="openForm('update', row.id)"
           v-hasPermi="['system:mail-template:update']"
         >
-          编辑
+          {{ t('common.edit') }}
         </el-button>
         <el-button
           link
@@ -56,7 +56,7 @@
           v-hasPermi="['system:mail-template:delete']"
           @click="handleDelete(row.id)"
         >
-          删除
+          {{ t('common.delete') }}
         </el-button>
       </template>
     </Table>

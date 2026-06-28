@@ -19,12 +19,12 @@ export const getPostPage = async (params: PageParam) => {
 
 // 获取岗位精简信息列表
 export const getSimplePostList = async (): Promise<PostVO[]> => {
-  return await request.get({ url: `/${SYS_BASE_URL}/post/getAllList`})
+  return await request.get({ url: `/${SYS_BASE_URL}/post/getAllList` })
 }
 
 // 查询岗位详情
 export const getPost = async (id: number) => {
-  return await request.get({ url:`/${SYS_BASE_URL}/post/get/` + id })
+  return await request.get({ url: `/${SYS_BASE_URL}/post/get/` + id })
 }
 
 // 新增/修改岗位

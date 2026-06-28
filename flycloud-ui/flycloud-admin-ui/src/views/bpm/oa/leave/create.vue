@@ -62,7 +62,7 @@
             <el-select
               v-model="startUserSelectAssignees[userTask.id]"
               multiple
-              placeholder="请选择审批人"
+              :placeholder="t('auto.views.bpm.processInstance.create.index_old.k263670a1')"
             >
               <el-option
                 v-for="user in userList"
@@ -76,7 +76,9 @@
       </el-card>
     </el-col>
     <el-form-item>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
     </el-form-item>
   </el-form>
 </template>

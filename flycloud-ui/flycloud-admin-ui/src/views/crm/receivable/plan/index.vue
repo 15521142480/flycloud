@@ -88,8 +88,17 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="合同编号" prop="contractNo" width="200px" />
-      <el-table-column align="center" label="期数" prop="period">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.backlog.components.ContractAuditList.k17b34173')"
+        prop="contractNo"
+        width="200px"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.plan.components.ReceivablePlanList.k389372a5')"
+        prop="period"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.id)">
             {{ scope.row.period }}
@@ -98,7 +107,7 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="计划回款金额（元）"
+        :label="t('extra.keb8da7ed')"
         prop="price"
         width="160"
         :formatter="erpPriceTableColumnFormatter"
@@ -106,28 +115,42 @@
       <el-table-column
         :formatter="dateFormatter2"
         align="center"
-        label="计划回款日期"
+        :label="t('auto.views.crm.receivable.plan.ReceivablePlanForm.kf5888bd3')"
         prop="returnTime"
         width="180px"
       />
-      <el-table-column align="center" label="提前几天提醒" prop="remindDays" width="150" />
       <el-table-column
         align="center"
-        label="提醒日期"
+        :label="t('auto.views.crm.receivable.plan.ReceivablePlanForm.k4eb4f0ab')"
+        prop="remindDays"
+        width="150"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.plan.components.ReceivablePlanList.k1ce64935')"
         prop="remindTime"
         width="180px"
         :formatter="dateFormatter2"
       />
-      <el-table-column align="center" label="回款方式" prop="returnType" width="130px">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.ReceivableForm.k6c0d9ca0')"
+        prop="returnType"
+        width="130px"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_RECEIVABLE_RETURN_TYPE" :value="scope.row.returnType" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark" />
-      <el-table-column label="负责人" prop="ownerUserName" width="120" />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" />
+      <el-table-column
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        prop="ownerUserName"
+        width="120"
+      />
       <el-table-column
         align="center"
-        label="实际回款金额（元）"
+        :label="t('extra.kf49c0ad3')"
         prop="receivable.price"
         width="160"
       >
@@ -140,14 +163,14 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="实际回款日期"
+        :label="t('extra.k7ebebecf')"
         prop="receivable.returnTime"
         width="180px"
         :formatter="dateFormatter2"
       />
       <el-table-column
         align="center"
-        label="实际回款金额（元）"
+        :label="t('extra.kf49c0ad3')"
         prop="receivable.price"
         width="160"
       >
@@ -161,19 +184,24 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="更新时间"
+        :label="t('common.updateTime')"
         prop="updateTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="创建人" prop="creatorName" width="100px" />
-      <el-table-column align="center" fixed="right" label="操作" width="180px">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        prop="creatorName"
+        width="100px"
+      />
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="180px">
         <template #default="scope">
           <el-button
             v-hasPermi="['crm:receivable:create']"
@@ -182,7 +210,7 @@
             @click="openReceivableForm(scope.row)"
             :disabled="scope.row.receivableId"
           >
-            创建回款
+            {{ t('extra.ka683c87a') }}
           </el-button>
           <el-button
             v-hasPermi="['crm:receivable-plan:update']"
@@ -190,7 +218,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['crm:receivable-plan:delete']"
@@ -198,7 +226,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

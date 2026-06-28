@@ -68,13 +68,22 @@
               <dict-tag :type="DICT_TYPE.PAY_NOTIFY_STATUS" :value="scope.row.status" />
             </template>
           </el-table-column>
-          <el-table-column label="通知次数" align="center" prop="notifyTimes" />
-          <el-table-column label="通知时间" align="center" prop="lastExecuteTime" width="180">
+          <el-table-column
+            :label="t('auto.views.pay.notify.NotifyDetail.kec63d1a8')"
+            align="center"
+            prop="notifyTimes"
+          />
+          <el-table-column
+            :label="t('extra.k3f6194f8')"
+            align="center"
+            prop="lastExecuteTime"
+            width="180"
+          >
             <template #default="scope">
               <span>{{ formatDate(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="响应结果" align="center" prop="response" />
+          <el-table-column :label="t('extra.k15d5fffa')" align="center" prop="response" />
         </el-table>
       </el-descriptions-item>
     </el-descriptions>

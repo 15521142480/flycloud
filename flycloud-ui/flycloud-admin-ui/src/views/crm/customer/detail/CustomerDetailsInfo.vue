@@ -8,50 +8,67 @@
           }}</span>
         </template>
         <el-descriptions :column="4">
-          <el-descriptions-item label="客户名称">
+          <el-descriptions-item
+            :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+          >
             {{ customer.name }}
           </el-descriptions-item>
-          <el-descriptions-item label="客户来源">
+          <el-descriptions-item :label="t('auto.views.crm.clue.ClueForm.kb805cdaa')">
             <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_SOURCE" :value="customer.source" />
           </el-descriptions-item>
-          <el-descriptions-item label="手机">{{ customer.mobile }}</el-descriptions-item>
-          <el-descriptions-item label="电话">{{ customer.telephone }}</el-descriptions-item>
-          <el-descriptions-item label="邮箱">{{ customer.email }}</el-descriptions-item>
-          <el-descriptions-item label="地址">
+          <el-descriptions-item :label="t('auto.views.crm.clue.ClueForm.k9c01ad09')">{{
+            customer.mobile
+          }}</el-descriptions-item>
+          <el-descriptions-item :label="t('system.dept.phone')">{{
+            customer.telephone
+          }}</el-descriptions-item>
+          <el-descriptions-item :label="t('system.user.email')">{{
+            customer.email
+          }}</el-descriptions-item>
+          <el-descriptions-item :label="t('auto.views.crm.clue.ClueForm.k67d2d797')">
             {{ customer.areaName }} {{ customer.detailAddress }}
           </el-descriptions-item>
           <el-descriptions-item label="QQ">{{ customer.qq }}</el-descriptions-item>
-          <el-descriptions-item label="微信">{{ customer.wechat }}</el-descriptions-item>
-          <el-descriptions-item label="客户行业">
+          <el-descriptions-item :label="t('auto.utils.constants.k68406df3')">{{
+            customer.wechat
+          }}</el-descriptions-item>
+          <el-descriptions-item :label="t('auto.views.crm.clue.ClueForm.k7b39ef2d')">
             <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_INDUSTRY" :value="customer.industryId" />
           </el-descriptions-item>
-          <el-descriptions-item label="客户级别">
+          <el-descriptions-item :label="t('auto.views.crm.clue.ClueForm.kbb7208b8')">
             <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_LEVEL" :value="customer.level" />
           </el-descriptions-item>
-          <el-descriptions-item label="下次联系时间">
+          <el-descriptions-item :label="t('auto.views.crm.clue.ClueForm.k8e1beb13')">
             {{ formatDate(customer.contactNextTime) }}
           </el-descriptions-item>
-          <el-descriptions-item label="备注">{{ customer.remark }}</el-descriptions-item>
+          <el-descriptions-item :label="t('common.remark')">{{
+            customer.remark
+          }}</el-descriptions-item>
         </el-descriptions>
       </el-collapse-item>
       <el-collapse-item name="systemInfo">
         <template #title>
-          <span class="text-base font-bold">系统信息</span>
+          <span class="text-base font-bold">{{ t('extra.kb7ea5e50') }}</span>
         </template>
         <el-descriptions :column="4">
-          <el-descriptions-item label="负责人">{{ customer.ownerUserName }}</el-descriptions-item>
-          <el-descriptions-item label="最后跟进记录">
+          <el-descriptions-item :label="t('auto.views.crm.business.BusinessForm.k974d383f')">{{
+            customer.ownerUserName
+          }}</el-descriptions-item>
+          <el-descriptions-item :label="t('extra.k1afb06c4')">
             {{ customer.contactLastContent }}
           </el-descriptions-item>
-          <el-descriptions-item label="最后跟进时间">
+          <el-descriptions-item :label="t('extra.kffa0750f')">
             {{ formatDate(customer.contactLastTime) }}
           </el-descriptions-item>
           <el-descriptions-item label="">&nbsp;</el-descriptions-item>
-          <el-descriptions-item label="创建人">{{ customer.creatorName }}</el-descriptions-item>
-          <el-descriptions-item label="创建时间">
+          <el-descriptions-item
+            :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+            >{{ customer.creatorName }}</el-descriptions-item
+          >
+          <el-descriptions-item :label="t('common.createTime')">
             {{ formatDate(customer.createTime) }}
           </el-descriptions-item>
-          <el-descriptions-item label="更新时间">
+          <el-descriptions-item :label="t('common.updateTime')">
             {{ formatDate(customer.updateTime) }}
           </el-descriptions-item>
         </el-descriptions>

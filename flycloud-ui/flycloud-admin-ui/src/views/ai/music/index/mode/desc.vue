@@ -18,8 +18,11 @@
       </template>
     </Title>
 
-    <Title title="版本" desc="描述您想要的音乐风格和主题，使用流派和氛围而不是特定的艺术家和歌曲">
-      <el-select v-model="formData.version" placeholder="请选择">
+    <Title
+      :title="t('auto.views.ai.image.index.components.midjourney.k989d1aff')"
+      :desc="t('extra.k17e8f5bd')"
+    >
+      <el-select v-model="formData.version" :placeholder="t('common.selectText')">
         <el-option
           v-for="item in [
             {

@@ -27,7 +27,9 @@
         >
           <el-card v-if="runningTask?.formId > 0" class="mb-15px !-mt-10px">
             <template #header>
-              <span class="el-icon-picture-outline"> 填写表单【{{ runningTask?.formName }}】 </span>
+              <span class="el-icon-picture-outline">
+                {{ t('extra.k78bf8bef') }}{{ runningTask?.formName }}】
+              </span>
             </template>
             <form-create
               v-model="approveForm.value"
@@ -36,10 +38,10 @@
               :rule="approveForm.rule"
             />
           </el-card>
-          <el-form-item label="审批意见" prop="reason">
+          <el-form-item :label="t('extra.k98a52a9e')" prop="reason">
             <el-input
               v-model="genericForm.reason"
-              placeholder="请输入审批意见"
+              :placeholder="t('extra.k20bf8923')"
               type="textarea"
               :rows="4"
             />
@@ -48,7 +50,9 @@
             <el-button :disabled="formLoading" type="success" @click="handleAudit(true)">
               {{ getButtonDisplayName(OperationButtonType.APPROVE) }}
             </el-button>
-            <el-button @click="popOverVisible.approve = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.approve = false">
+              {{ t('common.cancel') }}
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -79,7 +83,9 @@
         >
           <el-card v-if="runningTask?.formId > 0" class="mb-15px !-mt-10px">
             <template #header>
-              <span class="el-icon-picture-outline"> 填写表单【{{ runningTask?.formName }}】 </span>
+              <span class="el-icon-picture-outline">
+                {{ t('extra.k78bf8bef') }}{{ runningTask?.formName }}】
+              </span>
             </template>
             <form-create
               v-model="approveForm.value"
@@ -88,10 +94,10 @@
               :rule="approveForm.rule"
             />
           </el-card>
-          <el-form-item label="审批意见" prop="reason">
+          <el-form-item :label="t('extra.k98a52a9e')" prop="reason">
             <el-input
               v-model="genericForm.reason"
-              placeholder="请输入审批意见"
+              :placeholder="t('extra.k20bf8923')"
               type="textarea"
               :rows="4"
             />
@@ -100,7 +106,7 @@
             <el-button :disabled="formLoading" type="danger" @click="handleAudit(false)">
               {{ getButtonDisplayName(OperationButtonType.REJECT) }}
             </el-button>
-            <el-button @click="popOverVisible.reject = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.reject = false"> {{ t('common.cancel') }} </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -129,13 +135,16 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="抄送人" prop="copyUserIds">
+          <el-form-item
+            :label="t('auto.components.SimpleProcessDesignerV2.src.consts.kdb9f866c')"
+            prop="copyUserIds"
+          >
             <el-select
               v-model="genericForm.copyUserIds"
               clearable
               style="width: 100%"
               multiple
-              placeholder="请选择抄送人"
+              :placeholder="t('extra.k5837c75d')"
             >
               <el-option
                 v-for="item in userOptions"
@@ -145,11 +154,11 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="抄送意见" prop="copyReason">
+          <el-form-item :label="t('extra.k51cbb39c')" prop="copyReason">
             <el-input
               v-model="genericForm.copyReason"
               clearable
-              placeholder="请输入抄送意见"
+              :placeholder="t('extra.k6eb1aaca')"
               type="textarea"
               :rows="3"
             />
@@ -158,7 +167,7 @@
             <el-button :disabled="formLoading" type="primary" @click="handleCopy">
               {{ getButtonDisplayName(OperationButtonType.COPY) }}
             </el-button>
-            <el-button @click="popOverVisible.copy = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.copy = false"> {{ t('common.cancel') }} </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -187,7 +196,7 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="新审批人" prop="assigneeUserId">
+          <el-form-item :label="t('extra.k91950f5c')" prop="assigneeUserId">
             <el-select v-model="genericForm.assigneeUserId" clearable style="width: 100%">
               <el-option
                 v-for="item in userOptions"
@@ -197,11 +206,11 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="审批意见" prop="reason">
+          <el-form-item :label="t('extra.k98a52a9e')" prop="reason">
             <el-input
               v-model="genericForm.reason"
               clearable
-              placeholder="请输入审批意见"
+              :placeholder="t('extra.k20bf8923')"
               type="textarea"
               :rows="3"
             />
@@ -210,7 +219,9 @@
             <el-button :disabled="formLoading" type="primary" @click="handleTransfer()">
               {{ getButtonDisplayName(OperationButtonType.TRANSFER) }}
             </el-button>
-            <el-button @click="popOverVisible.transfer = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.transfer = false">
+              {{ t('common.cancel') }}
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -239,7 +250,10 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="接收人" prop="delegateUserId">
+          <el-form-item
+            :label="t('auto.views.system.notify.template.NotifyTemplateSendForm.k69eea8b7')"
+            prop="delegateUserId"
+          >
             <el-select v-model="genericForm.delegateUserId" clearable style="width: 100%">
               <el-option
                 v-for="item in userOptions"
@@ -249,11 +263,11 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="审批意见" prop="reason">
+          <el-form-item :label="t('extra.k98a52a9e')" prop="reason">
             <el-input
               v-model="genericForm.reason"
               clearable
-              placeholder="请输入审批意见"
+              :placeholder="t('extra.k20bf8923')"
               type="textarea"
               :rows="3"
             />
@@ -262,7 +276,9 @@
             <el-button :disabled="formLoading" type="primary" @click="handleDelegate()">
               {{ getButtonDisplayName(OperationButtonType.DELEGATE) }}
             </el-button>
-            <el-button @click="popOverVisible.delegate = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.delegate = false">
+              {{ t('common.cancel') }}
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -291,7 +307,7 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="加签处理人" prop="addSignUserIds">
+          <el-form-item :label="t('extra.k700d2573')" prop="addSignUserIds">
             <el-select v-model="genericForm.addSignUserIds" multiple clearable style="width: 100%">
               <el-option
                 v-for="item in userOptions"
@@ -301,23 +317,25 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="审批意见" prop="reason">
+          <el-form-item :label="t('extra.k98a52a9e')" prop="reason">
             <el-input
               v-model="genericForm.reason"
               clearable
-              placeholder="请输入审批意见"
+              :placeholder="t('extra.k20bf8923')"
               type="textarea"
               :rows="3"
             />
           </el-form-item>
           <el-form-item>
             <el-button :disabled="formLoading" type="primary" @click="handlerAddSign('before')">
-              向前{{ getButtonDisplayName(OperationButtonType.ADD_SIGN) }}
+              {{ t('extra.k719ffd6e') }}{{ getButtonDisplayName(OperationButtonType.ADD_SIGN) }}
             </el-button>
             <el-button :disabled="formLoading" type="primary" @click="handlerAddSign('after')">
-              向后{{ getButtonDisplayName(OperationButtonType.ADD_SIGN) }}
+              {{ t('extra.ka83d3df4') }}{{ getButtonDisplayName(OperationButtonType.ADD_SIGN) }}
             </el-button>
-            <el-button @click="popOverVisible.addSign = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.addSign = false">
+              {{ t('common.cancel') }}
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -333,7 +351,7 @@
     >
       <template #reference>
         <div @click="openPopover('deleteSign')" class="hover-bg-gray-100 rounded-xl p-6px">
-          <Icon :size="14" icon="ep:semi-select" />&nbsp; 减签
+          <Icon :size="14" icon="ep:semi-select" />  {{ t('extra.k30856d25') }}
         </div>
       </template>
       <div class="flex flex-col flex-1 pt-20px px-20px" v-loading="formLoading">
@@ -345,7 +363,7 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="减签人员" prop="deleteSignTaskId">
+          <el-form-item :label="t('extra.kd730c500')" prop="deleteSignTaskId">
             <el-select v-model="genericForm.deleteSignTaskId" clearable style="width: 100%">
               <el-option
                 v-for="item in runningTask.children"
@@ -355,20 +373,22 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="审批意见" prop="reason">
+          <el-form-item :label="t('extra.k98a52a9e')" prop="reason">
             <el-input
               v-model="genericForm.reason"
               clearable
-              placeholder="请输入审批意见"
+              :placeholder="t('extra.k20bf8923')"
               type="textarea"
               :rows="3"
             />
           </el-form-item>
           <el-form-item>
             <el-button :disabled="formLoading" type="primary" @click="handlerDeleteSign()">
-              减签
+              {{ t('extra.k30856d25') }}
             </el-button>
-            <el-button @click="popOverVisible.deleteSign = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.deleteSign = false">
+              {{ t('common.cancel') }}
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -397,7 +417,7 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="退回节点" prop="targetTaskDefinitionKey">
+          <el-form-item :label="t('extra.k3de3e170')" prop="targetTaskDefinitionKey">
             <el-select v-model="genericForm.targetTaskDefinitionKey" clearable style="width: 100%">
               <el-option
                 v-for="item in returnList"
@@ -407,11 +427,11 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="退回理由" prop="returnReason">
+          <el-form-item :label="t('extra.kc71aa01f')" prop="returnReason">
             <el-input
               v-model="genericForm.returnReason"
               clearable
-              placeholder="请输入退回理由"
+              :placeholder="t('extra.k124f4856')"
               type="textarea"
               :rows="3"
             />
@@ -420,7 +440,7 @@
             <el-button :disabled="formLoading" type="primary" @click="handleReturn()">
               {{ getButtonDisplayName(OperationButtonType.RETURN) }}
             </el-button>
-            <el-button @click="popOverVisible.return = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.return = false"> {{ t('common.cancel') }} </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -438,7 +458,7 @@
     >
       <template #reference>
         <div @click="openPopover('cancel')" class="hover-bg-gray-100 rounded-xl p-6px">
-          <Icon :size="14" icon="fa:mail-reply" />&nbsp; 取消
+          <Icon :size="14" icon="fa:mail-reply" />  {{ t('common.cancel') }}
         </div>
       </template>
       <div class="flex flex-col flex-1 pt-20px px-20px" v-loading="formLoading">
@@ -450,21 +470,21 @@
           :rules="genericRule"
           label-width="100px"
         >
-          <el-form-item label="取消理由" prop="cancelReason">
-            <span class="text-#878c93 text-12px">&nbsp; 取消后，该审批流程将自动结束</span>
+          <el-form-item :label="t('extra.k48ac07ce')" prop="cancelReason">
+            <span class="text-#878c93 text-12px">  {{ t('extra.k0aafa353') }}</span>
             <el-input
               v-model="genericForm.cancelReason"
               clearable
-              placeholder="请输入取消理由"
+              :placeholder="t('extra.k6e7d5f9f')"
               type="textarea"
               :rows="3"
             />
           </el-form-item>
           <el-form-item>
             <el-button :disabled="formLoading" type="primary" @click="handleCancel()">
-              取消
+              {{ t('common.cancel') }}
             </el-button>
-            <el-button @click="popOverVisible.cancel = false"> 取消 </el-button>
+            <el-button @click="popOverVisible.cancel = false"> {{ t('common.cancel') }} </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -479,7 +499,7 @@
         processDefinition?.formType === 10
       "
     >
-      <Icon :size="14" icon="ep:refresh" />&nbsp; 再次提交
+      <Icon :size="14" icon="ep:refresh" />  {{ t('extra.kb11248e5') }}
     </div>
   </div>
 </template>

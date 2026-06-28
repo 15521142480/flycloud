@@ -110,15 +110,15 @@
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark" width="150" />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" width="150" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" :label="t('common.operation')" width="200">
         <template #default="scope">
           <el-button
             v-hasPermi="['sys:dict:saveOrUpdate']"
@@ -126,10 +126,12 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <router-link :to="'/dict/type/data/' + scope.row.type">
-            <el-button v-hasPermi="['sys:dict:optionDictData']" link type="primary">数据</el-button>
+            <el-button v-hasPermi="['sys:dict:optionDictData']" link type="primary">{{
+              t('extra.k0d830788')
+            }}</el-button>
           </router-link>
           <el-button
             v-hasPermi="['sys:dict:delete']"
@@ -137,7 +139,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

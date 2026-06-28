@@ -109,13 +109,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="110">
+      <el-table-column :label="t('common.operation')" align="center" width="110">
         <template #default="scope">
           <el-button
             link
@@ -123,7 +123,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['erp:product:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -131,7 +131,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['erp:product:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

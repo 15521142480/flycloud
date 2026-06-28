@@ -24,18 +24,20 @@
       </div>
     </template>
     <el-tabs type="border-card" v-model="activeTabName">
-      <el-tab-pane label="权限" name="user">
-        <div> 待实现 </div>
+      <el-tab-pane :label="t('auto.views.system.oauth2.client.ClientForm.k560165a6')" name="user">
+        <div> {{ t('extra.k70211f9a') }} </div>
       </el-tab-pane>
-      <el-tab-pane label="表单字段权限" name="fields" v-if="formType === 10">
+      <el-tab-pane :label="t('extra.ke765ec60')" name="fields" v-if="formType === 10">
         <div class="field-setting-pane">
-          <div class="field-setting-desc">字段权限</div>
+          <div class="field-setting-desc">{{ t('extra.k7c462e44') }}</div>
           <div class="field-permit-title">
-            <div class="setting-title-label first-title"> 字段名称 </div>
+            <div class="setting-title-label first-title"> {{ t('extra.kb81e9b9c') }} </div>
             <div class="other-titles">
-              <span class="setting-title-label">只读</span>
-              <span class="setting-title-label">可编辑</span>
-              <span class="setting-title-label">隐藏</span>
+              <span class="setting-title-label">{{
+                t('auto.views.iot.product.detail.ThinkModelFunctionForm.kffc1d065')
+              }}</span>
+              <span class="setting-title-label">{{ t('extra.ka32b3bf7') }}</span>
+              <span class="setting-title-label">{{ t('system.menu.hidden') }}</span>
             </div>
           </div>
           <div
@@ -77,8 +79,10 @@
     <template #footer>
       <el-divider />
       <div>
-        <el-button type="primary" @click="saveConfig">确 定</el-button>
-        <el-button @click="closeDrawer">取 消</el-button>
+        <el-button type="primary" @click="saveConfig">{{ t('extra.k008b8fcb') }}</el-button>
+        <el-button @click="closeDrawer">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
       </div>
     </template>
   </el-drawer>

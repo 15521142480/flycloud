@@ -52,41 +52,58 @@
           <span>￥{{ (scope.row.price / 100.0).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="退款金额" align="center" prop="refundPrice">
+      <el-table-column
+        :label="t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2')"
+        align="center"
+        prop="refundPrice"
+      >
         <template #default="scope">
           <span>￥{{ (scope.row.refundPrice / 100.0).toFixed(2) }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="支付单号" align="center" prop="payOrderId" />
-      <el-table-column label="是否支付" align="center" prop="payStatus">
+      <el-table-column
+        :label="t('auto.views.pay.cashier.index.k956bb6be')"
+        align="center"
+        prop="payOrderId"
+      />
+      <el-table-column :label="t('extra.k353d6e4e')" align="center" prop="payStatus">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.payStatus" />
         </template>
       </el-table-column>
       <el-table-column
-        label="支付时间"
+        :label="t('auto.views.pay.order.OrderDetail.kd4c9603f')"
         align="center"
         prop="payTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="退款时间" align="center" prop="refundTime" width="180">
+      <el-table-column
+        :label="t('auto.views.pay.refund.RefundDetail.k6afc75d2')"
+        align="center"
+        prop="refundTime"
+        width="180"
+      >
         <template #default="scope">
           <span v-if="scope.row.refundTime">{{ formatDate(scope.row.refundTime) }}</span>
-          <span v-else-if="scope.row.payRefundId">退款中，等待退款结果</span>
+          <span v-else-if="scope.row.payRefundId">{{ t('extra.k62536cef') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template #default="scope">
           <el-button link type="primary" @click="handlePay(scope.row)" v-if="!scope.row.payStatus">
-            前往支付
+            {{ t('extra.k2f31e870') }}
           </el-button>
           <el-button
             link
@@ -94,7 +111,7 @@
             @click="handleRefund(scope.row)"
             v-if="scope.row.payStatus && !scope.row.payRefundId"
           >
-            发起退款
+            {{ t('extra.k8706d37f') }}
           </el-button>
         </template>
       </el-table-column>
@@ -109,7 +126,11 @@
   </ContentWrap>
 
   <!-- 对话框(添加 / 修改) -->
-  <Dialog title="发起订单" v-model="dialogVisible" width="500px">
+  <Dialog
+    :title="t('auto.views.pay.demo.order.index.k9f9650e9')"
+    v-model="dialogVisible"
+    width="500px"
+  >
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -117,10 +138,10 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item label="商品" prop="spuId">
+      <el-form-item :label="t('extra.kf8353994')" prop="spuId">
         <el-select
           v-model="formData.spuId"
-          placeholder="请输入下单商品"
+          :placeholder="t('extra.k8ffa50fa')"
           clearable
           style="width: 380px"
         >
@@ -134,8 +155,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

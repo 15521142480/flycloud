@@ -57,31 +57,39 @@
           <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="scope.row.discountType" />
         </template>
       </el-table-column>
-      <el-table-column label="领取方式" align="center" prop="takeType">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k1527d9df')"
+        align="center"
+        prop="takeType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_COUPON_TAKE_TYPE" :value="scope.row.takeType" />
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_COUPON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="领取时间"
+        :label="t('auto.views.mall.promotion.coupon.index.k05fea3f9')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180"
       />
       <el-table-column
-        label="使用时间"
+        :label="t('extra.k01100972')"
         align="center"
         prop="useTime"
         :formatter="dateFormatter"
         width="180"
       />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:coupon:delete']"
@@ -89,7 +97,7 @@
             link
             @click="handleDelete(scope.row.id)"
           >
-            回收
+            {{ t('extra.k7f9298c2') }}
           </el-button>
         </template>
       </el-table-column>

@@ -94,11 +94,19 @@
           <el-tag v-else class="ml-2" type="danger" effect="dark"> {{ scope.row.point }} </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="总积分" align="center" prop="totalPoint" width="100" />
-      <el-table-column label="标题" align="center" prop="title" />
-      <el-table-column label="描述" align="center" prop="description" />
-      <el-table-column label="业务编码" align="center" prop="bizId" />
-      <el-table-column label="业务类型" align="center" prop="bizType">
+      <el-table-column :label="t('extra.ke06ab0e3')" align="center" prop="totalPoint" width="100" />
+      <el-table-column :label="t('table.title')" align="center" prop="title" />
+      <el-table-column
+        :label="t('auto.views.bpm.group.UserGroupForm.k412f54dc')"
+        align="center"
+        prop="description"
+      />
+      <el-table-column :label="t('extra.k2c7b6265')" align="center" prop="bizId" />
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.record.index.k2268f2d5')"
+        align="center"
+        prop="bizType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.MEMBER_POINT_BIZ_TYPE" :value="scope.row.bizType" />
         </template>

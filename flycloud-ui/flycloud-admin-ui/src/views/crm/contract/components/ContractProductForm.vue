@@ -33,26 +33,32 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="条码" min-width="150">
+      <el-table-column
+        :label="t('auto.views.erp.product.product.ProductForm.kb1085310')"
+        min-width="150"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.productNo" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="单位" min-width="80">
+      <el-table-column
+        :label="t('auto.views.erp.product.product.ProductForm.k8ec8c8c7')"
+        min-width="80"
+      >
         <template #default="{ row }">
           <dict-tag :type="DICT_TYPE.CRM_PRODUCT_UNIT" :value="row.productUnit" />
         </template>
       </el-table-column>
-      <el-table-column label="价格（元）" min-width="120">
+      <el-table-column :label="t('extra.k3a50fbd4')" min-width="120">
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.productPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="售价（元）" fixed="right" min-width="140">
+      <el-table-column :label="t('extra.k56e8fb09')" fixed="right" min-width="140">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.contractPrice`" class="mb-0px!">
             <el-input-number
@@ -65,7 +71,12 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="数量" prop="count" fixed="right" min-width="120">
+      <el-table-column
+        :label="t('auto.views.erp.stock.check.index.kb9ae8931')"
+        prop="count"
+        fixed="right"
+        min-width="120"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.count`" :rules="formRules.count" class="mb-0px!">
             <el-input-number
@@ -78,14 +89,19 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="合计" prop="totalPrice" fixed="right" min-width="140">
+      <el-table-column
+        :label="t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k92bcbf71')"
+        prop="totalPrice"
+        fixed="right"
+        min-width="140"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.totalPrice`" class="mb-0px!">
             <el-input disabled v-model="row.totalPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="60">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="60">
         <template #default="{ $index }">
           <el-button @click="handleDelete($index)" link>—</el-button>
         </template>
@@ -93,7 +109,7 @@
     </el-table>
   </el-form>
   <el-row justify="center" class="mt-3" v-if="!disabled">
-    <el-button @click="handleAdd" round>+ 添加产品</el-button>
+    <el-button @click="handleAdd" round>{{ t('extra.k7a28b968') }}</el-button>
   </el-row>
 </template>
 <script setup lang="ts">

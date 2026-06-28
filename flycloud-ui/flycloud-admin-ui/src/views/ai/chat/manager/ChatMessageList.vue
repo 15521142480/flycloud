@@ -82,24 +82,34 @@
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色" align="center" prop="roleName" width="180" />
-      <el-table-column label="消息类型" align="center" prop="type" width="100" />
-      <el-table-column label="模型标识" align="center" prop="model" width="180" />
-      <el-table-column label="消息内容" align="center" prop="content" width="300" />
+      <el-table-column :label="t('system.user.role')" align="center" prop="roleName" width="180" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.mp.autoReply.components.ReplyForm.k15218877')"
+        align="center"
+        prop="type"
+        width="100"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k3a818387')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column :label="t('extra.kb87b7756')" align="center" prop="content" width="300" />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="回复消息编号" align="center" prop="replyId" width="180" />
-      <el-table-column label="携带上下文" align="center" prop="useContext" width="100">
+      <el-table-column :label="t('extra.k328782c6')" align="center" prop="replyId" width="180" />
+      <el-table-column :label="t('extra.k3f1b7791')" align="center" prop="useContext" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.useContext" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -107,7 +117,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:chat-message:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

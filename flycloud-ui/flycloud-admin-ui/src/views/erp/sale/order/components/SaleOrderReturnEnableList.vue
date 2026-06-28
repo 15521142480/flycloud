@@ -93,43 +93,61 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column min-width="180" label="订单单号" align="center" prop="no" />
-        <el-table-column label="客户" align="center" prop="customerName" />
-        <el-table-column label="产品信息" align="center" prop="productNames" min-width="200" />
         <el-table-column
-          label="订单时间"
+          min-width="180"
+          :label="t('auto.views.erp.purchase.order.PurchaseOrderForm.kdb1e6a3d')"
+          align="center"
+          prop="no"
+        />
+        <el-table-column
+          :label="t('auto.views.crm.contact.index.kf2068706')"
+          align="center"
+          prop="customerName"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k90095856')"
+          align="center"
+          prop="productNames"
+          min-width="200"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.order.PurchaseOrderForm.kee55d0ad')"
           align="center"
           prop="orderTime"
           :formatter="dateFormatter2"
           width="120px"
         />
-        <el-table-column label="创建人" align="center" prop="creatorName" />
         <el-table-column
-          label="总数量"
+          :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+          align="center"
+          prop="creatorName"
+        />
+        <el-table-column
+          :label="t('auto.views.erp.purchase.in.index.kc2bdcf08')"
           align="center"
           prop="totalCount"
           :formatter="erpCountTableColumnFormatter"
         />
         <el-table-column
-          label="出库数量"
+          :label="t('auto.views.erp.sale.order.index.k4259db87')"
           align="center"
           prop="outCount"
           :formatter="erpCountTableColumnFormatter"
         />
         <el-table-column
-          label="退货数量"
+          :label="t('auto.views.erp.purchase.order.index.kc97a4edd')"
           align="center"
           prop="returnCount"
           :formatter="erpCountTableColumnFormatter"
         />
         <el-table-column
-          label="金额合计"
+          :label="t('auto.views.erp.purchase.order.index.kbe1d4307')"
           align="center"
           prop="totalProductPrice"
           :formatter="erpPriceTableColumnFormatter"
         />
         <el-table-column
-          label="含税金额"
+          :label="t('auto.views.erp.purchase.order.index.kc73a8eab')"
           align="center"
           prop="totalPrice"
           :formatter="erpPriceTableColumnFormatter"
@@ -144,8 +162,12 @@
       />
     </ContentWrap>
     <template #footer>
-      <el-button :disabled="!currentRow" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="!currentRow" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

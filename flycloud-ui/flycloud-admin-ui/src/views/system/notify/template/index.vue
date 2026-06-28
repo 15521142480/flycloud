@@ -102,28 +102,37 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_NOTIFY_TEMPLATE_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="发送人名称" align="center" prop="name" />
       <el-table-column
-        label="模板内容"
+        :label="t('auto.views.system.mail.template.template_data.k008bf359')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.system.mail.template.MailTemplateSendForm.kdc362463')"
         align="center"
         prop="content"
         width="200"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="开启状态" align="center" prop="status" width="80">
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k6bbda1b1')"
+        align="center"
+        prop="status"
+        width="80"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" width="210" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="210" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -131,7 +140,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['system:notify-template:update']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             link
@@ -139,7 +148,7 @@
             @click="openSendForm(scope.row)"
             v-hasPermi="['system:notify-template:send-notify']"
           >
-            测试
+            {{ t('action.test') }}
           </el-button>
           <el-button
             link
@@ -147,7 +156,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:notify-template:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

@@ -89,8 +89,17 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column key="id" align="center" label="商品编号" prop="id" min-width="60" />
-        <el-table-column label="商品图" min-width="80">
+        <el-table-column
+          key="id"
+          align="center"
+          :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
+          prop="id"
+          min-width="60"
+        />
+        <el-table-column
+          :label="t('auto.views.member.user.detail.UserFavoriteList.k1b089e84')"
+          min-width="80"
+        >
           <template #default="{ row }">
             <el-image
               :src="row.picUrl"
@@ -100,8 +109,16 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="商品名称" min-width="200" prop="name" />
-        <el-table-column label="商品分类" min-width="100" prop="categoryId">
+        <el-table-column
+          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
+          min-width="200"
+          prop="name"
+        />
+        <el-table-column
+          :label="t('auto.components.AppLinkInput.data.k09482df6')"
+          min-width="100"
+          prop="categoryId"
+        >
           <template #default="{ row }">
             <span>{{ categoryList?.find((c) => c.id === row.categoryId)?.name }}</span>
           </template>
@@ -116,8 +133,10 @@
       />
     </ContentWrap>
     <template #footer v-if="multiple">
-      <el-button type="primary" @click="handleEmitChange">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handleEmitChange">{{ t('extra.k008b8fcb') }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

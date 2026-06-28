@@ -18,23 +18,28 @@
     <el-table-column
       :formatter="dateFormatter"
       align="center"
-      label="开始时间"
+      :label="t('common.startTimeText')"
       prop="createTime"
       min-width="140"
     />
     <el-table-column
       :formatter="dateFormatter"
       align="center"
-      label="结束时间"
+      :label="t('common.endTimeText')"
       prop="endTime"
       min-width="140"
     />
-    <el-table-column align="center" label="审批状态" prop="status" min-width="90">
+    <el-table-column
+      align="center"
+      :label="t('auto.views.bpm.task.done.index.k93623725')"
+      prop="status"
+      min-width="90"
+    >
       <template #default="scope">
         <dict-tag :type="DICT_TYPE.BPM_TASK_STATUS" :value="scope.row.status" />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="审批建议" prop="reason" min-width="200">
+    <el-table-column align="center" :label="t('extra.kd2a31c2e')" prop="reason" min-width="200">
       <template #default="scope">
         {{ scope.row.reason }}
         <el-button
@@ -43,11 +48,16 @@
           v-if="scope.row.formId > 0"
           @click="handleFormDetail(scope.row)"
         >
-          <Icon icon="ep:document" /> 查看表单
+          <Icon icon="ep:document" /> {{ t('extra.k5f73e281') }}
         </el-button>
       </template>
     </el-table-column>
-    <el-table-column align="center" label="耗时" prop="durationInMillis" min-width="100">
+    <el-table-column
+      align="center"
+      :label="t('extra.k39f1374d')"
+      prop="durationInMillis"
+      min-width="100"
+    >
       <template #default="scope">
         {{ formatPast2(scope.row.durationInMillis) }}
       </template>
@@ -55,7 +65,7 @@
   </el-table>
 
   <!-- 弹窗：表单 -->
-  <Dialog title="表单详情" v-model="taskFormVisible" width="600">
+  <Dialog :title="t('extra.k216a0b25')" v-model="taskFormVisible" width="600">
     <form-create
       ref="fApi"
       v-model="taskForm.value"

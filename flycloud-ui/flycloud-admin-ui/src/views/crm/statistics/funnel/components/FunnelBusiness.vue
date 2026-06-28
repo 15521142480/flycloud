@@ -33,8 +33,20 @@
           <dict-tag :type="DICT_TYPE.CRM_BUSINESS_END_STATUS_TYPE" :value="scope.row.endStatus" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="商机数" min-width="200" prop="businessCount" />
-      <el-table-column align="center" label="商机总金额(元)" min-width="200" prop="totalPrice" />
+      <el-table-column
+        align="center"
+        :label="
+          t('auto.views.crm.statistics.funnel.components.BusinessInversionRateSummary.kf6b4649f')
+        "
+        min-width="200"
+        prop="businessCount"
+      />
+      <el-table-column
+        align="center"
+        :label="t('extra.ke03f7ae4')"
+        min-width="200"
+        prop="totalPrice"
+      />
     </el-table>
   </el-card>
 </template>

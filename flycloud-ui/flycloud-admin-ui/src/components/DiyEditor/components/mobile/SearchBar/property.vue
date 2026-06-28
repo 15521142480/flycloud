@@ -18,48 +18,48 @@
           </template>
         </Draggable>
       </el-card>
-      <el-card header="搜索样式" class="property-group" shadow="never">
-        <el-form-item label="框体样式">
+      <el-card :header="t('extra.k4c419a4f')" class="property-group" shadow="never">
+        <el-form-item :label="t('extra.k9aac3609')">
           <el-radio-group v-model="formData!.borderRadius">
-            <el-tooltip content="方形" placement="top">
+            <el-tooltip :content="t('extra.k35908bb0')" placement="top">
               <el-radio-button :value="0">
                 <Icon icon="tabler:input-search" />
               </el-radio-button>
             </el-tooltip>
-            <el-tooltip content="圆形" placement="top">
+            <el-tooltip :content="t('extra.k2db0fcd5')" placement="top">
               <el-radio-button :value="10">
                 <Icon icon="iconoir:input-search" />
               </el-radio-button>
             </el-tooltip>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="提示文字" prop="placeholder">
+        <el-form-item :label="t('extra.k9b14c905')" prop="placeholder">
           <el-input v-model="formData.placeholder" />
         </el-form-item>
-        <el-form-item label="文本位置" prop="placeholderPosition">
+        <el-form-item :label="t('extra.k93bd6052')" prop="placeholderPosition">
           <el-radio-group v-model="formData!.placeholderPosition">
-            <el-tooltip content="居左" placement="top">
+            <el-tooltip :content="t('extra.k316a6396')" placement="top">
               <el-radio-button value="left">
                 <Icon icon="ant-design:align-left-outlined" />
               </el-radio-button>
             </el-tooltip>
-            <el-tooltip content="居中" placement="top">
+            <el-tooltip :content="t('extra.k0bbc2ea4')" placement="top">
               <el-radio-button value="center">
                 <Icon icon="ant-design:align-center-outlined" />
               </el-radio-button>
             </el-tooltip>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="扫一扫" prop="showScan">
+        <el-form-item :label="t('extra.k402b79ad')" prop="showScan">
           <el-switch v-model="formData!.showScan" />
         </el-form-item>
-        <el-form-item label="框体高度" prop="height">
+        <el-form-item :label="t('extra.k70e84c03')" prop="height">
           <el-slider v-model="formData!.height" :max="50" :min="28" show-input input-size="small" />
         </el-form-item>
-        <el-form-item label="框体颜色" prop="backgroundColor">
+        <el-form-item :label="t('extra.k4a1e658c')" prop="backgroundColor">
           <ColorInput v-model="formData.backgroundColor" />
         </el-form-item>
-        <el-form-item class="lef" label="文本颜色" prop="textColor">
+        <el-form-item class="lef" :label="t('extra.k3b33ac4d')" prop="textColor">
           <ColorInput v-model="formData.textColor" />
         </el-form-item>
       </el-card>

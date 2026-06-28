@@ -104,14 +104,24 @@
           <img :src="scope.row.avatar" style="width: 40px" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
-      <el-table-column align="center" label="昵称" prop="name" width="80px" />
-      <el-table-column align="center" label="等级" prop="levelName" width="100px" />
-      <el-table-column align="center" label="分组" prop="groupName" width="100px" />
+      <el-table-column align="center" :label="t('system.user.phone')" prop="mobile" width="120px" />
+      <el-table-column align="center" :label="t('system.user.nickname')" prop="name" width="80px" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.member.level.LevelForm.k5c42c048')"
+        prop="levelName"
+        width="100px"
+      />
+      <el-table-column
+        align="center"
+        :label="t('extra.k829abe5a')"
+        prop="groupName"
+        width="100px"
+      />
       <el-table-column
         :show-overflow-tooltip="false"
         align="center"
-        label="用户标签"
+        :label="t('auto.views.member.user.UserForm.k53ea20a0')"
         prop="tagNames"
       >
         <template #default="scope">
@@ -120,8 +130,8 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="积分" prop="point" width="100px" />
-      <el-table-column align="center" label="状态" prop="status" width="100px">
+      <el-table-column align="center" :label="t('extra.k4b7324dd')" prop="point" width="100px" />
+      <el-table-column align="center" :label="t('common.status')" prop="status" width="100px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -129,14 +139,14 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="登录时间"
+        :label="t('auto.views.member.user.index.k570df2c0')"
         prop="loginDate"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="注册时间"
+        :label="t('auto.views.member.user.index.k525ad5e2')"
         prop="createTime"
         width="180px"
       />
@@ -144,12 +154,14 @@
         :show-overflow-tooltip="false"
         align="center"
         fixed="right"
-        label="操作"
+        :label="t('common.operation')"
         width="100px"
       >
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>
+            <el-button link type="primary" @click="openDetail(scope.row.id)">{{
+              t('action.detail')
+            }}</el-button>
             <el-dropdown
               v-hasPermi="[
                 'member:user:update',
@@ -160,8 +172,7 @@
               @command="(command) => handleCommand(command, scope.row)"
             >
               <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" />
-                更多
+                <Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -169,25 +180,25 @@
                     v-if="checkPermi(['member:user:update'])"
                     command="handleUpdate"
                   >
-                    编辑
+                    {{ t('common.edit') }}
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="checkPermi(['member:user:update-level'])"
                     command="handleUpdateLevel"
                   >
-                    修改等级
+                    {{ t('extra.k735e7ba9') }}
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="checkPermi(['member:user:update-point'])"
                     command="handleUpdatePoint"
                   >
-                    修改积分
+                    {{ t('extra.k62787426') }}
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="checkPermi(['pay:wallet:update-balance'])"
                     command="handleUpdateBlance"
                   >
-                    修改余额
+                    {{ t('extra.k2ad1b297') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>

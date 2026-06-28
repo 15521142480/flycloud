@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash-es'
 import { IconJson } from '@/components/Icon/src/data'
 
 defineOptions({ name: 'IconSelect' })
+const { t } = useI18n()
 
 type ParameterCSSProperties = (item?: string) => CSSProperties | undefined
 
@@ -125,7 +126,12 @@ watch(
 
 <template>
   <div class="selector">
-    <ElInput v-model="inputValue" @click="visible = !visible" :clearable="props.clearable" @clear="clearIcon">
+    <ElInput
+      v-model="inputValue"
+      @click="visible = !visible"
+      :clearable="props.clearable"
+      @clear="clearIcon"
+    >
       <template #append>
         <ElPopover
           :popper-options="{
@@ -145,7 +151,12 @@ watch(
             </div>
           </template>
 
-          <ElInput v-model="filterValue" class="p-2" clearable placeholder="搜索图标" />
+          <ElInput
+            v-model="filterValue"
+            class="p-2"
+            clearable
+            :placeholder="t('extra.kc320dd0b')"
+          />
           <ElDivider border-style="dashed" />
 
           <ElTabs v-model="currentActiveType" @tab-click="handleClick">

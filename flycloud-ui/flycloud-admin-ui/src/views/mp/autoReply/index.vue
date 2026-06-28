@@ -41,12 +41,16 @@
       </el-tab-pane>
       <el-tab-pane :name="MsgType.Message">
         <template #label>
-          <el-row align="middle"><Icon icon="ep:chat-line-round" class="mr-2px" /> 消息回复</el-row>
+          <el-row align="middle"
+            ><Icon icon="ep:chat-line-round" class="mr-2px" /> {{ t('extra.kea3cd232') }}</el-row
+          >
         </template>
       </el-tab-pane>
       <el-tab-pane :name="MsgType.Keyword">
         <template #label>
-          <el-row align="middle"><Icon icon="fa:newspaper-o" class="mr-2px" /> 关键词回复</el-row>
+          <el-row align="middle"
+            ><Icon icon="fa:newspaper-o" class="mr-2px" /> {{ t('extra.k66148b64') }}</el-row
+          >
         </template>
       </el-tab-pane>
     </el-tabs>
@@ -67,8 +71,10 @@
     >
       <ReplyForm v-model="replyForm" v-model:reply="reply" :msg-type="msgType" ref="formRef" />
       <template #footer>
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="onSubmit">确 定</el-button>
+        <el-button @click="cancel">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
+        <el-button type="primary" @click="onSubmit">{{ t('extra.k008b8fcb') }}</el-button>
       </template>
     </el-dialog>
   </ContentWrap>

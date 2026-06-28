@@ -157,7 +157,7 @@ const setSimpleModelNodeTaskStatus = (
 .process-viewer-container {
   height: 100%;
   width: 100%;
-  
+
   :deep(.process-viewer) {
     height: 100% !important;
     min-height: 100%;

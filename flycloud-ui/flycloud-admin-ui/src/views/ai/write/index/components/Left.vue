@@ -65,39 +65,45 @@
         </template>
 
         <template v-else>
-          <ReuseLabel :hint-click="() => example('reply')" hint="示例" label="原文" />
+          <ReuseLabel
+            :hint-click="() => example('reply')"
+            :hint="t('extra.k3f258f5e')"
+            :label="t('extra.ke5729e94')"
+          />
           <el-input
             v-model="formData.originalContent"
             :maxlength="500"
             :rows="5"
-            placeholder="请输入原文"
+            :placeholder="t('auto.views.ai.write.index.components.Left.k685a687d')"
             showWordLimit
             type="textarea"
           />
 
-          <ReuseLabel label="回复内容" />
+          <ReuseLabel :label="t('auto.views.mall.product.comment.ReplyForm.ka36c787d')" />
           <el-input
             v-model="formData.prompt"
             :maxlength="500"
             :rows="5"
-            placeholder="请输入回复内容"
+            :placeholder="t('extra.kf9d98046')"
             showWordLimit
             type="textarea"
           />
         </template>
 
-        <ReuseLabel label="长度" />
+        <ReuseLabel :label="t('extra.kdfd0cd7f')" />
         <Tag v-model="formData.length" :tags="getIntDictOptions(DICT_TYPE.AI_WRITE_LENGTH)" />
-        <ReuseLabel label="格式" />
+        <ReuseLabel :label="t('extra.ke3127cc1')" />
         <Tag v-model="formData.format" :tags="getIntDictOptions(DICT_TYPE.AI_WRITE_FORMAT)" />
-        <ReuseLabel label="语气" />
+        <ReuseLabel :label="t('extra.kb77a2350')" />
         <Tag v-model="formData.tone" :tags="getIntDictOptions(DICT_TYPE.AI_WRITE_TONE)" />
-        <ReuseLabel label="语言" />
+        <ReuseLabel :label="t('preference.language')" />
         <Tag v-model="formData.language" :tags="getIntDictOptions(DICT_TYPE.AI_WRITE_LANGUAGE)" />
 
         <div class="flex items-center justify-center mt-3">
-          <el-button :disabled="isWriting" @click="reset">重置</el-button>
-          <el-button :loading="isWriting" color="#846af7" @click="submit">生成</el-button>
+          <el-button :disabled="isWriting" @click="reset">{{ t('common.reset') }}</el-button>
+          <el-button :loading="isWriting" color="#846af7" @click="submit">{{
+            t('action.generate')
+          }}</el-button>
         </div>
       </div>
     </div>

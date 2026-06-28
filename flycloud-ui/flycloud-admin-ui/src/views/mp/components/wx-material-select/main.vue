@@ -51,17 +51,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="上传时间"
+          :label="t('extra.kcae25527')"
           align="center"
           prop="createTime"
           width="180"
           :formatter="dateFormatter"
         />
-        <el-table-column label="操作" align="center" fixed="right">
+        <el-table-column :label="t('common.operation')" align="center" fixed="right">
           <template #default="scope">
             <el-button type="primary" link @click="selectMaterialFun(scope.row)"
-              >选择
-              <Icon icon="ep:plus" />
+              >{{ t('extra.k01216f50') }} <Icon icon="ep:plus" />
             </el-button>
           </template>
         </el-table-column>
@@ -78,32 +77,48 @@
     <div v-else-if="props.type === 'video'">
       <!-- 列表 -->
       <el-table v-loading="loading" :data="list">
-        <el-table-column label="编号" align="center" prop="mediaId" />
-        <el-table-column label="文件名" align="center" prop="name" />
-        <el-table-column label="标题" align="center" prop="title" />
-        <el-table-column label="介绍" align="center" prop="introduction" />
-        <el-table-column label="视频" align="center">
+        <el-table-column
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k9f42dac6')
+          "
+          align="center"
+          prop="mediaId"
+        />
+        <el-table-column
+          :label="t('auto.views.infra.file.index.k1275f6fe')"
+          align="center"
+          prop="name"
+        />
+        <el-table-column :label="t('table.title')" align="center" prop="title" />
+        <el-table-column
+          :label="t('auto.views.mp.material.components.VideoTable.k45fa4e00')"
+          align="center"
+          prop="introduction"
+        />
+        <el-table-column
+          :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.kfa4e33b6')"
+          align="center"
+        >
           <template #default="scope">
             <WxVideoPlayer :url="scope.row.url" />
           </template>
         </el-table-column>
         <el-table-column
-          label="上传时间"
+          :label="t('extra.kcae25527')"
           align="center"
           prop="createTime"
           width="180"
           :formatter="dateFormatter"
         />
         <el-table-column
-          label="操作"
+          :label="t('common.operation')"
           align="center"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template #default="scope">
             <el-button type="primary" link @click="selectMaterialFun(scope.row)"
-              >选择
-              <Icon icon="akar-icons:circle-plus" />
+              >{{ t('extra.k01216f50') }} <Icon icon="akar-icons:circle-plus" />
             </el-button>
           </template>
         </el-table-column>
@@ -124,8 +139,7 @@
             <WxNews :articles="item.content.newsItem" />
             <el-row class="ope-row">
               <el-button type="success" @click="selectMaterialFun(item)">
-                选择
-                <Icon icon="ep:circle-check" />
+                {{ t('extra.k01216f50') }} <Icon icon="ep:circle-check" />
               </el-button>
             </el-row>
           </div>

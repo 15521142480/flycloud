@@ -48,7 +48,7 @@
         >
           <!--  && activity.nodeType === NodeType.USER_TASK_NODE -->
 
-          <el-tooltip content="添加用户" placement="left">
+          <el-tooltip :content="t('extra.k49a51f68')" placement="left">
             <el-button
               class="!px-6px"
               @click="handleSelectUser(activity.id, customApproveUsers[activity.id])"
@@ -121,7 +121,7 @@
                 "
                 class="text-#a5a5a5 text-13px mt-1 w-full bg-#f8f8fa p2 rounded-md"
               >
-                审批意见：{{ task.reason }}
+                {{ t('extra.kf5c361d5') }}{{ task.reason }}
               </div>
             </teleport>
           </div>
@@ -170,6 +170,7 @@ import parallelSvg from '@/assets/svgs/bpm/parallel.svg'
 import finishSvg from '@/assets/svgs/bpm/finish.svg'
 
 defineOptions({ name: 'BpmProcessInstanceTimeline' })
+const { t } = useI18n()
 withDefaults(
   defineProps<{
     activityNodes: ProcessInstanceApi.ApprovalNodeInfo[] // 审批节点信息

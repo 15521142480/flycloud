@@ -20,21 +20,36 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="应付金额" prop="totalPrice" fixed="right" min-width="100">
+      <el-table-column
+        :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k20104358')"
+        prop="totalPrice"
+        fixed="right"
+        min-width="100"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.totalPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="已付金额" prop="receiptedPrice" fixed="right" min-width="100">
+      <el-table-column
+        :label="t('auto.views.erp.purchase.in.components.PurchaseInPaymentEnableList.k986c161f')"
+        prop="receiptedPrice"
+        fixed="right"
+        min-width="100"
+      >
         <template #default="{ row }">
           <el-form-item class="mb-0px!">
             <el-input disabled v-model="row.receiptedPrice" :formatter="erpPriceInputFormatter" />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="本次收款" prop="receiptPrice" fixed="right" min-width="115">
+      <el-table-column
+        :label="t('extra.k9d457e49')"
+        prop="receiptPrice"
+        fixed="right"
+        min-width="115"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.receiptPrice`" class="mb-0px!">
             <el-input-number
@@ -46,14 +61,17 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="备注" min-width="150">
+      <el-table-column :label="t('common.remark')" min-width="150">
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.remark`" class="mb-0px!">
-            <el-input v-model="row.remark" placeholder="请输入备注" />
+            <el-input
+              v-model="row.remark"
+              :placeholder="t('auto.views.crm.business.BusinessForm.k57e709d9')"
+            />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="60">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="60">
         <template #default="{ $index }">
           <el-button @click="handleDelete($index)" link>—</el-button>
         </template>
@@ -61,8 +79,8 @@
     </el-table>
   </el-form>
   <el-row justify="center" class="mt-3" v-if="!disabled">
-    <el-button @click="handleOpenSaleOut" round>+ 添加销售出库单</el-button>
-    <el-button @click="handleOpenSaleReturn" round>+ 添加销售退货单</el-button>
+    <el-button @click="handleOpenSaleOut" round>{{ t('extra.k2e04afa2') }}</el-button>
+    <el-button @click="handleOpenSaleReturn" round>{{ t('extra.kc0af35e2') }}</el-button>
   </el-row>
 
   <!-- 可收款的【销售出库单】列表 -->

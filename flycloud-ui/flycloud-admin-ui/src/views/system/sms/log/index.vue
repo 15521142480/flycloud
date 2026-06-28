@@ -148,20 +148,37 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="短信内容" align="center" prop="templateContent" width="300" />
-      <el-table-column label="发送状态" align="center" width="180">
+      <el-table-column
+        :label="t('auto.views.system.sms.log.SmsLogDetail.k687fd112')"
+        align="center"
+        prop="templateContent"
+        width="300"
+      />
+      <el-table-column
+        :label="t('auto.views.system.mail.log.log_data.k9fa54101')"
+        align="center"
+        width="180"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_SEND_STATUS" :value="scope.row.sendStatus" />
           <div>{{ formatDate(scope.row.sendTime) }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="接收状态" align="center" width="180">
+      <el-table-column
+        :label="t('auto.views.system.sms.log.index.k6eafa91f')"
+        align="center"
+        width="180"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_RECEIVE_STATUS" :value="scope.row.receiveStatus" />
           <div>{{ formatDate(scope.row.receiveTime) }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="短信渠道" align="center" width="120">
+      <el-table-column
+        :label="t('auto.views.system.sms.log.SmsLogDetail.k7575f737')"
+        align="center"
+        width="120"
+      >
         <template #default="scope">
           <div>
             {{ channelList.find((channel) => channel.id === scope.row.channelId)?.signature }}
@@ -169,13 +186,26 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE" :value="scope.row.channelCode" />
         </template>
       </el-table-column>
-      <el-table-column label="模板编号" align="center" prop="templateId" />
-      <el-table-column label="短信类型" align="center" prop="templateType">
+      <el-table-column
+        :label="t('auto.views.system.mail.log.log_data.k3fa1ce06')"
+        align="center"
+        prop="templateId"
+      />
+      <el-table-column
+        :label="t('auto.views.system.sms.template.SmsTemplateForm.k7599547f')"
+        align="center"
+        prop="templateType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_TEMPLATE_TYPE" :value="scope.row.templateType" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right" class-name="fixed-width">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        fixed="right"
+        class-name="fixed-width"
+      >
         <template #default="scope">
           <el-button
             link
@@ -183,7 +213,7 @@
             @click="openDetail(scope.row)"
             v-hasPermi="['system:sms-log:query']"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
         </template>
       </el-table-column>

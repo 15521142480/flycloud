@@ -103,15 +103,32 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="门店名称" min-width="150" prop="name" />
-      <el-table-column label="门店手机" min-width="100" prop="phone" />
-      <el-table-column label="地址" min-width="100" prop="detailAddress" />
-      <el-table-column label="营业时间" min-width="180">
+      <el-table-column
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.k7bfb547b')"
+        min-width="150"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kd25150b2')"
+        min-width="100"
+        prop="phone"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.clue.ClueForm.k67d2d797')"
+        min-width="100"
+        prop="detailAddress"
+      />
+      <el-table-column :label="t('extra.kcc3307c8')" min-width="180">
         <template #default="scope">
           {{ scope.row.openingTime }} ~ {{ scope.row.closingTime }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="开启状态" min-width="100" prop="status">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k6bbda1b1')"
+        min-width="100"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -119,11 +136,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['trade:delivery:pick-up-store:update']"
@@ -131,7 +148,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['trade:delivery:pick-up-store:delete']"
@@ -139,7 +156,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

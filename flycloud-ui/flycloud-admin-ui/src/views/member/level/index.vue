@@ -74,7 +74,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="等级背景图" align="center" prop="backgroundUrl" min-width="100">
+      <el-table-column
+        :label="t('extra.k80667212')"
+        align="center"
+        prop="backgroundUrl"
+        min-width="100"
+      >
         <template #default="scope">
           <el-image
             :src="scope.row.backgroundUrl"
@@ -83,23 +88,48 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="等级名称" align="center" prop="name" min-width="100" />
-      <el-table-column label="等级" align="center" prop="level" min-width="60" />
-      <el-table-column label="升级经验" align="center" prop="experience" min-width="80" />
-      <el-table-column label="享受折扣(%)" align="center" prop="discountPercent" min-width="110" />
-      <el-table-column label="状态" align="center" prop="status" min-width="70">
+      <el-table-column
+        :label="t('auto.views.member.level.LevelForm.k0ec5f743')"
+        align="center"
+        prop="name"
+        min-width="100"
+      />
+      <el-table-column
+        :label="t('auto.views.member.level.LevelForm.k5c42c048')"
+        align="center"
+        prop="level"
+        min-width="60"
+      />
+      <el-table-column
+        :label="t('auto.views.member.level.LevelForm.k9b48e1e4')"
+        align="center"
+        prop="experience"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('auto.views.member.level.LevelForm.k8df7f165')"
+        align="center"
+        prop="discountPercent"
+        min-width="110"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status" min-width="70">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         min-width="170"
       />
-      <el-table-column label="操作" align="center" min-width="110px" fixed="right">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        min-width="110px"
+        fixed="right"
+      >
         <template #default="scope">
           <el-button
             link
@@ -107,7 +137,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['member:level:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -115,7 +145,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['member:level:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

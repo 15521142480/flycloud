@@ -131,34 +131,38 @@
           </UploadImg>
         </el-form-item>
       </el-card>
-      <el-card header="按钮" class="property-group" shadow="never">
-        <el-form-item label="按钮类型" prop="btnBuy.type">
+      <el-card :header="t('form.button')" class="property-group" shadow="never">
+        <el-form-item :label="t('extra.kc82de942')" prop="btnBuy.type">
           <el-radio-group v-model="formData.btnBuy.type">
-            <el-radio-button value="text">文字</el-radio-button>
-            <el-radio-button value="img">图片</el-radio-button>
+            <el-radio-button value="text">{{ t('extra.k99e832f9') }}</el-radio-button>
+            <el-radio-button value="img">{{ t('extra.k3b9e2563') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <template v-if="formData.btnBuy.type === 'text'">
-          <el-form-item label="按钮文字" prop="btnBuy.text">
+          <el-form-item :label="t('extra.k1102b12a')" prop="btnBuy.text">
             <el-input v-model="formData.btnBuy.text" />
           </el-form-item>
-          <el-form-item label="左侧背景" prop="btnBuy.bgBeginColor">
+          <el-form-item :label="t('extra.k961f2280')" prop="btnBuy.bgBeginColor">
             <ColorInput v-model="formData.btnBuy.bgBeginColor" />
           </el-form-item>
-          <el-form-item label="右侧背景" prop="btnBuy.bgEndColor">
+          <el-form-item :label="t('extra.k55328e6a')" prop="btnBuy.bgEndColor">
             <ColorInput v-model="formData.btnBuy.bgEndColor" />
           </el-form-item>
         </template>
         <template v-else>
-          <el-form-item label="图片" prop="btnBuy.imgUrl">
+          <el-form-item :label="t('extra.k3b9e2563')" prop="btnBuy.imgUrl">
             <UploadImg v-model="formData.btnBuy.imgUrl" height="56px" width="56px">
-              <template #tip> 建议尺寸：56 * 56 </template>
+              <template #tip> {{ t('extra.k61b3bf07') }} </template>
             </UploadImg>
           </el-form-item>
         </template>
       </el-card>
-      <el-card header="商品样式" class="property-group" shadow="never">
-        <el-form-item label="上圆角" prop="borderRadiusTop">
+      <el-card
+        :header="t('auto.components.DiyEditor.components.mobile.ProductCard.property.ka9d65e39')"
+        class="property-group"
+        shadow="never"
+      >
+        <el-form-item :label="t('extra.kdb0f024d')" prop="borderRadiusTop">
           <el-slider
             v-model="formData.borderRadiusTop"
             :max="100"
@@ -168,7 +172,7 @@
             :show-input-controls="false"
           />
         </el-form-item>
-        <el-form-item label="下圆角" prop="borderRadiusBottom">
+        <el-form-item :label="t('extra.k17430953')" prop="borderRadiusBottom">
           <el-slider
             v-model="formData.borderRadiusBottom"
             :max="100"
@@ -178,7 +182,10 @@
             :show-input-controls="false"
           />
         </el-form-item>
-        <el-form-item label="间隔" prop="space">
+        <el-form-item
+          :label="t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')"
+          prop="space"
+        >
           <el-slider
             v-model="formData.space"
             :max="100"

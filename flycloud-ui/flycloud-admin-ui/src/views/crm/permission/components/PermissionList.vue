@@ -52,7 +52,12 @@
         <dict-tag :type="DICT_TYPE.CRM_PERMISSION_LEVEL" :value="row.level" />
       </template>
     </el-table-column>
-    <el-table-column :formatter="dateFormatter" align="center" label="加入时间" prop="createTime" />
+    <el-table-column
+      :formatter="dateFormatter"
+      align="center"
+      :label="t('extra.k8653cd3d')"
+      prop="createTime"
+    />
   </el-table>
 
   <!-- 表单弹窗：添加/修改 -->

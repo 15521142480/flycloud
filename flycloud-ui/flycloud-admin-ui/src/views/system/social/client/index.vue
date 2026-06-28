@@ -120,13 +120,22 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_SOCIAL_TYPE" :value="scope.row.socialType" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户类型" prop="userType">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.infra.apiAccessLog.index.k31ab92d1')"
+        prop="userType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户端编号" prop="clientId" width="180px" />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.system.oauth2.client.ClientForm.k090a075b')"
+        prop="clientId"
+        width="180px"
+      />
+      <el-table-column align="center" :label="t('common.status')" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -134,11 +143,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['system:social-client:update']"
@@ -146,7 +155,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['system:social-client:delete']"
@@ -154,7 +163,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

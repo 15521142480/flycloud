@@ -89,15 +89,30 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="活动编号" prop="id" min-width="80" />
-        <el-table-column label="活动名称" prop="name" min-width="140" />
-        <el-table-column label="活动时间" min-width="210">
+        <el-table-column
+          :label="t('auto.views.mall.promotion.bargain.activity.index.k32261198')"
+          prop="id"
+          min-width="80"
+        />
+        <el-table-column
+          :label="t('auto.views.mall.promotion.bargain.activity.index.k2b020286')"
+          prop="name"
+          min-width="140"
+        />
+        <el-table-column
+          :label="t('auto.views.mall.promotion.bargain.activity.index.kabe0ecdb')"
+          min-width="210"
+        >
           <template #default="scope">
             {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
             ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
           </template>
         </el-table-column>
-        <el-table-column label="商品图片" prop="spuName" min-width="80">
+        <el-table-column
+          :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
+          prop="spuName"
+          min-width="80"
+        >
           <template #default="scope">
             <el-image
               :src="scope.row.picUrl"
@@ -107,28 +122,37 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="商品标题" prop="spuName" min-width="300" />
         <el-table-column
-          label="原价"
+          :label="t('auto.views.pay.cashier.index.kd415beac')"
+          prop="spuName"
+          min-width="300"
+        />
+        <el-table-column
+          :label="t('extra.k1afdfea7')"
           prop="marketPrice"
           min-width="100"
           :formatter="fenToYuanFormat"
         />
-        <el-table-column label="拼团价" prop="seckillPrice" min-width="100">
+        <el-table-column :label="t('extra.k35a5764f')" prop="seckillPrice" min-width="100">
           <template #default="scope">
             {{ formatSeckillPrice(scope.row.products) }}
           </template>
         </el-table-column>
-        <el-table-column label="开团组数" prop="groupCount" min-width="100" />
-        <el-table-column label="成团组数" prop="groupSuccessCount" min-width="100" />
-        <el-table-column label="购买次数" prop="recordCount" min-width="100" />
-        <el-table-column label="活动状态" align="center" prop="status" min-width="100">
+        <el-table-column :label="t('extra.kdce0ed5c')" prop="groupCount" min-width="100" />
+        <el-table-column :label="t('extra.k8015f7c6')" prop="groupSuccessCount" min-width="100" />
+        <el-table-column :label="t('extra.kff1e75da')" prop="recordCount" min-width="100" />
+        <el-table-column
+          :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+          align="center"
+          prop="status"
+          min-width="100"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
         <el-table-column
-          label="创建时间"
+          :label="t('common.createTime')"
           align="center"
           prop="createTime"
           :formatter="dateFormatter"
@@ -144,8 +168,10 @@
       />
     </ContentWrap>
     <template #footer v-if="multiple">
-      <el-button type="primary" @click="handleEmitChange">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handleEmitChange">{{ t('extra.k008b8fcb') }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

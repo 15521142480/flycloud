@@ -17,19 +17,31 @@
           <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
         </template>
       </el-table-column>
-      <el-table-column :show-overflow-tooltip="true" label="商品名称" min-width="300" prop="name" />
-      <el-table-column align="center" label="商品售价" min-width="90" prop="price">
-        <template #default="{ row }"> {{ floatToFixed2(row.price) }}元</template>
+      <el-table-column
+        :show-overflow-tooltip="true"
+        :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
+        min-width="300"
+        prop="name"
+      />
+      <el-table-column align="center" :label="t('extra.kfb079de8')" min-width="90" prop="price">
+        <template #default="{ row }">
+          {{ floatToFixed2(row.price) }}{{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
-      <el-table-column align="center" label="销量" min-width="90" prop="salesCount" />
+      <el-table-column
+        align="center"
+        :label="t('extra.k44e7ebb4')"
+        min-width="90"
+        prop="salesCount"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="收藏时间"
+        :label="t('extra.k692f444e')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="状态" min-width="80">
+      <el-table-column align="center" :label="t('common.status')" min-width="80">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PRODUCT_SPU_STATUS" :value="scope.row.status" />
         </template>

@@ -69,7 +69,12 @@
               <el-input-number v-model="row.startCount" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column width="180" align="center" label="运费(元)" prop="startPrice">
+          <el-table-column
+            width="180"
+            align="center"
+            :label="t('extra.kef79a9c2')"
+            prop="startPrice"
+          >
             <template #default="{ row }">
               <el-input-number v-model="row.startPrice" :min="1" />
             </template>
@@ -84,15 +89,20 @@
               <el-input-number v-model="row.extraCount" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column width="180" align="center" label="续费(元)" prop="extraPrice">
+          <el-table-column
+            width="180"
+            align="center"
+            :label="t('extra.k0dc2ad7d')"
+            prop="extraPrice"
+          >
             <template #default="{ row }">
               <el-input-number v-model="row.extraPrice" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column :label="t('common.operation')" align="center">
             <template #default="scope">
               <el-button link type="danger" @click="deleteChargeArea(scope.$index)">
-                删除
+                {{ t('common.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -100,12 +110,18 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" plain @click="addChargeArea()">
-          <Icon icon="ep:plus" class="mr-5px" /> 添加区域
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k4ba9cd1a') }}
         </el-button>
       </el-form-item>
-      <el-form-item label="包邮区域" prop="frees">
+      <el-form-item :label="t('extra.k81f51da1')" prop="frees">
         <el-table border style="width: 100%" :data="formData.frees">
-          <el-table-column align="center" label="区域" width="360">
+          <el-table-column
+            align="center"
+            :label="
+              t('auto.views.crm.statistics.customer.components.CustomerDealCycleByArea.k17fc93c9')
+            "
+            width="360"
+          >
             <template #default="{ row }">
               <el-cascader
                 v-model="row.areaIds"
@@ -113,7 +129,9 @@
                 :props="defaultProps2"
                 class="w-1/1"
                 clearable
-                placeholder="请选择商品分类"
+                :placeholder="
+                  t('auto.views.mall.product.category.components.ProductCategorySelect.ke71fcc11')
+                "
                 filterable
                 collapse-tags
               />
@@ -124,30 +142,36 @@
               <el-input-number v-model="row.freeCount" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="包邮金额（元）" prop="freePrice">
+          <el-table-column align="center" :label="t('extra.k0482a274')" prop="freePrice">
             <template #default="{ row }">
               <el-input-number v-model="row.freePrice" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column :label="t('common.operation')" align="center">
             <template #default="scope">
-              <el-button link type="danger" @click="deleteFreeArea(scope.$index)"> 删除 </el-button>
+              <el-button link type="danger" @click="deleteFreeArea(scope.$index)">
+                {{ t('common.delete') }}
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" plain @click="addFreeArea()">
-          <Icon icon="ep:plus" class="mr-5px" /> 添加区域
+          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k4ba9cd1a') }}
         </el-button>
       </el-form-item>
-      <el-form-item label="排序" prop="sort">
+      <el-form-item :label="t('common.sort')" prop="sort">
         <el-input-number v-model="formData.sort" controls-position="right" :min="0" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

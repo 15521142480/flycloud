@@ -3,7 +3,6 @@ import { ProcessDefinitionVO } from '@/api/bpm/model'
 import { NodeType } from '@/components/SimpleProcessDesignerV2/src/consts'
 const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
-
 export type Task = {
   id: string
   name: string
@@ -27,24 +26,23 @@ export type ProcessInstanceVO = {
 
 // 用户信息
 export type User = {
-  id: number,
-  name: string,
+  id: number
+  name: string
   avatar: string
 }
 
 // 审批任务信息
 export type ApprovalTaskInfo = {
-  id: number,
-  ownerUser: User,
-  assigneeUser: User,
-  status: number,
+  id: number
+  ownerUser: User
+  assigneeUser: User
+  status: number
   reason: string
-
 }
 
 // 审批节点信息
 export type ApprovalNodeInfo = {
-  id : number
+  id: number
   name: string
   nodeType: NodeType
   status: number
@@ -85,7 +83,6 @@ export const cancelProcessInstanceByAdmin = async (id: number, reason: string) =
 export const getProcessInstance = async (id: string) => {
   return await request.get({ url: `/${BPM_BASE_URL}/instance/get/` + id })
 }
-
 
 // 获得抄送流程分页列表
 export const getProcessInstanceCopyPage = async (params: any) => {

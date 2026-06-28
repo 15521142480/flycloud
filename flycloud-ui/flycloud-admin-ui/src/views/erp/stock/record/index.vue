@@ -137,27 +137,31 @@
           <dict-tag :type="DICT_TYPE.ERP_STOCK_RECORD_BIZ_TYPE" :value="scope.row.bizType" />
         </template>
       </el-table-column>
-      <el-table-column label="出入库单号" align="center" prop="bizNo" width="200" />
+      <el-table-column :label="t('extra.kf9c7d9ef')" align="center" prop="bizNo" width="200" />
       <el-table-column
-        label="出入库日期"
+        :label="t('extra.ke1b6cc33')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
       <el-table-column
-        label="出入库数量"
+        :label="t('extra.k3e258fe3')"
         align="center"
         prop="count"
         :formatter="erpCountTableColumnFormatter"
       />
       <el-table-column
-        label="库存量"
+        :label="t('auto.views.erp.stock.stock.index.k71c2a10c')"
         align="center"
         prop="totalCount"
         :formatter="erpCountTableColumnFormatter"
       />
-      <el-table-column label="操作人" align="center" prop="creatorName" />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.index.k06858dfb')"
+        align="center"
+        prop="creatorName"
+      />
     </el-table>
     <!-- 分页 -->
     <Pagination

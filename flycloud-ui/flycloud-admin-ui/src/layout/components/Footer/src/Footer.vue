@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
 
 // eslint-disable-next-line vue/no-reserved-component-names
@@ -9,9 +8,8 @@ const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('footer')
 
-const appStore = useAppStore()
-
-const title = computed(() => appStore.getTitle)
+const { t } = useI18n()
+const title = computed(() => t('app.title'))
 </script>
 
 <template>

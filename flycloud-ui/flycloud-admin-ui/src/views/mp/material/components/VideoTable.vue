@@ -29,7 +29,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="上传时间"
+      :label="t('extra.kcae25527')"
       align="center"
       :formatter="dateFormatter"
       prop="createTime"
@@ -39,10 +39,10 @@
         <span>{{ scope.row.createTime }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" fixed="right">
+    <el-table-column :label="t('common.operation')" align="center" fixed="right">
       <template #default="scope">
         <el-button type="primary" link @click="handleDownload(scope.row.url)">
-          <Icon icon="ep:download" />下载
+          <Icon icon="ep:download" />{{ t('auto.views.infra.file.index.k2b9d0131') }}
         </el-button>
         <el-button
           type="primary"
@@ -50,7 +50,7 @@
           @click="emit('delete', scope.row.id)"
           v-hasPermi="['mp:material:delete']"
         >
-          <Icon icon="ep:delete" />删除
+          <Icon icon="ep:delete" />{{ t('common.delete') }}
         </el-button>
       </template>
     </el-table-column>

@@ -38,9 +38,11 @@
   <ContentWrap v-else>
     <el-card class="box-card">
       <div class="clearfix">
-        <span class="el-icon-document">申请信息【{{ selectProcessDefinition.name }}】</span>
+        <span class="el-icon-document"
+          >{{ t('extra.kff543a94') }}{{ selectProcessDefinition.name }}】</span
+        >
         <el-button style="float: right" type="primary" @click="selectProcessDefinition = undefined">
-          <Icon icon="ep:delete" /> 选择其它流程
+          <Icon icon="ep:delete" /> {{ t('extra.kf9ef5bc2') }}
         </el-button>
       </div>
       <el-col :span="16" :offset="6" style="margin-top: 20px">
@@ -54,7 +56,7 @@
           <template #type-startUserSelect>
             <el-col :span="24">
               <el-card class="mb-10px">
-                <template #header>指定审批人</template>
+                <template #header>{{ t('auto.views.bpm.oa.leave.create.k9f4b1131') }}</template>
                 <el-form
                   :model="startUserSelectAssignees"
                   :rules="startUserSelectAssigneesFormRules"
@@ -69,7 +71,7 @@
                     <el-select
                       v-model="startUserSelectAssignees[userTask.id]"
                       multiple
-                      placeholder="请选择审批人"
+                      :placeholder="t('auto.views.bpm.processInstance.create.index_old.k263670a1')"
                     >
                       <el-option
                         v-for="user in userList"

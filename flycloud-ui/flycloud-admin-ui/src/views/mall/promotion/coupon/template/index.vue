@@ -108,13 +108,17 @@
           <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="scope.row.productScope" />
         </template>
       </el-table-column>
-      <el-table-column label="优惠" min-width="110" prop="discount">
+      <el-table-column :label="t('extra.kf06ebf87')" min-width="110" prop="discount">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="scope.row.discountType" />
           <div>{{ discountFormat(scope.row) }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="领取方式" min-width="100" prop="takeType">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k1527d9df')"
+        min-width="100"
+        prop="takeType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PROMOTION_COUPON_TAKE_TYPE" :value="scope.row.takeType" />
         </template>
@@ -122,29 +126,29 @@
       <el-table-column
         :formatter="validityTypeFormat"
         align="center"
-        label="使用时间"
+        :label="t('extra.k01100972')"
         prop="validityType"
         width="185"
       />
       <el-table-column
         :formatter="totalCountFormat"
         align="center"
-        label="发放数量"
+        :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k54d6b5f2')"
         prop="totalCount"
       />
       <el-table-column
         :formatter="remainedCountFormat"
         align="center"
-        label="剩余数量"
+        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k0ca28093')"
         prop="totalCount"
       />
       <el-table-column
         :formatter="takeLimitCountFormat"
         align="center"
-        label="领取上限"
+        :label="t('extra.k666e6fea')"
         prop="takeLimitCount"
       />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" :label="t('common.status')" prop="status">
         <template #default="scope">
           <el-switch
             v-model="scope.row.status"
@@ -157,7 +161,7 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180"
       />
@@ -165,7 +169,7 @@
         align="center"
         class-name="small-padding fixed-width"
         fixed="right"
-        label="操作"
+        :label="t('common.operation')"
         width="120"
       >
         <template #default="scope">
@@ -175,7 +179,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             v-hasPermi="['promotion:coupon-template:delete']"
@@ -183,7 +187,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

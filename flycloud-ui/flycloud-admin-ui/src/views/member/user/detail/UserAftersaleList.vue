@@ -149,7 +149,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="商品信息" min-width="600" prop="spuName">
+      <el-table-column :label="t('extra.k7519f060')" min-width="600" prop="spuName">
         <template #default="{ row }">
           <div class="flex items-center">
             <el-image
@@ -164,29 +164,41 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="订单金额" min-width="120" prop="refundPrice">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.home.components.TradeTrendCard.kd98167d3')"
+        min-width="120"
+        prop="refundPrice"
+      >
         <template #default="scope">
-          <span>{{ fenToYuan(scope.row.refundPrice) }} 元</span>
+          <span>{{ fenToYuan(scope.row.refundPrice) }} {{ t('extra.k2d94e2e7') }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="申请时间" prop="createTime" width="180">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.oa.leave.index.ke85ad6ea')"
+        prop="createTime"
+        width="180"
+      >
         <template #default="scope">
           <span>{{ formatDate(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="售后状态" width="100">
+      <el-table-column align="center" :label="t('extra.k81df0241')" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="售后方式">
+      <el-table-column align="center" :label="t('auto.views.mall.trade.afterSale.index.k21718f30')">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_WAY" :value="scope.row.way" />
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="120">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="120">
         <template #default="{ row }">
-          <el-button link type="primary" @click="openAfterSaleDetail(row.id)">处理退款</el-button>
+          <el-button link type="primary" @click="openAfterSaleDetail(row.id)">{{
+            t('extra.kafde6a7e')
+          }}</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -43,29 +43,39 @@
       <XButton
         type="primary"
         preIcon="ep:plus"
-        title="添加属性"
+        :title="
+          t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k5a551cbe')
+        "
         @click="openAttributesForm(null, -1)"
       />
     </div>
 
     <el-dialog
       v-model="propertyFormModelVisible"
-      title="属性配置"
+      :title="t('auto.components.bpmnProcessDesigner.package.penal.form.ElementForm.kff9d15d6')"
       width="600px"
       append-to-body
       destroy-on-close
     >
       <el-form :model="propertyForm" label-width="80px" ref="attributeFormRef">
-        <el-form-item label="属性名：" prop="name">
+        <el-form-item
+          :label="t('auto.views.mall.product.spu.form.ProductAttributes.k030c4812')"
+          prop="name"
+        >
           <el-input v-model="propertyForm.name" clearable />
         </el-form-item>
-        <el-form-item label="属性值：" prop="value">
+        <el-form-item
+          :label="t('auto.views.mall.product.spu.form.ProductAttributes.k23d78d05')"
+          prop="value"
+        >
           <el-input v-model="propertyForm.value" clearable />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="propertyFormModelVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveAttribute">确 定</el-button>
+        <el-button @click="propertyFormModelVisible = false">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
+        <el-button type="primary" @click="saveAttribute">{{ t('extra.k008b8fcb') }}</el-button>
       </template>
     </el-dialog>
   </div>

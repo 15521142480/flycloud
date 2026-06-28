@@ -82,20 +82,22 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="订阅状态" align="center" prop="subscribeStatus">
+      <el-table-column :label="t('extra.k09491820')" align="center" prop="subscribeStatus">
         <template #default="scope">
-          <el-tag v-if="scope.row.subscribeStatus === 0" type="success">已订阅</el-tag>
-          <el-tag v-else type="danger">未订阅</el-tag>
+          <el-tag v-if="scope.row.subscribeStatus === 0" type="success">{{
+            t('extra.kd813712b')
+          }}</el-tag>
+          <el-tag v-else type="danger">{{ t('extra.k854d2961') }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="订阅时间"
+        :label="t('extra.ke91545b6')"
         align="center"
         prop="subscribeTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             type="primary"
@@ -103,7 +105,7 @@
             @click="openForm(scope.row.id)"
             v-hasPermi="['mp:user:update']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
         </template>
       </el-table-column>

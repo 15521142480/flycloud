@@ -10,10 +10,11 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('logo')
 
 const appStore = useAppStore()
+const { t } = useI18n()
 
 const show = ref(true)
 
-const title = computed(() => appStore.getTitle)
+const title = computed(() => t('app.title'))
 
 const layout = computed(() => appStore.getLayout)
 

@@ -1,7 +1,6 @@
 import request from '@/config/axios'
 const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
-
 export const getProcessDefinition = async (id?: string, key?: string) => {
   return await request.get({
     url: `/${BPM_BASE_URL}/processDefinition/get`,

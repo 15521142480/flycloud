@@ -117,18 +117,37 @@
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column label="应用名" align="center" prop="applicationName" width="200" />
-      <el-table-column label="请求方法" align="center" prop="requestMethod" width="80" />
-      <el-table-column label="请求地址" align="center" prop="requestUrl" width="180" />
       <el-table-column
-        label="异常发生时间"
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k6c19fe01')"
+        align="center"
+        prop="applicationName"
+        width="200"
+      />
+      <el-table-column
+        :label="t('extra.kec49329b')"
+        align="center"
+        prop="requestMethod"
+        width="80"
+      />
+      <el-table-column :label="t('extra.k251b56d4')" align="center" prop="requestUrl" width="180" />
+      <el-table-column
+        :label="t('extra.ka494891d')"
         align="center"
         prop="exceptionTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="异常名" align="center" prop="exceptionName" width="180" />
-      <el-table-column label="处理状态" align="center" prop="processStatus">
+      <el-table-column
+        :label="t('auto.views.infra.apiErrorLog.ApiErrorLogDetail.kaaa3d222')"
+        align="center"
+        prop="exceptionName"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.apiErrorLog.ApiErrorLogDetail.k8542beb9')"
+        align="center"
+        prop="processStatus"
+      >
         <template #default="scope">
           <dict-tag
             :type="DICT_TYPE.INFRA_API_ERROR_LOG_PROCESS_STATUS"
@@ -136,7 +155,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column :label="t('common.operation')" align="center" width="200">
         <template #default="scope">
           <el-button
             link
@@ -144,7 +163,7 @@
             @click="openDetail(scope.row)"
             v-hasPermi="['infra:api-error-log:query']"
           >
-            详细
+            {{ t('extra.k1f0a3a1c') }}
           </el-button>
           <el-button
             link
@@ -153,7 +172,7 @@
             @click="handleProcess(scope.row.id, InfraApiErrorLogProcessStatusEnum.DONE)"
             v-hasPermi="['infra:api-error-log:update-status']"
           >
-            已处理
+            {{ t('auto.views.infra.apiErrorLog.index.k219bde30') }}
           </el-button>
           <el-button
             link
@@ -162,7 +181,7 @@
             @click="handleProcess(scope.row.id, InfraApiErrorLogProcessStatusEnum.IGNORE)"
             v-hasPermi="['infra:api-error-log:update-status']"
           >
-            已忽略
+            {{ t('auto.views.infra.apiErrorLog.index.kbd172c8d') }}
           </el-button>
         </template>
       </el-table-column>

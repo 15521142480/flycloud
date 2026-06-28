@@ -33,8 +33,16 @@
             <dict-tag :type="DICT_TYPE.BPM_PROCESS_LISTENER_TYPE" :value="scope.row.type" />
           </template>
         </el-table-column>
-        <el-table-column label="事件" align="center" prop="event" />
-        <el-table-column label="值类型" align="center" prop="valueType">
+        <el-table-column
+          :label="t('auto.views.bpm.processListener.ProcessListenerForm.k550e3280')"
+          align="center"
+          prop="event"
+        />
+        <el-table-column
+          :label="t('auto.views.bpm.processListener.ProcessListenerForm.k5d6dd202')"
+          align="center"
+          prop="valueType"
+        >
           <template #default="scope">
             <dict-tag
               :type="DICT_TYPE.BPM_PROCESS_LISTENER_VALUE_TYPE"
@@ -42,10 +50,18 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="值" align="center" prop="value" />
-        <el-table-column label="操作" align="center">
+        <el-table-column
+          :label="
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k321b9558')
+          "
+          align="center"
+          prop="value"
+        />
+        <el-table-column :label="t('common.operation')" align="center">
           <template #default="scope">
-            <el-button link type="primary" @click="select(scope.row)"> 选择 </el-button>
+            <el-button link type="primary" @click="select(scope.row)">
+              {{ t('extra.k01216f50') }}
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

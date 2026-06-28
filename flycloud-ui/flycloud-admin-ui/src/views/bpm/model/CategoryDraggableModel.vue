@@ -65,8 +65,12 @@
           </el-dropdown>
         </template>
         <template v-else>
-          <el-button @click.stop="handleModelSortCancel"> 取 消 </el-button>
-          <el-button type="primary" @click.stop="handleModelSortSubmit"> 保存排序 </el-button>
+          <el-button @click.stop="handleModelSortCancel">
+            {{ t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc') }}
+          </el-button>
+          <el-button type="primary" @click.stop="handleModelSortSubmit">
+            {{ t('extra.kcbe89f13') }}
+          </el-button>
         </template>
       </div>
     </div>
@@ -84,10 +88,13 @@
         height="calc(100vh - 320px)"
         row-key="id"
       >
-        <el-table-column label="流程名" prop="name">
+        <el-table-column :label="t('auto.views.bpm.task.copy.index.kf766a7e3')" prop="name">
           <template #default="scope">
             <div class="flex items-center">
-              <el-tooltip content="拖动排序" v-if="isModelSorting">
+              <el-tooltip
+                :content="t('auto.components.Draggable.index.k2980f293')"
+                v-if="isModelSorting"
+              >
                 <Icon
                   icon="ic:round-drag-indicator"
                   class="drag-icon cursor-move text-#8a909c mr-10px"
@@ -98,10 +105,10 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="可见范围" prop="startUserIds" width="150">
+        <el-table-column :label="t('extra.kf9649507')" prop="startUserIds" width="150">
           <template #default="scope">
             <el-text v-if="!scope.row.startUsers || scope.row.startUsers.length === 0">
-              全部可见
+              {{ t('extra.k0d794240') }}
             </el-text>
             <el-text v-else-if="scope.row.startUsers.length == 1">
               {{ scope.row.startUsers[0].name }}
@@ -113,12 +120,13 @@
                 placement="top"
                 :content="scope.row.startUsers.map((user: any) => user.name).join('、')"
               >
-                {{ scope.row.startUsers[0].name }}等 {{ scope.row.startUsers.length }} 人可见
+                {{ scope.row.startUsers[0].name }}{{ t('extra.k11ccee3a') }}
+                {{ scope.row.startUsers.length }} {{ t('extra.k1a18d432') }}
               </el-tooltip>
             </el-text>
           </template>
         </el-table-column>
-        <el-table-column label="表单信息" prop="formType">
+        <el-table-column :label="t('extra.k1a946e0f')" prop="formType">
           <template #default="scope">
             <el-button
               v-if="scope.row.formType === BpmModelFormType.NORMAL"
@@ -136,10 +144,10 @@
             >
               <span>{{ scope.row.formCustomCreatePath }}</span>
             </el-button>
-            <label v-else>暂无表单</label>
+            <label v-else>{{ t('extra.kaadb29f8') }}</label>
           </template>
         </el-table-column>
-        <el-table-column label="最后发布" prop="deploymentTime" width="225">
+        <el-table-column :label="t('extra.kea7f6b97')" prop="deploymentTime" width="225">
           <template #default="scope">
             <div class="flex items-center">
               <span v-if="scope.row.processDefinition" class="w-150px">
@@ -148,18 +156,18 @@
               <el-tag v-if="scope.row.processDefinition">
                 v{{ scope.row.processDefinition.version }}
               </el-tag>
-              <el-tag v-else type="warning">未部署</el-tag>
+              <el-tag v-else type="warning">{{ t('extra.k647f2223') }}</el-tag>
               <el-tag
                 v-if="scope.row.processDefinition?.suspensionState === 2"
                 type="warning"
                 class="ml-10px"
               >
-                已停用
+                {{ t('extra.k69b0f684') }}
               </el-tag>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="230" fixed="right" align="center">
+        <el-table-column :label="t('common.operation')" width="230" fixed="right" align="center">
           <template #default="scope">
             <el-button
               link
@@ -168,7 +176,7 @@
               v-hasPermi="['bpm:manage:model:update']"
               :disabled="!isManagerUser(scope.row)"
             >
-              修改
+              {{ t('extra.k4c512392') }}
             </el-button>
             <el-button
               link
@@ -178,7 +186,7 @@
               v-hasPermi="['bpm:manage:model:designModel']"
               :disabled="!isManagerUser(scope.row)"
             >
-              设计
+              {{ t('extra.kb08890a6') }}
             </el-button>
             <el-button
               link
@@ -188,7 +196,7 @@
               v-hasPermi="['bpm:manage:model:designModel']"
               :disabled="!isManagerUser(scope.row)"
             >
-              发布
+              {{ t('extra.kb464b4af') }}
             </el-button>
             <el-dropdown
               class="!align-middle ml-5px"
@@ -199,14 +207,14 @@
                 'bpm:manage:model:delete'
               ]"
             >
-              <el-button type="primary" link>更多</el-button>
+              <el-button type="primary" link>{{ t('action.more') }}</el-button>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item
                     command="handleDefinitionList"
                     v-if="checkPermi(['bpm:manage:model:history'])"
                   >
-                    历史
+                    {{ t('extra.kc827d8db') }}
                   </el-dropdown-item>
                   <el-dropdown-item
                     command="handleChangeState"
@@ -221,7 +229,7 @@
                     v-if="checkPermi(['bpm:manage:model:delete'])"
                     :disabled="!isManagerUser(scope.row)"
                   >
-                    删除
+                    {{ t('common.delete') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -235,15 +243,19 @@
   <!-- 弹窗：重命名分类 -->
   <Dialog :fullscreen="false" class="rename-dialog" v-model="renameCategoryVisible" width="400">
     <template #title>
-      <div class="pl-10px font-bold text-18px"> 重命名分类 </div>
+      <div class="pl-10px font-bold text-18px"> {{ t('extra.kdddf3c2d') }} </div>
     </template>
     <div class="px-30px">
       <el-input v-model="renameCategoryForm.name" />
     </div>
     <template #footer>
       <div class="pr-25px pb-25px">
-        <el-button @click="renameCategoryVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleRenameConfirm">确 定</el-button>
+        <el-button @click="renameCategoryVisible = false">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
+        <el-button type="primary" @click="handleRenameConfirm">{{
+          t('extra.k008b8fcb')
+        }}</el-button>
       </div>
     </template>
   </Dialog>

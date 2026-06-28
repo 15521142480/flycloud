@@ -73,7 +73,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="部门" min-width="100" align="center">
+        <el-table-column :label="t('system.user.dept')" min-width="100" align="center">
           <template #default="scope">
             {{ scope.row.assigneeUser?.deptName || scope.row.ownerUser?.deptName }}
           </template>
@@ -81,24 +81,39 @@
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          label="开始时间"
+          :label="t('common.startTimeText')"
           prop="createTime"
           min-width="140"
         />
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          label="结束时间"
+          :label="t('common.endTimeText')"
           prop="endTime"
           min-width="140"
         />
-        <el-table-column align="center" label="审批状态" prop="status" min-width="90">
+        <el-table-column
+          align="center"
+          :label="t('auto.views.bpm.task.done.index.k93623725')"
+          prop="status"
+          min-width="90"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.BPM_TASK_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column align="center" label="审批建议" prop="reason" min-width="120" />
-        <el-table-column align="center" label="耗时" prop="durationInMillis" width="100">
+        <el-table-column
+          align="center"
+          :label="t('extra.kd2a31c2e')"
+          prop="reason"
+          min-width="120"
+        />
+        <el-table-column
+          align="center"
+          :label="t('extra.k39f1374d')"
+          prop="durationInMillis"
+          width="100"
+        >
           <template #default="scope">
             {{ formatPast2(scope.row.durationInMillis) }}
           </template>

@@ -97,7 +97,7 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="mqttDialogVisible = false">关闭</el-button>
+        <el-button @click="mqttDialogVisible = false">{{ t('common.close') }}</el-button>
       </template>
     </Dialog>
   </ContentWrap>

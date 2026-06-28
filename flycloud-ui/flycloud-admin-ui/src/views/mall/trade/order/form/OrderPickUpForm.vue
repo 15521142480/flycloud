@@ -32,11 +32,19 @@
     </template>
   </Dialog>
   <!-- 核销确认对话框 -->
-  <Dialog v-model="detailDialogVisible" title="订单详情" width="55%">
+  <Dialog
+    v-model="detailDialogVisible"
+    :title="t('auto.router.modules.remaining.kdea71f6f')"
+    width="55%"
+  >
     <TradeOrderDetail v-if="orderDetails.id" :id="orderDetails.id" :show-pick-up="false" />
     <template #footer>
-      <el-button type="primary" :disabled="formLoading" @click="submitForm"> 确认核销 </el-button>
-      <el-button @click="detailDialogVisible = false">取 消</el-button>
+      <el-button type="primary" :disabled="formLoading" @click="submitForm">
+        {{ t('extra.k9bd343f5') }}
+      </el-button>
+      <el-button @click="detailDialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

@@ -78,15 +78,29 @@
           <dict-tag :type="DICT_TYPE.AI_PLATFORM" :value="scope.row.platform" />
         </template>
       </el-table-column>
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="密钥" align="center" prop="apiKey" />
-      <el-table-column label="自定义 API URL" align="center" prop="url" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column
+        :label="
+          t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1be7ae4f')
+        "
+        align="center"
+        prop="name"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.apiKey.ApiKeyForm.k0d1965e1')"
+        align="center"
+        prop="apiKey"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.apiKey.ApiKeyForm.kc1d074da')"
+        align="center"
+        prop="url"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -94,7 +108,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['ai:api-key:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -102,7 +116,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:api-key:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

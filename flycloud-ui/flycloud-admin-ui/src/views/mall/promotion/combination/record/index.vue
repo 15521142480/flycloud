@@ -144,8 +144,13 @@
           <el-avatar :src="scope.row.avatar" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="昵称" prop="name" min-width="100" />
-      <el-table-column align="center" label="开团团长" prop="headId" min-width="100">
+      <el-table-column
+        align="center"
+        :label="t('system.user.nickname')"
+        prop="name"
+        min-width="100"
+      />
+      <el-table-column align="center" :label="t('extra.k2ac0d889')" prop="headId" min-width="100">
         <template #default="{ row }: { row: CombinationRecordApi.CombinationRecordVO }">
           {{ row.headId ? pageList.find((item) => item.id === row.headId)?.name : row.name }}
         </template>
@@ -153,13 +158,15 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="开团时间"
+        :label="t('extra.kc8516a03')"
         prop="startTime"
         width="180"
       />
       <el-table-column
         align="center"
-        label="拼团商品"
+        :label="
+          t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kcc137447')
+        "
         prop="type"
         show-overflow-tooltip
         min-width="300"
@@ -173,23 +180,40 @@
           <span class="align-middle">{{ row.spuName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="几人团" prop="userSize" min-width="100" />
-      <el-table-column align="center" label="参与人数" prop="userCount" min-width="100" />
+      <el-table-column
+        align="center"
+        :label="t('extra.k898267f8')"
+        prop="userSize"
+        min-width="100"
+      />
+      <el-table-column
+        align="center"
+        :label="
+          t('auto.views.mall.promotion.combination.activity.combinationActivity_data.kf2f555f3')
+        "
+        prop="userCount"
+        min-width="100"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="参团时间"
+        :label="t('extra.kfc0e0b97')"
         prop="createTime"
         width="180"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="结束时间"
+        :label="t('common.endTimeText')"
         prop="endTime"
         width="180"
       />
-      <el-table-column align="center" label="拼团状态" prop="status" min-width="150">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.mall.promotion.combination.record.index.ke7a33bf4')"
+        prop="status"
+        min-width="150"
+      >
         <template #default="scope">
           <dict-tag
             :type="DICT_TYPE.PROMOTION_COMBINATION_RECORD_STATUS"
@@ -197,7 +221,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:combination-record:query']"
@@ -205,7 +229,7 @@
             type="primary"
             @click="openRecordListDialog(scope.row)"
           >
-            查看拼团
+            {{ t('extra.ka35f131b') }}
           </el-button>
         </template>
       </el-table-column>

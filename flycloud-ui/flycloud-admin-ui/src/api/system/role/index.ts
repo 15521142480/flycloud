@@ -29,7 +29,7 @@ export const getSimpleRoleList = async (): Promise<RoleVO[]> => {
   const data = {
     type: 0
   }
-  return await request.post({ url: `/${SYS_BASE_URL}/role/getList`, data})
+  return await request.post({ url: `/${SYS_BASE_URL}/role/getList`, data })
 }
 
 // 查询角色详情

@@ -79,10 +79,15 @@
           <el-image :src="scope.row.icon" class="h-32px w-32px" />
         </template>
       </el-table-column>
-      <el-table-column label="可见范围" align="center" prop="startUserIds" min-width="100">
+      <el-table-column
+        :label="t('extra.kf9649507')"
+        align="center"
+        prop="startUserIds"
+        min-width="100"
+      >
         <template #default="scope">
           <el-text v-if="!scope.row.startUsers || scope.row.startUsers.length === 0">
-            全部可见
+            {{ t('extra.k0d794240') }}
           </el-text>
           <el-text v-else-if="scope.row.startUsers.length == 1">
             {{ scope.row.startUsers[0].name }}
@@ -94,13 +99,19 @@
               placement="top"
               :content="scope.row.startUsers.map((user: any) => user.name).join('、')"
             >
-              {{ scope.row.startUsers[0].name }}等 {{ scope.row.startUsers.length }} 人可见
+              {{ scope.row.startUsers[0].name }}{{ t('extra.k11ccee3a') }}
+              {{ scope.row.startUsers.length }} {{ t('extra.k1a18d432') }}
             </el-tooltip>
           </el-text>
         </template>
       </el-table-column>
-      <el-table-column label="流程分类" align="center" prop="categoryName" min-width="100" />
-      <el-table-column label="表单信息" align="center" prop="formType" min-width="200">
+      <el-table-column
+        :label="t('auto.views.bpm.model.ModelForm.k8377bb01')"
+        align="center"
+        prop="categoryName"
+        min-width="100"
+      />
+      <el-table-column :label="t('extra.k1a946e0f')" align="center" prop="formType" min-width="200">
         <template #default="scope">
           <el-button
             v-if="scope.row.formType === 10"
@@ -118,10 +129,15 @@
           >
             <span>{{ scope.row.formCustomCreatePath }}</span>
           </el-button>
-          <label v-else>暂无表单</label>
+          <label v-else>{{ t('extra.kaadb29f8') }}</label>
         </template>
       </el-table-column>
-      <el-table-column label="最后发布" align="center" prop="deploymentTime" min-width="250">
+      <el-table-column
+        :label="t('extra.kea7f6b97')"
+        align="center"
+        prop="deploymentTime"
+        min-width="250"
+      >
         <template #default="scope">
           <span v-if="scope.row.processDefinition">
             {{ formatDate(scope.row.processDefinition.deploymentTime) }}
@@ -129,17 +145,17 @@
           <el-tag v-if="scope.row.processDefinition" class="ml-10px">
             v{{ scope.row.processDefinition.version }}
           </el-tag>
-          <el-tag v-else type="warning">未部署</el-tag>
+          <el-tag v-else type="warning">{{ t('extra.k647f2223') }}</el-tag>
           <el-tag
             v-if="scope.row.processDefinition?.suspensionState === 2"
             type="warning"
             class="ml-10px"
           >
-            已停用
+            {{ t('extra.k69b0f684') }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="200" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -148,7 +164,7 @@
             v-hasPermi="['bpm:model:update']"
             :disabled="!isManagerUser(scope.row)"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             link
@@ -158,7 +174,7 @@
             v-hasPermi="['bpm:model:update']"
             :disabled="!isManagerUser(scope.row)"
           >
-            设计
+            {{ t('extra.kb08890a6') }}
           </el-button>
           <el-button
             link
@@ -168,21 +184,21 @@
             v-hasPermi="['bpm:model:deploy']"
             :disabled="!isManagerUser(scope.row)"
           >
-            发布
+            {{ t('extra.kb464b4af') }}
           </el-button>
           <el-dropdown
             class="!align-middle ml-5px"
             @command="(command) => handleCommand(command, scope.row)"
             v-hasPermi="['bpm:process-definition:query', 'bpm:model:update', 'bpm:model:delete']"
           >
-            <el-button type="primary" link>更多</el-button>
+            <el-button type="primary" link>{{ t('action.more') }}</el-button>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item
                   command="handleDefinitionList"
                   v-if="checkPermi(['bpm:process-definition:query'])"
                 >
-                  历史
+                  {{ t('extra.kc827d8db') }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   command="handleChangeState"
@@ -197,7 +213,7 @@
                   v-if="checkPermi(['bpm:model:delete'])"
                   :disabled="!isManagerUser(scope.row)"
                 >
-                  删除
+                  {{ t('common.delete') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -218,7 +234,7 @@
   <ModelForm ref="formRef" @success="getList" />
 
   <!-- 弹窗：表单详情 -->
-  <Dialog title="表单详情" v-model="formDetailVisible" width="800">
+  <Dialog :title="t('extra.k216a0b25')" v-model="formDetailVisible" width="800">
     <form-create :rule="formDetailPreview.rule" :option="formDetailPreview.option" />
   </Dialog>
 </template>

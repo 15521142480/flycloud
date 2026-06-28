@@ -96,31 +96,39 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="开始时间"
+        :label="t('common.startTimeText')"
         prop="startTime"
         width="180"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="结束时间"
+        :label="t('common.endTimeText')"
         prop="endTime"
         width="180"
       />
-      <el-table-column align="center" label="请假类型" prop="type">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.oa.leave.create.k1509ea5a')"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_OA_LEAVE_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原因" prop="reason" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.bpm.oa.leave.create.k1ff9c3d0')"
+        prop="reason"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="申请时间"
+        :label="t('auto.views.bpm.oa.leave.index.ke85ad6ea')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" :label="t('common.operation')" width="200">
         <template #default="scope">
           <el-button
             v-hasPermi="['bpm:oa:leave:detail']"
@@ -128,7 +136,7 @@
             type="primary"
             @click="handleDetail(scope.row)"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
           <el-button
             v-hasPermi="['bpm:oa:leave:progress']"
@@ -136,7 +144,7 @@
             type="primary"
             @click="handleProcessDetail(scope.row)"
           >
-            进度
+            {{ t('extra.kc7bff79d') }}
           </el-button>
           <el-button
             v-if="scope.row.result === 1"
@@ -144,7 +152,7 @@
             type="danger"
             @click="cancelLeave(scope.row)"
           >
-            取消
+            {{ t('common.cancel') }}
           </el-button>
         </template>
       </el-table-column>

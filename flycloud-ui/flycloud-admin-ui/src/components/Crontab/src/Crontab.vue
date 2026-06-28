@@ -556,27 +556,31 @@ const inputChange = () => {
     :width="580"
     append-to-body
     destroy-on-close
-    title="cron规则生成器"
+    :title="t('extra.k0f4668a2')"
   >
     <div class="sc-cron">
       <el-tabs>
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>秒</h2>
+              <h2>{{ t('auto.utils.formatTime.keb6aaba1') }}</h2>
               <h4>{{ value_second }}</h4>
             </div>
           </template>
           <el-form>
-            <el-form-item label="类型">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')"
+            >
               <el-radio-group v-model="cronValue.second.type">
-                <el-radio-button value="0">任意值</el-radio-button>
-                <el-radio-button value="1">范围</el-radio-button>
-                <el-radio-button value="2">间隔</el-radio-button>
-                <el-radio-button value="3">指定</el-radio-button>
+                <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                <el-radio-button value="2">{{
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                }}</el-radio-button>
+                <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="cronValue.second.type == '1'" label="范围">
+            <el-form-item v-if="cronValue.second.type == '1'" :label="t('extra.kdf011658')">
               <el-input-number
                 v-model="cronValue.second.range.start"
                 :max="59"
@@ -591,23 +595,28 @@ const inputChange = () => {
                 controls-position="right"
               />
             </el-form-item>
-            <el-form-item v-if="cronValue.second.type == '2'" label="间隔">
+            <el-form-item
+              v-if="cronValue.second.type == '2'"
+              :label="
+                t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+              "
+            >
               <el-input-number
                 v-model="cronValue.second.loop.start"
                 :max="59"
                 :min="0"
                 controls-position="right"
               />
-              秒开始，每
+              {{ t('extra.ke596f5fb') }}
               <el-input-number
                 v-model="cronValue.second.loop.end"
                 :max="59"
                 :min="0"
                 controls-position="right"
               />
-              秒执行一次
+              {{ t('extra.k0fe93ee1') }}
             </el-form-item>
-            <el-form-item v-if="cronValue.second.type == '3'" label="指定">
+            <el-form-item v-if="cronValue.second.type == '3'" :label="t('extra.k74decd73')">
               <el-select v-model="cronValue.second.appoint" multiple style="width: 100%">
                 <el-option
                   v-for="(item, index) in data.second"
@@ -622,20 +631,24 @@ const inputChange = () => {
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>分钟</h2>
+              <h2>{{ t('auto.components.SimpleProcessDesignerV2.src.consts.k28bf227b') }}</h2>
               <h4>{{ value_minute }}</h4>
             </div>
           </template>
           <el-form>
-            <el-form-item label="类型">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')"
+            >
               <el-radio-group v-model="cronValue.minute.type">
-                <el-radio-button value="0">任意值</el-radio-button>
-                <el-radio-button value="1">范围</el-radio-button>
-                <el-radio-button value="2">间隔</el-radio-button>
-                <el-radio-button value="3">指定</el-radio-button>
+                <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                <el-radio-button value="2">{{
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                }}</el-radio-button>
+                <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="cronValue.minute.type == '1'" label="范围">
+            <el-form-item v-if="cronValue.minute.type == '1'" :label="t('extra.kdf011658')">
               <el-input-number
                 v-model="cronValue.minute.range.start"
                 :max="59"
@@ -650,23 +663,28 @@ const inputChange = () => {
                 controls-position="right"
               />
             </el-form-item>
-            <el-form-item v-if="cronValue.minute.type == '2'" label="间隔">
+            <el-form-item
+              v-if="cronValue.minute.type == '2'"
+              :label="
+                t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+              "
+            >
               <el-input-number
                 v-model="cronValue.minute.loop.start"
                 :max="59"
                 :min="0"
                 controls-position="right"
               />
-              分钟开始，每
+              {{ t('extra.k4555079e') }}
               <el-input-number
                 v-model="cronValue.minute.loop.end"
                 :max="59"
                 :min="0"
                 controls-position="right"
               />
-              分钟执行一次
+              {{ t('extra.k3e47098a') }}
             </el-form-item>
-            <el-form-item v-if="cronValue.minute.type == '3'" label="指定">
+            <el-form-item v-if="cronValue.minute.type == '3'" :label="t('extra.k74decd73')">
               <el-select v-model="cronValue.minute.appoint" multiple style="width: 100%">
                 <el-option
                   v-for="(item, index) in data.minute"
@@ -681,20 +699,24 @@ const inputChange = () => {
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>小时</h2>
+              <h2>{{ t('auto.components.SimpleProcessDesignerV2.src.consts.k99f6904f') }}</h2>
               <h4>{{ value_hour }}</h4>
             </div>
           </template>
           <el-form>
-            <el-form-item label="类型">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')"
+            >
               <el-radio-group v-model="cronValue.hour.type">
-                <el-radio-button value="0">任意值</el-radio-button>
-                <el-radio-button value="1">范围</el-radio-button>
-                <el-radio-button value="2">间隔</el-radio-button>
-                <el-radio-button value="3">指定</el-radio-button>
+                <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                <el-radio-button value="2">{{
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                }}</el-radio-button>
+                <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="cronValue.hour.type == '1'" label="范围">
+            <el-form-item v-if="cronValue.hour.type == '1'" :label="t('extra.kdf011658')">
               <el-input-number
                 v-model="cronValue.hour.range.start"
                 :max="23"
@@ -709,23 +731,28 @@ const inputChange = () => {
                 controls-position="right"
               />
             </el-form-item>
-            <el-form-item v-if="cronValue.hour.type == '2'" label="间隔">
+            <el-form-item
+              v-if="cronValue.hour.type == '2'"
+              :label="
+                t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+              "
+            >
               <el-input-number
                 v-model="cronValue.hour.loop.start"
                 :max="23"
                 :min="0"
                 controls-position="right"
               />
-              小时开始，每
+              {{ t('extra.k9a8cdd36') }}
               <el-input-number
                 v-model="cronValue.hour.loop.end"
                 :max="23"
                 :min="0"
                 controls-position="right"
               />
-              小时执行一次
+              {{ t('extra.k547ddabc') }}
             </el-form-item>
-            <el-form-item v-if="cronValue.hour.type == '3'" label="指定">
+            <el-form-item v-if="cronValue.hour.type == '3'" :label="t('extra.k74decd73')">
               <el-select v-model="cronValue.hour.appoint" multiple style="width: 100%">
                 <el-option
                   v-for="(item, index) in data.hour"
@@ -740,22 +767,26 @@ const inputChange = () => {
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>日</h2>
+              <h2>{{ t('auto.hooks.web.useNow.k15917f3b') }}</h2>
               <h4>{{ value_day }}</h4>
             </div>
           </template>
           <el-form>
-            <el-form-item label="类型">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')"
+            >
               <el-radio-group v-model="cronValue.day.type">
-                <el-radio-button value="0">任意值</el-radio-button>
-                <el-radio-button value="1">范围</el-radio-button>
-                <el-radio-button value="2">间隔</el-radio-button>
-                <el-radio-button value="3">指定</el-radio-button>
-                <el-radio-button value="4">本月最后一天</el-radio-button>
-                <el-radio-button value="5">不指定</el-radio-button>
+                <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                <el-radio-button value="2">{{
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                }}</el-radio-button>
+                <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
+                <el-radio-button value="4">{{ t('extra.k36072700') }}</el-radio-button>
+                <el-radio-button value="5">{{ t('extra.kd436986a') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="cronValue.day.type == '1'" label="范围">
+            <el-form-item v-if="cronValue.day.type == '1'" :label="t('extra.kdf011658')">
               <el-input-number
                 v-model="cronValue.day.range.start"
                 :max="31"
@@ -770,23 +801,28 @@ const inputChange = () => {
                 controls-position="right"
               />
             </el-form-item>
-            <el-form-item v-if="cronValue.day.type == '2'" label="间隔">
+            <el-form-item
+              v-if="cronValue.day.type == '2'"
+              :label="
+                t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+              "
+            >
               <el-input-number
                 v-model="cronValue.day.loop.start"
                 :max="31"
                 :min="1"
                 controls-position="right"
               />
-              号开始，每
+              {{ t('extra.k59d0974a') }}
               <el-input-number
                 v-model="cronValue.day.loop.end"
                 :max="31"
                 :min="1"
                 controls-position="right"
               />
-              天执行一次
+              {{ t('extra.k0fc34910') }}
             </el-form-item>
-            <el-form-item v-if="cronValue.day.type == '3'" label="指定">
+            <el-form-item v-if="cronValue.day.type == '3'" :label="t('extra.k74decd73')">
               <el-select v-model="cronValue.day.appoint" multiple style="width: 100%">
                 <el-option
                   v-for="(item, index) in data.day"
@@ -801,20 +837,24 @@ const inputChange = () => {
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>月</h2>
+              <h2>{{ t('form.month') }}</h2>
               <h4>{{ value_month }}</h4>
             </div>
           </template>
           <el-form>
-            <el-form-item label="类型">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')"
+            >
               <el-radio-group v-model="cronValue.month.type">
-                <el-radio-button value="0">任意值</el-radio-button>
-                <el-radio-button value="1">范围</el-radio-button>
-                <el-radio-button value="2">间隔</el-radio-button>
-                <el-radio-button value="3">指定</el-radio-button>
+                <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                <el-radio-button value="2">{{
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                }}</el-radio-button>
+                <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="cronValue.month.type == '1'" label="范围">
+            <el-form-item v-if="cronValue.month.type == '1'" :label="t('extra.kdf011658')">
               <el-input-number
                 v-model="cronValue.month.range.start"
                 :max="12"
@@ -829,23 +869,28 @@ const inputChange = () => {
                 controls-position="right"
               />
             </el-form-item>
-            <el-form-item v-if="cronValue.month.type == '2'" label="间隔">
+            <el-form-item
+              v-if="cronValue.month.type == '2'"
+              :label="
+                t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+              "
+            >
               <el-input-number
                 v-model="cronValue.month.loop.start"
                 :max="12"
                 :min="1"
                 controls-position="right"
               />
-              月开始，每
+              {{ t('extra.kd6f0f297') }}
               <el-input-number
                 v-model="cronValue.month.loop.end"
                 :max="12"
                 :min="1"
                 controls-position="right"
               />
-              月执行一次
+              {{ t('extra.k78daf924') }}
             </el-form-item>
-            <el-form-item v-if="cronValue.month.type == '3'" label="指定">
+            <el-form-item v-if="cronValue.month.type == '3'" :label="t('extra.k74decd73')">
               <el-select v-model="cronValue.month.appoint" multiple style="width: 100%">
                 <el-option
                   v-for="(item, index) in data.month"
@@ -860,23 +905,29 @@ const inputChange = () => {
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>周</h2>
+              <h2>{{ t('form.week') }}</h2>
               <h4>{{ value_week }}</h4>
             </div>
           </template>
           <el-form>
             <el-form>
-              <el-form-item label="类型">
+              <el-form-item
+                :label="
+                  t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')
+                "
+              >
                 <el-radio-group v-model="cronValue.week.type">
-                  <el-radio-button value="0">任意值</el-radio-button>
-                  <el-radio-button value="1">范围</el-radio-button>
-                  <el-radio-button value="2">间隔</el-radio-button>
-                  <el-radio-button value="3">指定</el-radio-button>
-                  <el-radio-button value="4">本月最后一周</el-radio-button>
-                  <el-radio-button value="5">不指定</el-radio-button>
+                  <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                  <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                  <el-radio-button value="2">{{
+                    t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                  }}</el-radio-button>
+                  <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
+                  <el-radio-button value="4">{{ t('extra.kaa3607bb') }}</el-radio-button>
+                  <el-radio-button value="5">{{ t('extra.kd436986a') }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item v-if="cronValue.week.type == '1'" label="范围">
+              <el-form-item v-if="cronValue.week.type == '1'" :label="t('extra.kdf011658')">
                 <el-select v-model="cronValue.week.range.start">
                   <el-option
                     v-for="(item, index) in data.week"
@@ -895,15 +946,20 @@ const inputChange = () => {
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item v-if="cronValue.week.type == '2'" label="间隔">
-                第
+              <el-form-item
+                v-if="cronValue.week.type == '2'"
+                :label="
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                "
+              >
+                {{ t('extra.k0c88f9c5') }}
                 <el-input-number
                   v-model="cronValue.week.loop.start"
                   :max="4"
                   :min="1"
                   controls-position="right"
                 />
-                周的星期
+                {{ t('extra.kf40b847c') }}
                 <el-select v-model="cronValue.week.loop.end">
                   <el-option
                     v-for="(item, index) in data.week"
@@ -912,9 +968,9 @@ const inputChange = () => {
                     :value="item.value"
                   />
                 </el-select>
-                执行一次
+                {{ t('extra.k1bc974f4') }}
               </el-form-item>
-              <el-form-item v-if="cronValue.week.type == '3'" label="指定">
+              <el-form-item v-if="cronValue.week.type == '3'" :label="t('extra.k74decd73')">
                 <el-select v-model="cronValue.week.appoint" multiple style="width: 100%">
                   <el-option
                     v-for="(item, index) in data.week"
@@ -924,7 +980,7 @@ const inputChange = () => {
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item v-if="cronValue.week.type == '4'" label="最后一周">
+              <el-form-item v-if="cronValue.week.type == '4'" :label="t('extra.k0672a91e')">
                 <el-select v-model="cronValue.week.last">
                   <el-option
                     v-for="(item, index) in data.week"
@@ -940,36 +996,45 @@ const inputChange = () => {
         <el-tab-pane>
           <template #label>
             <div class="sc-cron-num">
-              <h2>年</h2>
+              <h2>{{ t('form.year') }}</h2>
               <h4>{{ value_year }}</h4>
             </div>
           </template>
           <el-form>
-            <el-form-item label="类型">
+            <el-form-item
+              :label="t('auto.components.DiyEditor.components.mobile.Carousel.property.ke4e46c72')"
+            >
               <el-radio-group v-model="cronValue.year.type">
-                <el-radio-button value="-1">忽略</el-radio-button>
-                <el-radio-button value="0">任意值</el-radio-button>
-                <el-radio-button value="1">范围</el-radio-button>
-                <el-radio-button value="2">间隔</el-radio-button>
-                <el-radio-button value="3">指定</el-radio-button>
+                <el-radio-button value="-1">{{ t('extra.kc0d5d68f') }}</el-radio-button>
+                <el-radio-button value="0">{{ t('extra.k6240a438') }}</el-radio-button>
+                <el-radio-button value="1">{{ t('extra.kdf011658') }}</el-radio-button>
+                <el-radio-button value="2">{{
+                  t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+                }}</el-radio-button>
+                <el-radio-button value="3">{{ t('extra.k74decd73') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="cronValue.year.type == '1'" label="范围">
+            <el-form-item v-if="cronValue.year.type == '1'" :label="t('extra.kdf011658')">
               <el-input-number v-model="cronValue.year.range.start" controls-position="right" />
               <span style="padding: 0 15px">-</span>
               <el-input-number v-model="cronValue.year.range.end" controls-position="right" />
             </el-form-item>
-            <el-form-item v-if="cronValue.year.type == '2'" label="间隔">
+            <el-form-item
+              v-if="cronValue.year.type == '2'"
+              :label="
+                t('auto.components.DiyEditor.components.mobile.CouponCard.property.k940c8865')
+              "
+            >
               <el-input-number v-model="cronValue.year.loop.start" controls-position="right" />
-              年开始，每
+              {{ t('extra.kc0f4fc50') }}
               <el-input-number
                 v-model="cronValue.year.loop.end"
                 :min="1"
                 controls-position="right"
               />
-              年执行一次
+              {{ t('extra.kb1e6cef3') }}
             </el-form-item>
-            <el-form-item v-if="cronValue.year.type == '3'" label="指定">
+            <el-form-item v-if="cronValue.year.type == '3'" :label="t('extra.k74decd73')">
               <el-select v-model="cronValue.year.appoint" multiple style="width: 100%">
                 <el-option
                   v-for="(item, index) in data.year"
@@ -985,8 +1050,12 @@ const inputChange = () => {
     </div>
 
     <template #footer>
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="submit()">确 认</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
+      <el-button type="primary" @click="submit()">{{
+        t('auto.components.bpmnProcessDesigner.package.penal.listeners.ElementListeners.kee629375')
+      }}</el-button>
     </template>
   </el-dialog>
 </template>

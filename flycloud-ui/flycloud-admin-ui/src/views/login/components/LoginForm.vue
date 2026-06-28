@@ -258,12 +258,16 @@ const getCode = async () => {
   //   verify.value.show()
   // }
 
-  const res = await LoginApi.getCodeApi()
-  if (!res) {
-    return
+  try {
+    const res = await LoginApi.getCodeApi()
+    if (!res) {
+      return
+    }
+    loginData.loginForm.codeKey = res.key
+    codeUrl.value = res.codeUrl
+  } catch {
+    codeUrl.value = ''
   }
-  loginData.loginForm.codeKey = res.key
-  codeUrl.value = res.codeUrl
 }
 
 /**
@@ -287,6 +291,10 @@ const loading = ref() // ElLoading.service 返回的实例
  * 登录
  */
 const handleLogin = async () => {
+  if (loginLoading.value) {
+    return
+  }
+
   const data = await validForm()
   if (!data) {
     return
@@ -307,6 +315,7 @@ const handleLogin = async () => {
     background: 'rgba(0, 0, 0, 0.7)'
   })
 
+  let keepLoading = false
   try {
     const loginDataLoginForm = { ...loginData.loginForm }
     const res = await LoginApi.login(loginDataLoginForm)
@@ -324,19 +333,17 @@ const handleLogin = async () => {
     }
     // 判断是否为SSO登录
     if (redirect.value.indexOf('sso') !== -1) {
+      keepLoading = true
       window.location.href = window.location.href.replace('/login?redirect=', '')
     } else {
-      push({ path: redirect.value || permissionStore.addRouters[0].path })
+      await push({ path: redirect.value || permissionStore.addRouters[0].path })
     }
     await nextTick()
-    loginLoading.value = false
-    loading.value.close()
   } finally {
-    if (!authUtil.getAccessToken()) {
-      await getCode()
+    if (!keepLoading) {
+      loginLoading.value = false
+      loading.value?.close()
     }
-    // loginLoading.value = false
-    // loading.value.close()
   }
 }
 
@@ -419,7 +426,6 @@ watch(
 )
 
 onMounted(() => {
-  getCode()
   getLoginFormCache()
   // getTenantByWebsite()
 })

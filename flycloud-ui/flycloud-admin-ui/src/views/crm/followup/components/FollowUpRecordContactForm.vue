@@ -12,17 +12,27 @@
         </el-link>
       </template>
     </el-table-column>
-    <el-table-column label="手机号" align="center" prop="mobile" />
-    <el-table-column label="职位" align="center" prop="post" />
-    <el-table-column label="直属上级" align="center" prop="parentName" />
-    <el-table-column label="是否关键决策人" align="center" prop="master" min-width="100">
+    <el-table-column :label="t('system.user.phone')" align="center" prop="mobile" />
+    <el-table-column
+      :label="t('auto.views.crm.contact.ContactForm.ka2a92e50')"
+      align="center"
+      prop="post"
+    />
+    <el-table-column
+      :label="t('auto.views.crm.contact.ContactForm.kcac16f50')"
+      align="center"
+      prop="parentName"
+    />
+    <el-table-column :label="t('extra.k9d406e6a')" align="center" prop="master" min-width="100">
       <template #default="scope">
         <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.master" />
       </template>
     </el-table-column>
-    <el-table-column align="center" fixed="right" label="操作" width="130">
+    <el-table-column align="center" fixed="right" :label="t('common.operation')" width="130">
       <template #default="scope">
-        <el-button link type="danger" @click="handleDelete(scope.row.id)"> 移除</el-button>
+        <el-button link type="danger" @click="handleDelete(scope.row.id)">
+          {{ t('extra.k825389c5') }}</el-button
+        >
       </template>
     </el-table-column>
   </el-table>

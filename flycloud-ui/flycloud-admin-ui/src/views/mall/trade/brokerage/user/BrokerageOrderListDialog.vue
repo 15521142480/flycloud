@@ -100,21 +100,26 @@
             <el-avatar :src="scope.row.sourceUserAvatar" />
           </template>
         </el-table-column>
-        <el-table-column label="昵称" align="center" prop="sourceUserNickname" min-width="80px" />
         <el-table-column
-          label="佣金"
+          :label="t('system.user.nickname')"
+          align="center"
+          prop="sourceUserNickname"
+          min-width="80px"
+        />
+        <el-table-column
+          :label="t('extra.k394ab37f')"
           align="center"
           prop="price"
           min-width="100px"
           :formatter="fenToYuanFormat"
         />
-        <el-table-column label="状态" align="center" prop="status" min-width="85">
+        <el-table-column :label="t('common.status')" align="center" prop="status" min-width="85">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.BROKERAGE_RECORD_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
         <el-table-column
-          label="创建时间"
+          :label="t('common.createTime')"
           align="center"
           prop="createTime"
           :formatter="dateFormatter"

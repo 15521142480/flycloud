@@ -44,11 +44,13 @@
               target="_blank"
               type="primary"
             >
-              下载
+              {{ t('auto.views.infra.file.index.k2b9d0131') }}
             </el-link>
           </div>
           <div class="ml-10px">
-            <el-button link type="danger" @click="handleRemove(row.file)"> 删除</el-button>
+            <el-button link type="danger" @click="handleRemove(row.file)">
+              {{ t('common.delete') }}</el-button
+            >
           </div>
         </div>
       </template>
@@ -61,7 +63,7 @@
       <span>{{ file.name }}</span>
       <div class="ml-10px">
         <el-link :href="file.url" :underline="false" download target="_blank" type="primary">
-          下载
+          {{ t('auto.views.infra.file.index.k2b9d0131') }}
         </el-link>
       </div>
     </div>

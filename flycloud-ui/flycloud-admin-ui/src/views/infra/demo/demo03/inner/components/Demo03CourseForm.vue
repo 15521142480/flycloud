@@ -22,14 +22,20 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="分数" min-width="150">
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo03.erp.components.kda335e20')"
+        min-width="150"
+      >
         <template #default="{ row, $index }">
           <el-form-item :prop="`${$index}.score`" :rules="formRules.score" class="mb-0px!">
-            <el-input v-model="row.score" placeholder="请输入分数" />
+            <el-input
+              v-model="row.score"
+              :placeholder="t('auto.views.infra.demo.demo03.erp.components.kcdc49d02')"
+            />
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="60">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="60">
         <template #default="{ $index }">
           <el-button @click="handleDelete($index)" link>—</el-button>
         </template>
@@ -37,7 +43,7 @@
     </el-table>
   </el-form>
   <el-row justify="center" class="mt-3">
-    <el-button @click="handleAdd" round>+ 添加学生课程</el-button>
+    <el-button @click="handleAdd" round>{{ t('extra.k9a4d2b12') }}</el-button>
   </el-row>
 </template>
 <script setup lang="ts">

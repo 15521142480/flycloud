@@ -188,9 +188,11 @@
     </ContentWrap>
     <template #footer>
       <el-button :disabled="!selectionList.length" type="primary" @click="submitForm">
-        确 定
+        {{ t('extra.k008b8fcb') }}
       </el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

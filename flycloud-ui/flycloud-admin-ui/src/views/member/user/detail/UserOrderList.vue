@@ -186,12 +186,10 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
-          <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          <Icon class="mr-5px" icon="ep:search" /> {{ t('extra.k04864902') }}
         </el-button>
         <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          <Icon class="mr-5px" icon="ep:refresh" /> {{ t('common.reset') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -204,8 +202,7 @@
       <OrderTableColumn :list="list" :pick-up-store-list="pickUpStoreList">
         <template #default="{ row }">
           <el-button link type="primary" @click="openDetail(row.id)">
-            <Icon icon="ep:notification" />
-            详情
+            <Icon icon="ep:notification" /> {{ t('action.detail') }}
           </el-button>
         </template>
       </OrderTableColumn>

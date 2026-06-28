@@ -17,7 +17,10 @@
           </template>
         </UploadImg>
       </el-form-item>
-      <el-form-item label="链接" prop="url">
+      <el-form-item
+        :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')"
+        prop="url"
+      >
         <AppLinkInput v-model="formData.url" />
       </el-form-item>
     </el-form>

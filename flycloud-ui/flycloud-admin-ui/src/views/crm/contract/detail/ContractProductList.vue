@@ -12,21 +12,31 @@
           {{ scope.row.productName }}
         </template>
       </el-table-column>
-      <el-table-column label="产品条码" align="center" prop="productNo" min-width="120" />
-      <el-table-column align="center" label="产品单位" prop="productUnit" min-width="160">
+      <el-table-column
+        :label="t('extra.kf8df7e6f')"
+        align="center"
+        prop="productNo"
+        min-width="120"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.product.ProductForm.k298ff4b9')"
+        prop="productUnit"
+        min-width="160"
+      >
         <template #default="{ row }">
           <dict-tag :type="DICT_TYPE.CRM_PRODUCT_UNIT" :value="row.productUnit" />
         </template>
       </el-table-column>
       <el-table-column
-        label="产品价格（元）"
+        :label="t('extra.k3f6a71d7')"
         align="center"
         prop="productPrice"
         min-width="140"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="合同价格（元）"
+        :label="t('extra.k7c0dc431')"
         align="center"
         prop="contractPrice"
         min-width="140"
@@ -34,13 +44,13 @@
       />
       <el-table-column
         align="center"
-        label="数量"
+        :label="t('auto.views.erp.stock.check.index.kb9ae8931')"
         prop="count"
         min-width="100px"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="合计金额（元）"
+        :label="t('extra.kc53c7f26')"
         align="center"
         prop="totalPrice"
         min-width="140"
@@ -48,9 +58,12 @@
       />
     </el-table>
     <el-row class="mt-10px" justify="end">
-      <el-col :span="3"> 整单折扣：{{ erpPriceInputFormatter(contract.discountPercent) }}% </el-col>
+      <el-col :span="3">
+        {{ t('extra.k80d4c19d') }}{{ erpPriceInputFormatter(contract.discountPercent) }}%
+      </el-col>
       <el-col :span="4">
-        产品总金额：{{ erpPriceInputFormatter(contract.totalProductPrice) }} 元
+        {{ t('extra.k311b7e20') }}{{ erpPriceInputFormatter(contract.totalProductPrice) }}
+        {{ t('extra.k2d94e2e7') }}
       </el-col>
     </el-row>
   </ContentWrap>

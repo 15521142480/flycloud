@@ -90,17 +90,36 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="总经验" align="center" prop="totalExperience" width="150px">
+      <el-table-column
+        :label="t('extra.k07b18889')"
+        align="center"
+        prop="totalExperience"
+        width="150px"
+      >
         <template #default="scope">
           <el-tag class="ml-2" effect="dark">
             {{ scope.row.totalExperience }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="标题" align="center" prop="title" width="150px" />
-      <el-table-column label="描述" align="center" prop="description" />
-      <el-table-column label="业务编号" align="center" prop="bizId" width="150px" />
-      <el-table-column label="业务类型" align="center" prop="bizType" width="150px">
+      <el-table-column :label="t('table.title')" align="center" prop="title" width="150px" />
+      <el-table-column
+        :label="t('auto.views.bpm.group.UserGroupForm.k412f54dc')"
+        align="center"
+        prop="description"
+      />
+      <el-table-column
+        :label="t('auto.views.system.operatelog.OperateLogDetail.k9c5f5763')"
+        align="center"
+        prop="bizId"
+        width="150px"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.record.index.k2268f2d5')"
+        align="center"
+        prop="bizType"
+        width="150px"
+      >
         <!--   TODO 芋艿：此处应创建对应的字典 -->
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.MEMBER_EXPERIENCE_BIZ_TYPE" :value="scope.row.bizType" />

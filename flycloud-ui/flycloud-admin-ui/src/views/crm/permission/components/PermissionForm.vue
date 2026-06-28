@@ -38,18 +38,28 @@
       </el-form-item>
       <el-form-item
         v-if="formType === 'create' && formData.bizType === BizTypeEnum.CRM_CUSTOMER"
-        label="同时添加至"
+        :label="t('extra.k387f40a1')"
       >
         <el-checkbox-group v-model="formData.toBizTypes">
-          <el-checkbox :value="BizTypeEnum.CRM_CONTACT">联系人</el-checkbox>
-          <el-checkbox :value="BizTypeEnum.CRM_BUSINESS">商机</el-checkbox>
-          <el-checkbox :value="BizTypeEnum.CRM_CONTRACT">合同</el-checkbox>
+          <el-checkbox :value="BizTypeEnum.CRM_CONTACT">{{
+            t('auto.views.crm.business.detail.index.k2425bd4b')
+          }}</el-checkbox>
+          <el-checkbox :value="BizTypeEnum.CRM_BUSINESS">{{
+            t('auto.views.crm.contact.detail.index.kc4beee85')
+          }}</el-checkbox>
+          <el-checkbox :value="BizTypeEnum.CRM_CONTRACT">{{
+            t('auto.views.crm.business.detail.index.k59404d40')
+          }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

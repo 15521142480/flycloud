@@ -11,55 +11,61 @@
         <el-descriptions :column="2">
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="用户名" icon="ep:user" />
+              <descriptions-item-label :label="t('login.username')" icon="ep:user" />
             </template>
             {{ user.name || '空' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="昵称" icon="ep:user" />
+              <descriptions-item-label :label="t('system.user.nickname')" icon="ep:user" />
             </template>
             {{ user.name }}
           </el-descriptions-item>
-          <el-descriptions-item label="手机号">
+          <el-descriptions-item :label="t('system.user.phone')">
             <template #label>
-              <descriptions-item-label label="手机号" icon="ep:phone" />
+              <descriptions-item-label :label="t('system.user.phone')" icon="ep:phone" />
             </template>
             {{ user.mobile }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="性别" icon="fa:mars-double" />
+              <descriptions-item-label :label="t('profile.user.sex')" icon="fa:mars-double" />
             </template>
             <dict-tag :type="DICT_TYPE.SYSTEM_USER_SEX" :value="user.sex" />
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="所在地" icon="ep:location" />
+              <descriptions-item-label
+                :label="t('auto.views.mall.trade.order.form.OrderUpdateAddressForm.kfe837ba6')"
+                icon="ep:location"
+              />
             </template>
             {{ user.areaName }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="注册 IP" icon="ep:position" />
+              <descriptions-item-label :label="t('extra.k945f63eb')" icon="ep:position" />
             </template>
             {{ user.registerIp }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="生日" icon="fa:birthday-cake" />
+              <descriptions-item-label :label="t('extra.k8483ed13')" icon="fa:birthday-cake" />
             </template>
             {{ user.birthday ? formatDate(user.birthday) : '空' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="注册时间" icon="ep:calendar" />
+              <descriptions-item-label
+                :label="t('auto.views.member.user.index.k525ad5e2')"
+                icon="ep:calendar"
+              />
             </template>
             {{ user.createTime ? formatDate(user.createTime) : '空' }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <descriptions-item-label label="最后登录时间" icon="ep:calendar" />
+              <descriptions-item-label :label="t('extra.k39b4f204')" icon="ep:calendar" />
             </template>
             {{ user.loginDate ? formatDate(user.loginDate) : '空' }}
           </el-descriptions-item>
@@ -69,6 +75,7 @@
   </el-card>
 </template>
 <script setup lang="ts">
+const { t } = useI18n()
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'

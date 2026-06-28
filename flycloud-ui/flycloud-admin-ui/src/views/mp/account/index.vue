@@ -61,12 +61,12 @@
           {{ 'http://服务端地址/admin-api/mp/open/' + scope.row.appId }}
         </template>
       </el-table-column>
-      <el-table-column label="二维码" align="center" prop="qrCodeUrl">
+      <el-table-column :label="t('extra.k22b03c02')" align="center" prop="qrCodeUrl">
         <template #default="scope">
           <img
             v-if="scope.row.qrCodeUrl"
             :src="scope.row.qrCodeUrl"
-            alt="二维码"
+            :alt="t('extra.k22b03c02')"
             style="display: inline-block; height: 100px"
           />
           <el-button
@@ -75,12 +75,12 @@
             @click="handleGenerateQrCode(scope.row)"
             v-hasPermi="['mp:account:qr-code']"
           >
-            生成二维码
+            {{ t('extra.k687fed8b') }}
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -88,7 +88,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['mp:account:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -96,7 +96,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['mp:account:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
           <el-button
             link
@@ -104,7 +104,7 @@
             @click="handleCleanQuota(scope.row)"
             v-hasPermi="['mp:account:clear-quota']"
           >
-            清空 API 配额
+            {{ t('extra.kf077faaa') }}
           </el-button>
         </template>
       </el-table-column>

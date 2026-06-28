@@ -119,7 +119,13 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="left" label="客户名称" prop="customerName" width="120">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+        prop="customerName"
+        width="120"
+      >
         <template #default="scope">
           <el-link
             :underline="false"
@@ -130,62 +136,112 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="手机" prop="mobile" width="120" />
-      <el-table-column align="center" label="电话" prop="telephone" width="130" />
-      <el-table-column align="center" label="邮箱" prop="email" width="180" />
-      <el-table-column align="center" label="职位" prop="post" width="120" />
-      <el-table-column align="center" label="地址" prop="detailAddress" width="120" />
-      <el-table-column align="center" label="关键决策人" prop="master" width="100">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.clue.ClueForm.k9c01ad09')"
+        prop="mobile"
+        width="120"
+      />
+      <el-table-column
+        align="center"
+        :label="t('system.dept.phone')"
+        prop="telephone"
+        width="130"
+      />
+      <el-table-column align="center" :label="t('system.user.email')" prop="email" width="180" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.contact.ContactForm.ka2a92e50')"
+        prop="post"
+        width="120"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.clue.ClueForm.k67d2d797')"
+        prop="detailAddress"
+        width="120"
+      />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.contact.ContactForm.k20f9b81d')"
+        prop="master"
+        width="100"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.master" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="直属上级" prop="parentName" width="160">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.contact.ContactForm.kcac16f50')"
+        prop="parentName"
+        width="160"
+      >
         <template #default="scope">
           <el-link :underline="false" type="primary" @click="openDetail(scope.row.parentId)">
             {{ scope.row.parentName }}
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column label="地址" align="center" prop="detailAddress" width="180" />
+      <el-table-column
+        :label="t('auto.views.crm.clue.ClueForm.k67d2d797')"
+        align="center"
+        prop="detailAddress"
+        width="180"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="下次联系时间"
+        :label="t('auto.views.crm.clue.ClueForm.k8e1beb13')"
         prop="contactNextTime"
         width="180px"
       />
-      <el-table-column align="center" label="性别" prop="sex">
+      <el-table-column align="center" :label="t('profile.user.sex')" prop="sex">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_USER_SEX" :value="scope.row.sex" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark" />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="最后跟进时间"
+        :label="t('extra.kffa0750f')"
         prop="contactLastTime"
         width="180px"
       />
-      <el-table-column align="center" label="负责人" prop="ownerUserName" width="120" />
-      <el-table-column align="center" label="所属部门" prop="ownerUserDeptName" width="100" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        prop="ownerUserName"
+        width="120"
+      />
+      <el-table-column
+        align="center"
+        :label="t('profile.user.dept')"
+        prop="ownerUserDeptName"
+        width="100"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="更新时间"
+        :label="t('common.updateTime')"
         prop="updateTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="创建人" prop="creatorName" width="120" />
-      <el-table-column align="center" fixed="right" label="操作" width="200">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        prop="creatorName"
+        width="120"
+      />
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="200">
         <template #default="scope">
           <el-button
             v-hasPermi="['crm:contact:update']"
@@ -193,7 +249,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-hasPermi="['crm:contact:delete']"
@@ -201,7 +257,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

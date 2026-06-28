@@ -82,21 +82,41 @@
           <el-image :src="scope?.row.avatar" class="w-32px h-32px" />
         </template>
       </el-table-column>
-      <el-table-column label="角色类别" align="center" prop="category" />
-      <el-table-column label="角色描述" align="center" prop="description" />
-      <el-table-column label="角色设定" align="center" prop="systemMessage" />
-      <el-table-column label="是否公开" align="center" prop="publicStatus">
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.ChatRoleForm.kcda79ba6')"
+        align="center"
+        prop="category"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.ChatRoleForm.ka0a62a00')"
+        align="center"
+        prop="description"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k338affe3')"
+        align="center"
+        prop="systemMessage"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.ChatRoleForm.k5857cbaf')"
+        align="center"
+        prop="publicStatus"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.publicStatus" />
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="角色排序" align="center" prop="sort" />
-      <el-table-column label="操作" align="center">
+      <el-table-column
+        :label="t('auto.views.ai.model.chatRole.ChatRoleForm.kf86bd91f')"
+        align="center"
+        prop="sort"
+      />
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -104,7 +124,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['ai:chat-role:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -112,7 +132,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:chat-role:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

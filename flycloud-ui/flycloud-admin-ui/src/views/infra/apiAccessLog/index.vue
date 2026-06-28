@@ -122,30 +122,68 @@
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column label="应用名" align="center" prop="applicationName" width="150" />
-      <el-table-column label="请求方法" align="center" prop="requestMethod" width="80" />
-      <el-table-column label="请求地址" align="center" prop="requestUrl" width="500" />
-      <el-table-column label="请求时间" align="center" prop="beginTime" width="180">
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k6c19fe01')"
+        align="center"
+        prop="applicationName"
+        width="150"
+      />
+      <el-table-column
+        :label="t('extra.kec49329b')"
+        align="center"
+        prop="requestMethod"
+        width="80"
+      />
+      <el-table-column :label="t('extra.k251b56d4')" align="center" prop="requestUrl" width="500" />
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.ke8b5eda0')"
+        align="center"
+        prop="beginTime"
+        width="180"
+      >
         <template #default="scope">
           <span>{{ formatDate(scope.row.beginTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="执行时长" align="center" prop="duration" width="180">
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.index.kf74f1dd2')"
+        align="center"
+        prop="duration"
+        width="180"
+      >
         <template #default="scope"> {{ scope.row.duration }} ms </template>
       </el-table-column>
-      <el-table-column label="操作结果" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k99d2f412')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           {{ scope.row.resultCode === 0 ? '成功' : '失败(' + scope.row.resultMsg + ')' }}
         </template>
       </el-table-column>
-      <el-table-column label="操作模块" align="center" prop="operateModule" width="180" />
-      <el-table-column label="操作名" align="center" prop="operateName" width="180" />
-      <el-table-column label="操作类型" align="center" prop="operateType">
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k301c995f')"
+        align="center"
+        prop="operateModule"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.apiAccessLog.ApiAccessLogDetail.k6116e6e0')"
+        align="center"
+        prop="operateName"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.system.loginlog.LoginLogDetail.k19e41f1b')"
+        align="center"
+        prop="operateType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_OPERATE_TYPE" :value="scope.row.operateType" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right" width="60">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right" width="60">
         <template #default="scope">
           <el-button
             link
@@ -153,7 +191,7 @@
             @click="openDetail(scope.row)"
             v-hasPermi="['infra:api-access-log:query']"
           >
-            详细
+            {{ t('extra.k1f0a3a1c') }}
           </el-button>
         </template>
       </el-table-column>

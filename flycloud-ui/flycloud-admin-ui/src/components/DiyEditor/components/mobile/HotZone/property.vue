@@ -19,7 +19,7 @@
     </el-form>
 
     <el-button type="primary" plain class="w-full" @click="handleOpenEditDialog">
-      设置热区
+      {{ t('auto.components.DiyEditor.components.mobile.HotZone.components.k51c58b78') }}
     </el-button>
   </ComponentContainerProperty>
   <!-- 热区编辑对话框 -->

@@ -71,22 +71,22 @@
       >
         <template #default="scope"> {{ scope.row.createUser?.name || '系统' }} </template>
       </el-table-column>
-      <el-table-column align="center" label="抄送意见" prop="reason" width="150" />
+      <el-table-column align="center" :label="t('extra.k51cbb39c')" prop="reason" width="150" />
       <el-table-column
         align="center"
-        label="抄送时间"
+        :label="t('auto.views.bpm.task.copy.index.ke3b33874')"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column align="center" label="操作" fixed="right" width="80">
+      <el-table-column align="center" :label="t('common.operation')" fixed="right" width="80">
         <template #default="scope">
           <el-button
             v-hasPermi="['bpm:audit:copy:detail']"
             link
             type="primary"
             @click="handleAudit(scope.row)"
-            >详情</el-button
+            >{{ t('action.detail') }}</el-button
           >
         </template>
       </el-table-column>

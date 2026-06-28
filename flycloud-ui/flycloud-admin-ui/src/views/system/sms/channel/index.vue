@@ -88,41 +88,50 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE" :value="scope.row.code" />
         </template>
       </el-table-column>
-      <el-table-column label="启用状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.k5691b379')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column
-        label="短信 API 的账号"
+        :label="t('common.remark')"
+        align="center"
+        prop="remark"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.k4df60a58')"
         align="center"
         prop="apiKey"
         :show-overflow-tooltip="true"
         width="180"
       />
       <el-table-column
-        label="短信 API 的密钥"
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.kae001512')"
         align="center"
         prop="apiSecret"
         :show-overflow-tooltip="true"
         width="180"
       />
       <el-table-column
-        label="短信发送回调 URL"
+        :label="t('auto.views.system.sms.channel.SmsChannelForm.kbe9e0cf3')"
         align="center"
         prop="callbackUrl"
         :show-overflow-tooltip="true"
         width="180"
       />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -130,7 +139,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['system:sms-channel:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -138,7 +147,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:sms-channel:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

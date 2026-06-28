@@ -13,7 +13,7 @@
           </el-radio>
         </template>
       </el-table-column>
-      <el-table-column label="图片" min-width="80">
+      <el-table-column :label="t('extra.k3b9e2563')" min-width="80">
         <template #default="{ row }">
           <el-image
             :src="row.picUrl"
@@ -23,12 +23,16 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="规格" align="center" min-width="80">
+      <el-table-column
+        :label="t('auto.views.erp.product.product.ProductForm.k53af00e1')"
+        align="center"
+        min-width="80"
+      >
         <template #default="{ row }">
           {{ row.properties?.map((p) => p.valueName)?.join(' ') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="销售价(元)" min-width="80">
+      <el-table-column align="center" :label="t('extra.kf3dec9e5')" min-width="80">
         <template #default="{ row }">
           {{ fenToYuan(row.price) }}
         </template>

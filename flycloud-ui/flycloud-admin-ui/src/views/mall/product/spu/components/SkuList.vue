@@ -33,12 +33,12 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" label="商品条码" min-width="168">
+    <el-table-column align="center" :label="t('extra.kf64e95eb')" min-width="168">
       <template #default="{ row }">
         <el-input v-model="row.barCode" class="w-100%" />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="销售价" min-width="168">
+    <el-table-column align="center" :label="t('extra.ke295757f')" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.price"
@@ -50,7 +50,11 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="市场价" min-width="168">
+    <el-table-column
+      align="center"
+      :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kfaeb45bc')"
+      min-width="168"
+    >
       <template #default="{ row }">
         <el-input-number
           v-model="row.marketPrice"
@@ -62,7 +66,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="成本价" min-width="168">
+    <el-table-column align="center" :label="t('extra.k2e2ce286')" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.costPrice"
@@ -74,12 +78,12 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="库存" min-width="168">
+    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="168">
       <template #default="{ row }">
         <el-input-number v-model="row.stock" :min="0" class="w-100%" controls-position="right" />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="重量(kg)" min-width="168">
+    <el-table-column align="center" :label="t('extra.k8c0d75b3')" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.weight"
@@ -91,7 +95,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" label="体积(m^3)" min-width="168">
+    <el-table-column align="center" :label="t('extra.k87e801a0')" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.volume"
@@ -104,7 +108,7 @@
       </template>
     </el-table-column>
     <template v-if="formData!.subCommissionType">
-      <el-table-column align="center" label="一级返佣(元)" min-width="168">
+      <el-table-column align="center" :label="t('extra.k84069087')" min-width="168">
         <template #default="{ row }">
           <el-input-number
             v-model="row.firstBrokeragePrice"
@@ -116,7 +120,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="二级返佣(元)" min-width="168">
+      <el-table-column align="center" :label="t('extra.k0e1865ff')" min-width="168">
         <template #default="{ row }">
           <el-input-number
             v-model="row.secondBrokeragePrice"
@@ -129,12 +133,20 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column v-if="formData?.specType" align="center" fixed="right" label="操作" width="80">
+    <el-table-column
+      v-if="formData?.specType"
+      align="center"
+      fixed="right"
+      :label="t('common.operation')"
+      width="80"
+    >
       <template #default="{ row }">
         <el-button v-if="isBatch" link size="small" type="primary" @click="batchAdd">
-          批量添加
+          {{ t('extra.k22de6ef8') }}
         </el-button>
-        <el-button v-else link size="small" type="primary" @click="deleteSku(row)">删除</el-button>
+        <el-button v-else link size="small" type="primary" @click="deleteSku(row)">{{
+          t('common.delete')
+        }}</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -151,7 +163,7 @@
     @selection-change="handleSelectionChange"
   >
     <el-table-column v-if="isComponent" type="selection" width="45" />
-    <el-table-column align="center" label="图片" min-width="80">
+    <el-table-column align="center" :label="t('extra.k3b9e2563')" min-width="80">
       <template #default="{ row }">
         <el-image
           v-if="row.picUrl"
@@ -177,48 +189,48 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" label="商品条码" min-width="100">
+    <el-table-column align="center" :label="t('extra.kf64e95eb')" min-width="100">
       <template #default="{ row }">
         {{ row.barCode }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="销售价(元)" min-width="80">
+    <el-table-column align="center" :label="t('extra.kf3dec9e5')" min-width="80">
       <template #default="{ row }">
         {{ row.price }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="市场价(元)" min-width="80">
+    <el-table-column align="center" :label="t('extra.kd2a5ad46')" min-width="80">
       <template #default="{ row }">
         {{ row.marketPrice }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="成本价(元)" min-width="80">
+    <el-table-column align="center" :label="t('extra.kcc1e68ad')" min-width="80">
       <template #default="{ row }">
         {{ row.costPrice }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="库存" min-width="80">
+    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="80">
       <template #default="{ row }">
         {{ row.stock }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="重量(kg)" min-width="80">
+    <el-table-column align="center" :label="t('extra.k8c0d75b3')" min-width="80">
       <template #default="{ row }">
         {{ row.weight }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="体积(m^3)" min-width="80">
+    <el-table-column align="center" :label="t('extra.k87e801a0')" min-width="80">
       <template #default="{ row }">
         {{ row.volume }}
       </template>
     </el-table-column>
     <template v-if="formData!.subCommissionType">
-      <el-table-column align="center" label="一级返佣(元)" min-width="80">
+      <el-table-column align="center" :label="t('extra.k84069087')" min-width="80">
         <template #default="{ row }">
           {{ row.firstBrokeragePrice }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="二级返佣(元)" min-width="80">
+      <el-table-column align="center" :label="t('extra.k0e1865ff')" min-width="80">
         <template #default="{ row }">
           {{ row.secondBrokeragePrice }}
         </template>
@@ -236,7 +248,7 @@
     style="width: 99%"
   >
     <el-table-column v-if="isComponent" type="selection" width="45" />
-    <el-table-column align="center" label="图片" min-width="80">
+    <el-table-column align="center" :label="t('extra.k3b9e2563')" min-width="80">
       <template #default="{ row }">
         <el-image :src="row.picUrl" class="h-60px w-60px" @click="imagePreview(row.picUrl)" />
       </template>
@@ -257,27 +269,27 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" label="商品条码" min-width="100">
+    <el-table-column align="center" :label="t('extra.kf64e95eb')" min-width="100">
       <template #default="{ row }">
         {{ row.barCode }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="销售价(元)" min-width="80">
+    <el-table-column align="center" :label="t('extra.kf3dec9e5')" min-width="80">
       <template #default="{ row }">
         {{ formatToFraction(row.price) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="市场价(元)" min-width="80">
+    <el-table-column align="center" :label="t('extra.kd2a5ad46')" min-width="80">
       <template #default="{ row }">
         {{ formatToFraction(row.marketPrice) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="成本价(元)" min-width="80">
+    <el-table-column align="center" :label="t('extra.kcc1e68ad')" min-width="80">
       <template #default="{ row }">
         {{ formatToFraction(row.costPrice) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="库存" min-width="80">
+    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="80">
       <template #default="{ row }">
         {{ row.stock }}
       </template>

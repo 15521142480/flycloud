@@ -23,7 +23,9 @@
     <!-- 类型 2：图片 -->
     <el-tab-pane :name="ReplyType.Image">
       <template #label>
-        <el-row align="middle"><Icon icon="ep:picture" class="mr-5px" /> 图片</el-row>
+        <el-row align="middle"
+          ><Icon icon="ep:picture" class="mr-5px" /> {{ t('extra.k3b9e2563') }}</el-row
+        >
       </template>
       <TabImage v-model="reply" />
     </el-tab-pane>
@@ -31,7 +33,10 @@
     <!-- 类型 3：语音 -->
     <el-tab-pane :name="ReplyType.Voice">
       <template #label>
-        <el-row align="middle"><Icon icon="ep:phone" /> 语音</el-row>
+        <el-row align="middle"
+          ><Icon icon="ep:phone" />
+          {{ t('auto.views.mp.components.wx_material_select.main.k7a73e125') }}</el-row
+        >
       </template>
       <TabVoice v-model="reply" />
     </el-tab-pane>
@@ -39,7 +44,10 @@
     <!-- 类型 4：视频 -->
     <el-tab-pane :name="ReplyType.Video">
       <template #label>
-        <el-row align="middle"><Icon icon="ep:share" /> 视频</el-row>
+        <el-row align="middle"
+          ><Icon icon="ep:share" />
+          {{ t('auto.components.DiyEditor.components.mobile.Carousel.property.kfa4e33b6') }}</el-row
+        >
       </template>
       <TabVideo v-model="reply" />
     </el-tab-pane>
@@ -47,7 +55,7 @@
     <!-- 类型 5：图文 -->
     <el-tab-pane :name="ReplyType.News">
       <template #label>
-        <el-row align="middle"><Icon icon="ep:reading" /> 图文</el-row>
+        <el-row align="middle"><Icon icon="ep:reading" /> {{ t('extra.k3d0587e2') }}</el-row>
       </template>
       <TabNews v-model="reply" :news-type="newsType" />
     </el-tab-pane>
@@ -55,7 +63,7 @@
     <!-- 类型 6：音乐 -->
     <el-tab-pane :name="ReplyType.Music">
       <template #label>
-        <el-row align="middle"><Icon icon="ep:service" />音乐</el-row>
+        <el-row align="middle"><Icon icon="ep:service" />{{ t('extra.k95521bb7') }}</el-row>
       </template>
       <TabMusic v-model="reply" />
     </el-tab-pane>

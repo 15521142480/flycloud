@@ -83,18 +83,36 @@
           <img width="40px" height="40px" :src="scope.row.logo" />
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="t('common.status')" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="访问令牌的有效期" align="center" prop="accessTokenValiditySeconds">
-        <template #default="scope">{{ scope.row.accessTokenValiditySeconds }} 秒</template>
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.ClientForm.kaa4907c8')"
+        align="center"
+        prop="accessTokenValiditySeconds"
+      >
+        <template #default="scope"
+          >{{ scope.row.accessTokenValiditySeconds }}
+          {{ t('auto.utils.formatTime.keb6aaba1') }}</template
+        >
       </el-table-column>
-      <el-table-column label="刷新令牌的有效期" align="center" prop="refreshTokenValiditySeconds">
-        <template #default="scope">{{ scope.row.refreshTokenValiditySeconds }} 秒</template>
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.ClientForm.k904a9d49')"
+        align="center"
+        prop="refreshTokenValiditySeconds"
+      >
+        <template #default="scope"
+          >{{ scope.row.refreshTokenValiditySeconds }}
+          {{ t('auto.utils.formatTime.keb6aaba1') }}</template
+        >
       </el-table-column>
-      <el-table-column label="授权类型" align="center" prop="authorizedGrantTypes">
+      <el-table-column
+        :label="t('auto.views.system.oauth2.client.ClientForm.k3006e441')"
+        align="center"
+        prop="authorizedGrantTypes"
+      >
         <template #default="scope">
           <el-tag
             :disable-transitions="true"
@@ -108,13 +126,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -122,7 +140,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['system:oauth2-client:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -130,7 +148,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:oauth2-client:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

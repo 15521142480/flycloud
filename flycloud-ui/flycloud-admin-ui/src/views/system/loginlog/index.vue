@@ -79,22 +79,40 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_TYPE" :value="scope.row.logType" />
         </template>
       </el-table-column>
-      <el-table-column label="用户名称" align="center" prop="username" width="180" />
-      <el-table-column label="登录地址" align="center" prop="userIp" width="180" />
-      <el-table-column label="浏览器" align="center" prop="userAgent" />
-      <el-table-column label="登陆结果" align="center" prop="result">
+      <el-table-column
+        :label="t('profile.user.username')"
+        align="center"
+        prop="username"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.system.loginlog.LoginLogDetail.k84dd1c57')"
+        align="center"
+        prop="userIp"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.system.loginlog.LoginLogDetail.k88d650dd')"
+        align="center"
+        prop="userAgent"
+      />
+      <el-table-column
+        :label="t('auto.views.system.loginlog.LoginLogDetail.k5ba4da17')"
+        align="center"
+        prop="result"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.SYSTEM_LOGIN_RESULT" :value="scope.row.result" />
         </template>
       </el-table-column>
       <el-table-column
-        label="登录日期"
+        :label="t('auto.views.system.loginlog.LoginLogDetail.k3e890a22')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -102,7 +120,7 @@
             @click="openDetail(scope.row)"
             v-hasPermi="['infra:login-log:query']"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
         </template>
       </el-table-column>

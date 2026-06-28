@@ -37,15 +37,17 @@
             @click="showImageDialog = true"
             style="margin-left: 5px"
           >
-            素材库选择
+            {{ t('extra.k02fb7196') }}
           </el-button>
           <template #tip>
-            <div class="el-upload__tip">支持 bmp/png/jpeg/jpg/gif 格式，大小不超过 2M</div>
+            <div class="el-upload__tip">{{
+              t('auto.views.mp.components.wx_reply.components.TabImage.kd2ee2686')
+            }}</div>
           </template>
         </el-upload>
       </div>
       <el-dialog
-        title="选择图片"
+        :title="t('cropper.selectImage')"
         v-model="showImageDialog"
         width="80%"
         append-to-body

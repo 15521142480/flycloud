@@ -44,14 +44,26 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="商机金额"
+        :label="t('auto.views.crm.followup.components.FollowUpRecordBusinessForm.k670248ff')"
         align="center"
         prop="price"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column label="客户名称" align="center" prop="customerName" />
-      <el-table-column label="商机组" align="center" prop="statusTypeName" />
-      <el-table-column label="商机阶段" align="center" prop="statusName" />
+      <el-table-column
+        :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+        align="center"
+        prop="customerName"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.business.detail.BusinessDetailsHeader.k949cacee')"
+        align="center"
+        prop="statusTypeName"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.business.BusinessUpdateStatusForm.kc0a20f9a')"
+        align="center"
+        prop="statusName"
+      />
     </el-table>
     <!-- 分页 -->
     <Pagination

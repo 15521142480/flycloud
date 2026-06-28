@@ -40,7 +40,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="创建时间"
+      :label="t('common.createTime')"
       align="center"
       prop="createTime"
       :formatter="dateFormatter"

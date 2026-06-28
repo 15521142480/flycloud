@@ -74,20 +74,20 @@
           {{ userList.find((user) => user.id === scope.row.leaderUserId)?.name }}
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="排序" align="center" width="150" />
-      <el-table-column prop="status" label="状态" align="center" width="180">
+      <el-table-column prop="sort" :label="t('common.sort')" align="center" width="150" />
+      <el-table-column prop="status" :label="t('common.status')" align="center" width="180">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" width="240">
+      <el-table-column :label="t('common.operation')" align="center" width="240">
         <template #default="scope">
           <el-button
             link
@@ -95,7 +95,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['sys:dept:saveOrUpdate']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             link
@@ -103,7 +103,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['sys:dept:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

@@ -30,7 +30,6 @@ export const saveOrUpdate = (data: DictTypeVO) => {
   return request.post({ url: `/${SYS_BASE_URL}/dictType/saveOrUpdate`, data })
 }
 
-
 // 删除字典
 export const deleteDictType = (id: number) => {
   return request.delete({ url: `/${SYS_BASE_URL}/dictType/delete/` + id })

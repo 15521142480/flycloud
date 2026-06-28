@@ -66,7 +66,6 @@ router.beforeEach(async (to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-
       // 获取所有字典
       const dictStore = useDictStoreWithOut()
       const userStore = useUserStoreWithOut()
@@ -95,7 +94,6 @@ router.beforeEach(async (to, from, next) => {
         next()
       }
     }
-
   } else {
     if (whiteList.indexOf(to.path) !== -1) {
       next()

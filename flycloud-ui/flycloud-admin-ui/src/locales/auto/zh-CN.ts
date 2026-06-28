@@ -5548,7 +5548,7 @@ export default {
           ka2ce6ca8: '安全验证',
           k3c89ee60: '请点击左边的安全验证',
           kbe6f5b7d: '请进行安全验证！',
-          k259acf4a: '正在加载系统中...',
+          k259acf4a: 'Loading system...',
           k2ae2512e: '选择的坐标为:'
         },
         MobileForm: {

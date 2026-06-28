@@ -16,7 +16,7 @@
       </el-form-item>
     </template>
     <el-form label-width="80px" :model="formData">
-      <el-form-item label="上传视频" prop="videoUrl">
+      <el-form-item :label="t('extra.kafddcb3b')" prop="videoUrl">
         <UploadFile
           v-model="formData.videoUrl"
           :file-type="['mp4']"
@@ -25,7 +25,7 @@
           class="min-w-80px"
         />
       </el-form-item>
-      <el-form-item label="上传封面" prop="posterUrl">
+      <el-form-item :label="t('extra.k9791798f')" prop="posterUrl">
         <UploadImg
           v-model="formData.posterUrl"
           draggable="false"
@@ -33,10 +33,12 @@
           width="100%"
           class="min-w-80px"
         >
-          <template #tip> 建议宽度750 </template>
+          <template #tip>
+            {{ t('auto.components.DiyEditor.components.mobile.ImageBar.property.k2c75987f') }}
+          </template>
         </UploadImg>
       </el-form-item>
-      <el-form-item label="自动播放" prop="autoplay">
+      <el-form-item :label="t('extra.k54c6bb48')" prop="autoplay">
         <el-switch v-model="formData.autoplay" />
       </el-form-item>
     </el-form>

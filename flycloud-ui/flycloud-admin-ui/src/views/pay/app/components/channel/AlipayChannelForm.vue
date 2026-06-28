@@ -21,10 +21,14 @@
             <template #append>%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="开放平台 APPID" label-width="180px" prop="config.appId">
-          <el-input v-model="formData.config.appId" clearable placeholder="请输入开放平台 APPID" />
+        <el-form-item :label="t('extra.kd21d8149')" label-width="180px" prop="config.appId">
+          <el-input v-model="formData.config.appId" clearable :placeholder="t('extra.k78a76dcd')" />
         </el-form-item>
-        <el-form-item label="渠道状态" label-width="180px" prop="status">
+        <el-form-item
+          :label="t('auto.views.pay.app.components.channel.MockChannelForm.k88965a11')"
+          label-width="180px"
+          prop="status"
+        >
           <el-radio-group v-model="formData.status">
             <el-radio
               v-for="dict in getDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -35,64 +39,74 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="网关地址" label-width="180px" prop="config.serverUrl">
+        <el-form-item :label="t('extra.k353dc237')" label-width="180px" prop="config.serverUrl">
           <el-radio-group v-model="formData.config.serverUrl">
-            <el-radio value="https://openapi.alipay.com/gateway.do">线上环境</el-radio>
+            <el-radio value="https://openapi.alipay.com/gateway.do">{{
+              t('extra.ke0b56e35')
+            }}</el-radio>
             <el-radio value="https://openapi-sandbox.dl.alipaydev.com/gateway.do">
-              沙箱环境
+              {{ t('extra.k4764b615') }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="算法类型" label-width="180px" prop="config.signType">
+        <el-form-item :label="t('extra.k6bd86cd7')" label-width="180px" prop="config.signType">
           <el-radio-group v-model="formData.config.signType">
             <el-radio key="RSA2" value="RSA2">RSA2</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="公钥类型" label-width="180px" prop="config.mode">
+        <el-form-item :label="t('extra.keeb43085')" label-width="180px" prop="config.mode">
           <el-radio-group v-model="formData.config.mode">
-            <el-radio key="公钥模式" :value="1">公钥模式</el-radio>
-            <el-radio key="证书模式" :value="2">证书模式</el-radio>
+            <el-radio key="公钥模式" :value="1">{{ t('extra.k43b23e7c') }}</el-radio>
+            <el-radio key="证书模式" :value="2">{{ t('extra.k35e52e6f') }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <div v-if="formData.config.mode === 1">
-          <el-form-item label="应用私钥" label-width="180px" prop="config.privateKey">
+          <el-form-item :label="t('extra.k7e99e0d6')" label-width="180px" prop="config.privateKey">
             <el-input
               v-model="formData.config.privateKey"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
               clearable
-              placeholder="请输入应用私钥"
+              :placeholder="t('extra.kcb68a956')"
               type="textarea"
             />
           </el-form-item>
-          <el-form-item label="支付宝公钥" label-width="180px" prop="config.alipayPublicKey">
+          <el-form-item
+            :label="t('extra.kc8ad33d2')"
+            label-width="180px"
+            prop="config.alipayPublicKey"
+          >
             <el-input
               v-model="formData.config.alipayPublicKey"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
               clearable
-              placeholder="请输入支付宝公钥"
+              :placeholder="t('extra.k0797c6d9')"
               type="textarea"
             />
           </el-form-item>
         </div>
         <div v-if="formData.config.mode === 2">
-          <el-form-item label="应用私钥" label-width="180px" prop="config.privateKey">
+          <el-form-item :label="t('extra.k7e99e0d6')" label-width="180px" prop="config.privateKey">
             <el-input
               v-model="formData.config.privateKey"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
               clearable
-              placeholder="请输入应用私钥"
+              :placeholder="t('extra.kcb68a956')"
               type="textarea"
             />
           </el-form-item>
-          <el-form-item label="商户公钥应用证书" label-width="180px" prop="config.appCertContent">
+          <el-form-item
+            :label="t('extra.k17a4eb3c')"
+            label-width="180px"
+            prop="config.appCertContent"
+          >
             <el-input
               v-model="formData.config.appCertContent"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
-              placeholder="请上传商户公钥应用证书"
+              :placeholder="t('auto.views.pay.app.components.channel.AlipayChannelForm.k685c8573')"
               readonly
               type="textarea"
             />
@@ -107,13 +121,12 @@
               action=""
             >
               <el-button type="primary">
-                <Icon class="mr-5px" icon="ep:upload" />
-                点击上传
+                <Icon class="mr-5px" icon="ep:upload" /> {{ t('system.user.uploadClickText') }}
               </el-button>
             </el-upload>
           </el-form-item>
           <el-form-item
-            label="支付宝公钥证书"
+            :label="t('extra.kc2f1ab32')"
             label-width="180px"
             prop="config.alipayPublicCertContent"
           >
@@ -121,7 +134,7 @@
               v-model="formData.config.alipayPublicCertContent"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
-              placeholder="请上传支付宝公钥证书"
+              :placeholder="t('auto.views.pay.app.components.channel.AlipayChannelForm.k0d1d866d')"
               readonly
               type="textarea"
             />
@@ -136,17 +149,20 @@
               action=""
             >
               <el-button type="primary">
-                <Icon class="mr-5px" icon="ep:upload" />
-                点击上传
+                <Icon class="mr-5px" icon="ep:upload" /> {{ t('system.user.uploadClickText') }}
               </el-button>
             </el-upload>
           </el-form-item>
-          <el-form-item label="根证书" label-width="180px" prop="config.rootCertContent">
+          <el-form-item
+            :label="t('extra.k73e6cd62')"
+            label-width="180px"
+            prop="config.rootCertContent"
+          >
             <el-input
               v-model="formData.config.rootCertContent"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
-              placeholder="请上传根证书"
+              :placeholder="t('extra.k1ccedc08')"
               readonly
               type="textarea"
             />
@@ -161,36 +177,39 @@
               action=""
             >
               <el-button type="primary">
-                <Icon class="mr-5px" icon="ep:upload" />
-                点击上传
+                <Icon class="mr-5px" icon="ep:upload" /> {{ t('system.user.uploadClickText') }}
               </el-button>
             </el-upload>
           </el-form-item>
         </div>
 
-        <el-form-item label="接口内容加密方式" label-width="180px" prop="config.encryptType">
+        <el-form-item :label="t('extra.k27f24982')" label-width="180px" prop="config.encryptType">
           <el-radio-group v-model="formData.config.encryptType">
-            <el-radio key="NONE" label="">无加密</el-radio>
+            <el-radio key="NONE" label="">{{ t('extra.k36bf1f63') }}</el-radio>
             <el-radio key="AES" label="AES">AES</el-radio>
           </el-radio-group>
         </el-form-item>
         <div v-if="formData.config.encryptType === 'AES'">
-          <el-form-item label="接口内容加密密钥" label-width="180px" prop="config.encryptKey">
+          <el-form-item :label="t('extra.k20c9fb61')" label-width="180px" prop="config.encryptKey">
             <el-input
               v-model="formData.config.encryptKey"
               clearable
-              placeholder="请输入接口内容加密密钥"
+              :placeholder="t('auto.views.pay.app.components.channel.AlipayChannelForm.k2108123f')"
             />
           </el-form-item>
         </div>
 
-        <el-form-item label="备注" label-width="180px" prop="remark">
+        <el-form-item :label="t('common.remark')" label-width="180px" prop="remark">
           <el-input v-model="formData.remark" :style="{ width: '100%' }" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+          t('extra.k008b8fcb')
+        }}</el-button>
+        <el-button @click="dialogVisible = false">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
       </template>
     </Dialog>
   </div>

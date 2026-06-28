@@ -32,17 +32,17 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="可兑换次数" min-width="168">
+          <el-table-column align="center" :label="t('extra.k366efcfd')" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.count" :min="0" class="w-100%" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="所需积分" min-width="168">
+          <el-table-column align="center" :label="t('extra.k6870f4b8')" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.point" :min="0" class="w-100%" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="所需金额(元)" min-width="168">
+          <el-table-column align="center" :label="t('extra.k1759e421')" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.price"
@@ -57,8 +57,12 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" @confirm="selectSpu" />

@@ -22,7 +22,7 @@
           :type="UploadType.Image"
           @uploaded="getList"
         >
-          支持 bmp/png/jpeg/jpg/gif 格式，大小不超过 2M
+          {{ t('auto.views.mp.components.wx_reply.components.TabImage.kd2ee2686') }}
         </UploadFile>
         <!-- 列表 -->
         <ImageTable :loading="loading" :list="list" @delete="handleDelete" />
@@ -38,14 +38,18 @@
       <!-- tab 2：语音  -->
       <el-tab-pane :name="UploadType.Voice">
         <template #label>
-          <el-row align="middle"> <Icon icon="ep:microphone" />语音 </el-row>
+          <el-row align="middle">
+            <Icon icon="ep:microphone" />{{
+              t('auto.views.mp.components.wx_material_select.main.k7a73e125')
+            }}
+          </el-row>
         </template>
         <UploadFile
           v-hasPermi="['mp:material:upload-permanent']"
           :type="UploadType.Voice"
           @uploaded="getList"
         >
-          格式支持 mp3/wma/wav/amr，文件大小不超过 2M，播放长度不超过 60s
+          {{ t('extra.kd161d68a') }}
         </UploadFile>
         <!-- 列表 -->
         <VoiceTable :list="list" :loading="loading" @delete="handleDelete" />
@@ -61,14 +65,17 @@
       <!-- tab 3：视频 -->
       <el-tab-pane :name="UploadType.Video">
         <template #label>
-          <el-row align="middle"> <Icon icon="ep:video-play" /> 视频 </el-row>
+          <el-row align="middle">
+            <Icon icon="ep:video-play" />
+            {{ t('auto.components.DiyEditor.components.mobile.Carousel.property.kfa4e33b6') }}
+          </el-row>
         </template>
         <el-button
           v-hasPermi="['mp:material:upload-permanent']"
           type="primary"
           plain
           @click="showCreateVideo = true"
-          >新建视频</el-button
+          >{{ t('auto.views.mp.components.wx_reply.components.TabVideo.kcb725a4b') }}</el-button
         >
         <!-- 新建视频的弹窗 -->
         <UploadVideo v-model="showCreateVideo" />

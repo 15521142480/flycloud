@@ -162,14 +162,14 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="发起时间"
+        :label="t('auto.views.bpm.processInstance.index.k44042ce0')"
         align="center"
         prop="startTime"
         width="180"
         :formatter="dateFormatter"
       />
       <el-table-column
-        label="结束时间"
+        :label="t('common.endTimeText')"
         align="center"
         prop="endTime"
         width="180"
@@ -188,7 +188,7 @@
         </template>
       </el-table-column>
       -->
-      <el-table-column label="操作" align="center" fixed="right" width="180">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right" width="180">
         <template #default="scope">
           <el-button
             link
@@ -196,7 +196,7 @@
             v-hasPermi="['bpm:audit:my:detail']"
             @click="handleDetail(scope.row)"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
           <el-button
             link
@@ -205,10 +205,10 @@
             v-hasPermi="['bpm:audit:my:cancel']"
             @click="handleCancel(scope.row)"
           >
-            取消
+            {{ t('common.cancel') }}
           </el-button>
           <el-button link type="primary" v-else @click="handleCreate(scope.row)">
-            重新发起
+            {{ t('extra.kab38ee9a') }}
           </el-button>
         </template>
       </el-table-column>

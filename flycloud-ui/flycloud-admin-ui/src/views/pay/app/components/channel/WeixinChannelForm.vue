@@ -22,18 +22,22 @@
             <template #append>%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="微信 APPID" label-width="180px" prop="config.appId">
+        <el-form-item :label="t('extra.k29d029e2')" label-width="180px" prop="config.appId">
           <el-input
             v-model="formData.config.appId"
             :style="{ width: '100%' }"
             clearable
-            placeholder="请输入微信 APPID"
+            :placeholder="t('extra.k67b9aba5')"
           />
         </el-form-item>
-        <el-form-item label="商户号" label-width="180px" prop="config.mchId">
+        <el-form-item :label="t('extra.kf173b741')" label-width="180px" prop="config.mchId">
           <el-input v-model="formData.config.mchId" :style="{ width: '100%' }" />
         </el-form-item>
-        <el-form-item label="渠道状态" label-width="180px" prop="status">
+        <el-form-item
+          :label="t('auto.views.pay.app.components.channel.MockChannelForm.k88965a11')"
+          label-width="180px"
+          prop="status"
+        >
           <el-radio-group v-model="formData.status">
             <el-radio
               v-for="dict in getDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -44,26 +48,26 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="API 版本" label-width="180px" prop="config.apiVersion">
+        <el-form-item :label="t('extra.k4f771261')" label-width="180px" prop="config.apiVersion">
           <el-radio-group v-model="formData.config.apiVersion">
             <el-radio value="v2">v2</el-radio>
             <el-radio value="v3">v3</el-radio>
           </el-radio-group>
         </el-form-item>
         <div v-if="formData.config.apiVersion === 'v2'">
-          <el-form-item label="商户密钥" label-width="180px" prop="config.mchKey">
-            <el-input v-model="formData.config.mchKey" clearable placeholder="请输入商户密钥" />
+          <el-form-item :label="t('extra.k7f04995c')" label-width="180px" prop="config.mchKey">
+            <el-input
+              v-model="formData.config.mchKey"
+              clearable
+              :placeholder="t('auto.views.pay.app.components.channel.WeixinChannelForm.kbe4e5ad2')"
+            />
           </el-form-item>
-          <el-form-item
-            label="apiclient_cert.p12 证书"
-            label-width="180px"
-            prop="config.keyContent"
-          >
+          <el-form-item :label="t('extra.k53c6a7e1')" label-width="180px" prop="config.keyContent">
             <el-input
               v-model="formData.config.keyContent"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
-              placeholder="请上传 apiclient_cert.p12 证书"
+              :placeholder="t('auto.views.pay.app.components.channel.WeixinChannelForm.k8a6c69ca')"
               readonly
               type="textarea"
             />
@@ -77,22 +81,21 @@
               action=""
             >
               <el-button type="primary">
-                <Icon class="mr-5px" icon="ep:upload" />
-                点击上传
+                <Icon class="mr-5px" icon="ep:upload" /> {{ t('system.user.uploadClickText') }}
               </el-button>
             </el-upload>
           </el-form-item>
         </div>
         <div v-if="formData.config.apiVersion === 'v3'">
-          <el-form-item label="API V3 密钥" label-width="180px" prop="config.apiV3Key">
+          <el-form-item :label="t('extra.k2f7a7caa')" label-width="180px" prop="config.apiV3Key">
             <el-input
               v-model="formData.config.apiV3Key"
               clearable
-              placeholder="请输入 API V3 密钥"
+              :placeholder="t('extra.keceeec12')"
             />
           </el-form-item>
           <el-form-item
-            label="apiclient_key.pem 证书"
+            :label="t('extra.k41eedb3a')"
             label-width="180px"
             prop="config.privateKeyContent"
           >
@@ -100,7 +103,7 @@
               v-model="formData.config.privateKeyContent"
               :autosize="{ minRows: 8, maxRows: 8 }"
               :style="{ width: '100%' }"
-              placeholder="请上传 apiclient_key.pem 证书"
+              :placeholder="t('auto.views.pay.app.components.channel.WeixinChannelForm.k8b5e5fbf')"
               readonly
               type="textarea"
             />
@@ -115,26 +118,33 @@
               action=""
             >
               <el-button type="primary">
-                <Icon class="mr-5px" icon="ep:upload" />
-                点击上传
+                <Icon class="mr-5px" icon="ep:upload" /> {{ t('system.user.uploadClickText') }}
               </el-button>
             </el-upload>
           </el-form-item>
-          <el-form-item label="证书序列号" label-width="180px" prop="config.certSerialNo">
+          <el-form-item
+            :label="t('extra.kc68b719d')"
+            label-width="180px"
+            prop="config.certSerialNo"
+          >
             <el-input
               v-model="formData.config.certSerialNo"
               clearable
-              placeholder="请输入证书序列号"
+              :placeholder="t('auto.views.pay.app.components.channel.WeixinChannelForm.k87068712')"
             />
           </el-form-item>
         </div>
-        <el-form-item label="备注" label-width="180px" prop="remark">
+        <el-form-item :label="t('common.remark')" label-width="180px" prop="remark">
           <el-input v-model="formData.remark" :style="{ width: '100%' }" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+          t('extra.k008b8fcb')
+        }}</el-button>
+        <el-button @click="dialogVisible = false">{{
+          t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+        }}</el-button>
       </template>
     </Dialog>
   </div>

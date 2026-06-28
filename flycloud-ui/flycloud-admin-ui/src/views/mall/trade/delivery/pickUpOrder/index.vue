@@ -75,16 +75,13 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
-          <Icon class="mr-5px" icon="ep:search" />
-          搜索
+          <Icon class="mr-5px" icon="ep:search" /> {{ t('extra.k04864902') }}
         </el-button>
         <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" />
-          重置
+          <Icon class="mr-5px" icon="ep:refresh" /> {{ t('common.reset') }}
         </el-button>
         <el-button @click="handlePickup" type="success" plain v-hasPermi="['trade:order:pick-up']">
-          <Icon class="mr-5px" icon="ep:check" />
-          核销
+          <Icon class="mr-5px" icon="ep:check" /> {{ t('extra.k1f9adbed') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -94,7 +91,7 @@
   <el-row :gutter="16" class="summary">
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        title="订单数量"
+        :title="t('auto.views.mall.home.components.TradeTrendCard.k85cf1931')"
         icon="icon-park-outline:transaction-order"
         icon-color="bg-blue-100"
         icon-bg-color="text-blue-500"
@@ -103,7 +100,7 @@
     </el-col>
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        title="订单金额"
+        :title="t('auto.views.mall.home.components.TradeTrendCard.kd98167d3')"
         icon="streamline:money-cash-file-dollar-common-money-currency-cash-file"
         icon-color="bg-purple-100"
         icon-bg-color="text-purple-500"
@@ -114,7 +111,7 @@
     </el-col>
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        title="退款单数"
+        :title="t('extra.k7d4b7ab6')"
         icon="heroicons:receipt-refund"
         icon-color="bg-yellow-100"
         icon-bg-color="text-yellow-500"
@@ -123,7 +120,7 @@
     </el-col>
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        title="退款金额"
+        :title="t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2')"
         icon="ri:refund-2-line"
         icon-color="bg-green-100"
         icon-bg-color="text-green-500"
@@ -137,15 +134,25 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="订单号" align="center" prop="no" min-width="180" />
-      <el-table-column label="用户信息" align="center" prop="user.name" min-width="80" />
       <el-table-column
-        label="推荐人信息"
+        :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k459868e5')"
+        align="center"
+        prop="no"
+        min-width="180"
+      />
+      <el-table-column
+        :label="t('auto.components.AppLinkInput.data.k55c26aba')"
+        align="center"
+        prop="user.name"
+        min-width="80"
+      />
+      <el-table-column
+        :label="t('extra.kc48eb4f0')"
         align="center"
         prop="brokerageUser.name"
         min-width="100"
       />
-      <el-table-column label="商品信息" align="center" prop="spuName" min-width="300">
+      <el-table-column :label="t('extra.k7519f060')" align="center" prop="spuName" min-width="300">
         <template #default="{ row }">
           <div class="flex items-center" v-for="item in row.items" :key="item.id">
             <el-image
@@ -163,36 +170,53 @@
               >
                 {{ property.propertyName }}: {{ property.valueName }}
               </el-tag>
-              <span>{{ floatToFixed2(item.price) }} 元 x {{ item.count }}</span>
+              <span
+                >{{ floatToFixed2(item.price) }} {{ t('extra.kb1376080') }} {{ item.count }}</span
+              >
             </div>
           </div>
         </template>
       </el-table-column>
       <el-table-column
-        label="实付金额(元)"
+        :label="t('extra.k20c122c4')"
         align="center"
         prop="payPrice"
         min-width="110"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="核销员" align="center" prop="storeStaffName" min-width="70" />
-      <el-table-column label="核销门店" align="center" prop="pickUpStoreId" min-width="80">
+      <el-table-column
+        :label="t('extra.kec69fc8a')"
+        align="center"
+        prop="storeStaffName"
+        min-width="70"
+      />
+      <el-table-column
+        :label="t('extra.k50cb5e1a')"
+        align="center"
+        prop="pickUpStoreId"
+        min-width="80"
+      >
         <template #default="{ row }">
           {{ pickUpStoreList.find((p) => p.id === row.pickUpStoreId)?.name }}
         </template>
       </el-table-column>
-      <el-table-column label="支付状态" align="center" prop="payStatus" min-width="80">
+      <el-table-column
+        :label="t('auto.views.pay.order.OrderDetail.kb9f11a33')"
+        align="center"
+        prop="payStatus"
+        min-width="80"
+      >
         <template #default="{ row }">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="row.payStatus || false" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="订单状态" prop="status" width="120">
+      <el-table-column align="center" :label="t('extra.k7617e1bf')" prop="status" width="120">
         <template #default="{ row }">
           <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="下单时间"
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k01f1aece')"
         align="center"
         prop="createTime"
         min-width="170"

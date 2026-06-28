@@ -214,14 +214,14 @@
           <dict-tag :type="DICT_TYPE.ERP_AUDIT_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" fixed="right" width="220">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right" width="220">
         <template #default="scope">
           <el-button
             link
             @click="openForm('detail', scope.row.id)"
             v-hasPermi="['erp:stock-out:query']"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
           <el-button
             link
@@ -230,7 +230,7 @@
             v-hasPermi="['erp:stock-out:update']"
             :disabled="scope.row.status === 20"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -239,7 +239,7 @@
             v-hasPermi="['erp:stock-out:update-status']"
             v-if="scope.row.status === 10"
           >
-            审批
+            {{ t('auto.views.erp.finance.payment.index.k5ce60cb7') }}
           </el-button>
           <el-button
             link
@@ -248,7 +248,7 @@
             v-hasPermi="['erp:stock-out:update-status']"
             v-else
           >
-            反审批
+            {{ t('auto.views.erp.finance.payment.index.k5e6e19f7') }}
           </el-button>
           <el-button
             link
@@ -256,7 +256,7 @@
             @click="handleDelete([scope.row.id])"
             v-hasPermi="['erp:stock-out:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

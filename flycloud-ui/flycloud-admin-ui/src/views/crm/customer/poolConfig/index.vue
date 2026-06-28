@@ -22,32 +22,37 @@
           </div>
         </template>
         <!-- 表单 -->
-        <el-form-item label="客户公海规则设置" prop="enabled">
+        <el-form-item
+          :label="t('auto.views.crm.customer.poolConfig.index.k8980fac2')"
+          prop="enabled"
+        >
           <el-radio-group v-model="formData.enabled" @change="changeEnable" class="ml-4">
-            <el-radio :value="false" size="large">不启用</el-radio>
-            <el-radio :value="true" size="large">启用</el-radio>
+            <el-radio :value="false" size="large">{{ t('extra.k62242481') }}</el-radio>
+            <el-radio :value="true" size="large">{{ t('system.user.enableAction') }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <div v-if="formData.enabled">
           <el-form-item>
             <el-input-number class="mr-2" v-model="formData.contactExpireDays" />
-            天不跟进或
+            {{ t('extra.k839038e7') }}
             <el-input-number class="mx-2" v-model="formData.dealExpireDays" />
-            天未成交
+            {{ t('extra.k738b3e24') }}
           </el-form-item>
-          <el-form-item label="提前提醒设置" prop="notifyEnabled">
+          <el-form-item :label="t('extra.k773912a5')" prop="notifyEnabled">
             <el-radio-group
               v-model="formData.notifyEnabled"
               @change="changeNotifyEnable"
               class="ml-4"
             >
-              <el-radio :value="false" size="large">不提醒</el-radio>
-              <el-radio :value="true" size="large">提醒</el-radio>
+              <el-radio :value="false" size="large">{{ t('extra.k55481bbc') }}</el-radio>
+              <el-radio :value="true" size="large">{{ t('extra.k4b027f39') }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <div v-if="formData.notifyEnabled">
             <el-form-item>
-              提前 <el-input-number class="mx-2" v-model="formData.notifyDays" /> 天提醒
+              {{ t('extra.k10ab23cd') }}
+              <el-input-number class="mx-2" v-model="formData.notifyDays" />
+              {{ t('extra.k132a265f') }}
             </el-form-item>
           </div>
         </div>

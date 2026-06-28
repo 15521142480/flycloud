@@ -178,7 +178,11 @@
         t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kd54aeadc')
       }}</el-button>
     </template>
-    <el-dialog v-model="mapDialogVisible" title="获取经纬度" append-to-body>
+    <el-dialog
+      v-model="mapDialogVisible"
+      :title="t('auto.views.mall.trade.delivery.pickUpStore.PickUpStoreForm.kebba50ad')"
+      append-to-body
+    >
       <IFrame class="h-609px" :src="tencentLbsUrl" />
     </el-dialog>
   </Dialog>

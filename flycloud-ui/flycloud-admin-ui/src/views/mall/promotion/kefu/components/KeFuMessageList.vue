@@ -104,7 +104,7 @@
         class="newMessageTip flex items-center cursor-pointer"
         @click="handleToNewMessage"
       >
-        <span>有新消息</span>
+        <span>{{ t('extra.kd71b5def') }}</span>
         <Icon class="ml-5px" icon="ep:bottom" />
       </div>
     </el-main>
@@ -119,12 +119,14 @@
         </div>
         <el-input v-model="message" :rows="6" style="border-style: none" type="textarea" />
         <div class="h-45px flex justify-end">
-          <el-button class="mt-10px" type="primary" @click="handleSendMessage">发送</el-button>
+          <el-button class="mt-10px" type="primary" @click="handleSendMessage">{{
+            t('extra.k3eab8c0b')
+          }}</el-button>
         </div>
       </div>
     </el-footer>
   </el-container>
-  <el-empty v-else description="请选择左侧的一个会话后开始" />
+  <el-empty v-else :description="t('extra.k8bcfee7f')" />
 </template>
 
 <script lang="ts" setup>

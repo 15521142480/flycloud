@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="openDetail(props.spuId)" style="cursor: pointer;">
+  <div @click.stop="openDetail(props.spuId)" style="cursor: pointer">
     <div>
       <slot name="top"></slot>
     </div>

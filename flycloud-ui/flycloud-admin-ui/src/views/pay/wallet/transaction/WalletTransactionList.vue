@@ -21,15 +21,19 @@
         :label="t('auto.views.pay.wallet.transaction.WalletTransactionList.k7d71851d')"
         prop="price"
       >
-        <template #default="{ row }"> {{ fenToYuan(row.price) }} 元</template>
+        <template #default="{ row }">
+          {{ fenToYuan(row.price) }} {{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
-      <el-table-column align="center" label="钱包余额" prop="balance">
-        <template #default="{ row }"> {{ fenToYuan(row.balance) }} 元</template>
+      <el-table-column align="center" :label="t('extra.ke12715ef')" prop="balance">
+        <template #default="{ row }">
+          {{ fenToYuan(row.balance) }} {{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="交易时间"
+        :label="t('extra.kf8de2c76')"
         prop="createTime"
         width="180px"
       />

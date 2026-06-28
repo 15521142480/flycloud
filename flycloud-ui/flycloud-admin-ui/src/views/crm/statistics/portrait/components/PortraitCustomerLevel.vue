@@ -30,10 +30,30 @@
           <dict-tag :type="DICT_TYPE.CRM_CUSTOMER_LEVEL" :value="scope.row.level" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户个数" min-width="200" prop="customerCount" />
-      <el-table-column align="center" label="成交个数" min-width="200" prop="dealCount" />
-      <el-table-column align="center" label="级别占比(%)" min-width="200" prop="levelPortion" />
-      <el-table-column align="center" label="成交占比(%)" min-width="200" prop="dealPortion" />
+      <el-table-column
+        align="center"
+        :label="t('extra.k465fe4d6')"
+        min-width="200"
+        prop="customerCount"
+      />
+      <el-table-column
+        align="center"
+        :label="t('extra.kf96f9eab')"
+        min-width="200"
+        prop="dealCount"
+      />
+      <el-table-column
+        align="center"
+        :label="t('extra.k81b67ddf')"
+        min-width="200"
+        prop="levelPortion"
+      />
+      <el-table-column
+        align="center"
+        :label="t('extra.k7acde532')"
+        min-width="200"
+        prop="dealPortion"
+      />
     </el-table>
   </el-card>
 </template>

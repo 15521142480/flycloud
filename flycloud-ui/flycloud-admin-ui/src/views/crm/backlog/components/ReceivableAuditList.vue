@@ -48,7 +48,12 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="客户名称" prop="customerName" width="120">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+        prop="customerName"
+        width="120"
+      >
         <template #default="scope">
           <el-link
             :underline="false"
@@ -59,7 +64,12 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="合同编号" prop="contractNo" width="180">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.backlog.components.ContractAuditList.k17b34173')"
+        prop="contractNo"
+        width="180"
+      >
         <template #default="scope">
           <el-link
             :underline="false"
@@ -73,53 +83,79 @@
       <el-table-column
         :formatter="dateFormatter2"
         align="center"
-        label="回款日期"
+        :label="t('auto.views.crm.receivable.ReceivableForm.kd0132503')"
         prop="returnTime"
         width="150px"
       />
       <el-table-column
         align="center"
-        label="回款金额(元)"
+        :label="t('extra.k5961f09c')"
         prop="price"
         width="140"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column align="center" label="回款方式" prop="returnType" width="130px">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.receivable.ReceivableForm.k6c0d9ca0')"
+        prop="returnType"
+        width="130px"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_RECEIVABLE_RETURN_TYPE" :value="scope.row.returnType" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="备注" prop="remark" width="200" />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" width="200" />
       <el-table-column
         align="center"
-        label="合同金额（元）"
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k4687c195')"
         prop="contract.totalPrice"
         width="140"
         :formatter="erpPriceTableColumnFormatter"
       />
-      <el-table-column align="center" label="负责人" prop="ownerUserName" width="120" />
-      <el-table-column align="center" label="所属部门" prop="ownerUserDeptName" width="100px" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        prop="ownerUserName"
+        width="120"
+      />
+      <el-table-column
+        align="center"
+        :label="t('profile.user.dept')"
+        prop="ownerUserDeptName"
+        width="100px"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="更新时间"
+        :label="t('common.updateTime')"
         prop="updateTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="创建人" prop="creatorName" width="120" />
-      <el-table-column align="center" fixed="right" label="回款状态" prop="auditStatus" width="120">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        prop="creatorName"
+        width="120"
+      />
+      <el-table-column
+        align="center"
+        fixed="right"
+        :label="t('extra.k764a6609')"
+        prop="auditStatus"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_AUDIT_STATUS" :value="scope.row.auditStatus" />
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="180px">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="180px">
         <template #default="scope">
           <el-button
             v-hasPermi="['crm:receivable:update']"
@@ -127,7 +163,7 @@
             type="primary"
             @click="handleProcessDetail(scope.row)"
           >
-            查看审批
+            {{ t('extra.k68aad05a') }}
           </el-button>
         </template>
       </el-table-column>

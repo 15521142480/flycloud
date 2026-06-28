@@ -40,30 +40,61 @@
           <dict-tag :type="DICT_TYPE.PAY_TRANSFER_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="转账金额" align="center" prop="price">
+      <el-table-column
+        :label="t('auto.views.pay.transfer.TransferDetail.ka6701065')"
+        align="center"
+        prop="price"
+      >
         <template #default="scope">
           <span>￥{{ (scope.row.price / 100.0).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="收款人姓名" align="center" prop="userName" width="120" />
-      <el-table-column label="支付宝登录账号" align="center" prop="alipayLogonId" width="180" />
-      <el-table-column label="微信 openid" align="center" prop="openid" width="120" />
-      <el-table-column label="转账状态" align="center" prop="transferStatus">
+      <el-table-column
+        :label="t('auto.views.pay.demo.transfer.DemoTransferForm.kad69bce0')"
+        align="center"
+        prop="userName"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.demo.transfer.DemoTransferForm.k6605bf8f')"
+        align="center"
+        prop="alipayLogonId"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.demo.transfer.DemoTransferForm.kc6eb425b')"
+        align="center"
+        prop="openid"
+        width="120"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.transfer.TransferDetail.k1a3ddc07')"
+        align="center"
+        prop="transferStatus"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_TRANSFER_STATUS" :value="scope.row.transferStatus" />
         </template>
       </el-table-column>
-      <el-table-column label="转账单号" align="center" prop="payTransferId" />
-      <el-table-column label="支付渠道" align="center" prop="payChannelCode" />
       <el-table-column
-        label="转账时间"
+        :label="t('auto.views.pay.transfer.TransferDetail.kd3f2bbea')"
+        align="center"
+        prop="payTransferId"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.order.OrderDetail.k88b37342')"
+        align="center"
+        prop="payChannelCode"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.transfer.TransferDetail.kb4ee942f')"
         align="center"
         prop="transferTime"
         :formatter="dateFormatter"
         width="180px"
       />
       <el-table-column
-        label="操作"
+        :label="t('common.operation')"
         align="center"
         class-name="small-padding fixed-width"
         width="100"
@@ -77,7 +108,7 @@
             v-if="scope.row.transferStatus === 0"
             v-hasPermi="['pay:transfer:create']"
           >
-            发起转账
+            {{ t('auto.views.pay.transfer.CreatePayTransfer.k208ab1da') }}
           </el-button>
         </template>
       </el-table-column>

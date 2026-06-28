@@ -86,49 +86,69 @@
           <el-avatar :src="scope.row.avatar" />
         </template>
       </el-table-column>
-      <el-table-column label="昵称" align="center" prop="name" min-width="80px" />
-      <el-table-column label="推广人数" align="center" prop="brokerageUserCount" width="80px" />
       <el-table-column
-        label="推广订单数量"
+        :label="t('system.user.nickname')"
+        align="center"
+        prop="name"
+        min-width="80px"
+      />
+      <el-table-column
+        :label="t('extra.ka006ed09')"
+        align="center"
+        prop="brokerageUserCount"
+        width="80px"
+      />
+      <el-table-column
+        :label="t('extra.kec878b95')"
         align="center"
         prop="brokerageOrderCount"
         min-width="110px"
       />
       <el-table-column
-        label="推广订单金额"
+        :label="t('extra.k5b91dee2')"
         align="center"
         prop="brokerageOrderPrice"
         min-width="110px"
         :formatter="fenToYuanFormat"
       />
       <el-table-column
-        label="已提现金额"
+        :label="t('extra.kab8bc688')"
         align="center"
         prop="withdrawPrice"
         min-width="100px"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="已提现次数" align="center" prop="withdrawCount" min-width="100px" />
       <el-table-column
-        label="未提现金额"
+        :label="t('extra.kc781592b')"
+        align="center"
+        prop="withdrawCount"
+        min-width="100px"
+      />
+      <el-table-column
+        :label="t('extra.ke4f18209')"
         align="center"
         prop="price"
         min-width="100px"
         :formatter="fenToYuanFormat"
       />
       <el-table-column
-        label="冻结中佣金"
+        :label="t('extra.k0273a244')"
         align="center"
         prop="frozenPrice"
         min-width="100px"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="推广资格" align="center" prop="brokerageEnabled" min-width="80px">
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.user.index.k95774950')"
+        align="center"
+        prop="brokerageEnabled"
+        min-width="80px"
+      >
         <template #default="scope">
           <el-switch
             v-model="scope.row.brokerageEnabled"
-            active-text="有"
-            inactive-text="无"
+            :active-text="t('auto.views.mall.trade.brokerage.user.index.kfbd5b750')"
+            :inactive-text="t('extra.kadb3d23e')"
             inline-prompt
             :disabled="!checkPermi(['trade:brokerage-user:update-bind-user'])"
             @change="handleBrokerageEnabledChange(scope.row)"
@@ -136,21 +156,26 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="成为推广员时间"
+        :label="t('extra.k3450932b')"
         align="center"
         prop="brokerageTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="上级推广员编号" align="center" prop="bindUserId" width="150px" />
       <el-table-column
-        label="推广员绑定时间"
+        :label="t('extra.k88a53323')"
+        align="center"
+        prop="bindUserId"
+        width="150px"
+      />
+      <el-table-column
+        :label="t('extra.k5ef47db8')"
         align="center"
         prop="bindUserTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="150px" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
         <template #default="scope">
           <el-dropdown
             @command="(command) => handleCommand(command, scope.row)"
@@ -162,8 +187,7 @@
             ]"
           >
             <el-button link type="primary">
-              <Icon icon="ep:d-arrow-right" />
-              更多
+              <Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
@@ -171,19 +195,19 @@
                   command="openBrokerageUserTable"
                   v-if="checkPermi(['trade:brokerage-user:user-query'])"
                 >
-                  推广人
+                  {{ t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.kc5885d57') }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   command="openBrokerageOrderTable"
                   v-if="checkPermi(['trade:brokerage-user:order-query'])"
                 >
-                  推广订单
+                  {{ t('extra.k04cb7e1a') }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   command="openUpdateBindUserForm"
                   v-if="checkPermi(['trade:brokerage-user:update-bind-user'])"
                 >
-                  修改上级推广人
+                  {{ t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.ka98a1127') }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   command="handleClearBindUser"
@@ -191,7 +215,7 @@
                     scope.row.bindUserId && checkPermi(['trade:brokerage-user:clear-bind-user'])
                   "
                 >
-                  清除上级推广人
+                  {{ t('extra.k3bd83b78') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>

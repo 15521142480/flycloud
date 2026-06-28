@@ -32,34 +32,45 @@
           :props="defaultProps"
           :check-strictly="!checkStrictly"
           node-key="id"
-          placeholder="请选择归属部门"
+          :placeholder="t('system.user.deptPlaceholder')"
           show-checkbox
         />
       </el-form-item>
-      <el-form-item label="阶段设置" prop="statuses">
+      <el-form-item :label="t('extra.k58f4ba99')" prop="statuses">
         <el-table
           border
           style="width: 100%"
           :data="formData.statuses.concat(BusinessStatusApi.DEFAULT_STATUSES)"
         >
-          <el-table-column align="center" label="阶段" width="70">
+          <el-table-column
+            align="center"
+            :label="t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k4ca39faa')"
+            width="70"
+          >
             <template #default="scope">
-              <el-text v-if="!scope.row.defaultStatus">阶段 {{ scope.$index + 1 }}</el-text>
-              <el-text v-else>结束</el-text>
+              <el-text v-if="!scope.row.defaultStatus"
+                >{{ t('auto.views.crm.statistics.funnel.components.FunnelBusiness.k4ca39faa') }}
+                {{ scope.$index + 1 }}</el-text
+              >
+              <el-text v-else>{{ t('common.doneLabel') }}</el-text>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="阶段名称" width="160" prop="name">
+          <el-table-column align="center" :label="t('extra.k4c97de6d')" width="160" prop="name">
             <template #default="{ row }">
-              <el-input v-if="!row.endStatus" v-model="row.name" placeholder="请输入状态名称" />
+              <el-input
+                v-if="!row.endStatus"
+                v-model="row.name"
+                :placeholder="t('extra.k262ebd5e')"
+              />
               <el-text v-else>{{ row.name }}</el-text>
             </template>
           </el-table-column>
-          <el-table-column width="140" align="center" label="赢单率（%）" prop="percent">
+          <el-table-column width="140" align="center" :label="t('extra.k78327a3b')" prop="percent">
             <template #default="{ row }">
               <el-input-number
                 v-if="!row.endStatus"
                 v-model="row.percent"
-                placeholder="请输入赢单率"
+                :placeholder="t('extra.k94e4d53c')"
                 controls-position="right"
                 :min="0"
                 :max="100"
@@ -69,7 +80,7 @@
               <el-text v-else>{{ row.percent }}</el-text>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="110" align="center">
+          <el-table-column :label="t('common.operation')" width="110" align="center">
             <template #default="scope">
               <el-button
                 v-if="!scope.row.endStatus"
@@ -77,7 +88,7 @@
                 type="primary"
                 @click="addStatus(scope.$index)"
               >
-                添加
+                {{ t('form.add') }}
               </el-button>
               <el-button
                 v-if="!scope.row.endStatus"
@@ -86,7 +97,7 @@
                 @click="deleteStatusArea(scope.$index)"
                 :disabled="formData.statuses.length <= 1"
               >
-                删除
+                {{ t('common.delete') }}
               </el-button>
             </template>
           </el-table-column>
@@ -94,8 +105,12 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

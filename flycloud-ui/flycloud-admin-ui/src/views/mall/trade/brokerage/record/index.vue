@@ -105,36 +105,56 @@
           <el-avatar :src="scope.row.userAvatar" />
         </template>
       </el-table-column>
-      <el-table-column label="昵称" align="center" prop="userNickname" min-width="80px" />
-      <el-table-column label="业务类型" align="center" prop="bizType" min-width="85">
+      <el-table-column
+        :label="t('system.user.nickname')"
+        align="center"
+        prop="userNickname"
+        min-width="80px"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.trade.brokerage.record.index.k2268f2d5')"
+        align="center"
+        prop="bizType"
+        min-width="85"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BROKERAGE_RECORD_BIZ_TYPE" :value="scope.row.bizType" />
         </template>
       </el-table-column>
-      <el-table-column label="业务编号" align="center" prop="bizId" min-width="80" />
-      <el-table-column label="标题" align="center" prop="title" min-width="110" />
       <el-table-column
-        label="金额"
+        :label="t('auto.views.system.operatelog.OperateLogDetail.k9c5f5763')"
+        align="center"
+        prop="bizId"
+        min-width="80"
+      />
+      <el-table-column :label="t('table.title')" align="center" prop="title" min-width="110" />
+      <el-table-column
+        :label="t('auto.views.erp.home.components.TimeSummaryChart.k34943c40')"
         align="center"
         prop="price"
         min-width="60"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column label="说明" align="center" prop="description" min-width="120" />
-      <el-table-column label="状态" align="center" prop="status" min-width="85">
+      <el-table-column
+        :label="t('extra.kf411d0f1')"
+        align="center"
+        prop="description"
+        min-width="120"
+      />
+      <el-table-column :label="t('common.status')" align="center" prop="status" min-width="85">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BROKERAGE_RECORD_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="解冻时间"
+        :label="t('extra.k80d0e2aa')"
         align="center"
         prop="unfreezeTime"
         :formatter="dateFormatter"
         width="180px"
       />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"

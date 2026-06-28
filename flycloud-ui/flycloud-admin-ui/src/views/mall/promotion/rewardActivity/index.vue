@@ -97,16 +97,16 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="活动开始时间"
+        :label="t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.k658b1a2e')"
         prop="startTime"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="活动结束时间"
+        :label="t('auto.views.mall.promotion.bargain.activity.bargainActivity_data.kcdd4e446')"
         prop="endTime"
       />
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" :label="t('common.status')" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -114,11 +114,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:reward-activity:update']"
@@ -126,7 +126,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             v-if="scope.row.status === 0"
@@ -135,7 +135,7 @@
             type="danger"
             @click="handleClose(scope.row.id)"
           >
-            关闭
+            {{ t('common.close') }}
           </el-button>
           <el-button
             v-hasPermi="['promotion:reward-activity:delete']"
@@ -143,7 +143,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

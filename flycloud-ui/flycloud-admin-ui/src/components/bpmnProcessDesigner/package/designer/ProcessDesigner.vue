@@ -47,16 +47,16 @@
                 />
               </div>
             </template>
-            <XButton title="下载文件" preIcon="ep:download" />
+            <XButton :title="t('extra.k5dfd5a78')" preIcon="ep:download" />
           </el-tooltip>
           <el-tooltip effect="light">
-            <XButton preIcon="ep:view" title="浏览" />
+            <XButton preIcon="ep:view" :title="t('extra.k9c5c5cdb')" />
             <template #content>
               <!-- <el-button link @click="previewProcessXML">预览XML</el-button> -->
-              <XTextButton title="预览XML" @click="previewProcessXML" />
+              <XTextButton :title="t('extra.k998ec2a7')" @click="previewProcessXML" />
               <br />
               <!-- <el-button link @click="previewProcessJson">预览JSON</el-button> -->
-              <XTextButton title="预览JSON" @click="previewProcessJson" />
+              <XTextButton :title="t('extra.kc2c4371f')" @click="previewProcessJson" />
             </template>
           </el-tooltip>
           <el-tooltip
@@ -64,11 +64,11 @@
             effect="light"
             :content="simulationStatus ? '退出模拟' : '开启模拟'"
           >
-            <XButton preIcon="ep:cpu" title="模拟" @click="processSimulation" />
+            <XButton preIcon="ep:cpu" :title="t('extra.kdc723a61')" @click="processSimulation" />
           </el-tooltip>
         </ElButtonGroup>
         <ElButtonGroup key="align-control">
-          <el-tooltip effect="light" content="向左对齐">
+          <el-tooltip effect="light" :content="t('extra.k84648e32')">
             <!-- <el-button
               class="align align-left"
               icon="el-icon-s-data"
@@ -80,7 +80,7 @@
               @click="elementsAlign('left')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="向右对齐">
+          <el-tooltip effect="light" :content="t('extra.k30c05ea1')">
             <!-- <el-button
               class="align align-right"
               icon="el-icon-s-data"
@@ -92,7 +92,7 @@
               @click="elementsAlign('right')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="向上对齐">
+          <el-tooltip effect="light" :content="t('extra.kb98f3ab9')">
             <!-- <el-button
               class="align align-top"
               icon="el-icon-s-data"
@@ -104,7 +104,7 @@
               @click="elementsAlign('top')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="向下对齐">
+          <el-tooltip effect="light" :content="t('extra.k996e5cd1')">
             <!-- <el-button
               class="align align-bottom"
               icon="el-icon-s-data"
@@ -116,7 +116,7 @@
               @click="elementsAlign('bottom')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="水平居中">
+          <el-tooltip effect="light" :content="t('extra.kd365d58d')">
             <!-- <el-button
               class="align align-center"
               icon="el-icon-s-data"
@@ -129,7 +129,7 @@
               @click="elementsAlign('center')"
             />
           </el-tooltip>
-          <el-tooltip effect="light" content="垂直居中">
+          <el-tooltip effect="light" :content="t('extra.k4117e80d')">
             <!-- <el-button
               class="align align-middle"
               icon="el-icon-s-data"
@@ -143,7 +143,7 @@
           </el-tooltip>
         </ElButtonGroup>
         <ElButtonGroup key="scale-control">
-          <el-tooltip effect="light" content="缩小视图">
+          <el-tooltip effect="light" :content="t('extra.kb9156bd5')">
             <!-- <el-button
               :disabled="defaultZoom < 0.2"
               icon="el-icon-zoom-out"
@@ -156,7 +156,7 @@
             />
           </el-tooltip>
           <el-button>{{ Math.floor(defaultZoom * 10 * 10) + '%' }}</el-button>
-          <el-tooltip effect="light" content="放大视图">
+          <el-tooltip effect="light" :content="t('extra.k85378ada')">
             <!-- <el-button
               :disabled="defaultZoom > 4"
               icon="el-icon-zoom-in"
@@ -164,17 +164,17 @@
             /> -->
             <XButton preIcon="ep:zoom-in" @click="processZoomIn()" :disabled="defaultZoom > 4" />
           </el-tooltip>
-          <el-tooltip effect="light" content="重置视图并居中">
+          <el-tooltip effect="light" :content="t('extra.kac739eda')">
             <!-- <el-button icon="el-icon-c-scale-to-original" @click="processReZoom()" /> -->
             <XButton preIcon="ep:scale-to-original" @click="processReZoom()" />
           </el-tooltip>
         </ElButtonGroup>
         <ElButtonGroup key="stack-control">
-          <el-tooltip effect="light" content="撤销">
+          <el-tooltip effect="light" :content="t('extra.kbd9fcf46')">
             <!-- <el-button :disabled="!revocable" icon="el-icon-refresh-left" @click="processUndo()" /> -->
             <XButton preIcon="ep:refresh-left" @click="processUndo()" :disabled="!revocable" />
           </el-tooltip>
-          <el-tooltip effect="light" content="恢复">
+          <el-tooltip effect="light" :content="t('extra.kc7db6d4f')">
             <!-- <el-button
               :disabled="!recoverable"
               icon="el-icon-refresh-right"
@@ -182,14 +182,14 @@
             /> -->
             <XButton preIcon="ep:refresh-right" @click="processRedo()" :disabled="!recoverable" />
           </el-tooltip>
-          <el-tooltip effect="light" content="重新绘制">
+          <el-tooltip effect="light" :content="t('extra.k5ed5c284')">
             <!-- <el-button icon="el-icon-refresh" @click="processRestart" /> -->
             <XButton preIcon="ep:refresh" @click="processRestart()" />
           </el-tooltip>
         </ElButtonGroup>
         <XButton
           preIcon="ep:plus"
-          title="保存模型"
+          :title="t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessModel.k5db70c89')"
           @click="processSave"
           :type="props.headerButtonType"
           :disabled="simulationStatus"
@@ -216,7 +216,7 @@
       <!-- <div class="my-process-designer__canvas" ref="bpmn-canvas"></div> -->
     </div>
     <Dialog
-      title="预览"
+      :title="t('action.preview')"
       v-model="previewModelVisible"
       width="80%"
       :scroll="true"

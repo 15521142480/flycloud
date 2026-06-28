@@ -19,8 +19,12 @@
           </template>
         </el-select>
       </el-form-item>
-      <el-form-item label="匹配类型" prop="requestMatch" v-if="msgType === MsgType.Keyword">
-        <el-select v-model="replyForm.requestMatch" placeholder="请选择匹配类型" clearable>
+      <el-form-item
+        :label="t('auto.views.mp.autoReply.components.ReplyTable.k575d0d32')"
+        prop="requestMatch"
+        v-if="msgType === MsgType.Keyword"
+      >
+        <el-select v-model="replyForm.requestMatch" :placeholder="t('extra.kc8206777')" clearable>
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.MP_AUTO_REPLY_REQUEST_MATCH)"
             :key="dict.value"
@@ -29,10 +33,18 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="关键词" prop="requestKeyword" v-if="msgType === MsgType.Keyword">
-        <el-input v-model="replyForm.requestKeyword" placeholder="请输入内容" clearable />
+      <el-form-item
+        :label="t('auto.views.mp.autoReply.components.ReplyTable.kcc1b21e8')"
+        prop="requestKeyword"
+        v-if="msgType === MsgType.Keyword"
+      >
+        <el-input
+          v-model="replyForm.requestKeyword"
+          :placeholder="t('auto.views.infra.config.ConfigForm.kac962cb9')"
+          clearable
+        />
       </el-form-item>
-      <el-form-item label="回复消息">
+      <el-form-item :label="t('extra.k6740d8c7')">
         <WxReplySelect v-model="reply" />
       </el-form-item>
     </el-form>

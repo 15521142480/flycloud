@@ -94,22 +94,30 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="出生年"
+        :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k6165c127')"
         align="center"
         prop="birthday"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="简介" align="center" prop="description" />
-      <el-table-column label="头像" align="center" prop="avatar" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k5ea2e0cd')"
+        align="center"
+        prop="description"
+      />
+      <el-table-column
+        :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k4ceeeb31')"
+        align="center"
+        prop="avatar"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -117,7 +125,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['infra:demo01-contact:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -125,7 +133,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['infra:demo01-contact:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

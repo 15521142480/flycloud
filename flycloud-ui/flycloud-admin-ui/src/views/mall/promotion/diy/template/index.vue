@@ -80,28 +80,32 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="模板名称" align="center" prop="name" />
-      <el-table-column label="是否使用" align="center" prop="used">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.diy.template.DiyTemplateForm.kbbc511d0')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('extra.k7386b590')" align="center" prop="used">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.used" />
         </template>
       </el-table-column>
       <el-table-column
-        label="使用时间"
+        :label="t('extra.k01100972')"
         align="center"
         prop="usedTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column :label="t('common.operation')" align="center" width="200">
         <template #default="scope">
           <el-button
             link
@@ -109,7 +113,7 @@
             @click="handleDecorate(scope.row.id)"
             v-hasPermi="['promotion:diy-template:update']"
           >
-            装修
+            {{ t('extra.k81b2cb54') }}
           </el-button>
           <el-button
             link
@@ -117,7 +121,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:diy-template:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <template v-if="!scope.row.used">
             <el-button
@@ -126,7 +130,7 @@
               @click="handleUse(scope.row)"
               v-hasPermi="['promotion:diy-template:use']"
             >
-              使用
+              {{ t('extra.kecff77a8') }}
             </el-button>
             <el-button
               link
@@ -134,7 +138,7 @@
               @click="handleDelete(scope.row.id)"
               v-hasPermi="['promotion:diy-template:delete']"
             >
-              删除
+              {{ t('common.delete') }}
             </el-button>
           </template>
         </template>

@@ -69,27 +69,44 @@
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="提示词" align="center" prop="prompt" width="180" />
-      <el-table-column label="思维导图" align="center" prop="generatedContent" min-width="300" />
-      <el-table-column label="模型" align="center" prop="model" width="180" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.ai.image.index.components.ImageDetail.k2f0bb123')"
+        align="center"
+        prop="prompt"
+        width="180"
+      />
+      <el-table-column
+        :label="t('extra.kc97c0438')"
+        align="center"
+        prop="generatedContent"
+        min-width="300"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.index.components.conversation.k98fd0cbd')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="错误信息" align="center" prop="errorMessage" />
-      <el-table-column label="操作" align="center" width="120" fixed="right">
+      <el-table-column :label="t('extra.k4604d502')" align="center" prop="errorMessage" />
+      <el-table-column :label="t('common.operation')" align="center" width="120" fixed="right">
         <template #default="scope">
-          <el-button link type="primary" @click="openPreview(scope.row)"> 预览 </el-button>
+          <el-button link type="primary" @click="openPreview(scope.row)">
+            {{ t('action.preview') }}
+          </el-button>
           <el-button
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:mind-map:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

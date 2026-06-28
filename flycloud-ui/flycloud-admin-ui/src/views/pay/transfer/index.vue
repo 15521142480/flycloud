@@ -142,61 +142,85 @@
           <dict-tag :type="DICT_TYPE.PAY_TRANSFER_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="转账金额" align="center" prop="price">
+      <el-table-column
+        :label="t('auto.views.pay.transfer.TransferDetail.ka6701065')"
+        align="center"
+        prop="price"
+      >
         <template #default="scope">
           <span>￥{{ (scope.row.price / 100.0).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="转账状态" align="center" prop="status" width="120">
+      <el-table-column
+        :label="t('auto.views.pay.transfer.TransferDetail.k1a3ddc07')"
+        align="center"
+        prop="status"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_TRANSFER_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="订单号" align="left" width="300">
+      <el-table-column
+        :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k459868e5')"
+        align="left"
+        width="300"
+      >
         <template #default="scope">
           <p class="transfer-font">
-            <el-tag size="small"> 商户</el-tag>
+            <el-tag size="small"> {{ t('extra.k9f1ea351') }}</el-tag>
             {{ scope.row.merchantTransferId }}
           </p>
           <p class="transfer-font" v-if="scope.row.no">
-            <el-tag size="small" type="warning">转账</el-tag>
+            <el-tag size="small" type="warning">{{ t('extra.kacaf665f') }}</el-tag>
             {{ scope.row.no }}
           </p>
           <p class="transfer-font" v-if="scope.row.channelTransferNo">
-            <el-tag size="small" type="success">渠道</el-tag>
+            <el-tag size="small" type="success">{{ t('extra.kebee0533') }}</el-tag>
             {{ scope.row.channelTransferNo }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column label="收款人姓名" align="center" prop="userName" width="120" />
-      <el-table-column label="收款账号" align="left" width="200">
+      <el-table-column
+        :label="t('auto.views.pay.demo.transfer.DemoTransferForm.kad69bce0')"
+        align="center"
+        prop="userName"
+        width="120"
+      />
+      <el-table-column :label="t('extra.k31eab821')" align="left" width="200">
         <template #default="scope">
           <p class="transfer-font" v-if="scope.row.alipayLogonId">
-            <el-tag size="small">支付宝登录号</el-tag>
+            <el-tag size="small">{{ t('extra.kc7e48738') }}</el-tag>
             {{ scope.row.alipayLogonId }}
           </p>
           <p class="transfer-font" v-if="scope.row.openid">
-            <el-tag size="small">微信 openId</el-tag>
+            <el-tag size="small">{{ t('extra.kf3590b06') }}</el-tag>
             {{ scope.row.openid }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column label="转账标题" align="center" prop="subject" width="120" />
-      <el-table-column label="转账渠道" align="center" prop="channelCode">
+      <el-table-column :label="t('extra.k682eb4c1')" align="center" prop="subject" width="120" />
+      <el-table-column
+        :label="t('auto.views.pay.transfer.index.kb358c815')"
+        align="center"
+        prop="channelCode"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="scope.row.channelCode" />
         </template>
       </el-table-column>
       <el-table-column
-        label="转账成功时间"
+        :label="t('extra.k221632df')"
         align="center"
         prop="successTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" fixed="right">
         <template #default="scope">
-          <el-button link type="primary" @click="openDetail(scope.row.id)"> 详情 </el-button>
+          <el-button link type="primary" @click="openDetail(scope.row.id)">
+            {{ t('action.detail') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

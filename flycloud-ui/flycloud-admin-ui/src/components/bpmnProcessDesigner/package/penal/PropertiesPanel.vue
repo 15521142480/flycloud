@@ -23,15 +23,19 @@
         <signal-and-massage />
       </el-collapse-item>
       <el-collapse-item name="condition" v-if="conditionFormVisible" key="condition">
-        <template #title><Icon icon="ep:promotion" />流转条件</template>
+        <template #title><Icon icon="ep:promotion" />{{ t('extra.k86a6b198') }}</template>
         <flow-condition :business-object="elementBusinessObject" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item name="condition" v-if="formVisible" key="form">
-        <template #title><Icon icon="ep:list" />表单</template>
+        <template #title
+          ><Icon icon="ep:list" />{{
+            t('auto.components.bpmnProcessDesigner.package.designer.plugins.translate.k1f515561')
+          }}</template
+        >
         <element-form :id="elementId" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item name="task" v-if="elementType.indexOf('Task') !== -1" key="task">
-        <template #title><Icon icon="ep:checked" />任务（审批人）</template>
+        <template #title><Icon icon="ep:checked" />{{ t('extra.k006f87b4') }}</template>
         <element-task :id="elementId" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item
@@ -39,23 +43,23 @@
         v-if="elementType.indexOf('Task') !== -1"
         key="multiInstance"
       >
-        <template #title><Icon icon="ep:help-filled" />多实例（会签配置）</template>
+        <template #title><Icon icon="ep:help-filled" />{{ t('extra.kcd6957c4') }}</template>
         <element-multi-instance :business-object="elementBusinessObject" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item name="listeners" key="listeners">
-        <template #title><Icon icon="ep:bell-filled" />执行监听器</template>
+        <template #title><Icon icon="ep:bell-filled" />{{ t('extra.k97af4eaf') }}</template>
         <element-listeners :id="elementId" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item name="taskListeners" v-if="elementType === 'UserTask'" key="taskListeners">
-        <template #title><Icon icon="ep:bell-filled" />任务监听器</template>
+        <template #title><Icon icon="ep:bell-filled" />{{ t('extra.k0d22287c') }}</template>
         <user-task-listeners :id="elementId" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item name="extensions" key="extensions">
-        <template #title><Icon icon="ep:circle-plus-filled" />扩展属性</template>
+        <template #title><Icon icon="ep:circle-plus-filled" />{{ t('extra.k764553c0') }}</template>
         <element-properties :id="elementId" :type="elementType" />
       </el-collapse-item>
       <el-collapse-item name="other" key="other">
-        <template #title><Icon icon="ep:promotion" />其他</template>
+        <template #title><Icon icon="ep:promotion" />{{ t('extra.k0d98c747') }}</template>
         <element-other-config :id="elementId" />
       </el-collapse-item>
       <el-collapse-item
@@ -63,7 +67,7 @@
         v-if="elementType.indexOf('Task') !== -1"
         key="customConfig"
       >
-        <template #title><Icon icon="ep:circle-plus-filled" />自定义配置</template>
+        <template #title><Icon icon="ep:circle-plus-filled" />{{ t('extra.kce28347f') }}</template>
         <element-custom-config :id="elementId" :type="elementType" />
       </el-collapse-item>
     </el-collapse>

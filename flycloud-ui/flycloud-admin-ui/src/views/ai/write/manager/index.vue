@@ -108,55 +108,79 @@
           <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="写作类型" align="center" prop="type">
+      <el-table-column
+        :label="t('auto.views.ai.write.manager.index.k2e533a22')"
+        align="center"
+        prop="type"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_WRITE_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="平台" align="center" prop="platform" width="120">
+      <el-table-column
+        :label="t('auto.views.ai.image.index.components.other.ke4b9d694')"
+        align="center"
+        prop="platform"
+        width="120"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_PLATFORM" :value="scope.row.platform" />
         </template>
       </el-table-column>
-      <el-table-column label="模型" align="center" prop="model" width="180" />
       <el-table-column
-        label="生成内容提示"
+        :label="t('auto.views.ai.chat.index.components.conversation.k98fd0cbd')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column
+        :label="t('extra.k610fd9b5')"
         align="center"
         prop="prompt"
         width="180"
         show-overflow-tooltip
       />
-      <el-table-column label="生成的内容" align="center" prop="generatedContent" width="180" />
-      <el-table-column label="原文" align="center" prop="originalContent" width="180" />
-      <el-table-column label="长度" align="center" prop="length">
+      <el-table-column
+        :label="t('extra.k84c7f0b2')"
+        align="center"
+        prop="generatedContent"
+        width="180"
+      />
+      <el-table-column
+        :label="t('extra.ke5729e94')"
+        align="center"
+        prop="originalContent"
+        width="180"
+      />
+      <el-table-column :label="t('extra.kdfd0cd7f')" align="center" prop="length">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_WRITE_LENGTH" :value="scope.row.length" />
         </template>
       </el-table-column>
-      <el-table-column label="格式" align="center" prop="format">
+      <el-table-column :label="t('extra.ke3127cc1')" align="center" prop="format">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_WRITE_FORMAT" :value="scope.row.format" />
         </template>
       </el-table-column>
-      <el-table-column label="语气" align="center" prop="tone">
+      <el-table-column :label="t('extra.kb77a2350')" align="center" prop="tone">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_WRITE_TONE" :value="scope.row.tone" />
         </template>
       </el-table-column>
-      <el-table-column label="语言" align="center" prop="language">
+      <el-table-column :label="t('preference.language')" align="center" prop="language">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.AI_WRITE_LANGUAGE" :value="scope.row.language" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="错误信息" align="center" prop="errorMessage" />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('extra.k4604d502')" align="center" prop="errorMessage" />
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <!--          TODO @YunaiV 目前没有修改接口，写作要可以更改吗-->
           <el-button
@@ -165,7 +189,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['ai:write:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -173,7 +197,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['ai:write:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

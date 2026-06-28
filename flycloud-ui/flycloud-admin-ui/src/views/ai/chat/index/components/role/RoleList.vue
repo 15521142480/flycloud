@@ -32,7 +32,9 @@
             <div class="description">{{ role.description }}</div>
           </div>
           <div class="btn-container">
-            <el-button type="primary" size="small" @click="handleUseClick(role)">使用</el-button>
+            <el-button type="primary" size="small" @click="handleUseClick(role)">{{
+              t('extra.kecff77a8')
+            }}</el-button>
           </div>
         </div>
       </el-card>

@@ -86,15 +86,19 @@
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template #default="scope">
           <el-button
             link
@@ -102,7 +106,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['system:tenant-package:update']"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
             link
@@ -110,7 +114,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:tenant-package:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

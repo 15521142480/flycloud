@@ -70,13 +70,17 @@
             <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="scope.row.productScope" />
           </template>
         </el-table-column>
-        <el-table-column label="优惠" min-width="100" prop="discount">
+        <el-table-column :label="t('extra.kf06ebf87')" min-width="100" prop="discount">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="scope.row.discountType" />
             {{ discountFormat(scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="领取方式" min-width="100" prop="takeType">
+        <el-table-column
+          :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k1527d9df')"
+          min-width="100"
+          prop="takeType"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.PROMOTION_COUPON_TAKE_TYPE" :value="scope.row.takeType" />
           </template>
@@ -84,24 +88,28 @@
         <el-table-column
           :formatter="validityTypeFormat"
           align="center"
-          label="使用时间"
+          :label="t('extra.k01100972')"
           prop="validityType"
           width="185"
         />
-        <el-table-column align="center" label="发放数量" prop="totalCount" />
+        <el-table-column
+          align="center"
+          :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k54d6b5f2')"
+          prop="totalCount"
+        />
         <el-table-column
           :formatter="remainedCountFormat"
           align="center"
-          label="剩余数量"
+          :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k0ca28093')"
           prop="totalCount"
         />
         <el-table-column
           :formatter="takeLimitCountFormat"
           align="center"
-          label="领取上限"
+          :label="t('extra.k666e6fea')"
           prop="takeLimitCount"
         />
-        <el-table-column align="center" label="状态" prop="status">
+        <el-table-column align="center" :label="t('common.status')" prop="status">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
           </template>
@@ -116,8 +124,12 @@
       />
     </ContentWrap>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

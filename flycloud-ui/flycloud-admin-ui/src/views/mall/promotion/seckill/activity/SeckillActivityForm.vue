@@ -27,7 +27,7 @@
               <el-input-number v-model="sku.productConfig.stock" :min="0" class="w-100%" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="秒杀价格(元)" min-width="168">
+          <el-table-column align="center" :label="t('extra.k08d8d613')" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.seckillPrice"
@@ -42,8 +42,12 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" @confirm="selectSpu" />

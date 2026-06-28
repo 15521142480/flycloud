@@ -30,7 +30,13 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="left" label="客户名称" prop="customerName" width="120">
+      <el-table-column
+        align="center"
+        fixed="left"
+        :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+        prop="customerName"
+        width="120"
+      >
         <template #default="scope">
           <el-link
             :underline="false"
@@ -44,60 +50,75 @@
       <el-table-column
         :formatter="erpPriceTableColumnFormatter"
         align="center"
-        label="商机金额（元）"
+        :label="t('auto.views.crm.business.detail.BusinessDetailsHeader.k9ee5e0c1')"
         prop="totalPrice"
         width="140"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="预计成交日期"
+        :label="t('auto.views.crm.business.BusinessForm.k491e6c11')"
         prop="dealTime"
         width="180px"
       />
-      <el-table-column align="center" label="备注" prop="remark" width="200" />
+      <el-table-column align="center" :label="t('common.remark')" prop="remark" width="200" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="下次联系时间"
+        :label="t('auto.views.crm.clue.ClueForm.k8e1beb13')"
         prop="contactNextTime"
         width="180px"
       />
-      <el-table-column align="center" label="负责人" prop="ownerUserName" width="100px" />
-      <el-table-column align="center" label="所属部门" prop="ownerUserDeptName" width="100px" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.business.BusinessForm.k974d383f')"
+        prop="ownerUserName"
+        width="100px"
+      />
+      <el-table-column
+        align="center"
+        :label="t('profile.user.dept')"
+        prop="ownerUserDeptName"
+        width="100px"
+      />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="最后跟进时间"
+        :label="t('extra.kffa0750f')"
         prop="contactLastTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="更新时间"
+        :label="t('common.updateTime')"
         prop="updateTime"
         width="180px"
       />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" label="创建人" prop="creatorName" width="100px" />
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+        prop="creatorName"
+        width="100px"
+      />
       <el-table-column
         align="center"
         fixed="right"
-        label="商机状态组"
+        :label="t('auto.views.crm.business.BusinessForm.k9d0edbd1')"
         prop="statusTypeName"
         width="140"
       />
       <el-table-column
         align="center"
         fixed="right"
-        label="商机阶段"
+        :label="t('auto.views.crm.business.BusinessUpdateStatusForm.kc0a20f9a')"
         prop="statusName"
         width="120"
       />

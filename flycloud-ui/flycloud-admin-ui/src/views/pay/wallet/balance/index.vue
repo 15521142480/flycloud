@@ -76,28 +76,38 @@
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column label="余额" align="center" prop="balance">
-        <template #default="{ row }"> {{ fenToYuan(row.balance) }} 元</template>
+      <el-table-column :label="t('extra.ke05e6f34')" align="center" prop="balance">
+        <template #default="{ row }">
+          {{ fenToYuan(row.balance) }} {{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
-      <el-table-column label="累计支出" align="center" prop="totalExpense">
-        <template #default="{ row }"> {{ fenToYuan(row.totalExpense) }} 元</template>
+      <el-table-column :label="t('extra.kb333ae8a')" align="center" prop="totalExpense">
+        <template #default="{ row }">
+          {{ fenToYuan(row.totalExpense) }} {{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
-      <el-table-column label="累计充值" align="center" prop="totalRecharge">
-        <template #default="{ row }"> {{ fenToYuan(row.totalRecharge) }} 元</template>
+      <el-table-column :label="t('extra.k8af6c290')" align="center" prop="totalRecharge">
+        <template #default="{ row }">
+          {{ fenToYuan(row.totalRecharge) }} {{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
-      <el-table-column label="冻结金额" align="center" prop="freezePrice">
-        <template #default="{ row }"> {{ fenToYuan(row.freezePrice) }} 元</template>
+      <el-table-column :label="t('extra.kd191ab79')" align="center" prop="freezePrice">
+        <template #default="{ row }">
+          {{ fenToYuan(row.freezePrice) }} {{ t('extra.k2d94e2e7') }}</template
+        >
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
-          <el-button link type="primary" @click="openForm(scope.row.id)">详情</el-button>
+          <el-button link type="primary" @click="openForm(scope.row.id)">{{
+            t('action.detail')
+          }}</el-button>
         </template>
       </el-table-column>
     </el-table>

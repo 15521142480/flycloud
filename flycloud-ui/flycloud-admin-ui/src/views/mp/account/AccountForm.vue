@@ -22,49 +22,51 @@
             {{ t('extra.k9919d199') }}
           </span>
         </template>
-        <el-input v-model="formData.account" placeholder="请输入微信号" />
+        <el-input v-model="formData.account" :placeholder="t('extra.k1d70e655')" />
       </el-form-item>
       <el-form-item label="appId" prop="appId">
         <template #label>
           <span>
-            <el-tooltip
-              content="在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 基本设置] 中能找到「开发者ID(AppID)」"
-              placement="top"
-            >
+            <el-tooltip :content="t('extra.k260bfc75')" placement="top">
               <Icon icon="ep:question-filled" style="vertical-align: middle" />
             </el-tooltip>
             appId
           </span>
         </template>
-        <el-input v-model="formData.appId" placeholder="请输入公众号 appId" />
+        <el-input v-model="formData.appId" :placeholder="t('extra.k16bc7073')" />
       </el-form-item>
       <el-form-item label="appSecret" prop="appSecret">
         <template #label>
           <span>
-            <el-tooltip
-              content="在微信公众平台（mp.weixin.qq.com）的菜单 [设置与开发 - 公众号设置 - 基本设置] 中能找到「开发者密码(AppSecret)」"
-              placement="top"
-            >
+            <el-tooltip :content="t('extra.k2c7ecde9')" placement="top">
               <Icon icon="ep:question-filled" style="vertical-align: middle" />
             </el-tooltip>
             appSecret
           </span>
         </template>
-        <el-input v-model="formData.appSecret" placeholder="请输入公众号 appSecret" />
+        <el-input v-model="formData.appSecret" :placeholder="t('extra.k88155e39')" />
       </el-form-item>
       <el-form-item label="token" prop="token">
-        <el-input v-model="formData.token" placeholder="请输入公众号token" />
+        <el-input v-model="formData.token" :placeholder="t('extra.k6830a219')" />
       </el-form-item>
-      <el-form-item label="消息加解密密钥" prop="aesKey">
-        <el-input v-model="formData.aesKey" placeholder="请输入消息加解密密钥" />
+      <el-form-item :label="t('extra.k15373d5c')" prop="aesKey">
+        <el-input v-model="formData.aesKey" :placeholder="t('extra.k857109f1')" />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输入备注" type="textarea" />
+      <el-form-item :label="t('common.remark')" prop="remark">
+        <el-input
+          v-model="formData.remark"
+          :placeholder="t('auto.views.crm.business.BusinessForm.k57e709d9')"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

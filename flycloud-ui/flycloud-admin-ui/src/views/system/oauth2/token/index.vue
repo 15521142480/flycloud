@@ -87,20 +87,20 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="过期时间"
+        :label="t('auto.views.pay.cashier.index.k27aefecf')"
         align="center"
         prop="expiresTime"
         :formatter="dateFormatter"
         width="180"
       />
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -108,7 +108,7 @@
             @click="handleForceLogout(scope.row.accessToken)"
             v-hasPermi="['system:oauth2-token:delete']"
           >
-            强退
+            {{ t('extra.k4a69ec74') }}
           </el-button>
         </template>
       </el-table-column>

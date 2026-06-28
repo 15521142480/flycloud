@@ -109,15 +109,19 @@
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="分类排序" align="center" prop="sort" />
       <el-table-column
-        label="创建时间"
+        :label="t('auto.views.bpm.category.CategoryForm.k2b77925f')"
+        align="center"
+        prop="sort"
+      />
+      <el-table-column
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -125,7 +129,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['bpm:manage:category:saveOrUpdate']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -133,7 +137,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['bpm:manage:category:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

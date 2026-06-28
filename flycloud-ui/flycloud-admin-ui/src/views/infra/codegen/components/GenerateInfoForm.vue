@@ -66,7 +66,7 @@
             :props="menuTreeProps"
             check-strictly
             node-key="id"
-            placeholder="请选择系统菜单"
+            :placeholder="t('extra.kfa755c67')"
           />
         </el-form-item>
       </el-col>
@@ -87,11 +87,8 @@
         <el-form-item prop="moduleName">
           <template #label>
             <span>
-              模块名
-              <el-tooltip
-                content="模块名，即一级目录，例如 system、infra、tool 等等"
-                placement="top"
-              >
+              {{ t('extra.k322ff093') }}
+              <el-tooltip :content="t('extra.kf113775f')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
@@ -104,11 +101,8 @@
         <el-form-item prop="businessName">
           <template #label>
             <span>
-              业务名
-              <el-tooltip
-                content="业务名，即二级目录，例如 user、permission、dict 等等"
-                placement="top"
-              >
+              {{ t('extra.k4884cc8f') }}
+              <el-tooltip :content="t('extra.k03a805da')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
@@ -133,11 +127,8 @@
         <el-form-item prop="className">
           <template #label>
             <span>
-              类名称
-              <el-tooltip
-                content="类名称（首字母大写），例如SysUser、SysMenu、SysDictData 等等"
-                placement="top"
-              >
+              {{ t('extra.ka7a7f8c4') }}
+              <el-tooltip :content="t('extra.k83014a4e')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
@@ -150,8 +141,8 @@
         <el-form-item prop="classComment">
           <template #label>
             <span>
-              类描述
-              <el-tooltip content="用作类描述，例如 用户" placement="top">
+              {{ t('extra.k0016dce5') }}
+              <el-tooltip :content="t('extra.k931448d1')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
@@ -164,11 +155,8 @@
         <el-form-item prop="genPath">
           <template #label>
             <span>
-              自定义路径
-              <el-tooltip
-                content="填写磁盘绝对路径，若不填写，则生成到当前Web项目下"
-                placement="top"
-              >
+              {{ t('extra.k4f356348') }}
+              <el-tooltip :content="t('extra.kb5e23fcb')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
@@ -177,13 +165,12 @@
             <template #append>
               <el-dropdown>
                 <el-button type="primary">
-                  最近路径快速选择
-                  <i class="el-icon-arrow-down el-icon--right"></i>
+                  {{ t('extra.k8aa6b8f8') }} <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item @click="formData.genPath = '/'">
-                      恢复默认的生成基础路径
+                      {{ t('extra.kb2409de3') }}
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -197,19 +184,19 @@
     <!-- 树表信息 -->
     <el-row v-if="formData.templateType == 2">
       <el-col :span="24">
-        <h4 class="form-header">树表信息</h4>
+        <h4 class="form-header">{{ t('extra.kc2369c23') }}</h4>
       </el-col>
       <el-col :span="12">
         <el-form-item prop="treeParentColumnId">
           <template #label>
             <span>
-              父编号字段
-              <el-tooltip content="树显示的父编码字段名， 如：parent_Id" placement="top">
+              {{ t('extra.k6f838183') }}
+              <el-tooltip :content="t('extra.kb5d06859')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model="formData.treeParentColumnId" placeholder="请选择">
+          <el-select v-model="formData.treeParentColumnId" :placeholder="t('common.selectText')">
             <el-option
               v-for="(column, index) in props.columns"
               :key="index"
@@ -223,13 +210,13 @@
         <el-form-item prop="treeNameColumnId">
           <template #label>
             <span>
-              树名称字段
-              <el-tooltip content="树节点的显示名称字段名， 如：dept_name" placement="top">
+              {{ t('extra.kc136b47b') }}
+              <el-tooltip :content="t('extra.kb2adc48a')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model="formData.treeNameColumnId" placeholder="请选择">
+          <el-select v-model="formData.treeNameColumnId" :placeholder="t('common.selectText')">
             <el-option
               v-for="(column, index) in props.columns"
               :key="index"
@@ -244,19 +231,19 @@
     <!-- 主表信息 -->
     <el-row v-if="formData.templateType == 15">
       <el-col :span="24">
-        <h4 class="form-header">主表信息</h4>
+        <h4 class="form-header">{{ t('extra.k6ee68497') }}</h4>
       </el-col>
       <el-col :span="12">
         <el-form-item prop="masterTableId">
           <template #label>
             <span>
-              关联的主表
-              <el-tooltip content="关联主表（父表）的表名， 如：system_user" placement="top">
+              {{ t('extra.kfc7f2cf7') }}
+              <el-tooltip :content="t('extra.kc1f214dd')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model="formData.masterTableId" placeholder="请选择">
+          <el-select v-model="formData.masterTableId" :placeholder="t('common.selectText')">
             <el-option
               v-for="(table0, index) in tables"
               :key="index"
@@ -270,13 +257,13 @@
         <el-form-item prop="subJoinColumnId">
           <template #label>
             <span>
-              子表关联的字段
-              <el-tooltip content="子表关联的字段， 如：user_id" placement="top">
+              {{ t('extra.kfae46df5') }}
+              <el-tooltip :content="t('extra.k8f2c5594')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
           </template>
-          <el-select v-model="formData.subJoinColumnId" placeholder="请选择">
+          <el-select v-model="formData.subJoinColumnId" :placeholder="t('common.selectText')">
             <el-option
               v-for="(column, index) in props.columns"
               :key="index"
@@ -290,15 +277,15 @@
         <el-form-item prop="subJoinMany">
           <template #label>
             <span>
-              关联关系
-              <el-tooltip content="主表与子表的关联关系" placement="top">
+              {{ t('extra.k6f6061ac') }}
+              <el-tooltip :content="t('extra.kff68907c')" placement="top">
                 <Icon icon="ep:question-filled" />
               </el-tooltip>
             </span>
           </template>
-          <el-radio-group v-model="formData.subJoinMany" placeholder="请选择">
-            <el-radio :value="true">一对多</el-radio>
-            <el-radio :value="false">一对一</el-radio>
+          <el-radio-group v-model="formData.subJoinMany" :placeholder="t('common.selectText')">
+            <el-radio :value="true">{{ t('extra.k78d5eb01') }}</el-radio>
+            <el-radio :value="false">{{ t('extra.kdd7768f4') }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>

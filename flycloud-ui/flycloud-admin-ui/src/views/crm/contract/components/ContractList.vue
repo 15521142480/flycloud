@@ -22,29 +22,37 @@
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column label="合同编号" align="center" prop="no" />
-      <el-table-column label="客户名称" align="center" prop="customerName" />
       <el-table-column
-        label="合同金额（元）"
+        :label="t('auto.views.crm.backlog.components.ContractAuditList.k17b34173')"
+        align="center"
+        prop="no"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+        align="center"
+        prop="customerName"
+      />
+      <el-table-column
+        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k4687c195')"
         align="center"
         prop="totalPrice"
         :formatter="erpPriceTableColumnFormatter"
       />
       <el-table-column
-        label="开始时间"
+        :label="t('common.startTimeText')"
         align="center"
         prop="startTime"
         :formatter="dateFormatter"
         width="180px"
       />
       <el-table-column
-        label="结束时间"
+        :label="t('common.endTimeText')"
         align="center"
         prop="endTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column align="center" label="状态" prop="auditStatus">
+      <el-table-column align="center" :label="t('common.status')" prop="auditStatus">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.CRM_AUDIT_STATUS" :value="scope.row.auditStatus" />
         </template>

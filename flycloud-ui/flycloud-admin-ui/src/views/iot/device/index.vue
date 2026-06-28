@@ -101,30 +101,42 @@
           <el-link @click="openDetail(scope.row.id)">{{ scope.row.deviceName }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="备注名称" align="center" prop="name" />
-      <el-table-column label="设备所属产品" align="center" prop="productId">
+      <el-table-column
+        :label="t('auto.views.iot.device.DeviceForm.k90f8a65c')"
+        align="center"
+        prop="name"
+      />
+      <el-table-column :label="t('extra.ka40bedeb')" align="center" prop="productId">
         <template #default="scope">
           {{ productMap[scope.row.productId] }}
         </template>
       </el-table-column>
-      <el-table-column label="设备类型" align="center" prop="deviceType">
+      <el-table-column
+        :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k47a991d1')"
+        align="center"
+        prop="deviceType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.IOT_PRODUCT_DEVICE_TYPE" :value="scope.row.deviceType" />
         </template>
       </el-table-column>
-      <el-table-column label="设备状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.iot.device.index.k567a4c84')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.IOT_DEVICE_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="最后上线时间"
+        :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k450b4a74')"
         align="center"
         prop="lastOnlineTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center" min-width="120px">
+      <el-table-column :label="t('common.operation')" align="center" min-width="120px">
         <template #default="scope">
           <el-button
             link
@@ -132,7 +144,7 @@
             @click="openDetail(scope.row.id)"
             v-hasPermi="['iot:product:query']"
           >
-            查看
+            {{ t('auto.components.UploadFile.src.UploadImgs.kf7acefd2') }}
           </el-button>
           <el-button
             link
@@ -140,7 +152,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['iot:device:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -148,7 +160,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['iot:device:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

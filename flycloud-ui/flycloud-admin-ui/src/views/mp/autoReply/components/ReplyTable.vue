@@ -22,12 +22,15 @@
         <dict-tag :type="DICT_TYPE.MP_AUTO_REPLY_REQUEST_MATCH" :value="scope.row.requestMatch" />
       </template>
     </el-table-column>
-    <el-table-column label="回复消息类型" align="center">
+    <el-table-column :label="t('extra.k1fdeeda3')" align="center">
       <template #default="scope">
         <dict-tag :type="DICT_TYPE.MP_MESSAGE_TYPE" :value="scope.row.responseMessageType" />
       </template>
     </el-table-column>
-    <el-table-column label="回复内容" align="center">
+    <el-table-column
+      :label="t('auto.views.mall.product.comment.ReplyForm.ka36c787d')"
+      align="center"
+    >
       <template #default="scope">
         <div v-if="scope.row.responseMessageType === 'text'">{{ scope.row.responseContent }}</div>
         <div v-else-if="scope.row.responseMessageType === 'voice'">
@@ -65,13 +68,13 @@
       </template>
     </el-table-column>
     <el-table-column
-      label="创建时间"
+      :label="t('common.createTime')"
       align="center"
       prop="createTime"
       :formatter="dateFormatter"
       width="180"
     />
-    <el-table-column label="操作" align="center">
+    <el-table-column :label="t('common.operation')" align="center">
       <template #default="scope">
         <el-button
           type="primary"
@@ -79,7 +82,7 @@
           @click="emit('on-update', scope.row.id)"
           v-hasPermi="['mp:auto-reply:update']"
         >
-          修改
+          {{ t('extra.k4c512392') }}
         </el-button>
         <el-button
           type="danger"
@@ -87,7 +90,7 @@
           @click="emit('on-delete', scope.row.id)"
           v-hasPermi="['mp:auto-reply:delete']"
         >
-          删除
+          {{ t('common.delete') }}
         </el-button>
       </template>
     </el-table-column>

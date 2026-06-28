@@ -80,19 +80,19 @@
           :placeholder="t('extra.kmenuOldComponentNamePlaceholder')"
         />
       </el-form-item>
-      <el-form-item v-if="formData.type !== 1" label="权限标识" prop="permission">
+      <el-form-item v-if="formData.type !== 1" :label="t('extra.k4379f002')" prop="permission">
         <template #label>
           <Tooltip
             message="Controller 方法上的权限字符，如：@PreAuthorize(`@ss.hasPermission('system:user:list')`)"
-            title="权限标识"
+            :title="t('extra.k4379f002')"
           />
         </template>
-        <el-input v-model="formData.permission" clearable placeholder="请输入权限标识" />
+        <el-input v-model="formData.permission" clearable :placeholder="t('extra.k73497420')" />
       </el-form-item>
-      <el-form-item label="显示排序" prop="sort">
+      <el-form-item :label="t('system.menu.displaySort')" prop="sort">
         <el-input-number v-model="formData.sort" :min="0" clearable controls-position="right" />
       </el-form-item>
-      <el-form-item label="菜单状态" prop="status">
+      <el-form-item :label="t('system.menu.menuStatus')" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -103,43 +103,62 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="formData.type !== 3" label="显示状态" prop="visible">
+      <el-form-item
+        v-if="formData.type !== 3"
+        :label="t('system.menu.visibleStatus')"
+        prop="visible"
+      >
         <template #label>
-          <Tooltip message="选择隐藏时，路由将不会出现在侧边栏，但仍然可以访问" title="显示状态" />
+          <Tooltip
+            message="选择隐藏时，路由将不会出现在侧边栏，但仍然可以访问"
+            :title="t('system.menu.visibleStatus')"
+          />
         </template>
         <el-radio-group v-model="formData.visible">
-          <el-radio key="true" :value="true" border>显示</el-radio>
-          <el-radio key="false" :value="false" border>隐藏</el-radio>
+          <el-radio key="true" :value="true" border>{{ t('system.menu.visible') }}</el-radio>
+          <el-radio key="false" :value="false" border>{{ t('system.menu.hidden') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="formData.type !== 3" label="总是显示" prop="alwaysShow">
+      <el-form-item
+        v-if="formData.type !== 3"
+        :label="t('system.menu.alwaysShow')"
+        prop="alwaysShow"
+      >
         <template #label>
           <Tooltip
             message="选择不是时，当该菜单只有一个子菜单时，不展示自己，直接展示子菜单"
-            title="总是显示"
+            :title="t('system.menu.alwaysShow')"
           />
         </template>
         <el-radio-group v-model="formData.alwaysShow">
-          <el-radio key="true" :value="true" border>总是</el-radio>
-          <el-radio key="false" :value="false" border>不是</el-radio>
+          <el-radio key="true" :value="true" border>{{ t('system.menu.always') }}</el-radio>
+          <el-radio key="false" :value="false" border>{{ t('system.menu.notAlways') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="formData.type === 2" label="缓存状态" prop="keepAlive">
+      <el-form-item
+        v-if="formData.type === 2"
+        :label="t('system.menu.cacheStatus')"
+        prop="keepAlive"
+      >
         <template #label>
           <Tooltip
             message="选择缓存时，则会被 `keep-alive` 缓存，必须填写「组件名称」字段"
-            title="缓存状态"
+            :title="t('system.menu.cacheStatus')"
           />
         </template>
         <el-radio-group v-model="formData.keepAlive">
-          <el-radio key="true" :value="true" border>缓存</el-radio>
-          <el-radio key="false" :value="false" border>不缓存</el-radio>
+          <el-radio key="true" :value="true" border>{{ t('system.menu.cache') }}</el-radio>
+          <el-radio key="false" :value="false" border>{{ t('system.menu.noCache') }}</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

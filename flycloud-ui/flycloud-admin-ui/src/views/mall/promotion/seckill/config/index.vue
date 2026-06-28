@@ -97,7 +97,11 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="活动状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <el-switch
             v-model="scope.row.status"
@@ -108,13 +112,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -122,7 +126,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:seckill-config:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -130,7 +134,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['promotion:seckill-config:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

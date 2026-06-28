@@ -52,16 +52,24 @@
               </div>
               <div class="button-wrapper" v-show="hoverConversationId === conversation.id">
                 <el-button class="btn" link @click.stop="handleTop(conversation)">
-                  <el-icon title="置顶" v-if="!conversation.pinned"><Top /></el-icon>
-                  <el-icon title="置顶" v-if="conversation.pinned"><Bottom /></el-icon>
+                  <el-icon
+                    :title="t('auto.views.ai.chat.index.components.conversation.k7bcf1864')"
+                    v-if="!conversation.pinned"
+                    ><Top
+                  /></el-icon>
+                  <el-icon
+                    :title="t('auto.views.ai.chat.index.components.conversation.k7bcf1864')"
+                    v-if="conversation.pinned"
+                    ><Bottom
+                  /></el-icon>
                 </el-button>
                 <el-button class="btn" link @click.stop="updateConversationTitle(conversation)">
-                  <el-icon title="编辑">
+                  <el-icon :title="t('common.edit')">
                     <Icon icon="ep:edit" />
                   </el-icon>
                 </el-button>
                 <el-button class="btn" link @click.stop="deleteChatConversation(conversation)">
-                  <el-icon title="删除对话">
+                  <el-icon :title="t('extra.k1021bde0')">
                     <Icon icon="ep:delete" />
                   </el-icon>
                 </el-button>
@@ -78,16 +86,22 @@
     <div class="tool-box">
       <div @click="handleRoleRepository">
         <Icon icon="ep:user" />
-        <el-text size="small">角色仓库</el-text>
+        <el-text size="small">{{
+          t('auto.views.ai.chat.index.components.role.kd92b5239')
+        }}</el-text>
       </div>
       <div @click="handleClearConversation">
         <Icon icon="ep:delete" />
-        <el-text size="small">清空未置顶对话</el-text>
+        <el-text size="small">{{ t('extra.kfffa19fd') }}</el-text>
       </div>
     </div>
 
     <!-- 角色仓库抽屉 -->
-    <el-drawer v-model="roleRepositoryOpen" title="角色仓库" size="754px">
+    <el-drawer
+      v-model="roleRepositoryOpen"
+      :title="t('auto.views.ai.chat.index.components.role.kd92b5239')"
+      size="754px"
+    >
       <RoleRepository />
     </el-drawer>
   </el-aside>

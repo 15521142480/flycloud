@@ -32,7 +32,7 @@
             @click="openForm('create')"
             v-hasPermi="['bpm:manage:model:create']"
           >
-            <Icon icon="ep:plus" class="mr-5px" /> 新建模型
+            <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kac8ad8d0') }}
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -44,11 +44,11 @@
               <el-dropdown-menu>
                 <el-dropdown-item command="handleCategoryAdd">
                   <Icon icon="ep:circle-plus" :size="13" class="mr-5px" />
-                  新建分类
+                  {{ t('extra.k472b0fb4') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="handleCategorySort">
                   <Icon icon="fa:sort-amount-desc" :size="13" class="mr-5px" />
-                  分类排序
+                  {{ t('auto.views.bpm.category.CategoryForm.k2b77925f') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -56,8 +56,12 @@
         </el-form-item>
       </el-form>
       <div class="mr-20px" v-else>
-        <el-button @click="handleCategorySortCancel"> 取 消 </el-button>
-        <el-button type="primary" @click="handleCategorySortSubmit"> 保存排序 </el-button>
+        <el-button @click="handleCategorySortCancel">
+          {{ t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc') }}
+        </el-button>
+        <el-button type="primary" @click="handleCategorySortSubmit">
+          {{ t('extra.kcbe89f13') }}
+        </el-button>
       </div>
     </div>
 
@@ -94,7 +98,7 @@
   <!-- 表单弹窗：添加分类 -->
   <CategoryForm ref="categoryFormRef" @success="getList" />
   <!-- 弹窗：表单详情 -->
-  <Dialog title="表单详情" v-model="formDetailVisible" width="800">
+  <Dialog :title="t('extra.k216a0b25')" v-model="formDetailVisible" width="800">
     <form-create :rule="formDetailPreview.rule" :option="formDetailPreview.option" />
   </Dialog>
 </template>

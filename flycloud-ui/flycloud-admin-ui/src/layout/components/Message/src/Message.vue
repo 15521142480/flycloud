@@ -3,6 +3,7 @@ import { formatDate } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'
 
 defineOptions({ name: 'Message' })
+const { t } = useI18n()
 
 const { push } = useRouter()
 const activeName = ref('notice')
@@ -18,7 +19,6 @@ const getList = async () => {
 
 // 获得未读消息数
 const getUnreadCount = async () => {
-
   // todo 先写死
   unreadCount.value = 2
   // NotifyMessageApi.getUnreadNotifyMessageCount().then((data) => {
@@ -55,7 +55,7 @@ onMounted(() => {
         </ElBadge>
       </template>
       <ElTabs v-model="activeName">
-        <ElTabPane label="我的站内信" name="notice">
+        <ElTabPane :label="t('auto.router.modules.remaining.k77e7ae0c')" name="notice">
           <el-scrollbar class="message-list">
             <template v-for="item in list" :key="item.id">
               <div class="message-item">
@@ -75,7 +75,7 @@ onMounted(() => {
       </ElTabs>
       <!-- 更多 -->
       <div style="margin-top: 10px; text-align: right">
-        <XButton preIcon="ep:view" title="查看全部" type="primary" @click="goMyList" />
+        <XButton preIcon="ep:view" :title="t('extra.k0467cc92')" type="primary" @click="goMyList" />
       </div>
     </ElPopover>
   </div>

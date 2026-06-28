@@ -36,7 +36,7 @@
         <el-card>
           <template #header>
             <div>
-              <span>累计用户数据</span>
+              <span>{{ t('extra.k0e801c4e') }}</span>
             </div>
           </template>
           <Echart :options="userCumulateOption" :height="420" />
@@ -46,7 +46,7 @@
         <el-card>
           <template #header>
             <div>
-              <span>消息概况数据</span>
+              <span>{{ t('extra.kcd69e364') }}</span>
             </div>
           </template>
           <Echart :options="upstreamMessageOption" :height="420" />
@@ -56,7 +56,7 @@
         <el-card>
           <template #header>
             <div>
-              <span>接口分析数据</span>
+              <span>{{ t('extra.k8f334054') }}</span>
             </div>
           </template>
           <Echart :options="interfaceSummaryOption" :height="420" />

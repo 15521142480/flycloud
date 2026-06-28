@@ -65,7 +65,6 @@ export const getRawRoute = (route: RouteLocationNormalized): RouteLocationNormal
  *
  */
 export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecordRaw[] => {
-
   const res: AppRouteRecordRaw[] = []
   const modulesRoutesKeys = Object.keys(modules)
   for (const route of routes) {

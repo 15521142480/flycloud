@@ -11,37 +11,43 @@
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="ep:suitcase" label=" 成长值 " />
+        <descriptions-item-label icon="ep:suitcase" :label="t('extra.k4a23832a')" />
       </template>
       {{ user.experience || 0 }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="ep:coin" label=" 当前积分 " />
+        <descriptions-item-label icon="ep:coin" :label="t('extra.k701a03c0')" />
       </template>
       {{ user.point || 0 }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="ep:coin" label=" 总积分 " />
+        <descriptions-item-label icon="ep:coin" :label="t('extra.ke06ab0e3')" />
       </template>
       {{ user.totalPoint || 0 }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="svg-icon:member_balance" label=" 当前余额 " />
+        <descriptions-item-label icon="svg-icon:member_balance" :label="t('extra.kae190ef1')" />
       </template>
       {{ fenToYuan(wallet.balance || 0) }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="svg-icon:member_expenditure_balance" label=" 支出金额 " />
+        <descriptions-item-label
+          icon="svg-icon:member_expenditure_balance"
+          :label="t('auto.views.mall.statistics.trade.index.k41fc3a1c')"
+        />
       </template>
       {{ fenToYuan(wallet.totalExpense || 0) }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
-        <descriptions-item-label icon="svg-icon:member_recharge_balance" label=" 充值金额 " />
+        <descriptions-item-label
+          icon="svg-icon:member_recharge_balance"
+          :label="t('auto.views.mall.statistics.trade.index.kbb535002')"
+        />
       </template>
       {{ fenToYuan(wallet.totalRecharge || 0) }}
     </el-descriptions-item>

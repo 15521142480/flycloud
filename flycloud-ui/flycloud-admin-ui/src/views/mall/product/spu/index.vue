@@ -126,8 +126,12 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="商品编号" min-width="140" prop="id" />
-      <el-table-column label="商品信息" min-width="300">
+      <el-table-column
+        :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
+        min-width="140"
+        prop="id"
+      />
+      <el-table-column :label="t('extra.k7519f060')" min-width="300">
         <template #default="{ row }">
           <div class="flex">
             <el-image
@@ -146,47 +150,59 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="价格" min-width="160" prop="price">
+      <el-table-column
+        align="center"
+        :label="t('auto.views.crm.product.ProductForm.kb70c2d28')"
+        min-width="160"
+        prop="price"
+      >
         <template #default="{ row }"> ¥ {{ fenToYuan(row.price) }}</template>
       </el-table-column>
-      <el-table-column align="center" label="销量" min-width="90" prop="salesCount" />
-      <el-table-column align="center" label="库存" min-width="90" prop="stock" />
-      <el-table-column align="center" label="排序" min-width="70" prop="sort" />
-      <el-table-column align="center" label="销售状态" min-width="80">
+      <el-table-column
+        align="center"
+        :label="t('extra.k44e7ebb4')"
+        min-width="90"
+        prop="salesCount"
+      />
+      <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="90" prop="stock" />
+      <el-table-column align="center" :label="t('common.sort')" min-width="70" prop="sort" />
+      <el-table-column align="center" :label="t('extra.k8fef583c')" min-width="80">
         <template #default="{ row }">
           <template v-if="row.status >= 0">
             <el-switch
               v-model="row.status"
               :active-value="1"
               :inactive-value="0"
-              active-text="上架"
-              inactive-text="下架"
+              :active-text="t('auto.utils.constants.kddc61d57')"
+              :inactive-text="t('auto.utils.constants.ka2698bcf')"
               inline-prompt
               @change="handleStatusChange(row)"
             />
           </template>
           <template v-else>
-            <el-tag type="info">回收站</el-tag>
+            <el-tag type="info">{{ t('auto.utils.constants.k64ea8751') }}</el-tag>
           </template>
         </template>
       </el-table-column>
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        label="创建时间"
+        :label="t('common.createTime')"
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" fixed="right" label="操作" min-width="200">
+      <el-table-column align="center" fixed="right" :label="t('common.operation')" min-width="200">
         <template #default="{ row }">
-          <el-button link type="primary" @click="openDetail(row.id)"> 详情 </el-button>
+          <el-button link type="primary" @click="openDetail(row.id)">
+            {{ t('action.detail') }}
+          </el-button>
           <el-button
             v-hasPermi="['product:spu:update']"
             link
             type="primary"
             @click="openForm(row.id)"
           >
-            修改
+            {{ t('extra.k4c512392') }}
           </el-button>
           <template v-if="queryParams.tabType === 4">
             <el-button
@@ -195,7 +211,7 @@
               type="danger"
               @click="handleDelete(row.id)"
             >
-              删除
+              {{ t('common.delete') }}
             </el-button>
             <el-button
               v-hasPermi="['product:spu:update']"
@@ -203,7 +219,7 @@
               type="primary"
               @click="handleStatus02Change(row, ProductSpuStatusEnum.DISABLE.status)"
             >
-              恢复
+              {{ t('extra.kc7db6d4f') }}
             </el-button>
           </template>
           <template v-else>
@@ -213,7 +229,7 @@
               type="danger"
               @click="handleStatus02Change(row, ProductSpuStatusEnum.RECYCLE.status)"
             >
-              回收
+              {{ t('extra.k7f9298c2') }}
             </el-button>
           </template>
         </template>

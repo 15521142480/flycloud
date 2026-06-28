@@ -142,49 +142,82 @@
       >
         <template #default="scope"> ￥{{ parseFloat(scope.row.price / 100).toFixed(2) }} </template>
       </el-table-column>
-      <el-table-column label="退款金额" align="center" prop="refundPrice" width="100">
+      <el-table-column
+        :label="t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2')"
+        align="center"
+        prop="refundPrice"
+        width="100"
+      >
         <template #default="scope">
           ￥{{ parseFloat(scope.row.refundPrice / 100).toFixed(2) }}
         </template>
       </el-table-column>
-      <el-table-column label="手续金额" align="center" prop="channelFeePrice" width="100">
+      <el-table-column
+        :label="t('extra.k4ba80178')"
+        align="center"
+        prop="channelFeePrice"
+        width="100"
+      >
         <template #default="scope">
           ￥{{ parseFloat(scope.row.channelFeePrice / 100).toFixed(2) }}
         </template>
       </el-table-column>
-      <el-table-column label="订单号" align="left" width="300">
+      <el-table-column
+        :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k459868e5')"
+        align="left"
+        width="300"
+      >
         <template #default="scope">
           <p class="order-font">
-            <el-tag size="small"> 商户</el-tag> {{ scope.row.merchantOrderId }}
+            <el-tag size="small"> {{ t('extra.k9f1ea351') }}</el-tag>
+            {{ scope.row.merchantOrderId }}
           </p>
           <p class="order-font" v-if="scope.row.no">
-            <el-tag size="small" type="warning">支付</el-tag> {{ scope.row.no }}
+            <el-tag size="small" type="warning">{{
+              t('auto.components.AppLinkInput.data.k9a2dba3c')
+            }}</el-tag>
+            {{ scope.row.no }}
           </p>
           <p class="order-font" v-if="scope.row.channelOrderNo">
-            <el-tag size="small" type="success">渠道</el-tag> {{ scope.row.channelOrderNo }}
+            <el-tag size="small" type="success">{{ t('extra.kebee0533') }}</el-tag>
+            {{ scope.row.channelOrderNo }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column label="支付状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.pay.order.OrderDetail.kb9f11a33')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_ORDER_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="支付渠道" align="center" prop="channelCode" width="140">
+      <el-table-column
+        :label="t('auto.views.pay.order.OrderDetail.k88b37342')"
+        align="center"
+        prop="channelCode"
+        width="140"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="scope.row.channelCode" />
         </template>
       </el-table-column>
       <el-table-column
-        label="支付时间"
+        :label="t('auto.views.pay.order.OrderDetail.kd4c9603f')"
         align="center"
         prop="successTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="支付应用" align="center" prop="appName" width="100" />
-      <el-table-column label="商品标题" align="center" prop="subject" width="180" />
-      <el-table-column label="操作" align="center" fixed="right">
+      <el-table-column :label="t('extra.k5f75a33c')" align="center" prop="appName" width="100" />
+      <el-table-column
+        :label="t('auto.views.pay.cashier.index.kd415beac')"
+        align="center"
+        prop="subject"
+        width="180"
+      />
+      <el-table-column :label="t('common.operation')" align="center" fixed="right">
         <template #default="scope">
           <el-button
             type="primary"
@@ -192,7 +225,7 @@
             @click="openDetail(scope.row.id)"
             v-hasPermi="['pay:order:query']"
           >
-            详情
+            {{ t('action.detail') }}
           </el-button>
         </template>
       </el-table-column>

@@ -58,24 +58,32 @@
         </template>
       </el-table-column>
       <el-table-column label="ProductKey" align="center" prop="productKey" />
-      <el-table-column label="设备类型" align="center" prop="deviceType">
+      <el-table-column
+        :label="t('auto.views.iot.device.detail.DeviceDetailsInfo.k47a991d1')"
+        align="center"
+        prop="deviceType"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.IOT_PRODUCT_DEVICE_TYPE" :value="scope.row.deviceType" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="产品状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.iot.product.detail.ProductDetailsInfo.k6f659980')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.IOT_PRODUCT_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column :label="t('common.operation')" align="center">
         <template #default="scope">
           <el-button
             link
@@ -83,7 +91,7 @@
             @click="openDetail(scope.row.id)"
             v-hasPermi="['iot:product:query']"
           >
-            查看
+            {{ t('auto.components.UploadFile.src.UploadImgs.kf7acefd2') }}
           </el-button>
           <el-button
             link
@@ -92,7 +100,7 @@
             v-hasPermi="['iot:product:delete']"
             :disabled="scope.row.status === 1"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

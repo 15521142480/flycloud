@@ -16,7 +16,6 @@ import { uploadAvatar } from '@/api/system/user/profile'
 import { CropperAvatar } from '@/components/Cropper'
 import { useUserStore } from '@/store/modules/user'
 
-
 defineOptions({ name: 'UserAvatar' })
 
 defineProps({
@@ -24,7 +23,6 @@ defineProps({
 })
 
 const userStore = useUserStore()
-
 
 const cropperRef = ref()
 const handelUpload = async ({ data }) => {

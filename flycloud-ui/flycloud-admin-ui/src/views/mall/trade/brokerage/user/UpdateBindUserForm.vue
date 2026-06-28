@@ -28,21 +28,29 @@
     </el-form>
     <!-- 展示上级推广人的信息 -->
     <el-descriptions v-if="bindUser" :column="1" border>
-      <el-descriptions-item label="头像">
+      <el-descriptions-item :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k4ceeeb31')">
         <el-avatar :src="bindUser.avatar" />
       </el-descriptions-item>
-      <el-descriptions-item label="昵称">{{ bindUser.name }}</el-descriptions-item>
-      <el-descriptions-item label="推广资格">
-        <el-tag v-if="bindUser.brokerageEnabled">有</el-tag>
-        <el-tag v-else type="info">无</el-tag>
+      <el-descriptions-item :label="t('system.user.nickname')">{{
+        bindUser.name
+      }}</el-descriptions-item>
+      <el-descriptions-item :label="t('auto.views.mall.trade.brokerage.user.index.k95774950')">
+        <el-tag v-if="bindUser.brokerageEnabled">{{
+          t('auto.views.mall.trade.brokerage.user.index.kfbd5b750')
+        }}</el-tag>
+        <el-tag v-else type="info">{{ t('extra.kadb3d23e') }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="成为推广员的时间">
+      <el-descriptions-item :label="t('extra.k3061ce46')">
         {{ formatDate(bindUser.brokerageTime) }}
       </el-descriptions-item>
     </el-descriptions>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
+        t('extra.k008b8fcb')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

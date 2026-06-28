@@ -128,34 +128,55 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="联系人" align="center" prop="contactName" />
-      <el-table-column label="联系手机" align="center" prop="contactMobile" />
-      <el-table-column label="账号额度" align="center" prop="accountCount">
+      <el-table-column
+        :label="t('auto.views.crm.business.detail.index.k2425bd4b')"
+        align="center"
+        prop="contactName"
+      />
+      <el-table-column
+        :label="t('auto.views.system.tenant.TenantForm.kef5dfe34')"
+        align="center"
+        prop="contactMobile"
+      />
+      <el-table-column
+        :label="t('auto.views.system.tenant.TenantForm.k6a558db6')"
+        align="center"
+        prop="accountCount"
+      >
         <template #default="scope">
           <el-tag>{{ scope.row.accountCount }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="过期时间"
+        :label="t('auto.views.pay.cashier.index.k27aefecf')"
         align="center"
         prop="expireTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="绑定域名" align="center" prop="website" width="180" />
-      <el-table-column label="租户状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.system.tenant.TenantForm.k8ff160ed')"
+        align="center"
+        prop="website"
+        width="180"
+      />
+      <el-table-column
+        :label="t('auto.views.system.tenant.TenantForm.k5f511c77')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="操作" align="center" min-width="110" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" min-width="110" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -163,7 +184,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['system:tenant:update']"
           >
-            编辑
+            {{ t('common.edit') }}
           </el-button>
           <el-button
             link
@@ -171,7 +192,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:tenant:delete']"
           >
-            删除
+            {{ t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

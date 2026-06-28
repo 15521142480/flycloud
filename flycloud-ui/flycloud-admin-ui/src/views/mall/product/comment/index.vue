@@ -111,10 +111,30 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="用户名称" align="center" prop="userNickname" width="100" />
-      <el-table-column label="商品评分" align="center" prop="descriptionScores" width="90" />
-      <el-table-column label="服务评分" align="center" prop="benefitScores" width="90" />
-      <el-table-column label="评论内容" align="center" prop="content" min-width="210">
+      <el-table-column
+        :label="t('profile.user.username')"
+        align="center"
+        prop="userNickname"
+        width="100"
+      />
+      <el-table-column
+        :label="t('extra.k3e24bdd5')"
+        align="center"
+        prop="descriptionScores"
+        width="90"
+      />
+      <el-table-column
+        :label="t('extra.kb612c55e')"
+        align="center"
+        prop="benefitScores"
+        width="90"
+      />
+      <el-table-column
+        :label="t('auto.views.mall.product.comment.CommentForm.ke25e61db')"
+        align="center"
+        prop="content"
+        min-width="210"
+      >
         <template #default="scope">
           <p>{{ scope.row.content }}</p>
           <div class="flex justify-center gap-x-4px">
@@ -131,20 +151,20 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="回复内容"
+        :label="t('auto.views.mall.product.comment.ReplyForm.ka36c787d')"
         align="center"
         prop="replyContent"
         min-width="250"
         show-overflow-tooltip
       />
       <el-table-column
-        label="评论时间"
+        :label="t('auto.views.mall.product.comment.index.k49a47b72')"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180"
       />
-      <el-table-column label="是否展示" align="center" width="80px">
+      <el-table-column :label="t('extra.kf3387f44')" align="center" width="80px">
         <template #default="scope">
           <el-switch
             v-model="scope.row.visible"
@@ -155,7 +175,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" min-width="60px" fixed="right">
+      <el-table-column :label="t('common.operation')" align="center" min-width="60px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -163,7 +183,7 @@
             @click="handleReply(scope.row.id)"
             v-hasPermi="['product:comment:update']"
           >
-            回复
+            {{ t('auto.views.ai.utils.constants.kffc78509') }}
           </el-button>
         </template>
       </el-table-column>

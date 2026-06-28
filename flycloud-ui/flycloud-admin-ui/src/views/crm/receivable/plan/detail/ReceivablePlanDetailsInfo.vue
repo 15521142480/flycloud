@@ -8,61 +8,82 @@
           }}</span>
         </template>
         <el-descriptions :column="4">
-          <el-descriptions-item label="期数">{{ receivablePlan.period }}</el-descriptions-item>
-          <el-descriptions-item label="客户名称">
+          <el-descriptions-item
+            :label="t('auto.views.crm.receivable.plan.components.ReceivablePlanList.k389372a5')"
+            >{{ receivablePlan.period }}</el-descriptions-item
+          >
+          <el-descriptions-item
+            :label="t('auto.views.crm.backlog.components.CustomerFollowList.ke941d410')"
+          >
             {{ receivablePlan.customerName }}
           </el-descriptions-item>
-          <el-descriptions-item label="合同编号">
+          <el-descriptions-item
+            :label="t('auto.views.crm.backlog.components.ContractAuditList.k17b34173')"
+          >
             {{ receivablePlan.contractNo }}
           </el-descriptions-item>
-          <el-descriptions-item label="计划回款金额">
+          <el-descriptions-item
+            :label="t('auto.views.crm.receivable.plan.ReceivablePlanForm.k2eaffb78')"
+          >
             {{ erpPriceInputFormatter(receivablePlan.price) }}
           </el-descriptions-item>
-          <el-descriptions-item label="计划回款日期">
+          <el-descriptions-item
+            :label="t('auto.views.crm.receivable.plan.ReceivablePlanForm.kf5888bd3')"
+          >
             {{ formatDate(receivablePlan.returnTime, 'YYYY-MM-DD') }}
           </el-descriptions-item>
-          <el-descriptions-item label="计划回款方式">
+          <el-descriptions-item :label="t('extra.kaef4c61d')">
             <dict-tag
               :type="DICT_TYPE.CRM_RECEIVABLE_RETURN_TYPE"
               :value="receivablePlan.returnType"
             />
           </el-descriptions-item>
-          <el-descriptions-item label="提前几天提醒">
+          <el-descriptions-item
+            :label="t('auto.views.crm.receivable.plan.ReceivablePlanForm.k4eb4f0ab')"
+          >
             {{ receivablePlan.remindDays }}
           </el-descriptions-item>
-          <el-descriptions-item label="备注">{{ receivablePlan.remark }}</el-descriptions-item>
-          <el-descriptions-item label="实际回款金额">
+          <el-descriptions-item :label="t('common.remark')">{{
+            receivablePlan.remark
+          }}</el-descriptions-item>
+          <el-descriptions-item
+            :label="
+              t('auto.views.crm.receivable.plan.detail.ReceivablePlanDetailsHeader.k2b3b7506')
+            "
+          >
             <el-text v-if="receivablePlan.receivable">
               {{ erpPriceInputFormatter(receivablePlan.receivable.price) }}
             </el-text>
             <el-text v-else>{{ erpPriceInputFormatter(0) }}</el-text>
           </el-descriptions-item>
-          <el-descriptions-item label="未回款金额">
+          <el-descriptions-item :label="t('extra.k9875650f')">
             <el-text v-if="receivablePlan.receivable">
               {{ erpPriceInputFormatter(receivablePlan.price - receivablePlan.receivable.price) }}
             </el-text>
             <el-text v-else>{{ erpPriceInputFormatter(receivablePlan.price) }}</el-text>
           </el-descriptions-item>
-          <el-descriptions-item label="实际回款日期">
+          <el-descriptions-item :label="t('extra.k7ebebecf')">
             {{ formatDate(receivablePlan.receivable?.returnTime, 'YYYY-MM-DD') }}
           </el-descriptions-item>
         </el-descriptions>
       </el-collapse-item>
       <el-collapse-item name="systemInfo">
         <template #title>
-          <span class="text-base font-bold">系统信息</span>
+          <span class="text-base font-bold">{{ t('extra.kb7ea5e50') }}</span>
         </template>
         <el-descriptions :column="4">
-          <el-descriptions-item label="负责人">
+          <el-descriptions-item :label="t('auto.views.crm.business.BusinessForm.k974d383f')">
             {{ receivablePlan.ownerUserName }}
           </el-descriptions-item>
-          <el-descriptions-item label="创建人">
+          <el-descriptions-item
+            :label="t('auto.views.crm.statistics.rank.components.ContactCountRank.k787ad1de')"
+          >
             {{ receivablePlan.creatorName }}
           </el-descriptions-item>
-          <el-descriptions-item label="创建时间">
+          <el-descriptions-item :label="t('common.createTime')">
             {{ formatDate(receivablePlan.createTime) }}
           </el-descriptions-item>
-          <el-descriptions-item label="更新时间">
+          <el-descriptions-item :label="t('common.updateTime')">
             {{ formatDate(receivablePlan.updateTime) }}
           </el-descriptions-item>
         </el-descriptions>

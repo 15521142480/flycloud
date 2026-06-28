@@ -123,34 +123,50 @@
           <dict-tag :type="DICT_TYPE.PAY_NOTIFY_TYPE" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="关联编号" align="center" prop="dataId" />
-      <el-table-column label="通知状态" align="center" prop="status">
+      <el-table-column
+        :label="t('auto.views.pay.notify.NotifyDetail.k8913e0a8')"
+        align="center"
+        prop="dataId"
+      />
+      <el-table-column
+        :label="t('auto.views.pay.notify.NotifyDetail.kcca88a70')"
+        align="center"
+        prop="status"
+      >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_NOTIFY_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        label="最后通知时间"
+        :label="t('auto.views.pay.notify.NotifyDetail.ka8943cc4')"
         align="center"
         prop="lastExecuteTime"
         width="180"
         :formatter="dateFormatter"
       />
       <el-table-column
-        label="下次通知时间"
+        :label="t('auto.views.pay.notify.NotifyDetail.kf9dac926')"
         align="center"
         prop="nextNotifyTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column label="通知次数" align="center" prop="notifyTimes">
+      <el-table-column
+        :label="t('auto.views.pay.notify.NotifyDetail.kec63d1a8')"
+        align="center"
+        prop="notifyTimes"
+      >
         <template #default="scope">
           <el-tag size="small" type="success">
             {{ scope.row.notifyTimes }} / {{ scope.row.maxNotifyTimes }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="t('common.operation')"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template #default="scope">
           <el-button
             link
@@ -158,7 +174,7 @@
             @click="openDetail(scope.row.id)"
             v-hasPermi="['pay:notify:query']"
           >
-            查看详情
+            {{ t('extra.k5b48dbb8') }}
           </el-button>
         </template>
       </el-table-column>

@@ -75,8 +75,16 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="活动编号" min-width="80" prop="id" />
-        <el-table-column label="商品图片" min-width="80" prop="spuName">
+        <el-table-column
+          :label="t('auto.views.mall.promotion.bargain.activity.index.k32261198')"
+          min-width="80"
+          prop="id"
+        />
+        <el-table-column
+          :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
+          min-width="80"
+          prop="spuName"
+        >
           <template #default="scope">
             <el-image
               :preview-src-list="[scope.row.picUrl]"
@@ -86,22 +94,41 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="商品标题" min-width="300" prop="spuName" />
+        <el-table-column
+          :label="t('auto.views.pay.cashier.index.kd415beac')"
+          min-width="300"
+          prop="spuName"
+        />
         <el-table-column
           :formatter="fenToYuanFormat"
-          label="原价"
+          :label="t('extra.k1afdfea7')"
           min-width="100"
           prop="marketPrice"
         />
-        <el-table-column label="原价" min-width="100" prop="marketPrice" />
-        <el-table-column align="center" label="活动状态" min-width="100" prop="status">
+        <el-table-column :label="t('extra.k1afdfea7')" min-width="100" prop="marketPrice" />
+        <el-table-column
+          align="center"
+          :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
+          min-width="100"
+          prop="status"
+        >
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column align="center" label="库存" min-width="80" prop="stock" />
-        <el-table-column align="center" label="总库存" min-width="80" prop="totalStock" />
-        <el-table-column align="center" label="已兑换数量" min-width="100" prop="redeemedQuantity">
+        <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="80" prop="stock" />
+        <el-table-column
+          align="center"
+          :label="t('extra.k9da72dfd')"
+          min-width="80"
+          prop="totalStock"
+        />
+        <el-table-column
+          align="center"
+          :label="t('extra.k0094a88a')"
+          min-width="100"
+          prop="redeemedQuantity"
+        >
           <template #default="{ row }">
             {{ getRedeemedQuantity(row) }}
           </template>
@@ -109,7 +136,7 @@
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          label="创建时间"
+          :label="t('common.createTime')"
           prop="createTime"
           width="180px"
         />
@@ -123,8 +150,10 @@
       />
     </ContentWrap>
     <template v-if="multiple" #footer>
-      <el-button type="primary" @click="handleEmitChange">确 定</el-button>
-      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handleEmitChange">{{ t('extra.k008b8fcb') }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
+      }}</el-button>
     </template>
   </Dialog>
 </template>

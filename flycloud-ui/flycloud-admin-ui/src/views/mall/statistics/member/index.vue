@@ -72,7 +72,7 @@
                 <el-table-column
                   :sort-method="(obj1, obj2) => obj1.areaName.localeCompare(obj2.areaName, 'zh-CN')"
                   align="center"
-                  label="省份"
+                  :label="t('extra.kd7009d07')"
                   min-width="80"
                   prop="areaName"
                   show-overflow-tooltip
@@ -80,21 +80,21 @@
                 />
                 <el-table-column
                   align="center"
-                  label="会员数量"
+                  :label="t('extra.ka640eb00')"
                   min-width="105"
                   prop="userCount"
                   sortable
                 />
                 <el-table-column
                   align="center"
-                  label="订单创建数量"
+                  :label="t('extra.kadebba2e')"
                   min-width="135"
                   prop="orderCreateUserCount"
                   sortable
                 />
                 <el-table-column
                   align="center"
-                  label="订单支付数量"
+                  :label="t('extra.k8f183335')"
                   min-width="135"
                   prop="orderPayUserCount"
                   sortable
@@ -102,7 +102,7 @@
                 <el-table-column
                   :formatter="fenToYuanFormat"
                   align="center"
-                  label="订单支付金额"
+                  :label="t('extra.k15be13ad')"
                   min-width="135"
                   prop="orderPayPrice"
                   sortable
@@ -115,7 +115,7 @@
       <el-col :md="6" :sm="24">
         <el-card v-loading="loading" shadow="never">
           <template #header>
-            <CardTitle title="会员性别比例" />
+            <CardTitle :title="t('extra.kedaafd2e')" />
           </template>
           <Echart :height="300" :options="sexChartOptions" />
         </el-card>
