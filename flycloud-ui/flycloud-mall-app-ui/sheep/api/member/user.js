@@ -1,17 +1,29 @@
 import request from '@/sheep/request';
+import { getSystemBaseUrl } from '@/sheep/config/server';
 
 const UserApi = {
   // 获得基本信息
   getUserInfo: () => {
     return request({
-      url: '/member/user/get',
+      baseURL: getSystemBaseUrl(),
+      url: '/user/getUserInfo',
       method: 'GET',
       custom: {
         showLoading: false,
         auth: true,
-      },
+      }
     });
   },
+  // getUserInfo: () => {
+  //   return request({
+  //     url: '/member/user/get',
+  //     method: 'GET',
+  //     custom: {
+  //       showLoading: false,
+  //       auth: true,
+  //     },
+  //   });
+  // },
   // 修改基本信息
   updateUser: (data) => {
     return request({
