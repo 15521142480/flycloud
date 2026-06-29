@@ -1,4 +1,4 @@
-package com.fly.feign;
+package com.fly.system.feign;
 
 import com.fly.common.domain.model.R;
 import com.fly.system.api.system.domain.vo.SysDeptVo;

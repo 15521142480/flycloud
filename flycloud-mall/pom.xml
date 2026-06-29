@@ -24,6 +24,11 @@
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-security</artifactId>
             <version>${revision}</version>
         </dependency>

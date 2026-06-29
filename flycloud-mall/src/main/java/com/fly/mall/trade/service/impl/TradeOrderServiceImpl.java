@@ -34,6 +34,8 @@ import com.fly.mall.trade.mapper.TradeOrderMapper;
 import com.fly.mall.trade.service.ICartService;
 import com.fly.mall.trade.service.ITradeOrderItemService;
 import com.fly.mall.trade.service.ITradeOrderService;
+import com.fly.system.api.pay.domain.bo.PayOrderCreateReqDto;
+import com.fly.system.api.pay.feign.IPayOrderApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +108,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     private final ICartService cartService;
     private final IProductSkuService productSkuService;
     private final IProductSpuService productSpuService;
+    private final IPayOrderApi payOrderApi;
 
     /**
      * 查询交易订单详情。
@@ -345,9 +348,17 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             cartService.deleteCart(userId, cartIds);
         }
 
+        Long payOrderId = createPayOrder(userId, order);
+        TradeOrder updateOrder = new TradeOrder();
+        updateOrder.setId(order.getId());
+        updateOrder.setPayOrderId(payOrderId);
+        updateOrder.setUpdateBy(operator);
+        updateOrder.setUpdateTime(LocalDateTime.now());
+        baseMapper.updateById(updateOrder);
+
         AppTradeOrderCreateRespVo respVo = new AppTradeOrderCreateRespVo();
         respVo.setId(order.getId());
-        respVo.setPayOrderId(order.getPayOrderId());
+        respVo.setPayOrderId(payOrderId);
         return respVo;
     }
 
@@ -712,6 +723,23 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             respList.add(respVo);
         }
         return respList;
+    }
+
+    /**
+     * 创建支付订单。
+     */
+    private Long createPayOrder(Long userId, TradeOrder order) {
+        PayOrderCreateReqDto createReqDto = new PayOrderCreateReqDto();
+        createReqDto.setAppId(1L);
+        createReqDto.setUserIp("0.0.0.0");
+        createReqDto.setUserId(userId);
+        createReqDto.setUserType(2);
+        createReqDto.setMerchantOrderId(String.valueOf(order.getId()));
+        createReqDto.setSubject("商城订单 " + order.getNo());
+        createReqDto.setBody("商城订单 " + order.getNo());
+        createReqDto.setPrice(order.getPayPrice());
+        createReqDto.setExpireTime(LocalDateTime.now().plusHours(2));
+        return payOrderApi.createPayOrder(createReqDto).getCheckedData();
     }
 
     /**
