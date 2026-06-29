@@ -219,7 +219,7 @@
     activeTimeIndex.value = index;
 
     // 查询活动列表
-    activityPageParams.pageNo = 1;
+    activityPageParams.pageNum = 1;
     activityPageParams.configId = id;
     activityList.value = [];
     getActivityList();
@@ -240,7 +240,7 @@
   // 查询活动列表
   const activityPageParams = reactive({
     configId: 0, // 时间段 ID
-    pageNo: 1, // 页码
+    pageNum: 1, // 页码
     pageSize: 5, // 每页数量
   });
   const activityTotal = ref(0); // 活动总数
@@ -264,7 +264,7 @@
   // 加载更多
   function loadMore() {
     if (loadStatus.value !== 'noMore') {
-      activityPageParams.pageNo += 1;
+      activityPageParams.pageNum += 1;
       getActivityList();
     }
   }

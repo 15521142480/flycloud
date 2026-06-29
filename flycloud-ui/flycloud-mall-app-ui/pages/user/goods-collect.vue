@@ -112,7 +112,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 6,
     },
     loadStatus: '',
@@ -125,7 +125,7 @@
   async function getData() {
     state.loadStatus = 'loading';
     const { code, data } = await FavoriteApi.getFavoritePage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
     });
     if (code !== 0) {
@@ -178,7 +178,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getData();
   }
 

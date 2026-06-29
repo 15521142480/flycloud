@@ -69,7 +69,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 10,
     },
     loadStatus: '',
@@ -86,7 +86,7 @@
   async function getList() {
     state.loadStatus = 'loading';
     const { data } = await CombinationApi.getCombinationActivityPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
     });
     data.list.forEach((activity) => {
@@ -101,7 +101,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getList();
   }
 

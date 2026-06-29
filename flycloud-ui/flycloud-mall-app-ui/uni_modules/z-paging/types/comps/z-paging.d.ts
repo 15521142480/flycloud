@@ -209,10 +209,10 @@ declare interface ZPagingProps {
   value?: any[]
 
   /**
-   * 自定义初始的pageNo(从第几页开始)
+   * 自定义初始的pageNum(从第几页开始)
    * @default 1
    */
-  defaultPageNo?: number
+  defaultpageNum?: number
 
   /**
    * 自定义pageSize(每页显示多少条)
@@ -1357,12 +1357,12 @@ declare interface ZPagingProps {
   onInput?: (value: any[]) => any
   
   /**
-   * 下拉刷新或滚动到底部时会自动触发此方法。z-paging加载时也会触发(若要禁止，请设置:auto="false")。pageNo和pageSize会自动计算好，直接传给服务器即可。
-   * @param pageNo 当前第几页
+   * 下拉刷新或滚动到底部时会自动触发此方法。z-paging加载时也会触发(若要禁止，请设置:auto="false")。pageNum和pageSize会自动计算好，直接传给服务器即可。
+   * @param pageNum 当前第几页
    * @param pageSize 每页多少条
    * @param from query的触发来源：user-pull-down:用户主动下拉刷新 reload:通过reload触发 refresh:通过refresh触发 load-more:通过滚动到底部加载更多或点击底部加载更多触发
    */
-  onQuery?: (pageNo: number, pageSize: number, from: ZPagingEnums.QueryFrom) => void
+  onQuery?: (pageNum: number, pageSize: number, from: ZPagingEnums.QueryFrom) => void
 
   /**
    * 分页渲染的数组改变时触发
@@ -1694,14 +1694,14 @@ declare interface ZPagingSlots {
 declare interface _ZPagingRef<T = any> {
   // ******************** 数据刷新&处理方法 ********************
   /**
-   * 重新加载分页数据，pageNo恢复为默认值，相当于下拉刷新的效果
+   * 重新加载分页数据，pageNum恢复为默认值，相当于下拉刷新的效果
    *
    * @param [animate=false] 是否展示下拉刷新动画
    */
   reload: (animate?: boolean) => Promise< ZPagingParams.ReturnData<T>>;
 
   /**
-   * 刷新列表数据，pageNo和pageSize不会重置，列表数据会重新从服务端获取
+   * 刷新列表数据，pageNum和pageSize不会重置，列表数据会重新从服务端获取
    *
    * @since 2.0.4
    * @returns {Promise<ZPagingParams.ReturnData<T>>} Promise，当前最新分页结果：
@@ -1802,14 +1802,14 @@ declare interface _ZPagingRef<T = any> {
   completeByKey: (data: T[], key: string, success?: boolean) => Promise<ZPagingParams.ReturnData<T>>;
 
   /**
-   * 清空分页数据，pageNo恢复为默认值
+   * 清空分页数据，pageNum恢复为默认值
    *
    * @since 2.1.0
    */
   clear: () => void;
 
   /**
-   * 从顶部添加数据，不会影响分页的pageNo和pageSize
+   * 从顶部添加数据，不会影响分页的pageNum和pageSize
    *
    * @param data 需要添加的数据，可以是一条数据或一组数据
    * @param [scrollToTop=true] 是否滚动到顶部，不填默认为true
@@ -1818,7 +1818,7 @@ declare interface _ZPagingRef<T = any> {
   addDataFromTop: (data: _Arrayable<T>, scrollToTop?: boolean, animate?: boolean) => void;
 
   /**
-   * 【不推荐】重新设置列表数据，调用此方法不会影响pageNo和pageSize，也不会触发请求
+   * 【不推荐】重新设置列表数据，调用此方法不会影响pageNum和pageSize，也不会触发请求
    * - 适用场景：当需要删除列表中某一项时，将删除对应项后的数组通过此方法传递给z-paging
    *
    * @param data 修改后的列表数组

@@ -103,7 +103,7 @@
       list: 0,
       total: 0,
       pageSize: 6,
-      pageNo: 1,
+      pageNum: 1,
     },
     loadStatus: '',
     date: [],
@@ -136,7 +136,7 @@
   async function getLogList() {
     state.loadStatus = 'loading';
     let { code, data } = await PointApi.getPointRecordPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       addStatus: state.currentTab > 0 ? tabMaps[state.currentTab].value : undefined,
       'createTime[0]': state.date[0] + ' 00:00:00',
@@ -173,7 +173,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getLogList();
   }
 

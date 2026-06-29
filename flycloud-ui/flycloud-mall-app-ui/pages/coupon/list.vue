@@ -82,7 +82,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 5,
     },
     loadStatus: '',
@@ -122,7 +122,7 @@
   async function getData() {
     state.loadStatus = 'loading';
     const { data, code } = await CouponApi.getCouponTemplatePage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
     });
     if (code !== 0) {
@@ -137,7 +137,7 @@
   async function getCoupon() {
     state.loadStatus = 'loading';
     const { data, code } = await CouponApi.getCouponPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       status: state.type,
     });
@@ -169,7 +169,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     if (state.currentTab === 0) {
       getData();
     } else {

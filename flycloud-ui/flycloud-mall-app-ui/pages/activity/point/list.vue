@@ -41,7 +41,7 @@
   const sPointCardRef = ref();
   // 查询活动列表
   const activityPageParams = reactive({
-    pageNo: 1, // 页码
+    pageNum: 1, // 页码
     pageSize: 5, // 每页数量
   });
 
@@ -61,7 +61,7 @@
   // 加载更多
   function loadMore() {
     if (loadStatus.value !== 'noMore') {
-      activityPageParams.pageNo += 1;
+      activityPageParams.pageNum += 1;
       getActivityList();
     }
   }

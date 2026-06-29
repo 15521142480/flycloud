@@ -66,7 +66,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 10,
     },
     loadStatus: '',
@@ -86,7 +86,7 @@
     state.loadStatus = 'loading';
     // 查询
     const { code, data } = await BrokerageApi.getBrokerageUserRankPageByUserCount({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       'times[0]': state.times[0],
       'times[1]': state.times[1],
@@ -104,7 +104,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getRankList();
   }
 

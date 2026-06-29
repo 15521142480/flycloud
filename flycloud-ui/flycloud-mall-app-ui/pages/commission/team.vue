@@ -275,7 +275,7 @@
   const state = reactive({
     summary: {},
     pagination: {
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
       list: [],
       total: 0,
@@ -303,7 +303,7 @@
   async function getTeamList() {
     state.loadStatus = 'loading';
     let { code, data } = await BrokerageApi.getBrokerageUserChildSummaryPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       level: state.level,
       'sortingField.order': state.isAsc,
@@ -320,7 +320,7 @@
 
   function setType(e) {
     state.pagination.list = [];
-    state.pagination.pageNo = 1;
+    state.pagination.pageNum = 1;
     state.level = e + '';
     getTeamList();
   }
@@ -345,7 +345,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getTeamList();
   }
 

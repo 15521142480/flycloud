@@ -76,7 +76,7 @@
     pagination: {
       list: [],
       total: 1,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
     },
     loadStatus: '',
@@ -117,7 +117,7 @@
     // 请求数据
     state.loadStatus = 'loading';
     const { code, data } = await SpuApi.getSpuPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       ...params,
     });
@@ -150,7 +150,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getList();
   }
 

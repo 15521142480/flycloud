@@ -66,7 +66,7 @@ declare interface ZPagingSwiperItemProps {
 // ****************************** Methods ******************************
 declare interface _ZPagingSwiperItemRef {
   /**
-   * 重新加载分页数据，pageNo恢复为默认值，相当于下拉刷新的效果
+   * 重新加载分页数据，pageNum恢复为默认值，相当于下拉刷新的效果
    *
    * @param [animate=false] 是否展示下拉刷新动画
    */

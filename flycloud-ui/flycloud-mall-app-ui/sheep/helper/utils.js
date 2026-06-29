@@ -275,7 +275,7 @@ export function handleTree(
 export function resetPagination(pagination) {
   pagination.list = [];
   pagination.total = 0;
-  pagination.pageNo = 1;
+  pagination.pageNum = 1;
 }
 
 /**

@@ -134,7 +134,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 6,
     },
     currentSort: undefined,
@@ -269,7 +269,7 @@
   async function getList() {
     state.loadStatus = 'loading';
     const { code, data } = await SpuApi.getSpuPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       sortField: state.currentSort,
       sortAsc: state.currentOrder,
@@ -297,7 +297,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getList(state.currentSort, state.currentOrder);
   }
 

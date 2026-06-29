@@ -79,7 +79,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 10,
     },
     loadStatus: '',
@@ -119,7 +119,7 @@
   async function getOrderList() {
     state.loadStatus = 'loading';
     let { data, code } = await AfterSaleApi.getAfterSalePage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       statuses: tabMaps[state.currentTab].value.join(','),
     });
@@ -161,7 +161,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getOrderList();
   }
 

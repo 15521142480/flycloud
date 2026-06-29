@@ -104,7 +104,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
     },
     summary: {
@@ -145,7 +145,7 @@
   async function getLogList() {
     state.loadStatus = 'loading';
     const { data, code } = await PayWalletApi.getWalletTransactionPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       type: tabMaps[state.currentTab].value,
       'createTime[0]': state.date[0] + ' 00:00:00',
@@ -202,7 +202,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getLogList();
   });
 </script>

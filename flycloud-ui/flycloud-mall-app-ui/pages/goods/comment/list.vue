@@ -47,7 +47,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
     },
   });
@@ -56,7 +56,7 @@
   function onTabsChange(e) {
     state.currentTab = e.index;
     // 加载列表
-    state.pagination.pageNo = 1;
+    state.pagination.pageNum = 1;
     state.pagination.list = [];
     state.pagination.total = 0;
     getList();
@@ -67,7 +67,7 @@
     state.loadStatus = 'loading';
     let res = await CommentApi.getCommentPage(
       state.id,
-      state.pagination.pageNo,
+      state.pagination.pageNum,
       state.pagination.pageSize,
       state.type[state.currentTab].type,
     );
@@ -85,7 +85,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getList();
   }
 

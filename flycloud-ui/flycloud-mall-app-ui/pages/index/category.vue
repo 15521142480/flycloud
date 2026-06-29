@@ -74,7 +74,7 @@
       // 商品分页
       list: [], // 商品列表
       total: [], // 商品总数
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 6,
     },
     loadStatus: '',
@@ -97,7 +97,7 @@
   const onMenu = (val) => {
     state.activeMenu = val;
     if (state.style === 'first_one' || state.style === 'first_two') {
-      state.pagination.pageNo = 1;
+      state.pagination.pageNum = 1;
       state.pagination.list = [];
       state.pagination.total = 0;
       getGoodsList();
@@ -110,7 +110,7 @@
     state.loadStatus = 'loading';
     const res = await SpuApi.getSpuPage({
       categoryId: state.categoryList[state.activeMenu].id,
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
     });
     if (res.code !== 0) {
@@ -127,7 +127,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getGoodsList();
   }
   function initMenuIndex() {

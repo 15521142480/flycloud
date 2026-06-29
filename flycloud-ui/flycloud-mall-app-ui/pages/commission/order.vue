@@ -95,7 +95,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
     },
   });
@@ -128,7 +128,7 @@
     const tab = tabMaps[state.currentTab];
     const queryParams = {
       pageSize: state.pagination.pageSize,
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       bizType: 1, // 获得推广佣金
       status: tab.value,
     };
@@ -156,7 +156,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getOrderList();
   }
 

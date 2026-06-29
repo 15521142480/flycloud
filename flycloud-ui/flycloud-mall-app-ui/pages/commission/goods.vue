@@ -69,7 +69,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
     },
     loadStatus: '',
@@ -102,7 +102,7 @@
     state.loadStatus = 'loading';
     let { code, data } = await SpuApi.getSpuPage({
       pageSize: state.pagination.pageSize,
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
     });
 
     if (code !== 0) {
@@ -138,7 +138,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getGoodsList();
   }
 

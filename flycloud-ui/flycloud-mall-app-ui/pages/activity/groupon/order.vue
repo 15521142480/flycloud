@@ -78,7 +78,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 5,
     },
     loadStatus: '',
@@ -114,7 +114,7 @@
   async function getGrouponList() {
     state.loadStatus = 'loading';
     const { code, data } = await CombinationApi.getCombinationRecordPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       status: tabMaps[state.currentTab].value,
     });
@@ -138,7 +138,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getGrouponList();
   }
 

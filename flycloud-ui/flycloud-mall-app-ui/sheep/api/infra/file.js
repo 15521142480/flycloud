@@ -1,5 +1,5 @@
 import { baseUrl, apiPath, tenantId } from '@/sheep/config';
-import request, { getAccessToken } from '@/sheep/request';
+import request, { buildAuthorization, getAccessToken } from '@/sheep/request';
 
 const FileApi = {
   // 上传文件
@@ -15,7 +15,7 @@ const FileApi = {
         header: {
           Accept: '*/*',
           'tenant-id': tenantId,
-          Authorization: 'Bearer ' + getAccessToken(),
+          Authorization: buildAuthorization(getAccessToken()),
         },
         formData: {
           directory,

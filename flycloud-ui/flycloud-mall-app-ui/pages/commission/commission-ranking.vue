@@ -70,7 +70,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 10,
     },
     loadStatus: '',
@@ -85,7 +85,7 @@
 
   async function getBrokerageRankList() {
     const { code, data } = await BrokerageApi.getBrokerageUserChildSummaryPageByPrice({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       'times[0]': state.times[0],
       'times[1]': state.times[1],
@@ -96,7 +96,7 @@
     state.pagination.list = concat(state.pagination.list, data.list);
     state.pagination.total = data.total;
     state.loadStatus = state.pagination.list.length < state.pagination.total ? 'more' : 'noMore';
-    if (state.pagination.pageNo === 1) {
+    if (state.pagination.pageNum === 1) {
       getBrokerageRankNumber();
     }
   }
@@ -135,7 +135,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getBrokerageRankList();
   }
 

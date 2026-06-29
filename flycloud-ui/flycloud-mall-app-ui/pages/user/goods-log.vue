@@ -129,7 +129,7 @@
   const sys_navBar = sheep.$platform.navbar;
   const pagination = {
     list: [],
-    pageNo: 1,
+    pageNum: 1,
     total: 1,
     pageSize: 10,
   };
@@ -144,7 +144,7 @@
   async function getList() {
     state.loadStatus = 'loading';
     const { code, data } = await SpuHistoryApi.getBrowseHistoryPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
     });
     if (code !== 0) {
@@ -212,7 +212,7 @@
   // 加载更多
   function loadMore() {
     if (state.loadStatus !== 'noMore') {
-      state.pagination.pageNo += 1;
+      state.pagination.pageNum += 1;
       getList();
     }
   }

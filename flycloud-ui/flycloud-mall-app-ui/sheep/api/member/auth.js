@@ -1,6 +1,39 @@
 import request from '@/sheep/request';
+import { getAuthBaseUrl } from '@/sheep/config/server';
+import md5 from '@/sheep/helper/md5';
+
+const BASIC_AUTHORIZATION = 'Basic Zmx5OmZseV9zZWNyZXQ=';
 
 const AuthUtil = {
+  // 使用帐号登录
+  loginByAccount: (data) => {
+    const newData = {
+      username: data.username || data.mobile,
+      password: md5(data.password),
+      grant_type: 'captcha',
+      scope: 'all',
+      imageTextClickCaptchaSuccessValue: data.imageTextClickCaptchaSuccessValue,
+      ImageTextClickCaptchaSuccessValue: data.imageTextClickCaptchaSuccessValue,
+    };
+    return request({
+      baseURL: getAuthBaseUrl(),
+      url: '/oauth/token',
+      method: 'POST',
+      data: newData,
+      header: {
+        'Content-Type': 'application/json',
+        ImageTextClickCaptchaSuccessValue: newData.imageTextClickCaptchaSuccessValue,
+        Authorization: BASIC_AUTHORIZATION,
+      },
+      custom: {
+        isToken: false,
+        showSuccess: true,
+        loadingMsg: '登录中',
+        successMsg: '登录成功',
+      },
+    });
+  },
+
   // 使用手机 + 密码登录
   login: (data) => {
     return request({
@@ -46,19 +79,27 @@ const AuthUtil = {
   // 登出系统
   logout: () => {
     return request({
-      url: '/member/auth/logout',
+      baseURL: getAuthBaseUrl(),
+      url: '/oauth/logOut',
       method: 'POST',
     });
   },
   // 刷新令牌
   refreshToken: (refreshToken) => {
     return request({
-      url: '/member/auth/refresh-token',
+      baseURL: getAuthBaseUrl(),
+      url: '/oauth/token',
       method: 'POST',
-      params: {
-        refreshToken,
+      data: {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      },
+      header: {
+        Authorization: BASIC_AUTHORIZATION,
       },
       custom: {
+        isToken: false,
+        isRefreshToken: true,
         showLoading: false, // 不用加载中
         showError: false, // 不展示错误提示
       },

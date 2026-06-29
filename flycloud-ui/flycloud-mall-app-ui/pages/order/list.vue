@@ -138,7 +138,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 5,
     },
     loadStatus: '',
@@ -321,7 +321,7 @@
   async function getOrderList() {
     state.loadStatus = 'loading';
     let { code, data } = await OrderApi.getOrderPage({
-      pageNo: state.pagination.pageNo,
+      pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       status: tabMaps[state.currentTab].value,
       commentStatus: tabMaps[state.currentTab].value === 30 ? false : null,
@@ -347,7 +347,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getOrderList();
   }
 

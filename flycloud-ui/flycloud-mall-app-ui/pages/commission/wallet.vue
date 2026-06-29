@@ -208,7 +208,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 8,
     },
     loadStatus: '',
@@ -241,13 +241,13 @@
     let { code, data } = await (state.currentTab === 0
       ? BrokerageApi.getBrokerageRecordPage({
           pageSize: state.pagination.pageSize,
-          pageNo: state.pagination.pageNo,
+          pageNum: state.pagination.pageNum,
           'createTime[0]': state.date[0] + ' 00:00:00',
           'createTime[1]': state.date[1] + ' 23:59:59',
         })
       : BrokerageApi.getBrokerageWithdrawPage({
           pageSize: state.pagination.pageSize,
-          pageNo: state.pagination.pageNo,
+          pageNum: state.pagination.pageNum,
           'createTime[0]': state.date[0] + ' 00:00:00',
           'createTime[1]': state.date[1] + ' 23:59:59',
         }));
@@ -377,7 +377,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getLogList();
   });
 </script>

@@ -93,7 +93,7 @@ http.interceptors.request.use(
     // 增加 token 令牌、terminal 终端、tenant 租户的请求头
     const token = config.custom.isToken ? getAccessToken() : undefined;
     if (token) {
-      config.header['Authorization'] = token;
+      config.header['Authorization'] = buildAuthorization(token);
     }
     config.header['terminal'] = getTerminal();
 
@@ -111,8 +111,8 @@ http.interceptors.request.use(
  */
 http.interceptors.response.use(
   (response) => {
-    // 约定：如果是 /auth/ 下的 URL 地址，并且返回了 accessToken 说明是登录相关的接口，则自动设置登陆令牌
-    if (response.config.url.indexOf('/member/auth/') >= 0 && response.data?.data?.accessToken) {
+    // 约定：登录或刷新令牌接口返回 accessToken 时，自动保存令牌。
+    if (isTokenResponse(response.config.url) && response.data?.data?.accessToken) {
       $store('user').setToken(response.data.data.accessToken, response.data.data.refreshToken);
     }
 
@@ -122,7 +122,7 @@ http.interceptors.response.use(
     // 自定义处理【error 错误提示】：如果需要显示错误提示，则显示错误提示
     if (response.data.code !== 0) {
       // 特殊：如果 401 错误码，则跳转到登录页 or 刷新令牌
-      if (response.data.code === 401) {
+      if (response.data.code === 401 && response.config.custom?.isToken !== false) {
         return refreshToken(response.config);
       }
       // 特殊：处理分销用户绑定失败的提示
@@ -223,8 +223,8 @@ http.interceptors.response.use(
 let requestList = []; // 请求队列
 let isRefreshToken = false; // 是否正在刷新中
 const refreshToken = async (config) => {
-  // 如果当前已经是 refresh-token 的 URL 地址，并且还是 401 错误，说明是刷新令牌失败了，直接返回 Promise.reject(error)
-  if (config.url.indexOf('/member/auth/refresh-token') >= 0) {
+  // 如果当前已经是刷新令牌请求，并且还是 401 错误，说明刷新令牌失败了，直接返回 Promise.reject(error)
+  if (isRefreshTokenRequest(config)) {
     return Promise.reject('error');
   }
 
@@ -247,7 +247,7 @@ const refreshToken = async (config) => {
         throw new Error('刷新令牌失败');
       }
       // 2.1 刷新成功，则回放队列的请求 + 当前请求
-      config.header.Authorization = 'Bearer ' + getAccessToken();
+      config.header.Authorization = buildAuthorization(getAccessToken());
       requestList.forEach((cb) => {
         cb();
       });
@@ -269,7 +269,7 @@ const refreshToken = async (config) => {
     // 添加到队列，等待刷新获取到新的令牌
     return new Promise((resolve) => {
       requestList.push(() => {
-        config.header.Authorization = 'Bearer ' + getAccessToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+        config.header.Authorization = buildAuthorization(getAccessToken()); // 让每个请求携带自定义token 请根据实际情况自行修改
         resolve(request(config));
       });
     });
@@ -299,6 +299,26 @@ export const getAccessToken = () => {
 export const getRefreshToken = () => {
   return uni.getStorageSync('refresh-token');
 };
+
+/** 构建授权请求头 */
+export const buildAuthorization = (token) => {
+  if (!token) {
+    return '';
+  }
+  return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+};
+
+function isTokenResponse(url = '') {
+  return url.indexOf('/member/auth/') >= 0 || url.indexOf('/oauth/token') >= 0;
+}
+
+function isRefreshTokenRequest(config) {
+  return (
+    config.custom?.isRefreshToken ||
+    config.url?.indexOf('/member/auth/refresh-token') >= 0 ||
+    (config.url?.indexOf('/oauth/token') >= 0 && config.data?.grant_type === 'refresh_token')
+  );
+}
 
 /** 获得租户编号 */
 export const getTenantId = () => {

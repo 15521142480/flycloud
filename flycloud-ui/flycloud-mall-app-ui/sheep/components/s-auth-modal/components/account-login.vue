@@ -121,7 +121,7 @@
       imageTextClickCaptchaSuccessValue: captchaVerification,
       ImageTextClickCaptchaSuccessValue: captchaVerification,
     };
-    const { code } = await AuthUtil.login(loginData);
+    const { code } = await AuthUtil.loginByAccount(loginData);
     if (code === 0) {
       closeAuthModal();
     }

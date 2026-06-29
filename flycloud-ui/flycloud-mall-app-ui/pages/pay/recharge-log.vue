@@ -64,7 +64,7 @@
     pagination: {
       list: [],
       total: 0,
-      pageNo: 1,
+      pageNum: 1,
       pageSize: 5,
     },
     loadStatus: '',
@@ -72,7 +72,7 @@
 
   async function getLogList(page = 1, list_rows = 5) {
     const { code, data } = await PayWalletApi.getWalletRechargePage({
-      pageNo: page,
+      pageNum: page,
       pageSize: list_rows,
     });
     if (code !== 0) {
@@ -88,7 +88,7 @@
     if (state.loadStatus === 'noMore') {
       return;
     }
-    state.pagination.pageNo++;
+    state.pagination.pageNum++;
     getLogList();
   }
 
