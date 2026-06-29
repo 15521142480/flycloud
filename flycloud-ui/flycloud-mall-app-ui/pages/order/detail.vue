@@ -328,7 +328,7 @@
   // 确认收货
   async function onConfirm(orderId, ignore = false) {
     // 需开启确认收货组件
-    // todo: 芋艿：【微信物流】待接入微信 https://gitee.com/sheepjs/shopro-uniapp/commit/a6bbba49b84dd418b84c5fefc8b7463df8f4901f
+    // todo: fly：【微信物流】待接入微信 https://gitee.com/sheepjs/shopro-uniapp/commit/a6bbba49b84dd418b84c5fefc8b7463df8f4901f
     // 1.怎么检测是否开启了发货组件功能？如果没有开启的话就不能在这里return出去
     // 2.如果开启了走mpConfirm方法,需要在App.vue的show方法中拿到确认收货结果
     let isOpenBusinessView = true;
@@ -403,7 +403,7 @@
     // 对详情数据进行适配
     let res;
     if (state.comeinType === 'wechat') {
-      // TODO 芋艿：【微信物流】微信场景下
+      // TODO fly：【微信物流】微信场景下
       res = await OrderApi.getOrderDetail(id, {
         merchant_trade_no: state.merchantTradeNo,
       });

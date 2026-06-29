@@ -58,7 +58,7 @@
     background: `url(${sheep.$url.cdn(props.data.bgImgUrl)}) no-repeat top center / 100% auto`,
     fontSize: `${props.data.titleSize}px`,
     fontWeight: `${props.data.titleWeight}`,
-    // add by 芋艿：shopro 是在 props.styles.height，我们是在 props.data.height
+    // add by fly：shopro 是在 props.styles.height，我们是在 props.data.height
     height: `${props.data.height || 40}px`,
   };
 
@@ -67,7 +67,7 @@
     color: props.data.titleColor,
     fontSize: `${props.data.titleSize}px`,
     textAlign: props.data.textAlign,
-    // add by 芋艿：shopro 是在 props.data.skew，我们是在 props.data.marginLeft
+    // add by fly：shopro 是在 props.data.skew，我们是在 props.data.marginLeft
     marginLeft: `${props.data.marginLeft || 0}px`,
   };
 

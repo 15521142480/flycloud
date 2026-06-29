@@ -3,7 +3,7 @@ import third from '@/sheep/api/migration/third';
 import SocialApi from '@/sheep/api/member/social';
 import $share from '@/sheep/platform/share';
 
-// TODO 芋艿：等后面搞 App 再弄
+// TODO fly：等后面搞 App 再弄
 const socialType = 32; // 社交类型 - 微信开放平台
 
 const load = async () => {};

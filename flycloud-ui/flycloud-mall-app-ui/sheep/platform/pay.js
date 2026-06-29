@@ -146,7 +146,7 @@ export default class SheepPay {
     });
   }
 
-  // 浏览器微信 H5 支付 TODO 芋艿：待接入（注意：H5 支付是给普通浏览器，不是微信公众号的支付，绝大多数人用不到，可以忽略）
+  // 浏览器微信 H5 支付 TODO fly：待接入（注意：H5 支付是给普通浏览器，不是微信公众号的支付，绝大多数人用不到，可以忽略）
   async wechatWapPay() {
     const { error, data } = await this.prepay();
     if (error === 0) {
@@ -236,7 +236,7 @@ export default class SheepPay {
       return;
     }
 
-    // TODO @芋艿：【可优化】如果是沙箱支付，EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX)，相关 https://t.zsxq.com/yjyJQ
+    // TODO @fly：【可优化】如果是沙箱支付，EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX)，相关 https://t.zsxq.com/yjyJQ
     uni.requestPayment({
       provider: 'alipay',
       orderInfo: data.displayContent, // 直接使用返回的支付参数
@@ -367,7 +367,7 @@ export function getPayMethods(channels) {
   if (channels.includes('wallet')) {
     walletMethod.disabled = false;
   }
-  // 4. 处理【苹果支付】TODO 芋艿：未来接入
+  // 4. 处理【苹果支付】TODO fly：未来接入
   // 5. 处理【模拟支付】
   const mockMethod = payMethods[4];
   if (channels.includes('mock')) {

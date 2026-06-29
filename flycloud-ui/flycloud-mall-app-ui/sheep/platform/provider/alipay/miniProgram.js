@@ -59,7 +59,7 @@ const mobileLogin = async (e) =>{
     // } else {
     //   return resolve(false);
     // }
-    // TODO 芋艿：shareInfo: uni.getStorageSync('shareLog') || {},
+    // TODO fly：shareInfo: uni.getStorageSync('shareLog') || {},
   });
 }
 

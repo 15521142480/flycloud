@@ -1,6 +1,6 @@
 import request from '@/sheep/request';
 
-// TODO 芋艿：【直播】小程序直播还不支持
+// TODO fly：【直播】小程序直播还不支持
 export default {
   //小程序直播
   mplive: {
