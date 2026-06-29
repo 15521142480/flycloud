@@ -1,30 +1,8 @@
 import request from '@/sheep/request';
-import { baseUrl } from '@/sheep/config';
+import { getAuthBaseUrl } from '@/sheep/config/server';
 
-const AUTH_SERVER_PREFIX = import.meta.env.AUTH_SERVER_PREFIX;
-const MALL_SERVER_PREFIX = import.meta.env.MALL_SERVER_PREFIX;
 const CAPTCHA_IMAGE_WIDTH = Number(import.meta.env.CAPTCHA_IMAGE_WIDTH);
 const CAPTCHA_IMAGE_HEIGHT = Number(import.meta.env.CAPTCHA_IMAGE_HEIGHT);
-
-function normalizePrefix(prefix) {
-  return `/${String(prefix || '').replace(/^\/+|\/+$/g, '')}`;
-}
-
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-// 获取认证服务网关地址，避免影响商城接口的基础路径。
-function getAuthBaseUrl() {
-  if (!baseUrl) {
-    return '';
-  }
-  const mallPrefix = normalizePrefix(MALL_SERVER_PREFIX);
-  const authPrefix = normalizePrefix(AUTH_SERVER_PREFIX);
-  return baseUrl
-    .replace(new RegExp(`${escapeRegExp(mallPrefix)}/?$`), authPrefix)
-    .replace(/\/$/, '');
-}
 
 const CaptchaApi = {
   imageWidth: CAPTCHA_IMAGE_WIDTH,

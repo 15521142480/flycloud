@@ -111,6 +111,8 @@
     state.showCaptcha = true;
   }
 
+  // const { code, data } = await AuthUtil.login(state.model);
+
   // 图文点选验证码通过后提交账号登录。
   async function handleCaptchaSuccess(captchaVerification) {
     const loginData = {
