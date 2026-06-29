@@ -63,7 +63,7 @@ const app = defineStore('app', {
       }
 
       // 加载租户
-      await adaptTenant();
+      // await adaptTenant();
 
       // 加载装修配置
       await adaptTemplate(this.template, templateId);
