@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="971.44" height="502" viewBox="0 0 971.44 502">
+    <defs>
+        <linearGradient id="moonGrad" x1="120" y1="40" x2="245" y2="165" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#bfe9ff"/>
+            <stop offset="1" stop-color="#7fc7ff"/>
+        </linearGradient>
+
+        <linearGradient id="rocketBody" x1="468" y1="128" x2="526" y2="334" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="0.48" stop-color="#f4fbff"/>
+            <stop offset="1" stop-color="#c9e2ff"/>
+        </linearGradient>
+
+        <linearGradient id="rocketShadow" x1="496" y1="130" x2="529" y2="324" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#dceeff" stop-opacity="0.15"/>
+            <stop offset="1" stop-color="#4d8af0" stop-opacity="0.42"/>
+        </linearGradient>
+
+        <linearGradient id="flameGrad" x1="486" y1="323" x2="486" y2="486" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff7bf"/>
+            <stop offset="0.38" stop-color="#ffb45e"/>
+            <stop offset="0.72" stop-color="#ff7a66"/>
+            <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+        </linearGradient>
+
+        <linearGradient id="blueCloud" x1="0" y1="320" x2="320" y2="505" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#eaf8ff"/>
+            <stop offset="1" stop-color="#b7e7ff"/>
+        </linearGradient>
+
+        <linearGradient id="purpleCloud" x1="0" y1="330" x2="350" y2="502" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#e8dcff"/>
+            <stop offset="1" stop-color="#c7b8ff"/>
+        </linearGradient>
+
+        <linearGradient id="groundGrad" x1="0" y1="448" x2="971" y2="502" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#eef8ff"/>
+            <stop offset="0.5" stop-color="#dff3ff"/>
+            <stop offset="1" stop-color="#f4f8ff"/>
+        </linearGradient>
+
+        <filter id="softBlur">
+            <feGaussianBlur stdDeviation="8"/>
+        </filter>
+
+        <!-- 用 mask 做月牙，不再用白色圆盖住，避免透明背景下出现白块 -->
+        <mask id="moonMask">
+            <rect width="971.44" height="502" fill="white"/>
+            <circle cx="189" cy="66" r="76" fill="black"/>
+        </mask>
+    </defs>
+
+    <!-- transparent sky: 已删除白色背景 rect -->
+
+    <!-- moon, kept visible -->
+    <circle cx="158" cy="86" r="72" fill="url(#moonGrad)" opacity="0.95" mask="url(#moonMask)"/>
+    <circle cx="157" cy="86" r="72" fill="none" stroke="#d8f0ff" stroke-width="2" opacity="0.7"/>
+
+    <!-- soft far atmosphere lines -->
+    <path d="M58 162 C160 135, 275 149, 378 117" fill="none" stroke="#d8f2ff" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <path d="M610 118 C704 92, 815 98, 918 74" fill="none" stroke="#edf6ff" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+    <path d="M658 166 C760 150, 842 160, 928 128" fill="none" stroke="#edf6ff" stroke-width="3" stroke-linecap="round" opacity="0.72"/>
+
+    <!-- launch tower, left background -->
+    <g opacity="0.56">
+        <rect x="384" y="212" width="10" height="165" rx="2" fill="#82b7dc"/>
+        <rect x="423" y="194" width="10" height="183" rx="2" fill="#82b7dc"/>
+        <line x1="389" y1="220" x2="428" y2="250" stroke="#9ccbe8" stroke-width="4"/>
+        <line x1="428" y1="222" x2="389" y2="255" stroke="#9ccbe8" stroke-width="4"/>
+        <line x1="389" y1="272" x2="428" y2="302" stroke="#9ccbe8" stroke-width="4"/>
+        <line x1="428" y1="274" x2="389" y2="307" stroke="#9ccbe8" stroke-width="4"/>
+        <line x1="389" y1="324" x2="428" y2="354" stroke="#9ccbe8" stroke-width="4"/>
+        <line x1="428" y1="326" x2="389" y2="359" stroke="#9ccbe8" stroke-width="4"/>
+        <rect x="374" y="248" width="70" height="8" rx="4" fill="#9ccbe8"/>
+        <rect x="372" y="304" width="74" height="8" rx="4" fill="#9ccbe8"/>
+        <rect x="368" y="372" width="84" height="12" rx="6" fill="#82b7dc"/>
+    </g>
+
+    <!-- rocket flame glow behind -->
+    <ellipse cx="486" cy="436" rx="126" ry="42" fill="#ffe0b0" opacity="0.38" filter="url(#softBlur)"/>
+    <path d="M467 315 C430 390, 444 458, 486 494 C530 454, 542 388, 505 315 Z" fill="url(#flameGrad)" opacity="0.95"/>
+    <path d="M476 326 C455 386, 461 441, 486 476 C513 438, 518 386, 497 326 Z" fill="#fff8cf" opacity="0.94"/>
+
+    <!-- rocket smoke clouds -->
+    <g opacity="0.98">
+        <ellipse cx="210" cy="415" rx="118" ry="45" fill="url(#purpleCloud)"/>
+        <ellipse cx="111" cy="425" rx="84" ry="39" fill="#e8dcff"/>
+        <ellipse cx="288" cy="395" rx="78" ry="38" fill="#daf3ff"/>
+        <ellipse cx="360" cy="426" rx="99" ry="40" fill="#d7f0ff"/>
+
+        <ellipse cx="630" cy="418" rx="128" ry="48" fill="#daf3ff"/>
+        <ellipse cx="739" cy="425" rx="97" ry="39" fill="#edf6ff"/>
+        <ellipse cx="825" cy="408" rx="94" ry="43" fill="#e8dcff"/>
+        <ellipse cx="485" cy="428" rx="167" ry="51" fill="#ffffff" opacity="0.84"/>
+    </g>
+
+    <!-- rocket body -->
+    <g id="starship">
+        <path d="M486 82
+             C466 108, 456 149, 456 188
+             L456 295
+             C456 320, 470 335, 486 335
+             C502 335, 516 320, 516 295
+             L516 188
+             C516 149, 506 108, 486 82Z"
+              fill="url(#rocketBody)" stroke="#5e83b6" stroke-width="2"/>
+
+        <path d="M486 82
+             C502 108, 511 149, 511 188
+             L511 295
+             C511 315, 501 330, 486 335
+             L486 82Z"
+              fill="url(#rocketShadow)" opacity="0.68"/>
+
+        <!-- nose window -->
+        <path d="M474 131 C478 118, 482 111, 486 105 C491 112, 496 119, 499 131 C491 128, 482 128, 474 131Z" fill="#162c5b" opacity="0.94"/>
+        <path d="M478 133 C482 125, 489 122, 497 126" fill="none" stroke="#cceaff" stroke-width="2" opacity="0.55"/>
+
+        <!-- body details -->
+        <rect x="474" y="169" width="24" height="4" rx="2" fill="#a6cbed" opacity="0.75"/>
+        <rect x="473" y="183" width="26" height="4" rx="2" fill="#a6cbed" opacity="0.65"/>
+        <line x1="486" y1="143" x2="486" y2="298" stroke="#b5d6f4" stroke-width="1.5" opacity="0.8"/>
+
+        <!-- fins -->
+        <path d="M456 258 C433 280, 423 316, 431 342 C449 331, 459 310, 461 286Z" fill="#8ebbec" stroke="#5e83b6" stroke-width="2"/>
+        <path d="M516 258 C539 280, 549 316, 541 342 C523 331, 513 310, 511 286Z" fill="#74a9e3" stroke="#5e83b6" stroke-width="2"/>
+
+        <!-- engines -->
+        <rect x="462" y="315" width="14" height="18" rx="5" fill="#59799d"/>
+        <rect x="481" y="318" width="12" height="20" rx="5" fill="#506f94"/>
+        <rect x="498" y="315" width="14" height="18" rx="5" fill="#59799d"/>
+    </g>
+
+    <!-- foreground ground -->
+    <rect y="455" width="971.44" height="47" fill="url(#groundGrad)"/>
+    <path d="M0 456 C135 438, 212 462, 352 448 C505 433, 626 461, 754 446 C846 435, 903 442, 971.44 432 L971.44 502 L0 502 Z"
+          fill="#e5f6ff" opacity="0.94"/>
+    <path d="M0 476 C122 462, 275 472, 424 459 C578 446, 728 474, 971.44 452" fill="none" stroke="#b7e7ff" stroke-width="3" opacity="0.8"/>
+    <path d="M126 481 C255 470, 402 480, 527 469" fill="none" stroke="#d3eaff" stroke-width="2" opacity="0.9"/>
+    <path d="M642 482 C770 466, 857 474, 946 464" fill="none" stroke="#d3eaff" stroke-width="2" opacity="0.9"/>
+
+    <!-- small sparkle/exhaust particles -->
+    <g opacity="0.65">
+        <circle cx="438" cy="333" r="3" fill="#ffcf7b"/>
+        <circle cx="534" cy="346" r="2.5" fill="#ffcf7b"/>
+        <circle cx="421" cy="386" r="2" fill="#ffc2a3"/>
+        <circle cx="559" cy="392" r="2.2" fill="#ffc2a3"/>
+        <circle cx="486" cy="371" r="2.5" fill="#ffffff"/>
+    </g>
+</svg>

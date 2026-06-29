@@ -67,7 +67,7 @@ import { ArrowDownBold, Edit, RefreshRight } from '@element-plus/icons-vue'
 import { ChatMessageApi, ChatMessageVO } from '@/api/ai/chat/message'
 import { ChatConversationVO } from '@/api/ai/chat/conversation'
 import { useUserStore } from '@/store/modules/user'
-import userAvatarDefaultImg from '@/assets/imgs/avatar.gif'
+import userAvatarDefaultImg from '@/assets/imgs/avatar.png'
 import roleAvatarDefaultImg from '@/assets/ai/gpt.svg'
 const { t } = useI18n()
 const message = useMessage() // 消息弹窗

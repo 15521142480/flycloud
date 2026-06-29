@@ -5,25 +5,27 @@
   >
     <div class="relative mx-auto h-full flex">
       <div
-        :class="`${prefixCls}__left flex-1 bg-gray-500 bg-opacity-20 relative p-30px lt-xl:hidden overflow-x-hidden overflow-y-auto`"
+        :class="`${prefixCls}__left flex-1 bg-white relative p-30px lt-xl:hidden overflow-x-hidden overflow-y-auto`"
       >
         <!-- 左上角的 logo + 系统标题 -->
-        <div class="relative flex items-center text-white">
-          <img alt="" class="mr-10px h-48px w-48px" src="@/assets/svgs/login-ball.jpg" />
-          <span class="text-20px font-bold">{{ t('app.title') }}</span>
+        <div class="login-logo-box relative flex items-center text-white">
+          <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
+          <span class="text-20px font-bold" style="font-size: 24px;font-weight: 700;">{{ t('app.title') }}</span>
         </div>
-        <!-- 左边的背景图 + 欢迎语 -->
-        <div class="h-[calc(100%-60px)] flex items-center justify-center">
+
+        <!-- 左边的背景图 + 提示语 -->
+        <div class="relative z-1 h-[calc(100%-60px)] flex items-center justify-center">
           <TransitionGroup
             appear
             enter-active-class="animate__animated animate__bounceInLeft"
             tag="div"
+            class="login-left-content"
           >
-            <!--            <img key="1" alt="" class="w-350px" src="@/assets/svgs/login-ball.jpg" />-->
-            <!--            <div key="2" class="text-3xl text-white">{{ t('login.welcome') }}</div>-->
-            <!--            <div key="3" class="mt-5 text-14px font-normal text-white">-->
-            <!--              {{ t('login.message') }}-->
-            <!--            </div>-->
+            <img key="1" alt="" class="login-left-img" src="@/assets/svgs/login_left.svg"/>
+            <div key="2" class="login-left-title">
+              基于主流技术栈的现代化管理平台
+            </div>
+            <div key="3" class="login-left-desc">一站式后台管理，登录即刻体验！</div>
           </TransitionGroup>
         </div>
       </div>
@@ -37,7 +39,7 @@
           style="color: var(--el-text-color-primary)"
         >
           <div class="flex items-center at-2xl:hidden at-xl:hidden">
-            <img alt="" class="mr-10px h-48px w-48px" src="@/assets/svgs/login-ball.jpg" />
+            <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
             <span class="text-20px font-bold">{{ t('app.title') }}</span>
           </div>
           <div class="flex items-center justify-end space-x-10px h-48px">
@@ -94,13 +96,14 @@ $prefix-cls: #{$namespace}-login;
       position: absolute;
       top: 0;
       left: 0;
-      z-index: -1;
       width: 100%;
       height: 100%;
-      background-image: url('@/assets/svgs/login-fly.jpg');
-      background-position: center;
+      //margin-left: -8%;
+      content: "";
+      background-image: url('@/assets/svgs/login-bg.svg');
       background-repeat: no-repeat;
-      content: '';
+      background-position: 100%;
+      background-size: auto 100%;
     }
   }
 }
@@ -115,5 +118,36 @@ $prefix-cls: #{$namespace}-login;
   .el-card {
     background-color: var(--login-bg-color);
   }
+}
+
+.login-logo-box {
+  justify-content: center;
+  transform: translate(-150px, 40px);
+}
+
+.login-left-content {
+  width: 520px;
+  color: #fff;
+  padding-bottom: 70px;
+}
+
+.login-left-img {
+  display: block;
+  width: 350px;
+  margin: 2px 1px 50px 10px;
+}
+
+.login-left-title {
+  margin-top: 20px;
+  font-size: 1.775rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.login-left-desc {
+  margin-top: 18px;
+  margin-left: 2px;
+  font-size: 16px;
+  font-weight: 500;
 }
 </style>

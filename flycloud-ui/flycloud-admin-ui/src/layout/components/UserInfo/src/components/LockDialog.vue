@@ -2,7 +2,7 @@
 import { useValidator } from '@/hooks/web/useValidator'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useLockStore } from '@/store/modules/lock'
-import avatarImg from '@/assets/imgs/avatar.gif'
+import avatarImg from '@/assets/imgs/avatar.png'
 import { useUserStore } from '@/store/modules/user'
 const { t } = useI18n()
 const { getPrefixCls } = useDesign()

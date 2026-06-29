@@ -69,7 +69,7 @@ watch(
     >
       <img
         class="h-[calc(var(--logo-height)-10px)] w-[calc(var(--logo-height)-10px)]"
-        src="@/assets/svgs/login-ball.jpg"
+        src="@/assets/imgs/logo.png"
       />
       <div
         v-if="show"

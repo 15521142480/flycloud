@@ -9,7 +9,7 @@
       >
         <!-- 左上角的 logo + 系统标题 -->
         <div class="relative flex items-center text-white">
-          <img alt="" class="mr-10px h-48px w-48px" src="@/assets/svgs/login-ball.jpg" />
+          <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
           <span class="text-20px font-bold">{{ t('app.title') }}</span>
         </div>
         <!-- 左边的背景图 + 欢迎语 -->
@@ -35,7 +35,7 @@
           class="flex items-center justify-between text-white at-2xl:justify-end at-xl:justify-end"
         >
           <div class="flex items-center at-2xl:hidden at-xl:hidden">
-            <img alt="" class="mr-10px h-48px w-48px" src="@/assets/svgs/login-ball.jpg" />
+            <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
             <span class="text-20px font-bold">{{ t('app.title') }}</span>
           </div>
           <div class="flex items-center justify-end space-x-10px h-48px">
@@ -330,7 +330,7 @@ $prefix-cls: #{$namespace}-login;
       z-index: -1;
       width: 100%;
       height: 100%;
-      background-image: url('@/assets/svgs/login-bg.svg');
+      background-image: url('@/assets/svgs/login-bg-old.svg');
       background-position: center;
       background-repeat: no-repeat;
       content: '';

@@ -1,4 +1,9 @@
 node_modules
+**/node_modules/
+**/unpackage/disk/
+
+
+
 .DS_Store
 dist
 dist-ssr
@@ -7,3 +12,4 @@ pnpm-debug
 auto-*.d.ts
 .idea
 .history
+
