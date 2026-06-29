@@ -6,7 +6,7 @@ import test from '@/sheep/helper/test.js';
 import AuthUtil from '@/sheep/api/member/auth';
 
 // 打开授权弹框
-export function showAuthModal(type = 'smsLogin') {
+export function showAuthModal(type = 'accountLogin') {
   const modal = $store('modal');
   // #ifdef H5
   closeAuthModal();

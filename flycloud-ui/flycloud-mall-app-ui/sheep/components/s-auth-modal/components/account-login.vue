@@ -4,10 +4,10 @@
     <!-- 标题栏 -->
     <view class="head-box ss-m-b-60 ss-flex-col">
       <view class="ss-flex ss-m-b-20">
+        <view class="head-title ss-m-r-40 head-title-animation">账号登录</view>
         <view class="head-title-active head-title-line" @tap="showAuthModal('smsLogin')">
           短信登录
         </view>
-        <view class="head-title ss-m-r-40 head-title-animation">账号登录</view>
       </view>
       <view class="head-subtitle">如果未设置过密码，请点击忘记密码</view>
     </view>
@@ -44,13 +44,15 @@
         </uni-easyinput>
       </uni-forms-item>
     </uni-forms>
+
+    <s-click-captcha v-model:show="state.showCaptcha" @success="handleCaptchaSuccess" />
   </view>
 </template>
 
 <script setup>
   import { ref, reactive, unref } from 'vue';
   import sheep from '@/sheep';
-  import { mobile, password } from '@/sheep/validate/form';
+  import { password } from '@/sheep/validate/form';
   import { showAuthModal, closeAuthModal } from '@/sheep/hooks/useModal';
   import AuthUtil from '@/sheep/api/member/auth';
 
@@ -67,12 +69,20 @@
 
   // 数据
   const state = reactive({
+    showCaptcha: false, // 是否展示图文点选验证码
     model: {
-      mobile: '', // 账号
-      password: '', // 密码
+      mobile: 'admin-app', // 账号
+      password: 'admin123', // 密码
     },
     rules: {
-      mobile,
+      mobile: {
+        rules: [
+          {
+            required: true,
+            errorMessage: '请输入账号',
+          },
+        ],
+      },
       password,
     },
   });
@@ -98,8 +108,18 @@
       return;
     }
 
-    // 提交数据
-    const { code, data } = await AuthUtil.login(state.model);
+    state.showCaptcha = true;
+  }
+
+  // 图文点选验证码通过后提交账号登录。
+  async function handleCaptchaSuccess(captchaVerification) {
+    const loginData = {
+      ...state.model,
+      captchaVerification,
+      imageTextClickCaptchaSuccessValue: captchaVerification,
+      ImageTextClickCaptchaSuccessValue: captchaVerification,
+    };
+    const { code } = await AuthUtil.login(loginData);
     if (code === 0) {
       closeAuthModal();
     }
