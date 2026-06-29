@@ -1,0 +1,26 @@
+package com.fly.system.api.member.domain.bo;
+
+import com.fly.common.domain.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * 会员经验记录业务对象。
+ *
+ * @author lxs
+ * @date 2026-06-30
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@Schema(description = "会员经验记录业务对象")
+public class MemberExperienceRecordBo extends BaseEntity {
+
+    private Long id;
+    private Long userId;
+    private Integer bizType;
+    private String bizId;
+    private String title;
+    private Integer experience;
+
+}

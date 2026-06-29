@@ -7,9 +7,13 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.StringUtils;
+import com.fly.pay.enums.PayWalletBizTypeEnum;
 import com.fly.pay.mapper.PayOrderExtensionMapper;
 import com.fly.pay.mapper.PayOrderMapper;
 import com.fly.pay.service.IPayOrderService;
+import com.fly.pay.service.IPayWalletRechargeService;
+import com.fly.pay.service.IPayWalletService;
+import com.fly.system.api.pay.domain.PayWallet;
 import com.fly.system.api.pay.domain.PayOrder;
 import com.fly.system.api.pay.domain.PayOrderExtension;
 import com.fly.system.api.pay.domain.bo.AppPayOrderSubmitReqVo;
@@ -18,6 +22,7 @@ import com.fly.system.api.pay.domain.bo.PayOrderCreateReqDto;
 import com.fly.system.api.pay.domain.vo.AppPayOrderSubmitRespVo;
 import com.fly.system.api.pay.domain.vo.PayOrderRespVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +64,8 @@ public class PayOrderServiceImpl implements IPayOrderService {
 
     private final PayOrderMapper payOrderMapper;
     private final PayOrderExtensionMapper payOrderExtensionMapper;
+    private final ObjectProvider<IPayWalletService> payWalletServiceProvider;
+    private final ObjectProvider<IPayWalletRechargeService> walletRechargeServiceProvider;
 
     /**
      * 创建支付订单。
@@ -169,7 +176,34 @@ public class PayOrderServiceImpl implements IPayOrderService {
         updateOrder.setUpdateBy(String.valueOf(userId));
         updateOrder.setUpdateTime(LocalDateTime.now());
 
-        if (Objects.equals("mock", submitReqVo.getChannelCode()) || Objects.equals("wallet", submitReqVo.getChannelCode())) {
+        if (Objects.equals("wallet", submitReqVo.getChannelCode())) {
+            PayWallet wallet = payWalletServiceProvider.getObject().getOrCreateWallet(userId, order.getUserType());
+            payWalletServiceProvider.getObject().reduceWalletBalance(wallet.getId(), String.valueOf(order.getId()),
+                    PayWalletBizTypeEnum.PAYMENT, order.getPrice());
+            markOrderSuccess(userId, updateOrder, extension);
+        } else if (Objects.equals("mock", submitReqVo.getChannelCode())) {
+            markOrderSuccess(userId, updateOrder, extension);
+        }
+        payOrderMapper.updateById(updateOrder);
+
+        if (ORDER_STATUS_SUCCESS == (updateOrder.getStatus() == null ? order.getStatus() : updateOrder.getStatus())) {
+            IPayWalletRechargeService rechargeService = walletRechargeServiceProvider.getIfAvailable();
+            if (rechargeService != null) {
+                rechargeService.updateWalletRechargePaid(order.getId(), extension.getChannelCode());
+            }
+        }
+
+        AppPayOrderSubmitRespVo respVo = new AppPayOrderSubmitRespVo();
+        respVo.setStatus(updateOrder.getStatus() == null ? order.getStatus() : updateOrder.getStatus());
+        respVo.setDisplayMode("none");
+        respVo.setDisplayContent("");
+        return respVo;
+    }
+
+    /**
+     * 标记支付订单和拓展单支付成功。
+     */
+    private void markOrderSuccess(Long userId, PayOrder updateOrder, PayOrderExtension extension) {
             updateOrder.setStatus(ORDER_STATUS_SUCCESS);
             updateOrder.setSuccessTime(LocalDateTime.now());
             PayOrderExtension updateExtension = new PayOrderExtension();
@@ -178,14 +212,6 @@ public class PayOrderServiceImpl implements IPayOrderService {
             updateExtension.setUpdateBy(String.valueOf(userId));
             updateExtension.setUpdateTime(LocalDateTime.now());
             payOrderExtensionMapper.updateById(updateExtension);
-        }
-        payOrderMapper.updateById(updateOrder);
-
-        AppPayOrderSubmitRespVo respVo = new AppPayOrderSubmitRespVo();
-        respVo.setStatus(updateOrder.getStatus() == null ? order.getStatus() : updateOrder.getStatus());
-        respVo.setDisplayMode("none");
-        respVo.setDisplayContent("");
-        return respVo;
     }
 
     /**
