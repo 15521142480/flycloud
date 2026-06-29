@@ -3,7 +3,7 @@ package com.fly.mall.trade.controller.app;
 import com.fly.common.domain.model.R;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.domain.trade.bo.CartBo;
-import com.fly.mall.api.domain.trade.vo.CartVo;
+import com.fly.mall.api.domain.trade.vo.AppCartListRespVo;
 import com.fly.mall.trade.service.ICartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +22,7 @@ import java.util.List;
  * 移动端 - 购物车 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @Validated
 @RequiredArgsConstructor
@@ -84,8 +84,8 @@ public class AppCartController {
      * 查询用户的购物车列表。
      */
     @GetMapping("/list")
-    public R<List<CartVo>> getCartList() {
-        return R.ok(cartService.queryUserCartList(UserUtils.getCurUserId()));
+    public R<AppCartListRespVo> getCartList() {
+        return R.ok(cartService.queryAppCartList(UserUtils.getCurUserId()));
     }
 
 }

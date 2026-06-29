@@ -10,12 +10,16 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
-import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.mall.api.domain.product.ProductSku;
+import com.fly.mall.api.domain.product.vo.AppProductPropertyValueDetailRespVo;
+import com.fly.mall.api.domain.product.vo.AppProductSkuBaseRespVo;
+import com.fly.mall.api.domain.product.vo.AppProductSpuBaseRespVo;
 import com.fly.mall.api.domain.product.vo.ProductSkuVo;
 import com.fly.mall.api.domain.product.vo.ProductSpuVo;
 import com.fly.mall.api.domain.trade.Cart;
 import com.fly.mall.api.domain.trade.bo.CartBo;
+import com.fly.mall.api.domain.trade.vo.AppCartListRespVo;
 import com.fly.mall.api.domain.trade.vo.CartVo;
 import com.fly.mall.product.service.IProductSkuService;
 import com.fly.mall.product.service.IProductSpuService;
@@ -29,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,7 +42,7 @@ import java.util.Optional;
  * 购物车 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @RequiredArgsConstructor
 @Service
@@ -85,6 +90,32 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
         list.sort(Comparator.comparing(CartVo::getId).reversed());
         fillProductInfo(list);
         return list;
+    }
+
+    /**
+     * 查询移动端用户购物车列表。
+     */
+    @Override
+    public AppCartListRespVo queryAppCartList(Long userId) {
+        CartBo bo = new CartBo();
+        bo.setUserId(userId);
+        List<CartVo> carts = queryList(bo);
+        carts.sort(Comparator.comparing(CartVo::getId).reversed());
+        if (CollectionUtils.isEmpty(carts)) {
+            AppCartListRespVo emptyRespVo = new AppCartListRespVo();
+            emptyRespVo.setValidList(Collections.emptyList());
+            emptyRespVo.setInvalidList(Collections.emptyList());
+            return emptyRespVo;
+        }
+
+        List<Long> spuIds = CollectionUtils.convertList(carts, CartVo::getSpuId);
+        List<Long> skuIds = CollectionUtils.convertList(carts, CartVo::getSkuId);
+        Map<Long, ProductSpuVo> spuMap = CollectionUtils.convertMap(productSpuService.queryListByIds(spuIds), ProductSpuVo::getId);
+        Map<Long, ProductSkuVo> skuMap = new java.util.HashMap<>();
+        for (Long skuId : skuIds) {
+            Optional.ofNullable(productSkuService.queryById(skuId)).ifPresent(sku -> skuMap.put(sku.getId(), sku));
+        }
+        return convertAppCartList(carts, spuMap, skuMap);
     }
 
     /**
@@ -331,6 +362,97 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
             deleteCart(UserUtils.getCurUserId(), deletedCartIds);
             list.removeIf(cart -> deletedCartIds.contains(cart.getId()));
         }
+    }
+
+    /**
+     * 转换移动端购物车列表，并按商品有效性拆分。
+     */
+    private AppCartListRespVo convertAppCartList(List<CartVo> carts, Map<Long, ProductSpuVo> spuMap, Map<Long, ProductSkuVo> skuMap) {
+        List<AppCartListRespVo.Cart> validList = new ArrayList<>(carts.size());
+        List<AppCartListRespVo.Cart> invalidList = new ArrayList<>();
+        for (CartVo cart : carts) {
+            ProductSpuVo spu = spuMap.get(cart.getSpuId());
+            ProductSkuVo sku = skuMap.get(cart.getSkuId());
+            AppCartListRespVo.Cart cartRespVo = new AppCartListRespVo.Cart();
+            cartRespVo.setId(cart.getId());
+            cartRespVo.setCount(cart.getCount());
+            cartRespVo.setSelected(cart.getSelected());
+            cartRespVo.setSpu(convertAppProductSpu(spu));
+            cartRespVo.setSku(convertAppProductSku(sku));
+            if (isInvalidCart(spu, sku, cart)) {
+                invalidList.add(cartRespVo);
+            } else {
+                validList.add(cartRespVo);
+            }
+        }
+
+        AppCartListRespVo respVo = new AppCartListRespVo();
+        respVo.setValidList(validList);
+        respVo.setInvalidList(invalidList);
+        return respVo;
+    }
+
+    /**
+     * 判断购物项是否无效。
+     */
+    private boolean isInvalidCart(ProductSpuVo spu, ProductSkuVo sku, CartVo cart) {
+        return spu == null
+                || sku == null
+                || !StatusEnum.isEnable(spu.getStatus())
+                || Optional.ofNullable(spu.getStock()).orElse(0) <= 0
+                || Optional.ofNullable(sku.getStock()).orElse(0) < Optional.ofNullable(cart.getCount()).orElse(0);
+    }
+
+    /**
+     * 转换移动端商品 SPU 基础信息。
+     */
+    private AppProductSpuBaseRespVo convertAppProductSpu(ProductSpuVo spu) {
+        if (spu == null) {
+            return null;
+        }
+        AppProductSpuBaseRespVo respVo = new AppProductSpuBaseRespVo();
+        respVo.setId(spu.getId());
+        respVo.setName(spu.getName());
+        respVo.setPicUrl(spu.getPicUrl());
+        respVo.setCategoryId(spu.getCategoryId());
+        respVo.setStock(spu.getStock());
+        respVo.setStatus(spu.getStatus());
+        return respVo;
+    }
+
+    /**
+     * 转换移动端商品 SKU 基础信息。
+     */
+    private AppProductSkuBaseRespVo convertAppProductSku(ProductSkuVo sku) {
+        if (sku == null) {
+            return null;
+        }
+        AppProductSkuBaseRespVo respVo = new AppProductSkuBaseRespVo();
+        respVo.setId(sku.getId());
+        respVo.setPicUrl(sku.getPicUrl());
+        respVo.setPrice(sku.getPrice());
+        respVo.setStock(sku.getStock());
+        respVo.setProperties(convertAppProductProperties(sku.getProperties()));
+        return respVo;
+    }
+
+    /**
+     * 转换移动端商品规格属性信息。
+     */
+    private List<AppProductPropertyValueDetailRespVo> convertAppProductProperties(List<ProductSku.Property> properties) {
+        if (CollectionUtils.isEmpty(properties)) {
+            return Collections.emptyList();
+        }
+        List<AppProductPropertyValueDetailRespVo> respList = new ArrayList<>(properties.size());
+        for (ProductSku.Property property : properties) {
+            AppProductPropertyValueDetailRespVo respVo = new AppProductPropertyValueDetailRespVo();
+            respVo.setPropertyId(property.getPropertyId());
+            respVo.setPropertyName(property.getPropertyName());
+            respVo.setValueId(property.getValueId());
+            respVo.setValueName(property.getValueName());
+            respList.add(respVo);
+        }
+        return respList;
     }
 
 }

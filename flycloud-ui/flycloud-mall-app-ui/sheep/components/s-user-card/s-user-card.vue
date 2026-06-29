@@ -61,6 +61,7 @@
   } from '@/sheep/hooks/useModal';
 
   // 用户信息
+  // const userInfo = computed(() => sheep.$store('user').userInfo);
   const userInfo = computed(() => sheep.$store('user').userInfo);
 
   // 是否登录

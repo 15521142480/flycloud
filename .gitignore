@@ -5,6 +5,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+node_modules/
+**/node_modules/
+**/unpackage/disk/
+
 ### STS ###
 .apt_generated
 .classpath

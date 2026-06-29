@@ -7,19 +7,26 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.mall.api.domain.product.ProductSku;
+import com.fly.mall.api.domain.product.vo.AppProductPropertyValueDetailRespVo;
 import com.fly.mall.api.domain.product.vo.ProductSkuVo;
 import com.fly.mall.api.domain.product.vo.ProductSpuVo;
 import com.fly.mall.api.domain.trade.TradeOrder;
 import com.fly.mall.api.domain.trade.TradeOrderItem;
 import com.fly.mall.api.domain.trade.bo.TradeOrderBo;
-import com.fly.mall.api.domain.trade.vo.TradeOrderVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateReqVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementReqVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementRespVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeProductSettlementRespVo;
 import com.fly.mall.api.domain.trade.vo.CartVo;
 import com.fly.mall.api.domain.trade.vo.TradeOrderItemVo;
+import com.fly.mall.api.domain.trade.vo.TradeOrderVo;
 import com.fly.mall.product.service.IProductSkuService;
 import com.fly.mall.product.service.IProductSpuService;
 import com.fly.mall.trade.mapper.TradeOrderItemMapper;
@@ -35,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +54,7 @@ import java.util.stream.Collectors;
  * 交易订单 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @RequiredArgsConstructor
 @Service
@@ -214,6 +222,133 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         }
         cartService.deleteCart(userId, carts.stream().map(CartVo::getId).collect(Collectors.toList()));
         return queryById(order.getId());
+    }
+
+    /**
+     * 移动端结算订单。
+     */
+    @Override
+    public AppTradeOrderSettlementRespVo settlementOrder(Long userId, AppTradeOrderSettlementReqVo settlementReqVo) {
+        List<OrderItemSource> sources = resolveOrderItemSources(userId, settlementReqVo == null ? null : settlementReqVo.getItems());
+        List<AppTradeOrderSettlementRespVo.Item> items = new ArrayList<>(sources.size());
+        int totalPrice = 0;
+        for (OrderItemSource source : sources) {
+            AppTradeOrderSettlementRespVo.Item item = new AppTradeOrderSettlementRespVo.Item();
+            item.setCategoryId(source.spu().getCategoryId());
+            item.setSpuId(source.spu().getId());
+            item.setSpuName(source.spu().getName());
+            item.setSkuId(source.sku().getId());
+            item.setPrice(defaultZero(source.sku().getPrice()));
+            item.setPicUrl(source.sku().getPicUrl() != null ? source.sku().getPicUrl() : source.spu().getPicUrl());
+            item.setProperties(convertAppProductProperties(source.sku().getProperties()));
+            item.setCartId(source.cartId());
+            item.setCount(source.count());
+            items.add(item);
+            totalPrice += item.getPrice() * item.getCount();
+        }
+
+        AppTradeOrderSettlementRespVo respVo = new AppTradeOrderSettlementRespVo();
+        respVo.setType(ORDER_TYPE_NORMAL);
+        respVo.setItems(items);
+        respVo.setCoupons(Collections.emptyList());
+        respVo.setPrice(new AppTradeOrderSettlementRespVo.Price(totalPrice, 0, 0, 0, 0, 0, totalPrice));
+        respVo.setUsePoint(0);
+        respVo.setTotalPoint(0);
+        respVo.setPromotions(Collections.emptyList());
+        return respVo;
+    }
+
+    /**
+     * 移动端查询商品结算信息。
+     */
+    @Override
+    public List<AppTradeProductSettlementRespVo> settlementProduct(List<Long> spuIds) {
+        if (CollectionUtils.isEmpty(spuIds)) {
+            return Collections.emptyList();
+        }
+        Map<Long, List<ProductSkuVo>> skuMap = productSkuService.queryListBySpuIds(spuIds)
+                .stream().collect(Collectors.groupingBy(ProductSkuVo::getSpuId));
+        List<AppTradeProductSettlementRespVo> list = new ArrayList<>(spuIds.size());
+        for (Long spuId : spuIds) {
+            AppTradeProductSettlementRespVo respVo = new AppTradeProductSettlementRespVo();
+            respVo.setSpuId(spuId);
+            List<AppTradeProductSettlementRespVo.Sku> skus = skuMap.getOrDefault(spuId, Collections.emptyList())
+                    .stream().map(sku -> {
+                        AppTradeProductSettlementRespVo.Sku skuRespVo = new AppTradeProductSettlementRespVo.Sku();
+                        skuRespVo.setId(sku.getId());
+                        skuRespVo.setPromotionPrice(defaultZero(sku.getPrice()));
+                        return skuRespVo;
+                    }).collect(Collectors.toList());
+            respVo.setSkus(skus);
+            list.add(respVo);
+        }
+        return list;
+    }
+
+    /**
+     * 移动端创建交易订单。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AppTradeOrderCreateRespVo createAppOrder(Long userId, AppTradeOrderCreateReqVo createReqVo) {
+        List<OrderItemSource> sources = resolveOrderItemSources(userId, createReqVo == null ? null : createReqVo.getItems());
+        LocalDateTime now = LocalDateTime.now();
+        String operator = String.valueOf(userId);
+        List<TradeOrderItem> items = buildAppOrderItems(userId, sources, operator, now);
+        int totalPrice = items.stream().map(TradeOrderItem::getPayPrice).filter(Objects::nonNull).reduce(0, Integer::sum);
+        int productCount = items.stream().map(TradeOrderItem::getCount).filter(Objects::nonNull).reduce(0, Integer::sum);
+
+        TradeOrder order = new TradeOrder();
+        order.setNo(generateOrderNo());
+        order.setType(ORDER_TYPE_NORMAL);
+        order.setTerminal(20);
+        order.setUserId(userId);
+        order.setUserRemark(createReqVo == null ? null : createReqVo.getRemark());
+        order.setStatus(ORDER_STATUS_UNPAID);
+        order.setProductCount(productCount);
+        order.setCommentStatus(false);
+        order.setPayStatus(false);
+        order.setTotalPrice(totalPrice);
+        order.setDiscountPrice(0);
+        order.setDeliveryPrice(0);
+        order.setAdjustPrice(0);
+        order.setCouponPrice(0);
+        order.setPointPrice(0);
+        order.setVipPrice(0);
+        order.setPayPrice(totalPrice);
+        order.setDeliveryType(createReqVo == null || createReqVo.getDeliveryType() == null
+                ? DELIVERY_TYPE_EXPRESS : createReqVo.getDeliveryType());
+        order.setReceiverName(createReqVo == null ? null : createReqVo.getReceiverName());
+        order.setReceiverMobile(createReqVo == null ? null : createReqVo.getReceiverMobile());
+        order.setPickUpStoreId(createReqVo == null ? null : createReqVo.getPickUpStoreId());
+        order.setRefundStatus(REFUND_STATUS_NONE);
+        order.setRefundPrice(0);
+        order.setUsePoint(0);
+        order.setGivePoint(0);
+        order.setRefundPoint(0);
+        order.setIsDeleted(false);
+        order.setCreateBy(operator);
+        order.setCreateTime(now);
+        order.setUpdateBy(operator);
+        order.setUpdateTime(now);
+        baseMapper.insert(order);
+
+        for (TradeOrderItem item : items) {
+            item.setOrderId(order.getId());
+        }
+        tradeOrderItemMapper.insertBatch(items);
+        for (TradeOrderItem item : items) {
+            productSkuService.reduceStock(item.getSkuId(), item.getCount());
+        }
+        List<Long> cartIds = sources.stream().map(source -> source.cartId()).filter(Objects::nonNull).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(cartIds)) {
+            cartService.deleteCart(userId, cartIds);
+        }
+
+        AppTradeOrderCreateRespVo respVo = new AppTradeOrderCreateRespVo();
+        respVo.setId(order.getId());
+        respVo.setPayOrderId(order.getPayOrderId());
+        return respVo;
     }
 
     /**
@@ -405,6 +540,57 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     }
 
     /**
+     * 解析移动端提交的下单商品。
+     */
+    private List<OrderItemSource> resolveOrderItemSources(Long userId, List<AppTradeOrderSettlementReqVo.Item> reqItems) {
+        if (CollectionUtils.isEmpty(reqItems)) {
+            throw new ServiceException("请选择要下单的商品");
+        }
+        Map<Long, CartVo> cartMap = Collections.emptyMap();
+        if (reqItems.stream().anyMatch(item -> item != null && item.getCartId() != null)) {
+            cartMap = cartService.queryUserCartList(userId).stream().collect(Collectors.toMap(CartVo::getId, item -> item));
+        }
+
+        List<OrderItemSource> sources = new ArrayList<>(reqItems.size());
+        for (AppTradeOrderSettlementReqVo.Item reqItem : reqItems) {
+            if (reqItem == null) {
+                throw new ServiceException("商品不能为空");
+            }
+            Long cartId = reqItem.getCartId();
+            Long skuId = reqItem.getSkuId();
+            Integer count = reqItem.getCount();
+            if (cartId != null) {
+                CartVo cart = cartMap.get(cartId);
+                if (cart == null) {
+                    throw new ServiceException("购物车商品不存在");
+                }
+                skuId = cart.getSkuId();
+                count = cart.getCount();
+            }
+            if (skuId == null || count == null) {
+                throw new ServiceException("商品 SKU 和数量不能为空");
+            }
+
+            ProductSkuVo sku = productSkuService.queryById(skuId);
+            if (sku == null) {
+                throw new ServiceException("商品 SKU 不存在");
+            }
+            ProductSpuVo spu = productSpuService.queryById(sku.getSpuId());
+            if (spu == null || !StatusEnum.isEnable(spu.getStatus())) {
+                throw new ServiceException("商品不存在或已下架");
+            }
+            if (count <= 0) {
+                throw new ServiceException("商品数量必须大于 0");
+            }
+            if (sku.getStock() == null || sku.getStock() < count) {
+                throw new ServiceException("商品库存不足：" + spu.getName());
+            }
+            sources.add(new OrderItemSource(cartId, spu, sku, count));
+        }
+        return sources;
+    }
+
+    /**
      * 构建订单项。
      */
     private List<TradeOrderItem> buildOrderItems(Long userId, List<CartVo> carts, String operator, LocalDateTime now) {
@@ -455,6 +641,44 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     }
 
     /**
+     * 构建移动端订单项。
+     */
+    private List<TradeOrderItem> buildAppOrderItems(Long userId, List<OrderItemSource> sources, String operator, LocalDateTime now) {
+        List<TradeOrderItem> items = new ArrayList<>(sources.size());
+        for (OrderItemSource source : sources) {
+            int price = defaultZero(source.sku().getPrice());
+            TradeOrderItem item = new TradeOrderItem();
+            item.setUserId(userId);
+            item.setCartId(source.cartId());
+            item.setSpuId(source.spu().getId());
+            item.setSpuName(source.spu().getName());
+            item.setSkuId(source.sku().getId());
+            item.setProperties(convertSkuProperties(source.sku().getProperties()));
+            item.setPicUrl(source.sku().getPicUrl() != null ? source.sku().getPicUrl() : source.spu().getPicUrl());
+            item.setCount(source.count());
+            item.setCommentStatus(false);
+            item.setPrice(price);
+            item.setDiscountPrice(0);
+            item.setDeliveryPrice(0);
+            item.setAdjustPrice(0);
+            item.setCouponPrice(0);
+            item.setPointPrice(0);
+            item.setUsePoint(0);
+            item.setGivePoint(0);
+            item.setVipPrice(0);
+            item.setPayPrice(price * source.count());
+            item.setAfterSaleStatus(0);
+            item.setIsDeleted(false);
+            item.setCreateBy(operator);
+            item.setCreateTime(now);
+            item.setUpdateBy(operator);
+            item.setUpdateTime(now);
+            items.add(item);
+        }
+        return items;
+    }
+
+    /**
      * 转换 SKU 规格属性到订单项快照。
      */
     private List<TradeOrderItem.Property> convertSkuProperties(List<ProductSku.Property> properties) {
@@ -469,6 +693,25 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             itemProperty.setValueName(property.getValueName());
             return itemProperty;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * 转换移动端商品规格属性信息。
+     */
+    private List<AppProductPropertyValueDetailRespVo> convertAppProductProperties(List<ProductSku.Property> properties) {
+        if (CollectionUtils.isEmpty(properties)) {
+            return Collections.emptyList();
+        }
+        List<AppProductPropertyValueDetailRespVo> respList = new ArrayList<>(properties.size());
+        for (ProductSku.Property property : properties) {
+            AppProductPropertyValueDetailRespVo respVo = new AppProductPropertyValueDetailRespVo();
+            respVo.setPropertyId(property.getPropertyId());
+            respVo.setPropertyName(property.getPropertyName());
+            respVo.setValueId(property.getValueId());
+            respVo.setValueName(property.getValueName());
+            respList.add(respVo);
+        }
+        return respList;
     }
 
     /**
@@ -532,6 +775,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      */
     private Integer defaultZero(Integer value) {
         return value == null ? 0 : value;
+    }
+
+    /**
+     * 移动端下单商品来源。
+     */
+    private record OrderItemSource(Long cartId, ProductSpuVo spu, ProductSkuVo sku, Integer count) {
     }
 
 }

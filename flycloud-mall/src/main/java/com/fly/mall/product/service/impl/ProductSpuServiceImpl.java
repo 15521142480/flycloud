@@ -14,6 +14,10 @@ import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.mall.api.domain.product.ProductSpu;
 import com.fly.mall.api.domain.product.bo.ProductSkuBo;
 import com.fly.mall.api.domain.product.bo.ProductSpuBo;
+import com.fly.mall.api.domain.product.ProductSku;
+import com.fly.mall.api.domain.product.vo.AppProductPropertyValueDetailRespVo;
+import com.fly.mall.api.domain.product.vo.AppProductSpuDetailRespVo;
+import com.fly.mall.api.domain.product.vo.AppProductSpuRespVo;
 import com.fly.mall.api.domain.product.vo.ProductSkuVo;
 import com.fly.mall.api.domain.product.vo.ProductSpuVo;
 import com.fly.mall.product.mapper.ProductSpuMapper;
@@ -25,7 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +41,7 @@ import java.util.stream.Collectors;
  * 商品 SPU Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @RequiredArgsConstructor
 @Service
@@ -83,6 +89,18 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     }
 
     /**
+     * 移动端查询商品 SPU 明细返回对象。
+     */
+    @Override
+    public AppProductSpuDetailRespVo queryAppDetailRespById(Long id) {
+        ProductSpuVo spu = queryAppDetailById(id);
+        if (spu == null) {
+            return null;
+        }
+        return convertAppProductSpuDetail(spu);
+    }
+
+    /**
      * 修改商品 SPU 状态。
      */
     @Override
@@ -119,6 +137,25 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     }
 
     /**
+     * 移动端分页查询商品 SPU。
+     */
+    @Override
+    public PageVo<AppProductSpuRespVo> queryAppPageList(ProductSpuBo bo, PageBo pageBo) {
+        PageVo<ProductSpuVo> page = queryPageList(bo, pageBo);
+        List<AppProductSpuRespVo> list = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(page.getList())) {
+            for (ProductSpuVo spu : page.getList()) {
+                list.add(convertAppProductSpu(spu));
+            }
+        }
+        PageVo<AppProductSpuRespVo> respPage = new PageVo<>();
+        respPage.setList(list);
+        respPage.setTotal(page.getTotal());
+        respPage.setPages(page.getPages());
+        return respPage;
+    }
+
+    /**
      * 查询商品 SPU 列表。
      */
     @Override
@@ -137,6 +174,24 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
             return List.of();
         }
         return baseMapper.selectVoBatchIds(ids);
+    }
+
+    /**
+     * 移动端根据商品 SPU 编号集合查询商品列表。
+     */
+    @Override
+    public List<AppProductSpuRespVo> queryAppListByIds(Collection<Long> ids) {
+        List<ProductSpuVo> spus = queryListByIds(ids);
+        if (CollectionUtils.isEmpty(spus)) {
+            return Collections.emptyList();
+        }
+        List<AppProductSpuRespVo> list = new ArrayList<>(spus.size());
+        for (ProductSpuVo spu : spus) {
+            if (StatusEnum.isEnable(spu.getStatus())) {
+                list.add(convertAppProductSpu(spu));
+            }
+        }
+        return list;
     }
 
     /**
@@ -226,6 +281,98 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         entity.setId(id);
         entity.setBrowseCount(old.getBrowseCount() == null ? 1 : old.getBrowseCount() + 1);
         baseMapper.updateById(entity);
+    }
+
+    /**
+     * 转换移动端商品 SPU 列表项。
+     */
+    private AppProductSpuRespVo convertAppProductSpu(ProductSpuVo spu) {
+        AppProductSpuRespVo respVo = new AppProductSpuRespVo();
+        respVo.setId(spu.getId());
+        respVo.setName(spu.getName());
+        respVo.setIntroduction(spu.getIntroduction());
+        respVo.setCategoryId(spu.getCategoryId());
+        respVo.setPicUrl(spu.getPicUrl());
+        respVo.setSliderPicUrls(spu.getSliderPicUrls());
+        respVo.setSpecType(spu.getSpecType());
+        respVo.setPrice(spu.getPrice());
+        respVo.setMarketPrice(spu.getMarketPrice());
+        respVo.setStock(spu.getStock());
+        respVo.setSalesCount(calculateSalesCount(spu));
+        respVo.setDeliveryTypes(spu.getDeliveryTypes());
+        return respVo;
+    }
+
+    /**
+     * 转换移动端商品 SPU 明细。
+     */
+    private AppProductSpuDetailRespVo convertAppProductSpuDetail(ProductSpuVo spu) {
+        AppProductSpuDetailRespVo respVo = new AppProductSpuDetailRespVo();
+        respVo.setId(spu.getId());
+        respVo.setName(spu.getName());
+        respVo.setIntroduction(spu.getIntroduction());
+        respVo.setDescription(spu.getDescription());
+        respVo.setCategoryId(spu.getCategoryId());
+        respVo.setPicUrl(spu.getPicUrl());
+        respVo.setSliderPicUrls(spu.getSliderPicUrls());
+        respVo.setSpecType(spu.getSpecType());
+        respVo.setPrice(spu.getPrice());
+        respVo.setMarketPrice(spu.getMarketPrice());
+        respVo.setStock(spu.getStock());
+        respVo.setSalesCount(calculateSalesCount(spu));
+        respVo.setDeliveryTypes(spu.getDeliveryTypes());
+        respVo.setSkus(convertAppProductSkuList(spu.getSkus()));
+        return respVo;
+    }
+
+    /**
+     * 转换移动端商品 SKU 列表。
+     */
+    private List<AppProductSpuDetailRespVo.Sku> convertAppProductSkuList(List<ProductSkuVo> skus) {
+        if (CollectionUtils.isEmpty(skus)) {
+            return Collections.emptyList();
+        }
+        List<AppProductSpuDetailRespVo.Sku> list = new ArrayList<>(skus.size());
+        for (ProductSkuVo sku : skus) {
+            AppProductSpuDetailRespVo.Sku respVo = new AppProductSpuDetailRespVo.Sku();
+            respVo.setId(sku.getId());
+            respVo.setProperties(convertAppProductProperties(sku.getProperties()));
+            respVo.setPrice(sku.getPrice());
+            respVo.setMarketPrice(sku.getMarketPrice());
+            respVo.setPicUrl(sku.getPicUrl());
+            respVo.setStock(sku.getStock());
+            respVo.setWeight(sku.getWeight());
+            respVo.setVolume(sku.getVolume());
+            list.add(respVo);
+        }
+        return list;
+    }
+
+    /**
+     * 转换移动端商品规格属性信息。
+     */
+    private List<AppProductPropertyValueDetailRespVo> convertAppProductProperties(List<ProductSku.Property> properties) {
+        if (CollectionUtils.isEmpty(properties)) {
+            return Collections.emptyList();
+        }
+        List<AppProductPropertyValueDetailRespVo> respList = new ArrayList<>(properties.size());
+        for (ProductSku.Property property : properties) {
+            AppProductPropertyValueDetailRespVo respVo = new AppProductPropertyValueDetailRespVo();
+            respVo.setPropertyId(property.getPropertyId());
+            respVo.setPropertyName(property.getPropertyName());
+            respVo.setValueId(property.getValueId());
+            respVo.setValueName(property.getValueName());
+            respList.add(respVo);
+        }
+        return respList;
+    }
+
+    /**
+     * 计算移动端展示销量。
+     */
+    private Integer calculateSalesCount(ProductSpuVo spu) {
+        return Objects.requireNonNullElse(spu.getSalesCount(), 0)
+                + Objects.requireNonNullElse(spu.getVirtualSalesCount(), 0);
     }
 
 }

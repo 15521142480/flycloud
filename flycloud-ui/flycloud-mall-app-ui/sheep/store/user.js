@@ -52,7 +52,8 @@ const user = defineStore('user', {
       if (code !== 0) {
         return;
       }
-      this.userInfo = data;
+      // this.userInfo = data;
+      this.userInfo = data.user;
       return Promise.resolve(data);
     },
 

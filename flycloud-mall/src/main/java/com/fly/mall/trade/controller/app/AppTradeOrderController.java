@@ -5,6 +5,11 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.domain.trade.bo.TradeOrderBo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateReqVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementReqVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementRespVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeProductSettlementRespVo;
 import com.fly.mall.api.domain.trade.vo.TradeOrderVo;
 import com.fly.mall.trade.service.ITradeOrderService;
 import jakarta.validation.constraints.NotNull;
@@ -20,21 +25,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * 移动端 - 交易订单 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/trade/trade-order")
+@RequestMapping("/app/trade/order")
 public class AppTradeOrderController {
 
     private final ITradeOrderService tradeOrderService;
+
+    /**
+     * 获得订单结算信息。
+     */
+    @GetMapping("/settlement")
+    public R<AppTradeOrderSettlementRespVo> settlementOrder(AppTradeOrderSettlementReqVo settlementReqVo) {
+        return R.ok(tradeOrderService.settlementOrder(UserUtils.getCurUserId(), settlementReqVo));
+    }
+
+    /**
+     * 获得商品结算信息。
+     */
+    @GetMapping("/settlement-product")
+    public R<List<AppTradeProductSettlementRespVo>> settlementProduct(@RequestParam("spuIds") List<Long> spuIds) {
+        return R.ok(tradeOrderService.settlementProduct(spuIds));
+    }
 
     /**
      * 查询移动端交易订单分页列表。
@@ -56,8 +78,8 @@ public class AppTradeOrderController {
      * 创建交易订单。
      */
     @PostMapping("/create")
-    public R<TradeOrderVo> createOrder(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.createOrder(UserUtils.getCurUserId(), bo));
+    public R<AppTradeOrderCreateRespVo> createOrder(@RequestBody AppTradeOrderCreateReqVo createReqVo) {
+        return R.ok(tradeOrderService.createAppOrder(UserUtils.getCurUserId(), createReqVo));
     }
 
     /**

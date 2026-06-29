@@ -19,15 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
  * 移动端 - 交易配置 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/trade/trade-config")
+@RequestMapping("/app/trade/config")
 public class AppTradeConfigController {
 
     private final ITradeConfigService tradeConfigService;
+
+    /**
+     * 获得交易配置。
+     */
+    @GetMapping("/get")
+    public R<TradeConfigVo> getTradeConfig() {
+        return R.ok(tradeConfigService.getTradeConfig());
+    }
 
     /**
      * 查询移动端交易配置分页列表。

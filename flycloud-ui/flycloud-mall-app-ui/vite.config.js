@@ -9,7 +9,8 @@ import mpliveMainfestPlugin from './sheep/libs/mplive-manifest-plugin';
 export default (command, mode) => {
   const env = loadEnv(mode, __dirname, 'SHOPRO_');
   return {
-    envPrefix: ['SHOPRO_', 'MALL_', 'AUTH_', 'CAPTCHA_'],
+    // 读取.env文件的前缀属性
+    envPrefix: ['SHOPRO_', 'CAPTCHA_', 'MALL_', 'AUTH_', 'SYSTEM_'],
     plugins: [
       uni(),
       // viteCompression({

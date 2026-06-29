@@ -25,13 +25,34 @@ import java.util.List;
  * 交易配置 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 @RequiredArgsConstructor
 @Service
 public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, TradeConfig> implements ITradeConfigService {
 
     private final TradeConfigMapper baseMapper;
+
+    /**
+     * 获得交易配置。
+     */
+    @Override
+    public TradeConfigVo getTradeConfig() {
+        LambdaQueryWrapper<TradeConfig> lqw = Wrappers.lambdaQuery();
+        lqw.eq(TradeConfig::getIsDeleted, false);
+        lqw.orderByAsc(TradeConfig::getId);
+        lqw.last("LIMIT 1");
+        TradeConfigVo config = baseMapper.selectVoOne(lqw);
+        if (config != null) {
+            return config;
+        }
+        TradeConfigVo defaultConfig = new TradeConfigVo();
+        defaultConfig.setDeliveryExpressFreeEnabled(false);
+        defaultConfig.setDeliveryExpressFreePrice(0);
+        defaultConfig.setDeliveryPickUpEnabled(false);
+        defaultConfig.setBrokerageEnabled(false);
+        return defaultConfig;
+    }
 
     /**
      * 查询交易配置详情。

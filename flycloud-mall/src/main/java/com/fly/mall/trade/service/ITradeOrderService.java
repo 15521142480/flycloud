@@ -3,6 +3,11 @@ package com.fly.mall.trade.service;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.domain.trade.bo.TradeOrderBo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateReqVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementReqVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementRespVo;
+import com.fly.mall.api.domain.trade.vo.AppTradeProductSettlementRespVo;
 import com.fly.mall.api.domain.trade.vo.TradeOrderVo;
 
 import java.util.Collection;
@@ -12,7 +17,7 @@ import java.util.List;
  * 交易订单 Service 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 public interface ITradeOrderService {
 
@@ -40,6 +45,21 @@ public interface ITradeOrderService {
      * 创建购物车订单。
      */
     TradeOrderVo createOrder(Long userId, TradeOrderBo bo);
+
+    /**
+     * 移动端结算订单。
+     */
+    AppTradeOrderSettlementRespVo settlementOrder(Long userId, AppTradeOrderSettlementReqVo settlementReqVo);
+
+    /**
+     * 移动端查询商品结算信息。
+     */
+    List<AppTradeProductSettlementRespVo> settlementProduct(List<Long> spuIds);
+
+    /**
+     * 移动端创建交易订单。
+     */
+    AppTradeOrderCreateRespVo createAppOrder(Long userId, AppTradeOrderCreateReqVo createReqVo);
 
     /**
      * 查询当前用户订单数量。

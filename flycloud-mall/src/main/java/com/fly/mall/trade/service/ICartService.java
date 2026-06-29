@@ -3,6 +3,7 @@ package com.fly.mall.trade.service;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.domain.trade.bo.CartBo;
+import com.fly.mall.api.domain.trade.vo.AppCartListRespVo;
 import com.fly.mall.api.domain.trade.vo.CartVo;
 
 import java.util.Collection;
@@ -12,7 +13,7 @@ import java.util.List;
  * 购物车 Service 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 public interface ICartService {
 
@@ -35,6 +36,11 @@ public interface ICartService {
      * 查询用户购物车列表。
      */
     List<CartVo> queryUserCartList(Long userId);
+
+    /**
+     * 查询移动端用户购物车列表。
+     */
+    AppCartListRespVo queryAppCartList(Long userId);
 
     /**
      * 添加购物车商品。

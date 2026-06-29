@@ -12,9 +12,14 @@ import java.util.List;
  * 交易配置 Service 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-06-29
  */
 public interface ITradeConfigService {
+
+    /**
+     * 获得交易配置。
+     */
+    TradeConfigVo getTradeConfig();
 
     /**
      * 查询交易配置详情。
