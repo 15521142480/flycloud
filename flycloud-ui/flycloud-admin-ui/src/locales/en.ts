@@ -1,6 +1,8 @@
 export default {
   app: {
-    title: 'FlyCloud Admin'
+    title: 'FlyCloud Admin',
+    homeTitle: 'A Modern Management Platform Built with Mainstream Technologies',
+    homeTitleDesc: 'One-stop Admin Management, Ready to Use After Login！'
   },
   common: {
     inputText: 'Please input',

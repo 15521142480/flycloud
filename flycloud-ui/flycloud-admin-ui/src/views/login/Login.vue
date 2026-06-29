@@ -23,9 +23,9 @@
           >
             <img key="1" alt="" class="login-left-img" src="@/assets/svgs/login_left.svg"/>
             <div key="2" class="login-left-title">
-              基于主流技术栈的现代化管理平台
+              {{ t('app.homeTitle') }}
             </div>
-            <div key="3" class="login-left-desc">一站式后台管理，登录即刻体验！</div>
+            <div key="3" class="login-left-desc">{{ t('app.homeTitleDesc') }}</div>
           </TransitionGroup>
         </div>
       </div>

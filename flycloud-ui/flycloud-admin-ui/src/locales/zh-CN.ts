@@ -1,6 +1,8 @@
 export default {
   app: {
-    title: '飞翔云管理系统'
+    title: '飞翔云管理系统',
+    homeTitle: '基于主流技术栈的现代化管理平台',
+    homeTitleDesc: '一站式后台管理，登录即刻体验！'
   },
   common: {
     inputText: '请输入',
