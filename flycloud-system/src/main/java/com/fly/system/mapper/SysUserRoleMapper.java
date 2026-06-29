@@ -1,8 +1,8 @@
 package com.fly.system.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysUserRole;
-import com.fly.system.api.domain.vo.SysUserRoleVo;
+import com.fly.system.api.system.domain.SysUserRole;
+import com.fly.system.api.system.domain.vo.SysUserRoleVo;
 
 import java.util.List;
 

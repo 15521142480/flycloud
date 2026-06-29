@@ -1,6 +1,6 @@
 package com.fly.bpm.flowable.convert;
 
-import com.fly.system.api.domain.bo.send.SmsSendSingleToUserReqBo;
+import com.fly.system.api.system.domain.bo.send.SmsSendSingleToUserReqBo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

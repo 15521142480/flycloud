@@ -1,8 +1,8 @@
 package com.fly.mall.trade.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.trade.DeliveryExpress;
-import com.fly.mall.api.domain.trade.vo.DeliveryExpressVo;
+import com.fly.mall.api.trade.domain.DeliveryExpress;
+import com.fly.mall.api.trade.domain.vo.DeliveryExpressVo;
 
 /**
  * 快递公司 Mapper 接口。

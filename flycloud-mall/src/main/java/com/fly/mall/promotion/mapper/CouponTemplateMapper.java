@@ -1,8 +1,8 @@
 package com.fly.mall.promotion.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.promotion.CouponTemplate;
-import com.fly.mall.api.domain.promotion.vo.CouponTemplateVo;
+import com.fly.mall.api.promotion.domain.CouponTemplate;
+import com.fly.mall.api.promotion.domain.vo.CouponTemplateVo;
 
 /**
  * 优惠券模板 Mapper 接口。

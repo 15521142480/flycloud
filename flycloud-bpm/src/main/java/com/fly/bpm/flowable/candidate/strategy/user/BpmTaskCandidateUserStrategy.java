@@ -4,7 +4,7 @@ import cn.hutool.core.text.StrPool;
 import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
 import com.fly.common.utils.StringUtils;
-import com.fly.system.api.feign.ISysUserApi;
+import com.fly.system.api.system.feign.ISysUserApi;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.Resource;

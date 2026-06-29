@@ -2,11 +2,11 @@ package com.fly.mall.promotion.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.promotion.bo.DiyTemplateBo;
-import com.fly.mall.api.domain.promotion.vo.AppDiyTemplatePropertyRespVo;
-import com.fly.mall.api.domain.promotion.vo.DiyTemplatePropertyRespVo;
-import com.fly.mall.api.domain.promotion.vo.DiyTemplateRespVo;
-import com.fly.mall.api.domain.promotion.vo.DiyTemplateVo;
+import com.fly.mall.api.promotion.domain.bo.DiyTemplateBo;
+import com.fly.mall.api.promotion.domain.vo.AppDiyTemplatePropertyRespVo;
+import com.fly.mall.api.promotion.domain.vo.DiyTemplatePropertyRespVo;
+import com.fly.mall.api.promotion.domain.vo.DiyTemplateRespVo;
+import com.fly.mall.api.promotion.domain.vo.DiyTemplateVo;
 
 import java.util.Collection;
 import java.util.List;

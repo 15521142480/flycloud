@@ -1,10 +1,10 @@
 package com.fly.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fly.system.api.domain.SysMenu;
-import com.fly.system.api.domain.vo.SysMenuTreeVo;
-import com.fly.system.api.domain.vo.SysMenuVo;
-import com.fly.system.api.domain.bo.SysMenuBo;
+import com.fly.system.api.system.domain.SysMenu;
+import com.fly.system.api.system.domain.vo.SysMenuTreeVo;
+import com.fly.system.api.system.domain.vo.SysMenuVo;
+import com.fly.system.api.system.domain.bo.SysMenuBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 

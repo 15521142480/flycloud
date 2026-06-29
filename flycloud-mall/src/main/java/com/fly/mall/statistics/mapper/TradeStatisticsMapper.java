@@ -1,8 +1,8 @@
 package com.fly.mall.statistics.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.statistics.TradeStatistics;
-import com.fly.mall.api.domain.statistics.vo.TradeStatisticsVo;
+import com.fly.mall.api.statistics.domain.TradeStatistics;
+import com.fly.mall.api.statistics.domain.vo.TradeStatisticsVo;
 
 /**
  * 交易统计 Mapper 接口。

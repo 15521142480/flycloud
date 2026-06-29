@@ -1,8 +1,7 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.SysPost;
-import com.fly.system.api.domain.vo.SysPostVo;
-import com.fly.system.api.domain.bo.SysPostBo;
+import com.fly.system.api.system.domain.vo.SysPostVo;
+import com.fly.system.api.system.domain.bo.SysPostBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 

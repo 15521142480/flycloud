@@ -3,7 +3,6 @@ package com.fly.system.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
-import com.fly.common.enums.StatusEnum;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -11,18 +10,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fly.common.utils.validation.RequireUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.fly.system.api.domain.bo.SysPostBo;
-import com.fly.system.api.domain.vo.SysPostVo;
-import com.fly.system.api.domain.SysPost;
+import com.fly.system.api.system.domain.bo.SysPostBo;
+import com.fly.system.api.system.domain.vo.SysPostVo;
+import com.fly.system.api.system.domain.SysPost;
 import com.fly.system.mapper.SysPostMapper;
 import com.fly.system.service.ISysPostService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**

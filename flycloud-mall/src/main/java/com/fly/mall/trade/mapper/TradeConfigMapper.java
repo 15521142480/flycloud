@@ -1,8 +1,8 @@
 package com.fly.mall.trade.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.trade.TradeConfig;
-import com.fly.mall.api.domain.trade.vo.TradeConfigVo;
+import com.fly.mall.api.trade.domain.TradeConfig;
+import com.fly.mall.api.trade.domain.vo.TradeConfigVo;
 
 /**
  * 交易配置 Mapper 接口。

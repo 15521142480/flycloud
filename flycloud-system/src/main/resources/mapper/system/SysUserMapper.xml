@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fly.system.mapper.SysUserMapper">
 
-    <resultMap type="com.fly.system.api.domain.SysUser" id="SysUserResult">
+    <resultMap type="com.fly.system.api.system.domain.SysUser" id="SysUserResult">
     <result property="id" column="id"/>
     <result property="account" column="account"/>
     <result property="password" column="password"/>
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
 
-    <select id="selectAllListSimple" resultType="com.fly.system.api.domain.vo.SysUserVo">
+    <select id="selectAllListSimple" resultType="com.fly.system.api.system.domain.vo.SysUserVo">
         select
             su.id,
             su.name,
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <!-- 根据用户信息查询用户 -->
-    <select id="selectOneUserByUser" resultMap="SysUserResult" parameterType="com.fly.system.api.domain.SysUser">
+    <select id="selectOneUserByUser" resultMap="SysUserResult" parameterType="com.fly.system.api.system.domain.SysUser">
         SELECT
             <include refid="Base_Column_List" />
         FROM

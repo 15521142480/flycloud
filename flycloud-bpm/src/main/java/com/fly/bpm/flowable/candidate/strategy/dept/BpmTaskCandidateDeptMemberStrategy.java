@@ -4,9 +4,9 @@ import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.system.api.domain.vo.SysUserVo;
-import com.fly.system.api.feign.ISysDeptApi;
-import com.fly.system.api.feign.ISysUserApi;
+import com.fly.system.api.system.domain.vo.SysUserVo;
+import com.fly.system.api.system.feign.ISysDeptApi;
+import com.fly.system.api.system.feign.ISysUserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
 package com.fly.mall.product.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.product.ProductComment;
-import com.fly.mall.api.domain.product.vo.ProductCommentVo;
+import com.fly.mall.api.product.domain.ProductComment;
+import com.fly.mall.api.product.domain.vo.ProductCommentVo;
 
 /**
  * 商品评价 Mapper 接口。

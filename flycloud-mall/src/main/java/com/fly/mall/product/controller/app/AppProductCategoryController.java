@@ -1,8 +1,8 @@
 package com.fly.mall.product.controller.app;
 
 import com.fly.common.domain.model.R;
-import com.fly.mall.api.domain.product.bo.ProductCategoryBo;
-import com.fly.mall.api.domain.product.vo.ProductCategoryVo;
+import com.fly.mall.api.product.domain.bo.ProductCategoryBo;
+import com.fly.mall.api.product.domain.vo.ProductCategoryVo;
 import com.fly.mall.product.service.IProductCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

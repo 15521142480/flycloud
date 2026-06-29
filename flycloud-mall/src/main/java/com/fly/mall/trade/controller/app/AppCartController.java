@@ -2,8 +2,8 @@ package com.fly.mall.trade.controller.app;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.security.util.UserUtils;
-import com.fly.mall.api.domain.trade.bo.CartBo;
-import com.fly.mall.api.domain.trade.vo.AppCartListRespVo;
+import com.fly.mall.api.trade.domain.bo.CartBo;
+import com.fly.mall.api.trade.domain.vo.AppCartListRespVo;
 import com.fly.mall.trade.service.ICartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

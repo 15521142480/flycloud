@@ -1,8 +1,8 @@
 package com.fly.mall.trade.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.trade.AfterSale;
-import com.fly.mall.api.domain.trade.vo.AfterSaleVo;
+import com.fly.mall.api.trade.domain.AfterSale;
+import com.fly.mall.api.trade.domain.vo.AfterSaleVo;
 
 /**
  * 售后单 Mapper 接口。

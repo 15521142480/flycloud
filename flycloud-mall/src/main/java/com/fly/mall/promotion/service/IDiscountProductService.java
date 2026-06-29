@@ -2,8 +2,8 @@ package com.fly.mall.promotion.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.promotion.bo.DiscountProductBo;
-import com.fly.mall.api.domain.promotion.vo.DiscountProductVo;
+import com.fly.mall.api.promotion.domain.bo.DiscountProductBo;
+import com.fly.mall.api.promotion.domain.vo.DiscountProductVo;
 
 import java.util.Collection;
 import java.util.List;

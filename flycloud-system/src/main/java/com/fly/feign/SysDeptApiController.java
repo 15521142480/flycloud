@@ -1,8 +1,8 @@
 package com.fly.feign;
 
 import com.fly.common.domain.model.R;
-import com.fly.system.api.domain.vo.SysDeptVo;
-import com.fly.system.api.feign.ISysDeptApi;
+import com.fly.system.api.system.domain.vo.SysDeptVo;
+import com.fly.system.api.system.feign.ISysDeptApi;
 import com.fly.system.service.ISysDeptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

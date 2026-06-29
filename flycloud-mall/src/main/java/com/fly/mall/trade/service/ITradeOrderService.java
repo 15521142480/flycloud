@@ -2,13 +2,13 @@ package com.fly.mall.trade.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.trade.bo.TradeOrderBo;
-import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateReqVo;
-import com.fly.mall.api.domain.trade.vo.AppTradeOrderCreateRespVo;
-import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementReqVo;
-import com.fly.mall.api.domain.trade.vo.AppTradeOrderSettlementRespVo;
-import com.fly.mall.api.domain.trade.vo.AppTradeProductSettlementRespVo;
-import com.fly.mall.api.domain.trade.vo.TradeOrderVo;
+import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
+import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 
 import java.util.Collection;
 import java.util.List;

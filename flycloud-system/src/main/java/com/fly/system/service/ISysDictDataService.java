@@ -1,7 +1,7 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.vo.SysDictDataVo;
-import com.fly.system.api.domain.bo.SysDictDataBo;
+import com.fly.system.api.system.domain.vo.SysDictDataVo;
+import com.fly.system.api.system.domain.bo.SysDictDataBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 

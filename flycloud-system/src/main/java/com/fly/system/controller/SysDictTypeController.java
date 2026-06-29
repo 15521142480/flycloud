@@ -1,7 +1,5 @@
 package com.fly.system.controller;
 
-import com.fly.common.validate.AddGroup;
-import com.fly.common.validate.EditGroup;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.utils.ExcelUtil;
 import com.fly.common.annotation.Log;
@@ -13,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.fly.system.api.domain.vo.SysDictTypeVo;
-import com.fly.system.api.domain.bo.SysDictTypeBo;
+import com.fly.system.api.system.domain.vo.SysDictTypeVo;
+import com.fly.system.api.system.domain.bo.SysDictTypeBo;
 import com.fly.system.service.ISysDictTypeService;
 
 import java.util.List;

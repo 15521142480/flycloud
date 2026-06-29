@@ -1,22 +1,18 @@
 package com.fly.bpm.flowable.convert;
 
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenTaskCreatedReqDTO;
-import com.fly.bpm.api.domain.vo.instance.BpmProcessInstanceRespVO;
 import com.fly.bpm.api.domain.vo.task.BpmTaskRespVO;
 import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
-import com.fly.bpm.flowable.utils.BpmnModelUtils;
 import com.fly.bpm.flowable.utils.FlowableUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.bpm.BpmTaskStatusEnum;
 import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.number.NumberUtils;
-import com.fly.system.api.domain.vo.SysDeptVo;
-import com.fly.system.api.domain.vo.SysUserVo;
-import org.flowable.bpmn.model.BpmnModel;
+import com.fly.system.api.system.domain.vo.SysDeptVo;
+import com.fly.system.api.system.domain.vo.SysUserVo;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;

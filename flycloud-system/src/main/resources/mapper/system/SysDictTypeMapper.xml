@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fly.system.mapper.SysDictTypeMapper">
 
-    <resultMap type="com.fly.system.api.domain.SysDictType" id="SysDictTypeResult">
+    <resultMap type="com.fly.system.api.system.domain.SysDictType" id="SysDictTypeResult">
     <result property="id" column="id"/>
     <result property="name" column="name"/>
     <result property="type" column="type"/>

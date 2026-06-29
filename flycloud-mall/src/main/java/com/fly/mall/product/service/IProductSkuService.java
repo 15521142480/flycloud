@@ -1,8 +1,8 @@
 package com.fly.mall.product.service;
 
-import com.fly.mall.api.domain.product.ProductSku;
-import com.fly.mall.api.domain.product.bo.ProductSkuBo;
-import com.fly.mall.api.domain.product.vo.ProductSkuVo;
+import com.fly.mall.api.product.domain.ProductSku;
+import com.fly.mall.api.product.domain.bo.ProductSkuBo;
+import com.fly.mall.api.product.domain.vo.ProductSkuVo;
 
 import java.util.Collection;
 import java.util.List;

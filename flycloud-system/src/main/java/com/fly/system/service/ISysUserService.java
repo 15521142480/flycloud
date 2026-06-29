@@ -1,12 +1,12 @@
 package com.fly.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fly.system.api.domain.SysUser;
-import com.fly.system.api.domain.vo.SysUserVo;
-import com.fly.system.api.domain.bo.SysUserBo;
+import com.fly.system.api.system.domain.SysUser;
+import com.fly.system.api.system.domain.vo.SysUserVo;
+import com.fly.system.api.system.domain.bo.SysUserBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
-import com.fly.system.api.domain.vo.UserDetailInfoVo;
+import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 
 import java.util.Collection;
 import java.util.List;

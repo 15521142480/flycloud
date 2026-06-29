@@ -2,8 +2,6 @@ package com.fly.system.controller;
 
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
-import com.fly.common.validate.AddGroup;
-import com.fly.common.validate.EditGroup;
 import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.utils.ExcelUtil;
 import com.fly.common.annotation.Log;
@@ -11,15 +9,15 @@ import com.fly.common.enums.BusinessType;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
-import com.fly.system.api.domain.SysUser;
-import com.fly.system.api.domain.vo.UserDetailInfoVo;
+import com.fly.system.api.system.domain.SysUser;
+import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 import com.fly.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.fly.system.api.domain.vo.SysUserVo;
-import com.fly.system.api.domain.bo.SysUserBo;
+import com.fly.system.api.system.domain.vo.SysUserVo;
+import com.fly.system.api.system.domain.bo.SysUserBo;
 
 import java.util.List;
 import java.util.Arrays;

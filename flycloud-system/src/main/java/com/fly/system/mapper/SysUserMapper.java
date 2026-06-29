@@ -2,9 +2,9 @@ package com.fly.system.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysUser;
-import com.fly.system.api.domain.bo.SysUserBo;
-import com.fly.system.api.domain.vo.SysUserVo;
+import com.fly.system.api.system.domain.SysUser;
+import com.fly.system.api.system.domain.bo.SysUserBo;
+import com.fly.system.api.system.domain.vo.SysUserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

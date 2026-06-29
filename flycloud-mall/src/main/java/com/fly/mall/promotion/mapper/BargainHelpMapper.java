@@ -1,8 +1,8 @@
 package com.fly.mall.promotion.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.promotion.BargainHelp;
-import com.fly.mall.api.domain.promotion.vo.BargainHelpVo;
+import com.fly.mall.api.promotion.domain.BargainHelp;
+import com.fly.mall.api.promotion.domain.vo.BargainHelpVo;
 
 /**
  * 砍价助力 Mapper 接口。

@@ -1,8 +1,8 @@
 package com.fly.system.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysRoleMenu;
-import com.fly.system.api.domain.vo.SysRoleMenuVo;
+import com.fly.system.api.system.domain.SysRoleMenu;
+import com.fly.system.api.system.domain.vo.SysRoleMenuVo;
 
 /**
  * 角色权限Mapper接口

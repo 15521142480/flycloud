@@ -5,7 +5,7 @@ import com.fly.bpm.task.service.BpmInstanceService;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
 import com.fly.common.utils.collection.SetUtils;
 import com.fly.common.utils.number.NumberUtils;
-import com.fly.system.api.domain.vo.SysDeptVo;
+import com.fly.system.api.system.domain.vo.SysDeptVo;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.runtime.ProcessInstance;

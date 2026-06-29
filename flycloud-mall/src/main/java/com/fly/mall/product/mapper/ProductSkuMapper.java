@@ -1,8 +1,8 @@
 package com.fly.mall.product.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.product.ProductSku;
-import com.fly.mall.api.domain.product.vo.ProductSkuVo;
+import com.fly.mall.api.product.domain.ProductSku;
+import com.fly.mall.api.product.domain.vo.ProductSkuVo;
 
 /**
  * 商品 SKU Mapper 接口。

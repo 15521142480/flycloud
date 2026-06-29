@@ -1,8 +1,8 @@
 package com.fly.system.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysDept;
-import com.fly.system.api.domain.vo.SysDeptVo;
+import com.fly.system.api.system.domain.SysDept;
+import com.fly.system.api.system.domain.vo.SysDeptVo;
 
 /**
  * 部门Mapper接口

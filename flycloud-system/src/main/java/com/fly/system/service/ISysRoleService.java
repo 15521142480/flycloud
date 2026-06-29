@@ -1,8 +1,8 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.vo.SysMenuTreeVo;
-import com.fly.system.api.domain.vo.SysRoleVo;
-import com.fly.system.api.domain.bo.SysRoleBo;
+import com.fly.system.api.system.domain.vo.SysMenuTreeVo;
+import com.fly.system.api.system.domain.vo.SysRoleVo;
+import com.fly.system.api.system.domain.bo.SysRoleBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 

@@ -5,7 +5,7 @@ import com.fly.bpm.flowable.behavior.BpmActivityBehaviorFactory;
 import com.fly.bpm.flowable.candidate.BpmTaskCandidateInvoker;
 import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
 import com.fly.bpm.flowable.event.BpmProcessInstanceEventPublisher;
-import com.fly.system.api.feign.ISysUserApi;
+import com.fly.system.api.system.feign.ISysUserApi;
 import org.flowable.common.engine.api.delegate.FlowableFunctionDelegate;
 import org.flowable.common.engine.api.delegate.event.FlowableEventListener;
 import org.flowable.spring.SpringProcessEngineConfiguration;

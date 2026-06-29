@@ -1,8 +1,8 @@
 package com.fly.mall.product.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.product.ProductPropertyValue;
-import com.fly.mall.api.domain.product.vo.ProductPropertyValueVo;
+import com.fly.mall.api.product.domain.ProductPropertyValue;
+import com.fly.mall.api.product.domain.vo.ProductPropertyValueVo;
 
 /**
  * 商品属性值 Mapper 接口。

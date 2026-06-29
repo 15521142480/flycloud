@@ -2,8 +2,8 @@ package com.fly.mall.trade.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.trade.bo.DeliveryPickUpStoreBo;
-import com.fly.mall.api.domain.trade.vo.DeliveryPickUpStoreVo;
+import com.fly.mall.api.trade.domain.bo.DeliveryPickUpStoreBo;
+import com.fly.mall.api.trade.domain.vo.DeliveryPickUpStoreVo;
 
 import java.util.Collection;
 import java.util.List;

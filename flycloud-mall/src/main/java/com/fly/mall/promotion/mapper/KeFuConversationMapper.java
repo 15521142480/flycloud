@@ -1,8 +1,8 @@
 package com.fly.mall.promotion.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.promotion.KeFuConversation;
-import com.fly.mall.api.domain.promotion.vo.KeFuConversationVo;
+import com.fly.mall.api.promotion.domain.KeFuConversation;
+import com.fly.mall.api.promotion.domain.vo.KeFuConversationVo;
 
 /**
  * 客服会话 Mapper 接口。

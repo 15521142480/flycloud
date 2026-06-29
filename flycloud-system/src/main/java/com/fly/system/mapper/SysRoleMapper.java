@@ -1,8 +1,8 @@
 package com.fly.system.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysRole;
-import com.fly.system.api.domain.vo.SysRoleVo;
+import com.fly.system.api.system.domain.SysRole;
+import com.fly.system.api.system.domain.vo.SysRoleVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

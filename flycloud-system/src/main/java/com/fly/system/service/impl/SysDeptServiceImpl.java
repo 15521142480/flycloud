@@ -14,12 +14,11 @@ import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.common.utils.validation.RequireUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.fly.system.api.domain.bo.SysDeptBo;
-import com.fly.system.api.domain.vo.SysDeptVo;
-import com.fly.system.api.domain.SysDept;
+import com.fly.system.api.system.domain.bo.SysDeptBo;
+import com.fly.system.api.system.domain.vo.SysDeptVo;
+import com.fly.system.api.system.domain.SysDept;
 import com.fly.system.mapper.SysDeptMapper;
 import com.fly.system.service.ISysDeptService;
 

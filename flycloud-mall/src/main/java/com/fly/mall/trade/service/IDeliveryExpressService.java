@@ -2,8 +2,8 @@ package com.fly.mall.trade.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.trade.bo.DeliveryExpressBo;
-import com.fly.mall.api.domain.trade.vo.DeliveryExpressVo;
+import com.fly.mall.api.trade.domain.bo.DeliveryExpressBo;
+import com.fly.mall.api.trade.domain.vo.DeliveryExpressVo;
 
 import java.util.Collection;
 import java.util.List;

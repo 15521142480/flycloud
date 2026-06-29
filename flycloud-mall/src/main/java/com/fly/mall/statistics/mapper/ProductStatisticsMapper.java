@@ -1,8 +1,8 @@
 package com.fly.mall.statistics.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.statistics.ProductStatistics;
-import com.fly.mall.api.domain.statistics.vo.ProductStatisticsVo;
+import com.fly.mall.api.statistics.domain.ProductStatistics;
+import com.fly.mall.api.statistics.domain.vo.ProductStatisticsVo;
 
 /**
  * 商品统计 Mapper 接口。

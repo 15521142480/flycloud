@@ -10,12 +10,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fly.common.utils.validation.RequireUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.fly.system.api.domain.bo.SysDictDataBo;
-import com.fly.system.api.domain.vo.SysDictDataVo;
-import com.fly.system.api.domain.SysDictData;
+import com.fly.system.api.system.domain.bo.SysDictDataBo;
+import com.fly.system.api.system.domain.vo.SysDictDataVo;
+import com.fly.system.api.system.domain.SysDictData;
 import com.fly.system.mapper.SysDictDataMapper;
 import com.fly.system.service.ISysDictDataService;
 

@@ -2,8 +2,8 @@ package com.fly.mall.statistics.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.statistics.bo.ProductStatisticsBo;
-import com.fly.mall.api.domain.statistics.vo.ProductStatisticsVo;
+import com.fly.mall.api.statistics.domain.bo.ProductStatisticsBo;
+import com.fly.mall.api.statistics.domain.vo.ProductStatisticsVo;
 
 import java.util.Collection;
 import java.util.List;

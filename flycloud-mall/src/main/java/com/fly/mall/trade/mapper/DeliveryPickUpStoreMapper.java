@@ -1,8 +1,8 @@
 package com.fly.mall.trade.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.trade.DeliveryPickUpStore;
-import com.fly.mall.api.domain.trade.vo.DeliveryPickUpStoreVo;
+import com.fly.mall.api.trade.domain.DeliveryPickUpStore;
+import com.fly.mall.api.trade.domain.vo.DeliveryPickUpStoreVo;
 
 /**
  * 自提门店 Mapper 接口。

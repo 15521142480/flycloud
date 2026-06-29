@@ -2,10 +2,10 @@ package com.fly.feign;
 
 import com.fly.system.api.constants.SystemFeignApiConstants;
 import com.fly.common.domain.model.R;
-import com.fly.system.api.domain.common.UserInfo;
-import com.fly.system.api.domain.SysUser;
-import com.fly.system.api.domain.vo.SysUserVo;
-import com.fly.system.api.feign.ISysUserApi;
+import com.fly.system.api.system.domain.common.UserInfo;
+import com.fly.system.api.system.domain.SysUser;
+import com.fly.system.api.system.domain.vo.SysUserVo;
+import com.fly.system.api.system.feign.ISysUserApi;
 import com.fly.system.service.ISysRoleService;
 import com.fly.system.service.ISysUserRoleService;
 import com.fly.system.service.ISysUserService;

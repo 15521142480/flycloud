@@ -1,8 +1,8 @@
 package com.fly.mall.promotion.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.promotion.SeckillProduct;
-import com.fly.mall.api.domain.promotion.vo.SeckillProductVo;
+import com.fly.mall.api.promotion.domain.SeckillProduct;
+import com.fly.mall.api.promotion.domain.vo.SeckillProductVo;
 
 /**
  * 秒杀商品 Mapper 接口。

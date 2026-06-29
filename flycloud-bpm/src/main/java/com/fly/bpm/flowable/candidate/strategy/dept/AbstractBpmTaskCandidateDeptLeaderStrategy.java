@@ -3,10 +3,10 @@ package com.fly.bpm.flowable.candidate.strategy.dept;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.fly.bpm.flowable.candidate.BpmTaskCandidateStrategy;
-import com.fly.system.api.domain.vo.SysDeptVo;
-import com.fly.system.api.domain.vo.SysUserVo;
-import com.fly.system.api.feign.ISysDeptApi;
-import com.fly.system.api.feign.ISysUserApi;
+import com.fly.system.api.system.domain.vo.SysDeptVo;
+import com.fly.system.api.system.domain.vo.SysUserVo;
+import com.fly.system.api.system.feign.ISysDeptApi;
+import com.fly.system.api.system.feign.ISysUserApi;
 
 import jakarta.annotation.Resource;
 import java.util.HashSet;

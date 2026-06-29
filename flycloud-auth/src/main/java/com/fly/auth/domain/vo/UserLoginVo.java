@@ -1,11 +1,8 @@
 package com.fly.auth.domain.vo;
 
-import com.fly.system.api.domain.vo.SysMenuTreeVo;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 用户登录信息 - vo

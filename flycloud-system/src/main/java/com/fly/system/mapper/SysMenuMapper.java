@@ -1,10 +1,10 @@
 package com.fly.system.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysMenu;
-import com.fly.system.api.domain.bo.SysMenuBo;
-import com.fly.system.api.domain.vo.SysMenuTreeVo;
-import com.fly.system.api.domain.vo.SysMenuVo;
+import com.fly.system.api.system.domain.SysMenu;
+import com.fly.system.api.system.domain.bo.SysMenuBo;
+import com.fly.system.api.system.domain.vo.SysMenuTreeVo;
+import com.fly.system.api.system.domain.vo.SysMenuVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

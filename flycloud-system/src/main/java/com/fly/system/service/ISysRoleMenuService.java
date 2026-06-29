@@ -1,7 +1,7 @@
 package com.fly.system.service;
 
-import com.fly.system.api.domain.vo.SysRoleMenuVo;
-import com.fly.system.api.domain.bo.SysRoleMenuBo;
+import com.fly.system.api.system.domain.vo.SysRoleMenuVo;
+import com.fly.system.api.system.domain.bo.SysRoleMenuBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 

@@ -1,8 +1,8 @@
 package com.fly.mall.trade.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.trade.BrokerageWithdraw;
-import com.fly.mall.api.domain.trade.vo.BrokerageWithdrawVo;
+import com.fly.mall.api.trade.domain.BrokerageWithdraw;
+import com.fly.mall.api.trade.domain.vo.BrokerageWithdrawVo;
 
 /**
  * 佣金提现 Mapper 接口。

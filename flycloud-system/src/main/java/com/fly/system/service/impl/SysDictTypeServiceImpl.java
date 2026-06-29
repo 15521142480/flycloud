@@ -13,15 +13,14 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.fly.system.api.domain.bo.SysDictTypeBo;
-import com.fly.system.api.domain.vo.SysDictTypeVo;
-import com.fly.system.api.domain.SysDictType;
+import com.fly.system.api.system.domain.bo.SysDictTypeBo;
+import com.fly.system.api.system.domain.vo.SysDictTypeVo;
+import com.fly.system.api.system.domain.SysDictType;
 import com.fly.system.mapper.SysDictTypeMapper;
 import com.fly.system.service.ISysDictTypeService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**

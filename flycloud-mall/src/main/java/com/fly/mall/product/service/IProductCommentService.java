@@ -2,8 +2,8 @@ package com.fly.mall.product.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.product.bo.ProductCommentBo;
-import com.fly.mall.api.domain.product.vo.ProductCommentVo;
+import com.fly.mall.api.product.domain.bo.ProductCommentBo;
+import com.fly.mall.api.product.domain.vo.ProductCommentVo;
 
 import java.util.Collection;
 import java.util.List;

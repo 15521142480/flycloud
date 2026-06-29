@@ -2,9 +2,9 @@ package com.fly.mall.trade.service;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.domain.trade.bo.CartBo;
-import com.fly.mall.api.domain.trade.vo.AppCartListRespVo;
-import com.fly.mall.api.domain.trade.vo.CartVo;
+import com.fly.mall.api.trade.domain.bo.CartBo;
+import com.fly.mall.api.trade.domain.vo.AppCartListRespVo;
+import com.fly.mall.api.trade.domain.vo.CartVo;
 
 import java.util.Collection;
 import java.util.List;

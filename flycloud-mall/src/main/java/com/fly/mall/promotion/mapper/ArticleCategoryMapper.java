@@ -1,8 +1,8 @@
 package com.fly.mall.promotion.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.promotion.ArticleCategory;
-import com.fly.mall.api.domain.promotion.vo.ArticleCategoryVo;
+import com.fly.mall.api.promotion.domain.ArticleCategory;
+import com.fly.mall.api.promotion.domain.vo.ArticleCategoryVo;
 
 /**
  * 文章分类 Mapper 接口。

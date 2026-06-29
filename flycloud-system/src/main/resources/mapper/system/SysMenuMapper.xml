@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fly.system.mapper.SysMenuMapper">
 
-    <resultMap type="com.fly.system.api.domain.SysMenu" id="SysMenuResult">
+    <resultMap type="com.fly.system.api.system.domain.SysMenu" id="SysMenuResult">
         <result property="id" column="id"/>
         <result property="type" column="type"/>
         <result property="name" column="name"/>
@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="isDeleted" column="is_deleted"/>
     </resultMap>
 
-    <resultMap type="com.fly.system.api.domain.vo.SysMenuTreeVo" id="SysMenuTreeVoResult">
+    <resultMap type="com.fly.system.api.system.domain.vo.SysMenuTreeVo" id="SysMenuTreeVoResult">
         <result property="id" column="id"/>
         <result property="type" column="type"/>
         <result property="name" column="name"/>

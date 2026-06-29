@@ -1,8 +1,8 @@
 package com.fly.system.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.system.api.domain.SysPost;
-import com.fly.system.api.domain.vo.SysPostVo;
+import com.fly.system.api.system.domain.SysPost;
+import com.fly.system.api.system.domain.vo.SysPostVo;
 
 /**
  * 岗位Mapper接口

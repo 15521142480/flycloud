@@ -1,8 +1,8 @@
 package com.fly.mall.promotion.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.mall.api.domain.promotion.CombinationRecord;
-import com.fly.mall.api.domain.promotion.vo.CombinationRecordVo;
+import com.fly.mall.api.promotion.domain.CombinationRecord;
+import com.fly.mall.api.promotion.domain.vo.CombinationRecordVo;
 
 /**
  * 拼团记录 Mapper 接口。
