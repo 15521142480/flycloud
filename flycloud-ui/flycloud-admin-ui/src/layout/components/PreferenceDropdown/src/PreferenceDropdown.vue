@@ -9,8 +9,9 @@ import { propTypes } from '@/utils/propTypes'
 const { t } = useI18n()
 defineOptions({ name: 'PreferenceDropdown' })
 
-defineProps({
-  color: propTypes.string.def('')
+const props = defineProps({
+  color: propTypes.string.def(''),
+  showSize: propTypes.bool.def(true)
 })
 const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('preference-dropdown')
@@ -62,9 +63,9 @@ const setLang = async (lang: LocaleType) => {
       </template>
     </ElDropdown>
 
-    <ElDropdown trigger="click" @command="setCurrentSize">
+    <ElDropdown v-if="props.showSize" trigger="click" @command="setCurrentSize">
       <button class="preference-switcher" type="button" :aria-label="t('preference.size')">
-        <Icon :color="color" :size="16" icon="mdi:format-size" />
+        <Icon :color="props.color" :size="16" icon="mdi:format-size" />
         <span>{{ t(`size.${currentSize}`) }}</span>
         <ArrowDown />
       </button>

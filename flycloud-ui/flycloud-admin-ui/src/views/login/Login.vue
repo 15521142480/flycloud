@@ -5,12 +5,14 @@
   >
     <div class="relative mx-auto h-full flex">
       <div
-        :class="`${prefixCls}__left flex-1 bg-white relative p-30px lt-xl:hidden overflow-x-hidden overflow-y-auto`"
+        :class="`${prefixCls}__left w-[55%] relative p-30px lt-xl:hidden overflow-x-hidden overflow-y-auto`"
       >
         <!-- 左上角的 logo + 系统标题 -->
         <div class="login-logo-box relative flex items-center text-white">
           <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
-          <span class="text-20px font-bold" style="font-size: 24px;font-weight: 700;">{{ t('app.title') }}</span>
+          <span class="text-20px font-bold" style="font-size: 24px; font-weight: 700">{{
+            t('app.title')
+          }}</span>
         </div>
 
         <!-- 左边的背景图 + 提示语 -->
@@ -21,7 +23,7 @@
             tag="div"
             class="login-left-content"
           >
-            <img key="1" alt="" class="login-left-img" src="@/assets/svgs/login_left.svg"/>
+            <img key="1" alt="" class="login-left-img" src="@/assets/svgs/login_left.svg" />
             <div key="2" class="login-left-title">
               {{ t('app.homeTitle') }}
             </div>
@@ -30,8 +32,9 @@
         </div>
       </div>
 
+      <!--   右边区域   -->
       <div
-        class="relative flex-1 p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden overflow-y-auto"
+        class="relative w-[45%] p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden overflow-y-auto"
       >
         <!-- 右上角的主题、语言选择 -->
         <div
@@ -42,9 +45,8 @@
             <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
             <span class="text-20px font-bold">{{ t('app.title') }}</span>
           </div>
-          <div class="flex items-center justify-end space-x-10px h-48px">
-            <ThemeSwitch />
-            <LocaleDropdown />
+          <div class="login-preference flex items-center justify-end h-48px">
+            <PreferenceDropdown :show-size="false" />
           </div>
         </div>
         <!-- 右边的登录界面 -->
@@ -74,8 +76,7 @@
 </template>
 <script lang="ts" setup>
 import { useDesign } from '@/hooks/web/useDesign'
-import { ThemeSwitch } from '@/layout/components/ThemeSwitch'
-import { LocaleDropdown } from '@/layout/components/LocaleDropdown'
+import { PreferenceDropdown } from '@/layout/components/PreferenceDropdown'
 
 // import { LoginForm, MobileForm, QrCodeForm, RegisterForm, SSOLoginVue } from './components'
 import { LoginForm, RegisterForm } from './components'
@@ -92,6 +93,8 @@ $prefix-cls: #{$namespace}-login;
   overflow: auto;
 
   &__left {
+    background-color: #fff;
+
     &::before {
       position: absolute;
       top: 0;
@@ -99,11 +102,35 @@ $prefix-cls: #{$namespace}-login;
       width: 100%;
       height: 100%;
       //margin-left: -8%;
-      content: "";
+      content: '';
       background-image: url('@/assets/svgs/login-bg.svg');
       background-repeat: no-repeat;
       background-position: 100%;
       background-size: auto 100%;
+    }
+  }
+}
+
+.dark .#{$prefix-cls} {
+  &__left {
+    background: linear-gradient(160deg, #1f2f4b 0%, #17243a 100%);
+
+    &::before {
+      background-image: none;
+      background: radial-gradient(circle at 22% 28%, rgb(64 158 255 / 16%) 0, transparent 30%),
+        linear-gradient(160deg, #1f2f4b 0%, #17243a 100%);
+    }
+
+    &::after {
+      position: absolute;
+      top: -15%;
+      right: -360px;
+      width: 520px;
+      height: 130%;
+      content: '';
+      background: var(--login-bg-color);
+      border-radius: 50%;
+      box-shadow: -18px 0 0 rgb(41 49 70 / 35%);
     }
   }
 }
@@ -123,6 +150,12 @@ $prefix-cls: #{$namespace}-login;
 .login-logo-box {
   justify-content: center;
   transform: translate(-150px, 40px);
+}
+
+.login-preference {
+  --app-chip-bg: var(--el-bg-color);
+  --app-border: var(--el-border-color);
+  --app-text: var(--el-text-color-primary);
 }
 
 .login-left-content {
