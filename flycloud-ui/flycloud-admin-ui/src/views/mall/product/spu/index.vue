@@ -52,7 +52,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['product:spu:create']"
+          v-hasPermi="['mall:product:spu:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm(undefined)"
@@ -61,7 +61,7 @@
           新增
         </el-button>
         <el-button
-          v-hasPermi="['product:spu:export']"
+          v-hasPermi="['mall:product:spu:export']"
           :loading="exportLoading"
           plain
           type="success"
@@ -183,7 +183,7 @@
         <template #default="{ row }">
           <el-button link type="primary" @click="openDetail(row.id)"> 详情 </el-button>
           <el-button
-            v-hasPermi="['product:spu:update']"
+            v-hasPermi="['mall:product:spu:saveOrUpdate']"
             link
             type="primary"
             @click="openForm(row.id)"
@@ -192,7 +192,7 @@
           </el-button>
           <template v-if="queryParams.tabType === 4">
             <el-button
-              v-hasPermi="['product:spu:delete']"
+              v-hasPermi="['mall:product:spu:delete']"
               link
               type="danger"
               @click="handleDelete(row.id)"
@@ -200,7 +200,7 @@
               删除
             </el-button>
             <el-button
-              v-hasPermi="['product:spu:update']"
+              v-hasPermi="['mall:product:spu:saveOrUpdate']"
               link
               type="primary"
               @click="handleStatus02Change(row, ProductSpuStatusEnum.DISABLE.status)"
@@ -210,7 +210,7 @@
           </template>
           <template v-else>
             <el-button
-              v-hasPermi="['product:spu:update']"
+              v-hasPermi="['mall:product:spu:saveOrUpdate']"
               link
               type="danger"
               @click="handleStatus02Change(row, ProductSpuStatusEnum.RECYCLE.status)"

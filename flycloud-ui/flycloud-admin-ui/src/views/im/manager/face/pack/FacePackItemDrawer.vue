@@ -34,7 +34,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['im:manager:face-pack-item:create']"
+          v-hasPermi="['im:manager:face-pack-item:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增表情
         </el-button>
@@ -93,7 +93,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['im:manager:face-pack-item:update']"
+            v-hasPermi="['im:manager:face-pack-item:saveOrUpdate']"
           >
             编辑
           </el-button>

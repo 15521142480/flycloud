@@ -52,7 +52,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['infra:job:create']"
+          v-hasPermi="['infra:job:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1e136e95') }}
         </el-button>
@@ -115,7 +115,7 @@
             type="primary"
             link
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['infra:job:update']"
+            v-hasPermi="['infra:job:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>
@@ -123,7 +123,7 @@
             type="primary"
             link
             @click="handleChangeStatus(scope.row)"
-            v-hasPermi="['infra:job:update']"
+            v-hasPermi="['infra:job:saveOrUpdate']"
           >
             {{ scope.row.status === InfraJobStatusEnum.STOP ? '开启' : '暂停' }}
           </el-button>

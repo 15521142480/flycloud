@@ -86,7 +86,7 @@
           {{ t('extra.k79f4d7aa') }}
         </el-button>
         <el-button
-          v-hasPermi="['system:social-client:create']"
+          v-hasPermi="['system:social-client:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -150,7 +150,7 @@
       <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
-            v-hasPermi="['system:social-client:update']"
+            v-hasPermi="['system:social-client:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

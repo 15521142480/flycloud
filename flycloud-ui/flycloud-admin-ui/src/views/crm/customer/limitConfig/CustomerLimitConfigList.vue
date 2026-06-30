@@ -7,7 +7,7 @@
     type="primary"
     plain
     @click="openForm('create')"
-    v-hasPermi="['crm:customer-limit-config:create']"
+    v-hasPermi="['crm:customer-limit-config:saveOrUpdate']"
   >
     <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ka30e2f1d') }}
   </el-button>
@@ -66,7 +66,7 @@
           link
           type="primary"
           @click="openForm('update', scope.row.id)"
-          v-hasPermi="['crm:customer-limit-config:update']"
+          v-hasPermi="['crm:customer-limit-config:saveOrUpdate']"
         >
           {{ t('common.edit') }}
         </el-button>

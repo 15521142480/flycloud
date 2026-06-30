@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/sign-in-config")
+@RequestMapping("/admin/member/sign-in-config")
 public class MemberSignInConfigController {
 
     private final IMemberSignInConfigService signInConfigService;

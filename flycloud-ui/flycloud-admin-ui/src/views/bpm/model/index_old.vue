@@ -52,7 +52,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['bpm:model:create']"
+          v-hasPermi="['bpm:model:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k99418085') }}
         </el-button>
@@ -161,7 +161,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['bpm:model:update']"
+            v-hasPermi="['bpm:model:saveOrUpdate']"
             :disabled="!isManagerUser(scope.row)"
           >
             {{ t('extra.k4c512392') }}
@@ -171,7 +171,7 @@
             class="!ml-5px"
             type="primary"
             @click="handleDesign(scope.row)"
-            v-hasPermi="['bpm:model:update']"
+            v-hasPermi="['bpm:model:saveOrUpdate']"
             :disabled="!isManagerUser(scope.row)"
           >
             {{ t('extra.kb08890a6') }}
@@ -202,7 +202,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item
                   command="handleChangeState"
-                  v-if="checkPermi(['bpm:model:update']) && scope.row.processDefinition"
+                  v-if="checkPermi(['bpm:model:saveOrUpdate']) && scope.row.processDefinition"
                   :disabled="!isManagerUser(scope.row)"
                 >
                   {{ scope.row.processDefinition.suspensionState === 1 ? '停用' : '启用' }}

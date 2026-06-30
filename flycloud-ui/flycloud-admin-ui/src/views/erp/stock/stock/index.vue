@@ -52,7 +52,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['erp:stock:create']"
+          v-hasPermi="['erp:stock:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1f42eba7') }}
         </el-button>

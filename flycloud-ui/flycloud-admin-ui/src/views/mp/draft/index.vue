@@ -21,7 +21,7 @@
           type="primary"
           plain
           @click="handleAdd"
-          v-hasPermi="['mp:draft:create']"
+          v-hasPermi="['mp:draft:saveOrUpdate']"
           :disabled="accountId === 0"
         >
           <Icon icon="ep:plus" />{{ t('extra.k1528bd8b') }}

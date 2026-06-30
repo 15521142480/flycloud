@@ -31,7 +31,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/address")
+@RequestMapping("/admin/member/address")
 public class AddressController {
 
     private final IAddressService addressService;

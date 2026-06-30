@@ -58,7 +58,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:sms-channel:create']"
+          v-hasPermi="['system:sms-channel:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('common.create') }}</el-button
         >
@@ -137,7 +137,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:sms-channel:update']"
+            v-hasPermi="['system:sms-channel:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

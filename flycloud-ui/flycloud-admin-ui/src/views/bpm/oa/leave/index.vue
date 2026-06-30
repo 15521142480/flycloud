@@ -68,7 +68,7 @@
           {{ t('extra.k6fdfb376') }}
         </el-button>
         <el-button
-          v-hasPermi="['bpm:oa:leave:create']"
+          v-hasPermi="['bpm:oa:leave:saveOrUpdate']"
           plain
           type="primary"
           @click="handleCreate()"

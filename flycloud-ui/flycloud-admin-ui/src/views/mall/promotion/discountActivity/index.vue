@@ -52,7 +52,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['promotion:discount-activity:create']"
+          v-hasPermi="['promotion:discount-activity:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增活动
         </el-button>
@@ -99,7 +99,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['promotion:discount-activity:update']"
+            v-hasPermi="['promotion:discount-activity:saveOrUpdate']"
           >
             编辑
           </el-button>

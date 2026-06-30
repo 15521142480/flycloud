@@ -49,7 +49,7 @@ export const usePermissionStore = defineStore('permission', {
           {
             path: '/:path(.*)*',
             // redirect: '/404',
-            component: () => import('@/views/error/404.vue'),
+            component: () => import('@/views/Error/404.vue'),
             name: '404Page',
             meta: {
               hidden: true,

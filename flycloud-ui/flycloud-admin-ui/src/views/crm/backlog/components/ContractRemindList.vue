@@ -210,7 +210,7 @@
         <template #default="scope">
           <el-button
             link
-            v-hasPermi="['crm:contract:update']"
+            v-hasPermi="['crm:contract:saveOrUpdate']"
             type="primary"
             @click="handleProcessDetail(scope.row)"
           >

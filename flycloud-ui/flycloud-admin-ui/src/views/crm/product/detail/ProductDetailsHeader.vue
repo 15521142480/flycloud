@@ -10,7 +10,7 @@
       </div>
       <div>
         <!-- 右上：按钮 -->
-        <el-button @click="openForm('update', product.id)" v-hasPermi="['crm:product:update']">
+        <el-button @click="openForm('update', product.id)" v-hasPermi="['crm:product:saveOrUpdate']">
           {{ t('extra.k25a56180') }}
         </el-button>
       </div>

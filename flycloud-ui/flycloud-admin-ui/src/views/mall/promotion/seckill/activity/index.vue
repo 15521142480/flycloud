@@ -41,7 +41,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['promotion:seckill-activity:create']"
+          v-hasPermi="['promotion:seckill-activity:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -115,7 +115,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['promotion:seckill-activity:update']"
+            v-hasPermi="['promotion:seckill-activity:saveOrUpdate']"
           >
             编辑
           </el-button>

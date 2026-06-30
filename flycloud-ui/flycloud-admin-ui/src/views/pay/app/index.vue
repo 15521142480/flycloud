@@ -53,7 +53,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
-        <el-button v-hasPermi="['pay:app:create']" plain type="primary" @click="openForm('create')">
+        <el-button v-hasPermi="['pay:app:saveOrUpdate']" plain type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
           新增
         </el-button>
@@ -185,7 +185,7 @@
       <el-table-column align="center" fixed="right" label="操作" min-width="110">
         <template #default="scope">
           <el-button
-            v-hasPermi="['pay:app:update']"
+            v-hasPermi="['pay:app:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

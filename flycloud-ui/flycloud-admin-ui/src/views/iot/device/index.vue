@@ -84,7 +84,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['iot:device:create']"
+          v-hasPermi="['iot:device:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
           {{ t('extra.kbd17ec6a') }}
@@ -150,7 +150,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['iot:device:update']"
+            v-hasPermi="['iot:device:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

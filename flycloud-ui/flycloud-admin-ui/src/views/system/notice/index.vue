@@ -43,7 +43,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:notice:create']"
+          v-hasPermi="['system:notice:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k37369059') }}
         </el-button>
@@ -91,7 +91,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:notice:update']"
+            v-hasPermi="['system:notice:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>
@@ -103,7 +103,7 @@
           >
             {{ t('common.delete') }}
           </el-button>
-          <el-button link @click="handlePush(scope.row.id)" v-hasPermi="['system:notice:update']">
+          <el-button link @click="handlePush(scope.row.id)" v-hasPermi="['system:notice:saveOrUpdate']">
             {{ t('workplace.push') }}
           </el-button>
         </template>

@@ -37,7 +37,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['iot:think-model-function:create']"
+          v-hasPermi="['iot:think-model-function:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k24fcd440') }}
         </el-button>

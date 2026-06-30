@@ -48,7 +48,7 @@
         <el-button @click="resetQuery"
           ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
         >
-        <el-button type="primary" @click="openForm('create')" v-hasPermi="['crm:clue:create']">
+        <el-button type="primary" @click="openForm('create')" v-hasPermi="['crm:clue:saveOrUpdate']">
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke5c77d7a') }}
         </el-button>
         <el-button
@@ -193,7 +193,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['crm:clue:update']"
+            v-hasPermi="['crm:clue:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

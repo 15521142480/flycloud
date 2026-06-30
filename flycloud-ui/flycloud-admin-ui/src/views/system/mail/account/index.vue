@@ -13,7 +13,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:mail-account:create']"
+          v-hasPermi="['system:mail-account:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke0e62251') }}
         </el-button>
@@ -38,7 +38,7 @@
           link
           type="primary"
           @click="openForm('update', row.id)"
-          v-hasPermi="['system:mail-account:update']"
+          v-hasPermi="['system:mail-account:saveOrUpdate']"
         >
           {{ t('common.edit') }}
         </el-button>

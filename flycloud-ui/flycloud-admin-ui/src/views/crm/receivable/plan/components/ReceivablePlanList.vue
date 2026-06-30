@@ -63,7 +63,7 @@
       <el-table-column align="center" fixed="right" :label="t('common.operation')" width="200px">
         <template #default="scope">
           <el-button
-            v-hasPermi="['crm:receivable:create']"
+            v-hasPermi="['crm:receivable:saveOrUpdate']"
             link
             type="primary"
             @click="createReceivable(scope.row)"
@@ -72,7 +72,7 @@
             {{ t('extra.ka683c87a') }}
           </el-button>
           <el-button
-            v-hasPermi="['crm:receivable-plan:update']"
+            v-hasPermi="['crm:receivable-plan:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

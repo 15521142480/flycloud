@@ -161,7 +161,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item
-                    v-if="checkPermi(['member:user:update'])"
+                    v-if="checkPermi(['member:user:saveOrUpdate'])"
                     command="handleUpdate"
                   >
                     编辑

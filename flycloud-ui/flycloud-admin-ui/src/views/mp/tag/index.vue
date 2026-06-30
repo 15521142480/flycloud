@@ -18,7 +18,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['mp:tag:create']"
+          v-hasPermi="['mp:tag:saveOrUpdate']"
           :disabled="queryParams.accountId === 0"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke9c5073c') }}
@@ -59,7 +59,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['mp:tag:update']"
+            v-hasPermi="['mp:tag:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>

@@ -57,7 +57,7 @@
       <el-table-column align="center" fixed="right" :label="t('common.operation')" width="130px">
         <template #default="scope">
           <el-button
-            v-hasPermi="['crm:receivable:update']"
+            v-hasPermi="['crm:receivable:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

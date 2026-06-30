@@ -46,7 +46,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['erp:account:create']"
+          v-hasPermi="['erp:account:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k03fa6f86') }}
         </el-button>
@@ -110,7 +110,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['erp:account:update']"
+            v-hasPermi="['erp:account:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

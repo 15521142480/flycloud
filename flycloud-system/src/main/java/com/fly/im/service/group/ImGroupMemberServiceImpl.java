@@ -78,7 +78,7 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
 
     @Override
     public List<ImGroupMemberDO> getGroupMemberListByOwnerAndAdmin(Long groupId) {
-        // TODO DONE @AI：把条件往下传；这样减少加载数据量！
+        // 把条件往下传；这样减少加载数据量！
         return groupMemberMapper.selectListByGroupIdAndStatusAndRoles(groupId, CommonStatusEnum.ENABLE.getStatus(),
                 List.of(ImGroupMemberRoleEnum.OWNER.getRole(), ImGroupMemberRoleEnum.ADMIN.getRole()));
     }

@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/experience-record")
+@RequestMapping("/admin/member/experience-record")
 public class MemberExperienceRecordController {
 
     private final IMemberExperienceRecordService experienceRecordService;
 
-    @PreAuthorize("@pms.hasPermission('member:experience-record:list')")
+    @PreAuthorize("@pms.hasPermission('member:experience:list')")
     @GetMapping("/list")
     public R<PageVo<MemberExperienceRecordVo>> list(MemberExperienceRecordBo bo, PageBo pageBo) {
         return R.ok(experienceRecordService.queryPageList(bo, pageBo));

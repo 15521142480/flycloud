@@ -64,7 +64,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['product:comment:create']"
+          v-hasPermi="['mall:product:comment:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
           添加虚拟评论
@@ -137,7 +137,7 @@
             v-model="scope.row.visible"
             :active-value="true"
             :inactive-value="false"
-            v-hasPermi="['product:comment:update']"
+            v-hasPermi="['mall:product:comment:saveOrUpdate']"
             @change="handleVisibleChange(scope.row)"
           />
         </template>
@@ -148,7 +148,7 @@
             link
             type="primary"
             @click="handleReply(scope.row.id)"
-            v-hasPermi="['product:comment:update']"
+            v-hasPermi="['mall:product:comment:saveOrUpdate']"
           >
             回复
           </el-button>

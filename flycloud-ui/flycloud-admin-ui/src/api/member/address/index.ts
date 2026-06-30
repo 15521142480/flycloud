@@ -11,5 +11,5 @@ export interface AddressVO {
 
 // 查询用户收件地址列表
 export const getAddressList = async (params) => {
-  return await request.get({ url: `/member/address/list`, params })
+  return await request.get({ url: `/admin/member/address/list`, params })
 }

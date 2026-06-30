@@ -181,7 +181,7 @@
               详情
             </el-button>
             <el-dropdown
-              v-hasPermi="['trade:order:update']"
+              v-hasPermi="['trade:order:saveOrUpdate']"
               @command="(command) => handleCommand(command, row)"
             >
               <el-button link type="primary">

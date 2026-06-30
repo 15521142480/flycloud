@@ -40,7 +40,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['product:property:create']"
+          v-hasPermi="['mall:product:property:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -68,7 +68,7 @@
       <el-table-column align="center" label="操作">
         <template #default="scope">
           <el-button
-            v-hasPermi="['product:property:update']"
+            v-hasPermi="['mall:product:property:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
@@ -77,7 +77,7 @@
           </el-button>
           <el-button link type="primary" @click="goValueList(scope.row.id)">属性值</el-button>
           <el-button
-            v-hasPermi="['product:property:delete']"
+            v-hasPermi="['mall:product:property:delete']"
             link
             type="danger"
             @click="handleDelete(scope.row.id)"

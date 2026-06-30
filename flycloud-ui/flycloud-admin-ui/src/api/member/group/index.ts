@@ -9,30 +9,30 @@ export interface GroupVO {
 
 // 查询用户分组列表
 export const getGroupPage = async (params: any) => {
-  return await request.get({ url: `/member/group/page`, params })
+  return await request.get({ url: `/admin/member/group/page`, params })
 }
 
 // 查询用户分组详情
 export const getGroup = async (id: number) => {
-  return await request.get({ url: `/member/group/get?id=` + id })
+  return await request.get({ url: `/admin/member/group/get?id=` + id })
 }
 
 // 新增用户分组
 export const createGroup = async (data: GroupVO) => {
-  return await request.post({ url: `/member/group/create`, data })
+  return await request.post({ url: `/admin/member/group/create`, data })
 }
 
 // 查询用户分组 - 精简信息列表
 export const getSimpleGroupList = async () => {
-  return await request.get({ url: `/member/group/list-all-simple` })
+  return await request.get({ url: `/admin/member/group/list-all-simple` })
 }
 
 // 修改用户分组
 export const updateGroup = async (data: GroupVO) => {
-  return await request.put({ url: `/member/group/update`, data })
+  return await request.put({ url: `/admin/member/group/update`, data })
 }
 
 // 删除用户分组
 export const deleteGroup = async (id: number) => {
-  return await request.delete({ url: `/member/group/delete?id=` + id })
+  return await request.delete({ url: `/admin/member/group/delete?id=` + id })
 }

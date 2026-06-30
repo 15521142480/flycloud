@@ -104,7 +104,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:sms-template:create']"
+          v-hasPermi="['system:sms-template:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />{{ t('extra.k95792bc9') }}
         </el-button>
@@ -192,7 +192,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:sms-template:update']"
+            v-hasPermi="['system:sms-template:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>

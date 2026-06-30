@@ -15,7 +15,7 @@
             <el-button
               type="primary"
               @click="onSubmit"
-              v-hasPermi="['crm:customer-pool-config:update']"
+              v-hasPermi="['crm:customer-pool-config:saveOrUpdate']"
             >
               {{ t('extra.k792def23') }}
             </el-button>

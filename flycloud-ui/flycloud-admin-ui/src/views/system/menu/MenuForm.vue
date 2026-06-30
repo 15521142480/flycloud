@@ -180,7 +180,7 @@
           <!--            <div>123</div>-->
           <!--          </div>-->
           <el-button type="primary" plain @click="openBtnForm(false)">
-            <!-- v-hasPermi="['system:menu:create']" -->
+            <!-- v-hasPermi="['system:menu:saveOrUpdate']" -->
             <Icon icon="ep:plus" /> {{ t('common.create') }}
           </el-button>
           <el-table

@@ -26,7 +26,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['product:category:create']"
+          v-hasPermi="['mall:product:category:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -62,7 +62,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['product:category:update']"
+            v-hasPermi="['mall:product:category:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -71,7 +71,7 @@
             type="primary"
             v-if="scope.row.parentId > 0"
             @click="handleViewSpu(scope.row.id)"
-            v-hasPermi="['product:spu:query']"
+            v-hasPermi="['mall:product:spu:query']"
           >
             查看商品
           </el-button>
@@ -79,7 +79,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['product:category:delete']"
+            v-hasPermi="['mall:product:category:delete']"
           >
             删除
           </el-button>

@@ -1,7 +1,6 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-// import { createRouter, createWebHistory } from 'vue-router'
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import remainingRouter from './modules/remaining'
 
 // 创建路由实例

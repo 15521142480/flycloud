@@ -37,7 +37,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['iot:product:create']"
+          v-hasPermi="['iot:product:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kbc001ebb') }}
         </el-button>

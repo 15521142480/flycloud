@@ -173,7 +173,7 @@
               link
               type="primary"
               @click="openModelForm('update', scope.row.id)"
-              v-hasPermi="['bpm:manage:model:update']"
+              v-hasPermi="['bpm:manage:model:saveOrUpdate']"
               :disabled="!isManagerUser(scope.row)"
             >
               {{ t('extra.k4c512392') }}

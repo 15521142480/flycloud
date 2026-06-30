@@ -2,7 +2,7 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-button
-      v-hasPermi="['infra:demo03-student:create']"
+      v-hasPermi="['infra:demo03-student:saveOrUpdate']"
       plain
       type="primary"
       @click="openForm('create')"
@@ -36,7 +36,7 @@
       <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
-            v-hasPermi="['infra:demo03-student:update']"
+            v-hasPermi="['infra:demo03-student:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/level-record")
+@RequestMapping("/admin/member/level-record")
 public class MemberLevelRecordController {
 
     private final IMemberLevelRecordService levelRecordService;
 
-    @PreAuthorize("@pms.hasPermission('member:level-record:list')")
+    @PreAuthorize("@pms.hasPermission('member:level:list')")
     @GetMapping("/list")
     public R<PageVo<MemberLevelRecordVo>> list(MemberLevelRecordBo bo, PageBo pageBo) {
         return R.ok(levelRecordService.queryPageList(bo, pageBo));

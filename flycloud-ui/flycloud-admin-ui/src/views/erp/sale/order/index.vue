@@ -130,7 +130,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['erp:sale-order:create']"
+          v-hasPermi="['erp:sale-order:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf6e9624c') }}
         </el-button>
@@ -259,7 +259,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['erp:sale-order:update']"
+            v-hasPermi="['erp:sale-order:saveOrUpdate']"
             :disabled="scope.row.status === 20"
           >
             {{ t('common.edit') }}

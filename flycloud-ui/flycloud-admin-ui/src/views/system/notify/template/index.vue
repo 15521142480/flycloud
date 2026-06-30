@@ -68,7 +68,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:notify-template:create']"
+          v-hasPermi="['system:notify-template:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />{{ t('extra.kefe6cbbb') }}
         </el-button>
@@ -138,7 +138,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:notify-template:update']"
+            v-hasPermi="['system:notify-template:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>

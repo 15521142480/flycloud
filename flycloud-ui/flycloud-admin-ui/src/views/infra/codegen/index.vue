@@ -63,7 +63,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           {{ t('extra.k2291d9b6') }}
         </el-button>
-        <el-button v-hasPermi="['infra:codegen:create']" type="primary" @click="openImportTable()">
+        <el-button v-hasPermi="['infra:codegen:saveOrUpdate']" type="primary" @click="openImportTable()">
           <Icon class="mr-5px" icon="ep:zoom-in" />
           {{ t('extra.kc62b1222') }}
         </el-button>
@@ -120,7 +120,7 @@
             {{ t('action.preview') }}
           </el-button>
           <el-button
-            v-hasPermi="['infra:codegen:update']"
+            v-hasPermi="['infra:codegen:saveOrUpdate']"
             link
             type="primary"
             @click="handleUpdate(scope.row.id)"
@@ -136,7 +136,7 @@
             {{ t('common.delete') }}
           </el-button>
           <el-button
-            v-hasPermi="['infra:codegen:update']"
+            v-hasPermi="['infra:codegen:saveOrUpdate']"
             link
             type="primary"
             @click="handleSyncDB(scope.row)"

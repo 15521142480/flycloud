@@ -12,7 +12,7 @@
         <!-- 右上：按钮 -->
         <el-button
           @click="openForm('update', device.id)"
-          v-hasPermi="['iot:device:update']"
+          v-hasPermi="['iot:device:saveOrUpdate']"
           v-if="product.status === 0"
         >
           {{ t('extra.k165d95ac') }}

@@ -52,7 +52,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['trade:delivery:pick-up-store:create']"
+          v-hasPermi="['trade:delivery:pick-up-store:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -96,7 +96,7 @@
       <el-table-column align="center" label="操作" min-width="110">
         <template #default="scope">
           <el-button
-            v-hasPermi="['trade:delivery:pick-up-store:update']"
+            v-hasPermi="['trade:delivery:pick-up-store:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
@@ -104,7 +104,7 @@
             编辑
           </el-button>
           <el-button
-            v-hasPermi="['trade:delivery:pick-up-store:update']"
+            v-hasPermi="['trade:delivery:pick-up-store:saveOrUpdate']"
             link
             type="primary"
             @click="openFormBind(scope.row.id)"

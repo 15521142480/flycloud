@@ -33,7 +33,7 @@
             <Icon class="mr-5px" icon="ep:refresh" />
             {{ t('extra.k4e2cb309') }}
           </el-button>
-          <el-button v-hasPermi="['crm:business:create']" type="primary" @click="openForm()">
+          <el-button v-hasPermi="['crm:business:saveOrUpdate']" type="primary" @click="openForm()">
             <Icon class="mr-5px" icon="ep:plus" />
             {{ t('extra.k3e388810') }}
           </el-button>

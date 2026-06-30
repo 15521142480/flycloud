@@ -58,7 +58,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['ai:api-key:create']"
+          v-hasPermi="['ai:api-key:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k45df1290') }}
         </el-button>
@@ -106,7 +106,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['ai:api-key:update']"
+            v-hasPermi="['ai:api-key:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

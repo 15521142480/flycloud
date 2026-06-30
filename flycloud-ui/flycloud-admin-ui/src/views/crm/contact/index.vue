@@ -80,7 +80,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           {{ t('extra.k389f1be1') }}
         </el-button>
-        <el-button v-hasPermi="['crm:contact:create']" type="primary" @click="openForm('create')">
+        <el-button v-hasPermi="['crm:contact:saveOrUpdate']" type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
           {{ t('extra.k5fd6a763') }}
         </el-button>
@@ -244,7 +244,7 @@
       <el-table-column align="center" fixed="right" :label="t('common.operation')" width="200">
         <template #default="scope">
           <el-button
-            v-hasPermi="['crm:contact:update']"
+            v-hasPermi="['crm:contact:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

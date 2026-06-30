@@ -12,7 +12,7 @@
         <template #header>
           <div class="flex items-center justify-between">
             <CardTitle :title="t('auto.views.crm.contract.config.index.k73e70892')" />
-            <el-button type="primary" @click="onSubmit" v-hasPermi="['crm:contract-config:update']">
+            <el-button type="primary" @click="onSubmit" v-hasPermi="['crm:contract-config:saveOrUpdate']">
               {{ t('extra.kc56b2e2d') }}
             </el-button>
           </div>

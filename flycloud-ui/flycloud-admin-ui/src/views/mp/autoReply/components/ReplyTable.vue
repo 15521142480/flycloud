@@ -80,7 +80,7 @@
           type="primary"
           link
           @click="emit('on-update', scope.row.id)"
-          v-hasPermi="['mp:auto-reply:update']"
+          v-hasPermi="['mp:auto-reply:saveOrUpdate']"
         >
           {{ t('extra.k4c512392') }}
         </el-button>

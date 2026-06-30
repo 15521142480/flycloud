@@ -80,7 +80,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:tenant:create']"
+          v-hasPermi="['system:tenant:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
           {{ t('extra.k7d731296') }}
@@ -182,7 +182,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:tenant:update']"
+            v-hasPermi="['system:tenant:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

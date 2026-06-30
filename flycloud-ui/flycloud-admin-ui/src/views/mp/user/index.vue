@@ -103,7 +103,7 @@
             type="primary"
             link
             @click="openForm(scope.row.id)"
-            v-hasPermi="['mp:user:update']"
+            v-hasPermi="['mp:user:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>

@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/tag")
+@RequestMapping("/admin/member/tag")
 public class MemberTagController {
 
     private final IMemberTagService tagService;

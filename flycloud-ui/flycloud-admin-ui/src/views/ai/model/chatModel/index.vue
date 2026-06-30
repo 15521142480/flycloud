@@ -46,7 +46,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['ai:chat-model:create']"
+          v-hasPermi="['ai:chat-model:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf201d37c') }}
         </el-button>
@@ -114,7 +114,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['ai:chat-model:update']"
+            v-hasPermi="['ai:chat-model:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

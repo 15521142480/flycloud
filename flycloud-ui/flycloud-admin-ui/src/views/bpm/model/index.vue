@@ -30,7 +30,7 @@
           <el-button
             type="primary"
             @click="openForm('create')"
-            v-hasPermi="['bpm:manage:model:create']"
+            v-hasPermi="['bpm:manage:model:saveOrUpdate']"
           >
             <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kac8ad8d0') }}
           </el-button>

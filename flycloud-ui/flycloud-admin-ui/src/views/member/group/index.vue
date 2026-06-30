@@ -43,7 +43,7 @@
       <el-form-item>
         <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
         <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
-        <el-button type="primary" @click="openForm('create')" v-hasPermi="['member:group:create']">
+        <el-button type="primary" @click="openForm('create')" v-hasPermi="['member:group:saveOrUpdate']">
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
@@ -74,7 +74,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['member:group:update']"
+            v-hasPermi="['member:group:saveOrUpdate']"
           >
             编辑
           </el-button>

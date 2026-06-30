@@ -45,7 +45,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['im:manager:sensitive-word:create']"
+          v-hasPermi="['im:manager:sensitive-word:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增
         </el-button>
@@ -93,7 +93,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['im:manager:sensitive-word:update']"
+            v-hasPermi="['im:manager:sensitive-word:saveOrUpdate']"
           >
             编辑
           </el-button>

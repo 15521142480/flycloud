@@ -51,7 +51,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['trade:brokerage-user:create']"
+          v-hasPermi="['trade:brokerage-user:saveOrUpdate']"
           plain
           type="primary"
           @click="openCreateUserForm"

@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/group")
+@RequestMapping("/admin/member/group")
 public class MemberGroupController {
 
     private final IMemberGroupService groupService;

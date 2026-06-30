@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/level")
+@RequestMapping("/admin/member/level")
 public class MemberLevelController {
 
     private final IMemberLevelService levelService;

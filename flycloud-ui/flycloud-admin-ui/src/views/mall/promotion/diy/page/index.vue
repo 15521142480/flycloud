@@ -37,7 +37,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['promotion:diy-page:create']"
+          v-hasPermi="['promotion:diy-page:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -77,7 +77,7 @@
             link
             type="primary"
             @click="handleDecorate(scope.row.id)"
-            v-hasPermi="['promotion:diy-page:update']"
+            v-hasPermi="['promotion:diy-page:saveOrUpdate']"
           >
             装修
           </el-button>
@@ -85,7 +85,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['promotion:diy-page:update']"
+            v-hasPermi="['promotion:diy-page:saveOrUpdate']"
           >
             编辑
           </el-button>

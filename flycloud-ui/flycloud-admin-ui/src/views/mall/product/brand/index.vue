@@ -47,7 +47,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['product:brand:create']"
+          v-hasPermi="['mall:product:brand:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -83,7 +83,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['product:brand:update']"
+            v-hasPermi="['mall:product:brand:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -91,7 +91,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['product:brand:delete']"
+            v-hasPermi="['mall:product:brand:delete']"
           >
             删除
           </el-button>

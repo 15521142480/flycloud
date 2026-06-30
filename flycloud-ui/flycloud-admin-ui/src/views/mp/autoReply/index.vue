@@ -23,7 +23,7 @@
             type="primary"
             plain
             @click="onCreate"
-            v-hasPermi="['mp:auto-reply:create']"
+            v-hasPermi="['mp:auto-reply:saveOrUpdate']"
             v-if="msgType !== MsgType.Follow || list.length <= 0"
           >
             <Icon icon="ep:plus" />{{ t('extra.k002217aa') }}

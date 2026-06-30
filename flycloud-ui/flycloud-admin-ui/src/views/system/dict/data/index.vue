@@ -52,7 +52,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:dict:create']"
+          v-hasPermi="['system:dict:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke646be4d') }}
         </el-button>
@@ -122,7 +122,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:dict:update']"
+            v-hasPermi="['system:dict:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>

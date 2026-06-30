@@ -59,7 +59,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['infra:file-config:create']"
+          v-hasPermi="['infra:file-config:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k1c7d3e6e') }}
         </el-button>
@@ -108,7 +108,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['infra:file-config:update']"
+            v-hasPermi="['infra:file-config:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>
@@ -117,7 +117,7 @@
             type="primary"
             :disabled="scope.row.master"
             @click="handleMaster(scope.row.id)"
-            v-hasPermi="['infra:file-config:update']"
+            v-hasPermi="['infra:file-config:saveOrUpdate']"
           >
             {{ t('extra.k5fa0fcd9') }}
           </el-button>

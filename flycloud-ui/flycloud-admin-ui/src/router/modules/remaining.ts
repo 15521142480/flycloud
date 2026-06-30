@@ -1,4 +1,6 @@
 import { Layout } from '@/utils/routerHelper'
+
+const { t } = useI18n()
 /**
  * redirect: noredirect        当设置 noredirect 的时候该路由在面包屑导航中不可被点击
  * name:'router-name'          设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
@@ -34,12 +36,12 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/redirect',
     component: Layout,
-    name: 'Redirect',
+    name: 'RedirectRoot',
     children: [
       {
         path: '/redirect/:path(.*)',
         name: 'Redirect',
-        component: () => import('@/views/redirect/Redirect.vue'),
+        component: () => import('@/views/Redirect/Redirect.vue'),
         meta: {}
       }
     ],
@@ -57,10 +59,10 @@ const remainingRouter: AppRouteRecordRaw[] = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/home/Index.vue'),
+        component: () => import('@/views/Home/Index.vue'),
         name: 'Index',
         meta: {
-          title: 'router.home',
+          title: t('router.home'),
           icon: 'ep:home-filled',
           noCache: false,
           affix: true
@@ -78,14 +80,14 @@ const remainingRouter: AppRouteRecordRaw[] = [
     children: [
       {
         path: 'profile',
-        component: () => import('@/views/profile/Index.vue'),
+        component: () => import('@/views/Profile/Index.vue'),
         name: 'Profile',
         meta: {
           canTo: true,
           hidden: true,
           noTagsView: false,
           icon: 'ep:user',
-          title: 'common.profile'
+          title: t('common.profile')
         }
       },
       {
@@ -97,7 +99,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           noTagsView: false,
           icon: 'ep:message',
-          title: 'auto.router.modules.remaining.k77e7ae0c'
+          title: '我的站内信'
         }
       }
     ]
@@ -115,7 +117,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/system/dict/data/index.vue'),
         name: 'SystemDictData',
         meta: {
-          title: 'auto.router.modules.remaining.k01fabb56',
+          title: '字典数据',
           noCache: true,
           hidden: true,
           canTo: true,
@@ -125,7 +127,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
       }
     ]
   },
-
   {
     path: '/codegen',
     component: Layout,
@@ -143,7 +144,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: 'auto.router.modules.remaining.k2825f79c',
+          title: '修改生成配置',
           activeMenu: 'infra/codegen/index'
         }
       }
@@ -166,7 +167,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: 'auto.router.modules.remaining.ka3756839',
+          title: '调度日志',
           activeMenu: 'infra/job/index'
         }
       }
@@ -174,37 +175,37 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/login',
-    component: () => import('@/views/login/Login.vue'),
+    component: () => import('@/views/Login/Login.vue'),
     name: 'Login',
     meta: {
       hidden: true,
-      title: 'router.login',
+      title: t('router.login'),
       noTagsView: true
     }
   },
   {
     path: '/sso',
-    component: () => import('@/views/login/Login.vue'),
+    component: () => import('@/views/Login/Login.vue'),
     name: 'SSOLogin',
     meta: {
       hidden: true,
-      title: 'router.login',
+      title: t('router.login'),
       noTagsView: true
     }
   },
   {
     path: '/social-login',
-    component: () => import('@/views/login/SocialLogin.vue'),
+    component: () => import('@/views/Login/SocialLogin.vue'),
     name: 'SocialLogin',
     meta: {
       hidden: true,
-      title: 'router.socialLogin',
+      title: t('router.socialLogin'),
       noTagsView: true
     }
   },
   {
     path: '/403',
-    component: () => import('@/views/error/403.vue'),
+    component: () => import('@/views/Error/403.vue'),
     name: 'NoAccess',
     meta: {
       hidden: true,
@@ -214,7 +215,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/404',
-    component: () => import('@/views/error/404.vue'),
+    component: () => import('@/views/Error/404.vue'),
     name: 'NoFound',
     meta: {
       hidden: true,
@@ -224,12 +225,22 @@ const remainingRouter: AppRouteRecordRaw[] = [
   },
   {
     path: '/500',
-    component: () => import('@/views/error/500.vue'),
+    component: () => import('@/views/Error/500.vue'),
     name: 'Error',
     meta: {
       hidden: true,
       title: '500',
       noTagsView: true
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('@/views/Error/404.vue'),
+    name: '',
+    meta: {
+      title: '404',
+      hidden: true,
+      breadcrumb: false
     }
   },
   {
@@ -248,32 +259,8 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: 'auto.router.modules.remaining.k23577ff1',
+          title: '设计流程表单',
           activeMenu: '/bpm/manager/form'
-        }
-      },
-      {
-        path: 'manager/model/edit',
-        component: () => import('@/views/bpm/model/editor/index.vue'),
-        name: 'BpmModelEditor',
-        meta: {
-          noCache: true,
-          hidden: true,
-          canTo: true,
-          title: 'auto.router.modules.remaining.kae3d7440',
-          activeMenu: '/bpm/manager/model'
-        }
-      },
-      {
-        path: 'manager/simple/model',
-        component: () => import('@/views/bpm/simple/SimpleModelDesign.vue'),
-        name: 'SimpleModelDesign',
-        meta: {
-          noCache: true,
-          hidden: true,
-          canTo: true,
-          title: 'auto.router.modules.remaining.k782f5842',
-          activeMenu: '/bpm/manager/model'
         }
       },
       {
@@ -284,7 +271,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: 'auto.router.modules.remaining.kc6983fb9',
+          title: '流程定义',
           activeMenu: '/bpm/manager/model'
         }
       },
@@ -296,7 +283,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: 'auto.router.modules.remaining.kd157b8ac',
+          title: '流程详情',
           activeMenu: '/bpm/task/my'
         },
         props: (route) => ({
@@ -306,6 +293,18 @@ const remainingRouter: AppRouteRecordRaw[] = [
         })
       },
       {
+        path: 'process-instance/report',
+        component: () => import('@/views/bpm/processInstance/manager/index.vue'),
+        name: 'BpmProcessInstanceReport',
+        meta: {
+          noCache: true,
+          hidden: true,
+          canTo: true,
+          title: '数据报表',
+          activeMenu: '/bpm/manager/model'
+        }
+      },
+      {
         path: 'oa/leave/create',
         component: () => import('@/views/bpm/oa/leave/create.vue'),
         name: 'OALeaveCreate',
@@ -313,7 +312,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: 'auto.router.modules.remaining.k11b2c19b',
+          title: '发起 OA 请假',
           activeMenu: '/bpm/oa/leave'
         }
       },
@@ -325,8 +324,32 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: 'auto.router.modules.remaining.k0a4c23b1',
+          title: '查看 OA 请假',
           activeMenu: '/bpm/oa/leave'
+        }
+      },
+      {
+        path: 'manager/model/create',
+        component: () => import('@/views/bpm/form/index.vue'),
+        name: 'BpmModelCreate',
+        meta: {
+          noCache: true,
+          hidden: true,
+          canTo: true,
+          title: '创建流程',
+          activeMenu: '/bpm/manager/model'
+        }
+      },
+      {
+        path: 'manager/model/:type/:id',
+        component: () => import('@/views/bpm/form/index.vue'),
+        name: 'BpmModelUpdate',
+        meta: {
+          noCache: true,
+          hidden: true,
+          canTo: true,
+          title: '修改流程',
+          activeMenu: '/bpm/manager/model'
         }
       }
     ]
@@ -348,7 +371,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: 'auto.router.modules.remaining.kc2728137',
+          title: '商品添加',
           activeMenu: '/mall/product/spu'
         }
       },
@@ -361,7 +384,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:edit',
-          title: 'auto.router.modules.remaining.k00809ec8',
+          title: '商品编辑',
           activeMenu: '/mall/product/spu'
         }
       },
@@ -374,7 +397,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:view',
-          title: 'auto.router.modules.remaining.kad98c017',
+          title: '商品详情',
           activeMenu: '/mall/product/spu'
         }
       },
@@ -387,7 +410,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           hidden: true,
           canTo: true,
           icon: 'ep:view',
-          title: 'auto.router.modules.remaining.kb2fa49b8',
+          title: '商品属性值',
           activeMenu: '/product/property'
         }
       }
@@ -405,21 +428,13 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'order/detail/:id(\\d+)',
         component: () => import('@/views/mall/trade/order/detail/index.vue'),
         name: 'TradeOrderDetail',
-        meta: {
-          title: 'auto.router.modules.remaining.kdea71f6f',
-          icon: 'ep:view',
-          activeMenu: '/mall/trade/order'
-        }
+        meta: { title: '订单详情', icon: 'ep:view', activeMenu: '/mall/trade/order' }
       },
       {
         path: 'after-sale/detail/:id(\\d+)',
         component: () => import('@/views/mall/trade/afterSale/detail/index.vue'),
         name: 'TradeAfterSaleDetail',
-        meta: {
-          title: 'auto.router.modules.remaining.k372e055c',
-          icon: 'ep:view',
-          activeMenu: '/mall/trade/after-sale'
-        }
+        meta: { title: '退款详情', icon: 'ep:view', activeMenu: '/mall/trade/after-sale' }
       }
     ]
   },
@@ -433,7 +448,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'user/detail/:id',
         name: 'MemberUserDetail',
         meta: {
-          title: 'auto.router.modules.remaining.kebc068a6',
+          title: '会员详情',
           noCache: true,
           hidden: true
         },
@@ -451,7 +466,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'cashier',
         name: 'PayCashier',
         meta: {
-          title: 'auto.router.modules.remaining.k22c38833',
+          title: '收银台',
           noCache: true,
           hidden: true
         },
@@ -469,10 +484,10 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'template/decorate/:id',
         name: 'DiyTemplateDecorate',
         meta: {
-          title: 'auto.router.modules.remaining.k393ed7d4',
-          noCache: true,
+          title: '模板装修',
+          noCache: false,
           hidden: true,
-          activeMenu: '/mall/promotion/diy/template'
+          activeMenu: '/mall/promotion/diy-template/diy-template'
         },
         component: () => import('@/views/mall/promotion/diy/template/decorate.vue')
       },
@@ -480,10 +495,10 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'page/decorate/:id',
         name: 'DiyPageDecorate',
         meta: {
-          title: 'auto.router.modules.remaining.k91f15a38',
-          noCache: true,
+          title: '页面装修',
+          noCache: false,
           hidden: true,
-          activeMenu: '/mall/promotion/diy/page'
+          activeMenu: '/mall/promotion/diy-template/diy-page'
         },
         component: () => import('@/views/mall/promotion/diy/page/decorate.vue')
       }
@@ -499,7 +514,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'clue/detail/:id',
         name: 'CrmClueDetail',
         meta: {
-          title: 'auto.router.modules.remaining.kd8e33fc6',
+          title: '线索详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/clue'
@@ -510,7 +525,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'customer/detail/:id',
         name: 'CrmCustomerDetail',
         meta: {
-          title: 'auto.router.modules.remaining.kccd01125',
+          title: '客户详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/customer'
@@ -521,7 +536,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'business/detail/:id',
         name: 'CrmBusinessDetail',
         meta: {
-          title: 'auto.router.modules.remaining.k620f4ee9',
+          title: '商机详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/business'
@@ -532,7 +547,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'contract/detail/:id',
         name: 'CrmContractDetail',
         meta: {
-          title: 'auto.router.modules.remaining.kc9f5bb18',
+          title: '合同详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/contract'
@@ -543,7 +558,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'receivable-plan/detail/:id',
         name: 'CrmReceivablePlanDetail',
         meta: {
-          title: 'auto.router.modules.remaining.kdfebfb9e',
+          title: '回款计划详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/receivable-plan'
@@ -554,7 +569,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'receivable/detail/:id',
         name: 'CrmReceivableDetail',
         meta: {
-          title: 'auto.router.modules.remaining.k7da02c89',
+          title: '回款详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/receivable'
@@ -565,7 +580,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'contact/detail/:id',
         name: 'CrmContactDetail',
         meta: {
-          title: 'auto.router.modules.remaining.k47bb5a44',
+          title: '联系人详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/contact'
@@ -576,7 +591,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'product/detail/:id',
         name: 'CrmProductDetail',
         meta: {
-          title: 'auto.router.modules.remaining.kd54d2698',
+          title: '产品详情',
           noCache: true,
           hidden: true,
           activeMenu: '/crm/product'
@@ -586,64 +601,31 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
-    path: '/ai',
-    component: Layout,
-    name: 'Ai',
-    meta: {
-      hidden: true
-    },
+    path: '/im',
+    name: 'Im',
+    redirect: '/im/home/conversation',
+    meta: { hidden: true, title: 'IM 即时通讯' },
     children: [
       {
-        path: 'image/square',
-        component: () => import('@/views/ai/image/square/index.vue'),
-        name: 'AiImageSquare',
-        meta: {
-          title: 'auto.router.modules.remaining.k85439d81',
-          icon: 'ep:home-filled',
-          noCache: false
-        }
-      }
-    ]
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    component: () => import('@/views/error/404.vue'),
-    name: '',
-    meta: {
-      title: '404',
-      hidden: true,
-      breadcrumb: false
-    }
-  },
-  {
-    path: '/iot',
-    component: Layout,
-    name: 'IOT',
-    meta: {
-      hidden: true
-    },
-    children: [
-      {
-        path: 'product/detail/:id',
-        name: 'IoTProductDetail',
-        meta: {
-          title: 'auto.router.modules.remaining.kd54d2698',
-          noCache: true,
-          hidden: true,
-          activeMenu: '/iot/product'
-        },
-        component: () => import('@/views/iot/product/detail/index.vue')
-      },
-      {
-        path: 'device/detail/:id',
-        name: 'IoTDeviceDetail',
-        meta: {
-          title: 'auto.router.modules.remaining.k050563c4',
-          noCache: true,
-          hidden: true,
-          activeMenu: '/iot/device'
-        },
-        component: () => import('@/views/iot/device/detail/index.vue')
+        path: 'home',
+        component: () => import('@/views/im/home/index.vue'),
+        name: 'ImHome',
+        redirect: '/im/home/conversation',
+        meta: { hidden: true, title: '聊天' },
+        children: [
+          {
+            path: 'conversation',
+            component: () => import('@/views/im/home/pages/conversation/index.vue'),
+            name: 'ImHomeConversation',
+            meta: { hidden: true, title: '消息' }
+          },
+          {
+            path: 'contact',
+            component: () => import('@/views/im/home/pages/contact/index.vue'),
+            name: 'ImHomeContact',
+            meta: { hidden: true, title: '通讯录' }
+          }
+        ]
       }
     ]
   }

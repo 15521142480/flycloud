@@ -42,7 +42,7 @@
           {{ t('extra.k8e9e63df') }}
         </el-button>
         <el-button
-          v-hasPermi="['system:menu:create']"
+          v-hasPermi="['system:menu:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -108,7 +108,7 @@
           <el-switch
             class="ml-4px"
             v-model="scope.row.status"
-            v-hasPermi="['system:menu:update']"
+            v-hasPermi="['system:menu:saveOrUpdate']"
             :active-value="CommonStatusEnum.ENABLE"
             :inactive-value="CommonStatusEnum.DISABLE"
             :loading="menuStatusUpdating[scope.row.id]"
@@ -119,7 +119,7 @@
       <el-table-column align="center" :label="t('common.operation')">
         <template #default="scope">
           <el-button
-            v-hasPermi="['system:menu:update']"
+            v-hasPermi="['system:menu:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
@@ -127,7 +127,7 @@
             {{ t('extra.k4c512392') }}
           </el-button>
           <el-button
-            v-hasPermi="['system:menu:create']"
+            v-hasPermi="['system:menu:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('create', undefined, scope.row.id)"

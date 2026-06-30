@@ -29,7 +29,7 @@
         <el-button @click="resetQuery"
           ><Icon icon="ep:refresh" class="mr-5px" />{{ t('common.reset') }}</el-button
         >
-        <el-button type="primary" @click="openForm('create')" v-hasPermi="['mp:account:create']">
+        <el-button type="primary" @click="openForm('create')" v-hasPermi="['mp:account:saveOrUpdate']">
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf6e9f8c0') }}
         </el-button>
       </el-form-item>
@@ -86,7 +86,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['mp:account:update']"
+            v-hasPermi="['mp:account:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

@@ -12,7 +12,7 @@
         <!-- 右上：按钮 -->
         <el-button
           @click="openForm('update', product.id)"
-          v-hasPermi="['iot:product:update']"
+          v-hasPermi="['iot:product:saveOrUpdate']"
           v-if="product.status === 0"
         >
           {{ t('extra.k929d7448') }}
@@ -20,7 +20,7 @@
         <el-button
           type="primary"
           @click="confirmPublish(product.id)"
-          v-hasPermi="['iot:product:update']"
+          v-hasPermi="['iot:product:saveOrUpdate']"
           v-if="product.status === 0"
         >
           {{ t('extra.kb464b4af') }}
@@ -28,7 +28,7 @@
         <el-button
           type="danger"
           @click="confirmUnpublish(product.id)"
-          v-hasPermi="['iot:product:update']"
+          v-hasPermi="['iot:product:saveOrUpdate']"
           v-if="product.status === 1"
         >
           {{ t('extra.k23fca5ce') }}

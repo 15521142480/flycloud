@@ -2,7 +2,7 @@
   <CustomerDetailsHeader :customer="customer" :loading="loading">
     <el-button
       v-if="permissionListRef?.validateWrite"
-      v-hasPermi="['crm:customer:update']"
+      v-hasPermi="['crm:customer:saveOrUpdate']"
       type="primary"
       @click="openForm"
     >

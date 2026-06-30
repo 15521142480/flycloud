@@ -26,7 +26,7 @@
       <el-descriptions-item label="订单状态: ">
         <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="formData.status!" />
       </el-descriptions-item>
-      <el-descriptions-item v-hasPermi="['trade:order:update']" label-class-name="no-colon">
+      <el-descriptions-item v-hasPermi="['trade:order:saveOrUpdate']" label-class-name="no-colon">
         <el-button
           v-if="formData.status! === TradeOrderStatusEnum.UNPAID.status"
           type="primary"

@@ -2,7 +2,7 @@
   <ClueDetailsHeader :clue="clue" :loading="loading">
     <el-button
       v-if="permissionListRef?.validateWrite"
-      v-hasPermi="['crm:clue:update']"
+      v-hasPermi="['crm:clue:saveOrUpdate']"
       type="primary"
       @click="openForm"
     >

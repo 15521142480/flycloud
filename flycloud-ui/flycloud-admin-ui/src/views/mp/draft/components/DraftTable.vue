@@ -17,7 +17,7 @@
             type="primary"
             circle
             @click="emit('update', item)"
-            v-hasPermi="['mp:draft:update']"
+            v-hasPermi="['mp:draft:saveOrUpdate']"
           >
             <Icon icon="ep:edit" />
           </el-button>

@@ -70,7 +70,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['ai:write:create']"
+          v-hasPermi="['ai:write:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k632d8e98') }}
         </el-button>
@@ -187,7 +187,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['ai:write:update']"
+            v-hasPermi="['ai:write:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

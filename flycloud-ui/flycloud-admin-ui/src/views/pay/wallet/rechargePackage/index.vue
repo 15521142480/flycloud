@@ -45,7 +45,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['pay:wallet-recharge-package:create']"
+          v-hasPermi="['pay:wallet-recharge-package:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -82,7 +82,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['pay:wallet-recharge-package:update']"
+            v-hasPermi="['pay:wallet-recharge-package:saveOrUpdate']"
           >
             编辑
           </el-button>

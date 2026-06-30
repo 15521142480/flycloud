@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member/config")
+@RequestMapping("/admin/member/config")
 public class MemberConfigController {
 
     private final IMemberConfigService configService;
@@ -28,7 +28,7 @@ public class MemberConfigController {
     /**
      * 获取会员配置。
      */
-    @PreAuthorize("@pms.hasPermission('member:config:query')")
+    @PreAuthorize("@pms.hasPermission('member:config:list')")
     @GetMapping("/get")
     public R<MemberConfigVo> getConfig() {
         return R.ok(configService.getConfig());

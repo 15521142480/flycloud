@@ -8,7 +8,7 @@
     class="ml-2"
     link
     @click="openForm('create')"
-    v-hasPermi="['member:tag:create']"
+    v-hasPermi="['member:tag:saveOrUpdate']"
   >
     新增标签
   </el-button>

@@ -58,7 +58,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['system:tenant-package:create']"
+          v-hasPermi="['system:tenant-package:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
           {{ t('extra.k5dd362b0') }}
@@ -104,7 +104,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:tenant-package:update']"
+            v-hasPermi="['system:tenant-package:saveOrUpdate']"
           >
             {{ t('extra.k4c512392') }}
           </el-button>

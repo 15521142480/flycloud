@@ -7,12 +7,16 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.StringUtils;
+import com.fly.pay.enums.PayNotifyTypeEnum;
 import com.fly.pay.enums.PayWalletBizTypeEnum;
+import com.fly.pay.mapper.PayAppMapper;
 import com.fly.pay.mapper.PayOrderExtensionMapper;
 import com.fly.pay.mapper.PayOrderMapper;
+import com.fly.pay.service.IPayNotifyService;
 import com.fly.pay.service.IPayOrderService;
 import com.fly.pay.service.IPayWalletRechargeService;
 import com.fly.pay.service.IPayWalletService;
+import com.fly.system.api.pay.domain.PayApp;
 import com.fly.system.api.pay.domain.PayWallet;
 import com.fly.system.api.pay.domain.PayOrder;
 import com.fly.system.api.pay.domain.PayOrderExtension;
@@ -64,8 +68,10 @@ public class PayOrderServiceImpl implements IPayOrderService {
 
     private final PayOrderMapper payOrderMapper;
     private final PayOrderExtensionMapper payOrderExtensionMapper;
+    private final PayAppMapper payAppMapper;
     private final ObjectProvider<IPayWalletService> payWalletServiceProvider;
     private final ObjectProvider<IPayWalletRechargeService> walletRechargeServiceProvider;
+    private final ObjectProvider<IPayNotifyService> payNotifyServiceProvider;
 
     /**
      * 创建支付订单。
@@ -80,13 +86,14 @@ public class PayOrderServiceImpl implements IPayOrderService {
 
         LocalDateTime now = LocalDateTime.now();
         PayOrder order = new PayOrder();
+        PayApp app = payAppMapper.selectById(appId);
         order.setAppId(appId);
         order.setUserId(createReqDto.getUserId());
         order.setUserType(createReqDto.getUserType());
         order.setMerchantOrderId(createReqDto.getMerchantOrderId());
         order.setSubject(createReqDto.getSubject());
         order.setBody(createReqDto.getBody());
-        order.setNotifyUrl("");
+        order.setNotifyUrl(app == null ? null : app.getOrderNotifyUrl());
         order.setPrice(createReqDto.getPrice());
         order.setChannelFeeRate(0D);
         order.setChannelFeePrice(0);
@@ -190,6 +197,10 @@ public class PayOrderServiceImpl implements IPayOrderService {
             IPayWalletRechargeService rechargeService = walletRechargeServiceProvider.getIfAvailable();
             if (rechargeService != null) {
                 rechargeService.updateWalletRechargePaid(order.getId(), extension.getChannelCode());
+            }
+            IPayNotifyService notifyService = payNotifyServiceProvider.getIfAvailable();
+            if (notifyService != null) {
+                notifyService.createPayNotifyTask(PayNotifyTypeEnum.ORDER.getType(), order.getId());
             }
         }
 

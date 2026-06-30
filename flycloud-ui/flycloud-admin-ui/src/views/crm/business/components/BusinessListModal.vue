@@ -31,7 +31,7 @@
           <el-button @click="resetQuery"
             ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
           >
-          <el-button type="primary" @click="openForm()" v-hasPermi="['crm:business:create']">
+          <el-button type="primary" @click="openForm()" v-hasPermi="['crm:business:saveOrUpdate']">
             <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ke34f6c01') }}
           </el-button>
         </el-form-item>

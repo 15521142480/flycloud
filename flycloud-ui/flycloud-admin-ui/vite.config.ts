@@ -40,6 +40,7 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
             port: env.VITE_PORT, // 端口号
             host: "0.0.0.0",
             open: env.VITE_OPEN === 'true',
+            strictPort: true,
             proxy: {
 
               // 授权服务
@@ -68,6 +69,15 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
                 ws: false,
                 changeOrigin: true,
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-bpm`), ''),
+              },
+
+              // 商城服务
+              ['/flycloud-mall']: {
+                target: 'http://localhost:8080/flycloud-mall',
+                // target: 'http://101.34.33.33:8080/flycloud-mall',
+                ws: false,
+                changeOrigin: true,
+                rewrite: (path) => path.replace(new RegExp(`^/flycloud-mall`), ''),
               },
 
               // 自动生成服务

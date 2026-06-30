@@ -70,7 +70,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['promotion:coupon-template:create']"
+          v-hasPermi="['promotion:coupon-template:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -153,7 +153,7 @@
       >
         <template #default="scope">
           <el-button
-            v-hasPermi="['promotion:coupon-template:update']"
+            v-hasPermi="['promotion:coupon-template:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

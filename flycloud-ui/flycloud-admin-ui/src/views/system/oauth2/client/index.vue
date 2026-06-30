@@ -48,7 +48,7 @@
           plain
           type="primary"
           @click="openForm('create')"
-          v-hasPermi="['system:oauth2-client:create']"
+          v-hasPermi="['system:oauth2-client:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k7c50bf93') }}
         </el-button>
@@ -138,7 +138,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['system:oauth2-client:update']"
+            v-hasPermi="['system:oauth2-client:saveOrUpdate']"
           >
             {{ t('common.edit') }}
           </el-button>

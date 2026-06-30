@@ -41,7 +41,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['promotion:seckill-config:create']"
+          v-hasPermi="['promotion:seckill-config:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -91,7 +91,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['promotion:seckill-config:update']"
+            v-hasPermi="['promotion:seckill-config:saveOrUpdate']"
           >
             编辑
           </el-button>

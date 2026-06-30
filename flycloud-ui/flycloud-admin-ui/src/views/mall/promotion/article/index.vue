@@ -65,7 +65,7 @@
           重置
         </el-button>
         <el-button
-          v-hasPermi="['promotion:article:create']"
+          v-hasPermi="['promotion:article:saveOrUpdate']"
           plain
           type="primary"
           @click="openForm('create')"
@@ -111,7 +111,7 @@
       <el-table-column align="center" fixed="right" label="操作" width="120">
         <template #default="scope">
           <el-button
-            v-hasPermi="['promotion:article:update']"
+            v-hasPermi="['promotion:article:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"

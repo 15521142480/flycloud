@@ -71,7 +71,7 @@
             <el-button
               plain
               type="success"
-              v-hasPermi="['bpm:audit:create:create']"
+              v-hasPermi="['bpm:audit:create:saveOrUpdate']"
               @click="submitForm"
             >
               <Icon icon="ep:select" />{{ t('extra.ke857c224') }}

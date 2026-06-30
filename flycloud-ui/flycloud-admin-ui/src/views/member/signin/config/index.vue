@@ -7,7 +7,7 @@
       type="primary"
       plain
       @click="openForm('create')"
-      v-hasPermi="['point:sign-in-config:create']"
+      v-hasPermi="['point:sign-in-config:saveOrUpdate']"
     >
       <Icon icon="ep:plus" class="mr-5px" /> 新增
     </el-button>
@@ -35,7 +35,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['point:sign-in-config:update']"
+            v-hasPermi="['point:sign-in-config:saveOrUpdate']"
           >
             编辑
           </el-button>

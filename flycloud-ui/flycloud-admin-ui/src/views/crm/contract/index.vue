@@ -53,7 +53,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           {{ t('extra.kc5217b66') }}
         </el-button>
-        <el-button v-hasPermi="['crm:contract:create']" type="primary" @click="openForm('create')">
+        <el-button v-hasPermi="['crm:contract:saveOrUpdate']" type="primary" @click="openForm('create')">
           <Icon class="mr-5px" icon="ep:plus" />
           {{ t('extra.ka93aca74') }}
         </el-button>
@@ -254,7 +254,7 @@
         <template #default="scope">
           <el-button
             v-if="scope.row.auditStatus === 0"
-            v-hasPermi="['crm:contract:update']"
+            v-hasPermi="['crm:contract:saveOrUpdate']"
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
@@ -263,7 +263,7 @@
           </el-button>
           <el-button
             v-if="scope.row.auditStatus === 0"
-            v-hasPermi="['crm:contract:update']"
+            v-hasPermi="['crm:contract:saveOrUpdate']"
             link
             type="primary"
             @click="handleSubmit(scope.row)"
@@ -273,7 +273,7 @@
           <el-button
             v-else
             link
-            v-hasPermi="['crm:contract:update']"
+            v-hasPermi="['crm:contract:saveOrUpdate']"
             type="primary"
             @click="handleProcessDetail(scope.row)"
           >
