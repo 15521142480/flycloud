@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface LevelVO {
   id: number
   name: string
@@ -13,30 +15,30 @@ export interface LevelVO {
 
 // 查询会员等级列表
 export const getLevelList = async (params) => {
-  return await request.get({ url: `/admin/member/level/list`, params })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/member/level/list`, params })
 }
 
 // 查询会员等级详情
 export const getLevel = async (id: number) => {
-  return await request.get({ url: `/admin/member/level/get?id=` + id })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/member/level/get?id=` + id })
 }
 
 // 查询会员等级 - 精简信息列表
 export const getSimpleLevelList = async () => {
-  return await request.get({ url: `/admin/member/level/list-all-simple` })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/member/level/list-all-simple` })
 }
 
 // 新增会员等级
 export const createLevel = async (data: LevelVO) => {
-  return await request.post({ url: `/admin/member/level/create`, data })
+  return await request.post({ url: `/${SYS_BASE_URL}/admin/member/level/create`, data })
 }
 
 // 修改会员等级
 export const updateLevel = async (data: LevelVO) => {
-  return await request.put({ url: `/admin/member/level/update`, data })
+  return await request.put({ url: `/${SYS_BASE_URL}/admin/member/level/update`, data })
 }
 
 // 删除会员等级
 export const deleteLevel = async (id: number) => {
-  return await request.delete({ url: `/admin/member/level/delete?id=` + id })
+  return await request.delete({ url: `/${SYS_BASE_URL}/admin/member/level/delete?id=` + id })
 }

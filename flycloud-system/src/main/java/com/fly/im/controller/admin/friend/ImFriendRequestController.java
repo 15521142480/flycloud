@@ -5,8 +5,8 @@ import cn.hutool.core.util.ObjUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVO;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestRespVO;
+import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVo;
+import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestRespVo;
 import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
 import com.fly.im.service.friend.ImFriendRequestService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -54,8 +54,8 @@ public class ImFriendRequestController {
 
     @PostMapping("/apply")
     @Operation(summary = "发起好友申请")
-    public R<Long> applyFriend(@Valid @RequestBody ImFriendRequestApplyReqVO reqVO) {
-        ImFriendRequestDO request = friendRequestService.applyFriend(getCurUserId(), reqVO);
+    public R<Long> applyFriend(@Valid @RequestBody ImFriendRequestApplyReqVo reqVo) {
+        ImFriendRequestDO request = friendRequestService.applyFriend(getCurUserId(), reqVo);
         return ok(request != null ? request.getId() : null);
     }
 
@@ -80,7 +80,7 @@ public class ImFriendRequestController {
 
     @GetMapping("/list")
     @Operation(summary = "查询「我相关」的好友申请列表（游标分页：传 maxId 加载更多）")
-    public R<List<ImFriendRequestRespVO>> getMyFriendRequestList(
+    public R<List<ImFriendRequestRespVo>> getMyFriendRequestList(
             @Parameter(description = "当前列表最旧记录的 id；首页不传")
             @RequestParam(value = "maxId", required = false) Long maxId,
             @Parameter(description = "单次拉取条数", required = true)
@@ -92,20 +92,20 @@ public class ImFriendRequestController {
     @GetMapping("/get")
     @Operation(summary = "按 id 单查「我相关」的申请记录（带越权过滤；WebSocket 通知到达后用）")
     @Parameter(name = "id", description = "申请记录编号", required = true)
-    public R<ImFriendRequestRespVO> getMyFriendRequest(@RequestParam("id") Long id) {
+    public R<ImFriendRequestRespVo> getMyFriendRequest(@RequestParam("id") Long id) {
         ImFriendRequestDO request = friendRequestService.getFriendRequest(id);
         // 越权过滤：fromUser / toUser 必有一方是当前用户，否则当不存在返回 null
         Long currentUserId = getCurUserId();
         if (request == null || (ObjUtil.notEqual(request.getFromUserId(), currentUserId)
                 && ObjUtil.notEqual(request.getToUserId(), currentUserId))) {
-            return ok((ImFriendRequestRespVO) null);
+            return ok((ImFriendRequestRespVo) null);
         }
         return ok(CollUtil.getFirst(buildList(Collections.singletonList(request))));
     }
 
     // ========== 私有方法：VO 组装 ==========
 
-    private List<ImFriendRequestRespVO> buildList(List<ImFriendRequestDO> list) {
+    private List<ImFriendRequestRespVo> buildList(List<ImFriendRequestDO> list) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }
@@ -114,7 +114,7 @@ public class ImFriendRequestController {
                 request -> Stream.of(request.getFromUserId(), request.getToUserId()));
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(userIds);
         return convertList(list, request -> {
-            ImFriendRequestRespVO vo = BeanUtils.toBean(request, ImFriendRequestRespVO.class);
+            ImFriendRequestRespVo vo = BeanUtils.toBean(request, ImFriendRequestRespVo.class);
             MapUtils.findAndThen(userMap, request.getFromUserId(), user ->
                     vo.setFromNickname(user.getName()).setFromAvatar(user.getAvatar()));
             MapUtils.findAndThen(userMap, request.getToUserId(), user ->

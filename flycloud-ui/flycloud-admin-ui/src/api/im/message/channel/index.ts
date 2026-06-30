@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface ImChannelMessageRespVO {
   id: number
   clientMessageId?: string
@@ -17,7 +19,7 @@ export const pullChannelMessageList = (
   signal?: AbortSignal
 ) => {
   return request.get<ImChannelMessageRespVO[]>({
-    url: '/im/channel/message/pull',
+    url: `/${SYS_BASE_URL}/im/channel/message/pull`,
     params,
     signal
   })
@@ -26,7 +28,7 @@ export const pullChannelMessageList = (
 // 上报频道消息已读位置；切到频道会话或拉到新消息后调
 export const readChannelMessages = (channelId: number, messageId: number) => {
   return request.put({
-    url: '/im/channel/message/read',
+    url: `/${SYS_BASE_URL}/im/channel/message/read`,
     params: { channelId, messageId }
   })
 }

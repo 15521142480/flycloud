@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVO;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemSaveReqVO;
+import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVo;
+import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemSaveReqVo;
 import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
 import com.fly.im.dal.mysql.face.ImFacePackItemMapper;
 import jakarta.annotation.Resource;
@@ -60,8 +60,8 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFacePackItemDO> getFacePackItemPage(ImFacePackItemPageReqVO reqVO) {
-        return facePackItemMapper.selectPage(reqVO);
+    public PageResult<ImFacePackItemDO> getFacePackItemPage(ImFacePackItemPageReqVo reqVo) {
+        return facePackItemMapper.selectPage(reqVo);
     }
 
     @Override
@@ -70,25 +70,25 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
     }
 
     @Override
-    public Long createFacePackItem(ImFacePackItemSaveReqVO reqVO) {
+    public Long createFacePackItem(ImFacePackItemSaveReqVo reqVo) {
         // 1. 校验所属表情包存在
-        facePackService.validateFacePackExists(reqVO.getPackId());
+        facePackService.validateFacePackExists(reqVo.getPackId());
 
         // 2. 入库
-        ImFacePackItemDO item = BeanUtils.toBean(reqVO, ImFacePackItemDO.class);
+        ImFacePackItemDO item = BeanUtils.toBean(reqVo, ImFacePackItemDO.class);
         facePackItemMapper.insert(item);
         return item.getId();
     }
 
     @Override
-    public void updateFacePackItem(ImFacePackItemSaveReqVO reqVO) {
+    public void updateFacePackItem(ImFacePackItemSaveReqVo reqVo) {
         // 1.1 校验存在
-        validateFacePackItemExists(reqVO.getId());
+        validateFacePackItemExists(reqVo.getId());
         // 1.2 校验所属表情包存在
-        facePackService.validateFacePackExists(reqVO.getPackId());
+        facePackService.validateFacePackExists(reqVo.getPackId());
 
         // 2. 更新
-        ImFacePackItemDO updateObj = BeanUtils.toBean(reqVO, ImFacePackItemDO.class);
+        ImFacePackItemDO updateObj = BeanUtils.toBean(reqVo, ImFacePackItemDO.class);
         facePackItemMapper.updateById(updateObj);
     }
 

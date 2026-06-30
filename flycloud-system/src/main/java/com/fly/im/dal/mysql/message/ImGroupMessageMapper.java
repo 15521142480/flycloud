@@ -4,7 +4,7 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
 import com.fly.im.framework.mybatis.QueryWrapperX;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVO;
+import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
 import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
 import com.fly.im.enums.message.ImGroupMessageReceiptStatusEnum;
 import com.fly.im.enums.message.ImMessageStatusEnum;
@@ -115,14 +115,14 @@ public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
                 .ne(ImGroupMessageDO::getStatus, ImMessageStatusEnum.RECALL.getStatus()));
     }
 
-    default PageResult<ImGroupMessageDO> selectPage(ImGroupMessageManagerPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImGroupMessageDO>()
-                .eqIfPresent(ImGroupMessageDO::getGroupId, reqVO.getGroupId())
-                .eqIfPresent(ImGroupMessageDO::getSenderId, reqVO.getSenderId())
-                .eqIfPresent(ImGroupMessageDO::getType, reqVO.getType())
-                .likeIfPresent(ImGroupMessageDO::getContent, reqVO.getContent())
-                .eqIfPresent(ImGroupMessageDO::getStatus, reqVO.getStatus())
-                .betweenIfPresent(ImGroupMessageDO::getSendTime, reqVO.getSendTime())
+    default PageResult<ImGroupMessageDO> selectPage(ImGroupMessageManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImGroupMessageDO>()
+                .eqIfPresent(ImGroupMessageDO::getGroupId, reqVo.getGroupId())
+                .eqIfPresent(ImGroupMessageDO::getSenderId, reqVo.getSenderId())
+                .eqIfPresent(ImGroupMessageDO::getType, reqVo.getType())
+                .likeIfPresent(ImGroupMessageDO::getContent, reqVo.getContent())
+                .eqIfPresent(ImGroupMessageDO::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImGroupMessageDO::getSendTime, reqVo.getSendTime())
                 .orderByDesc(ImGroupMessageDO::getId));
     }
 

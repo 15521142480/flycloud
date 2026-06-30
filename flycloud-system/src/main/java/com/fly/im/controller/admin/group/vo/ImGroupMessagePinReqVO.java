@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - 群消息置顶 / 取消置顶 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupMessagePinReqVO {
+public class ImGroupMessagePinReqVo {
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "13279")
     @NotNull(message = "群编号不能为空")

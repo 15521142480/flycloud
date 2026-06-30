@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 表情包项新增 / 修改 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImFacePackItemSaveReqVO {
+public class ImFacePackItemSaveReqVo {
 
     @Schema(description = "编号（修改时必填）", example = "2048")
     private Long id;

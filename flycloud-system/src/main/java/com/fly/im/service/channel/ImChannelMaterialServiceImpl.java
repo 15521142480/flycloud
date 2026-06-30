@@ -3,8 +3,8 @@ package com.fly.im.service.channel;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialPageReqVO;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialSaveReqVO;
+import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialPageReqVo;
+import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialSaveReqVo;
 import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
 import com.fly.im.dal.mysql.channel.ImChannelMaterialMapper;
 import com.fly.im.dal.mysql.message.ImChannelMessageMapper;
@@ -69,8 +69,8 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
     }
 
     @Override
-    public PageResult<ImChannelMaterialDO> getMaterialPage(ImChannelMaterialPageReqVO reqVO) {
-        return channelMaterialMapper.selectPage(reqVO);
+    public PageResult<ImChannelMaterialDO> getMaterialPage(ImChannelMaterialPageReqVo reqVo) {
+        return channelMaterialMapper.selectPage(reqVo);
     }
 
     @Override
@@ -79,25 +79,25 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
     }
 
     @Override
-    public Long createMaterial(ImChannelMaterialSaveReqVO reqVO) {
+    public Long createMaterial(ImChannelMaterialSaveReqVo reqVo) {
         // 1. 校验所属频道存在
-        channelService.validateChannelExists(reqVO.getChannelId());
+        channelService.validateChannelExists(reqVo.getChannelId());
 
         // 2. 插入素材
-        ImChannelMaterialDO material = BeanUtils.toBean(reqVO, ImChannelMaterialDO.class);
+        ImChannelMaterialDO material = BeanUtils.toBean(reqVo, ImChannelMaterialDO.class);
         channelMaterialMapper.insert(material);
         return material.getId();
     }
 
     @Override
-    public void updateMaterial(ImChannelMaterialSaveReqVO reqVO) {
+    public void updateMaterial(ImChannelMaterialSaveReqVo reqVo) {
         // 1.1 校验存在
-        validateMaterialExists(reqVO.getId());
+        validateMaterialExists(reqVo.getId());
         // 1.2 校验所属频道存在
-        channelService.validateChannelExists(reqVO.getChannelId());
+        channelService.validateChannelExists(reqVo.getChannelId());
 
         // 2. 更新素材
-        ImChannelMaterialDO updateObj = BeanUtils.toBean(reqVO, ImChannelMaterialDO.class);
+        ImChannelMaterialDO updateObj = BeanUtils.toBean(reqVo, ImChannelMaterialDO.class);
         channelMaterialMapper.updateById(updateObj);
     }
 

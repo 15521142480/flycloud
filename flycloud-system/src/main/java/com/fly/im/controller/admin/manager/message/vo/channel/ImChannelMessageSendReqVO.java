@@ -10,7 +10,7 @@ import java.util.List;
 @Schema(description = "管理后台 - IM 频道消息推送 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImChannelMessageSendReqVO {
+public class ImChannelMessageSendReqVo {
 
     @Schema(description = "素材编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     @NotNull(message = "素材编号不能为空")

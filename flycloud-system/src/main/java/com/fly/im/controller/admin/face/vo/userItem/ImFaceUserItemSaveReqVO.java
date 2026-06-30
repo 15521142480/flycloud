@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "IM 个人表情新增 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImFaceUserItemSaveReqVO {
+public class ImFaceUserItemSaveReqVo {
 
     @Schema(description = "表情图 URL", requiredMode = Schema.RequiredMode.REQUIRED,
             example = "https://cdn.example.com/face/user/abc.gif")

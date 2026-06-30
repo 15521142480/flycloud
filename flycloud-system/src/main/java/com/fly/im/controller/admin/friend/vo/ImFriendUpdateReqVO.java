@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 好友更新 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImFriendUpdateReqVO {
+public class ImFriendUpdateReqVo {
 
     @Schema(description = "好友的用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "2048")
     @NotNull(message = "好友用户编号不能为空")

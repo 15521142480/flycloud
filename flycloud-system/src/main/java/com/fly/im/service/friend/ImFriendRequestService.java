@@ -1,8 +1,8 @@
 package com.fly.im.service.friend;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVO;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVO;
+import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVo;
+import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
 
 import java.util.List;
@@ -19,10 +19,10 @@ public interface ImFriendRequestService {
      * 发起好友申请
      *
      * @param fromUserId 发起方用户编号
-     * @param reqVO      申请请求
+     * @param reqVo      申请请求
      * @return 申请记录
      */
-    ImFriendRequestDO applyFriend(Long fromUserId, ImFriendRequestApplyReqVO reqVO);
+    ImFriendRequestDO applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo);
 
     /**
      * 同意好友申请
@@ -61,6 +61,6 @@ public interface ImFriendRequestService {
     /**
      * 【管理后台】分页查询好友申请记录
      */
-    PageResult<ImFriendRequestDO> getFriendRequestPage(ImFriendRequestManagerPageReqVO reqVO);
+    PageResult<ImFriendRequestDO> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo);
 
 }

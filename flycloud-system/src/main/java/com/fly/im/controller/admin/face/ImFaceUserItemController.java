@@ -2,8 +2,8 @@ package com.fly.im.controller.admin.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemRespVO;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVO;
+import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemRespVo;
+import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVo;
 import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
 import com.fly.im.service.face.ImFaceUserItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,15 +30,15 @@ public class ImFaceUserItemController {
 
     @GetMapping("/list")
     @Operation(summary = "获得我的个人表情列表")
-    public R<List<ImFaceUserItemRespVO>> getFaceUserItemList() {
+    public R<List<ImFaceUserItemRespVo>> getFaceUserItemList() {
         List<ImFaceUserItemDO> items = faceUserItemService.getFaceUserItemList(getCurUserId());
-        return ok(BeanUtils.toBean(items, ImFaceUserItemRespVO.class));
+        return ok(BeanUtils.toBean(items, ImFaceUserItemRespVo.class));
     }
 
     @PostMapping("/create")
     @Operation(summary = "添加个人表情")
-    public R<Long> createFaceUserItem(@Valid @RequestBody ImFaceUserItemSaveReqVO reqVO) {
-        return ok(faceUserItemService.createFaceUserItem(getCurUserId(), reqVO));
+    public R<Long> createFaceUserItem(@Valid @RequestBody ImFaceUserItemSaveReqVo reqVo) {
+        return ok(faceUserItemService.createFaceUserItem(getCurUserId(), reqVo));
     }
 
     @DeleteMapping("/delete")

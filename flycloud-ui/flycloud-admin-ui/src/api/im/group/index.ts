@@ -1,6 +1,8 @@
 import request from '@/config/axios'
 import type { ImGroupMessageRespVO } from '@/api/im/message/group'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // 群 Response VO
 export interface ImGroupRespVO {
   id: number // 编号
@@ -76,65 +78,65 @@ export interface ImGroupCancelMuteMemberReqVO {
 
 // 获得当前登录用户的群列表
 export const getMyGroupList = () => {
-  return request.get<ImGroupRespVO[]>({ url: '/im/group/list' })
+  return request.get<ImGroupRespVO[]>({ url: `/${SYS_BASE_URL}/im/group/list` })
 }
 
 // 获得群详情
 export const getGroup = (id: number | string) => {
-  return request.get<ImGroupRespVO>({ url: '/im/group/get', params: { id } })
+  return request.get<ImGroupRespVO>({ url: `/${SYS_BASE_URL}/im/group/get`, params: { id } })
 }
 
 // 创建群
 export const createGroup = (data: ImGroupCreateReqVO) => {
-  return request.post<ImGroupRespVO>({ url: '/im/group/create', data })
+  return request.post<ImGroupRespVO>({ url: `/${SYS_BASE_URL}/im/group/create`, data })
 }
 
 // 更新群
 export const updateGroup = (data: ImGroupUpdateReqVO) => {
-  return request.put<ImGroupRespVO>({ url: '/im/group/update', data })
+  return request.put<ImGroupRespVO>({ url: `/${SYS_BASE_URL}/im/group/update`, data })
 }
 
 // 解散群
 export const dissolveGroup = (id: number | string) => {
-  return request.delete<boolean>({ url: '/im/group/dissolve', params: { id } })
+  return request.delete<boolean>({ url: `/${SYS_BASE_URL}/im/group/dissolve`, params: { id } })
 }
 
 // 添加群管理员（仅群主可调）
 export const addGroupAdmin = (data: ImGroupAdminReqVO) => {
-  return request.put<boolean>({ url: '/im/group/add-admin', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/add-admin`, data })
 }
 
 // 撤销群管理员（仅群主可调）
 export const removeGroupAdmin = (data: ImGroupAdminReqVO) => {
-  return request.put<boolean>({ url: '/im/group/remove-admin', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/remove-admin`, data })
 }
 
 // 转让群主（仅老群主可调；旧群主转让后降为普通成员）
 export const transferGroupOwner = (data: ImGroupTransferOwnerReqVO) => {
-  return request.put<boolean>({ url: '/im/group/transfer-owner', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/transfer-owner`, data })
 }
 
 // 置顶群消息（仅群主 / 管理员可调）
 export const pinGroupMessage = (data: ImGroupMessagePinReqVO) => {
-  return request.put<boolean>({ url: '/im/group/pin-message', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/pin-message`, data })
 }
 
 // 取消置顶群消息（仅群主 / 管理员可调）
 export const unpinGroupMessage = (data: ImGroupMessagePinReqVO) => {
-  return request.put<boolean>({ url: '/im/group/unpin-message', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/unpin-message`, data })
 }
 
 // 全群禁言 / 取消（仅群主 / 管理员可调）
 export const muteAll = (data: ImGroupMuteAllReqVO) => {
-  return request.put<boolean>({ url: '/im/group/mute-all', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/mute-all`, data })
 }
 
 // 禁言成员
 export const muteMember = (data: ImGroupMuteMemberReqVO) => {
-  return request.put<boolean>({ url: '/im/group/mute-member', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/mute-member`, data })
 }
 
 // 取消成员禁言
 export const cancelMuteMember = (data: ImGroupCancelMuteMemberReqVO) => {
-  return request.put<boolean>({ url: '/im/group/cancel-mute-member', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group/cancel-mute-member`, data })
 }

@@ -3,7 +3,7 @@ package com.fly.im.controller.admin.message;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.message.vo.channel.ImChannelMessagePullRespVO;
+import com.fly.im.controller.admin.message.vo.channel.ImChannelMessagePullRespVo;
 import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
 import com.fly.im.enums.message.ImMessageStatusEnum;
 import com.fly.im.service.message.ImChannelMessageService;
@@ -40,7 +40,7 @@ public class ImChannelMessageController {
 
     @GetMapping("/pull")
     @Operation(summary = "拉取频道消息（离线增量）；按 minId 游标分页")
-    public R<List<ImChannelMessagePullRespVO>> pull(
+    public R<List<ImChannelMessagePullRespVo>> pull(
             @RequestParam(value = "minId", defaultValue = "0") @PositiveOrZero(message = "minId 不能小于 0") Long minId,
             @RequestParam(value = "size", defaultValue = "100")
             @Min(value = 1, message = "size 必须大于 0")
@@ -54,7 +54,7 @@ public class ImChannelMessageController {
         // 2. 按 Redis 已读游标补 status；device A 已读后 device B 拉到这条不再算入未读
         Map<Long, Long> readMaxByChannel = channelMessageService.getChannelReadMaxMessageIdMap(
                 userId, convertSet(list, ImChannelMessageDO::getChannelId));
-        return ok(BeanUtils.toBean(list, ImChannelMessagePullRespVO.class, vo -> {
+        return ok(BeanUtils.toBean(list, ImChannelMessagePullRespVo.class, vo -> {
             Long readMax = readMaxByChannel.get(vo.getChannelId());
             vo.setStatus(readMax != null && readMax >= vo.getId()
                     ? ImMessageStatusEnum.READ.getStatus()

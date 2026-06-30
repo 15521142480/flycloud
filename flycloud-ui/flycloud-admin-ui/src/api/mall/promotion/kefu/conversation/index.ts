@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface KeFuConversationRespVO {
   id: number // 编号
   userId: number // 会话所属用户
@@ -19,21 +21,23 @@ export interface KeFuConversationRespVO {
 export const KeFuConversationApi = {
   // 获得客服会话列表
   getConversationList: async () => {
-    return await request.get({ url: '/promotion/kefu-conversation/list' })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/kefu-conversation/list` })
   },
   // 获得客服会话
   getConversation: async (id: number) => {
-    return await request.get({ url: `/promotion/kefu-conversation/get?id=` + id })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/kefu-conversation/get?id=` + id })
   },
   // 客服会话置顶
   updateConversationPinned: async (data: any) => {
     return await request.put({
-      url: '/promotion/kefu-conversation/update-conversation-pinned',
+      url: `/${MALL_BASE_URL}/promotion/kefu-conversation/update-conversation-pinned`,
       data
     })
   },
   // 删除客服会话
   deleteConversation: async (id: number) => {
-    return await request.delete({ url: `/promotion/kefu-conversation/delete?id=${id}` })
+    return await request.delete({
+      url: `/${MALL_BASE_URL}/promotion/kefu-conversation/delete?id=${id}`
+    })
   }
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - IM 表情包项 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImFacePackItemRespVO {
+public class ImFacePackItemRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "2048")
     private Long id;

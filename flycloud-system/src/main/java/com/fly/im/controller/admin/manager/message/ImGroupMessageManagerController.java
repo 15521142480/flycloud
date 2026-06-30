@@ -5,8 +5,8 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVO;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerRespVO;
+import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
+import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerRespVo;
 import com.fly.im.dal.dataobject.group.ImGroupDO;
 import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
 import com.fly.im.service.group.ImGroupService;
@@ -52,10 +52,10 @@ public class ImGroupMessageManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得群聊消息分页")
     @PreAuthorize("@pms.hasPermission('im:manager:message:query')")
-    public R<PageResult<ImGroupMessageManagerRespVO>> getGroupMessagePage(
-            @Valid ImGroupMessageManagerPageReqVO pageReqVO) {
+    public R<PageResult<ImGroupMessageManagerRespVo>> getGroupMessagePage(
+            @Valid ImGroupMessageManagerPageReqVo pageReqVo) {
         // 1. 分页查询
-        PageResult<ImGroupMessageDO> pageResult = groupMessageService.getGroupMessagePage(pageReqVO);
+        PageResult<ImGroupMessageDO> pageResult = groupMessageService.getGroupMessagePage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
@@ -68,7 +68,7 @@ public class ImGroupMessageManagerController {
                         .filter(id -> !Objects.equals(id, AT_USER_ID_ALL))));
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(userIds);
         // 2.2 转换为 VO，填充群名 / 发送人昵称 / @ 用户昵称（-1 位置留 null，由前端展示「@所有人」）
-        return ok(PageResult.convert(pageResult, ImGroupMessageManagerRespVO.class, vo -> {
+        return ok(PageResult.convert(pageResult, ImGroupMessageManagerRespVo.class, vo -> {
             MapUtils.findAndThen(groupMap, vo.getGroupId(), group -> vo.setGroupName(group.getName()));
             MapUtils.findAndThen(userMap, vo.getSenderId(), user -> vo.setSenderNickname(user.getName()));
             if (CollUtil.isNotEmpty(vo.getAtUserIds())) {
@@ -84,9 +84,9 @@ public class ImGroupMessageManagerController {
     @Operation(summary = "获得群聊消息详情")
     @Parameter(name = "id", description = "消息编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:message:query')")
-    public R<ImGroupMessageManagerRespVO> getGroupMessage(@RequestParam("id") Long id) {
+    public R<ImGroupMessageManagerRespVo> getGroupMessage(@RequestParam("id") Long id) {
         ImGroupMessageDO message = groupMessageService.getGroupMessage(id);
-        return ok(BeanUtils.toBean(message, ImGroupMessageManagerRespVO.class));
+        return ok(BeanUtils.toBean(message, ImGroupMessageManagerRespVo.class));
     }
 
 }

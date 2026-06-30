@@ -10,18 +10,18 @@ import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.ImGroupAdminAddReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupAdminRemoveReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupCancelMuteMemberReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupCreateReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupMuteAllReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupMuteMemberReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupTransferOwnerReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupUpdateReqVO;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberInviteReqVO;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRemoveReqVO;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerBanReqVO;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerPageReqVO;
+import com.fly.im.controller.admin.group.vo.ImGroupAdminAddReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupAdminRemoveReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupCancelMuteMemberReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupCreateReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupMuteAllReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupMuteMemberReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupTransferOwnerReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupUpdateReqVo;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberInviteReqVo;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRemoveReqVo;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerBanReqVo;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerPageReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendDO;
 import com.fly.im.dal.dataobject.group.ImGroupDO;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
@@ -90,10 +90,10 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImGroupDO createGroup(ImGroupCreateReqVO createReqVO, Long userId) {
+    public ImGroupDO createGroup(ImGroupCreateReqVo createReqVo, Long userId) {
         // 1.1 处理初始成员列表（去重 + 排除创建者自己）
-        Set<Long> initialMemberUserIds = createReqVO.getMemberUserIds() == null
-                ? new HashSet<>() : new HashSet<>(createReqVO.getMemberUserIds());
+        Set<Long> initialMemberUserIds = createReqVo.getMemberUserIds() == null
+                ? new HashSet<>() : new HashSet<>(createReqVo.getMemberUserIds());
         initialMemberUserIds.remove(userId);
         // 1.2 校验初始成员都是创建者的好友
         if (CollUtil.isNotEmpty(initialMemberUserIds)) {
@@ -111,7 +111,7 @@ public class ImGroupServiceImpl implements ImGroupService {
         }
 
         // 2.1 插入群记录
-        ImGroupDO group = BeanUtils.toBean(createReqVO, ImGroupDO.class)
+        ImGroupDO group = BeanUtils.toBean(createReqVo, ImGroupDO.class)
                 .setOwnerUserId(userId).setStatus(CommonStatusEnum.ENABLE.getStatus());
         groupMapper.insert(group);
         // 2.2 创建者作为 OWNER 入群
@@ -130,44 +130,44 @@ public class ImGroupServiceImpl implements ImGroupService {
     }
 
     @Override
-    @CacheEvict(cacheNames = GROUP, key = "#updateReqVO.id")
+    @CacheEvict(cacheNames = GROUP, key = "#updateReqVo.id")
     @Transactional(rollbackFor = Exception.class)
-    public ImGroupDO updateGroup(ImGroupUpdateReqVO updateReqVO, Long userId) {
+    public ImGroupDO updateGroup(ImGroupUpdateReqVo updateReqVo, Long userId) {
         // 1.1 校验群存在：group 留作老值备份，通知里 oldXXX 字段从这里取
-        ImGroupDO group = validateGroupExists(updateReqVO.getId());
+        ImGroupDO group = validateGroupExists(updateReqVo.getId());
         // 1.2 校验操作人是群主
         if (ObjUtil.notEqual(group.getOwnerUserId(), userId)) {
             throw exception(GROUP_NOT_OWNER);
         }
 
         // 2. 更新数据库（newGroup 仅含变更字段）
-        ImGroupDO newGroup = BeanUtils.toBean(updateReqVO, ImGroupDO.class);
+        ImGroupDO newGroup = BeanUtils.toBean(updateReqVo, ImGroupDO.class);
         groupMapper.updateById(newGroup);
 
         // 3. 按变更字段分别推送 GROUP_NAME / NOTICE / INFO_UPDATE 通知；活跃成员只查一次复用，避免 3 次 Redis GET
         // name / avatar 不允许空串（业务上必须非空），notice 允许空串（清空公告也是有效操作）
         Long groupId = group.getId();
-        boolean nameChanged = StrUtil.isNotEmpty(updateReqVO.getName());
-        boolean noticeChanged = updateReqVO.getNotice() != null;
-        boolean avatarChanged = StrUtil.isNotEmpty(updateReqVO.getAvatar());
+        boolean nameChanged = StrUtil.isNotEmpty(updateReqVo.getName());
+        boolean noticeChanged = updateReqVo.getNotice() != null;
+        boolean avatarChanged = StrUtil.isNotEmpty(updateReqVo.getAvatar());
         if (nameChanged || noticeChanged || avatarChanged) {
             List<Long> memberUserIds = groupMemberService.getActiveGroupMemberUserIdsByGroupId(groupId);
             if (nameChanged) {
                 groupMessageService.sendGroupMessage(userId, memberUserIds, ImGroupMessageSendDTO.ofGroupNameUpdate(
-                        groupId, userId, group.getName(), updateReqVO.getName()));
+                        groupId, userId, group.getName(), updateReqVo.getName()));
             }
             if (noticeChanged) {
                 groupMessageService.sendGroupMessage(userId, memberUserIds, ImGroupMessageSendDTO.ofGroupNoticeUpdate(
-                        groupId, userId, group.getNotice(), updateReqVO.getNotice()));
+                        groupId, userId, group.getNotice(), updateReqVo.getNotice()));
             }
             if (avatarChanged) {
                 groupMessageService.sendGroupMessage(userId, memberUserIds, ImGroupMessageSendDTO.ofGroupInfoUpdate(
-                        groupId, userId, group.getAvatar(), updateReqVO.getAvatar()));
+                        groupId, userId, group.getAvatar(), updateReqVo.getAvatar()));
             }
         }
 
-        // 4. 返回合并后的新群信息（updateReqVO 非空字段覆盖 group）
-        BeanUtil.copyProperties(updateReqVO, group, CopyOptions.create().ignoreNullValue());
+        // 4. 返回合并后的新群信息（updateReqVo 非空字段覆盖 group）
+        BeanUtil.copyProperties(updateReqVo, group, CopyOptions.create().ignoreNullValue());
         return group;
     }
 
@@ -202,8 +202,8 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void inviteGroupMember(Long userId, ImGroupMemberInviteReqVO inviteReqVO) {
-        Long groupId = inviteReqVO.getGroupId();
+    public void inviteGroupMember(Long userId, ImGroupMemberInviteReqVo inviteReqVo) {
+        Long groupId = inviteReqVo.getGroupId();
         // 1.1 校验群存在 + 当前用户是群成员；同时拿到 role 供下面审批分支判断
         ImGroupDO group = validateGroupExists(groupId);
         ImGroupMemberDO operator = groupMemberService.validateMemberInGroup(groupId, userId);
@@ -211,7 +211,7 @@ public class ImGroupServiceImpl implements ImGroupService {
         List<ImGroupMemberDO> activeMembers = groupMemberService.getActiveGroupMemberListByGroupId(groupId);
         Set<Long> activeMemberUserIds = convertSet(activeMembers, ImGroupMemberDO::getUserId);
         List<Long> memberUserIds = CollUtil.subtractToList(
-                CollUtil.distinct(inviteReqVO.getMemberUserIds()), activeMemberUserIds);
+                CollUtil.distinct(inviteReqVo.getMemberUserIds()), activeMemberUserIds);
         if (CollUtil.isEmpty(memberUserIds)) {
             return;
         }
@@ -276,9 +276,9 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeGroupMember(Long userId, ImGroupMemberRemoveReqVO removeReqVO) {
-        Long groupId = removeReqVO.getGroupId();
-        Set<Long> targetUserIds = new HashSet<>(removeReqVO.getMemberUserIds());
+    public void removeGroupMember(Long userId, ImGroupMemberRemoveReqVo removeReqVo) {
+        Long groupId = removeReqVo.getGroupId();
+        Set<Long> targetUserIds = new HashSet<>(removeReqVo.getMemberUserIds());
         // 1.1 校验群存在 + 操作者是群主或管理员
         ImGroupMemberDO operator = validateGroupOwnerOrAdmin(groupId, userId);
         // 1.2 不能移除自己
@@ -316,9 +316,9 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addGroupAdmin(Long userId, ImGroupAdminAddReqVO reqVO) {
-        Long groupId = reqVO.getId();
-        Set<Long> targetUserIds = new HashSet<>(reqVO.getUserIds());
+    public void addGroupAdmin(Long userId, ImGroupAdminAddReqVo reqVo) {
+        Long groupId = reqVo.getId();
+        Set<Long> targetUserIds = new HashSet<>(reqVo.getUserIds());
         // 1.1 仅群主可操作
         validateGroupOwnerForUpdate(groupId, userId);
         // 1.2 校验目标都是有效成员且非群主
@@ -354,9 +354,9 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeGroupAdmin(Long userId, ImGroupAdminRemoveReqVO reqVO) {
-        Long groupId = reqVO.getId();
-        Set<Long> targetUserIds = new HashSet<>(reqVO.getUserIds());
+    public void removeGroupAdmin(Long userId, ImGroupAdminRemoveReqVo reqVo) {
+        Long groupId = reqVo.getId();
+        Set<Long> targetUserIds = new HashSet<>(reqVo.getUserIds());
         // 1.1 仅群主可操作
         validateGroupOwnerForUpdate(groupId, userId);
         // 1.2 校验目标都是有效成员且非群主
@@ -399,11 +399,11 @@ public class ImGroupServiceImpl implements ImGroupService {
     }
 
     @Override
-    @CacheEvict(cacheNames = GROUP, key = "#transferReqVO.id")
+    @CacheEvict(cacheNames = GROUP, key = "#transferReqVo.id")
     @Transactional(rollbackFor = Exception.class)
-    public void transferGroupOwner(Long userId, ImGroupTransferOwnerReqVO transferReqVO) {
-        Long groupId = transferReqVO.getId();
-        Long newOwnerUserId = transferReqVO.getNewOwnerUserId();
+    public void transferGroupOwner(Long userId, ImGroupTransferOwnerReqVo transferReqVo) {
+        Long groupId = transferReqVo.getId();
+        Long newOwnerUserId = transferReqVo.getNewOwnerUserId();
         // 1.1 仅老群主可执行
         validateGroupOwnerForUpdate(groupId, userId);
         // 1.2 不能转让给自己
@@ -619,15 +619,15 @@ public class ImGroupServiceImpl implements ImGroupService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImGroupDO> getGroupPage(ImGroupManagerPageReqVO pageReqVO) {
-        return groupMapper.selectPage(pageReqVO);
+    public PageResult<ImGroupDO> getGroupPage(ImGroupManagerPageReqVo pageReqVo) {
+        return groupMapper.selectPage(pageReqVo);
     }
 
     @Override
-    @CacheEvict(cacheNames = GROUP, key = "#banReqVO.id")
-    public void banGroup(Long operatorUserId, ImGroupManagerBanReqVO banReqVO) {
+    @CacheEvict(cacheNames = GROUP, key = "#banReqVo.id")
+    public void banGroup(Long operatorUserId, ImGroupManagerBanReqVo banReqVo) {
         // 1. 校验群存在且未解散
-        ImGroupDO group = getSelf().getGroup(banReqVO.getId());
+        ImGroupDO group = getSelf().getGroup(banReqVo.getId());
         if (group == null) {
             throw exception(GROUP_NOT_EXISTS);
         }
@@ -640,12 +640,12 @@ public class ImGroupServiceImpl implements ImGroupService {
         }
 
         // 3. 更新封禁状态
-        groupMapper.updateById(new ImGroupDO().setId(banReqVO.getId())
-                .setBanned(true).setBannedReason(banReqVO.getReason()).setBannedTime(LocalDateTime.now()));
+        groupMapper.updateById(new ImGroupDO().setId(banReqVo.getId())
+                .setBanned(true).setBannedReason(banReqVo.getReason()).setBannedTime(LocalDateTime.now()));
 
         // 4. 广播通知
         groupMessageService.sendGroupMessage(operatorUserId,
-                ImGroupMessageSendDTO.ofGroupBanned(banReqVO.getId(), operatorUserId, true));
+                ImGroupMessageSendDTO.ofGroupBanned(banReqVo.getId(), operatorUserId, true));
     }
 
     @Override
@@ -678,65 +678,65 @@ public class ImGroupServiceImpl implements ImGroupService {
     // ==================== 群禁言 ====================
 
     @Override
-    @CacheEvict(cacheNames = GROUP, key = "#reqVO.id")
+    @CacheEvict(cacheNames = GROUP, key = "#reqVo.id")
     @Transactional(rollbackFor = Exception.class)
-    public void muteAll(Long userId, ImGroupMuteAllReqVO reqVO) {
+    public void muteAll(Long userId, ImGroupMuteAllReqVo reqVo) {
         // 1. 校验群主或管理员
-        validateGroupOwnerOrAdmin(reqVO.getId(), userId);
+        validateGroupOwnerOrAdmin(reqVo.getId(), userId);
 
         // 2. 更新 mutedAll
-        groupMapper.updateById(new ImGroupDO().setId(reqVO.getId()).setMutedAll(reqVO.getMutedAll()));
+        groupMapper.updateById(new ImGroupDO().setId(reqVo.getId()).setMutedAll(reqVo.getMutedAll()));
 
         // 3. 广播通知
-        ImGroupMessageSendDTO messageSendDTO = Boolean.TRUE.equals(reqVO.getMutedAll())
-                ? ImGroupMessageSendDTO.ofGroupMuted(reqVO.getId(), userId)
-                : ImGroupMessageSendDTO.ofGroupCancelMuted(reqVO.getId(), userId);
+        ImGroupMessageSendDTO messageSendDTO = Boolean.TRUE.equals(reqVo.getMutedAll())
+                ? ImGroupMessageSendDTO.ofGroupMuted(reqVo.getId(), userId)
+                : ImGroupMessageSendDTO.ofGroupCancelMuted(reqVo.getId(), userId);
         groupMessageService.sendGroupMessage(userId, messageSendDTO);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void muteMember(Long userId, ImGroupMuteMemberReqVO reqVO) {
+    public void muteMember(Long userId, ImGroupMuteMemberReqVo reqVo) {
         // 1.1 不能禁言自己
-        if (ObjUtil.equal(userId, reqVO.getUserId())) {
+        if (ObjUtil.equal(userId, reqVo.getUserId())) {
             throw exception(GROUP_MUTE_MEMBER_SELF);
         }
         // 1.2 校验群存在且未封禁
-        validateGroupExists(reqVO.getId());
+        validateGroupExists(reqVo.getId());
         // 1.3 校验操作人和目标都在群中
-        ImGroupMemberDO operatorMember = groupMemberService.validateMemberInGroup(reqVO.getId(), userId);
-        ImGroupMemberDO targetMember = groupMemberService.validateMemberInGroup(reqVO.getId(), reqVO.getUserId());
+        ImGroupMemberDO operatorMember = groupMemberService.validateMemberInGroup(reqVo.getId(), userId);
+        ImGroupMemberDO targetMember = groupMemberService.validateMemberInGroup(reqVo.getId(), reqVo.getUserId());
         // 1.4 三档权限校验
         validateMutePermission(operatorMember, targetMember);
 
         // 2. 设置 muteEndTime
-        LocalDateTime muteEndTime = reqVO.getMutedSeconds() == 0
-                ? ImGroupMemberDO.PERMANENT_MUTE_END_TIME : LocalDateTime.now().plusSeconds(reqVO.getMutedSeconds());
-        groupMemberService.updateGroupMemberMuteEndTime(reqVO.getId(), reqVO.getUserId(), muteEndTime);
+        LocalDateTime muteEndTime = reqVo.getMutedSeconds() == 0
+                ? ImGroupMemberDO.PERMANENT_MUTE_END_TIME : LocalDateTime.now().plusSeconds(reqVo.getMutedSeconds());
+        groupMemberService.updateGroupMemberMuteEndTime(reqVo.getId(), reqVo.getUserId(), muteEndTime);
 
         // 3. 广播通知
         groupMessageService.sendGroupMessage(userId,
-                ImGroupMessageSendDTO.ofGroupMemberMuted(reqVO.getId(), userId,
-                        reqVO.getUserId(), muteEndTime));
+                ImGroupMessageSendDTO.ofGroupMemberMuted(reqVo.getId(), userId,
+                        reqVo.getUserId(), muteEndTime));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void cancelMuteMember(Long userId, ImGroupCancelMuteMemberReqVO reqVO) {
+    public void cancelMuteMember(Long userId, ImGroupCancelMuteMemberReqVo reqVo) {
         // 1.1 校验群存在且未封禁
-        validateGroupExists(reqVO.getId());
+        validateGroupExists(reqVo.getId());
         // 1.2 校验操作人和目标都在群中
-        ImGroupMemberDO operatorMember = groupMemberService.validateMemberInGroup(reqVO.getId(), userId);
-        ImGroupMemberDO targetMember = groupMemberService.validateMemberInGroup(reqVO.getId(), reqVO.getUserId());
+        ImGroupMemberDO operatorMember = groupMemberService.validateMemberInGroup(reqVo.getId(), userId);
+        ImGroupMemberDO targetMember = groupMemberService.validateMemberInGroup(reqVo.getId(), reqVo.getUserId());
         // 1.3 三档权限校验
         validateMutePermission(operatorMember, targetMember);
 
         // 2. 取消禁言（清空 muteEndTime）
-        groupMemberService.updateGroupMemberMuteEndTime(reqVO.getId(), reqVO.getUserId(), null);
+        groupMemberService.updateGroupMemberMuteEndTime(reqVo.getId(), reqVo.getUserId(), null);
 
         // 3. 广播通知
         groupMessageService.sendGroupMessage(userId,
-                ImGroupMessageSendDTO.ofGroupMemberCancelMuted(reqVO.getId(), userId, reqVO.getUserId()));
+                ImGroupMessageSendDTO.ofGroupMemberCancelMuted(reqVo.getId(), userId, reqVo.getUserId()));
     }
 
     /**

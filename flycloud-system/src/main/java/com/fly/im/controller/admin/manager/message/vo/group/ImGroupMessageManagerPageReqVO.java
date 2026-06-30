@@ -15,7 +15,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImGroupMessageManagerPageReqVO extends PageBo {
+public class ImGroupMessageManagerPageReqVo extends PageBo {
 
     @Schema(description = "群编号", example = "1024")
     private Long groupId;

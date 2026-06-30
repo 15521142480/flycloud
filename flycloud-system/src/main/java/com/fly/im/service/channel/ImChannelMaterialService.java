@@ -1,8 +1,8 @@
 package com.fly.im.service.channel;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialPageReqVO;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialSaveReqVO;
+import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialPageReqVo;
+import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialSaveReqVo;
 import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
 import jakarta.validation.Valid;
 
@@ -69,10 +69,10 @@ public interface ImChannelMaterialService {
     /**
      * 分页查询素材
      *
-     * @param reqVO 分页查询条件
+     * @param reqVo 分页查询条件
      * @return 素材分页
      */
-    PageResult<ImChannelMaterialDO> getMaterialPage(ImChannelMaterialPageReqVO reqVO);
+    PageResult<ImChannelMaterialDO> getMaterialPage(ImChannelMaterialPageReqVo reqVo);
 
     /**
      * 获取素材详情（含 content 富文本）
@@ -85,17 +85,17 @@ public interface ImChannelMaterialService {
     /**
      * 新增素材
      *
-     * @param reqVO 新增请求
+     * @param reqVo 新增请求
      * @return 新增素材编号
      */
-    Long createMaterial(@Valid ImChannelMaterialSaveReqVO reqVO);
+    Long createMaterial(@Valid ImChannelMaterialSaveReqVo reqVo);
 
     /**
      * 修改素材
      *
-     * @param reqVO 修改请求
+     * @param reqVo 修改请求
      */
-    void updateMaterial(@Valid ImChannelMaterialSaveReqVO reqVO);
+    void updateMaterial(@Valid ImChannelMaterialSaveReqVo reqVo);
 
     /**
      * 删除素材；素材已被推送过时拒绝，避免历史消息无法回查

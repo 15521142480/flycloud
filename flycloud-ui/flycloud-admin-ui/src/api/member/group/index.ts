@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface GroupVO {
   id: number
   name: string
@@ -9,30 +11,30 @@ export interface GroupVO {
 
 // 查询用户分组列表
 export const getGroupPage = async (params: any) => {
-  return await request.get({ url: `/admin/member/group/page`, params })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/member/group/page`, params })
 }
 
 // 查询用户分组详情
 export const getGroup = async (id: number) => {
-  return await request.get({ url: `/admin/member/group/get?id=` + id })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/member/group/get?id=` + id })
 }
 
 // 新增用户分组
 export const createGroup = async (data: GroupVO) => {
-  return await request.post({ url: `/admin/member/group/create`, data })
+  return await request.post({ url: `/${SYS_BASE_URL}/admin/member/group/create`, data })
 }
 
 // 查询用户分组 - 精简信息列表
 export const getSimpleGroupList = async () => {
-  return await request.get({ url: `/admin/member/group/list-all-simple` })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/member/group/list-all-simple` })
 }
 
 // 修改用户分组
 export const updateGroup = async (data: GroupVO) => {
-  return await request.put({ url: `/admin/member/group/update`, data })
+  return await request.put({ url: `/${SYS_BASE_URL}/admin/member/group/update`, data })
 }
 
 // 删除用户分组
 export const deleteGroup = async (id: number) => {
-  return await request.delete({ url: `/admin/member/group/delete?id=` + id })
+  return await request.delete({ url: `/${SYS_BASE_URL}/admin/member/group/delete?id=` + id })
 }

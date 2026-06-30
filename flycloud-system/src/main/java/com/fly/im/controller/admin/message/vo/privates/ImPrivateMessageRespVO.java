@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - 私聊消息 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImPrivateMessageRespVO {
+public class ImPrivateMessageRespVo {
 
     @Schema(description = "消息编号", example = "1")
     private Long id;

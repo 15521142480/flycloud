@@ -2,7 +2,7 @@ package com.fly.im.controller.admin.channel;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialRespVO;
+import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialRespVo;
 import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,9 +29,9 @@ public class ImChannelMaterialController {
     @GetMapping("/get")
     @Operation(summary = "获取素材详情；用于客户端点击图文卡片渲染详情页")
     @Parameter(name = "id", description = "素材编号", required = true, example = "1024")
-    public R<ImChannelMaterialRespVO> getMaterial(@RequestParam("id") Long id) {
+    public R<ImChannelMaterialRespVo> getMaterial(@RequestParam("id") Long id) {
         ImChannelMaterialDO material = channelMaterialService.validateMaterialExists(id);
-        return ok(BeanUtils.toBean(material, ImChannelMaterialRespVO.class));
+        return ok(BeanUtils.toBean(material, ImChannelMaterialRespVo.class));
     }
 
 }

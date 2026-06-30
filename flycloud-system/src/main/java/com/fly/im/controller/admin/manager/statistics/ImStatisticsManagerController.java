@@ -54,14 +54,14 @@ public class ImStatisticsManagerController {
     @GetMapping("/overview")
     @Operation(summary = "获得数据概览")
     @PreAuthorize("@pms.hasPermission('im:manager:statistics:query')")
-    public R<ImStatisticsManagerOverviewRespVO> getOverview() {
+    public R<ImStatisticsManagerOverviewRespVo> getOverview() {
         LocalDateTime todayBegin = LocalDate.now().atStartOfDay();
         LocalDateTime tomorrowBegin = todayBegin.plusDays(1);
         LocalDateTime yesterdayBegin = todayBegin.minusDays(1);
         // 周活/月活定义为 N 天滚动窗口（含今天）
         LocalDateTime weekBegin = todayBegin.minusDays(6);
         LocalDateTime monthBegin = todayBegin.minusDays(29);
-        return ok(new ImStatisticsManagerOverviewRespVO()
+        return ok(new ImStatisticsManagerOverviewRespVo()
                 .setTotalUser(statisticsService.getTotalUserCount())
                 .setNewUserToday(statisticsService.getNewUserCount(todayBegin, tomorrowBegin))
                 .setTotalGroup(statisticsService.getTotalGroupCount())
@@ -79,7 +79,7 @@ public class ImStatisticsManagerController {
     @Operation(summary = "获得消息趋势（私聊 / 群聊双线）")
     @Parameter(name = "days", description = "回看天数（含今日）", example = "7")
     @PreAuthorize("@pms.hasPermission('im:manager:statistics:query')")
-    public R<ImStatisticsManagerTrendRespVO> getMessageTrend(
+    public R<ImStatisticsManagerTrendRespVo> getMessageTrend(
             @RequestParam(value = "days", defaultValue = "7") @Min(1) @Max(90) int days) {
         List<LocalDateTime> dates = LocalDateTimeUtils.getLatestDays(days);
         LocalDateTime beginTime = dates.get(0);
@@ -90,14 +90,14 @@ public class ImStatisticsManagerController {
         Map<String, List<Long>> series = new LinkedHashMap<>();
         series.put("private", alignSeries(dates, privateMap));
         series.put("group", alignSeries(dates, groupMap));
-        return ok(new ImStatisticsManagerTrendRespVO().setDates(dates).setSeries(series));
+        return ok(new ImStatisticsManagerTrendRespVo().setDates(dates).setSeries(series));
     }
 
     @GetMapping("/user-trend")
     @Operation(summary = "获得用户趋势（新增注册 / 日活双线）")
     @Parameter(name = "days", description = "回看天数（含今日）", example = "7")
     @PreAuthorize("@pms.hasPermission('im:manager:statistics:query')")
-    public R<ImStatisticsManagerTrendRespVO> getUserTrend(
+    public R<ImStatisticsManagerTrendRespVo> getUserTrend(
             @RequestParam(value = "days", defaultValue = "7") @Min(1) @Max(90) int days) {
         List<LocalDateTime> dates = LocalDateTimeUtils.getLatestDays(days);
         LocalDateTime beginTime = dates.get(0);
@@ -108,42 +108,42 @@ public class ImStatisticsManagerController {
         Map<String, List<Long>> series = new LinkedHashMap<>();
         series.put("register", alignSeries(dates, registerMap));
         series.put("active", alignSeries(dates, activeMap));
-        return ok(new ImStatisticsManagerTrendRespVO().setDates(dates).setSeries(series));
+        return ok(new ImStatisticsManagerTrendRespVo().setDates(dates).setSeries(series));
     }
 
     @GetMapping("/message-type-distribution")
     @Operation(summary = "获得消息类型分布（最近 30 天）")
     @PreAuthorize("@pms.hasPermission('im:manager:statistics:query')")
-    public R<List<ImStatisticsManagerMessageTypeRespVO>> getMessageTypeDistribution() {
+    public R<List<ImStatisticsManagerMessageTypeRespVo>> getMessageTypeDistribution() {
         LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
         LocalDateTime beginTime = endTime.minusDays(DISTRIBUTION_WINDOW_DAYS);
         Map<Integer, Long> typeCountMap = statisticsService.getMessageTypeCountMap(beginTime, endTime);
         // 转换格式
-        return ok(convertList(typeCountMap.entrySet(), entry -> new ImStatisticsManagerMessageTypeRespVO()
+        return ok(convertList(typeCountMap.entrySet(), entry -> new ImStatisticsManagerMessageTypeRespVo()
                 .setType(entry.getKey()).setValue(entry.getValue())));
     }
 
     @GetMapping("/group-size-distribution")
     @Operation(summary = "获得群规模分布")
     @PreAuthorize("@pms.hasPermission('im:manager:statistics:query')")
-    public R<List<ImStatisticsManagerGroupSizeRespVO>> getGroupSizeDistribution() {
+    public R<List<ImStatisticsManagerGroupSizeRespVo>> getGroupSizeDistribution() {
         Map<String, Long> groupSizeMap = statisticsService.getGroupSizeCountMap();
         // 转换格式
-        return ok(convertList(GROUP_SIZE_BUCKETS, bucket -> new ImStatisticsManagerGroupSizeRespVO()
+        return ok(convertList(GROUP_SIZE_BUCKETS, bucket -> new ImStatisticsManagerGroupSizeRespVo()
                 .setRange(bucket).setCount(groupSizeMap.getOrDefault(bucket, 0L))));
     }
 
     @GetMapping("/top-senders")
     @Operation(summary = "获得消息 TOP 发送者（最近 30 天）")
     @PreAuthorize("@pms.hasPermission('im:manager:statistics:query')")
-    public R<List<ImStatisticsManagerTopSenderRespVO>> getTopSenders() {
+    public R<List<ImStatisticsManagerTopSenderRespVo>> getTopSenders() {
         LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
         LocalDateTime beginTime = endTime.minusDays(DISTRIBUTION_WINDOW_DAYS);
         Map<Long, Long> topSenderMap = statisticsService.getTopSenderCountMap(beginTime, endTime, TOP_SENDER_LIMIT);
         // TOP 发送者：批量回填昵称
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(topSenderMap.keySet());
         return ok(convertList(topSenderMap.entrySet(), entry -> {
-            ImStatisticsManagerTopSenderRespVO item = new ImStatisticsManagerTopSenderRespVO()
+            ImStatisticsManagerTopSenderRespVo item = new ImStatisticsManagerTopSenderRespVo()
                     .setUserId(entry.getKey()).setMessageCount(entry.getValue());
             MapUtils.findAndThen(userMap, entry.getKey(), user -> item.setNickname(user.getName()));
             return item;

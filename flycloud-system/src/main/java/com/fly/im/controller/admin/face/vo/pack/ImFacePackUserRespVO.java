@@ -9,7 +9,7 @@ import java.util.List;
 @Schema(description = "IM 表情包（用户端） Response VO")
 @Data
 @Accessors(chain = true)
-public class ImFacePackUserRespVO {
+public class ImFacePackUserRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private Long id;

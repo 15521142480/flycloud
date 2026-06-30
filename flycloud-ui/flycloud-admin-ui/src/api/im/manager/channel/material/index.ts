@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface ImManagerChannelMaterialVO {
   id: number
   channelId: number
@@ -15,33 +17,36 @@ export interface ImManagerChannelMaterialVO {
 
 // 获得素材分页
 export const getManagerChannelMaterialPage = (params: PageParam) => {
-  return request.get({ url: '/im/manager/channel-material/page', params })
+  return request.get({ url: `/${SYS_BASE_URL}/im/manager/channel-material/page`, params })
 }
 
 // 获得指定频道下的素材精简列表
 export const getSimpleManagerChannelMaterialList = (channelId: number) => {
   return request.get({
-    url: '/im/manager/channel-material/simple-list',
+    url: `/${SYS_BASE_URL}/im/manager/channel-material/simple-list`,
     params: { channelId }
   })
 }
 
 // 获得素材详情
 export const getManagerChannelMaterial = (id: number) => {
-  return request.get({ url: '/im/manager/channel-material/get', params: { id } })
+  return request.get({ url: `/${SYS_BASE_URL}/im/manager/channel-material/get`, params: { id } })
 }
 
 // 新增素材
 export const createManagerChannelMaterial = (data: ImManagerChannelMaterialVO) => {
-  return request.post({ url: '/im/manager/channel-material/create', data })
+  return request.post({ url: `/${SYS_BASE_URL}/im/manager/channel-material/create`, data })
 }
 
 // 修改素材
 export const updateManagerChannelMaterial = (data: ImManagerChannelMaterialVO) => {
-  return request.put({ url: '/im/manager/channel-material/update', data })
+  return request.put({ url: `/${SYS_BASE_URL}/im/manager/channel-material/update`, data })
 }
 
 // 删除素材
 export const deleteManagerChannelMaterial = (id: number) => {
-  return request.delete({ url: '/im/manager/channel-material/delete', params: { id } })
+  return request.delete({
+    url: `/${SYS_BASE_URL}/im/manager/channel-material/delete`,
+    params: { id }
+  })
 }

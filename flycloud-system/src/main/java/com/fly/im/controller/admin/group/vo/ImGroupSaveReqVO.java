@@ -8,7 +8,7 @@ import jakarta.validation.constraints.*;
 @Schema(description = "管理后台 - 群新增/修改 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupSaveReqVO {
+public class ImGroupSaveReqVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1003")
     private Long id;

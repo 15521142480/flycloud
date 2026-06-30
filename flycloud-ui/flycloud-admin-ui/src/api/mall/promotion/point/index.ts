@@ -1,6 +1,8 @@
 import request from '@/config/axios'
 import { Sku, Spu } from '@/api/mall/product/spu' // 积分商城活动 VO
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 // 积分商城活动 VO
 export interface PointActivityVO {
   id: number // 积分商城活动编号
@@ -56,36 +58,38 @@ export interface SpuExtension0 extends Spu {
 export const PointActivityApi = {
   // 查询积分商城活动分页
   getPointActivityPage: async (params: any) => {
-    return await request.get({ url: `/promotion/point-activity/page`, params })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/point-activity/page`, params })
   },
 
   // 查询积分商城活动详情
   getPointActivity: async (id: number) => {
-    return await request.get({ url: `/promotion/point-activity/get?id=` + id })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/point-activity/get?id=` + id })
   },
 
   // 查询积分商城活动列表，基于活动编号数组
   getPointActivityListByIds: async (ids: number[]) => {
-    return request.get({ url: `/promotion/point-activity/list-by-ids?ids=${ids}` })
+    return request.get({ url: `/${MALL_BASE_URL}/promotion/point-activity/list-by-ids?ids=${ids}` })
   },
 
   // 新增积分商城活动
   createPointActivity: async (data: PointActivityVO) => {
-    return await request.post({ url: `/promotion/point-activity/create`, data })
+    return await request.post({ url: `/${MALL_BASE_URL}/promotion/point-activity/create`, data })
   },
 
   // 修改积分商城活动
   updatePointActivity: async (data: PointActivityVO) => {
-    return await request.put({ url: `/promotion/point-activity/update`, data })
+    return await request.put({ url: `/${MALL_BASE_URL}/promotion/point-activity/update`, data })
   },
 
   // 删除积分商城活动
   deletePointActivity: async (id: number) => {
-    return await request.delete({ url: `/promotion/point-activity/delete?id=` + id })
+    return await request.delete({
+      url: `/${MALL_BASE_URL}/promotion/point-activity/delete?id=` + id
+    })
   },
 
   // 关闭秒杀活动
   closePointActivity: async (id: number) => {
-    return await request.put({ url: '/promotion/point-activity/close?id=' + id })
+    return await request.put({ url: `/${MALL_BASE_URL}/promotion/point-activity/close?id=` + id })
   }
 }

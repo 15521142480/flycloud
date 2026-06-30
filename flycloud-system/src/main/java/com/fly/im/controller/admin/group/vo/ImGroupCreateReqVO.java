@@ -11,7 +11,7 @@ import java.util.List;
 @Schema(description = "管理后台 - 群创建 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupCreateReqVO {
+public class ImGroupCreateReqVo {
 
     @Schema(description = "群名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "flycloud技术交流群")
     @NotBlank(message = "群名称不能为空")

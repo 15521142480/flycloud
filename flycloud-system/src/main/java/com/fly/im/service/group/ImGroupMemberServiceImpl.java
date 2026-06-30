@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVO;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import com.fly.im.dal.mysql.group.ImGroupMemberMapper;
 import com.fly.im.enums.group.ImGroupMemberRoleEnum;
@@ -250,30 +250,30 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
     }
 
     @Override
-    public void updateGroupMember(Long userId, ImGroupMemberUpdateReqVO updateReqVO) {
-        Long groupId = updateReqVO.getGroupId();
+    public void updateGroupMember(Long userId, ImGroupMemberUpdateReqVo updateReqVo) {
+        Long groupId = updateReqVo.getGroupId();
         // 1. 校验是群的有效成员
         ImGroupMemberDO member = validateMemberInGroup(groupId, userId);
 
         // 2. 更新群成员信息
-        ImGroupMemberDO updateObj = BeanUtils.toBean(updateReqVO, ImGroupMemberDO.class)
+        ImGroupMemberDO updateObj = BeanUtils.toBean(updateReqVo, ImGroupMemberDO.class)
                 .setId(member.getId());
         groupMemberMapper.updateById(updateObj);
 
         // 3.1 displayUserName 是公开字段，单独走 GROUP_MEMBER_NICKNAME_UPDATE 广播给全员；空串视为「清空昵称」也要广播；与旧值相同跳过
-        if (updateReqVO.getDisplayUserName() != null
-                && ObjUtil.notEqual(updateReqVO.getDisplayUserName(), member.getDisplayUserName())) {
+        if (updateReqVo.getDisplayUserName() != null
+                && ObjUtil.notEqual(updateReqVo.getDisplayUserName(), member.getDisplayUserName())) {
             groupMessageService.sendGroupMessage(userId, ImGroupMessageSendDTO.ofGroupMemberNicknameUpdate(
-                    groupId, userId, updateReqVO.getDisplayUserName()));
+                    groupId, userId, updateReqVo.getDisplayUserName()));
         }
         // 3.2 silent / groupRemark 是个人字段，仅推自己做多端同步；与旧值都相同跳过
-        boolean silentChanged = updateReqVO.getSilent() != null
-                && ObjUtil.notEqual(updateReqVO.getSilent(), member.getSilent());
-        boolean groupRemarkChanged = updateReqVO.getGroupRemark() != null
-                && ObjUtil.notEqual(updateReqVO.getGroupRemark(), member.getGroupRemark());
+        boolean silentChanged = updateReqVo.getSilent() != null
+                && ObjUtil.notEqual(updateReqVo.getSilent(), member.getSilent());
+        boolean groupRemarkChanged = updateReqVo.getGroupRemark() != null
+                && ObjUtil.notEqual(updateReqVo.getGroupRemark(), member.getGroupRemark());
         if (silentChanged || groupRemarkChanged) {
             groupMessageService.sendGroupMessage(userId, List.of(userId), ImGroupMessageSendDTO.ofGroupMemberSettingUpdate(
-                    groupId, userId, updateReqVO.getSilent(), updateReqVO.getGroupRemark()));
+                    groupId, userId, updateReqVo.getSilent(), updateReqVo.getGroupRemark()));
         }
     }
 

@@ -1,8 +1,8 @@
 package com.fly.im.service.group;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVO;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVO;
+import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVo;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupRequestDO;
 import jakarta.validation.Valid;
 
@@ -23,10 +23,10 @@ public interface ImGroupRequestService {
      * 群未开启审批时直接入群 + 1510 全员广播；开启审批则创建或复用一条待审批记录 + 1503 推送
      *
      * @param userId 申请人用户编号
-     * @param reqVO  申请请求
+     * @param reqVo  申请请求
      * @return 申请记录；自由进群直进时返回 null
      */
-    ImGroupRequestDO applyJoinGroup(Long userId, @Valid ImGroupRequestApplyReqVO reqVO);
+    ImGroupRequestDO applyJoinGroup(Long userId, @Valid ImGroupRequestApplyReqVo reqVo);
 
     /**
      * 同意加群申请（群主或管理员）；处理前校验入群人数上限
@@ -88,6 +88,6 @@ public interface ImGroupRequestService {
     /**
      * 【管理后台】分页查询加群申请记录
      */
-    PageResult<ImGroupRequestDO> getGroupRequestPage(ImGroupRequestManagerPageReqVO reqVO);
+    PageResult<ImGroupRequestDO> getGroupRequestPage(ImGroupRequestManagerPageReqVo reqVo);
 
 }

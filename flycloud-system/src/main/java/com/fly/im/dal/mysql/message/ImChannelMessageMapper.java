@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.message;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVO;
+import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVo;
 import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -42,11 +42,11 @@ public interface ImChannelMessageMapper extends BaseMapperX<ImChannelMessageDO> 
         return selectCount(ImChannelMessageDO::getMaterialId, materialId);
     }
 
-    default PageResult<ImChannelMessageDO> selectPage(ImChannelMessagePageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImChannelMessageDO>()
-                .eqIfPresent(ImChannelMessageDO::getChannelId, reqVO.getChannelId())
-                .eqIfPresent(ImChannelMessageDO::getMaterialId, reqVO.getMaterialId())
-                .betweenIfPresent(ImChannelMessageDO::getSendTime, reqVO.getSendTime())
+    default PageResult<ImChannelMessageDO> selectPage(ImChannelMessagePageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImChannelMessageDO>()
+                .eqIfPresent(ImChannelMessageDO::getChannelId, reqVo.getChannelId())
+                .eqIfPresent(ImChannelMessageDO::getMaterialId, reqVo.getMaterialId())
+                .betweenIfPresent(ImChannelMessageDO::getSendTime, reqVo.getSendTime())
                 .orderByDesc(ImChannelMessageDO::getId));
     }
 

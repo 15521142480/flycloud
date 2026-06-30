@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelPageReqVO;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelSaveReqVO;
+import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelPageReqVo;
+import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelSaveReqVo;
 import com.fly.im.dal.dataobject.channel.ImChannelDO;
 import com.fly.im.dal.mysql.channel.ImChannelMapper;
 import jakarta.annotation.Resource;
@@ -63,8 +63,8 @@ public class ImChannelServiceImpl implements ImChannelService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImChannelDO> getChannelPage(ImChannelPageReqVO reqVO) {
-        return channelMapper.selectPage(reqVO);
+    public PageResult<ImChannelDO> getChannelPage(ImChannelPageReqVo reqVo) {
+        return channelMapper.selectPage(reqVo);
     }
 
     @Override
@@ -73,25 +73,25 @@ public class ImChannelServiceImpl implements ImChannelService {
     }
 
     @Override
-    public Long createChannel(ImChannelSaveReqVO reqVO) {
+    public Long createChannel(ImChannelSaveReqVo reqVo) {
         // 校验 code 唯一
-        validateCodeUnique(null, reqVO.getCode());
+        validateCodeUnique(null, reqVo.getCode());
 
         // 插入
-        ImChannelDO channel = BeanUtils.toBean(reqVO, ImChannelDO.class);
+        ImChannelDO channel = BeanUtils.toBean(reqVo, ImChannelDO.class);
         channelMapper.insert(channel);
         return channel.getId();
     }
 
     @Override
-    public void updateChannel(ImChannelSaveReqVO reqVO) {
+    public void updateChannel(ImChannelSaveReqVo reqVo) {
         // 1.1 校验存在
-        validateChannelExists(reqVO.getId());
+        validateChannelExists(reqVo.getId());
         // 1.2 校验 code 唯一
-        validateCodeUnique(reqVO.getId(), reqVO.getCode());
+        validateCodeUnique(reqVo.getId(), reqVo.getCode());
 
         // 2. 更新
-        ImChannelDO updateObj = BeanUtils.toBean(reqVO, ImChannelDO.class);
+        ImChannelDO updateObj = BeanUtils.toBean(reqVo, ImChannelDO.class);
         channelMapper.updateById(updateObj);
     }
 

@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 @Schema(description = "管理后台 - 私聊历史消息列表 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImPrivateMessageListReqVO {
+public class ImPrivateMessageListReqVo {
 
     @Schema(description = "接收人编号（对方）", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     @NotNull(message = "接收人编号不能为空")

@@ -15,7 +15,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImFriendRequestManagerPageReqVO extends PageBo {
+public class ImFriendRequestManagerPageReqVo extends PageBo {
 
     @Schema(description = "发起方用户编号", example = "1024")
     private Long fromUserId;

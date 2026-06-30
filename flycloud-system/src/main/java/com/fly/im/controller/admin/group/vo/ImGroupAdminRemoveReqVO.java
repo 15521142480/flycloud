@@ -11,7 +11,7 @@ import java.util.List;
 @Schema(description = "管理后台 - 撤销群管理员 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupAdminRemoveReqVO {
+public class ImGroupAdminRemoveReqVo {
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "13279")
     @NotNull(message = "群编号不能为空")

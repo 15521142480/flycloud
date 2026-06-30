@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 频道素材新增 / 修改 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImChannelMaterialSaveReqVO {
+public class ImChannelMaterialSaveReqVo {
 
     @Schema(description = "编号（修改时必填）", example = "1024")
     private Long id;

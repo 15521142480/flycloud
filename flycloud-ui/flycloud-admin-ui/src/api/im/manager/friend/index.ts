@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface ImManagerFriendVO {
   id: number
   userId: number
@@ -19,5 +21,5 @@ export interface ImManagerFriendVO {
 
 // 获得好友关系分页
 export const getManagerFriendPage = (params: PageParam) => {
-  return request.get({ url: '/im/manager/friend/page', params })
+  return request.get({ url: `/${SYS_BASE_URL}/im/manager/friend/page`, params })
 }

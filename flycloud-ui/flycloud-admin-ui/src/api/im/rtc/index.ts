@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // 创建新通话请求 VO
 export interface ImRtcCallCreateReqVO {
   conversationType: number
@@ -41,48 +43,51 @@ export interface ImRtcGroupCallRespVO {
 
 // 创建新通话；私聊或群聊根据 conversationType 区分
 export const createCall = (data: ImRtcCallCreateReqVO) => {
-  return request.post<ImRtcCallRespVO>({ url: '/im/rtc/create', data })
+  return request.post<ImRtcCallRespVO>({ url: `/${SYS_BASE_URL}/im/rtc/create`, data })
 }
 
 // 通话中追加邀请；仅群通话可用
 export const inviteCall = (data: ImRtcCallInviteReqVO) => {
-  return request.post<boolean>({ url: '/im/rtc/invite', data })
+  return request.post<boolean>({ url: `/${SYS_BASE_URL}/im/rtc/invite`, data })
 }
 
 // 加入已有群通话；用于胶囊条「加入」按钮
 export const joinCall = (room: string) => {
-  return request.post<ImRtcCallRespVO>({ url: '/im/rtc/join', params: { room } })
+  return request.post<ImRtcCallRespVO>({ url: `/${SYS_BASE_URL}/im/rtc/join`, params: { room } })
 }
 
 // 接听通话
 export const acceptCall = (room: string) => {
-  return request.post<ImRtcCallRespVO>({ url: '/im/rtc/accept', params: { room } })
+  return request.post<ImRtcCallRespVO>({ url: `/${SYS_BASE_URL}/im/rtc/accept`, params: { room } })
 }
 
 // 拒绝通话
 export const rejectCall = (room: string) => {
-  return request.post<boolean>({ url: '/im/rtc/reject', params: { room } })
+  return request.post<boolean>({ url: `/${SYS_BASE_URL}/im/rtc/reject`, params: { room } })
 }
 
 // 取消邀请；主叫接通前调用
 export const cancelCall = (room: string) => {
-  return request.post<boolean>({ url: '/im/rtc/cancel', params: { room } })
+  return request.post<boolean>({ url: `/${SYS_BASE_URL}/im/rtc/cancel`, params: { room } })
 }
 
 // 离开通话；接通后调用
 export const leaveCall = (room: string) => {
-  return request.post<boolean>({ url: '/im/rtc/leave', params: { room } })
+  return request.post<boolean>({ url: `/${SYS_BASE_URL}/im/rtc/leave`, params: { room } })
 }
 
 // 振铃超时检查；RUNNING 端 timer 兜底，触发后端立即扫描该 room 的超时 INVITING（接口静默）
 export const noAnswerCallCheck = (room: string) => {
-  return request.post<boolean>({ url: '/im/rtc/no-answer-call-check', params: { room } })
+  return request.post<boolean>({
+    url: `/${SYS_BASE_URL}/im/rtc/no-answer-call-check`,
+    params: { room }
+  })
 }
 
 // 查询当前进行中的通话；目前仅群聊场景（胶囊条），返回 null 表示无活跃通话
 export const getActiveCall = (groupId: number) => {
   return request.get<ImRtcGroupCallRespVO | null>({
-    url: '/im/rtc/get-active-call',
+    url: `/${SYS_BASE_URL}/im/rtc/get-active-call`,
     params: { groupId }
   })
 }

@@ -1,6 +1,8 @@
 import request from '@/config/axios'
 import { DataComparisonRespVO } from '@/api/mall/statistics/common'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface ProductStatisticsVO {
   id: number
   day: string
@@ -24,28 +26,28 @@ export const ProductStatisticsApi = {
   // 获得商品统计分析
   getProductStatisticsAnalyse: (params: any) => {
     return request.get<DataComparisonRespVO<ProductStatisticsVO>>({
-      url: '/statistics/product/analyse',
+      url: `/${MALL_BASE_URL}/statistics/product/analyse`,
       params
     })
   },
   // 获得商品状况明细
   getProductStatisticsList: (params: any) => {
     return request.get<ProductStatisticsVO[]>({
-      url: '/statistics/product/list',
+      url: `/${MALL_BASE_URL}/statistics/product/list`,
       params
     })
   },
   // 导出获得商品状况明细 Excel
   exportProductStatisticsExcel: (params: any) => {
     return request.download({
-      url: '/statistics/product/export-excel',
+      url: `/${MALL_BASE_URL}/statistics/product/export-excel`,
       params
     })
   },
   // 获得商品排行榜分页
   getProductStatisticsRankPage: async (params: any) => {
     return await request.get({
-      url: `/statistics/product/rank-page`,
+      url: `/${MALL_BASE_URL}/statistics/product/rank-page`,
       params
     })
   }

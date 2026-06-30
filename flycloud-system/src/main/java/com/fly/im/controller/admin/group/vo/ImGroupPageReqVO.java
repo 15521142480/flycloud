@@ -14,7 +14,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ImGroupPageReqVO extends PageBo {
+public class ImGroupPageReqVo extends PageBo {
 
     @Schema(description = "群名称", example = "张三")
     private String name;

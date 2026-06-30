@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.friend;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVO;
+import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendDO;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.ibatis.annotations.Mapper;
@@ -57,13 +57,13 @@ public interface ImFriendMapper extends BaseMapperX<ImFriendDO> {
                 .eq(ImFriendDO::getStatus, status));
     }
 
-    default PageResult<ImFriendDO> selectPage(ImFriendManagerPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImFriendDO>()
-                .eqIfPresent(ImFriendDO::getUserId, reqVO.getUserId())
-                .eqIfPresent(ImFriendDO::getFriendUserId, reqVO.getFriendUserId())
-                .eqIfPresent(ImFriendDO::getStatus, reqVO.getStatus())
-                .eqIfPresent(ImFriendDO::getSilent, reqVO.getSilent())
-                .betweenIfPresent(ImFriendDO::getAddTime, reqVO.getAddTime())
+    default PageResult<ImFriendDO> selectPage(ImFriendManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFriendDO>()
+                .eqIfPresent(ImFriendDO::getUserId, reqVo.getUserId())
+                .eqIfPresent(ImFriendDO::getFriendUserId, reqVo.getFriendUserId())
+                .eqIfPresent(ImFriendDO::getStatus, reqVo.getStatus())
+                .eqIfPresent(ImFriendDO::getSilent, reqVo.getSilent())
+                .betweenIfPresent(ImFriendDO::getAddTime, reqVo.getAddTime())
                 .orderByDesc(ImFriendDO::getId));
     }
 

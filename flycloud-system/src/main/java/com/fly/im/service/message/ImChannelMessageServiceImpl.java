@@ -6,8 +6,8 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVO;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageSendReqVO;
+import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVo;
+import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageSendReqVo;
 import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
 import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
 import com.fly.im.dal.mysql.message.ImChannelMessageMapper;
@@ -105,22 +105,22 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long sendMessage(ImChannelMessageSendReqVO reqVO) {
+    public Long sendMessage(ImChannelMessageSendReqVo reqVo) {
         // 1. 校验素材存在
-        ImChannelMaterialDO material = channelMaterialService.validateMaterialExists(reqVO.getMaterialId());
+        ImChannelMaterialDO material = channelMaterialService.validateMaterialExists(reqVo.getMaterialId());
 
         // 2.1 组装 payload（不带富文本正文）；字段同名直接 BeanUtils 拷贝，materialId 单独 set 以兼容转发场景
         MaterialMessage payload = BeanUtils.toBean(material, MaterialMessage.class).setMaterialId(material.getId());
         String payloadJson = JsonUtils.toJsonString(payload);
-        // 2.2 落库 1 行 message；reqVO 同名字段（materialId / receiverUserIds）自动拷贝，剩余字段补 set
-        ImChannelMessageDO message = BeanUtils.toBean(reqVO, ImChannelMessageDO.class).setChannelId(material.getChannelId())
+        // 2.2 落库 1 行 message；reqVo 同名字段（materialId / receiverUserIds）自动拷贝，剩余字段补 set
+        ImChannelMessageDO message = BeanUtils.toBean(reqVo, ImChannelMessageDO.class).setChannelId(material.getChannelId())
                 .setType(ImMessageTypeEnum.MATERIAL.getType()).setContent(payloadJson).setSendTime(LocalDateTime.now());
         channelMessageMapper.insert(message);
 
         // 3. 异步推 WebSocket：指定用户走点对点；全员（receiverUserIds 为空）走广播
         ImChannelMessageDTO dto = ImChannelMessageDTO.ofSend(message);
-        if (CollUtil.isNotEmpty(reqVO.getReceiverUserIds())) {
-            webSocketService.sendChannelMessageAsync(reqVO.getReceiverUserIds(), dto);
+        if (CollUtil.isNotEmpty(reqVo.getReceiverUserIds())) {
+            webSocketService.sendChannelMessageAsync(reqVo.getReceiverUserIds(), dto);
         } else {
             webSocketService.broadcastChannelMessageAsync(dto);
         }
@@ -128,8 +128,8 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
     }
 
     @Override
-    public PageResult<ImChannelMessageDO> getMessagePage(ImChannelMessagePageReqVO reqVO) {
-        return channelMessageMapper.selectPage(reqVO);
+    public PageResult<ImChannelMessageDO> getMessagePage(ImChannelMessagePageReqVo reqVo) {
+        return channelMessageMapper.selectPage(reqVo);
     }
 
     @Override

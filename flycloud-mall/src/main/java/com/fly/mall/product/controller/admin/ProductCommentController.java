@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/product/product-comment")
+@RequestMapping("/admin/product/comment")
 public class ProductCommentController extends BaseController {
 
     private final IProductCommentService productCommentService;
@@ -36,7 +36,7 @@ public class ProductCommentController extends BaseController {
     /**
      * 查询商品评价分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:product:product-comment:list')")
+    @PreAuthorize("@pms.hasPermission('mall:product:comment:list')")
     @GetMapping("/list")
     public R<PageVo<ProductCommentVo>> list(ProductCommentBo bo, PageBo page) {
         return R.ok(productCommentService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class ProductCommentController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:product:product-comment:list')")
+    @PreAuthorize("@pms.hasPermission('mall:product:comment:list')")
     @GetMapping("/page")
     public R<PageVo<ProductCommentVo>> page(ProductCommentBo bo, PageBo page) {
         return R.ok(productCommentService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class ProductCommentController extends BaseController {
      * 新增或修改商品评价。
      */
     @Log(title = "商品评价", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-comment:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:product:comment:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@RequestBody ProductCommentBo bo) {
         return R.ok(productCommentService.saveOrUpdate(bo));
@@ -90,7 +90,7 @@ public class ProductCommentController extends BaseController {
      * 删除商品评价。
      */
     @Log(title = "商品评价", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-comment:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:product:comment:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productCommentService.deleteWithValidByIds(Arrays.asList(ids), true));

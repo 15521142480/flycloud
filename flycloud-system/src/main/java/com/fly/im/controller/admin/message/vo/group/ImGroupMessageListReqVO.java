@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - 群聊历史消息列表 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupMessageListReqVO {
+public class ImGroupMessageListReqVo {
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "10")
     @NotNull(message = "群编号不能为空")

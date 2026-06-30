@@ -1,18 +1,18 @@
 package com.fly.im.service.group;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.group.vo.ImGroupAdminAddReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupAdminRemoveReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupCancelMuteMemberReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupCreateReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupMuteAllReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupMuteMemberReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupTransferOwnerReqVO;
-import com.fly.im.controller.admin.group.vo.ImGroupUpdateReqVO;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberInviteReqVO;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRemoveReqVO;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerBanReqVO;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerPageReqVO;
+import com.fly.im.controller.admin.group.vo.ImGroupAdminAddReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupAdminRemoveReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupCancelMuteMemberReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupCreateReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupMuteAllReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupMuteMemberReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupTransferOwnerReqVo;
+import com.fly.im.controller.admin.group.vo.ImGroupUpdateReqVo;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberInviteReqVo;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRemoveReqVo;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerBanReqVo;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerPageReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupDO;
 import jakarta.validation.Valid;
 
@@ -35,20 +35,20 @@ public interface ImGroupService {
      * <p>
      * 同时将当前登录用户设置为群主，并插入群主的群成员记录
      *
-     * @param createReqVO 创建信息
+     * @param createReqVo 创建信息
      * @param userId      当前登录用户编号（群主）
      * @return 创建后的群信息
      */
-    ImGroupDO createGroup(@Valid ImGroupCreateReqVO createReqVO, Long userId);
+    ImGroupDO createGroup(@Valid ImGroupCreateReqVo createReqVo, Long userId);
 
     /**
      * 更新群信息
      *
-     * @param updateReqVO 更新信息
+     * @param updateReqVo 更新信息
      * @param userId      当前登录用户编号
      * @return 更新后的群信息
      */
-    ImGroupDO updateGroup(@Valid ImGroupUpdateReqVO updateReqVO, Long userId);
+    ImGroupDO updateGroup(@Valid ImGroupUpdateReqVo updateReqVo, Long userId);
 
     /**
      * 解散群
@@ -119,9 +119,9 @@ public interface ImGroupService {
      * 校验群人数上限，邀请后推送提示消息和群创建事件给被邀请人。
      *
      * @param userId      当前登录用户编号
-     * @param inviteReqVO 邀请信息
+     * @param inviteReqVo 邀请信息
      */
-    void inviteGroupMember(Long userId, @Valid ImGroupMemberInviteReqVO inviteReqVO);
+    void inviteGroupMember(Long userId, @Valid ImGroupMemberInviteReqVo inviteReqVo);
 
     /**
      * 退群
@@ -139,25 +139,25 @@ public interface ImGroupService {
      * 群主可踢管理员和普通成员；管理员仅能踢普通成员；群主不可被踢。
      *
      * @param userId      当前登录用户编号
-     * @param removeReqVO 移除信息
+     * @param removeReqVo 移除信息
      */
-    void removeGroupMember(Long userId, @Valid ImGroupMemberRemoveReqVO removeReqVO);
+    void removeGroupMember(Long userId, @Valid ImGroupMemberRemoveReqVo removeReqVo);
 
     /**
      * 添加群管理员（仅群主可执行）
      *
      * @param userId 当前登录用户编号（群主）
-     * @param reqVO  添加信息（含群编号、目标用户编号列表）
+     * @param reqVo  添加信息（含群编号、目标用户编号列表）
      */
-    void addGroupAdmin(Long userId, @Valid ImGroupAdminAddReqVO reqVO);
+    void addGroupAdmin(Long userId, @Valid ImGroupAdminAddReqVo reqVo);
 
     /**
      * 撤销群管理员（仅群主可执行）
      *
      * @param userId 当前登录用户编号（群主）
-     * @param reqVO  撤销信息（含群编号、目标用户编号列表）
+     * @param reqVo  撤销信息（含群编号、目标用户编号列表）
      */
-    void removeGroupAdmin(Long userId, @Valid ImGroupAdminRemoveReqVO reqVO);
+    void removeGroupAdmin(Long userId, @Valid ImGroupAdminRemoveReqVo reqVo);
 
     /**
      * 转让群主（仅老群主可执行）
@@ -165,9 +165,9 @@ public interface ImGroupService {
      * 转让后：旧群主 role 降为 MEMBER，新群主 role 升为 OWNER
      *
      * @param userId      当前登录用户编号（旧群主）
-     * @param transferReqVO 转让信息
+     * @param transferReqVo 转让信息
      */
-    void transferGroupOwner(Long userId, @Valid ImGroupTransferOwnerReqVO transferReqVO);
+    void transferGroupOwner(Long userId, @Valid ImGroupTransferOwnerReqVo transferReqVo);
 
     /**
      * 置顶群消息（仅群主或管理员可执行）
@@ -195,43 +195,43 @@ public interface ImGroupService {
      * 全群禁言 / 取消（仅群主或管理员可执行）
      *
      * @param userId 当前登录用户编号
-     * @param reqVO  禁言信息
+     * @param reqVo  禁言信息
      */
-    void muteAll(Long userId, @Valid ImGroupMuteAllReqVO reqVO);
+    void muteAll(Long userId, @Valid ImGroupMuteAllReqVo reqVo);
 
     /**
      * 禁言单个成员（三档分层权限）
      *
      * @param userId 当前登录用户编号
-     * @param reqVO  禁言信息
+     * @param reqVo  禁言信息
      */
-    void muteMember(Long userId, @Valid ImGroupMuteMemberReqVO reqVO);
+    void muteMember(Long userId, @Valid ImGroupMuteMemberReqVo reqVo);
 
     /**
      * 取消成员禁言（三档分层权限）
      *
      * @param userId 当前登录用户编号
-     * @param reqVO  取消禁言信息
+     * @param reqVo  取消禁言信息
      */
-    void cancelMuteMember(Long userId, @Valid ImGroupCancelMuteMemberReqVO reqVO);
+    void cancelMuteMember(Long userId, @Valid ImGroupCancelMuteMemberReqVo reqVo);
 
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询群列表
      *
-     * @param pageReqVO 分页查询条件
+     * @param pageReqVo 分页查询条件
      * @return 群分页列表
      */
-    PageResult<ImGroupDO> getGroupPage(ImGroupManagerPageReqVO pageReqVO);
+    PageResult<ImGroupDO> getGroupPage(ImGroupManagerPageReqVo pageReqVo);
 
     /**
      * 【管理后台】封禁群
      *
      * @param operatorUserId 操作人用户编号
-     * @param banReqVO 封禁信息（含群编号、封禁原因）
+     * @param banReqVo 封禁信息（含群编号、封禁原因）
      */
-    void banGroup(Long operatorUserId, @Valid ImGroupManagerBanReqVO banReqVO);
+    void banGroup(Long operatorUserId, @Valid ImGroupManagerBanReqVo banReqVo);
 
     /**
      * 【管理后台】解封群

@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 // 秒杀时段 VO
 export interface SeckillConfigVO {
   id: number // 编号
@@ -14,32 +16,34 @@ export interface SeckillConfigVO {
 export const SeckillConfigApi = {
   // 查询秒杀时段分页
   getSeckillConfigPage: async (params: any) => {
-    return await request.get({ url: `/promotion/seckill-config/page`, params })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/seckill-config/page`, params })
   },
 
   // 查询秒杀时段列表
   getSimpleSeckillConfigList: async () => {
-    return await request.get({ url: `/promotion/seckill-config/list` })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/seckill-config/list` })
   },
 
   // 查询秒杀时段详情
   getSeckillConfig: async (id: number) => {
-    return await request.get({ url: `/promotion/seckill-config/get?id=` + id })
+    return await request.get({ url: `/${MALL_BASE_URL}/promotion/seckill-config/get?id=` + id })
   },
 
   // 新增秒杀时段
   createSeckillConfig: async (data: SeckillConfigVO) => {
-    return await request.post({ url: `/promotion/seckill-config/create`, data })
+    return await request.post({ url: `/${MALL_BASE_URL}/promotion/seckill-config/create`, data })
   },
 
   // 修改秒杀时段
   updateSeckillConfig: async (data: SeckillConfigVO) => {
-    return await request.put({ url: `/promotion/seckill-config/update`, data })
+    return await request.put({ url: `/${MALL_BASE_URL}/promotion/seckill-config/update`, data })
   },
 
   // 删除秒杀时段
   deleteSeckillConfig: async (id: number) => {
-    return await request.delete({ url: `/promotion/seckill-config/delete?id=` + id })
+    return await request.delete({
+      url: `/${MALL_BASE_URL}/promotion/seckill-config/delete?id=` + id
+    })
   },
 
   // 修改时段配置状态
@@ -48,6 +52,9 @@ export const SeckillConfigApi = {
       id,
       status
     }
-    return request.put({ url: '/promotion/seckill-config/update-status', data: data })
+    return request.put({
+      url: `/${MALL_BASE_URL}/promotion/seckill-config/update-status`,
+      data: data
+    })
   }
 }

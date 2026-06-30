@@ -17,7 +17,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImFacePackPageReqVO extends PageBo {
+public class ImFacePackPageReqVo extends PageBo {
 
     @Schema(description = "表情包名称，模糊匹配", example = "猫")
     private String name;

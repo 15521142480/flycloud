@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.face;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVO;
+import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVo;
 import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -38,11 +38,11 @@ public interface ImFacePackItemMapper extends BaseMapperX<ImFacePackItemDO> {
                 .in(ImFacePackItemDO::getPackId, packIds));
     }
 
-    default PageResult<ImFacePackItemDO> selectPage(ImFacePackItemPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImFacePackItemDO>()
-                .eqIfPresent(ImFacePackItemDO::getPackId, reqVO.getPackId())
-                .likeIfPresent(ImFacePackItemDO::getName, reqVO.getName())
-                .eqIfPresent(ImFacePackItemDO::getStatus, reqVO.getStatus())
+    default PageResult<ImFacePackItemDO> selectPage(ImFacePackItemPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFacePackItemDO>()
+                .eqIfPresent(ImFacePackItemDO::getPackId, reqVo.getPackId())
+                .likeIfPresent(ImFacePackItemDO::getName, reqVo.getName())
+                .eqIfPresent(ImFacePackItemDO::getStatus, reqVo.getStatus())
                 .orderByAsc(ImFacePackItemDO::getSort)
                 .orderByDesc(ImFacePackItemDO::getId));
     }

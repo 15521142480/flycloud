@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Schema(description = "用户 APP - IM 频道消息拉取 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImChannelMessagePullRespVO {
+public class ImChannelMessagePullRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "9001")
     private Long id;

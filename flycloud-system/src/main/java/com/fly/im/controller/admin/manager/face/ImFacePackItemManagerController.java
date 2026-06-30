@@ -3,9 +3,9 @@ package com.fly.im.controller.admin.manager.face;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVO;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemRespVO;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemSaveReqVO;
+import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVo;
+import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemRespVo;
+import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemSaveReqVo;
 import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
 import com.fly.im.service.face.ImFacePackItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,15 +34,15 @@ public class ImFacePackItemManagerController {
     @PostMapping("/create")
     @Operation(summary = "新增表情")
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:create')")
-    public R<Long> createFacePackItem(@Valid @RequestBody ImFacePackItemSaveReqVO reqVO) {
-        return ok(facePackItemService.createFacePackItem(reqVO));
+    public R<Long> createFacePackItem(@Valid @RequestBody ImFacePackItemSaveReqVo reqVo) {
+        return ok(facePackItemService.createFacePackItem(reqVo));
     }
 
     @PutMapping("/update")
     @Operation(summary = "修改表情")
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:update')")
-    public R<Boolean> updateFacePackItem(@Valid @RequestBody ImFacePackItemSaveReqVO reqVO) {
-        facePackItemService.updateFacePackItem(reqVO);
+    public R<Boolean> updateFacePackItem(@Valid @RequestBody ImFacePackItemSaveReqVo reqVo) {
+        facePackItemService.updateFacePackItem(reqVo);
         return ok(true);
     }
 
@@ -68,18 +68,18 @@ public class ImFacePackItemManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得表情分页")
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:query')")
-    public R<PageResult<ImFacePackItemRespVO>> getFacePackItemPage(@Valid ImFacePackItemPageReqVO pageReqVO) {
-        PageResult<ImFacePackItemDO> pageResult = facePackItemService.getFacePackItemPage(pageReqVO);
-        return ok(PageResult.convert(pageResult, ImFacePackItemRespVO.class));
+    public R<PageResult<ImFacePackItemRespVo>> getFacePackItemPage(@Valid ImFacePackItemPageReqVo pageReqVo) {
+        PageResult<ImFacePackItemDO> pageResult = facePackItemService.getFacePackItemPage(pageReqVo);
+        return ok(PageResult.convert(pageResult, ImFacePackItemRespVo.class));
     }
 
     @GetMapping("/get")
     @Operation(summary = "获得表情详情")
     @Parameter(name = "id", description = "编号", required = true, example = "2048")
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:query')")
-    public R<ImFacePackItemRespVO> getFacePackItem(@RequestParam("id") Long id) {
+    public R<ImFacePackItemRespVo> getFacePackItem(@RequestParam("id") Long id) {
         ImFacePackItemDO item = facePackItemService.getFacePackItem(id);
-        return ok(BeanUtils.toBean(item, ImFacePackItemRespVO.class));
+        return ok(BeanUtils.toBean(item, ImFacePackItemRespVo.class));
     }
 
 }

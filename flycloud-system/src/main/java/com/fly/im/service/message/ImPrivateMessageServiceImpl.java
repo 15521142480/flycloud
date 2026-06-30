@@ -7,9 +7,9 @@ import cn.hutool.core.util.ObjUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVO;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVO;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVO;
+import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
+import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVo;
+import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVo;
 import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
 import com.fly.im.dal.mysql.message.ImPrivateMessageMapper;
 import com.fly.im.enums.message.ImMessageStatusEnum;
@@ -62,28 +62,28 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     private ImProperties imProperties;
 
     @Override
-    public ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVO reqVO) {
+    public ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo) {
         // 1.1 幂等校验：根据 senderId + clientMessageId 查重
         ImPrivateMessageDO existing = privateMessageMapper.selectBySenderIdAndClientMessageId(
-                senderId, reqVO.getClientMessageId());
+                senderId, reqVo.getClientMessageId());
         if (existing != null) {
             log.info("[sendPrivateMessage][幂等命中 senderId({}) clientMessageId({}) 已存在消息({})]",
-                    senderId, reqVO.getClientMessageId(), existing.getId());
+                    senderId, reqVo.getClientMessageId(), existing.getId());
             return existing;
         }
         // 1.2 消息内容校验
-        ImMessageUtils.validateUserMessageContent(reqVO.getType(), reqVO.getContent());
+        ImMessageUtils.validateUserMessageContent(reqVo.getType(), reqVo.getContent());
         // 1.3 好友校验
-        friendService.validateFriend(senderId, reqVO.getReceiverId());
+        friendService.validateFriend(senderId, reqVo.getReceiverId());
         // 1.4 文本消息敏感词过滤
-        if (ImMessageTypeEnum.TEXT.getType().equals(reqVO.getType())) {
-            sensitiveWordService.validateText(reqVO.getContent());
+        if (ImMessageTypeEnum.TEXT.getType().equals(reqVo.getType())) {
+            sensitiveWordService.validateText(reqVo.getContent());
         }
 
         // 2.1 引用 quote 消息规范化
-        reqVO.setContent(normalizeQuoteContent(reqVO, senderId));
+        reqVo.setContent(normalizeQuoteContent(reqVo, senderId));
         // 2.2 构建并保存消息
-        ImPrivateMessageDO message = BeanUtils.toBean(reqVO, ImPrivateMessageDO.class, m -> m
+        ImPrivateMessageDO message = BeanUtils.toBean(reqVo, ImPrivateMessageDO.class, m -> m
                 .setSenderId(senderId).setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now()));
         privateMessageMapper.insert(message);
 
@@ -157,17 +157,17 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     /**
      * 私聊引用消息规范化
      *
-     * @param reqVO 发送请求
+     * @param reqVo 发送请求
      * @param senderId 发送人编号
      * @return 规范化后的 content
      */
-    private String normalizeQuoteContent(ImPrivateMessageSendReqVO reqVO, Long senderId) {
+    private String normalizeQuoteContent(ImPrivateMessageSendReqVo reqVo, Long senderId) {
         // 解析客户端 content 里的 quote.messageId
-        Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVO.getContent());
+        Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVo.getContent());
 
         // 情况一：没有 quoteMessageId，直接 remove 掉 content 里可能伪造的 quote 字段
         if (quoteMessageId == null) {
-            return ImMessageUtils.removeQuote(reqVO.getContent());
+            return ImMessageUtils.removeQuote(reqVo.getContent());
         }
 
         // 情况二：有 quoteMessageId，加载原消息并校验
@@ -178,8 +178,8 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         }
         // 校验是同对话
         boolean sameConversation = (ObjUtil.equal(original.getSenderId(), senderId) // 发送人是当前用户，接收人是对方
-                && ObjUtil.equal(original.getReceiverId(), reqVO.getReceiverId()))
-                || (ObjUtil.equal(original.getSenderId(), reqVO.getReceiverId()) // 发送人是对方，接收人是当前用户
+                && ObjUtil.equal(original.getReceiverId(), reqVo.getReceiverId()))
+                || (ObjUtil.equal(original.getSenderId(), reqVo.getReceiverId()) // 发送人是对方，接收人是当前用户
                         && ObjUtil.equal(original.getReceiverId(), senderId));
         if (!sameConversation) {
             throw exception(MESSAGE_QUOTE_INVALID);
@@ -187,7 +187,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         // 构建 quote 对象并注入 content
         QuoteMessage quote = ImMessageUtils.buildQuote(original.getId(),
                 original.getSenderId(), original.getType(), original.getContent());
-        return ImMessageUtils.appendQuote(reqVO.getContent(), quote);
+        return ImMessageUtils.appendQuote(reqVo.getContent(), quote);
     }
 
     @Override
@@ -239,15 +239,15 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     }
 
     @Override
-    public List<ImPrivateMessageDO> getPrivateMessageList(Long userId, ImPrivateMessageListReqVO reqVO) {
-        return privateMessageMapper.selectHistoryList(userId, reqVO.getReceiverId(), reqVO.getMaxId(), reqVO.getLimit());
+    public List<ImPrivateMessageDO> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo) {
+        return privateMessageMapper.selectHistoryList(userId, reqVo.getReceiverId(), reqVo.getMaxId(), reqVo.getLimit());
     }
 
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImPrivateMessageDO> getPrivateMessagePage(ImPrivateMessageManagerPageReqVO reqVO) {
-        return privateMessageMapper.selectPage(reqVO);
+    public PageResult<ImPrivateMessageDO> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo) {
+        return privateMessageMapper.selectPage(reqVo);
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.fly.im.service.face;
 import cn.hutool.core.util.ObjectUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVO;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVO;
+import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVo;
+import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
 import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
 import com.fly.im.dal.mysql.face.ImFaceUserItemMapper;
 import com.fly.im.framework.config.ImProperties;
@@ -42,9 +42,9 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     }
 
     @Override
-    public Long createFaceUserItem(Long userId, ImFaceUserItemSaveReqVO reqVO) {
+    public Long createFaceUserItem(Long userId, ImFaceUserItemSaveReqVo reqVo) {
         // 1.1 同 URL 已存在则报错
-        if (faceUserItemMapper.selectByUserIdAndUrl(userId, reqVO.getUrl()) != null) {
+        if (faceUserItemMapper.selectByUserIdAndUrl(userId, reqVo.getUrl()) != null) {
             throw exception(FACE_USER_ITEM_DUPLICATED);
         }
         // 1.2 超过最大数量限制则报错
@@ -54,7 +54,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
         }
 
         // 2. 入库
-        ImFaceUserItemDO item = BeanUtils.toBean(reqVO, ImFaceUserItemDO.class).setUserId(userId);
+        ImFaceUserItemDO item = BeanUtils.toBean(reqVo, ImFaceUserItemDO.class).setUserId(userId);
         try {
             faceUserItemMapper.insert(item);
         } catch (DuplicateKeyException ex) {
@@ -82,8 +82,8 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFaceUserItemDO> getFaceUserItemPage(ImFaceUserItemManagerPageReqVO reqVO) {
-        return faceUserItemMapper.selectPage(reqVO);
+    public PageResult<ImFaceUserItemDO> getFaceUserItemPage(ImFaceUserItemManagerPageReqVo reqVo) {
+        return faceUserItemMapper.selectPage(reqVo);
     }
 
     @Override

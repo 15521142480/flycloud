@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.face;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVO;
+import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVo;
 import com.fly.im.dal.dataobject.face.ImFacePackDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,11 +25,11 @@ public interface ImFacePackMapper extends BaseMapperX<ImFacePackDO> {
                 .orderByAsc(ImFacePackDO::getId));
     }
 
-    default PageResult<ImFacePackDO> selectPage(ImFacePackPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImFacePackDO>()
-                .likeIfPresent(ImFacePackDO::getName, reqVO.getName())
-                .eqIfPresent(ImFacePackDO::getStatus, reqVO.getStatus())
-                .betweenIfPresent(ImFacePackDO::getCreateTime, reqVO.getCreateTime())
+    default PageResult<ImFacePackDO> selectPage(ImFacePackPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFacePackDO>()
+                .likeIfPresent(ImFacePackDO::getName, reqVo.getName())
+                .eqIfPresent(ImFacePackDO::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImFacePackDO::getCreateTime, reqVo.getCreateTime())
                 .orderByAsc(ImFacePackDO::getSort)
                 .orderByDesc(ImFacePackDO::getId));
     }

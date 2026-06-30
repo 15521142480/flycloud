@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface BargainHelpVO {
   id: number
   record: number
@@ -10,5 +12,5 @@ export interface BargainHelpVO {
 
 // 查询砍价记录列表
 export const getBargainHelpPage = async (params) => {
-  return await request.get({ url: `/promotion/bargain-help/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/promotion/bargain-help/page`, params })
 }

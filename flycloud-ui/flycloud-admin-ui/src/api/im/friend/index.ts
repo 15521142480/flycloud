@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // IM 好友 Response VO
 export interface ImFriendRespVO {
   id: number // 关系记录编号
@@ -30,7 +32,7 @@ export interface ImFriendUpdateReqVO {
 
 // 获得当前登录用户的好友列表
 export const getMyFriendList = () => {
-  return request.get<ImFriendRespVO[]>({ url: '/im/friend/list' })
+  return request.get<ImFriendRespVO[]>({ url: `/${SYS_BASE_URL}/im/friend/list` })
 }
 
 // 增量拉取当前用户的好友关系（重连 / 离线补偿）
@@ -39,33 +41,39 @@ export const pullMyFriendList = (params: {
   lastId?: number
   limit: number
 }) => {
-  return request.get<ImFriendRespVO[]>({ url: '/im/friend/pull', params })
+  return request.get<ImFriendRespVO[]>({ url: `/${SYS_BASE_URL}/im/friend/pull`, params })
 }
 
 // 获得好友详情
 export const getFriend = (friendUserId: number | string) => {
-  return request.get<ImFriendRespVO>({ url: '/im/friend/get', params: { friendUserId } })
+  return request.get<ImFriendRespVO>({
+    url: `/${SYS_BASE_URL}/im/friend/get`,
+    params: { friendUserId }
+  })
 }
 
 // 删除好友（单向软删除）
 export const deleteFriend = (friendUserId: number | string, clear: boolean) => {
   return request.delete<boolean>({
-    url: '/im/friend/delete',
+    url: `/${SYS_BASE_URL}/im/friend/delete`,
     params: { friendUserId, clear }
   })
 }
 
 // 更新好友信息（备注 / 免打扰 / 联系人置顶）
 export const updateFriend = (data: ImFriendUpdateReqVO) => {
-  return request.put<boolean>({ url: '/im/friend/update', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/friend/update`, data })
 }
 
 // 拉黑好友（必须先是好友；单边屏蔽对方私聊消息）
 export const blockFriend = (friendUserId: number | string) => {
-  return request.put<boolean>({ url: '/im/friend/block', params: { friendUserId } })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/friend/block`, params: { friendUserId } })
 }
 
 // 移出黑名单
 export const unblockFriend = (friendUserId: number | string) => {
-  return request.put<boolean>({ url: '/im/friend/unblock', params: { friendUserId } })
+  return request.put<boolean>({
+    url: `/${SYS_BASE_URL}/im/friend/unblock`,
+    params: { friendUserId }
+  })
 }

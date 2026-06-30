@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 数据看板消息类型分布项 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImStatisticsManagerMessageTypeRespVO {
+public class ImStatisticsManagerMessageTypeRespVo {
 
     @Schema(description = "消息类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "0")
     private Integer type; // 参见 ImMessageTypeEnum 枚举类

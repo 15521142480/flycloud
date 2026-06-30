@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface ImManagerChannelMessageVO {
   id: number
   channelId: number
@@ -20,15 +22,18 @@ export interface ImManagerChannelMessageSendReqVO {
 
 // 立即推送频道消息
 export const sendManagerChannelMessage = (data: ImManagerChannelMessageSendReqVO) => {
-  return request.post({ url: '/im/manager/channel-message/send', data })
+  return request.post({ url: `/${SYS_BASE_URL}/im/manager/channel-message/send`, data })
 }
 
 // 删除频道消息
 export const deleteManagerChannelMessage = (id: number) => {
-  return request.delete({ url: '/im/manager/channel-message/delete', params: { id } })
+  return request.delete({
+    url: `/${SYS_BASE_URL}/im/manager/channel-message/delete`,
+    params: { id }
+  })
 }
 
 // 获得频道消息分页
 export const getManagerChannelMessagePage = (params: PageParam) => {
-  return request.get({ url: '/im/manager/channel-message/page', params })
+  return request.get({ url: `/${SYS_BASE_URL}/im/manager/channel-message/page`, params })
 }

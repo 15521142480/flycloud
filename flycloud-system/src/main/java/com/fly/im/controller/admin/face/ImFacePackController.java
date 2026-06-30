@@ -2,7 +2,7 @@ package com.fly.im.controller.admin.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.face.vo.pack.ImFacePackUserRespVO;
+import com.fly.im.controller.admin.face.vo.pack.ImFacePackUserRespVo;
 import com.fly.im.dal.dataobject.face.ImFacePackDO;
 import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
 import com.fly.im.service.face.ImFacePackItemService;
@@ -35,7 +35,7 @@ public class ImFacePackController {
 
     @GetMapping("/list")
     @Operation(summary = "获得启用的表情包列表（含表情）")
-    public R<List<ImFacePackUserRespVO>> getFacePackList() {
+    public R<List<ImFacePackUserRespVo>> getFacePackList() {
         // 1.1 拉所有启用表情包
         List<ImFacePackDO> packs = facePackService.getEnabledFacePackList();
         if (packs.isEmpty()) {
@@ -47,9 +47,9 @@ public class ImFacePackController {
         Map<Long, List<ImFacePackItemDO>> itemsByPackId = convertMultiMap(items, ImFacePackItemDO::getPackId);
 
         // 2. 拼装：BeanUtils 把 pack 字段映射 + 自己塞 items
-        List<ImFacePackUserRespVO> result = convertList(packs, pack -> {
-            ImFacePackUserRespVO vo = BeanUtils.toBean(pack, ImFacePackUserRespVO.class);
-            vo.setItems(BeanUtils.toBean(itemsByPackId.getOrDefault(pack.getId(), List.of()), ImFacePackUserRespVO.Item.class));
+        List<ImFacePackUserRespVo> result = convertList(packs, pack -> {
+            ImFacePackUserRespVo vo = BeanUtils.toBean(pack, ImFacePackUserRespVo.class);
+            vo.setItems(BeanUtils.toBean(itemsByPackId.getOrDefault(pack.getId(), List.of()), ImFacePackUserRespVo.Item.class));
             return vo;
         });
         return ok(result);

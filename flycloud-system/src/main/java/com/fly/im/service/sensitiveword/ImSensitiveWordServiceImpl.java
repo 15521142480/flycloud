@@ -9,8 +9,8 @@ import com.fly.im.framework.util.CacheUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.framework.tenant.TenantContextHolder;
 import com.fly.im.framework.tenant.TenantUtils;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVO;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordSaveReqVO;
+import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVo;
+import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordSaveReqVo;
 import com.fly.im.dal.dataobject.sensitiveword.ImSensitiveWordDO;
 import com.fly.im.dal.mysql.sensitiveword.ImSensitiveWordMapper;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
@@ -150,8 +150,8 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImSensitiveWordDO> getSensitiveWordPage(ImSensitiveWordPageReqVO reqVO) {
-        return sensitiveWordMapper.selectPage(reqVO);
+    public PageResult<ImSensitiveWordDO> getSensitiveWordPage(ImSensitiveWordPageReqVo reqVo) {
+        return sensitiveWordMapper.selectPage(reqVo);
     }
 
     @Override
@@ -160,12 +160,12 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     }
 
     @Override
-    public Long createSensitiveWord(ImSensitiveWordSaveReqVO reqVO) {
+    public Long createSensitiveWord(ImSensitiveWordSaveReqVo reqVo) {
         // 1. 校验唯一
-        validateWordUnique(null, reqVO.getWord());
+        validateWordUnique(null, reqVo.getWord());
 
         // 2.1 入库
-        ImSensitiveWordDO word = BeanUtils.toBean(reqVO, ImSensitiveWordDO.class);
+        ImSensitiveWordDO word = BeanUtils.toBean(reqVo, ImSensitiveWordDO.class);
         sensitiveWordMapper.insert(word);
         // 2.2 强制失效本机缓存（多实例靠定时刷新收敛）
         invalidateSensitiveWordBsCaches();
@@ -173,14 +173,14 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     }
 
     @Override
-    public void updateSensitiveWord(ImSensitiveWordSaveReqVO reqVO) {
+    public void updateSensitiveWord(ImSensitiveWordSaveReqVo reqVo) {
         // 1.1 校验存在
-        validateSensitiveWordExists(reqVO.getId());
+        validateSensitiveWordExists(reqVo.getId());
         // 1.2 校验唯一（排除自身）
-        validateWordUnique(reqVO.getId(), reqVO.getWord());
+        validateWordUnique(reqVo.getId(), reqVo.getWord());
 
         // 2.1 更新
-        ImSensitiveWordDO updateObj = BeanUtils.toBean(reqVO, ImSensitiveWordDO.class);
+        ImSensitiveWordDO updateObj = BeanUtils.toBean(reqVo, ImSensitiveWordDO.class);
         sensitiveWordMapper.updateById(updateObj);
         // 2.2 强制失效本机缓存
         invalidateSensitiveWordBsCaches();

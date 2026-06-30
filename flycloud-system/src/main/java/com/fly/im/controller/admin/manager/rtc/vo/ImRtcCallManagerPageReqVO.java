@@ -15,7 +15,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImRtcCallManagerPageReqVO extends PageBo {
+public class ImRtcCallManagerPageReqVo extends PageBo {
 
     @Schema(description = "发起人用户编号", example = "1024")
     private Long inviterUserId;

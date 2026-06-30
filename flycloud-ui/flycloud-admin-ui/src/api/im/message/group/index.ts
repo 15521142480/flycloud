@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // 群聊消息 Response VO
 export interface ImGroupMessageRespVO {
   id: number // 消息编号
@@ -35,7 +37,7 @@ export interface ImGroupMessageListReqVO {
 
 // 发送群聊消息
 export const sendGroupMessage = (data: ImGroupMessageSendReqVO) => {
-  return request.post<ImGroupMessageRespVO>({ url: '/im/message/group/send', data })
+  return request.post<ImGroupMessageRespVO>({ url: `/${SYS_BASE_URL}/im/message/group/send`, data })
 }
 
 // 拉取群聊消息（增量）
@@ -43,18 +45,25 @@ export const pullGroupMessageList = (
   params: { minId: number | string; size: number },
   signal?: AbortSignal
 ) => {
-  return request.get<ImGroupMessageRespVO[]>({ url: '/im/message/group/pull', params, signal })
+  return request.get<ImGroupMessageRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/message/group/pull`,
+    params,
+    signal
+  })
 }
 
 // 查询群聊历史消息
 export const getGroupMessageList = (params: ImGroupMessageListReqVO) => {
-  return request.get<ImGroupMessageRespVO[]>({ url: '/im/message/group/list', params })
+  return request.get<ImGroupMessageRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/message/group/list`,
+    params
+  })
 }
 
 // 标记群聊消息已读
 export const readGroupMessages = (groupId: number | string, messageId: number | string) => {
   return request.put<boolean>({
-    url: '/im/message/group/read',
+    url: `/${SYS_BASE_URL}/im/message/group/read`,
     params: { groupId, messageId }
   })
 }
@@ -62,7 +71,7 @@ export const readGroupMessages = (groupId: number | string, messageId: number | 
 // 撤回群聊消息
 export const recallGroupMessage = (id: number | string) => {
   return request.delete<ImGroupMessageRespVO>({
-    url: '/im/message/group/recall',
+    url: `/${SYS_BASE_URL}/im/message/group/recall`,
     params: { id }
   })
 }
@@ -72,5 +81,8 @@ export const getGroupReadUsers = (params: {
   groupId: number | string
   messageId: number | string
 }) => {
-  return request.get<number[]>({ url: '/im/message/group/get-read-user-ids', params })
+  return request.get<number[]>({
+    url: `/${SYS_BASE_URL}/im/message/group/get-read-user-ids`,
+    params
+  })
 }

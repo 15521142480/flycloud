@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - 群成员 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupMemberRespVO {
+public class ImGroupMemberRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "17071")
     private Long id;

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - IM 好友 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImFriendRespVO {
+public class ImFriendRespVo {
 
     @Schema(description = "关系记录编号", example = "1024")
     private Long id;

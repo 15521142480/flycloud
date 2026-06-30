@@ -4,7 +4,7 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
 import com.fly.im.framework.mybatis.QueryWrapperX;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVO;
+import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
 import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -87,23 +87,23 @@ public interface ImPrivateMessageMapper extends BaseMapperX<ImPrivateMessageDO> 
                 .eq(ImPrivateMessageDO::getStatus, whereStatus));
     }
 
-    default PageResult<ImPrivateMessageDO> selectPage(ImPrivateMessageManagerPageReqVO reqVO) {
+    default PageResult<ImPrivateMessageDO> selectPage(ImPrivateMessageManagerPageReqVo reqVo) {
         LambdaQueryWrapperX<ImPrivateMessageDO> query = new LambdaQueryWrapperX<>();
-        if (reqVO.getSenderId() != null && reqVO.getReceiverId() != null) {
-            query.and(w -> w.eq(ImPrivateMessageDO::getSenderId, reqVO.getSenderId())
-                            .eq(ImPrivateMessageDO::getReceiverId, reqVO.getReceiverId())
+        if (reqVo.getSenderId() != null && reqVo.getReceiverId() != null) {
+            query.and(w -> w.eq(ImPrivateMessageDO::getSenderId, reqVo.getSenderId())
+                            .eq(ImPrivateMessageDO::getReceiverId, reqVo.getReceiverId())
                             .or()
-                            .eq(ImPrivateMessageDO::getSenderId, reqVO.getReceiverId())
-                            .eq(ImPrivateMessageDO::getReceiverId, reqVO.getSenderId()));
+                            .eq(ImPrivateMessageDO::getSenderId, reqVo.getReceiverId())
+                            .eq(ImPrivateMessageDO::getReceiverId, reqVo.getSenderId()));
         } else {
-            query.eqIfPresent(ImPrivateMessageDO::getSenderId, reqVO.getSenderId())
-                    .eqIfPresent(ImPrivateMessageDO::getReceiverId, reqVO.getReceiverId());
+            query.eqIfPresent(ImPrivateMessageDO::getSenderId, reqVo.getSenderId())
+                    .eqIfPresent(ImPrivateMessageDO::getReceiverId, reqVo.getReceiverId());
         }
-        return selectPage(reqVO, query
-                .eqIfPresent(ImPrivateMessageDO::getType, reqVO.getType())
-                .likeIfPresent(ImPrivateMessageDO::getContent, reqVO.getContent())
-                .eqIfPresent(ImPrivateMessageDO::getStatus, reqVO.getStatus())
-                .betweenIfPresent(ImPrivateMessageDO::getSendTime, reqVO.getSendTime())
+        return selectPage(reqVo, query
+                .eqIfPresent(ImPrivateMessageDO::getType, reqVo.getType())
+                .likeIfPresent(ImPrivateMessageDO::getContent, reqVo.getContent())
+                .eqIfPresent(ImPrivateMessageDO::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImPrivateMessageDO::getSendTime, reqVo.getSendTime())
                 .orderByDesc(ImPrivateMessageDO::getId));
     }
 

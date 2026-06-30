@@ -13,7 +13,7 @@ import java.util.List;
 @Schema(description = "管理后台 - 群聊消息 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupMessageRespVO {
+public class ImGroupMessageRespVo {
 
     @Schema(description = "消息编号", example = "1")
     private Long id;

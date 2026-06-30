@@ -12,7 +12,7 @@ import java.util.Set;
 @Schema(description = "管理后台 - 通话中追加邀请 Request VO；仅群通话可用")
 @Data
 @Accessors(chain = true)
-public class ImRtcCallInviteReqVO {
+public class ImRtcCallInviteReqVo {
 
     @Schema(description = "业务通话编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "f47ac10b58cc4372a567")
     @NotBlank(message = "通话编号不能为空")

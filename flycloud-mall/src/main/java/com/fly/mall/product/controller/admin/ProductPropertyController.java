@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/product/product-property")
+@RequestMapping("/admin/product/property")
 public class ProductPropertyController extends BaseController {
 
     private final IProductPropertyService productPropertyService;
@@ -36,7 +36,7 @@ public class ProductPropertyController extends BaseController {
     /**
      * 查询商品属性分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property:list')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:list')")
     @GetMapping("/list")
     public R<PageVo<ProductPropertyVo>> list(ProductPropertyBo bo, PageBo page) {
         return R.ok(productPropertyService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class ProductPropertyController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property:list')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:list')")
     @GetMapping("/page")
     public R<PageVo<ProductPropertyVo>> page(ProductPropertyBo bo, PageBo page) {
         return R.ok(productPropertyService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class ProductPropertyController extends BaseController {
      * 新增或修改商品属性。
      */
     @Log(title = "商品属性", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@RequestBody ProductPropertyBo bo) {
         return R.ok(productPropertyService.saveOrUpdate(bo));
@@ -90,7 +90,7 @@ public class ProductPropertyController extends BaseController {
      * 删除商品属性。
      */
     @Log(title = "商品属性", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productPropertyService.deleteWithValidByIds(Arrays.asList(ids), true));

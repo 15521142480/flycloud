@@ -1,6 +1,8 @@
 import request from '@/config/axios'
 import type { OrderItemRespVO, OrderVO } from '@/api/mall/trade/order'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface TradeAfterSaleVO {
   id?: number | null // 售后编号，主键自增
   no?: string // 售后单号
@@ -58,37 +60,39 @@ export interface ProductPropertiesVO {
 // 获得交易售后分页
 export const getAfterSalePage = async (params) => {
   return await request.get<PageResult<TradeAfterSaleVO[]>>({
-    url: `/trade/after-sale/page`,
+    url: `/${MALL_BASE_URL}/trade/after-sale/page`,
     params
   })
 }
 
 // 获得交易售后详情
 export const getAfterSale = async (id: any) => {
-  return await request.get<TradeAfterSaleDetailVO>({ url: `/trade/after-sale/get-detail?id=${id}` })
+  return await request.get<TradeAfterSaleDetailVO>({
+    url: `/${MALL_BASE_URL}/trade/after-sale/get-detail?id=${id}`
+  })
 }
 
 // 同意售后
 export const agree = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/agree?id=${id}` })
+  return await request.put({ url: `/${MALL_BASE_URL}/trade/after-sale/agree?id=${id}` })
 }
 
 // 拒绝售后
 export const disagree = async (data: any) => {
-  return await request.put({ url: `/trade/after-sale/disagree`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/trade/after-sale/disagree`, data })
 }
 
 // 确认收货
 export const receive = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/receive?id=${id}` })
+  return await request.put({ url: `/${MALL_BASE_URL}/trade/after-sale/receive?id=${id}` })
 }
 
 // 拒绝收货
 export const refuse = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/refuse?id=${id}` })
+  return await request.put({ url: `/${MALL_BASE_URL}/trade/after-sale/refuse?id=${id}` })
 }
 
 // 确认退款
 export const refund = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/refund?id=${id}` })
+  return await request.put({ url: `/${MALL_BASE_URL}/trade/after-sale/refund?id=${id}` })
 }

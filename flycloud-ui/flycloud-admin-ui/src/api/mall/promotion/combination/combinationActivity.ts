@@ -1,6 +1,8 @@
 import request from '@/config/axios'
 import { Sku, Spu } from '@/api/mall/product/spu'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface CombinationActivityVO {
   id?: number
   name?: string
@@ -40,35 +42,44 @@ export interface SpuExtension extends Spu {
 
 // 查询拼团活动列表
 export const getCombinationActivityPage = async (params: any) => {
-  return await request.get({ url: '/promotion/combination-activity/page', params })
+  return await request.get({ url: `/${MALL_BASE_URL}/promotion/combination-activity/page`, params })
 }
 
 // 查询拼团活动详情
 export const getCombinationActivity = async (id: number) => {
-  return await request.get({ url: '/promotion/combination-activity/get?id=' + id })
+  return await request.get({ url: `/${MALL_BASE_URL}/promotion/combination-activity/get?id=` + id })
 }
 
 // 获得拼团活动列表，基于活动编号数组
 export const getCombinationActivityListByIds = (ids: number[]) => {
-  return request.get({ url: `/promotion/combination-activity/list-by-ids?ids=${ids}` })
+  return request.get({
+    url: `/${MALL_BASE_URL}/promotion/combination-activity/list-by-ids?ids=${ids}`
+  })
 }
 
 // 新增拼团活动
 export const createCombinationActivity = async (data: CombinationActivityVO) => {
-  return await request.post({ url: '/promotion/combination-activity/create', data })
+  return await request.post({
+    url: `/${MALL_BASE_URL}/promotion/combination-activity/create`,
+    data
+  })
 }
 
 // 修改拼团活动
 export const updateCombinationActivity = async (data: CombinationActivityVO) => {
-  return await request.put({ url: '/promotion/combination-activity/update', data })
+  return await request.put({ url: `/${MALL_BASE_URL}/promotion/combination-activity/update`, data })
 }
 
 // 关闭拼团活动
 export const closeCombinationActivity = async (id: number) => {
-  return await request.put({ url: '/promotion/combination-activity/close?id=' + id })
+  return await request.put({
+    url: `/${MALL_BASE_URL}/promotion/combination-activity/close?id=` + id
+  })
 }
 
 // 删除拼团活动
 export const deleteCombinationActivity = async (id: number) => {
-  return await request.delete({ url: '/promotion/combination-activity/delete?id=' + id })
+  return await request.delete({
+    url: `/${MALL_BASE_URL}/promotion/combination-activity/delete?id=` + id
+  })
 }

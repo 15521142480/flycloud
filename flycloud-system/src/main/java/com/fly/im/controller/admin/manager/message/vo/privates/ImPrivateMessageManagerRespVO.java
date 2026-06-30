@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - IM 私聊消息 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImPrivateMessageManagerRespVO {
+public class ImPrivateMessageManagerRespVo {
 
     @Schema(description = "消息编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private Long id;

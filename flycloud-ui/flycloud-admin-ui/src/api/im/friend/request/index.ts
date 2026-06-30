@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // IM 好友申请 Response VO
 export interface ImFriendRequestRespVO {
   id: number // 申请编号
@@ -29,18 +31,18 @@ export interface ImFriendRequestApplyReqVO {
 
 // 发起好友申请
 export const applyFriendRequest = (data: ImFriendRequestApplyReqVO) => {
-  return request.post<number | null>({ url: '/im/friend-request/apply', data })
+  return request.post<number | null>({ url: `/${SYS_BASE_URL}/im/friend-request/apply`, data })
 }
 
 // 同意好友申请
 export const agreeFriendRequest = (id: number | string) => {
-  return request.put<boolean>({ url: '/im/friend-request/agree', params: { id } })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/friend-request/agree`, params: { id } })
 }
 
 // 拒绝好友申请
 export const refuseFriendRequest = (id: number | string, handleContent?: string) => {
   return request.put<boolean>({
-    url: '/im/friend-request/refuse',
+    url: `/${SYS_BASE_URL}/im/friend-request/refuse`,
     params: { id, handleContent }
   })
 }
@@ -52,7 +54,7 @@ export const getMyFriendRequestList = (limit: number, maxId?: number) => {
     params.maxId = maxId
   }
   return request.get<ImFriendRequestRespVO[]>({
-    url: '/im/friend-request/list',
+    url: `/${SYS_BASE_URL}/im/friend-request/list`,
     params
   })
 }
@@ -63,13 +65,16 @@ export const pullMyFriendRequestList = (params: {
   lastId?: number
   limit: number
 }) => {
-  return request.get<ImFriendRequestRespVO[]>({ url: '/im/friend-request/pull', params })
+  return request.get<ImFriendRequestRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/friend-request/pull`,
+    params
+  })
 }
 
 // 按 id 单查「我相关」的申请记录（带越权过滤；WebSocket 通知到达后用）
 export const getMyFriendRequest = (id: number) => {
   return request.get<ImFriendRequestRespVO | null>({
-    url: '/im/friend-request/get',
+    url: `/${SYS_BASE_URL}/im/friend-request/get`,
     params: { id }
   })
 }

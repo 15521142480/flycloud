@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface OrderVO {
   id: number
   merchantId: number
@@ -58,7 +60,7 @@ export interface OrderDetailVO {
 // 查询列表支付订单
 export const getOrderPage = async (params: any) => {
   return await request.get<PageResult<OrderDetailVO[]>>({
-    url: '/pay/order/page',
+    url: `/${SYS_BASE_URL}/pay/order/page`,
     params
   })
 }
@@ -66,7 +68,7 @@ export const getOrderPage = async (params: any) => {
 // 查询详情支付订单
 export const getOrder = async (id: number, sync?: boolean) => {
   return await request.get<OrderVO>({
-    url: '/pay/order/get',
+    url: `/${SYS_BASE_URL}/pay/order/get`,
     params: {
       id,
       sync
@@ -76,15 +78,15 @@ export const getOrder = async (id: number, sync?: boolean) => {
 
 // 获得支付订单的明细
 export const getOrderDetail = async (id: number) => {
-  return await request.get<OrderDetailVO>({ url: '/pay/order/get-detail?id=' + id })
+  return await request.get<OrderDetailVO>({ url: `/${SYS_BASE_URL}/pay/order/get-detail?id=` + id })
 }
 
 // 提交支付订单
 export const submitOrder = async (data: any) => {
-  return await request.post({ url: '/pay/order/submit', data })
+  return await request.post({ url: `/${SYS_BASE_URL}/pay/order/submit`, data })
 }
 
 // 导出支付订单
 export const exportOrder = async (params: any) => {
-  return await request.download({ url: '/pay/order/export-excel', params })
+  return await request.download({ url: `/${SYS_BASE_URL}/pay/order/export-excel`, params })
 }

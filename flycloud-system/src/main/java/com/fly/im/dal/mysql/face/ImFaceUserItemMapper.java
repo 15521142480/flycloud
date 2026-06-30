@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.face;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVO;
+import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
 import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -35,11 +35,11 @@ public interface ImFaceUserItemMapper extends BaseMapperX<ImFaceUserItemDO> {
         return selectCount(ImFaceUserItemDO::getUserId, userId);
     }
 
-    default PageResult<ImFaceUserItemDO> selectPage(ImFaceUserItemManagerPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImFaceUserItemDO>()
-                .eqIfPresent(ImFaceUserItemDO::getUserId, reqVO.getUserId())
-                .likeIfPresent(ImFaceUserItemDO::getName, reqVO.getName())
-                .betweenIfPresent(ImFaceUserItemDO::getCreateTime, reqVO.getCreateTime())
+    default PageResult<ImFaceUserItemDO> selectPage(ImFaceUserItemManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFaceUserItemDO>()
+                .eqIfPresent(ImFaceUserItemDO::getUserId, reqVo.getUserId())
+                .likeIfPresent(ImFaceUserItemDO::getName, reqVo.getName())
+                .betweenIfPresent(ImFaceUserItemDO::getCreateTime, reqVo.getCreateTime())
                 .orderByDesc(ImFaceUserItemDO::getId));
     }
 

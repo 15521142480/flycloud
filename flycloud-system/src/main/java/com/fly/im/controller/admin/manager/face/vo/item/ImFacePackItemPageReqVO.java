@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImFacePackItemPageReqVO extends PageBo {
+public class ImFacePackItemPageReqVo extends PageBo {
 
     @Schema(description = "所属表情包编号", example = "1024")
     private Long packId;

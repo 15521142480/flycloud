@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVO;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackSaveReqVO;
+import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVo;
+import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackSaveReqVo;
 import com.fly.im.dal.dataobject.face.ImFacePackDO;
 import com.fly.im.dal.mysql.face.ImFacePackMapper;
 import jakarta.annotation.Resource;
@@ -58,8 +58,8 @@ public class ImFacePackServiceImpl implements ImFacePackService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFacePackDO> getFacePackPage(ImFacePackPageReqVO reqVO) {
-        return facePackMapper.selectPage(reqVO);
+    public PageResult<ImFacePackDO> getFacePackPage(ImFacePackPageReqVo reqVo) {
+        return facePackMapper.selectPage(reqVo);
     }
 
     @Override
@@ -68,19 +68,19 @@ public class ImFacePackServiceImpl implements ImFacePackService {
     }
 
     @Override
-    public Long createFacePack(ImFacePackSaveReqVO reqVO) {
-        ImFacePackDO pack = BeanUtils.toBean(reqVO, ImFacePackDO.class);
+    public Long createFacePack(ImFacePackSaveReqVo reqVo) {
+        ImFacePackDO pack = BeanUtils.toBean(reqVo, ImFacePackDO.class);
         facePackMapper.insert(pack);
         return pack.getId();
     }
 
     @Override
-    public void updateFacePack(ImFacePackSaveReqVO reqVO) {
+    public void updateFacePack(ImFacePackSaveReqVo reqVo) {
         // 1. 校验存在
-        validateFacePackExists(reqVO.getId());
+        validateFacePackExists(reqVo.getId());
 
         // 2. 更新
-        ImFacePackDO updateObj = BeanUtils.toBean(reqVO, ImFacePackDO.class);
+        ImFacePackDO updateObj = BeanUtils.toBean(reqVo, ImFacePackDO.class);
         facePackMapper.updateById(updateObj);
     }
 

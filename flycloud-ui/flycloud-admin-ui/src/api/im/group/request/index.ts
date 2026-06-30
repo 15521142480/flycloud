@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // IM 加群申请 Response VO
 export interface ImGroupRequestRespVO {
   id: number // 申请编号
@@ -32,18 +34,18 @@ export interface ImGroupRequestApplyReqVO {
 
 // 申请加群
 export const applyJoinGroup = (data: ImGroupRequestApplyReqVO) => {
-  return request.post<number | null>({ url: '/im/group-request/apply', data })
+  return request.post<number | null>({ url: `/${SYS_BASE_URL}/im/group-request/apply`, data })
 }
 
 // 同意加群申请（群主或管理员）
 export const agreeGroupRequest = (id: number | string) => {
-  return request.put<boolean>({ url: '/im/group-request/agree', params: { id } })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group-request/agree`, params: { id } })
 }
 
 // 拒绝加群申请（群主或管理员）
 export const refuseGroupRequest = (id: number | string, handleContent?: string) => {
   return request.put<boolean>({
-    url: '/im/group-request/refuse',
+    url: `/${SYS_BASE_URL}/im/group-request/refuse`,
     params: { id, handleContent }
   })
 }
@@ -51,14 +53,14 @@ export const refuseGroupRequest = (id: number | string, handleContent?: string) 
 // 查询「我管理的所有群」下的未处理加群申请列表（不分页）；前端 store 据此派生横幅红点 + Drawer 列表
 export const getUnhandledRequestList = () => {
   return request.get<ImGroupRequestRespVO[]>({
-    url: '/im/group-request/unhandled-list'
+    url: `/${SYS_BASE_URL}/im/group-request/unhandled-list`
   })
 }
 
 // 查询指定群下的全部加群申请（含已处理）；仅群主 / 管理员可查
 export const getGroupRequestListByGroupId = (groupId: number) => {
   return request.get<ImGroupRequestRespVO[]>({
-    url: '/im/group-request/list-by-group',
+    url: `/${SYS_BASE_URL}/im/group-request/list-by-group`,
     params: { groupId }
   })
 }
@@ -66,7 +68,7 @@ export const getGroupRequestListByGroupId = (groupId: number) => {
 // 按 id 单查申请记录（带越权过滤；WebSocket 通知到达后用）
 export const getMyGroupRequest = (id: number) => {
   return request.get<ImGroupRequestRespVO | null>({
-    url: '/im/group-request/get',
+    url: `/${SYS_BASE_URL}/im/group-request/get`,
     params: { id }
   })
 }
@@ -77,5 +79,8 @@ export const pullMyGroupRequestList = (params: {
   lastId?: number
   limit: number
 }) => {
-  return request.get<ImGroupRequestRespVO[]>({ url: '/im/group-request/pull', params })
+  return request.get<ImGroupRequestRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/group-request/pull`,
+    params
+  })
 }

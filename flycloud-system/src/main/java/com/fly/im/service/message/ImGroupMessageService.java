@@ -1,9 +1,9 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVO;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageListReqVO;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageSendReqVO;
+import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
+import com.fly.im.controller.admin.message.vo.group.ImGroupMessageListReqVo;
+import com.fly.im.controller.admin.message.vo.group.ImGroupMessageSendReqVo;
 import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
 import com.fly.im.service.message.dto.ImGroupMessageSendDTO;
 
@@ -26,10 +26,10 @@ public interface ImGroupMessageService {
      * type 校验由 VO 层 {@code @InEnum} + {@code @AssertTrue} 完成（仅允许 normal 类型）。
      *
      * @param senderId 发送人编号
-     * @param reqVO    发送请求
+     * @param reqVo    发送请求
      * @return 消息
      */
-    ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendReqVO reqVO);
+    ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo);
 
     /**
      * 【系统调用】发送群聊消息：内部查 active 成员 + 推送
@@ -94,10 +94,10 @@ public interface ImGroupMessageService {
      * 查询群聊历史消息（游标拉取）
      *
      * @param userId 当前用户编号
-     * @param reqVO  拉取请求
+     * @param reqVo  拉取请求
      * @return 消息列表（按 id 倒序）
      */
-    List<ImGroupMessageDO> getGroupMessageList(Long userId, ImGroupMessageListReqVO reqVO);
+    List<ImGroupMessageDO> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo);
 
     /**
      * 清理用户在某群的已读位置缓存
@@ -133,7 +133,7 @@ public interface ImGroupMessageService {
     /**
      * 【管理后台】分页查询群聊消息
      */
-    PageResult<ImGroupMessageDO> getGroupMessagePage(ImGroupMessageManagerPageReqVO reqVO);
+    PageResult<ImGroupMessageDO> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo);
 
     /**
      * 【管理后台】获取群聊消息详情

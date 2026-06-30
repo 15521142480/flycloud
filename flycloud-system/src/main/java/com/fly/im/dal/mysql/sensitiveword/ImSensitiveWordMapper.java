@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.sensitiveword;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVO;
+import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVo;
 import com.fly.im.dal.dataobject.sensitiveword.ImSensitiveWordDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,11 +31,11 @@ public interface ImSensitiveWordMapper extends BaseMapperX<ImSensitiveWordDO> {
                 .eq(ImSensitiveWordDO::getWord, word));
     }
 
-    default PageResult<ImSensitiveWordDO> selectPage(ImSensitiveWordPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImSensitiveWordDO>()
-                .likeIfPresent(ImSensitiveWordDO::getWord, reqVO.getWord())
-                .eqIfPresent(ImSensitiveWordDO::getStatus, reqVO.getStatus())
-                .betweenIfPresent(ImSensitiveWordDO::getCreateTime, reqVO.getCreateTime())
+    default PageResult<ImSensitiveWordDO> selectPage(ImSensitiveWordPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImSensitiveWordDO>()
+                .likeIfPresent(ImSensitiveWordDO::getWord, reqVo.getWord())
+                .eqIfPresent(ImSensitiveWordDO::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImSensitiveWordDO::getCreateTime, reqVo.getCreateTime())
                 .orderByDesc(ImSensitiveWordDO::getId));
     }
 

@@ -6,8 +6,8 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVO;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVO;
+import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVo;
+import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendDO;
 import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
 import com.fly.im.dal.mysql.friend.ImFriendRequestMapper;
@@ -66,8 +66,8 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImFriendRequestDO applyFriend(Long fromUserId, ImFriendRequestApplyReqVO reqVO) {
-        Long toUserId = reqVO.getToUserId();
+    public ImFriendRequestDO applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+        Long toUserId = reqVo.getToUserId();
         // 1.1 校验：不能加自己
         if (Objects.equals(fromUserId, toUserId)) {
             throw exception(FRIEND_ADD_SELF);
@@ -91,12 +91,12 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
             if (BooleanUtil.isTrue(peerFriend.getBlocked())) {
                 throw exception(FRIEND_REQUEST_BLOCKED_BY_PEER);
             }
-            friendService.silentReAddFriend(fromUserId, toUserId, reqVO.getDisplayName(), reqVO.getAddSource());
+            friendService.silentReAddFriend(fromUserId, toUserId, reqVo.getDisplayName(), reqVo.getAddSource());
             return null;
         }
 
         // 2. 落库：同一申请人和接收人唯一，已有记录覆盖申请内容并重置为未处理
-        ImFriendRequestDO request = createOrResetRequest(fromUserId, reqVO);
+        ImFriendRequestDO request = createOrResetRequest(fromUserId, reqVo);
 
         // 3. 推送 FRIEND_REQUEST_RECEIVED 给 toUser 多端；payload 携带申请方昵称 / 头像，前端按 requestId 直推 push 进列表
         SysUserVo fromUser = adminUserApi.getUser(fromUserId).getCheckedData();
@@ -134,15 +134,15 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
      * 创建或重置好友申请
      *
      * @param fromUserId 申请人用户编号
-     * @param reqVO      申请请求
+     * @param reqVo      申请请求
      * @return 申请记录
      */
-    private ImFriendRequestDO createOrResetRequest(Long fromUserId, ImFriendRequestApplyReqVO reqVO) {
-        Long toUserId = reqVO.getToUserId();
+    private ImFriendRequestDO createOrResetRequest(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+        Long toUserId = reqVo.getToUserId();
         ImFriendRequestDO request = friendRequestMapper.selectByFromUserIdAndToUserId(fromUserId, toUserId);
         if (request == null) {
             // 1. 无旧申请：创建新申请；唯一键冲突时回查并复用并发写入的记录
-            request = BeanUtils.toBean(reqVO, ImFriendRequestDO.class)
+            request = BeanUtils.toBean(reqVo, ImFriendRequestDO.class)
                     .setFromUserId(fromUserId).setToUserId(toUserId)
                     .setHandleResult(ImFriendRequestHandleResultEnum.UNHANDLED.getResult());
             try {
@@ -159,10 +159,10 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
         // 2. 复用旧申请：覆盖本次申请内容，并重置为未处理
         LocalDateTime now = LocalDateTime.now();
         friendRequestMapper.updateByIdReset(request.getId(),
-                reqVO.getApplyContent(), reqVO.getDisplayName(), reqVO.getAddSource(), now);
+                reqVo.getApplyContent(), reqVo.getDisplayName(), reqVo.getAddSource(), now);
         // 同步内存对象，后续通知和自动通过直接复用
-        request.setApplyContent(reqVO.getApplyContent()).setDisplayName(reqVO.getDisplayName())
-                .setAddSource(reqVO.getAddSource())
+        request.setApplyContent(reqVo.getApplyContent()).setDisplayName(reqVo.getDisplayName())
+                .setAddSource(reqVo.getAddSource())
                 .setHandleResult(ImFriendRequestHandleResultEnum.UNHANDLED.getResult())
                 .setHandleContent(null).setHandleTime(null).setUpdateTime(now);
         return request;
@@ -240,8 +240,8 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     }
 
     @Override
-    public PageResult<ImFriendRequestDO> getFriendRequestPage(ImFriendRequestManagerPageReqVO reqVO) {
-        return friendRequestMapper.selectPage(reqVO);
+    public PageResult<ImFriendRequestDO> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo) {
+        return friendRequestMapper.selectPage(reqVo);
     }
 
     /**

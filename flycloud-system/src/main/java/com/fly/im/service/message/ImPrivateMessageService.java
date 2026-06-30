@@ -1,9 +1,9 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVO;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVO;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVO;
+import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
+import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVo;
+import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVo;
 import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 
@@ -24,10 +24,10 @@ public interface ImPrivateMessageService {
      * type 校验由 VO 层 {@code @InEnum} + {@code @AssertTrue} 完成（仅允许 normal 类型）。
      *
      * @param senderId 发送人编号
-     * @param reqVO    发送请求
+     * @param reqVo    发送请求
      * @return 消息
      */
-    ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVO reqVO);
+    ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo);
 
     /**
      * 【系统调用】发送私聊消息
@@ -85,17 +85,17 @@ public interface ImPrivateMessageService {
      * 查询私聊历史消息（游标拉取）
      *
      * @param userId 当前用户编号
-     * @param reqVO  拉取请求
+     * @param reqVo  拉取请求
      * @return 消息列表（按 id 倒序）
      */
-    List<ImPrivateMessageDO> getPrivateMessageList(Long userId, ImPrivateMessageListReqVO reqVO);
+    List<ImPrivateMessageDO> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo);
 
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询私聊消息
      */
-    PageResult<ImPrivateMessageDO> getPrivateMessagePage(ImPrivateMessageManagerPageReqVO reqVO);
+    PageResult<ImPrivateMessageDO> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo);
 
     /**
      * 【管理后台】获取私聊消息详情

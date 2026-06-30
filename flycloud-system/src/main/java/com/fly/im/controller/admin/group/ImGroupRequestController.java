@@ -6,8 +6,8 @@ import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVO;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestRespVO;
+import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVo;
+import com.fly.im.controller.admin.group.vo.request.ImGroupRequestRespVo;
 import com.fly.im.dal.dataobject.group.ImGroupDO;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import com.fly.im.dal.dataobject.group.ImGroupRequestDO;
@@ -58,8 +58,8 @@ public class ImGroupRequestController {
 
     @PostMapping("/apply")
     @Operation(summary = "申请加群")
-    public R<Long> applyJoinGroup(@Valid @RequestBody ImGroupRequestApplyReqVO reqVO) {
-        ImGroupRequestDO request = groupRequestService.applyJoinGroup(getCurUserId(), reqVO);
+    public R<Long> applyJoinGroup(@Valid @RequestBody ImGroupRequestApplyReqVo reqVo) {
+        ImGroupRequestDO request = groupRequestService.applyJoinGroup(getCurUserId(), reqVo);
         return ok(request != null ? request.getId() : null);
     }
 
@@ -84,7 +84,7 @@ public class ImGroupRequestController {
 
     @GetMapping("/unhandled-list")
     @Operation(summary = "查询「我管理的所有群」下的未处理加群申请列表（不分页）；前端 store 据此派生横幅红点 + Drawer 列表")
-    public R<List<ImGroupRequestRespVO>> getUnhandledRequestList() {
+    public R<List<ImGroupRequestRespVo>> getUnhandledRequestList() {
         List<ImGroupRequestDO> list = groupRequestService.getUnhandledRequestListByOwnerOrAdmin(getCurUserId());
         return ok(buildVOList(list));
     }
@@ -92,7 +92,7 @@ public class ImGroupRequestController {
     @GetMapping("/list-by-group")
     @Operation(summary = "查询指定群下的全部加群申请（含已处理）；仅群主 / 管理员可查")
     @Parameter(name = "groupId", description = "群编号", required = true, example = "1024")
-    public R<List<ImGroupRequestRespVO>> getGroupRequestListByGroupId(
+    public R<List<ImGroupRequestRespVo>> getGroupRequestListByGroupId(
             @RequestParam("groupId") @NotNull(message = "群编号不能为空") Long groupId) {
         List<ImGroupRequestDO> list = groupRequestService.getGroupRequestListByGroupId(getCurUserId(), groupId);
         return ok(buildVOList(list));
@@ -101,10 +101,10 @@ public class ImGroupRequestController {
     @GetMapping("/get")
     @Operation(summary = "按 id 单查申请记录（带越权过滤；WebSocket 通知到达后用）")
     @Parameter(name = "id", description = "申请记录编号", required = true)
-    public R<ImGroupRequestRespVO> getGroupRequest(@RequestParam("id") Long id) {
+    public R<ImGroupRequestRespVo> getGroupRequest(@RequestParam("id") Long id) {
         ImGroupRequestDO request = groupRequestService.getGroupRequest(id);
         if (request == null) {
-            return ok((ImGroupRequestRespVO) null);
+            return ok((ImGroupRequestRespVo) null);
         }
         // 越权过滤：申请人 / 邀请人 / 群主 / 管理员之外，当不存在返回 null
         Long currentUserId = getCurUserId();
@@ -112,7 +112,7 @@ public class ImGroupRequestController {
                 || ObjUtil.equal(request.getInviterUserId(), currentUserId)
                 || isGroupOwnerOrAdmin(request.getGroupId(), currentUserId);
         if (!canSee) {
-            return ok((ImGroupRequestRespVO) null);
+            return ok((ImGroupRequestRespVo) null);
         }
 
         // 转换并返回
@@ -130,7 +130,7 @@ public class ImGroupRequestController {
     }
 
     /** 申请记录列表批量转 VO + 关联回填用户 / 群信息 */
-    private List<ImGroupRequestRespVO> buildVOList(List<ImGroupRequestDO> list) {
+    private List<ImGroupRequestRespVo> buildVOList(List<ImGroupRequestDO> list) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }
@@ -142,7 +142,7 @@ public class ImGroupRequestController {
         Set<Long> groupIds = convertSet(list, ImGroupRequestDO::getGroupId);
         Map<Long, ImGroupDO> groupMap = groupService.getGroupMap(groupIds);
         return convertList(list, request -> {
-            ImGroupRequestRespVO vo = BeanUtils.toBean(request, ImGroupRequestRespVO.class);
+            ImGroupRequestRespVo vo = BeanUtils.toBean(request, ImGroupRequestRespVo.class);
             MapUtils.findAndThen(userMap, request.getUserId(), user ->
                     vo.setUserNickname(user.getName()).setUserAvatar(user.getAvatar()));
             MapUtils.findAndThen(userMap, request.getInviterUserId(), user ->

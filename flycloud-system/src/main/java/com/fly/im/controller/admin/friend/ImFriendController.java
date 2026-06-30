@@ -5,8 +5,8 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.framework.util.StrUtils;
-import com.fly.im.controller.admin.friend.vo.ImFriendRespVO;
-import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVO;
+import com.fly.im.controller.admin.friend.vo.ImFriendRespVo;
+import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendDO;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -45,18 +45,18 @@ public class ImFriendController {
 
     @GetMapping("/list")
     @Operation(summary = "获得当前登录用户的好友列表")
-    public R<List<ImFriendRespVO>> getMyFriendList() {
+    public R<List<ImFriendRespVo>> getMyFriendList() {
         // 含 DISABLE 历史好友：保留给前端展示「已删除好友」的历史对话信息；前端按 status 决定会话级联清理
         List<ImFriendDO> friends = friendService.getFriendList(getCurUserId());
-        return ok(buildFriendRespVOList(friends));
+        return ok(buildFriendRespVoList(friends));
     }
 
     @GetMapping("/get")
     @Operation(summary = "获得好友详情")
     @Parameter(name = "friendUserId", description = "好友的用户编号", required = true, example = "2048")
-    public R<ImFriendRespVO> getFriend(@RequestParam("friendUserId") Long friendUserId) {
+    public R<ImFriendRespVo> getFriend(@RequestParam("friendUserId") Long friendUserId) {
         ImFriendDO friend = friendService.getFriend(getCurUserId(), friendUserId);
-        return ok(buildFriendRespVO(friend));
+        return ok(buildFriendRespVo(friend));
     }
 
     @DeleteMapping("/delete")
@@ -74,8 +74,8 @@ public class ImFriendController {
 
     @PutMapping("/update")
     @Operation(summary = "更新好友单边属性（备注 / 免打扰 / 联系人置顶）")
-    public R<Boolean> updateFriend(@Valid @RequestBody ImFriendUpdateReqVO reqVO) {
-        friendService.updateFriend(getCurUserId(), reqVO);
+    public R<Boolean> updateFriend(@Valid @RequestBody ImFriendUpdateReqVo reqVo) {
+        friendService.updateFriend(getCurUserId(), reqVo);
         return ok(true);
     }
 
@@ -99,7 +99,7 @@ public class ImFriendController {
 
     // ========== 私有方法：VO 组装 ==========
 
-    private List<ImFriendRespVO> buildFriendRespVOList(Collection<ImFriendDO> friends) {
+    private List<ImFriendRespVo> buildFriendRespVoList(Collection<ImFriendDO> friends) {
         if (CollUtil.isEmpty(friends)) {
             return Collections.emptyList();
         }
@@ -107,7 +107,7 @@ public class ImFriendController {
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
                 convertList(friends, ImFriendDO::getFriendUserId));
         return convertList(friends, friend -> {
-            ImFriendRespVO vo = BeanUtils.toBean(friend, ImFriendRespVO.class);
+            ImFriendRespVo vo = BeanUtils.toBean(friend, ImFriendRespVo.class);
             MapUtils.findAndThen(userMap, friend.getFriendUserId(), user ->
                     vo.setNickname(user.getName()).setAvatar(user.getAvatar()));
             // 备注 / 昵称的拼音，给前端做字母分桶 + 拼音搜索
@@ -117,11 +117,11 @@ public class ImFriendController {
         });
     }
 
-    private ImFriendRespVO buildFriendRespVO(ImFriendDO friend) {
+    private ImFriendRespVo buildFriendRespVo(ImFriendDO friend) {
         if (friend == null) {
             return null;
         }
-        return CollUtil.getFirst(buildFriendRespVOList(singleton(friend)));
+        return CollUtil.getFirst(buildFriendRespVoList(singleton(friend)));
     }
 
 }

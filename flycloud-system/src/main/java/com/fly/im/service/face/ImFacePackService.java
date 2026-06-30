@@ -1,8 +1,8 @@
 package com.fly.im.service.face;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVO;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackSaveReqVO;
+import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVo;
+import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackSaveReqVo;
 import com.fly.im.dal.dataobject.face.ImFacePackDO;
 import jakarta.validation.Valid;
 
@@ -39,10 +39,10 @@ public interface ImFacePackService {
     /**
      * 分页查询表情包
      *
-     * @param reqVO 分页查询条件
+     * @param reqVo 分页查询条件
      * @return 表情包分页
      */
-    PageResult<ImFacePackDO> getFacePackPage(ImFacePackPageReqVO reqVO);
+    PageResult<ImFacePackDO> getFacePackPage(ImFacePackPageReqVo reqVo);
 
     /**
      * 获取表情包详情
@@ -55,17 +55,17 @@ public interface ImFacePackService {
     /**
      * 新增表情包
      *
-     * @param reqVO 新增请求
+     * @param reqVo 新增请求
      * @return 新增表情包编号
      */
-    Long createFacePack(@Valid ImFacePackSaveReqVO reqVO);
+    Long createFacePack(@Valid ImFacePackSaveReqVo reqVo);
 
     /**
      * 修改表情包
      *
-     * @param reqVO 修改请求
+     * @param reqVo 修改请求
      */
-    void updateFacePack(@Valid ImFacePackSaveReqVO reqVO);
+    void updateFacePack(@Valid ImFacePackSaveReqVo reqVo);
 
     /**
      * 删除表情包；包下存在表情时拒绝，避免历史 face 消息无法回查归属

@@ -15,7 +15,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImChannelMessagePageReqVO extends PageBo {
+public class ImChannelMessagePageReqVo extends PageBo {
 
     @Schema(description = "频道编号", example = "1")
     private Long channelId;

@@ -18,7 +18,7 @@ import java.util.List;
 @Schema(description = "管理后台 - 群聊消息发送 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupMessageSendReqVO {
+public class ImGroupMessageSendReqVo {
 
     @Schema(description = "客户端消息编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "uuid-xxx")
     @NotEmpty(message = "客户端消息编号不能为空")

@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "IM 个人表情 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImFaceUserItemRespVO {
+public class ImFaceUserItemRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "4096")
     private Long id;

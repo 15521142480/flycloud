@@ -17,7 +17,7 @@ import static com.fly.im.framework.util.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MIN
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImSensitiveWordPageReqVO extends PageBo {
+public class ImSensitiveWordPageReqVo extends PageBo {
 
     @Schema(description = "敏感词，模糊匹配", example = "敏感")
     private String word;

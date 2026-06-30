@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - IM 好友关系 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImFriendManagerRespVO {
+public class ImFriendManagerRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private Long id;

@@ -1,9 +1,9 @@
 package com.fly.im.service.rtc;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerPageReqVO;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallCreateReqVO;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallInviteReqVO;
+import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerPageReqVo;
+import com.fly.im.controller.admin.rtc.vo.ImRtcCallCreateReqVo;
+import com.fly.im.controller.admin.rtc.vo.ImRtcCallInviteReqVo;
 import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
 import com.fly.im.dal.dataobject.rtc.ImRtcParticipantDO;
 
@@ -21,18 +21,18 @@ public interface ImRtcCallService {
      * 创建新通话；同好友对 / 同群已有进行中通话直接抛错（群场景应改走 {@link #inviteCall} 追加邀请，或 {@link #joinCall} 加入旁观）
      *
      * @param userId 发起人编号；通常是当前登录用户
-     * @param reqVO  请求参数（scene / mediaType / peerUserId 或 groupId + inviteeIds）
+     * @param reqVo  请求参数（scene / mediaType / peerUserId 或 groupId + inviteeIds）
      * @return 通话主表
      */
-    ImRtcCallDO createCall(Long userId, ImRtcCallCreateReqVO reqVO);
+    ImRtcCallDO createCall(Long userId, ImRtcCallCreateReqVo reqVo);
 
     /**
      * 通话中追加邀请：仅群通话场景可用；本人必须是房内 JOINED 参与者；给新邀请人推 RTC_CALL(INVITE)
      *
      * @param userId 操作人编号；必须是当前会话参与者
-     * @param reqVO  room + 新邀请的用户编号集合
+     * @param reqVo  room + 新邀请的用户编号集合
      */
-    void inviteCall(Long userId, ImRtcCallInviteReqVO reqVO);
+    void inviteCall(Long userId, ImRtcCallInviteReqVo reqVo);
 
     /**
      * 加入已有群通话：用于群胶囊条「加入」按钮；旁观者作为 JOINER 加入，邀请池内成员转 JOINED
@@ -146,10 +146,10 @@ public interface ImRtcCallService {
     /**
      * 【管理后台】获得通话记录分页
      *
-     * @param reqVO 分页查询条件
+     * @param reqVo 分页查询条件
      * @return 通话记录分页
      */
-    PageResult<ImRtcCallDO> getCallPage(ImRtcCallManagerPageReqVO reqVO);
+    PageResult<ImRtcCallDO> getCallPage(ImRtcCallManagerPageReqVo reqVo);
 
     /**
      * 【管理后台】获得通话记录

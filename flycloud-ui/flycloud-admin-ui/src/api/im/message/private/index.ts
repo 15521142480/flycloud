@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // 私聊消息 Response VO
 export interface ImPrivateMessageRespVO {
   id: number // 消息编号
@@ -31,7 +33,10 @@ export interface ImPrivateMessageListReqVO {
 
 // 发送私聊消息
 export const sendPrivateMessage = (data: ImPrivateMessageSendReqVO) => {
-  return request.post<ImPrivateMessageRespVO>({ url: '/im/message/private/send', data })
+  return request.post<ImPrivateMessageRespVO>({
+    url: `/${SYS_BASE_URL}/im/message/private/send`,
+    data
+  })
 }
 
 // 拉取私聊消息（增量）
@@ -39,18 +44,25 @@ export const pullPrivateMessageList = (
   params: { minId: number | string; size: number },
   signal?: AbortSignal
 ) => {
-  return request.get<ImPrivateMessageRespVO[]>({ url: '/im/message/private/pull', params, signal })
+  return request.get<ImPrivateMessageRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/message/private/pull`,
+    params,
+    signal
+  })
 }
 
 // 查询私聊历史消息
 export const getPrivateMessageList = (params: ImPrivateMessageListReqVO) => {
-  return request.get<ImPrivateMessageRespVO[]>({ url: '/im/message/private/list', params })
+  return request.get<ImPrivateMessageRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/message/private/list`,
+    params
+  })
 }
 
 // 标记私聊消息已读
 export const readPrivateMessages = (receiverId: number | string, messageId: number | string) => {
   return request.put<boolean>({
-    url: '/im/message/private/read',
+    url: `/${SYS_BASE_URL}/im/message/private/read`,
     params: { receiverId, messageId }
   })
 }
@@ -58,7 +70,7 @@ export const readPrivateMessages = (receiverId: number | string, messageId: numb
 // 查询对方已读到我发的最大消息 id（多端 / 离线后用于补齐已读状态）
 export const getPrivateMaxReadMessageId = (peerId: number | string, signal?: AbortSignal) => {
   return request.get<number | null>({
-    url: '/im/message/private/max-read-message-id',
+    url: `/${SYS_BASE_URL}/im/message/private/max-read-message-id`,
     params: { peerId },
     signal
   })
@@ -67,7 +79,7 @@ export const getPrivateMaxReadMessageId = (peerId: number | string, signal?: Abo
 // 撤回私聊消息
 export const recallPrivateMessage = (id: number | string) => {
   return request.delete<ImPrivateMessageRespVO>({
-    url: '/im/message/private/recall',
+    url: `/${SYS_BASE_URL}/im/message/private/recall`,
     params: { id }
   })
 }

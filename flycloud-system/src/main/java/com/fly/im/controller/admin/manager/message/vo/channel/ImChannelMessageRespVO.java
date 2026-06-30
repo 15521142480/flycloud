@@ -10,7 +10,7 @@ import java.util.List;
 @Schema(description = "管理后台 - IM 频道消息 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImChannelMessageRespVO {
+public class ImChannelMessageRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private Long id;

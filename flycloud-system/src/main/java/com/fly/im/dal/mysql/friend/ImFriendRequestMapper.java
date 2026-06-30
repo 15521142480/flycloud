@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.friend;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVO;
+import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
 import com.fly.im.enums.friend.ImFriendRequestHandleResultEnum;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -69,13 +69,13 @@ public interface ImFriendRequestMapper extends BaseMapperX<ImFriendRequestDO> {
                 .set(ImFriendRequestDO::getUpdateTime, updateTime));
     }
 
-    default PageResult<ImFriendRequestDO> selectPage(ImFriendRequestManagerPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImFriendRequestDO>()
-                .eqIfPresent(ImFriendRequestDO::getFromUserId, reqVO.getFromUserId())
-                .eqIfPresent(ImFriendRequestDO::getToUserId, reqVO.getToUserId())
-                .eqIfPresent(ImFriendRequestDO::getHandleResult, reqVO.getHandleResult())
-                .eqIfPresent(ImFriendRequestDO::getAddSource, reqVO.getAddSource())
-                .betweenIfPresent(ImFriendRequestDO::getCreateTime, reqVO.getCreateTime())
+    default PageResult<ImFriendRequestDO> selectPage(ImFriendRequestManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFriendRequestDO>()
+                .eqIfPresent(ImFriendRequestDO::getFromUserId, reqVo.getFromUserId())
+                .eqIfPresent(ImFriendRequestDO::getToUserId, reqVo.getToUserId())
+                .eqIfPresent(ImFriendRequestDO::getHandleResult, reqVo.getHandleResult())
+                .eqIfPresent(ImFriendRequestDO::getAddSource, reqVo.getAddSource())
+                .betweenIfPresent(ImFriendRequestDO::getCreateTime, reqVo.getCreateTime())
                 .orderByDesc(ImFriendRequestDO::getId));
     }
 

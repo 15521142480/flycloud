@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 群聊封禁 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupManagerBanReqVO {
+public class ImGroupManagerBanReqVo {
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     @NotNull(message = "群编号不能为空")

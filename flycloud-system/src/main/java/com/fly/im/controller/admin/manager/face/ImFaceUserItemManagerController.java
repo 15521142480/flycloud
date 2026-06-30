@@ -4,8 +4,8 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVO;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerRespVO;
+import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
+import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerRespVo;
 import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
 import com.fly.im.service.face.ImFaceUserItemService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -38,14 +38,14 @@ public class ImFaceUserItemManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得用户表情分页")
     @PreAuthorize("@pms.hasPermission('im:manager:face-user-item:query')")
-    public R<PageResult<ImFaceUserItemManagerRespVO>> getFaceUserItemPage(
-            @Valid ImFaceUserItemManagerPageReqVO pageReqVO) {
-        PageResult<ImFaceUserItemDO> pageResult = faceUserItemService.getFaceUserItemPage(pageReqVO);
+    public R<PageResult<ImFaceUserItemManagerRespVo>> getFaceUserItemPage(
+            @Valid ImFaceUserItemManagerPageReqVo pageReqVo) {
+        PageResult<ImFaceUserItemDO> pageResult = faceUserItemService.getFaceUserItemPage(pageReqVo);
         // 关联回填用户昵称
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
                 CollectionUtils.convertSet(pageResult.getList(), ImFaceUserItemDO::getUserId));
-        List<ImFaceUserItemManagerRespVO> voList = CollectionUtils.convertList(pageResult.getList(), item -> {
-            ImFaceUserItemManagerRespVO vo = BeanUtils.toBean(item, ImFaceUserItemManagerRespVO.class);
+        List<ImFaceUserItemManagerRespVo> voList = CollectionUtils.convertList(pageResult.getList(), item -> {
+            ImFaceUserItemManagerRespVo vo = BeanUtils.toBean(item, ImFaceUserItemManagerRespVo.class);
             SysUserVo user = userMap.get(item.getUserId());
             if (user != null) {
                 vo.setUserNickname(user.getName());

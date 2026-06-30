@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface NotifyLogVO {
   id?: number
   status?: number
@@ -31,14 +33,14 @@ export interface NotifyTaskVO {
 // 获得支付通知明细
 export const getNotifyTaskDetail = (id: number) => {
   return request.get<NotifyTaskVO>({
-    url: '/pay/notify/get-detail?id=' + id
+    url: `/${SYS_BASE_URL}/pay/notify/get-detail?id=` + id
   })
 }
 
 // 获得支付通知分页
 export const getNotifyTaskPage = (query: any) => {
   return request.get<PageResult<NotifyTaskVO[]>>({
-    url: '/pay/notify/page',
+    url: `/${SYS_BASE_URL}/pay/notify/page`,
     params: query
   })
 }

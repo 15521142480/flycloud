@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVO;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVO;
+import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVo;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupDO;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import com.fly.im.dal.dataobject.group.ImGroupRequestDO;
@@ -73,8 +73,8 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImGroupRequestDO applyJoinGroup(Long userId, ImGroupRequestApplyReqVO reqVO) {
-        Long groupId = reqVO.getGroupId();
+    public ImGroupRequestDO applyJoinGroup(Long userId, ImGroupRequestApplyReqVo reqVo) {
+        Long groupId = reqVo.getGroupId();
         // 1.1 校验群存在 + 未封禁 / 未解散
         ImGroupDO group = groupService.validateGroupExists(groupId);
         // 1.2 校验未在群中
@@ -89,15 +89,15 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
             groupService.validateMemberCountLimit(groupId, 1);
             // 写群成员；addSource 来自前端入口（搜索 / 二维码 / 分享链接），inviterUserId=null（主动申请）
             groupMemberService.addGroupMember(groupId, userId,
-                    ImGroupMemberRoleEnum.NORMAL.getRole(), reqVO.getAddSource(), null);
+                    ImGroupMemberRoleEnum.NORMAL.getRole(), reqVo.getAddSource(), null);
             // 推 1510 给全员；payload 含进群者 + 来源，前端按 entrantUserId 局部插入新成员
             groupMessageService.sendGroupMessage(userId,
-                    ImGroupMessageSendDTO.ofGroupMemberEnter(groupId, userId, reqVO.getAddSource()));
+                    ImGroupMessageSendDTO.ofGroupMemberEnter(groupId, userId, reqVo.getAddSource()));
             return null;
         }
 
         // 3. 情况二：群开启了审批，创建或复用一条主动申请记录
-        ImGroupRequestDO request = createOrResetApplyRequest(groupId, userId, reqVO);
+        ImGroupRequestDO request = createOrResetApplyRequest(groupId, userId, reqVo);
 
         // 4. 1503 私聊定向推群主 + 全部管理员（多端同步）；payload 携带申请方昵称 / 头像
         SysUserVo applyUser = adminUserApi.getUser(userId).getCheckedData();
@@ -242,8 +242,8 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
     }
 
     @Override
-    public PageResult<ImGroupRequestDO> getGroupRequestPage(ImGroupRequestManagerPageReqVO reqVO) {
-        return groupRequestMapper.selectPage(reqVO);
+    public PageResult<ImGroupRequestDO> getGroupRequestPage(ImGroupRequestManagerPageReqVo reqVo) {
+        return groupRequestMapper.selectPage(reqVo);
     }
 
     /**
@@ -251,18 +251,18 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
      *
      * @param groupId 群编号
      * @param userId  申请人用户编号
-     * @param reqVO   申请请求
+     * @param reqVo   申请请求
      * @return 申请记录
      */
-    private ImGroupRequestDO createOrResetApplyRequest(Long groupId, Long userId, ImGroupRequestApplyReqVO reqVO) {
+    private ImGroupRequestDO createOrResetApplyRequest(Long groupId, Long userId, ImGroupRequestApplyReqVo reqVo) {
         // 1. 已有申请：覆盖本次申请内容，并重置为未处理
         ImGroupRequestDO request = groupRequestMapper.selectByGroupIdAndUserId(groupId, userId);
         if (request != null) {
-            resetApplyRequest(request, reqVO);
+            resetApplyRequest(request, reqVo);
             return request;
         }
         // 2. 无旧申请：创建主动申请记录
-        request = BeanUtils.toBean(reqVO, ImGroupRequestDO.class)
+        request = BeanUtils.toBean(reqVo, ImGroupRequestDO.class)
                 .setUserId(userId).setInviterUserId(null)
                 .setHandleResult(ImGroupRequestHandleResultEnum.UNHANDLED.getResult());
         try {
@@ -274,7 +274,7 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
             if (request == null) {
                 throw ex;
             }
-            resetApplyRequest(request, reqVO);
+            resetApplyRequest(request, reqVo);
             return request;
         }
     }
@@ -317,15 +317,15 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
      * 重置主动加群申请
      *
      * @param request 申请记录
-     * @param reqVO   申请请求
+     * @param reqVo   申请请求
      */
-    private void resetApplyRequest(ImGroupRequestDO request, ImGroupRequestApplyReqVO reqVO) {
+    private void resetApplyRequest(ImGroupRequestDO request, ImGroupRequestApplyReqVo reqVo) {
         // 1. 更新申请内容、来源和处理状态
         LocalDateTime now = LocalDateTime.now();
         groupRequestMapper.updateApplyByIdReset(request.getId(),
-                reqVO.getApplyContent(), reqVO.getAddSource(), now);
+                reqVo.getApplyContent(), reqVo.getAddSource(), now);
         // 2. 同步内存对象，后续通知构建直接复用
-        request.setApplyContent(reqVO.getApplyContent()).setAddSource(reqVO.getAddSource())
+        request.setApplyContent(reqVo.getApplyContent()).setAddSource(reqVo.getAddSource())
                 .setHandleResult(ImGroupRequestHandleResultEnum.UNHANDLED.getResult())
                 .setInviterUserId(null).setHandleUserId(null)
                 .setHandleContent(null).setHandleTime(null).setUpdateTime(now);

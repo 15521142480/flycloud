@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 数据看板概览 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImStatisticsManagerOverviewRespVO {
+public class ImStatisticsManagerOverviewRespVo {
 
     @Schema(description = "用户总数", requiredMode = Schema.RequiredMode.REQUIRED, example = "12345")
     private Long totalUser;

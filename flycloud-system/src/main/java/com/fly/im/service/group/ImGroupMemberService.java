@@ -1,6 +1,6 @@
 package com.fly.im.service.group;
 
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVO;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import jakarta.validation.Valid;
 
@@ -175,9 +175,9 @@ public interface ImGroupMemberService {
      * 内部会校验用户是否为群的有效成员
      *
      * @param userId      当前登录用户编号
-     * @param updateReqVO 更新信息
+     * @param updateReqVo 更新信息
      */
-    void updateGroupMember(Long userId, @Valid ImGroupMemberUpdateReqVO updateReqVO);
+    void updateGroupMember(Long userId, @Valid ImGroupMemberUpdateReqVo updateReqVo);
 
     /**
      * 批量更新群成员角色

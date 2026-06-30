@@ -9,7 +9,7 @@ import java.util.Set;
 @Schema(description = "管理后台 - 群活跃通话 Response VO；不含 token，胶囊条仅展示用")
 @Data
 @Accessors(chain = true)
-public class ImRtcGroupCallRespVO {
+public class ImRtcGroupCallRespVo {
 
     @Schema(description = "业务通话编号")
     private String room;

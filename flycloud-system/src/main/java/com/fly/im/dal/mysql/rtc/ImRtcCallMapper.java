@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.rtc;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerPageReqVO;
+import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerPageReqVo;
 import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.ibatis.annotations.Mapper;
@@ -51,14 +51,14 @@ public interface ImRtcCallMapper extends BaseMapperX<ImRtcCallDO> {
                 .lt(ImRtcCallDO::getStartTime, startTimeBefore));
     }
 
-    default PageResult<ImRtcCallDO> selectPage(ImRtcCallManagerPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImRtcCallDO>()
-                .eqIfPresent(ImRtcCallDO::getInviterUserId, reqVO.getInviterUserId())
-                .eqIfPresent(ImRtcCallDO::getConversationType, reqVO.getConversationType())
-                .eqIfPresent(ImRtcCallDO::getMediaType, reqVO.getMediaType())
-                .eqIfPresent(ImRtcCallDO::getStatus, reqVO.getStatus())
-                .eqIfPresent(ImRtcCallDO::getEndReason, reqVO.getEndReason())
-                .betweenIfPresent(ImRtcCallDO::getStartTime, reqVO.getStartTime())
+    default PageResult<ImRtcCallDO> selectPage(ImRtcCallManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImRtcCallDO>()
+                .eqIfPresent(ImRtcCallDO::getInviterUserId, reqVo.getInviterUserId())
+                .eqIfPresent(ImRtcCallDO::getConversationType, reqVo.getConversationType())
+                .eqIfPresent(ImRtcCallDO::getMediaType, reqVo.getMediaType())
+                .eqIfPresent(ImRtcCallDO::getStatus, reqVo.getStatus())
+                .eqIfPresent(ImRtcCallDO::getEndReason, reqVo.getEndReason())
+                .betweenIfPresent(ImRtcCallDO::getStartTime, reqVo.getStartTime())
                 .orderByDesc(ImRtcCallDO::getId));
     }
 

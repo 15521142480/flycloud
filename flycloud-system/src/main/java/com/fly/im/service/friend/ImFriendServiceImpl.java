@@ -5,8 +5,8 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVO;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVO;
+import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVo;
+import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVo;
 import com.fly.im.dal.dataobject.friend.ImFriendDO;
 import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
 import com.fly.im.dal.mysql.friend.ImFriendMapper;
@@ -138,25 +138,25 @@ public class ImFriendServiceImpl implements ImFriendService {
     }
 
     @Override
-    public void updateFriend(Long userId, ImFriendUpdateReqVO reqVO) {
+    public void updateFriend(Long userId, ImFriendUpdateReqVo reqVo) {
         // 1.1 校验：至少改一个字段（无字段变更，直接结束）
-        if (reqVO.getDisplayName() == null && reqVO.getSilent() == null && reqVO.getPinned() == null) {
+        if (reqVo.getDisplayName() == null && reqVo.getSilent() == null && reqVo.getPinned() == null) {
             return;
         }
         // 1.2 校验好友关系启用
-        ImFriendDO friend = friendMapper.selectByUserIdAndFriendUserId(userId, reqVO.getFriendUserId());
+        ImFriendDO friend = friendMapper.selectByUserIdAndFriendUserId(userId, reqVo.getFriendUserId());
         if (friend == null || !CommonStatusEnum.isEnable(friend.getStatus())) {
             throw exception(FRIEND_NOT_FRIEND);
         }
 
         // 2. 更新好友属性（备注 / 免打扰 / 联系人置顶）
         friendMapper.updateById(new ImFriendDO().setId(friend.getId())
-                .setSilent(reqVO.getSilent()).setDisplayName(reqVO.getDisplayName()).setPinned(reqVO.getPinned()));
+                .setSilent(reqVo.getSilent()).setDisplayName(reqVo.getDisplayName()).setPinned(reqVo.getPinned()));
 
         // 3. 推 FRIEND_UPDATE 给 A 多端：所有单边属性变更合并为单条通知，避免多通知顺序竞争
         FriendUpdateNotification payload = (FriendUpdateNotification) new FriendUpdateNotification()
-                .setDisplayName(reqVO.getDisplayName()).setSilent(reqVO.getSilent()).setPinned(reqVO.getPinned())
-                .setOperatorUserId(userId).setFriendUserId(reqVO.getFriendUserId());
+                .setDisplayName(reqVo.getDisplayName()).setSilent(reqVo.getSilent()).setPinned(reqVo.getPinned())
+                .setOperatorUserId(userId).setFriendUserId(reqVo.getFriendUserId());
         websocketService.sendPrivateMessageAsync(userId, ImPrivateMessageDTO.ofFriendNotification(
                 ImMessageTypeEnum.FRIEND_UPDATE.getType(), userId, userId, payload));
     }
@@ -328,8 +328,8 @@ public class ImFriendServiceImpl implements ImFriendService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFriendDO> getFriendPage(ImFriendManagerPageReqVO reqVO) {
-        return friendMapper.selectPage(reqVO);
+    public PageResult<ImFriendDO> getFriendPage(ImFriendManagerPageReqVo reqVo) {
+        return friendMapper.selectPage(reqVo);
     }
 
 }

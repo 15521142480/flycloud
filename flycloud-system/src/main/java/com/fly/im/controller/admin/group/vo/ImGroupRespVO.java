@@ -1,6 +1,6 @@
 package com.fly.im.controller.admin.group.vo;
 
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageRespVO;
+import com.fly.im.controller.admin.message.vo.group.ImGroupMessageRespVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -11,7 +11,7 @@ import java.util.List;
 @Schema(description = "管理后台 - 群 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupRespVO {
+public class ImGroupRespVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1003")
     private Long id;
@@ -50,6 +50,6 @@ public class ImGroupRespVO {
     private LocalDateTime createTime;
 
     @Schema(description = "群置顶消息列表，按 pin 顺序（最先置顶的在前）；非该群有效成员时为空")
-    private List<ImGroupMessageRespVO> pinnedMessages;
+    private List<ImGroupMessageRespVo> pinnedMessages;
 
 }

@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 export interface DemoOrderVO {
   spuId: number
   createTime: Date
@@ -8,7 +10,7 @@ export interface DemoOrderVO {
 // 创建示例订单
 export function createDemoOrder(data: DemoOrderVO) {
   return request.post({
-    url: '/pay/demo-order/create',
+    url: `/${SYS_BASE_URL}/pay/demo-order/create`,
     data: data
   })
 }
@@ -16,7 +18,7 @@ export function createDemoOrder(data: DemoOrderVO) {
 // 获得示例订单分页
 export function getDemoOrderPage(query: PageParam) {
   return request.get({
-    url: '/pay/demo-order/page',
+    url: `/${SYS_BASE_URL}/pay/demo-order/page`,
     params: query
   })
 }
@@ -24,6 +26,6 @@ export function getDemoOrderPage(query: PageParam) {
 // 退款示例订单
 export function refundDemoOrder(id: number) {
   return request.put({
-    url: '/pay/demo-order/refund?id=' + id
+    url: `/${SYS_BASE_URL}/pay/demo-order/refund?id=` + id
   })
 }

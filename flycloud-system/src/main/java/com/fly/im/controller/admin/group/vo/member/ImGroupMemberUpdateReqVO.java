@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - 群成员更新 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupMemberUpdateReqVO {
+public class ImGroupMemberUpdateReqVo {
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     @NotNull(message = "群编号不能为空")

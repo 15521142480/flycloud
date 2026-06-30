@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 数据看板群规模分布项 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImStatisticsManagerGroupSizeRespVO {
+public class ImStatisticsManagerGroupSizeRespVo {
 
     @Schema(description = "区间名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "1-9 人")
     private String range;

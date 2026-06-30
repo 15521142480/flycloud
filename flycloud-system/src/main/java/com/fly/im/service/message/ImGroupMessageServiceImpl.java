@@ -10,9 +10,9 @@ import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVO;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageListReqVO;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageSendReqVO;
+import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
+import com.fly.im.controller.admin.message.vo.group.ImGroupMessageListReqVo;
+import com.fly.im.controller.admin.message.vo.group.ImGroupMessageSendReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupDO;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
@@ -84,33 +84,33 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     private ImProperties imProperties;
 
     @Override
-    public ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendReqVO reqVO) {
+    public ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo) {
         // 1.1 幂等校验：根据 senderId + clientMessageId 查重
         ImGroupMessageDO existing = groupMessageMapper.selectBySenderIdAndClientMessageId(
-                senderId, reqVO.getClientMessageId());
+                senderId, reqVo.getClientMessageId());
         if (existing != null) {
             log.info("[sendGroupMessage][幂等命中 senderId({}) clientMessageId({}) 已存在消息({})]",
-                    senderId, reqVO.getClientMessageId(), existing.getId());
+                    senderId, reqVo.getClientMessageId(), existing.getId());
             return existing;
         }
         // 1.2 消息内容校验
-        ImMessageUtils.validateUserMessageContent(reqVO.getType(), reqVO.getContent());
+        ImMessageUtils.validateUserMessageContent(reqVo.getType(), reqVo.getContent());
         // 1.3 校验群存在、发送人仍在群中
-        ImGroupDO group = groupService.validateGroupExists(reqVO.getGroupId());
-        ImGroupMemberDO senderMember = groupMemberService.validateMemberInGroup(reqVO.getGroupId(), senderId);
+        ImGroupDO group = groupService.validateGroupExists(reqVo.getGroupId());
+        ImGroupMemberDO senderMember = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), senderId);
         // 1.4 禁言校验
         validateMuteStatus(group, senderMember);
         // 1.5 文本消息敏感词过滤
-        if (ImMessageTypeEnum.TEXT.getType().equals(reqVO.getType())) {
-            sensitiveWordService.validateText(reqVO.getContent());
+        if (ImMessageTypeEnum.TEXT.getType().equals(reqVo.getType())) {
+            sensitiveWordService.validateText(reqVo.getContent());
         }
 
         // 2.1 引用 quote 消息规范化
-        reqVO.setContent(normalizeQuoteContent(reqVO, senderMember));
+        reqVo.setContent(normalizeQuoteContent(reqVo, senderMember));
         // 2.2 构建并保存消息
-        ImGroupMessageDO message = BeanUtils.toBean(reqVO, ImGroupMessageDO.class, m -> m
+        ImGroupMessageDO message = BeanUtils.toBean(reqVo, ImGroupMessageDO.class, m -> m
                 .setSenderId(senderId).setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now())
-                .setReceiptStatus(resolveReceiptStatus(reqVO.getReceipt())));
+                .setReceiptStatus(resolveReceiptStatus(reqVo.getReceipt())));
         groupMessageMapper.insert(message);
 
         // 3. WebSocket 异步推送（群内可见成员 + 发送方多端同步）
@@ -420,13 +420,13 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     }
 
     @Override
-    public List<ImGroupMessageDO> getGroupMessageList(Long userId, ImGroupMessageListReqVO reqVO) {
+    public List<ImGroupMessageDO> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo) {
         // 1. 校验用户在群中
-        ImGroupMemberDO member = groupMemberService.validateMemberInGroup(reqVO.getGroupId(), userId);
+        ImGroupMemberDO member = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), userId);
 
         // 2. 查询历史消息（仅入群之后）
         List<ImGroupMessageDO> messages = groupMessageMapper.selectHistoryList(
-                reqVO.getGroupId(), reqVO.getMaxId(), reqVO.getLimit(), member.getJoinTime());
+                reqVo.getGroupId(), reqVo.getMaxId(), reqVo.getLimit(), member.getJoinTime());
 
         // 3. 过滤定向消息：仅保留当前用户可见的（receiverUserIds 为空 / 含当前用户 / 本人发送）
         return filterList(messages, message -> isMessageVisible(message, member, userId));
@@ -486,17 +486,17 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     /**
      * 群聊引用消息规范化
      *
-     * @param reqVO 发送请求
+     * @param reqVo 发送请求
      * @param senderMember 发送人成员
      * @return 规范化后的 content
      */
-    private String normalizeQuoteContent(ImGroupMessageSendReqVO reqVO, ImGroupMemberDO senderMember) {
+    private String normalizeQuoteContent(ImGroupMessageSendReqVo reqVo, ImGroupMemberDO senderMember) {
         // 解析客户端 content 里的 quote.messageId
-        Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVO.getContent());
+        Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVo.getContent());
 
         // 情况一：没有 quoteMessageId，直接 remove 掉 content 里可能伪造的 quote 字段
         if (quoteMessageId == null) {
-            return ImMessageUtils.removeQuote(reqVO.getContent());
+            return ImMessageUtils.removeQuote(reqVo.getContent());
         }
 
         // 情况二：有 quoteMessageId，加载原消息并校验
@@ -506,7 +506,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             throw exception(MESSAGE_QUOTE_INVALID);
         }
         // 校验是同群
-        if (ObjUtil.notEqual(original.getGroupId(), reqVO.getGroupId())) {
+        if (ObjUtil.notEqual(original.getGroupId(), reqVo.getGroupId())) {
             throw exception(MESSAGE_QUOTE_INVALID);
         }
         // 拒绝定向消息（仅发送人可见的内容若被全员广播 quote.content，会泄漏给原本看不到的成员）
@@ -520,7 +520,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         // 构建 quote 对象并注入 content
         QuoteMessage quote = ImMessageUtils.buildQuote(original.getId(),
                 original.getSenderId(), original.getType(), original.getContent());
-        return ImMessageUtils.appendQuote(reqVO.getContent(), quote);
+        return ImMessageUtils.appendQuote(reqVo.getContent(), quote);
     }
 
     /**
@@ -622,8 +622,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImGroupMessageDO> getGroupMessagePage(ImGroupMessageManagerPageReqVO reqVO) {
-        return groupMessageMapper.selectPage(reqVO);
+    public PageResult<ImGroupMessageDO> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo) {
+        return groupMessageMapper.selectPage(reqVo);
     }
 
     @Override

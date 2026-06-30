@@ -6,8 +6,8 @@ import com.fly.im.framework.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRespVO;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVO;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRespVo;
+import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -44,8 +44,8 @@ public class ImGroupMemberController {
 
     @PutMapping("/update")
     @Operation(summary = "更新群成员")
-    public R<Boolean> updateGroupMember(@Valid @RequestBody ImGroupMemberUpdateReqVO updateReqVO) {
-        groupMemberService.updateGroupMember(getCurUserId(), updateReqVO);
+    public R<Boolean> updateGroupMember(@Valid @RequestBody ImGroupMemberUpdateReqVo updateReqVo) {
+        groupMemberService.updateGroupMember(getCurUserId(), updateReqVo);
         return ok(true);
     }
 
@@ -56,7 +56,7 @@ public class ImGroupMemberController {
             @Parameter(name = "groupId", description = "群编号（与 userId 配合查）", example = "1"),
             @Parameter(name = "userId", description = "用户编号（与 groupId 配合查）", example = "100")
     })
-    public R<ImGroupMemberRespVO> getGroupMember(@RequestParam(value = "id", required = false) Long id,
+    public R<ImGroupMemberRespVo> getGroupMember(@RequestParam(value = "id", required = false) Long id,
                                                             @RequestParam(value = "groupId", required = false) Long groupId,
                                                             @RequestParam(value = "userId", required = false) Long userId) {
         // 1. 查询群成员
@@ -70,7 +70,7 @@ public class ImGroupMemberController {
             throw new IllegalArgumentException("参数缺失：需传 id 或 (groupId, userId)");
         }
         if (member == null) {
-            return ok((ImGroupMemberRespVO) null);
+            return ok((ImGroupMemberRespVo) null);
         }
 
         // 2. 校验当前登录用户是该成员所在群的有效成员
@@ -78,19 +78,19 @@ public class ImGroupMemberController {
         groupMemberService.validateMemberInGroup(member.getGroupId(), loginUserId);
 
         // 3. 转化 VO
-        ImGroupMemberRespVO memberVO = BeanUtils.toBean(member, ImGroupMemberRespVO.class);
+        ImGroupMemberRespVo memberVo = BeanUtils.toBean(member, ImGroupMemberRespVo.class);
         SysUserVo user = adminUserApi.getUser(member.getUserId()).getCheckedData();
         if (user != null) {
-            memberVO.setNickname(user.getName()).setAvatar(user.getAvatar());
+            memberVo.setNickname(user.getName()).setAvatar(user.getAvatar());
         }
-        hidePrivateFieldsIfNotSelf(memberVO, member.getUserId(), loginUserId);
-        return ok(memberVO);
+        hidePrivateFieldsIfNotSelf(memberVo, member.getUserId(), loginUserId);
+        return ok(memberVo);
     }
 
     @GetMapping("/list")
     @Operation(summary = "获得指定群的成员列表")
     @Parameter(name = "groupId", description = "群编号", required = true, example = "1024")
-    public R<List<ImGroupMemberRespVO>> getGroupMemberList(@RequestParam("groupId") Long groupId) {
+    public R<List<ImGroupMemberRespVo>> getGroupMemberList(@RequestParam("groupId") Long groupId) {
         // 1.1 查询群成员列表（包含 DISABLE 已退群的成员，不按时间过滤）
         // 说明：保留已退群成员，是为了前端展示历史消息时，仍能通过该接口拿到已退群成员的昵称 / 头像信息，避免显示为空
         List<ImGroupMemberDO> members = groupMemberService.getGroupMemberListByGroupId(groupId);
@@ -105,7 +105,7 @@ public class ImGroupMemberController {
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
                 convertList(members, ImGroupMemberDO::getUserId));
         return ok(convertList(members, m -> {
-            ImGroupMemberRespVO vo = BeanUtils.toBean(m, ImGroupMemberRespVO.class);
+            ImGroupMemberRespVo vo = BeanUtils.toBean(m, ImGroupMemberRespVo.class);
             MapUtils.findAndThen(userMap, m.getUserId(), user ->
                     vo.setNickname(user.getName()).setAvatar(user.getAvatar()));
             hidePrivateFieldsIfNotSelf(vo, m.getUserId(), loginUserId);
@@ -116,7 +116,7 @@ public class ImGroupMemberController {
     /**
      * 非本人查看时，置空成员的私人设置字段（groupRemark / silent）
      */
-    private void hidePrivateFieldsIfNotSelf(ImGroupMemberRespVO vo, Long memberUserId, Long loginUserId) {
+    private void hidePrivateFieldsIfNotSelf(ImGroupMemberRespVo vo, Long memberUserId, Long loginUserId) {
         if (ObjUtil.notEqual(loginUserId, memberUserId)) {
             vo.setGroupRemark(null).setSilent(null);
         }

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - IM 好友申请 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImFriendRequestRespVO {
+public class ImFriendRequestRespVo {
 
     @Schema(description = "申请编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private Long id;

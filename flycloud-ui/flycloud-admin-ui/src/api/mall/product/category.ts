@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 /**
  * 产品分类
  */
@@ -32,25 +34,25 @@ export interface CategoryVO {
 
 // 创建商品分类
 export const createCategory = (data: CategoryVO) => {
-  return request.post({ url: '/product/category/create', data })
+  return request.post({ url: `/${MALL_BASE_URL}/product/category/create`, data })
 }
 
 // 更新商品分类
 export const updateCategory = (data: CategoryVO) => {
-  return request.put({ url: '/product/category/update', data })
+  return request.put({ url: `/${MALL_BASE_URL}/product/category/update`, data })
 }
 
 // 删除商品分类
 export const deleteCategory = (id: number) => {
-  return request.delete({ url: `/product/category/delete?id=${id}` })
+  return request.delete({ url: `/${MALL_BASE_URL}/product/category/delete?id=${id}` })
 }
 
 // 获得商品分类
 export const getCategory = (id: number) => {
-  return request.get({ url: `/product/category/get?id=${id}` })
+  return request.get({ url: `/${MALL_BASE_URL}/product/category/get?id=${id}` })
 }
 
 // 获得商品分类列表
 export const getCategoryList = (params: any) => {
-  return request.get({ url: '/product/category/list', params })
+  return request.get({ url: `/${MALL_BASE_URL}/product/category/list`, params })
 }

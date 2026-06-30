@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 数据看板 TOP 发送者项 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImStatisticsManagerTopSenderRespVO {
+public class ImStatisticsManagerTopSenderRespVo {
 
     @Schema(description = "用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     private Long userId;

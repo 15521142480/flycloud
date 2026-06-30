@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // IM 会话读位置 Response VO
 export interface ImConversationReadRespVO {
   id: number // 读位置编号（增量拉取游标用）
@@ -15,5 +17,8 @@ export const pullMyConversationReadList = (params: {
   lastId?: number
   limit: number
 }) => {
-  return request.get<ImConversationReadRespVO[]>({ url: '/im/conversation-read/pull', params })
+  return request.get<ImConversationReadRespVO[]>({
+    url: `/${SYS_BASE_URL}/im/conversation-read/pull`,
+    params
+  })
 }

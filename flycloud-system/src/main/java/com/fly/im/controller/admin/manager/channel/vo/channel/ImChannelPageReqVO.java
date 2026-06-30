@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class ImChannelPageReqVO extends PageBo {
+public class ImChannelPageReqVo extends PageBo {
 
     @Schema(description = "频道业务码", example = "system_notice")
     private String code;

@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - 私聊消息发送 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImPrivateMessageSendReqVO {
+public class ImPrivateMessageSendReqVo {
 
     @Schema(description = "客户端消息编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "uuid-xxx")
     @NotEmpty(message = "客户端消息编号不能为空")

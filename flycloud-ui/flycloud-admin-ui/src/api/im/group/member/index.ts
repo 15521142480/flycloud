@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
 // 群成员 Response VO
 export interface ImGroupMemberRespVO {
   id: number // 编号
@@ -41,23 +43,23 @@ export interface ImGroupMemberUpdateReqVO {
 
 // 邀请用户加入群
 export const inviteGroupMember = (data: ImGroupMemberInviteReqVO) => {
-  return request.post<boolean>({ url: '/im/group/invite', data })
+  return request.post<boolean>({ url: `/${SYS_BASE_URL}/im/group/invite`, data })
 }
 
 // 退出群
 export const quitGroup = (groupId: number | string) => {
-  return request.delete<boolean>({ url: '/im/group/quit', params: { groupId } })
+  return request.delete<boolean>({ url: `/${SYS_BASE_URL}/im/group/quit`, params: { groupId } })
 }
 
 // 移除群成员
 export const removeGroupMember = (data: ImGroupMemberRemoveReqVO) => {
-  return request.delete<boolean>({ url: '/im/group/kicking', data })
+  return request.delete<boolean>({ url: `/${SYS_BASE_URL}/im/group/kicking`, data })
 }
 
 // 获得群成员详情
 export const getGroupMember = (groupId: number, userId: number) => {
   return request.get<ImGroupMemberRespVO>({
-    url: '/im/group-member/get',
+    url: `/${SYS_BASE_URL}/im/group-member/get`,
     params: { groupId, userId }
   })
 }
@@ -65,12 +67,12 @@ export const getGroupMember = (groupId: number, userId: number) => {
 // 获得指定群的成员列表（聚合 AdminUser 昵称 / 头像）
 export const getGroupMemberList = (groupId: number | string) => {
   return request.get<ImGroupMemberRespVO[]>({
-    url: '/im/group-member/list',
+    url: `/${SYS_BASE_URL}/im/group-member/list`,
     params: { groupId }
   })
 }
 
 // 更新群成员
 export const updateGroupMember = (data: ImGroupMemberUpdateReqVO) => {
-  return request.put<boolean>({ url: '/im/group-member/update', data })
+  return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group-member/update`, data })
 }

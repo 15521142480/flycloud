@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.group.vo.member.ImGroupMemberManagerRespVO;
+import com.fly.im.controller.admin.manager.group.vo.member.ImGroupMemberManagerRespVo;
 import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -42,7 +42,7 @@ public class ImGroupMemberManagerController {
     @Operation(summary = "获得群成员列表（含已退群成员，由前端按需过滤）")
     @Parameter(name = "groupId", description = "群编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:group:query')")
-    public R<List<ImGroupMemberManagerRespVO>> getGroupMemberList(@RequestParam("groupId") Long groupId) {
+    public R<List<ImGroupMemberManagerRespVo>> getGroupMemberList(@RequestParam("groupId") Long groupId) {
         // 1. 查询群全部成员（含已退群）
         List<ImGroupMemberDO> members = groupMemberService.getGroupMemberListByGroupId(groupId);
         if (CollUtil.isEmpty(members)) {
@@ -52,7 +52,7 @@ public class ImGroupMemberManagerController {
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
                 convertSet(members, ImGroupMemberDO::getUserId));
         // 2.2 转换为 VO，填充昵称、头像
-        return ok(BeanUtils.toBean(members, ImGroupMemberManagerRespVO.class, vo ->
+        return ok(BeanUtils.toBean(members, ImGroupMemberManagerRespVo.class, vo ->
                 MapUtils.findAndThen(userMap, vo.getUserId(), user ->
                         vo.setNickname(user.getName()).setAvatar(user.getAvatar()))));
     }

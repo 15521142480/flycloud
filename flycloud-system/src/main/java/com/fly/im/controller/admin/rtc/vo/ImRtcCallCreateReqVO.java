@@ -15,7 +15,7 @@ import java.util.Set;
 @Schema(description = "管理后台 - 创建通话 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImRtcCallCreateReqVO {
+public class ImRtcCallCreateReqVo {
 
     @Schema(description = "会话类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     @NotNull(message = "会话类型不能为空")

@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ImPrivateMessagePageReqVO extends PageBo {
+public class ImPrivateMessagePageReqVo extends PageBo {
 
     @Schema(description = "接收人编号（对方）", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     @NotNull(message = "接收人编号不能为空")

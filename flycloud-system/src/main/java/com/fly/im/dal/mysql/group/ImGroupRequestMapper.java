@@ -3,7 +3,7 @@ package com.fly.im.dal.mysql.group;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVO;
+import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVo;
 import com.fly.im.dal.dataobject.group.ImGroupRequestDO;
 import com.fly.im.enums.group.ImGroupRequestHandleResultEnum;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -80,14 +80,14 @@ public interface ImGroupRequestMapper extends BaseMapperX<ImGroupRequestDO> {
                 .set(ImGroupRequestDO::getUpdateTime, updateTime));
     }
 
-    default PageResult<ImGroupRequestDO> selectPage(ImGroupRequestManagerPageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapperX<ImGroupRequestDO>()
-                .eqIfPresent(ImGroupRequestDO::getGroupId, reqVO.getGroupId())
-                .eqIfPresent(ImGroupRequestDO::getUserId, reqVO.getUserId())
-                .eqIfPresent(ImGroupRequestDO::getInviterUserId, reqVO.getInviterUserId())
-                .eqIfPresent(ImGroupRequestDO::getHandleResult, reqVO.getHandleResult())
-                .eqIfPresent(ImGroupRequestDO::getAddSource, reqVO.getAddSource())
-                .betweenIfPresent(ImGroupRequestDO::getCreateTime, reqVO.getCreateTime())
+    default PageResult<ImGroupRequestDO> selectPage(ImGroupRequestManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImGroupRequestDO>()
+                .eqIfPresent(ImGroupRequestDO::getGroupId, reqVo.getGroupId())
+                .eqIfPresent(ImGroupRequestDO::getUserId, reqVo.getUserId())
+                .eqIfPresent(ImGroupRequestDO::getInviterUserId, reqVo.getInviterUserId())
+                .eqIfPresent(ImGroupRequestDO::getHandleResult, reqVo.getHandleResult())
+                .eqIfPresent(ImGroupRequestDO::getAddSource, reqVo.getAddSource())
+                .betweenIfPresent(ImGroupRequestDO::getCreateTime, reqVo.getCreateTime())
                 .orderByDesc(ImGroupRequestDO::getId));
     }
 

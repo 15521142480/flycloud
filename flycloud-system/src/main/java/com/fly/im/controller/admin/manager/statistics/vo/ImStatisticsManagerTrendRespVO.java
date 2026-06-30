@@ -11,7 +11,7 @@ import java.util.Map;
 @Schema(description = "管理后台 - IM 数据看板趋势 Response VO")
 @Data
 @Accessors(chain = true)
-public class ImStatisticsManagerTrendRespVO {
+public class ImStatisticsManagerTrendRespVo {
 
     @Schema(description = "横轴日期序列（每天 00:00:00，由前端按需取日期部分）", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<LocalDateTime> dates;

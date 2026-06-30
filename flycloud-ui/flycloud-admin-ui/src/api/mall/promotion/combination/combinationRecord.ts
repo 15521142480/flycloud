@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface CombinationRecordVO {
   id: number // 拼团记录编号
   activityId: number // 拼团活动编号
@@ -19,10 +21,10 @@ export interface CombinationRecordVO {
 
 // 查询拼团记录列表
 export const getCombinationRecordPage = async (params: any) => {
-  return await request.get({ url: '/promotion/combination-record/page', params })
+  return await request.get({ url: `/${MALL_BASE_URL}/promotion/combination-record/page`, params })
 }
 
 // 获得拼团记录的概要信息
 export const getCombinationRecordSummary = async () => {
-  return await request.get({ url: '/promotion/combination-record/get-summary' })
+  return await request.get({ url: `/${MALL_BASE_URL}/promotion/combination-record/get-summary` })
 }

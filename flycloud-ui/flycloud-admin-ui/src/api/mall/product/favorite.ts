@@ -1,5 +1,7 @@
 import request from '@/config/axios'
 
+const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
+
 export interface Favorite {
   id?: number
   userId?: number // 用户编号
@@ -14,5 +16,8 @@ export interface Favorite {
 
 // 获得 ProductFavorite 列表
 export const getFavoritePage = (params: PageParam) => {
-  return request.get<PageResult<Favorite[]>>({ url: '/product/favorite/page', params })
+  return request.get<PageResult<Favorite[]>>({
+    url: `/${MALL_BASE_URL}/product/favorite/page`,
+    params
+  })
 }

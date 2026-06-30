@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Schema(description = "管理后台 - IM 加群申请发起 Request VO")
 @Data
 @Accessors(chain = true)
-public class ImGroupRequestApplyReqVO {
+public class ImGroupRequestApplyReqVo {
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
     @NotNull(message = "群编号不能为空")
