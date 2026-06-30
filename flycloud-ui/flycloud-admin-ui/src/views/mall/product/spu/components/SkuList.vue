@@ -8,11 +8,7 @@
     max-height="500"
     size="small"
   >
-    <el-table-column
-      align="center"
-      :label="t('auto.views.mall.product.spu.components.SkuList.kbe8da62e')"
-      min-width="65"
-    >
+    <el-table-column align="center" label="图片" min-width="65">
       <template #default="{ row }">
         <UploadImg v-model="row.picUrl" height="50px" width="50px" />
       </template>
@@ -33,12 +29,12 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" :label="t('extra.kf64e95eb')" min-width="168">
+    <el-table-column align="center" label="商品条码" min-width="168">
       <template #default="{ row }">
         <el-input v-model="row.barCode" class="w-100%" />
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.ke295757f')" min-width="168">
+    <el-table-column align="center" label="销售价" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.price"
@@ -50,11 +46,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column
-      align="center"
-      :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.kfaeb45bc')"
-      min-width="168"
-    >
+    <el-table-column align="center" label="市场价" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.marketPrice"
@@ -66,7 +58,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k2e2ce286')" min-width="168">
+    <el-table-column align="center" label="成本价" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.costPrice"
@@ -78,12 +70,12 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="168">
+    <el-table-column align="center" label="库存" min-width="168">
       <template #default="{ row }">
         <el-input-number v-model="row.stock" :min="0" class="w-100%" controls-position="right" />
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k8c0d75b3')" min-width="168">
+    <el-table-column align="center" label="重量(kg)" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.weight"
@@ -95,7 +87,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k87e801a0')" min-width="168">
+    <el-table-column align="center" label="体积(m^3)" min-width="168">
       <template #default="{ row }">
         <el-input-number
           v-model="row.volume"
@@ -108,7 +100,7 @@
       </template>
     </el-table-column>
     <template v-if="formData!.subCommissionType">
-      <el-table-column align="center" :label="t('extra.k84069087')" min-width="168">
+      <el-table-column align="center" label="一级返佣(元)" min-width="168">
         <template #default="{ row }">
           <el-input-number
             v-model="row.firstBrokeragePrice"
@@ -120,7 +112,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('extra.k0e1865ff')" min-width="168">
+      <el-table-column align="center" label="二级返佣(元)" min-width="168">
         <template #default="{ row }">
           <el-input-number
             v-model="row.secondBrokeragePrice"
@@ -133,20 +125,12 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column
-      v-if="formData?.specType"
-      align="center"
-      fixed="right"
-      :label="t('common.operation')"
-      width="80"
-    >
+    <el-table-column v-if="formData?.specType" align="center" fixed="right" label="操作" width="80">
       <template #default="{ row }">
         <el-button v-if="isBatch" link size="small" type="primary" @click="batchAdd">
-          {{ t('extra.k22de6ef8') }}
+          批量添加
         </el-button>
-        <el-button v-else link size="small" type="primary" @click="deleteSku(row)">{{
-          t('common.delete')
-        }}</el-button>
+        <el-button v-else link size="small" type="primary" @click="deleteSku(row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -163,7 +147,7 @@
     @selection-change="handleSelectionChange"
   >
     <el-table-column v-if="isComponent" type="selection" width="45" />
-    <el-table-column align="center" :label="t('extra.k3b9e2563')" min-width="80">
+    <el-table-column align="center" label="图片" min-width="80">
       <template #default="{ row }">
         <el-image
           v-if="row.picUrl"
@@ -189,48 +173,48 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" :label="t('extra.kf64e95eb')" min-width="100">
+    <el-table-column align="center" label="商品条码" min-width="100">
       <template #default="{ row }">
         {{ row.barCode }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.kf3dec9e5')" min-width="80">
+    <el-table-column align="center" label="销售价(元)" min-width="80">
       <template #default="{ row }">
         {{ row.price }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.kd2a5ad46')" min-width="80">
+    <el-table-column align="center" label="市场价(元)" min-width="80">
       <template #default="{ row }">
         {{ row.marketPrice }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.kcc1e68ad')" min-width="80">
+    <el-table-column align="center" label="成本价(元)" min-width="80">
       <template #default="{ row }">
         {{ row.costPrice }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="80">
+    <el-table-column align="center" label="库存" min-width="80">
       <template #default="{ row }">
         {{ row.stock }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k8c0d75b3')" min-width="80">
+    <el-table-column align="center" label="重量(kg)" min-width="80">
       <template #default="{ row }">
         {{ row.weight }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k87e801a0')" min-width="80">
+    <el-table-column align="center" label="体积(m^3)" min-width="80">
       <template #default="{ row }">
         {{ row.volume }}
       </template>
     </el-table-column>
     <template v-if="formData!.subCommissionType">
-      <el-table-column align="center" :label="t('extra.k84069087')" min-width="80">
+      <el-table-column align="center" label="一级返佣(元)" min-width="80">
         <template #default="{ row }">
           {{ row.firstBrokeragePrice }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('extra.k0e1865ff')" min-width="80">
+      <el-table-column align="center" label="二级返佣(元)" min-width="80">
         <template #default="{ row }">
           {{ row.secondBrokeragePrice }}
         </template>
@@ -248,7 +232,7 @@
     style="width: 99%"
   >
     <el-table-column v-if="isComponent" type="selection" width="45" />
-    <el-table-column align="center" :label="t('extra.k3b9e2563')" min-width="80">
+    <el-table-column align="center" label="图片" min-width="80">
       <template #default="{ row }">
         <el-image :src="row.picUrl" class="h-60px w-60px" @click="imagePreview(row.picUrl)" />
       </template>
@@ -269,27 +253,27 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column align="center" :label="t('extra.kf64e95eb')" min-width="100">
+    <el-table-column align="center" label="商品条码" min-width="100">
       <template #default="{ row }">
         {{ row.barCode }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.kf3dec9e5')" min-width="80">
+    <el-table-column align="center" label="销售价(元)" min-width="80">
       <template #default="{ row }">
         {{ formatToFraction(row.price) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.kd2a5ad46')" min-width="80">
+    <el-table-column align="center" label="市场价(元)" min-width="80">
       <template #default="{ row }">
         {{ formatToFraction(row.marketPrice) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.kcc1e68ad')" min-width="80">
+    <el-table-column align="center" label="成本价(元)" min-width="80">
       <template #default="{ row }">
         {{ formatToFraction(row.costPrice) }}
       </template>
     </el-table-column>
-    <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="80">
+    <el-table-column align="center" label="库存" min-width="80">
       <template #default="{ row }">
         {{ row.stock }}
       </template>
@@ -309,7 +293,7 @@ import { RuleConfig } from '@/views/mall/product/spu/components/index'
 import { PropertyAndValues } from './index'
 import { ElTable } from 'element-plus'
 import { isEmpty } from '@/utils/is'
-const { t } = useI18n()
+
 defineOptions({ name: 'SkuList' })
 const message = useMessage() // 消息弹窗
 
@@ -334,6 +318,7 @@ const props = defineProps({
 const formData: Ref<Spu | undefined> = ref<Spu>() // 表单数据
 const skuList = ref<Sku[]>([
   {
+    name: '', // SKU 名称
     price: 0, // 商品价格
     marketPrice: 0, // 市场价
     costPrice: 0, // 成本价
@@ -365,7 +350,7 @@ const batchAdd = () => {
 /** 校验商品属性属性值 */
 const validateProperty = () => {
   // 校验商品属性属性值是否为空，有一个为空都不给过
-  const warningInfo = t('auto.views.mall.product.spu.components.SkuList.k5dad0ff4')
+  const warningInfo = '存在属性属性值为空，请先检查完善属性值后重试！！！'
   for (const item of props.propertyList) {
     if (!item.values || isEmpty(item.values)) {
       message.warning(warningInfo)
@@ -387,7 +372,7 @@ const tableHeaders = ref<{ prop: string; label: string }[]>([]) // 多属性表�
  */
 const validateSku = () => {
   validateProperty()
-  let warningInfo = t('auto.views.mall.product.spu.components.SkuList.ka00b5e54')
+  let warningInfo = '请检查商品各行相关属性配置，'
   let validate = true // 默认通过
   for (const sku of formData.value!.skus!) {
     // 作为活动组件的校验
@@ -465,6 +450,7 @@ const generateTableData = (propertyList: any[]) => {
   }
   for (const item of buildSkuList) {
     const row = {
+      name: '', // SKU 名称，提交时会自动使用 SPU 名称
       properties: Array.isArray(item) ? item : [item], // 如果只有一个属性的话返回的是一个 property 对象
       price: 0,
       marketPrice: 0,
@@ -507,22 +493,17 @@ const validateData = (propertyList: any[]) => {
 }
 
 /** 构建所有排列组合 */
-const build = (propertyValuesList: Property[][]) => {
+const build = (propertyValuesList: Property[][]): Property[][] => {
   if (propertyValuesList.length === 0) {
     return []
   } else if (propertyValuesList.length === 1) {
-    return propertyValuesList[0]
+    return propertyValuesList[0].map((item) => [item])
   } else {
     const result: Property[][] = []
     const rest = build(propertyValuesList.slice(1))
     for (let i = 0; i < propertyValuesList[0].length; i++) {
       for (let j = 0; j < rest.length; j++) {
-        // 第一次不是数组结构，后面的都是数组结构
-        if (Array.isArray(rest[j])) {
-          result.push([propertyValuesList[0][i], ...rest[j]])
-        } else {
-          result.push([propertyValuesList[0][i], rest[j]])
-        }
+        result.push([propertyValuesList[0][i], ...rest[j]])
       }
     }
     return result
@@ -541,6 +522,7 @@ watch(
     if (props.isBatch) {
       skuList.value = [
         {
+          name: '', // SKU 名称
           price: 0,
           marketPrice: 0,
           costPrice: 0,
@@ -590,3 +572,12 @@ const getSkuTableRef = () => {
 // 暴露出生成 sku 方法，给添加属性成功时调用
 defineExpose({ generateTableData, validateSku, getSkuTableRef })
 </script>
+<style>
+/*
+ * 避免滚动条遮挡最后一行数据
+ * noinspection CssUnusedSymbol
+ */
+.el-table.tabNumWidth .el-scrollbar {
+  padding-bottom: 10px;
+}
+</style>

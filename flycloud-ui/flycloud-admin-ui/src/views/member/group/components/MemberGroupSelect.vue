@@ -1,10 +1,5 @@
 <template>
-  <el-select
-    v-model="groupId"
-    :placeholder="t('auto.views.member.group.components.MemberGroupSelect.k9f7df605')"
-    clearable
-    class="!w-240px"
-  >
+  <el-select v-model="groupId" placeholder="请选择用户分组" clearable class="!w-240px">
     <el-option
       v-for="group in groupOptions"
       :key="group.id"
@@ -17,7 +12,6 @@
 import * as GroupApi from '@/api/member/group'
 
 /** 会员分组选择框 **/
-const { t } = useI18n()
 defineOptions({ name: 'MemberGroupSelect' })
 
 const props = defineProps({

@@ -2,11 +2,8 @@
 <template>
   <el-form ref="formRef" :model="formData" :rules="rules" label-width="120px" :disabled="isDetail">
     <!--富文本编辑器组件-->
-    <el-form-item
-      :label="t('auto.views.mall.product.spu.form.DescriptionForm.kad98c017')"
-      prop="description"
-    >
-      <Editor v-model:modelValue="formData.description" />
+    <el-form-item label="商品详情" prop="description">
+      <Editor :readonly="isDetail" v-model:modelValue="formData.description" />
     </el-form-item>
   </el-form>
 </template>
@@ -16,7 +13,7 @@ import { Editor } from '@/components/Editor'
 import { PropType } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import { copyValueToTarget } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'ProductDescriptionForm' })
 
 const message = useMessage() // 消息弹窗
@@ -75,7 +72,7 @@ const validate = async () => {
     // 校验通过更新数据
     Object.assign(props.propFormData, formData.value)
   } catch (e) {
-    message.error(t('auto.views.mall.product.spu.form.DescriptionForm.kbc6dbc7a'))
+    message.error('【商品详情】不完善，请填写相关信息')
     emit('update:activeName', 'description')
     throw e // 目的截断之后的校验
   }

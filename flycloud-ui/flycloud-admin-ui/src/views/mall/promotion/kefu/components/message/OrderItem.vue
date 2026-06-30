@@ -3,7 +3,7 @@
     <div :key="getMessageContent.id" class="order-list-card-box mt-14px">
       <div class="order-card-header flex items-center justify-between p-x-5px">
         <div class="order-no">
-          {{ t('extra.k36c75109') }}
+          订单号：
           <span style="cursor: pointer" @click="openDetail(getMessageContent.id)">
             {{ getMessageContent.no }}
           </span>
@@ -14,19 +14,19 @@
       </div>
       <div v-for="item in getMessageContent.items" :key="item.id" class="border-bottom">
         <ProductItem
-          :spu-id="item.spuId"
           :num="item.count"
           :picUrl="item.picUrl"
           :price="item.price"
           :skuText="item.properties.map((property: any) => property.valueName).join(' ')"
+          :spu-id="item.spuId"
           :title="item.spuName"
         />
       </div>
       <div class="pay-box flex justify-end pr-5px">
         <div class="flex items-center">
-          <div class="discounts-title pay-color">{{
-            t('extra.kff394279', { p0: getMessageContent?.productCount })
-          }}</div>
+          <div class="discounts-title pay-color">
+            共 {{ getMessageContent?.productCount }} 件商品,总金额:
+          </div>
           <div class="discounts-money pay-color">
             ￥{{ fenToYuan(getMessageContent?.payPrice) }}
           </div>
@@ -41,7 +41,7 @@ import { fenToYuan, jsonParse } from '@/utils'
 import { KeFuMessageRespVO } from '@/api/mall/promotion/kefu/message'
 import { isObject } from '@/utils/is'
 import ProductItem from '@/views/mall/promotion/kefu/components/message/ProductItem.vue'
-const { t } = useI18n()
+
 const { push } = useRouter()
 
 defineOptions({ name: 'OrderItem' })
@@ -86,94 +86,96 @@ function formatOrderColor(order: any) {
  */
 function formatOrderStatus(order: any) {
   if (order.status === 0) {
-    return t('auto.views.mall.promotion.kefu.components.message.k20825179')
+    return '待付款'
   }
   if (order.status === 10 && order.deliveryType === 1) {
-    return t('auto.views.mall.promotion.kefu.components.message.k2dd7fc21')
+    return '待发货'
   }
   if (order.status === 10 && order.deliveryType === 2) {
-    return t('auto.views.mall.promotion.kefu.components.message.k0ce9663d')
+    return '待核销'
   }
   if (order.status === 20) {
-    return t('auto.views.mall.promotion.kefu.components.message.kd116cd98')
+    return '待收货'
   }
   if (order.status === 30 && !order.commentStatus) {
-    return t('auto.views.mall.promotion.kefu.components.message.k966dce41')
+    return '待评价'
   }
   if (order.status === 30 && order.commentStatus) {
-    return t('auto.views.mall.promotion.kefu.components.message.ke99b48a2')
+    return '已完成'
   }
-  return t('auto.views.mall.promotion.kefu.components.message.kf628761b')
+  return '已关闭'
 }
 </script>
 
 <style lang="scss" scoped>
 .order-list-card-box {
-  border-radius: 10px;
   padding: 10px;
+  background-color: rgb(128 128 128 / 30%); // 透明色，暗黑模式下也能体现
   border: 1px var(--el-border-color) solid;
-  background-color: var(--app-content-bg-color);
+  border-radius: 10px;
 
   .order-card-header {
     height: 28px;
+    font-weight: bold;
 
     .order-no {
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 13px;
 
       span {
         &:hover {
-          text-decoration: underline;
           color: var(--left-menu-bg-active-color);
+          text-decoration: underline;
         }
       }
+    }
+
+    .order-state {
+      font-size: 13px;
     }
   }
 
   .pay-box {
     padding-top: 10px;
+    font-weight: bold;
 
     .discounts-title {
       font-size: 16px;
       line-height: normal;
-      color: #999999;
     }
 
     .discounts-money {
+      font-family: OPPOSANS;
       font-size: 16px;
       line-height: normal;
-      color: #999;
-      font-family: OPPOSANS;
     }
 
     .pay-color {
       font-size: 13px;
-      color: var(--left-menu-text-color);
     }
   }
 }
 
 .warning-color {
-  color: #faad14;
   font-size: 11px;
   font-weight: bold;
+  color: #faad14;
 }
 
 .danger-color {
-  color: #ff3000;
   font-size: 11px;
   font-weight: bold;
+  color: #ff3000;
 }
 
 .success-color {
-  color: #52c41a;
   font-size: 11px;
   font-weight: bold;
+  color: #52c41a;
 }
 
 .info-color {
-  color: #999999;
   font-size: 11px;
   font-weight: bold;
+  color: #999;
 }
 </style>

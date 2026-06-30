@@ -9,22 +9,14 @@
       class="mt-10px"
     >
       <template #spuId>
-        <el-button @click="spuSelectRef.open()">{{
-          t('auto.views.mall.promotion.combination.activity.CombinationActivityForm.kf4d8d03c')
-        }}</el-button>
+        <el-button @click="spuSelectRef.open()">选择商品</el-button>
         <SpuAndSkuList
           ref="spuAndSkuListRef"
           :rule-config="ruleConfig"
           :spu-list="spuList"
           :spu-property-list-p="spuPropertyList"
         >
-          <el-table-column
-            align="center"
-            :label="
-              t('auto.views.mall.promotion.combination.activity.CombinationActivityForm.k1b1331f2')
-            "
-            min-width="168"
-          >
+          <el-table-column align="center" label="拼团价格(元)" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.combinationPrice"
@@ -39,12 +31,8 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('extra.k008b8fcb')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" @confirm="selectSpu" />
@@ -58,8 +46,10 @@ import { getPropertyList, RuleConfig } from '@/views/mall/product/spu/components
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { convertToInteger, formatToFraction } from '@/utils'
 import { cloneDeep } from 'lodash-es'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionCombinationActivityForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -78,7 +68,7 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'productConfig.combinationPrice',
     rule: (arg) => arg >= 0.01,
-    message: t('auto.views.mall.promotion.combination.activity.CombinationActivityForm.kee6191ab')
+    message: '商品拼团价格不能小于0.01 ！！！'
   }
 ]
 const selectSpu = (spuId: number, skuIds: number[]) => {
@@ -114,7 +104,7 @@ const getSpuDetails = async (
     if (typeof products !== 'undefined') {
       const product = products.find((item) => item.skuId === sku.id)
       if (product) {
-        product.combinationPrice = formatToFraction(product.combinationPrice)
+        product.combinationPrice = Number(formatToFraction(product.combinationPrice))
       }
       config = product || config
     }

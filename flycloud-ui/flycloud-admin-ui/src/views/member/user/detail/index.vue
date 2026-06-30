@@ -6,9 +6,9 @@
         <UserBasicInfo :user="user">
           <template #header>
             <div class="card-header">
-              <CardTitle :title="t('auto.views.member.user.detail.index.kb122f813')" />
+              <CardTitle title="基本信息" />
               <el-button size="small" text type="primary" @click="openForm('update')">
-                {{ t('extra.k7ab5e727') }}
+                编辑
               </el-button>
             </div>
           </template>
@@ -18,46 +18,46 @@
       <el-col :span="10" class="detail-info-item">
         <el-card class="h-full" shadow="never">
           <template #header>
-            <CardTitle :title="t('extra.k3ad511e4')" />
+            <CardTitle title="账户信息" />
           </template>
           <UserAccountInfo :user="user" :wallet="wallet" />
         </el-card>
       </el-col>
       <!-- 下边：账户明细 -->
       <!-- TODO 芋艿：【订单管理】【售后管理】【收藏记录】-->
-      <el-card :header="t('extra.k5c794c60')" shadow="never" style="width: 100%; margin-top: 20px">
+      <el-card header="账户明细" shadow="never" style="width: 100%; margin-top: 20px">
         <template #header>
-          <CardTitle :title="t('extra.k5c794c60')" />
+          <CardTitle title="账户明细" />
         </template>
         <el-tabs>
-          <el-tab-pane :label="t('extra.k4b7324dd')">
+          <el-tab-pane label="积分">
             <UserPointList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('extra.kc9da9b59')" lazy>
+          <el-tab-pane label="签到" lazy>
             <UserSignList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('extra.k4a23832a')" lazy>
+          <el-tab-pane label="成长值" lazy>
             <UserExperienceRecordList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('extra.ke05e6f34')" lazy>
+          <el-tab-pane label="余额" lazy>
             <UserBalanceList :wallet-id="wallet.id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('extra.k748ea9b7')" lazy>
+          <el-tab-pane label="收货地址" lazy>
             <UserAddressList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('auto.views.mall.home.components.ShortcutCard.k26d8e2fa')" lazy>
+          <el-tab-pane label="订单管理" lazy>
             <UserOrderList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('auto.views.mall.home.components.ShortcutCard.kd7413960')" lazy>
+          <el-tab-pane label="售后管理" lazy>
             <UserAfterSaleList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('extra.k90ed2fc4')" lazy>
+          <el-tab-pane label="收藏记录" lazy>
             <UserFavoriteList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('auto.views.member.user.detail.UserCouponList.k338d0ddd')" lazy>
+          <el-tab-pane label="优惠劵" lazy>
             <UserCouponList :user-id="id" />
           </el-tab-pane>
-          <el-tab-pane :label="t('extra.k3b4445f3')" lazy>
+          <el-tab-pane label="推广用户" lazy>
             <UserBrokerageList :bind-user-id="id" />
           </el-tab-pane>
         </el-tabs>
@@ -87,7 +87,7 @@ import UserAfterSaleList from './UserAftersaleList.vue'
 import UserBalanceList from './UserBalanceList.vue'
 import { CardTitle } from '@/components/Card/index'
 import { ElMessage } from 'element-plus'
-const { t } = useI18n()
+
 defineOptions({ name: 'MemberDetail' })
 
 const loading = ref(true) // 加载中
@@ -134,7 +134,7 @@ const getUserWallet = async () => {
 
 onMounted(() => {
   if (!id) {
-    ElMessage.warning(t('auto.views.member.user.detail.index.k5386b7eb'))
+    ElMessage.warning('参数错误，会员编号不能为空！')
     delView(unref(currentRoute))
     return
   }

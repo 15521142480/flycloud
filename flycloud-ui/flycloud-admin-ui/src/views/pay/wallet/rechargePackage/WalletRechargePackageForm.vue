@@ -7,33 +7,16 @@
       label-width="150px"
       v-loading="formLoading"
     >
-      <el-form-item
-        :label="t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.kc3313b31')"
-        prop="name"
-      >
-        <el-input
-          v-model="formData.name"
-          :placeholder="
-            t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.ke9eeb94f')
-          "
-        />
+      <el-form-item label="套餐名" prop="name">
+        <el-input v-model="formData.name" placeholder="请输入套餐名" />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.k2a8942f6')"
-        prop="payPrice"
-      >
+      <el-form-item label="支付金额(元)" prop="payPrice">
         <el-input-number v-model="formData.payPrice" :min="0" :precision="2" :step="0.01" />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.ka1f8cc54')"
-        prop="bonusPrice"
-      >
+      <el-form-item label="赠送金额(元)" prop="bonusPrice">
         <el-input-number v-model="formData.bonusPrice" :min="0" :precision="2" :step="0.01" />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.k6bbda1b1')"
-        prop="status"
-      >
+      <el-form-item label="开启状态" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -46,12 +29,8 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
-        t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.k31f9d856')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.kd54aeadc')
-      }}</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -59,7 +38,7 @@
 import * as WalletRechargePackageApi from '@/api/pay/wallet/rechargePackage'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { fenToYuan, yuanToFen } from '@/utils'
-const { t } = useI18n()
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -67,41 +46,17 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined,
-  name: undefined,
-  payPrice: undefined,
-  bonusPrice: undefined,
-  status: undefined
+  id: undefined as number | undefined,
+  name: undefined as string | undefined,
+  payPrice: undefined as number | undefined,
+  bonusPrice: undefined as number | undefined,
+  status: undefined as number | undefined
 })
 const formRules = reactive({
-  name: [
-    {
-      required: true,
-      message: t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.ked2e662a'),
-      trigger: 'blur'
-    }
-  ],
-  payPrice: [
-    {
-      required: true,
-      message: t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.k452d8ac0'),
-      trigger: 'blur'
-    }
-  ],
-  bonusPrice: [
-    {
-      required: true,
-      message: t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.k41b38a58'),
-      trigger: 'blur'
-    }
-  ],
-  status: [
-    {
-      required: true,
-      message: t('auto.views.pay.wallet.rechargePackage.WalletRechargePackageForm.k1318b551'),
-      trigger: 'blur'
-    }
-  ]
+  name: [{ required: true, message: '套餐名不能为空', trigger: 'blur' }],
+  payPrice: [{ required: true, message: '支付金额不能为空', trigger: 'blur' }],
+  bonusPrice: [{ required: true, message: '赠送金额不能为空', trigger: 'blur' }],
+  status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 
@@ -116,8 +71,8 @@ const open = async (type: string, id?: number) => {
     formLoading.value = true
     try {
       formData.value = await WalletRechargePackageApi.getWalletRechargePackage(id)
-      formData.value.payPrice = fenToYuan(formData.value.payPrice)
-      formData.value.bonusPrice = fenToYuan(formData.value.bonusPrice)
+      formData.value.payPrice = Number(fenToYuan(formData.value.payPrice!))
+      formData.value.bonusPrice = Number(fenToYuan(formData.value.bonusPrice!))
     } finally {
       formLoading.value = false
     }
@@ -135,9 +90,11 @@ const submitForm = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    const data = { ...formData.value }
-    data.payPrice = yuanToFen(data.payPrice)
-    data.bonusPrice = yuanToFen(data.bonusPrice)
+    const data = {
+      ...formData.value,
+      payPrice: yuanToFen(formData.value.payPrice!),
+      bonusPrice: yuanToFen(formData.value.bonusPrice!)
+    } as WalletRechargePackageApi.WalletRechargePackageVO
     if (formType.value === 'create') {
       await WalletRechargePackageApi.createWalletRechargePackage(data)
       message.success(t('common.createSuccess'))

@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.promotion.seckill.config.index.kb4b3d450')"
-    url="https://doc.iocoder.cn/mall/promotion-seckill/"
-  />
+  <doc-alert title="【营销】秒杀活动" url="https://doc.iocoder.cn/mall/promotion-seckill/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -13,25 +10,19 @@
       :inline="true"
       label-width="108px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.seckill.config.index.kb4a36dd0')"
-        prop="name"
-      >
+      <el-form-item label="秒杀时段名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.promotion.seckill.config.index.kc30b664c')"
+          placeholder="请输入秒杀时段名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.promotion.seckill.config.index.k65a972d7')"
-        prop="status"
-      >
+      <el-form-item label="活动状态" prop="status">
         <el-select
           v-model="queryParams.status"
-          :placeholder="t('auto.views.mall.promotion.seckill.config.index.k4b6989d1')"
+          placeholder="请选择活动状态"
           clearable
           class="!w-240px"
         >
@@ -44,19 +35,15 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:seckill-config:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k199f0d70') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -65,26 +52,10 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.mall.promotion.seckill.config.index.kb4a36dd0')"
-        align="center"
-        prop="name"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.seckill.config.index.k871bfb38')"
-        align="center"
-        prop="startTime"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.seckill.config.index.k52b5e70f')"
-        align="center"
-        prop="endTime"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.seckill.config.index.kc00cb496')"
-        align="center"
-        prop="sliderPicUrls"
-      >
+      <el-table-column label="秒杀时段名称" align="center" prop="name" />
+      <el-table-column label="开始时间点" align="center" prop="startTime" />
+      <el-table-column label="结束时间点" align="center" prop="endTime" />
+      <el-table-column label="秒杀轮播图" align="center" prop="sliderPicUrls">
         <template #default="scope">
           <el-image
             class="h-40px max-w-40px"
@@ -92,16 +63,12 @@
             :key="index"
             :src="url"
             :preview-src-list="scope?.row.sliderPicUrls"
-            :initial-index="index"
+            :initial-index="Number(index)"
             preview-teleported
           />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
-        align="center"
-        prop="status"
-      >
+      <el-table-column label="活动状态" align="center" prop="status">
         <template #default="scope">
           <el-switch
             v-model="scope.row.status"
@@ -112,13 +79,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.operation')" align="center">
+      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
             link
@@ -126,7 +93,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:seckill-config:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -134,7 +101,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['promotion:seckill-config:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -155,15 +122,15 @@
 <script setup lang="ts">
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
-import { SeckillConfigApi, SeckillConfigVO } from '@/api/mall/promotion/seckill/seckillConfig.ts'
+import { SeckillConfigApi, SeckillConfigVO } from '@/api/mall/promotion/seckill/seckillConfig'
 import SeckillConfigForm from './SeckillConfigForm.vue'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** 秒杀时段 列表 */
-const { t } = useI18n()
 defineOptions({ name: 'SeckillConfig' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<SeckillConfigVO[]>([]) // 列表的数据
@@ -175,7 +142,6 @@ const queryParams = reactive({
   status: undefined
 })
 const queryFormRef = ref() // 搜索的表单
-const exportLoading = ref(false) // 导出的加载中
 
 /** 查询列表 */
 const getList = async () => {
@@ -224,14 +190,8 @@ const handleDelete = async (id: number) => {
 const handleStatusChange = async (row: SeckillConfigVO) => {
   try {
     // 修改状态的二次确认
-    const text = row.status === CommonStatusEnum.ENABLE ? t('common.enabled') : t('common.disabled')
-    await message.confirm(
-      t('auto.views.mall.promotion.seckill.config.index.k2be38185') +
-        text +
-        '"' +
-        row.name +
-        t('auto.views.mall.promotion.seckill.config.index.k090c9105')
-    )
+    const text = row.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
+    await message.confirm('确认要' + text + '"' + row.name + '"活动吗?')
     // 发起修改状态
     await SeckillConfigApi.updateSeckillConfigStatus(row.id, row.status)
     // 刷新列表

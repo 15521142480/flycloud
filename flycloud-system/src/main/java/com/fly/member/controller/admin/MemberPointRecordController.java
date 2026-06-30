@@ -25,7 +25,7 @@ public class MemberPointRecordController {
 
     private final IMemberPointRecordService pointRecordService;
 
-    @PreAuthorize("@pms.hasPermission('member:point-record:list')")
+    @PreAuthorize("@pms.hasPermission('member:point:list')")
     @GetMapping("/list")
     public R<PageVo<MemberPointRecordVo>> list(MemberPointRecordBo bo, PageBo pageBo) {
         return R.ok(pointRecordService.queryPageList(bo, pageBo));

@@ -10,9 +10,7 @@
       <CountTo :prefix="prefix" :end-val="value" :decimals="decimals" />
     </div>
     <div class="flex flex-row gap-1 text-sm">
-      <span class="text-gray-500">{{
-        t('auto.views.mall.statistics.trade.components.TradeStatisticValue.k17bb1915')
-      }}</span>
+      <span class="text-gray-500">环比</span>
       <span :class="toNumber(percent) > 0 ? 'text-red-500' : 'text-green-500'">
         {{ Math.abs(toNumber(percent)) }}%
         <Icon :icon="toNumber(percent) > 0 ? 'ep:caret-top' : 'ep:caret-bottom'" class="!text-sm" />
@@ -25,7 +23,6 @@ import { propTypes } from '@/utils/propTypes'
 import { toNumber } from 'lodash-es'
 
 /** 交易统计值组件 */
-const { t } = useI18n()
 defineOptions({ name: 'TradeStatisticValue' })
 
 defineProps({

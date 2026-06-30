@@ -1,11 +1,5 @@
 <template>
-  <el-select
-    v-model="tagIds"
-    :placeholder="t('auto.views.member.tag.components.MemberTagSelect.k19d75a2a')"
-    clearable
-    multiple
-    class="!w-240px"
-  >
+  <el-select v-model="tagIds" placeholder="请选择用户标签" clearable multiple class="!w-240px">
     <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id" />
   </el-select>
   <el-button
@@ -16,7 +10,7 @@
     @click="openForm('create')"
     v-hasPermi="['member:tag:create']"
   >
-    {{ t('extra.k6cb06c7d') }}
+    新增标签
   </el-button>
 
   <!-- 表单弹窗：添加 -->
@@ -26,7 +20,7 @@
 <script lang="ts" setup>
 import * as TagApi from '@/api/member/tag'
 import TagForm from '@/views/member/tag/TagForm.vue'
-const { t } = useI18n()
+
 defineOptions({ name: 'MemberTagSelect' })
 
 const props = defineProps({

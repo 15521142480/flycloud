@@ -8,19 +8,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item :label="t('auto.views.pay.wallet.balance.index.kec750ef6')" prop="userId">
+      <el-form-item label="用户编号" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          :placeholder="t('auto.views.pay.wallet.balance.index.kb719fb8a')"
+          placeholder="请输入用户编号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.wallet.balance.index.k31ab92d1')" prop="userType">
+      <el-form-item label="用户类型" prop="userType">
         <el-select
           v-model="queryParams.userType"
-          :placeholder="t('auto.views.pay.wallet.balance.index.k8d91841e')"
+          placeholder="请选择用户类型"
           clearable
           class="!w-240px"
         >
@@ -32,24 +32,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          :start-placeholder="t('auto.views.pay.wallet.balance.index.k1f291968')"
-          :end-placeholder="t('auto.views.pay.wallet.balance.index.kf4b9b2b5')"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -57,57 +53,35 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.pay.wallet.balance.index.k9f42dac6')"
-        align="center"
-        prop="id"
-      />
-      <el-table-column
-        :label="t('auto.views.pay.wallet.balance.index.kec750ef6')"
-        align="center"
-        prop="userId"
-      />
-      <el-table-column
-        :label="t('auto.views.pay.wallet.balance.index.k31ab92d1')"
-        align="center"
-        prop="userType"
-      >
+      <el-table-column label="编号" align="center" prop="id" />
+      <el-table-column label="用户编号" align="center" prop="userId" />
+      <el-table-column label="用户类型" align="center" prop="userType">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.ke05e6f34')" align="center" prop="balance">
-        <template #default="{ row }">
-          {{ fenToYuan(row.balance) }} {{ t('extra.k2d94e2e7') }}</template
-        >
+      <el-table-column label="余额" align="center" prop="balance">
+        <template #default="{ row }"> {{ fenToYuan(row.balance) }} 元</template>
       </el-table-column>
-      <el-table-column :label="t('extra.kb333ae8a')" align="center" prop="totalExpense">
-        <template #default="{ row }">
-          {{ fenToYuan(row.totalExpense) }} {{ t('extra.k2d94e2e7') }}</template
-        >
+      <el-table-column label="累计支出" align="center" prop="totalExpense">
+        <template #default="{ row }"> {{ fenToYuan(row.totalExpense) }} 元</template>
       </el-table-column>
-      <el-table-column :label="t('extra.k8af6c290')" align="center" prop="totalRecharge">
-        <template #default="{ row }">
-          {{ fenToYuan(row.totalRecharge) }} {{ t('extra.k2d94e2e7') }}</template
-        >
+      <el-table-column label="累计充值" align="center" prop="totalRecharge">
+        <template #default="{ row }"> {{ fenToYuan(row.totalRecharge) }} 元</template>
       </el-table-column>
-      <el-table-column :label="t('extra.kd191ab79')" align="center" prop="freezePrice">
-        <template #default="{ row }">
-          {{ fenToYuan(row.freezePrice) }} {{ t('extra.k2d94e2e7') }}</template
-        >
+      <el-table-column label="冻结金额" align="center" prop="freezePrice">
+        <template #default="{ row }"> {{ fenToYuan(row.freezePrice) }} 元</template>
       </el-table-column>
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.operation')" align="center">
+      <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-button link type="primary" @click="openForm(scope.row.id)">{{
-            t('action.detail')
-          }}</el-button>
+          <el-button link type="primary" @click="openForm(scope.row.id)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,7 +104,7 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { fenToYuan } from '@/utils'
 import * as WalletApi from '@/api/pay/wallet/balance'
 import WalletForm from './WalletForm.vue'
-const { t } = useI18n()
+
 defineOptions({ name: 'WalletBalance' })
 
 const loading = ref(true) // 列表的加载中

@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="【营销】砍价活动" url="https://doc.iocoder.cn/mall/promotion-bargain/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -8,25 +10,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.bargain.activity.index.k2b020286')"
-        prop="name"
-      >
+      <el-form-item label="活动名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.promotion.bargain.activity.index.ka90d22e9')"
+          placeholder="请输入活动名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.promotion.bargain.activity.index.k65a972d7')"
-        prop="status"
-      >
+      <el-form-item label="活动状态" prop="status">
         <el-select
           v-model="queryParams.status"
-          :placeholder="t('auto.views.mall.promotion.bargain.activity.index.k4b6989d1')"
+          placeholder="请选择活动状态"
           clearable
           class="!w-240px"
         >
@@ -39,19 +35,15 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:bargain-activity:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k606804dd') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -60,30 +52,15 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.mall.promotion.bargain.activity.index.k32261198')"
-        prop="id"
-        min-width="80"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.bargain.activity.index.k2b020286')"
-        prop="name"
-        min-width="140"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.bargain.activity.index.kabe0ecdb')"
-        min-width="210"
-      >
+      <el-table-column label="活动编号" prop="id" min-width="80" />
+      <el-table-column label="活动名称" prop="name" min-width="140" />
+      <el-table-column label="活动时间" min-width="210">
         <template #default="scope">
           {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
-        prop="spuName"
-        min-width="80"
-      >
+      <el-table-column label="商品图片" prop="spuName" min-width="80">
         <template #default="scope">
           <el-image
             :src="scope.row.picUrl"
@@ -93,55 +70,37 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="商品标题" prop="spuName" min-width="300" />
       <el-table-column
-        :label="t('auto.views.pay.cashier.index.kd415beac')"
-        prop="spuName"
-        min-width="300"
-      />
-      <el-table-column
-        :label="t('extra.k15817242')"
+        label="起始价格"
         prop="bargainFirstPrice"
         min-width="100"
         :formatter="fenToYuanFormat"
       />
       <el-table-column
-        :label="t('extra.kbf6a688e')"
+        label="砍价底价"
         prop="bargainMinPrice"
         min-width="100"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column :label="t('extra.kd30bf783')" prop="recordUserCount" min-width="100" />
-      <el-table-column
-        :label="t('extra.kdf4965e0')"
-        prop="recordSuccessUserCount"
-        min-width="110"
-      />
-      <el-table-column :label="t('extra.kbfea2224')" prop="helpUserCount" min-width="100" />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
-        align="center"
-        prop="status"
-        min-width="100"
-      >
+      <el-table-column label="总砍价人数" prop="recordUserCount" min-width="100" />
+      <el-table-column label="成功砍价人数" prop="recordSuccessUserCount" min-width="110" />
+      <el-table-column label="助力人数" prop="helpUserCount" min-width="100" />
+      <el-table-column label="活动状态" align="center" prop="status" min-width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.k0eac8802')" align="center" prop="stock" min-width="80" />
+      <el-table-column label="库存" align="center" prop="stock" min-width="80" />
+      <el-table-column label="总库存" align="center" prop="totalStock" min-width="80" />
       <el-table-column
-        :label="t('extra.k9da72dfd')"
-        align="center"
-        prop="totalStock"
-        min-width="80"
-      />
-      <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
+      <el-table-column label="操作" align="center" width="150px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -149,7 +108,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:bargain-activity:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -158,7 +117,7 @@
             v-if="scope.row.status === 0"
             v-hasPermi="['promotion:bargain-activity:close']"
           >
-            {{ t('common.close') }}
+            关闭
           </el-button>
           <el-button
             link
@@ -167,7 +126,7 @@
             v-else
             v-hasPermi="['promotion:bargain-activity:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -192,11 +151,11 @@ import * as BargainActivityApi from '@/api/mall/promotion/bargain/bargainActivit
 import BargainActivityForm from './BargainActivityForm.vue'
 import { formatDate } from '@/utils/formatTime'
 import { fenToYuanFormat } from '@/utils/formatter'
-import { closeBargainActivity } from '@/api/mall/promotion/bargain/bargainActivity'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionBargainActivity' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -208,7 +167,6 @@ const queryParams = reactive({
   status: null
 })
 const queryFormRef = ref() // 搜索的表单
-const exportLoading = ref(false) // 导出的加载中
 
 /** 查询列表 */
 const getList = async () => {
@@ -245,10 +203,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm(t('auto.views.mall.promotion.bargain.activity.index.kdb531662'))
+    await message.confirm('确认关闭该砍价活动吗？')
     // 发起关闭
     await BargainActivityApi.closeBargainActivity(id)
-    message.success(t('auto.views.mall.promotion.bargain.activity.index.kf3cf9e86'))
+    message.success('关闭成功')
     // 刷新列表
     await getList()
   } catch {}

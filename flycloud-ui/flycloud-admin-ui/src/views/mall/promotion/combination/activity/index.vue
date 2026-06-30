@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="【营销】拼团活动" url="https://doc.iocoder.cn/mall/promotion-combination/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -8,27 +10,21 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.combination.activity.index.k2b020286')"
-        prop="name"
-      >
+      <el-form-item label="活动名称" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
           clearable
-          :placeholder="t('auto.views.mall.promotion.combination.activity.index.ka90d22e9')"
+          placeholder="请输入活动名称"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.promotion.combination.activity.index.k65a972d7')"
-        prop="status"
-      >
+      <el-form-item label="活动状态" prop="status">
         <el-select
           v-model="queryParams.status"
           class="!w-240px"
           clearable
-          :placeholder="t('auto.views.mall.promotion.combination.activity.index.k4b6989d1')"
+          placeholder="请选择活动状态"
         >
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -41,11 +37,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          {{ t('extra.k04864902') }}
+          搜索
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          {{ t('extra.k289a57d5') }}
+          重置
         </el-button>
         <el-button
           v-hasPermi="['promotion:combination-activity:create']"
@@ -54,7 +50,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          {{ t('extra.k6e641c94') }}
+          新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -63,30 +59,15 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column
-        :label="t('auto.views.mall.promotion.combination.activity.index.k32261198')"
-        min-width="80"
-        prop="id"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.combination.activity.index.k2b020286')"
-        min-width="140"
-        prop="name"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.combination.activity.index.kabe0ecdb')"
-        min-width="210"
-      >
+      <el-table-column label="活动编号" min-width="80" prop="id" />
+      <el-table-column label="活动名称" min-width="140" prop="name" />
+      <el-table-column label="活动时间" min-width="210">
         <template #default="scope">
           {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
-        min-width="80"
-        prop="spuName"
-      >
+      <el-table-column label="商品图片" min-width="80" prop="spuName">
         <template #default="scope">
           <el-image
             :preview-src-list="[scope.row.picUrl]"
@@ -96,31 +77,22 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.pay.cashier.index.kd415beac')"
-        min-width="300"
-        prop="spuName"
-      />
+      <el-table-column label="商品标题" min-width="300" prop="spuName" />
       <el-table-column
         :formatter="fenToYuanFormat"
-        :label="t('extra.k1afdfea7')"
+        label="原价"
         min-width="100"
         prop="marketPrice"
       />
-      <el-table-column :label="t('extra.k35a5764f')" min-width="100" prop="seckillPrice">
+      <el-table-column label="拼团价" min-width="100" prop="seckillPrice">
         <template #default="scope">
           {{ formatCombinationPrice(scope.row.products) }}
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.kdce0ed5c')" min-width="100" prop="groupCount" />
-      <el-table-column :label="t('extra.k8015f7c6')" min-width="100" prop="groupSuccessCount" />
-      <el-table-column :label="t('extra.kff1e75da')" min-width="100" prop="recordCount" />
-      <el-table-column
-        align="center"
-        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
-        min-width="100"
-        prop="status"
-      >
+      <el-table-column label="开团组数" min-width="100" prop="groupCount" />
+      <el-table-column label="成团组数" min-width="100" prop="groupSuccessCount" />
+      <el-table-column label="购买次数" min-width="100" prop="recordCount" />
+      <el-table-column align="center" label="活动状态" min-width="100" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -128,11 +100,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        :label="t('common.createTime')"
+        label="创建时间"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="150px">
+      <el-table-column align="center" fixed="right" label="操作" width="150px">
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:combination-activity:update']"
@@ -140,7 +112,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             v-if="scope.row.status === 0"
@@ -149,7 +121,7 @@
             type="danger"
             @click="handleClose(scope.row.id)"
           >
-            {{ t('common.close') }}
+            关闭
           </el-button>
           <el-button
             v-else
@@ -158,7 +130,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -183,10 +155,11 @@ import * as CombinationActivityApi from '@/api/mall/promotion/combination/combin
 import CombinationActivityForm from './CombinationActivityForm.vue'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { fenToYuan } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionBargainActivity' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -233,10 +206,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm(t('auto.views.mall.promotion.combination.activity.index.kc7fb009c'))
+    await message.confirm('确认关闭该拼团活动吗？')
     // 发起关闭
     await CombinationActivityApi.closeCombinationActivity(id)
-    message.success(t('auto.views.mall.promotion.combination.activity.index.kf3cf9e86'))
+    message.success('关闭成功')
     // 刷新列表
     await getList()
   } catch {}

@@ -1,12 +1,6 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.trade.delivery.pickUpOrder.index.k1daebace')"
-    url="https://doc.iocoder.cn/mall/trade-order/"
-  />
-  <doc-alert
-    :title="t('auto.views.mall.trade.delivery.pickUpOrder.index.k4c3890b5')"
-    url="https://doc.iocoder.cn/mall/trade-cart/"
-  />
+  <doc-alert title="【交易】交易订单" url="https://doc.iocoder.cn/mall/trade-order/" />
+  <doc-alert title="【交易】购物车" url="https://doc.iocoder.cn/mall/trade-cart/" />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -17,50 +11,46 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-280px"
-          :end-placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k935f547a')"
-          :start-placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k935f547a')"
+          end-placeholder="自定义时间"
+          start-placeholder="自定义时间"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k7d250a8d')"
-        prop="pickUpStoreId"
-      >
+      <el-form-item label="自提门店" prop="pickUpStoreIds">
         <el-select
-          v-model="queryParams.pickUpStoreId"
+          v-model="queryParams.pickUpStoreIds"
           class="!w-280px"
-          clearable
-          multiple
-          :placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k778fc8f9')"
+          placeholder="全部"
+          @change="handleQuery"
         >
           <el-option
             v-for="item in pickUpStoreList"
             :key="item.id"
             :label="item.name"
-            :value="item.id"
+            :value="item.id!"
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k2798e98a')">
+      <el-form-item label="聚合搜索">
         <el-input
           v-show="true"
           v-model="queryParams[queryType.queryParam]"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k601816e1')"
+          placeholder="请输入"
           :type="queryType.queryParam === 'userId' ? 'number' : 'text'"
         >
           <template #prepend>
             <el-select
               v-model="queryType.queryParam"
               class="!w-110px"
-              :placeholder="t('auto.views.mall.trade.delivery.pickUpOrder.index.k778fc8f9')"
+              placeholder="全部"
               @change="inputChangeSelect"
             >
               <el-option
@@ -75,13 +65,28 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
-          <Icon class="mr-5px" icon="ep:search" /> {{ t('extra.k04864902') }}
+          <Icon class="mr-5px" icon="ep:search" />
+          搜索
         </el-button>
         <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" /> {{ t('common.reset') }}
+          <Icon class="mr-5px" icon="ep:refresh" />
+          重置
         </el-button>
-        <el-button @click="handlePickup" type="success" plain v-hasPermi="['trade:order:pick-up']">
-          <Icon class="mr-5px" icon="ep:check" /> {{ t('extra.k1f9adbed') }}
+        <el-button
+          @click="handlePickup"
+          type="success"
+          plain
+          v-hasPermi="['trade:order:pick-up']"
+          :disabled="isUse"
+        >
+          <Icon class="mr-5px" icon="ep:check" />
+          核销
+        </el-button>
+        <el-button type="primary" @click="connectToSerialPort" :disabled="serialPort || isUse">
+          连接扫描枪
+        </el-button>
+        <el-button type="danger" @click="cutPort" :disabled="!serialPort || isUse">
+          断开扫描枪
         </el-button>
       </el-form-item>
     </el-form>
@@ -91,7 +96,7 @@
   <el-row :gutter="16" class="summary">
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        :title="t('auto.views.mall.home.components.TradeTrendCard.k85cf1931')"
+        title="订单数量"
         icon="icon-park-outline:transaction-order"
         icon-color="bg-blue-100"
         icon-bg-color="text-blue-500"
@@ -100,18 +105,18 @@
     </el-col>
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        :title="t('auto.views.mall.home.components.TradeTrendCard.kd98167d3')"
+        title="订单金额"
         icon="streamline:money-cash-file-dollar-common-money-currency-cash-file"
         icon-color="bg-purple-100"
         icon-bg-color="text-purple-500"
         prefix="￥"
         :decimals="2"
-        :value="fenToYuan(summary?.orderPayPrice || 0)"
+        :value="Number(fenToYuan(summary?.orderPayPrice || 0))"
       />
     </el-col>
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        :title="t('extra.k7d4b7ab6')"
+        title="退款单数"
         icon="heroicons:receipt-refund"
         icon-color="bg-yellow-100"
         icon-bg-color="text-yellow-500"
@@ -120,13 +125,13 @@
     </el-col>
     <el-col :sm="6" :xs="12" v-loading="loading">
       <SummaryCard
-        :title="t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2')"
+        title="退款金额"
         icon="ri:refund-2-line"
         icon-color="bg-green-100"
         icon-bg-color="text-green-500"
         prefix="￥"
         :decimals="2"
-        :value="fenToYuan(summary?.afterSalePrice || 0)"
+        :value="Number(fenToYuan(summary?.afterSalePrice || 0))"
       />
     </el-col>
   </el-row>
@@ -134,25 +139,15 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
+      <el-table-column label="订单号" align="center" prop="no" min-width="180" />
+      <el-table-column label="用户信息" align="center" prop="user.nickname" min-width="80" />
       <el-table-column
-        :label="t('auto.views.mall.trade.delivery.pickUpOrder.index.k459868e5')"
+        label="推荐人信息"
         align="center"
-        prop="no"
-        min-width="180"
-      />
-      <el-table-column
-        :label="t('auto.components.AppLinkInput.data.k55c26aba')"
-        align="center"
-        prop="user.name"
-        min-width="80"
-      />
-      <el-table-column
-        :label="t('extra.kc48eb4f0')"
-        align="center"
-        prop="brokerageUser.name"
+        prop="brokerageUser.nickname"
         min-width="100"
       />
-      <el-table-column :label="t('extra.k7519f060')" align="center" prop="spuName" min-width="300">
+      <el-table-column label="商品信息" align="center" prop="spuName" min-width="300">
         <template #default="{ row }">
           <div class="flex items-center" v-for="item in row.items" :key="item.id">
             <el-image
@@ -170,53 +165,36 @@
               >
                 {{ property.propertyName }}: {{ property.valueName }}
               </el-tag>
-              <span
-                >{{ floatToFixed2(item.price) }} {{ t('extra.kb1376080') }} {{ item.count }}</span
-              >
+              <span>{{ floatToFixed2(item.price) }} 元 x {{ item.count }}</span>
             </div>
           </div>
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('extra.k20c122c4')"
+        label="实付金额(元)"
         align="center"
         prop="payPrice"
         min-width="110"
         :formatter="fenToYuanFormat"
       />
-      <el-table-column
-        :label="t('extra.kec69fc8a')"
-        align="center"
-        prop="storeStaffName"
-        min-width="70"
-      />
-      <el-table-column
-        :label="t('extra.k50cb5e1a')"
-        align="center"
-        prop="pickUpStoreId"
-        min-width="80"
-      >
+      <el-table-column label="核销员" align="center" prop="storeStaffName" min-width="70" />
+      <el-table-column label="核销门店" align="center" prop="pickUpStoreId" min-width="80">
         <template #default="{ row }">
           {{ pickUpStoreList.find((p) => p.id === row.pickUpStoreId)?.name }}
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.pay.order.OrderDetail.kb9f11a33')"
-        align="center"
-        prop="payStatus"
-        min-width="80"
-      >
+      <el-table-column label="支付状态" align="center" prop="payStatus" min-width="80">
         <template #default="{ row }">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="row.payStatus || false" />
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('extra.k7617e1bf')" prop="status" width="120">
+      <el-table-column align="center" label="订单状态" prop="status" width="120">
         <template #default="{ row }">
           <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('auto.views.crm.contract.detail.ContractDetailsHeader.k01f1aece')"
+        label="下单时间"
         align="center"
         prop="createTime"
         min-width="170"
@@ -249,18 +227,38 @@ import { DeliveryTypeEnum } from '@/utils/constants'
 import { TradeOrderSummaryRespVO } from '@/api/mall/trade/order'
 import { DeliveryPickUpStoreVO } from '@/api/mall/trade/delivery/pickUpStore'
 import OrderPickUpForm from '@/views/mall/trade/order/form/OrderPickUpForm.vue'
-const { t } = useI18n()
+import { ref, onMounted } from 'vue'
+import { getCurrentUserId } from '@/utils/auth'
+const message = useMessage() // 消息弹窗
+
+type SerialReader = ReadableStreamDefaultReader<Uint8Array>
+type SerialPort = {
+  readable: ReadableStream<Uint8Array>
+  open: (options: SerialOptions) => Promise<void>
+  close: () => Promise<void>
+}
+type SerialOptions = {
+  baudRate: number
+  dataBits?: number
+  stopBits?: number
+}
+type SerialNavigator = Navigator & {
+  serial: {
+    requestPort: () => Promise<SerialPort>
+    getPorts: () => Promise<SerialPort[]>
+  }
+}
+
+const port = ref<SerialPort>()
+const ports = ref<SerialPort[]>([])
+const reader = ref<SerialReader>()
+
 defineOptions({ name: 'PickUpOrder' })
 
-// 列表的加载中
-const loading = ref(true)
-// 列表的总页数
-const total = ref(2)
-// 列表的数据
-const list = ref<TradeOrderApi.OrderVO[]>([])
-// 搜索的表单
-const queryFormRef = ref<FormInstance>()
-// 初始表单参数
+const loading = ref(true) // 列表的加载中
+const total = ref(2) // 列表的总页数
+const list = ref<TradeOrderApi.OrderVO[]>([]) // 列表的数据
+const queryFormRef = ref<FormInstance>() // 搜索的表单
 const INIT_QUERY_PARAMS = {
   // 页数
   pageNum: 1,
@@ -271,21 +269,22 @@ const INIT_QUERY_PARAMS = {
   // 配送方式
   deliveryType: DeliveryTypeEnum.PICK_UP.type,
   // 自提门店
-  pickUpStoreId: undefined
-}
-// 表单搜索
-const queryParams = ref({ ...INIT_QUERY_PARAMS })
-// 订单搜索类型 queryParam
-const queryType = reactive({ queryParam: 'no' })
-// 订单统计数据
-const summary = ref<TradeOrderSummaryRespVO>()
+  pickUpStoreIds: -1
+} // 初始表单参数
+
+const queryParams = ref({ ...INIT_QUERY_PARAMS }) // 表单搜索
+const queryType = reactive({ queryParam: 'no' }) // 订单搜索类型 queryParam
+const summary = ref<TradeOrderSummaryRespVO>() // 订单统计数据
+
+const serialPort = ref(false) // 是否连接扫码枪
+const isUse = ref(true) // 是否可核销
 
 // 订单聚合搜索 select 类型配置（动态搜索）
 const dynamicSearchList = ref([
-  { value: 'no', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.k459868e5') },
-  { value: 'userId', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.kc643dec1') },
-  { value: 'userNickname', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.k90542e0a') },
-  { value: 'userMobile', label: t('auto.views.mall.trade.delivery.pickUpOrder.index.kf1f95d00') }
+  { value: 'no', label: '订单号' },
+  { value: 'userId', label: '用户 UID' },
+  { value: 'userNickname', label: '用户昵称' },
+  { value: 'userMobile', label: '用户电话' }
 ])
 /**
  * 聚合搜索切换查询对象时触发
@@ -327,13 +326,21 @@ const handleQuery = async () => {
 const resetQuery = () => {
   queryFormRef.value?.resetFields()
   queryParams.value = { ...INIT_QUERY_PARAMS }
+  if (pickUpStoreList.value.length > 0) {
+    queryParams.value.pickUpStoreIds = pickUpStoreList.value[0].id!
+  }
   handleQuery()
 }
 
 /** 自提门店精简列表 */
 const pickUpStoreList = ref<DeliveryPickUpStoreVO[]>([])
 const getPickUpStoreList = async () => {
-  pickUpStoreList.value = await PickUpStoreApi.getListAllSimple()
+  pickUpStoreList.value = await PickUpStoreApi.getSimpleDeliveryPickUpStoreList()
+  // 移除自己无法核销的门店
+  const userId = getCurrentUserId()
+  pickUpStoreList.value = pickUpStoreList.value.filter((item) =>
+    item.verifyUserIds?.includes(userId)
+  )
 }
 
 /** 显示核销表单 */
@@ -342,10 +349,94 @@ const handlePickup = () => {
   pickUpForm.value.open()
 }
 
+/** 连接扫码枪 */
+const connectToSerialPort = async () => {
+  try {
+    // 判断浏览器支持串口通信
+    if ('serial' in navigator) {
+      const serial = (navigator as SerialNavigator).serial
+      // 提示用户选择一个串口
+      port.value = await serial.requestPort()
+      // 获取用户之前授予该网站访问权限的所有串口。
+      ports.value = await serial.getPorts()
+    } else {
+      message.error('浏览器不支持扫码枪连接，请更换浏览器重试')
+      return
+    }
+
+    // console.log(port.value, ports.value);
+    // console.log(port.value)
+    // 等待串口打开
+    await port.value.open({ baudRate: 9600, dataBits: 8, stopBits: 2 })
+
+    // console.log(typeof port.value);
+    message.success('成功连接扫码枪')
+    serialPort.value = true
+    // readData(port.value);
+    readData()
+  } catch (error) {
+    // 处理连接串口出错的情况
+    console.log('Error connecting to serial port:', error)
+  }
+}
+
+/** 监听扫码枪输入 */
+const readData = async () => {
+  if (!port.value) {
+    return
+  }
+  reader.value = port.value.readable.getReader()
+  let data = '' //扫码数据
+  // 监听来自串口的数据
+  while (true) {
+    const { value, done } = await reader.value.read()
+    if (done) {
+      // 允许稍后关闭串口
+      reader.value.releaseLock()
+      break
+    }
+    // 获取发送的数据
+    const serialData = new TextDecoder().decode(value)
+    data = `${data}${serialData}`
+    if (serialData.includes('\r')) {
+      //读取结束
+      let codeData = data.replace('\r', '')
+      data = '' //清空下次读取不会叠加
+      console.log(`二维码数据:${codeData}`)
+      //处理拿到数据逻辑
+      pickUpForm.value.open(codeData)
+    }
+  }
+}
+
+/** 断开扫码枪 */
+const cutPort = async () => {
+  if (port.value) {
+    await reader.value?.cancel()
+    await port.value.close()
+    port.value = undefined
+    console.log('断开扫码枪连接')
+    message.success('已成功断开扫码枪连接')
+    serialPort.value = false
+  } else {
+    message.warning('请先连接或打开扫码枪')
+  }
+}
+
 /** 初始化 **/
-onMounted(() => {
-  getList()
-  getPickUpStoreList()
+onMounted(async () => {
+  await getPickUpStoreList()
+  if (pickUpStoreList.value.length === 0) {
+    message.error('当前登录人没绑定任何自提点')
+    loading.value = false
+    isUse.value = true
+    return
+  }
+
+  // 查询
+  queryParams.value.pickUpStoreIds = pickUpStoreList.value[0].id!
+  isUse.value = false
+  await getList()
 })
 </script>
 <style lang="scss" scoped>

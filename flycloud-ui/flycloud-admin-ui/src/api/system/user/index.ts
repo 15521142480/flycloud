@@ -6,12 +6,17 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface UserVO {
   id: number
   account: string
+  username?: string
   password: string
   name: string
+  nickname?: string
   deptId: number
+  deptName?: string
+  postIds?: string[]
   // postIds: string[]
   email: string
   telephone: string
+  mobile?: string
   sex: number
   avatar: string
   loginIp: string
@@ -31,9 +36,46 @@ export const getSimpleUserList = (): Promise<UserVO[]> => {
   return request.get({ url: `/${SYS_BASE_URL}/user/allListSimple` })
 }
 
+const normalizeSimpleUser = (user: UserVO): UserVO => {
+  if (!user) return user
+  return {
+    ...user,
+    username: user.username ?? user.account,
+    nickname: user.nickname ?? user.name,
+    mobile: user.mobile ?? user.telephone
+  }
+}
+
+// 按用户编号查询用户精简信息（IM 名片等新版业务使用）
+export const getSimpleUser = async (id: number | string): Promise<UserVO> => {
+  const user = await request.get({ url: `/${SYS_BASE_URL}/user/getDetailInfo/` + id })
+  return normalizeSimpleUser(user)
+}
+
+// 按昵称/姓名模糊搜索用户（IM 加好友使用）
+export const getSimpleUserListByNickname = async (nickname: string): Promise<UserVO[]> => {
+  const list = await request.get({
+    url: `/${SYS_BASE_URL}/user/list`,
+    params: { name: nickname, nickname, pageNum: 1, pageSize: 20 }
+  })
+  const rows = Array.isArray(list) ? list : list?.list || list?.rows || list?.data || []
+  return rows.map(normalizeSimpleUser)
+}
+
 // 查询所有用户列表
 export const getAllUser = () => {
   return request.get({ url: `/${SYS_BASE_URL}/user/all` })
+}
+
+// 根据用户编号列表查询用户
+export const getUserList = async (ids: number[]): Promise<UserVO[]> => {
+  if (!ids?.length) return []
+  const list = await request.get({
+    url: `/${SYS_BASE_URL}/user/list`,
+    params: { ids: ids.join(',') }
+  })
+  const rows = Array.isArray(list) ? list : list?.list || list?.rows || list?.data || []
+  return rows.map(normalizeSimpleUser)
 }
 
 // 查询用户详情

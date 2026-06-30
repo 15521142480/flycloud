@@ -1,38 +1,35 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :title="t('auto.views.mall.trade.order.form.OrderUpdateRemarkForm.k3e10245a')"
-    width="45%"
-  >
+  <Dialog v-model="dialogVisible" title="商家备注" width="45%">
     <el-form ref="formRef" v-loading="formLoading" :model="formData" label-width="80px">
-      <el-form-item :label="t('common.remark')">
+      <el-form-item label="备注">
         <el-input
           v-model="formData.remark"
           :rows="3"
-          :placeholder="t('auto.views.mall.trade.order.form.OrderUpdateRemarkForm.kf7c741fa')"
+          placeholder="请输入订单备注"
           type="textarea"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('auto.views.mall.trade.order.form.OrderUpdateRemarkForm.k31f9d856')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.views.mall.trade.order.form.OrderUpdateRemarkForm.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as TradeOrderApi from '@/api/mall/trade/order'
-const { t } = useI18n()
+
 defineOptions({ name: 'OrderUpdateRemarkForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
-const formData = ref({
+const formData = ref<{
+  id: number | null | undefined
+  remark: string
+}>({
   id: undefined, // 订单编号
   remark: '' // 订单备注
 })
@@ -43,7 +40,7 @@ const open = async (row: TradeOrderApi.OrderVO) => {
   resetForm()
   // 设置数据
   formData.value.id = row.id
-  formData.value.remark = row.remark
+  formData.value.remark = row.remark || ''
   dialogVisible.value = true
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗

@@ -9,20 +9,14 @@
     >
       <!-- 先选择 -->
       <template #spuId>
-        <el-button v-if="!isFormUpdate" @click="spuSelectRef.open()">{{
-          t('auto.views.mall.promotion.point.activity.PointActivityForm.kf4d8d03c')
-        }}</el-button>
+        <el-button v-if="!isFormUpdate" @click="spuSelectRef.open()">选择商品</el-button>
         <SpuAndSkuList
           ref="spuAndSkuListRef"
           :rule-config="ruleConfig"
           :spu-list="spuList"
           :spu-property-list-p="spuPropertyList"
         >
-          <el-table-column
-            align="center"
-            :label="t('auto.views.mall.promotion.point.activity.PointActivityForm.k506701d2')"
-            min-width="168"
-          >
+          <el-table-column align="center" label="可兑换库存" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.stock"
@@ -32,17 +26,17 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="t('extra.k366efcfd')" min-width="168">
+          <el-table-column align="center" label="可兑换次数" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.count" :min="0" class="w-100%" />
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="t('extra.k6870f4b8')" min-width="168">
+          <el-table-column align="center" label="所需积分" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.point" :min="0" class="w-100%" />
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="t('extra.k1759e421')" min-width="168">
+          <el-table-column align="center" label="所需金额(元)" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.price"
@@ -57,12 +51,8 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('extra.k008b8fcb')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" @confirm="selectSpu" />
@@ -81,8 +71,10 @@ import {
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { getPropertyList, RuleConfig } from '@/views/mall/product/spu/components'
 import { convertToInteger, formatToFraction } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionSeckillActivityForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -100,17 +92,17 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'productConfig.stock',
     rule: (arg) => arg >= 1,
-    message: t('auto.views.mall.promotion.point.activity.PointActivityForm.k37680d5a')
+    message: '商品可兑换库存必须大于等于 1 ！！！'
   },
   {
     name: 'productConfig.point',
     rule: (arg) => arg >= 1,
-    message: t('auto.views.mall.promotion.point.activity.PointActivityForm.kec24331c')
+    message: '商品所需兑换积分必须大于等于 1 ！！！'
   },
   {
     name: 'productConfig.count',
     rule: (arg) => arg >= 1,
-    message: t('auto.views.mall.promotion.point.activity.PointActivityForm.kebb756bf')
+    message: '商品可兑换次数必须大于等于 1 ！！！'
   }
 ]
 const spuList = ref<SpuExtension[]>([]) // 选择的 spu

@@ -1,46 +1,17 @@
 <template>
   <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-    <el-table-column
-      :label="t('auto.views.member.user.detail.UserAddressList.ka55475ab')"
-      align="center"
-      prop="id"
-      width="150px"
-    />
-    <el-table-column
-      :label="t('auto.views.member.user.detail.UserAddressList.k44bf7d8a')"
-      align="center"
-      prop="name"
-      width="150px"
-    />
-    <el-table-column
-      :label="t('auto.views.member.user.detail.UserAddressList.k5a9cc5e8')"
-      align="center"
-      prop="mobile"
-      width="150px"
-    />
-    <el-table-column
-      :label="t('auto.views.member.user.detail.UserAddressList.ke79f4d85')"
-      align="center"
-      prop="areaId"
-      width="150px"
-    />
-    <el-table-column
-      :label="t('auto.views.member.user.detail.UserAddressList.ka3d99209')"
-      align="center"
-      prop="detailAddress"
-    />
-    <el-table-column
-      :label="t('auto.views.member.user.detail.UserAddressList.k8f91be14')"
-      align="center"
-      prop="defaultStatus"
-      width="150px"
-    >
+    <el-table-column label="地址编号" align="center" prop="id" width="150px" />
+    <el-table-column label="收件人名称" align="center" prop="name" width="150px" />
+    <el-table-column label="手机号" align="center" prop="mobile" width="150px" />
+    <el-table-column label="所在地区" align="center" prop="areaName" width="150px" />
+    <el-table-column label="收件详细地址" align="center" prop="detailAddress" />
+    <el-table-column label="是否默认" align="center" prop="defaultStatus" width="150px">
       <template #default="scope">
         <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="Number(scope.row.defaultStatus)" />
       </template>
     </el-table-column>
     <el-table-column
-      :label="t('common.createTime')"
+      label="创建时间"
       align="center"
       prop="createTime"
       :formatter="dateFormatter"
@@ -52,7 +23,7 @@
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as AddressApi from '@/api/member/address'
-const { t } = useI18n()
+
 const { userId }: { userId: number } = defineProps({
   userId: {
     type: Number,
@@ -61,7 +32,6 @@ const { userId }: { userId: number } = defineProps({
 })
 
 const loading = ref(true) // 列表的加载中
-const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数据
 
 /** 查询列表 */

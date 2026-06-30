@@ -1,34 +1,23 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :title="t('auto.views.mall.promotion.bargain.record.BargainRecordListDialog.k9d43d7d1')"
-  >
+  <Dialog v-model="dialogVisible" title="助力列表">
     <!-- 列表 -->
     <ContentWrap>
       <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-        <el-table-column
-          :label="t('auto.views.mall.promotion.bargain.record.BargainRecordListDialog.kec750ef6')"
-          prop="userId"
-          min-width="80px"
-        />
-        <el-table-column
-          :label="t('auto.views.mall.promotion.bargain.record.BargainRecordListDialog.k2b78f76f')"
-          prop="avatar"
-          min-width="80px"
-        >
+        <el-table-column label="用户编号" prop="userId" min-width="80px" />
+        <el-table-column label="用户头像" prop="avatar" min-width="80px">
           <template #default="scope">
             <el-avatar :src="scope.row.avatar" />
           </template>
         </el-table-column>
-        <el-table-column :label="t('profile.user.name')" prop="name" min-width="100px" />
+        <el-table-column label="用户昵称" prop="nickname" min-width="100px" />
         <el-table-column
-          :label="t('extra.kcb97a6a0')"
+          label="砍价金额"
           prop="reducePrice"
           min-width="100px"
           :formatter="fenToYuanFormat"
         />
         <el-table-column
-          :label="t('extra.kfefba32a')"
+          label="助力时间"
           align="center"
           prop="createTime"
           :formatter="dateFormatter"
@@ -50,11 +39,9 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as BargainHelpApi from '@/api/mall/promotion/bargain/bargainHelp'
 import { fenToYuanFormat } from '@/utils/formatter'
-/** 助力列表 */
-const { t } = useI18n()
-defineOptions({ name: 'BargainRecordListDialog' })
 
-const message = useMessage() // 消息弹窗
+/** 助力列表 */
+defineOptions({ name: 'BargainRecordListDialog' })
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

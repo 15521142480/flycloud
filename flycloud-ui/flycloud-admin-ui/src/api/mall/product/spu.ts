@@ -65,9 +65,9 @@ export const getSpuPage = (params: PageParam) => {
   return request.get({ url: '/product/spu/page', params })
 }
 
-// 获得 Spu 列表 tabsCount
-export const getTabsCount = () => {
-  return request.get({ url: '/product/spu/get-count' })
+// 获得 Spu 列表 tabsCount（支持按 name/categoryId/createTime 筛选）
+export const getTabsCount = (params?: any) => {
+  return request.get({ url: '/product/spu/get-count', params })
 }
 
 // 创建商品 Spu
@@ -87,7 +87,7 @@ export const updateStatus = (data: { id: number; status: number }) => {
 
 // 获得商品 Spu
 export const getSpu = (id: number) => {
-  return request.get({ url: `/product/spu/get-detail/${id}` })
+  return request.get({ url: `/product/spu/get-detail?id=${id}` })
 }
 
 // 获得商品 Spu 详情列表
@@ -97,12 +97,12 @@ export const getSpuDetailList = (ids: number[]) => {
 
 // 删除商品 Spu
 export const deleteSpu = (id: number) => {
-  return request.delete({ url: `/product/spu/delete/${id}` })
+  return request.delete({ url: `/product/spu/delete?id=${id}` })
 }
 
 // 导出商品 Spu Excel
-export const exportSpu = async (params) => {
-  return await request.download({ url: '/product/spu/export', params })
+export const exportSpu = async (params: any) => {
+  return await request.download({ url: '/product/spu/export-excel', params })
 }
 
 // 获得商品 SPU 精简列表

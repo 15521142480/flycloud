@@ -5,7 +5,7 @@
       :key="pointActivity.id"
       class="select-box spu-pic"
     >
-      <el-tooltip :content="pointActivity.name">
+      <el-tooltip :content="pointActivity.spuName">
         <div class="relative h-full w-full">
           <el-image :src="pointActivity.picUrl" class="h-full w-full" />
           <Icon
@@ -17,10 +17,7 @@
         </div>
       </el-tooltip>
     </div>
-    <el-tooltip
-      v-if="canAdd"
-      :content="t('auto.views.mall.promotion.point.components.PointShowcase.k9669b876')"
-    >
+    <el-tooltip v-if="canAdd" content="选择活动">
       <div class="select-box" @click="openSeckillActivityTableSelect">
         <Icon icon="ep:plus" />
       </div>
@@ -42,7 +39,6 @@ import { isArray } from '@/utils/is'
 
 // 活动橱窗，一般用于装修时使用
 // 提供功能：展示活动列表、添加活动、删除活动
-const { t } = useI18n()
 defineOptions({ name: 'PointShowcase' })
 
 const props = defineProps({
@@ -136,11 +132,11 @@ const emitActivityChange = () => {
   display: flex;
   width: 60px;
   height: 60px;
+  cursor: pointer;
   border: 1px dashed var(--el-border-color-darker);
   border-radius: 8px;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .spu-pic {

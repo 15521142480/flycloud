@@ -121,6 +121,50 @@ public class CollectionUtils {
         return from.stream().filter(filter).map(func).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
+    /**
+     * 转换为有序去重集合。
+     *
+     * @author lxs
+     * @date 2026-06-30
+     */
+    public static <T, U> Set<U> convertLinkedSet(Collection<T> from, Function<T, U> func) {
+        if (CollUtil.isEmpty(from)) {
+            return new LinkedHashSet<>();
+        }
+        return from.stream().map(func).filter(Objects::nonNull).collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    /**
+     * 转换为有序去重集合，并支持过滤源数据。
+     *
+     * @author lxs
+     * @date 2026-06-30
+     */
+    public static <T, U> Set<U> convertLinkedSet(Collection<T> from, Function<T, U> func, Predicate<T> filter) {
+        if (CollUtil.isEmpty(from)) {
+            return new LinkedHashSet<>();
+        }
+        return from.stream().filter(filter).map(func).filter(Objects::nonNull)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    /**
+     * 合并单个元素和集合，保留顺序并去重。
+     *
+     * @author lxs
+     * @date 2026-06-30
+     */
+    public static <T> List<T> of(T value, Collection<T> values) {
+        LinkedHashSet<T> result = new LinkedHashSet<>();
+        if (value != null) {
+            result.add(value);
+        }
+        if (CollUtil.isNotEmpty(values)) {
+            result.addAll(values);
+        }
+        return new ArrayList<>(result);
+    }
+
     public static <T, K> Map<K, T> convertMapByFilter(Collection<T> from, Predicate<T> filter, Function<T, K> keyFunc) {
         if (CollUtil.isEmpty(from)) {
             return new HashMap<>();

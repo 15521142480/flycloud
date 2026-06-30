@@ -157,6 +157,23 @@ http.interceptors.response.use(
     const userStore = $store('user');
     const isLogin = userStore.isLogin;
     let errorMessage = '网络请求出错';
+
+    // 后端直接返回 HTTP 401 时，同样走刷新令牌或重新登录流程。
+    if (error?.statusCode === 401) {
+      const errorConfig = error.config;
+      errorConfig?.custom?.showLoading && closeLoading();
+      if (!errorConfig) {
+        return handleAuthorized(isLogin);
+      }
+      if (isRefreshTokenRequest(errorConfig)) {
+        return handleAuthorized(isLogin);
+      }
+      if (errorConfig.custom?.isToken !== false) {
+        return refreshToken(errorConfig);
+      }
+      return handleAuthorized(isLogin);
+    }
+
     if (error !== undefined) {
       switch (error.statusCode) {
         case 400:
@@ -279,14 +296,14 @@ const refreshToken = async (config) => {
 /**
  * 处理 401 未登录的错误
  */
-const handleAuthorized = () => {
+const handleAuthorized = (wasLogin) => {
   const userStore = $store('user');
+  const loginStatus = typeof wasLogin === 'boolean' ? wasLogin : userStore.isLogin;
   userStore.logout(true);
-  showAuthModal();
   // 登录超时
   return Promise.reject({
     code: 401,
-    msg: userStore.isLogin ? '您的登陆已过期' : '请先登录',
+    msg: loginStatus ? '您的登陆已过期' : '请先登录',
   });
 };
 

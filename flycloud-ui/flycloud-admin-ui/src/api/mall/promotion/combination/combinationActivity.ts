@@ -5,6 +5,8 @@ export interface CombinationActivityVO {
   id?: number
   name?: string
   spuId?: number
+  spuName?: string
+  picUrl?: string
   totalLimitCount?: number
   singleLimitCount?: number
   startTime?: Date
@@ -43,7 +45,7 @@ export const getCombinationActivityPage = async (params: any) => {
 
 // 查询拼团活动详情
 export const getCombinationActivity = async (id: number) => {
-  return await request.get({ url: '/promotion/combination-activity/get/' + id })
+  return await request.get({ url: '/promotion/combination-activity/get?id=' + id })
 }
 
 // 获得拼团活动列表，基于活动编号数组
@@ -63,10 +65,10 @@ export const updateCombinationActivity = async (data: CombinationActivityVO) => 
 
 // 关闭拼团活动
 export const closeCombinationActivity = async (id: number) => {
-  return await request.put({ url: '/promotion/combination-activity/close/' + id })
+  return await request.put({ url: '/promotion/combination-activity/close?id=' + id })
 }
 
 // 删除拼团活动
 export const deleteCombinationActivity = async (id: number) => {
-  return await request.delete({ url: '/promotion/combination-activity/delete/' + id })
+  return await request.delete({ url: '/promotion/combination-activity/delete?id=' + id })
 }

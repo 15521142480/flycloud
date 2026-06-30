@@ -9,21 +9,17 @@
     >
       <el-row>
         <el-col :span="12">
-          <el-form-item :label="t('auto.views.member.level.LevelForm.k0ec5f743')" prop="name">
-            <el-input
-              v-model="formData.name"
-              :placeholder="t('auto.views.member.level.LevelForm.kfdb90969')"
-              class="!w-240px"
-            />
+          <el-form-item label="等级名称" prop="name">
+            <el-input v-model="formData.name" placeholder="请输入等级名称" class="!w-240px" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('auto.views.member.level.LevelForm.k5c42c048')" prop="level">
+          <el-form-item label="等级" prop="level">
             <el-input-number
               v-model="formData.level"
               :min="0"
               :precision="0"
-              :placeholder="t('auto.views.member.level.LevelForm.k8efbaca6')"
+              placeholder="请输入等级"
               class="!w-240px"
             />
           </el-form-item>
@@ -31,27 +27,24 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item :label="t('auto.views.member.level.LevelForm.k9b48e1e4')" prop="experience">
+          <el-form-item label="升级经验" prop="experience">
             <el-input-number
               v-model="formData.experience"
               :min="0"
               :precision="0"
-              :placeholder="t('auto.views.member.level.LevelForm.k31645409')"
+              placeholder="请输入升级经验"
               class="!w-240px"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item
-            :label="t('auto.views.member.level.LevelForm.k8df7f165')"
-            prop="discountPercent"
-          >
+          <el-form-item label="享受折扣(%)" prop="discountPercent">
             <el-input-number
               v-model="formData.discountPercent"
               :min="0"
               :max="100"
               :precision="0"
-              :placeholder="t('auto.views.member.level.LevelForm.k04586c3e')"
+              placeholder="请输入享受折扣"
               class="!w-240px"
             />
           </el-form-item>
@@ -59,17 +52,17 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item :label="t('auto.views.member.level.LevelForm.kd60dee70')">
+          <el-form-item label="等级图标">
             <UploadImg v-model="formData.icon" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="t('auto.views.member.level.LevelForm.ke5c12c3b')">
+          <el-form-item label="背景图">
             <UploadImg v-model="formData.backgroundUrl" />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item :label="t('common.status')" prop="status">
+      <el-form-item label="状态" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -82,12 +75,8 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
-        t('auto.views.member.level.LevelForm.k31f9d856')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.views.member.level.LevelForm.kd54aeadc')
-      }}</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -97,8 +86,9 @@ import * as LevelApi from '@/api/member/level'
 import { CommonStatusEnum } from '@/utils/constants'
 
 /** 会员等级表单 **/
-const { t } = useI18n()
 defineOptions({ name: 'MemberLevelForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -116,21 +106,11 @@ const formData = ref({
   status: CommonStatusEnum.ENABLE
 })
 const formRules = reactive({
-  name: [
-    { required: true, message: t('auto.views.member.level.LevelForm.k9a1b8ff2'), trigger: 'blur' }
-  ],
-  experience: [
-    { required: true, message: t('auto.views.member.level.LevelForm.k0559169a'), trigger: 'blur' }
-  ],
-  level: [
-    { required: true, message: t('auto.views.member.level.LevelForm.k329e8bb9'), trigger: 'blur' }
-  ],
-  discountPercent: [
-    { required: true, message: t('auto.views.member.level.LevelForm.k91b65d30'), trigger: 'blur' }
-  ],
-  status: [
-    { required: true, message: t('auto.views.member.level.LevelForm.k1318b551'), trigger: 'change' }
-  ]
+  name: [{ required: true, message: '等级名称不能为空', trigger: 'blur' }],
+  experience: [{ required: true, message: '升级经验不能为空', trigger: 'blur' }],
+  level: [{ required: true, message: '等级不能为空', trigger: 'blur' }],
+  discountPercent: [{ required: true, message: '享受折扣不能为空', trigger: 'blur' }],
+  status: [{ required: true, message: '状态不能为空', trigger: 'change' }]
 })
 const formRef = ref() // 表单 Ref
 

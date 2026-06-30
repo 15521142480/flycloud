@@ -1,0 +1,80 @@
+package com.fly.im.controller.admin.manager.message;
+
+import cn.hutool.core.collection.CollUtil;
+import com.fly.common.domain.model.R;
+import com.fly.im.framework.pojo.PageResult;
+import com.fly.im.framework.util.MapUtils;
+import com.fly.common.utils.BeanUtils;
+import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVO;
+import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageRespVO;
+import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageSendReqVO;
+import com.fly.im.dal.dataobject.channel.ImChannelDO;
+import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
+import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
+import com.fly.im.service.channel.ImChannelMaterialService;
+import com.fly.im.service.message.ImChannelMessageService;
+import com.fly.im.service.channel.ImChannelService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+import static com.fly.common.domain.model.R.ok;
+import static com.fly.common.utils.collection.CollectionUtils.convertSet;
+
+@Tag(name = "管理后台 - IM 频道消息")
+@RestController
+@RequestMapping("/im/manager/channel-message")
+@Validated
+public class ImChannelMessageManagerController {
+
+    @Resource
+    private ImChannelMessageService channelMessageService;
+    @Resource
+    private ImChannelService channelService;
+    @Resource
+    private ImChannelMaterialService channelMaterialService;
+
+    @PostMapping("/send")
+    @Operation(summary = "立即推送频道消息")
+    @PreAuthorize("@pms.hasPermission('im:manager:channel-message:send')")
+    public R<Long> sendMessage(@Valid @RequestBody ImChannelMessageSendReqVO reqVO) {
+        return ok(channelMessageService.sendMessage(reqVO));
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除频道消息")
+    @Parameter(name = "id", description = "编号", required = true, example = "1024")
+    @PreAuthorize("@pms.hasPermission('im:manager:channel-message:delete')")
+    public R<Boolean> deleteMessage(@RequestParam("id") Long id) {
+        channelMessageService.deleteMessage(id);
+        return ok(true);
+    }
+
+    @GetMapping("/page")
+    @Operation(summary = "获得频道消息分页；回填频道名 / 素材标题")
+    @PreAuthorize("@pms.hasPermission('im:manager:channel-message:query')")
+    public R<PageResult<ImChannelMessageRespVO>> getMessagePage(@Valid ImChannelMessagePageReqVO pageReqVO) {
+        PageResult<ImChannelMessageDO> pageResult = channelMessageService.getMessagePage(pageReqVO);
+        if (CollUtil.isEmpty(pageResult.getList())) {
+            return ok(PageResult.empty(pageResult.getTotal()));
+        }
+        // 批量查询频道和素材，并回填频道名 / 素材标题
+        Map<Long, ImChannelDO> channelMap = channelService.getChannelMap(
+                convertSet(pageResult.getList(), ImChannelMessageDO::getChannelId));
+        Map<Long, ImChannelMaterialDO> materialMap = channelMaterialService.getMaterialMap(
+                convertSet(pageResult.getList(), ImChannelMessageDO::getMaterialId));
+        return ok(PageResult.convert(pageResult, ImChannelMessageRespVO.class, vo -> {
+            MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()));
+            MapUtils.findAndThen(materialMap, vo.getMaterialId(),
+                    material -> vo.setMaterialTitle(material.getTitle()).setMaterialCoverUrl(material.getCoverUrl()));
+        }));
+    }
+
+}

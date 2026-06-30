@@ -7,55 +7,38 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.product.property.PropertyForm.k1be7ae4f')"
-        prop="name"
-      >
-        <el-input
-          v-model="formData.name"
-          :placeholder="t('auto.views.mall.product.property.PropertyForm.kc2afb255')"
-        />
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="formData.name" placeholder="请输入名称" />
       </el-form-item>
-      <el-form-item :label="t('common.remark')" prop="remark">
-        <el-input
-          v-model="formData.remark"
-          :placeholder="t('auto.views.mall.product.property.PropertyForm.kac962cb9')"
-          type="textarea"
-        />
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="formData.remark" placeholder="请输入内容" type="textarea" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('auto.views.mall.product.property.PropertyForm.k31f9d856')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.views.mall.product.property.PropertyForm.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as PropertyApi from '@/api/mall/product/property'
-const { t } = useI18n()
+
 defineOptions({ name: 'ProductPropertyForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
-const formData = ref({
+const formData = ref<PropertyApi.PropertyVO>({
   id: undefined,
-  name: ''
+  name: '',
+  remark: ''
 })
 const formRules = reactive({
-  name: [
-    {
-      required: true,
-      message: t('auto.views.mall.product.property.PropertyForm.kca898456'),
-      trigger: 'blur'
-    }
-  ]
+  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 
@@ -87,7 +70,7 @@ const submitForm = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    const data = formData.value as PropertyApi.PropertyVO
+    const data = formData.value
     if (formType.value === 'create') {
       await PropertyApi.createProperty(data)
       message.success(t('common.createSuccess'))
@@ -107,7 +90,8 @@ const submitForm = async () => {
 const resetForm = () => {
   formData.value = {
     id: undefined,
-    name: ''
+    name: '',
+    remark: ''
   }
   formRef.value?.resetFields()
 }

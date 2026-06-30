@@ -1,39 +1,16 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :title="t('auto.views.mall.promotion.combination.record.CombinationRecordListDialog.kedf727fa')"
-    width="950"
-  >
+  <Dialog v-model="dialogVisible" title="拼团列表" width="950">
     <!-- 列表 -->
     <ContentWrap>
       <el-table v-loading="loading" :data="list">
-        <el-table-column
-          align="center"
-          :label="
-            t('auto.views.mall.promotion.combination.record.CombinationRecordListDialog.k9f42dac6')
-          "
-          prop="id"
-          min-width="50"
-        />
-        <el-table-column
-          align="center"
-          :label="
-            t('auto.views.mall.promotion.combination.record.CombinationRecordListDialog.k4ceeeb31')
-          "
-          prop="avatar"
-          min-width="80"
-        >
+        <el-table-column align="center" label="编号" prop="id" min-width="50" />
+        <el-table-column align="center" label="头像" prop="avatar" min-width="80">
           <template #default="scope">
             <el-avatar :src="scope.row.avatar" />
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('system.user.nickname')"
-          prop="name"
-          min-width="100"
-        />
-        <el-table-column align="center" :label="t('extra.k2ac0d889')" prop="headId" min-width="100">
+        <el-table-column align="center" label="昵称" prop="nickname" min-width="100" />
+        <el-table-column align="center" label="开团团长" prop="headId" min-width="100">
           <template #default="{ row }: { row: CombinationRecordApi.CombinationRecordVO }">
             <el-tag> {{ row.headId === 0 ? '团长' : '团员' }} </el-tag>
           </template>
@@ -41,23 +18,18 @@
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          :label="t('extra.kfc0e0b97')"
+          label="参团时间"
           prop="createTime"
           width="180"
         />
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          :label="t('common.endTimeText')"
+          label="结束时间"
           prop="endTime"
           width="180"
         />
-        <el-table-column
-          align="center"
-          :label="t('auto.views.mall.promotion.combination.record.index.ke7a33bf4')"
-          prop="status"
-          min-width="150"
-        >
+        <el-table-column align="center" label="拼团状态" prop="status" min-width="150">
           <template #default="scope">
             <dict-tag
               :type="DICT_TYPE.PROMOTION_COMBINATION_RECORD_STATUS"
@@ -83,7 +55,6 @@ import * as CombinationRecordApi from '@/api/mall/promotion/combination/combinat
 import { DICT_TYPE } from '@/utils/dict'
 
 /** 助力列表 */
-const { t } = useI18n()
 defineOptions({ name: 'CombinationRecordListDialog' })
 
 const loading = ref(true) // 列表的加载中

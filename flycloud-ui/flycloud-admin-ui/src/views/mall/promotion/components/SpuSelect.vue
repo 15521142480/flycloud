@@ -7,7 +7,7 @@
             v-model="queryParams.name"
             class="!w-240px"
             clearable
-            :placeholder="t('auto.views.mall.promotion.components.SpuSelect.k5c6bf9b9')"
+            placeholder="请输入商品名称"
             @keyup.enter="handleQuery"
           />
         </el-col>
@@ -19,7 +19,7 @@
             check-strictly
             class="w-1/1"
             node-key="id"
-            :placeholder="t('auto.views.mall.promotion.components.SpuSelect.ke71fcc11')"
+            placeholder="请选择商品分类"
           />
         </el-col>
         <el-col :span="6">
@@ -27,8 +27,8 @@
             v-model="queryParams.createTime"
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-240px"
-            :end-placeholder="t('auto.views.mall.promotion.components.SpuSelect.kf4b9b2b5')"
-            :start-placeholder="t('auto.views.mall.promotion.components.SpuSelect.k1f291968')"
+            end-placeholder="结束日期"
+            start-placeholder="开始日期"
             type="daterange"
             value-format="YYYY-MM-DD HH:mm:ss"
           />
@@ -36,11 +36,11 @@
         <el-col :span="6">
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            {{ t('extra.k7e756702') }}
+            搜索
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            {{ t('extra.k23d15c25') }}
+            重置
           </el-button>
         </el-col>
       </el-row>
@@ -67,43 +67,30 @@
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55" />
-        <el-table-column
-          key="id"
-          align="center"
-          :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
-          prop="id"
-        />
-        <el-table-column
-          :label="t('auto.views.member.user.detail.UserFavoriteList.k1b089e84')"
-          min-width="80"
-        >
+        <el-table-column key="id" align="center" label="商品编号" prop="id" />
+        <el-table-column label="商品图" min-width="80">
           <template #default="{ row }">
             <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
           </template>
         </el-table-column>
         <el-table-column
           :show-overflow-tooltip="true"
-          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
+          label="商品名称"
           min-width="300"
           prop="name"
         />
-        <el-table-column align="center" :label="t('extra.kfb079de8')" min-width="90" prop="price">
+        <el-table-column align="center" label="商品售价" min-width="90" prop="price">
           <template #default="{ row }">
             {{ formatToFraction(row.price) }}
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('extra.k44e7ebb4')"
-          min-width="90"
-          prop="salesCount"
-        />
-        <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="90" prop="stock" />
-        <el-table-column align="center" :label="t('common.sort')" min-width="70" prop="sort" />
+        <el-table-column align="center" label="销量" min-width="90" prop="salesCount" />
+        <el-table-column align="center" label="库存" min-width="90" prop="stock" />
+        <el-table-column align="center" label="排序" min-width="70" prop="sort" />
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          :label="t('common.createTime')"
+          label="创建时间"
           prop="createTime"
           width="180"
         />
@@ -117,10 +104,8 @@
       />
     </ContentWrap>
     <template #footer>
-      <el-button type="primary" @click="confirm">{{ t('extra.k008b8fcb') }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button type="primary" @click="confirm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -130,13 +115,13 @@ import { getPropertyList, PropertyAndValues, SkuList } from '@/views/mall/produc
 import { ElTable } from 'element-plus'
 import { dateFormatter } from '@/utils/formatTime'
 import { createImageViewer } from '@/components/ImageViewer'
-import { formatToFraction } from '@/utils'
+import { floatToFixed2, formatToFraction } from '@/utils'
 import { defaultProps, handleTree } from '@/utils/tree'
 
 import * as ProductCategoryApi from '@/api/mall/product/category'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { propTypes } from '@/utils/propTypes'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionSpuSelect' })
 
 const props = defineProps({
@@ -165,7 +150,7 @@ const spuListRef = ref<InstanceType<typeof ElTable>>()
 const skuListRef = ref<InstanceType<typeof SkuList>>() // 商品属性选择 Ref
 const spuData = ref<ProductSpuApi.Spu>() // 商品详情
 const isExpand = ref(false) // 控制 SKU 列表显示
-const expandRowKeys = ref<number[]>() // 控制展开行需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。
+const expandRowKeys = ref<string[]>() // 控制展开行需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。
 
 //============ 商品选择相关 ============
 const selectedSpuId = ref<number>(0) // 选中的商品 spuId
@@ -173,7 +158,7 @@ const selectedSkuIds = ref<number[]>([]) // 选中的商品 skuIds
 const selectSku = (val: ProductSpuApi.Sku[]) => {
   const skuTable = skuListRef.value?.getSkuTableRef()
   if (selectedSpuId.value === 0) {
-    message.warning(t('auto.views.mall.promotion.components.SpuSelect.k8ecf7bc6'))
+    message.warning('请先选择商品再选择相应的规格！！！')
     skuTable?.clearSelection()
     return
   }
@@ -224,8 +209,8 @@ const expandChange = async (row: ProductSpuApi.Spu, expandedRows?: ProductSpuApi
   // 目的防止误选 sku
   if (selectedSpuId.value !== 0) {
     if (row.id !== selectedSpuId.value) {
-      message.warning(t('auto.views.mall.promotion.components.SpuSelect.kdf4117d8'))
-      expandRowKeys.value = [selectedSpuId.value]
+      message.warning('你已选择商品请先取消')
+      expandRowKeys.value = [String(selectedSpuId.value)]
       return
     }
     // 如果已展开 skuList 则选择此对应的 spu 不需要重新获取渲染 skuList
@@ -243,10 +228,17 @@ const expandChange = async (row: ProductSpuApi.Spu, expandedRows?: ProductSpuApi
   }
   // 获取 SPU 详情
   const res = (await ProductSpuApi.getSpu(row.id as number)) as ProductSpuApi.Spu
+  res.skus?.forEach((item) => {
+    item.price = floatToFixed2(item.price)
+    item.marketPrice = floatToFixed2(item.marketPrice)
+    item.costPrice = floatToFixed2(item.costPrice)
+    item.firstBrokeragePrice = floatToFixed2(item.firstBrokeragePrice)
+    item.secondBrokeragePrice = floatToFixed2(item.secondBrokeragePrice)
+  })
   propertyList.value = getPropertyList(res)
   spuData.value = res
   isExpand.value = true
-  expandRowKeys.value = [row.id!]
+  expandRowKeys.value = [String(row.id!)]
 }
 
 // 确认选择时的触发事件
@@ -258,11 +250,11 @@ const emits = defineEmits<{
  */
 const confirm = () => {
   if (selectedSpuId.value === 0) {
-    message.warning(t('auto.views.mall.promotion.components.SpuSelect.kc0839af8'))
+    message.warning('没有选择任何商品')
     return
   }
   if (props.isSelectSku && selectedSkuIds.value.length === 0) {
-    message.warning(t('auto.views.mall.promotion.components.SpuSelect.k0eb93e7e'))
+    message.warning('没有选择任何商品属性')
     return
   }
   // 返回各自 id 列表
@@ -277,7 +269,7 @@ const confirm = () => {
 
 /** 打开弹窗 */
 const open = () => {
-  dialogTitle.value = t('auto.views.mall.promotion.components.SpuSelect.kfc01fcbb')
+  dialogTitle.value = '商品选择'
   dialogVisible.value = true
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗

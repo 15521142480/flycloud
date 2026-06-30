@@ -1,221 +1,183 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.trade.brokerage.user.index.k50f5e3f4')"
-    url="https://doc.iocoder.cn/mall/trade-brokerage/"
-  />
+  <doc-alert title="【交易】分销返佣" url="https://doc.iocoder.cn/mall/trade-brokerage/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
-      class="-mb-15px"
-      :model="queryParams"
       ref="queryFormRef"
       :inline="true"
+      :model="queryParams"
+      class="-mb-15px"
       label-width="85px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.user.index.k4f34fd64')"
-        prop="bindUserId"
-      >
+      <el-form-item label="推广员编号" prop="bindUserId">
         <el-input
           v-model="queryParams.bindUserId"
-          :placeholder="t('auto.views.mall.trade.brokerage.user.index.k9c7d84ed')"
-          clearable
-          @keyup.enter="handleQuery"
           class="!w-240px"
+          clearable
+          placeholder="请输入推广员编号"
+          @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.user.index.k95774950')"
-        prop="brokerageEnabled"
-      >
+      <el-form-item label="推广资格" prop="brokerageEnabled">
         <el-select
           v-model="queryParams.brokerageEnabled"
           class="!w-240px"
           clearable
-          :placeholder="t('auto.views.mall.trade.brokerage.user.index.kd7294eea')"
+          placeholder="请选择推广资格"
         >
-          <el-option
-            :label="t('auto.views.mall.trade.brokerage.user.index.kfbd5b750')"
-            :value="true"
-          />
-          <el-option
-            :label="t('auto.views.mall.trade.brokerage.user.index.k72077749')"
-            :value="false"
-          />
+          <el-option :value="true" label="有" />
+          <el-option :value="false" label="无" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          type="daterange"
-          :start-placeholder="t('auto.views.mall.trade.brokerage.user.index.k1f291968')"
-          :end-placeholder="t('auto.views.mall.trade.brokerage.user.index.kf4b9b2b5')"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
+          end-placeholder="结束日期"
+          start-placeholder="开始日期"
+          type="daterange"
+          value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        <el-button @click="handleQuery">
+          <Icon class="mr-5px" icon="ep:search" />
+          搜索
+        </el-button>
+        <el-button @click="resetQuery">
+          <Icon class="mr-5px" icon="ep:refresh" />
+          重置
+        </el-button>
+        <el-button
+          v-hasPermi="['trade:brokerage-user:create']"
+          plain
+          type="primary"
+          @click="openCreateUserForm"
         >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+          <Icon class="mr-5px" icon="ep:plus" />
+          新增
+        </el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
 
   <!-- 列表 -->
   <ContentWrap>
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.mall.trade.brokerage.user.index.kec750ef6')"
-        align="center"
-        prop="id"
-        min-width="80px"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.brokerage.user.index.k4ceeeb31')"
-        align="center"
-        prop="avatar"
-        width="70px"
-      >
+    <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
+      <el-table-column align="center" label="用户编号" min-width="80px" prop="id" />
+      <el-table-column align="center" label="头像" prop="avatar" width="70px">
         <template #default="scope">
           <el-avatar :src="scope.row.avatar" />
         </template>
       </el-table-column>
+      <el-table-column align="center" label="昵称" min-width="80px" prop="nickname" />
+      <el-table-column align="center" label="推广人数" prop="brokerageUserCount" width="80px" />
       <el-table-column
-        :label="t('system.user.nickname')"
         align="center"
-        prop="name"
-        min-width="80px"
-      />
-      <el-table-column
-        :label="t('extra.ka006ed09')"
-        align="center"
-        prop="brokerageUserCount"
-        width="80px"
-      />
-      <el-table-column
-        :label="t('extra.kec878b95')"
-        align="center"
+        label="推广订单数量"
+        min-width="110px"
         prop="brokerageOrderCount"
-        min-width="110px"
       />
       <el-table-column
-        :label="t('extra.k5b91dee2')"
+        :formatter="fenToYuanFormat"
         align="center"
+        label="推广订单金额"
+        min-width="110px"
         prop="brokerageOrderPrice"
-        min-width="110px"
-        :formatter="fenToYuanFormat"
       />
       <el-table-column
-        :label="t('extra.kab8bc688')"
+        :formatter="fenToYuanFormat"
         align="center"
+        label="已提现金额"
+        min-width="100px"
         prop="withdrawPrice"
-        min-width="100px"
+      />
+      <el-table-column align="center" label="已提现次数" min-width="100px" prop="withdrawCount" />
+      <el-table-column
         :formatter="fenToYuanFormat"
-      />
-      <el-table-column
-        :label="t('extra.kc781592b')"
         align="center"
-        prop="withdrawCount"
+        label="未提现金额"
         min-width="100px"
-      />
-      <el-table-column
-        :label="t('extra.ke4f18209')"
-        align="center"
         prop="price"
-        min-width="100px"
-        :formatter="fenToYuanFormat"
       />
       <el-table-column
-        :label="t('extra.k0273a244')"
+        :formatter="fenToYuanFormat"
         align="center"
+        label="冻结中佣金"
+        min-width="100px"
         prop="frozenPrice"
-        min-width="100px"
-        :formatter="fenToYuanFormat"
       />
-      <el-table-column
-        :label="t('auto.views.mall.trade.brokerage.user.index.k95774950')"
-        align="center"
-        prop="brokerageEnabled"
-        min-width="80px"
-      >
+      <el-table-column align="center" label="推广资格" min-width="80px" prop="brokerageEnabled">
         <template #default="scope">
           <el-switch
             v-model="scope.row.brokerageEnabled"
-            :active-text="t('auto.views.mall.trade.brokerage.user.index.kfbd5b750')"
-            :inactive-text="t('extra.kadb3d23e')"
-            inline-prompt
             :disabled="!checkPermi(['trade:brokerage-user:update-bind-user'])"
+            active-text="有"
+            inactive-text="无"
+            inline-prompt
             @change="handleBrokerageEnabledChange(scope.row)"
           />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('extra.k3450932b')"
+        :formatter="dateFormatter"
         align="center"
+        label="成为推广员时间"
         prop="brokerageTime"
-        :formatter="dateFormatter"
         width="180px"
       />
+      <el-table-column align="center" label="上级推广员编号" prop="bindUserId" width="150px" />
       <el-table-column
-        :label="t('extra.k88a53323')"
+        :formatter="dateFormatter"
         align="center"
-        prop="bindUserId"
-        width="150px"
-      />
-      <el-table-column
-        :label="t('extra.k5ef47db8')"
-        align="center"
+        label="推广员绑定时间"
         prop="bindUserTime"
-        :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
+      <el-table-column align="center" fixed="right" label="操作" width="150px">
         <template #default="scope">
           <el-dropdown
-            @command="(command) => handleCommand(command, scope.row)"
             v-hasPermi="[
               'trade:brokerage-user:user-query',
               'trade:brokerage-user:order-query',
               'trade:brokerage-user:update-bind-user',
               'trade:brokerage-user:clear-bind-user'
             ]"
+            @command="(command) => handleCommand(command, scope.row)"
           >
             <el-button link type="primary">
-              <Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}
+              <Icon icon="ep:d-arrow-right" />
+              更多
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item
-                  command="openBrokerageUserTable"
                   v-if="checkPermi(['trade:brokerage-user:user-query'])"
+                  command="openBrokerageUserTable"
                 >
-                  {{ t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.kc5885d57') }}
+                  推广人
                 </el-dropdown-item>
                 <el-dropdown-item
-                  command="openBrokerageOrderTable"
                   v-if="checkPermi(['trade:brokerage-user:order-query'])"
+                  command="openBrokerageOrderTable"
                 >
-                  {{ t('extra.k04cb7e1a') }}
+                  推广订单
                 </el-dropdown-item>
                 <el-dropdown-item
-                  command="openUpdateBindUserForm"
                   v-if="checkPermi(['trade:brokerage-user:update-bind-user'])"
+                  command="openUpdateBindUserForm"
                 >
-                  {{ t('auto.views.mall.trade.brokerage.user.UpdateBindUserForm.ka98a1127') }}
+                  修改上级推广人
                 </el-dropdown-item>
                 <el-dropdown-item
-                  command="handleClearBindUser"
                   v-if="
                     scope.row.bindUserId && checkPermi(['trade:brokerage-user:clear-bind-user'])
                   "
+                  command="handleClearBindUser"
                 >
-                  {{ t('extra.k3bd83b78') }}
+                  清除上级推广人
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -225,36 +187,39 @@
     </el-table>
     <!-- 分页 -->
     <Pagination
-      :total="total"
-      v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      v-model:page="queryParams.pageNum"
+      :total="total"
       @pagination="getList"
     />
   </ContentWrap>
   <!-- 修改上级推广人表单 -->
-  <UpdateBindUserForm ref="updateBindUserFormRef" @success="getList" />
+  <BrokerageUserUpdateForm ref="updateFormRef" @success="getList" />
   <!-- 推广人列表 -->
-  <BrokerageUserListDialog ref="brokerageUserListDialogRef" />
+  <BrokerageUserListDialog ref="listDialogRef" />
   <!-- 推广订单列表 -->
-  <BrokerageOrderListDialog ref="brokerageOrderListDialogRef" />
+  <BrokerageOrderListDialog ref="orderDialogRef" />
+  <!-- 创建分销员 -->
+  <BrokerageUserCreateForm ref="createFormRef" @success="getList" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as BrokerageUserApi from '@/api/mall/trade/brokerage/user'
 import { checkPermi } from '@/utils/permission'
 import { fenToYuanFormat } from '@/utils/formatter'
-import UpdateBindUserForm from '@/views/mall/trade/brokerage/user/UpdateBindUserForm.vue'
+import BrokerageUserUpdateForm from '@/views/mall/trade/brokerage/user/BrokerageUserUpdateForm.vue'
 import BrokerageUserListDialog from '@/views/mall/trade/brokerage/user/BrokerageUserListDialog.vue'
 import BrokerageOrderListDialog from '@/views/mall/trade/brokerage/user/BrokerageOrderListDialog.vue'
-const { t } = useI18n()
+import BrokerageUserCreateForm from '@/views/mall/trade/brokerage/user/BrokerageUserCreateForm.vue'
+
 defineOptions({ name: 'TradeBrokerageUser' })
 
 const message = useMessage() // 消息弹窗
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
+const list = ref<BrokerageUserApi.BrokerageUserVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
@@ -306,31 +271,37 @@ const handleCommand = (command: string, row: BrokerageUserApi.BrokerageUserVO) =
 }
 
 /** 打开推广人列表 */
-const brokerageUserListDialogRef = ref()
+const listDialogRef = ref()
 const openBrokerageUserTable = (id: number) => {
-  brokerageUserListDialogRef.value.open(id)
+  listDialogRef.value.open(id)
 }
 
 /** 打开推广订单列表 */
-const brokerageOrderListDialogRef = ref()
+const orderDialogRef = ref()
 const openBrokerageOrderTable = (id: number) => {
-  brokerageOrderListDialogRef.value.open(id)
+  orderDialogRef.value.open(id)
 }
 
 /** 打开表单：修改上级推广人 */
-const updateBindUserFormRef = ref()
+const updateFormRef = ref()
 const openUpdateBindUserForm = (row: BrokerageUserApi.BrokerageUserVO) => {
-  updateBindUserFormRef.value.open(row)
+  updateFormRef.value.open(row)
+}
+
+/** 创建分销员 */
+const createFormRef = ref<InstanceType<typeof BrokerageUserCreateForm>>()
+const openCreateUserForm = () => {
+  createFormRef.value?.open()
 }
 
 /** 清除上级推广人 */
 const handleClearBindUser = async (row: BrokerageUserApi.BrokerageUserVO) => {
   try {
     // 二次确认
-    await message.confirm(t('extra.k5ddef612', { p0: row.name }))
+    await message.confirm(`确认要清除"${row.nickname}"的上级推广人吗？`)
     // 发起修改
     await BrokerageUserApi.clearBindUser({ id: row.id })
-    message.success(t('auto.views.mall.trade.brokerage.user.index.k994b7aa4'))
+    message.success('清除成功')
     // 刷新列表
     await getList()
   } catch {}
@@ -340,13 +311,11 @@ const handleClearBindUser = async (row: BrokerageUserApi.BrokerageUserVO) => {
 const handleBrokerageEnabledChange = async (row: BrokerageUserApi.BrokerageUserVO) => {
   try {
     // 二次确认
-    const text = row.brokerageEnabled
-      ? t('auto.views.mall.trade.brokerage.user.index.ka2094955')
-      : t('common.close')
-    await message.confirm(t('extra.k6fdd9ff6', { p0: text, p1: row.name }))
+    const text = row.brokerageEnabled ? '开通' : '关闭'
+    await message.confirm(`确认要${text}"${row.nickname}"的推广资格吗？`)
     // 发起修改
     await BrokerageUserApi.updateBrokerageEnabled({ id: row.id, enabled: row.brokerageEnabled })
-    message.success(text + t('common.success'))
+    message.success(text + '成功')
     // 刷新列表
     await getList()
   } catch {

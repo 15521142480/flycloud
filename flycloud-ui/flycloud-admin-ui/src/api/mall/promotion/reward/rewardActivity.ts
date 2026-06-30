@@ -10,10 +10,10 @@ export interface RewardActivityVO {
   conditionType?: number
   productScope?: number
   rules: RewardRule[]
+  productScopeValues: number[] // 商品范围：值为品类编号列表、商品编号列表
   // 如下仅用于表单，不提交
-  productScopeValues?: number[] // 商品范围：值为品类编号列表、商品编号列表
-  productCategoryIds?: number[]
-  productSpuIds?: number[]
+  productCategoryIds: number[]
+  productSpuIds: number[]
 }
 
 // 优惠规则
@@ -44,15 +44,15 @@ export const getRewardActivityPage = async (params) => {
 
 // 查询满减送活动详情
 export const getReward = async (id: number) => {
-  return await request.get({ url: '/promotion/reward-activity/get/' + id })
+  return await request.get({ url: '/promotion/reward-activity/get?id=' + id })
 }
 
 // 删除满减送活动
 export const deleteRewardActivity = async (id: number) => {
-  return await request.delete({ url: '/promotion/reward-activity/delete/' + id })
+  return await request.delete({ url: '/promotion/reward-activity/delete?id=' + id })
 }
 
 // 关闭满减送活动
 export const closeRewardActivity = async (id: number) => {
-  return await request.put({ url: '/promotion/reward-activity/close/' + id })
+  return await request.put({ url: '/promotion/reward-activity/close?id=' + id })
 }

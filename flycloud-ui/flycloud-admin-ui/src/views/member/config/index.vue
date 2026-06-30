@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.member.config.index.k5e432f1a')"
-    url="https://doc.iocoder.cn/member/build/"
-  />
+  <doc-alert title="会员手册（功能开启）" url="https://doc.iocoder.cn/member/build/" />
 
   <ContentWrap>
     <el-form
@@ -17,71 +14,59 @@
       </el-form-item>
 
       <el-tabs>
-        <el-tab-pane :label="t('auto.views.member.config.index.kb3e2659e')">
-          <el-form-item
-            :label="t('auto.views.member.config.index.k34de1129')"
-            prop="pointTradeDeductEnable"
-          >
+        <el-tab-pane label="积分">
+          <el-form-item label="积分抵扣" prop="pointTradeDeductEnable">
             <el-switch v-model="formData.pointTradeDeductEnable" style="user-select: none" />
-            <el-text class="w-full" size="small" type="info">{{
-              t('auto.views.member.config.index.k51ba1eed')
-            }}</el-text>
+            <el-text class="w-full" size="small" type="info">下单积分是否抵用订单金额</el-text>
           </el-form-item>
-          <el-form-item
-            :label="t('auto.views.member.config.index.k34de1129')"
-            prop="pointTradeDeductUnitPrice"
-          >
+          <el-form-item label="积分抵扣" prop="pointTradeDeductUnitPrice">
             <el-input-number
               v-model="computedPointTradeDeductUnitPrice"
-              :placeholder="t('auto.views.member.config.index.k89ca4fa4')"
+              placeholder="请输入积分抵扣金额"
               :precision="2"
             />
             <el-text class="w-full" size="small" type="info">
-              {{ t('extra.k4f38ad18') }}
+              积分抵用比例(1 积分抵多少金额)，单位：元
             </el-text>
           </el-form-item>
-          <el-form-item
-            :label="t('auto.views.member.config.index.kd12449c0')"
-            prop="pointTradeDeductMaxPrice"
-          >
+          <el-form-item label="积分抵扣最大值" prop="pointTradeDeductMaxPrice">
             <el-input-number
               v-model="formData.pointTradeDeductMaxPrice"
-              :placeholder="t('auto.views.member.config.index.k8645f546')"
+              placeholder="请输入积分抵扣最大值"
             />
             <el-text class="w-full" size="small" type="info">
-              {{ t('extra.k76d68943') }}
+              单次下单积分使用上限，0 不限制
             </el-text>
           </el-form-item>
-          <el-form-item
-            :label="t('auto.views.member.config.index.k3bebc6ff')"
-            prop="pointTradeGivePoint"
-          >
+          <el-form-item label="1 元赠送多少分" prop="pointTradeGivePoint">
             <el-input-number
               v-model="formData.pointTradeGivePoint"
-              :placeholder="t('auto.views.member.config.index.k3d89d235')"
+              placeholder="请输入 1 元赠送多少积分"
             />
             <el-text class="w-full" size="small" type="info">
-              {{ t('extra.kc09fb5ff') }}
+              下单支付金额按比例赠送积分（实际支付 1 元赠送多少积分）
             </el-text>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">{{ t('common.save') }}</el-button>
+        <el-button type="primary" @click="onSubmit">保存</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
 </template>
 <script lang="ts" setup>
 import * as ConfigApi from '@/api/member/config'
-const { t } = useI18n()
+
 defineOptions({ name: 'MemberConfig' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
-const formData = ref({
+const formData = ref<ConfigApi.ConfigVO>({
   id: undefined,
   pointTradeDeductEnable: true,
   pointTradeDeductUnitPrice: 0,
@@ -91,9 +76,9 @@ const formData = ref({
 
 // 创建一个计算属性，用于将 pointTradeDeductUnitPrice 显示为带两位小数的形式
 const computedPointTradeDeductUnitPrice = computed({
-  get: () => (formData.value.pointTradeDeductUnitPrice / 100).toFixed(2),
-  set: (newValue: number) => {
-    formData.value.pointTradeDeductUnitPrice = Math.round(newValue * 100)
+  get: () => formData.value.pointTradeDeductUnitPrice / 100,
+  set: (newValue?: number) => {
+    formData.value.pointTradeDeductUnitPrice = Math.round((newValue ?? 0) * 100)
   }
 })
 
@@ -109,7 +94,7 @@ const onSubmit = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    const data = formData.value as unknown as ConfigApi.ConfigVO
+    const data = formData.value
     await ConfigApi.saveConfig(data)
     message.success(t('common.updateSuccess'))
     dialogVisible.value = false

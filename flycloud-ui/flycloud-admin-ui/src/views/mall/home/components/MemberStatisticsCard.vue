@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <CardTitle :title="t('auto.views.mall.home.components.MemberStatisticsCard.k30e1b70f')" />
+      <CardTitle title="用户统计" />
     </template>
     <!-- 折线图 -->
     <Echart :height="300" :options="lineChartOptions" />
@@ -15,7 +15,6 @@ import { formatDate } from '@/utils/formatTime'
 import { CardTitle } from '@/components/Card'
 
 /** 会员用户统计卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'MemberStatisticsCard' })
 
 const loading = ref(true) // 加载中
@@ -35,14 +34,7 @@ const lineChartOptions = reactive<EChartsOption>({
   legend: {
     top: 50
   },
-  series: [
-    {
-      name: t('auto.views.mall.home.components.MemberStatisticsCard.k1e5df8e7'),
-      type: 'line',
-      smooth: true,
-      areaStyle: {}
-    }
-  ],
+  series: [{ name: '注册量', type: 'line', smooth: true, areaStyle: {} }],
   toolbox: {
     feature: {
       // 数据区域缩放
@@ -52,10 +44,7 @@ const lineChartOptions = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: {
-        show: true,
-        name: t('auto.views.mall.home.components.MemberStatisticsCard.k3634d02b')
-      } // 保存为图片
+      saveAsImage: { show: true, name: '会员统计' } // 保存为图片
     }
   },
   tooltip: {

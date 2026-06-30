@@ -2,17 +2,13 @@
 <template>
   <el-col v-for="(item, index) in attributeList" :key="index">
     <div>
-      <el-text class="mx-1">{{
-        t('auto.views.mall.product.spu.form.ProductAttributes.k030c4812')
-      }}</el-text>
+      <el-text class="mx-1">属性名：</el-text>
       <el-tag :closable="!isDetail" class="mx-1" type="success" @close="handleCloseProperty(index)">
         {{ item.name }}
       </el-tag>
     </div>
     <div>
-      <el-text class="mx-1">{{
-        t('auto.views.mall.product.spu.form.ProductAttributes.k23d78d05')
-      }}</el-text>
+      <el-text class="mx-1">属性值：</el-text>
       <el-tag
         v-for="(value, valueIndex) in item.values"
         :key="value.id"
@@ -50,7 +46,7 @@
         size="small"
         @click="showInput(index)"
       >
-        {{ t('extra.kb599822e') }}
+        + 添加
       </el-button>
     </div>
     <el-divider class="my-10px" />
@@ -61,8 +57,11 @@
 import * as PropertyApi from '@/api/mall/product/property'
 import { PropertyAndValues } from '@/views/mall/product/spu/components'
 import { propTypes } from '@/utils/propTypes'
-const { t } = useI18n()
+import type { PropType } from 'vue'
+
 defineOptions({ name: 'ProductAttributes' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const inputValue = ref('') // 输入框值
 const attributeIndex = ref<number | null>(null) // 获取焦点时记录当前属性项的index
@@ -84,8 +83,8 @@ const attributeList = ref<PropertyAndValues[]>([]) // 商品属性列表
 const attributeOptions = ref([] as PropertyApi.PropertyValueVO[]) // 商品属性名称下拉框
 const props = defineProps({
   propertyList: {
-    type: Array,
-    default: () => {}
+    type: Array as PropType<PropertyAndValues[]>,
+    default: () => []
   },
   isDetail: propTypes.bool.def(false) // 是否作为详情组件
 })
@@ -94,7 +93,7 @@ watch(
   () => props.propertyList,
   (data) => {
     if (!data) return
-    attributeList.value = data as any
+    attributeList.value = data
   },
   {
     deep: true,
@@ -116,9 +115,9 @@ const handleCloseProperty = (index: number) => {
 /** 显示输入框并获取焦点 */
 const showInput = async (index: number) => {
   attributeIndex.value = index
-  inputRef.value[index].focus()
+  inputRef.value[index]?.focus()
   // 获取属性下拉选项
-  await getAttributeOptions(attributeList.value[index].id)
+  await getAttributeOptions(attributeList.value[index]!.id)
 }
 
 /** 输入框失去焦点或点击回车时触发 */
@@ -126,8 +125,9 @@ const emit = defineEmits(['success']) // 定义 success 事件，用于操作成
 const handleInputConfirm = async (index: number, propertyId: number) => {
   if (inputValue.value) {
     // 1. 重复添加校验
-    if (attributeList.value[index].values.find((item) => item.name === inputValue.value)) {
-      message.warning(t('auto.views.mall.product.spu.form.ProductAttributes.kbb5889cf'))
+    const values = attributeList.value[index]!.values || []
+    if (values.find((item) => item.name === inputValue.value)) {
+      message.warning('已存在相同属性值，请重试')
       attributeIndex.value = null
       inputValue.value = ''
       return
@@ -138,7 +138,8 @@ const handleInputConfirm = async (index: number, propertyId: number) => {
     if (existValue) {
       attributeIndex.value = null
       inputValue.value = ''
-      attributeList.value[index].values.push({ id: existValue.id, name: existValue.name })
+      values.push({ id: existValue.id!, name: existValue.name })
+      attributeList.value[index]!.values = values
       emit('success', attributeList.value)
       return
     }
@@ -146,11 +147,12 @@ const handleInputConfirm = async (index: number, propertyId: number) => {
     // 2.2 情况二：新属性值，则进行保存
     try {
       const id = await PropertyApi.createPropertyValue({ propertyId, name: inputValue.value })
-      attributeList.value[index].values.push({ id, name: inputValue.value })
+      values.push({ id, name: inputValue.value })
+      attributeList.value[index]!.values = values
       message.success(t('common.createSuccess'))
       emit('success', attributeList.value)
     } catch {
-      message.error(t('auto.views.mall.product.spu.form.ProductAttributes.k3143d14e'))
+      message.error('添加失败，请重试')
     }
   }
   attributeIndex.value = null

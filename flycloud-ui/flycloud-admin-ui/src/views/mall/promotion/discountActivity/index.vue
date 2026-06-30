@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.promotion.discountActivity.index.k9397115d')"
-    url="https://doc.iocoder.cn/mall/promotion-discount/"
-  />
+  <doc-alert title="【营销】限时折扣" url="https://doc.iocoder.cn/mall/promotion-discount/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -13,25 +10,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.discountActivity.index.k2b020286')"
-        prop="name"
-      >
+      <el-form-item label="活动名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.promotion.discountActivity.index.ka90d22e9')"
+          placeholder="请输入活动名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.promotion.discountActivity.index.k65a972d7')"
-        prop="status"
-      >
+      <el-form-item label="活动状态" prop="status">
         <el-select
           v-model="queryParams.status"
-          :placeholder="t('auto.views.mall.promotion.discountActivity.index.k4b6989d1')"
+          placeholder="请选择活动状态"
           clearable
           class="!w-240px"
         >
@@ -43,34 +34,27 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.promotion.discountActivity.index.kabe0ecdb')"
-        prop="activeTime"
-      >
+      <el-form-item label="活动时间" prop="activeTime">
         <el-date-picker
           v-model="queryParams.activeTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          :start-placeholder="t('auto.views.mall.promotion.discountActivity.index.k1f291968')"
-          :end-placeholder="t('auto.views.mall.promotion.discountActivity.index.kf4b9b2b5')"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:discount-activity:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kbf9686ba') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增活动
         </el-button>
       </el-form-item>
     </el-form>
@@ -78,20 +62,9 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.mall.promotion.discountActivity.index.k32261198')"
-        prop="id"
-        min-width="80"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.discountActivity.index.k2b020286')"
-        prop="name"
-        min-width="140"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.discountActivity.index.kabe0ecdb')"
-        min-width="210"
-      >
+      <el-table-column label="活动编号" prop="id" min-width="80" />
+      <el-table-column label="活动名称" prop="name" min-width="140" />
+      <el-table-column label="活动时间" min-width="210">
         <template #default="scope">
           {{ formatDate(scope.row.startTime, 'YYYY-MM-DD') }}
           ~ {{ formatDate(scope.row.endTime, 'YYYY-MM-DD') }}
@@ -108,24 +81,19 @@
       <!--        </template>-->
       <!--      </el-table-column>-->
       <!--      <el-table-column label="商品标题" prop="spuName" min-width="300" />-->
-      <el-table-column
-        :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
-        align="center"
-        prop="status"
-        min-width="100"
-      >
+      <el-table-column label="活动状态" align="center" prop="status" min-width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.operation')" align="center" width="150px" fixed="right">
+      <el-table-column label="操作" align="center" width="150px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -133,7 +101,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:discount-activity:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -142,7 +110,7 @@
             v-if="scope.row.status === 0"
             v-hasPermi="['promotion:discount-activity:close']"
           >
-            {{ t('common.close') }}
+            关闭
           </el-button>
           <el-button
             link
@@ -151,7 +119,7 @@
             v-else
             v-hasPermi="['promotion:discount-activity:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -174,12 +142,11 @@ import { dateFormatter } from '@/utils/formatTime'
 import * as DiscountActivity from '@/api/mall/promotion/discount/discountActivity'
 import DiscountActivityForm from './DiscountActivityForm.vue'
 import { formatDate } from '@/utils/formatTime'
-import { fenToYuanFormat } from '@/utils/formatter'
-import { fenToYuan } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'DiscountActivity' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -192,7 +159,6 @@ const queryParams = reactive({
   status: null
 })
 const queryFormRef = ref() // 搜索的表单
-const exportLoading = ref(false) // 导出的加载中
 
 /** 查询列表 */
 const getList = async () => {
@@ -228,10 +194,10 @@ const openForm = (type: string, id?: number) => {
 const handleClose = async (id: number) => {
   try {
     // 关闭的二次确认
-    await message.confirm(t('auto.views.mall.promotion.discountActivity.index.k7ea73eb8'))
+    await message.confirm('确认关闭该限时折扣活动吗？')
     // 发起关闭
     await DiscountActivity.closeDiscountActivity(id)
-    message.success(t('auto.views.mall.promotion.discountActivity.index.kf3cf9e86'))
+    message.success('关闭成功')
     // 刷新列表
     await getList()
   } catch {}
@@ -248,19 +214,6 @@ const handleDelete = async (id: number) => {
     // 刷新列表
     await getList()
   } catch {}
-}
-
-const configList = ref([]) // 时段配置精简列表
-// const formatConfigNames = (configId) => {
-//   const config = configList.value.find((item) => item.id === configId)
-//   return config != null ? `${config.name}[${config.startTime} ~ ${config.endTime}]` : ''
-// }
-
-const formatSeckillPrice = (products) => {
-  // const seckillPrice = Math.min(...products.map((item) => item.seckillPrice))
-  console.log(products)
-  const seckillPrice = 200
-  return `￥${fenToYuan(seckillPrice)}`
 }
 
 /** 初始化 **/

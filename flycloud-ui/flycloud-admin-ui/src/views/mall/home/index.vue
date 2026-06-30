@@ -1,37 +1,39 @@
 <template>
+  <doc-alert title="商城手册（功能开启）" url="https://doc.iocoder.cn/mall/build/" />
+
   <div class="flex flex-col">
     <!-- 数据对照 -->
     <el-row :gutter="16" class="row">
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          :tag="t('extra.k9abb8c5e')"
-          :title="t('auto.views.mall.home.index.k1002a2a0')"
+          tag="今日"
+          title="销售额"
           prefix="￥"
           :decimals="2"
-          :value="fenToYuan(orderComparison?.value?.orderPayPrice || 0)"
-          :reference="fenToYuan(orderComparison?.reference?.orderPayPrice || 0)"
+          :value="fenToYuanNumber(orderComparison?.value?.orderPayPrice || 0)"
+          :reference="fenToYuanNumber(orderComparison?.reference?.orderPayPrice || 0)"
         />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          :tag="t('extra.k9abb8c5e')"
-          :title="t('auto.views.mall.home.index.k3fd75ad7')"
-          :value="userComparison?.value?.visitUserCount || 0"
-          :reference="userComparison?.reference?.visitUserCount || 0"
+          tag="今日"
+          title="用户访问量"
+          :value="Number(userComparison?.value?.visitUserCount || 0)"
+          :reference="Number(userComparison?.reference?.visitUserCount || 0)"
         />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          :tag="t('extra.k9abb8c5e')"
-          :title="t('auto.views.mall.home.index.k59a40702')"
+          tag="今日"
+          title="订单量"
           :value="orderComparison?.value?.orderPayCount || 0"
           :reference="orderComparison?.reference?.orderPayCount || 0"
         />
       </el-col>
       <el-col :md="6" :sm="12" :xs="24" :loading="loading">
         <ComparisonCard
-          :tag="t('extra.k9abb8c5e')"
-          :title="t('auto.views.mall.home.index.k6153a08d')"
+          tag="今日"
+          title="新增用户"
           :value="userComparison?.value?.registerUserCount || 0"
           :reference="userComparison?.reference?.registerUserCount || 0"
         />
@@ -69,7 +71,7 @@ import * as MemberStatisticsApi from '@/api/mall/statistics/member'
 import { DataComparisonRespVO } from '@/api/mall/statistics/common'
 import { TradeOrderSummaryRespVO } from '@/api/mall/statistics/trade'
 import { MemberCountRespVO } from '@/api/mall/statistics/member'
-import { fenToYuan } from '@/utils'
+import { fenToYuanNumber } from '@/utils'
 import ComparisonCard from './components/ComparisonCard.vue'
 import MemberStatisticsCard from './components/MemberStatisticsCard.vue'
 import OperationDataCard from './components/OperationDataCard.vue'
@@ -79,7 +81,6 @@ import MemberTerminalCard from '@/views/mall/statistics/member/components/Member
 import MemberFunnelCard from '@/views/mall/statistics/member/components/MemberFunnelCard.vue'
 
 /** 商城首页 */
-const { t } = useI18n()
 defineOptions({ name: 'MallHome' })
 
 const loading = ref(true) // 加载中

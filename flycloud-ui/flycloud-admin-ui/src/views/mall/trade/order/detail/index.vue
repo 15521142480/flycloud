@@ -1,42 +1,29 @@
 <template>
   <ContentWrap>
     <!-- 订单信息 -->
-    <el-descriptions :title="t('auto.views.mall.trade.order.detail.index.k43b06de2')">
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k9820edd2')">{{
-        formData.no
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k2a120ba7')">{{
-        formData?.user?.name
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.kccc1043a')">
+    <el-descriptions title="订单信息">
+      <el-descriptions-item label="订单号: ">{{ formData.no }}</el-descriptions-item>
+      <el-descriptions-item label="买家: ">{{ formData?.user?.nickname }}</el-descriptions-item>
+      <el-descriptions-item label="订单类型: ">
         <dict-tag :type="DICT_TYPE.TRADE_ORDER_TYPE" :value="formData.type!" />
       </el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k6c8104c1')">
+      <el-descriptions-item label="订单来源: ">
         <dict-tag :type="DICT_TYPE.TERMINAL" :value="formData.terminal!" />
       </el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.ke3fabec0')">{{
-        formData.userRemark
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k6718a4d1')">{{
-        formData.remark
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.kfa7bd390')">{{
-        formData.payOrderId
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k835299d9')">
+      <el-descriptions-item label="买家留言: ">{{ formData.userRemark }}</el-descriptions-item>
+      <el-descriptions-item label="商家备注: ">{{ formData.remark }}</el-descriptions-item>
+      <el-descriptions-item label="支付单号: ">{{ formData.payOrderId }}</el-descriptions-item>
+      <el-descriptions-item label="付款方式: ">
         <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="formData.payChannelCode!" />
       </el-descriptions-item>
-      <el-descriptions-item
-        v-if="formData.brokerageUser"
-        :label="t('auto.views.mall.trade.order.detail.index.kb0521549')"
-      >
-        {{ formData.brokerageUser?.name }}
+      <el-descriptions-item v-if="formData.brokerageUser" label="推广用户: ">
+        {{ formData.brokerageUser?.nickname }}
       </el-descriptions-item>
     </el-descriptions>
 
     <!-- 订单状态 -->
-    <el-descriptions :column="1" :title="t('auto.views.mall.trade.order.detail.index.k4e4ca9ca')">
-      <el-descriptions-item :label="t('auto.views.mall.trade.order.detail.index.k9d97842b')">
+    <el-descriptions :column="1" title="订单状态">
+      <el-descriptions-item label="订单状态: ">
         <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="formData.status!" />
       </el-descriptions-item>
       <el-descriptions-item v-hasPermi="['trade:order:update']" label-class-name="no-colon">
@@ -45,9 +32,9 @@
           type="primary"
           @click="updatePrice"
         >
-          {{ t('extra.k8ca82085') }}
+          调整价格
         </el-button>
-        <el-button type="primary" @click="remark">{{ t('common.remark') }}</el-button>
+        <el-button type="primary" @click="remark">备注</el-button>
         <!-- 待发货 -->
         <template v-if="formData.status! === TradeOrderStatusEnum.UNDELIVERED.status">
           <!-- 快递发货 -->
@@ -56,14 +43,14 @@
             type="primary"
             @click="delivery"
           >
-            {{ t('extra.k3ddeb39f') }}
+            发货
           </el-button>
           <el-button
             v-if="formData.deliveryType === DeliveryTypeEnum.EXPRESS.type"
             type="primary"
             @click="updateAddress"
           >
-            {{ t('extra.k1dfdf0dc') }}
+            修改地址
           </el-button>
           <!-- 到店自提 -->
           <el-button
@@ -71,29 +58,25 @@
             type="primary"
             @click="handlePickUp"
           >
-            {{ t('extra.k1f9adbed') }}
+            核销
           </el-button>
         </template>
       </el-descriptions-item>
       <el-descriptions-item>
-        <template #label
-          ><span style="color: red"
-            >{{ t('auto.views.mall.trade.afterSale.detail.index.ka2af2599') }}
-          </span></template
-        >
-        {{ t('extra.kec41fc89') }}<br />
-        {{ t('extra.k32ca1b49') }} <br />
-        {{ t('extra.k8de769ef') }}
+        <template #label><span style="color: red">提醒: </span></template>
+        买家付款成功后，货款将直接进入您的商户号（微信、支付宝）<br />
+        请及时关注你发出的包裹状态，确保可以配送至买家手中 <br />
+        如果买家表示没收到货或货物有问题，请及时联系买家处理，友好协商
       </el-descriptions-item>
     </el-descriptions>
 
     <!-- 商品信息 -->
-    <el-descriptions :title="t('extra.k7519f060')">
+    <el-descriptions title="商品信息">
       <el-descriptions-item labelClassName="no-colon">
         <el-row :gutter="20">
           <el-col :span="15">
             <el-table :data="formData.items" border>
-              <el-table-column :label="t('extra.kf8353994')" prop="spuName" width="auto">
+              <el-table-column label="商品" prop="spuName" width="auto">
                 <template #default="{ row }">
                   {{ row.spuName }}
                   <el-tag v-for="property in row.properties" :key="property.propertyId">
@@ -101,28 +84,14 @@
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column :label="t('extra.ke34fd103')" prop="price" width="150">
-                <template #default="{ row }"
-                  >{{ fenToYuan(row.price) }}{{ t('extra.k2d94e2e7') }}</template
-                >
+              <el-table-column label="商品原价" prop="price" width="150">
+                <template #default="{ row }">{{ fenToYuan(row.price) }}元</template>
               </el-table-column>
-              <el-table-column
-                :label="t('auto.views.erp.stock.check.index.kb9ae8931')"
-                prop="count"
-                width="100"
-              />
-              <el-table-column
-                :label="
-                  t('auto.views.erp.finance.payment.components.FinancePaymentItemForm.k92bcbf71')
-                "
-                prop="payPrice"
-                width="150"
-              >
-                <template #default="{ row }"
-                  >{{ fenToYuan(row.payPrice) }}{{ t('extra.k2d94e2e7') }}</template
-                >
+              <el-table-column label="数量" prop="count" width="100" />
+              <el-table-column label="合计" prop="payPrice" width="150">
+                <template #default="{ row }">{{ fenToYuan(row.payPrice) }}元</template>
               </el-table-column>
-              <el-table-column :label="t('extra.k81df0241')" prop="afterSaleStatus" width="120">
+              <el-table-column label="售后状态" prop="afterSaleStatus" width="120">
                 <template #default="{ row }">
                   <dict-tag
                     :type="DICT_TYPE.TRADE_ORDER_ITEM_AFTER_SALE_STATUS"
@@ -138,62 +107,50 @@
     </el-descriptions>
     <el-descriptions :column="4">
       <!-- 第一层 -->
-      <el-descriptions-item :label="t('extra.k6eb0c208')">
-        {{ fenToYuan(formData.totalPrice!) }} {{ t('extra.k2d94e2e7') }}
+      <el-descriptions-item label="商品总额: ">
+        {{ fenToYuan(formData.totalPrice!) }} 元
       </el-descriptions-item>
-      <el-descriptions-item :label="t('extra.kd0e9e5f9')">
-        {{ fenToYuan(formData.deliveryPrice!) }} {{ t('extra.k2d94e2e7') }}
+      <el-descriptions-item label="运费金额: ">
+        {{ fenToYuan(formData.deliveryPrice!) }} 元
       </el-descriptions-item>
-      <el-descriptions-item :label="t('extra.kbf367808')">
-        {{ fenToYuan(formData.adjustPrice!) }} {{ t('extra.k2d94e2e7') }}
+      <el-descriptions-item label="订单调价: ">
+        {{ fenToYuan(formData.adjustPrice!) }} 元
       </el-descriptions-item>
       <el-descriptions-item v-for="item in 1" :key="item" label-class-name="no-colon" />
       <!-- 第二层 -->
       <el-descriptions-item>
-        <template #label
-          ><span style="color: red">{{ t('extra.kc467084a') }} </span></template
-        >
-        {{ fenToYuan(formData.couponPrice!) }} {{ t('extra.k2d94e2e7') }}
+        <template #label><span style="color: red">优惠劵优惠: </span></template>
+        {{ fenToYuan(formData.couponPrice!) }} 元
       </el-descriptions-item>
       <el-descriptions-item>
-        <template #label
-          ><span style="color: red">{{ t('extra.k2ce8b041') }} </span></template
-        >
-        {{ fenToYuan(formData.vipPrice!) }} {{ t('extra.k2d94e2e7') }}
+        <template #label><span style="color: red">VIP 优惠: </span></template>
+        {{ fenToYuan(formData.vipPrice!) }} 元
       </el-descriptions-item>
       <el-descriptions-item>
-        <template #label
-          ><span style="color: red">{{ t('extra.k46f1bb8f') }} </span></template
-        >
-        {{ fenToYuan(formData.discountPrice!) }} {{ t('extra.k2d94e2e7') }}
+        <template #label><span style="color: red">活动优惠: </span></template>
+        {{ fenToYuan(formData.discountPrice!) }} 元
       </el-descriptions-item>
       <el-descriptions-item>
-        <template #label
-          ><span style="color: red">{{ t('extra.k87c5d5ef') }} </span></template
-        >
-        {{ fenToYuan(formData.pointPrice!) }} {{ t('extra.k2d94e2e7') }}
+        <template #label><span style="color: red">积分抵扣: </span></template>
+        {{ fenToYuan(formData.pointPrice!) }} 元
       </el-descriptions-item>
       <!-- 第三层 -->
       <el-descriptions-item v-for="item in 3" :key="item" label-class-name="no-colon" />
-      <el-descriptions-item :label="t('extra.k864f6636')">
-        {{ fenToYuan(formData.payPrice!) }} {{ t('extra.k2d94e2e7') }}
+      <el-descriptions-item label="应付金额: ">
+        {{ fenToYuan(formData.payPrice!) }} 元
       </el-descriptions-item>
     </el-descriptions>
 
     <!-- 物流信息 -->
-    <el-descriptions :column="4" :title="t('extra.kcf5122d3')">
-      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k8e7a820e')">
+    <el-descriptions :column="4" title="收货信息">
+      <el-descriptions-item label="配送方式: ">
         <dict-tag :type="DICT_TYPE.TRADE_DELIVERY_TYPE" :value="formData.deliveryType!" />
       </el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.k022b027f')">{{
-        formData.receiverName
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.mall.trade.afterSale.detail.index.ka90ca165')">{{
-        formData.receiverMobile
-      }}</el-descriptions-item>
+      <el-descriptions-item label="收货人: ">{{ formData.receiverName }}</el-descriptions-item>
+      <el-descriptions-item label="联系电话: ">{{ formData.receiverMobile }}</el-descriptions-item>
       <!-- 快递配送 -->
       <div v-if="formData.deliveryType === DeliveryTypeEnum.EXPRESS.type">
-        <el-descriptions-item v-if="formData.receiverDetailAddress" :label="t('extra.k371a3b91')">
+        <el-descriptions-item v-if="formData.receiverDetailAddress" label="收货地址: ">
           {{ formData.receiverAreaName }} {{ formData.receiverDetailAddress }}
           <el-link
             v-clipboard:copy="formData.receiverAreaName + ' ' + formData.receiverDetailAddress"
@@ -202,17 +159,17 @@
             type="primary"
           />
         </el-descriptions-item>
-        <el-descriptions-item v-if="formData.logisticsId" :label="t('extra.k8d274e36')">
+        <el-descriptions-item v-if="formData.logisticsId" label="物流公司: ">
           {{ deliveryExpressList.find((item) => item.id === formData.logisticsId)?.name }}
         </el-descriptions-item>
-        <el-descriptions-item v-if="formData.logisticsId" :label="t('extra.ke3479963')">
+        <el-descriptions-item v-if="formData.logisticsId" label="运单号: ">
           {{ formData.logisticsNo }}
         </el-descriptions-item>
-        <el-descriptions-item v-if="formatDate.deliveryTime" :label="t('extra.k21524c74')">
+        <el-descriptions-item v-if="formData.deliveryTime" label="发货时间: ">
           {{ formatDate(formData.deliveryTime) }}
         </el-descriptions-item>
         <el-descriptions-item v-for="item in 2" :key="item" label-class-name="no-colon" />
-        <el-descriptions-item v-if="expressTrackList.length > 0" :label="t('extra.kbb77c761')">
+        <el-descriptions-item v-if="expressTrackList.length > 0" label="物流详情: ">
           <el-timeline>
             <el-timeline-item
               v-for="(express, index) in expressTrackList"
@@ -226,14 +183,14 @@
       </div>
       <!-- 自提门店 -->
       <div v-if="formData.deliveryType === DeliveryTypeEnum.PICK_UP.type">
-        <el-descriptions-item v-if="formData.pickUpStoreId" :label="t('extra.ke01ab7e6')">
+        <el-descriptions-item v-if="formData.pickUpStoreId" label="自提门店: ">
           {{ pickUpStore?.name }}
         </el-descriptions-item>
       </div>
     </el-descriptions>
 
     <!-- 订单日志 -->
-    <el-descriptions :title="t('extra.k03bc5ae7')">
+    <el-descriptions title="订单操作日志">
       <el-descriptions-item labelClassName="no-colon">
         <el-timeline>
           <el-timeline-item
@@ -279,7 +236,7 @@ import { useTagsViewStore } from '@/store/modules/tagsView'
 import { DeliveryTypeEnum, TradeOrderStatusEnum } from '@/utils/constants'
 import * as DeliveryPickUpStoreApi from '@/api/mall/trade/delivery/pickUpStore'
 import { propTypes } from '@/utils/propTypes'
-const { t } = useI18n()
+
 defineOptions({ name: 'TradeOrderDetail' })
 
 const message = useMessage() // 消息弹窗
@@ -302,6 +259,7 @@ const getUserTypeColor = (type: number) => {
 
 // 订单详情
 const formData = ref<TradeOrderApi.OrderVO>({
+  items: [],
   logs: []
 })
 
@@ -327,10 +285,10 @@ const updatePrice = () => {
 const handlePickUp = async () => {
   try {
     // 二次确认
-    await message.confirm(t('auto.views.mall.trade.order.detail.index.k4fcfc596'))
+    await message.confirm('确认核销订单吗？')
     // 提交
     await TradeOrderApi.pickUpOrder(formData.value.id!)
-    message.success(t('auto.views.mall.trade.order.detail.index.k6a980a8c'))
+    message.success('核销成功')
     // 刷新列表
     await getDetail()
   } catch {}
@@ -342,13 +300,13 @@ const props = defineProps({
   id: propTypes.number.def(undefined), // 订单ID
   showPickUp: propTypes.bool.def(true) // 显示核销按钮
 })
-const id = (params.id || props.id) as unknown as number
+const id = Number(params.id || props.id)
 const getDetail = async () => {
   if (id) {
     const res = (await TradeOrderApi.getOrder(id)) as TradeOrderApi.OrderVO
     // 没有表单信息则关闭页面返回
     if (!res) {
-      message.error(t('auto.views.mall.trade.order.detail.index.kd639df2e'))
+      message.error('交易订单不存在')
       close()
     }
     formData.value = res
@@ -365,25 +323,27 @@ const close = () => {
 
 /** 复制 */
 const clipboardSuccess = () => {
-  message.success(t('auto.views.mall.trade.order.detail.index.kc1ef062e'))
+  message.success('复制成功')
 }
 
 /** 初始化 **/
-const deliveryExpressList = ref([]) // 物流公司
-const expressTrackList = ref([]) // 物流详情
-const pickUpStore = ref({}) // 自提门店
+const deliveryExpressList = ref<DeliveryExpressApi.DeliveryExpressVO[]>([]) // 物流公司
+const expressTrackList = ref<Array<{ time?: Date | string; content?: string }>>([]) // 物流详情
+const pickUpStore = ref<DeliveryPickUpStoreApi.DeliveryPickUpStoreVO>() // 自提门店
 onMounted(async () => {
   await getDetail()
   // 如果配送方式为快递，则查询物流公司
   if (formData.value.deliveryType === DeliveryTypeEnum.EXPRESS.type) {
     deliveryExpressList.value = await DeliveryExpressApi.getSimpleDeliveryExpressList()
-    if (form.value.logisticsId) {
+    if (formData.value.logisticsId) {
       expressTrackList.value = await TradeOrderApi.getExpressTrackList(formData.value.id!)
     }
   } else if (formData.value.deliveryType === DeliveryTypeEnum.PICK_UP.type) {
-    pickUpStore.value = await DeliveryPickUpStoreApi.getDeliveryPickUpStore(
-      formData.value.pickUpStoreId
-    )
+    if (formData.value.pickUpStoreId) {
+      pickUpStore.value = await DeliveryPickUpStoreApi.getDeliveryPickUpStore(
+        formData.value.pickUpStoreId
+      )
+    }
   }
 })
 </script>
@@ -437,11 +397,11 @@ onMounted(async () => {
 
   .el-timeline-right-content {
     display: flex;
-    align-items: center;
     min-height: 30px;
     padding: 10px;
-    border-radius: var(--el-card-border-radius);
     background-color: var(--app-content-bg-color);
+    border-radius: var(--el-card-border-radius);
+    align-items: center;
 
     &::before {
       position: absolute;

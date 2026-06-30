@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.statistics.member.index.k5bbb4c4a')"
-    url="https://doc.iocoder.cn/mall/statistics/"
-  />
+  <doc-alert title="【统计】会员、商品、交易统计" url="https://doc.iocoder.cn/mall/statistics/" />
 
   <div class="flex flex-col">
     <el-row :gutter="16" class="summary">
@@ -12,7 +9,7 @@
           icon="fa-solid:users"
           icon-bg-color="text-blue-500"
           icon-color="bg-blue-100"
-          :title="t('auto.views.mall.statistics.member.index.ka123df5e')"
+          title="累计会员数"
         />
       </el-col>
       <el-col v-loading="loading" :sm="6" :xs="12">
@@ -21,29 +18,29 @@
           icon="fa-solid:user"
           icon-bg-color="text-purple-500"
           icon-color="bg-purple-100"
-          :title="t('auto.views.mall.statistics.member.index.k71a589e7')"
+          title="累计充值人数"
         />
       </el-col>
       <el-col v-loading="loading" :sm="6" :xs="12">
         <SummaryCard
           :decimals="2"
-          :value="fenToYuan(summary?.rechargePrice || 0)"
+          :value="fenToYuanNumber(summary?.rechargePrice || 0)"
           icon="fa-solid:money-check-alt"
           icon-bg-color="text-yellow-500"
           icon-color="bg-yellow-100"
           prefix="￥"
-          :title="t('auto.views.mall.statistics.member.index.kfc86f96a')"
+          title="累计充值金额"
         />
       </el-col>
       <el-col v-loading="loading" :sm="6" :xs="12">
         <SummaryCard
           :decimals="2"
-          :value="fenToYuan(summary?.expensePrice || 0)"
+          :value="fenToYuanNumber(summary?.expensePrice || 0)"
           icon="fa-solid:yen-sign"
           icon-bg-color="text-green-500"
           icon-color="bg-green-100"
           prefix="￥"
-          :title="t('auto.views.mall.statistics.member.index.k5d112c6e')"
+          title="累计消费金额"
         />
       </el-col>
     </el-row>
@@ -61,7 +58,7 @@
       <el-col :md="18" :sm="24">
         <el-card shadow="never">
           <template #header>
-            <CardTitle :title="t('auto.views.mall.statistics.member.index.k40a8fae9')" />
+            <CardTitle title="会员地域分布" />
           </template>
           <el-row v-loading="loading">
             <el-col :span="10">
@@ -72,7 +69,7 @@
                 <el-table-column
                   :sort-method="(obj1, obj2) => obj1.areaName.localeCompare(obj2.areaName, 'zh-CN')"
                   align="center"
-                  :label="t('extra.kd7009d07')"
+                  label="省份"
                   min-width="80"
                   prop="areaName"
                   show-overflow-tooltip
@@ -80,21 +77,21 @@
                 />
                 <el-table-column
                   align="center"
-                  :label="t('extra.ka640eb00')"
+                  label="会员数量"
                   min-width="105"
                   prop="userCount"
                   sortable
                 />
                 <el-table-column
                   align="center"
-                  :label="t('extra.kadebba2e')"
+                  label="订单创建数量"
                   min-width="135"
                   prop="orderCreateUserCount"
                   sortable
                 />
                 <el-table-column
                   align="center"
-                  :label="t('extra.k8f183335')"
+                  label="订单支付数量"
                   min-width="135"
                   prop="orderPayUserCount"
                   sortable
@@ -102,7 +99,7 @@
                 <el-table-column
                   :formatter="fenToYuanFormat"
                   align="center"
-                  :label="t('extra.k15be13ad')"
+                  label="订单支付金额"
                   min-width="135"
                   prop="orderPayPrice"
                   sortable
@@ -115,7 +112,7 @@
       <el-col :md="6" :sm="24">
         <el-card v-loading="loading" shadow="never">
           <template #header>
-            <CardTitle :title="t('extra.kedaafd2e')" />
+            <CardTitle title="会员性别比例" />
           </template>
           <Echart :height="300" :options="sexChartOptions" />
         </el-card>
@@ -134,7 +131,7 @@ import {
 import SummaryCard from '@/components/SummaryCard/index.vue'
 import { EChartsOption } from 'echarts'
 import china from '@/assets/map/json/china.json'
-import { areaReplace, fenToYuan } from '@/utils'
+import { areaReplace, fenToYuan, fenToYuanNumber } from '@/utils'
 import { DICT_TYPE, DictDataType, getIntDictOptions } from '@/utils/dict'
 import echarts from '@/plugins/echarts'
 import { fenToYuanFormat } from '@/utils/formatter'
@@ -143,7 +140,6 @@ import MemberTerminalCard from './components/MemberTerminalCard.vue'
 import { CardTitle } from '@/components/Card'
 
 /** 会员统计 */
-const { t } = useI18n()
 defineOptions({ name: 'MemberStatistics' })
 
 const loading = ref(true) // 加载中
@@ -167,7 +163,7 @@ const terminalChartOptions = reactive<EChartsOption>({
   roseType: 'area',
   series: [
     {
-      name: t('auto.views.mall.statistics.member.index.k4067b526'),
+      name: '会员终端',
       type: 'pie',
       label: {
         show: false
@@ -194,7 +190,7 @@ const sexChartOptions = reactive<EChartsOption>({
   roseType: 'area',
   series: [
     {
-      name: t('auto.views.mall.statistics.member.index.k4e5403cf'),
+      name: '会员性别',
       type: 'pie',
       label: {
         show: false
@@ -211,20 +207,15 @@ const areaChartOptions = reactive<EChartsOption>({
   tooltip: {
     trigger: 'item',
     formatter: (params: any) => {
-      return t('extra.kb7a8d82d', {
-        p0: params?.data?.areaName || params?.name,
-        p1: params?.data?.userCount || 0,
-        p2: params?.data?.orderCreateUserCount || 0,
-        p3: params?.data?.orderPayUserCount || 0,
-        p4: fenToYuan(params?.data?.orderPayPrice || 0)
-      })
+      return `${params?.data?.areaName || params?.name}<br/>
+会员数量：${params?.data?.userCount || 0}<br/>
+订单创建数量：${params?.data?.orderCreateUserCount || 0}<br/>
+订单支付数量：${params?.data?.orderPayUserCount || 0}<br/>
+订单支付金额：${fenToYuan(params?.data?.orderPayPrice || 0)}`
     }
   },
   visualMap: {
-    text: [
-      t('auto.views.mall.statistics.member.index.kb096b3f5'),
-      t('auto.views.mall.statistics.member.index.kb9ee259b')
-    ],
+    text: ['高', '低'],
     realtime: false,
     calculable: true,
     top: 'middle',
@@ -234,7 +225,7 @@ const areaChartOptions = reactive<EChartsOption>({
   },
   series: [
     {
-      name: t('auto.views.mall.statistics.member.index.k40a8fae9'),
+      name: '会员地域分布',
       type: 'map',
       map: 'china',
       roam: false,
@@ -273,10 +264,7 @@ const getMemberAreaStatisticsList = async () => {
 const getMemberSexStatisticsList = async () => {
   const list = await MemberStatisticsApi.getMemberSexStatisticsList()
   const dictDataList = getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)
-  dictDataList.push({
-    label: t('auto.views.mall.statistics.member.index.kd9c32a4c'),
-    value: null
-  } as any)
+  dictDataList.push({ label: '未知', value: null } as any)
   sexChartOptions.series![0].data = dictDataList.map((dictData: DictDataType) => {
     const userCount = list.find(
       (item: MemberSexStatisticsRespVO) => item.sex === dictData.value
@@ -292,10 +280,7 @@ const getMemberSexStatisticsList = async () => {
 const getMemberTerminalStatisticsList = async () => {
   const list = await MemberStatisticsApi.getMemberTerminalStatisticsList()
   const dictDataList = getIntDictOptions(DICT_TYPE.TERMINAL)
-  dictDataList.push({
-    label: t('auto.views.mall.statistics.member.index.kd9c32a4c'),
-    value: null
-  } as any)
+  dictDataList.push({ label: '未知', value: null } as any)
   terminalChartOptions.series![0].data = dictDataList.map((dictData: DictDataType) => {
     const userCount = list.find(
       (item: MemberTerminalStatisticsRespVO) => item.terminal === dictData.value

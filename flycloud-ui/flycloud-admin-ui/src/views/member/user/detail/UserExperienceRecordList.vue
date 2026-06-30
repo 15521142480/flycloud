@@ -8,13 +8,10 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserExperienceRecordList.k2268f2d5')"
-        prop="bizType"
-      >
+      <el-form-item label="业务类型" prop="bizType">
         <el-select
           v-model="queryParams.bizType"
-          :placeholder="t('auto.views.member.user.detail.UserExperienceRecordList.kb6423b8b')"
+          placeholder="请选择业务类型"
           clearable
           class="!w-240px"
         >
@@ -26,36 +23,29 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserExperienceRecordList.k748d7dc7')"
-        prop="title"
-      >
+      <el-form-item label="标题" prop="title">
         <el-input
           v-model="queryParams.title"
-          :placeholder="t('auto.views.member.user.detail.UserExperienceRecordList.k901722e5')"
+          placeholder="请输入标题"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          :start-placeholder="t('auto.views.member.user.detail.UserExperienceRecordList.k1f291968')"
-          :end-placeholder="t('auto.views.member.user.detail.UserExperienceRecordList.kf4b9b2b5')"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -63,24 +53,14 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+      <el-table-column label="编号" align="center" prop="id" width="150px" />
       <el-table-column
-        :label="t('auto.views.member.user.detail.UserExperienceRecordList.k9f42dac6')"
-        align="center"
-        prop="id"
-        width="150px"
-      />
-      <el-table-column
-        :label="t('auto.views.member.user.detail.UserExperienceRecordList.k350cb33c')"
+        label="获得时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
       />
-      <el-table-column
-        :label="t('auto.views.member.user.detail.UserExperienceRecordList.kdd5a3ee9')"
-        align="center"
-        prop="experience"
-        width="150px"
-      >
+      <el-table-column label="经验" align="center" prop="experience" width="150px">
         <template #default="scope">
           <el-tag v-if="scope.row.experience > 0" class="ml-2" type="success" effect="dark">
             +{{ scope.row.experience }}
@@ -90,36 +70,17 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('extra.k07b18889')"
-        align="center"
-        prop="totalExperience"
-        width="150px"
-      >
+      <el-table-column label="总经验" align="center" prop="totalExperience" width="150px">
         <template #default="scope">
           <el-tag class="ml-2" effect="dark">
             {{ scope.row.totalExperience }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="t('table.title')" align="center" prop="title" width="150px" />
-      <el-table-column
-        :label="t('auto.views.bpm.group.UserGroupForm.k412f54dc')"
-        align="center"
-        prop="description"
-      />
-      <el-table-column
-        :label="t('auto.views.system.operatelog.OperateLogDetail.k9c5f5763')"
-        align="center"
-        prop="bizId"
-        width="150px"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.brokerage.record.index.k2268f2d5')"
-        align="center"
-        prop="bizType"
-        width="150px"
-      >
+      <el-table-column label="标题" align="center" prop="title" width="150px" />
+      <el-table-column label="描述" align="center" prop="description" />
+      <el-table-column label="业务编号" align="center" prop="bizId" width="150px" />
+      <el-table-column label="业务类型" align="center" prop="bizType" width="150px">
         <!--   TODO 芋艿：此处应创建对应的字典 -->
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.MEMBER_EXPERIENCE_BIZ_TYPE" :value="scope.row.bizType" />
@@ -140,22 +101,22 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as ExperienceRecordApi from '@/api/member/experience-record/index'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-const { t } = useI18n()
+
 defineOptions({ name: 'UserExperienceRecordList' })
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
+const list = ref<ExperienceRecordApi.ExperienceRecordVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  userId: null,
-  bizId: null,
-  bizType: null,
-  title: null,
-  description: null,
-  experience: null,
-  totalExperience: null,
+  userId: undefined as number | undefined,
+  bizId: undefined as number | undefined,
+  bizType: undefined as number | undefined,
+  title: undefined as string | undefined,
+  description: undefined as string | undefined,
+  experience: undefined as number | undefined,
+  totalExperience: undefined as number | undefined,
   createTime: []
 })
 const queryFormRef = ref() // 搜索的表单

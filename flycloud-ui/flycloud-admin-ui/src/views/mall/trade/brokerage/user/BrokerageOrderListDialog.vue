@@ -1,42 +1,27 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :title="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k8e4ab3af')"
-    width="75%"
-  >
+  <Dialog v-model="dialogVisible" title="推广订单列表" width="75%">
     <ContentWrap>
       <!-- 搜索工作栏 -->
       <el-form
-        class="-mb-15px"
-        :model="queryParams"
         ref="queryFormRef"
         :inline="true"
+        :model="queryParams"
+        class="-mb-15px"
         label-width="85px"
       >
-        <el-form-item
-          :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k31ab92d1')"
-          prop="level"
-        >
-          <el-radio-group v-model="queryParams.level" @change="handleQuery">
-            <el-radio-button checked>{{
-              t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k778fc8f9')
-            }}</el-radio-button>
-            <el-radio-button value="1">{{
-              t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k8c80ac09')
-            }}</el-radio-button>
-            <el-radio-button value="2">{{
-              t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k0f298d5c')
-            }}</el-radio-button>
+        <el-form-item label="用户类型" prop="sourceUserLevel">
+          <el-radio-group v-model="queryParams.sourceUserLevel" @change="handleQuery">
+            <el-radio-button :value="0">全部</el-radio-button>
+            <el-radio-button :value="1">一级推广人</el-radio-button>
+            <el-radio-button :value="2">二级推广人</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item :label="t('common.status')" prop="status">
+        <el-form-item label="状态" prop="status">
           <el-select
             v-model="queryParams.status"
-            :placeholder="
-              t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.kdba277df')
-            "
-            clearable
             class="!w-240px"
+            clearable
+            placeholder="请选择状态"
           >
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.BROKERAGE_RECORD_STATUS)"
@@ -46,108 +31,81 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
-          :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.kd9bbd388')"
-          prop="createTime"
-        >
+        <el-form-item label="绑定时间" prop="createTime">
           <el-date-picker
             v-model="queryParams.createTime"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            type="daterange"
-            :start-placeholder="
-              t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k1f291968')
-            "
-            :end-placeholder="
-              t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.kf4b9b2b5')
-            "
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-240px"
+            end-placeholder="结束日期"
+            start-placeholder="开始日期"
+            type="daterange"
+            value-format="YYYY-MM-DD HH:mm:ss"
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleQuery"
-            ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-          >
-          <el-button @click="resetQuery"
-            ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-          >
+          <el-button @click="handleQuery">
+            <Icon class="mr-5px" icon="ep:search" />
+            搜索
+          </el-button>
+          <el-button @click="resetQuery">
+            <Icon class="mr-5px" icon="ep:refresh" />
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
     </ContentWrap>
 
     <!-- 列表 -->
     <ContentWrap>
-      <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-        <el-table-column
-          :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k8c60a237')"
-          align="center"
-          prop="bizId"
-          min-width="80px"
-        />
-        <el-table-column
-          :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.kec750ef6')"
-          align="center"
-          prop="sourceUserId"
-          min-width="80px"
-        />
-        <el-table-column
-          :label="t('auto.views.mall.trade.brokerage.user.BrokerageOrderListDialog.k4ceeeb31')"
-          align="center"
-          prop="sourceUserAvatar"
-          width="70px"
-        >
+      <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
+        <el-table-column align="center" label="订单编号" min-width="80px" prop="bizId" />
+        <el-table-column align="center" label="用户编号" min-width="80px" prop="sourceUserId" />
+        <el-table-column align="center" label="头像" prop="sourceUserAvatar" width="70px">
           <template #default="scope">
             <el-avatar :src="scope.row.sourceUserAvatar" />
           </template>
         </el-table-column>
+        <el-table-column align="center" label="昵称" min-width="80px" prop="sourceUserNickname" />
         <el-table-column
-          :label="t('system.user.nickname')"
-          align="center"
-          prop="sourceUserNickname"
-          min-width="80px"
-        />
-        <el-table-column
-          :label="t('extra.k394ab37f')"
-          align="center"
-          prop="price"
-          min-width="100px"
           :formatter="fenToYuanFormat"
+          align="center"
+          label="佣金"
+          min-width="100px"
+          prop="price"
         />
-        <el-table-column :label="t('common.status')" align="center" prop="status" min-width="85">
+        <el-table-column align="center" label="状态" min-width="85" prop="status">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.BROKERAGE_RECORD_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
         <el-table-column
-          :label="t('common.createTime')"
-          align="center"
-          prop="createTime"
           :formatter="dateFormatter"
+          align="center"
+          label="创建时间"
+          prop="createTime"
           width="180px"
         />
       </el-table>
       <!-- 分页 -->
       <Pagination
-        :total="total"
-        v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize"
+        v-model:page="queryParams.pageNum"
+        :total="total"
         @pagination="getList"
       />
     </ContentWrap>
   </Dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as BrokerageRecordApi from '@/api/mall/trade/brokerage/record'
 import { BrokerageRecordBizTypeEnum } from '@/utils/constants'
 import { fenToYuanFormat } from '@/utils/formatter'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-/** 推广订单列表 */
-const { t } = useI18n()
-defineOptions({ name: 'BrokerageOrderListDialog' })
 
-const message = useMessage() // 消息弹窗
+/** 推广订单列表 */
+defineOptions({ name: 'BrokerageOrderListDialog' })
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -157,7 +115,7 @@ const queryParams = reactive({
   pageSize: 10,
   userId: null,
   bizType: BrokerageRecordBizTypeEnum.ORDER.type,
-  level: '',
+  sourceUserLevel: 0,
   createTime: [],
   status: null
 })
@@ -176,7 +134,11 @@ defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 const getList = async () => {
   loading.value = true
   try {
-    const data = await BrokerageRecordApi.getBrokerageRecordPage(queryParams)
+    // 处理全部的情况
+    const data = await BrokerageRecordApi.getBrokerageRecordPage({
+      ...queryParams,
+      sourceUserLevel: queryParams.sourceUserLevel === 0 ? undefined : queryParams.sourceUserLevel
+    })
     list.value = data.list
     total.value = data.total
   } finally {

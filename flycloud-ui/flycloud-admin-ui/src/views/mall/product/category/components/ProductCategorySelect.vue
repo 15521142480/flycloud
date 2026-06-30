@@ -7,7 +7,7 @@
     :show-checkbox="multiple"
     class="w-1/1"
     node-key="id"
-    :placeholder="t('auto.views.mall.product.category.components.ProductCategorySelect.ke71fcc11')"
+    placeholder="请选择商品分类"
   />
 </template>
 <script lang="ts" setup>
@@ -17,7 +17,6 @@ import { oneOfType } from 'vue-types'
 import { propTypes } from '@/utils/propTypes'
 
 /** 商品分类选择组件 */
-const { t } = useI18n()
 defineOptions({ name: 'ProductCategorySelect' })
 
 const props = defineProps({

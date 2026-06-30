@@ -1,5 +1,5 @@
 <template>
-  <Dialog :title="t('auto.views.mall.product.comment.ReplyForm.kffc78509')" v-model="dialogVisible">
+  <Dialog title="回复" v-model="dialogVisible">
     <el-form
       ref="formRef"
       :model="formData"
@@ -7,20 +7,13 @@
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item
-        :label="t('auto.views.mall.product.comment.ReplyForm.ka36c787d')"
-        prop="replyContent"
-      >
+      <el-form-item label="回复内容" prop="replyContent">
         <el-input type="textarea" v-model="formData.replyContent" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitReplyForm" type="primary" :disabled="formLoading"
-        >{{ t('auto.views.mall.product.comment.ReplyForm.k31f9d856') }}
-      </el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.views.mall.product.comment.ReplyForm.kd54aeadc')
-      }}</el-button>
+      <el-button @click="submitReplyForm" type="primary" :disabled="formLoading">确 定 </el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -28,25 +21,20 @@
 <script setup lang="ts">
 import * as CommentApi from '@/api/mall/product/comment'
 import { ElInput } from 'element-plus'
-const { t } = useI18n()
+
 defineOptions({ name: 'ProductComment' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formData = ref({
-  id: undefined,
-  replyContent: undefined
+  id: undefined as number | undefined,
+  replyContent: undefined as string | undefined
 })
 const formRules = reactive({
-  replyContent: [
-    {
-      required: true,
-      message: t('auto.views.mall.product.comment.ReplyForm.kf5da0888'),
-      trigger: 'blur'
-    }
-  ]
+  replyContent: [{ required: true, message: '回复内容不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 

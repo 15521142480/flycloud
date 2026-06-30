@@ -57,13 +57,13 @@ export interface OrderVO {
   // 下单用户信息
   user?: {
     id?: number | null
-    name?: string
+    nickname?: string
     avatar?: string
   }
   // 推广用户信息
   brokerageUser?: {
     id?: number | null
-    name?: string
+    nickname?: string
     avatar?: string
   }
   // 订单操作日志
@@ -122,7 +122,7 @@ export interface TradeOrderSummaryRespVO {
 
 // 查询交易订单列表
 export const getOrderPage = async (params: any) => {
-  return await request.get({ url: `/trade/order/page`, params })
+  return await request.get<PageResult<OrderVO[]>>({ url: `/trade/order/page`, params })
 }
 
 // 查询交易订单统计
@@ -132,12 +132,14 @@ export const getOrderSummary = async (params: any) => {
 
 // 查询交易订单详情
 export const getOrder = async (id: number | null) => {
-  return await request.get({ url: `/trade/order/get-detail/` + id })
+  return await request.get<OrderVO>({ url: `/trade/order/get-detail?id=` + id })
 }
 
 // 查询交易订单物流详情
 export const getExpressTrackList = async (id: number | null) => {
-  return await request.get({ url: `/trade/order/get-express-track-list/` + id })
+  return await request.get<Array<{ time?: Date | string; content?: string }>>({
+    url: `/trade/order/get-express-track-list?id=` + id
+  })
 }
 
 export interface DeliveryVO {
@@ -168,7 +170,7 @@ export const updateOrderAddress = async (data: any) => {
 
 // 订单核销
 export const pickUpOrder = async (id: number) => {
-  return await request.put({ url: `/trade/order/pick-up-by-id/${id}` })
+  return await request.put({ url: `/trade/order/pick-up-by-id?id=${id}` })
 }
 
 // 订单核销

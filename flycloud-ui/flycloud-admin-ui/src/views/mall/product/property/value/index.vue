@@ -8,45 +8,35 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.product.property.value.index.k212a5ca9')"
-        prop="propertyId"
-      >
+      <el-form-item label="属性项" prop="propertyId">
         <el-select v-model="queryParams.propertyId" class="!w-240px" disabled>
           <el-option
             v-for="item in propertyOptions"
             :key="item.id"
             :label="item.name"
-            :value="item.id"
+            :value="item.id!"
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.product.property.value.index.k1be7ae4f')"
-        prop="name"
-      >
+      <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.product.property.value.index.kc2afb255')"
+          placeholder="请输入名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           plain
           type="primary"
           @click="openForm('create')"
           v-hasPermi="['product:property:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k56bdd74b') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -55,32 +45,17 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
+      <el-table-column label="编号" align="center" min-width="60" prop="id" />
+      <el-table-column label="属性值名称" align="center" min-width="150" prop="name" />
+      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column
-        :label="t('auto.views.mall.product.property.value.index.k9f42dac6')"
-        align="center"
-        min-width="60"
-        prop="id"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.product.property.value.index.k8cce3c6d')"
-        align="center"
-        min-width="150"
-        prop="name"
-      />
-      <el-table-column
-        :label="t('common.remark')"
-        align="center"
-        prop="remark"
-        :show-overflow-tooltip="true"
-      />
-      <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column :label="t('common.operation')" align="center">
+      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
             link
@@ -88,7 +63,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['product:property:update']"
           >
-            {{ t('extra.k7ebae945') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -96,7 +71,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['product:property:delete']"
           >
-            {{ t('extra.k6da505cf') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -117,23 +92,24 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as PropertyApi from '@/api/mall/product/property'
 import ValueForm from './ValueForm.vue'
-const { t } = useI18n()
+
 defineOptions({ name: 'ProductPropertyValue' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 const { params } = useRoute() // 查询参数
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
+const list = ref<PropertyApi.PropertyValueVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  propertyId: params.propertyId,
+  propertyId: Number(params.propertyId),
   name: undefined
 })
 const queryFormRef = ref() // 搜索的表单
-const propertyOptions = ref([]) // 属性项的列表
+const propertyOptions = ref<PropertyApi.PropertyVO[]>([]) // 属性项的列表
 
 /** 查询列表 */
 const getList = async () => {

@@ -1,4 +1,5 @@
 import request from '@/config/axios'
+import type { OrderItemRespVO, OrderVO } from '@/api/mall/trade/order'
 
 export interface TradeAfterSaleVO {
   id?: number | null // 售后编号，主键自增
@@ -32,6 +33,21 @@ export interface TradeAfterSaleVO {
   receiveReason?: string // 收货备注
 }
 
+export interface TradeAfterSaleDetailVO extends TradeAfterSaleVO {
+  order: OrderVO
+  orderItem?: OrderItemRespVO
+  user?: {
+    id?: number
+    nickname?: string
+  }
+  logs: Array<{
+    id?: number
+    createTime?: Date
+    content?: string
+    userType?: number
+  }>
+}
+
 export interface ProductPropertiesVO {
   propertyId?: number | null // 属性的编号
   propertyName?: string // 属性的名称
@@ -41,17 +57,20 @@ export interface ProductPropertiesVO {
 
 // 获得交易售后分页
 export const getAfterSalePage = async (params) => {
-  return await request.get({ url: `/trade/after-sale/page`, params })
+  return await request.get<PageResult<TradeAfterSaleVO[]>>({
+    url: `/trade/after-sale/page`,
+    params
+  })
 }
 
 // 获得交易售后详情
 export const getAfterSale = async (id: any) => {
-  return await request.get({ url: `/trade/after-sale/get-detail/${id}` })
+  return await request.get<TradeAfterSaleDetailVO>({ url: `/trade/after-sale/get-detail?id=${id}` })
 }
 
 // 同意售后
 export const agree = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/agree/${id}` })
+  return await request.put({ url: `/trade/after-sale/agree?id=${id}` })
 }
 
 // 拒绝售后
@@ -61,15 +80,15 @@ export const disagree = async (data: any) => {
 
 // 确认收货
 export const receive = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/receive/${id}` })
+  return await request.put({ url: `/trade/after-sale/receive?id=${id}` })
 }
 
 // 拒绝收货
 export const refuse = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/refuse/${id}` })
+  return await request.put({ url: `/trade/after-sale/refuse?id=${id}` })
 }
 
 // 确认退款
 export const refund = async (id: any) => {
-  return await request.put({ url: `/trade/after-sale/refund/${id}` })
+  return await request.put({ url: `/trade/after-sale/refund?id=${id}` })
 }

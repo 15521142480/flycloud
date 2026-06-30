@@ -9,27 +9,21 @@
         class="-mb-15px"
         label-width="82px"
       >
-        <el-form-item
-          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.k040f6dcf')"
-          prop="name"
-        >
+        <el-form-item label="优惠券名称" prop="name">
           <el-input
             v-model="queryParams.name"
             class="!w-240px"
             clearable
-            :placeholder="t('auto.views.mall.promotion.coupon.components.CouponSelect.k70a14fb5')"
+            placeholder="请输入优惠劵名"
             @keyup="handleQuery"
           />
         </el-form-item>
-        <el-form-item
-          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.k1b05dd75')"
-          prop="discountType"
-        >
+        <el-form-item label="优惠类型" prop="discountType">
           <el-select
             v-model="queryParams.discountType"
             class="!w-240px"
             clearable
-            :placeholder="t('auto.views.mall.promotion.coupon.components.CouponSelect.ka363f12a')"
+            placeholder="请选择优惠券类型"
           >
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.PROMOTION_DISCOUNT_TYPE)"
@@ -42,11 +36,11 @@
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            {{ t('extra.kcfbac39f') }}
+            搜索
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            {{ t('extra.ked89c360') }}
+            重置
           </el-button>
         </el-form-item>
       </el-form>
@@ -56,31 +50,19 @@
     <ContentWrap>
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
-        <el-table-column
-          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.k040f6dcf')"
-          min-width="140"
-          prop="name"
-        />
-        <el-table-column
-          :label="t('auto.views.mall.promotion.coupon.components.CouponSelect.ke4e46c72')"
-          min-width="80"
-          prop="productScope"
-        >
+        <el-table-column label="优惠券名称" min-width="140" prop="name" />
+        <el-table-column label="类型" min-width="80" prop="productScope">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="scope.row.productScope" />
           </template>
         </el-table-column>
-        <el-table-column :label="t('extra.kf06ebf87')" min-width="100" prop="discount">
+        <el-table-column label="优惠" min-width="100" prop="discount">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="scope.row.discountType" />
             {{ discountFormat(scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column
-          :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k1527d9df')"
-          min-width="100"
-          prop="takeType"
-        >
+        <el-table-column label="领取方式" min-width="100" prop="takeType">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.PROMOTION_COUPON_TAKE_TYPE" :value="scope.row.takeType" />
           </template>
@@ -88,28 +70,24 @@
         <el-table-column
           :formatter="validityTypeFormat"
           align="center"
-          :label="t('extra.k01100972')"
+          label="使用时间"
           prop="validityType"
           width="185"
         />
-        <el-table-column
-          align="center"
-          :label="t('auto.views.mall.promotion.coupon.template.CouponTemplateForm.k54d6b5f2')"
-          prop="totalCount"
-        />
+        <el-table-column align="center" label="发放数量" prop="totalCount" />
         <el-table-column
           :formatter="remainedCountFormat"
           align="center"
-          :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k0ca28093')"
+          label="剩余数量"
           prop="totalCount"
         />
         <el-table-column
           :formatter="takeLimitCountFormat"
           align="center"
-          :label="t('extra.k666e6fea')"
+          label="领取上限"
           prop="takeLimitCount"
         />
-        <el-table-column align="center" :label="t('common.status')" prop="status">
+        <el-table-column align="center" label="状态" prop="status">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
           </template>
@@ -124,12 +102,8 @@
       />
     </ContentWrap>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('extra.k008b8fcb')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -143,7 +117,7 @@ import {
 } from '@/views/mall/promotion/coupon/formatter'
 import * as CouponTemplateApi from '@/api/mall/promotion/coupon/couponTemplate'
 import { CouponTemplateTakeTypeEnum } from '@/utils/constants'
-const { t } = useI18n()
+
 defineOptions({ name: 'CouponSelect' })
 
 const props = defineProps<{
@@ -155,7 +129,7 @@ const emit = defineEmits<{
   (e: 'change', v: CouponTemplateApi.CouponTemplateVO[]): void
 }>()
 const dialogVisible = ref(false) // 弹窗的是否展示
-const dialogTitle = ref(t('auto.views.mall.promotion.coupon.components.CouponSelect.k3acbce42')) // 弹窗的标题
+const dialogTitle = ref('选择优惠劵') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

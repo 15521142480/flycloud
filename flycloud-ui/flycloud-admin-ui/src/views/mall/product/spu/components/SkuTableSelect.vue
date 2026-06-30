@@ -1,19 +1,14 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :appendToBody="true"
-    :title="t('auto.views.mall.product.spu.components.SkuTableSelect.kfa5c5a4e')"
-    width="700"
-  >
+  <Dialog v-model="dialogVisible" :appendToBody="true" title="选择规格" width="700">
     <el-table v-loading="loading" :data="list" show-overflow-tooltip>
       <el-table-column label="#" width="55">
         <template #default="{ row }">
-          <el-radio :value="row.id" v-model="selectedSkuId" @change="handleSelected(row)"
-            >&nbsp;
+          <el-radio :value="row.id" v-model="selectedSkuId" @change="handleSelected(row)">
+            &nbsp;
           </el-radio>
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.k3b9e2563')" min-width="80">
+      <el-table-column label="图片" min-width="80">
         <template #default="{ row }">
           <el-image
             :src="row.picUrl"
@@ -23,16 +18,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.erp.product.product.ProductForm.k53af00e1')"
-        align="center"
-        min-width="80"
-      >
+      <el-table-column label="规格" align="center" min-width="80">
         <template #default="{ row }">
           {{ row.properties?.map((p) => p.valueName)?.join(' ') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('extra.kf3dec9e5')" min-width="80">
+      <el-table-column align="center" label="销售价(元)" min-width="80">
         <template #default="{ row }">
           {{ fenToYuan(row.price) }}
         </template>
@@ -46,14 +37,13 @@ import { ElTable } from 'element-plus'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { propTypes } from '@/utils/propTypes'
 import { fenToYuan } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'SkuTableSelect' })
 
 const props = defineProps({
-  spuId: propTypes.number.def(null)
+  spuId: propTypes.number.def(undefined)
 })
 
-const message = useMessage() // 消息弹窗
 const list = ref<any[]>([]) // 列表的数据
 const loading = ref(false) // 列表的加载中
 const dialogVisible = ref(false) // 弹窗的是否展示

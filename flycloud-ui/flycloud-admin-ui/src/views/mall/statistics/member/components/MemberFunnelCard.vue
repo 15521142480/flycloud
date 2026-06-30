@@ -2,9 +2,7 @@
   <el-card shadow="never">
     <template #header>
       <div class="my--1.5 flex flex-row items-center justify-between">
-        <CardTitle
-          :title="t('auto.views.mall.statistics.member.components.MemberFunnelCard.k09005ef0')"
-        />
+        <CardTitle title="会员概览" />
         <!-- 查询条件 -->
         <ShortcutDateRangePicker @change="handleTimeRangeChange" />
       </div>
@@ -14,11 +12,10 @@
         <div class="h-full w-75% bg-blue-50 <lg:w-35% <xl:w-55%">
           <div class="ml-15 h-full flex flex-col justify-center">
             <div class="font-bold">
-              {{ t('extra.k0a3d4dd2') }}{{ analyseData?.comparison?.value?.registerUserCount || 0 }}
+              注册用户数量：{{ analyseData?.comparison?.value?.registerUserCount || 0 }}
             </div>
             <div class="mt-2 text-3.5">
-              {{ t('extra.kbc2118e7')
-              }}{{
+              环比增长率：{{
                 calculateRelativeRate(
                   analyseData?.comparison?.value?.registerUserCount,
                   analyseData?.comparison?.reference?.registerUserCount
@@ -31,18 +28,17 @@
           class="trapezoid1 ml--38.5 mt-1.5 h-full w-77 flex flex-col items-center justify-center bg-blue-5 text-3.5 text-white"
         >
           <span class="text-6 font-bold">{{ analyseData?.visitUserCount || 0 }}</span>
-          <span>{{ t('extra.k852da3f7') }}</span>
+          <span>访客</span>
         </div>
       </div>
       <div class="relative h-24 flex">
         <div class="h-full w-75% flex bg-cyan-50 <lg:w-35% <xl:w-55%">
           <div class="ml-15 h-full flex flex-col justify-center">
             <div class="font-bold">
-              {{ t('extra.k311719b8') }}{{ analyseData?.comparison?.value?.visitUserCount || 0 }}
+              活跃用户数量：{{ analyseData?.comparison?.value?.visitUserCount || 0 }}
             </div>
             <div class="mt-2 text-3.5">
-              {{ t('extra.kbc2118e7')
-              }}{{
+              环比增长率：{{
                 calculateRelativeRate(
                   analyseData?.comparison?.value?.visitUserCount,
                   analyseData?.comparison?.reference?.visitUserCount
@@ -55,7 +51,7 @@
           class="trapezoid2 ml--28 mt-1.7 h-25 w-56 flex flex-col items-center justify-center bg-cyan-5 text-3.5 text-white"
         >
           <span class="text-6 font-bold">{{ analyseData?.orderUserCount || 0 }}</span>
-          <span>{{ t('extra.k423da4b1') }}</span>
+          <span>下单</span>
         </div>
       </div>
       <div class="relative h-24 flex">
@@ -63,12 +59,10 @@
           <div class="ml-15 h-full flex flex-row gap-x-16">
             <div class="flex flex-col justify-center">
               <div class="font-bold">
-                {{ t('extra.k47f7456f')
-                }}{{ analyseData?.comparison?.value?.rechargeUserCount || 0 }}
+                充值用户数量：{{ analyseData?.comparison?.value?.rechargeUserCount || 0 }}
               </div>
               <div class="mt-2 text-3.5">
-                {{ t('extra.kbc2118e7')
-                }}{{
+                环比增长率：{{
                   calculateRelativeRate(
                     analyseData?.comparison?.value?.rechargeUserCount,
                     analyseData?.comparison?.reference?.rechargeUserCount
@@ -77,9 +71,7 @@
               </div>
             </div>
             <div class="flex flex-col justify-center">
-              <div class="font-bold"
-                >{{ t('extra.kb0069f90') }}{{ fenToYuan(analyseData?.atv || 0) }}</div
-              >
+              <div class="font-bold">客单价：{{ fenToYuan(analyseData?.atv || 0) }}</div>
             </div>
           </div>
         </div>
@@ -87,7 +79,7 @@
           class="trapezoid3 ml--18 mt-3.25 h-23 w-36 flex flex-col items-center justify-center bg-slate-5 text-3.5 text-white"
         >
           <span class="text-6 font-bold">{{ analyseData?.payUserCount || 0 }}</span>
-          <span>{{ t('extra.ke2c94f12') }}</span>
+          <span>成交用户</span>
         </div>
       </div>
     </div>
@@ -101,7 +93,6 @@ import { MemberAnalyseRespVO } from '@/api/mall/statistics/member'
 import { CardTitle } from '@/components/Card'
 
 /** 会员概览卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'MemberFunnelCard' })
 
 const loading = ref(true) // 加载中

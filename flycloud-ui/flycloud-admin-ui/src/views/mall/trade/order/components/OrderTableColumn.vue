@@ -3,28 +3,28 @@
     <template #header>
       <div class="flex items-center" style="width: 100%">
         <div :style="{ width: orderTableHeadWidthList[0] + 'px' }" class="flex justify-center">
-          {{ t('extra.k7519f060') }}
+          商品信息
         </div>
         <div :style="{ width: orderTableHeadWidthList[1] + 'px' }" class="flex justify-center">
-          {{ t('extra.kb6d2f20e') }}
+          单价(元)/数量
         </div>
         <div :style="{ width: orderTableHeadWidthList[2] + 'px' }" class="flex justify-center">
-          {{ t('extra.k81df0241') }}
+          售后状态
         </div>
         <div :style="{ width: orderTableHeadWidthList[3] + 'px' }" class="flex justify-center">
-          {{ t('extra.k20c122c4') }}
+          实付金额(元)
         </div>
         <div :style="{ width: orderTableHeadWidthList[4] + 'px' }" class="flex justify-center">
-          {{ t('extra.kd573ba88') }}
+          买家/收货人
         </div>
         <div :style="{ width: orderTableHeadWidthList[5] + 'px' }" class="flex justify-center">
-          {{ t('extra.k09ada78b') }}
+          配送方式
         </div>
         <div :style="{ width: orderTableHeadWidthList[6] + 'px' }" class="flex justify-center">
-          {{ t('extra.k7617e1bf') }}
+          订单状态
         </div>
         <div :style="{ width: orderTableHeadWidthList[7] + 'px' }" class="flex justify-center">
-          {{ t('extra.k9ab0bdab') }}
+          操作
         </div>
       </div>
     </template>
@@ -40,27 +40,25 @@
         <el-table-column min-width="300" prop="spuName">
           <template #header>
             <div
-              class="mr-[20px] h-[35px] flex items-center pl-[10px] pr-[10px]"
+              class="h-[35px] flex items-center -mx-[10px] px-[20px]"
               style="background-color: var(--app-content-bg-color)"
             >
-              <span class="mr-20px">{{ t('extra.k36c75109') }}{{ scope.row.no }} </span>
-              <span class="mr-20px"
-                >{{ t('extra.k15f438c5') }}{{ formatDate(scope.row.createTime) }}</span
-              >
-              <span>{{ t('extra.k74885e87') }}</span>
+              <span class="mr-20px">订单号：{{ scope.row.no }} </span>
+              <span class="mr-20px">下单时间：{{ formatDate(scope.row.createTime) }}</span>
+              <span>订单来源：</span>
               <dict-tag :type="DICT_TYPE.TERMINAL" :value="scope.row.terminal" class="mr-20px" />
-              <span>{{ t('extra.kfc4d648a') }}</span>
+              <span>支付方式：</span>
               <dict-tag
                 v-if="scope.row.payChannelCode"
                 :type="DICT_TYPE.PAY_CHANNEL_CODE"
                 :value="scope.row.payChannelCode"
                 class="mr-20px"
               />
-              <span v-else class="mr-20px">{{ t('auto.utils.constants.k5a565427') }}</span>
+              <span v-else class="mr-20px">未支付</span>
               <span v-if="scope.row.payTime" class="mr-20px">
-                {{ t('extra.kca25d2fa') }}{{ formatDate(scope.row.payTime) }}
+                支付时间：{{ formatDate(scope.row.payTime) }}
               </span>
-              <span>{{ t('extra.k0dc09088') }}</span>
+              <span>订单类型：</span>
               <dict-tag :type="DICT_TYPE.TRADE_ORDER_TYPE" :value="scope.row.type" />
             </div>
           </template>
@@ -97,12 +95,12 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="t('extra.k03e677dd')" prop="price" width="150">
+        <el-table-column label="商品原价*数量" prop="price" width="150">
           <template #default="{ row }">
-            {{ floatToFixed2(row.price) }} {{ t('extra.k1216a8d4') }} {{ row.count }}
+            {{ floatToFixed2(row.price) }} 元 / {{ row.count }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('extra.k81df0241')" prop="afterSaleStatus" width="120">
+        <el-table-column label="售后状态" prop="afterSaleStatus" width="120">
           <template #default="{ row }">
             <dict-tag
               :type="DICT_TYPE.TRADE_ORDER_ITEM_AFTER_SALE_STATUS"
@@ -110,28 +108,22 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          :label="t('extra.k44ae82e9')"
-          min-width="120"
-          prop="payPrice"
-        >
+        <el-table-column align="center" label="实际支付" min-width="120" prop="payPrice">
           <template #default>
             {{ floatToFixed2(scope.row.payPrice) + '元' }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('extra.kd573ba88')" min-width="160">
+        <el-table-column label="买家/收货人" min-width="160">
           <template #default>
             <!-- 快递发货  -->
             <div
               v-if="scope.row.deliveryType === DeliveryTypeEnum.EXPRESS.type"
               class="flex flex-col"
             >
-              <span>{{ t('extra.k60db2a3e') }}{{ scope.row.user.name }}</span>
+              <span>买家：{{ scope.row.user?.nickname }}</span>
               <span>
-                {{ t('extra.k02ddb455') }}{{ scope.row.receiverName }}
-                {{ scope.row.receiverMobile }} {{ scope.row.receiverAreaName }}
-                {{ scope.row.receiverDetailAddress }}
+                收货人：{{ scope.row.receiverName }} {{ scope.row.receiverMobile }}
+                {{ scope.row.receiverAreaName }} {{ scope.row.receiverDetailAddress }}
               </span>
             </div>
             <!-- 自提  -->
@@ -140,31 +132,31 @@
               class="flex flex-col"
             >
               <span>
-                {{ t('extra.k77a7d219') }}
+                门店名称：
                 {{ pickUpStoreList.find((p) => p.id === scope.row.pickUpStoreId)?.name }}
               </span>
               <span>
-                {{ t('extra.k671e097c') }}
+                门店手机：
                 {{ pickUpStoreList.find((p) => p.id === scope.row.pickUpStoreId)?.phone }}
               </span>
               <span>
-                {{ t('extra.ke01ab7e6') }}
+                自提门店:
                 {{ pickUpStoreList.find((p) => p.id === scope.row.pickUpStoreId)?.detailAddress }}
               </span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" :label="t('extra.k09ada78b')" width="120">
+        <el-table-column align="center" label="配送方式" width="120">
           <template #default>
             <dict-tag :type="DICT_TYPE.TRADE_DELIVERY_TYPE" :value="scope.row.deliveryType" />
           </template>
         </el-table-column>
-        <el-table-column align="center" :label="t('extra.k7617e1bf')" width="120">
+        <el-table-column align="center" label="订单状态" width="120">
           <template #default>
             <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column align="center" fixed="right" :label="t('common.operation')" width="160">
+        <el-table-column align="center" fixed="right" label="操作" width="160">
           <template #default>
             <slot :row="scope.row"></slot>
           </template>
@@ -174,6 +166,7 @@
   </el-table-column>
 </template>
 <script lang="ts" setup>
+import { nextTick, onMounted, onUnmounted, watch } from 'vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { DeliveryTypeEnum } from '@/utils/constants'
 import { formatDate } from '@/utils/formatTime'
@@ -184,7 +177,6 @@ import type { TableColumnCtx, TableInstance } from 'element-plus'
 import { createImageViewer } from '@/components/ImageViewer'
 import type { DeliveryPickUpStoreVO } from '@/api/mall/trade/delivery/pickUpStore'
 
-const { t } = useI18n()
 defineOptions({ name: 'OrderTableColumn' })
 
 const props = defineProps<{
@@ -203,6 +195,7 @@ const headerStyle = ({ row, columnIndex }: any) => {
       display: 'none'
     }
   }
+  return {}
 }
 
 interface SpanMethodProps {
@@ -235,19 +228,26 @@ const spanMethod = ({ row, rowIndex, columnIndex }: SpanMethodProps): spanMethod
   }
 }
 
+const orderTableHeadWidthList = ref([300, 150, 120, 120, 160, 120, 120, 160]) // 头部 col 宽度初始化
+let isFirstTable = false // 标记是否已处理第一个表格
+let firstTableInstance: TableInstance | null = null
+
 /** 解决 ref 在 v-for 中的获取问题*/
-const setOrderTableRef = (el: TableInstance) => {
+const setOrderTableRef = async (el: TableInstance) => {
   if (!el) return
-  // 只要第一个表也就是开始的第一行
-  if (el.tableId !== 'el-table_2') {
-    return
+  // 只处理第一个表格实例
+  if (!isFirstTable) {
+    isFirstTable = true
+    firstTableInstance = el
+    // 使用 nextTick 确保 DOM 已完全渲染
+    await nextTick()
+    tableHeadWidthAuto(el)
   }
-  tableHeadWidthAuto(el)
 }
-// 头部 col 宽度初始化
-const orderTableHeadWidthList = ref([300, 150, 120, 120, 160, 120, 120, 160])
-// 头部宽度自适应
+
+/** 头部宽度自适应 */
 const tableHeadWidthAuto = (el: TableInstance) => {
+  if (!el) return
   const columns = el.store.states.columns.value
   if (columns.length === 0) {
     return
@@ -258,6 +258,38 @@ const tableHeadWidthAuto = (el: TableInstance) => {
     }
   })
 }
+
+/** 监听窗口大小变化，重新计算表头宽度 */
+const handleResize = async () => {
+  if (firstTableInstance) {
+    await nextTick()
+    tableHeadWidthAuto(firstTableInstance!)
+  }
+}
+
+/** 监听列表数据变化，重新计算表头宽度 */
+watch(
+  () => props.list,
+  async () => {
+    // 数据变化后，等待 DOM 更新完成再重新计算宽度
+    await nextTick()
+    if (firstTableInstance) {
+      // 延迟一小段时间，确保表格已完全渲染
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      tableHeadWidthAuto(firstTableInstance!)
+    }
+  },
+  { deep: true }
+)
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
 /** 商品图预览 */
 const imagePreview = (imgUrl: string) => {
   createImageViewer({

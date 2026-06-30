@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <CardTitle :title="t('auto.views.mall.home.components.ShortcutCard.k73f33421')" />
+      <CardTitle title="快捷入口" />
     </template>
     <div class="flex flex-row flex-wrap gap-8 p-4">
       <div
@@ -24,57 +24,47 @@
 <script lang="ts" setup>
 /** 快捷入口卡片 */
 import { CardTitle } from '@/components/Card'
-const { t } = useI18n()
+
 defineOptions({ name: 'ShortcutCard' })
 
 const router = useRouter() // 路由
 
 /** 菜单列表 */
 const menuList = [
+  { name: '用户管理', icon: 'ep:user-filled', bgColor: 'bg-red-400', routerName: 'MemberUser' },
   {
-    name: t('auto.views.mall.home.components.ShortcutCard.kbaf84751'),
-    icon: 'ep:user-filled',
-    bgColor: 'bg-red-400',
-    routerName: 'MemberUser'
-  },
-  {
-    name: t('auto.views.mall.home.components.ShortcutCard.k4c536ac8'),
+    name: '商品管理',
     icon: 'fluent-mdl2:product',
     bgColor: 'bg-orange-400',
     routerName: 'ProductSpu'
   },
+  { name: '订单管理', icon: 'ep:list', bgColor: 'bg-yellow-500', routerName: 'TradeOrder' },
   {
-    name: t('auto.views.mall.home.components.ShortcutCard.k26d8e2fa'),
-    icon: 'ep:list',
-    bgColor: 'bg-yellow-500',
-    routerName: 'TradeOrder'
-  },
-  {
-    name: t('auto.views.mall.home.components.ShortcutCard.kd7413960'),
+    name: '售后管理',
     icon: 'ri:refund-2-line',
     bgColor: 'bg-green-600',
     routerName: 'TradeAfterSale'
   },
   {
-    name: t('auto.views.mall.home.components.ShortcutCard.kdead2295'),
+    name: '分销管理',
     icon: 'fa-solid:project-diagram',
     bgColor: 'bg-cyan-500',
     routerName: 'TradeBrokerageUser'
   },
   {
-    name: t('auto.views.mall.home.components.ShortcutCard.k30f810e7'),
+    name: '优惠券',
     icon: 'ep:ticket',
     bgColor: 'bg-blue-500',
     routerName: 'PromotionCoupon'
   },
   {
-    name: t('auto.views.mall.home.components.ShortcutCard.kf68ed13e'),
+    name: '拼团活动',
     icon: 'fa:group',
     bgColor: 'bg-purple-500',
     routerName: 'PromotionBargainActivity'
   },
   {
-    name: t('auto.views.mall.home.components.ShortcutCard.k5b301da3'),
+    name: '佣金提现',
     icon: 'vaadin:money-withdraw',
     bgColor: 'bg-rose-500',
     routerName: 'TradeBrokerageWithdraw'

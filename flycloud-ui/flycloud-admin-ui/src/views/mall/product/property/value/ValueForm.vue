@@ -7,70 +7,48 @@
       :rules="formRules"
       label-width="80px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.product.property.value.ValueForm.kabf37f9b')"
-        prop="category"
-      >
-        <el-input v-model="formData.propertyId" disabled="" />
+      <el-form-item label="属性编号" prop="category">
+        <el-input v-model="formData.propertyId" disabled />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.product.property.value.ValueForm.k1be7ae4f')"
-        prop="name"
-      >
-        <el-input
-          v-model="formData.name"
-          :placeholder="t('auto.views.mall.product.property.value.ValueForm.kc2afb255')"
-        />
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="formData.name" placeholder="请输入名称" />
       </el-form-item>
-      <el-form-item :label="t('common.remark')" prop="remark">
-        <el-input
-          v-model="formData.remark"
-          :placeholder="t('auto.views.mall.product.property.value.ValueForm.kac962cb9')"
-          type="textarea"
-        />
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="formData.remark" placeholder="请输入内容" type="textarea" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('auto.views.mall.product.property.value.ValueForm.k31f9d856')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.views.mall.product.property.value.ValueForm.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
 <script lang="ts" setup>
 import * as PropertyApi from '@/api/mall/product/property'
-const { t } = useI18n()
+
 defineOptions({ name: 'ProductPropertyValueForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
-const formData = ref({
-  id: undefined,
-  propertyId: undefined,
+const formData = ref<{
+  id?: number
+  propertyId?: number
+  name: string
+  remark?: string
+}>({
+  id: undefined as number | undefined,
+  propertyId: undefined as number | undefined,
   name: '',
-  remark: ''
+  remark: undefined as string | undefined
 })
 const formRules = reactive({
-  propertyId: [
-    {
-      required: true,
-      message: t('auto.views.mall.product.property.value.ValueForm.k62f18db5'),
-      trigger: 'blur'
-    }
-  ],
-  name: [
-    {
-      required: true,
-      message: t('auto.views.mall.product.property.value.ValueForm.kca898456'),
-      trigger: 'blur'
-    }
-  ]
+  propertyId: [{ required: true, message: '属性不能为空', trigger: 'blur' }],
+  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 
@@ -125,7 +103,7 @@ const resetForm = () => {
     id: undefined,
     propertyId: undefined,
     name: '',
-    remark: ''
+    remark: undefined
   }
   formRef.value?.resetFields()
 }

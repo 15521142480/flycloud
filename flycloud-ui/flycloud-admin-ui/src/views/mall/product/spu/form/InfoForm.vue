@@ -1,7 +1,7 @@
 <!-- 商品发布 - 基础设置 -->
 <template>
   <el-form ref="formRef" :disabled="isDetail" :model="formData" :rules="rules" label-width="120px">
-    <el-form-item :label="t('auto.views.mall.product.spu.form.InfoForm.k47b74133')" prop="name">
+    <el-form-item label="商品名称" prop="name">
       <el-input
         v-model="formData.name"
         :autosize="{ minRows: 2, maxRows: 2 }"
@@ -9,30 +9,24 @@
         :show-word-limit="true"
         class="w-80!"
         maxlength="64"
-        :placeholder="t('auto.views.mall.product.spu.form.InfoForm.k5c6bf9b9')"
+        placeholder="请输入商品名称"
         type="textarea"
       />
     </el-form-item>
-    <el-form-item
-      :label="t('auto.views.mall.product.spu.form.InfoForm.k09482df6')"
-      prop="categoryId"
-    >
+    <el-form-item label="商品分类" prop="categoryId">
       <el-cascader
         v-model="formData.categoryId"
         :options="categoryList"
         :props="defaultProps"
-        class="w-80"
+        class="w-80!"
         clearable
         filterable
-        :placeholder="t('auto.views.mall.product.spu.form.InfoForm.ke71fcc11')"
+        placeholder="请选择商品分类"
       />
+      <el-button :icon="RefreshRight" @click="refreshCategoryList" class="ml-1" size="small" />
     </el-form-item>
-    <el-form-item :label="t('auto.views.mall.product.spu.form.InfoForm.k69291cfc')" prop="brandId">
-      <el-select
-        v-model="formData.brandId"
-        class="w-80"
-        :placeholder="t('auto.views.mall.product.spu.form.InfoForm.ka5c2affd')"
-      >
+    <el-form-item label="商品品牌" prop="brandId">
+      <el-select v-model="formData.brandId" class="w-80!" placeholder="请选择商品品牌">
         <el-option
           v-for="item in brandList"
           :key="item.id"
@@ -40,18 +34,12 @@
           :value="item.id as number"
         />
       </el-select>
+      <el-button :icon="RefreshRight" @click="refreshBrandList" class="ml-1" size="small" />
     </el-form-item>
-    <el-form-item :label="t('auto.views.mall.product.spu.form.InfoForm.k76ed45b2')" prop="keyword">
-      <el-input
-        v-model="formData.keyword"
-        class="w-80!"
-        :placeholder="t('auto.views.mall.product.spu.form.InfoForm.k3409b6c6')"
-      />
+    <el-form-item label="商品关键字" prop="keyword">
+      <el-input v-model="formData.keyword" class="w-80!" placeholder="请输入商品关键字" />
     </el-form-item>
-    <el-form-item
-      :label="t('auto.views.mall.product.spu.form.InfoForm.ke50db553')"
-      prop="introduction"
-    >
+    <el-form-item label="商品简介" prop="introduction">
       <el-input
         v-model="formData.introduction"
         :autosize="{ minRows: 2, maxRows: 2 }"
@@ -59,18 +47,15 @@
         :show-word-limit="true"
         class="w-80!"
         maxlength="128"
-        :placeholder="t('auto.views.mall.product.spu.form.InfoForm.k1ceb80b5')"
+        placeholder="请输入商品简介"
         type="textarea"
       />
     </el-form-item>
-    <el-form-item :label="t('auto.views.mall.product.spu.form.InfoForm.k35e0b189')" prop="picUrl">
+    <el-form-item label="商品封面图" prop="picUrl">
       <UploadImg v-model="formData.picUrl" :disabled="isDetail" height="80px" />
     </el-form-item>
-    <el-form-item
-      :label="t('auto.views.mall.product.spu.form.InfoForm.k472dbc1b')"
-      prop="sliderPicUrls"
-    >
-      <UploadImgs v-model="formData.sliderPicUrls" :disabled="isDetail" />
+    <el-form-item label="商品轮播图" prop="sliderPicUrls">
+      <UploadImgs v-model="sliderPicUrls" :disabled="isDetail" />
     </el-form-item>
   </el-form>
 </template>
@@ -84,7 +69,8 @@ import * as ProductCategoryApi from '@/api/mall/product/category'
 import { CategoryVO } from '@/api/mall/product/category'
 import * as ProductBrandApi from '@/api/mall/product/brand'
 import { BrandVO } from '@/api/mall/product/brand'
-const { t } = useI18n()
+import { RefreshRight } from '@element-plus/icons-vue'
+
 defineOptions({ name: 'ProductSpuInfoForm' })
 const props = defineProps({
   propFormData: {
@@ -105,6 +91,12 @@ const formData = reactive<Spu>({
   sliderPicUrls: [], // 商品轮播图
   introduction: '', // 商品简介
   brandId: undefined // 商品品牌
+})
+const sliderPicUrls = computed({
+  get: () => formData.sliderPicUrls || [],
+  set: (value: string[]) => {
+    formData.sliderPicUrls = value
+  }
 })
 const rules = reactive({
   name: [required],
@@ -139,7 +131,7 @@ const validate = async () => {
     // 校验通过更新数据
     Object.assign(props.propFormData, formData)
   } catch (e) {
-    message.error(t('auto.views.mall.product.spu.form.InfoForm.kea3e4b86'))
+    message.error('【基础设置】不完善，请填写相关信息')
     emit('update:activeName', 'info')
     throw e // 目的截断之后的校验
   }
@@ -149,11 +141,19 @@ defineExpose({ validate })
 /** 初始化 */
 const brandList = ref<BrandVO[]>([]) // 商品品牌列表
 const categoryList = ref<CategoryVO[]>([]) // 商品分类树
-onMounted(async () => {
+async function refreshCategoryList() {
   // 获得分类树
   const data = await ProductCategoryApi.getCategoryList({})
   categoryList.value = handleTree(data, 'id')
-  // 获取商品品牌列表
+}
+
+async function refreshBrandList() {
   brandList.value = await ProductBrandApi.getSimpleBrandList()
+}
+
+onMounted(async () => {
+  await refreshCategoryList()
+  // 获取商品品牌列表
+  await refreshBrandList()
 })
 </script>

@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import Picture from '@/views/mall/promotion/kefu/components/asserts/picture.svg'
 import * as FileApi from '@/api/infra/file'
-const { t } = useI18n()
+
 defineOptions({ name: 'PictureSelectUpload' })
 
 const message = useMessage() // 消息弹窗
@@ -19,7 +19,7 @@ const emits = defineEmits<{
 }>()
 const selectAndUpload = async () => {
   const files: any = await getFiles()
-  message.success(t('auto.views.mall.promotion.kefu.components.tools.kb4a407a7'))
+  message.success('图片发送中请稍等。。。')
   const res = await FileApi.updateFile({ file: files[0].file })
   emits('send-picture', res.data)
 }
@@ -84,7 +84,7 @@ async function getFiles(options = {}) {
       })
     })
   } catch (error) {
-    console.error(t('auto.views.mall.promotion.kefu.components.tools.k0909e9e3'), error)
+    console.error('选择文件出错:', error)
     throw error
   }
 }

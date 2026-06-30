@@ -1,10 +1,5 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :appendToBody="true"
-    :title="t('auto.views.mall.promotion.point.components.PointTableSelect.k9669b876')"
-    width="70%"
-  >
+  <Dialog v-model="dialogVisible" :appendToBody="true" title="选择活动" width="70%">
     <ContentWrap>
       <!-- 搜索工作栏 -->
       <el-form
@@ -14,17 +9,12 @@
         class="-mb-15px"
         label-width="68px"
       >
-        <el-form-item
-          :label="t('auto.views.mall.promotion.point.components.PointTableSelect.k65a972d7')"
-          prop="status"
-        >
+        <el-form-item label="活动状态" prop="status">
           <el-select
             v-model="queryParams.status"
             class="!w-240px"
             clearable
-            :placeholder="
-              t('auto.views.mall.promotion.point.components.PointTableSelect.k4b6989d1')
-            "
+            placeholder="请选择活动状态"
           >
             <el-option
               v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
@@ -37,11 +27,11 @@
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            {{ t('extra.k1010c255') }}
+            搜索
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            {{ t('extra.kb68c8fb1') }}
+            重置
           </el-button>
         </el-form-item>
       </el-form>
@@ -75,16 +65,8 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column
-          :label="t('auto.views.mall.promotion.bargain.activity.index.k32261198')"
-          min-width="80"
-          prop="id"
-        />
-        <el-table-column
-          :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
-          min-width="80"
-          prop="spuName"
-        >
+        <el-table-column label="活动编号" min-width="80" prop="id" />
+        <el-table-column label="商品图片" min-width="80" prop="spuName">
           <template #default="scope">
             <el-image
               :preview-src-list="[scope.row.picUrl]"
@@ -94,41 +76,22 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          :label="t('auto.views.pay.cashier.index.kd415beac')"
-          min-width="300"
-          prop="spuName"
-        />
+        <el-table-column label="商品标题" min-width="300" prop="spuName" />
         <el-table-column
           :formatter="fenToYuanFormat"
-          :label="t('extra.k1afdfea7')"
+          label="原价"
           min-width="100"
           prop="marketPrice"
         />
-        <el-table-column :label="t('extra.k1afdfea7')" min-width="100" prop="marketPrice" />
-        <el-table-column
-          align="center"
-          :label="t('auto.views.mall.promotion.banner.index.k65a972d7')"
-          min-width="100"
-          prop="status"
-        >
+        <el-table-column label="原价" min-width="100" prop="marketPrice" />
+        <el-table-column align="center" label="活动状态" min-width="100" prop="status">
           <template #default="scope">
             <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column align="center" :label="t('extra.k0eac8802')" min-width="80" prop="stock" />
-        <el-table-column
-          align="center"
-          :label="t('extra.k9da72dfd')"
-          min-width="80"
-          prop="totalStock"
-        />
-        <el-table-column
-          align="center"
-          :label="t('extra.k0094a88a')"
-          min-width="100"
-          prop="redeemedQuantity"
-        >
+        <el-table-column align="center" label="库存" min-width="80" prop="stock" />
+        <el-table-column align="center" label="总库存" min-width="80" prop="totalStock" />
+        <el-table-column align="center" label="已兑换数量" min-width="100" prop="redeemedQuantity">
           <template #default="{ row }">
             {{ getRedeemedQuantity(row) }}
           </template>
@@ -136,7 +99,7 @@
         <el-table-column
           :formatter="dateFormatter"
           align="center"
-          :label="t('common.createTime')"
+          label="创建时间"
           prop="createTime"
           width="180px"
         />
@@ -150,10 +113,8 @@
       />
     </ContentWrap>
     <template v-if="multiple" #footer>
-      <el-button type="primary" @click="handleEmitChange">{{ t('extra.k008b8fcb') }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button type="primary" @click="handleEmitChange">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -177,7 +138,6 @@ import { dateFormatter } from '@/utils/formatTime'
  *    2.3 点击右下角的确定按钮时，结束选择，关闭对话框
  *    2.4 再次打开时，保持选中状态
  */
-const { t } = useI18n()
 defineOptions({ name: 'PointTableSelect' })
 
 defineProps({
@@ -286,7 +246,7 @@ const handleEmitChange = () => {
 
 /** 确认选择时的触发事件 */
 const emits = defineEmits<{
-  (e: CHANGE_EVENT, v: PointActivityVO | PointActivityVO[] | any): void
+  (e: typeof CHANGE_EVENT, v: PointActivityVO | PointActivityVO[] | any): void
 }>()
 
 /** 全选/全不选 */

@@ -1,7 +1,6 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
-import { useI18n } from '@/hooks/web/useI18n'
-const { t } = useI18n()
 
+// 表单校验
 export const rules = reactive({
   spuId: [required],
   sort: [required]
@@ -10,7 +9,7 @@ export const rules = reactive({
 // CrudSchema https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: t('common.sort'),
+    label: '排序',
     field: 'sort',
     form: {
       component: 'InputNumber',
@@ -21,7 +20,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.point.activity.pointActivity_data.k324aa117'),
+    label: '活动商品',
     field: 'spuId',
     isTable: true,
     isSearch: false,
@@ -35,7 +34,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('common.remark'),
+    label: '备注',
     field: 'remark',
     isSearch: false,
     form: {

@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="【营销】内容管理" url="https://doc.iocoder.cn/mall/promotion-content/" />
+
   <ContentWrap>
     <!-- 搜索工作栏 -->
     <el-form
@@ -8,14 +10,11 @@
       class="-mb-15px"
       label-width="80px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.article.index.k8b397ec2')"
-        prop="categoryId"
-      >
+      <el-form-item label="文章分类" prop="categoryId">
         <el-select
           v-model="queryParams.categoryId"
           class="!w-240px"
-          :placeholder="t('auto.views.mall.promotion.article.index.k778fc8f9')"
+          placeholder="全部"
           @keyup.enter="handleQuery"
         >
           <el-option
@@ -26,22 +25,17 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.promotion.article.index.kce8733b4')" prop="title">
+      <el-form-item label="文章标题" prop="title">
         <el-input
           v-model="queryParams.title"
           class="!w-240px"
           clearable
-          :placeholder="t('auto.views.mall.promotion.article.index.k06ba23b7')"
+          placeholder="请输入文章标题"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('common.status')" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          class="!w-240px"
-          clearable
-          :placeholder="t('auto.views.mall.promotion.article.index.kdba277df')"
-        >
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" class="!w-240px" clearable placeholder="请选择状态">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -50,13 +44,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
-          :end-placeholder="t('auto.views.mall.promotion.article.index.kf4b9b2b5')"
-          :start-placeholder="t('auto.views.mall.promotion.article.index.k1f291968')"
+          end-placeholder="结束日期"
+          start-placeholder="开始日期"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -64,11 +58,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          {{ t('extra.kbfd7542b') }}
+          搜索
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          {{ t('extra.kbba7883a') }}
+          重置
         </el-button>
         <el-button
           v-hasPermi="['promotion:article:create']"
@@ -77,7 +71,7 @@
           @click="openForm('create')"
         >
           <Icon class="mr-5px" icon="ep:plus" />
-          {{ t('extra.kec7f1754') }}
+          新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -86,42 +80,23 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column
-        align="center"
-        :label="t('auto.views.mall.promotion.article.index.kb8bb31e1')"
-        min-width="80"
-        prop="picUrl"
-      >
+      <el-table-column align="center" label="ID" min-width="180" prop="id" />
+      <el-table-column align="center" label="封面" min-width="80" prop="picUrl">
         <template #default="{ row }">
           <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('table.title')" min-width="180" prop="title" />
-      <el-table-column
-        align="center"
-        :label="t('extra.k8c3fa055')"
-        min-width="180"
-        prop="categoryId"
-      >
+      <el-table-column align="center" label="标题" min-width="180" prop="title" />
+      <el-table-column align="center" label="分类" min-width="180" prop="categoryId">
         <template #default="scope">
           {{ categoryList.find((item) => item.id === scope.row.categoryId)?.name }}
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        :label="t('extra.k88bc4d7a')"
-        min-width="180"
-        prop="browseCount"
-      />
-      <el-table-column align="center" :label="t('table.author')" min-width="180" prop="author" />
-      <el-table-column
-        align="center"
-        :label="t('auto.views.mall.promotion.article.ArticleForm.k5c86fcd2')"
-        min-width="250"
-        prop="introduction"
-      />
-      <el-table-column align="center" :label="t('common.sort')" min-width="60" prop="sort" />
-      <el-table-column align="center" :label="t('common.status')" min-width="60" prop="status">
+      <el-table-column align="center" label="浏览量" min-width="180" prop="browseCount" />
+      <el-table-column align="center" label="作者" min-width="180" prop="author" />
+      <el-table-column align="center" label="文章简介" min-width="250" prop="introduction" />
+      <el-table-column align="center" label="排序" min-width="60" prop="sort" />
+      <el-table-column align="center" label="状态" min-width="60" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
@@ -129,11 +104,11 @@
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        :label="t('extra.kf1f98fb7')"
+        label="发布时间"
         prop="createTime"
         width="180px"
       />
-      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="120">
+      <el-table-column align="center" fixed="right" label="操作" width="120">
         <template #default="scope">
           <el-button
             v-hasPermi="['promotion:article:update']"
@@ -141,7 +116,7 @@
             type="primary"
             @click="openForm('update', scope.row.id)"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             v-hasPermi="['promotion:article:delete']"
@@ -149,7 +124,7 @@
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -175,10 +150,11 @@ import ArticleForm from './ArticleForm.vue'
 import * as ArticleCategoryApi from '@/api/mall/promotion/articleCategory'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { createImageViewer } from '@/components/ImageViewer'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionArticle' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

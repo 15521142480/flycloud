@@ -7,15 +7,19 @@ export interface BrokerageWithdrawVO {
   feePrice: number
   totalPrice: number
   type: number
-  name: string
-  accountNo: string
+  userName: string
+  userAccount: string
   bankName: string
   bankAddress: string
-  accountQrCodeUrl: string
+  qrCodeUrl: string
   status: number
   auditReason: string
   auditTime: Date
   remark: string
+  payTransferId?: number
+  transferChannelCode?: string
+  transferTime?: Date
+  transferErrorMsg?: string
 }
 
 // 查询佣金提现列表
@@ -25,12 +29,12 @@ export const getBrokerageWithdrawPage = async (params: any) => {
 
 // 查询佣金提现详情
 export const getBrokerageWithdraw = async (id: number) => {
-  return await request.get({ url: `/trade/brokerage-withdraw/get/` + id })
+  return await request.get({ url: `/trade/brokerage-withdraw/get?id=` + id })
 }
 
 // 佣金提现 - 通过申请
 export const approveBrokerageWithdraw = async (id: number) => {
-  return await request.put({ url: `/trade/brokerage-withdraw/approve/` + id })
+  return await request.put({ url: `/trade/brokerage-withdraw/approve?id=` + id })
 }
 
 // 审核佣金提现 - 驳回申请

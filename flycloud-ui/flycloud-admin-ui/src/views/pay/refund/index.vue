@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.pay.refund.index.ka8355392')"
-    url="https://doc.iocoder.cn/pay/refund-demo/"
-  />
+  <doc-alert title="支付宝、微信退款接入" url="https://doc.iocoder.cn/pay/refund-demo/" />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -13,20 +10,20 @@
       :inline="true"
       label-width="120px"
     >
-      <el-form-item :label="t('auto.views.pay.refund.index.k396d9d78')" prop="appId">
+      <el-form-item label="应用编号" prop="appId">
         <el-select
           v-model="queryParams.appId"
           clearable
-          :placeholder="t('auto.views.pay.refund.index.kb926b59e')"
+          placeholder="请选择应用信息"
           class="!w-240px"
         >
           <el-option v-for="item in appList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.refund.index.k7917cc84')" prop="channelCode">
+      <el-form-item label="退款渠道" prop="channelCode">
         <el-select
           v-model="queryParams.channelCode"
-          :placeholder="t('auto.views.pay.refund.index.kc7b33d1a')"
+          placeholder="请选择退款渠道"
           clearable
           class="!w-240px"
         >
@@ -38,46 +35,46 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.refund.index.k9445bf49')" prop="merchantOrderId">
+      <el-form-item label="商户支付单号" prop="merchantOrderId">
         <el-input
           v-model="queryParams.merchantOrderId"
-          :placeholder="t('auto.views.pay.refund.index.k37e69683')"
+          placeholder="请输入商户支付单号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.refund.index.kac63f2e3')" prop="merchantRefundId">
+      <el-form-item label="商户退款单号" prop="merchantRefundId">
         <el-input
           v-model="queryParams.merchantRefundId"
-          :placeholder="t('auto.views.pay.refund.index.k755b4877')"
+          placeholder="请输入商户退款单号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.refund.index.k249a8a8d')" prop="channelOrderNo">
+      <el-form-item label="渠道支付单号" prop="channelOrderNo">
         <el-input
           v-model="queryParams.channelOrderNo"
-          :placeholder="t('auto.views.pay.refund.index.kd76ae7e1')"
+          placeholder="请输入渠道支付单号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.refund.index.k90b08b3a')" prop="channelRefundNo">
+      <el-form-item label="渠道退款单号" prop="channelRefundNo">
         <el-input
           v-model="queryParams.channelRefundNo"
-          :placeholder="t('auto.views.pay.refund.index.k576fb7e8')"
+          placeholder="请输入渠道退款单号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.pay.refund.index.k7d1f4b47')" prop="status">
+      <el-form-item label="退款状态" prop="status">
         <el-select
           v-model="queryParams.status"
-          :placeholder="t('auto.views.pay.refund.index.k4d97c509')"
+          placeholder="请选择退款状态"
           clearable
           class="!w-240px"
         >
@@ -89,24 +86,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          :start-placeholder="t('auto.views.pay.refund.index.k1f291968')"
-          :end-placeholder="t('auto.views.pay.refund.index.kf4b9b2b5')"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery">
-          <Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}
-        </el-button>
-        <el-button @click="resetQuery">
-          <Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}
-        </el-button>
+        <el-button @click="handleQuery"> <Icon icon="ep:search" class="mr-5px" /> 搜索 </el-button>
+        <el-button @click="resetQuery"> <Icon icon="ep:refresh" class="mr-5px" /> 重置 </el-button>
         <el-button
           type="success"
           plain
@@ -114,7 +107,7 @@
           :loading="exportLoading"
           v-hasPermi="['system:tenant:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kaa873de5') }}
+          <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
       </el-form-item>
     </el-form>
@@ -123,96 +116,70 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
+      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column
-        :label="t('auto.views.pay.refund.index.k9f42dac6')"
-        align="center"
-        prop="id"
-      />
-      <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
-        width="180"
+        width="170"
         :formatter="dateFormatter"
       />
-      <el-table-column
-        :label="t('auto.views.pay.refund.index.kb579703e')"
-        align="center"
-        prop="payPrice"
-        width="100"
-      >
-        <template #default="scope">
-          ￥{{ parseFloat(scope.row.payPrice / 100).toFixed(2) }}
-        </template>
+      <el-table-column label="支付金额" align="center" prop="payPrice" width="100">
+        <template #default="scope"> ￥{{ (scope.row.payPrice! / 100).toFixed(2) }} </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.mall.statistics.product.components.ProductSummary.kf243aec2')"
-        align="center"
-        prop="refundPrice"
-        width="100"
-      >
-        <template #default="scope">
-          ￥{{ parseFloat(scope.row.refundPrice / 100).toFixed(2) }}
-        </template>
+      <el-table-column label="退款金额" align="center" prop="refundPrice" width="100">
+        <template #default="scope"> ￥{{ (scope.row.refundPrice! / 100).toFixed(2) }} </template>
       </el-table-column>
-      <el-table-column :label="t('extra.k4bf165f6')" align="left" width="300">
+      <el-table-column label="退款订单号" align="left" width="300">
         <template #default="scope">
           <p class="order-font">
-            <el-tag size="small">{{ t('extra.k9f1ea351') }}</el-tag>
-            {{ scope.row.merchantRefundId }}
+            <el-tag size="small">商户</el-tag> {{ scope.row.merchantRefundId }}
           </p>
           <p class="order-font">
-            <el-tag size="small" type="warning">{{ t('extra.k44c198c1') }}</el-tag>
-            {{ scope.row.no }}
+            <el-tag size="small" type="warning">退款</el-tag> {{ scope.row.no }}
           </p>
           <p class="order-font" v-if="scope.row.channelRefundNo">
-            <el-tag size="small" type="success">{{ t('extra.kebee0533') }}</el-tag>
-            {{ scope.row.channelRefundNo }}
+            <el-tag size="small" type="success">渠道</el-tag> {{ scope.row.channelRefundNo }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.k8d3c0557')" align="left" width="300">
+      <el-table-column label="支付订单号" align="left" width="300">
         <template #default="scope">
           <p class="order-font">
-            <el-tag size="small">{{ t('extra.k9f1ea351') }}</el-tag> {{ scope.row.merchantOrderId }}
+            <el-tag size="small">商户</el-tag> {{ scope.row.merchantOrderId }}
           </p>
           <p class="order-font">
-            <el-tag size="small" type="success">{{ t('extra.kebee0533') }}</el-tag>
-            {{ scope.row.channelOrderNo }}
+            <el-tag size="small" type="success">渠道</el-tag> {{ scope.row.channelOrderNo }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.erp.purchase.return.index.k7d1f4b47')"
-        align="center"
-        prop="status"
-      >
+      <el-table-column label="退款状态" align="center" prop="status" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.PAY_REFUND_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.pay.refund.RefundDetail.k7917cc84')"
-        align="center"
-        width="140"
-      >
+      <el-table-column label="退款渠道" align="center" width="140">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.PAY_CHANNEL_CODE" :value="scope.row.channelCode" />
+          <dict-tag
+            v-if="scope.row.channelCode"
+            :type="DICT_TYPE.PAY_CHANNEL_CODE"
+            :value="scope.row.channelCode"
+          />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('extra.k7193c149')"
+        label="成功时间"
         align="center"
         prop="successTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column :label="t('extra.k5f75a33c')" align="center" prop="successTime" width="100">
+      <el-table-column label="支付应用" align="center" prop="successTime" width="100">
         <template #default="scope">
           <span>{{ scope.row.appName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.operation')" align="center" fixed="right">
+      <el-table-column label="操作" align="center" fixed="right">
         <template #default="scope">
           <el-button
             type="primary"
@@ -220,7 +187,7 @@
             @click="openDetail(scope.row.id)"
             v-hasPermi="['pay:order:query']"
           >
-            {{ t('action.detail') }}
+            详情
           </el-button>
         </template>
       </el-table-column>
@@ -244,33 +211,33 @@ import * as RefundApi from '@/api/pay/refund'
 import * as AppApi from '@/api/pay/app'
 import RefundDetail from './RefundDetail.vue'
 import download from '@/utils/download'
-const { t } = useI18n()
+
 defineOptions({ name: 'PayRefund' })
 
 const message = useMessage() // 消息弹窗
 
 const loading = ref(false) // 列表遮罩层
 const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
+const list = ref<RefundApi.RefundDetailVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  merchantId: undefined,
-  appId: undefined,
-  channelCode: undefined,
-  merchantOrderId: undefined,
-  merchantRefundId: undefined,
-  status: undefined,
-  payPrice: undefined,
-  refundPrice: undefined,
-  channelOrderNo: undefined,
-  channelRefundNo: undefined,
-  createTime: [],
-  successTime: []
+  merchantId: undefined as number | undefined,
+  appId: undefined as number | undefined,
+  channelCode: undefined as string | undefined,
+  merchantOrderId: undefined as string | undefined,
+  merchantRefundId: undefined as string | undefined,
+  status: undefined as number | undefined,
+  payPrice: undefined as number | undefined,
+  refundPrice: undefined as number | undefined,
+  channelOrderNo: undefined as string | undefined,
+  channelRefundNo: undefined as string | undefined,
+  createTime: [] as string[],
+  successTime: [] as string[]
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出等待
-const appList = ref([]) // 支付应用列表集合
+const appList = ref<AppApi.AppVO[]>([]) // 支付应用列表集合
 
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -304,7 +271,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await RefundApi.exportRefund(queryParams)
-    download.excel(data, t('auto.views.pay.refund.index.k8e9584f0'))
+    download.excel(data, '支付订单.xls')
   } catch {
   } finally {
     exportLoading.value = false

@@ -13,9 +13,7 @@
     </div>
     <el-divider class="mb-1! mt-2!" />
     <div class="flex flex-row items-center justify-between text-sm">
-      <span class="text-gray-500">{{
-        t('auto.views.mall.home.components.ComparisonCard.kd1094c55')
-      }}</span>
+      <span class="text-gray-500">昨日数据</span>
       <span>{{ prefix || '' }}{{ reference }}</span>
     </div>
   </div>
@@ -26,7 +24,6 @@ import { toNumber } from 'lodash-es'
 import { calculateRelativeRate } from '@/utils'
 
 /** 交易对照卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'ComparisonCard' })
 
 const props = defineProps({

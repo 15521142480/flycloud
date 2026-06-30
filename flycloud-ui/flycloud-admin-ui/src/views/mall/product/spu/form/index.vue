@@ -1,7 +1,7 @@
 <template>
   <ContentWrap v-loading="formLoading">
     <el-tabs v-model="activeName">
-      <el-tab-pane :label="t('auto.views.mall.product.spu.form.index.k35ff7705')" name="info">
+      <el-tab-pane label="基础设置" name="info">
         <InfoForm
           ref="infoRef"
           v-model:activeName="activeName"
@@ -9,7 +9,7 @@
           :propFormData="formData"
         />
       </el-tab-pane>
-      <el-tab-pane :label="t('auto.views.mall.product.spu.form.index.k71108428')" name="sku">
+      <el-tab-pane label="价格库存" name="sku">
         <SkuForm
           ref="skuRef"
           v-model:activeName="activeName"
@@ -17,7 +17,7 @@
           :propFormData="formData"
         />
       </el-tab-pane>
-      <el-tab-pane :label="t('auto.views.mall.product.spu.form.index.kdac513ac')" name="delivery">
+      <el-tab-pane label="物流设置" name="delivery">
         <DeliveryForm
           ref="deliveryRef"
           v-model:activeName="activeName"
@@ -25,10 +25,7 @@
           :propFormData="formData"
         />
       </el-tab-pane>
-      <el-tab-pane
-        :label="t('auto.views.mall.product.spu.form.index.kad98c017')"
-        name="description"
-      >
+      <el-tab-pane label="商品详情" name="description">
         <DescriptionForm
           ref="descriptionRef"
           v-model:activeName="activeName"
@@ -36,7 +33,7 @@
           :propFormData="formData"
         />
       </el-tab-pane>
-      <el-tab-pane :label="t('auto.views.mall.product.spu.form.index.kd4a3f5d9')" name="other">
+      <el-tab-pane label="其它设置" name="other">
         <OtherForm
           ref="otherRef"
           v-model:activeName="activeName"
@@ -48,9 +45,9 @@
     <el-form>
       <el-form-item style="float: right">
         <el-button v-if="!isDetail" :loading="formLoading" type="primary" @click="submitForm">
-          {{ t('extra.ka4e2ce9a') }}
+          保存
         </el-button>
-        <el-button @click="close">{{ t('common.back') }}</el-button>
+        <el-button @click="close">返回</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -65,8 +62,11 @@ import OtherForm from './OtherForm.vue'
 import SkuForm from './SkuForm.vue'
 import DeliveryForm from './DeliveryForm.vue'
 import { convertToInteger, floatToFixed2, formatToFraction } from '@/utils'
-const { t } = useI18n()
+import { isEmpty } from '@/utils/is'
+
 defineOptions({ name: 'ProductSpuAdd' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const { push, currentRoute } = useRouter() // 路由
 const { params, name } = useRoute() // 查询参数
@@ -95,6 +95,7 @@ const formData = ref<ProductSpuApi.Spu>({
   subCommissionType: false, // 分销类型
   skus: [
     {
+      name: '', // SKU 名称，提交时会自动使用 SPU 名称
       price: 0, // 商品价格
       marketPrice: 0, // 市场价
       costPrice: 0, // 成本价
@@ -159,8 +160,13 @@ const submitForm = async () => {
     await unref(otherRef)?.validate()
     // 深拷贝一份, 这样最终 server 端不满足，不需要影响原始数据
     const deepCopyFormData = cloneDeep(unref(formData.value)) as ProductSpuApi.Spu
+    // 校验商品名称不能为空（用于 SKU name）
+    if (isEmpty(deepCopyFormData.name)) {
+      message.error('商品名称不能为空')
+      return
+    }
     deepCopyFormData.skus!.forEach((item) => {
-      // 给sku name赋值
+      // 给sku name赋值（使用商品名称作为 SKU 名称）
       item.name = deepCopyFormData.name
       // sku相关价格元转分
       item.price = convertToInteger(item.price)

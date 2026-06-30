@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.promotion.diy.template.index.k5ab6537f')"
-    url="https://doc.iocoder.cn/mall/diy/"
-  />
+  <doc-alert title="【营销】商城装修" url="https://doc.iocoder.cn/mall/diy/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -13,43 +10,36 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.diy.template.index.kbbc511d0')"
-        prop="name"
-      >
+      <el-form-item label="模板名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.promotion.diy.template.index.k86bd4450')"
+          placeholder="请输入模板名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          :start-placeholder="t('auto.views.mall.promotion.diy.template.index.k1f291968')"
-          :end-placeholder="t('auto.views.mall.promotion.diy.template.index.kf4b9b2b5')"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['promotion:diy-template:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k19e408b4') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -58,16 +48,8 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.mall.promotion.diy.template.index.k9f42dac6')"
-        align="center"
-        prop="id"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.diy.template.index.k81946fbf')"
-        align="center"
-        prop="previewPicUrls"
-      >
+      <el-table-column label="编号" align="center" prop="id" />
+      <el-table-column label="预览图" align="center" prop="previewPicUrls">
         <template #default="scope">
           <el-image
             class="h-40px max-w-40px"
@@ -75,37 +57,26 @@
             :key="index"
             :src="url"
             :preview-src-list="scope.row.previewPicUrls"
-            :initial-index="index"
+            :initial-index="Number(index)"
             preview-teleported
           />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.mall.promotion.diy.template.DiyTemplateForm.kbbc511d0')"
-        align="center"
-        prop="name"
-      />
-      <el-table-column :label="t('extra.k7386b590')" align="center" prop="used">
+      <el-table-column label="模板名称" align="center" prop="name" min-width="180" />
+      <el-table-column label="是否使用" align="center" prop="used">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.used" />
         </template>
       </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" min-width="180" />
       <el-table-column
-        :label="t('extra.k01100972')"
-        align="center"
-        prop="usedTime"
-        :formatter="dateFormatter"
-        width="180px"
-      />
-      <el-table-column :label="t('common.remark')" align="center" prop="remark" />
-      <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.operation')" align="center" width="200">
+      <el-table-column label="操作" align="center" width="200">
         <template #default="scope">
           <el-button
             link
@@ -113,7 +84,7 @@
             @click="handleDecorate(scope.row.id)"
             v-hasPermi="['promotion:diy-template:update']"
           >
-            {{ t('extra.k81b2cb54') }}
+            装修
           </el-button>
           <el-button
             link
@@ -121,7 +92,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['promotion:diy-template:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <template v-if="!scope.row.used">
             <el-button
@@ -130,7 +101,7 @@
               @click="handleUse(scope.row)"
               v-hasPermi="['promotion:diy-template:use']"
             >
-              {{ t('extra.kecff77a8') }}
+              使用
             </el-button>
             <el-button
               link
@@ -138,7 +109,7 @@
               @click="handleDelete(scope.row.id)"
               v-hasPermi="['promotion:diy-template:delete']"
             >
-              {{ t('common.delete') }}
+              删除
             </el-button>
           </template>
         </template>
@@ -164,10 +135,10 @@ import DiyTemplateForm from './DiyTemplateForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 
 /** 装修模板 */
-const { t } = useI18n()
 defineOptions({ name: 'DiyTemplate' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -176,7 +147,7 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   name: null,
-  createTime: []
+  createTime: [] as string[]
 })
 const queryFormRef = ref() // 搜索的表单
 
@@ -227,10 +198,10 @@ const handleDelete = async (id: number) => {
 const handleUse = async (row: DiyTemplateApi.DiyTemplateVO) => {
   try {
     // 使用模板的二次确认
-    await message.confirm(t('extra.kae05a21f', { p0: row.name }))
+    await message.confirm(`是否使用模板“${row.name}”?`)
     // 发起删除
     await DiyTemplateApi.useDiyTemplate(row.id!)
-    message.success(t('auto.views.mall.promotion.diy.template.index.kbd1f9ccb'))
+    message.success('使用成功')
     // 刷新列表
     await getList()
   } catch {}

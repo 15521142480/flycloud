@@ -1,7 +1,5 @@
 <template>
-  <el-button class="ml-10px" type="text" @click="selectCoupon">{{
-    t('auto.views.mall.promotion.rewardActivity.components.RewardRuleCouponSelect.kd6ac9789')
-  }}</el-button>
+  <el-button class="ml-10px" type="text" @click="selectCoupon">添加优惠劵</el-button>
 
   <div
     v-for="(item, index) in list"
@@ -9,24 +7,22 @@
     class="coupon-list-item p-x-10px mb-10px flex justify-between"
   >
     <div class="coupon-list-item-left flex items-center flex-wrap">
-      <div class="mr-10px">{{ t('extra.k4c5ecb7c', { p0: item.name }) }}</div>
+      <div class="mr-10px"> 优惠券名称：{{ item.name }}</div>
       <div class="mr-10px">
-        {{ t('extra.kd5641bee') }}
+        范围：
         <dict-tag :type="DICT_TYPE.PROMOTION_PRODUCT_SCOPE" :value="item.productScope" />
       </div>
       <div class="flex items-center">
-        {{ t('extra.k74b838c7') }}
+        优惠：
         <dict-tag :type="DICT_TYPE.PROMOTION_DISCOUNT_TYPE" :value="item.discountType" />
         {{ discountFormat(item) }}
       </div>
     </div>
     <div class="coupon-list-item-right">
-      {{ t('extra.k95d3bcf4') }}
+      送
       <el-input v-model="item.giveCount" class="w-150px! p-x-20px!" placeholder="" type="number" />
-      {{ t('extra.kc30cb0c6') }}
-      <el-button class="ml-20px" link type="danger" @click="deleteCoupon(index)">{{
-        t('common.delete')
-      }}</el-button>
+      张
+      <el-button class="ml-20px" link type="danger" @click="deleteCoupon(index)">删除</el-button>
     </div>
   </div>
 
@@ -47,7 +43,7 @@ import { CouponTemplateTakeTypeEnum } from '@/utils/constants'
 import { discountFormat } from '@/views/mall/promotion/coupon/formatter'
 import { isEmpty } from '@/utils/is'
 import { useVModel } from '@vueuse/core'
-const { t } = useI18n()
+
 defineOptions({ name: 'RewardRuleCouponSelect' })
 
 const props = defineProps<{
@@ -93,9 +89,7 @@ const initGiveCouponList = async () => {
   if (isEmpty(rewardRule.value) || isEmpty(rewardRule.value.giveCouponTemplateCounts)) {
     return
   }
-  const tempLateIds = Object.keys(rewardRule.value.giveCouponTemplateCounts!).map((item) =>
-    parseInt(item)
-  )
+  const tempLateIds = Object.keys(rewardRule.value.giveCouponTemplateCounts!).map(Number)
   const data = await CouponTemplateApi.getCouponTemplateList(tempLateIds)
   if (!data) {
     return
@@ -111,16 +105,15 @@ const initGiveCouponList = async () => {
 
 /** 设置赠送的优惠券 */
 const setGiveCouponList = () => {
-  if (isEmpty(rewardRule.value) || isEmpty(list.value)) {
+  if (isEmpty(rewardRule.value)) {
     return
   }
+  // 核心：清空 rewardRule.value.giveCouponTemplateCounts，解决删除不生效的问题
+  rewardRule.value.giveCouponTemplateCounts = {}
 
   // 设置优惠券和其数量的对应
   list.value.forEach((rule) => {
-    if (!rewardRule.value.giveCouponTemplateCounts) {
-      rewardRule.value.giveCouponTemplateCounts = {}
-    }
-    rewardRule.value.giveCouponTemplateCounts[rule.id] = rule.giveCount!
+    rewardRule.value.giveCouponTemplateCounts![rule.id] = rule.giveCount!
   })
 }
 defineExpose({ setGiveCouponList })

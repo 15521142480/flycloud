@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.trade.delivery.express.index.k13435b1a')"
-    url="https://doc.iocoder.cn/mall/trade-delivery-express/"
-  />
+  <doc-alert title="【交易】快递发货" url="https://doc.iocoder.cn/mall/trade-delivery-express/" />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -13,44 +10,34 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.express.index.k3cebbe73')"
-        prop="code"
-      >
+      <el-form-item label="快递公司编号" prop="code">
         <el-input
           v-model="queryParams.code"
-          :placeholder="t('auto.views.mall.trade.delivery.express.index.k2d4c99ea')"
+          placeholder="请输快递公司编号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.express.index.k01e5c5c2')"
-        prop="name"
-      >
+      <el-form-item label="快递公司名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.trade.delivery.express.index.kf322cfc7')"
+          placeholder="请输快递公司名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['trade:delivery:express:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k77c0e5c7') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
         <el-button
           type="success"
@@ -59,7 +46,7 @@
           :loading="exportLoading"
           v-hasPermi="['trade:delivery:express:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.k0d5ebdbf') }}
+          <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
       </el-form-item>
     </el-form>
@@ -68,45 +55,27 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column
-        :label="t('auto.views.mall.trade.delivery.express.index.kdb6d81d4')"
-        prop="code"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.delivery.express.index.k94c4852f')"
-        prop="name"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.delivery.express.index.k74d69958')"
-        prop="logo"
-      >
+      <el-table-column label="公司编码" prop="code" />
+      <el-table-column label="公司名称" prop="name" />
+      <el-table-column label="公司 logo " prop="logo">
         <template #default="scope">
-          <img
-            v-if="scope.row.logo"
-            :src="scope.row.logo"
-            :alt="t('auto.views.mall.trade.delivery.express.index.k7f62a799')"
-            class="h-40px"
-          />
+          <img v-if="scope.row.logo" :src="scope.row.logo" alt="公司logo" class="h-40px" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.sort')" align="center" prop="sort" />
-      <el-table-column
-        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k6bbda1b1')"
-        align="center"
-        prop="status"
-      >
+      <el-table-column label="排序" align="center" prop="sort" />
+      <el-table-column label="开启状态" align="center" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column :label="t('common.operation')" align="center">
+      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
             link
@@ -114,7 +83,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['trade:delivery:express:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -122,7 +91,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['trade:delivery:express:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -138,10 +107,11 @@ import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as DeliveryExpressApi from '@/api/mall/trade/delivery/express'
 import ExpressForm from './ExpressForm.vue'
-const { t } = useI18n()
+
 defineOptions({ name: 'Express' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 const total = ref(0) // 列表的总页数
 const loading = ref(true) // 列表的加载中
 const list = ref<any[]>([]) // 列表的数据
@@ -205,7 +175,7 @@ const handleExport = async () => {
     // 发起导出
     exportLoading.value = true
     const data = await DeliveryExpressApi.exportDeliveryExpressApi(queryParams)
-    download.excel(data, t('auto.views.mall.trade.delivery.express.index.k11926211'))
+    download.excel(data, '快递公司.xls')
   } catch {
   } finally {
     exportLoading.value = false

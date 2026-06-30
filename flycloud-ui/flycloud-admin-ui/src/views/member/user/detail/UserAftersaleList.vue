@@ -2,56 +2,41 @@
   <!-- 搜索 -->
   <ContentWrap>
     <el-form ref="queryFormRef" :inline="true" :model="queryParams" label-width="68px">
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserAftersaleList.k47b74133')"
-        prop="spuName"
-      >
+      <el-form-item label="商品名称" prop="spuName">
         <el-input
           v-model="queryParams.spuName"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.member.user.detail.UserAftersaleList.k46c7a7ea')"
+          placeholder="请输入商品 SPU 名称"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserAftersaleList.kaa0737e3')"
-        prop="no"
-      >
+      <el-form-item label="退款编号" prop="no">
         <el-input
           v-model="queryParams.no"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.member.user.detail.UserAftersaleList.k6e9e0e31')"
+          placeholder="请输入退款编号"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserAftersaleList.k8c60a237')"
-        prop="orderNo"
-      >
+      <el-form-item label="订单编号" prop="orderNo">
         <el-input
           v-model="queryParams.orderNo"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.member.user.detail.UserAftersaleList.k703bbdd7')"
+          placeholder="请输入订单编号"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserAftersaleList.k1357a380')"
-        prop="status"
-      >
+      <el-form-item label="售后状态" prop="status">
         <el-select
           v-model="queryParams.status"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.member.user.detail.UserAftersaleList.kaafac0f5')"
+          placeholder="请选择售后状态"
         >
-          <el-option
-            :label="t('auto.views.member.user.detail.UserAftersaleList.k778fc8f9')"
-            value="0"
-          />
+          <el-option label="全部" value="0" />
           <el-option
             v-for="dict in getDictOptions(DICT_TYPE.TRADE_AFTER_SALE_STATUS)"
             :key="dict.value"
@@ -60,15 +45,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserAftersaleList.k21718f30')"
-        prop="way"
-      >
+      <el-form-item label="售后方式" prop="way">
         <el-select
           v-model="queryParams.way"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.member.user.detail.UserAftersaleList.kf7e2ae13')"
+          placeholder="请选择售后方式"
         >
           <el-option
             v-for="dict in getDictOptions(DICT_TYPE.TRADE_AFTER_SALE_WAY)"
@@ -78,15 +60,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.member.user.detail.UserAftersaleList.k3bf5ee94')"
-        prop="type"
-      >
+      <el-form-item label="售后类型" prop="type">
         <el-select
           v-model="queryParams.type"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.member.user.detail.UserAftersaleList.k2a7ecc3c')"
+          placeholder="请选择售后类型"
         >
           <el-option
             v-for="dict in getDictOptions(DICT_TYPE.TRADE_AFTER_SALE_TYPE)"
@@ -96,13 +75,13 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-280px"
-          :end-placeholder="t('auto.views.member.user.detail.UserAftersaleList.k935f547a')"
-          :start-placeholder="t('auto.views.member.user.detail.UserAftersaleList.k935f547a')"
+          end-placeholder="自定义时间"
+          start-placeholder="自定义时间"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
@@ -110,11 +89,11 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          {{ t('extra.k887fa182') }}
+          搜索
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          {{ t('extra.k28219ac1') }}
+          重置
         </el-button>
       </el-form-item>
     </el-form>
@@ -131,25 +110,15 @@
     </el-tabs>
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
-      <el-table-column
-        align="center"
-        :label="t('auto.views.member.user.detail.UserAftersaleList.kaa0737e3')"
-        min-width="200"
-        prop="no"
-      />
-      <el-table-column
-        align="center"
-        :label="t('auto.views.member.user.detail.UserAftersaleList.k8c60a237')"
-        min-width="200"
-        prop="orderNo"
-      >
+      <el-table-column align="center" label="退款编号" min-width="200" prop="no" />
+      <el-table-column align="center" label="订单编号" min-width="200" prop="orderNo">
         <template #default="{ row }">
           <el-button link type="primary" @click="openOrderDetail(row.orderId)">
             {{ row.orderNo }}
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.k7519f060')" min-width="600" prop="spuName">
+      <el-table-column label="商品信息" min-width="600" prop="spuName">
         <template #default="{ row }">
           <div class="flex items-center">
             <el-image
@@ -164,41 +133,29 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        :label="t('auto.views.mall.home.components.TradeTrendCard.kd98167d3')"
-        min-width="120"
-        prop="refundPrice"
-      >
+      <el-table-column align="center" label="订单金额" min-width="120" prop="refundPrice">
         <template #default="scope">
-          <span>{{ fenToYuan(scope.row.refundPrice) }} {{ t('extra.k2d94e2e7') }}</span>
+          <span>{{ fenToYuan(scope.row.refundPrice) }} 元</span>
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        :label="t('auto.views.bpm.oa.leave.index.ke85ad6ea')"
-        prop="createTime"
-        width="180"
-      >
+      <el-table-column align="center" label="申请时间" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ formatDate(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('extra.k81df0241')" width="100">
+      <el-table-column align="center" label="售后状态" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column align="center" :label="t('auto.views.mall.trade.afterSale.index.k21718f30')">
+      <el-table-column align="center" label="售后方式">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.TRADE_AFTER_SALE_WAY" :value="scope.row.way" />
         </template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" :label="t('common.operation')" width="120">
+      <el-table-column align="center" fixed="right" label="操作" width="120">
         <template #default="{ row }">
-          <el-button link type="primary" @click="openAfterSaleDetail(row.id)">{{
-            t('extra.kafde6a7e')
-          }}</el-button>
+          <el-button link type="primary" @click="openAfterSaleDetail(row.id)">处理退款</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -219,7 +176,7 @@ import { createImageViewer } from '@/components/ImageViewer'
 import { TabsPaneContext } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
 import { fenToYuan } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'UserAfterSaleList' })
 
 const { push } = useRouter() // 路由跳转
@@ -231,7 +188,7 @@ const total = ref(0) // 列表的总页数
 const list = ref<AfterSaleApi.TradeAfterSaleVO[]>([]) // 列表的数据
 const statusTabs = ref([
   {
-    label: t('auto.views.member.user.detail.UserAftersaleList.k778fc8f9'),
+    label: '全部',
     value: '0'
   }
 ])
@@ -256,14 +213,12 @@ const getList = async () => {
   try {
     const data = cloneDeep(queryParams.value)
     // 处理掉全部的状态，不传就是全部
-    if (data.status === '0') {
-      delete data.status
-    }
+    const queryData = data.status === '0' ? (({ status: _status, ...rest }) => rest)(data) : data
     // 执行查询
     if (props.userId) {
-      data.userId = props.userId as any
+      queryData.userId = props.userId as any
     }
-    const res = await AfterSaleApi.getAfterSalePage(data)
+    const res = await AfterSaleApi.getAfterSalePage(queryData)
     list.value = res.list as AfterSaleApi.TradeAfterSaleVO[]
     total.value = res.total
   } finally {

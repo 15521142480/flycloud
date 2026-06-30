@@ -17,10 +17,7 @@
         </div>
       </el-tooltip>
     </div>
-    <el-tooltip
-      :content="t('auto.views.mall.promotion.seckill.components.SeckillShowcase.k9669b876')"
-      v-if="canAdd"
-    >
+    <el-tooltip content="选择活动" v-if="canAdd">
       <div class="select-box" @click="openSeckillActivityTableSelect">
         <Icon icon="ep:plus" />
       </div>
@@ -42,7 +39,6 @@ import SeckillTableSelect from '@/views/mall/promotion/seckill/components/Seckil
 
 // 活动橱窗，一般用于装修时使用
 // 提供功能：展示活动列表、添加活动、删除活动
-const { t } = useI18n()
 defineOptions({ name: 'SeckillShowcase' })
 
 const props = defineProps({
@@ -62,7 +58,7 @@ const canAdd = computed(() => {
   return Activitys.value.length < props.limit
 })
 
-// 拼团活动列表
+// 秒杀活动列表
 const Activitys = ref<SeckillActivityApi.SeckillActivityVO[]>([])
 
 watch(
@@ -138,11 +134,11 @@ const emitActivityChange = () => {
   display: flex;
   width: 60px;
   height: 60px;
+  cursor: pointer;
   border: 1px dashed var(--el-border-color-darker);
   border-radius: 8px;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .spu-pic {

@@ -1,12 +1,6 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.trade.order.index.k1daebace')"
-    url="https://doc.iocoder.cn/mall/trade-order/"
-  />
-  <doc-alert
-    :title="t('auto.views.mall.trade.order.index.k4c3890b5')"
-    url="https://doc.iocoder.cn/mall/trade-cart/"
-  />
+  <doc-alert title="【交易】交易订单" url="https://doc.iocoder.cn/mall/trade-order/" />
+  <doc-alert title="【交易】购物车" url="https://doc.iocoder.cn/mall/trade-cart/" />
 
   <!-- 搜索 -->
   <ContentWrap>
@@ -17,13 +11,8 @@
       class="-mb-15px"
       label-width="68px"
     >
-      <el-form-item :label="t('auto.views.mall.trade.order.index.k4e4ca9ca')" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          class="!w-280px"
-          clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
-        >
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" class="!w-280px" clearable placeholder="全部">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_ORDER_STATUS)"
             :key="dict.value"
@@ -32,12 +21,12 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.trade.order.index.ka870784d')" prop="payChannelCode">
+      <el-form-item label="支付方式" prop="payChannelCode">
         <el-select
           v-model="queryParams.payChannelCode"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
+          placeholder="全部"
         >
           <el-option
             v-for="dict in getStrDictOptions(DICT_TYPE.PAY_CHANNEL_CODE)"
@@ -47,24 +36,19 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.createTime')" prop="createTime">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-280px"
-          :end-placeholder="t('auto.views.mall.trade.order.index.k935f547a')"
-          :start-placeholder="t('auto.views.mall.trade.order.index.k935f547a')"
+          end-placeholder="自定义时间"
+          start-placeholder="自定义时间"
           type="daterange"
           value-format="YYYY-MM-DD HH:mm:ss"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.trade.order.index.k83ecd478')" prop="terminal">
-        <el-select
-          v-model="queryParams.terminal"
-          class="!w-280px"
-          clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
-        >
+      <el-form-item label="订单来源" prop="terminal">
+        <el-select v-model="queryParams.terminal" class="!w-280px" clearable placeholder="全部">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TERMINAL)"
             :key="dict.value"
@@ -73,13 +57,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.trade.order.index.ka1d4eaf1')" prop="type">
-        <el-select
-          v-model="queryParams.type"
-          class="!w-280px"
-          clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
-        >
+      <el-form-item label="订单类型" prop="type">
+        <el-select v-model="queryParams.type" class="!w-280px" clearable placeholder="全部">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_ORDER_TYPE)"
             :key="dict.value"
@@ -88,13 +67,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.trade.order.index.kaa419646')" prop="deliveryType">
-        <el-select
-          v-model="queryParams.deliveryType"
-          class="!w-280px"
-          clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
-        >
+      <el-form-item label="配送方式" prop="deliveryType">
+        <el-select v-model="queryParams.deliveryType" class="!w-280px" clearable placeholder="全部">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.TRADE_DELIVERY_TYPE)"
             :key="dict.value"
@@ -105,26 +79,21 @@
       </el-form-item>
       <el-form-item
         v-if="queryParams.deliveryType === DeliveryTypeEnum.EXPRESS.type"
-        :label="t('auto.views.mall.trade.order.index.k158720a2')"
+        label="快递公司"
         prop="logisticsId"
       >
-        <el-select
-          v-model="queryParams.logisticsId"
-          class="!w-280px"
-          clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
-        >
+        <el-select v-model="queryParams.logisticsId" class="!w-280px" clearable placeholder="全部">
           <el-option
             v-for="item in deliveryExpressList"
             :key="item.id"
             :label="item.name"
-            :value="item.id"
+            :value="item.id!"
           />
         </el-select>
       </el-form-item>
       <el-form-item
         v-if="queryParams.deliveryType === DeliveryTypeEnum.PICK_UP.type"
-        :label="t('auto.views.mall.trade.order.index.k7d250a8d')"
+        label="自提门店"
         prop="pickUpStoreId"
       >
         <el-select
@@ -132,44 +101,44 @@
           class="!w-280px"
           clearable
           multiple
-          :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
+          placeholder="全部"
         >
           <el-option
             v-for="item in pickUpStoreList"
             :key="item.id"
             :label="item.name"
-            :value="item.id"
+            :value="item.id!"
           />
         </el-select>
       </el-form-item>
       <el-form-item
         v-if="queryParams.deliveryType === DeliveryTypeEnum.PICK_UP.type"
-        :label="t('auto.views.mall.trade.order.index.k270938f1')"
+        label="核销码"
         prop="pickUpVerifyCode"
       >
         <el-input
           v-model="queryParams.pickUpVerifyCode"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k1572eb0d')"
+          placeholder="请输入自提核销码"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="t('auto.views.mall.trade.order.index.k2798e98a')">
+      <el-form-item label="聚合搜索">
         <el-input
           v-show="true"
           v-model="queryParams[queryType.queryParam]"
           :type="queryType.queryParam === 'userId' ? 'number' : 'text'"
           class="!w-280px"
           clearable
-          :placeholder="t('auto.views.mall.trade.order.index.k601816e1')"
+          placeholder="请输入"
         >
           <template #prepend>
             <el-select
               v-model="queryType.queryParam"
               class="!w-110px"
               clearable
-              :placeholder="t('auto.views.mall.trade.order.index.k778fc8f9')"
+              placeholder="全部"
               @change="inputChangeSelect"
             >
               <el-option
@@ -184,10 +153,12 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="handleQuery">
-          <Icon class="mr-5px" icon="ep:search" /> {{ t('extra.k04864902') }}
+          <Icon class="mr-5px" icon="ep:search" />
+          搜索
         </el-button>
         <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" /> {{ t('common.reset') }}
+          <Icon class="mr-5px" icon="ep:refresh" />
+          重置
         </el-button>
       </el-form-item>
     </el-form>
@@ -206,14 +177,16 @@
               type="primary"
               @click="openDetail(row.id)"
             >
-              <Icon icon="ep:notification" /> {{ t('action.detail') }}
+              <Icon icon="ep:notification" />
+              详情
             </el-button>
             <el-dropdown
               v-hasPermi="['trade:order:update']"
               @command="(command) => handleCommand(command, row)"
             >
               <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}
+                <Icon icon="ep:d-arrow-right" />
+                更多
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -225,10 +198,12 @@
                     "
                     command="delivery"
                   >
-                    <Icon icon="ep:takeaway-box" /> {{ t('extra.k3ddeb39f') }}
+                    <Icon icon="ep:takeaway-box" />
+                    发货
                   </el-dropdown-item>
                   <el-dropdown-item command="remark">
-                    <Icon icon="ep:chat-line-square" /> {{ t('common.remark') }}
+                    <Icon icon="ep:chat-line-square" />
+                    备注
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -261,7 +236,7 @@ import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
 import * as DeliveryExpressApi from '@/api/mall/trade/delivery/express'
 import { DeliveryTypeEnum, TradeOrderStatusEnum } from '@/utils/constants'
 import { OrderTableColumn } from './components'
-const { t } = useI18n()
+
 defineOptions({ name: 'TradeOrder' })
 
 const { currentRoute, push } = useRouter() // 路由跳转
@@ -287,10 +262,10 @@ const queryType = reactive({ queryParam: '' }) // 订单搜索类型 queryParam
 
 // 订单聚合搜索 select 类型配置（动态搜索）
 const dynamicSearchList = ref([
-  { value: 'no', label: t('auto.views.mall.trade.order.index.k459868e5') },
-  { value: 'userId', label: t('auto.views.mall.trade.order.index.kc643dec1') },
-  { value: 'userNickname', label: t('auto.views.mall.trade.order.index.k90542e0a') },
-  { value: 'userMobile', label: t('auto.views.mall.trade.order.index.kf1f95d00') }
+  { value: 'no', label: '订单号' },
+  { value: 'userId', label: '用户UID' },
+  { value: 'userNickname', label: '用户昵称' },
+  { value: 'userMobile', label: '用户电话' }
 ])
 /**
  * 聚合搜索切换查询对象时触发
@@ -376,7 +351,7 @@ const deliveryExpressList = ref<DeliveryExpressApi.DeliveryExpressVO[]>([]) // �
 /** 初始化 **/
 onMounted(async () => {
   await getList()
-  pickUpStoreList.value = await PickUpStoreApi.getListAllSimple()
+  pickUpStoreList.value = await PickUpStoreApi.getSimpleDeliveryPickUpStoreList()
   deliveryExpressList.value = await DeliveryExpressApi.getSimpleDeliveryExpressList()
 })
 </script>

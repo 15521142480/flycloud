@@ -1,4 +1,6 @@
 <template>
+  <doc-alert title="【商品】商品分类" url="https://doc.iocoder.cn/mall/product-category/" />
+
   <!-- 搜索工作栏 -->
   <ContentWrap>
     <el-form
@@ -8,29 +10,25 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item :label="t('auto.views.mall.product.category.index.k3fc30355')" prop="name">
+      <el-form-item label="分类名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.product.category.index.k56e43e46')"
+          placeholder="请输入分类名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
           v-hasPermi="['product:category:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.ka07f2d48') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -39,40 +37,26 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" row-key="id" default-expand-all>
-      <el-table-column
-        :label="t('auto.views.mall.product.category.index.k1be7ae4f')"
-        min-width="240"
-        prop="name"
-        sortable
-      />
-      <el-table-column
-        :label="t('auto.views.mall.product.category.index.k698667d1')"
-        align="center"
-        min-width="80"
-        prop="picUrl"
-      >
+      <el-table-column label="名称" min-width="240" prop="name" sortable />
+      <el-table-column label="分类图标" align="center" min-width="80" prop="picUrl">
         <template #default="scope">
-          <img
-            :src="scope.row.picUrl"
-            :alt="t('auto.views.mall.product.category.index.k48d796b0')"
-            class="h-36px"
-          />
+          <img :src="scope.row.picUrl" alt="移动端分类图" class="h-36px" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.sort')" align="center" min-width="150" prop="sort" />
-      <el-table-column :label="t('common.status')" align="center" min-width="150" prop="status">
+      <el-table-column label="排序" align="center" min-width="150" prop="sort" />
+      <el-table-column label="状态" align="center" min-width="150" prop="status">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column :label="t('common.operation')" align="center" min-width="180">
+      <el-table-column label="操作" align="center" min-width="180">
         <template #default="scope">
           <el-button
             link
@@ -80,7 +64,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['product:category:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -89,7 +73,7 @@
             @click="handleViewSpu(scope.row.id)"
             v-hasPermi="['product:spu:query']"
           >
-            {{ t('extra.kf13684ce') }}
+            查看商品
           </el-button>
           <el-button
             link
@@ -97,7 +81,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['product:category:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -113,10 +97,11 @@ import { handleTree } from '@/utils/tree'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ProductCategoryApi from '@/api/mall/product/category'
 import CategoryForm from './CategoryForm.vue'
-const { t } = useI18n()
+
 defineOptions({ name: 'ProductCategory' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<any[]>([]) // 列表的数据

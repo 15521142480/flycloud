@@ -1,49 +1,43 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :title="t('auto.views.pay.notify.NotifyDetail.k779398d0')"
-    width="50%"
-  >
+  <Dialog v-model="dialogVisible" title="通知详情" width="50%" :loading="detailLoading">
     <el-descriptions :column="2">
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.kf51b03a6')">
+      <el-descriptions-item label="通知状态" :span="2">
+        <dict-tag :type="DICT_TYPE.PAY_NOTIFY_STATUS" :value="detailData.status!" />
+      </el-descriptions-item>
+      <el-descriptions-item label="商户订单编号" :span="2">
         <el-tag>{{ detailData.merchantOrderId }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.kcca88a70')">
-        <dict-tag :type="DICT_TYPE.PAY_NOTIFY_STATUS" :value="detailData.status" />
+      <el-descriptions-item label="商户退款编号" :span="2" v-if="detailData.merchantRefundId">
+        <el-tag>{{ detailData.merchantRefundId }}</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="商户转账编号" :span="2" v-if="detailData.merchantTransferId">
+        <el-tag>{{ detailData.merchantTransferId }}</el-tag>
       </el-descriptions-item>
 
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.k396d9d78')">{{
-        detailData.appId
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.k2d87d518')">{{
-        detailData.appName
-      }}</el-descriptions-item>
+      <el-descriptions-item label="应用编号">{{ detailData.appId }}</el-descriptions-item>
+      <el-descriptions-item label="应用名称">{{ detailData.appName }}</el-descriptions-item>
 
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.k8913e0a8')">{{
-        detailData.dataId
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.k1cf9ae8f')">
-        <dict-tag :type="DICT_TYPE.PAY_NOTIFY_TYPE" :value="detailData.type" />
+      <el-descriptions-item label="关联编号">{{ detailData.dataId }}</el-descriptions-item>
+      <el-descriptions-item label="通知类型">
+        <dict-tag :type="DICT_TYPE.PAY_NOTIFY_TYPE" :value="detailData.type!" />
       </el-descriptions-item>
 
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.kec63d1a8')">{{
-        detailData.notifyTimes
-      }}</el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.k036388c2')">
+      <el-descriptions-item label="通知次数">{{ detailData.notifyTimes }}</el-descriptions-item>
+      <el-descriptions-item label="最大通知次数">
         {{ detailData.maxNotifyTimes }}
       </el-descriptions-item>
 
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.ka8943cc4')">
+      <el-descriptions-item label="最后通知时间">
         {{ formatDate(detailData.lastExecuteTime) }}
       </el-descriptions-item>
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.kf9dac926')">
+      <el-descriptions-item label="下次通知时间">
         {{ formatDate(detailData.nextNotifyTime) }}
       </el-descriptions-item>
 
-      <el-descriptions-item :label="t('common.createTime')">
+      <el-descriptions-item label="创建时间">
         {{ formatDate(detailData.createTime) }}
       </el-descriptions-item>
-      <el-descriptions-item :label="t('common.updateTime')">
+      <el-descriptions-item label="更新时间">
         {{ formatDate(detailData.updateTime) }}
       </el-descriptions-item>
     </el-descriptions>
@@ -52,38 +46,21 @@
     <el-divider />
 
     <el-descriptions :column="1" direction="vertical" border>
-      <el-descriptions-item :label="t('auto.views.pay.notify.NotifyDetail.kfd16b473')">
-        <el-table :data="detailData.logs">
-          <el-table-column
-            :label="t('auto.views.pay.notify.NotifyDetail.k8cac83c8')"
-            align="center"
-            prop="id"
-          />
-          <el-table-column
-            :label="t('auto.views.pay.notify.NotifyDetail.kcca88a70')"
-            align="center"
-            prop="status"
-          >
+      <el-descriptions-item label="回调日志">
+        <el-table :data="detailData.logs || []">
+          <el-table-column label="日志编号" align="center" prop="id" />
+          <el-table-column label="通知状态" align="center" prop="status">
             <template #default="scope">
               <dict-tag :type="DICT_TYPE.PAY_NOTIFY_STATUS" :value="scope.row.status" />
             </template>
           </el-table-column>
-          <el-table-column
-            :label="t('auto.views.pay.notify.NotifyDetail.kec63d1a8')"
-            align="center"
-            prop="notifyTimes"
-          />
-          <el-table-column
-            :label="t('extra.k3f6194f8')"
-            align="center"
-            prop="lastExecuteTime"
-            width="180"
-          >
+          <el-table-column label="通知次数" align="center" prop="notifyTimes" />
+          <el-table-column label="通知时间" align="center" prop="lastExecuteTime" width="180">
             <template #default="scope">
               <span>{{ formatDate(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="t('extra.k15d5fffa')" align="center" prop="response" />
+          <el-table-column label="响应结果" align="center" prop="response" />
         </el-table>
       </el-descriptions-item>
     </el-descriptions>
@@ -93,18 +70,18 @@
 import { DICT_TYPE } from '@/utils/dict'
 import * as PayNotifyApi from '@/api/pay/notify'
 import { formatDate } from '@/utils/formatTime'
-const { t } = useI18n()
+
 defineOptions({ name: 'PayNotifyDetail' })
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const detailLoading = ref(false) // 表单的加载中
-const detailData = ref({})
+const detailData = ref<PayNotifyApi.NotifyTaskVO>({ logs: [] })
 
 /** 打开弹窗 */
 const open = async (id: number) => {
-  dialogVisible.value = true
   // 设置数据
   detailLoading.value = true
+  dialogVisible.value = true
   try {
     detailData.value = await PayNotifyApi.getNotifyTaskDetail(id)
   } finally {

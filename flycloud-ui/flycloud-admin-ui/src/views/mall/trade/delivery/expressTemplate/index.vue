@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.trade.delivery.expressTemplate.index.k13435b1a')"
-    url="https://doc.iocoder.cn/mall/trade-delivery-express/"
-  />
+  <doc-alert title="【交易】快递发货" url="https://doc.iocoder.cn/mall/trade-delivery-express/" />
 
   <!-- 搜索工作栏 -->
   <ContentWrap>
@@ -13,25 +10,19 @@
       :inline="true"
       label-width="100px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.index.kbbc511d0')"
-        prop="name"
-      >
+      <el-form-item label="模板名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.mall.trade.delivery.expressTemplate.index.k86bd4450')"
+          placeholder="请输入模板名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.index.k459460d6')"
-        prop="chargeMode"
-      >
+      <el-form-item label="计费方式" prop="chargeMode">
         <el-select
           v-model="queryParams.chargeMode"
-          :placeholder="t('auto.views.mall.trade.delivery.expressTemplate.index.k459460d6')"
+          placeholder="计费方式"
           clearable
           class="!w-240px"
         >
@@ -44,12 +35,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button
           type="primary"
           plain
@@ -57,7 +44,7 @@
           v-hasPermi="['trade:delivery:express-template:create']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
-          {{ t('extra.kf9542690') }}
+          新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -66,35 +53,22 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.index.k9f42dac6')"
-        min-width="60"
-        prop="id"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.index.kbbc511d0')"
-        min-width="100"
-        prop="name"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.index.k459460d6')"
-        prop="chargeMode"
-        min-width="100"
-        align="center"
-      >
+      <el-table-column label="编号" min-width="60" prop="id" />
+      <el-table-column label="模板名称" min-width="100" prop="name" />
+      <el-table-column label="计费方式" prop="chargeMode" min-width="100" align="center">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.EXPRESS_CHARGE_MODE" :value="scope.row.chargeMode" />
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.sort')" min-width="100" prop="sort" />
+      <el-table-column label="排序" min-width="100" prop="sort" />
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         width="180"
         :formatter="dateFormatter"
       />
-      <el-table-column :label="t('common.operation')" align="center">
+      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
             link
@@ -102,7 +76,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['trade:delivery:express-template:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -110,7 +84,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['trade:delivery:express-template:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -125,10 +99,11 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as DeliveryExpressTemplateApi from '@/api/mall/trade/delivery/expressTemplate'
 import ExpressTemplateForm from './ExpressTemplateForm.vue'
-const { t } = useI18n()
+
 defineOptions({ name: 'DeliveryExpressTemplate' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 const total = ref(0) // 列表的总页数
 const loading = ref(true) // 列表的加载中
 const list = ref<any[]>([]) // 列表的数据

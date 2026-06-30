@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.statistics.product.index.k5bbb4c4a')"
-    url="https://doc.iocoder.cn/mall/statistics/"
-  />
+  <doc-alert title="【统计】会员、商品、交易统计" url="https://doc.iocoder.cn/mall/statistics/" />
 
   <!-- 商品概览 -->
   <ProductSummary />
@@ -14,7 +11,6 @@ import ProductSummary from './components/ProductSummary.vue'
 import ProductRank from './components/ProductRank.vue'
 
 /** 商品统计 */
-const { t } = useI18n()
 defineOptions({ name: 'ProductStatistics' })
 </script>
 <style lang="scss" scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <CardTitle :title="t('auto.views.mall.home.components.OperationDataCard.k45b9d122')" />
+      <CardTitle title="运营数据" />
     </template>
     <div class="flex flex-row flex-wrap items-center gap-8 p-4">
       <div
@@ -26,52 +26,32 @@ import * as ProductSpuApi from '@/api/mall/product/spu'
 import * as TradeStatisticsApi from '@/api/mall/statistics/trade'
 import * as PayStatisticsApi from '@/api/mall/statistics/pay'
 import { CardTitle } from '@/components/Card'
+import { fenToYuan } from '@/utils'
 
 /** 运营数据卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'OperationDataCard' })
 
 const router = useRouter() // 路由
 
+type OperationDataItem = {
+  name: string
+  value: number
+  routerName: string
+  prefix?: string
+  decimals?: number
+}
+
 /** 数据 */
-const data = reactive({
-  orderUndelivered: {
-    name: t('auto.views.mall.home.components.OperationDataCard.kc1d9820f'),
-    value: 9,
-    routerName: 'TradeOrder'
-  },
-  orderAfterSaleApply: {
-    name: t('auto.views.mall.home.components.OperationDataCard.k8c6a48f8'),
-    value: 4,
-    routerName: 'TradeAfterSale'
-  },
-  orderWaitePickUp: {
-    name: t('auto.views.mall.home.components.OperationDataCard.k65b5072d'),
-    value: 0,
-    routerName: 'TradeOrder'
-  },
-  productAlertStock: {
-    name: t('auto.views.mall.home.components.OperationDataCard.ke8ee7bca'),
-    value: 0,
-    routerName: 'ProductSpu'
-  },
-  productForSale: {
-    name: t('auto.views.mall.home.components.OperationDataCard.kc6a49d3a'),
-    value: 0,
-    routerName: 'ProductSpu'
-  },
-  productInWarehouse: {
-    name: t('auto.views.mall.home.components.OperationDataCard.k70b85c3d'),
-    value: 0,
-    routerName: 'ProductSpu'
-  },
-  withdrawAuditing: {
-    name: t('auto.views.mall.home.components.OperationDataCard.kd85c40da'),
-    value: 0,
-    routerName: 'TradeBrokerageWithdraw'
-  },
+const data = reactive<Record<string, OperationDataItem>>({
+  orderUndelivered: { name: '待发货订单', value: 9, routerName: 'TradeOrder' },
+  orderAfterSaleApply: { name: '退款中订单', value: 4, routerName: 'TradeAfterSale' },
+  orderWaitePickUp: { name: '待核销订单', value: 0, routerName: 'TradeOrder' },
+  productAlertStock: { name: '库存预警', value: 0, routerName: 'ProductSpu' },
+  productForSale: { name: '上架商品', value: 0, routerName: 'ProductSpu' },
+  productInWarehouse: { name: '仓库商品', value: 0, routerName: 'ProductSpu' },
+  withdrawAuditing: { name: '提现待审核', value: 0, routerName: 'TradeBrokerageWithdraw' },
   rechargePrice: {
-    name: t('auto.views.mall.home.components.OperationDataCard.k46c2558a'),
+    name: '账户充值',
     value: 0.0,
     prefix: '￥',
     decimals: 2,
@@ -98,7 +78,6 @@ const getOrderData = async () => {
 
 /** 查询商品数据 */
 const getProductData = async () => {
-  // TODO: ：这个接口的返回值，是不是用命名字段更好些？
   const productCount = await ProductSpuApi.getTabsCount()
   data.productForSale.value = productCount['0']
   data.productInWarehouse.value = productCount['1']
@@ -108,7 +87,7 @@ const getProductData = async () => {
 /** 查询钱包充值数据 */
 const getWalletRechargeData = async () => {
   const paySummary = await PayStatisticsApi.getWalletRechargePrice()
-  data.rechargePrice.value = paySummary.rechargePrice
+  data.rechargePrice.value = Number(fenToYuan(paySummary.rechargePrice || 0))
 }
 
 /**

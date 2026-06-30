@@ -1,34 +1,18 @@
 <template>
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :show-overflow-tooltip="true" :stripe="true">
-      <el-table-column
-        align="center"
-        :label="t('auto.views.member.user.detail.UserBalanceList.k9f42dac6')"
-        prop="id"
-      />
-      <el-table-column
-        align="center"
-        :label="t('auto.views.member.user.detail.UserBalanceList.k1e61915a')"
-        prop="title"
-      />
-      <el-table-column
-        align="center"
-        :label="t('auto.views.member.user.detail.UserBalanceList.k7d71851d')"
-        prop="price"
-      >
-        <template #default="{ row }">
-          {{ fenToYuan(row.price) }} {{ t('extra.k2d94e2e7') }}</template
-        >
+      <el-table-column align="center" label="编号" prop="id" />
+      <el-table-column align="center" label="关联业务标题" prop="title" />
+      <el-table-column align="center" label="交易金额" prop="price">
+        <template #default="{ row }"> {{ fenToYuan(row.price) }} 元</template>
       </el-table-column>
-      <el-table-column align="center" :label="t('extra.ke12715ef')" prop="balance">
-        <template #default="{ row }">
-          {{ fenToYuan(row.balance) }} {{ t('extra.k2d94e2e7') }}</template
-        >
+      <el-table-column align="center" label="钱包余额" prop="balance">
+        <template #default="{ row }"> {{ fenToYuan(row.balance) }} 元</template>
       </el-table-column>
       <el-table-column
         :formatter="dateFormatter"
         align="center"
-        :label="t('extra.kf8de2c76')"
+        label="交易时间"
         prop="createTime"
         width="180px"
       />
@@ -47,7 +31,7 @@
 import { dateFormatter } from '@/utils/formatTime'
 import * as WalletTransactionApi from '@/api/pay/wallet/transaction'
 import { fenToYuan } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'UserBalanceList' })
 const props = defineProps({
   walletId: {

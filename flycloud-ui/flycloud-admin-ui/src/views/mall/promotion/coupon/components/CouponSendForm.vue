@@ -1,10 +1,5 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :appendToBody="true"
-    :title="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k54e73df1')"
-    width="70%"
-  >
+  <Dialog v-model="dialogVisible" :appendToBody="true" title="发送优惠券" width="70%">
     <!-- 搜索工作栏 -->
     <el-form
       ref="queryFormRef"
@@ -13,14 +8,11 @@
       class="-mb-15px"
       label-width="82px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k040f6dcf')"
-        prop="name"
-      >
+      <el-form-item label="优惠券名称" prop="name">
         <el-input
           v-model="queryParams.name"
           class="!w-240px"
-          :placeholder="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k70a14fb5')"
+          placeholder="请输入优惠劵名"
           clearable
           @keyup="handleQuery"
         />
@@ -28,25 +20,20 @@
       <el-form-item>
         <el-button @click="handleQuery">
           <Icon class="mr-5px" icon="ep:search" />
-          {{ t('extra.kc640adf4') }}
+          搜索
         </el-button>
         <el-button @click="resetQuery">
           <Icon class="mr-5px" icon="ep:refresh" />
-          {{ t('extra.k0819aba8') }}
+          重置
         </el-button>
       </el-form-item>
     </el-form>
 
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list" show-overflow-tooltip>
+      <el-table-column align="center" label="优惠券名称" prop="name" min-width="60" />
       <el-table-column
-        align="center"
-        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k040f6dcf')"
-        prop="name"
-        min-width="60"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.kab288966')"
+        label="优惠金额 / 折扣"
         align="center"
         prop="discount"
         :formatter="discountFormat"
@@ -54,25 +41,25 @@
       />
       <el-table-column
         align="center"
-        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.kf5f10f3d')"
+        label="最低消费"
         prop="usePrice"
         min-width="60"
         :formatter="usePriceFormat"
       />
       <el-table-column
         align="center"
-        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k5b41241e')"
+        label="有效期限"
         prop="validityType"
         min-width="140"
         :formatter="validityTypeFormat"
       />
       <el-table-column
         align="center"
-        :label="t('auto.views.mall.promotion.coupon.components.CouponSendForm.k0ca28093')"
+        label="剩余数量"
         min-width="60"
         :formatter="remainedCountFormat"
       />
-      <el-table-column :label="t('common.operation')" align="center" min-width="60px" fixed="right">
+      <el-table-column label="操作" align="center" min-width="60px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -82,7 +69,7 @@
             @click="handleSendCoupon(scope.row.id)"
             v-hasPermi="['promotion:coupon:send']"
           >
-            {{ t('extra.k3eab8c0b') }}
+            发送
           </el-button>
         </template>
       </el-table-column>
@@ -107,7 +94,7 @@ import {
   validityTypeFormat
 } from '@/views/mall/promotion/coupon/formatter'
 import { CouponTemplateTakeTypeEnum } from '@/utils/constants'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionCouponSendForm' })
 
 const message = useMessage() // 消息弹窗
@@ -166,7 +153,7 @@ const handleSendCoupon = async (templateId: number) => {
     sendLoading.value = true
     await CouponApi.sendCoupon({ templateId, userIds })
     // 提示
-    message.success(t('auto.views.mall.promotion.coupon.components.CouponSendForm.kf12988cf'))
+    message.success('发送成功')
     dialogVisible.value = false
   } finally {
     sendLoading.value = false

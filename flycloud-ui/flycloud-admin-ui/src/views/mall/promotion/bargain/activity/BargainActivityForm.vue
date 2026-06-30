@@ -9,20 +9,14 @@
       class="mt-10px"
     >
       <template #spuId>
-        <el-button @click="spuSelectRef.open()">{{
-          t('auto.views.mall.promotion.bargain.activity.BargainActivityForm.kf4d8d03c')
-        }}</el-button>
+        <el-button @click="spuSelectRef.open()">选择商品</el-button>
         <SpuAndSkuList
           ref="spuAndSkuListRef"
           :rule-config="ruleConfig"
           :spu-list="spuList"
           :spu-property-list-p="spuPropertyList"
         >
-          <el-table-column
-            align="center"
-            :label="t('auto.views.mall.promotion.bargain.activity.BargainActivityForm.k55043762')"
-            min-width="168"
-          >
+          <el-table-column align="center" label="砍价起始价格(元)" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.bargainFirstPrice"
@@ -33,7 +27,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="t('extra.k303ec66c')" min-width="168">
+          <el-table-column align="center" label="砍价底价(元)" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number
                 v-model="sku.productConfig.bargainMinPrice"
@@ -44,7 +38,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="t('extra.ka43d00bc')" min-width="168">
+          <el-table-column align="center" label="活动库存" min-width="168">
             <template #default="{ row: sku }">
               <el-input-number v-model="sku.productConfig.stock" class="w-100%" />
             </template>
@@ -53,12 +47,8 @@
       </template>
     </Form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('extra.k008b8fcb')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
   <SpuSelect ref="spuSelectRef" :isSelectSku="true" :radio="true" @confirm="selectSpu" />
@@ -72,8 +62,10 @@ import { getPropertyList, RuleConfig } from '@/views/mall/product/spu/components
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { convertToInteger, formatToFraction } from '@/utils'
 import { cloneDeep } from 'lodash-es'
-const { t } = useI18n()
+
 defineOptions({ name: 'PromotionBargainActivityForm' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -92,17 +84,17 @@ const ruleConfig: RuleConfig[] = [
   {
     name: 'productConfig.bargainFirstPrice',
     rule: (arg) => arg > 0,
-    message: t('auto.views.mall.promotion.bargain.activity.BargainActivityForm.ka6e77bf0')
+    message: '商品砍价起始价格不能小于 0 ！！！'
   },
   {
     name: 'productConfig.bargainMinPrice',
     rule: (arg) => arg >= 0,
-    message: t('auto.views.mall.promotion.bargain.activity.BargainActivityForm.k9202442f')
+    message: '商品砍价底价不能小于 0 ！！！'
   },
   {
     name: 'productConfig.stock',
     rule: (arg) => arg >= 1,
-    message: t('auto.views.mall.promotion.bargain.activity.BargainActivityForm.k2c0461b9')
+    message: '商品活动库存不能小于 1 ！！！'
   }
 ]
 const selectSpu = (spuId: number, skuIds: number[]) => {
@@ -138,8 +130,8 @@ const getSpuDetails = async (
     if (typeof products !== 'undefined') {
       const product = products.find((item) => item.skuId === sku.id)
       if (product) {
-        product.bargainFirstPrice = formatToFraction(product.bargainFirstPrice)
-        product.bargainMinPrice = formatToFraction(product.bargainMinPrice)
+        product.bargainFirstPrice = Number(formatToFraction(product.bargainFirstPrice))
+        product.bargainMinPrice = Number(formatToFraction(product.bargainMinPrice))
       }
       config = product || config
     }
@@ -171,8 +163,8 @@ const open = async (type: string, id?: number) => {
         id
       )) as BargainActivityApi.BargainActivityVO
       // 用户每次砍价金额分转元, 分转元
-      data.randomMinPrice = formatToFraction(data.randomMinPrice)
-      data.randomMaxPrice = formatToFraction(data.randomMaxPrice)
+      data.randomMinPrice = Number(formatToFraction(data.randomMinPrice))
+      data.randomMaxPrice = Number(formatToFraction(data.randomMaxPrice))
       // 对齐活动商品处理结构
       await getSpuDetails(
         data.spuId!,

@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.trade.brokerage.withdraw.index.k50f5e3f4')"
-    url="https://doc.iocoder.cn/mall/trade-brokerage/"
-  />
+  <doc-alert title="【交易】分销返佣" url="https://doc.iocoder.cn/mall/trade-brokerage/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -13,25 +10,19 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.kec750ef6')"
-        prop="userId"
-      >
+      <el-form-item label="用户编号" prop="userId">
         <el-input
           v-model="queryParams.userId"
-          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kb719fb8a')"
+          placeholder="请输入用户编号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.ke756194f')"
-        prop="type"
-      >
+      <el-form-item label="提现类型" prop="type">
         <el-select
           v-model="queryParams.type"
-          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.ke4bc442b')"
+          placeholder="请选择提现类型"
           clearable
           class="!w-240px"
         >
@@ -43,25 +34,28 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k90138491')"
-        prop="accountNo"
-      >
+      <el-form-item label="账号" prop="userAccount">
         <el-input
-          v-model="queryParams.accountNo"
-          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kdfcc8446')"
+          v-model="queryParams.userAccount"
+          placeholder="请输入账号"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k641a9208')"
-        prop="bankName"
-      >
+      <el-form-item label="真实名字" prop="userName">
+        <el-input
+          v-model="queryParams.userName"
+          placeholder="请输入真实名字"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item label="提现银行" prop="bankName">
         <el-select
           v-model="queryParams.bankName"
-          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kadfde72c')"
+          placeholder="请选择提现银行"
           clearable
           class="!w-240px"
         >
@@ -73,13 +67,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('common.status')" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          :placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kdba277df')"
-          clearable
-          class="!w-240px"
-        >
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.BROKERAGE_WITHDRAW_STATUS)"
             :key="dict.value"
@@ -88,27 +77,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.ke85ad6ea')"
-        prop="createTime"
-      >
+      <el-form-item label="申请时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
           value-format="YYYY-MM-DD HH:mm:ss"
           type="daterange"
-          :start-placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.k1f291968')"
-          :end-placeholder="t('auto.views.mall.trade.brokerage.withdraw.index.kf4b9b2b5')"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
           :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           class="!w-240px"
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -116,100 +98,87 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k9f42dac6')"
-        align="left"
-        prop="id"
-        min-width="60px"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.trade.brokerage.withdraw.index.k55c26aba')"
-        align="left"
-        min-width="120px"
-      >
+      <el-table-column label="编号" align="left" prop="id" min-width="60px" />
+      <el-table-column label="用户信息" align="left" min-width="120px">
         <template #default="scope">
-          <div>{{ t('extra.k35a4edf3', { p0: scope.row.userId }) }}</div>
-          <div>{{ t('extra.k0b53584e', { p0: scope.row.userNickname }) }}</div>
+          <div>编号：{{ scope.row.userId }}</div>
+          <div>昵称：{{ scope.row.userNickname }}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="t('extra.k292a2899')" align="left" prop="price" min-width="80px">
+      <el-table-column label="提现金额" align="left" prop="price" min-width="80px">
         <template #default="scope">
-          <div>{{ t('extra.k519bc307') }}{{ fenToYuan(scope.row.price) }}</div>
-          <div>{{ t('extra.k20374f83') }}{{ fenToYuan(scope.row.feePrice) }}</div>
+          <div>金　额：￥{{ fenToYuan(scope.row.price) }}</div>
+          <div>手续费：￥{{ fenToYuan(scope.row.feePrice) }}</div>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.mall.trade.config.index.k9f9ca520')"
-        align="left"
-        prop="type"
-        min-width="120px"
-      >
+      <el-table-column label="提现方式" align="left" prop="type" min-width="80px">
         <template #default="scope">
-          <div v-if="scope.row.type === BrokerageWithdrawTypeEnum.WALLET.type">
-            {{ t('extra.ke05e6f34') }}
-          </div>
+          <dict-tag :type="DICT_TYPE.BROKERAGE_WITHDRAW_TYPE" :value="scope.row.type" />
+        </template>
+      </el-table-column>
+      <el-table-column label="提现信息" align="left" min-width="120px">
+        <template #default="scope">
+          <div v-if="scope.row.type === BrokerageWithdrawTypeEnum.WALLET.type">-</div>
           <div v-else>
-            {{ getDictLabel(DICT_TYPE.BROKERAGE_WITHDRAW_TYPE, scope.row.type) }}
-            <span v-if="scope.row.accountNo"
-              >{{ t('extra.kd7a47ec7') }}{{ scope.row.accountNo }}</span
-            >
+            <div v-if="scope.row.userAccount">账号：{{ scope.row.userAccount }}</div>
+            <div v-if="scope.row.userName">真实姓名：{{ scope.row.userName }}</div>
           </div>
           <template v-if="scope.row.type === BrokerageWithdrawTypeEnum.BANK.type">
-            <div>{{ t('extra.kbb099f69') }}{{ scope.row.name }}</div>
             <div>
-              {{ t('extra.k60e8fef1') }}
+              银行名称：
               <dict-tag :type="DICT_TYPE.BROKERAGE_BANK_NAME" :value="scope.row.bankName" />
             </div>
-            <div>{{ t('extra.ke5eabe91') }}{{ scope.row.bankAddress }}</div>
+            <div>开户地址：{{ scope.row.bankAddress }}</div>
           </template>
+          <div v-if="scope.row.qrCodeUrl" class="mt-2">
+            <div>收款码：</div>
+            <el-image
+              :src="scope.row.qrCodeUrl"
+              class="h-40px w-40px"
+              :preview-src-list="[scope.row.qrCodeUrl]"
+              preview-teleported
+            />
+          </div>
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('extra.kee375a63')"
-        align="left"
-        prop="accountQrCodeUrl"
-        min-width="70px"
-      >
-        <template #default="scope">
-          <el-image
-            v-if="scope.row.accountQrCodeUrl"
-            :src="scope.row.accountQrCodeUrl"
-            class="h-40px w-40px"
-            :preview-src-list="[scope.row.accountQrCodeUrl]"
-            preview-teleported
-          />
-          <span v-else>{{ t('extra.kadb3d23e') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="t('auto.views.bpm.oa.leave.index.ke85ad6ea')"
+        label="申请时间"
         align="left"
         prop="createTime"
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column :label="t('common.remark')" align="left" prop="remark" />
-      <el-table-column :label="t('common.status')" align="left" prop="status" min-width="120px">
+      <el-table-column label="备注" align="left" prop="remark" />
+      <el-table-column label="状态" align="left" prop="status" min-width="120px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BROKERAGE_WITHDRAW_STATUS" :value="scope.row.status" />
           <div v-if="scope.row.auditTime" class="text-xs">
-            {{ t('extra.k14e6d83f') }}{{ formatDate(scope.row.auditTime) }}
+            时间：{{ formatDate(scope.row.auditTime) }}
           </div>
           <div v-if="scope.row.auditReason" class="text-xs">
-            {{ t('extra.k7e87cede') }}{{ scope.row.auditReason }}
+            审核原因：{{ scope.row.auditReason }}
+          </div>
+          <!-- 提现失败原因 -->
+          <div v-if="scope.row.transferErrorMsg" class="text-xs text-red-500">
+            转账失败原因：{{ scope.row.transferErrorMsg }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="t('common.operation')" align="left" width="110px" fixed="right">
+      <el-table-column label="操作" align="left" width="110px" fixed="right">
         <template #default="scope">
-          <template v-if="scope.row.status === BrokerageWithdrawStatusEnum.AUDITING.status">
+          <template
+            v-if="
+              scope.row.status === BrokerageWithdrawStatusEnum.AUDITING.status &&
+              !scope.row.payTransferId
+            "
+          >
             <el-button
               link
               type="primary"
               @click="handleApprove(scope.row.id)"
               v-hasPermi="['trade:brokerage-withdraw:audit']"
             >
-              {{ t('auto.components.SimpleProcessDesignerV2.src.consts.kdcc42332') }}
+              通过
             </el-button>
             <el-button
               link
@@ -217,7 +186,17 @@
               @click="openForm(scope.row.id)"
               v-hasPermi="['trade:brokerage-withdraw:audit']"
             >
-              {{ t('extra.k32525478') }}
+              驳回
+            </el-button>
+          </template>
+          <template v-if="scope.row.status === BrokerageWithdrawStatusEnum.WITHDRAW_FAIL.status">
+            <el-button
+              link
+              type="warning"
+              @click="handleRetryTransfer(scope.row.id)"
+              v-hasPermi="['trade:brokerage-withdraw:audit']"
+            >
+              重新转账
             </el-button>
           </template>
         </template>
@@ -237,15 +216,16 @@
 </template>
 
 <script setup lang="ts">
-import { DICT_TYPE, getDictLabel, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
+import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
 import { dateFormatter, formatDate } from '@/utils/formatTime'
 import * as BrokerageWithdrawApi from '@/api/mall/trade/brokerage/withdraw'
 import BrokerageWithdrawRejectForm from './BrokerageWithdrawRejectForm.vue'
 import { BrokerageWithdrawStatusEnum, BrokerageWithdrawTypeEnum } from '@/utils/constants'
-import { fenToYuanFormat } from '@/utils/formatter'
 import { fenToYuan } from '@/utils'
-const { t } = useI18n()
+
 defineOptions({ name: 'BrokerageWithdraw' })
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -254,11 +234,11 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   userId: null,
-  type: null,
-  name: null,
-  accountNo: null,
-  bankName: null,
-  status: null,
+  type: undefined,
+  userName: null,
+  userAccount: null,
+  bankName: undefined,
+  status: undefined,
   auditReason: null,
   auditTime: [],
   remark: null,
@@ -300,7 +280,20 @@ const openForm = (id: number) => {
 const handleApprove = async (id: number) => {
   try {
     loading.value = true
-    await message.confirm(t('auto.views.mall.trade.brokerage.withdraw.index.k2aeb21c7'))
+    await message.confirm('确定要审核通过吗？')
+    await BrokerageWithdrawApi.approveBrokerageWithdraw(id)
+    await message.success(t('common.success'))
+    await getList()
+  } finally {
+    loading.value = false
+  }
+}
+
+/** 重新转账 */
+const handleRetryTransfer = async (id: number) => {
+  try {
+    loading.value = true
+    await message.confirm('确定要重新转账吗？')
     await BrokerageWithdrawApi.approveBrokerageWithdraw(id)
     await message.success(t('common.success'))
     await getList()

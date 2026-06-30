@@ -56,6 +56,20 @@ public class BeanUtils {
     }
 
     /**
+     * 列表转换，并允许调用方补充聚合字段。
+     *
+     * @author lxs
+     * @date 2026-06-30
+     */
+    public static <S, T> List<T> toBean(List<S> source, Class<T> targetType, Consumer<T> peek) {
+        List<T> list = toBean(source, targetType);
+        if (list != null && peek != null) {
+            list.forEach(peek);
+        }
+        return list;
+    }
+
+    /**
      * 分页
      */
     public static <S, T> PageVo<T> toBean(PageVo<S> source, Class<T> targetType) {

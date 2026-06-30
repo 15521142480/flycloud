@@ -1,9 +1,8 @@
 import type { CrudSchema } from '@/hooks/web/useCrudSchemas'
 import { dateFormatter2 } from '@/utils/formatTime'
 import { SeckillConfigApi } from '@/api/mall/promotion/seckill/seckillConfig'
-import { useI18n } from '@/hooks/web/useI18n'
-const { t } = useI18n()
 
+// 表单校验
 export const rules = reactive({
   spuId: [required],
   name: [required],
@@ -19,7 +18,7 @@ export const rules = reactive({
 // CrudSchema https://doc.iocoder.cn/vue3/crud-schema/
 const crudSchemas = reactive<CrudSchema[]>([
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.kdf6e5940'),
+    label: '秒杀活动名称',
     field: 'name',
     isSearch: true,
     form: {
@@ -32,7 +31,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.k658b1a2e'),
+    label: '活动开始时间',
     field: 'startTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -55,7 +54,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.kcdd4e446'),
+    label: '活动结束时间',
     field: 'endTime',
     formatter: dateFormatter2,
     isSearch: true,
@@ -78,7 +77,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.kd38ded65'),
+    label: '秒杀时段',
     field: 'configIds',
     form: {
       component: 'Select',
@@ -96,7 +95,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.kc71a1741'),
+    label: '总限购数量',
     field: 'totalLimitCount',
     form: {
       component: 'InputNumber',
@@ -107,7 +106,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.kf934a1eb'),
+    label: '单次限够数量',
     field: 'singleLimitCount',
     form: {
       component: 'InputNumber',
@@ -118,7 +117,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('common.sort'),
+    label: '排序',
     field: 'sort',
     form: {
       component: 'InputNumber',
@@ -129,7 +128,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('auto.views.mall.promotion.seckill.activity.seckillActivity_data.k5dcdcf26'),
+    label: '秒杀活动商品',
     field: 'spuId',
     isTable: true,
     isSearch: false,
@@ -143,7 +142,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    label: t('common.remark'),
+    label: '备注',
     field: 'remark',
     isSearch: false,
     form: {

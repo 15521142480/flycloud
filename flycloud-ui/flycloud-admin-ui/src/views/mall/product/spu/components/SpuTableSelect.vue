@@ -1,10 +1,5 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :appendToBody="true"
-    :title="t('auto.views.mall.product.spu.components.SpuTableSelect.kf4d8d03c')"
-    width="70%"
-  >
+  <Dialog v-model="dialogVisible" :appendToBody="true" title="选择商品" width="70%">
     <ContentWrap>
       <el-form
         ref="queryFormRef"
@@ -13,22 +8,16 @@
         class="-mb-15px"
         label-width="68px"
       >
-        <el-form-item
-          :label="t('auto.views.mall.product.spu.components.SpuTableSelect.k47b74133')"
-          prop="name"
-        >
+        <el-form-item label="商品名称" prop="name">
           <el-input
             v-model="queryParams.name"
             class="!w-240px"
             clearable
-            :placeholder="t('auto.views.mall.product.spu.components.SpuTableSelect.k5c6bf9b9')"
+            placeholder="请输入商品名称"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item
-          :label="t('auto.views.mall.product.spu.components.SpuTableSelect.k09482df6')"
-          prop="categoryId"
-        >
+        <el-form-item label="商品分类" prop="categoryId">
           <el-tree-select
             v-model="queryParams.categoryId"
             :data="categoryTreeList"
@@ -36,18 +25,16 @@
             check-strictly
             class="!w-240px"
             node-key="id"
-            :placeholder="t('auto.views.mall.product.spu.components.SpuTableSelect.ke71fcc11')"
+            placeholder="请选择商品分类"
           />
         </el-form-item>
-        <el-form-item :label="t('common.createTime')" prop="createTime">
+        <el-form-item label="创建时间" prop="createTime">
           <el-date-picker
             v-model="queryParams.createTime"
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
             class="!w-240px"
-            :end-placeholder="t('auto.views.mall.product.spu.components.SpuTableSelect.kf4b9b2b5')"
-            :start-placeholder="
-              t('auto.views.mall.product.spu.components.SpuTableSelect.k1f291968')
-            "
+            end-placeholder="结束日期"
+            start-placeholder="开始日期"
             type="daterange"
             value-format="YYYY-MM-DD HH:mm:ss"
           />
@@ -55,11 +42,11 @@
         <el-form-item>
           <el-button @click="handleQuery">
             <Icon class="mr-5px" icon="ep:search" />
-            {{ t('extra.kc2b45123') }}
+            搜索
           </el-button>
           <el-button @click="resetQuery">
             <Icon class="mr-5px" icon="ep:refresh" />
-            {{ t('extra.kc72bb73e') }}
+            重置
           </el-button>
         </el-form-item>
       </el-form>
@@ -89,17 +76,8 @@
             </el-radio>
           </template>
         </el-table-column>
-        <el-table-column
-          key="id"
-          align="center"
-          :label="t('auto.views.member.user.detail.UserFavoriteList.k8d0ed357')"
-          prop="id"
-          min-width="60"
-        />
-        <el-table-column
-          :label="t('auto.views.member.user.detail.UserFavoriteList.k1b089e84')"
-          min-width="80"
-        >
+        <el-table-column key="id" align="center" label="商品编号" prop="id" min-width="60" />
+        <el-table-column label="商品图" min-width="80">
           <template #default="{ row }">
             <el-image
               :src="row.picUrl"
@@ -109,16 +87,8 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
-          min-width="200"
-          prop="name"
-        />
-        <el-table-column
-          :label="t('auto.components.AppLinkInput.data.k09482df6')"
-          min-width="100"
-          prop="categoryId"
-        >
+        <el-table-column label="商品名称" min-width="200" prop="name" />
+        <el-table-column label="商品分类" min-width="100" prop="categoryId">
           <template #default="{ row }">
             <span>{{ categoryList?.find((c) => c.id === row.categoryId)?.name }}</span>
           </template>
@@ -133,10 +103,8 @@
       />
     </ContentWrap>
     <template #footer v-if="multiple">
-      <el-button type="primary" @click="handleEmitChange">{{ t('extra.k008b8fcb') }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button type="primary" @click="handleEmitChange">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -148,7 +116,7 @@ import * as ProductCategoryApi from '@/api/mall/product/category'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { propTypes } from '@/utils/propTypes'
 import { CHANGE_EVENT } from 'element-plus'
-const { t } = useI18n()
+
 type Spu = Required<ProductSpuApi.Spu>
 
 /**

@@ -5,6 +5,7 @@ export interface SeckillActivityVO {
   id?: number
   spuId?: number
   name?: string
+  picUrl?: string
   status?: number
   remark?: string
   startTime?: Date
@@ -51,7 +52,7 @@ export const getSeckillActivityListByIds = (ids: number[]) => {
 
 // 查询秒杀活动详情
 export const getSeckillActivity = async (id: number) => {
-  return await request.get({ url: '/promotion/seckill-activity/get/' + id })
+  return await request.get({ url: '/promotion/seckill-activity/get?id=' + id })
 }
 
 // 新增秒杀活动
@@ -66,10 +67,10 @@ export const updateSeckillActivity = async (data: SeckillActivityVO) => {
 
 // 关闭秒杀活动
 export const closeSeckillActivity = async (id: number) => {
-  return await request.put({ url: '/promotion/seckill-activity/close/' + id })
+  return await request.put({ url: '/promotion/seckill-activity/close?id=' + id })
 }
 
 // 删除秒杀活动
 export const deleteSeckillActivity = async (id: number) => {
-  return await request.delete({ url: '/promotion/seckill-activity/delete/' + id })
+  return await request.delete({ url: '/promotion/seckill-activity/delete?id=' + id })
 }

@@ -7,21 +7,10 @@
       label-width="80px"
       v-loading="formLoading"
     >
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kbbc511d0')"
-        prop="name"
-      >
-        <el-input
-          v-model="formData.name"
-          :placeholder="
-            t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k86bd4450')
-          "
-        />
+      <el-form-item label="模板名称" prop="name">
+        <el-input v-model="formData.name" placeholder="请输入模板名称" />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k459460d6')"
-        prop="chargeMode"
-      >
+      <el-form-item label="计费方式" prop="chargeMode">
         <el-radio-group v-model="formData.chargeMode" @change="changeChargeMode">
           <el-radio
             v-for="dict in getIntDictOptions(DICT_TYPE.EXPRESS_CHARGE_MODE)"
@@ -32,18 +21,9 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.keb1ae86c')"
-        prop="charges"
-      >
+      <el-form-item label="运费" prop="charges">
         <el-table border style="width: 100%" :data="formData.charges">
-          <el-table-column
-            align="center"
-            :label="
-              t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k17fc93c9')
-            "
-            width="360"
-          >
+          <el-table-column align="center" label="区域" width="360">
             <template #default="{ row }">
               <el-cascader
                 v-model="row.areaIds"
@@ -51,9 +31,7 @@
                 :props="defaultProps2"
                 class="w-1/1"
                 clearable
-                :placeholder="
-                  t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kb4407498')
-                "
+                placeholder="请选择地区"
                 filterable
                 collapse-tags
               />
@@ -69,12 +47,7 @@
               <el-input-number v-model="row.startCount" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column
-            width="180"
-            align="center"
-            :label="t('extra.kef79a9c2')"
-            prop="startPrice"
-          >
+          <el-table-column width="180" align="center" label="运费(元)" prop="startPrice">
             <template #default="{ row }">
               <el-input-number v-model="row.startPrice" :min="1" />
             </template>
@@ -89,20 +62,15 @@
               <el-input-number v-model="row.extraCount" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column
-            width="180"
-            align="center"
-            :label="t('extra.k0dc2ad7d')"
-            prop="extraPrice"
-          >
+          <el-table-column width="180" align="center" label="续费(元)" prop="extraPrice">
             <template #default="{ row }">
               <el-input-number v-model="row.extraPrice" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column :label="t('common.operation')" align="center">
+          <el-table-column label="操作" align="center">
             <template #default="scope">
               <el-button link type="danger" @click="deleteChargeArea(scope.$index)">
-                {{ t('common.delete') }}
+                删除
               </el-button>
             </template>
           </el-table-column>
@@ -110,18 +78,12 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" plain @click="addChargeArea()">
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k4ba9cd1a') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 添加区域
         </el-button>
       </el-form-item>
-      <el-form-item :label="t('extra.k81f51da1')" prop="frees">
+      <el-form-item label="包邮区域" prop="frees">
         <el-table border style="width: 100%" :data="formData.frees">
-          <el-table-column
-            align="center"
-            :label="
-              t('auto.views.crm.statistics.customer.components.CustomerDealCycleByArea.k17fc93c9')
-            "
-            width="360"
-          >
+          <el-table-column align="center" label="区域" width="360">
             <template #default="{ row }">
               <el-cascader
                 v-model="row.areaIds"
@@ -129,9 +91,7 @@
                 :props="defaultProps2"
                 class="w-1/1"
                 clearable
-                :placeholder="
-                  t('auto.views.mall.product.category.components.ProductCategorySelect.ke71fcc11')
-                "
+                placeholder="请选择商品分类"
                 filterable
                 collapse-tags
               />
@@ -142,36 +102,30 @@
               <el-input-number v-model="row.freeCount" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column align="center" :label="t('extra.k0482a274')" prop="freePrice">
+          <el-table-column align="center" label="包邮金额（元）" prop="freePrice">
             <template #default="{ row }">
               <el-input-number v-model="row.freePrice" :min="1" />
             </template>
           </el-table-column>
-          <el-table-column :label="t('common.operation')" align="center">
+          <el-table-column label="操作" align="center">
             <template #default="scope">
-              <el-button link type="danger" @click="deleteFreeArea(scope.$index)">
-                {{ t('common.delete') }}
-              </el-button>
+              <el-button link type="danger" @click="deleteFreeArea(scope.$index)"> 删除 </el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" plain @click="addFreeArea()">
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.k4ba9cd1a') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 添加区域
         </el-button>
       </el-form-item>
-      <el-form-item :label="t('common.sort')" prop="sort">
+      <el-form-item label="排序" prop="sort">
         <el-input-number v-model="formData.sort" controls-position="right" :min="0" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="submitForm" type="primary" :disabled="formLoading">{{
-        t('extra.k008b8fcb')
-      }}</el-button>
-      <el-button @click="dialogVisible = false">{{
-        t('auto.components.AppLinkInput.AppLinkSelectDialog.kd54aeadc')
-      }}</el-button>
+      <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
 </template>
@@ -182,7 +136,7 @@ import * as AreaApi from '@/api/system/area'
 import { defaultProps } from '@/utils/tree'
 import { yuanToFen, fenToYuan } from '@/utils'
 import { cloneDeep } from 'lodash-es'
-const { t } = useI18n()
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 const defaultProps2 = {
@@ -194,7 +148,7 @@ const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
-const formData = ref({
+const formData = ref<DeliveryExpressTemplateApi.DeliveryExpressTemplateVO>({
   id: undefined,
   name: '',
   chargeMode: 1,
@@ -202,38 +156,17 @@ const formData = ref({
   charges: [],
   frees: []
 })
-const columnTitleMap = new Map()
 const columnTitle = ref({
-  startCountTitle: t(
-    'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k750f7c5f'
-  ),
-  extraCountTitle: t(
-    'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k26ba72bc'
-  ),
-  freeCountTitle: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kec243680')
+  startCountTitle: '首件',
+  extraCountTitle: '续件',
+  freeCountTitle: '包邮件数'
 })
+const columnTitleMap = new Map<number, typeof columnTitle.value>()
+const getColumnTitle = (chargeMode: number) => columnTitleMap.get(chargeMode) || columnTitle.value
 const formRules = reactive({
-  name: [
-    {
-      required: true,
-      message: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k15011507'),
-      trigger: 'blur'
-    }
-  ],
-  chargeMode: [
-    {
-      required: true,
-      message: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k0bcfe7ce'),
-      trigger: 'blur'
-    }
-  ],
-  sort: [
-    {
-      required: true,
-      message: t('auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k331d6aa3'),
-      trigger: 'blur'
-    }
-  ]
+  name: [{ required: true, message: '模板名称不能为空', trigger: 'blur' }],
+  chargeMode: [{ required: true, message: '配送计费方式不能为空', trigger: 'blur' }],
+  sort: [{ required: true, message: '分类排序不能为空', trigger: 'blur' }]
 })
 const formRef = ref() // 表单 Ref
 
@@ -248,14 +181,14 @@ const open = async (type: string, id?: number) => {
     if (id) {
       formLoading.value = true
       formData.value = await DeliveryExpressTemplateApi.getDeliveryExpressTemplate(id)
-      columnTitle.value = columnTitleMap.get(formData.value.chargeMode)
+      columnTitle.value = getColumnTitle(formData.value.chargeMode)
       formData.value.charges.forEach((item) => {
         // 前端价格以元展示
-        item.startPrice = fenToYuan(item.startPrice)
-        item.extraPrice = fenToYuan(item.extraPrice)
+        item.startPrice = Number(fenToYuan(item.startPrice))
+        item.extraPrice = Number(fenToYuan(item.extraPrice))
       })
       formData.value.frees.forEach((item) => {
-        item.freePrice = fenToYuan(item.freePrice)
+        item.freePrice = Number(fenToYuan(item.freePrice))
       })
     }
   } finally {
@@ -274,7 +207,7 @@ const submitForm = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    const data = cloneDeep(formData.value) as DeliveryExpressTemplateApi.DeliveryExpressTemplateVO
+    const data = cloneDeep(formData.value)
     // 前端价格以元展示，提交到后端。用分计算
     data.charges.forEach((item) => {
       item.startPrice = yuanToFen(item.startPrice)
@@ -316,51 +249,33 @@ const resetForm = () => {
     frees: [],
     sort: 0
   }
-  columnTitle.value = columnTitleMap.get(1)
+  columnTitle.value = getColumnTitle(1)
   formRef.value?.resetFields()
 }
 
 /** 配送计费方法改变 */
 const changeChargeMode = (chargeMode: number) => {
-  columnTitle.value = columnTitleMap.get(chargeMode)
+  columnTitle.value = getColumnTitle(chargeMode)
 }
 
 /** 初始化数据 */
-const areaTree = ref([])
+const areaTree = ref<any[]>([])
 const initData = async () => {
   // 表头标题和计费方式的映射
   columnTitleMap.set(1, {
-    startCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k750f7c5f'
-    ),
-    extraCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k26ba72bc'
-    ),
-    freeCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kec243680'
-    )
+    startCountTitle: '首件',
+    extraCountTitle: '续件',
+    freeCountTitle: '包邮件数'
   })
   columnTitleMap.set(2, {
-    startCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k0c31896e'
-    ),
-    extraCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kd3a8a11d'
-    ),
-    freeCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k2a051efa'
-    )
+    startCountTitle: '首件重量(kg)',
+    extraCountTitle: '续件重量(kg)',
+    freeCountTitle: '包邮重量(kg)'
   })
   columnTitleMap.set(3, {
-    startCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.kc15f5541'
-    ),
-    extraCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k6d9bbfbd'
-    ),
-    freeCountTitle: t(
-      'auto.views.mall.trade.delivery.expressTemplate.ExpressTemplateForm.k5e727017'
-    )
+    startCountTitle: '首件体积(m³)',
+    extraCountTitle: '续件体积(m³)',
+    freeCountTitle: '包邮体积(m³)'
   })
   // 加载区域数据
   areaTree.value = await AreaApi.getAreaTree()
@@ -379,7 +294,7 @@ const addChargeArea = () => {
 }
 
 /** 删除计费区域 */
-const deleteChargeArea = (index) => {
+const deleteChargeArea = (index: number) => {
   const data = formData.value
   data.charges.splice(index, 1)
 }
@@ -395,7 +310,7 @@ const addFreeArea = () => {
 }
 
 /** 删除包邮区域 */
-const deleteFreeArea = (index) => {
+const deleteFreeArea = (index: number) => {
   const data = formData.value
   data.frees.splice(index, 1)
 }

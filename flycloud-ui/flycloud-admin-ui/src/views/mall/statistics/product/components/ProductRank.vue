@@ -3,22 +3,15 @@
     <template #header>
       <!-- 标题 -->
       <div class="flex flex-row items-center justify-between">
-        <CardTitle
-          :title="t('auto.views.mall.statistics.product.components.ProductRank.k38754fec')"
-        />
+        <CardTitle title="商品排行" />
         <!-- 查询条件 -->
         <ShortcutDateRangePicker ref="shortcutDateRangePicker" @change="handleDateRangeChange" />
       </div>
     </template>
     <!-- 排行列表 -->
     <el-table v-loading="loading" :data="list" @sort-change="handleSortChange">
-      <el-table-column :label="t('extra.k858526d6')" prop="spuId" min-width="70" />
-      <el-table-column
-        :label="t('auto.views.mall.promotion.point.activity.index.k188d1e2d')"
-        align="center"
-        prop="picUrl"
-        width="80"
-      >
+      <el-table-column label="商品 ID" prop="spuId" min-width="70" />
+      <el-table-column label="商品图片" align="center" prop="picUrl" width="80">
         <template #default="{ row }">
           <el-image
             :src="row.picUrl"
@@ -28,56 +21,22 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="商品名称" prop="name" min-width="200" :show-overflow-tooltip="true" />
+      <el-table-column label="浏览量" prop="browseCount" min-width="90" sortable="custom" />
+      <el-table-column label="访客数" prop="browseUserCount" min-width="90" sortable="custom" />
+      <el-table-column label="加购件数" prop="cartCount" min-width="105" sortable="custom" />
+      <el-table-column label="下单件数" prop="orderCount" min-width="105" sortable="custom" />
+      <el-table-column label="支付件数" prop="orderPayCount" min-width="105" sortable="custom" />
       <el-table-column
-        :label="t('auto.components.DiyEditor.components.mobile.ProductCard.property.k47b74133')"
-        prop="name"
-        min-width="200"
-        :show-overflow-tooltip="true"
-      />
-      <el-table-column
-        :label="t('extra.k88bc4d7a')"
-        prop="browseCount"
-        min-width="90"
-        sortable="custom"
-      />
-      <el-table-column
-        :label="t('extra.kced9fc4c')"
-        prop="browseUserCount"
-        min-width="90"
-        sortable="custom"
-      />
-      <el-table-column
-        :label="t('extra.k9836ba49')"
-        prop="cartCount"
-        min-width="105"
-        sortable="custom"
-      />
-      <el-table-column
-        :label="t('extra.kef4c56f2')"
-        prop="orderCount"
-        min-width="105"
-        sortable="custom"
-      />
-      <el-table-column
-        :label="t('extra.kbe4e90a9')"
-        prop="orderPayCount"
-        min-width="105"
-        sortable="custom"
-      />
-      <el-table-column
-        :label="t('auto.views.mall.statistics.product.components.ProductSummary.kb579703e')"
+        label="支付金额"
         prop="orderPayPrice"
         min-width="105"
         sortable="custom"
+        :formatter="fenToYuanFormat"
       />
+      <el-table-column label="收藏数" prop="favoriteCount" min-width="90" sortable="custom" />
       <el-table-column
-        :label="t('extra.k35337eb4')"
-        prop="favoriteCount"
-        min-width="90"
-        sortable="custom"
-      />
-      <el-table-column
-        :label="t('extra.kd02d2b84')"
+        label="访客-支付转化率(%)"
         prop="browseConvertPercent"
         min-width="180"
         sortable="custom"
@@ -97,9 +56,9 @@
 import { ProductStatisticsApi, ProductStatisticsVO } from '@/api/mall/statistics/product'
 import { CardTitle } from '@/components/Card'
 import { buildSortingField } from '@/utils'
+import { fenToYuanFormat } from '@/utils/formatter'
 
 /** 商品排行 */
-const { t } = useI18n()
 defineOptions({ name: 'ProductRank' })
 
 // 格式化：访客-支付转化率
@@ -117,7 +76,6 @@ const handleDateRangeChange = (times: any[]) => {
   getSpuList()
 }
 
-const shortcutDateRangePicker = ref()
 // 查询参数
 const queryParams = reactive({
   pageNum: 1,

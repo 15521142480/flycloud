@@ -146,8 +146,11 @@ const user = defineStore('user', {
     },
 
     // 登出系统
-    async logout() {
+    async logout(showLogin = false) {
       this.resetUserData();
+      if (showLogin) {
+        showAuthModal();
+      }
       return !this.isLogin;
     },
   },

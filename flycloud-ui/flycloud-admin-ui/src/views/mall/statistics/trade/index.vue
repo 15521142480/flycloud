@@ -1,15 +1,12 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.mall.statistics.trade.index.k5bbb4c4a')"
-    url="https://doc.iocoder.cn/mall/statistics/"
-  />
+  <doc-alert title="【统计】会员、商品、交易统计" url="https://doc.iocoder.cn/mall/statistics/" />
 
   <div class="flex flex-col">
     <el-row :gutter="16" class="summary">
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          :tooltip="t('extra.k1411ac23')"
-          :title="t('auto.views.mall.statistics.trade.index.k414751d3')"
+          tooltip="昨日订单数量"
+          title="昨日订单数量"
           :value="summary?.value?.yesterdayOrderCount || 0"
           :percent="
             calculateRelativeRate(
@@ -21,8 +18,8 @@
       </el-col>
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          :tooltip="t('extra.kaaf0507b')"
-          :title="t('auto.views.mall.statistics.trade.index.kecde0644')"
+          tooltip="本月订单数量"
+          title="本月订单数量"
           :value="summary?.value?.monthOrderCount || 0"
           :percent="
             calculateRelativeRate(
@@ -34,11 +31,11 @@
       </el-col>
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          :tooltip="t('extra.k2e4bcf00')"
-          :title="t('auto.views.mall.statistics.trade.index.kd746de70')"
+          tooltip="昨日支付金额"
+          title="昨日支付金额"
           prefix="￥"
           :decimals="2"
-          :value="fenToYuan(summary?.value?.yesterdayPayPrice || 0)"
+          :value="fenToYuanNumber(summary?.value?.yesterdayPayPrice || 0)"
           :percent="
             calculateRelativeRate(
               summary?.value?.yesterdayPayPrice,
@@ -49,11 +46,11 @@
       </el-col>
       <el-col :sm="6" :xs="12">
         <TradeStatisticValue
-          :tooltip="t('extra.k9f847939')"
-          :title="t('auto.views.mall.statistics.trade.index.kbf31e7d0')"
+          tooltip="本月支付金额"
+          title="本月支付金额"
           prefix="￥"
-          ::decimals="2"
-          :value="fenToYuan(summary?.value?.monthPayPrice || 0)"
+          :decimals="2"
+          :value="fenToYuanNumber(summary?.value?.monthPayPrice || 0)"
           :percent="
             calculateRelativeRate(summary?.value?.monthPayPrice, summary?.reference?.monthPayPrice)
           "
@@ -64,7 +61,7 @@
       <template #header>
         <!-- 标题 -->
         <div class="flex flex-row items-center justify-between">
-          <CardTitle :title="t('auto.views.mall.statistics.trade.index.k27a29e7e')" />
+          <CardTitle title="交易状况" />
           <!-- 查询条件 -->
           <ShortcutDateRangePicker ref="shortcutDateRangePicker" @change="getTradeTrendData">
             <el-button
@@ -73,7 +70,7 @@
               :loading="exportLoading"
               v-hasPermi="['statistics:trade:export']"
             >
-              <Icon icon="ep:download" class="mr-1" />{{ t('extra.k59ef74af') }}
+              <Icon icon="ep:download" class="mr-1" />导出
             </el-button>
           </ShortcutDateRangePicker>
         </div>
@@ -82,14 +79,14 @@
       <el-row :gutter="16">
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('auto.views.mall.statistics.trade.index.k20fc2cd1')"
+            title="营业额"
             tooltip="商品支付金额、充值金额"
             icon="fa-solid:yen-sign"
             icon-color="bg-blue-100"
             icon-bg-color="text-blue-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.turnoverPrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.turnoverPrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.turnoverPrice,
@@ -100,14 +97,14 @@
         </el-col>
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('auto.views.mall.statistics.trade.index.ka2cf72a6')"
+            title="商品支付金额"
             tooltip="用户购买商品的实际支付金额，包括微信支付、余额支付、支付宝支付、线下支付金额（拼团商品在成团之后计入，线下支付订单在后台确认支付后计入）"
             icon="fa-solid:shopping-cart"
             icon-color="bg-purple-100"
             icon-bg-color="text-purple-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.orderPayPrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.orderPayPrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.orderPayPrice,
@@ -118,14 +115,14 @@
         </el-col>
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('auto.views.mall.statistics.trade.index.kbb535002')"
+            title="充值金额"
             tooltip="用户成功充值的金额"
             icon="fa-solid:money-check-alt"
             icon-color="bg-yellow-100"
             icon-bg-color="text-yellow-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.rechargePrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.rechargePrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.rechargePrice,
@@ -136,14 +133,14 @@
         </el-col>
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('auto.views.mall.statistics.trade.index.k41fc3a1c')"
+            title="支出金额"
             tooltip="余额支付金额、支付佣金金额、商品退款金额"
             icon="ep:warning-filled"
             icon-color="bg-green-100"
             icon-bg-color="text-green-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.expensePrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.expensePrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.expensePrice,
@@ -154,14 +151,14 @@
         </el-col>
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('extra.k0b6acd95')"
+            title="余额支付金额"
             tooltip="用户下单时使用余额实际支付的金额"
             icon="fa-solid:wallet"
             icon-color="bg-cyan-100"
             icon-bg-color="text-cyan-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.walletPayPrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.walletPayPrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.walletPayPrice,
@@ -172,14 +169,14 @@
         </el-col>
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('extra.kaa929d53')"
+            title="支付佣金金额"
             tooltip="后台给推广员支付的推广佣金，以实际支付为准"
             icon="fa-solid:award"
             icon-color="bg-yellow-100"
             icon-bg-color="text-yellow-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.brokerageSettlementPrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.brokerageSettlementPrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.brokerageSettlementPrice,
@@ -190,14 +187,14 @@
         </el-col>
         <el-col :md="6" :sm="12" :xs="24">
           <SummaryCard
-            :title="t('extra.k9ba98f38')"
+            title="商品退款金额"
             tooltip="用户成功退款的商品金额"
             icon="fa-solid:times-circle"
             icon-color="bg-blue-100"
             icon-bg-color="text-blue-500"
             prefix="￥"
             :decimals="2"
-            :value="fenToYuan(trendSummary?.value?.afterSaleRefundPrice || 0)"
+            :value="fenToYuanNumber(trendSummary?.value?.afterSaleRefundPrice || 0)"
             :percent="
               calculateRelativeRate(
                 trendSummary?.value?.afterSaleRefundPrice,
@@ -221,14 +218,13 @@ import SummaryCard from '@/components/SummaryCard/index.vue'
 import { EChartsOption } from 'echarts'
 import { DataComparisonRespVO } from '@/api/mall/statistics/common'
 import { TradeSummaryRespVO, TradeTrendSummaryRespVO } from '@/api/mall/statistics/trade'
-import { calculateRelativeRate, fenToYuan } from '@/utils'
+import { calculateRelativeRate, fenToYuanNumber } from '@/utils'
 import download from '@/utils/download'
 import { CardTitle } from '@/components/Card'
 import * as DateUtil from '@/utils/formatTime'
 import dayjs from 'dayjs'
 
 /** 交易统计 */
-const { t } = useI18n()
 defineOptions({ name: 'TradeStatistics' })
 
 const message = useMessage() // 消息弹窗
@@ -256,10 +252,10 @@ const lineChartOptions = reactive<EChartsOption>({
     top: 50
   },
   series: [
-    { name: t('auto.views.mall.statistics.trade.index.k20fc2cd1'), type: 'line', smooth: true },
-    { name: t('auto.views.mall.statistics.trade.index.ka2cf72a6'), type: 'line', smooth: true },
-    { name: t('auto.views.mall.statistics.trade.index.kbb535002'), type: 'line', smooth: true },
-    { name: t('auto.views.mall.statistics.trade.index.k41fc3a1c'), type: 'line', smooth: true }
+    { name: '营业额', type: 'line', smooth: true },
+    { name: '商品支付金额', type: 'line', smooth: true },
+    { name: '充值金额', type: 'line', smooth: true },
+    { name: '支出金额', type: 'line', smooth: true }
   ],
   toolbox: {
     feature: {
@@ -270,7 +266,7 @@ const lineChartOptions = reactive<EChartsOption>({
       brush: {
         type: ['lineX', 'clear'] // 区域缩放按钮、还原按钮
       },
-      saveAsImage: { show: true, name: t('auto.views.mall.statistics.trade.index.k27a29e7e') } // 保存为图片
+      saveAsImage: { show: true, name: '交易状况' } // 保存为图片
     }
   },
   tooltip: {
@@ -326,10 +322,10 @@ const getTradeStatisticsList = async () => {
   const list = await TradeStatisticsApi.getTradeStatisticsList({ times })
   // 处理数据
   for (let item of list) {
-    item.turnoverPrice = fenToYuan(item.turnoverPrice)
-    item.orderPayPrice = fenToYuan(item.orderPayPrice)
-    item.rechargePrice = fenToYuan(item.rechargePrice)
-    item.expensePrice = fenToYuan(item.expensePrice)
+    item.turnoverPrice = fenToYuanNumber(item.turnoverPrice)
+    item.orderPayPrice = fenToYuanNumber(item.orderPayPrice)
+    item.rechargePrice = fenToYuanNumber(item.rechargePrice)
+    item.expensePrice = fenToYuanNumber(item.expensePrice)
   }
   // 更新 Echarts 数据
   if (lineChartOptions.dataset && lineChartOptions.dataset['source']) {
@@ -346,7 +342,7 @@ const handleExport = async () => {
     exportLoading.value = true
     const times = shortcutDateRangePicker.value.times
     const data = await TradeStatisticsApi.exportTradeStatisticsExcel({ times })
-    download.excel(data, t('auto.views.mall.statistics.trade.index.k7dfa3208'))
+    download.excel(data, '交易状况.xls')
   } catch {
   } finally {
     exportLoading.value = false

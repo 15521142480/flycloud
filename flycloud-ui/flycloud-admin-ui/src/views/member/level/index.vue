@@ -1,8 +1,5 @@
 <template>
-  <doc-alert
-    :title="t('auto.views.member.level.index.k1bee1a27')"
-    url="https://doc.iocoder.cn/member/level/"
-  />
+  <doc-alert title="会员等级、积分、签到" url="https://doc.iocoder.cn/member/level/" />
 
   <ContentWrap>
     <!-- 搜索工作栏 -->
@@ -13,22 +10,17 @@
       :inline="true"
       label-width="68px"
     >
-      <el-form-item :label="t('auto.views.member.level.index.k0ec5f743')" prop="name">
+      <el-form-item label="等级名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="t('auto.views.member.level.index.kfdb90969')"
+          placeholder="请输入等级名称"
           clearable
           @keyup.enter="handleQuery"
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item :label="t('common.status')" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          :placeholder="t('auto.views.member.level.index.kdba277df')"
-          clearable
-          class="!w-240px"
-        >
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable class="!w-240px">
           <el-option
             v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
             :key="dict.value"
@@ -38,14 +30,10 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"
-          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
-        >
-        <el-button @click="resetQuery"
-          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
-        >
+        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
         <el-button type="primary" @click="openForm('create')" v-hasPermi="['member:level:create']">
-          <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kffeb66cc') }}
+          <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
       </el-form-item>
     </el-form>
@@ -54,18 +42,8 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column
-        :label="t('auto.views.member.level.index.k9f42dac6')"
-        align="center"
-        prop="id"
-        min-width="60"
-      />
-      <el-table-column
-        :label="t('auto.views.member.level.index.kd60dee70')"
-        align="center"
-        prop="icon"
-        min-width="80"
-      >
+      <el-table-column label="编号" align="center" prop="id" min-width="60" />
+      <el-table-column label="等级图标" align="center" prop="icon" min-width="80">
         <template #default="scope">
           <el-image
             :src="scope.row.icon"
@@ -74,12 +52,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('extra.k80667212')"
-        align="center"
-        prop="backgroundUrl"
-        min-width="100"
-      >
+      <el-table-column label="等级背景图" align="center" prop="backgroundUrl" min-width="100">
         <template #default="scope">
           <el-image
             :src="scope.row.backgroundUrl"
@@ -88,48 +61,23 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        :label="t('auto.views.member.level.LevelForm.k0ec5f743')"
-        align="center"
-        prop="name"
-        min-width="100"
-      />
-      <el-table-column
-        :label="t('auto.views.member.level.LevelForm.k5c42c048')"
-        align="center"
-        prop="level"
-        min-width="60"
-      />
-      <el-table-column
-        :label="t('auto.views.member.level.LevelForm.k9b48e1e4')"
-        align="center"
-        prop="experience"
-        min-width="80"
-      />
-      <el-table-column
-        :label="t('auto.views.member.level.LevelForm.k8df7f165')"
-        align="center"
-        prop="discountPercent"
-        min-width="110"
-      />
-      <el-table-column :label="t('common.status')" align="center" prop="status" min-width="70">
+      <el-table-column label="等级名称" align="center" prop="name" min-width="100" />
+      <el-table-column label="等级" align="center" prop="level" min-width="60" />
+      <el-table-column label="升级经验" align="center" prop="experience" min-width="80" />
+      <el-table-column label="享受折扣(%)" align="center" prop="discountPercent" min-width="110" />
+      <el-table-column label="状态" align="center" prop="status" min-width="70">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :label="t('common.createTime')"
+        label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
         min-width="170"
       />
-      <el-table-column
-        :label="t('common.operation')"
-        align="center"
-        min-width="110px"
-        fixed="right"
-      >
+      <el-table-column label="操作" align="center" min-width="110px" fixed="right">
         <template #default="scope">
           <el-button
             link
@@ -137,7 +85,7 @@
             @click="openForm('update', scope.row.id)"
             v-hasPermi="['member:level:update']"
           >
-            {{ t('common.edit') }}
+            编辑
           </el-button>
           <el-button
             link
@@ -145,7 +93,7 @@
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['member:level:delete']"
           >
-            {{ t('common.delete') }}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -163,10 +111,10 @@ import * as LevelApi from '@/api/member/level'
 import LevelForm from './LevelForm.vue'
 
 /** 会员等级管理 **/
-const { t } = useI18n()
 defineOptions({ name: 'MemberLevel' })
 
 const message = useMessage() // 消息弹窗
+const { t } = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref([]) // 列表的数据
