@@ -56,7 +56,7 @@ public class AppDeliveryExpressTemplateFreeController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DeliveryExpressTemplateFreeVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(deliveryExpressTemplateFreeService.queryById(id));
     }

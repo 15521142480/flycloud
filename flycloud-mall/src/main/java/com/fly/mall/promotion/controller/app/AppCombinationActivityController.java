@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 移动端 - 拼团活动 控制器。
  *
@@ -56,9 +58,18 @@ public class AppCombinationActivityController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CombinationActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationActivityService.queryById(id));
+    }
+
+    /**
+     * 根据编号列表查询拼团活动。
+     */
+    @GetMapping("/list-by-ids")
+    public R<List<CombinationActivityVo>> listByIds(@RequestParam("ids") List<Long> ids) {
+        return R.ok(combinationActivityService.queryList(new CombinationActivityBo()).stream()
+                .filter(item -> ids.contains(item.getId())).toList());
     }
 
 }

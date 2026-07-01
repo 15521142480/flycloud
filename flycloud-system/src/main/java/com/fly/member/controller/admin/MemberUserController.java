@@ -66,7 +66,7 @@ public class MemberUserController {
     }
 
     @PreAuthorize("@pms.hasPermission('member:user:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody MemberUserBo bo) {
         return R.ok(memberUserService.saveOrUpdate(bo));
     }

@@ -29,7 +29,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertList;
 
 @Tag(name = "管理后台 - IM 数据看板")
 @RestController
-@RequestMapping("/im/manager/statistics")
+@RequestMapping({"/im/manager/statistics", "/admin/im/manager/statistics"})
 @Validated
 public class ImStatisticsManagerController {
 

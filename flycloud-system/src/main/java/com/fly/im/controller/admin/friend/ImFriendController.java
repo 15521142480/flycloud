@@ -33,7 +33,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "管理后台 - IM 好友")
 @RestController
-@RequestMapping("/im/friend")
+@RequestMapping({"/im/friend", "/admin/im/friend"})
 @Validated
 public class ImFriendController {
 

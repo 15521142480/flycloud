@@ -14,6 +14,8 @@ import com.fly.system.api.pay.domain.vo.PayRefundVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 支付退款单 Service 业务层处理。
  *
@@ -33,6 +35,27 @@ public class PayRefundServiceImpl implements IPayRefundService {
 
     @Override
     public PageVo<PayRefundVo> queryPageList(PayRefundBo bo, PageBo pageBo) {
+        LambdaQueryWrapper<PayRefund> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(PayRefund::getId);
+        Page<PayRefundVo> page = payRefundMapper.selectVoPage(pageBo.build(), lqw);
+        PageVo<PayRefundVo> pageVo = new PageVo<>();
+        pageVo.setList(page.getRecords());
+        pageVo.setTotal(page.getTotal());
+        pageVo.setPages(page.getPages());
+        return pageVo;
+    }
+
+    @Override
+    public List<PayRefundVo> queryList(PayRefundBo bo) {
+        LambdaQueryWrapper<PayRefund> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(PayRefund::getId);
+        return payRefundMapper.selectVoList(lqw);
+    }
+
+    /**
+     * 构建支付退款单查询条件。
+     */
+    private LambdaQueryWrapper<PayRefund> buildQueryWrapper(PayRefundBo bo) {
         LambdaQueryWrapper<PayRefund> lqw = Wrappers.lambdaQuery();
         lqw.eq(PayRefund::getIsDeleted, false);
         if (bo != null) {
@@ -45,13 +68,7 @@ public class PayRefundServiceImpl implements IPayRefundService {
             lqw.eq(StringUtils.isNotBlank(bo.getMerchantRefundId()), PayRefund::getMerchantRefundId, bo.getMerchantRefundId());
             lqw.eq(bo.getStatus() != null, PayRefund::getStatus, bo.getStatus());
         }
-        lqw.orderByDesc(PayRefund::getId);
-        Page<PayRefundVo> page = payRefundMapper.selectVoPage(pageBo.build(), lqw);
-        PageVo<PayRefundVo> pageVo = new PageVo<>();
-        pageVo.setList(page.getRecords());
-        pageVo.setTotal(page.getTotal());
-        pageVo.setPages(page.getPages());
-        return pageVo;
+        return lqw;
     }
 
 }

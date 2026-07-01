@@ -103,6 +103,18 @@ public class PayWalletServiceImpl implements IPayWalletService {
         if (wallet == null) {
             throw new ServiceException("钱包不存在");
         }
+        if (PayWalletBizTypeEnum.RECHARGE_REFUND.equals(bizType)) {
+            if (wallet.getFreezePrice() == null || wallet.getFreezePrice() < price) {
+                throw new ServiceException("钱包冻结金额不足");
+            }
+            PayWallet updateWallet = new PayWallet();
+            updateWallet.setId(walletId);
+            updateWallet.setFreezePrice(wallet.getFreezePrice() - price);
+            updateWallet.setUpdateBy(String.valueOf(wallet.getUserId()));
+            updateWallet.setUpdateTime(LocalDateTime.now());
+            payWalletMapper.updateById(updateWallet);
+            return createTransaction(walletId, bizId, bizType, -price, wallet.getBalance());
+        }
         if (wallet.getBalance() == null || wallet.getBalance() < price) {
             throw new ServiceException("钱包余额不足");
         }

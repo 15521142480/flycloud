@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/promotion/ke-fu-conversation")
+@RequestMapping({"/admin/promotion/ke-fu-conversation", "/admin/promotion/kefu-conversation"})
 public class KeFuConversationController extends BaseController {
 
     private final IKeFuConversationService keFuConversationService;
@@ -71,7 +71,7 @@ public class KeFuConversationController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<KeFuConversationVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(keFuConversationService.queryById(id));
     }
@@ -81,8 +81,24 @@ public class KeFuConversationController extends BaseController {
      */
     @Log(title = "客服会话", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:ke-fu-conversation:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody KeFuConversationBo bo) {
+        return R.ok(keFuConversationService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody KeFuConversationBo bo) {
+        return R.ok(keFuConversationService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新客服会话置顶状态。
+     */
+    @PutMapping("/update-conversation-pinned")
+    public R<Void> updateConversationPinned(@RequestBody KeFuConversationBo bo) {
         return R.ok(keFuConversationService.saveOrUpdate(bo));
     }
 
@@ -94,6 +110,14 @@ public class KeFuConversationController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(keFuConversationService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(keFuConversationService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

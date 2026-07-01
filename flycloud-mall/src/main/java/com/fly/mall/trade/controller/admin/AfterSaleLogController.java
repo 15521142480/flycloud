@@ -71,7 +71,7 @@ public class AfterSaleLogController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<AfterSaleLogVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(afterSaleLogService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class AfterSaleLogController extends BaseController {
      */
     @Log(title = "售后日志", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:after-sale-log:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody AfterSaleLogBo bo) {
+        return R.ok(afterSaleLogService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody AfterSaleLogBo bo) {
         return R.ok(afterSaleLogService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class AfterSaleLogController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(afterSaleLogService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(afterSaleLogService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

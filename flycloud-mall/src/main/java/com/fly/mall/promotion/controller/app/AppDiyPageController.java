@@ -65,7 +65,7 @@ public class AppDiyPageController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<AppDiyPagePropertyRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(diyPageService.queryAppPropertyRespById(id));
     }

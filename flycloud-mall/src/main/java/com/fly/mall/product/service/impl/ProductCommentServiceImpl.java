@@ -83,6 +83,35 @@ public class ProductCommentServiceImpl extends BaseServiceImpl<ProductCommentMap
     }
 
     /**
+     * 回复商品评价。
+     */
+    @Override
+    public Boolean replyComment(ProductCommentBo bo) {
+        ProductComment entity = new ProductComment();
+        entity.setId(bo.getId());
+        entity.setReplyStatus(true);
+        entity.setReplyContent(bo.getReplyContent());
+        entity.setReplyUserId(UserUtils.getCurUserId());
+        entity.setReplyTime(LocalDateTime.now());
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
+     * 更新商品评价可见状态。
+     */
+    @Override
+    public Boolean updateCommentVisible(ProductCommentBo bo) {
+        ProductComment entity = new ProductComment();
+        entity.setId(bo.getId());
+        entity.setVisible(bo.getVisible());
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
      * 校验并批量删除商品评价。
      */
     @Override

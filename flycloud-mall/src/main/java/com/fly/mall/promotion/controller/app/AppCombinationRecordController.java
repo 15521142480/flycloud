@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * 移动端 - 拼团记录 控制器。
  *
@@ -56,9 +58,30 @@ public class AppCombinationRecordController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CombinationRecordVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationRecordService.queryById(id));
+    }
+
+    /**
+     * 获得团长拼团记录列表。
+     */
+    @GetMapping("/get-head-list")
+    public R<java.util.List<CombinationRecordVo>> getHeadList(@RequestParam("activityId") Long activityId) {
+        CombinationRecordBo bo = new CombinationRecordBo();
+        bo.setActivityId(activityId);
+        return R.ok(combinationRecordService.queryList(bo).stream()
+                .filter(item -> item.getHeadId() == null || item.getHeadId().equals(item.getId())).toList());
+    }
+
+    /**
+     * 获得拼团记录汇总。
+     */
+    @GetMapping("/get-summary")
+    public R<Map<String, Long>> getSummary(@RequestParam(value = "activityId", required = false) Long activityId) {
+        CombinationRecordBo bo = new CombinationRecordBo();
+        bo.setActivityId(activityId);
+        return R.ok(Map.of("count", (long) combinationRecordService.queryList(bo).size()));
     }
 
 }

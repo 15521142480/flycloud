@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/trade/delivery-express-template")
+@RequestMapping({"/admin/trade/delivery-express-template", "/admin/trade/delivery/express-template"})
 public class DeliveryExpressTemplateController extends BaseController {
 
     private final IDeliveryExpressTemplateService deliveryExpressTemplateService;
@@ -55,7 +55,7 @@ public class DeliveryExpressTemplateController extends BaseController {
     /**
      * 查询所有运费模板。
      */
-    @GetMapping("/getList")
+    @GetMapping({"/getList", "/list-all-simple"})
     public R<List<DeliveryExpressTemplateVo>> allList(DeliveryExpressTemplateBo bo) {
         return R.ok(deliveryExpressTemplateService.queryList(bo));
     }
@@ -71,7 +71,7 @@ public class DeliveryExpressTemplateController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DeliveryExpressTemplateVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(deliveryExpressTemplateService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class DeliveryExpressTemplateController extends BaseController {
      */
     @Log(title = "运费模板", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express-template:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryExpressTemplateBo bo) {
+        return R.ok(deliveryExpressTemplateService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody DeliveryExpressTemplateBo bo) {
         return R.ok(deliveryExpressTemplateService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class DeliveryExpressTemplateController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(deliveryExpressTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(deliveryExpressTemplateService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

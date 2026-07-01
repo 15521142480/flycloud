@@ -8,5 +8,5 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
  * @param params 请求参数
  */
 export const getBrowseHistoryPage = (params: any) => {
-  return request.get({ url: `/${MALL_BASE_URL}/product/browse-history/page`, params })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/product/browse-history/page`, params })
 }

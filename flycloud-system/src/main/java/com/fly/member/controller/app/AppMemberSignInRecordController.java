@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/member/sign-in-record")
+@RequestMapping({"/app/member/sign-in-record", "/app/member/sign-in/record"})
 public class AppMemberSignInRecordController {
 
     private final IMemberSignInRecordService signInRecordService;

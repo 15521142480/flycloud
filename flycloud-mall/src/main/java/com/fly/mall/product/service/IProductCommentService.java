@@ -37,6 +37,16 @@ public interface IProductCommentService {
     Boolean saveOrUpdate(ProductCommentBo bo);
 
     /**
+     * 回复商品评价。
+     */
+    Boolean replyComment(ProductCommentBo bo);
+
+    /**
+     * 更新商品评价可见状态。
+     */
+    Boolean updateCommentVisible(ProductCommentBo bo);
+
+    /**
      * 校验并批量删除商品评价。
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);

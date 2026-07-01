@@ -45,6 +45,11 @@ public class MemberLevelRecordServiceImpl implements IMemberLevelRecordService {
     }
 
     @Override
+    public MemberLevelRecordVo queryById(Long id) {
+        return levelRecordMapper.selectVoById(id);
+    }
+
+    @Override
     public void createLevelRecord(MemberLevelRecord levelRecord) {
         levelRecord.setIsDeleted(false);
         levelRecord.setCreateBy(String.valueOf(levelRecord.getUserId()));

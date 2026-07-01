@@ -23,7 +23,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "管理后台 - IM 群聊消息")
 @RestController
-@RequestMapping("/im/message/group")
+@RequestMapping({"/im/message/group", "/admin/im/message/group"})
 @Validated
 public class ImGroupMessageController {
 

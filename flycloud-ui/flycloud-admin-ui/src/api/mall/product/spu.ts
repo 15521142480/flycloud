@@ -64,50 +64,50 @@ export interface Spu {
 
 // 获得 Spu 列表
 export const getSpuPage = (params: PageParam) => {
-  return request.get({ url: `/${MALL_BASE_URL}/product/spu/page`, params })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/page`, params })
 }
 
 // 获得 Spu 列表 tabsCount（支持按 name/categoryId/createTime 筛选）
 export const getTabsCount = (params?: any) => {
-  return request.get({ url: `/${MALL_BASE_URL}/product/spu/get-count`, params })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/get-count`, params })
 }
 
 // 创建商品 Spu
 export const createSpu = (data: Spu) => {
-  return request.post({ url: `/${MALL_BASE_URL}/product/spu/create`, data })
+  return request.post({ url: `/${MALL_BASE_URL}/admin/product/spu/create`, data })
 }
 
 // 更新商品 Spu
 export const updateSpu = (data: Spu) => {
-  return request.put({ url: `/${MALL_BASE_URL}/product/spu/update`, data })
+  return request.put({ url: `/${MALL_BASE_URL}/admin/product/spu/update`, data })
 }
 
 // 更新商品 Spu status
 export const updateStatus = (data: { id: number; status: number }) => {
-  return request.put({ url: `/${MALL_BASE_URL}/product/spu/update-status`, data })
+  return request.put({ url: `/${MALL_BASE_URL}/admin/product/spu/update-status`, data })
 }
 
 // 获得商品 Spu
 export const getSpu = (id: number) => {
-  return request.get({ url: `/${MALL_BASE_URL}/product/spu/get-detail?id=${id}` })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/get-detail?id=${id}` })
 }
 
 // 获得商品 Spu 详情列表
 export const getSpuDetailList = (ids: number[]) => {
-  return request.get({ url: `/${MALL_BASE_URL}/product/spu/list?spuIds=${ids}` })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/list?spuIds=${ids}` })
 }
 
 // 删除商品 Spu
 export const deleteSpu = (id: number) => {
-  return request.delete({ url: `/${MALL_BASE_URL}/product/spu/delete?id=${id}` })
+  return request.delete({ url: `/${MALL_BASE_URL}/admin/product/spu/delete?id=${id}` })
 }
 
 // 导出商品 Spu Excel
 export const exportSpu = async (params: any) => {
-  return await request.download({ url: `/${MALL_BASE_URL}/product/spu/export-excel`, params })
+  return await request.download({ url: `/${MALL_BASE_URL}/admin/product/spu/export-excel`, params })
 }
 
 // 获得商品 SPU 精简列表
 export const getSpuSimpleList = async () => {
-  return request.get({ url: `/${MALL_BASE_URL}/product/spu/list-all-simple` })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/list-all-simple` })
 }

@@ -105,8 +105,16 @@ public class ProductSpuController extends BaseController {
      */
     @Log(title = "商品SPU", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:spu:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductSpuBo bo) {
+        return R.ok(productSpuService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ProductSpuBo bo) {
         return R.ok(productSpuService.saveOrUpdate(bo));
     }
 
@@ -131,6 +139,14 @@ public class ProductSpuController extends BaseController {
     }
 
     /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(productSpuService.deleteWithValidByIds(java.util.List.of(id), true));
+    }
+
+    /**
      * 导出商品 SPU。
      */
     @Log(title = "商品SPU", businessType = BusinessType.EXPORT)
@@ -139,6 +155,14 @@ public class ProductSpuController extends BaseController {
     public void export(ProductSpuBo bo, HttpServletResponse response) {
         List<ProductSpuVo> list = productSpuService.queryList(bo);
         ExcelUtil.exportExcel(list, "商品SPU", ProductSpuVo.class, response);
+    }
+
+    /**
+     * 导出商品 SPU，兼容 yudao 前端接口。
+     */
+    @GetMapping("/export-excel")
+    public void exportExcel(ProductSpuBo bo, HttpServletResponse response) {
+        export(bo, response);
     }
 
 }

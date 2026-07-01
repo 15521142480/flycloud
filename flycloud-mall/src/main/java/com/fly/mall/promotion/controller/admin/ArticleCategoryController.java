@@ -55,7 +55,7 @@ public class ArticleCategoryController extends BaseController {
     /**
      * 查询所有文章分类。
      */
-    @GetMapping("/getList")
+    @GetMapping({"/getList", "/list-all-simple"})
     public R<List<ArticleCategoryVo>> allList(ArticleCategoryBo bo) {
         return R.ok(articleCategoryService.queryList(bo));
     }
@@ -71,7 +71,7 @@ public class ArticleCategoryController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<ArticleCategoryVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(articleCategoryService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class ArticleCategoryController extends BaseController {
      */
     @Log(title = "文章分类", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:article-category:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ArticleCategoryBo bo) {
+        return R.ok(articleCategoryService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ArticleCategoryBo bo) {
         return R.ok(articleCategoryService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class ArticleCategoryController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(articleCategoryService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(articleCategoryService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

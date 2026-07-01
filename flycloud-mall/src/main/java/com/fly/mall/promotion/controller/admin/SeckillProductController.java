@@ -71,7 +71,7 @@ public class SeckillProductController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<SeckillProductVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(seckillProductService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class SeckillProductController extends BaseController {
      */
     @Log(title = "秒杀商品", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:seckill-product:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody SeckillProductBo bo) {
+        return R.ok(seckillProductService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody SeckillProductBo bo) {
         return R.ok(seckillProductService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class SeckillProductController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(seckillProductService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(seckillProductService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

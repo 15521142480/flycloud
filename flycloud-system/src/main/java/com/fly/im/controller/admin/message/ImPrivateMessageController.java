@@ -23,7 +23,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "管理后台 - IM 私聊消息")
 @RestController
-@RequestMapping("/im/message/private")
+@RequestMapping({"/im/message/private", "/admin/im/message/private"})
 @Validated
 public class ImPrivateMessageController {
 

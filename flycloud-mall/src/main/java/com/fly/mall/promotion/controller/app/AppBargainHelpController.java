@@ -3,6 +3,7 @@ package com.fly.mall.promotion.controller.app;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.promotion.domain.bo.BargainHelpBo;
 import com.fly.mall.api.promotion.domain.vo.BargainHelpVo;
 import com.fly.mall.promotion.service.IBargainHelpService;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,9 +59,18 @@ public class AppBargainHelpController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BargainHelpVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bargainHelpService.queryById(id));
+    }
+
+    /**
+     * 创建砍价助力记录。
+     */
+    @PostMapping("/create")
+    public R<Void> create(@RequestBody BargainHelpBo bo) {
+        bo.setUserId(UserUtils.getCurUserId());
+        return R.ok(bargainHelpService.saveOrUpdate(bo));
     }
 
 }

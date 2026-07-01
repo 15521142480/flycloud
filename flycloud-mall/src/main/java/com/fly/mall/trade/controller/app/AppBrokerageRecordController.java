@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * 移动端 - 佣金记录 控制器。
  *
@@ -56,9 +58,17 @@ public class AppBrokerageRecordController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BrokerageRecordVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(brokerageRecordService.queryById(id));
+    }
+
+    /**
+     * 查询商品佣金价格。
+     */
+    @GetMapping("/get-product-brokerage-price")
+    public R<Map<String, Integer>> getProductBrokeragePrice() {
+        return R.ok(Map.of("firstBrokeragePrice", 0, "secondBrokeragePrice", 0));
     }
 
 }

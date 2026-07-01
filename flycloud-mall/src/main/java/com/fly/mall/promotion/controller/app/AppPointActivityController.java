@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 移动端 - 积分商城活动 控制器。
  *
@@ -56,9 +58,18 @@ public class AppPointActivityController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<PointActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(pointActivityService.queryById(id));
+    }
+
+    /**
+     * 根据编号列表查询积分商城活动。
+     */
+    @GetMapping("/list-by-ids")
+    public R<List<PointActivityVo>> listByIds(@RequestParam("ids") List<Long> ids) {
+        return R.ok(pointActivityService.queryList(new PointActivityBo()).stream()
+                .filter(item -> ids.contains(item.getId())).toList());
     }
 
 }

@@ -24,7 +24,7 @@ import static com.fly.common.domain.model.R.ok;
 
 @Tag(name = "管理后台 - IM 表情包")
 @RestController
-@RequestMapping("/im/manager/face-pack")
+@RequestMapping({"/im/manager/face-pack", "/admin/im/manager/face-pack"})
 @Validated
 public class ImFacePackManagerController {
 

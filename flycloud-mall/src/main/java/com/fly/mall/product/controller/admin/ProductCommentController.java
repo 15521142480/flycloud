@@ -77,13 +77,45 @@ public class ProductCommentController extends BaseController {
     }
 
     /**
+     * 获得商品评价详情，兼容 yudao 前端接口。
+     */
+    @GetMapping("/get")
+    public R<ProductCommentVo> get(@RequestParam("id") Long id) {
+        return R.ok(productCommentService.queryById(id));
+    }
+
+    /**
      * 新增或修改商品评价。
      */
     @Log(title = "商品评价", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:comment:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductCommentBo bo) {
         return R.ok(productCommentService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ProductCommentBo bo) {
+        return R.ok(productCommentService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 回复商品评价。
+     */
+    @PutMapping("/reply")
+    public R<Void> reply(@RequestBody ProductCommentBo bo) {
+        return R.ok(productCommentService.replyComment(bo));
+    }
+
+    /**
+     * 更新商品评价可见状态。
+     */
+    @PutMapping("/update-visible")
+    public R<Void> updateVisible(@RequestBody ProductCommentBo bo) {
+        return R.ok(productCommentService.updateCommentVisible(bo));
     }
 
     /**
@@ -94,6 +126,14 @@ public class ProductCommentController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productCommentService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(productCommentService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/product/product-favorite")
+@RequestMapping({"/admin/product/product-favorite", "/admin/product/favorite"})
 public class ProductFavoriteController extends BaseController {
 
     private final IProductFavoriteService productFavoriteService;
@@ -81,8 +81,16 @@ public class ProductFavoriteController extends BaseController {
      */
     @Log(title = "商品收藏", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductFavoriteBo bo) {
+        return R.ok(productFavoriteService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ProductFavoriteBo bo) {
         return R.ok(productFavoriteService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class ProductFavoriteController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productFavoriteService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(productFavoriteService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

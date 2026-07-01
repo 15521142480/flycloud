@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/trade/trade-order-item")
+@RequestMapping({"/app/trade/trade-order-item", "/app/trade/order/item"})
 public class AppTradeOrderItemController {
 
     private final ITradeOrderItemService tradeOrderItemService;
@@ -56,9 +58,18 @@ public class AppTradeOrderItemController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<TradeOrderItemVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(tradeOrderItemService.queryById(id));
+    }
+
+    /**
+     * 创建订单项评价。
+     */
+    @PostMapping("/create-comment")
+    public R<Long> createComment(@RequestBody com.fly.mall.api.trade.domain.bo.TradeOrderItemBo bo) {
+        tradeOrderItemService.saveOrUpdate(bo);
+        return R.ok(bo.getId());
     }
 
 }

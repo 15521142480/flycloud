@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/member/sign-in-record")
+@RequestMapping({"/admin/member/sign-in-record", "/admin/member/sign-in/record"})
 public class MemberSignInRecordController {
 
     private final IMemberSignInRecordService signInRecordService;
 
     @PreAuthorize("@pms.hasPermission('member:sign:list')")
-    @GetMapping("/list")
+    @GetMapping({"/list", "/page"})
     public R<PageVo<MemberSignInRecordVo>> list(MemberSignInRecordBo bo, PageBo pageBo) {
         return R.ok(signInRecordService.queryPageList(bo, pageBo));
     }

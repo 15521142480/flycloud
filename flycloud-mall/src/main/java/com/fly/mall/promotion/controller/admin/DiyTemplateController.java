@@ -110,7 +110,7 @@ public class DiyTemplateController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DiyTemplateRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(diyTemplateService.queryRespById(id));
     }
@@ -138,7 +138,7 @@ public class DiyTemplateController extends BaseController {
      */
     @Log(title = "装修模板", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiyTemplateBo bo) {
         return R.ok(diyTemplateService.saveOrUpdate(bo));
     }

@@ -21,7 +21,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "管理后台 - IM 个人表情")
 @RestController
-@RequestMapping("/im/face-user-item")
+@RequestMapping({"/im/face-user-item", "/admin/im/face-user-item"})
 @Validated
 public class ImFaceUserItemController {
 

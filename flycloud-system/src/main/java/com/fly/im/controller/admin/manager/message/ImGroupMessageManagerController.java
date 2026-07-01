@@ -38,7 +38,7 @@ import static com.fly.im.enums.ImCommonConstants.AT_USER_ID_ALL;
 
 @Tag(name = "管理后台 - IM 群聊消息")
 @RestController
-@RequestMapping("/im/manager/message/group")
+@RequestMapping({"/im/manager/message/group", "/admin/im/manager/message/group"})
 @Validated
 public class ImGroupMessageManagerController {
 

@@ -33,6 +33,21 @@ public interface IPayWalletRechargeService {
     void updateWalletRechargePaid(Long payOrderId, String channelCode);
 
     /**
+     * 支付回调后更新钱包充值为已支付。
+     */
+    void updateWalletRechargerPaid(Long id, Long payOrderId);
+
+    /**
+     * 发起钱包充值退款。
+     */
+    void refundWalletRecharge(Long id, String userIp);
+
+    /**
+     * 退款回调后更新钱包充值为已退款。
+     */
+    void updateWalletRechargeRefunded(Long id, String refundId, Long payRefundId);
+
+    /**
      * 分页查询钱包充值记录。
      */
     PageVo<PayWalletRechargeVo> queryPageList(PayWalletRechargeBo bo, PageBo pageBo);

@@ -56,7 +56,7 @@ public class AppCombinationProductController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CombinationProductVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationProductService.queryById(id));
     }

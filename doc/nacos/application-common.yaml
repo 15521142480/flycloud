@@ -65,7 +65,7 @@ security:
       host: 39.98.125.88
       port: 6379
       # 密码(如没有密码请注释掉password字段)
-      password: wW257007
+      password: 
       database: 0
       timeout: 18s
       ssl:

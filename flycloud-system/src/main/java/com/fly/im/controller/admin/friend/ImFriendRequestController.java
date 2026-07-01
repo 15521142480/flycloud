@@ -42,7 +42,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
  */
 @Tag(name = "管理后台 - IM 好友申请")
 @RestController
-@RequestMapping("/im/friend-request")
+@RequestMapping({"/im/friend-request", "/admin/im/friend-request"})
 @Validated
 public class ImFriendRequestController {
 

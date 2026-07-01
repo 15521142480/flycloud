@@ -25,7 +25,7 @@ import java.util.Objects;
 @Getter
 public enum ImRtcParticipantStatusEnum implements ArrayValuable<Integer> {
 
-    // TODO ：hand up 要不要也搞下。
+    // 目前用 LEFT 统一表示接通后主动挂断或离开房间。
     INVITING(10, "邀请中"), // 已发出 invite，等被叫响应
     JOINED(20, "已加入"), // 已 connect 进 LiveKit 房间
     REJECTED(30, "已拒绝"), // 接通前点拒接

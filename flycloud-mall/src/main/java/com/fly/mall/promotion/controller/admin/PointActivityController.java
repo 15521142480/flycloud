@@ -71,7 +71,7 @@ public class PointActivityController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<PointActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(pointActivityService.queryById(id));
     }
@@ -81,8 +81,36 @@ public class PointActivityController extends BaseController {
      */
     @Log(title = "积分商城活动", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:point-activity:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody PointActivityBo bo) {
+        return R.ok(pointActivityService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody PointActivityBo bo) {
+        return R.ok(pointActivityService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 根据编号列表查询积分商城活动。
+     */
+    @GetMapping("/list-by-ids")
+    public R<List<PointActivityVo>> listByIds(@RequestParam("ids") List<Long> ids) {
+        return R.ok(pointActivityService.queryList(new PointActivityBo()).stream()
+                .filter(item -> ids.contains(item.getId())).toList());
+    }
+
+    /**
+     * 关闭积分商城活动。
+     */
+    @PutMapping("/close")
+    public R<Void> close(@RequestParam("id") Long id) {
+        PointActivityBo bo = new PointActivityBo();
+        bo.setId(id);
+        bo.setStatus(com.fly.common.enums.StatusEnum.DISABLE.getStatus());
         return R.ok(pointActivityService.saveOrUpdate(bo));
     }
 
@@ -94,6 +122,14 @@ public class PointActivityController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(pointActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(pointActivityService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

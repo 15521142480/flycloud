@@ -27,13 +27,13 @@ public class MemberGroupController {
     private final IMemberGroupService groupService;
 
     @PreAuthorize("@pms.hasPermission('member:group:list')")
-    @GetMapping("/list")
+    @GetMapping({"/list", "/page"})
     public R<PageVo<MemberGroupVo>> list(MemberGroupBo bo, PageBo pageBo) {
         return R.ok(groupService.queryPageList(bo, pageBo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:list')")
-    @GetMapping("/allList")
+    @GetMapping({"/allList", "/list-all-simple"})
     public R<List<MemberGroupVo>> allList(MemberGroupBo bo) {
         return R.ok(groupService.queryList(bo));
     }
@@ -44,15 +44,39 @@ public class MemberGroupController {
         return R.ok(groupService.queryById(id));
     }
 
+    /**
+     * 获得详情，兼容 yudao 前端接口。
+     */
+    @GetMapping("/get")
+    public R<MemberGroupVo> yudaoGet(@RequestParam("id") Long id) {
+        return R.ok(groupService.queryById(id));
+    }
+
     @PreAuthorize("@pms.hasPermission('member:group:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody MemberGroupBo bo) {
+        return R.ok(groupService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody MemberGroupBo bo) {
         return R.ok(groupService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(groupService.deleteById(id));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(groupService.deleteById(id));
     }
 

@@ -1,16 +1,18 @@
 package com.fly.common.utils;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import org.springframework.web.util.UriUtils;
+
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -124,6 +126,92 @@ public class FileUtils extends FileUtil {
             FileUtil.writeBytes(content, dest);
         }
 
+    }
+
+    /**
+     * 创建临时文件
+     * 该文件会在 JVM 退出时，进行删除
+     *
+     * @param data 文件内容
+     * @return 文件
+     */
+    @SneakyThrows
+    public static File createTempFile(String data) {
+        File file = createTempFile();
+        // 写入内容
+        FileUtil.writeUtf8String(data, file);
+        return file;
+    }
+
+    /**
+     * 创建临时文件
+     * 该文件会在 JVM 退出时，进行删除
+     *
+     * @param data 文件内容
+     * @return 文件
+     */
+    @SneakyThrows
+    public static File createTempFile(byte[] data) {
+        File file = createTempFile();
+        // 写入内容
+        FileUtil.writeBytes(data, file);
+        return file;
+    }
+
+    /**
+     * 创建临时文件，无内容
+     * 该文件会在 JVM 退出时，进行删除
+     *
+     * @return 文件
+     */
+    @SneakyThrows
+    public static File createTempFile() {
+        // 创建文件，通过 UUID 保证唯一
+        File file = File.createTempFile(IdUtil.simpleUUID(), null);
+        // 标记 JVM 退出时，自动删除
+        file.deleteOnExit();
+        return file;
+    }
+
+    public static String encodeUrlPath(String path) {
+        if (StrUtil.isEmpty(path)) {
+            return path;
+        }
+        String[] segments = path.split(StrUtil.SLASH, -1);
+        StringBuilder result = new StringBuilder(path.length());
+        for (int i = 0; i < segments.length; i++) {
+            if (i > 0) {
+                result.append(StrUtil.SLASH);
+            }
+            result.append(encodeUrlPathSegment(segments[i]));
+        }
+        return result.toString();
+    }
+
+    /**
+     * 编码 URL 路径段
+     *
+     * @param segment URL 路径段
+     * @return 编码后的路径段
+     */
+    public static String encodeUrlPathSegment(String segment) {
+        return UriUtils.encodePathSegment(segment, StandardCharsets.UTF_8);
+    }
+
+    public static String removeUrlPathQueryAndFragment(String path) {
+        if (StrUtil.isEmpty(path)) {
+            return path;
+        }
+        int endIndex = path.length();
+        int queryIndex = path.indexOf('?');
+        if (queryIndex >= 0) {
+            endIndex = queryIndex;
+        }
+        int fragmentIndex = path.indexOf('#');
+        if (fragmentIndex >= 0 && fragmentIndex < endIndex) {
+            endIndex = fragmentIndex;
+        }
+        return path.substring(0, endIndex);
     }
 
 }

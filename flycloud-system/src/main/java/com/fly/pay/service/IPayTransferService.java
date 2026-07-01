@@ -5,6 +5,8 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.system.api.pay.domain.bo.PayTransferBo;
 import com.fly.system.api.pay.domain.vo.PayTransferVo;
 
+import java.util.List;
+
 /**
  * 支付转账单 Service 接口。
  *
@@ -14,4 +16,5 @@ import com.fly.system.api.pay.domain.vo.PayTransferVo;
 public interface IPayTransferService {
     PayTransferVo queryById(Long id);
     PageVo<PayTransferVo> queryPageList(PayTransferBo bo, PageBo pageBo);
+    List<PayTransferVo> queryList(PayTransferBo bo);
 }

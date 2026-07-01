@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/member/sign-in-config")
+@RequestMapping({"/admin/member/sign-in-config", "/admin/member/sign-in/config"})
 public class MemberSignInConfigController {
 
     private final IMemberSignInConfigService signInConfigService;
@@ -44,15 +44,39 @@ public class MemberSignInConfigController {
         return R.ok(signInConfigService.queryById(id));
     }
 
+    /**
+     * 获得详情，兼容 yudao 前端接口。
+     */
+    @GetMapping("/get")
+    public R<MemberSignInConfigVo> yudaoGet(@RequestParam("id") Long id) {
+        return R.ok(signInConfigService.queryById(id));
+    }
+
     @PreAuthorize("@pms.hasPermission('member:sign-in-config:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody MemberSignInConfigBo bo) {
+        return R.ok(signInConfigService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody MemberSignInConfigBo bo) {
         return R.ok(signInConfigService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:sign-in-config:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(signInConfigService.deleteById(id));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(signInConfigService.deleteById(id));
     }
 

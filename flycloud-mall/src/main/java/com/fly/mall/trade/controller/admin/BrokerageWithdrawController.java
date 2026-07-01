@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * 管理后台 - 佣金提现 控制器。
@@ -71,7 +72,7 @@ public class BrokerageWithdrawController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BrokerageWithdrawVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(brokerageWithdrawService.queryById(id));
     }
@@ -81,8 +82,46 @@ public class BrokerageWithdrawController extends BaseController {
      */
     @Log(title = "佣金提现", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:brokerage-withdraw:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BrokerageWithdrawBo bo) {
+        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody BrokerageWithdrawBo bo) {
+        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 同意佣金提现。
+     */
+    @PutMapping("/approve")
+    public R<Void> approve(@RequestBody BrokerageWithdrawBo bo) {
+        bo.setStatus(10);
+        bo.setAuditTime(LocalDateTime.now());
+        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 拒绝佣金提现。
+     */
+    @PutMapping("/reject")
+    public R<Void> reject(@RequestBody BrokerageWithdrawBo bo) {
+        bo.setStatus(20);
+        bo.setAuditTime(LocalDateTime.now());
+        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 转账回调后更新佣金提现。
+     */
+    @PostMapping("/update-transferred")
+    public R<Void> updateTransferred(@RequestBody BrokerageWithdrawBo bo) {
+        bo.setStatus(30);
+        bo.setTransferTime(LocalDateTime.now());
         return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
@@ -94,6 +133,14 @@ public class BrokerageWithdrawController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(brokerageWithdrawService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(brokerageWithdrawService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -32,7 +32,7 @@ public class AppArticleCategoryController {
     /**
      * 查询移动端文章分类分页列表。
      */
-    @GetMapping("/list")
+    @RequestMapping("/list")
     public R<PageVo<ArticleCategoryVo>> list(ArticleCategoryBo bo, PageBo page) {
         return R.ok(articleCategoryService.queryPageList(bo, page));
     }
@@ -56,7 +56,7 @@ public class AppArticleCategoryController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<ArticleCategoryVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(articleCategoryService.queryById(id));
     }

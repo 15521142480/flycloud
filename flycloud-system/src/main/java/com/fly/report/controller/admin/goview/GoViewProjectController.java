@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/report/go-view/project")
+@RequestMapping({"/report/go-view/project", "/admin/report/go-view/project"})
 public class GoViewProjectController {
 
     private final IGoViewProjectService goViewProjectService;

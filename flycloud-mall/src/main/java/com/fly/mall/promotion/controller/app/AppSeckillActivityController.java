@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 移动端 - 秒杀活动 控制器。
  *
@@ -56,9 +58,26 @@ public class AppSeckillActivityController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<SeckillActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(seckillActivityService.queryById(id));
+    }
+
+    /**
+     * 根据编号列表查询秒杀活动。
+     */
+    @GetMapping("/list-by-ids")
+    public R<List<SeckillActivityVo>> listByIds(@RequestParam("ids") List<Long> ids) {
+        return R.ok(seckillActivityService.queryList(new SeckillActivityBo()).stream()
+                .filter(item -> ids.contains(item.getId())).toList());
+    }
+
+    /**
+     * 获得当前秒杀活动。
+     */
+    @GetMapping("/get-now")
+    public R<SeckillActivityVo> getNow() {
+        return R.ok(seckillActivityService.queryList(new SeckillActivityBo()).stream().findFirst().orElse(null));
     }
 
 }

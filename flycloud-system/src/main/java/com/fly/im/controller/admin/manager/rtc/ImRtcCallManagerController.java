@@ -36,7 +36,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 
 @Tag(name = "管理后台 - IM 通话记录")
 @RestController
-@RequestMapping("/im/manager/rtc")
+@RequestMapping({"/im/manager/rtc", "/admin/im/manager/rtc"})
 @Validated
 public class ImRtcCallManagerController {
 

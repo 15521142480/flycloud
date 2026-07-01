@@ -31,7 +31,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSetByFlatMa
 
 @Tag(name = "管理后台 - IM 私聊消息")
 @RestController
-@RequestMapping("/im/manager/message/private")
+@RequestMapping({"/im/manager/message/private", "/admin/im/manager/message/private"})
 @Validated
 public class ImPrivateMessageManagerController {
 

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/member/point-record")
+@RequestMapping({"/app/member/point-record", "/app/member/point/record"})
 public class AppMemberPointRecordController {
 
     private final IMemberPointRecordService pointRecordService;

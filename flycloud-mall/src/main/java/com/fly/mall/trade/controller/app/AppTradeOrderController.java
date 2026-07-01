@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * 移动端 - 交易订单 控制器。
@@ -93,9 +95,31 @@ public class AppTradeOrderController {
     /**
      * 获得交易订单详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<TradeOrderVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(tradeOrderService.queryByUserAndId(UserUtils.getCurUserId(), id));
+    }
+
+    /**
+     * 支付回调后更新订单为已支付。
+     */
+    @PostMapping("/update-paid")
+    public R<Void> updatePaid(@RequestBody PayOrderNotifyReq req) {
+        TradeOrderBo bo = new TradeOrderBo();
+        bo.setId(Long.valueOf(req.getMerchantOrderId()));
+        bo.setPayOrderId(req.getPayOrderId());
+        bo.setPayStatus(true);
+        bo.setStatus(10);
+        bo.setPayTime(LocalDateTime.now());
+        return R.ok(tradeOrderService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 查询订单物流轨迹。
+     */
+    @GetMapping("/get-express-track-list")
+    public R<List<Object>> getExpressTrackList(@RequestParam("id") Long id) {
+        return R.ok(List.of());
     }
 
     /**
@@ -128,6 +152,15 @@ public class AppTradeOrderController {
     @DeleteMapping("/delete")
     public R<Void> deleteOrder(@RequestParam("id") Long id) {
         return R.ok(tradeOrderService.deleteOrder(UserUtils.getCurUserId(), id));
+    }
+
+    /**
+     * 支付订单通知请求。
+     */
+    @Data
+    public static class PayOrderNotifyReq {
+        private String merchantOrderId;
+        private Long payOrderId;
     }
 
 }

@@ -30,7 +30,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 
 @Tag(name = "管理后台 - IM 频道素材")
 @RestController
-@RequestMapping("/im/manager/channel-material")
+@RequestMapping({"/im/manager/channel-material", "/admin/im/manager/channel-material"})
 @Validated
 public class ImChannelMaterialManagerController {
 

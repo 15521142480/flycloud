@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * 管理后台 - 售后单 控制器。
@@ -71,7 +72,7 @@ public class AfterSaleController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<AfterSaleVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(afterSaleService.queryById(id));
     }
@@ -81,8 +82,76 @@ public class AfterSaleController extends BaseController {
      */
     @Log(title = "售后单", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody AfterSaleBo bo) {
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody AfterSaleBo bo) {
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 同意售后申请。
+     */
+    @PutMapping("/agree")
+    public R<Void> agree(@RequestBody AfterSaleBo bo) {
+        bo.setStatus(20);
+        bo.setAuditTime(LocalDateTime.now());
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 拒绝售后申请。
+     */
+    @PutMapping("/disagree")
+    public R<Void> disagree(@RequestBody AfterSaleBo bo) {
+        bo.setStatus(61);
+        bo.setAuditTime(LocalDateTime.now());
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 确认收到退货。
+     */
+    @PutMapping("/receive")
+    public R<Void> receive(@RequestBody AfterSaleBo bo) {
+        bo.setStatus(40);
+        bo.setReceiveTime(LocalDateTime.now());
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 售后退款。
+     */
+    @PutMapping("/refund")
+    public R<Void> refund(@RequestBody AfterSaleBo bo) {
+        bo.setStatus(50);
+        bo.setRefundTime(LocalDateTime.now());
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 拒绝收货。
+     */
+    @PutMapping("/refuse")
+    public R<Void> refuse(@RequestBody AfterSaleBo bo) {
+        bo.setStatus(62);
+        bo.setReceiveTime(LocalDateTime.now());
+        return R.ok(afterSaleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 支付退款回调后更新售后单。
+     */
+    @PostMapping("/update-refunded")
+    public R<Void> updateRefunded(@RequestBody AfterSaleBo bo) {
+        bo.setStatus(50);
+        bo.setRefundTime(LocalDateTime.now());
         return R.ok(afterSaleService.saveOrUpdate(bo));
     }
 
@@ -94,6 +163,14 @@ public class AfterSaleController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(afterSaleService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(afterSaleService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

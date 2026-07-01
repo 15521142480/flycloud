@@ -56,7 +56,7 @@ public class AppSeckillProductController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<SeckillProductVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(seckillProductService.queryById(id));
     }

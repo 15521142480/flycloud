@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/promotion/ke-fu-message")
+@RequestMapping({"/app/promotion/ke-fu-message", "/app/promotion/kefu-message"})
 public class AppKeFuMessageController {
 
     private final IKeFuMessageService keFuMessageService;
@@ -56,9 +59,26 @@ public class AppKeFuMessageController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<KeFuMessageVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(keFuMessageService.queryById(id));
+    }
+
+    /**
+     * 发送客服消息。
+     */
+    @PostMapping("/send")
+    public R<Void> send(@RequestBody KeFuMessageBo bo) {
+        return R.ok(keFuMessageService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新客服消息已读状态。
+     */
+    @PutMapping("/update-read-status")
+    public R<Void> updateReadStatus(@RequestBody KeFuMessageBo bo) {
+        bo.setReadStatus(true);
+        return R.ok(keFuMessageService.saveOrUpdate(bo));
     }
 
 }

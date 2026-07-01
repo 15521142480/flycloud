@@ -17,7 +17,7 @@ export interface Favorite {
 // 获得 ProductFavorite 列表
 export const getFavoritePage = (params: PageParam) => {
   return request.get<PageResult<Favorite[]>>({
-    url: `/${MALL_BASE_URL}/product/favorite/page`,
+    url: `/${MALL_BASE_URL}/admin/product/favorite/page`,
     params
   })
 }

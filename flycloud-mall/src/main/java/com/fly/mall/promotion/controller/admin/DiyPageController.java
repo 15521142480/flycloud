@@ -108,7 +108,7 @@ public class DiyPageController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DiyPageRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(diyPageService.queryRespById(id));
     }
@@ -136,7 +136,7 @@ public class DiyPageController extends BaseController {
      */
     @Log(title = "装修页面", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiyPageBo bo) {
         return R.ok(diyPageService.saveOrUpdate(bo));
     }

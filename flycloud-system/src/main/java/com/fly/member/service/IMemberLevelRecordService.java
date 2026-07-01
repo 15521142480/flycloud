@@ -14,5 +14,6 @@ import com.fly.system.api.member.domain.vo.MemberLevelRecordVo;
  */
 public interface IMemberLevelRecordService {
     PageVo<MemberLevelRecordVo> queryPageList(MemberLevelRecordBo bo, PageBo pageBo);
+    MemberLevelRecordVo queryById(Long id);
     void createLevelRecord(MemberLevelRecord levelRecord);
 }

@@ -26,9 +26,18 @@ public class MemberLevelRecordController {
     private final IMemberLevelRecordService levelRecordService;
 
     @PreAuthorize("@pms.hasPermission('member:level:list')")
-    @GetMapping("/list")
+    @GetMapping({"/list", "/page"})
     public R<PageVo<MemberLevelRecordVo>> list(MemberLevelRecordBo bo, PageBo pageBo) {
         return R.ok(levelRecordService.queryPageList(bo, pageBo));
+    }
+
+    /**
+     * 获取会员等级记录详情。
+     */
+    @PreAuthorize("@pms.hasPermission('member:level:query')")
+    @GetMapping("/get")
+    public R<MemberLevelRecordVo> get(Long id) {
+        return R.ok(levelRecordService.queryById(id));
     }
 
 }

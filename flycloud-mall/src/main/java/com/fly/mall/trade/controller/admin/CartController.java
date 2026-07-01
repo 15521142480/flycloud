@@ -71,7 +71,7 @@ public class CartController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CartVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(cartService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class CartController extends BaseController {
      */
     @Log(title = "购物车", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:cart:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CartBo bo) {
+        return R.ok(cartService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody CartBo bo) {
         return R.ok(cartService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class CartController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(cartService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(cartService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 移动端 - 优惠券模板 控制器。
  *
@@ -56,9 +58,18 @@ public class AppCouponTemplateController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CouponTemplateVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(couponTemplateService.queryById(id));
+    }
+
+    /**
+     * 根据编号列表查询优惠券模板。
+     */
+    @GetMapping("/list-by-ids")
+    public R<List<CouponTemplateVo>> listByIds(@RequestParam("ids") List<Long> ids) {
+        return R.ok(couponTemplateService.queryList(new CouponTemplateBo()).stream()
+                .filter(item -> ids.contains(item.getId())).toList());
     }
 
 }

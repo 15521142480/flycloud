@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/trade/delivery-express")
+@RequestMapping({"/admin/trade/delivery-express", "/admin/trade/delivery/express"})
 public class DeliveryExpressController extends BaseController {
 
     private final IDeliveryExpressService deliveryExpressService;
@@ -55,7 +55,7 @@ public class DeliveryExpressController extends BaseController {
     /**
      * 查询所有快递公司。
      */
-    @GetMapping("/getList")
+    @GetMapping({"/getList", "/list-all-simple"})
     public R<List<DeliveryExpressVo>> allList(DeliveryExpressBo bo) {
         return R.ok(deliveryExpressService.queryList(bo));
     }
@@ -71,7 +71,7 @@ public class DeliveryExpressController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DeliveryExpressVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(deliveryExpressService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class DeliveryExpressController extends BaseController {
      */
     @Log(title = "快递公司", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryExpressBo bo) {
+        return R.ok(deliveryExpressService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody DeliveryExpressBo bo) {
         return R.ok(deliveryExpressService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,23 @@ public class DeliveryExpressController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(deliveryExpressService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(deliveryExpressService.deleteWithValidByIds(java.util.List.of(id), true));
+    }
+
+    /**
+     * 导出物流公司，兼容 yudao 前端接口。
+     */
+    @GetMapping("/export-excel")
+    public void exportExcel(DeliveryExpressBo bo, jakarta.servlet.http.HttpServletResponse response) {
+        com.fly.common.utils.ExcelUtil.exportExcel(deliveryExpressService.queryList(bo), "物流公司",
+                DeliveryExpressVo.class, response);
     }
 
 }

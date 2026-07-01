@@ -1,4 +1,5 @@
 import request from '@/config/axios'
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface FilePageReqVO extends PageParam {
   path?: string
@@ -18,28 +19,28 @@ export interface FilePresignedUrlRespVO {
 
 // 查询文件列表
 export const getFilePage = (params: FilePageReqVO) => {
-  return request.get({ url: '/infra/file/page', params })
+  return request.get({ url: `/${SYS_BASE_URL}/file/page`, params })
 }
 
 // 删除文件
 export const deleteFile = (id: number) => {
-  return request.delete({ url: '/infra/file/delete/' + id })
+  return request.delete({ url: `/${SYS_BASE_URL}/file/delete/` + id })
 }
 
 // 获取文件预签名地址
 export const getFilePresignedUrl = (path: string) => {
   return request.get<FilePresignedUrlRespVO>({
-    url: '/infra/file/presigned-url',
+    url: `/${SYS_BASE_URL}/file/presigned-url`,
     params: { path }
   })
 }
 
 // 创建文件
 export const createFile = (data: any) => {
-  return request.post({ url: '/infra/file/create', data })
+  return request.post({ url: `/${SYS_BASE_URL}/file/create`, data })
 }
 
 // 上传文件
 export const updateFile = (data: any) => {
-  return request.upload({ url: '/infra/file/upload', data })
+  return request.upload({ url: `/${SYS_BASE_URL}/file/upload`, data })
 }

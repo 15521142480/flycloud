@@ -56,7 +56,7 @@ public class AppAfterSaleLogController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<AfterSaleLogVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(afterSaleLogService.queryById(id));
     }

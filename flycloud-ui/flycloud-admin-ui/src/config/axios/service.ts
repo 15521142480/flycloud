@@ -9,7 +9,7 @@ import axios, {
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import qs from 'qs'
 import { config } from '@/config/axios/config'
-import { getAccessToken, getRefreshToken, removeToken, setToken } from '@/utils/auth'
+import { getAccessToken, removeToken } from '@/utils/auth'
 import errorCode from './errorCode'
 
 import { resetRouter } from '@/router'
@@ -21,7 +21,7 @@ import { deleteUserCache } from '@/hooks/web/useCache'
 
 const { t } = useI18n()
 
-const { result_code, base_url, request_timeout } = config
+const { result_code, request_timeout } = config
 
 // 需要忽略的提示。忽略后，自动 Promise.reject('error')
 const ignoreMsgs = [
@@ -34,10 +34,9 @@ export const isRelogin = { show: false }
 
 // Axios 无感知刷新令牌，参考 https://www.dashingdog.cn/article/11 与 https://segmentfault.com/a/1190000020210980 实现
 // 请求队列
-let requestList: any[] = []
-
-// 是否正在刷新中
-let isRefreshToken = false
+// let requestList: any[] = []
+// // 是否正在刷新中
+// let isRefreshToken = false
 
 // 请求白名单，无须token的接口
 const whiteList: string[] = ['/auth/code', '/login', '/refresh-token']
@@ -102,10 +101,10 @@ service.interceptors.request.use(
  * response 拦截器
  */
 service.interceptors.response.use(
-  // 响应为成功(200)的情况
+
+  // 响应状态码为：成功；即200、201、204
   async (response: AxiosResponse<any>) => {
     let { data } = response
-    const config = response.config
     if (!data) {
       // 返回“[HTTP]请求没有返回值”;
       throw new Error()
@@ -121,71 +120,16 @@ service.interceptors.response.use(
       }
       data = await new Response(response.data).json()
     }
-    const code = data.code || result_code
-    // 获取错误信息
-    const msg = data.msg || errorCode[code] || errorCode['default']
+
+    // 处理code和msg
+    const code = data.code ?? result_code // 不能用 ||, 因为0是假值
+    const msg = data.msg || errorCode['default']
     if (ignoreMsgs.indexOf(msg) !== -1) {
       // 如果是忽略的错误码，直接返回 msg 异常
       return Promise.reject(msg)
-    } else if (code === 401) {
-      // debugger
-      // 如果未认证，并且未进行刷新令牌，说明可能是访问令牌过期了
-      if (!isRefreshToken) {
-        isRefreshToken = true
-        // 1. 如果获取不到刷新令牌，则只能执行登出操作
-        if (!getRefreshToken()) {
-          return handleAuthorized()
-        }
-        // 2. 进行刷新访问令牌
-        try {
-          const refreshTokenRes = await refreshToken()
-          // 2.1 刷新成功，则回放队列的请求 + 当前请求
-          setToken((await refreshTokenRes).data.data)
-          config.headers!.Authorization = 'Bearer ' + getAccessToken()
-          requestList.forEach((cb: any) => {
-            cb()
-          })
-          requestList = []
-          return service(config)
-        } catch (e) {
-          // 为什么需要 catch 异常呢？刷新失败时，请求因为 Promise.reject 触发异常。
-          // 2.2 刷新失败，只回放队列的请求
-          requestList.forEach((cb: any) => {
-            cb()
-          })
-          // 提示是否要登出。即不回放当前请求！不然会形成递归
-          return handleAuthorized()
-        } finally {
-          requestList = []
-          isRefreshToken = false
-        }
-      } else {
-        // 添加到队列，等待刷新获取到新的令牌
-        return new Promise((resolve) => {
-          requestList.push(() => {
-            config.headers!.Authorization = 'Bearer ' + getAccessToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-            resolve(service(config))
-          })
-        })
-      }
-    } else if (code === 500) {
-      ElMessage.error(t('sys.api.errMsg500'))
-      return Promise.reject(new Error(msg))
-    } else if (code === 901) {
-      ElMessage.error({
-        offset: 300,
-        dangerouslyUseHTMLString: true,
-        message:
-          '<div>' +
-          t('sys.api.errMsg901') +
-          '</div>' +
-          '<div> &nbsp; </div>' +
-          t('auto.config.axios.service.kb42e1af2') +
-          '<div> &nbsp; </div>' +
-          t('auto.config.axios.service.ka5daecc6')
-      })
-      return Promise.reject(new Error(msg))
-    } else if (code !== 200) {
+    } else if (code === 1) {
+      ElNotification.error({ title: msg })
+    } else if (code !== 0) {
       if (msg === t('auto.config.axios.service.k6a0a80cf')) {
         // hard coding：忽略这个提示，直接登出
         console.log(msg)
@@ -199,8 +143,10 @@ service.interceptors.response.use(
     }
   },
 
+
   // 响应为错误的情况
   (error: AxiosError) => {
+
     console.log('err' + error)
     const { response } = error
     const status: number = response!.status
@@ -228,7 +174,7 @@ service.interceptors.response.use(
  * @param data
  */
 const handleError = (status: number, data) => {
-  const { msg } = data
+  const msg = data.msg || errorCode[status] || errorCode['default']
   switch (status) {
     case 401: // 401: 未登录状态，跳转登录页
       // debugger
@@ -243,10 +189,9 @@ const handleError = (status: number, data) => {
       window.location.reload()
       break
 
-    case 403: // 403 token过期 清除token并跳转登录页
+    case 403: // 403 无权限访问资源
       ElMessage.warning(msg)
-      // router.replace({path: '/login'})
-      window.location.reload()
+      // window.location.reload()
       break
 
     // case 404: // 404请求不存在
@@ -261,9 +206,9 @@ const handleError = (status: number, data) => {
 /**
  * 刷新token
  */
-const refreshToken = async () => {
-  return await axios.post(base_url + '/system/auth/refresh-token?refreshToken=' + getRefreshToken())
-}
+// const refreshToken = async () => {
+//   return await axios.post(base_url + '/system/auth/refresh-token?refreshToken=' + getRefreshToken())
+// }
 
 /**
  * 处理登录超时

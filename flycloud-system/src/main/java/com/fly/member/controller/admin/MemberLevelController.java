@@ -27,13 +27,13 @@ public class MemberLevelController {
     private final IMemberLevelService levelService;
 
     @PreAuthorize("@pms.hasPermission('member:level:list')")
-    @GetMapping("/list")
+    @GetMapping({"/list", "/page"})
     public R<PageVo<MemberLevelVo>> list(MemberLevelBo bo, PageBo pageBo) {
         return R.ok(levelService.queryPageList(bo, pageBo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:level:list')")
-    @GetMapping("/allList")
+    @GetMapping({"/allList", "/list-all-simple"})
     public R<List<MemberLevelVo>> allList(MemberLevelBo bo) {
         return R.ok(levelService.queryList(bo));
     }
@@ -44,15 +44,39 @@ public class MemberLevelController {
         return R.ok(levelService.queryById(id));
     }
 
+    /**
+     * 获得详情，兼容 yudao 前端接口。
+     */
+    @GetMapping("/get")
+    public R<MemberLevelVo> yudaoGet(@RequestParam("id") Long id) {
+        return R.ok(levelService.queryById(id));
+    }
+
     @PreAuthorize("@pms.hasPermission('member:level:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody MemberLevelBo bo) {
+        return R.ok(levelService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody MemberLevelBo bo) {
         return R.ok(levelService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:level:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(levelService.deleteById(id));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(levelService.deleteById(id));
     }
 

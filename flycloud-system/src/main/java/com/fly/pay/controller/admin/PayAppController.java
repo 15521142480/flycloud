@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pay/app")
+@RequestMapping("/admin/pay/app")
 public class PayAppController {
 
     private final IPayAppService payAppService;

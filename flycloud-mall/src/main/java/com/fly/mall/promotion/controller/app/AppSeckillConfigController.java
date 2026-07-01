@@ -56,7 +56,7 @@ public class AppSeckillConfigController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<SeckillConfigVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(seckillConfigService.queryById(id));
     }

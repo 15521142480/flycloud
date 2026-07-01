@@ -71,7 +71,7 @@ public class CombinationProductController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CombinationProductVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationProductService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class CombinationProductController extends BaseController {
      */
     @Log(title = "拼团商品", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-product:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CombinationProductBo bo) {
+        return R.ok(combinationProductService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody CombinationProductBo bo) {
         return R.ok(combinationProductService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class CombinationProductController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(combinationProductService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(combinationProductService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

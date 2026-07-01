@@ -71,7 +71,7 @@ public class CouponTemplateController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CouponTemplateVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(couponTemplateService.queryById(id));
     }
@@ -81,8 +81,24 @@ public class CouponTemplateController extends BaseController {
      */
     @Log(title = "优惠券模板", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CouponTemplateBo bo) {
+        return R.ok(couponTemplateService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody CouponTemplateBo bo) {
+        return R.ok(couponTemplateService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新优惠券模板状态。
+     */
+    @PutMapping("/update-status")
+    public R<Void> updateStatus(@RequestBody CouponTemplateBo bo) {
         return R.ok(couponTemplateService.saveOrUpdate(bo));
     }
 
@@ -94,6 +110,14 @@ public class CouponTemplateController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(couponTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(couponTemplateService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -1,5 +1,7 @@
 package com.fly.report.framework.jmreport.config;
 
+import com.fly.common.config.properties.AuthProperties;
+import com.fly.common.redis.utils.RedisUtils;
 import com.fly.report.framework.jmreport.core.service.JmOnlDragExternalServiceImpl;
 import com.fly.report.framework.jmreport.core.service.JmReportTokenServiceImpl;
 import org.jeecg.modules.jmreport.api.JmReportTokenServiceI;
@@ -19,8 +21,8 @@ import org.springframework.context.annotation.Primary;
 public class JmReportConfiguration {
 
     @Bean
-    public JmReportTokenServiceI jmReportTokenService() {
-        return new JmReportTokenServiceImpl();
+    public JmReportTokenServiceI jmReportTokenService(RedisUtils redisUtils, AuthProperties authProperties) {
+        return new JmReportTokenServiceImpl(redisUtils, authProperties);
     }
 
     @Bean

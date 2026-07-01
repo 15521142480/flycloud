@@ -63,14 +63,14 @@ export interface TradeOrderTrendRespVO {
 // 查询交易统计
 export const getTradeStatisticsSummary = () => {
   return request.get<DataComparisonRespVO<TradeSummaryRespVO>>({
-    url: `/${MALL_BASE_URL}/statistics/trade/summary`
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/summary`
   })
 }
 
 // 获得交易状况统计
 export const getTradeStatisticsAnalyse = (params: TradeTrendReqVO) => {
   return request.get<DataComparisonRespVO<TradeTrendSummaryRespVO>>({
-    url: `/${MALL_BASE_URL}/statistics/trade/analyse`,
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/analyse`,
     params: formatDateParam(params)
   })
 }
@@ -78,7 +78,7 @@ export const getTradeStatisticsAnalyse = (params: TradeTrendReqVO) => {
 // 获得交易状况明细
 export const getTradeStatisticsList = (params: TradeTrendReqVO) => {
   return request.get<TradeTrendSummaryRespVO[]>({
-    url: `/${MALL_BASE_URL}/statistics/trade/list`,
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/list`,
     params: formatDateParam(params)
   })
 }
@@ -86,7 +86,7 @@ export const getTradeStatisticsList = (params: TradeTrendReqVO) => {
 // 导出交易状况明细
 export const exportTradeStatisticsExcel = (params: TradeTrendReqVO) => {
   return request.download({
-    url: `/${MALL_BASE_URL}/statistics/trade/export-excel`,
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/export-excel`,
     params: formatDateParam(params)
   })
 }
@@ -94,14 +94,14 @@ export const exportTradeStatisticsExcel = (params: TradeTrendReqVO) => {
 // 获得交易订单数量
 export const getOrderCount = async () => {
   return await request.get<TradeOrderCountRespVO>({
-    url: `/${MALL_BASE_URL}/statistics/trade/order-count`
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/order-count`
   })
 }
 
 // 获得交易订单数量对照
 export const getOrderComparison = async () => {
   return await request.get<DataComparisonRespVO<TradeOrderSummaryRespVO>>({
-    url: `/${MALL_BASE_URL}/statistics/trade/order-comparison`
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/order-comparison`
   })
 }
 
@@ -112,7 +112,7 @@ export const getOrderCountTrendComparison = (
   endTime: dayjs.ConfigType
 ) => {
   return request.get<DataComparisonRespVO<TradeOrderTrendRespVO>[]>({
-    url: `/${MALL_BASE_URL}/statistics/trade/order-count-trend`,
+    url: `/${MALL_BASE_URL}/admin/statistics/trade/order-count-trend`,
     params: { type, beginTime: formatDate(beginTime), endTime: formatDate(endTime) }
   })
 }

@@ -45,6 +45,11 @@ public class MemberExperienceRecordServiceImpl implements IMemberExperienceRecor
     }
 
     @Override
+    public MemberExperienceRecordVo queryById(Long id) {
+        return experienceRecordMapper.selectVoById(id);
+    }
+
+    @Override
     public void createExperienceRecord(Long userId, Integer experience, Integer totalExperience, Integer bizType, String bizId) {
         if (experience == null || experience == 0) {
             return;

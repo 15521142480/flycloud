@@ -55,7 +55,7 @@ public class SeckillConfigController extends BaseController {
     /**
      * 查询所有秒杀时段配置。
      */
-    @GetMapping("/getList")
+    @GetMapping({"/getList", "/simple-list"})
     public R<List<SeckillConfigVo>> allList(SeckillConfigBo bo) {
         return R.ok(seckillConfigService.queryList(bo));
     }
@@ -71,7 +71,7 @@ public class SeckillConfigController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<SeckillConfigVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(seckillConfigService.queryById(id));
     }
@@ -81,8 +81,24 @@ public class SeckillConfigController extends BaseController {
      */
     @Log(title = "秒杀时段配置", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:seckill-config:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody SeckillConfigBo bo) {
+        return R.ok(seckillConfigService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody SeckillConfigBo bo) {
+        return R.ok(seckillConfigService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新秒杀时段状态。
+     */
+    @PutMapping("/update-status")
+    public R<Void> updateStatus(@RequestBody SeckillConfigBo bo) {
         return R.ok(seckillConfigService.saveOrUpdate(bo));
     }
 
@@ -94,6 +110,14 @@ public class SeckillConfigController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(seckillConfigService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(seckillConfigService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -40,6 +40,11 @@ public final class ServiceException extends RuntimeException {
         this.message = message;
     }
 
+    public ServiceException(ErrorCode errorCode) {
+        this.code = errorCode.getCode();
+        this.message = errorCode.getMsg();
+    }
+
     public ServiceException(Integer code, String message) {
         this.code = code;
         this.message = message;

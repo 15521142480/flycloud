@@ -29,7 +29,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 
 @Tag(name = "管理后台 - IM 群成员管理")
 @RestController
-@RequestMapping("/im/manager/group/member")
+@RequestMapping({"/im/manager/group/member", "/admin/im/manager/group/member"})
 @Validated
 public class ImGroupMemberManagerController {
 

@@ -25,7 +25,7 @@ import java.util.Map;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/report/go-view/data")
+@RequestMapping({"/report/go-view/data", "/admin/report/go-view/data"})
 public class GoViewDataController {
 
     private final IGoViewDataService goViewDataService;

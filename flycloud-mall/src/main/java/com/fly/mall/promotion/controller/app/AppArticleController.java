@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class AppArticleController {
     /**
      * 查询移动端文章分页列表。
      */
-    @GetMapping("/list")
+    @RequestMapping("/list")
     public R<PageVo<ArticleVo>> list(ArticleBo bo, PageBo page) {
         return R.ok(articleService.queryPageList(bo, page));
     }
@@ -40,7 +41,7 @@ public class AppArticleController {
     /**
      * 获得分页列表。
      */
-    @GetMapping("/page")
+    @RequestMapping("/page")
     public R<PageVo<ArticleVo>> page(ArticleBo bo, PageBo page) {
         return R.ok(articleService.queryPageList(bo, page));
     }
@@ -56,9 +57,24 @@ public class AppArticleController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @RequestMapping({"/get-detail", "/get"})
     public R<ArticleVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(articleService.queryById(id));
+    }
+
+    /**
+     * 增加文章浏览次数。
+     */
+    @PutMapping("/add-browse-count")
+    public R<Void> addBrowseCount(@RequestParam("id") Long id) {
+        ArticleVo article = articleService.queryById(id);
+        if (article != null) {
+            ArticleBo bo = new ArticleBo();
+            bo.setId(id);
+            bo.setBrowseCount((article.getBrowseCount() == null ? 0 : article.getBrowseCount()) + 1);
+            articleService.saveOrUpdate(bo);
+        }
+        return R.ok();
     }
 
 }

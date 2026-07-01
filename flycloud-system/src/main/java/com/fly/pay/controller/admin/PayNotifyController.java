@@ -34,7 +34,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pay/notify")
+@RequestMapping("/admin/pay/notify")
 public class PayNotifyController {
 
     private final IPayNotifyService notifyService;

@@ -13,5 +13,6 @@ import com.fly.system.api.member.domain.vo.MemberExperienceRecordVo;
  */
 public interface IMemberExperienceRecordService {
     PageVo<MemberExperienceRecordVo> queryPageList(MemberExperienceRecordBo bo, PageBo pageBo);
+    MemberExperienceRecordVo queryById(Long id);
     void createExperienceRecord(Long userId, Integer experience, Integer totalExperience, Integer bizType, String bizId);
 }

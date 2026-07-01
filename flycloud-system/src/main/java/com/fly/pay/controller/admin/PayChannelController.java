@@ -21,7 +21,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pay/channel")
+@RequestMapping("/admin/pay/channel")
 public class PayChannelController {
 
     private final IPayChannelService payChannelService;

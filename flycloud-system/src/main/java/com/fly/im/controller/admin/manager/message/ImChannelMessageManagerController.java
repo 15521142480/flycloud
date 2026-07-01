@@ -30,7 +30,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 
 @Tag(name = "管理后台 - IM 频道消息")
 @RestController
-@RequestMapping("/im/manager/channel-message")
+@RequestMapping({"/im/manager/channel-message", "/admin/im/manager/channel-message"})
 @Validated
 public class ImChannelMessageManagerController {
 

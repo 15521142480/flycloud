@@ -57,7 +57,7 @@ public class AppProductFavoriteController {
     /**
      * 检查是否收藏过商品。
      */
-    @GetMapping("/exists")
+    @GetMapping({"/exists", "/exits"})
     public R<Boolean> isFavoriteExists(ProductFavoriteBo bo) {
         return R.ok(productFavoriteService.isFavoriteExists(UserUtils.getCurUserId(), bo.getSpuId()));
     }

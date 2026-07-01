@@ -42,7 +42,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
  */
 @Tag(name = "管理后台 - IM 加群申请")
 @RestController
-@RequestMapping("/im/group-request")
+@RequestMapping({"/im/group-request", "/admin/im/group-request"})
 @Validated
 public class ImGroupRequestController {
 

@@ -64,7 +64,11 @@ export const getRawRoute = (route: RouteLocationNormalized): RouteLocationNormal
  * 组装后端的菜单路由数据
  *
  */
-export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecordRaw[] => {
+export const generateRoute = (
+  routes: AppCustomRouteRecordRaw[],
+  // 使用set避免路由重复
+  routeNameSet: Set<string> = new Set()
+): AppRouteRecordRaw[] => {
   const res: AppRouteRecordRaw[] = []
   const modulesRoutesKeys = Object.keys(modules)
   for (const route of routes) {
@@ -90,29 +94,29 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
 
     // 2. 生成 data（AppRouteRecordRaw）
     // 路由地址转首字母大写驼峰，作为路由名称，适配keepAlive
+    const rawRouteName =
+      route.componentName && route.componentName.length > 0
+        ? route.componentName
+        : toCamelCase(route.path, true)
+    const isTopLevelPageRoute = !route.children && route.parentId == 0 && route.component
     let data: AppRouteRecordRaw = {
       path:
         route.path.indexOf('?') > -1 && !isUrl(route.path) ? route.path.split('?')[0] : route.path, // 注意，需要排除 http 这种 url，避免它带 ? 参数被截取掉
-      name:
-        route.componentName && route.componentName.length > 0
-          ? route.componentName
-          : toCamelCase(route.path, true),
+      name: isTopLevelPageRoute
+        ? getUniqueRouteName(toCamelCase(route.path, true) + 'Parent', routeNameSet)
+        : getUniqueRouteName(rawRouteName, routeNameSet, route.path),
       redirect: route.redirect,
       meta: meta
     }
     //处理顶级非目录路由
-    if (!route.children && route.parentId == 0 && route.component) {
+    if (isTopLevelPageRoute) {
       data.component = Layout
       data.meta = {}
-      data.name = toCamelCase(route.path, true) + 'Parent'
       data.redirect = ''
       meta.alwaysShow = true
       const childrenData: AppRouteRecordRaw = {
         path: '',
-        name:
-          route.componentName && route.componentName.length > 0
-            ? route.componentName
-            : toCamelCase(route.path, true),
+        name: getUniqueRouteName(rawRouteName, routeNameSet, route.path),
         redirect: route.redirect,
         meta: meta
       }
@@ -145,7 +149,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
         data.component = modules[modulesRoutesKeys[index]]
       }
       if (route.children) {
-        data.children = generateRoute(route.children)
+        data.children = generateRoute(route.children, routeNameSet)
       }
     }
     res.push(data as AppRouteRecordRaw)
@@ -170,6 +174,31 @@ const generateRoutePath = (parentPath: string, path: string) => {
     path = '/' + path
   }
   return parentPath + path
+}
+
+const getUniqueRouteName = (
+  name: string | undefined,
+  routeNameSet: Set<string>,
+  routePath?: string
+) => {
+  if (!name) {
+    return name
+  }
+  if (!routeNameSet.has(name)) {
+    routeNameSet.add(name)
+    return name
+  }
+
+  const pathSuffix = routePath ? toCamelCase(routePath, true) : ''
+  const baseName = pathSuffix && pathSuffix !== name ? `${name}_${pathSuffix}` : name
+  let index = 1
+  let uniqueName = `${baseName}_${index}`
+  while (routeNameSet.has(uniqueName)) {
+    index += 1
+    uniqueName = `${baseName}_${index}`
+  }
+  routeNameSet.add(uniqueName)
+  return uniqueName
 }
 
 export const pathResolve = (parentPath: string, path: string) => {

@@ -71,7 +71,7 @@ public class BannerController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BannerVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bannerService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class BannerController extends BaseController {
      */
     @Log(title = "轮播图", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:banner:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BannerBo bo) {
+        return R.ok(bannerService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody BannerBo bo) {
         return R.ok(bannerService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class BannerController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(bannerService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(bannerService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

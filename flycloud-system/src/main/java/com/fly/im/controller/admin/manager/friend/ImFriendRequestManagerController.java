@@ -30,7 +30,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSetByFlatMa
 
 @Tag(name = "管理后台 - IM 好友申请管理")
 @RestController
-@RequestMapping("/im/manager/friend-request")
+@RequestMapping({"/im/manager/friend-request", "/admin/im/manager/friend-request"})
 @Validated
 public class ImFriendRequestManagerController {
 

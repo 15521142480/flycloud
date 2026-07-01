@@ -56,7 +56,7 @@ public class AppDeliveryExpressController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DeliveryExpressVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(deliveryExpressService.queryById(id));
     }

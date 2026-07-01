@@ -170,13 +170,13 @@ function pickFirstVisibleConversation(sorted: Conversation[]): Conversation | un
   return sorted.find((c) => !c.top || (!c.silent && (c.unreadCount || 0) > 0)) ?? sorted[0]
 }
 
-/** 标签关闭前 flush 草稿队列；debounce 默认 trail-edge 触发，最后一次输入可能还压在队列里 */
-function onBeforeUnload() {
+/** 页面隐藏/关闭前 flush 草稿队列；debounce 默认 trail-edge 触发，最后一次输入可能还压在队列里 */
+function onPageHide() {
   conversationStore.flushConversationDraftSave()
 }
-window.addEventListener('beforeunload', onBeforeUnload)
+window.addEventListener('pagehide', onPageHide)
 
-/** 离开 IM 主壳：取消 pull、断开 WebSocket、清理 RTC、保存草稿、停止语音、解绑 unload，并结束当前 IM session */
+/** 离开 IM 主壳：取消 pull、断开 WebSocket、清理 RTC、保存草稿、停止语音、解绑页面隐藏事件，并结束当前 IM session */
 onUnmounted(() => {
   cancelPull()
   webSocketStore.disconnect()
@@ -186,7 +186,7 @@ onUnmounted(() => {
   faceStore.clear()
   // 模块级单例 audio 不会随视图卸载自动停，主动停掉避免切路由后语音继续响
   voicePlayer.stop()
-  window.removeEventListener('beforeunload', onBeforeUnload)
+  window.removeEventListener('pagehide', onPageHide)
   // 停止当前 IM session 并清理各 store 内存
   void stopRequests()
 })
@@ -216,7 +216,7 @@ watch(
 )
 
 /**
- * 浏览器标签 title 拼上未读数前缀；例：(63条未读)芋道源码
+ * 浏览器标签 title 拼上未读数前缀；例：(63条未读)lxs
  *
  * 路由切换时 router.afterEach 会调 useTitle 重置 title；用 nextTick 排在它之后再覆盖
  * 一并监听 route.fullPath，IM 子路由切换（消息 / 通讯录）也能重新加上前缀

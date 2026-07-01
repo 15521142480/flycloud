@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/product/product-browse-history")
+@RequestMapping({"/admin/product/product-browse-history", "/admin/product/browse-history"})
 public class ProductBrowseHistoryController extends BaseController {
 
     private final IProductBrowseHistoryService productBrowseHistoryService;
@@ -81,8 +81,16 @@ public class ProductBrowseHistoryController extends BaseController {
      */
     @Log(title = "商品浏览记录", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:product-browse-history:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductBrowseHistoryBo bo) {
+        return R.ok(productBrowseHistoryService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ProductBrowseHistoryBo bo) {
         return R.ok(productBrowseHistoryService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class ProductBrowseHistoryController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productBrowseHistoryService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(productBrowseHistoryService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

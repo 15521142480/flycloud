@@ -30,7 +30,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "管理后台 - IM 群聊管理")
 @RestController
-@RequestMapping("/im/manager/group")
+@RequestMapping({"/im/manager/group", "/admin/im/manager/group"})
 @Validated
 public class ImGroupManagerController {
 

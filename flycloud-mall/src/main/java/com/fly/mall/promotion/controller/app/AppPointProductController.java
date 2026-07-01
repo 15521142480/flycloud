@@ -56,7 +56,7 @@ public class AppPointProductController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<PointProductVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(pointProductService.queryById(id));
     }

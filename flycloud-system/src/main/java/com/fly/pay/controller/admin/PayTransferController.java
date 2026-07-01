@@ -3,9 +3,11 @@ package com.fly.pay.controller.admin;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.utils.ExcelUtil;
 import com.fly.pay.service.IPayTransferService;
 import com.fly.system.api.pay.domain.bo.PayTransferBo;
 import com.fly.system.api.pay.domain.vo.PayTransferVo;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pay/transfer")
+@RequestMapping("/admin/pay/transfer")
 public class PayTransferController {
 
     private final IPayTransferService payTransferService;
@@ -36,6 +38,12 @@ public class PayTransferController {
     @GetMapping("/get")
     public R<PayTransferVo> get(@RequestParam Long id) {
         return R.ok(payTransferService.queryById(id));
+    }
+
+    @PreAuthorize("@pms.hasPermission('pay:transfer:download')")
+    @GetMapping("/export-excel")
+    public void export(PayTransferBo bo, HttpServletResponse response) {
+        ExcelUtil.exportExcel(payTransferService.queryList(bo), "支付转账单", PayTransferVo.class, response);
     }
 
 }

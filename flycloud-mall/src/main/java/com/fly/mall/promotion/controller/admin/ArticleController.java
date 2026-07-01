@@ -71,7 +71,7 @@ public class ArticleController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<ArticleVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(articleService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class ArticleController extends BaseController {
      */
     @Log(title = "文章", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:article:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ArticleBo bo) {
+        return R.ok(articleService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ArticleBo bo) {
         return R.ok(articleService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class ArticleController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(articleService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(articleService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

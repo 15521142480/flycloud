@@ -10,5 +10,5 @@ export interface PaySummaryRespVO {
 
 /** 获取钱包充值金额 */
 export const getWalletRechargePrice = async () => {
-  return await request.get<PaySummaryRespVO>({ url: `/${MALL_BASE_URL}/statistics/pay/summary` })
+  return await request.get<PaySummaryRespVO>({ url: `/${MALL_BASE_URL}/admin/statistics/pay/summary` })
 }

@@ -3,9 +3,11 @@ package com.fly.pay.controller.admin;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.utils.ExcelUtil;
 import com.fly.pay.service.IPayRefundService;
 import com.fly.system.api.pay.domain.bo.PayRefundBo;
 import com.fly.system.api.pay.domain.vo.PayRefundVo;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pay/refund")
+@RequestMapping("/admin/pay/refund")
 public class PayRefundController {
 
     private final IPayRefundService payRefundService;
@@ -36,6 +38,12 @@ public class PayRefundController {
     @GetMapping("/get")
     public R<PayRefundVo> get(@RequestParam Long id) {
         return R.ok(payRefundService.queryById(id));
+    }
+
+    @PreAuthorize("@pms.hasPermission('pay:refund:download')")
+    @GetMapping("/export-excel")
+    public void export(PayRefundBo bo, HttpServletResponse response) {
+        ExcelUtil.exportExcel(payRefundService.queryList(bo), "支付退款单", PayRefundVo.class, response);
     }
 
 }

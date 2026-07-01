@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,15 @@ public class MemberConfigController {
     @PreAuthorize("@pms.hasPermission('member:config:save')")
     @PostMapping("/save")
     public R<Void> saveConfig(@RequestBody MemberConfigBo bo) {
+        return R.ok(configService.saveConfig(bo));
+    }
+
+    /**
+     * 保存会员配置，兼容 yudao 前端接口。
+     */
+    @PreAuthorize("@pms.hasPermission('member:config:save')")
+    @PutMapping("/save")
+    public R<Void> yudaoSaveConfig(@RequestBody MemberConfigBo bo) {
         return R.ok(configService.saveConfig(bo));
     }
 

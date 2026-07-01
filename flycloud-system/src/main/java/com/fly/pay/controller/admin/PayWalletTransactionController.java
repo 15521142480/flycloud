@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pay/wallet-transaction")
+@RequestMapping("/admin/pay/wallet-transaction")
 public class PayWalletTransactionController {
 
     private final IPayWalletTransactionService walletTransactionService;
@@ -33,6 +33,15 @@ public class PayWalletTransactionController {
     @PreAuthorize("@pms.hasPermission('pay:wallet-transaction:list')")
     @GetMapping("/list")
     public R<PageVo<PayWalletTransactionVo>> list(PayWalletTransactionBo bo, PageBo pageBo) {
+        return R.ok(walletTransactionService.queryPageList(bo, pageBo));
+    }
+
+    /**
+     * 查询支付钱包流水分页列表，兼容 yudao 前端接口。
+     */
+    @PreAuthorize("@pms.hasPermission('pay:wallet-transaction:list')")
+    @GetMapping("/page")
+    public R<PageVo<PayWalletTransactionVo>> page(PayWalletTransactionBo bo, PageBo pageBo) {
         return R.ok(walletTransactionService.queryPageList(bo, pageBo));
     }
 

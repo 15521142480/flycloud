@@ -19,7 +19,7 @@ import static com.fly.common.domain.model.R.ok;
 
 @Tag(name = "用户 APP - IM 频道素材")
 @RestController
-@RequestMapping("/im/channel/material")
+@RequestMapping({"/im/channel/material", "/admin/im/channel/material"})
 @Validated
 public class ImChannelMaterialController {
 

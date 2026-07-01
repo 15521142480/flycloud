@@ -24,7 +24,7 @@ import static com.fly.common.domain.model.R.ok;
 
 @Tag(name = "管理后台 - IM 频道")
 @RestController
-@RequestMapping("/im/manager/channel")
+@RequestMapping({"/im/manager/channel", "/admin/im/manager/channel"})
 @Validated
 public class ImChannelManagerController {
 

@@ -14,6 +14,8 @@ import com.fly.system.api.pay.domain.vo.PayTransferVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 支付转账单 Service 业务层处理。
  *
@@ -33,6 +35,27 @@ public class PayTransferServiceImpl implements IPayTransferService {
 
     @Override
     public PageVo<PayTransferVo> queryPageList(PayTransferBo bo, PageBo pageBo) {
+        LambdaQueryWrapper<PayTransfer> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(PayTransfer::getId);
+        Page<PayTransferVo> page = payTransferMapper.selectVoPage(pageBo.build(), lqw);
+        PageVo<PayTransferVo> pageVo = new PageVo<>();
+        pageVo.setList(page.getRecords());
+        pageVo.setTotal(page.getTotal());
+        pageVo.setPages(page.getPages());
+        return pageVo;
+    }
+
+    @Override
+    public List<PayTransferVo> queryList(PayTransferBo bo) {
+        LambdaQueryWrapper<PayTransfer> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(PayTransfer::getId);
+        return payTransferMapper.selectVoList(lqw);
+    }
+
+    /**
+     * 构建支付转账单查询条件。
+     */
+    private LambdaQueryWrapper<PayTransfer> buildQueryWrapper(PayTransferBo bo) {
         LambdaQueryWrapper<PayTransfer> lqw = Wrappers.lambdaQuery();
         lqw.eq(PayTransfer::getIsDeleted, false);
         if (bo != null) {
@@ -44,13 +67,7 @@ public class PayTransferServiceImpl implements IPayTransferService {
             lqw.eq(StringUtils.isNotBlank(bo.getMerchantTransferId()), PayTransfer::getMerchantTransferId, bo.getMerchantTransferId());
             lqw.eq(bo.getStatus() != null, PayTransfer::getStatus, bo.getStatus());
         }
-        lqw.orderByDesc(PayTransfer::getId);
-        Page<PayTransferVo> page = payTransferMapper.selectVoPage(pageBo.build(), lqw);
-        PageVo<PayTransferVo> pageVo = new PageVo<>();
-        pageVo.setList(page.getRecords());
-        pageVo.setTotal(page.getTotal());
-        pageVo.setPages(page.getPages());
-        return pageVo;
+        return lqw;
     }
 
 }

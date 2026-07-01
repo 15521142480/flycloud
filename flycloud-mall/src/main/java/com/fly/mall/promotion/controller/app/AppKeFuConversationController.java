@@ -56,7 +56,7 @@ public class AppKeFuConversationController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<KeFuConversationVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(keFuConversationService.queryById(id));
     }

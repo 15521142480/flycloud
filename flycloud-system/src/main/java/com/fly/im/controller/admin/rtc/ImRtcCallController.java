@@ -29,7 +29,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "管理后台 - IM 实时通话")
 @RestController
-@RequestMapping("/im/rtc")
+@RequestMapping({"/im/rtc", "/admin/im/rtc"})
 @Validated
 public class ImRtcCallController {
 

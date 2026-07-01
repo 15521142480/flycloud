@@ -534,7 +534,7 @@ export default {
               kf10483d2: '用户卡片'
             },
             index: {
-              ke2d27f2f: '芋道源码',
+              ke2d27f2f: 'lxs',
               k89cb95cf: '点击绑定手机号',
               k741b57d4: '去绑定'
             }
@@ -5537,7 +5537,7 @@ export default {
     },
     login: {
       SocialLogin: {
-        ke2d27f2f: '芋道源码',
+        ke2d27f2f: 'lxs',
         k259acf4a: '正在加载系统中...'
       },
       components: {
@@ -5552,7 +5552,7 @@ export default {
           k2ae2512e: '选择的坐标为:'
         },
         MobileForm: {
-          ke2d27f2f: '芋道源码',
+          ke2d27f2f: 'lxs',
           k259acf4a: '正在加载系统中...'
         },
         RegisterForm: {

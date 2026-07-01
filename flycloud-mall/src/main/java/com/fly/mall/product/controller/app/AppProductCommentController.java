@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/app/product/product-comment")
+@RequestMapping({"/app/product/product-comment", "/app/product/comment"})
 public class AppProductCommentController {
 
     private final IProductCommentService productCommentService;

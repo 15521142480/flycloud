@@ -71,7 +71,7 @@ public class BargainHelpController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BargainHelpVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bargainHelpService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class BargainHelpController extends BaseController {
      */
     @Log(title = "砍价助力", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-help:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BargainHelpBo bo) {
+        return R.ok(bargainHelpService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody BargainHelpBo bo) {
         return R.ok(bargainHelpService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class BargainHelpController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(bargainHelpService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(bargainHelpService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

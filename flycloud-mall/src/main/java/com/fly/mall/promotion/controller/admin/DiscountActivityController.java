@@ -71,7 +71,7 @@ public class DiscountActivityController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DiscountActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(discountActivityService.queryById(id));
     }
@@ -81,8 +81,27 @@ public class DiscountActivityController extends BaseController {
      */
     @Log(title = "限时折扣活动", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:discount-activity:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiscountActivityBo bo) {
+        return R.ok(discountActivityService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody DiscountActivityBo bo) {
+        return R.ok(discountActivityService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 关闭限时折扣活动。
+     */
+    @PutMapping("/close")
+    public R<Void> close(@RequestParam("id") Long id) {
+        DiscountActivityBo bo = new DiscountActivityBo();
+        bo.setId(id);
+        bo.setStatus(com.fly.common.enums.StatusEnum.DISABLE.getStatus());
         return R.ok(discountActivityService.saveOrUpdate(bo));
     }
 
@@ -94,6 +113,14 @@ public class DiscountActivityController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(discountActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(discountActivityService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

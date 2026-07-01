@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/promotion/ke-fu-message")
+@RequestMapping({"/admin/promotion/ke-fu-message", "/admin/promotion/kefu-message"})
 public class KeFuMessageController extends BaseController {
 
     private final IKeFuMessageService keFuMessageService;
@@ -71,7 +71,7 @@ public class KeFuMessageController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<KeFuMessageVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(keFuMessageService.queryById(id));
     }
@@ -81,8 +81,33 @@ public class KeFuMessageController extends BaseController {
      */
     @Log(title = "客服消息", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:ke-fu-message:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody KeFuMessageBo bo) {
+        return R.ok(keFuMessageService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody KeFuMessageBo bo) {
+        return R.ok(keFuMessageService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 发送客服消息。
+     */
+    @PostMapping("/send")
+    public R<Void> send(@RequestBody KeFuMessageBo bo) {
+        return R.ok(keFuMessageService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新客服消息已读状态。
+     */
+    @PutMapping("/update-read-status")
+    public R<Void> updateReadStatus(@RequestBody KeFuMessageBo bo) {
+        bo.setReadStatus(true);
         return R.ok(keFuMessageService.saveOrUpdate(bo));
     }
 
@@ -94,6 +119,14 @@ public class KeFuMessageController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(keFuMessageService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(keFuMessageService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

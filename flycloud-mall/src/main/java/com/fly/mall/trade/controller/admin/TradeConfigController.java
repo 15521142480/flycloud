@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/trade/trade-config")
+@RequestMapping({"/admin/trade/trade-config", "/admin/trade/config"})
 public class TradeConfigController extends BaseController {
 
     private final ITradeConfigService tradeConfigService;
@@ -71,7 +71,7 @@ public class TradeConfigController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<TradeConfigVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(tradeConfigService.queryById(id));
     }
@@ -81,8 +81,24 @@ public class TradeConfigController extends BaseController {
      */
     @Log(title = "交易配置", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:trade-config:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeConfigBo bo) {
+        return R.ok(tradeConfigService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody TradeConfigBo bo) {
+        return R.ok(tradeConfigService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 保存交易配置。
+     */
+    @PutMapping("/save")
+    public R<Void> save(@RequestBody TradeConfigBo bo) {
         return R.ok(tradeConfigService.saveOrUpdate(bo));
     }
 
@@ -94,6 +110,14 @@ public class TradeConfigController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(tradeConfigService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(tradeConfigService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

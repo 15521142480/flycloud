@@ -56,7 +56,7 @@ public class AppDiscountActivityController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DiscountActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(discountActivityService.queryById(id));
     }

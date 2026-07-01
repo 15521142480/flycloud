@@ -440,8 +440,8 @@ onMounted(async () => {
   // 获得商品信息
   await getTabsCount()
   await getList()
-  // 获得分类树
   const data = await ProductCategoryApi.getCategoryList({})
+  // 处理分类树
   categoryList.value = handleTree(data, 'id', 'parentId')
 })
 </script>

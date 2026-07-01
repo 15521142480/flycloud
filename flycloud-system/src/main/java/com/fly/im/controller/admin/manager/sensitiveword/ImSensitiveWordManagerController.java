@@ -31,7 +31,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 
 @Tag(name = "管理后台 - IM 敏感词")
 @RestController
-@RequestMapping("/im/manager/sensitive-word")
+@RequestMapping({"/im/manager/sensitive-word", "/admin/im/manager/sensitive-word"})
 @Validated
 public class ImSensitiveWordManagerController {
 

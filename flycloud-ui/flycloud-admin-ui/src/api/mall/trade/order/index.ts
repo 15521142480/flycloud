@@ -125,7 +125,7 @@ export interface TradeOrderSummaryRespVO {
 // 查询交易订单列表
 export const getOrderPage = async (params: any) => {
   return await request.get<PageResult<OrderVO[]>>({
-    url: `/${MALL_BASE_URL}/trade/order/page`,
+    url: `/${MALL_BASE_URL}/admin/trade/order/page`,
     params
   })
 }
@@ -133,20 +133,20 @@ export const getOrderPage = async (params: any) => {
 // 查询交易订单统计
 export const getOrderSummary = async (params: any) => {
   return await request.get<TradeOrderSummaryRespVO>({
-    url: `/${MALL_BASE_URL}/trade/order/summary`,
+    url: `/${MALL_BASE_URL}/admin/trade/order/summary`,
     params
   })
 }
 
 // 查询交易订单详情
 export const getOrder = async (id: number | null) => {
-  return await request.get<OrderVO>({ url: `/${MALL_BASE_URL}/trade/order/get-detail?id=` + id })
+  return await request.get<OrderVO>({ url: `/${MALL_BASE_URL}/admin/trade/order/get-detail?id=` + id })
 }
 
 // 查询交易订单物流详情
 export const getExpressTrackList = async (id: number | null) => {
   return await request.get<Array<{ time?: Date | string; content?: string }>>({
-    url: `/${MALL_BASE_URL}/trade/order/get-express-track-list?id=` + id
+    url: `/${MALL_BASE_URL}/admin/trade/order/get-express-track-list?id=` + id
   })
 }
 
@@ -158,33 +158,33 @@ export interface DeliveryVO {
 
 // 订单发货
 export const deliveryOrder = async (data: DeliveryVO) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/trade/order/delivery`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/order/delivery`, data })
 }
 
 // 订单备注
 export const updateOrderRemark = async (data: any) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/trade/order/update-remark`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/order/update-remark`, data })
 }
 
 // 订单调价
 export const updateOrderPrice = async (data: any) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/trade/order/update-price`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/order/update-price`, data })
 }
 
 // 修改订单地址
 export const updateOrderAddress = async (data: any) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/trade/order/update-address`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/order/update-address`, data })
 }
 
 // 订单核销
 export const pickUpOrder = async (id: number) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/trade/order/pick-up-by-id?id=${id}` })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/order/pick-up-by-id?id=${id}` })
 }
 
 // 订单核销
 export const pickUpOrderByVerifyCode = async (pickUpVerifyCode: string) => {
   return await request.put({
-    url: `/${MALL_BASE_URL}/trade/order/pick-up-by-verify-code`,
+    url: `/${MALL_BASE_URL}/admin/trade/order/pick-up-by-verify-code`,
     params: { pickUpVerifyCode }
   })
 }
@@ -192,7 +192,7 @@ export const pickUpOrderByVerifyCode = async (pickUpVerifyCode: string) => {
 // 查询核销码对应的订单
 export const getOrderByPickUpVerifyCode = async (pickUpVerifyCode: string) => {
   return await request.get<OrderVO>({
-    url: `/${MALL_BASE_URL}/trade/order/get-by-pick-up-verify-code`,
+    url: `/${MALL_BASE_URL}/admin/trade/order/get-by-pick-up-verify-code`,
     params: { pickUpVerifyCode }
   })
 }

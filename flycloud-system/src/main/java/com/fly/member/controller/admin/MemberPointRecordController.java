@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/member/point-record")
+@RequestMapping({"/admin/member/point-record", "/admin/member/point/record"})
 public class MemberPointRecordController {
 
     private final IMemberPointRecordService pointRecordService;
 
     @PreAuthorize("@pms.hasPermission('member:point:list')")
-    @GetMapping("/list")
+    @GetMapping({"/list", "/page"})
     public R<PageVo<MemberPointRecordVo>> list(MemberPointRecordBo bo, PageBo pageBo) {
         return R.ok(pointRecordService.queryPageList(bo, pageBo));
     }

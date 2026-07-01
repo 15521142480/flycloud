@@ -97,6 +97,7 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
           preprocessorOptions: {
             scss: {
               additionalData: '@use "@/styles/variables.scss" as *;',
+              api: 'modern-compiler',
               javascriptEnabled: true
             }
           }

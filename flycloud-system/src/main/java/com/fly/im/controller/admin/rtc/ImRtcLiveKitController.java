@@ -30,7 +30,7 @@ import static com.fly.common.domain.model.R.ok;
  */
 @Tag(name = "LiveKit Webhook 回调")
 @RestController
-@RequestMapping("/im/livekit")
+@RequestMapping({"/im/livekit", "/admin/im/livekit"})
 @Slf4j
 public class ImRtcLiveKitController {
 

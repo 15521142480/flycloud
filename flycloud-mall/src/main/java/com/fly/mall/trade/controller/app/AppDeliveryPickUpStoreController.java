@@ -56,7 +56,7 @@ public class AppDeliveryPickUpStoreController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DeliveryPickUpStoreVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(deliveryPickUpStoreService.queryById(id));
     }

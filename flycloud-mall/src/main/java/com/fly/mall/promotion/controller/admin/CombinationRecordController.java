@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 管理后台 - 拼团记录 控制器。
@@ -71,9 +72,17 @@ public class CombinationRecordController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<CombinationRecordVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationRecordService.queryById(id));
+    }
+
+    /**
+     * 获得拼团记录汇总。
+     */
+    @GetMapping("/get-summary")
+    public R<Map<String, Long>> getSummary(CombinationRecordBo bo) {
+        return R.ok(Map.of("count", (long) combinationRecordService.queryList(bo).size()));
     }
 
     /**
@@ -81,8 +90,16 @@ public class CombinationRecordController extends BaseController {
      */
     @Log(title = "拼团记录", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-record:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CombinationRecordBo bo) {
+        return R.ok(combinationRecordService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody CombinationRecordBo bo) {
         return R.ok(combinationRecordService.saveOrUpdate(bo));
     }
 
@@ -94,6 +111,14 @@ public class CombinationRecordController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(combinationRecordService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(combinationRecordService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

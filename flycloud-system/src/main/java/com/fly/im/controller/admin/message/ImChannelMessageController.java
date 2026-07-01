@@ -31,7 +31,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
 
 @Tag(name = "用户 APP - IM 频道消息")
 @RestController
-@RequestMapping("/im/channel/message")
+@RequestMapping({"/im/channel/message", "/admin/im/channel/message"})
 @Validated
 public class ImChannelMessageController {
 

@@ -55,7 +55,7 @@ public class ProductPropertyController extends BaseController {
     /**
      * 查询所有商品属性。
      */
-    @GetMapping("/getList")
+    @GetMapping({"/getList", "/simple-list"})
     public R<List<ProductPropertyVo>> allList(ProductPropertyBo bo) {
         return R.ok(productPropertyService.queryList(bo));
     }
@@ -77,12 +77,28 @@ public class ProductPropertyController extends BaseController {
     }
 
     /**
+     * 获得商品属性详情，兼容 yudao 前端接口。
+     */
+    @GetMapping("/get")
+    public R<ProductPropertyVo> get(@RequestParam("id") Long id) {
+        return R.ok(productPropertyService.queryById(id));
+    }
+
+    /**
      * 新增或修改商品属性。
      */
     @Log(title = "商品属性", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:property:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductPropertyBo bo) {
+        return R.ok(productPropertyService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ProductPropertyBo bo) {
         return R.ok(productPropertyService.saveOrUpdate(bo));
     }
 
@@ -94,6 +110,14 @@ public class ProductPropertyController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productPropertyService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(productPropertyService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

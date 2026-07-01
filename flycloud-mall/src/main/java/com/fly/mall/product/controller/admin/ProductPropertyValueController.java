@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/product/product-property-value")
+@RequestMapping({"/admin/product/product-property-value", "/admin/product/property/value"})
 public class ProductPropertyValueController extends BaseController {
 
     private final IProductPropertyValueService productPropertyValueService;
@@ -55,7 +55,7 @@ public class ProductPropertyValueController extends BaseController {
     /**
      * 查询所有商品属性值。
      */
-    @GetMapping("/getList")
+    @GetMapping({"/getList", "/simple-list"})
     public R<List<ProductPropertyValueVo>> allList(ProductPropertyValueBo bo) {
         return R.ok(productPropertyValueService.queryList(bo));
     }
@@ -77,12 +77,28 @@ public class ProductPropertyValueController extends BaseController {
     }
 
     /**
+     * 获得商品属性值详情，兼容 yudao 前端接口。
+     */
+    @GetMapping("/get")
+    public R<ProductPropertyValueVo> get(@RequestParam("id") Long id) {
+        return R.ok(productPropertyValueService.queryById(id));
+    }
+
+    /**
      * 新增或修改商品属性值。
      */
     @Log(title = "商品属性值", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:product-property-value:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductPropertyValueBo bo) {
+        return R.ok(productPropertyValueService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody ProductPropertyValueBo bo) {
         return R.ok(productPropertyValueService.saveOrUpdate(bo));
     }
 
@@ -94,6 +110,14 @@ public class ProductPropertyValueController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productPropertyValueService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(productPropertyValueService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

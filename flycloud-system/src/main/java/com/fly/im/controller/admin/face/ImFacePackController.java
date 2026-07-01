@@ -24,7 +24,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertMultiMap;
 
 @Tag(name = "管理后台 - IM 表情包")
 @RestController
-@RequestMapping("/im/face-pack")
+@RequestMapping({"/im/face-pack", "/admin/im/face-pack"})
 @Validated
 public class ImFacePackController {
 

@@ -3,6 +3,7 @@ package com.fly.mall.promotion.controller.app;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.promotion.domain.bo.BargainRecordBo;
 import com.fly.mall.api.promotion.domain.vo.BargainRecordVo;
 import com.fly.mall.promotion.service.IBargainRecordService;
@@ -11,9 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * 移动端 - 砍价记录 控制器。
@@ -56,9 +61,28 @@ public class AppBargainRecordController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BargainRecordVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bargainRecordService.queryById(id));
+    }
+
+    /**
+     * 创建砍价记录。
+     */
+    @PostMapping("/create")
+    public R<Void> create(@RequestBody BargainRecordBo bo) {
+        bo.setUserId(UserUtils.getCurUserId());
+        return R.ok(bargainRecordService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 获得当前用户砍价汇总。
+     */
+    @GetMapping("/get-summary")
+    public R<Map<String, Long>> getSummary() {
+        BargainRecordBo bo = new BargainRecordBo();
+        bo.setUserId(UserUtils.getCurUserId());
+        return R.ok(Map.of("count", (long) bargainRecordService.queryList(bo).size()));
     }
 
 }

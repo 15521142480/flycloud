@@ -73,14 +73,14 @@ export interface MemberRegisterCountRespVO {
 // 查询会员统计
 export const getMemberSummary = () => {
   return request.get<MemberSummaryRespVO>({
-    url: `/${MALL_BASE_URL}/statistics/member/summary`
+    url: `/${MALL_BASE_URL}/admin/statistics/member/summary`
   })
 }
 
 // 查询会员分析数据
 export const getMemberAnalyse = (params: MemberAnalyseReqVO) => {
   return request.get<MemberAnalyseRespVO>({
-    url: `/${MALL_BASE_URL}/statistics/member/analyse`,
+    url: `/${MALL_BASE_URL}/admin/statistics/member/analyse`,
     params: { times: [formatDate(params.times[0] as any), formatDate(params.times[1] as any)] }
   })
 }
@@ -88,28 +88,28 @@ export const getMemberAnalyse = (params: MemberAnalyseReqVO) => {
 // 按照省份，查询会员统计列表
 export const getMemberAreaStatisticsList = () => {
   return request.get<MemberAreaStatisticsRespVO[]>({
-    url: `/${MALL_BASE_URL}/statistics/member/area-statistics-list`
+    url: `/${MALL_BASE_URL}/admin/statistics/member/area-statistics-list`
   })
 }
 
 // 按照性别，查询会员统计列表
 export const getMemberSexStatisticsList = () => {
   return request.get<MemberSexStatisticsRespVO[]>({
-    url: `/${MALL_BASE_URL}/statistics/member/sex-statistics-list`
+    url: `/${MALL_BASE_URL}/admin/statistics/member/sex-statistics-list`
   })
 }
 
 // 按照终端，查询会员统计列表
 export const getMemberTerminalStatisticsList = () => {
   return request.get<MemberTerminalStatisticsRespVO[]>({
-    url: `/${MALL_BASE_URL}/statistics/member/terminal-statistics-list`
+    url: `/${MALL_BASE_URL}/admin/statistics/member/terminal-statistics-list`
   })
 }
 
 // 获得用户数量量对照
 export const getUserCountComparison = () => {
   return request.get<DataComparisonRespVO<MemberCountRespVO>>({
-    url: `/${MALL_BASE_URL}/statistics/member/user-count-comparison`
+    url: `/${MALL_BASE_URL}/admin/statistics/member/user-count-comparison`
   })
 }
 
@@ -119,7 +119,7 @@ export const getMemberRegisterCountList = (
   endTime: dayjs.ConfigType
 ) => {
   return request.get<MemberRegisterCountRespVO[]>({
-    url: `/${MALL_BASE_URL}/statistics/member/register-count-list`,
+    url: `/${MALL_BASE_URL}/admin/statistics/member/register-count-list`,
     params: { times: [formatDate(beginTime as any), formatDate(endTime as any)] }
   })
 }

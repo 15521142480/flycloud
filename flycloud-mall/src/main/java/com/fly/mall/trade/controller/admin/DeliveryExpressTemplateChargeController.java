@@ -71,7 +71,7 @@ public class DeliveryExpressTemplateChargeController extends BaseController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<DeliveryExpressTemplateChargeVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(deliveryExpressTemplateChargeService.queryById(id));
     }
@@ -81,8 +81,16 @@ public class DeliveryExpressTemplateChargeController extends BaseController {
      */
     @Log(title = "运费模板计费规则", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express-template-charge:saveOrUpdate')")
-    @PostMapping("/saveOrUpdate")
+    @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryExpressTemplateChargeBo bo) {
+        return R.ok(deliveryExpressTemplateChargeService.saveOrUpdate(bo));
+    }
+
+    /**
+     * 更新数据，兼容 yudao 前端接口。
+     */
+    @PutMapping("/update")
+    public R<Void> yudaoUpdate(@RequestBody DeliveryExpressTemplateChargeBo bo) {
         return R.ok(deliveryExpressTemplateChargeService.saveOrUpdate(bo));
     }
 
@@ -94,6 +102,14 @@ public class DeliveryExpressTemplateChargeController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(deliveryExpressTemplateChargeService.deleteWithValidByIds(Arrays.asList(ids), true));
+    }
+
+    /**
+     * 删除数据，兼容 yudao 前端接口。
+     */
+    @DeleteMapping("/delete")
+    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(deliveryExpressTemplateChargeService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

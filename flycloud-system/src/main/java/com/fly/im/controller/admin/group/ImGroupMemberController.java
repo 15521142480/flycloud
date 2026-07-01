@@ -32,7 +32,7 @@ import static com.fly.im.enums.ErrorCodeConstants.GROUP_MEMBER_NOT_IN_GROUP;
 
 @Tag(name = "管理后台 - 群成员")
 @RestController
-@RequestMapping("/im/group-member")
+@RequestMapping({"/im/group-member", "/admin/im/group-member"})
 @Validated
 public class ImGroupMemberController {
 

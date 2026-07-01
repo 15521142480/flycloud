@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,9 +57,24 @@ public class AppBannerController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<BannerVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bannerService.queryById(id));
+    }
+
+    /**
+     * 增加轮播图浏览次数。
+     */
+    @PutMapping("/add-browse-count")
+    public R<Void> addBrowseCount(@RequestParam("id") Long id) {
+        BannerVo banner = bannerService.queryById(id);
+        if (banner != null) {
+            BannerBo bo = new BannerBo();
+            bo.setId(id);
+            bo.setBrowseCount((banner.getBrowseCount() == null ? 0 : banner.getBrowseCount()) + 1);
+            bannerService.saveOrUpdate(bo);
+        }
+        return R.ok();
     }
 
 }

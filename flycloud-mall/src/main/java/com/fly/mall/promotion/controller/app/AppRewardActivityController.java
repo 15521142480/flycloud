@@ -56,7 +56,7 @@ public class AppRewardActivityController {
     /**
      * 获得详情。
      */
-    @GetMapping("/get-detail")
+    @GetMapping({"/get-detail", "/get"})
     public R<RewardActivityVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(rewardActivityService.queryById(id));
     }
