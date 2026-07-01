@@ -36,7 +36,7 @@ public class DeliveryPickUpStoreController extends BaseController {
     /**
      * 查询自提门店分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-pick-up-store:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:pick-up-store:shop:list')")
     @GetMapping("/list")
     public R<PageVo<DeliveryPickUpStoreVo>> list(DeliveryPickUpStoreBo bo, PageBo page) {
         return R.ok(deliveryPickUpStoreService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class DeliveryPickUpStoreController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-pick-up-store:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:pick-up-store:shop:list')")
     @GetMapping("/page")
     public R<PageVo<DeliveryPickUpStoreVo>> page(DeliveryPickUpStoreBo bo, PageBo page) {
         return R.ok(deliveryPickUpStoreService.queryPageList(bo, page));
@@ -88,7 +88,7 @@ public class DeliveryPickUpStoreController extends BaseController {
      * 新增或修改自提门店。
      */
     @Log(title = "自提门店", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-pick-up-store:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:pick-up-store:shop:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryPickUpStoreBo bo) {
         return R.ok(deliveryPickUpStoreService.saveOrUpdate(bo));
@@ -106,7 +106,7 @@ public class DeliveryPickUpStoreController extends BaseController {
      * 删除自提门店。
      */
     @Log(title = "自提门店", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-pick-up-store:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:pick-up-store:shop:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(deliveryPickUpStoreService.deleteWithValidByIds(Arrays.asList(ids), true));

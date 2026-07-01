@@ -153,10 +153,12 @@ public class TradeOrderItemServiceImpl extends BaseServiceImpl<TradeOrderItemMap
         lqw.eq(bo.getVipPrice() != null, TradeOrderItem::getVipPrice, bo.getVipPrice());
         lqw.eq(bo.getAfterSaleId() != null, TradeOrderItem::getAfterSaleId, bo.getAfterSaleId());
         lqw.eq(bo.getAfterSaleStatus() != null, TradeOrderItem::getAfterSaleStatus, bo.getAfterSaleStatus());
-        lqw.eq(bo.getPropertyId() != null, TradeOrderItem::getPropertyId, bo.getPropertyId());
-        lqw.like(StringUtils.isNotBlank(bo.getPropertyName()), TradeOrderItem::getPropertyName, bo.getPropertyName());
-        lqw.eq(bo.getValueId() != null, TradeOrderItem::getValueId, bo.getValueId());
-        lqw.like(StringUtils.isNotBlank(bo.getValueName()), TradeOrderItem::getValueName, bo.getValueName());
+
+//        lqw.eq(bo.getPropertyId() != null, TradeOrderItem::getPropertyId, bo.getPropertyId());
+//        lqw.like(StringUtils.isNotBlank(bo.getPropertyName()), TradeOrderItem::getPropertyName, bo.getPropertyName());
+//        lqw.eq(bo.getValueId() != null, TradeOrderItem::getValueId, bo.getValueId());
+//        lqw.like(StringUtils.isNotBlank(bo.getValueName()), TradeOrderItem::getValueName, bo.getValueName());
+
         return lqw;
     }
 

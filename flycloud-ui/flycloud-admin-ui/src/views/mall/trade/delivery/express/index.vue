@@ -35,7 +35,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['trade:delivery:express:saveOrUpdate']"
+          v-hasPermi="['mall:trade:delivery:express:company:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" /> 新增
         </el-button>
@@ -44,7 +44,7 @@
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['trade:delivery:express:export']"
+          v-hasPermi="['mall:trade:delivery:express:company:export']"
         >
           <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>
@@ -81,7 +81,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['trade:delivery:express:saveOrUpdate']"
+            v-hasPermi="['mall:trade:delivery:express:company:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -89,7 +89,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['trade:delivery:express:delete']"
+            v-hasPermi="['mall:trade:delivery:express:company:delete']"
           >
             删除
           </el-button>

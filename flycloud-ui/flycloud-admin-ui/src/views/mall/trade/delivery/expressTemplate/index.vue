@@ -41,7 +41,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['trade:delivery:express-template:saveOrUpdate']"
+          v-hasPermi="['mall:trade:delivery:express:template:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />
           新增
@@ -74,7 +74,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['trade:delivery:express-template:saveOrUpdate']"
+            v-hasPermi="['mall:trade:delivery:express:template:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -82,7 +82,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['trade:delivery:express-template:delete']"
+            v-hasPermi="['mall:trade:delivery:express:template:delete']"
           >
             删除
           </el-button>

@@ -36,7 +36,7 @@ public class DeliveryExpressTemplateController extends BaseController {
     /**
      * 查询运费模板分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express-template:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:template:list')")
     @GetMapping("/list")
     public R<PageVo<DeliveryExpressTemplateVo>> list(DeliveryExpressTemplateBo bo, PageBo page) {
         return R.ok(deliveryExpressTemplateService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class DeliveryExpressTemplateController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express-template:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:template:list')")
     @GetMapping("/page")
     public R<PageVo<DeliveryExpressTemplateVo>> page(DeliveryExpressTemplateBo bo, PageBo page) {
         return R.ok(deliveryExpressTemplateService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class DeliveryExpressTemplateController extends BaseController {
      * 新增或修改运费模板。
      */
     @Log(title = "运费模板", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express-template:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:template:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryExpressTemplateBo bo) {
         return R.ok(deliveryExpressTemplateService.saveOrUpdate(bo));
@@ -98,7 +98,7 @@ public class DeliveryExpressTemplateController extends BaseController {
      * 删除运费模板。
      */
     @Log(title = "运费模板", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express-template:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:template:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(deliveryExpressTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));

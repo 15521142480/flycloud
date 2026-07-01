@@ -36,7 +36,7 @@ public class DeliveryExpressController extends BaseController {
     /**
      * 查询快递公司分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:company:list')")
     @GetMapping("/list")
     public R<PageVo<DeliveryExpressVo>> list(DeliveryExpressBo bo, PageBo page) {
         return R.ok(deliveryExpressService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class DeliveryExpressController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:company:list')")
     @GetMapping("/page")
     public R<PageVo<DeliveryExpressVo>> page(DeliveryExpressBo bo, PageBo page) {
         return R.ok(deliveryExpressService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class DeliveryExpressController extends BaseController {
      * 新增或修改快递公司。
      */
     @Log(title = "快递公司", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:company:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryExpressBo bo) {
         return R.ok(deliveryExpressService.saveOrUpdate(bo));
@@ -98,7 +98,7 @@ public class DeliveryExpressController extends BaseController {
      * 删除快递公司。
      */
     @Log(title = "快递公司", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:trade:delivery-express:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:delivery:express:company:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(deliveryExpressService.deleteWithValidByIds(Arrays.asList(ids), true));

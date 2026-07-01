@@ -71,13 +71,13 @@ public class TradeOrderItem extends BaseEntity {
 
     private Integer afterSaleStatus;
 
-    private Long propertyId;
-
-    private String propertyName;
-
-    private Long valueId;
-
-    private String valueName;
+//    private Long propertyId;
+//
+//    private String propertyName;
+//
+//    private Long valueId;
+//
+//    private String valueName;
 
     /**
      * 订单项商品规格属性。
