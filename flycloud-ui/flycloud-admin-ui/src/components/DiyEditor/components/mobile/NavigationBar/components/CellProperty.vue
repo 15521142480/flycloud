@@ -50,7 +50,7 @@
       <!-- 2. 图片 -->
       <template v-else-if="cell.type === 'image'">
         <el-form-item :label="t('extra.k3b9e2563')" :prop="`cell[${cellIndex}].imgUrl`">
-          <UploadImg v-model="cell.imgUrl" :limit="1" height="56px" width="56px">
+          <UploadImg v-model="cell.imgUrl" directory="diy" :limit="1" height="56px" width="56px">
             <template #tip>{{ t('extra.k2fb19cb9') }}</template>
           </UploadImg>
         </el-form-item>

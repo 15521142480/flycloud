@@ -11,7 +11,7 @@
         <el-input v-model="formData.name" placeholder="请输入品牌名称" />
       </el-form-item>
       <el-form-item label="品牌图片" prop="picUrl">
-        <UploadImg v-model="formData.picUrl" :limit="1" :is-show-tip="false" />
+        <UploadImg v-model="formData.picUrl" directory="mall" :limit="1" :is-show-tip="false" />
       </el-form-item>
       <el-form-item label="品牌排序" prop="sort">
         <el-input-number v-model="formData.sort" controls-position="right" :min="0" />

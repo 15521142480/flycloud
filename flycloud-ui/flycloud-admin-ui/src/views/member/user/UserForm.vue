@@ -28,7 +28,7 @@
         <el-input v-model="formData.nickname" placeholder="请输入用户昵称" />
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
-        <UploadImg v-model="formData.avatar" :limit="1" :is-show-tip="false" />
+        <UploadImg v-model="formData.avatar" directory="member" :limit="1" :is-show-tip="false" />
       </el-form-item>
       <el-form-item label="真实名字" prop="name">
         <el-input v-model="formData.name" placeholder="请输入真实名字" />

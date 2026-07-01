@@ -6,7 +6,10 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.BusinessType;
+import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
+import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
+import com.fly.mall.api.trade.domain.vo.TradeOrderSummaryRespVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.trade.service.ITradeOrderService;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.util.Map;
 
 /**
  * 管理后台 - 交易订单 控制器。
@@ -100,16 +101,16 @@ public class TradeOrderController extends BaseController {
      * 获得交易订单统计。
      */
     @GetMapping("/summary")
-    public R<Map<String, Long>> summary(TradeOrderBo bo) {
-        return R.ok(Map.of("count", (long) tradeOrderService.queryList(bo).size()));
+    public R<TradeOrderSummaryRespVo> summary(TradeOrderBo bo) {
+        return R.ok(tradeOrderService.getOrderSummary(bo));
     }
 
     /**
      * 查询交易订单物流轨迹。
      */
     @GetMapping("/get-express-track-list")
-    public R<List<Object>> getExpressTrackList(@RequestParam("id") Long id) {
-        return R.ok(List.of());
+    public R<List<AppOrderExpressTrackRespDto>> getExpressTrackList(@RequestParam("id") Long id) {
+        return R.ok(tradeOrderService.getExpressTrackList(id));
     }
 
     /**
@@ -117,9 +118,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/delivery")
     public R<Void> delivery(@RequestBody TradeOrderBo bo) {
-        bo.setStatus(20);
-        bo.setDeliveryTime(LocalDateTime.now());
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.ok(tradeOrderService.deliveryOrder(bo));
     }
 
     /**
@@ -127,7 +126,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update-remark")
     public R<Void> updateRemark(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.ok(tradeOrderService.updateOrderRemark(bo));
     }
 
     /**
@@ -135,7 +134,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update-price")
     public R<Void> updatePrice(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.ok(tradeOrderService.updateOrderPrice(bo));
     }
 
     /**
@@ -143,7 +142,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update-address")
     public R<Void> updateAddress(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.ok(tradeOrderService.updateOrderAddress(bo));
     }
 
     /**
@@ -151,12 +150,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/pick-up-by-id")
     public R<Void> pickUpById(@RequestParam("id") Long id) {
-        TradeOrderBo bo = new TradeOrderBo();
-        bo.setId(id);
-        bo.setStatus(30);
-        bo.setReceiveTime(LocalDateTime.now());
-        bo.setFinishTime(LocalDateTime.now());
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.ok(tradeOrderService.pickUpOrderByAdmin(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -164,13 +158,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/pick-up-by-verify-code")
     public R<Void> pickUpByVerifyCode(@RequestParam("pickUpVerifyCode") String pickUpVerifyCode) {
-        TradeOrderBo query = new TradeOrderBo();
-        query.setPickUpVerifyCode(pickUpVerifyCode);
-        List<TradeOrderVo> orders = tradeOrderService.queryList(query);
-        if (orders.isEmpty()) {
-            return R.ok();
-        }
-        return pickUpById(orders.get(0).getId());
+        return R.ok(tradeOrderService.pickUpOrderByAdmin(UserUtils.getCurUserId(), pickUpVerifyCode));
     }
 
     /**
@@ -178,9 +166,7 @@ public class TradeOrderController extends BaseController {
      */
     @GetMapping("/get-by-pick-up-verify-code")
     public R<TradeOrderVo> getByPickUpVerifyCode(@RequestParam("pickUpVerifyCode") String pickUpVerifyCode) {
-        TradeOrderBo query = new TradeOrderBo();
-        query.setPickUpVerifyCode(pickUpVerifyCode);
-        return R.ok(tradeOrderService.queryList(query).stream().findFirst().orElse(null));
+        return R.ok(tradeOrderService.getByPickUpVerifyCode(pickUpVerifyCode));
     }
 
     /**

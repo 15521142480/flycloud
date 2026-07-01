@@ -10,7 +10,7 @@
   >
     <el-table-column align="center" label="图片" min-width="65">
       <template #default="{ row }">
-        <UploadImg v-model="row.picUrl" height="50px" width="50px" />
+        <UploadImg v-model="row.picUrl" directory="mall" height="50px" width="50px" />
       </template>
     </el-table-column>
     <template v-if="formData!.specType && !isBatch">

@@ -96,8 +96,8 @@ public class MemberUserController {
     }
 
     @PreAuthorize("@pms.hasPermission('member:user:update-level')")
-    @RequestMapping(value = "/update-level", method = {RequestMethod.POST, RequestMethod.PUT})
-    public R<Boolean> updateLevel(@RequestBody MemberUserUpdateLevelReq req) {
+    @PutMapping("/update-level")
+    public R<Boolean> updateLevel(@Valid @RequestBody MemberUserUpdateLevelReq req) {
         memberLevelService.updateUserLevel(req.getId(), req.getLevelId(), req.getReason());
         return R.ok(true);
     }

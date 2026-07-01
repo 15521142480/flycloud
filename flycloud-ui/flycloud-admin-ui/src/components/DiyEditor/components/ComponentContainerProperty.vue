@@ -43,7 +43,7 @@
             prop="bgImg"
             v-else
           >
-            <UploadImg v-model="formData.bgImg" :limit="1">
+            <UploadImg v-model="formData.bgImg" directory="diy" :limit="1">
               <template #tip>{{
                 t('auto.components.DiyEditor.components.ComponentContainerProperty.k54614dc3')
               }}</template>

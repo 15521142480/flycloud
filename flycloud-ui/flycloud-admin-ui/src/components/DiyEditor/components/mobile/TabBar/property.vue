@@ -43,7 +43,7 @@
         <ColorInput v-model="formData!.style.bgColor" />
       </el-form-item>
       <el-form-item :label="t('cropper.selectImage')" v-if="formData!.style.bgType === 'img'">
-        <UploadImg v-model="formData!.style.bgImg" width="100%" height="50px" class="min-w-200px">
+        <UploadImg v-model="formData!.style.bgImg" directory="diy" width="100%" height="50px" class="min-w-200px">
           <template #tip> {{ t('extra.k509da066') }} </template>
         </UploadImg>
       </el-form-item>

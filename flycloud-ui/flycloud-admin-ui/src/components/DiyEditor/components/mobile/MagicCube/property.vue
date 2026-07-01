@@ -21,7 +21,7 @@
             :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k59b308c8')"
             :prop="`list[${index}].imgUrl`"
           >
-            <UploadImg v-model="hotArea.imgUrl" height="80px" width="80px" />
+            <UploadImg v-model="hotArea.imgUrl" directory="diy" height="80px" width="80px" />
           </el-form-item>
           <el-form-item
             :label="t('auto.components.DiyEditor.components.mobile.MagicCube.property.k71502205')"

@@ -101,7 +101,7 @@
       }}</el-text>
     </div>
     <el-space wrap class="model-list">
-      <UploadImg v-model="referImageUrl" height="120px" width="120px" />
+      <UploadImg v-model="referImageUrl" directory="ai" height="120px" width="120px" />
     </el-space>
   </div>
   <div class="btns">

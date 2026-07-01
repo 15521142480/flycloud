@@ -10,7 +10,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="门店 logo" prop="logo">
-            <UploadImg v-model="formData.logo" :limit="1" :is-show-tip="false" />
+            <UploadImg v-model="formData.logo" directory="mall" :limit="1" :is-show-tip="false" />
             <div style="font-size: 10px" class="pl-10px">推荐 180x180 图片分辨率</div>
           </el-form-item>
         </el-col>

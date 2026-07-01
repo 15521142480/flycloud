@@ -64,7 +64,7 @@
       prop="bgImg"
       v-else
     >
-      <UploadImg v-model="formData.bgImg" :limit="1" width="56px" height="56px" />
+      <UploadImg v-model="formData.bgImg" directory="diy" :limit="1" width="56px" height="56px" />
     </el-form-item>
     <el-card class="property-group" shadow="never">
       <template #header>

@@ -88,7 +88,7 @@
           prop="badge.imgUrl"
           v-if="formData.badge.show"
         >
-          <UploadImg v-model="formData.badge.imgUrl" height="44px" width="72px">
+          <UploadImg v-model="formData.badge.imgUrl" directory="diy" height="44px" width="72px">
             <template #tip>
               {{ t('auto.components.DiyEditor.components.mobile.ProductList.property.k5bba7969') }}
             </template>

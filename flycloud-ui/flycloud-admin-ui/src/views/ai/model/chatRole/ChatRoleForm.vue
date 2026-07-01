@@ -14,7 +14,7 @@
         />
       </el-form-item>
       <el-form-item :label="t('auto.views.ai.model.chatRole.ChatRoleForm.k9b7423ef')" prop="avatar">
-        <UploadImg v-model="formData.avatar" height="60px" width="60px" />
+        <UploadImg v-model="formData.avatar" directory="ai" height="60px" width="60px" />
       </el-form-item>
       <el-form-item
         :label="t('auto.views.ai.model.chatRole.ChatRoleForm.k5b7d951b')"

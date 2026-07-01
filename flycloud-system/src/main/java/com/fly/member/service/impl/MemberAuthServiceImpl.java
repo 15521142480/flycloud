@@ -9,13 +9,16 @@ import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.member.mapper.MemberUserMapper;
 import com.fly.member.service.IMemberAuthService;
+import com.fly.member.service.ISocialUserService;
 import com.fly.system.api.member.domain.MemberUser;
+import com.fly.system.api.member.domain.SocialUser;
 import com.fly.system.api.member.domain.bo.AppAuthLoginReqBo;
 import com.fly.system.api.member.domain.bo.AppAuthSmsLoginReqBo;
 import com.fly.system.api.member.domain.bo.AppAuthSmsSendReqBo;
 import com.fly.system.api.member.domain.bo.AppAuthSmsValidateReqBo;
 import com.fly.system.api.member.domain.bo.AppAuthSocialLoginReqBo;
 import com.fly.system.api.member.domain.bo.AppAuthWeixinMiniAppLoginReqBo;
+import com.fly.system.api.member.domain.bo.AppSocialUserBindReqBo;
 import com.fly.system.api.member.domain.vo.AppAuthLoginRespVo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -59,6 +62,7 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
     private final MemberUserMapper memberUserMapper;
     private final RedisUtils redisUtils;
     private final AuthProperties authProperties;
+    private final ISocialUserService socialUserService;
 
     /**
      * 手机号和密码登录。
@@ -102,19 +106,44 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
     }
 
     /**
-     * 社交登录依赖社交用户模块，当前项目未配置时明确返回业务异常。
+     * 社交登录。
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AppAuthLoginRespVo socialLogin(AppAuthSocialLoginReqBo reqBo) {
-        throw new ServiceException("社交登录能力未配置");
+        SocialUser socialUser = socialUserService.getSocialUserByCode(USER_TYPE_MEMBER, reqBo.getType(), reqBo.getCode(), reqBo.getState());
+        Object bindUserId = socialUser.getParams().get("bindUserId");
+        MemberUser user = bindUserId == null ? null : memberUserMapper.selectById(Long.valueOf(String.valueOf(bindUserId)));
+        if (user == null) {
+            user = createSocialMemberUser(socialUser);
+            AppSocialUserBindReqBo bindReqBo = new AppSocialUserBindReqBo();
+            bindReqBo.setType(reqBo.getType());
+            bindReqBo.setCode(reqBo.getCode());
+            bindReqBo.setState(reqBo.getState());
+            socialUserService.bindSocialUser(user.getId(), USER_TYPE_MEMBER, bindReqBo);
+        }
+        validateUserEnabled(user);
+        return createTokenAfterLoginSuccess(user, LOGIN_TYPE_PASSWORD, socialUser.getOpenid());
     }
 
     /**
-     * 微信小程序登录依赖微信社交能力，当前项目未配置时明确返回业务异常。
+     * 微信小程序登录。
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AppAuthLoginRespVo weixinMiniAppLogin(AppAuthWeixinMiniAppLoginReqBo reqBo) {
-        throw new ServiceException("微信小程序登录能力未配置");
+        String mobile = reqBo.getPhoneCode();
+        MemberUser user = selectUserByMobile(mobile);
+        if (user == null) {
+            user = createMemberUser(mobile);
+        }
+        AppSocialUserBindReqBo bindReqBo = new AppSocialUserBindReqBo();
+        bindReqBo.setType(34);
+        bindReqBo.setCode(reqBo.getLoginCode());
+        bindReqBo.setState(reqBo.getState());
+        String openid = socialUserService.bindSocialUser(user.getId(), USER_TYPE_MEMBER, bindReqBo);
+        validateUserEnabled(user);
+        return createTokenAfterLoginSuccess(user, LOGIN_TYPE_SMS, openid);
     }
 
     /**
@@ -122,7 +151,11 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
      */
     @Override
     public String getSocialAuthorizeUrl(Integer type, String redirectUri) {
-        throw new ServiceException("社交授权能力未配置");
+        if (StringUtils.isBlank(redirectUri)) {
+            return "";
+        }
+        String separator = redirectUri.contains("?") ? "&" : "?";
+        return redirectUri + separator + "type=" + type;
     }
 
     /**
@@ -199,6 +232,24 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
         user.setMobile(mobile);
         user.setStatus(0);
         user.setNickname("会员" + mobile.substring(Math.max(0, mobile.length() - 4)));
+        user.setPoint(0);
+        user.setExperience(0);
+        user.setRegisterTerminal(20);
+        user.setRegisterIp("");
+        user.setIsDeleted(false);
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
+        memberUserMapper.insert(user);
+        return user;
+    }
+
+    private MemberUser createSocialMemberUser(SocialUser socialUser) {
+        LocalDateTime now = LocalDateTime.now();
+        MemberUser user = new MemberUser();
+        user.setMobile("social_" + socialUser.getOpenid().substring(Math.max(0, socialUser.getOpenid().length() - 24)));
+        user.setStatus(0);
+        user.setNickname(StringUtils.isBlank(socialUser.getNickname()) ? "社交会员" : socialUser.getNickname());
+        user.setAvatar(socialUser.getAvatar());
         user.setPoint(0);
         user.setExperience(0);
         user.setRegisterTerminal(20);

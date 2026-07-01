@@ -30,6 +30,7 @@ import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.CartVo;
+import com.fly.mall.api.trade.domain.vo.TradeOrderSummaryRespVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderItemVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.product.service.IProductSkuService;
@@ -50,6 +51,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +108,11 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      * 快递配送。
      */
     private static final int DELIVERY_TYPE_EXPRESS = 1;
+
+    /**
+     * 到店自提。
+     */
+    private static final int DELIVERY_TYPE_PICK_UP = 2;
 
     private final TradeOrderMapper baseMapper;
     private final TradeOrderItemMapper tradeOrderItemMapper;
@@ -190,20 +197,39 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Override
     public List<AppOrderExpressTrackRespDto> getAppExpressTrackList(Long userId, Long id) {
         TradeOrder order = validateUserOrder(userId, id);
-        List<AppOrderExpressTrackRespDto> tracks = new ArrayList<>();
-        if (order.getDeliveryTime() != null) {
-            AppOrderExpressTrackRespDto track = new AppOrderExpressTrackRespDto();
-            track.setTime(order.getDeliveryTime());
-            track.setContent("商家已发货" + (StringUtils.isNotBlank(order.getLogisticsNo()) ? "，物流单号：" + order.getLogisticsNo() : ""));
-            tracks.add(track);
+        return buildOrderExpressTrackList(order);
+    }
+
+    /**
+     * 查询后台订单物流轨迹。
+     */
+    @Override
+    public List<AppOrderExpressTrackRespDto> getExpressTrackList(Long id) {
+        return buildOrderExpressTrackList(validateOrderExists(id));
+    }
+
+    /**
+     * 查询后台订单统计。
+     */
+    @Override
+    public TradeOrderSummaryRespVo getOrderSummary(TradeOrderBo bo) {
+        List<TradeOrderVo> orders = queryList(bo);
+        TradeOrderSummaryRespVo respVo = new TradeOrderSummaryRespVo();
+        respVo.setOrderCount(0L);
+        respVo.setOrderPayPrice(0L);
+        respVo.setAfterSaleCount(0L);
+        respVo.setAfterSalePrice(0L);
+        for (TradeOrderVo order : orders) {
+            Integer refundStatus = order.getRefundStatus();
+            if (refundStatus == null || refundStatus == REFUND_STATUS_NONE) {
+                respVo.setOrderCount(respVo.getOrderCount() + 1);
+                respVo.setOrderPayPrice(respVo.getOrderPayPrice() + defaultZero(order.getPayPrice()));
+            } else {
+                respVo.setAfterSaleCount(respVo.getAfterSaleCount() + 1);
+                respVo.setAfterSalePrice(respVo.getAfterSalePrice() + defaultZero(order.getRefundPrice()));
+            }
         }
-        if (order.getReceiveTime() != null) {
-            AppOrderExpressTrackRespDto track = new AppOrderExpressTrackRespDto();
-            track.setTime(order.getReceiveTime());
-            track.setContent("订单已确认收货");
-            tracks.add(track);
-        }
-        return tracks;
+        return respVo;
     }
 
     /**
@@ -535,6 +561,155 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         entity.setUpdateBy(String.valueOf(userId));
         entity.setUpdateTime(LocalDateTime.now());
         return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
+     * 后台订单发货。
+     */
+    @Override
+    public Boolean deliveryOrder(TradeOrderBo bo) {
+        if (bo == null || bo.getId() == null) {
+            throw new ServiceException("订单编号不能为空");
+        }
+        TradeOrder order = validateOrderExists(bo.getId());
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNDELIVERED)) {
+            throw new ServiceException("只有待发货订单可以发货");
+        }
+        if (!Objects.equals(order.getDeliveryType(), DELIVERY_TYPE_EXPRESS)) {
+            throw new ServiceException("只有快递配送订单可以发货");
+        }
+        if (bo.getLogisticsId() != null && bo.getLogisticsId() > 0 && StringUtils.isBlank(bo.getLogisticsNo())) {
+            throw new ServiceException("物流单号不能为空");
+        }
+        TradeOrder entity = new TradeOrder();
+        entity.setId(order.getId());
+        entity.setStatus(ORDER_STATUS_DELIVERED);
+        entity.setLogisticsId(bo.getLogisticsId() == null ? 0L : bo.getLogisticsId());
+        entity.setLogisticsNo(bo.getLogisticsId() == null || bo.getLogisticsId() == 0 ? "" : bo.getLogisticsNo());
+        entity.setDeliveryTime(LocalDateTime.now());
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
+     * 后台更新订单备注。
+     */
+    @Override
+    public Boolean updateOrderRemark(TradeOrderBo bo) {
+        if (bo == null || bo.getId() == null) {
+            throw new ServiceException("订单编号不能为空");
+        }
+        validateOrderExists(bo.getId());
+        TradeOrder entity = new TradeOrder();
+        entity.setId(bo.getId());
+        entity.setRemark(bo.getRemark());
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
+     * 后台更新订单价格。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean updateOrderPrice(TradeOrderBo bo) {
+        if (bo == null || bo.getId() == null || bo.getAdjustPrice() == null) {
+            throw new ServiceException("订单编号和调价金额不能为空");
+        }
+        TradeOrder order = validateOrderExists(bo.getId());
+        if (Boolean.TRUE.equals(order.getPayStatus())) {
+            throw new ServiceException("已支付订单不能调价");
+        }
+        if (defaultZero(order.getAdjustPrice()) > 0) {
+            throw new ServiceException("订单已调价，不能重复调价");
+        }
+        int newPayPrice = defaultZero(order.getPayPrice()) + bo.getAdjustPrice();
+        if (newPayPrice <= 0) {
+            throw new ServiceException("调价后支付金额必须大于 0");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        String operator = String.valueOf(UserUtils.getCurUserId());
+        TradeOrder entity = new TradeOrder();
+        entity.setId(order.getId());
+        entity.setAdjustPrice(defaultZero(order.getAdjustPrice()) + bo.getAdjustPrice());
+        entity.setPayPrice(newPayPrice);
+        entity.setUpdateBy(operator);
+        entity.setUpdateTime(now);
+        baseMapper.updateById(entity);
+
+        List<TradeOrderItemVo> items = tradeOrderItemService.queryListByOrderId(order.getId());
+        List<Integer> adjustPrices = dividePrice(items, bo.getAdjustPrice());
+        for (int i = 0; i < items.size(); i++) {
+            TradeOrderItemVo item = items.get(i);
+            Integer adjustPrice = adjustPrices.get(i);
+            TradeOrderItem updateItem = new TradeOrderItem();
+            updateItem.setId(item.getId());
+            updateItem.setAdjustPrice(defaultZero(item.getAdjustPrice()) + adjustPrice);
+            updateItem.setPayPrice(defaultZero(item.getPayPrice()) + adjustPrice);
+            updateItem.setUpdateBy(operator);
+            updateItem.setUpdateTime(now);
+            tradeOrderItemMapper.updateById(updateItem);
+        }
+        return true;
+    }
+
+    /**
+     * 后台更新订单收货地址。
+     */
+    @Override
+    public Boolean updateOrderAddress(TradeOrderBo bo) {
+        if (bo == null || bo.getId() == null) {
+            throw new ServiceException("订单编号不能为空");
+        }
+        TradeOrder order = validateOrderExists(bo.getId());
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNDELIVERED)) {
+            throw new ServiceException("只有待发货订单可以修改收货地址");
+        }
+        TradeOrder entity = new TradeOrder();
+        entity.setId(order.getId());
+        entity.setReceiverName(bo.getReceiverName());
+        entity.setReceiverMobile(bo.getReceiverMobile());
+        entity.setReceiverAreaId(bo.getReceiverAreaId());
+        entity.setReceiverDetailAddress(bo.getReceiverDetailAddress());
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
+     * 后台按订单编号核销订单。
+     */
+    @Override
+    public Boolean pickUpOrderByAdmin(Long userId, Long id) {
+        return pickUpOrder(userId, validateOrderExists(id));
+    }
+
+    /**
+     * 后台按核销码核销订单。
+     */
+    @Override
+    public Boolean pickUpOrderByAdmin(Long userId, String pickUpVerifyCode) {
+        TradeOrderVo order = getByPickUpVerifyCode(pickUpVerifyCode);
+        if (order == null) {
+            throw new ServiceException("订单不存在");
+        }
+        return pickUpOrder(userId, validateOrderExists(order.getId()));
+    }
+
+    /**
+     * 根据自提核销码查询订单。
+     */
+    @Override
+    public TradeOrderVo getByPickUpVerifyCode(String pickUpVerifyCode) {
+        if (StringUtils.isBlank(pickUpVerifyCode)) {
+            throw new ServiceException("核销码不能为空");
+        }
+        TradeOrderBo query = new TradeOrderBo();
+        query.setPickUpVerifyCode(pickUpVerifyCode);
+        return queryList(query).stream().findFirst().orElse(null);
     }
 
     /**
@@ -875,6 +1050,102 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             throw new ServiceException("订单不存在");
         }
         return order;
+    }
+
+    /**
+     * 校验订单存在。
+     */
+    private TradeOrder validateOrderExists(Long id) {
+        if (id == null) {
+            throw new ServiceException("订单编号不能为空");
+        }
+        TradeOrder order = baseMapper.selectById(id);
+        if (order == null || Boolean.TRUE.equals(order.getIsDeleted())) {
+            throw new ServiceException("订单不存在");
+        }
+        return order;
+    }
+
+    /**
+     * 构建订单物流轨迹。
+     */
+    private List<AppOrderExpressTrackRespDto> buildOrderExpressTrackList(TradeOrder order) {
+        List<AppOrderExpressTrackRespDto> tracks = new ArrayList<>();
+        if (order.getCreateTime() != null) {
+            tracks.add(buildExpressTrack(order.getCreateTime(), "订单已创建"));
+        }
+        if (order.getPayTime() != null) {
+            tracks.add(buildExpressTrack(order.getPayTime(), "订单已支付"));
+        }
+        if (order.getDeliveryTime() != null) {
+            tracks.add(buildExpressTrack(order.getDeliveryTime(),
+                    "商家已发货" + (StringUtils.isNotBlank(order.getLogisticsNo()) ? "，物流单号：" + order.getLogisticsNo() : "")));
+        }
+        if (order.getReceiveTime() != null) {
+            tracks.add(buildExpressTrack(order.getReceiveTime(), "订单已确认收货"));
+        }
+        if (order.getFinishTime() != null && order.getReceiveTime() == null) {
+            tracks.add(buildExpressTrack(order.getFinishTime(), "订单已完成"));
+        }
+        if (order.getCancelTime() != null) {
+            tracks.add(buildExpressTrack(order.getCancelTime(), "订单已取消"));
+        }
+        tracks.sort(Comparator.comparing(AppOrderExpressTrackRespDto::getTime));
+        return tracks;
+    }
+
+    /**
+     * 构建单条订单轨迹。
+     */
+    private AppOrderExpressTrackRespDto buildExpressTrack(LocalDateTime time, String content) {
+        AppOrderExpressTrackRespDto track = new AppOrderExpressTrackRespDto();
+        track.setTime(time);
+        track.setContent(content);
+        return track;
+    }
+
+    /**
+     * 后台核销自提订单。
+     */
+    private Boolean pickUpOrder(Long userId, TradeOrder order) {
+        if (!Objects.equals(order.getDeliveryType(), DELIVERY_TYPE_PICK_UP)) {
+            throw new ServiceException("只有到店自提订单可以核销");
+        }
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNDELIVERED)) {
+            throw new ServiceException("只有待核销订单可以核销");
+        }
+        TradeOrder entity = new TradeOrder();
+        entity.setId(order.getId());
+        entity.setStatus(ORDER_STATUS_COMPLETED);
+        entity.setReceiveTime(LocalDateTime.now());
+        entity.setFinishTime(LocalDateTime.now());
+        entity.setUpdateBy(String.valueOf(userId));
+        entity.setUpdateTime(LocalDateTime.now());
+        return baseMapper.updateById(entity) > 0;
+    }
+
+    /**
+     * 按订单项支付金额分摊调价金额。
+     */
+    private List<Integer> dividePrice(List<TradeOrderItemVo> items, Integer adjustPrice) {
+        if (CollectionUtils.isEmpty(items)) {
+            return List.of();
+        }
+        int totalPayPrice = items.stream().map(TradeOrderItemVo::getPayPrice)
+                .filter(Objects::nonNull).reduce(0, Integer::sum);
+        List<Integer> result = new ArrayList<>(items.size());
+        int assigned = 0;
+        for (int i = 0; i < items.size(); i++) {
+            int itemAdjustPrice;
+            if (i == items.size() - 1 || totalPayPrice == 0) {
+                itemAdjustPrice = adjustPrice - assigned;
+            } else {
+                itemAdjustPrice = adjustPrice * defaultZero(items.get(i).getPayPrice()) / totalPayPrice;
+                assigned += itemAdjustPrice;
+            }
+            result.add(itemAdjustPrice);
+        }
+        return result;
     }
 
     /**

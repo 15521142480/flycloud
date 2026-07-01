@@ -77,7 +77,7 @@
           :label="t('auto.components.DiyEditor.components.mobile.CouponCard.property.k8c841866')"
           prop="bgImg"
         >
-          <UploadImg v-model="formData.bgImg" height="80px" width="100%" class="min-w-160px" />
+          <UploadImg v-model="formData.bgImg" directory="diy" height="80px" width="100%" class="min-w-160px" />
         </el-form-item>
         <el-form-item
           :label="t('auto.components.DiyEditor.components.mobile.CouponCard.property.k07f568da')"

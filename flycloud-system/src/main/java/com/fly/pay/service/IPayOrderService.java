@@ -9,6 +9,7 @@ import com.fly.system.api.pay.domain.vo.AppPayOrderSubmitRespVo;
 import com.fly.system.api.pay.domain.vo.PayOrderRespVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 支付订单 Service 接口。
@@ -47,5 +48,10 @@ public interface IPayOrderService {
      * 提交支付订单。
      */
     AppPayOrderSubmitRespVo submitOrder(Long userId, AppPayOrderSubmitReqVo submitReqVo, String userIp);
+
+    /**
+     * 支付渠道回调后更新支付订单。
+     */
+    void notifyOrder(Long channelId, Map<String, String> params, String body, Map<String, String> headers);
 
 }

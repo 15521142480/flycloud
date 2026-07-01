@@ -1,5 +1,5 @@
 <template>
-  <div class="upload-box">
+  <div class="upload-box" :style="uploadStyle">
     <el-upload
       :id="uuid"
       :accept="fileType.join(',')"
@@ -53,7 +53,7 @@ import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { createImageViewer } from '@/components/ImageViewer'
 import { useUpload } from '@/components/UploadFile/src/useUpload'
-const { t } = useI18n()
+
 defineOptions({ name: 'UploadImg' })
 
 type FileTypes =
@@ -79,8 +79,17 @@ const props = defineProps({
   width: propTypes.string.def('150px'), // 组件宽度 ==> 非必传（默认为 150px）
   borderradius: propTypes.string.def('8px'), // 组件边框圆角 ==> 非必传（默认为 8px）
   showDelete: propTypes.bool.def(true), // 是否显示删除按钮
-  showBtnText: propTypes.bool.def(true) // 是否显示按钮文字
+  showBtnText: propTypes.bool.def(true), // 是否显示按钮文字
+  directory: propTypes.string.def(undefined) // 上传目录 ==> 非必传（默认为 undefined）
 })
+
+const uploadStyle = computed(() => ({
+  '--upload-width': props.width,
+  '--upload-height': props.height,
+  '--upload-border-radius': props.borderradius
+}))
+
+const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 // 生成组件唯一id
 const uuid = ref('id-' + generateUUID())
@@ -98,7 +107,7 @@ const deleteImg = () => {
   emit('update:modelValue', '')
 }
 
-const { uploadUrl, httpRequest } = useUpload()
+const { uploadUrl, httpRequest } = useUpload(props.directory)
 
 const editImg = () => {
   const dom = document.querySelector(`#${uuid.value} .el-upload__input`)
@@ -109,20 +118,20 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize
   const imgType = props.fileType
   if (!imgType.includes(rawFile.type as FileTypes))
-    message.notifyWarning(t('auto.components.UploadFile.src.UploadImg.k4e46f515'))
-  if (!imgSize) message.notifyWarning(t('extra.k450ec046', { p0: props.fileSize }))
+    message.notifyWarning('上传图片不符合所需的格式！')
+  if (!imgSize) message.notifyWarning(`上传图片大小不能超过 ${props.fileSize}M！`)
   return imgType.includes(rawFile.type as FileTypes) && imgSize
 }
 
 // 图片上传成功提示
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  message.success(t('auto.components.UploadFile.src.UploadImg.kea9f9179'))
+  message.success('上传成功')
   emit('update:modelValue', res.data)
 }
 
 // 图片上传错误提示
 const uploadError = () => {
-  message.notifyError(t('auto.components.UploadFile.src.UploadImg.k3d25606c'))
+  message.notifyError('图片上传失败，请您重新上传！')
 }
 </script>
 <style lang="scss" scoped>
@@ -165,11 +174,11 @@ const uploadError = () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: v-bind(width);
-      height: v-bind(height);
+      width: var(--upload-width);
+      height: var(--upload-height);
       overflow: hidden;
       border: 1px dashed var(--el-border-color-darker);
-      border-radius: v-bind(borderradius);
+      border-radius: var(--upload-border-radius);
       transition: var(--el-transition-duration-fast);
 
       &:hover {
@@ -190,7 +199,7 @@ const uploadError = () => {
         overflow: hidden;
         background-color: transparent;
         border: 1px dashed var(--el-border-color-darker);
-        border-radius: v-bind(borderradius);
+        border-radius: var(--upload-border-radius);
 
         &:hover {
           border: 1px dashed var(--el-color-primary);

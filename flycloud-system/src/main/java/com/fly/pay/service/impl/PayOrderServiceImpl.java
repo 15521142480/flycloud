@@ -16,6 +16,7 @@ import com.fly.pay.service.IPayNotifyService;
 import com.fly.pay.service.IPayOrderService;
 import com.fly.pay.service.IPayWalletRechargeService;
 import com.fly.pay.service.IPayWalletService;
+import com.fly.pay.utils.PayNotifyParseUtils;
 import com.fly.system.api.pay.domain.PayApp;
 import com.fly.system.api.pay.domain.PayWallet;
 import com.fly.system.api.pay.domain.PayOrder;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -212,6 +214,52 @@ public class PayOrderServiceImpl implements IPayOrderService {
     }
 
     /**
+     * 支付渠道回调后更新支付订单。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void notifyOrder(Long channelId, Map<String, String> params, String body, Map<String, String> headers) {
+        Map<String, String> data = PayNotifyParseUtils.parseNotifyData(params, body);
+        PayOrder order = findNotifyOrder(data);
+        if (order == null) {
+            throw new ServiceException("支付回调对应的支付订单不存在");
+        }
+        if (Objects.equals(order.getStatus(), ORDER_STATUS_SUCCESS)) {
+            return;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        PayOrder updateOrder = new PayOrder();
+        updateOrder.setId(order.getId());
+        updateOrder.setChannelId(channelId);
+        updateOrder.setStatus(ORDER_STATUS_SUCCESS);
+        updateOrder.setSuccessTime(now);
+        updateOrder.setChannelOrderNo(PayNotifyParseUtils.firstValue(data, "channelOrderNo", "transaction_id", "trade_no"));
+        updateOrder.setUpdateBy("callback");
+        updateOrder.setUpdateTime(now);
+        payOrderMapper.updateById(updateOrder);
+
+        if (order.getExtensionId() != null) {
+            PayOrderExtension updateExtension = new PayOrderExtension();
+            updateExtension.setId(order.getExtensionId());
+            updateExtension.setStatus(ORDER_STATUS_SUCCESS);
+            updateExtension.setChannelNotifyData(PayNotifyParseUtils.toNotifyData(params, body, headers));
+            updateExtension.setUpdateBy("callback");
+            updateExtension.setUpdateTime(now);
+            payOrderExtensionMapper.updateById(updateExtension);
+        }
+
+        IPayWalletRechargeService rechargeService = walletRechargeServiceProvider.getIfAvailable();
+        if (rechargeService != null) {
+            rechargeService.updateWalletRechargePaid(order.getId(), order.getChannelCode());
+        }
+        IPayNotifyService notifyService = payNotifyServiceProvider.getIfAvailable();
+        if (notifyService != null) {
+            notifyService.createPayNotifyTask(PayNotifyTypeEnum.ORDER.getType(), order.getId());
+        }
+    }
+
+    /**
      * 标记支付订单和拓展单支付成功。
      */
     private void markOrderSuccess(Long userId, PayOrder updateOrder, PayOrderExtension extension) {
@@ -280,6 +328,32 @@ public class PayOrderServiceImpl implements IPayOrderService {
         lqw.eq(PayOrder::getMerchantOrderId, merchantOrderId);
         lqw.last("LIMIT 1");
         return payOrderMapper.selectOne(lqw);
+    }
+
+    /**
+     * 查询支付回调对应的本地支付订单。
+     */
+    private PayOrder findNotifyOrder(Map<String, String> data) {
+        String no = PayNotifyParseUtils.firstValue(data, "no", "out_trade_no", "outTradeNo", "payOrderNo");
+        if (StringUtils.isNotBlank(no)) {
+            LambdaQueryWrapper<PayOrder> noQuery = Wrappers.lambdaQuery();
+            noQuery.eq(PayOrder::getIsDeleted, false);
+            noQuery.eq(PayOrder::getNo, no);
+            noQuery.last("LIMIT 1");
+            PayOrder order = payOrderMapper.selectOne(noQuery);
+            if (order != null) {
+                return order;
+            }
+        }
+        String merchantOrderId = PayNotifyParseUtils.firstValue(data, "merchantOrderId", "merchant_order_id");
+        if (StringUtils.isNotBlank(merchantOrderId)) {
+            LambdaQueryWrapper<PayOrder> merchantQuery = Wrappers.lambdaQuery();
+            merchantQuery.eq(PayOrder::getIsDeleted, false);
+            merchantQuery.eq(PayOrder::getMerchantOrderId, merchantOrderId);
+            merchantQuery.last("LIMIT 1");
+            return payOrderMapper.selectOne(merchantQuery);
+        }
+        return null;
     }
 
     /**

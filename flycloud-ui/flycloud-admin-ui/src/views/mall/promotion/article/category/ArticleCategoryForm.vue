@@ -11,7 +11,7 @@
         <el-input v-model="formData.name" placeholder="请输入分类名称" />
       </el-form-item>
       <el-form-item label="图标地址" prop="picUrl">
-        <UploadImg v-model="formData.picUrl" height="80px" />
+        <UploadImg v-model="formData.picUrl" directory="mall" height="80px" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="formData.status">

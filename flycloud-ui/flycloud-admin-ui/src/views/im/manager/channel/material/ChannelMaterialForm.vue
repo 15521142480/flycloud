@@ -25,7 +25,7 @@
         <el-input v-model="formData.title" placeholder="图文标题" maxlength="128" show-word-limit />
       </el-form-item>
       <el-form-item label="封面图" prop="coverUrl">
-        <UploadImg v-model="formData.coverUrl" :limit="1" />
+        <UploadImg v-model="formData.coverUrl" directory="im" :limit="1" />
       </el-form-item>
       <el-form-item label="摘要" prop="summary">
         <el-input

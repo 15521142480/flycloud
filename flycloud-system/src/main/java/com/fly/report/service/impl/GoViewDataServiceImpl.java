@@ -16,6 +16,8 @@ import java.util.Map;
 
 /**
  * GoView 数据 Service 业务层处理。
+ * <p>
+ * 默认使用系统数据源执行 SQL 查询；如果后续需要多数据源，可以在这里按数据源类型扩展 JdbcTemplate。
  *
  * @author lxs
  * @date 2026-06-30

@@ -15,7 +15,7 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="图片" prop="picUrl">
-            <UploadImg v-model="formData.picUrl" />
+            <UploadImg v-model="formData.picUrl" directory="mall" />
           </el-form-item>
         </el-col>
         <el-col :span="24">

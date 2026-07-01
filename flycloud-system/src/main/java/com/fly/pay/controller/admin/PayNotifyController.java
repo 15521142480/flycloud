@@ -3,8 +3,10 @@ package com.fly.pay.controller.admin;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.exception.ServiceException;
 import com.fly.pay.service.IPayNotifyService;
+import com.fly.pay.service.IPayOrderService;
+import com.fly.pay.service.IPayRefundService;
+import com.fly.pay.service.IPayTransferService;
 import com.fly.system.api.pay.domain.bo.PayNotifyTaskBo;
 import com.fly.system.api.pay.domain.vo.PayNotifyTaskDetailVo;
 import com.fly.system.api.pay.domain.vo.PayNotifyTaskVo;
@@ -38,6 +40,9 @@ import java.util.Map;
 public class PayNotifyController {
 
     private final IPayNotifyService notifyService;
+    private final IPayOrderService orderService;
+    private final IPayRefundService refundService;
+    private final IPayTransferService transferService;
 
     @GetMapping("/get-detail")
     @Operation(summary = "获得回调通知的明细")
@@ -69,7 +74,8 @@ public class PayNotifyController {
                               @RequestBody(required = false) String body,
                               @RequestHeader Map<String, String> headers) {
         log.info("[notifyOrder][channelId({}) 回调数据({}/{}/{})]", channelId, params, body, headers);
-        throw new ServiceException("支付渠道回调解析器未接入");
+        orderService.notifyOrder(channelId, params, body, headers);
+        return "success";
     }
 
     @PostMapping(value = "/refund/{channelId}")
@@ -80,7 +86,8 @@ public class PayNotifyController {
                                @RequestBody(required = false) String body,
                                @RequestHeader Map<String, String> headers) {
         log.info("[notifyRefund][channelId({}) 回调数据({}/{}/{})]", channelId, params, body, headers);
-        throw new ServiceException("支付渠道回调解析器未接入");
+        refundService.notifyRefund(channelId, params, body, headers);
+        return "success";
     }
 
     @PostMapping(value = "/transfer/{channelId}")
@@ -91,7 +98,8 @@ public class PayNotifyController {
                                  @RequestBody(required = false) String body,
                                  @RequestHeader Map<String, String> headers) {
         log.info("[notifyTransfer][channelId({}) 回调数据({}/{}/{})]", channelId, params, body, headers);
-        throw new ServiceException("支付渠道回调解析器未接入");
+        transferService.notifyTransfer(channelId, params, body, headers);
+        return "success";
     }
 
 }

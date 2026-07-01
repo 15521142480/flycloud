@@ -56,7 +56,7 @@
         </el-select>
       </el-form-item>
       <el-form-item :label="t('auto.views.bpm.model.ModelForm.kb46a9bd4')" prop="icon">
-        <UploadImg v-model="formData.icon" :limit="1" height="64px" width="64px" />
+        <UploadImg v-model="formData.icon" directory="bpm" :limit="1" height="64px" width="64px" />
       </el-form-item>
       <el-form-item :label="t('auto.views.bpm.model.ModelForm.kd344413f')" prop="description">
         <el-input v-model="formData.description" clearable type="textarea" />

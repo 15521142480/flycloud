@@ -58,7 +58,7 @@
               "
               prop="iconUrl"
             >
-              <UploadImg v-model="element.iconUrl" height="80px" width="80px">
+              <UploadImg v-model="element.iconUrl" directory="diy" height="80px" width="80px">
                 <template #tip>
                   {{
                     t('auto.components.DiyEditor.components.mobile.MenuSwiper.property.k5026223e')

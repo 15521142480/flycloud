@@ -5,7 +5,7 @@
         :label="t('auto.components.DiyEditor.components.mobile.NoticeBar.property.k2e6872ea')"
         prop="iconUrl"
       >
-        <UploadImg v-model="formData.iconUrl" height="48px">
+        <UploadImg v-model="formData.iconUrl" directory="diy" height="48px">
           <template #tip>{{
             t('auto.components.DiyEditor.components.mobile.NoticeBar.property.kf03b0c2d')
           }}</template>

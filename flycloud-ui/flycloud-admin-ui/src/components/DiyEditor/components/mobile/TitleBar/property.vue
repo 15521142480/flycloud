@@ -10,7 +10,7 @@
           :label="t('auto.components.DiyEditor.components.mobile.TitleBar.property.k8c841866')"
           prop="bgImgUrl"
         >
-          <UploadImg v-model="formData.bgImgUrl" width="100%" height="40px">
+          <UploadImg v-model="formData.bgImgUrl" directory="diy" width="100%" height="40px">
             <template #tip>{{
               t('auto.components.DiyEditor.components.mobile.TitleBar.property.ka13ca032')
             }}</template>

@@ -15,7 +15,7 @@
             :label="t('auto.components.DiyEditor.components.mobile.MenuList.property.k1f24c1e5')"
             prop="iconUrl"
           >
-            <UploadImg v-model="element.iconUrl" height="80px" width="80px">
+            <UploadImg v-model="element.iconUrl" directory="diy" height="80px" width="80px">
               <template #tip>
                 {{ t('auto.components.DiyEditor.components.mobile.MenuList.property.kc9250c21') }}
               </template>

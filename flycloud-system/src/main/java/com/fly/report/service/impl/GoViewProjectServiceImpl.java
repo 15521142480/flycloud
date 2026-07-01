@@ -11,6 +11,7 @@ import com.fly.report.service.IGoViewProjectService;
 import com.fly.system.api.report.domain.GoViewProject;
 import com.fly.system.api.report.domain.bo.GoViewProjectBo;
 import com.fly.system.api.report.domain.vo.GoViewProjectRespVo;
+import com.fly.system.api.report.enums.ErrorCodeConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -84,7 +85,7 @@ public class GoViewProjectServiceImpl implements IGoViewProjectService {
      */
     private void validateProjectExists(Long id) {
         if (goViewProjectMapper.selectById(id) == null) {
-            throw new ServiceException("GoView 项目不存在");
+            throw new ServiceException(ErrorCodeConstants.GO_VIEW_PROJECT_NOT_EXISTS);
         }
     }
 

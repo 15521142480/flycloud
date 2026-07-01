@@ -37,7 +37,7 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="文章封面" prop="picUrl">
-            <UploadImg v-model="formData.picUrl" height="80px" />
+            <UploadImg v-model="formData.picUrl" directory="mall" height="80px" />
           </el-form-item>
         </el-col>
         <el-col :span="12">

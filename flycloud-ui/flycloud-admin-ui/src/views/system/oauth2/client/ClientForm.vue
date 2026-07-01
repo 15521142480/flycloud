@@ -32,7 +32,7 @@
         />
       </el-form-item>
       <el-form-item :label="t('auto.views.system.oauth2.client.ClientForm.kf93d423d')">
-        <UploadImg v-model="formData.logo" :limit="1" />
+        <UploadImg v-model="formData.logo" directory="sys" :limit="1" />
       </el-form-item>
       <el-form-item :label="t('auto.views.system.oauth2.client.ClientForm.k92dad4cc')">
         <el-input

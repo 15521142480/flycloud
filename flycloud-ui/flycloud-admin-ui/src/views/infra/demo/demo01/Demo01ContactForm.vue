@@ -51,7 +51,7 @@
         :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k4ceeeb31')"
         prop="avatar"
       >
-        <UploadImg v-model="formData.avatar" />
+        <UploadImg v-model="formData.avatar" directory="demo" />
       </el-form-item>
     </el-form>
     <template #footer>

@@ -48,7 +48,7 @@
             "
             :prop="`list[${index}].imgUrl`"
           >
-            <UploadImg v-model="element.imgUrl" height="56px" width="56px" />
+            <UploadImg v-model="element.imgUrl" directory="diy" height="56px" width="56px" />
           </el-form-item>
           <el-form-item
             :label="

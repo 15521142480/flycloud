@@ -1,5 +1,5 @@
 <template>
-  <div class="upload-box">
+  <div class="upload-box" :style="uploadStyle">
     <el-upload
       v-model:file-list="fileList"
       :accept="fileType.join(',')"
@@ -19,7 +19,7 @@
       <div class="upload-empty">
         <slot name="empty">
           <Icon icon="ep:plus" />
-          <!-- <span>{{ t('extra.k957bcf8b') }}</span> -->
+          <!-- <span>请上传图片</span> -->
         </slot>
       </div>
       <template #file="{ file }">
@@ -27,11 +27,11 @@
         <div class="upload-handle" @click.stop>
           <div class="handle-icon" @click="imagePreview(file.url!)">
             <Icon icon="ep:zoom-in" />
-            <span>{{ t('auto.components.UploadFile.src.UploadImgs.kf7acefd2') }}</span>
+            <span>查看</span>
           </div>
           <div v-if="!disabled" class="handle-icon" @click="handleRemove(file)">
             <Icon icon="ep:delete" />
-            <span>{{ t('common.delete') }}</span>
+            <span>删除</span>
           </div>
         </div>
       </template>
@@ -48,7 +48,7 @@ import { createImageViewer } from '@/components/ImageViewer'
 
 import { propTypes } from '@/utils/propTypes'
 import { useUpload } from '@/components/UploadFile/src/useUpload'
-const { t } = useI18n()
+
 defineOptions({ name: 'UploadImgs' })
 
 const message = useMessage() // 消息弹窗
@@ -81,10 +81,17 @@ const props = defineProps({
   fileType: propTypes.array.def(['image/jpeg', 'image/png', 'image/gif']), // 图片类型限制 ==> 非必传（默认为 ["image/jpeg", "image/png", "image/gif"]）
   height: propTypes.string.def('150px'), // 组件高度 ==> 非必传（默认为 150px）
   width: propTypes.string.def('150px'), // 组件宽度 ==> 非必传（默认为 150px）
-  borderradius: propTypes.string.def('8px') // 组件边框圆角 ==> 非必传（默认为 8px）
+  borderradius: propTypes.string.def('8px'), // 组件边框圆角 ==> 非必传（默认为 8px）
+  directory: propTypes.string.def(undefined) // 上传目录 ==> 非必传（默认为 undefined）
 })
 
-const { uploadUrl, httpRequest } = useUpload()
+const uploadStyle = computed(() => ({
+  '--upload-width': props.width,
+  '--upload-height': props.height,
+  '--upload-border-radius': props.borderradius
+}))
+
+const { uploadUrl, httpRequest } = useUpload(props.directory)
 
 const fileList = ref<UploadUserFile[]>([])
 const uploadNumber = ref<number>(0)
@@ -96,20 +103,28 @@ const uploadList = ref<UploadUserFile[]>([])
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize
   const imgType = props.fileType
-  if (!imgType.includes(rawFile.type as FileTypes))
+  const isValidType = imgType.includes(rawFile.type as FileTypes)
+  const isValidSize = imgSize
+
+  if (!isValidType)
     ElNotification({
-      title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
-      message: t('auto.components.UploadFile.src.UploadImgs.k4e46f515'),
+      title: '温馨提示',
+      message: '上传图片不符合所需的格式！',
       type: 'warning'
     })
-  if (!imgSize)
+  if (!isValidSize)
     ElNotification({
-      title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
-      message: t('extra.kcd0a2974', { p0: props.fileSize }),
+      title: '温馨提示',
+      message: `上传图片大小不能超过 ${props.fileSize}M！`,
       type: 'warning'
     })
-  uploadNumber.value++
-  return imgType.includes(rawFile.type as FileTypes) && imgSize
+
+  // 只有在验证通过后才增加计数器
+  if (isValidType && isValidSize) {
+    uploadNumber.value++
+  }
+
+  return isValidType && isValidSize
 }
 
 // 图片上传成功
@@ -119,11 +134,14 @@ interface UploadEmits {
 
 const emit = defineEmits<UploadEmits>()
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  message.success(t('auto.components.UploadFile.src.UploadImgs.kea9f9179'))
+  message.success('上传成功')
+  const response = res as { data: string }
   // 删除自身
-  const index = fileList.value.findIndex((item) => item.response?.data === res.data)
+  const index = fileList.value.findIndex(
+    (item) => (item.response as { data?: string } | undefined)?.data === response.data
+  )
   fileList.value.splice(index, 1)
-  uploadList.value.push({ name: res.data, url: res.data })
+  uploadList.value.push({ name: response.data, url: response.data })
   if (uploadList.value.length == uploadNumber.value) {
     fileList.value.push(...uploadList.value)
     uploadList.value = []
@@ -167,17 +185,19 @@ const handleRemove = (uploadFile: UploadFile) => {
 // 图片上传错误提示
 const uploadError = () => {
   ElNotification({
-    title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
-    message: t('auto.components.UploadFile.src.UploadImgs.k3d25606c'),
+    title: '温馨提示',
+    message: '图片上传失败，请您重新上传！',
     type: 'error'
   })
+  // 上传失败时减少计数器，避免后续上传被阻塞
+  uploadNumber.value = Math.max(0, uploadNumber.value - 1)
 }
 
 // 文件数超出提示
 const handleExceed = () => {
   ElNotification({
-    title: t('auto.components.UploadFile.src.UploadImgs.kaaf6dac9'),
-    message: t('extra.kb2b4387a', { p0: props.limit }),
+    title: '温馨提示',
+    message: `当前最多只能上传 ${props.limit} 张图片，请移除后上传！`,
     type: 'warning'
   })
 }
@@ -227,7 +247,7 @@ const handleExceed = () => {
       padding: 0;
       overflow: hidden;
       border: 1px dashed var(--el-border-color-darker);
-      border-radius: v-bind(borderradius);
+      border-radius: var(--upload-border-radius);
 
       &:hover {
         border: 1px dashed var(--el-color-primary);
@@ -241,10 +261,10 @@ const handleExceed = () => {
 
     .el-upload-list__item,
     .el-upload--picture-card {
-      width: v-bind(width);
-      height: v-bind(height);
+      width: var(--upload-width);
+      height: var(--upload-height);
       background-color: transparent;
-      border-radius: v-bind(borderradius);
+      border-radius: var(--upload-border-radius);
     }
 
     .upload-image {

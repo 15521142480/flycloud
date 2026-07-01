@@ -13,6 +13,7 @@ import com.fly.mall.api.trade.domain.vo.AppTradeOrderPageItemRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
+import com.fly.mall.api.trade.domain.vo.TradeOrderSummaryRespVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 
 import java.util.Collection;
@@ -60,6 +61,16 @@ public interface ITradeOrderService {
      * 查询当前用户移动端订单物流轨迹。
      */
     List<AppOrderExpressTrackRespDto> getAppExpressTrackList(Long userId, Long id);
+
+    /**
+     * 查询后台订单物流轨迹。
+     */
+    List<AppOrderExpressTrackRespDto> getExpressTrackList(Long id);
+
+    /**
+     * 查询后台订单统计。
+     */
+    TradeOrderSummaryRespVo getOrderSummary(TradeOrderBo bo);
 
     /**
      * 查询当前用户移动端交易订单项。
@@ -110,6 +121,41 @@ public interface ITradeOrderService {
      * 当前用户确认收货。
      */
     Boolean receiveOrder(Long userId, Long id);
+
+    /**
+     * 后台订单发货。
+     */
+    Boolean deliveryOrder(TradeOrderBo bo);
+
+    /**
+     * 后台更新订单备注。
+     */
+    Boolean updateOrderRemark(TradeOrderBo bo);
+
+    /**
+     * 后台更新订单价格。
+     */
+    Boolean updateOrderPrice(TradeOrderBo bo);
+
+    /**
+     * 后台更新订单收货地址。
+     */
+    Boolean updateOrderAddress(TradeOrderBo bo);
+
+    /**
+     * 后台按订单编号核销订单。
+     */
+    Boolean pickUpOrderByAdmin(Long userId, Long id);
+
+    /**
+     * 后台按核销码核销订单。
+     */
+    Boolean pickUpOrderByAdmin(Long userId, String pickUpVerifyCode);
+
+    /**
+     * 根据自提核销码查询订单。
+     */
+    TradeOrderVo getByPickUpVerifyCode(String pickUpVerifyCode);
 
     /**
      * 查询交易订单列表。

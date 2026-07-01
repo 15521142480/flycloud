@@ -6,7 +6,7 @@
         :label="t('auto.components.DiyEditor.components.mobile.HotZone.property.k59b308c8')"
         prop="imgUrl"
       >
-        <UploadImg v-model="formData.imgUrl" height="50px" width="auto" class="min-w-80px">
+        <UploadImg v-model="formData.imgUrl" directory="diy" height="50px" width="auto" class="min-w-80px">
           <template #tip>
             <el-text type="info" size="small">
               {{

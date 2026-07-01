@@ -53,12 +53,12 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="等级图标">
-            <UploadImg v-model="formData.icon" />
+            <UploadImg v-model="formData.icon" directory="member" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="背景图">
-            <UploadImg v-model="formData.backgroundUrl" />
+            <UploadImg v-model="formData.backgroundUrl" directory="member" />
           </el-form-item>
         </el-col>
       </el-row>

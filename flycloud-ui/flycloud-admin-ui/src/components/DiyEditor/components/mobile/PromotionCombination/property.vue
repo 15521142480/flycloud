@@ -159,7 +159,7 @@
           prop="badge.imgUrl"
           v-if="formData.badge.show"
         >
-          <UploadImg v-model="formData.badge.imgUrl" height="44px" width="72px">
+          <UploadImg v-model="formData.badge.imgUrl" directory="diy" height="44px" width="72px">
             <template #tip>
               {{
                 t(
@@ -190,7 +190,7 @@
         </template>
         <template v-else>
           <el-form-item :label="t('extra.k3b9e2563')" prop="btnBuy.imgUrl">
-            <UploadImg v-model="formData.btnBuy.imgUrl" height="56px" width="56px">
+            <UploadImg v-model="formData.btnBuy.imgUrl" directory="diy" height="56px" width="56px">
               <template #tip> {{ t('extra.k61b3bf07') }}</template>
             </UploadImg>
           </el-form-item>

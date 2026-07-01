@@ -41,7 +41,11 @@ public class FileServiceImpl implements FileService {
     static boolean PATH_SUFFIX_TIMESTAMP_ENABLE = true;
 
     // 后缀是否作为上级目录; true保留原文件名, false:后缀拼到文件名
-    static boolean PATH_SUFFIX_AS_DIRECTORY = true;
+    static boolean PATH_SUFFIX_AS_DIRECTORY = false;
+
+    // 上面三个属性如果设置为：true、true、false，推荐使用，则文件路径为：/20260701/xxx_178290301301859703.png
+    // 上面三个属性如果设置为：true、true、true，则文件路径为：/20260701/178290301301859703/xxx.png
+    // 上面三个属性如果设置为：true、false、false，则文件路径为：/20260701/xxx.png
 
     private final FileMapper fileMapper;
 

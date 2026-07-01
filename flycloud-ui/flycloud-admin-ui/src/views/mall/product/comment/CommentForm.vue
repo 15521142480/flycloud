@@ -21,7 +21,7 @@
         </div>
       </el-form-item>
       <el-form-item label="用户头像" prop="userAvatar">
-        <UploadImg v-model="formData.userAvatar" height="60px" width="60px" />
+        <UploadImg v-model="formData.userAvatar" directory="mall" height="60px" width="60px" />
       </el-form-item>
       <el-form-item label="用户名称" prop="userNickname">
         <el-input v-model="formData.userNickname" placeholder="请输入用户名称" />

@@ -8,7 +8,7 @@
       label-width="80px"
     >
       <el-form-item label="表情图" prop="url">
-        <UploadImg v-model="formData.url" :limit="1" @update:model-value="onUrlChange" />
+        <UploadImg v-model="formData.url" directory="im" :limit="1" @update:model-value="onUrlChange" />
       </el-form-item>
       <el-form-item label="表情名" prop="name">
         <el-input

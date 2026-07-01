@@ -22,7 +22,7 @@
       :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k8c841866')"
       prop="backgroundImage"
     >
-      <UploadImg v-model="formData!.backgroundImage" :limit="1">
+      <UploadImg v-model="formData!.backgroundImage" directory="diy" :limit="1">
         <template #tip>{{
           t('auto.components.DiyEditor.components.mobile.PageConfig.property.k54614dc3')
         }}</template>

@@ -8,7 +8,7 @@
       label-width="80px"
     >
       <el-form-item label="封面" prop="icon">
-        <UploadImg v-model="formData.icon" :limit="1" />
+        <UploadImg v-model="formData.icon" directory="im" :limit="1" />
       </el-form-item>
       <el-form-item label="名称" prop="name">
         <el-input

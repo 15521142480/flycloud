@@ -18,7 +18,7 @@
         <el-input v-model="formData.name" placeholder="如 系统公告" />
       </el-form-item>
       <el-form-item label="频道头像" prop="avatar">
-        <UploadImg v-model="formData.avatar" :limit="1" />
+        <UploadImg v-model="formData.avatar" directory="im" :limit="1" />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input-number v-model="formData.sort" :min="0" controls-position="right" />
