@@ -37,6 +37,11 @@ public interface IProductPropertyValueService {
     Boolean saveOrUpdate(ProductPropertyValueBo bo);
 
     /**
+     * 新增商品属性值并返回编号。
+     */
+    Long createPropertyValue(ProductPropertyValueBo bo);
+
+    /**
      * 校验并批量删除商品属性值。
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);

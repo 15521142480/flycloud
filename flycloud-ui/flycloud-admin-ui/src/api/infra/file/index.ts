@@ -42,5 +42,5 @@ export const createFile = (data: any) => {
 
 // 上传文件
 export const updateFile = (data: any) => {
-  return request.upload({ url: `/${SYS_BASE_URL}/file/upload`, data })
+  return request.upload({ url: `/${SYS_BASE_URL}/admin/file/upload`, data })
 }

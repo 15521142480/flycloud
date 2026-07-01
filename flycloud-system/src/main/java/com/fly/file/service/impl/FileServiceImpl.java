@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
     // 上传文件的后缀，是否启用
     // 算法：当前时间戳（毫秒）+ 5 位随机数；目的是保证文件的唯一性，避免覆盖
     // 定制：可按需调整成 UUID、或者其他方式
-    static boolean PATH_SUFFIX_TIMESTAMP_ENABLE = false;
+    static boolean PATH_SUFFIX_TIMESTAMP_ENABLE = true;
 
     // 后缀是否作为上级目录; true保留原文件名, false:后缀拼到文件名
     static boolean PATH_SUFFIX_AS_DIRECTORY = true;

@@ -1,4 +1,4 @@
-package com.fly.file.controller;
+package com.fly.file.controller.app;
 
 import cn.hutool.core.io.IoUtil;
 import com.fly.common.domain.model.R;
@@ -14,16 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 /**
- * 文件-控制器。
+ * app文件-控制器。
  *
  * @author lxs
  * @date 2026-07-01
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/file")
-public class FileController {
+@RequestMapping("/app/file")
+public class AppFileController {
 
 
     private final FileService fileService;
@@ -37,7 +39,13 @@ public class FileController {
 
         MultipartFile file = uploadReqVO.getFile();
         byte[] content = IoUtil.readBytes(file.getInputStream());
-        String filePath = fileService.uploadFile(content, file.getOriginalFilename(), uploadReqVO.getDirectory(), file.getContentType());
+        // app 多一个app文件夹区分
+        String filePath = fileService.uploadFile(
+                content,
+                file.getOriginalFilename(),
+                File.separator + "app" + File.separator + uploadReqVO.getDirectory(),
+                file.getContentType()
+        );
         return R.ok(filePath);
     }
 

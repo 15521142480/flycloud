@@ -83,6 +83,23 @@ public class ProductPropertyValueServiceImpl extends BaseServiceImpl<ProductProp
     }
 
     /**
+     * 新增商品属性值并返回编号。
+     */
+    @Override
+    public Long createPropertyValue(ProductPropertyValueBo bo) {
+        ProductPropertyValue entity = BeanUtil.toBean(bo, ProductPropertyValue.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        entity.setIsDeleted(false);
+        entity.setCreateBy(userId);
+        entity.setCreateTime(now);
+        entity.setUpdateBy(userId);
+        entity.setUpdateTime(now);
+        baseMapper.insert(entity);
+        return entity.getId();
+    }
+
+    /**
      * 校验并批量删除商品属性值。
      */
     @Override

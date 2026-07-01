@@ -7,8 +7,10 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.BusinessType;
 import com.fly.mall.api.product.domain.bo.ProductPropertyBo;
+import com.fly.mall.api.product.domain.vo.ProductPropertyRespVo;
 import com.fly.mall.api.product.domain.vo.ProductPropertyVo;
 import com.fly.mall.product.service.IProductPropertyService;
+import cn.hutool.core.bean.BeanUtil;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +40,8 @@ public class ProductPropertyController extends BaseController {
      */
     @PreAuthorize("@pms.hasPermission('mall:product:property:list')")
     @GetMapping("/list")
-    public R<PageVo<ProductPropertyVo>> list(ProductPropertyBo bo, PageBo page) {
-        return R.ok(productPropertyService.queryPageList(bo, page));
+    public R<PageVo<ProductPropertyRespVo>> list(ProductPropertyBo bo, PageBo page) {
+        return R.ok(convertPage(productPropertyService.queryPageList(bo, page)));
     }
 
     /**
@@ -48,40 +50,40 @@ public class ProductPropertyController extends BaseController {
 
     @PreAuthorize("@pms.hasPermission('mall:product:property:list')")
     @GetMapping("/page")
-    public R<PageVo<ProductPropertyVo>> page(ProductPropertyBo bo, PageBo page) {
-        return R.ok(productPropertyService.queryPageList(bo, page));
+    public R<PageVo<ProductPropertyRespVo>> page(ProductPropertyBo bo, PageBo page) {
+        return R.ok(convertPage(productPropertyService.queryPageList(bo, page)));
     }
 
     /**
      * 查询所有商品属性。
      */
     @GetMapping({"/getList", "/simple-list"})
-    public R<List<ProductPropertyVo>> allList(ProductPropertyBo bo) {
-        return R.ok(productPropertyService.queryList(bo));
+    public R<List<ProductPropertyRespVo>> allList(ProductPropertyBo bo) {
+        return R.ok(BeanUtil.copyToList(productPropertyService.queryList(bo), ProductPropertyRespVo.class));
     }
 
     /**
      * 获取商品属性详情。
      */
     @GetMapping("/get/{id}")
-    public R<ProductPropertyVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(productPropertyService.queryById(id));
+    public R<ProductPropertyRespVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(BeanUtil.toBean(productPropertyService.queryById(id), ProductPropertyRespVo.class));
     }
 
     /**
      * 获得详情。
      */
     @GetMapping("/get-detail")
-    public R<ProductPropertyVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(productPropertyService.queryById(id));
+    public R<ProductPropertyRespVo> getDetail(@RequestParam("id") Long id) {
+        return R.ok(BeanUtil.toBean(productPropertyService.queryById(id), ProductPropertyRespVo.class));
     }
 
     /**
      * 获得商品属性详情，兼容 yudao 前端接口。
      */
     @GetMapping("/get")
-    public R<ProductPropertyVo> get(@RequestParam("id") Long id) {
-        return R.ok(productPropertyService.queryById(id));
+    public R<ProductPropertyRespVo> get(@RequestParam("id") Long id) {
+        return R.ok(BeanUtil.toBean(productPropertyService.queryById(id), ProductPropertyRespVo.class));
     }
 
     /**
@@ -90,15 +92,19 @@ public class ProductPropertyController extends BaseController {
     @Log(title = "商品属性", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:property:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody ProductPropertyBo bo) {
-        return R.ok(productPropertyService.saveOrUpdate(bo));
+    public R<Long> saveOrUpdate(@RequestBody ProductPropertyBo bo) {
+        if (bo.getId() == null) {
+            return R.ok(productPropertyService.createProperty(bo));
+        }
+        productPropertyService.saveOrUpdate(bo);
+        return R.ok(bo.getId());
     }
 
     /**
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody ProductPropertyBo bo) {
+    public R<Boolean> yudaoUpdate(@RequestBody ProductPropertyBo bo) {
         return R.ok(productPropertyService.saveOrUpdate(bo));
     }
 
@@ -108,7 +114,7 @@ public class ProductPropertyController extends BaseController {
     @Log(title = "商品属性", businessType = BusinessType.DELETE)
     @PreAuthorize("@pms.hasPermission('mall:product:property:delete')")
     @DeleteMapping("/delete/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+    public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productPropertyService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
@@ -116,8 +122,19 @@ public class ProductPropertyController extends BaseController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(productPropertyService.deleteWithValidByIds(java.util.List.of(id), true));
+    }
+
+    /**
+     * 转换商品属性分页响应对象。
+     */
+    private PageVo<ProductPropertyRespVo> convertPage(PageVo<ProductPropertyVo> page) {
+        PageVo<ProductPropertyRespVo> respPage = new PageVo<>();
+        respPage.setList(BeanUtil.copyToList(page.getList(), ProductPropertyRespVo.class));
+        respPage.setTotal(page.getTotal());
+        respPage.setPages(page.getPages());
+        return respPage;
     }
 
 }
