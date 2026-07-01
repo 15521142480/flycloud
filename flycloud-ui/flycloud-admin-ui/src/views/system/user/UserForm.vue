@@ -88,6 +88,22 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item :label="t('common.status')" prop="status">
+            <el-select
+              v-model="formData.status"
+              clearable
+              :placeholder="t('auto.views.system.post.PostForm.kdba277df')"
+            >
+              <el-option
+                v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
         <!--        <el-col :span="12">-->
         <!--          <el-form-item :label="t('extra.k06ba448d')">-->
         <!--            <el-select v-model="formData.postIds" multiple :placeholder="t('extra.k15cfe2ff')">-->
@@ -100,6 +116,13 @@
         <!--            </el-select>-->
         <!--          </el-form-item>-->
         <!--        </el-col>-->
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item :label="t('system.user.avatar')" prop="picUrl">
+            <UploadImg v-model="formData.avatar" directory="user" :disabled="false" height="80px" />
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
@@ -129,6 +152,7 @@ import * as PostApi from '@/api/system/post'
 import * as DeptApi from '@/api/system/dept'
 import * as UserApi from '@/api/system/user'
 import { FormRules } from 'element-plus'
+import {TransferReqVO} from "@/api/crm/permission";
 const { t } = useI18n()
 defineOptions({ name: 'SystemUserForm' })
 const message = useMessage() // 消息弹窗
@@ -137,20 +161,21 @@ const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
-const formData = ref({
-  name: '',
-  deptId: '',
-  telephone: '',
-  email: '',
-  id: undefined,
-  account: '',
-  password: '',
-  sex: undefined,
-  postIds: [],
-  remark: '',
-  status: CommonStatusEnum.ENABLE
-  // roleIds: []
-})
+// const formData = ref({
+//   name: '',
+//   deptId: '',
+//   telephone: '',
+//   email: '',
+//   id: undefined,
+//   account: '',
+//   password: '',
+//   sex: undefined,
+//   postIds: [],
+//   remark: '',
+//   status: CommonStatusEnum.ENABLE
+//   // roleIds: []
+// })
+const formData = ref<UserApi.UserVO>({} as UserApi.UserVO)
 const formRules = reactive<FormRules>({
   account: [{ required: true, message: t('system.user.accountRequired'), trigger: 'blur' }],
   name: [{ required: true, message: t('system.user.nicknameRequired'), trigger: 'blur' }],

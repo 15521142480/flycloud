@@ -31,7 +31,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping({"/admin/trade/trade-order", "/admin/trade/order"})
+@RequestMapping("/admin/trade/order")
 public class TradeOrderController extends BaseController {
 
     private final ITradeOrderService tradeOrderService;
@@ -39,7 +39,7 @@ public class TradeOrderController extends BaseController {
     /**
      * 查询交易订单分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-order:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:order:list')")
     @GetMapping("/list")
     public R<PageVo<TradeOrderVo>> list(TradeOrderBo bo, PageBo page) {
         return R.ok(tradeOrderService.queryPageList(bo, page));
@@ -49,7 +49,7 @@ public class TradeOrderController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-order:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:order:list')")
     @GetMapping("/page")
     public R<PageVo<TradeOrderVo>> page(TradeOrderBo bo, PageBo page) {
         return R.ok(tradeOrderService.queryPageList(bo, page));
@@ -83,7 +83,7 @@ public class TradeOrderController extends BaseController {
      * 新增或修改交易订单。
      */
     @Log(title = "交易订单", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-order:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:order:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeOrderBo bo) {
         return R.ok(tradeOrderService.saveOrUpdate(bo));
@@ -173,7 +173,7 @@ public class TradeOrderController extends BaseController {
      * 删除交易订单。
      */
     @Log(title = "交易订单", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-order:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:order:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(tradeOrderService.deleteWithValidByIds(Arrays.asList(ids), true));

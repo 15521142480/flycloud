@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2026-07-01
  */
 @Data
-public class TradeOrderSummaryRespVo implements Serializable {
+public class StatisticsTradeOrderSummaryRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

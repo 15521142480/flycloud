@@ -12,7 +12,7 @@ import com.fly.mall.api.statistics.domain.bo.TradeOrderTrendBo;
 import com.fly.mall.api.statistics.domain.bo.TradeStatisticsBo;
 import com.fly.mall.api.statistics.domain.vo.DataComparisonRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeOrderCountRespVo;
-import com.fly.mall.api.statistics.domain.vo.TradeOrderSummaryRespVo;
+import com.fly.mall.api.statistics.domain.vo.StatisticsTradeOrderSummaryRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeOrderTrendRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeSummaryRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeStatisticsVo;
@@ -98,7 +98,7 @@ public class TradeStatisticsController extends BaseController {
      * 查询交易订单对照数据。
      */
     @GetMapping("/order-comparison")
-    public R<DataComparisonRespVo<TradeOrderSummaryRespVo>> orderComparison() {
+    public R<DataComparisonRespVo<StatisticsTradeOrderSummaryRespVo>> orderComparison() {
         return R.ok(tradeStatisticsService.getOrderComparison());
     }
 

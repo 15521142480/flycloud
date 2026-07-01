@@ -7,7 +7,7 @@ import com.fly.mall.api.statistics.domain.bo.StatisticsTimeRangeBo;
 import com.fly.mall.api.statistics.domain.bo.TradeOrderTrendBo;
 import com.fly.mall.api.statistics.domain.vo.DataComparisonRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeOrderCountRespVo;
-import com.fly.mall.api.statistics.domain.vo.TradeOrderSummaryRespVo;
+import com.fly.mall.api.statistics.domain.vo.StatisticsTradeOrderSummaryRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeOrderTrendRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeSummaryRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeStatisticsVo;
@@ -62,7 +62,7 @@ public interface ITradeStatisticsService {
     /**
      * 查询交易订单对照数据。
      */
-    DataComparisonRespVo<TradeOrderSummaryRespVo> getOrderComparison();
+    DataComparisonRespVo<StatisticsTradeOrderSummaryRespVo> getOrderComparison();
 
     /**
      * 查询订单数量趋势。

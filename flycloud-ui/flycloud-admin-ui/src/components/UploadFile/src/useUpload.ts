@@ -6,11 +6,14 @@ import {
 } from 'element-plus/es/components/upload/src/upload'
 import axios, { AxiosProgressEvent } from 'axios'
 
+const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+
+
 /**
  * 获得上传 URL
  */
 export const getUploadUrl = (): string => {
-  return import.meta.env.VITE_BASE_URL + import.meta.env.VITE_API_URL + '/infra/file/upload'
+  return import.meta.env.VITE_BASE_URL +  `/${SYS_BASE_URL}/admin/file/upload`
 }
 
 export const useUpload = (directory?: string) => {

@@ -202,6 +202,7 @@ export default {
       nicknamePlaceholder: 'Please enter nickname',
       nicknameRequired: 'Nickname is required',
       realName: 'Name',
+      avatar: 'Avatar',
       dept: 'Department',
       deptPlaceholder: 'Please select department',
       phone: 'Mobile',

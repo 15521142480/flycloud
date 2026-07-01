@@ -185,7 +185,7 @@
           </el-button>
           <el-table
             :data="buttonPermissionList"
-            style="width: 100%; height: calc(100vh - 240px); overflow-y: auto; overflow-x: hidden"
+            style="width: 100%; height: calc(100vh - 272px); overflow-y: auto; overflow-x: hidden"
           >
             <el-table-column
               fixed

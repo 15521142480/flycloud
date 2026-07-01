@@ -30,7 +30,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping({"/admin/product/product-property-value", "/admin/product/property/value"})
+@RequestMapping( "/admin/product/property/value")
 public class ProductPropertyValueController extends BaseController {
 
     private final IProductPropertyValueService productPropertyValueService;
@@ -38,7 +38,7 @@ public class ProductPropertyValueController extends BaseController {
     /**
      * 查询商品属性值分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property-value:list')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:list')")
     @GetMapping("/list")
     public R<PageVo<ProductPropertyValueRespVo>> list(ProductPropertyValueBo bo, PageBo page) {
         return R.ok(convertPage(productPropertyValueService.queryPageList(bo, page)));
@@ -48,7 +48,7 @@ public class ProductPropertyValueController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property-value:list')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:list')")
     @GetMapping("/page")
     public R<PageVo<ProductPropertyValueRespVo>> page(ProductPropertyValueBo bo, PageBo page) {
         return R.ok(convertPage(productPropertyValueService.queryPageList(bo, page)));
@@ -90,7 +90,7 @@ public class ProductPropertyValueController extends BaseController {
      * 新增或修改商品属性值。
      */
     @Log(title = "商品属性值", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property-value:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Long> saveOrUpdate(@RequestBody ProductPropertyValueBo bo) {
         if (bo.getId() == null) {
@@ -112,7 +112,7 @@ public class ProductPropertyValueController extends BaseController {
      * 删除商品属性值。
      */
     @Log(title = "商品属性值", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-property-value:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:product:property:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productPropertyValueService.deleteWithValidByIds(Arrays.asList(ids), true));

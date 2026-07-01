@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping({"/admin/trade/trade-config", "/admin/trade/config"})
+@RequestMapping("/admin/trade/config")
 public class TradeConfigController extends BaseController {
 
     private final ITradeConfigService tradeConfigService;
@@ -36,7 +36,7 @@ public class TradeConfigController extends BaseController {
     /**
      * 查询交易配置分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-config:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:config:list')")
     @GetMapping("/list")
     public R<PageVo<TradeConfigVo>> list(TradeConfigBo bo, PageBo page) {
         return R.ok(tradeConfigService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class TradeConfigController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-config:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:config:list')")
     @GetMapping("/page")
     public R<PageVo<TradeConfigVo>> page(TradeConfigBo bo, PageBo page) {
         return R.ok(tradeConfigService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class TradeConfigController extends BaseController {
      * 新增或修改交易配置。
      */
     @Log(title = "交易配置", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-config:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:config:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeConfigBo bo) {
         return R.ok(tradeConfigService.saveOrUpdate(bo));
@@ -106,7 +106,7 @@ public class TradeConfigController extends BaseController {
      * 删除交易配置。
      */
     @Log(title = "交易配置", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:trade:trade-config:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:config:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(tradeConfigService.deleteWithValidByIds(Arrays.asList(ids), true));

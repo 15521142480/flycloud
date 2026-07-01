@@ -36,7 +36,7 @@ public class AfterSaleLogController extends BaseController {
     /**
      * 查询售后日志分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale-log:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:list')")
     @GetMapping("/list")
     public R<PageVo<AfterSaleLogVo>> list(AfterSaleLogBo bo, PageBo page) {
         return R.ok(afterSaleLogService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class AfterSaleLogController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale-log:list')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:list')")
     @GetMapping("/page")
     public R<PageVo<AfterSaleLogVo>> page(AfterSaleLogBo bo, PageBo page) {
         return R.ok(afterSaleLogService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class AfterSaleLogController extends BaseController {
      * 新增或修改售后日志。
      */
     @Log(title = "售后日志", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale-log:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody AfterSaleLogBo bo) {
         return R.ok(afterSaleLogService.saveOrUpdate(bo));
@@ -98,7 +98,7 @@ public class AfterSaleLogController extends BaseController {
      * 删除售后日志。
      */
     @Log(title = "售后日志", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale-log:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(afterSaleLogService.deleteWithValidByIds(Arrays.asList(ids), true));

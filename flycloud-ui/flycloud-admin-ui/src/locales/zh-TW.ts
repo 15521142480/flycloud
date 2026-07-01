@@ -211,6 +211,7 @@ export default {
       nicknamePlaceholder: '請輸入暱稱',
       nicknameRequired: '用戶暱稱不能為空',
       realName: '姓名',
+      avatar: '頭像',
       dept: '部門',
       deptPlaceholder: '請選擇歸屬部門',
       phone: '手機號',

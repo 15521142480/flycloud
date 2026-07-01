@@ -6,11 +6,11 @@ import axios, {
   InternalAxiosRequestConfig
 } from 'axios'
 
-import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { ElMessageBox, ElNotification } from 'element-plus'
 import qs from 'qs'
 import { config } from '@/config/axios/config'
 import { getAccessToken, removeToken } from '@/utils/auth'
-import errorCode from './errorCode'
+import { getErrorMessage } from './errorCode'
 
 import { resetRouter } from '@/router'
 import { deleteUserCache } from '@/hooks/web/useCache'
@@ -123,7 +123,7 @@ service.interceptors.response.use(
 
     // 处理code和msg
     const code = data.code ?? result_code // 不能用 ||, 因为0是假值
-    const msg = data.msg || errorCode['default']
+    const msg = data.msg || getErrorMessage('default')
     if (ignoreMsgs.indexOf(msg) !== -1) {
       // 如果是忽略的错误码，直接返回 msg 异常
       return Promise.reject(msg)
@@ -161,7 +161,7 @@ service.interceptors.response.use(
       } else if (message.includes('Request failed with status code')) {
         message = t('sys.api.apiRequestFailed') + message.substr(message.length - 3)
       }
-      ElMessage.error(message)
+      ElNotification.error(message)
     }
 
     return Promise.reject(error)
@@ -174,11 +174,11 @@ service.interceptors.response.use(
  * @param data
  */
 const handleError = (status: number, data) => {
-  const msg = data.msg || errorCode[status] || errorCode['default']
+
+  const msg = data.msg || getErrorMessage(status) || getErrorMessage('default')
   switch (status) {
     case 401: // 401: 未登录状态，跳转登录页
-      // debugger
-      ElMessage.warning(msg)
+      ElNotification.error(msg)
       resetRouter() // 重置静态路由表
       deleteUserCache() // 删除用户缓存
       removeToken()
@@ -190,7 +190,7 @@ const handleError = (status: number, data) => {
       break
 
     case 403: // 403 无权限访问资源
-      ElMessage.warning(msg)
+      ElNotification.warning(msg)
       // window.location.reload()
       break
 

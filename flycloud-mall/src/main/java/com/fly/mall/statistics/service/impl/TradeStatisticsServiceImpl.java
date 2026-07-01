@@ -14,7 +14,7 @@ import com.fly.mall.api.statistics.domain.bo.TradeStatisticsBo;
 import com.fly.mall.api.statistics.domain.bo.TradeOrderTrendBo;
 import com.fly.mall.api.statistics.domain.vo.DataComparisonRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeOrderCountRespVo;
-import com.fly.mall.api.statistics.domain.vo.TradeOrderSummaryRespVo;
+import com.fly.mall.api.statistics.domain.vo.StatisticsTradeOrderSummaryRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeOrderTrendRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeSummaryRespVo;
 import com.fly.mall.api.statistics.domain.vo.TradeStatisticsVo;
@@ -139,7 +139,7 @@ public class TradeStatisticsServiceImpl extends BaseServiceImpl<TradeStatisticsM
      * 查询交易订单对照数据。
      */
     @Override
-    public DataComparisonRespVo<TradeOrderSummaryRespVo> getOrderComparison() {
+    public DataComparisonRespVo<StatisticsTradeOrderSummaryRespVo> getOrderComparison() {
         LocalDateTime yesterdayBegin = LocalDate.now().minusDays(1).atStartOfDay();
         LocalDateTime todayBegin = LocalDate.now().atStartOfDay();
         LocalDateTime beforeYesterdayBegin = LocalDate.now().minusDays(2).atStartOfDay();
@@ -308,8 +308,8 @@ public class TradeStatisticsServiceImpl extends BaseServiceImpl<TradeStatisticsM
     /**
      * 汇总订单支付数据。
      */
-    private TradeOrderSummaryRespVo summaryTradeOrder(List<TradeTrendSummaryRespVo> list) {
-        TradeOrderSummaryRespVo respVo = new TradeOrderSummaryRespVo();
+    private StatisticsTradeOrderSummaryRespVo summaryTradeOrder(List<TradeTrendSummaryRespVo> list) {
+        StatisticsTradeOrderSummaryRespVo respVo = new StatisticsTradeOrderSummaryRespVo();
         respVo.setOrderPayCount(list.stream().map(TradeTrendSummaryRespVo::getDate).filter(Objects::nonNull)
                 .mapToInt(this::sumOrderPayCountByDate).sum());
         respVo.setOrderPayPrice(sum(list, TradeTrendSummaryRespVo::getOrderPayPrice));

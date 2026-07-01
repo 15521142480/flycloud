@@ -211,6 +211,7 @@ export default {
       nicknamePlaceholder: '请输入昵称',
       nicknameRequired: '用户昵称不能为空',
       realName: '姓名',
+      avatar: '头像',
       dept: '部门',
       deptPlaceholder: '请选择归属部门',
       phone: '手机号',

@@ -168,47 +168,68 @@
   <ContentWrap>
     <!-- 添加 row-key="id" 解决列数据中的 table#header 数据不刷新的问题  -->
     <el-table v-loading="loading" :data="list" row-key="id">
+
       <OrderTableColumn :list="list" :pick-up-store-list="pickUpStoreList">
+
         <template #default="{ row }">
-          <div class="flex items-center justify-center">
+<!--          <div class="flex items-center justify-center">-->
             <el-button
-              v-hasPermi="['trade:order:query']"
+              v-hasPermi="['mall:trade:order:list']"
               link
               type="primary"
               @click="openDetail(row.id)"
             >
-              <Icon icon="ep:notification" />
+              <Icon icon="ep:document" />
               详情
             </el-button>
-            <el-dropdown
-              v-hasPermi="['trade:order:saveOrUpdate']"
-              @command="(command) => handleCommand(command, row)"
+
+
+            <el-button
+              v-if="row.deliveryType === DeliveryTypeEnum.EXPRESS.type && row.status === TradeOrderStatusEnum.UNDELIVERED.status"
+              link type="primary"
+              v-hasPermi="['mall:trade:order:saveOrUpdate']"
+              @click="handleCommand('delivery', row)"
             >
-              <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" />
-                更多
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <!-- 如果是【快递】，并且【未发货】，则展示【发货】按钮 -->
-                  <el-dropdown-item
-                    v-if="
-                      row.deliveryType === DeliveryTypeEnum.EXPRESS.type &&
-                      row.status === TradeOrderStatusEnum.UNDELIVERED.status
-                    "
-                    command="delivery"
-                  >
-                    <Icon icon="ep:takeaway-box" />
-                    发货
-                  </el-dropdown-item>
-                  <el-dropdown-item command="remark">
-                    <Icon icon="ep:chat-line-square" />
-                    备注
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
+              <Icon icon="ep:takeaway-box" />发货
+            </el-button>
+
+            <el-button
+              link type="primary"
+              v-hasPermi="['mall:trade:order:saveOrUpdate']"
+              @click="handleCommand('remark', row)"
+            >
+              <Icon icon="ep:chat-line-square" />备注
+            </el-button>
+
+<!--            <el-dropdown-->
+<!--              v-hasPermi="['mall:trade:order:saveOrUpdate']"-->
+<!--              @command="(command) => handleCommand(command, row)"-->
+<!--            >-->
+<!--              <el-button link type="primary">-->
+<!--                <Icon icon="ep:d-arrow-right" />-->
+<!--                更多-->
+<!--              </el-button>-->
+<!--              <template #dropdown>-->
+<!--                <el-dropdown-menu>-->
+<!--                  &lt;!&ndash; 如果是【快递】，并且【未发货】，则展示【发货】按钮 &ndash;&gt;-->
+<!--                  <el-dropdown-item-->
+<!--                    v-if="-->
+<!--                      row.deliveryType === DeliveryTypeEnum.EXPRESS.type &&-->
+<!--                      row.status === TradeOrderStatusEnum.UNDELIVERED.status-->
+<!--                    "-->
+<!--                    command="delivery"-->
+<!--                  >-->
+<!--                    <Icon icon="ep:takeaway-box" />-->
+<!--                    发货-->
+<!--                  </el-dropdown-item>-->
+<!--                  <el-dropdown-item command="remark">-->
+<!--                    <Icon icon="ep:chat-line-square" />-->
+<!--                    备注-->
+<!--                  </el-dropdown-item>-->
+<!--                </el-dropdown-menu>-->
+<!--              </template>-->
+<!--            </el-dropdown>-->
+<!--          </div>-->
         </template>
       </OrderTableColumn>
     </el-table>
