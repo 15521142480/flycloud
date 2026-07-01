@@ -37,6 +37,11 @@ public interface IProductBrandService {
     Boolean saveOrUpdate(ProductBrandBo bo);
 
     /**
+     * 新增商品品牌并返回编号。
+     */
+    Long createBrand(ProductBrandBo bo);
+
+    /**
      * 校验并批量删除商品品牌。
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);

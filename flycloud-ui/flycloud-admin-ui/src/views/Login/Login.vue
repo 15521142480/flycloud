@@ -34,7 +34,7 @@
 
       <!--   右边区域   -->
       <div
-        class="relative w-[45%] p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden overflow-y-auto"
+        class="relative w-[45%] lt-xl:w-full p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden overflow-y-auto"
       >
         <!-- 右上角的主题、语言选择 -->
         <div
@@ -52,7 +52,7 @@
         <!-- 右边的登录界面 -->
         <Transition appear enter-active-class="animate__animated animate__bounceInRight">
           <div
-            class="m-auto h-[calc(100%-60px)] w-[100%] flex items-center at-2xl:max-w-500px at-lg:max-w-500px at-md:max-w-500px at-xl:max-w-500px"
+            class="m-auto h-[calc(100%-60px)] w-[100%] flex items-center justify-center at-2xl:max-w-500px at-lg:max-w-500px at-md:max-w-500px at-xl:max-w-500px"
           >
             <!-- 账号登录 -->
             <LoginForm class="m-auto h-auto p-20px lt-xl:(rounded-3xl light:bg-white)" />
@@ -117,7 +117,8 @@ $prefix-cls: #{$namespace}-login;
 
     &::before {
       background-image: none;
-      background: radial-gradient(circle at 22% 28%, rgb(64 158 255 / 16%) 0, transparent 30%),
+      background:
+        radial-gradient(circle at 22% 28%, rgb(64 158 255 / 16%) 0, transparent 30%),
         linear-gradient(160deg, #1f2f4b 0%, #17243a 100%);
     }
 

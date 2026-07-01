@@ -79,6 +79,11 @@ public interface IProductSpuService {
     Boolean saveOrUpdate(ProductSpuBo bo);
 
     /**
+     * 新增商品 SPU 并返回编号。
+     */
+    Long createSpu(ProductSpuBo bo);
+
+    /**
      * 校验并批量删除商品 SPU。
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);

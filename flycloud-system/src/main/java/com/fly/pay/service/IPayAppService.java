@@ -17,6 +17,7 @@ public interface IPayAppService {
     PageVo<PayAppVo> queryPageList(PayAppBo bo, PageBo pageBo);
     List<PayAppVo> queryList(PayAppBo bo);
     PayAppVo queryById(Long id);
+    Long createApp(PayAppBo bo);
     Boolean saveOrUpdate(PayAppBo bo);
     Boolean updateStatus(Long id, Integer status);
     Boolean deleteById(Long id);

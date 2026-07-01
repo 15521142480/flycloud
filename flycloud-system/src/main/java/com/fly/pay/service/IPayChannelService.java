@@ -3,6 +3,7 @@ package com.fly.pay.service;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.system.api.pay.domain.bo.PayChannelBo;
+import com.fly.system.api.pay.domain.vo.PayChannelRespVo;
 import com.fly.system.api.pay.domain.vo.PayChannelVo;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface IPayChannelService {
     PageVo<PayChannelVo> queryPageList(PayChannelBo bo, PageBo pageBo);
     List<PayChannelVo> queryList(PayChannelBo bo);
     PayChannelVo queryById(Long id);
+    PayChannelRespVo getChannel(Long id, Long appId, String code);
+    Long createChannel(PayChannelBo bo);
     Boolean saveOrUpdate(PayChannelBo bo);
     Boolean deleteById(Long id);
     Set<String> getEnableChannelCodeList(Long appId);

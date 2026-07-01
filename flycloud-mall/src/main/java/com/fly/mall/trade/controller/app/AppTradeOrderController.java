@@ -7,10 +7,14 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderDetailRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderPageItemRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
-import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.trade.service.ITradeOrderService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -64,16 +68,16 @@ public class AppTradeOrderController {
      * 查询移动端交易订单分页列表。
      */
     @GetMapping("/list")
-    public R<PageVo<TradeOrderVo>> list(TradeOrderBo bo, PageBo page) {
-        return R.ok(tradeOrderService.queryUserPageList(UserUtils.getCurUserId(), bo, page));
+    public R<PageVo<AppTradeOrderPageItemRespVo>> list(TradeOrderBo bo, PageBo page) {
+        return R.ok(tradeOrderService.queryUserAppPageList(UserUtils.getCurUserId(), bo, page));
     }
 
     /**
      * 获得交易订单分页。
      */
     @GetMapping("/page")
-    public R<PageVo<TradeOrderVo>> page(TradeOrderBo bo, PageBo page) {
-        return R.ok(tradeOrderService.queryUserPageList(UserUtils.getCurUserId(), bo, page));
+    public R<PageVo<AppTradeOrderPageItemRespVo>> page(TradeOrderBo bo, PageBo page) {
+        return R.ok(tradeOrderService.queryUserAppPageList(UserUtils.getCurUserId(), bo, page));
     }
 
     /**
@@ -88,23 +92,23 @@ public class AppTradeOrderController {
      * 获取移动端交易订单详情。
      */
     @GetMapping("/get/{id}")
-    public R<TradeOrderVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(tradeOrderService.queryByUserAndId(UserUtils.getCurUserId(), id));
+    public R<AppTradeOrderDetailRespVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(tradeOrderService.queryUserAppDetail(UserUtils.getCurUserId(), id));
     }
 
     /**
      * 获得交易订单详情。
      */
     @GetMapping({"/get-detail", "/get"})
-    public R<TradeOrderVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderService.queryByUserAndId(UserUtils.getCurUserId(), id));
+    public R<AppTradeOrderDetailRespVo> getDetail(@RequestParam("id") Long id) {
+        return R.ok(tradeOrderService.queryUserAppDetail(UserUtils.getCurUserId(), id));
     }
 
     /**
      * 支付回调后更新订单为已支付。
      */
     @PostMapping("/update-paid")
-    public R<Void> updatePaid(@RequestBody PayOrderNotifyReq req) {
+    public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
         TradeOrderBo bo = new TradeOrderBo();
         bo.setId(Long.valueOf(req.getMerchantOrderId()));
         bo.setPayOrderId(req.getPayOrderId());
@@ -118,8 +122,8 @@ public class AppTradeOrderController {
      * 查询订单物流轨迹。
      */
     @GetMapping("/get-express-track-list")
-    public R<List<Object>> getExpressTrackList(@RequestParam("id") Long id) {
-        return R.ok(List.of());
+    public R<List<AppOrderExpressTrackRespDto>> getExpressTrackList(@RequestParam("id") Long id) {
+        return R.ok(tradeOrderService.getAppExpressTrackList(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -134,7 +138,7 @@ public class AppTradeOrderController {
      * 确认交易订单收货。
      */
     @PutMapping("/receive")
-    public R<Void> receiveOrder(@RequestParam("id") Long id) {
+    public R<Boolean> receiveOrder(@RequestParam("id") Long id) {
         return R.ok(tradeOrderService.receiveOrder(UserUtils.getCurUserId(), id));
     }
 
@@ -142,7 +146,7 @@ public class AppTradeOrderController {
      * 取消交易订单。
      */
     @DeleteMapping("/cancel")
-    public R<Void> cancelOrder(@RequestParam("id") Long id) {
+    public R<Boolean> cancelOrder(@RequestParam("id") Long id) {
         return R.ok(tradeOrderService.cancelOrder(UserUtils.getCurUserId(), id));
     }
 
@@ -150,8 +154,24 @@ public class AppTradeOrderController {
      * 删除交易订单。
      */
     @DeleteMapping("/delete")
-    public R<Void> deleteOrder(@RequestParam("id") Long id) {
+    public R<Boolean> deleteOrder(@RequestParam("id") Long id) {
         return R.ok(tradeOrderService.deleteOrder(UserUtils.getCurUserId(), id));
+    }
+
+    /**
+     * 获得交易订单项。
+     */
+    @GetMapping("/item/get")
+    public R<AppTradeOrderItemRespVo> getOrderItem(@RequestParam("id") Long id) {
+        return R.ok(tradeOrderService.getAppOrderItem(UserUtils.getCurUserId(), id));
+    }
+
+    /**
+     * 创建交易订单项评价。
+     */
+    @PostMapping("/item/create-comment")
+    public R<Long> createOrderItemComment(@RequestBody AppTradeOrderItemCommentCreateReqVo createReqVo) {
+        return R.ok(tradeOrderService.createOrderItemComment(UserUtils.getCurUserId(), createReqVo));
     }
 
     /**

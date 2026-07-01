@@ -86,6 +86,23 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
     }
 
     /**
+     * 新增商品品牌并返回编号。
+     */
+    @Override
+    public Long createBrand(ProductBrandBo bo) {
+        ProductBrand entity = BeanUtil.toBean(bo, ProductBrand.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        entity.setIsDeleted(false);
+        entity.setCreateBy(userId);
+        entity.setCreateTime(now);
+        entity.setUpdateBy(userId);
+        entity.setUpdateTime(now);
+        baseMapper.insert(entity);
+        return entity.getId();
+    }
+
+    /**
      * 校验并批量删除商品品牌。
      */
     @Override

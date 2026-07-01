@@ -101,6 +101,23 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
     }
 
     /**
+     * 新增商品分类并返回编号。
+     */
+    @Override
+    public Long createCategory(ProductCategoryBo bo) {
+        ProductCategory entity = BeanUtil.toBean(bo, ProductCategory.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        entity.setIsDeleted(false);
+        entity.setCreateBy(userId);
+        entity.setCreateTime(now);
+        entity.setUpdateBy(userId);
+        entity.setUpdateTime(now);
+        baseMapper.insert(entity);
+        return entity.getId();
+    }
+
+    /**
      * 校验并批量删除商品分类。
      */
     @Override

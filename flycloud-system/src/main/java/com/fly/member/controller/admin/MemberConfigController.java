@@ -3,7 +3,8 @@ package com.fly.member.controller.admin;
 import com.fly.common.domain.model.R;
 import com.fly.member.service.IMemberConfigService;
 import com.fly.system.api.member.domain.bo.MemberConfigBo;
-import com.fly.system.api.member.domain.vo.MemberConfigVo;
+import com.fly.system.api.member.domain.vo.MemberConfigRespVo;
+import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +32,8 @@ public class MemberConfigController {
      */
     @PreAuthorize("@pms.hasPermission('member:config:list')")
     @GetMapping("/get")
-    public R<MemberConfigVo> getConfig() {
-        return R.ok(configService.getConfig());
+    public R<MemberConfigRespVo> getConfig() {
+        return R.ok(BeanUtil.toBean(configService.getConfig(), MemberConfigRespVo.class));
     }
 
     /**
@@ -40,7 +41,7 @@ public class MemberConfigController {
      */
     @PreAuthorize("@pms.hasPermission('member:config:save')")
     @PostMapping("/save")
-    public R<Void> saveConfig(@RequestBody MemberConfigBo bo) {
+    public R<Boolean> saveConfig(@RequestBody MemberConfigBo bo) {
         return R.ok(configService.saveConfig(bo));
     }
 
@@ -49,7 +50,7 @@ public class MemberConfigController {
      */
     @PreAuthorize("@pms.hasPermission('member:config:save')")
     @PutMapping("/save")
-    public R<Void> yudaoSaveConfig(@RequestBody MemberConfigBo bo) {
+    public R<Boolean> yudaoSaveConfig(@RequestBody MemberConfigBo bo) {
         return R.ok(configService.saveConfig(bo));
     }
 

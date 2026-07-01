@@ -59,6 +59,20 @@ public class MemberGroupServiceImpl implements IMemberGroupService {
     }
 
     @Override
+    public Long createGroup(MemberGroupBo bo) {
+        MemberGroup group = BeanUtil.toBean(bo, MemberGroup.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        group.setIsDeleted(false);
+        group.setCreateBy(userId);
+        group.setCreateTime(now);
+        group.setUpdateBy(userId);
+        group.setUpdateTime(now);
+        memberGroupMapper.insert(group);
+        return group.getId();
+    }
+
+    @Override
     public Boolean saveOrUpdate(MemberGroupBo bo) {
         MemberGroup group = BeanUtil.toBean(bo, MemberGroup.class);
         LocalDateTime now = LocalDateTime.now();

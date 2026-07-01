@@ -226,6 +226,28 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     }
 
     /**
+     * 新增商品 SPU 并返回编号。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long createSpu(ProductSpuBo bo) {
+        refreshSkuSummary(bo);
+        ProductSpu entity = BeanUtil.toBean(bo, ProductSpu.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        entity.setIsDeleted(false);
+        entity.setCreateBy(userId);
+        entity.setCreateTime(now);
+        entity.setUpdateBy(userId);
+        entity.setUpdateTime(now);
+        baseMapper.insert(entity);
+        if (!CollectionUtils.isEmpty(bo.getSkus())) {
+            productSkuService.saveSkuList(entity.getId(), bo.getSkus());
+        }
+        return entity.getId();
+    }
+
+    /**
      * 校验并批量删除商品 SPU。
      */
     @Override

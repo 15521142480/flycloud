@@ -78,7 +78,7 @@ public class SftpFileClientServiceImpl implements FileClientService {
         }
 
         // 拼接返回路径
-        return fileConfigProperties.getSftpServerConfig().getBasePath() + path;
+        return fileConfigProperties.getSftpServerConfig().getBaseUrl() + path;
     }
 
 

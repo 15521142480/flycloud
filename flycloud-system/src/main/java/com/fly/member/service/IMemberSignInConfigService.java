@@ -17,6 +17,7 @@ public interface IMemberSignInConfigService {
     PageVo<MemberSignInConfigVo> queryPageList(MemberSignInConfigBo bo, PageBo pageBo);
     List<MemberSignInConfigVo> queryList(MemberSignInConfigBo bo);
     MemberSignInConfigVo queryById(Long id);
+    Long createSignInConfig(MemberSignInConfigBo bo);
     Boolean saveOrUpdate(MemberSignInConfigBo bo);
     Boolean deleteById(Long id);
 }

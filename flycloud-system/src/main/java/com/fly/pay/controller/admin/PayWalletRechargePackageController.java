@@ -6,6 +6,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.pay.service.IPayWalletRechargePackageService;
 import com.fly.system.api.pay.domain.bo.PayWalletRechargePackageBo;
 import com.fly.system.api.pay.domain.vo.PayWalletRechargePackageVo;
+import com.fly.system.api.pay.domain.vo.WalletRechargePackageRespVo;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,8 +40,8 @@ public class PayWalletRechargePackageController {
      */
     @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:list')")
     @GetMapping("/list")
-    public R<PageVo<PayWalletRechargePackageVo>> list(PayWalletRechargePackageBo bo, PageBo pageBo) {
-        return R.ok(rechargePackageService.queryPageList(bo, pageBo));
+    public R<PageVo<WalletRechargePackageRespVo>> list(PayWalletRechargePackageBo bo, PageBo pageBo) {
+        return R.ok(convertPage(rechargePackageService.queryPageList(bo, pageBo)));
     }
 
     /**
@@ -48,8 +49,8 @@ public class PayWalletRechargePackageController {
      */
     @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:list')")
     @GetMapping("/page")
-    public R<PageVo<PayWalletRechargePackageVo>> page(PayWalletRechargePackageBo bo, PageBo pageBo) {
-        return R.ok(rechargePackageService.queryPageList(bo, pageBo));
+    public R<PageVo<WalletRechargePackageRespVo>> page(PayWalletRechargePackageBo bo, PageBo pageBo) {
+        return R.ok(convertPage(rechargePackageService.queryPageList(bo, pageBo)));
     }
 
     /**
@@ -57,9 +58,9 @@ public class PayWalletRechargePackageController {
      */
     @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:query')")
     @GetMapping("/get")
-    public R<PayWalletRechargePackageVo> get(@RequestParam("id") Long id) {
+    public R<WalletRechargePackageRespVo> get(@RequestParam("id") Long id) {
         return R.ok(cn.hutool.core.bean.BeanUtil.toBean(rechargePackageService.getWalletRechargePackage(id),
-                PayWalletRechargePackageVo.class));
+                WalletRechargePackageRespVo.class));
     }
 
     /**
@@ -67,15 +68,19 @@ public class PayWalletRechargePackageController {
      */
     @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody PayWalletRechargePackageBo bo) {
-        return R.ok(rechargePackageService.saveOrUpdate(bo));
+    public R<Long> saveOrUpdate(@RequestBody PayWalletRechargePackageBo bo) {
+        if (bo.getId() == null) {
+            return R.ok(rechargePackageService.createWalletRechargePackage(bo));
+        }
+        rechargePackageService.saveOrUpdate(bo);
+        return R.ok(bo.getId());
     }
 
     /**
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody PayWalletRechargePackageBo bo) {
+    public R<Boolean> yudaoUpdate(@RequestBody PayWalletRechargePackageBo bo) {
         return R.ok(rechargePackageService.saveOrUpdate(bo));
     }
 
@@ -84,7 +89,7 @@ public class PayWalletRechargePackageController {
      */
     @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:delete')")
     @DeleteMapping("/delete/{id}")
-    public R<Void> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+    public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(rechargePackageService.deleteById(id));
     }
 
@@ -92,8 +97,19 @@ public class PayWalletRechargePackageController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(rechargePackageService.deleteById(id));
+    }
+
+    /**
+     * 转换充值套餐分页响应对象。
+     */
+    private PageVo<WalletRechargePackageRespVo> convertPage(PageVo<PayWalletRechargePackageVo> page) {
+        PageVo<WalletRechargePackageRespVo> respPage = new PageVo<>();
+        respPage.setList(cn.hutool.core.bean.BeanUtil.copyToList(page.getList(), WalletRechargePackageRespVo.class));
+        respPage.setTotal(page.getTotal());
+        respPage.setPages(page.getPages());
+        return respPage;
     }
 
 }

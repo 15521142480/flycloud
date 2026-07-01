@@ -2,7 +2,7 @@ package com.fly.pay.controller.app;
 
 import com.fly.common.domain.model.R;
 import com.fly.pay.service.IPayWalletRechargePackageService;
-import com.fly.system.api.pay.domain.vo.PayWalletRechargePackageVo;
+import com.fly.system.api.pay.domain.vo.AppPayWalletPackageRespVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +29,9 @@ public class AppPayWalletRechargePackageController {
      * 查询启用的钱包充值套餐列表。
      */
     @GetMapping("/list")
-    public R<List<PayWalletRechargePackageVo>> list() {
-        return R.ok(rechargePackageService.getWalletRechargePackageList(STATUS_ENABLE));
+    public R<List<AppPayWalletPackageRespVo>> list() {
+        return R.ok(cn.hutool.core.bean.BeanUtil.copyToList(
+                rechargePackageService.getWalletRechargePackageList(STATUS_ENABLE), AppPayWalletPackageRespVo.class));
     }
 
 }

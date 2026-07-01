@@ -5,6 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.file.factory.FileClientFactory;
 import com.fly.file.factory.service.FileClientService;
 import com.fly.common.utils.file.FilePathUtils;
@@ -15,6 +16,8 @@ import com.fly.system.api.file.domain.File;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 import static cn.hutool.core.date.DatePattern.PURE_DATE_PATTERN;
 
@@ -77,15 +80,19 @@ public class FileServiceImpl implements FileService {
         String url = fileClientService.executeUploadFile(content, path, type);
 
         // 3 保存到数据库
-        fileMapper.insert(new File()
+        File file = new File();
+        file.setConfigId(1L)
 //                .setConfigId(client.getId())
-                .setConfigId(1L)
                 .setName(name)
                 .setPath(path)
                 .setUrl(url)
                 .setType(type)
                 .setSize((long) content.length)
-        );
+                .setCreateBy(String.valueOf(UserUtils.getCurUserId()))
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateBy(String.valueOf(UserUtils.getCurUserId()))
+                .setUpdateTime(LocalDateTime.now());
+        fileMapper.insert(file);
 
         return url;
     }

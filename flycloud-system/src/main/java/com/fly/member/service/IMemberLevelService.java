@@ -17,6 +17,7 @@ public interface IMemberLevelService {
     PageVo<MemberLevelVo> queryPageList(MemberLevelBo bo, PageBo pageBo);
     List<MemberLevelVo> queryList(MemberLevelBo bo);
     MemberLevelVo queryById(Long id);
+    Long createLevel(MemberLevelBo bo);
     Boolean saveOrUpdate(MemberLevelBo bo);
     Boolean deleteById(Long id);
     void addExperience(Long userId, Integer experience, Integer bizType, String bizId);

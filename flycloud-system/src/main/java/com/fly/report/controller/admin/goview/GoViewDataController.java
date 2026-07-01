@@ -5,7 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.fly.common.domain.model.R;
 import com.fly.report.service.IGoViewDataService;
 import com.fly.system.api.report.domain.bo.GoViewDataGetBySqlBo;
-import com.fly.system.api.report.domain.vo.GoViewDataVo;
+import com.fly.system.api.report.domain.vo.GoViewDataRespVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,15 +32,15 @@ public class GoViewDataController {
 
     @RequestMapping("/get-by-sql")
     @PreAuthorize("@pms.hasPermission('report:go-view-data:get-by-sql')")
-    public R<GoViewDataVo> getDataBySql(@Valid @RequestBody GoViewDataGetBySqlBo bo) {
+    public R<GoViewDataRespVo> getDataBySQL(@Valid @RequestBody GoViewDataGetBySqlBo bo) {
         return R.ok(goViewDataService.getDataBySql(bo.getSql()));
     }
 
     @RequestMapping("/get-by-http")
     @PreAuthorize("@pms.hasPermission('report:go-view-data:get-by-http')")
-    public R<GoViewDataVo> getDataByHttp(@RequestParam(required = false) Map<String, String> params,
-                                         @RequestBody(required = false) String body) {
-        GoViewDataVo respVo = new GoViewDataVo();
+    public R<GoViewDataRespVo> getDataByHttp(@RequestParam(required = false) Map<String, String> params,
+                                             @RequestBody(required = false) String body) {
+        GoViewDataRespVo respVo = new GoViewDataRespVo();
         respVo.setDimensions(Arrays.asList("日期", "PV", "UV"));
         respVo.setSource(new LinkedList<>());
         for (int i = 1; i <= 12; i++) {

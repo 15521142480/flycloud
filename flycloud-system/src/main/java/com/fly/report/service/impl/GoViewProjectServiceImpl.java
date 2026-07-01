@@ -10,7 +10,7 @@ import com.fly.report.mapper.GoViewProjectMapper;
 import com.fly.report.service.IGoViewProjectService;
 import com.fly.system.api.report.domain.GoViewProject;
 import com.fly.system.api.report.domain.bo.GoViewProjectBo;
-import com.fly.system.api.report.domain.vo.GoViewProjectVo;
+import com.fly.system.api.report.domain.vo.GoViewProjectRespVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -65,15 +65,15 @@ public class GoViewProjectServiceImpl implements IGoViewProjectService {
     }
 
     @Override
-    public GoViewProjectVo queryById(Long id) {
-        return goViewProjectMapper.selectVoById(id);
+    public GoViewProjectRespVo queryById(Long id) {
+        return buildRespVo(goViewProjectMapper.selectById(id));
     }
 
     @Override
-    public PageVo<GoViewProjectVo> getMyProjectPage(PageBo pageBo, Long userId) {
-        Page<GoViewProjectVo> page = goViewProjectMapper.selectMyPage(pageBo, userId);
-        PageVo<GoViewProjectVo> pageVo = new PageVo<>();
-        pageVo.setList(page.getRecords());
+    public PageVo<GoViewProjectRespVo> getMyProjectPage(PageBo pageBo, Long userId) {
+        Page<GoViewProject> page = goViewProjectMapper.selectMyEntityPage(pageBo, userId);
+        PageVo<GoViewProjectRespVo> pageVo = new PageVo<>();
+        pageVo.setList(page.getRecords().stream().map(this::buildRespVo).toList());
         pageVo.setTotal(page.getTotal());
         pageVo.setPages(page.getPages());
         return pageVo;
@@ -86,6 +86,18 @@ public class GoViewProjectServiceImpl implements IGoViewProjectService {
         if (goViewProjectMapper.selectById(id) == null) {
             throw new ServiceException("GoView 项目不存在");
         }
+    }
+
+    /**
+     * 构建 GoView 项目响应对象。
+     */
+    private GoViewProjectRespVo buildRespVo(GoViewProject project) {
+        if (project == null) {
+            return null;
+        }
+        GoViewProjectRespVo respVo = BeanUtil.toBean(project, GoViewProjectRespVo.class);
+        respVo.setCreator(project.getCreateBy());
+        return respVo;
     }
 
 }

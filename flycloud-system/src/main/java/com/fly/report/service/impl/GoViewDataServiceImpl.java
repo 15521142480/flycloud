@@ -2,7 +2,7 @@ package com.fly.report.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import com.fly.report.service.IGoViewDataService;
-import com.fly.system.api.report.domain.vo.GoViewDataVo;
+import com.fly.system.api.report.domain.vo.GoViewDataRespVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -28,12 +28,12 @@ public class GoViewDataServiceImpl implements IGoViewDataService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public GoViewDataVo getDataBySql(String sql) {
+    public GoViewDataRespVo getDataBySql(String sql) {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql);
         SqlRowSetMetaData metaData = sqlRowSet.getMetaData();
         String[] columnNames = metaData.getColumnNames();
 
-        GoViewDataVo respVo = new GoViewDataVo();
+        GoViewDataRespVo respVo = new GoViewDataRespVo();
         respVo.setDimensions(Arrays.asList(columnNames));
         respVo.setSource(new LinkedList<>());
         while (sqlRowSet.next()) {

@@ -26,4 +26,15 @@ public interface GoViewProjectMapper extends BaseMapperPlus<GoViewProjectMapper,
         return selectVoPage(pageBo.build(), lqw);
     }
 
+    /**
+     * 分页查询我的 GoView 项目实体，用于组装自定义响应对象。
+     */
+    default Page<GoViewProject> selectMyEntityPage(PageBo pageBo, Long userId) {
+        LambdaQueryWrapper<GoViewProject> lqw = new LambdaQueryWrapper<GoViewProject>()
+                .eq(GoViewProject::getIsDeleted, false)
+                .eq(userId != null, GoViewProject::getCreateBy, String.valueOf(userId))
+                .orderByDesc(GoViewProject::getId);
+        return selectPage(pageBo.build(), lqw);
+    }
+
 }

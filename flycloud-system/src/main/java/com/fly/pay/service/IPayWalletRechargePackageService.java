@@ -42,6 +42,11 @@ public interface IPayWalletRechargePackageService {
     Boolean saveOrUpdate(PayWalletRechargePackageBo bo);
 
     /**
+     * 新增充值套餐并返回编号。
+     */
+    Long createWalletRechargePackage(PayWalletRechargePackageBo bo);
+
+    /**
      * 删除充值套餐。
      */
     Boolean deleteById(Long id);

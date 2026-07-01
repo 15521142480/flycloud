@@ -19,8 +19,13 @@ import com.fly.mall.api.product.domain.vo.ProductSpuVo;
 import com.fly.mall.api.trade.domain.TradeOrder;
 import com.fly.mall.api.trade.domain.TradeOrderItem;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
+import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderDetailRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderPageItemRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
@@ -155,6 +160,105 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         }
         bo.setUserId(userId);
         return queryPageList(bo, pageBo);
+    }
+
+    /**
+     * 分页查询当前用户移动端交易订单。
+     */
+    @Override
+    public PageVo<AppTradeOrderPageItemRespVo> queryUserAppPageList(Long userId, TradeOrderBo bo, PageBo pageBo) {
+        PageVo<TradeOrderVo> page = queryUserPageList(userId, bo, pageBo);
+        PageVo<AppTradeOrderPageItemRespVo> respPage = new PageVo<>();
+        respPage.setTotal(page.getTotal());
+        respPage.setPages(page.getPages());
+        respPage.setList(page.getList().stream().map(this::buildAppPageItemRespVo).toList());
+        return respPage;
+    }
+
+    /**
+     * 查询当前用户移动端交易订单详情。
+     */
+    @Override
+    public AppTradeOrderDetailRespVo queryUserAppDetail(Long userId, Long id) {
+        TradeOrderVo order = queryByUserAndId(userId, id);
+        return buildAppDetailRespVo(order);
+    }
+
+    /**
+     * 查询当前用户移动端订单物流轨迹。
+     */
+    @Override
+    public List<AppOrderExpressTrackRespDto> getAppExpressTrackList(Long userId, Long id) {
+        TradeOrder order = validateUserOrder(userId, id);
+        List<AppOrderExpressTrackRespDto> tracks = new ArrayList<>();
+        if (order.getDeliveryTime() != null) {
+            AppOrderExpressTrackRespDto track = new AppOrderExpressTrackRespDto();
+            track.setTime(order.getDeliveryTime());
+            track.setContent("商家已发货" + (StringUtils.isNotBlank(order.getLogisticsNo()) ? "，物流单号：" + order.getLogisticsNo() : ""));
+            tracks.add(track);
+        }
+        if (order.getReceiveTime() != null) {
+            AppOrderExpressTrackRespDto track = new AppOrderExpressTrackRespDto();
+            track.setTime(order.getReceiveTime());
+            track.setContent("订单已确认收货");
+            tracks.add(track);
+        }
+        return tracks;
+    }
+
+    /**
+     * 查询当前用户移动端交易订单项。
+     */
+    @Override
+    public AppTradeOrderItemRespVo getAppOrderItem(Long userId, Long id) {
+        TradeOrderItemVo item = tradeOrderItemService.queryById(id);
+        if (item == null) {
+            return null;
+        }
+        validateUserOrder(userId, item.getOrderId());
+        return buildAppOrderItemRespVo(item);
+    }
+
+    /**
+     * 当前用户创建交易订单项评价。
+     */
+    @Override
+    public Long createOrderItemComment(Long userId, AppTradeOrderItemCommentCreateReqVo createReqVo) {
+        if (createReqVo == null || createReqVo.getOrderItemId() == null) {
+            throw new ServiceException("订单项不能为空");
+        }
+        TradeOrderItemVo item = tradeOrderItemService.queryById(createReqVo.getOrderItemId());
+        if (item == null) {
+            throw new ServiceException("订单项不存在");
+        }
+        TradeOrder order = validateUserOrder(userId, item.getOrderId());
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_COMPLETED)) {
+            throw new ServiceException("订单完成后才可以评价");
+        }
+        if (Boolean.TRUE.equals(item.getCommentStatus())) {
+            throw new ServiceException("订单项已评价");
+        }
+
+        TradeOrderItem updateItem = new TradeOrderItem();
+        updateItem.setId(item.getId());
+        updateItem.setCommentStatus(true);
+        updateItem.setUpdateBy(String.valueOf(userId));
+        updateItem.setUpdateTime(LocalDateTime.now());
+        tradeOrderItemMapper.updateById(updateItem);
+
+        List<TradeOrderItemVo> items = tradeOrderItemService.queryListByOrderId(order.getId());
+        boolean allCommented = items.stream()
+                .filter(orderItem -> !Objects.equals(orderItem.getId(), item.getId()))
+                .allMatch(orderItem -> Boolean.TRUE.equals(orderItem.getCommentStatus()));
+        if (allCommented) {
+            TradeOrder updateOrder = new TradeOrder();
+            updateOrder.setId(order.getId());
+            updateOrder.setCommentStatus(true);
+            updateOrder.setUpdateBy(String.valueOf(userId));
+            updateOrder.setUpdateTime(LocalDateTime.now());
+            baseMapper.updateById(updateOrder);
+        }
+        return item.getId();
     }
 
     /**
@@ -796,6 +900,127 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         for (TradeOrderVo order : orders) {
             order.setItems(itemMap.getOrDefault(order.getId(), List.of()));
         }
+    }
+
+    /**
+     * 构建移动端订单分页项响应对象。
+     */
+    private AppTradeOrderPageItemRespVo buildAppPageItemRespVo(TradeOrderVo order) {
+        AppTradeOrderPageItemRespVo respVo = new AppTradeOrderPageItemRespVo();
+        respVo.setId(order.getId());
+        respVo.setNo(order.getNo());
+        respVo.setType(order.getType());
+        respVo.setStatus(order.getStatus());
+        respVo.setProductCount(order.getProductCount());
+        respVo.setCommentStatus(order.getCommentStatus());
+        respVo.setCreateTime(order.getCreateTime());
+        respVo.setPayOrderId(order.getPayOrderId());
+        respVo.setPayPrice(order.getPayPrice());
+        respVo.setDeliveryType(order.getDeliveryType());
+        respVo.setCombinationRecordId(order.getCombinationRecordId());
+        respVo.setItems(buildAppOrderItemRespVoList(order.getItems()));
+        return respVo;
+    }
+
+    /**
+     * 构建移动端订单详情响应对象。
+     */
+    private AppTradeOrderDetailRespVo buildAppDetailRespVo(TradeOrderVo order) {
+        if (order == null) {
+            return null;
+        }
+        AppTradeOrderDetailRespVo respVo = new AppTradeOrderDetailRespVo();
+        respVo.setId(order.getId());
+        respVo.setNo(order.getNo());
+        respVo.setType(order.getType());
+        respVo.setCreateTime(order.getCreateTime());
+        respVo.setUserRemark(order.getUserRemark());
+        respVo.setStatus(order.getStatus());
+        respVo.setProductCount(order.getProductCount());
+        respVo.setFinishTime(order.getFinishTime());
+        respVo.setCancelTime(order.getCancelTime());
+        respVo.setCommentStatus(order.getCommentStatus());
+        respVo.setPayStatus(order.getPayStatus());
+        respVo.setPayOrderId(order.getPayOrderId());
+        respVo.setPayTime(order.getPayTime());
+        respVo.setPayExpireTime(order.getCreateTime() == null ? null : order.getCreateTime().plusHours(2));
+        respVo.setPayChannelCode(order.getPayChannelCode());
+        respVo.setPayChannelName(order.getPayChannelCode());
+        respVo.setTotalPrice(order.getTotalPrice());
+        respVo.setDiscountPrice(order.getDiscountPrice());
+        respVo.setDeliveryPrice(order.getDeliveryPrice());
+        respVo.setAdjustPrice(order.getAdjustPrice());
+        respVo.setPayPrice(order.getPayPrice());
+        respVo.setDeliveryType(order.getDeliveryType());
+        respVo.setLogisticsId(order.getLogisticsId());
+        respVo.setLogisticsNo(order.getLogisticsNo());
+        respVo.setDeliveryTime(order.getDeliveryTime());
+        respVo.setReceiveTime(order.getReceiveTime());
+        respVo.setReceiverName(order.getReceiverName());
+        respVo.setReceiverMobile(order.getReceiverMobile());
+        respVo.setReceiverAreaId(order.getReceiverAreaId());
+        respVo.setReceiverDetailAddress(order.getReceiverDetailAddress());
+        respVo.setPickUpStoreId(order.getPickUpStoreId());
+        respVo.setPickUpVerifyCode(order.getPickUpVerifyCode());
+        respVo.setRefundStatus(order.getRefundStatus());
+        respVo.setRefundPrice(order.getRefundPrice());
+        respVo.setCouponId(order.getCouponId());
+        respVo.setCouponPrice(order.getCouponPrice());
+        respVo.setPointPrice(order.getPointPrice());
+        respVo.setVipPrice(order.getVipPrice());
+        respVo.setCombinationRecordId(order.getCombinationRecordId());
+        respVo.setItems(buildAppOrderItemRespVoList(order.getItems()));
+        return respVo;
+    }
+
+    /**
+     * 构建移动端订单项响应对象列表。
+     */
+    private List<AppTradeOrderItemRespVo> buildAppOrderItemRespVoList(List<TradeOrderItemVo> items) {
+        if (CollectionUtils.isEmpty(items)) {
+            return List.of();
+        }
+        return items.stream().map(this::buildAppOrderItemRespVo).toList();
+    }
+
+    /**
+     * 构建移动端订单项响应对象。
+     */
+    private AppTradeOrderItemRespVo buildAppOrderItemRespVo(TradeOrderItemVo item) {
+        AppTradeOrderItemRespVo respVo = new AppTradeOrderItemRespVo();
+        respVo.setId(item.getId());
+        respVo.setOrderId(item.getOrderId());
+        respVo.setSpuId(item.getSpuId());
+        respVo.setSpuName(item.getSpuName());
+        respVo.setSkuId(item.getSkuId());
+        respVo.setProperties(convertOrderItemProperties(item.getProperties()));
+        respVo.setPicUrl(item.getPicUrl());
+        respVo.setCount(item.getCount());
+        respVo.setCommentStatus(item.getCommentStatus());
+        respVo.setPrice(item.getPrice());
+        respVo.setPayPrice(item.getPayPrice());
+        respVo.setAfterSaleId(item.getAfterSaleId());
+        respVo.setAfterSaleStatus(item.getAfterSaleStatus());
+        return respVo;
+    }
+
+    /**
+     * 转换订单项规格属性信息。
+     */
+    private List<AppProductPropertyValueDetailRespVo> convertOrderItemProperties(List<TradeOrderItem.Property> properties) {
+        if (CollectionUtils.isEmpty(properties)) {
+            return List.of();
+        }
+        List<AppProductPropertyValueDetailRespVo> respList = new ArrayList<>(properties.size());
+        for (TradeOrderItem.Property property : properties) {
+            AppProductPropertyValueDetailRespVo respVo = new AppProductPropertyValueDetailRespVo();
+            respVo.setPropertyId(property.getPropertyId());
+            respVo.setPropertyName(property.getPropertyName());
+            respVo.setValueId(property.getValueId());
+            respVo.setValueName(property.getValueName());
+            respList.add(respVo);
+        }
+        return respList;
     }
 
     /**

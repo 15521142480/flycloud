@@ -5,7 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.member.service.IAddressService;
 import com.fly.system.api.member.domain.bo.MemberAddressBo;
+import com.fly.system.api.member.domain.vo.AddressRespVo;
 import com.fly.system.api.member.domain.vo.MemberAddressVo;
+import cn.hutool.core.bean.BeanUtil;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +41,20 @@ public class AddressController {
     private final IAddressService addressService;
 
     /**
-     * 查询会员收件地址分页列表。
+     * 查询会员收件地址列表。
      */
     @PreAuthorize("@pms.hasPermission('member:address:list')")
     @GetMapping("/list")
-    public R<PageVo<MemberAddressVo>> list(MemberAddressBo bo, PageBo page) {
+    public R<List<AddressRespVo>> list(MemberAddressBo bo) {
+        return R.ok(BeanUtil.copyToList(addressService.queryList(bo), AddressRespVo.class));
+    }
+
+    /**
+     * 查询会员收件地址分页列表。
+     */
+    @PreAuthorize("@pms.hasPermission('member:address:list')")
+    @GetMapping("/page")
+    public R<PageVo<MemberAddressVo>> page(MemberAddressBo bo, PageBo page) {
         return R.ok(addressService.queryPageList(bo, page));
     }
 
@@ -52,8 +63,8 @@ public class AddressController {
      */
     @PreAuthorize("@pms.hasPermission('member:address:list')")
     @GetMapping("/allList")
-    public R<List<MemberAddressVo>> allList(MemberAddressBo bo) {
-        return R.ok(addressService.queryList(bo));
+    public R<List<AddressRespVo>> allList(MemberAddressBo bo) {
+        return R.ok(BeanUtil.copyToList(addressService.queryList(bo), AddressRespVo.class));
     }
 
     /**
@@ -70,7 +81,7 @@ public class AddressController {
      */
     @PreAuthorize("@pms.hasPermission('member:address:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody MemberAddressBo bo) {
+    public R<Boolean> saveOrUpdate(@RequestBody MemberAddressBo bo) {
         return R.ok(addressService.saveOrUpdate(bo));
     }
 
@@ -78,7 +89,7 @@ public class AddressController {
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody MemberAddressBo bo) {
+    public R<Boolean> yudaoUpdate(@RequestBody MemberAddressBo bo) {
         return R.ok(addressService.saveOrUpdate(bo));
     }
 
@@ -87,7 +98,7 @@ public class AddressController {
      */
     @PreAuthorize("@pms.hasPermission('member:address:delete')")
     @DeleteMapping("/delete/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+    public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(addressService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
@@ -95,7 +106,7 @@ public class AddressController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(addressService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 

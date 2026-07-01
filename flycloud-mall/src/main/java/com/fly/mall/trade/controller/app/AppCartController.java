@@ -44,7 +44,7 @@ public class AppCartController {
      * 更新购物车商品数量。
      */
     @PutMapping("/update-count")
-    public R<Void> updateCartCount(@RequestBody CartBo bo) {
+    public R<Boolean> updateCartCount(@RequestBody CartBo bo) {
         return R.ok(cartService.updateCartCount(UserUtils.getCurUserId(), bo));
     }
 
@@ -52,7 +52,7 @@ public class AppCartController {
      * 更新购物车商品选中状态。
      */
     @PutMapping("/update-selected")
-    public R<Void> updateCartSelected(@RequestBody CartBo bo) {
+    public R<Boolean> updateCartSelected(@RequestBody CartBo bo) {
         return R.ok(cartService.updateCartSelected(UserUtils.getCurUserId(), bo));
     }
 
@@ -60,7 +60,7 @@ public class AppCartController {
      * 重置购物车商品。
      */
     @PutMapping("/reset")
-    public R<Void> resetCart(@RequestBody CartBo bo) {
+    public R<Boolean> resetCart(@RequestBody CartBo bo) {
         return R.ok(cartService.resetCart(UserUtils.getCurUserId(), bo));
     }
 
@@ -68,7 +68,7 @@ public class AppCartController {
      * 删除购物车商品。
      */
     @DeleteMapping("/delete")
-    public R<Void> deleteCart(@RequestParam("ids") List<Long> ids) {
+    public R<Boolean> deleteCart(@RequestParam("ids") List<Long> ids) {
         return R.ok(cartService.deleteCart(UserUtils.getCurUserId(), ids));
     }
 

@@ -67,6 +67,21 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
     }
 
     @Override
+    public Long createLevel(MemberLevelBo bo) {
+        validateLevelConfig(null, bo.getName(), bo.getLevel(), bo.getExperience());
+        MemberLevel level = BeanUtil.toBean(bo, MemberLevel.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        level.setIsDeleted(false);
+        level.setCreateBy(userId);
+        level.setCreateTime(now);
+        level.setUpdateBy(userId);
+        level.setUpdateTime(now);
+        memberLevelMapper.insert(level);
+        return level.getId();
+    }
+
+    @Override
     public Boolean saveOrUpdate(MemberLevelBo bo) {
         validateLevelConfig(bo.getId(), bo.getName(), bo.getLevel(), bo.getExperience());
         MemberLevel level = BeanUtil.toBean(bo, MemberLevel.class);

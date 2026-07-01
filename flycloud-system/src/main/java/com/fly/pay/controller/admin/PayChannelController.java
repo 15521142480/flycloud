@@ -5,7 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.pay.service.IPayChannelService;
 import com.fly.system.api.pay.domain.bo.PayChannelBo;
+import com.fly.system.api.pay.domain.vo.PayChannelRespVo;
 import com.fly.system.api.pay.domain.vo.PayChannelVo;
+import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,31 +36,33 @@ public class PayChannelController {
 
     @PreAuthorize("@pms.hasPermission('pay:channel:list')")
     @GetMapping("/list")
-    public R<List<PayChannelVo>> list(PayChannelBo bo) {
-        return R.ok(payChannelService.queryList(bo));
+    public R<List<PayChannelRespVo>> list(PayChannelBo bo) {
+        return R.ok(BeanUtil.copyToList(payChannelService.queryList(bo), PayChannelRespVo.class));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:channel:query')")
     @GetMapping("/get")
-    public R<PayChannelVo> get(@RequestParam Long id) {
-        return R.ok(payChannelService.queryById(id));
+    public R<PayChannelRespVo> get(@RequestParam(value = "id", required = false) Long id,
+                                   @RequestParam(value = "appId", required = false) Long appId,
+                                   @RequestParam(value = "code", required = false) String code) {
+        return R.ok(payChannelService.getChannel(id, appId, code));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:channel:create')")
     @PostMapping("/create")
-    public R<Void> create(@RequestBody PayChannelBo bo) {
-        return R.ok(payChannelService.saveOrUpdate(bo));
+    public R<Long> create(@RequestBody PayChannelBo bo) {
+        return R.ok(payChannelService.createChannel(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:channel:update')")
     @PutMapping("/update")
-    public R<Void> update(@RequestBody PayChannelBo bo) {
+    public R<Boolean> update(@RequestBody PayChannelBo bo) {
         return R.ok(payChannelService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:channel:delete')")
     @DeleteMapping("/delete")
-    public R<Void> delete(@RequestParam Long id) {
+    public R<Boolean> delete(@RequestParam Long id) {
         return R.ok(payChannelService.deleteById(id));
     }
 

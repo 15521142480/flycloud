@@ -17,6 +17,7 @@ public interface IMemberGroupService {
     PageVo<MemberGroupVo> queryPageList(MemberGroupBo bo, PageBo pageBo);
     List<MemberGroupVo> queryList(MemberGroupBo bo);
     MemberGroupVo queryById(Long id);
+    Long createGroup(MemberGroupBo bo);
     Boolean saveOrUpdate(MemberGroupBo bo);
     Boolean deleteById(Long id);
 }

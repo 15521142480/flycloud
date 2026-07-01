@@ -4,7 +4,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.system.api.report.domain.GoViewProject;
 import com.fly.system.api.report.domain.bo.GoViewProjectBo;
-import com.fly.system.api.report.domain.vo.GoViewProjectVo;
+import com.fly.system.api.report.domain.vo.GoViewProjectRespVo;
 
 /**
  * GoView 项目 Service 接口。
@@ -22,8 +22,8 @@ public interface IGoViewProjectService {
 
     GoViewProject getProject(Long id);
 
-    GoViewProjectVo queryById(Long id);
+    GoViewProjectRespVo queryById(Long id);
 
-    PageVo<GoViewProjectVo> getMyProjectPage(PageBo pageBo, Long userId);
+    PageVo<GoViewProjectRespVo> getMyProjectPage(PageBo pageBo, Long userId);
 
 }

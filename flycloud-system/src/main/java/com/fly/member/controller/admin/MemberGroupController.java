@@ -5,7 +5,10 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.member.service.IMemberGroupService;
 import com.fly.system.api.member.domain.bo.MemberGroupBo;
+import com.fly.system.api.member.domain.vo.MemberGroupRespVo;
+import com.fly.system.api.member.domain.vo.MemberGroupSimpleRespVo;
 import com.fly.system.api.member.domain.vo.MemberGroupVo;
+import cn.hutool.core.bean.BeanUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,47 +31,51 @@ public class MemberGroupController {
 
     @PreAuthorize("@pms.hasPermission('member:group:list')")
     @GetMapping({"/list", "/page"})
-    public R<PageVo<MemberGroupVo>> list(MemberGroupBo bo, PageBo pageBo) {
-        return R.ok(groupService.queryPageList(bo, pageBo));
+    public R<PageVo<MemberGroupRespVo>> list(MemberGroupBo bo, PageBo pageBo) {
+        return R.ok(convertPage(groupService.queryPageList(bo, pageBo)));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:list')")
     @GetMapping({"/allList", "/list-all-simple"})
-    public R<List<MemberGroupVo>> allList(MemberGroupBo bo) {
-        return R.ok(groupService.queryList(bo));
+    public R<List<MemberGroupSimpleRespVo>> allList(MemberGroupBo bo) {
+        return R.ok(BeanUtil.copyToList(groupService.queryList(bo), MemberGroupSimpleRespVo.class));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:query')")
     @GetMapping("/get/{id}")
-    public R<MemberGroupVo> getInfo(@PathVariable Long id) {
-        return R.ok(groupService.queryById(id));
+    public R<MemberGroupRespVo> getInfo(@PathVariable Long id) {
+        return R.ok(BeanUtil.toBean(groupService.queryById(id), MemberGroupRespVo.class));
     }
 
     /**
      * 获得详情，兼容 yudao 前端接口。
      */
     @GetMapping("/get")
-    public R<MemberGroupVo> yudaoGet(@RequestParam("id") Long id) {
-        return R.ok(groupService.queryById(id));
+    public R<MemberGroupRespVo> yudaoGet(@RequestParam("id") Long id) {
+        return R.ok(BeanUtil.toBean(groupService.queryById(id), MemberGroupRespVo.class));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody MemberGroupBo bo) {
-        return R.ok(groupService.saveOrUpdate(bo));
+    public R<Long> saveOrUpdate(@RequestBody MemberGroupBo bo) {
+        if (bo.getId() == null) {
+            return R.ok(groupService.createGroup(bo));
+        }
+        groupService.saveOrUpdate(bo);
+        return R.ok(bo.getId());
     }
 
     /**
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody MemberGroupBo bo) {
+    public R<Boolean> yudaoUpdate(@RequestBody MemberGroupBo bo) {
         return R.ok(groupService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:delete')")
     @DeleteMapping("/delete/{id}")
-    public R<Void> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+    public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(groupService.deleteById(id));
     }
 
@@ -76,8 +83,16 @@ public class MemberGroupController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(groupService.deleteById(id));
+    }
+
+    private PageVo<MemberGroupRespVo> convertPage(PageVo<MemberGroupVo> page) {
+        PageVo<MemberGroupRespVo> respPage = new PageVo<>();
+        respPage.setList(BeanUtil.copyToList(page.getList(), MemberGroupRespVo.class));
+        respPage.setTotal(page.getTotal());
+        respPage.setPages(page.getPages());
+        return respPage;
     }
 
 }

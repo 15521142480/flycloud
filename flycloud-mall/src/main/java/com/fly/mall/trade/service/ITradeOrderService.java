@@ -5,6 +5,11 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderDetailRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderPageItemRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
@@ -40,6 +45,31 @@ public interface ITradeOrderService {
      * 分页查询当前用户交易订单。
      */
     PageVo<TradeOrderVo> queryUserPageList(Long userId, TradeOrderBo bo, PageBo pageBo);
+
+    /**
+     * 分页查询当前用户移动端交易订单。
+     */
+    PageVo<AppTradeOrderPageItemRespVo> queryUserAppPageList(Long userId, TradeOrderBo bo, PageBo pageBo);
+
+    /**
+     * 查询当前用户移动端交易订单详情。
+     */
+    AppTradeOrderDetailRespVo queryUserAppDetail(Long userId, Long id);
+
+    /**
+     * 查询当前用户移动端订单物流轨迹。
+     */
+    List<AppOrderExpressTrackRespDto> getAppExpressTrackList(Long userId, Long id);
+
+    /**
+     * 查询当前用户移动端交易订单项。
+     */
+    AppTradeOrderItemRespVo getAppOrderItem(Long userId, Long id);
+
+    /**
+     * 当前用户创建交易订单项评价。
+     */
+    Long createOrderItemComment(Long userId, AppTradeOrderItemCommentCreateReqVo createReqVo);
 
     /**
      * 创建购物车订单。

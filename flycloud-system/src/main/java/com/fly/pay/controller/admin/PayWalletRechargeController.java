@@ -55,28 +55,28 @@ public class PayWalletRechargeController {
      * 更新钱包充值为已支付。
      */
     @PostMapping("/update-paid")
-    public R<Void> updatePaid(@RequestBody PayOrderNotifyReq req) {
+    public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
         walletRechargeService.updateWalletRechargerPaid(Long.valueOf(req.getMerchantOrderId()), req.getPayOrderId());
-        return R.ok();
+        return R.ok(true);
     }
 
     /**
      * 发起钱包充值退款。
      */
     @PostMapping("/refund")
-    public R<Void> refund(@RequestParam("id") Long id, HttpServletRequest request) {
+    public R<Boolean> refund(@RequestParam("id") Long id, HttpServletRequest request) {
         walletRechargeService.refundWalletRecharge(id, getClientIp(request));
-        return R.ok();
+        return R.ok(true);
     }
 
     /**
      * 更新钱包充值为已退款。
      */
     @PostMapping("/update-refunded")
-    public R<Void> updateRefunded(@RequestBody PayRefundNotifyReq req) {
+    public R<Boolean> updateRefunded(@RequestBody PayRefundNotifyReq req) {
         walletRechargeService.updateWalletRechargeRefunded(Long.valueOf(req.getMerchantOrderId()),
                 req.getMerchantRefundId(), req.getPayRefundId());
-        return R.ok();
+        return R.ok(true);
     }
 
     /**

@@ -59,6 +59,21 @@ public class MemberTagServiceImpl implements IMemberTagService {
     }
 
     @Override
+    public Long createTag(MemberTagBo bo) {
+        validateNameUnique(null, bo.getName());
+        MemberTag tag = BeanUtil.toBean(bo, MemberTag.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        tag.setIsDeleted(false);
+        tag.setCreateBy(userId);
+        tag.setCreateTime(now);
+        tag.setUpdateBy(userId);
+        tag.setUpdateTime(now);
+        memberTagMapper.insert(tag);
+        return tag.getId();
+    }
+
+    @Override
     public Boolean saveOrUpdate(MemberTagBo bo) {
         validateNameUnique(bo.getId(), bo.getName());
         MemberTag tag = BeanUtil.toBean(bo, MemberTag.class);

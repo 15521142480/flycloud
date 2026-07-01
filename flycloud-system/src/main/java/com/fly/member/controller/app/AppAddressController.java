@@ -46,7 +46,7 @@ public class AppAddressController {
      * 更新用户收件地址。
      */
     @PutMapping("/update")
-    public R<Void> updateAddress(@Valid @RequestBody AppAddressUpdateReqBo updateReqBo) {
+    public R<Boolean> updateAddress(@Valid @RequestBody AppAddressUpdateReqBo updateReqBo) {
         return R.ok(addressService.updateAddress(UserUtils.getCurUserId(), updateReqBo));
     }
 
@@ -54,7 +54,7 @@ public class AppAddressController {
      * 删除用户收件地址。
      */
     @DeleteMapping("/delete")
-    public R<Void> deleteAddress(@RequestParam("id") Long id) {
+    public R<Boolean> deleteAddress(@RequestParam("id") Long id) {
         return R.ok(addressService.deleteAddress(UserUtils.getCurUserId(), id));
     }
 

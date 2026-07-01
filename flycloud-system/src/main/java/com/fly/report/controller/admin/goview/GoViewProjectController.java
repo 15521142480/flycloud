@@ -6,7 +6,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.security.util.UserUtils;
 import com.fly.report.service.IGoViewProjectService;
 import com.fly.system.api.report.domain.bo.GoViewProjectBo;
-import com.fly.system.api.report.domain.vo.GoViewProjectVo;
+import com.fly.system.api.report.domain.vo.GoViewProjectRespVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,13 +49,13 @@ public class GoViewProjectController {
 
     @GetMapping("/get")
     @PreAuthorize("@pms.hasPermission('report:go-view-project:query')")
-    public R<GoViewProjectVo> getProject(@RequestParam("id") Long id) {
+    public R<GoViewProjectRespVo> getProject(@RequestParam("id") Long id) {
         return R.ok(goViewProjectService.queryById(id));
     }
 
     @GetMapping("/my-page")
     @PreAuthorize("@pms.hasPermission('report:go-view-project:query')")
-    public R<PageVo<GoViewProjectVo>> getMyProjectPage(PageBo pageBo) {
+    public R<PageVo<GoViewProjectRespVo>> getMyProjectPage(PageBo pageBo) {
         return R.ok(goViewProjectService.getMyProjectPage(pageBo, UserUtils.getCurUserId()));
     }
 

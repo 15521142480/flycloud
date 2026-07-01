@@ -53,6 +53,22 @@ public class PayAppServiceImpl implements IPayAppService {
     }
 
     @Override
+    public Long createApp(PayAppBo bo) {
+        validateAppKeyUnique(null, bo.getAppKey());
+        PayApp app = BeanUtil.toBean(bo, PayApp.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        app.setId(null);
+        app.setIsDeleted(false);
+        app.setCreateBy(userId);
+        app.setCreateTime(now);
+        app.setUpdateBy(userId);
+        app.setUpdateTime(now);
+        payAppMapper.insert(app);
+        return app.getId();
+    }
+
+    @Override
     public Boolean saveOrUpdate(PayAppBo bo) {
         validateAppKeyUnique(bo.getId(), bo.getAppKey());
         PayApp app = BeanUtil.toBean(bo, PayApp.class);

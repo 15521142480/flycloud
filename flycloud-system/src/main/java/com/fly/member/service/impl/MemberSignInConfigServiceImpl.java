@@ -56,6 +56,21 @@ public class MemberSignInConfigServiceImpl implements IMemberSignInConfigService
     }
 
     @Override
+    public Long createSignInConfig(MemberSignInConfigBo bo) {
+        validateDayUnique(null, bo.getDay());
+        MemberSignInConfig config = BeanUtil.toBean(bo, MemberSignInConfig.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        config.setIsDeleted(false);
+        config.setCreateBy(userId);
+        config.setCreateTime(now);
+        config.setUpdateBy(userId);
+        config.setUpdateTime(now);
+        signInConfigMapper.insert(config);
+        return config.getId();
+    }
+
+    @Override
     public Boolean saveOrUpdate(MemberSignInConfigBo bo) {
         validateDayUnique(bo.getId(), bo.getDay());
         MemberSignInConfig config = BeanUtil.toBean(bo, MemberSignInConfig.class);

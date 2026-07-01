@@ -13,6 +13,7 @@ import com.fly.pay.mapper.PayChannelMapper;
 import com.fly.pay.service.IPayChannelService;
 import com.fly.system.api.pay.domain.PayChannel;
 import com.fly.system.api.pay.domain.bo.PayChannelBo;
+import com.fly.system.api.pay.domain.vo.PayChannelRespVo;
 import com.fly.system.api.pay.domain.vo.PayChannelVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,35 @@ public class PayChannelServiceImpl implements IPayChannelService {
     @Override
     public PayChannelVo queryById(Long id) {
         return payChannelMapper.selectVoById(id);
+    }
+
+    @Override
+    public PayChannelRespVo getChannel(Long id, Long appId, String code) {
+        PayChannelVo channel = null;
+        if (id != null) {
+            channel = queryById(id);
+        } else if (appId != null && StringUtils.isNotBlank(code)) {
+            PayChannelBo bo = new PayChannelBo();
+            bo.setAppId(appId);
+            bo.setCode(code);
+            channel = queryList(bo).stream().findFirst().orElse(null);
+        }
+        return BeanUtil.toBean(channel, PayChannelRespVo.class);
+    }
+
+    @Override
+    public Long createChannel(PayChannelBo bo) {
+        validateCodeUnique(null, bo.getAppId(), bo.getCode());
+        PayChannel channel = BeanUtil.toBean(bo, PayChannel.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        channel.setIsDeleted(false);
+        channel.setCreateBy(userId);
+        channel.setCreateTime(now);
+        channel.setUpdateBy(userId);
+        channel.setUpdateTime(now);
+        payChannelMapper.insert(channel);
+        return channel.getId();
     }
 
     @Override

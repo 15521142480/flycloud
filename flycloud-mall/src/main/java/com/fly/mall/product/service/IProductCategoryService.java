@@ -42,6 +42,11 @@ public interface IProductCategoryService {
     Boolean saveOrUpdate(ProductCategoryBo bo);
 
     /**
+     * 新增商品分类并返回编号。
+     */
+    Long createCategory(ProductCategoryBo bo);
+
+    /**
      * 校验并批量删除商品分类。
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);

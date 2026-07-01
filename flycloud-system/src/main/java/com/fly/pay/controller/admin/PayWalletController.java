@@ -67,11 +67,11 @@ public class PayWalletController {
      */
     @PreAuthorize("@pms.hasPermission('pay:wallet:update-balance')")
     @PutMapping("/update-balance")
-    public R<Void> updateBalance(@RequestBody UpdateBalanceReq req) {
+    public R<Boolean> updateBalance(@RequestBody UpdateBalanceReq req) {
         PayWallet wallet = walletService.getOrCreateWallet(req.getUserId(), 2);
         walletService.addWalletBalance(wallet.getId(), String.valueOf(req.getUserId()),
                 PayWalletBizTypeEnum.UPDATE_BALANCE, req.getBalance());
-        return R.ok();
+        return R.ok(true);
     }
 
     /**

@@ -4,6 +4,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.security.util.UserUtils;
 import com.fly.pay.service.IPayWalletService;
 import com.fly.system.api.pay.domain.PayWallet;
+import com.fly.system.api.pay.domain.vo.AppPayWalletRespVo;
 import com.fly.system.api.pay.domain.vo.PayWalletRespVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +30,9 @@ public class AppPayWalletController {
      * 获取当前用户钱包。
      */
     @GetMapping("/get")
-    public R<PayWalletRespVo> getPayWallet() {
+    public R<AppPayWalletRespVo> getPayWallet() {
         PayWallet walletEntity = payWalletService.getOrCreateWallet(UserUtils.getCurUserId(), USER_TYPE_MEMBER);
-        PayWalletRespVo wallet = new PayWalletRespVo();
+        AppPayWalletRespVo wallet = new AppPayWalletRespVo();
         wallet.setId(walletEntity.getId());
         wallet.setUserId(walletEntity.getUserId());
         wallet.setUserType(walletEntity.getUserType());

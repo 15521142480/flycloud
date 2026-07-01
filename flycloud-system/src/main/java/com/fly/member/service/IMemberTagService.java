@@ -17,6 +17,7 @@ public interface IMemberTagService {
     PageVo<MemberTagVo> queryPageList(MemberTagBo bo, PageBo pageBo);
     List<MemberTagVo> queryList(MemberTagBo bo);
     MemberTagVo queryById(Long id);
+    Long createTag(MemberTagBo bo);
     Boolean saveOrUpdate(MemberTagBo bo);
     Boolean deleteById(Long id);
 }

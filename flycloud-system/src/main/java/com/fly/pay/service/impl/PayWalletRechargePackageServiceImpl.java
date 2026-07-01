@@ -118,6 +118,27 @@ public class PayWalletRechargePackageServiceImpl implements IPayWalletRechargePa
     }
 
     /**
+     * 新增充值套餐并返回编号。
+     */
+    @Override
+    public Long createWalletRechargePackage(PayWalletRechargePackageBo bo) {
+        validateNameUnique(null, bo.getName());
+        PayWalletRechargePackage rechargePackage = BeanUtil.toBean(bo, PayWalletRechargePackage.class);
+        LocalDateTime now = LocalDateTime.now();
+        String userId = String.valueOf(UserUtils.getCurUserId());
+        rechargePackage.setIsDeleted(false);
+        if (rechargePackage.getStatus() == null) {
+            rechargePackage.setStatus(STATUS_ENABLE);
+        }
+        rechargePackage.setCreateBy(userId);
+        rechargePackage.setCreateTime(now);
+        rechargePackage.setUpdateBy(userId);
+        rechargePackage.setUpdateTime(now);
+        walletRechargePackageMapper.insert(rechargePackage);
+        return rechargePackage.getId();
+    }
+
+    /**
      * 删除充值套餐。
      */
     @Override

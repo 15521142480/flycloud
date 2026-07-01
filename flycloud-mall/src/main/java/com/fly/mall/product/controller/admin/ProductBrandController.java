@@ -92,15 +92,19 @@ public class ProductBrandController extends BaseController {
     @Log(title = "商品品牌", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:brand:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody ProductBrandBo bo) {
-        return R.ok(productBrandService.saveOrUpdate(bo));
+    public R<Long> saveOrUpdate(@RequestBody ProductBrandBo bo) {
+        if (bo.getId() == null) {
+            return R.ok(productBrandService.createBrand(bo));
+        }
+        productBrandService.saveOrUpdate(bo);
+        return R.ok(bo.getId());
     }
 
     /**
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody ProductBrandBo bo) {
+    public R<Boolean> yudaoUpdate(@RequestBody ProductBrandBo bo) {
         return R.ok(productBrandService.saveOrUpdate(bo));
     }
 
@@ -110,7 +114,7 @@ public class ProductBrandController extends BaseController {
     @Log(title = "商品品牌", businessType = BusinessType.DELETE)
     @PreAuthorize("@pms.hasPermission('mall:product:brand:delete')")
     @DeleteMapping("/delete/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+    public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productBrandService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
@@ -118,7 +122,7 @@ public class ProductBrandController extends BaseController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(productBrandService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 

@@ -8,8 +8,11 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.BusinessType;
 import com.fly.common.utils.ExcelUtil;
 import com.fly.mall.api.product.domain.bo.ProductSpuBo;
+import com.fly.mall.api.product.domain.vo.ProductSpuRespVo;
+import com.fly.mall.api.product.domain.vo.ProductSpuSimpleRespVo;
 import com.fly.mall.api.product.domain.vo.ProductSpuVo;
 import com.fly.mall.product.service.IProductSpuService;
+import cn.hutool.core.bean.BeanUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,9 +44,9 @@ public class ProductSpuController extends BaseController {
      * 查询商品 SPU 分页列表。
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
-    @GetMapping("/list")
-    public R<PageVo<ProductSpuVo>> list(ProductSpuBo bo, PageBo page) {
-        return R.ok(productSpuService.queryPageList(bo, page));
+    @GetMapping(value = "/list", params = "!spuIds")
+    public R<PageVo<ProductSpuRespVo>> list(ProductSpuBo bo, PageBo page) {
+        return R.ok(convertPage(productSpuService.queryPageList(bo, page)));
     }
 
     /**
@@ -51,17 +54,17 @@ public class ProductSpuController extends BaseController {
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
     @GetMapping("/page")
-    public R<PageVo<ProductSpuVo>> page(ProductSpuBo bo, PageBo page) {
-        return R.ok(productSpuService.queryPageList(bo, page));
+    public R<PageVo<ProductSpuRespVo>> page(ProductSpuBo bo, PageBo page) {
+        return R.ok(convertPage(productSpuService.queryPageList(bo, page)));
     }
 
     /**
      * 获得商品 SPU 详情列表。
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
-    @GetMapping("/detail-list")
-    public R<List<ProductSpuVo>> getSpuList(@RequestParam("spuIds") Collection<Long> spuIds) {
-        return R.ok(productSpuService.queryListByIds(spuIds));
+    @GetMapping(value = {"/detail-list", "/list"}, params = "spuIds")
+    public R<List<ProductSpuRespVo>> getSpuList(@RequestParam("spuIds") Collection<Long> spuIds) {
+        return R.ok(BeanUtil.copyToList(productSpuService.queryListByIds(spuIds), ProductSpuRespVo.class));
     }
 
     /**
@@ -69,10 +72,10 @@ public class ProductSpuController extends BaseController {
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
     @GetMapping("/list-all-simple")
-    public R<List<ProductSpuVo>> getSpuSimpleList() {
+    public R<List<ProductSpuSimpleRespVo>> getSpuSimpleList() {
         ProductSpuBo bo = new ProductSpuBo();
         bo.setStatus(com.fly.common.enums.StatusEnum.ENABLE.getStatus());
-        return R.ok(productSpuService.queryList(bo));
+        return R.ok(BeanUtil.copyToList(productSpuService.queryList(bo), ProductSpuSimpleRespVo.class));
     }
 
     /**
@@ -88,16 +91,16 @@ public class ProductSpuController extends BaseController {
      * 获取商品 SPU 详情。
      */
     @GetMapping("/get/{id}")
-    public R<ProductSpuVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(productSpuService.queryDetailById(id));
+    public R<ProductSpuRespVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
+        return R.ok(BeanUtil.toBean(productSpuService.queryDetailById(id), ProductSpuRespVo.class));
     }
 
     /**
      * 获得商品 SPU 明细。
      */
     @GetMapping("/get-detail")
-    public R<ProductSpuVo> getSpuDetail(@RequestParam("id") Long id) {
-        return R.ok(productSpuService.queryDetailById(id));
+    public R<ProductSpuRespVo> getSpuDetail(@RequestParam("id") Long id) {
+        return R.ok(BeanUtil.toBean(productSpuService.queryDetailById(id), ProductSpuRespVo.class));
     }
 
     /**
@@ -106,15 +109,19 @@ public class ProductSpuController extends BaseController {
     @Log(title = "商品SPU", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:product:spu:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody ProductSpuBo bo) {
-        return R.ok(productSpuService.saveOrUpdate(bo));
+    public R<Long> saveOrUpdate(@RequestBody ProductSpuBo bo) {
+        if (bo.getId() == null) {
+            return R.ok(productSpuService.createSpu(bo));
+        }
+        productSpuService.saveOrUpdate(bo);
+        return R.ok(bo.getId());
     }
 
     /**
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody ProductSpuBo bo) {
+    public R<Boolean> yudaoUpdate(@RequestBody ProductSpuBo bo) {
         return R.ok(productSpuService.saveOrUpdate(bo));
     }
 
@@ -124,7 +131,7 @@ public class ProductSpuController extends BaseController {
     @Log(title = "商品SPU", businessType = BusinessType.UPDATE)
     @PreAuthorize("@pms.hasPermission('mall:product:spu:saveOrUpdate')")
     @PutMapping("/update-status")
-    public R<Void> updateStatus(@RequestBody ProductSpuBo bo) {
+    public R<Boolean> updateStatus(@RequestBody ProductSpuBo bo) {
         return R.ok(productSpuService.updateStatus(bo.getId(), bo.getStatus()));
     }
 
@@ -134,7 +141,7 @@ public class ProductSpuController extends BaseController {
     @Log(title = "商品SPU", businessType = BusinessType.DELETE)
     @PreAuthorize("@pms.hasPermission('mall:product:spu:delete')")
     @DeleteMapping("/delete/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+    public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(productSpuService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
@@ -142,8 +149,19 @@ public class ProductSpuController extends BaseController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
         return R.ok(productSpuService.deleteWithValidByIds(java.util.List.of(id), true));
+    }
+
+    /**
+     * 转换商品 SPU 分页响应对象。
+     */
+    private PageVo<ProductSpuRespVo> convertPage(PageVo<ProductSpuVo> page) {
+        PageVo<ProductSpuRespVo> respPage = new PageVo<>();
+        respPage.setList(BeanUtil.copyToList(page.getList(), ProductSpuRespVo.class));
+        respPage.setTotal(page.getTotal());
+        respPage.setPages(page.getPages());
+        return respPage;
     }
 
     /**
