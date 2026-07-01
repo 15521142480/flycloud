@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * 秒杀时段配置 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "promotion_seckill_config", autoResultMap = true)
 @Data

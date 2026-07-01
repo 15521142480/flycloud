@@ -3,15 +3,15 @@ package com.fly.im.service.friend;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVo;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVo;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
-import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
+import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageReqVo;
+import com.fly.system.api.im.domain.friend.ImFriend;
+import com.fly.system.api.im.domain.friend.ImFriendRequest;
 import com.fly.im.dal.mysql.friend.ImFriendMapper;
-import com.fly.im.enums.friend.ImFriendStateEnum;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.message.ImPrivateMessageService;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 import com.fly.im.service.websocket.ImWebSocketService;
@@ -38,15 +38,15 @@ import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
 import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 import static com.fly.common.utils.collection.CollectionUtils.filterList;
 import static com.fly.im.dal.redis.RedisKeyConstants.FRIEND_STATE;
-import static com.fly.im.enums.ErrorCodeConstants.FRIEND_BLOCKED_BY_PEER;
-import static com.fly.im.enums.ErrorCodeConstants.FRIEND_NOT_BLOCKED;
-import static com.fly.im.enums.ErrorCodeConstants.FRIEND_NOT_FRIEND;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FRIEND_BLOCKED_BY_PEER;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FRIEND_NOT_BLOCKED;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FRIEND_NOT_FRIEND;
 
 /**
  * IM 好友关系 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Slf4j
 @Service
@@ -66,12 +66,12 @@ public class ImFriendServiceImpl implements ImFriendService {
     @Cacheable(cacheNames = FRIEND_STATE, key = "#userId + '_' + #friendUserId", unless = "#result == null")
     public Integer getFriendState(Long userId, Long friendUserId) {
         // 1.1 我侧记录：我方删了，都算非好友
-        ImFriendDO mine = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
+        ImFriend mine = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
         if (mine == null || !CommonStatusEnum.isEnable(mine.getStatus())) {
             return ImFriendStateEnum.NONE.getState();
         }
         // 1.2 对方侧记录：对方删了 = 不是好友
-        ImFriendDO peer = friendMapper.selectByUserIdAndFriendUserId(friendUserId, userId);
+        ImFriend peer = friendMapper.selectByUserIdAndFriendUserId(friendUserId, userId);
         if (peer == null || !CommonStatusEnum.isEnable(peer.getStatus())) {
             return ImFriendStateEnum.NONE.getState();
         }
@@ -96,35 +96,35 @@ public class ImFriendServiceImpl implements ImFriendService {
     }
 
     @Override
-    public List<ImFriendDO> getFriendList(Long userId) {
+    public List<ImFriend> getFriendList(Long userId) {
         return friendMapper.selectListByUserId(userId);
     }
 
     @Override
-    public List<ImFriendDO> getEnableFriendList(Long userId) {
+    public List<ImFriend> getEnableFriendList(Long userId) {
         return friendMapper.selectListByUserIdAndStatus(userId, CommonStatusEnum.ENABLE.getStatus());
     }
 
     @Override
-    public List<ImFriendDO> getMutualEnableFriendList(Long userId) {
+    public List<ImFriend> getMutualEnableFriendList(Long userId) {
         // 1. 查询本端启用好友
-        List<ImFriendDO> friends = getEnableFriendList(userId);
+        List<ImFriend> friends = getEnableFriendList(userId);
         if (CollUtil.isEmpty(friends)) {
             return Collections.emptyList();
         }
 
         // 2. 查询对端启用好友关系
-        Set<Long> friendUserIds = convertSet(friends, ImFriendDO::getFriendUserId);
-        List<ImFriendDO> mutualFriends = friendMapper.selectListByUserIdsAndFriendUserIdAndStatus(friendUserIds, userId,
+        Set<Long> friendUserIds = convertSet(friends, ImFriend::getFriendUserId);
+        List<ImFriend> mutualFriends = friendMapper.selectListByUserIdsAndFriendUserIdAndStatus(friendUserIds, userId,
                 CommonStatusEnum.ENABLE.getStatus());
-        Set<Long> mutualUserIds = convertSet(mutualFriends, ImFriendDO::getUserId);
+        Set<Long> mutualUserIds = convertSet(mutualFriends, ImFriend::getUserId);
 
         // 3. 过滤双向启用好友
         return filterList(friends, friend -> mutualUserIds.contains(friend.getFriendUserId()));
     }
 
     @Override
-    public List<ImFriendDO> getActiveFriendList(Long userId, Collection<Long> friendUserIds) {
+    public List<ImFriend> getActiveFriendList(Long userId, Collection<Long> friendUserIds) {
         if (CollUtil.isEmpty(friendUserIds)) {
             return Collections.emptyList();
         }
@@ -133,7 +133,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     }
 
     @Override
-    public ImFriendDO getFriend(Long userId, Long friendUserId) {
+    public ImFriend getFriend(Long userId, Long friendUserId) {
         return friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
     }
 
@@ -144,13 +144,13 @@ public class ImFriendServiceImpl implements ImFriendService {
             return;
         }
         // 1.2 校验好友关系启用
-        ImFriendDO friend = friendMapper.selectByUserIdAndFriendUserId(userId, reqVo.getFriendUserId());
+        ImFriend friend = friendMapper.selectByUserIdAndFriendUserId(userId, reqVo.getFriendUserId());
         if (friend == null || !CommonStatusEnum.isEnable(friend.getStatus())) {
             throw exception(FRIEND_NOT_FRIEND);
         }
 
         // 2. 更新好友属性（备注 / 免打扰 / 联系人置顶）
-        friendMapper.updateById(new ImFriendDO().setId(friend.getId())
+        friendMapper.updateById(new ImFriend().setId(friend.getId())
                 .setSilent(reqVo.getSilent()).setDisplayName(reqVo.getDisplayName()).setPinned(reqVo.getPinned()));
 
         // 3. 推 FRIEND_UPDATE 给 A 多端：所有单边属性变更合并为单条通知，避免多通知顺序竞争
@@ -167,7 +167,7 @@ public class ImFriendServiceImpl implements ImFriendService {
             @CacheEvict(cacheNames = FRIEND_STATE, key = "#request.toUserId + '_' + #request.fromUserId")
     })
     @Transactional(rollbackFor = Exception.class)
-    public void becomeFriends(ImFriendRequestDO request) {
+    public void becomeFriends(ImFriendRequest request) {
         Long fromUserId = request.getFromUserId();
         Long toUserId = request.getToUserId();
         // 1. 双向建立关系：A 侧带申请的 displayName / addSource；B 侧 displayName 为空、addSource 同来源
@@ -232,7 +232,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     })
     public void blockFriend(Long userId, Long friendUserId) {
         // 1.1 校验是好友
-        ImFriendDO friend = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
+        ImFriend friend = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
         if (friend == null || !CommonStatusEnum.isEnable(friend.getStatus())) {
             throw exception(FRIEND_NOT_FRIEND);
         }
@@ -242,7 +242,7 @@ public class ImFriendServiceImpl implements ImFriendService {
         }
 
         // 2. 单边更新
-        friendMapper.updateById(new ImFriendDO().setId(friend.getId()).setBlocked(true));
+        friendMapper.updateById(new ImFriend().setId(friend.getId()).setBlocked(true));
 
         // 3. 推 FRIEND_BLOCK 给 A 多端
         FriendBlockNotification payload = (FriendBlockNotification) new FriendBlockNotification()
@@ -258,7 +258,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     })
     public void unblockFriend(Long userId, Long friendUserId) {
         // 1.1 校验是好友
-        ImFriendDO friend = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
+        ImFriend friend = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
         if (friend == null || !CommonStatusEnum.isEnable(friend.getStatus())) {
             throw exception(FRIEND_NOT_FRIEND);
         }
@@ -268,7 +268,7 @@ public class ImFriendServiceImpl implements ImFriendService {
         }
 
         // 2. 单边更新
-        friendMapper.updateById(new ImFriendDO().setId(friend.getId()).setBlocked(false));
+        friendMapper.updateById(new ImFriend().setId(friend.getId()).setBlocked(false));
 
         // 3. 推 FRIEND_UNBLOCK 给 A 多端
         FriendUnblockNotification payload = (FriendUnblockNotification) new FriendUnblockNotification()
@@ -289,7 +289,7 @@ public class ImFriendServiceImpl implements ImFriendService {
      * FRIEND_STATE 缓存失效由调用方的 @Caching 注解统一处理，本方法不主动 evict
      */
     public void addFriend0(Long userId, Long friendUserId, String displayName, Integer addSource) {
-        ImFriendDO exists = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
+        ImFriend exists = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
         // 情况一：已是 ENABLE 好友，幂等跳过；防御历史未处理申请被二次同意时把 blocked / silent / pinned 清回 false
         if (exists != null && CommonStatusEnum.isEnable(exists.getStatus())) {
             return;
@@ -301,7 +301,7 @@ public class ImFriendServiceImpl implements ImFriendService {
             return;
         }
         // 情况三：不存在记录 → 直接插入新记录
-        ImFriendDO friend = ImFriendDO.builder().userId(userId).friendUserId(friendUserId)
+        ImFriend friend = ImFriend.builder().userId(userId).friendUserId(friendUserId)
                 .silent(false).pinned(false).blocked(false)
                 .displayName(displayName).addSource(addSource)
                 .status(CommonStatusEnum.ENABLE.getStatus()).addTime(LocalDateTime.now()).build();
@@ -316,11 +316,11 @@ public class ImFriendServiceImpl implements ImFriendService {
      * FRIEND_STATE 缓存失效由调用方的 @Caching 注解统一处理，本方法不主动 evict
      */
     public boolean deleteFriend0(Long userId, Long friendUserId) {
-        ImFriendDO exists = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
+        ImFriend exists = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
         if (exists == null || CommonStatusEnum.isDisable(exists.getStatus())) {
             return false;
         }
-        friendMapper.updateById(new ImFriendDO().setId(exists.getId())
+        friendMapper.updateById(new ImFriend().setId(exists.getId())
                 .setStatus(CommonStatusEnum.DISABLE.getStatus()).setDeleteTime(LocalDateTime.now()));
         return true;
     }
@@ -328,7 +328,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFriendDO> getFriendPage(ImFriendManagerPageReqVo reqVo) {
+    public PageResult<ImFriend> getFriendPage(ImFriendManagerPageReqVo reqVo) {
         return friendMapper.selectPage(reqVo);
     }
 

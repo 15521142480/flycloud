@@ -2,9 +2,9 @@ package com.fly.im.controller.admin.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemRespVo;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVo;
-import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
+import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemRespVo;
+import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
+import com.fly.system.api.im.domain.face.ImFaceUserItem;
 import com.fly.im.service.face.ImFaceUserItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +31,7 @@ public class ImFaceUserItemController {
     @GetMapping("/list")
     @Operation(summary = "获得我的个人表情列表")
     public R<List<ImFaceUserItemRespVo>> getFaceUserItemList() {
-        List<ImFaceUserItemDO> items = faceUserItemService.getFaceUserItemList(getCurUserId());
+        List<ImFaceUserItem> items = faceUserItemService.getFaceUserItemList(getCurUserId());
         return ok(BeanUtils.toBean(items, ImFaceUserItemRespVo.class));
     }
 

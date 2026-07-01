@@ -12,7 +12,7 @@ import java.util.List;
  * 秒杀商品 Service 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface ISeckillProductService {
 

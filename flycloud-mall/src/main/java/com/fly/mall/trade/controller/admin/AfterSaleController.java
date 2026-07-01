@@ -6,6 +6,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.BusinessType;
+import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.bo.AfterSaleBo;
 import com.fly.mall.api.trade.domain.vo.AfterSaleVo;
 import com.fly.mall.trade.service.IAfterSaleService;
@@ -18,13 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.time.LocalDateTime;
 
 /**
  * 管理后台 - 售后单 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor
@@ -99,10 +99,9 @@ public class AfterSaleController extends BaseController {
      * 同意售后申请。
      */
     @PutMapping("/agree")
-    public R<Void> agree(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(20);
-        bo.setAuditTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+    public R<Void> agree(@RequestBody(required = false) AfterSaleBo bo, @RequestParam(value = "id", required = false) Long id) {
+        Long afterSaleId = id != null ? id : bo.getId();
+        return R.ok(afterSaleService.agreeAfterSale(UserUtils.getCurUserId(), afterSaleId));
     }
 
     /**
@@ -110,29 +109,25 @@ public class AfterSaleController extends BaseController {
      */
     @PutMapping("/disagree")
     public R<Void> disagree(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(61);
-        bo.setAuditTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.ok(afterSaleService.disagreeAfterSale(UserUtils.getCurUserId(), bo));
     }
 
     /**
      * 确认收到退货。
      */
     @PutMapping("/receive")
-    public R<Void> receive(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(40);
-        bo.setReceiveTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+    public R<Void> receive(@RequestBody(required = false) AfterSaleBo bo, @RequestParam(value = "id", required = false) Long id) {
+        Long afterSaleId = id != null ? id : bo.getId();
+        return R.ok(afterSaleService.receiveAfterSale(UserUtils.getCurUserId(), afterSaleId));
     }
 
     /**
      * 售后退款。
      */
     @PutMapping("/refund")
-    public R<Void> refund(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(50);
-        bo.setRefundTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+    public R<Void> refund(@RequestBody(required = false) AfterSaleBo bo, @RequestParam(value = "id", required = false) Long id) {
+        Long afterSaleId = id != null ? id : bo.getId();
+        return R.ok(afterSaleService.refundAfterSale(UserUtils.getCurUserId(), afterSaleId));
     }
 
     /**
@@ -140,9 +135,7 @@ public class AfterSaleController extends BaseController {
      */
     @PutMapping("/refuse")
     public R<Void> refuse(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(62);
-        bo.setReceiveTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.ok(afterSaleService.refuseAfterSale(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -150,9 +143,7 @@ public class AfterSaleController extends BaseController {
      */
     @PostMapping("/update-refunded")
     public R<Void> updateRefunded(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(50);
-        bo.setRefundTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.ok(afterSaleService.updateAfterSaleRefunded(bo.getId(), bo.getOrderId(), bo.getPayRefundId()));
     }
 
     /**

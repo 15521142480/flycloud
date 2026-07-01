@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  * 佣金记录 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "trade_brokerage_record")
 @Data

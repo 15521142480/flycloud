@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * 商品评价 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "product_comment", autoResultMap = true)
 @Data

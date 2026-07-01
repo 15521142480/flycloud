@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
  * IM QueryWrapper 扩展。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public class QueryWrapperX<T> extends QueryWrapper<T> {
 

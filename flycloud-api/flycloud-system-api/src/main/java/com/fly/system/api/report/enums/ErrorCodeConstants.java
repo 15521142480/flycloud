@@ -6,7 +6,7 @@ import com.fly.common.exception.ErrorCode;
  * 报表模块错误码常量。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 public interface ErrorCodeConstants {
 

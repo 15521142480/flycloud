@@ -1,10 +1,10 @@
 package com.fly.im.dal.mysql.group;
 
 import cn.hutool.core.collection.CollUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
+import com.fly.system.api.im.domain.group.ImGroupMember;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,45 +19,45 @@ import java.util.Map;
  * IM 群成员 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImGroupMemberMapper extends BaseMapperX<ImGroupMemberDO> {
+public interface ImGroupMemberMapper extends BaseMapperX<ImGroupMember> {
 
-    default List<ImGroupMemberDO> selectListByGroupId(Long groupId) {
-        return selectList(new LambdaQueryWrapperX<ImGroupMemberDO>().eq(ImGroupMemberDO::getGroupId, groupId));
+    default List<ImGroupMember> selectListByGroupId(Long groupId) {
+        return selectList(new LambdaQueryWrapperX<ImGroupMember>().eq(ImGroupMember::getGroupId, groupId));
     }
 
-    default ImGroupMemberDO selectByGroupIdAndUserId(Long groupId, Long userId) {
-        return selectOne(new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .eq(ImGroupMemberDO::getUserId, userId));
+    default ImGroupMember selectByGroupIdAndUserId(Long groupId, Long userId) {
+        return selectOne(new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .eq(ImGroupMember::getUserId, userId));
     }
 
-    default List<ImGroupMemberDO> selectListByGroupIdAndUserIds(Long groupId, Collection<Long> userIds) {
-        return selectList(new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .in(ImGroupMemberDO::getUserId, userIds));
+    default List<ImGroupMember> selectListByGroupIdAndUserIds(Long groupId, Collection<Long> userIds) {
+        return selectList(new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .in(ImGroupMember::getUserId, userIds));
     }
 
-    default List<ImGroupMemberDO> selectListByGroupIdAndStatus(Long groupId, Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .eq(ImGroupMemberDO::getStatus, status));
+    default List<ImGroupMember> selectListByGroupIdAndStatus(Long groupId, Integer status) {
+        return selectList(new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .eq(ImGroupMember::getStatus, status));
     }
 
-    default List<ImGroupMemberDO> selectListByGroupIdAndStatusAndRoles(Long groupId, Integer status,
+    default List<ImGroupMember> selectListByGroupIdAndStatusAndRoles(Long groupId, Integer status,
                                                                         Collection<Integer> roles) {
-        return selectList(new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .eq(ImGroupMemberDO::getStatus, status)
-                .in(ImGroupMemberDO::getRole, roles));
+        return selectList(new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .eq(ImGroupMember::getStatus, status)
+                .in(ImGroupMember::getRole, roles));
     }
 
-    default List<ImGroupMemberDO> selectListByUserIdAndStatus(Long userId, Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getUserId, userId)
-                .eq(ImGroupMemberDO::getStatus, status));
+    default List<ImGroupMember> selectListByUserIdAndStatus(Long userId, Integer status) {
+        return selectList(new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getUserId, userId)
+                .eq(ImGroupMember::getStatus, status));
     }
 
     /**
@@ -69,42 +69,42 @@ public interface ImGroupMemberMapper extends BaseMapperX<ImGroupMemberDO> {
      * @param minQuitTime 最早退群时间（含），可空
      * @return 已退群成员记录列表
      */
-    default List<ImGroupMemberDO> selectQuitListByUserId(Long userId, LocalDateTime minQuitTime) {
-        LambdaQueryWrapperX<ImGroupMemberDO> wrapper = new LambdaQueryWrapperX<>();
-        wrapper.eq(ImGroupMemberDO::getUserId, userId)
-                .eq(ImGroupMemberDO::getStatus, CommonStatusEnum.DISABLE.getStatus());
-        wrapper.geIfPresent(ImGroupMemberDO::getQuitTime, minQuitTime);
+    default List<ImGroupMember> selectQuitListByUserId(Long userId, LocalDateTime minQuitTime) {
+        LambdaQueryWrapperX<ImGroupMember> wrapper = new LambdaQueryWrapperX<>();
+        wrapper.eq(ImGroupMember::getUserId, userId)
+                .eq(ImGroupMember::getStatus, CommonStatusEnum.DISABLE.getStatus());
+        wrapper.geIfPresent(ImGroupMember::getQuitTime, minQuitTime);
         return selectList(wrapper);
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    default int updateByGroupIdAndStatus(Long groupId, Integer oldStatus, ImGroupMemberDO updateObj) {
-        return update(updateObj, new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .eq(ImGroupMemberDO::getStatus, oldStatus));
+    default int updateByGroupIdAndStatus(Long groupId, Integer oldStatus, ImGroupMember updateObj) {
+        return update(updateObj, new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .eq(ImGroupMember::getStatus, oldStatus));
     }
 
     @SuppressWarnings("UnusedReturnValue")
     default int updateByGroupIdAndUserIdsAndStatus(Long groupId, Collection<Long> userIds,
-                                                   Integer oldStatus, ImGroupMemberDO updateObj) {
-        return update(updateObj, new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .in(ImGroupMemberDO::getUserId, userIds)
-                .eq(ImGroupMemberDO::getStatus, oldStatus));
+                                                   Integer oldStatus, ImGroupMember updateObj) {
+        return update(updateObj, new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .in(ImGroupMember::getUserId, userIds)
+                .eq(ImGroupMember::getStatus, oldStatus));
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    default int updateListByGroupIdAndUserIds(Long groupId, Collection<Long> userIds, ImGroupMemberDO updateObj) {
-        return update(updateObj, new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .in(ImGroupMemberDO::getUserId, userIds));
+    default int updateListByGroupIdAndUserIds(Long groupId, Collection<Long> userIds, ImGroupMember updateObj) {
+        return update(updateObj, new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .in(ImGroupMember::getUserId, userIds));
     }
 
     default Long selectCountByGroupIdAndRoleAndStatus(Long groupId, Integer role, Integer status) {
-        return selectCount(new LambdaQueryWrapperX<ImGroupMemberDO>()
-                .eq(ImGroupMemberDO::getGroupId, groupId)
-                .eq(ImGroupMemberDO::getRole, role)
-                .eq(ImGroupMemberDO::getStatus, status));
+        return selectCount(new LambdaQueryWrapperX<ImGroupMember>()
+                .eq(ImGroupMember::getGroupId, groupId)
+                .eq(ImGroupMember::getRole, role)
+                .eq(ImGroupMember::getStatus, status));
     }
 
     /**
@@ -114,7 +114,7 @@ public interface ImGroupMemberMapper extends BaseMapperX<ImGroupMemberDO> {
         if (CollUtil.isEmpty(groupIds)) {
             return Collections.emptyMap();
         }
-        List<Map<String, Object>> rows = selectMaps(Wrappers.<ImGroupMemberDO>query()
+        List<Map<String, Object>> rows = selectMaps(Wrappers.<ImGroupMember>query()
                 .select("group_id AS groupId", "COUNT(*) AS cnt")
                 .in("group_id", groupIds)
                 .eq("status", status)
@@ -129,23 +129,23 @@ public interface ImGroupMemberMapper extends BaseMapperX<ImGroupMemberDO> {
 
     @SuppressWarnings("UnusedReturnValue")
     default int updateMuteEndTimeNull(Long id) {
-        return update(null, Wrappers.<ImGroupMemberDO>lambdaUpdate()
-                .eq(ImGroupMemberDO::getId, id)
-                .set(ImGroupMemberDO::getMuteEndTime, null));
+        return update(null, Wrappers.<ImGroupMember>lambdaUpdate()
+                .eq(ImGroupMember::getId, id)
+                .set(ImGroupMember::getMuteEndTime, null));
     }
 
     @SuppressWarnings("UnusedReturnValue")
     default int updateRejoinFields(Long id, Integer status, LocalDateTime joinTime,
                                    Integer role, Integer addSource, Long inviterUserId) {
-        return update(null, Wrappers.<ImGroupMemberDO>lambdaUpdate()
-                .eq(ImGroupMemberDO::getId, id)
-                .set(ImGroupMemberDO::getStatus, status)
-                .set(ImGroupMemberDO::getJoinTime, joinTime)
-                .set(ImGroupMemberDO::getRole, role)
-                .set(ImGroupMemberDO::getAddSource, addSource)
-                .set(ImGroupMemberDO::getInviterUserId, inviterUserId)
-                .set(ImGroupMemberDO::getQuitTime, null)
-                .set(ImGroupMemberDO::getMuteEndTime, null));
+        return update(null, Wrappers.<ImGroupMember>lambdaUpdate()
+                .eq(ImGroupMember::getId, id)
+                .set(ImGroupMember::getStatus, status)
+                .set(ImGroupMember::getJoinTime, joinTime)
+                .set(ImGroupMember::getRole, role)
+                .set(ImGroupMember::getAddSource, addSource)
+                .set(ImGroupMember::getInviterUserId, inviterUserId)
+                .set(ImGroupMember::getQuitTime, null)
+                .set(ImGroupMember::getMuteEndTime, null));
     }
 
 }

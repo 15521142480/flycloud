@@ -8,7 +8,7 @@ import com.fly.system.api.member.domain.vo.MemberLevelVo;
  * 会员等级 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface MemberLevelMapper extends BaseMapperPlus<MemberLevelMapper, MemberLevel, MemberLevelVo> {
 }

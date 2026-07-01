@@ -9,7 +9,7 @@ import java.util.Arrays;
  * 钱包交易业务类型。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Getter
 @AllArgsConstructor

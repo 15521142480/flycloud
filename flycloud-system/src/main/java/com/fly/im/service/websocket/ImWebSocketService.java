@@ -13,7 +13,7 @@ import java.util.Collections;
  * 统一封装 WebSocket 消息推送，事务内调用时提交后异步执行。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImWebSocketService {
 

@@ -15,7 +15,7 @@ import java.util.List;
  * 会员收件地址 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IAddressService {
 

@@ -8,7 +8,7 @@ import com.fly.mall.api.product.domain.vo.ProductCommentVo;
  * 商品评价 Mapper 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface ProductCommentMapper extends BaseMapperPlus<ProductCommentMapper, ProductComment, ProductCommentVo> {
 

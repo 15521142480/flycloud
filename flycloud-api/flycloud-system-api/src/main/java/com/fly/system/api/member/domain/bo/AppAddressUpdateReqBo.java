@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  * 移动端 - 会员收件地址更新请求对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

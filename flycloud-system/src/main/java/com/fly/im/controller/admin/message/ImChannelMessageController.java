@@ -3,9 +3,9 @@ package com.fly.im.controller.admin.message;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.message.vo.channel.ImChannelMessagePullRespVo;
-import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
-import com.fly.im.enums.message.ImMessageStatusEnum;
+import com.fly.system.api.im.domain.vo.admin.message.channel.ImChannelMessagePullRespVo;
+import com.fly.system.api.im.domain.message.ImChannelMessage;
+import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
 import com.fly.im.service.message.ImChannelMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,13 +47,13 @@ public class ImChannelMessageController {
             @Max(value = 200, message = "size 一次最多 200 条") Integer size) {
         // 1. 拉取消息列表
         Long userId = getCurUserId();
-        List<ImChannelMessageDO> list = channelMessageService.getMessageListForPull(userId, minId, size);
+        List<ImChannelMessage> list = channelMessageService.getMessageListForPull(userId, minId, size);
         if (CollUtil.isEmpty(list)) {
             return ok(Collections.emptyList());
         }
         // 2. 按 Redis 已读游标补 status；device A 已读后 device B 拉到这条不再算入未读
         Map<Long, Long> readMaxByChannel = channelMessageService.getChannelReadMaxMessageIdMap(
-                userId, convertSet(list, ImChannelMessageDO::getChannelId));
+                userId, convertSet(list, ImChannelMessage::getChannelId));
         return ok(BeanUtils.toBean(list, ImChannelMessagePullRespVo.class, vo -> {
             Long readMax = readMaxByChannel.get(vo.getChannelId());
             vo.setStatus(readMax != null && readMax >= vo.getId()

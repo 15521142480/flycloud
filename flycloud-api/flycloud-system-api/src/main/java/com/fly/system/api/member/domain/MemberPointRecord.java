@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 会员积分记录。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("member_point_record")
 @Data

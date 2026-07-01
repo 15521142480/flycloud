@@ -1,8 +1,8 @@
 package com.fly.im.service.websocket.dto;
 
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.domain.message.ImChannelMessage;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * 字段分层：顶层是消息元数据 + 检索维度，content 是 MaterialMessage payload 的 JSON 串。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -51,7 +51,7 @@ public class ImChannelMessageDTO {
     /**
      * 由频道消息 DO 构建推送 DTO
      */
-    public static ImChannelMessageDTO ofSend(ImChannelMessageDO message) {
+    public static ImChannelMessageDTO ofSend(ImChannelMessage message) {
         return BeanUtils.toBean(message, ImChannelMessageDTO.class);
     }
 

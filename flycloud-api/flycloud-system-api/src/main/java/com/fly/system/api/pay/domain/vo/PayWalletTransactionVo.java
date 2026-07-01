@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 支付钱包流水返回对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "支付钱包流水返回对象")

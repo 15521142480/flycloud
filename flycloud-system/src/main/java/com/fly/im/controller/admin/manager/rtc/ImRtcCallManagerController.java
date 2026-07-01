@@ -5,12 +5,12 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerPageReqVo;
-import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerRespVo;
-import com.fly.im.controller.admin.manager.rtc.vo.ImRtcParticipantManagerRespVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
-import com.fly.im.dal.dataobject.rtc.ImRtcParticipantDO;
+import com.fly.system.api.im.domain.vo.admin.manager.rtc.ImRtcCallManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.rtc.ImRtcCallManagerRespVo;
+import com.fly.system.api.im.domain.vo.admin.manager.rtc.ImRtcParticipantManagerRespVo;
+import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.domain.rtc.ImRtcParticipant;
 import com.fly.im.service.group.ImGroupService;
 import com.fly.im.service.rtc.ImRtcCallService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -52,7 +52,7 @@ public class ImRtcCallManagerController {
     @Operation(summary = "获得通话记录分页")
     @PreAuthorize("@pms.hasPermission('im:manager:rtc:query')")
     public R<PageResult<ImRtcCallManagerRespVo>> getCallPage(@Valid ImRtcCallManagerPageReqVo pageReqVo) {
-        PageResult<ImRtcCallDO> pageResult = rtcCallService.getCallPage(pageReqVo);
+        PageResult<ImRtcCall> pageResult = rtcCallService.getCallPage(pageReqVo);
         return ok(buildCallRespVoPage(pageResult));
     }
 
@@ -61,7 +61,7 @@ public class ImRtcCallManagerController {
     @Parameter(name = "id", description = "通话编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:rtc:query')")
     public R<ImRtcCallManagerRespVo> getCall(@RequestParam("id") Long id) {
-        ImRtcCallDO call = rtcCallService.getCall(id);
+        ImRtcCall call = rtcCallService.getCall(id);
         if (call == null) {
             return ok((ImRtcCallManagerRespVo) null);
         }
@@ -73,13 +73,13 @@ public class ImRtcCallManagerController {
     @Parameter(name = "id", description = "通话编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:rtc:query')")
     public R<List<ImRtcParticipantManagerRespVo>> getCallParticipantList(@RequestParam("id") Long id) {
-        List<ImRtcParticipantDO> participants = rtcCallService.getCallParticipantListByCallId(id);
+        List<ImRtcParticipant> participants = rtcCallService.getCallParticipantListByCallId(id);
         if (CollUtil.isEmpty(participants)) {
             return ok(Collections.emptyList());
         }
         // 查询用户信息
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                convertSet(participants, ImRtcParticipantDO::getUserId));
+                convertSet(participants, ImRtcParticipant::getUserId));
         // 组装返回
         return ok(BeanUtils.toBean(participants, ImRtcParticipantManagerRespVo.class, vo ->
                 MapUtils.findAndThen(userMap, vo.getUserId(),
@@ -88,19 +88,19 @@ public class ImRtcCallManagerController {
 
     // ========== 私有方法：VO 组装 ==========
 
-    private PageResult<ImRtcCallManagerRespVo> buildCallRespVoPage(PageResult<ImRtcCallDO> pageResult) {
+    private PageResult<ImRtcCallManagerRespVo> buildCallRespVoPage(PageResult<ImRtcCall> pageResult) {
         if (CollUtil.isEmpty(pageResult.getList())) {
             return PageResult.empty(pageResult.getTotal());
         }
         return new PageResult<>(buildCallRespVoList(pageResult.getList()), pageResult.getTotal());
     }
 
-    private List<ImRtcCallManagerRespVo> buildCallRespVoList(List<ImRtcCallDO> calls) {
+    private List<ImRtcCallManagerRespVo> buildCallRespVoList(List<ImRtcCall> calls) {
         // 查询用户信息
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                convertSet(calls, ImRtcCallDO::getInviterUserId));
-        Map<Long, ImGroupDO> groupMap = groupService.getGroupMap(
-                convertSet(calls, ImRtcCallDO::getGroupId));
+                convertSet(calls, ImRtcCall::getInviterUserId));
+        Map<Long, ImGroup> groupMap = groupService.getGroupMap(
+                convertSet(calls, ImRtcCall::getGroupId));
         // 组装返回
         return BeanUtils.toBean(calls, ImRtcCallManagerRespVo.class, vo -> {
             MapUtils.findAndThen(userMap, vo.getInviterUserId(),

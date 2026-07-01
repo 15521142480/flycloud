@@ -1,9 +1,9 @@
 package com.fly.im.service.group;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVo;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupRequestManagerPageReqVo;
-import com.fly.im.dal.dataobject.group.ImGroupRequestDO;
+import com.fly.system.api.im.domain.vo.admin.group.request.ImGroupRequestApplyReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupRequestManagerPageReqVo;
+import com.fly.system.api.im.domain.group.ImGroupRequest;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.List;
  * IM 加群申请 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImGroupRequestService {
 
@@ -26,7 +26,7 @@ public interface ImGroupRequestService {
      * @param reqVo  申请请求
      * @return 申请记录；自由进群直进时返回 null
      */
-    ImGroupRequestDO applyJoinGroup(Long userId, @Valid ImGroupRequestApplyReqVo reqVo);
+    ImGroupRequest applyJoinGroup(Long userId, @Valid ImGroupRequestApplyReqVo reqVo);
 
     /**
      * 同意加群申请（群主或管理员）；处理前校验入群人数上限
@@ -62,7 +62,7 @@ public interface ImGroupRequestService {
      * @param userId 当前用户编号；后端按 ImGroupMember.role 过滤出我作为 OWNER / ADMIN 的群
      * @return 未处理申请列表（不分页）
      */
-    List<ImGroupRequestDO> getUnhandledRequestListByOwnerOrAdmin(Long userId);
+    List<ImGroupRequest> getUnhandledRequestListByOwnerOrAdmin(Long userId);
 
     /**
      * 拉取指定群下的全部加群申请（含已处理）；仅群主 / 管理员可查
@@ -73,7 +73,7 @@ public interface ImGroupRequestService {
      * @param groupId 群编号
      * @return 申请记录列表，按 id 倒序
      */
-    List<ImGroupRequestDO> getGroupRequestListByGroupId(Long userId, Long groupId);
+    List<ImGroupRequest> getGroupRequestListByGroupId(Long userId, Long groupId);
 
     /**
      * 按 id 单查申请记录；通用读接口，越权过滤交由调用方
@@ -81,13 +81,13 @@ public interface ImGroupRequestService {
      * @param id 申请记录编号
      * @return 申请记录
      */
-    ImGroupRequestDO getGroupRequest(Long id);
+    ImGroupRequest getGroupRequest(Long id);
 
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询加群申请记录
      */
-    PageResult<ImGroupRequestDO> getGroupRequestPage(ImGroupRequestManagerPageReqVo reqVo);
+    PageResult<ImGroupRequest> getGroupRequestPage(ImGroupRequestManagerPageReqVo reqVo);
 
 }

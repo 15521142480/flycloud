@@ -8,7 +8,7 @@ import com.fly.mall.api.product.domain.vo.ProductSpuVo;
  * 商品 SPU Mapper 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface ProductSpuMapper extends BaseMapperPlus<ProductSpuMapper, ProductSpu, ProductSpuVo> {
 

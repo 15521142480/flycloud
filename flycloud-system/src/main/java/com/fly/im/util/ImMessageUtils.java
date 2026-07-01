@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.fly.common.utils.json.JsonUtils;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.websocket.dto.message.QuoteMessage;
 
 import java.util.Collection;
@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
-import static com.fly.im.enums.ErrorCodeConstants.MESSAGE_CONTENT_INVALID;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.MESSAGE_CONTENT_INVALID;
 
 /**
  * IM 消息内容相关工具类

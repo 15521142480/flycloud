@@ -1,7 +1,7 @@
 package com.fly.im.service.message.dto;
 
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.websocket.dto.notification.group.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.List;
  * IM 群聊消息发送 DTO
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -170,7 +170,7 @@ public class ImGroupMessageSendDTO {
                 .setType(ImMessageTypeEnum.GROUP_MEMBER_SETTING_UPDATE.getType()).setContent(notification);
     }
 
-    public static ImGroupMessageSendDTO ofGroupMessagePin(Long groupId, Long operatorUserId, ImGroupMessageDO message) {
+    public static ImGroupMessageSendDTO ofGroupMessagePin(Long groupId, Long operatorUserId, ImGroupMessage message) {
         GroupMessagePinNotification notification = new GroupMessagePinNotification();
         GroupMessagePinNotification.PinnedMessage pinnedMessage = new GroupMessagePinNotification.PinnedMessage()
                 .setId(message.getId()).setSenderId(message.getSenderId()).setGroupId(message.getGroupId())

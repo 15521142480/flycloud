@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 移动端 - 交易配置 控制器。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor

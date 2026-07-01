@@ -9,7 +9,7 @@ import java.util.List;
  * 支付通知任务详情 VO。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

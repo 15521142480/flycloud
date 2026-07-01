@@ -8,7 +8,7 @@ import com.fly.system.api.member.domain.vo.MemberPointRecordVo;
  * 会员积分记录 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface MemberPointRecordMapper extends BaseMapperPlus<MemberPointRecordMapper, MemberPointRecord, MemberPointRecordVo> {
 }

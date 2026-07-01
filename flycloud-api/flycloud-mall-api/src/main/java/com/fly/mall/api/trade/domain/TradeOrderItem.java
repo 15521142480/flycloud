@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * 交易订单项 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "trade_order_item", autoResultMap = true)
 @Data
@@ -83,7 +83,7 @@ public class TradeOrderItem extends BaseEntity {
      * 订单项商品规格属性。
      *
      * @author lxs
-     * @date 2026-06-28
+     * @date 2026-07-02
      */
     @Data
     public static class Property implements Serializable {

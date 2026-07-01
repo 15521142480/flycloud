@@ -3,8 +3,8 @@ package com.fly.im.dal.mysql.sensitiveword;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVo;
-import com.fly.im.dal.dataobject.sensitiveword.ImSensitiveWordDO;
+import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordPageReqVo;
+import com.fly.system.api.im.domain.sensitiveword.ImSensitiveWord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -16,27 +16,27 @@ import java.util.List;
  * IM 敏感词 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImSensitiveWordMapper extends BaseMapperX<ImSensitiveWordDO> {
+public interface ImSensitiveWordMapper extends BaseMapperX<ImSensitiveWord> {
 
-    default List<ImSensitiveWordDO> selectListByStatus(Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImSensitiveWordDO>()
-                .eq(ImSensitiveWordDO::getStatus, status));
+    default List<ImSensitiveWord> selectListByStatus(Integer status) {
+        return selectList(new LambdaQueryWrapperX<ImSensitiveWord>()
+                .eq(ImSensitiveWord::getStatus, status));
     }
 
-    default ImSensitiveWordDO selectByWord(String word) {
-        return selectOne(new LambdaQueryWrapperX<ImSensitiveWordDO>()
-                .eq(ImSensitiveWordDO::getWord, word));
+    default ImSensitiveWord selectByWord(String word) {
+        return selectOne(new LambdaQueryWrapperX<ImSensitiveWord>()
+                .eq(ImSensitiveWord::getWord, word));
     }
 
-    default PageResult<ImSensitiveWordDO> selectPage(ImSensitiveWordPageReqVo reqVo) {
-        return selectPage(reqVo, new LambdaQueryWrapperX<ImSensitiveWordDO>()
-                .likeIfPresent(ImSensitiveWordDO::getWord, reqVo.getWord())
-                .eqIfPresent(ImSensitiveWordDO::getStatus, reqVo.getStatus())
-                .betweenIfPresent(ImSensitiveWordDO::getCreateTime, reqVo.getCreateTime())
-                .orderByDesc(ImSensitiveWordDO::getId));
+    default PageResult<ImSensitiveWord> selectPage(ImSensitiveWordPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImSensitiveWord>()
+                .likeIfPresent(ImSensitiveWord::getWord, reqVo.getWord())
+                .eqIfPresent(ImSensitiveWord::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImSensitiveWord::getCreateTime, reqVo.getCreateTime())
+                .orderByDesc(ImSensitiveWord::getId));
     }
 
     @Select("SELECT MAX(update_time) FROM im_sensitive_word")

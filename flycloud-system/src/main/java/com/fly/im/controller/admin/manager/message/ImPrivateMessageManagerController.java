@@ -5,9 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerRespVo;
-import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerRespVo;
+import com.fly.system.api.im.domain.message.ImPrivateMessage;
 import com.fly.im.service.message.ImPrivateMessageService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -46,7 +46,7 @@ public class ImPrivateMessageManagerController {
     public R<PageResult<ImPrivateMessageManagerRespVo>> getPrivateMessagePage(
             @Valid ImPrivateMessageManagerPageReqVo pageReqVo) {
         // 1. 分页查询
-        PageResult<ImPrivateMessageDO> pageResult = privateMessageService.getPrivateMessagePage(pageReqVo);
+        PageResult<ImPrivateMessage> pageResult = privateMessageService.getPrivateMessagePage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
@@ -65,7 +65,7 @@ public class ImPrivateMessageManagerController {
     @Parameter(name = "id", description = "消息编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:message:query')")
     public R<ImPrivateMessageManagerRespVo> getPrivateMessage(@RequestParam("id") Long id) {
-        ImPrivateMessageDO message = privateMessageService.getPrivateMessage(id);
+        ImPrivateMessage message = privateMessageService.getPrivateMessage(id);
         return ok(BeanUtils.toBean(message, ImPrivateMessageManagerRespVo.class));
     }
 

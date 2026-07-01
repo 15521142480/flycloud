@@ -4,8 +4,8 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
 import com.fly.im.framework.mybatis.QueryWrapperX;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.message.ImPrivateMessage;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
@@ -15,10 +15,10 @@ import java.util.List;
  * IM 私聊消息 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImPrivateMessageMapper extends BaseMapperX<ImPrivateMessageDO> {
+public interface ImPrivateMessageMapper extends BaseMapperX<ImPrivateMessage> {
 
     /**
      * 根据 minId + 时间窗口增量拉取私聊消息
@@ -29,9 +29,9 @@ public interface ImPrivateMessageMapper extends BaseMapperX<ImPrivateMessageDO> 
      * @param size        拉取数量
      * @return 消息列表
      */
-    default List<ImPrivateMessageDO> selectListByMinId(Long userId, Long minId,
+    default List<ImPrivateMessage> selectListByMinId(Long userId, Long minId,
                                                        LocalDateTime minSendTime, Integer size) {
-        QueryWrapperX<ImPrivateMessageDO> wrapper = new QueryWrapperX<>();
+        QueryWrapperX<ImPrivateMessage> wrapper = new QueryWrapperX<>();
         wrapper.and(w -> w.eq("sender_id", userId)
                         .or()
                         .eq("receiver_id", userId))
@@ -51,8 +51,8 @@ public interface ImPrivateMessageMapper extends BaseMapperX<ImPrivateMessageDO> 
      * @param limit      拉取数量
      * @return 消息列表（按 id 倒序）
      */
-    default List<ImPrivateMessageDO> selectHistoryList(Long userId, Long receiverId, Long maxId, Integer limit) {
-        QueryWrapperX<ImPrivateMessageDO> wrapper = new QueryWrapperX<>();
+    default List<ImPrivateMessage> selectHistoryList(Long userId, Long receiverId, Long maxId, Integer limit) {
+        QueryWrapperX<ImPrivateMessage> wrapper = new QueryWrapperX<>();
         wrapper.and(w -> w.eq("sender_id", userId).eq("receiver_id", receiverId)
                         .or()
                         .eq("sender_id", receiverId).eq("receiver_id", userId))
@@ -62,49 +62,49 @@ public interface ImPrivateMessageMapper extends BaseMapperX<ImPrivateMessageDO> 
         return selectList(wrapper);
     }
 
-    default ImPrivateMessageDO selectBySenderIdAndClientMessageId(Long senderId, String clientMessageId) {
-        return selectOne(new LambdaQueryWrapperX<ImPrivateMessageDO>()
-                .eq(ImPrivateMessageDO::getSenderId, senderId)
-                .eq(ImPrivateMessageDO::getClientMessageId, clientMessageId));
+    default ImPrivateMessage selectBySenderIdAndClientMessageId(Long senderId, String clientMessageId) {
+        return selectOne(new LambdaQueryWrapperX<ImPrivateMessage>()
+                .eq(ImPrivateMessage::getSenderId, senderId)
+                .eq(ImPrivateMessage::getClientMessageId, clientMessageId));
     }
 
     default Long selectMaxIdBySenderIdAndReceiverIdAndStatus(Long senderId, Long receiverId, Integer status) {
-        ImPrivateMessageDO message = selectOne(new LambdaQueryWrapperX<ImPrivateMessageDO>()
-                .eq(ImPrivateMessageDO::getSenderId, senderId)
-                .eq(ImPrivateMessageDO::getReceiverId, receiverId)
-                .eq(ImPrivateMessageDO::getStatus, status)
-                .orderByDesc(ImPrivateMessageDO::getId)
+        ImPrivateMessage message = selectOne(new LambdaQueryWrapperX<ImPrivateMessage>()
+                .eq(ImPrivateMessage::getSenderId, senderId)
+                .eq(ImPrivateMessage::getReceiverId, receiverId)
+                .eq(ImPrivateMessage::getStatus, status)
+                .orderByDesc(ImPrivateMessage::getId)
                 .last("LIMIT 1"));
         return message != null ? message.getId() : null;
     }
 
     default int updateBySenderIdAndReceiverIdAndIdLeAndStatus(Long senderId, Long receiverId, Long maxMessageId,
-                                                              Integer whereStatus, ImPrivateMessageDO updateObj) {
-        return update(updateObj, new LambdaQueryWrapperX<ImPrivateMessageDO>()
-                .eq(ImPrivateMessageDO::getSenderId, senderId)
-                .eq(ImPrivateMessageDO::getReceiverId, receiverId)
-                .le(ImPrivateMessageDO::getId, maxMessageId)
-                .eq(ImPrivateMessageDO::getStatus, whereStatus));
+                                                              Integer whereStatus, ImPrivateMessage updateObj) {
+        return update(updateObj, new LambdaQueryWrapperX<ImPrivateMessage>()
+                .eq(ImPrivateMessage::getSenderId, senderId)
+                .eq(ImPrivateMessage::getReceiverId, receiverId)
+                .le(ImPrivateMessage::getId, maxMessageId)
+                .eq(ImPrivateMessage::getStatus, whereStatus));
     }
 
-    default PageResult<ImPrivateMessageDO> selectPage(ImPrivateMessageManagerPageReqVo reqVo) {
-        LambdaQueryWrapperX<ImPrivateMessageDO> query = new LambdaQueryWrapperX<>();
+    default PageResult<ImPrivateMessage> selectPage(ImPrivateMessageManagerPageReqVo reqVo) {
+        LambdaQueryWrapperX<ImPrivateMessage> query = new LambdaQueryWrapperX<>();
         if (reqVo.getSenderId() != null && reqVo.getReceiverId() != null) {
-            query.and(w -> w.eq(ImPrivateMessageDO::getSenderId, reqVo.getSenderId())
-                            .eq(ImPrivateMessageDO::getReceiverId, reqVo.getReceiverId())
+            query.and(w -> w.eq(ImPrivateMessage::getSenderId, reqVo.getSenderId())
+                            .eq(ImPrivateMessage::getReceiverId, reqVo.getReceiverId())
                             .or()
-                            .eq(ImPrivateMessageDO::getSenderId, reqVo.getReceiverId())
-                            .eq(ImPrivateMessageDO::getReceiverId, reqVo.getSenderId()));
+                            .eq(ImPrivateMessage::getSenderId, reqVo.getReceiverId())
+                            .eq(ImPrivateMessage::getReceiverId, reqVo.getSenderId()));
         } else {
-            query.eqIfPresent(ImPrivateMessageDO::getSenderId, reqVo.getSenderId())
-                    .eqIfPresent(ImPrivateMessageDO::getReceiverId, reqVo.getReceiverId());
+            query.eqIfPresent(ImPrivateMessage::getSenderId, reqVo.getSenderId())
+                    .eqIfPresent(ImPrivateMessage::getReceiverId, reqVo.getReceiverId());
         }
         return selectPage(reqVo, query
-                .eqIfPresent(ImPrivateMessageDO::getType, reqVo.getType())
-                .likeIfPresent(ImPrivateMessageDO::getContent, reqVo.getContent())
-                .eqIfPresent(ImPrivateMessageDO::getStatus, reqVo.getStatus())
-                .betweenIfPresent(ImPrivateMessageDO::getSendTime, reqVo.getSendTime())
-                .orderByDesc(ImPrivateMessageDO::getId));
+                .eqIfPresent(ImPrivateMessage::getType, reqVo.getType())
+                .likeIfPresent(ImPrivateMessage::getContent, reqVo.getContent())
+                .eqIfPresent(ImPrivateMessage::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImPrivateMessage::getSendTime, reqVo.getSendTime())
+                .orderByDesc(ImPrivateMessage::getId));
     }
 
 }

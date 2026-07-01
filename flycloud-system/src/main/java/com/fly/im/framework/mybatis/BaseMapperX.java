@@ -16,7 +16,7 @@ import java.util.List;
  * IM Mapper 扩展接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface BaseMapperX<T> extends BaseMapperPlus<BaseMapperX<T>, T, T> {
 

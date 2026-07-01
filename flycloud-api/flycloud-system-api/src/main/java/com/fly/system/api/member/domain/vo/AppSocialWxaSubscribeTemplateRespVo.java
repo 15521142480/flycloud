@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 移动端会员小程序订阅模板响应对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class AppSocialWxaSubscribeTemplateRespVo implements Serializable {

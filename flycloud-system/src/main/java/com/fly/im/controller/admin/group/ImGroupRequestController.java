@@ -2,16 +2,16 @@ package com.fly.im.controller.admin.group;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestApplyReqVo;
-import com.fly.im.controller.admin.group.vo.request.ImGroupRequestRespVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
-import com.fly.im.dal.dataobject.group.ImGroupRequestDO;
-import com.fly.im.enums.group.ImGroupMemberRoleEnum;
+import com.fly.system.api.im.domain.vo.admin.group.request.ImGroupRequestApplyReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.request.ImGroupRequestRespVo;
+import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.group.ImGroupMember;
+import com.fly.system.api.im.domain.group.ImGroupRequest;
+import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.service.group.ImGroupRequestService;
 import com.fly.im.service.group.ImGroupService;
@@ -38,7 +38,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
  * IM 加群申请 Controller
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Tag(name = "管理后台 - IM 加群申请")
 @RestController
@@ -59,7 +59,7 @@ public class ImGroupRequestController {
     @PostMapping("/apply")
     @Operation(summary = "申请加群")
     public R<Long> applyJoinGroup(@Valid @RequestBody ImGroupRequestApplyReqVo reqVo) {
-        ImGroupRequestDO request = groupRequestService.applyJoinGroup(getCurUserId(), reqVo);
+        ImGroupRequest request = groupRequestService.applyJoinGroup(getCurUserId(), reqVo);
         return ok(request != null ? request.getId() : null);
     }
 
@@ -85,7 +85,7 @@ public class ImGroupRequestController {
     @GetMapping("/unhandled-list")
     @Operation(summary = "查询「我管理的所有群」下的未处理加群申请列表（不分页）；前端 store 据此派生横幅红点 + Drawer 列表")
     public R<List<ImGroupRequestRespVo>> getUnhandledRequestList() {
-        List<ImGroupRequestDO> list = groupRequestService.getUnhandledRequestListByOwnerOrAdmin(getCurUserId());
+        List<ImGroupRequest> list = groupRequestService.getUnhandledRequestListByOwnerOrAdmin(getCurUserId());
         return ok(buildVOList(list));
     }
 
@@ -94,7 +94,7 @@ public class ImGroupRequestController {
     @Parameter(name = "groupId", description = "群编号", required = true, example = "1024")
     public R<List<ImGroupRequestRespVo>> getGroupRequestListByGroupId(
             @RequestParam("groupId") @NotNull(message = "群编号不能为空") Long groupId) {
-        List<ImGroupRequestDO> list = groupRequestService.getGroupRequestListByGroupId(getCurUserId(), groupId);
+        List<ImGroupRequest> list = groupRequestService.getGroupRequestListByGroupId(getCurUserId(), groupId);
         return ok(buildVOList(list));
     }
 
@@ -102,7 +102,7 @@ public class ImGroupRequestController {
     @Operation(summary = "按 id 单查申请记录（带越权过滤；WebSocket 通知到达后用）")
     @Parameter(name = "id", description = "申请记录编号", required = true)
     public R<ImGroupRequestRespVo> getGroupRequest(@RequestParam("id") Long id) {
-        ImGroupRequestDO request = groupRequestService.getGroupRequest(id);
+        ImGroupRequest request = groupRequestService.getGroupRequest(id);
         if (request == null) {
             return ok((ImGroupRequestRespVo) null);
         }
@@ -123,14 +123,14 @@ public class ImGroupRequestController {
      * 当前用户是否该群的有效群主 / 管理员
      */
     private boolean isGroupOwnerOrAdmin(Long groupId, Long userId) {
-        ImGroupMemberDO member = groupMemberService.getGroupMember(groupId, userId);
+        ImGroupMember member = groupMemberService.getGroupMember(groupId, userId);
         return member != null
                 && !CommonStatusEnum.DISABLE.getStatus().equals(member.getStatus())
                 && ImGroupMemberRoleEnum.isOwnerOrAdmin(member.getRole());
     }
 
     /** 申请记录列表批量转 VO + 关联回填用户 / 群信息 */
-    private List<ImGroupRequestRespVo> buildVOList(List<ImGroupRequestDO> list) {
+    private List<ImGroupRequestRespVo> buildVOList(List<ImGroupRequest> list) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }
@@ -139,8 +139,8 @@ public class ImGroupRequestController {
                 request -> Stream.of(request.getUserId(), request.getInviterUserId()));
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(userIds);
         // 2. 聚合群信息（封禁 / 解散群也要回填，便于前端展示历史）
-        Set<Long> groupIds = convertSet(list, ImGroupRequestDO::getGroupId);
-        Map<Long, ImGroupDO> groupMap = groupService.getGroupMap(groupIds);
+        Set<Long> groupIds = convertSet(list, ImGroupRequest::getGroupId);
+        Map<Long, ImGroup> groupMap = groupService.getGroupMap(groupIds);
         return convertList(list, request -> {
             ImGroupRequestRespVo vo = BeanUtils.toBean(request, ImGroupRequestRespVo.class);
             MapUtils.findAndThen(userMap, request.getUserId(), user ->

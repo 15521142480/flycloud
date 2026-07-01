@@ -11,7 +11,7 @@ import com.fly.system.api.report.domain.vo.GoViewProjectVo;
  * GoView 项目 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface GoViewProjectMapper extends BaseMapperPlus<GoViewProjectMapper, GoViewProject, GoViewProjectVo> {
 

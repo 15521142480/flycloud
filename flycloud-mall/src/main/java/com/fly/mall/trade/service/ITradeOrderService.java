@@ -23,7 +23,7 @@ import java.util.List;
  * 交易订单 Service 接口。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 public interface ITradeOrderService {
 
@@ -106,6 +106,11 @@ public interface ITradeOrderService {
      * 查询当前用户订单数量。
      */
     java.util.Map<String, Long> getOrderCount(Long userId);
+
+    /**
+     * 支付回调后更新订单为已支付。
+     */
+    void updateOrderPaid(Long id, Long payOrderId);
 
     /**
      * 当前用户取消订单。

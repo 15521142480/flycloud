@@ -5,12 +5,12 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVo;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageRespVo;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageSendReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelDO;
-import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
-import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessagePageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageRespVo;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageSendReqVo;
+import com.fly.system.api.im.domain.channel.ImChannel;
+import com.fly.system.api.im.domain.channel.ImChannelMaterial;
+import com.fly.system.api.im.domain.message.ImChannelMessage;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import com.fly.im.service.message.ImChannelMessageService;
 import com.fly.im.service.channel.ImChannelService;
@@ -61,15 +61,15 @@ public class ImChannelMessageManagerController {
     @Operation(summary = "获得频道消息分页；回填频道名 / 素材标题")
     @PreAuthorize("@pms.hasPermission('im:manager:channel-message:query')")
     public R<PageResult<ImChannelMessageRespVo>> getMessagePage(@Valid ImChannelMessagePageReqVo pageReqVo) {
-        PageResult<ImChannelMessageDO> pageResult = channelMessageService.getMessagePage(pageReqVo);
+        PageResult<ImChannelMessage> pageResult = channelMessageService.getMessagePage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
         // 批量查询频道和素材，并回填频道名 / 素材标题
-        Map<Long, ImChannelDO> channelMap = channelService.getChannelMap(
-                convertSet(pageResult.getList(), ImChannelMessageDO::getChannelId));
-        Map<Long, ImChannelMaterialDO> materialMap = channelMaterialService.getMaterialMap(
-                convertSet(pageResult.getList(), ImChannelMessageDO::getMaterialId));
+        Map<Long, ImChannel> channelMap = channelService.getChannelMap(
+                convertSet(pageResult.getList(), ImChannelMessage::getChannelId));
+        Map<Long, ImChannelMaterial> materialMap = channelMaterialService.getMaterialMap(
+                convertSet(pageResult.getList(), ImChannelMessage::getMaterialId));
         return ok(PageResult.convert(pageResult, ImChannelMessageRespVo.class, vo -> {
             MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()));
             MapUtils.findAndThen(materialMap, vo.getMaterialId(),

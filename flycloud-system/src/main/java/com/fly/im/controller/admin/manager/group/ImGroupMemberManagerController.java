@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.group.vo.member.ImGroupMemberManagerRespVo;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
+import com.fly.system.api.im.domain.vo.admin.manager.group.member.ImGroupMemberManagerRespVo;
+import com.fly.system.api.im.domain.group.ImGroupMember;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -44,13 +44,13 @@ public class ImGroupMemberManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:group:query')")
     public R<List<ImGroupMemberManagerRespVo>> getGroupMemberList(@RequestParam("groupId") Long groupId) {
         // 1. 查询群全部成员（含已退群）
-        List<ImGroupMemberDO> members = groupMemberService.getGroupMemberListByGroupId(groupId);
+        List<ImGroupMember> members = groupMemberService.getGroupMemberListByGroupId(groupId);
         if (CollUtil.isEmpty(members)) {
             return ok(Collections.emptyList());
         }
         // 2.1 批量查询用户信息
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                convertSet(members, ImGroupMemberDO::getUserId));
+                convertSet(members, ImGroupMember::getUserId));
         // 2.2 转换为 VO，填充昵称、头像
         return ok(BeanUtils.toBean(members, ImGroupMemberManagerRespVo.class, vo ->
                 MapUtils.findAndThen(userMap, vo.getUserId(), user ->

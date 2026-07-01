@@ -8,7 +8,7 @@ import com.fly.mall.api.trade.domain.vo.AfterSaleLogVo;
  * 售后日志 Mapper 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface AfterSaleLogMapper extends BaseMapperPlus<AfterSaleLogMapper, AfterSaleLog, AfterSaleLogVo> {
 

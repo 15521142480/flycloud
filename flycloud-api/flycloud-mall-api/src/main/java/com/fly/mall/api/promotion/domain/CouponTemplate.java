@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * 优惠券模板 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "promotion_coupon_template", autoResultMap = true)
 @Data

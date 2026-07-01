@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 支付示例提现单。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("pay_demo_withdraw")
 @Data

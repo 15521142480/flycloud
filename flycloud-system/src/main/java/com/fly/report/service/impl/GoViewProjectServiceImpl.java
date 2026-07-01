@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  * GoView 项目 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -84,7 +84,7 @@ public class GoViewProjectServiceImpl implements IGoViewProjectService {
      * 校验 GoView 项目存在。
      */
     private void validateProjectExists(Long id) {
-        if (goViewProjectMapper.selectById(id) == null) {
+        if (id == null || goViewProjectMapper.selectById(id) == null) {
             throw new ServiceException(ErrorCodeConstants.GO_VIEW_PROJECT_NOT_EXISTS);
         }
     }

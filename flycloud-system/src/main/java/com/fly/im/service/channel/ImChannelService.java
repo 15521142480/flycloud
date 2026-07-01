@@ -1,9 +1,9 @@
 package com.fly.im.service.channel;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelPageReqVo;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelSaveReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelDO;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
+import com.fly.system.api.im.domain.channel.ImChannel;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertMap;
  * IM 频道 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImChannelService {
 
@@ -28,7 +28,7 @@ public interface ImChannelService {
      * @param status 状态；对应 CommonStatusEnum
      * @return 频道列表
      */
-    List<ImChannelDO> getChannelListByStatus(Integer status);
+    List<ImChannel> getChannelListByStatus(Integer status);
 
     /**
      * 按编号批量查询频道
@@ -36,7 +36,7 @@ public interface ImChannelService {
      * @param ids 频道编号列表
      * @return 频道列表
      */
-    List<ImChannelDO> getChannelList(Collection<Long> ids);
+    List<ImChannel> getChannelList(Collection<Long> ids);
 
     /**
      * 按编号批量查询频道 Map
@@ -44,8 +44,8 @@ public interface ImChannelService {
      * @param ids 频道编号列表
      * @return id -> 频道 Map
      */
-    default Map<Long, ImChannelDO> getChannelMap(Collection<Long> ids) {
-        return convertMap(getChannelList(ids), ImChannelDO::getId);
+    default Map<Long, ImChannel> getChannelMap(Collection<Long> ids) {
+        return convertMap(getChannelList(ids), ImChannel::getId);
     }
 
     /**
@@ -55,7 +55,7 @@ public interface ImChannelService {
      * @return 频道 DO
      */
     @SuppressWarnings("UnusedReturnValue")
-    ImChannelDO validateChannelExists(Long id);
+    ImChannel validateChannelExists(Long id);
 
     // ==================== 管理后台 ====================
 
@@ -65,7 +65,7 @@ public interface ImChannelService {
      * @param reqVo 分页查询条件
      * @return 频道分页
      */
-    PageResult<ImChannelDO> getChannelPage(ImChannelPageReqVo reqVo);
+    PageResult<ImChannel> getChannelPage(ImChannelPageReqVo reqVo);
 
     /**
      * 获取频道详情
@@ -73,7 +73,7 @@ public interface ImChannelService {
      * @param id 频道编号
      * @return 频道 DO
      */
-    ImChannelDO getChannel(Long id);
+    ImChannel getChannel(Long id);
 
     /**
      * 新增频道

@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 会员分组。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("member_group")
 @Data

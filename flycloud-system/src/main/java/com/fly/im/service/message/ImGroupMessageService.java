@@ -1,10 +1,10 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageListReqVo;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageSendReqVo;
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageListReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageSendReqVo;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
 import com.fly.im.service.message.dto.ImGroupMessageSendDTO;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ import java.util.Map;
  * IM 群聊消息 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImGroupMessageService {
 
@@ -29,7 +29,7 @@ public interface ImGroupMessageService {
      * @param reqVo    发送请求
      * @return 消息
      */
-    ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo);
+    ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo);
 
     /**
      * 【系统调用】发送群聊消息：内部查 active 成员 + 推送
@@ -40,7 +40,7 @@ public interface ImGroupMessageService {
      * @param dto      消息 DTO
      * @return 消息
      */
-    ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendDTO dto);
+    ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageSendDTO dto);
 
     /**
      * 【系统调用】发送群聊消息：显式指定推送目标
@@ -50,7 +50,7 @@ public interface ImGroupMessageService {
      * @param dto           消息 DTO
      * @return 构造的消息 DO（持久化时 id 已回填）
      */
-    ImGroupMessageDO sendGroupMessage(Long senderId, Collection<Long> targetUserIds, ImGroupMessageSendDTO dto);
+    ImGroupMessage sendGroupMessage(Long senderId, Collection<Long> targetUserIds, ImGroupMessageSendDTO dto);
 
     /**
      * 【用户调用】撤回群聊消息
@@ -59,7 +59,7 @@ public interface ImGroupMessageService {
      * @param messageId 消息编号
      * @return 撤回后的提示消息
      */
-    ImGroupMessageDO recallGroupMessage(Long userId, Long messageId);
+    ImGroupMessage recallGroupMessage(Long userId, Long messageId);
 
     /**
      * 拉取群聊消息（增量）
@@ -69,7 +69,7 @@ public interface ImGroupMessageService {
      * @param size   拉取数量
      * @return 消息列表
      */
-    List<ImGroupMessageDO> pullGroupMessageList(Long userId, Long minId, Integer size);
+    List<ImGroupMessage> pullGroupMessageList(Long userId, Long minId, Integer size);
 
     /**
      * 标记群聊消息已读
@@ -97,7 +97,7 @@ public interface ImGroupMessageService {
      * @param reqVo  拉取请求
      * @return 消息列表（按 id 倒序）
      */
-    List<ImGroupMessageDO> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo);
+    List<ImGroupMessage> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo);
 
     /**
      * 清理用户在某群的已读位置缓存
@@ -133,12 +133,12 @@ public interface ImGroupMessageService {
     /**
      * 【管理后台】分页查询群聊消息
      */
-    PageResult<ImGroupMessageDO> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo);
+    PageResult<ImGroupMessage> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo);
 
     /**
      * 【管理后台】获取群聊消息详情
      */
-    ImGroupMessageDO getGroupMessage(Long id);
+    ImGroupMessage getGroupMessage(Long id);
 
     /**
      * 批量按消息编号查询群聊消息
@@ -146,7 +146,7 @@ public interface ImGroupMessageService {
      * @param ids 消息编号集合
      * @return 消息列表
      */
-    List<ImGroupMessageDO> getGroupMessageList(Collection<Long> ids);
+    List<ImGroupMessage> getGroupMessageList(Collection<Long> ids);
 
     /**
      * 批量按消息编号查询群聊消息，返回 messageId → DO 映射
@@ -154,7 +154,7 @@ public interface ImGroupMessageService {
      * @param ids 消息编号集合
      * @return 消息 Map（key = 消息编号）
      */
-    Map<Long, ImGroupMessageDO> getGroupMessageMap(Collection<Long> ids);
+    Map<Long, ImGroupMessage> getGroupMessageMap(Collection<Long> ids);
 
 }
 

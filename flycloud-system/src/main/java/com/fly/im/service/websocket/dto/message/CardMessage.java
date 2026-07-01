@@ -1,6 +1,6 @@
 package com.fly.im.service.websocket.dto.message;
 
-import com.fly.im.enums.ImConversationTypeEnum;
+import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

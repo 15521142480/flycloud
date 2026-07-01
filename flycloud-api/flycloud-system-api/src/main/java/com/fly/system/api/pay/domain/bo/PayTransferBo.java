@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
  * 支付转账单业务对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -18,6 +18,11 @@ public class PayTransferBo extends BaseEntity {
     private Long appId;
     private String channelCode;
     private Long userId;
+    private Integer userType;
     private String merchantTransferId;
+    private String subject;
+    private Integer price;
+    private String userAccount;
+    private String userName;
     private Integer status;
 }

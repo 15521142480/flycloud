@@ -11,7 +11,7 @@ import static com.fly.im.dal.redis.RedisKeyConstants.CHANNEL_MESSAGE_READ;
  * IM 频道消息已读位置 Redis DAO
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Repository
 public class ImChannelMessageReadRedisDAO {

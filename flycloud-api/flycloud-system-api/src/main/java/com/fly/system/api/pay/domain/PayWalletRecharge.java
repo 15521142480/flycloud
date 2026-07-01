@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * 支付钱包充值记录。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("pay_wallet_recharge")
 @Data

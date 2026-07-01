@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 忽略租户注解。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 移动端会员社交绑定请求对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class AppSocialUserBindReqBo implements Serializable {

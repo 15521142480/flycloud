@@ -12,7 +12,7 @@ import java.util.List;
  * 交易配置 Service 接口。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 public interface ITradeConfigService {
 

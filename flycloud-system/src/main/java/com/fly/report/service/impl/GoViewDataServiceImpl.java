@@ -20,7 +20,7 @@ import java.util.Map;
  * 默认使用系统数据源执行 SQL 查询；如果后续需要多数据源，可以在这里按数据源类型扩展 JdbcTemplate。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -46,6 +46,11 @@ public class GoViewDataServiceImpl implements IGoViewDataService {
             respVo.getSource().add(row);
         }
         return respVo;
+    }
+
+    @Override
+    public GoViewDataRespVo getDataBySQL(String sql) {
+        return getDataBySql(sql);
     }
 
 }

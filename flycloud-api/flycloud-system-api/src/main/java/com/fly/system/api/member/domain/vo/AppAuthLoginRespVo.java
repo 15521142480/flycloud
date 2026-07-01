@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 移动端会员登录响应对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class AppAuthLoginRespVo implements Serializable {

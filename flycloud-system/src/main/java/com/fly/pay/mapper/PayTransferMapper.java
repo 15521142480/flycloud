@@ -8,7 +8,7 @@ import com.fly.system.api.pay.domain.vo.PayTransferVo;
  * 支付转账单 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface PayTransferMapper extends BaseMapperPlus<PayTransferMapper, PayTransfer, PayTransferVo> {
 }

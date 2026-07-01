@@ -4,9 +4,9 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerRespVo;
-import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
+import com.fly.system.api.im.domain.vo.admin.manager.face.useritem.ImFaceUserItemManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.useritem.ImFaceUserItemManagerRespVo;
+import com.fly.system.api.im.domain.face.ImFaceUserItem;
 import com.fly.im.service.face.ImFaceUserItemService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -40,10 +40,10 @@ public class ImFaceUserItemManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-user-item:query')")
     public R<PageResult<ImFaceUserItemManagerRespVo>> getFaceUserItemPage(
             @Valid ImFaceUserItemManagerPageReqVo pageReqVo) {
-        PageResult<ImFaceUserItemDO> pageResult = faceUserItemService.getFaceUserItemPage(pageReqVo);
+        PageResult<ImFaceUserItem> pageResult = faceUserItemService.getFaceUserItemPage(pageReqVo);
         // 关联回填用户昵称
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                CollectionUtils.convertSet(pageResult.getList(), ImFaceUserItemDO::getUserId));
+                CollectionUtils.convertSet(pageResult.getList(), ImFaceUserItem::getUserId));
         List<ImFaceUserItemManagerRespVo> voList = CollectionUtils.convertList(pageResult.getList(), item -> {
             ImFaceUserItemManagerRespVo vo = BeanUtils.toBean(item, ImFaceUserItemManagerRespVo.class);
             SysUserVo user = userMap.get(item.getUserId());

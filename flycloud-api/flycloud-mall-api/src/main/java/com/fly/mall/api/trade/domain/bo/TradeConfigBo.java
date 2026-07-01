@@ -9,7 +9,7 @@ import lombok.Data;
  * 交易配置 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class TradeConfigBo extends BaseEntity {

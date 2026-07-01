@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 移动端会员微信公众号 JSAPI 签名响应对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class AuthWeixinJsapiSignatureRespVo implements Serializable {

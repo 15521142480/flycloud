@@ -4,10 +4,10 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
 import com.fly.im.framework.mybatis.QueryWrapperX;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
-import com.fly.im.enums.message.ImGroupMessageReceiptStatusEnum;
-import com.fly.im.enums.message.ImMessageStatusEnum;
+import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.enums.message.ImGroupMessageReceiptStatusEnum;
+import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
@@ -17,10 +17,10 @@ import java.util.List;
  * IM 群聊消息 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
+public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessage> {
 
     /**
      * 根据 minId + 时间窗口增量拉取群聊消息（在群成员使用）
@@ -31,9 +31,9 @@ public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
      * @param size        拉取数量
      * @return 消息列表（按 id 升序）
      */
-    default List<ImGroupMessageDO> selectListByMinId(List<Long> groupIds, Long minId,
+    default List<ImGroupMessage> selectListByMinId(List<Long> groupIds, Long minId,
                                                      LocalDateTime minSendTime, Integer size) {
-        QueryWrapperX<ImGroupMessageDO> wrapper = new QueryWrapperX<>();
+        QueryWrapperX<ImGroupMessage> wrapper = new QueryWrapperX<>();
         wrapper.in("group_id", groupIds)
                 .gt("id", minId)
                 .gt("send_time", minSendTime)
@@ -56,11 +56,11 @@ public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
      * @param size        拉取数量
      * @return 消息列表（按 id 升序）
      */
-    default List<ImGroupMessageDO> selectListByGroupIdAndMinIdAndQuitTimeBefore(Long groupId, Long minId,
+    default List<ImGroupMessage> selectListByGroupIdAndMinIdAndQuitTimeBefore(Long groupId, Long minId,
                                                                                 LocalDateTime minSendTime,
                                                                                 LocalDateTime quitTime,
                                                                                 Integer size) {
-        QueryWrapperX<ImGroupMessageDO> wrapper = new QueryWrapperX<>();
+        QueryWrapperX<ImGroupMessage> wrapper = new QueryWrapperX<>();
         wrapper.eq("group_id", groupId)
                 .gt("id", minId)
                 .gt("send_time", minSendTime)
@@ -79,8 +79,8 @@ public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
      * @param joinTime 入群时间，仅返回入群之后的消息
      * @return 消息列表（按 id 倒序）
      */
-    default List<ImGroupMessageDO> selectHistoryList(Long groupId, Long maxId, Integer limit, LocalDateTime joinTime) {
-        QueryWrapperX<ImGroupMessageDO> wrapper = new QueryWrapperX<>();
+    default List<ImGroupMessage> selectHistoryList(Long groupId, Long maxId, Integer limit, LocalDateTime joinTime) {
+        QueryWrapperX<ImGroupMessage> wrapper = new QueryWrapperX<>();
         wrapper.eq("group_id", groupId)
                 .lt(maxId != null, "id", maxId)
                 .ge(joinTime != null, "send_time", joinTime)
@@ -89,10 +89,10 @@ public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
         return selectList(wrapper);
     }
 
-    default ImGroupMessageDO selectBySenderIdAndClientMessageId(Long senderId, String clientMessageId) {
-        return selectOne(new LambdaQueryWrapperX<ImGroupMessageDO>()
-                .eq(ImGroupMessageDO::getSenderId, senderId)
-                .eq(ImGroupMessageDO::getClientMessageId, clientMessageId));
+    default ImGroupMessage selectBySenderIdAndClientMessageId(Long senderId, String clientMessageId) {
+        return selectOne(new LambdaQueryWrapperX<ImGroupMessage>()
+                .eq(ImGroupMessage::getSenderId, senderId)
+                .eq(ImGroupMessage::getClientMessageId, clientMessageId));
     }
 
     /**
@@ -106,24 +106,24 @@ public interface ImGroupMessageMapper extends BaseMapperX<ImGroupMessageDO> {
      * @param maxId   结束消息 id（含，本次已读位置）
      * @return 待回执消息列表
      */
-    default List<ImGroupMessageDO> selectListByGroupIdAndPendingReceipt(Long groupId, Long minId, Long maxId) {
-        return selectList(new LambdaQueryWrapperX<ImGroupMessageDO>()
-                .eq(ImGroupMessageDO::getGroupId, groupId)
-                .eq(ImGroupMessageDO::getReceiptStatus, ImGroupMessageReceiptStatusEnum.PENDING.getStatus())
-                .gt(minId != null, ImGroupMessageDO::getId, minId)
-                .le(ImGroupMessageDO::getId, maxId)
-                .ne(ImGroupMessageDO::getStatus, ImMessageStatusEnum.RECALL.getStatus()));
+    default List<ImGroupMessage> selectListByGroupIdAndPendingReceipt(Long groupId, Long minId, Long maxId) {
+        return selectList(new LambdaQueryWrapperX<ImGroupMessage>()
+                .eq(ImGroupMessage::getGroupId, groupId)
+                .eq(ImGroupMessage::getReceiptStatus, ImGroupMessageReceiptStatusEnum.PENDING.getStatus())
+                .gt(minId != null, ImGroupMessage::getId, minId)
+                .le(ImGroupMessage::getId, maxId)
+                .ne(ImGroupMessage::getStatus, ImMessageStatusEnum.RECALL.getStatus()));
     }
 
-    default PageResult<ImGroupMessageDO> selectPage(ImGroupMessageManagerPageReqVo reqVo) {
-        return selectPage(reqVo, new LambdaQueryWrapperX<ImGroupMessageDO>()
-                .eqIfPresent(ImGroupMessageDO::getGroupId, reqVo.getGroupId())
-                .eqIfPresent(ImGroupMessageDO::getSenderId, reqVo.getSenderId())
-                .eqIfPresent(ImGroupMessageDO::getType, reqVo.getType())
-                .likeIfPresent(ImGroupMessageDO::getContent, reqVo.getContent())
-                .eqIfPresent(ImGroupMessageDO::getStatus, reqVo.getStatus())
-                .betweenIfPresent(ImGroupMessageDO::getSendTime, reqVo.getSendTime())
-                .orderByDesc(ImGroupMessageDO::getId));
+    default PageResult<ImGroupMessage> selectPage(ImGroupMessageManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImGroupMessage>()
+                .eqIfPresent(ImGroupMessage::getGroupId, reqVo.getGroupId())
+                .eqIfPresent(ImGroupMessage::getSenderId, reqVo.getSenderId())
+                .eqIfPresent(ImGroupMessage::getType, reqVo.getType())
+                .likeIfPresent(ImGroupMessage::getContent, reqVo.getContent())
+                .eqIfPresent(ImGroupMessage::getStatus, reqVo.getStatus())
+                .betweenIfPresent(ImGroupMessage::getSendTime, reqVo.getSendTime())
+                .orderByDesc(ImGroupMessage::getId));
     }
 
 }

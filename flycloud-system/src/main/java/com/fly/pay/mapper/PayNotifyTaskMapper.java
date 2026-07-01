@@ -13,7 +13,7 @@ import java.util.List;
  * 支付通知任务 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface PayNotifyTaskMapper extends BaseMapperPlus<PayNotifyTaskMapper, PayNotifyTask, PayNotifyTaskVo> {
 

@@ -1,6 +1,6 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
  * 前端 callStore 把 userId 追加进 joinedUserIds；胶囊条人数 +1；群聊场景首条 1602 携带通话元信息以便 首次填充胶囊条
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -44,13 +44,13 @@ public class ImRtcParticipantConnectedNotification {
     private Long inviterUserId;
 
     /**
-     * 构造参与者加入通知；按 {@link ImRtcCallDO} 抽通话上下文，仅 userId 是变量
+     * 构造参与者加入通知；按 {@link ImRtcCall} 抽通话上下文，仅 userId 是变量
      *
      * @param call    通话主表
      * @param userId  加入的参与者用户编号
      * @return 通知载荷
      */
-    public static ImRtcParticipantConnectedNotification of(ImRtcCallDO call, Long userId) {
+    public static ImRtcParticipantConnectedNotification of(ImRtcCall call, Long userId) {
         ImRtcParticipantConnectedNotification notification = new ImRtcParticipantConnectedNotification();
         notification.room = call.getRoom();
         notification.userId = userId;

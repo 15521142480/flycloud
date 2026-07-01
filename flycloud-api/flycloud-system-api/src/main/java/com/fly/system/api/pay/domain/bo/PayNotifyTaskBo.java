@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * 支付通知任务查询 BO。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class PayNotifyTaskBo {

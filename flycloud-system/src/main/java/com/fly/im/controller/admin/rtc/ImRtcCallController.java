@@ -2,14 +2,14 @@ package com.fly.im.controller.admin.rtc;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallCreateReqVo;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallInviteReqVo;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallRespVo;
-import com.fly.im.controller.admin.rtc.vo.ImRtcGroupCallRespVo;
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
-import com.fly.im.dal.dataobject.rtc.ImRtcParticipantDO;
-import com.fly.im.enums.rtc.ImRtcCallStatusEnum;
-import com.fly.im.enums.rtc.ImRtcParticipantStatusEnum;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallCreateReqVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallInviteReqVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallRespVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcGroupCallRespVo;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.domain.rtc.ImRtcParticipant;
+import com.fly.system.api.im.enums.rtc.ImRtcCallStatusEnum;
+import com.fly.system.api.im.enums.rtc.ImRtcParticipantStatusEnum;
 import com.fly.im.framework.config.ImProperties;
 import com.fly.im.service.rtc.ImRtcCallService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +42,7 @@ public class ImRtcCallController {
     @Operation(summary = "创建新通话；按 conversationType 区分私聊 / 群聊")
     public R<ImRtcCallRespVo> createCall(@Valid @RequestBody ImRtcCallCreateReqVo reqVo) {
         Long userId = getCurUserId();
-        ImRtcCallDO call = rtcCallService.createCall(userId, reqVo);
+        ImRtcCall call = rtcCallService.createCall(userId, reqVo);
         return ok(buildCallRespVo(call, userId));
     }
 
@@ -105,7 +105,7 @@ public class ImRtcCallController {
     @Operation(summary = "查询当前进行中的通话；用于群聊顶部「N 人正在通话」胶囊条")
     @Parameter(name = "groupId", description = "群编号", required = true, example = "2048")
     public R<ImRtcGroupCallRespVo> getActiveCall(@RequestParam("groupId") Long groupId) {
-        ImRtcCallDO call = rtcCallService.getActiveCall(getCurUserId(), groupId);
+        ImRtcCall call = rtcCallService.getActiveCall(getCurUserId(), groupId);
         return ok(buildGroupActiveRespVo(call));
     }
 
@@ -118,11 +118,11 @@ public class ImRtcCallController {
      * @param userId 当前用户编号；token 按该用户签发
      * @return 响应 VO；call 为空返回 null
      */
-    private ImRtcCallRespVo buildCallRespVo(ImRtcCallDO call, Long userId) {
+    private ImRtcCallRespVo buildCallRespVo(ImRtcCall call, Long userId) {
         if (call == null) {
             return null;
         }
-        List<ImRtcParticipantDO> participants = rtcCallService.getCallParticipantList(call.getRoom());
+        List<ImRtcParticipant> participants = rtcCallService.getCallParticipantList(call.getRoom());
         boolean ended = ImRtcCallStatusEnum.isEnded(call.getStatus());
         return new ImRtcCallRespVo()
                 .setRoom(call.getRoom())
@@ -142,11 +142,11 @@ public class ImRtcCallController {
      * @param call 通话主表
      * @return 响应 VO：只用于群聊胶囊条，不含 token
      */
-    private ImRtcGroupCallRespVo buildGroupActiveRespVo(ImRtcCallDO call) {
+    private ImRtcGroupCallRespVo buildGroupActiveRespVo(ImRtcCall call) {
         if (call == null) {
             return null;
         }
-        List<ImRtcParticipantDO> participants = rtcCallService.getCallParticipantList(call.getRoom());
+        List<ImRtcParticipant> participants = rtcCallService.getCallParticipantList(call.getRoom());
         return new ImRtcGroupCallRespVo().setRoom(call.getRoom()).setMediaType(call.getMediaType())
                 .setGroupId(call.getGroupId()).setInviterId(call.getInviterUserId())
                 .setJoinedUserIds(filterUserIds(participants, ImRtcParticipantStatusEnum.JOINED))
@@ -160,9 +160,9 @@ public class ImRtcCallController {
      * @param status       目标状态
      * @return userId 集合
      */
-    private static Set<Long> filterUserIds(List<ImRtcParticipantDO> participants,
+    private static Set<Long> filterUserIds(List<ImRtcParticipant> participants,
                                            ImRtcParticipantStatusEnum status) {
-        return CollectionUtils.convertLinkedSet(participants, ImRtcParticipantDO::getUserId,
+        return CollectionUtils.convertLinkedSet(participants, ImRtcParticipant::getUserId,
                 participant -> Objects.equals(participant.getStatus(), status.getStatus()));
     }
 

@@ -7,7 +7,7 @@ import lombok.Getter;
  * 支付通知状态枚举。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Getter
 @AllArgsConstructor

@@ -8,7 +8,7 @@ import com.fly.system.api.member.domain.vo.AppSocialUserRespVo;
  * 社交用户 Mapper。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 public interface SocialUserMapper extends BaseMapperPlus<SocialUserMapper, SocialUser, AppSocialUserRespVo> {
 }

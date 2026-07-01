@@ -1,19 +1,19 @@
 package com.fly.im.service.group;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.group.vo.ImGroupAdminAddReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupAdminRemoveReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupCancelMuteMemberReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupCreateReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupMuteAllReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupMuteMemberReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupTransferOwnerReqVo;
-import com.fly.im.controller.admin.group.vo.ImGroupUpdateReqVo;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberInviteReqVo;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRemoveReqVo;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerBanReqVo;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerPageReqVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminAddReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminRemoveReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupCancelMuteMemberReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupCreateReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupMuteAllReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupMuteMemberReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupTransferOwnerReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.ImGroupUpdateReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberInviteReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberRemoveReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerBanReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerPageReqVo;
+import com.fly.system.api.im.domain.group.ImGroup;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.Map;
  * 用户群群 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImGroupService {
 
@@ -39,7 +39,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号（群主）
      * @return 创建后的群信息
      */
-    ImGroupDO createGroup(@Valid ImGroupCreateReqVo createReqVo, Long userId);
+    ImGroup createGroup(@Valid ImGroupCreateReqVo createReqVo, Long userId);
 
     /**
      * 更新群信息
@@ -48,7 +48,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号
      * @return 更新后的群信息
      */
-    ImGroupDO updateGroup(@Valid ImGroupUpdateReqVo updateReqVo, Long userId);
+    ImGroup updateGroup(@Valid ImGroupUpdateReqVo updateReqVo, Long userId);
 
     /**
      * 解散群
@@ -68,7 +68,7 @@ public interface ImGroupService {
      * @param id 编号
      * @return 群
      */
-    ImGroupDO getGroup(Long id);
+    ImGroup getGroup(Long id);
 
     /**
      * 批量获得群 Map
@@ -76,7 +76,7 @@ public interface ImGroupService {
      * @param ids 群编号集合
      * @return 群 Map（key = 群编号）
      */
-    Map<Long, ImGroupDO> getGroupMap(Collection<Long> ids);
+    Map<Long, ImGroup> getGroupMap(Collection<Long> ids);
 
     /**
      * 校验群存在且未封禁、未解散
@@ -84,7 +84,7 @@ public interface ImGroupService {
      * @param groupId 群编号
      * @return 群信息
      */
-    ImGroupDO validateGroupExists(Long groupId);
+    ImGroup validateGroupExists(Long groupId);
 
     /**
      * 校验入群人数上限
@@ -106,7 +106,7 @@ public interface ImGroupService {
      * @param userId 用户编号
      * @return 群列表
      */
-    List<ImGroupDO> getMyGroupList(Long userId);
+    List<ImGroup> getMyGroupList(Long userId);
 
     // ==================== 群成员的写操作 ====================
     // 说明：群成员的写操作统一放在 ImGroupService，而非 ImGroupMemberService，
@@ -223,7 +223,7 @@ public interface ImGroupService {
      * @param pageReqVo 分页查询条件
      * @return 群分页列表
      */
-    PageResult<ImGroupDO> getGroupPage(ImGroupManagerPageReqVo pageReqVo);
+    PageResult<ImGroup> getGroupPage(ImGroupManagerPageReqVo pageReqVo);
 
     /**
      * 【管理后台】封禁群

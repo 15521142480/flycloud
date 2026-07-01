@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 交易订单趋势查询对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 public class TradeOrderTrendBo {

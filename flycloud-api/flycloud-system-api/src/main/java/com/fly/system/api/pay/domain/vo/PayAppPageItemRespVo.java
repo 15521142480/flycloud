@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
  * 支付应用分页项响应视图对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

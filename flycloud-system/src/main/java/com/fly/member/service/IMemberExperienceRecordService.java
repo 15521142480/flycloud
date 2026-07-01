@@ -9,7 +9,7 @@ import com.fly.system.api.member.domain.vo.MemberExperienceRecordVo;
  * 会员经验记录 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IMemberExperienceRecordService {
     PageVo<MemberExperienceRecordVo> queryPageList(MemberExperienceRecordBo bo, PageBo pageBo);

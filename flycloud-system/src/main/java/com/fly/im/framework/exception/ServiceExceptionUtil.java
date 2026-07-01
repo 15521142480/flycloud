@@ -2,12 +2,13 @@ package com.fly.im.framework.exception;
 
 import cn.hutool.core.util.StrUtil;
 import com.fly.common.exception.ServiceException;
+import com.fly.system.api.im.enums.ErrorCode;
 
 /**
  * IM 业务异常工具。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public class ServiceExceptionUtil {
 

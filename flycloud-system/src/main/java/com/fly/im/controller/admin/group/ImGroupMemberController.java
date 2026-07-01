@@ -2,13 +2,13 @@ package com.fly.im.controller.admin.group;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRespVo;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVo;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberRespVo;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberUpdateReqVo;
+import com.fly.system.api.im.domain.group.ImGroupMember;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -28,7 +28,7 @@ import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
 import static com.fly.common.domain.model.R.ok;
 import static com.fly.common.utils.collection.CollectionUtils.convertList;
 import static com.fly.common.security.util.UserUtils.getCurUserId;
-import static com.fly.im.enums.ErrorCodeConstants.GROUP_MEMBER_NOT_IN_GROUP;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.GROUP_MEMBER_NOT_IN_GROUP;
 
 @Tag(name = "管理后台 - 群成员")
 @RestController
@@ -60,7 +60,7 @@ public class ImGroupMemberController {
                                                             @RequestParam(value = "groupId", required = false) Long groupId,
                                                             @RequestParam(value = "userId", required = false) Long userId) {
         // 1. 查询群成员
-        ImGroupMemberDO member;
+        ImGroupMember member;
         if (id != null) {
             member = groupMemberService.getGroupMember(id);
         } else if (groupId != null && userId != null) {
@@ -93,7 +93,7 @@ public class ImGroupMemberController {
     public R<List<ImGroupMemberRespVo>> getGroupMemberList(@RequestParam("groupId") Long groupId) {
         // 1.1 查询群成员列表（包含 DISABLE 已退群的成员，不按时间过滤）
         // 说明：保留已退群成员，是为了前端展示历史消息时，仍能通过该接口拿到已退群成员的昵称 / 头像信息，避免显示为空
-        List<ImGroupMemberDO> members = groupMemberService.getGroupMemberListByGroupId(groupId);
+        List<ImGroupMember> members = groupMemberService.getGroupMemberListByGroupId(groupId);
         // 1.2 校验当前登录用户是否为群的有效成员，非成员不可查看
         Long loginUserId = getCurUserId();
         if (CollUtil.findOne(members, member -> loginUserId.equals(member.getUserId())
@@ -103,7 +103,7 @@ public class ImGroupMemberController {
 
         // 2.批量聚合 AdminUser 信息（昵称 / 头像）
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                convertList(members, ImGroupMemberDO::getUserId));
+                convertList(members, ImGroupMember::getUserId));
         return ok(convertList(members, m -> {
             ImGroupMemberRespVo vo = BeanUtils.toBean(m, ImGroupMemberRespVo.class);
             MapUtils.findAndThen(userMap, m.getUserId(), user ->

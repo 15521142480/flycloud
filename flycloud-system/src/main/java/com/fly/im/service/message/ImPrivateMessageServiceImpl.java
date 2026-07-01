@@ -7,13 +7,13 @@ import cn.hutool.core.util.ObjUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVo;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVo;
-import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageListReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageSendReqVo;
+import com.fly.system.api.im.domain.message.ImPrivateMessage;
 import com.fly.im.dal.mysql.message.ImPrivateMessageMapper;
-import com.fly.im.enums.message.ImMessageStatusEnum;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.framework.config.ImProperties;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
@@ -34,13 +34,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
-import static com.fly.im.enums.ErrorCodeConstants.*;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
 
 /**
  * IM 私聊消息 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -62,9 +62,9 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     private ImProperties imProperties;
 
     @Override
-    public ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo) {
+    public ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo) {
         // 1.1 幂等校验：根据 senderId + clientMessageId 查重
-        ImPrivateMessageDO existing = privateMessageMapper.selectBySenderIdAndClientMessageId(
+        ImPrivateMessage existing = privateMessageMapper.selectBySenderIdAndClientMessageId(
                 senderId, reqVo.getClientMessageId());
         if (existing != null) {
             log.info("[sendPrivateMessage][幂等命中 senderId({}) clientMessageId({}) 已存在消息({})]",
@@ -83,7 +83,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         // 2.1 引用 quote 消息规范化
         reqVo.setContent(normalizeQuoteContent(reqVo, senderId));
         // 2.2 构建并保存消息
-        ImPrivateMessageDO message = BeanUtils.toBean(reqVo, ImPrivateMessageDO.class, m -> m
+        ImPrivateMessage message = BeanUtils.toBean(reqVo, ImPrivateMessage.class, m -> m
                 .setSenderId(senderId).setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now()));
         privateMessageMapper.insert(message);
 
@@ -95,14 +95,14 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     }
 
     @Override
-    public ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendDTO dto) {
+    public ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageSendDTO dto) {
         // 1.1 content 序列化：null / String 透传，POJO 走 JSON
         Object payload = dto.getContent();
         String contentString = payload == null || payload instanceof String
                 ? (String) payload
                 : JsonUtils.toJsonString(payload);
         // 1.2 构建消息
-        ImPrivateMessageDO message = new ImPrivateMessageDO().setClientMessageId(IdUtil.fastSimpleUUID())
+        ImPrivateMessage message = new ImPrivateMessage().setClientMessageId(IdUtil.fastSimpleUUID())
                 .setSenderId(senderId).setReceiverId(dto.getReceiverId())
                 .setType(dto.getType()).setContent(contentString)
                 .setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now());
@@ -125,9 +125,9 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImPrivateMessageDO recallPrivateMessage(Long userId, Long messageId) {
+    public ImPrivateMessage recallPrivateMessage(Long userId, Long messageId) {
         // 1.1 校验消息存在
-        ImPrivateMessageDO message = privateMessageMapper.selectById(messageId);
+        ImPrivateMessage message = privateMessageMapper.selectById(messageId);
         if (message == null) {
             throw exception(MESSAGE_NOT_EXISTS);
         }
@@ -146,7 +146,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         }
 
         // 2. 更新原消息状态为撤回
-        privateMessageMapper.updateById(new ImPrivateMessageDO().setId(messageId)
+        privateMessageMapper.updateById(new ImPrivateMessage().setId(messageId)
                 .setStatus(ImMessageStatusEnum.RECALL.getStatus()));
 
         // 3. 发送撤回事件
@@ -171,7 +171,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         }
 
         // 情况二：有 quoteMessageId，加载原消息并校验
-        ImPrivateMessageDO original = privateMessageMapper.selectById(quoteMessageId);
+        ImPrivateMessage original = privateMessageMapper.selectById(quoteMessageId);
         if (original == null
                 || ImMessageStatusEnum.RECALL.getStatus().equals(original.getStatus())) {
             throw exception(MESSAGE_QUOTE_INVALID);
@@ -191,7 +191,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     }
 
     @Override
-    public List<ImPrivateMessageDO> pullPrivateMessageList(Long userId, Long minId, Integer size) {
+    public List<ImPrivateMessage> pullPrivateMessageList(Long userId, Long minId, Integer size) {
         int maxPullSize = imProperties.getMessage().getMaxPullSize();
         if (size > maxPullSize) {
             throw exception(MESSAGE_PULL_SIZE_EXCEEDED, maxPullSize);
@@ -200,7 +200,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         LocalDateTime minSendTime = LocalDateTime.now().minusDays(imProperties.getMessage().getPrivatePullMaxDays());
 
         // 根据 minId 和 minSendTime 拉取消息，避免 minId 恰好被发出后才拉取，导致漏消息
-        List<ImPrivateMessageDO> messages = privateMessageMapper.selectListByMinId(userId, minId, minSendTime, size);
+        List<ImPrivateMessage> messages = privateMessageMapper.selectListByMinId(userId, minId, minSendTime, size);
         log.info("[pullPrivateMessageList][userId({}) minId({}) size({}) result({})]",
                 userId, minId, size, messages.size());
         return messages;
@@ -217,7 +217,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         // 仅 UNREAD 行被命中，避免覆盖已撤回/已读的状态；select-then-update 合成单条 SQL 后也消除了竞态窗口
         int updated = privateMessageMapper.updateBySenderIdAndReceiverIdAndIdLeAndStatus(
                 receiverId, userId, messageId, ImMessageStatusEnum.UNREAD.getStatus(),
-                new ImPrivateMessageDO().setStatus(ImMessageStatusEnum.READ.getStatus()));
+                new ImPrivateMessage().setStatus(ImMessageStatusEnum.READ.getStatus()));
         if (updated == 0) {
             return;
         }
@@ -239,19 +239,19 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     }
 
     @Override
-    public List<ImPrivateMessageDO> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo) {
+    public List<ImPrivateMessage> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo) {
         return privateMessageMapper.selectHistoryList(userId, reqVo.getReceiverId(), reqVo.getMaxId(), reqVo.getLimit());
     }
 
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImPrivateMessageDO> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo) {
+    public PageResult<ImPrivateMessage> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo) {
         return privateMessageMapper.selectPage(reqVo);
     }
 
     @Override
-    public ImPrivateMessageDO getPrivateMessage(Long id) {
+    public ImPrivateMessage getPrivateMessage(Long id) {
         return privateMessageMapper.selectById(id);
     }
 

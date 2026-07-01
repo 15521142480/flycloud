@@ -1,9 +1,9 @@
 package com.fly.im.service.channel;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialPageReqVo;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialSaveReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialSaveReqVo;
+import com.fly.system.api.im.domain.channel.ImChannelMaterial;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertMap;
  * IM 频道素材 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImChannelMaterialService {
 
@@ -28,7 +28,7 @@ public interface ImChannelMaterialService {
      * @param id 素材编号
      * @return 素材 DO
      */
-    ImChannelMaterialDO validateMaterialExists(Long id);
+    ImChannelMaterial validateMaterialExists(Long id);
 
     /**
      * 按编号批量查询素材
@@ -36,7 +36,7 @@ public interface ImChannelMaterialService {
      * @param ids 素材编号列表
      * @return 素材列表
      */
-    List<ImChannelMaterialDO> getMaterialList(Collection<Long> ids);
+    List<ImChannelMaterial> getMaterialList(Collection<Long> ids);
 
     /**
      * 按编号批量查询素材 Map
@@ -44,8 +44,8 @@ public interface ImChannelMaterialService {
      * @param ids 素材编号列表
      * @return id -> 素材 Map
      */
-   default Map<Long, ImChannelMaterialDO> getMaterialMap(Collection<Long> ids) {
-       return convertMap(getMaterialList(ids), ImChannelMaterialDO::getId);
+   default Map<Long, ImChannelMaterial> getMaterialMap(Collection<Long> ids) {
+       return convertMap(getMaterialList(ids), ImChannelMaterial::getId);
    }
 
     /**
@@ -64,7 +64,7 @@ public interface ImChannelMaterialService {
      * @param channelId 频道编号
      * @return 素材列表
      */
-    List<ImChannelMaterialDO> getMaterialListByChannelId(Long channelId);
+    List<ImChannelMaterial> getMaterialListByChannelId(Long channelId);
 
     /**
      * 分页查询素材
@@ -72,7 +72,7 @@ public interface ImChannelMaterialService {
      * @param reqVo 分页查询条件
      * @return 素材分页
      */
-    PageResult<ImChannelMaterialDO> getMaterialPage(ImChannelMaterialPageReqVo reqVo);
+    PageResult<ImChannelMaterial> getMaterialPage(ImChannelMaterialPageReqVo reqVo);
 
     /**
      * 获取素材详情（含 content 富文本）
@@ -80,7 +80,7 @@ public interface ImChannelMaterialService {
      * @param id 素材编号
      * @return 素材 DO
      */
-    ImChannelMaterialDO getMaterial(Long id);
+    ImChannelMaterial getMaterial(Long id);
 
     /**
      * 新增素材

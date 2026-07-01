@@ -10,7 +10,7 @@ import lombok.Data;
  * 管理后台 - 装修页面响应对象。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Data
 @Schema(name = "DiyPageRespVo", description = "管理后台 - 装修页面响应对象")

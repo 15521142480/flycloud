@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  * 满减送活动 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "promotion_reward_activity", autoResultMap = true)
 @Data
@@ -63,7 +63,7 @@ public class RewardActivity extends BaseEntity {
      * 满减送活动优惠规则。
      *
      * @author lxs
-     * @date 2026-06-28
+     * @date 2026-07-02
      */
     @Data
     public static class Rule implements Serializable {

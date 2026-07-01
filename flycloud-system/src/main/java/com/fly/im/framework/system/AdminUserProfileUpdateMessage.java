@@ -6,7 +6,7 @@ import lombok.Data;
  * 系统用户资料更新消息。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class AdminUserProfileUpdateMessage {

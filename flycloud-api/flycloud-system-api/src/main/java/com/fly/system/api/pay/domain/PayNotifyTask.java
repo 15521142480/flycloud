@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 支付通知任务。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("pay_notify_task")
 @Data

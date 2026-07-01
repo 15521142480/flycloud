@@ -3,9 +3,12 @@ package com.fly.mall.trade.controller.app;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.bo.TradeOrderItemBo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderItemVo;
 import com.fly.mall.trade.service.ITradeOrderItemService;
+import com.fly.mall.trade.service.ITradeOrderService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 移动端 - 交易订单项 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppTradeOrderItemController {
 
     private final ITradeOrderItemService tradeOrderItemService;
+    private final ITradeOrderService tradeOrderService;
 
     /**
      * 查询移动端交易订单项分页列表。
@@ -67,9 +71,8 @@ public class AppTradeOrderItemController {
      * 创建订单项评价。
      */
     @PostMapping("/create-comment")
-    public R<Long> createComment(@RequestBody com.fly.mall.api.trade.domain.bo.TradeOrderItemBo bo) {
-        tradeOrderItemService.saveOrUpdate(bo);
-        return R.ok(bo.getId());
+    public R<Long> createComment(@RequestBody AppTradeOrderItemCommentCreateReqVo createReqVo) {
+        return R.ok(tradeOrderService.createOrderItemComment(UserUtils.getCurUserId(), createReqVo));
     }
 
 }

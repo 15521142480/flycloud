@@ -1,7 +1,7 @@
 package com.fly.im.service.websocket;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.fly.im.framework.enums.UserTypeEnum;
+import com.fly.system.api.im.enums.UserTypeEnum;
 import com.fly.im.service.websocket.dto.ImChannelMessageDTO;
 import com.fly.im.service.websocket.dto.ImGroupMessageDTO;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
@@ -26,7 +26,7 @@ import java.util.Set;
  * 避免客户端收到 WebSocket 消息时数据库变更尚未可见。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated

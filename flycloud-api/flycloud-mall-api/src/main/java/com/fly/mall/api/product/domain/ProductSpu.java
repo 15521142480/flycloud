@@ -15,7 +15,7 @@ import java.util.List;
  * 商品 SPU 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "product_spu", autoResultMap = true)
 @Data

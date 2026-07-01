@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
  * 后台 - 会员分组精简响应对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -5,11 +5,11 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialPageReqVo;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialRespVo;
-import com.fly.im.controller.admin.manager.channel.vo.material.ImChannelMaterialSaveReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelDO;
-import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialRespVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialSaveReqVo;
+import com.fly.system.api.im.domain.channel.ImChannel;
+import com.fly.system.api.im.domain.channel.ImChannelMaterial;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import com.fly.im.service.channel.ImChannelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,14 +67,14 @@ public class ImChannelMaterialManagerController {
     @Operation(summary = "获得素材分页；含频道名回填")
     @PreAuthorize("@pms.hasPermission('im:manager:channel-material:query')")
     public R<PageResult<ImChannelMaterialRespVo>> getMaterialPage(@Valid ImChannelMaterialPageReqVo pageReqVo) {
-        PageResult<ImChannelMaterialDO> pageResult = channelMaterialService.getMaterialPage(pageReqVo);
+        PageResult<ImChannelMaterial> pageResult = channelMaterialService.getMaterialPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
         // 回填频道名
-        List<ImChannelDO> channels = channelService.getChannelList(
-                convertSet(pageResult.getList(), ImChannelMaterialDO::getChannelId));
-        Map<Long, ImChannelDO> channelMap = convertMap(channels, ImChannelDO::getId);
+        List<ImChannel> channels = channelService.getChannelList(
+                convertSet(pageResult.getList(), ImChannelMaterial::getChannelId));
+        Map<Long, ImChannel> channelMap = convertMap(channels, ImChannel::getId);
         return ok(PageResult.convert(pageResult, ImChannelMaterialRespVo.class, vo ->
                 MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()))));
     }
@@ -84,7 +84,7 @@ public class ImChannelMaterialManagerController {
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:channel-material:query')")
     public R<ImChannelMaterialRespVo> getMaterial(@RequestParam("id") Long id) {
-        ImChannelMaterialDO material = channelMaterialService.getMaterial(id);
+        ImChannelMaterial material = channelMaterialService.getMaterial(id);
         return ok(BeanUtils.toBean(material, ImChannelMaterialRespVo.class));
     }
 
@@ -92,7 +92,7 @@ public class ImChannelMaterialManagerController {
     @Operation(summary = "获得指定频道下的素材精简列表；用于推送弹窗的素材下拉")
     @Parameter(name = "channelId", description = "频道编号", required = true, example = "1")
     public R<List<ImChannelMaterialRespVo>> getSimpleMaterialList(@RequestParam("channelId") Long channelId) {
-        List<ImChannelMaterialDO> list = channelMaterialService.getMaterialListByChannelId(channelId);
+        List<ImChannelMaterial> list = channelMaterialService.getMaterialListByChannelId(channelId);
         return ok(BeanUtils.toBean(list, ImChannelMaterialRespVo.class));
     }
 

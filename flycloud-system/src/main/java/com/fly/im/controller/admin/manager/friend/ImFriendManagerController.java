@@ -5,9 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVo;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerRespVo;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerRespVo;
+import com.fly.system.api.im.domain.friend.ImFriend;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -45,7 +45,7 @@ public class ImFriendManagerController {
     public R<PageResult<ImFriendManagerRespVo>> getFriendPage(
             @Valid ImFriendManagerPageReqVo pageReqVo) {
         // 1. 分页查询
-        PageResult<ImFriendDO> pageResult = friendService.getFriendPage(pageReqVo);
+        PageResult<ImFriend> pageResult = friendService.getFriendPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }

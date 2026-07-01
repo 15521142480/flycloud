@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  * 支付渠道。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("pay_channel")
 @Data

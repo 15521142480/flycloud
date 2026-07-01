@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 移动端会员发送短信验证码请求对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class AppAuthSmsSendReqBo implements Serializable {

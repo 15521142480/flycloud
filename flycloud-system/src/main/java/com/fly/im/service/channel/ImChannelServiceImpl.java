@@ -4,9 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelPageReqVo;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelSaveReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelDO;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
+import com.fly.system.api.im.domain.channel.ImChannel;
 import com.fly.im.dal.mysql.channel.ImChannelMapper;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
@@ -18,13 +18,13 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
-import static com.fly.im.enums.ErrorCodeConstants.*;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
 
 /**
  * IM 频道 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -39,12 +39,12 @@ public class ImChannelServiceImpl implements ImChannelService {
     // ==================== 用户端 ====================
 
     @Override
-    public List<ImChannelDO> getChannelListByStatus(Integer status) {
+    public List<ImChannel> getChannelListByStatus(Integer status) {
         return channelMapper.selectListByStatusOrderBySort(status);
     }
 
     @Override
-    public List<ImChannelDO> getChannelList(Collection<Long> ids) {
+    public List<ImChannel> getChannelList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -52,8 +52,8 @@ public class ImChannelServiceImpl implements ImChannelService {
     }
 
     @Override
-    public ImChannelDO validateChannelExists(Long id) {
-        ImChannelDO channel = channelMapper.selectById(id);
+    public ImChannel validateChannelExists(Long id) {
+        ImChannel channel = channelMapper.selectById(id);
         if (channel == null) {
             throw exception(IM_CHANNEL_NOT_EXISTS);
         }
@@ -63,12 +63,12 @@ public class ImChannelServiceImpl implements ImChannelService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImChannelDO> getChannelPage(ImChannelPageReqVo reqVo) {
+    public PageResult<ImChannel> getChannelPage(ImChannelPageReqVo reqVo) {
         return channelMapper.selectPage(reqVo);
     }
 
     @Override
-    public ImChannelDO getChannel(Long id) {
+    public ImChannel getChannel(Long id) {
         return channelMapper.selectById(id);
     }
 
@@ -78,7 +78,7 @@ public class ImChannelServiceImpl implements ImChannelService {
         validateCodeUnique(null, reqVo.getCode());
 
         // 插入
-        ImChannelDO channel = BeanUtils.toBean(reqVo, ImChannelDO.class);
+        ImChannel channel = BeanUtils.toBean(reqVo, ImChannel.class);
         channelMapper.insert(channel);
         return channel.getId();
     }
@@ -91,7 +91,7 @@ public class ImChannelServiceImpl implements ImChannelService {
         validateCodeUnique(reqVo.getId(), reqVo.getCode());
 
         // 2. 更新
-        ImChannelDO updateObj = BeanUtils.toBean(reqVo, ImChannelDO.class);
+        ImChannel updateObj = BeanUtils.toBean(reqVo, ImChannel.class);
         channelMapper.updateById(updateObj);
     }
 
@@ -109,7 +109,7 @@ public class ImChannelServiceImpl implements ImChannelService {
     }
 
     private void validateCodeUnique(Long id, String code) {
-        ImChannelDO exist = channelMapper.selectByCode(code);
+        ImChannel exist = channelMapper.selectByCode(code);
         if (exist == null) {
             return;
         }

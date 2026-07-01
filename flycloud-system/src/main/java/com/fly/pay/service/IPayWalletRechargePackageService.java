@@ -12,7 +12,7 @@ import java.util.List;
  * 支付钱包充值套餐 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IPayWalletRechargePackageService {
 

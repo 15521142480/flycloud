@@ -1,7 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
-import com.fly.im.enums.rtc.ImRtcCallEndReasonEnum;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.enums.rtc.ImRtcCallEndReasonEnum;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
  * 两段位于不同请求 / 事务，自增 id 保证聊天流顺序
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -60,7 +60,7 @@ public class ImRtcCallEndNotification {
      */
     private String operatorAvatar;
 
-    public static ImRtcCallEndNotification of(ImRtcCallDO call, ImRtcCallEndReasonEnum reason, Long durationSeconds,
+    public static ImRtcCallEndNotification of(ImRtcCall call, ImRtcCallEndReasonEnum reason, Long durationSeconds,
                                               Long operatorId, SysUserVo operator) {
         ImRtcCallEndNotification notification = new ImRtcCallEndNotification();
         notification.room = call.getRoom();

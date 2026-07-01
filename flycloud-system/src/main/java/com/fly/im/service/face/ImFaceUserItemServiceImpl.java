@@ -3,9 +3,9 @@ package com.fly.im.service.face;
 import cn.hutool.core.util.ObjectUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVo;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
-import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
+import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.useritem.ImFaceUserItemManagerPageReqVo;
+import com.fly.system.api.im.domain.face.ImFaceUserItem;
 import com.fly.im.dal.mysql.face.ImFaceUserItemMapper;
 import com.fly.im.framework.config.ImProperties;
 import jakarta.annotation.Resource;
@@ -16,16 +16,16 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
-import static com.fly.im.enums.ErrorCodeConstants.FACE_USER_ITEM_DUPLICATED;
-import static com.fly.im.enums.ErrorCodeConstants.FACE_USER_ITEM_MAX_LIMIT;
-import static com.fly.im.enums.ErrorCodeConstants.FACE_USER_ITEM_NOT_EXISTS;
-import static com.fly.im.enums.ErrorCodeConstants.FACE_USER_ITEM_NOT_OWN;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FACE_USER_ITEM_DUPLICATED;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FACE_USER_ITEM_MAX_LIMIT;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FACE_USER_ITEM_NOT_EXISTS;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.FACE_USER_ITEM_NOT_OWN;
 
 /**
  * IM 用户私有表情 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -37,7 +37,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     private ImProperties imProperties;
 
     @Override
-    public List<ImFaceUserItemDO> getFaceUserItemList(Long userId) {
+    public List<ImFaceUserItem> getFaceUserItemList(Long userId) {
         return faceUserItemMapper.selectListByUserId(userId);
     }
 
@@ -54,7 +54,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
         }
 
         // 2. 入库
-        ImFaceUserItemDO item = BeanUtils.toBean(reqVo, ImFaceUserItemDO.class).setUserId(userId);
+        ImFaceUserItem item = BeanUtils.toBean(reqVo, ImFaceUserItem.class).setUserId(userId);
         try {
             faceUserItemMapper.insert(item);
         } catch (DuplicateKeyException ex) {
@@ -66,7 +66,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     @Override
     public void deleteFaceUserItem(Long userId, Long id) {
         // 1.1 校验存在
-        ImFaceUserItemDO item = faceUserItemMapper.selectById(id);
+        ImFaceUserItem item = faceUserItemMapper.selectById(id);
         if (item == null) {
             throw exception(FACE_USER_ITEM_NOT_EXISTS);
         }
@@ -82,7 +82,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFaceUserItemDO> getFaceUserItemPage(ImFaceUserItemManagerPageReqVo reqVo) {
+    public PageResult<ImFaceUserItem> getFaceUserItemPage(ImFaceUserItemManagerPageReqVo reqVo) {
         return faceUserItemMapper.selectPage(reqVo);
     }
 

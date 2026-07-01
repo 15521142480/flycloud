@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 支付订单 BO。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class PayOrderBo extends BaseEntity {

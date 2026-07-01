@@ -8,7 +8,7 @@ import com.fly.mall.api.statistics.domain.vo.TradeStatisticsVo;
  * 交易统计 Mapper 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface TradeStatisticsMapper extends BaseMapperPlus<TradeStatisticsMapper, TradeStatistics, TradeStatisticsVo> {
 

@@ -9,7 +9,7 @@ import com.fly.system.api.pay.domain.vo.PayDemoWithdrawVo;
  * 支付示例提现单 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface PayDemoWithdrawMapper extends BaseMapperPlus<PayDemoWithdrawMapper, PayDemoWithdraw, PayDemoWithdrawVo> {
 

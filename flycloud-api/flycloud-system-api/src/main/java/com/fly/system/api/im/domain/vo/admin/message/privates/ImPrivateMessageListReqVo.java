@@ -1,0 +1,29 @@
+package com.fly.system.api.im.domain.vo.admin.message.privates;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
+@Schema(description = "管理后台 - 私聊历史消息列表 Request VO")
+@Data
+@Accessors(chain = true)
+public class ImPrivateMessageListReqVo {
+
+    @Schema(description = "接收人编号（对方）", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
+    @NotNull(message = "接收人编号不能为空")
+    private Long receiverId;
+
+    @Schema(description = "起始消息编号，从该 id 往前拉取（不含）。为空则从最新消息开始", example = "1024")
+    private Long maxId;
+
+    @Schema(description = "拉取数量", requiredMode = Schema.RequiredMode.REQUIRED, example = "20")
+    @NotNull(message = "拉取数量不能为空")
+    @Min(value = 1, message = "拉取数量最小值为 1")
+    @Max(value = 200, message = "拉取数量最大值为 200")
+    private Integer limit;
+
+}

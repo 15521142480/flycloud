@@ -1,8 +1,8 @@
 package com.fly.im.mq.consumer.friend;
 
 import cn.hutool.core.collection.CollUtil;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.domain.friend.ImFriend;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.service.websocket.ImWebSocketService;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
@@ -22,7 +22,7 @@ import java.util.List;
  * 监听 system 模块的 {@link AdminUserProfileUpdateMessage} 消息，向「资料被改的人」的所有好友推送 FRIEND_INFO_UPDATED 通知
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Slf4j
 @Component
@@ -43,14 +43,14 @@ public class AdminUserProfileUpdateConsumer {
                 return;
             }
             Long userId = message.getUserId();
-            List<ImFriendDO> friends = friendService.getMutualEnableFriendList(userId);
+            List<ImFriend> friends = friendService.getMutualEnableFriendList(userId);
             if (CollUtil.isEmpty(friends)) {
                 return;
             }
 
             // 2. 给每个好友的多端推 FRIEND_INFO_UPDATED；payload 里 operatorUserId / friendUserId 都是「资料被改的人」
             int successCount = 0;
-            for (ImFriendDO friend : friends) {
+            for (ImFriend friend : friends) {
                 try {
                     FriendInfoUpdatedNotification payload = (FriendInfoUpdatedNotification) new FriendInfoUpdatedNotification()
                             .setOperatorUserId(userId).setFriendUserId(userId);

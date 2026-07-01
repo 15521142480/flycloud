@@ -3,17 +3,17 @@ package com.fly.im.service.friend;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVo;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVo;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
-import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
+import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerPageReqVo;
+import com.fly.system.api.im.domain.friend.ImFriend;
+import com.fly.system.api.im.domain.friend.ImFriendRequest;
 import com.fly.im.dal.mysql.friend.ImFriendRequestMapper;
-import com.fly.im.enums.friend.ImFriendRequestHandleResultEnum;
-import com.fly.im.enums.friend.ImFriendStateEnum;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.friend.ImFriendRequestHandleResultEnum;
+import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.framework.config.ImProperties;
 import com.fly.im.service.websocket.ImWebSocketService;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
@@ -37,13 +37,13 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
-import static com.fly.im.enums.ErrorCodeConstants.*;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
 
 /**
  * IM 好友申请 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Slf4j
 @Service
@@ -66,7 +66,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImFriendRequestDO applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+    public ImFriendRequest applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
         Long toUserId = reqVo.getToUserId();
         // 1.1 校验：不能加自己
         if (Objects.equals(fromUserId, toUserId)) {
@@ -84,7 +84,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
             throw exception(FRIEND_REQUEST_BLOCKED_BY_PEER);
         }
         // 1.4 单向好友（我已删 + 对方仍把我当好友）：静默重新启用我侧关系，避免对方感知我曾删除
-        ImFriendDO peerFriend = friendService.getFriend(toUserId, fromUserId);
+        ImFriend peerFriend = friendService.getFriend(toUserId, fromUserId);
         if (peerFriend != null && CommonStatusEnum.isEnable(peerFriend.getStatus())) {
             // 对方已拉黑：静默恢复等于绕过拉黑回到好友列表，必须先拒掉；
             // getFriendState 在我侧 DISABLE 时直接返回 NONE，拿不到 BLOCKED 信号，这里显式补一次校验
@@ -96,7 +96,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
         }
 
         // 2. 落库：同一申请人和接收人唯一，已有记录覆盖申请内容并重置为未处理
-        ImFriendRequestDO request = createOrResetRequest(fromUserId, reqVo);
+        ImFriendRequest request = createOrResetRequest(fromUserId, reqVo);
 
         // 3. 推送 FRIEND_REQUEST_RECEIVED 给 toUser 多端；payload 携带申请方昵称 / 头像，前端按 requestId 直推 push 进列表
         SysUserVo fromUser = adminUserApi.getUser(fromUserId).getCheckedData();
@@ -137,12 +137,12 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
      * @param reqVo      申请请求
      * @return 申请记录
      */
-    private ImFriendRequestDO createOrResetRequest(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+    private ImFriendRequest createOrResetRequest(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
         Long toUserId = reqVo.getToUserId();
-        ImFriendRequestDO request = friendRequestMapper.selectByFromUserIdAndToUserId(fromUserId, toUserId);
+        ImFriendRequest request = friendRequestMapper.selectByFromUserIdAndToUserId(fromUserId, toUserId);
         if (request == null) {
             // 1. 无旧申请：创建新申请；唯一键冲突时回查并复用并发写入的记录
-            request = BeanUtils.toBean(reqVo, ImFriendRequestDO.class)
+            request = BeanUtils.toBean(reqVo, ImFriendRequest.class)
                     .setFromUserId(fromUserId).setToUserId(toUserId)
                     .setHandleResult(ImFriendRequestHandleResultEnum.UNHANDLED.getResult());
             try {
@@ -172,12 +172,12 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     @Transactional(rollbackFor = Exception.class)
     public void agreeFriendRequest(Long userId, Long requestId) {
         // 1.1 校验申请存在、未处理、操作人是接收方
-        ImFriendRequestDO request = validateRequestForHandle(userId, requestId);
+        ImFriendRequest request = validateRequestForHandle(userId, requestId);
         // 1.2 复验双方用户有效
         adminUserApi.validateUserList(List.of(request.getFromUserId(), request.getToUserId())).checkError();
 
         // 2. 乐观锁更新申请处理结果
-        ImFriendRequestDO updateObj = new ImFriendRequestDO()
+        ImFriendRequest updateObj = new ImFriendRequest()
                 .setHandleResult(ImFriendRequestHandleResultEnum.AGREED.getResult()).setHandleTime(LocalDateTime.now());
         int affected = friendRequestMapper.updateByIdAndHandleResult(request.getId(),
                 ImFriendRequestHandleResultEnum.UNHANDLED.getResult(), updateObj);
@@ -201,10 +201,10 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     @Transactional(rollbackFor = Exception.class)
     public void refuseFriendRequest(Long userId, Long requestId, String handleContent) {
         // 1. 校验申请存在 + 未处理 + 操作人是接收方（fail-fast；并发场景仍由下面的乐观锁兜底）
-        ImFriendRequestDO request = validateRequestForHandle(userId, requestId);
+        ImFriendRequest request = validateRequestForHandle(userId, requestId);
 
         // 2. 乐观锁更新申请：handleResult=REFUSED + handleContent + handleTime；并发拒绝会有一方 affectedRows=0
-        ImFriendRequestDO updateObj = new ImFriendRequestDO()
+        ImFriendRequest updateObj = new ImFriendRequest()
                 .setHandleResult(ImFriendRequestHandleResultEnum.REFUSED.getResult())
                 .setHandleContent(handleContent).setHandleTime(LocalDateTime.now());
         int affected = friendRequestMapper.updateByIdAndHandleResult(request.getId(),
@@ -223,8 +223,8 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     }
 
     @Override
-    public List<ImFriendRequestDO> getMyFriendRequestList(Long userId, Long maxId, Integer limit) {
-        ImFriendRequestDO maxRequest = maxId != null ? friendRequestMapper.selectById(maxId) : null;
+    public List<ImFriendRequest> getMyFriendRequestList(Long userId, Long maxId, Integer limit) {
+        ImFriendRequest maxRequest = maxId != null ? friendRequestMapper.selectById(maxId) : null;
         if (maxId != null && maxRequest == null) {
             return List.of();
         }
@@ -235,20 +235,20 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     }
 
     @Override
-    public ImFriendRequestDO getFriendRequest(Long id) {
+    public ImFriendRequest getFriendRequest(Long id) {
         return friendRequestMapper.selectById(id);
     }
 
     @Override
-    public PageResult<ImFriendRequestDO> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo) {
+    public PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo) {
         return friendRequestMapper.selectPage(reqVo);
     }
 
     /**
      * 校验申请可被「当前用户」处理：申请存在 + 未处理 + 操作人 = 接收方
      */
-    private ImFriendRequestDO validateRequestForHandle(Long userId, Long requestId) {
-        ImFriendRequestDO request = friendRequestMapper.selectById(requestId);
+    private ImFriendRequest validateRequestForHandle(Long userId, Long requestId) {
+        ImFriendRequest request = friendRequestMapper.selectById(requestId);
         if (request == null) {
             throw exception(FRIEND_REQUEST_NOT_EXISTS);
         }

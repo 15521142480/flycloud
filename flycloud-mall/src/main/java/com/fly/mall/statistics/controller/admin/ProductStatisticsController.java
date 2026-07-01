@@ -28,7 +28,7 @@ import java.util.List;
  * 管理后台 - 商品统计 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor

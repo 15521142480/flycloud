@@ -1,13 +1,13 @@
 package com.fly.im.controller.admin.manager.channel;
 
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelPageReqVo;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelRespVo;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelSaveReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelDO;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelRespVo;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
+import com.fly.system.api.im.domain.channel.ImChannel;
 import com.fly.im.service.channel.ImChannelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -59,7 +59,7 @@ public class ImChannelManagerController {
     @Operation(summary = "获得频道分页")
     @PreAuthorize("@pms.hasPermission('im:manager:channel:query')")
     public R<PageResult<ImChannelRespVo>> getChannelPage(@Valid ImChannelPageReqVo pageReqVo) {
-        PageResult<ImChannelDO> pageResult = channelService.getChannelPage(pageReqVo);
+        PageResult<ImChannel> pageResult = channelService.getChannelPage(pageReqVo);
         return ok(PageResult.convert(pageResult, ImChannelRespVo.class));
     }
 
@@ -68,7 +68,7 @@ public class ImChannelManagerController {
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:channel:query')")
     public R<ImChannelRespVo> getChannel(@RequestParam("id") Long id) {
-        ImChannelDO channel = channelService.getChannel(id);
+        ImChannel channel = channelService.getChannel(id);
         return ok(BeanUtils.toBean(channel, ImChannelRespVo.class));
     }
 
@@ -76,7 +76,7 @@ public class ImChannelManagerController {
     @Operation(summary = "获得启用的频道精简列表；前端表单选择频道时调用")
     public R<List<ImChannelRespVo>> getSimpleChannelList() {
         // getChannelListByStatus 统一命名
-        List<ImChannelDO> list = channelService.getChannelListByStatus(CommonStatusEnum.ENABLE.getStatus());
+        List<ImChannel> list = channelService.getChannelListByStatus(CommonStatusEnum.ENABLE.getStatus());
         return ok(BeanUtils.toBean(list, ImChannelRespVo.class));
     }
 

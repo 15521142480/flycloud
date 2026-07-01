@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  * 商品统计 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "product_statistics")
 @Data

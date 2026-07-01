@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * 支付钱包流水 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IPayWalletTransactionService {
 

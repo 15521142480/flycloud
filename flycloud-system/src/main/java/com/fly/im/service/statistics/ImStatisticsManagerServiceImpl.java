@@ -17,7 +17,7 @@ import static com.fly.common.utils.collection.CollectionUtils.convertMap;
  * IM 数据看板 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated

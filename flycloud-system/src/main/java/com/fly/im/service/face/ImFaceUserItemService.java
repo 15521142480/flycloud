@@ -1,9 +1,9 @@
 package com.fly.im.service.face;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.face.vo.useritem.ImFaceUserItemSaveReqVo;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
-import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
+import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.useritem.ImFaceUserItemManagerPageReqVo;
+import com.fly.system.api.im.domain.face.ImFaceUserItem;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * IM 用户私有表情 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImFaceUserItemService {
 
@@ -22,7 +22,7 @@ public interface ImFaceUserItemService {
      * @param userId 用户编号
      * @return 个人表情列表
      */
-    List<ImFaceUserItemDO> getFaceUserItemList(Long userId);
+    List<ImFaceUserItem> getFaceUserItemList(Long userId);
 
     /**
      * 添加个人表情
@@ -49,7 +49,7 @@ public interface ImFaceUserItemService {
      * @param reqVo 分页查询条件
      * @return 个人表情分页
      */
-    PageResult<ImFaceUserItemDO> getFaceUserItemPage(ImFaceUserItemManagerPageReqVo reqVo);
+    PageResult<ImFaceUserItem> getFaceUserItemPage(ImFaceUserItemManagerPageReqVo reqVo);
 
     /**
      * 管理后台直接删除某条个人表情；不做归属校验

@@ -8,7 +8,7 @@ import lombok.Data;
  * 轮播图 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class BannerBo extends BaseEntity {

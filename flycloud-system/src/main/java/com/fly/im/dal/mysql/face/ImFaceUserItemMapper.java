@@ -3,8 +3,8 @@ package com.fly.im.dal.mysql.face;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.face.vo.useritem.ImFaceUserItemManagerPageReqVo;
-import com.fly.im.dal.dataobject.face.ImFaceUserItemDO;
+import com.fly.system.api.im.domain.vo.admin.manager.face.useritem.ImFaceUserItemManagerPageReqVo;
+import com.fly.system.api.im.domain.face.ImFaceUserItem;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,34 +13,34 @@ import java.util.List;
  * IM 用户私有表情 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImFaceUserItemMapper extends BaseMapperX<ImFaceUserItemDO> {
+public interface ImFaceUserItemMapper extends BaseMapperX<ImFaceUserItem> {
 
-    default List<ImFaceUserItemDO> selectListByUserId(Long userId) {
-        return selectList(new LambdaQueryWrapperX<ImFaceUserItemDO>()
-                .eq(ImFaceUserItemDO::getUserId, userId)
-                .orderByAsc(ImFaceUserItemDO::getSort)
-                .orderByDesc(ImFaceUserItemDO::getId));
+    default List<ImFaceUserItem> selectListByUserId(Long userId) {
+        return selectList(new LambdaQueryWrapperX<ImFaceUserItem>()
+                .eq(ImFaceUserItem::getUserId, userId)
+                .orderByAsc(ImFaceUserItem::getSort)
+                .orderByDesc(ImFaceUserItem::getId));
     }
 
-    default ImFaceUserItemDO selectByUserIdAndUrl(Long userId, String url) {
-        return selectOne(new LambdaQueryWrapperX<ImFaceUserItemDO>()
-                .eq(ImFaceUserItemDO::getUserId, userId)
-                .eq(ImFaceUserItemDO::getUrl, url));
+    default ImFaceUserItem selectByUserIdAndUrl(Long userId, String url) {
+        return selectOne(new LambdaQueryWrapperX<ImFaceUserItem>()
+                .eq(ImFaceUserItem::getUserId, userId)
+                .eq(ImFaceUserItem::getUrl, url));
     }
 
     default Long selectCountByUserId(Long userId) {
-        return selectCount(ImFaceUserItemDO::getUserId, userId);
+        return selectCount(ImFaceUserItem::getUserId, userId);
     }
 
-    default PageResult<ImFaceUserItemDO> selectPage(ImFaceUserItemManagerPageReqVo reqVo) {
-        return selectPage(reqVo, new LambdaQueryWrapperX<ImFaceUserItemDO>()
-                .eqIfPresent(ImFaceUserItemDO::getUserId, reqVo.getUserId())
-                .likeIfPresent(ImFaceUserItemDO::getName, reqVo.getName())
-                .betweenIfPresent(ImFaceUserItemDO::getCreateTime, reqVo.getCreateTime())
-                .orderByDesc(ImFaceUserItemDO::getId));
+    default PageResult<ImFaceUserItem> selectPage(ImFaceUserItemManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFaceUserItem>()
+                .eqIfPresent(ImFaceUserItem::getUserId, reqVo.getUserId())
+                .likeIfPresent(ImFaceUserItem::getName, reqVo.getName())
+                .betweenIfPresent(ImFaceUserItem::getCreateTime, reqVo.getCreateTime())
+                .orderByDesc(ImFaceUserItem::getId));
     }
 
 }

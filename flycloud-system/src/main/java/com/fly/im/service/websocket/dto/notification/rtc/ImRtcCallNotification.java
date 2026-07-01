@@ -1,7 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
-import com.fly.im.enums.rtc.ImRtcParticipantStatusEnum;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.enums.rtc.ImRtcParticipantStatusEnum;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,7 +17,7 @@ import java.util.List;
  * status 字段复用 {@link ImRtcParticipantStatusEnum}，表达「本次信令对应的参与者状态变迁」
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -101,7 +101,7 @@ public class ImRtcCallNotification {
      * @param inviteeIds  本次被邀请人列表；前端来电界面展示「邀请的其他人」用
      * @return INVITE 信令
      */
-    public static ImRtcCallNotification ofInvite(ImRtcCallDO call, SysUserVo inviter,
+    public static ImRtcCallNotification ofInvite(ImRtcCall call, SysUserVo inviter,
                                                  String livekitUrl, String token,
                                                  Collection<Long> inviteeIds) {
         ImRtcCallNotification notification = baseOf(call, ImRtcParticipantStatusEnum.INVITING.getStatus());
@@ -124,7 +124,7 @@ public class ImRtcCallNotification {
      * @param operator        拒接者；可空，缺失时 operatorNickname / operatorAvatar 留空
      * @return REJECT 信令
      */
-    public static ImRtcCallNotification ofReject(ImRtcCallDO call, Long operatorUserId, SysUserVo operator) {
+    public static ImRtcCallNotification ofReject(ImRtcCall call, Long operatorUserId, SysUserVo operator) {
         ImRtcCallNotification notification = baseOf(call, ImRtcParticipantStatusEnum.REJECTED.getStatus());
         notification.operatorUserId = operatorUserId;
         if (operator != null) {
@@ -142,7 +142,7 @@ public class ImRtcCallNotification {
      * @param operator       未接听者；可空，缺失时 operatorNickname / operatorAvatar 留空
      * @return NO_ANSWER 信令
      */
-    public static ImRtcCallNotification ofNoAnswer(ImRtcCallDO call, Long operatorUserId, SysUserVo operator) {
+    public static ImRtcCallNotification ofNoAnswer(ImRtcCall call, Long operatorUserId, SysUserVo operator) {
         ImRtcCallNotification notification = baseOf(call, ImRtcParticipantStatusEnum.NO_ANSWER.getStatus());
         notification.operatorUserId = operatorUserId;
         if (operator != null) {
@@ -155,7 +155,7 @@ public class ImRtcCallNotification {
     /**
      * 公共骨架；填充 call 上下文 + status
      */
-    private static ImRtcCallNotification baseOf(ImRtcCallDO call, Integer status) {
+    private static ImRtcCallNotification baseOf(ImRtcCall call, Integer status) {
         ImRtcCallNotification notification = new ImRtcCallNotification();
         notification.status = status;
         notification.room = call.getRoom();

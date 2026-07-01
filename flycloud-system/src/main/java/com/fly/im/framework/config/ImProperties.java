@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
  * yaml 路径保持 yudao.im.{module}.{key} 与原有部署保持兼容
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Component
 @ConfigurationProperties(prefix = "yudao.im")

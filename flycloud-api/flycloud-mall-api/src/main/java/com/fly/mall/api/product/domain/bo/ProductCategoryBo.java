@@ -8,7 +8,7 @@ import lombok.Data;
  * 商品分类 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class ProductCategoryBo extends BaseEntity {

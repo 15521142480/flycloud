@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 后台 - 会员配置控制器。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @RequiredArgsConstructor
 @RestController

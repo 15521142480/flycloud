@@ -3,8 +3,8 @@ package com.fly.im.dal.mysql.friend;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVo;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageReqVo;
+import com.fly.system.api.im.domain.friend.ImFriend;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,71 +16,71 @@ import java.util.List;
  * IM 好友关系 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImFriendMapper extends BaseMapperX<ImFriendDO> {
+public interface ImFriendMapper extends BaseMapperX<ImFriend> {
 
-    default ImFriendDO selectByUserIdAndFriendUserId(Long userId, Long friendUserId) {
-        return selectOne(new LambdaQueryWrapperX<ImFriendDO>()
-                .eq(ImFriendDO::getUserId, userId)
-                .eq(ImFriendDO::getFriendUserId, friendUserId));
+    default ImFriend selectByUserIdAndFriendUserId(Long userId, Long friendUserId) {
+        return selectOne(new LambdaQueryWrapperX<ImFriend>()
+                .eq(ImFriend::getUserId, userId)
+                .eq(ImFriend::getFriendUserId, friendUserId));
     }
 
-    default List<ImFriendDO> selectListByUserId(Long userId) {
-        return selectList(new LambdaQueryWrapperX<ImFriendDO>()
-                .eq(ImFriendDO::getUserId, userId)
-                .orderByDesc(ImFriendDO::getId));
+    default List<ImFriend> selectListByUserId(Long userId) {
+        return selectList(new LambdaQueryWrapperX<ImFriend>()
+                .eq(ImFriend::getUserId, userId)
+                .orderByDesc(ImFriend::getId));
     }
-    default List<ImFriendDO> selectListByUserIdAndStatus(Long userId, Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImFriendDO>()
-                .eq(ImFriendDO::getUserId, userId)
-                .eq(ImFriendDO::getStatus, status)
-                .orderByDesc(ImFriendDO::getId));
+    default List<ImFriend> selectListByUserIdAndStatus(Long userId, Integer status) {
+        return selectList(new LambdaQueryWrapperX<ImFriend>()
+                .eq(ImFriend::getUserId, userId)
+                .eq(ImFriend::getStatus, status)
+                .orderByDesc(ImFriend::getId));
     }
 
-    default List<ImFriendDO> selectListByUserIdAndFriendUserIdsAndStatus(Long userId,
+    default List<ImFriend> selectListByUserIdAndFriendUserIdsAndStatus(Long userId,
                                                                         Collection<Long> friendUserIds,
                                                                         Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImFriendDO>()
-                .eq(ImFriendDO::getUserId, userId)
-                .in(ImFriendDO::getFriendUserId, friendUserIds)
-                .eq(ImFriendDO::getStatus, status));
+        return selectList(new LambdaQueryWrapperX<ImFriend>()
+                .eq(ImFriend::getUserId, userId)
+                .in(ImFriend::getFriendUserId, friendUserIds)
+                .eq(ImFriend::getStatus, status));
     }
 
-    default List<ImFriendDO> selectListByUserIdsAndFriendUserIdAndStatus(Collection<Long> userIds,
+    default List<ImFriend> selectListByUserIdsAndFriendUserIdAndStatus(Collection<Long> userIds,
                                                                         Long friendUserId,
                                                                         Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImFriendDO>()
-                .in(ImFriendDO::getUserId, userIds)
-                .eq(ImFriendDO::getFriendUserId, friendUserId)
-                .eq(ImFriendDO::getStatus, status));
+        return selectList(new LambdaQueryWrapperX<ImFriend>()
+                .in(ImFriend::getUserId, userIds)
+                .eq(ImFriend::getFriendUserId, friendUserId)
+                .eq(ImFriend::getStatus, status));
     }
 
-    default PageResult<ImFriendDO> selectPage(ImFriendManagerPageReqVo reqVo) {
-        return selectPage(reqVo, new LambdaQueryWrapperX<ImFriendDO>()
-                .eqIfPresent(ImFriendDO::getUserId, reqVo.getUserId())
-                .eqIfPresent(ImFriendDO::getFriendUserId, reqVo.getFriendUserId())
-                .eqIfPresent(ImFriendDO::getStatus, reqVo.getStatus())
-                .eqIfPresent(ImFriendDO::getSilent, reqVo.getSilent())
-                .betweenIfPresent(ImFriendDO::getAddTime, reqVo.getAddTime())
-                .orderByDesc(ImFriendDO::getId));
+    default PageResult<ImFriend> selectPage(ImFriendManagerPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFriend>()
+                .eqIfPresent(ImFriend::getUserId, reqVo.getUserId())
+                .eqIfPresent(ImFriend::getFriendUserId, reqVo.getFriendUserId())
+                .eqIfPresent(ImFriend::getStatus, reqVo.getStatus())
+                .eqIfPresent(ImFriend::getSilent, reqVo.getSilent())
+                .betweenIfPresent(ImFriend::getAddTime, reqVo.getAddTime())
+                .orderByDesc(ImFriend::getId));
     }
 
     @SuppressWarnings("UnusedReturnValue")
     default int updateReAddFields(Long id, Integer status, LocalDateTime addTime,
                                   Boolean silent, Boolean pinned, Boolean blocked,
                                   String displayName, Integer addSource) {
-        return update(null, Wrappers.<ImFriendDO>lambdaUpdate()
-                .eq(ImFriendDO::getId, id)
-                .set(ImFriendDO::getStatus, status)
-                .set(ImFriendDO::getAddTime, addTime)
-                .set(ImFriendDO::getSilent, silent)
-                .set(ImFriendDO::getPinned, pinned)
-                .set(ImFriendDO::getBlocked, blocked)
-                .set(ImFriendDO::getDisplayName, displayName)
-                .set(ImFriendDO::getAddSource, addSource)
-                .set(ImFriendDO::getDeleteTime, null));
+        return update(null, Wrappers.<ImFriend>lambdaUpdate()
+                .eq(ImFriend::getId, id)
+                .set(ImFriend::getStatus, status)
+                .set(ImFriend::getAddTime, addTime)
+                .set(ImFriend::getSilent, silent)
+                .set(ImFriend::getPinned, pinned)
+                .set(ImFriend::getBlocked, blocked)
+                .set(ImFriend::getDisplayName, displayName)
+                .set(ImFriend::getAddSource, addSource)
+                .set(ImFriend::getDeleteTime, null));
     }
 
 }

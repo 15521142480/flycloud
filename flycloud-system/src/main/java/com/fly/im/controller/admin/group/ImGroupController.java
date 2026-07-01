@@ -3,13 +3,13 @@ package com.fly.im.controller.admin.group;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.group.vo.*;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberInviteReqVo;
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberRemoveReqVo;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageRespVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
+import com.fly.system.api.im.domain.vo.admin.group.*;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberInviteReqVo;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberRemoveReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageRespVo;
+import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.group.ImGroupMember;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.service.group.ImGroupService;
 import com.fly.im.service.message.ImGroupMessageService;
@@ -46,7 +46,7 @@ public class ImGroupController {
     @PostMapping("/create")
     @Operation(summary = "创建群")
     public R<ImGroupRespVo> createGroup(@Valid @RequestBody ImGroupCreateReqVo createReqVo) {
-        ImGroupDO group = groupService.createGroup(createReqVo, getCurUserId());
+        ImGroup group = groupService.createGroup(createReqVo, getCurUserId());
         // 新建群必无 pinnedMessages，跳过关联回填
         return ok(BeanUtils.toBean(group, ImGroupRespVo.class));
     }
@@ -54,7 +54,7 @@ public class ImGroupController {
     @PutMapping("/update")
     @Operation(summary = "更新群")
     public R<ImGroupRespVo> updateGroup(@Valid @RequestBody ImGroupUpdateReqVo updateReqVo) {
-        ImGroupDO group = groupService.updateGroup(updateReqVo, getCurUserId());
+        ImGroup group = groupService.updateGroup(updateReqVo, getCurUserId());
         return ok(buildGroupRespVo(group, getCurUserId()));
     }
 
@@ -72,7 +72,7 @@ public class ImGroupController {
     @Operation(summary = "获得群")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     public R<ImGroupRespVo> getGroup(@RequestParam("id") Long id) {
-        ImGroupDO group = groupService.getGroup(id);
+        ImGroup group = groupService.getGroup(id);
         return ok(buildGroupRespVo(group, getCurUserId()));
     }
 
@@ -80,7 +80,7 @@ public class ImGroupController {
     @Operation(summary = "获得当前登录用户的群列表")
     public R<List<ImGroupRespVo>> getMyGroupList() {
         Long loginUserId = getCurUserId();
-        List<ImGroupDO> groups = groupService.getMyGroupList(loginUserId);
+        List<ImGroup> groups = groupService.getMyGroupList(loginUserId);
         return ok(buildGroupRespVoList(groups, loginUserId));
     }
 
@@ -169,7 +169,7 @@ public class ImGroupController {
     }
 
     /** 单群转 VO + 关联回填 pinnedMessages（仅当登录用户是该群有效成员） */
-    private ImGroupRespVo buildGroupRespVo(ImGroupDO group, Long loginUserId) {
+    private ImGroupRespVo buildGroupRespVo(ImGroup group, Long loginUserId) {
         if (group == null) {
             return null;
         }
@@ -181,16 +181,16 @@ public class ImGroupController {
      * <p>
      * 仅当登录用户是某群的有效成员时才回填该群的 pinnedMessages，避免非成员 / 已退群用户越权拿到置顶消息内容
      */
-    private List<ImGroupRespVo> buildGroupRespVoList(List<ImGroupDO> groups, Long loginUserId) {
+    private List<ImGroupRespVo> buildGroupRespVoList(List<ImGroup> groups, Long loginUserId) {
         if (CollUtil.isEmpty(groups)) {
             return Collections.emptyList();
         }
         // 仅当前用户是有效成员的群才允许回填置顶消息
         Set<Long> activeGroupIds = convertSet(
-                groupMemberService.getActiveGroupMemberListByUserId(loginUserId), ImGroupMemberDO::getGroupId);
+                groupMemberService.getActiveGroupMemberListByUserId(loginUserId), ImGroupMember::getGroupId);
         Set<Long> allMessageIds = convertSetByFlatMap(groups, group -> activeGroupIds.contains(group.getId())
                 ? CollUtil.emptyIfNull(group.getPinnedMessageIds()).stream() : Stream.empty());
-        Map<Long, ImGroupMessageDO> messageMap = groupMessageService.getGroupMessageMap(allMessageIds);
+        Map<Long, ImGroupMessage> messageMap = groupMessageService.getGroupMessageMap(allMessageIds);
         // 转换输出
         return convertList(groups, group -> {
             ImGroupRespVo vo = BeanUtils.toBean(group, ImGroupRespVo.class);
@@ -198,7 +198,7 @@ public class ImGroupController {
                 return vo;
             }
             // 按 pin 顺序输出，已被删除的消息（messageMap 没命中）跳过
-            List<ImGroupMessageDO> pinnedMesages = convertList(group.getPinnedMessageIds(), messageMap::get);
+            List<ImGroupMessage> pinnedMesages = convertList(group.getPinnedMessageIds(), messageMap::get);
             return vo.setPinnedMessages(BeanUtils.toBean(pinnedMesages, ImGroupMessageRespVo.class));
         });
     }

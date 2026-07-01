@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  * 砍价活动 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "promotion_bargain_activity")
 @Data

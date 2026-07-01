@@ -14,7 +14,7 @@ import java.util.List;
  * 商品 SPU Service 接口。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 public interface IProductSpuService {
 

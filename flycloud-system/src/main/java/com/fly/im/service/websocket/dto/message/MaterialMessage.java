@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * 频道素材消息 payload
  * <p>
- * 对应 {@link com.fly.im.enums.message.ImMessageTypeEnum#MATERIAL}（type=125）。
+ * 对应 {@link com.fly.system.api.im.enums.message.ImMessageTypeEnum#MATERIAL}（type=125）。
  * 客户端按本字段集渲染图文卡片；
  * 富文本正文不在本 payload 中传递，点击详情时另调 /im/channel/material/get-content?id= 按需拉取。
  */
@@ -27,7 +27,7 @@ public class MaterialMessage {
     /**
      * 素材内容类型
      * <p>
-     * 枚举 {@link com.fly.im.enums.channel.ImChannelMaterialTypeEnum}
+     * 枚举 {@link com.fly.system.api.im.enums.channel.ImChannelMaterialTypeEnum}
      * 客户端按本字段判定点击行为：CONTENT 走站内详情页拉富文本；LINK 跳 url
      */
     private Integer type;

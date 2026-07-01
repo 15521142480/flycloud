@@ -5,9 +5,9 @@ import cn.hutool.core.util.ObjUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVo;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestRespVo;
-import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
+import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
+import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestRespVo;
+import com.fly.system.api.im.domain.friend.ImFriendRequest;
 import com.fly.im.service.friend.ImFriendRequestService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -38,7 +38,7 @@ import static com.fly.common.security.util.UserUtils.getCurUserId;
  * IM 好友申请记录 Controller
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Tag(name = "管理后台 - IM 好友申请")
 @RestController
@@ -55,7 +55,7 @@ public class ImFriendRequestController {
     @PostMapping("/apply")
     @Operation(summary = "发起好友申请")
     public R<Long> applyFriend(@Valid @RequestBody ImFriendRequestApplyReqVo reqVo) {
-        ImFriendRequestDO request = friendRequestService.applyFriend(getCurUserId(), reqVo);
+        ImFriendRequest request = friendRequestService.applyFriend(getCurUserId(), reqVo);
         return ok(request != null ? request.getId() : null);
     }
 
@@ -85,7 +85,7 @@ public class ImFriendRequestController {
             @RequestParam(value = "maxId", required = false) Long maxId,
             @Parameter(description = "单次拉取条数", required = true)
             @RequestParam("limit") @Min(1) @Max(200) Integer limit) {
-        List<ImFriendRequestDO> list = friendRequestService.getMyFriendRequestList(getCurUserId(), maxId, limit);
+        List<ImFriendRequest> list = friendRequestService.getMyFriendRequestList(getCurUserId(), maxId, limit);
         return ok(buildList(list));
     }
 
@@ -93,7 +93,7 @@ public class ImFriendRequestController {
     @Operation(summary = "按 id 单查「我相关」的申请记录（带越权过滤；WebSocket 通知到达后用）")
     @Parameter(name = "id", description = "申请记录编号", required = true)
     public R<ImFriendRequestRespVo> getMyFriendRequest(@RequestParam("id") Long id) {
-        ImFriendRequestDO request = friendRequestService.getFriendRequest(id);
+        ImFriendRequest request = friendRequestService.getFriendRequest(id);
         // 越权过滤：fromUser / toUser 必有一方是当前用户，否则当不存在返回 null
         Long currentUserId = getCurUserId();
         if (request == null || (ObjUtil.notEqual(request.getFromUserId(), currentUserId)
@@ -105,7 +105,7 @@ public class ImFriendRequestController {
 
     // ========== 私有方法：VO 组装 ==========
 
-    private List<ImFriendRequestRespVo> buildList(List<ImFriendRequestDO> list) {
+    private List<ImFriendRequestRespVo> buildList(List<ImFriendRequest> list) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }

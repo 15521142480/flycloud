@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 移动端 - 钱包流水统计返回对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "移动端 - 钱包流水统计返回对象")

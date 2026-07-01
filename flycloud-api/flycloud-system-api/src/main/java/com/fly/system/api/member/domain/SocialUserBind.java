@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  * 社交用户绑定关系。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @TableName("system_social_user_bind")
 @Data

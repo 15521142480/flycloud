@@ -20,13 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-
 /**
  * 移动端 - 售后单 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor
@@ -41,6 +39,7 @@ public class AppAfterSaleController {
      */
     @GetMapping("/list")
     public R<PageVo<AfterSaleVo>> list(AfterSaleBo bo, PageBo page) {
+        bo.setUserId(UserUtils.getCurUserId());
         return R.ok(afterSaleService.queryPageList(bo, page));
     }
 
@@ -49,6 +48,7 @@ public class AppAfterSaleController {
      */
     @GetMapping("/page")
     public R<PageVo<AfterSaleVo>> page(AfterSaleBo bo, PageBo page) {
+        bo.setUserId(UserUtils.getCurUserId());
         return R.ok(afterSaleService.queryPageList(bo, page));
     }
 
@@ -57,7 +57,7 @@ public class AppAfterSaleController {
      */
     @GetMapping("/get/{id}")
     public R<AfterSaleVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(afterSaleService.queryById(id));
+        return R.ok(afterSaleService.queryByUserAndId(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -65,17 +65,15 @@ public class AppAfterSaleController {
      */
     @GetMapping({"/get-detail", "/get"})
     public R<AfterSaleVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(afterSaleService.queryById(id));
+        return R.ok(afterSaleService.queryByUserAndId(UserUtils.getCurUserId(), id));
     }
 
     /**
      * 创建售后申请。
      */
     @PostMapping("/create")
-    public R<Void> create(@RequestBody AfterSaleBo bo) {
-        bo.setUserId(UserUtils.getCurUserId());
-        bo.setStatus(10);
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+    public R<Long> create(@RequestBody AfterSaleBo bo) {
+        return R.ok(afterSaleService.createAfterSale(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -83,10 +81,7 @@ public class AppAfterSaleController {
      */
     @DeleteMapping("/cancel")
     public R<Void> cancel(@RequestParam("id") Long id) {
-        AfterSaleBo bo = new AfterSaleBo();
-        bo.setId(id);
-        bo.setStatus(62);
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.ok(afterSaleService.cancelAfterSale(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -94,9 +89,7 @@ public class AppAfterSaleController {
      */
     @PutMapping("/delivery")
     public R<Void> delivery(@RequestBody AfterSaleBo bo) {
-        bo.setStatus(30);
-        bo.setDeliveryTime(LocalDateTime.now());
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.ok(afterSaleService.deliveryAfterSale(UserUtils.getCurUserId(), bo));
     }
 
 }

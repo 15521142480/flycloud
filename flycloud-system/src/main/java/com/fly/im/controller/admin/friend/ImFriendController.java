@@ -5,9 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.framework.util.StrUtils;
-import com.fly.im.controller.admin.friend.vo.ImFriendRespVo;
-import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVo;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
+import com.fly.system.api.im.domain.vo.admin.friend.ImFriendRespVo;
+import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
+import com.fly.system.api.im.domain.friend.ImFriend;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -47,7 +47,7 @@ public class ImFriendController {
     @Operation(summary = "获得当前登录用户的好友列表")
     public R<List<ImFriendRespVo>> getMyFriendList() {
         // 含 DISABLE 历史好友：保留给前端展示「已删除好友」的历史对话信息；前端按 status 决定会话级联清理
-        List<ImFriendDO> friends = friendService.getFriendList(getCurUserId());
+        List<ImFriend> friends = friendService.getFriendList(getCurUserId());
         return ok(buildFriendRespVoList(friends));
     }
 
@@ -55,7 +55,7 @@ public class ImFriendController {
     @Operation(summary = "获得好友详情")
     @Parameter(name = "friendUserId", description = "好友的用户编号", required = true, example = "2048")
     public R<ImFriendRespVo> getFriend(@RequestParam("friendUserId") Long friendUserId) {
-        ImFriendDO friend = friendService.getFriend(getCurUserId(), friendUserId);
+        ImFriend friend = friendService.getFriend(getCurUserId(), friendUserId);
         return ok(buildFriendRespVo(friend));
     }
 
@@ -99,13 +99,13 @@ public class ImFriendController {
 
     // ========== 私有方法：VO 组装 ==========
 
-    private List<ImFriendRespVo> buildFriendRespVoList(Collection<ImFriendDO> friends) {
+    private List<ImFriendRespVo> buildFriendRespVoList(Collection<ImFriend> friends) {
         if (CollUtil.isEmpty(friends)) {
             return Collections.emptyList();
         }
         // 批量聚合 AdminUser 信息（昵称 / 头像），避免 N+1
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                convertList(friends, ImFriendDO::getFriendUserId));
+                convertList(friends, ImFriend::getFriendUserId));
         return convertList(friends, friend -> {
             ImFriendRespVo vo = BeanUtils.toBean(friend, ImFriendRespVo.class);
             MapUtils.findAndThen(userMap, friend.getFriendUserId(), user ->
@@ -117,7 +117,7 @@ public class ImFriendController {
         });
     }
 
-    private ImFriendRespVo buildFriendRespVo(ImFriendDO friend) {
+    private ImFriendRespVo buildFriendRespVo(ImFriend friend) {
         if (friend == null) {
             return null;
         }

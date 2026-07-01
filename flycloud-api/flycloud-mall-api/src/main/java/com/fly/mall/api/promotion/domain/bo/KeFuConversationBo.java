@@ -9,7 +9,7 @@ import lombok.Data;
  * 客服会话 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class KeFuConversationBo extends BaseEntity {

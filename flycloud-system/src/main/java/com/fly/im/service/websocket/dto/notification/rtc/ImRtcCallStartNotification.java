@@ -1,6 +1,6 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
  * 两段位于不同请求 / 事务，自增 id 保证聊天流顺序；后续如果合并到同一事务里 push，需要额外保证 START 先于 END
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -48,7 +48,7 @@ public class ImRtcCallStartNotification {
      */
     private String inviterAvatar;
 
-    public static ImRtcCallStartNotification of(ImRtcCallDO call, SysUserVo inviter) {
+    public static ImRtcCallStartNotification of(ImRtcCall call, SysUserVo inviter) {
         ImRtcCallStartNotification notification = new ImRtcCallStartNotification();
         notification.room = call.getRoom();
         notification.conversationType = call.getConversationType();

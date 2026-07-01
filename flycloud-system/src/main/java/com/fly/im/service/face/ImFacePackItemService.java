@@ -1,9 +1,9 @@
 package com.fly.im.service.face;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVo;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemSaveReqVo;
-import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
+import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemSaveReqVo;
+import com.fly.system.api.im.domain.face.ImFacePackItem;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.List;
  * IM 表情包项 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImFacePackItemService {
 
@@ -25,7 +25,7 @@ public interface ImFacePackItemService {
      * @param packIds 表情包编号列表
      * @return 启用状态的表情列表
      */
-    List<ImFacePackItemDO> getEnabledItemListByPackIds(Collection<Long> packIds);
+    List<ImFacePackItem> getEnabledItemListByPackIds(Collection<Long> packIds);
 
     /**
      * 取某个表情包下的表情数量；ImFacePackService 删除前校验「包下无项」用
@@ -51,7 +51,7 @@ public interface ImFacePackItemService {
      * @param reqVo 分页查询条件
      * @return 表情包项分页
      */
-    PageResult<ImFacePackItemDO> getFacePackItemPage(ImFacePackItemPageReqVo reqVo);
+    PageResult<ImFacePackItem> getFacePackItemPage(ImFacePackItemPageReqVo reqVo);
 
     /**
      * 获取表情包项详情
@@ -59,7 +59,7 @@ public interface ImFacePackItemService {
      * @param id 表情包项编号
      * @return 表情包项 DO
      */
-    ImFacePackItemDO getFacePackItem(Long id);
+    ImFacePackItem getFacePackItem(Long id);
 
     /**
      * 新增表情包项

@@ -14,7 +14,7 @@ import java.util.Map;
  * 独立于业务 Mapper：所有统计 SQL 集中在此，仅服务于 manager 看板，不被其它业务调用，保持各业务 Mapper / Service 不受统计需求污染。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
 public interface ImStatisticsManagerMapper {

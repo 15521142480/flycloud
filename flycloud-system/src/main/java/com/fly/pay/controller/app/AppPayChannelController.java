@@ -12,7 +12,7 @@ import java.util.List;
  * 移动端 - 支付渠道控制器。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @RestController
 @RequestMapping("/app/pay/channel")

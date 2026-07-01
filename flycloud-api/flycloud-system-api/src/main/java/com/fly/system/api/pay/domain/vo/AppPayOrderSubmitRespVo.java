@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 移动端 - 支付订单提交返回对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "移动端 - 支付订单提交返回对象")

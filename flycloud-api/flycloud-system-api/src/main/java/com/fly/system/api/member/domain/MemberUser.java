@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * 会员用户。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("member_user")
 @Data

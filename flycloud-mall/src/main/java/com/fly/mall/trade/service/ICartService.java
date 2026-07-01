@@ -13,7 +13,7 @@ import java.util.List;
  * 购物车 Service 接口。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 public interface ICartService {
 

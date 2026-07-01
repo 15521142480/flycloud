@@ -1,9 +1,9 @@
 package com.fly.im.service.friend;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.friend.vo.request.ImFriendRequestApplyReqVo;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendRequestManagerPageReqVo;
-import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
+import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerPageReqVo;
+import com.fly.system.api.im.domain.friend.ImFriendRequest;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * IM 好友申请 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImFriendRequestService {
 
@@ -22,7 +22,7 @@ public interface ImFriendRequestService {
      * @param reqVo      申请请求
      * @return 申请记录
      */
-    ImFriendRequestDO applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo);
+    ImFriendRequest applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo);
 
     /**
      * 同意好友申请
@@ -49,18 +49,18 @@ public interface ImFriendRequestService {
      * @param limit  单次拉取条数（page size，由前端常量控制）
      * @return 申请记录列表，按更新时间、id 倒序
      */
-    List<ImFriendRequestDO> getMyFriendRequestList(Long userId, Long maxId, Integer limit);
+    List<ImFriendRequest> getMyFriendRequestList(Long userId, Long maxId, Integer limit);
 
     /**
      * 按 id 单查申请记录；通用读接口，调用方自行做越权过滤
      */
-    ImFriendRequestDO getFriendRequest(Long id);
+    ImFriendRequest getFriendRequest(Long id);
 
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询好友申请记录
      */
-    PageResult<ImFriendRequestDO> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo);
+    PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo);
 
 }

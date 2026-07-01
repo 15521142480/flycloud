@@ -16,7 +16,7 @@ import java.util.List;
  * 移动端 - 商品分类控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @RequiredArgsConstructor
 @RestController

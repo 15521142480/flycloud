@@ -1,8 +1,8 @@
 package com.fly.im.service.websocket.dto;
 
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * 并统一复用 {@link #id} 字段表达目标消息或已读位置。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -89,7 +89,7 @@ public class ImGroupMessageDTO {
      * @param message 群聊消息 DO
      * @return 群聊 DTO
      */
-    public static ImGroupMessageDTO ofSend(ImGroupMessageDO message) {
+    public static ImGroupMessageDTO ofSend(ImGroupMessage message) {
         return BeanUtils.toBean(message, ImGroupMessageDTO.class).setReceiverUserIds(null);
     }
 

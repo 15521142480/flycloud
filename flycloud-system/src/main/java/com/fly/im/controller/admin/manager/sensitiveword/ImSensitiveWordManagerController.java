@@ -6,10 +6,10 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.im.framework.util.NumberUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVo;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordRespVo;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordSaveReqVo;
-import com.fly.im.dal.dataobject.sensitiveword.ImSensitiveWordDO;
+import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordRespVo;
+import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordSaveReqVo;
+import com.fly.system.api.im.domain.sensitiveword.ImSensitiveWord;
 import com.fly.im.service.sensitiveword.ImSensitiveWordService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -81,7 +81,7 @@ public class ImSensitiveWordManagerController {
     public R<PageResult<ImSensitiveWordRespVo>> getSensitiveWordPage(
             @Valid ImSensitiveWordPageReqVo pageReqVo) {
         // 1. 分页查询
-        PageResult<ImSensitiveWordDO> pageResult = sensitiveWordService.getSensitiveWordPage(pageReqVo);
+        PageResult<ImSensitiveWord> pageResult = sensitiveWordService.getSensitiveWordPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
@@ -99,7 +99,7 @@ public class ImSensitiveWordManagerController {
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:sensitive-word:query')")
     public R<ImSensitiveWordRespVo> getSensitiveWord(@RequestParam("id") Long id) {
-        ImSensitiveWordDO word = sensitiveWordService.getSensitiveWord(id);
+        ImSensitiveWord word = sensitiveWordService.getSensitiveWord(id);
         return ok(BeanUtils.toBean(word, ImSensitiveWordRespVo.class));
     }
 

@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 支付钱包充值套餐。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName("pay_wallet_recharge_package")
 @Data

@@ -8,7 +8,7 @@ import com.fly.system.api.member.domain.vo.MemberSignInRecordVo;
  * 会员签到记录 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface MemberSignInRecordMapper extends BaseMapperPlus<MemberSignInRecordMapper, MemberSignInRecord, MemberSignInRecordVo> {
 }

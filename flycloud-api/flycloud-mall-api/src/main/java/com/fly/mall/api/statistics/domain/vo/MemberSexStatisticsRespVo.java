@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 会员性别统计响应对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 public class MemberSexStatisticsRespVo implements Serializable {

@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 商品浏览记录 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "product_browse_history")
 @Data

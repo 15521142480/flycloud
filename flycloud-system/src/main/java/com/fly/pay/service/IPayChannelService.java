@@ -13,7 +13,7 @@ import java.util.Set;
  * 支付渠道 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IPayChannelService {
     PageVo<PayChannelVo> queryPageList(PayChannelBo bo, PageBo pageBo);

@@ -24,7 +24,7 @@ import java.util.List;
  * 运费模板包邮规则 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @RequiredArgsConstructor
 @Service

@@ -6,22 +6,22 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageListReqVo;
-import com.fly.im.controller.admin.message.vo.group.ImGroupMessageSendReqVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageListReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageSendReqVo;
+import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.group.ImGroupMember;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
 import com.fly.im.dal.mysql.message.ImGroupMessageMapper;
 import com.fly.im.dal.redis.message.ImGroupMessageReadRedisDAO;
-import com.fly.im.enums.group.ImGroupMemberRoleEnum;
-import com.fly.im.enums.message.ImGroupMessageReceiptStatusEnum;
-import com.fly.im.enums.message.ImMessageStatusEnum;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
+import com.fly.system.api.im.enums.message.ImGroupMessageReceiptStatusEnum;
+import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.framework.config.ImProperties;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.service.group.ImGroupService;
@@ -45,13 +45,13 @@ import java.util.*;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
 import static com.fly.common.utils.collection.CollectionUtils.*;
-import static com.fly.im.enums.ErrorCodeConstants.*;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
 
 /**
  * IM 群聊消息 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -84,9 +84,9 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     private ImProperties imProperties;
 
     @Override
-    public ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo) {
+    public ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo) {
         // 1.1 幂等校验：根据 senderId + clientMessageId 查重
-        ImGroupMessageDO existing = groupMessageMapper.selectBySenderIdAndClientMessageId(
+        ImGroupMessage existing = groupMessageMapper.selectBySenderIdAndClientMessageId(
                 senderId, reqVo.getClientMessageId());
         if (existing != null) {
             log.info("[sendGroupMessage][幂等命中 senderId({}) clientMessageId({}) 已存在消息({})]",
@@ -96,8 +96,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         // 1.2 消息内容校验
         ImMessageUtils.validateUserMessageContent(reqVo.getType(), reqVo.getContent());
         // 1.3 校验群存在、发送人仍在群中
-        ImGroupDO group = groupService.validateGroupExists(reqVo.getGroupId());
-        ImGroupMemberDO senderMember = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), senderId);
+        ImGroup group = groupService.validateGroupExists(reqVo.getGroupId());
+        ImGroupMember senderMember = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), senderId);
         // 1.4 禁言校验
         validateMuteStatus(group, senderMember);
         // 1.5 文本消息敏感词过滤
@@ -108,7 +108,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         // 2.1 引用 quote 消息规范化
         reqVo.setContent(normalizeQuoteContent(reqVo, senderMember));
         // 2.2 构建并保存消息
-        ImGroupMessageDO message = BeanUtils.toBean(reqVo, ImGroupMessageDO.class, m -> m
+        ImGroupMessage message = BeanUtils.toBean(reqVo, ImGroupMessage.class, m -> m
                 .setSenderId(senderId).setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now())
                 .setReceiptStatus(resolveReceiptStatus(reqVo.getReceipt())));
         groupMessageMapper.insert(message);
@@ -121,21 +121,21 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     }
 
     @Override
-    public ImGroupMessageDO sendGroupMessage(Long senderId, ImGroupMessageSendDTO dto) {
+    public ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageSendDTO dto) {
         List<Long> memberUserIds = groupMemberService.getActiveGroupMemberUserIdsByGroupId(dto.getGroupId());
         Set<Long> targetUserIds = getVisibleUserIds(dto.getReceiverUserIds(), senderId, memberUserIds);
         return sendGroupMessage(senderId, targetUserIds, dto);
     }
 
     @Override
-    public ImGroupMessageDO sendGroupMessage(Long senderId, Collection<Long> targetUserIds, ImGroupMessageSendDTO dto) {
+    public ImGroupMessage sendGroupMessage(Long senderId, Collection<Long> targetUserIds, ImGroupMessageSendDTO dto) {
         // 1.1 content 序列化：null / String 透传，POJO 走 JSON
         Object payload = dto.getContent();
         String contentString = payload == null || payload instanceof String
                 ? (String) payload
                 : JsonUtils.toJsonString(payload);
         // 1.2 构建并保存消息
-        ImGroupMessageDO message = new ImGroupMessageDO().setClientMessageId(IdUtil.fastSimpleUUID())
+        ImGroupMessage message = new ImGroupMessage().setClientMessageId(IdUtil.fastSimpleUUID())
                 .setSenderId(senderId).setGroupId(dto.getGroupId())
                 .setType(dto.getType()).setContent(contentString)
                 .setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now())
@@ -153,11 +153,11 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImGroupMessageDO recallGroupMessage(Long userId, Long messageId) {
+    public ImGroupMessage recallGroupMessage(Long userId, Long messageId) {
         // 1.1 校验消息存在
-        ImGroupMessageDO message = validateGroupMessageExists(messageId);
+        ImGroupMessage message = validateGroupMessageExists(messageId);
         // 1.2 校验撤回人仍在群中，并取角色用于权限判断
-        ImGroupMemberDO operator = groupMemberService.validateMemberInGroup(message.getGroupId(), userId);
+        ImGroupMember operator = groupMemberService.validateMemberInGroup(message.getGroupId(), userId);
         boolean isOwnerOrAdmin = ImGroupMemberRoleEnum.isOwnerOrAdmin(operator.getRole());
         // 1.3 普通成员只能撤回自己发的消息；群主 / 管理员可撤回他人违规消息
         if (ObjUtil.notEqual(message.getSenderId(), userId) && !isOwnerOrAdmin) {
@@ -176,7 +176,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         }
 
         // 2. 更新原消息状态为撤回
-        groupMessageMapper.updateById(new ImGroupMessageDO().setId(messageId)
+        groupMessageMapper.updateById(new ImGroupMessage().setId(messageId)
                 .setStatus(ImMessageStatusEnum.RECALL.getStatus()));
 
         // 3. 发送撤回事件
@@ -187,7 +187,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     }
 
     @Override
-    public List<ImGroupMessageDO> pullGroupMessageList(Long userId, Long minId, Integer size) {
+    public List<ImGroupMessage> pullGroupMessageList(Long userId, Long minId, Integer size) {
         int maxPullSize = imProperties.getMessage().getMaxPullSize();
         if (size > maxPullSize) {
             throw exception(MESSAGE_PULL_SIZE_EXCEEDED, maxPullSize);
@@ -197,11 +197,11 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         LocalDateTime minSendTime = LocalDateTime.now().minusDays(imProperties.getMessage().getGroupPullMaxDays());
 
         // 1.1 主查询：仅用"当前仍在群"的成员记录驱动；若首批消息过滤后为空，则允许内部重试
-        List<ImGroupMemberDO> activeMembers = groupMemberService.getActiveGroupMemberListByUserId(userId);
-        Map<Long, ImGroupMemberDO> memberMap = convertMap(activeMembers, ImGroupMemberDO::getGroupId);
-        List<ImGroupMessageDO> messages = new ArrayList<>();
+        List<ImGroupMember> activeMembers = groupMemberService.getActiveGroupMemberListByUserId(userId);
+        Map<Long, ImGroupMember> memberMap = convertMap(activeMembers, ImGroupMember::getGroupId);
+        List<ImGroupMessage> messages = new ArrayList<>();
         if (CollUtil.isNotEmpty(activeMembers)) {
-            List<Long> groupIds = convertList(activeMembers, ImGroupMemberDO::getGroupId);
+            List<Long> groupIds = convertList(activeMembers, ImGroupMember::getGroupId);
             messages.addAll(pullActiveGroupMessageList(userId, groupIds, minId, size, minSendTime, memberMap));
         }
         // 1.2 补齐"退群前"的消息：
@@ -210,7 +210,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         messages.addAll(pullQuitGroupMessageList(userId, minId, size, minSendTime, memberMap));
 
         // 2. 合并后统一过滤，得到当前用户可见的结果
-        List<ImGroupMessageDO> result = filterGroupMessageList(messages, memberMap, userId, size);
+        List<ImGroupMessage> result = filterGroupMessageList(messages, memberMap, userId, size);
 
         // 3. 按当前用户补齐：消息已读态（相对 Redis 已读游标）、本人发送的回执消息的已读人数
         appendMessageStatusAndReceipt(userId, result);
@@ -224,14 +224,14 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * 仅当首批消息过滤后仍无可见消息时，才按消息最大 id 继续向后探测，
      * 直到命中可见消息或确认该来源已耗尽。
      */
-    private List<ImGroupMessageDO> pullActiveGroupMessageList(Long userId, List<Long> groupIds, Long minId,
+    private List<ImGroupMessage> pullActiveGroupMessageList(Long userId, List<Long> groupIds, Long minId,
                                                               Integer size, LocalDateTime minSendTime,
-                                                              Map<Long, ImGroupMemberDO> memberMap) {
+                                                              Map<Long, ImGroupMember> memberMap) {
         // 1. 主查询内部探测游标：仅用于向后探测，不代表客户端真实已送达边界
         Long activeMinId = minId;
         for (int retryCount = 0; retryCount <= PULL_GROUP_MESSAGE_EMPTY_RETRY_TIMES; retryCount++) {
             // 2. 查询本轮消息；若已无更多消息，则当前主路径直接结束
-            List<ImGroupMessageDO> messages = groupMessageMapper.selectListByMinId(groupIds, activeMinId,
+            List<ImGroupMessage> messages = groupMessageMapper.selectListByMinId(groupIds, activeMinId,
                     minSendTime, size);
             if (CollUtil.isEmpty(messages)) {
                 return Collections.emptyList();
@@ -245,7 +245,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             }
 
             // 4. 按本轮消息最大 id 推进内部游标，跳过这段不可见区间；若游标未前进则直接停止
-            Long maxMessageId = getMaxValue(messages, ImGroupMessageDO::getId);
+            Long maxMessageId = getMaxValue(messages, ImGroupMessage::getId);
             if (maxMessageId == null || maxMessageId <= activeMinId) {
                 return Collections.emptyList();
             }
@@ -257,24 +257,24 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     /**
      * 拉取已离开群路径的消息（退群前消息）
      */
-    private List<ImGroupMessageDO> pullQuitGroupMessageList(Long userId, Long minId, Integer size,
+    private List<ImGroupMessage> pullQuitGroupMessageList(Long userId, Long minId, Integer size,
                                                             LocalDateTime minSendTime,
-                                                            Map<Long, ImGroupMemberDO> memberMap) {
+                                                            Map<Long, ImGroupMember> memberMap) {
         // 1. 退群补齐始终基于用户原始 minId 计算时间边界，避免被主查询内部重试游标误伤
         LocalDateTime minQuitTime = minSendTime;
         if (minId != null && minId > 0) {
-            ImGroupMessageDO minMessage = groupMessageMapper.selectById(minId);
+            ImGroupMessage minMessage = groupMessageMapper.selectById(minId);
             if (minMessage != null && minMessage.getSendTime() != null
                     && minMessage.getSendTime().isAfter(minSendTime)) {
                 minQuitTime = minMessage.getSendTime();
             }
         }
         // 2. 查询用户离开的群记录；若原始 minId 对应消息仍在窗口内，则用它的发送时间抬升退群筛选下限
-        List<ImGroupMessageDO> messages = new ArrayList<>();
-        List<ImGroupMemberDO> quitMembers = groupMemberService.getQuitGroupMemberListByUserId(userId, minQuitTime);
-        for (ImGroupMemberDO quitMember : quitMembers) {
+        List<ImGroupMessage> messages = new ArrayList<>();
+        List<ImGroupMember> quitMembers = groupMemberService.getQuitGroupMemberListByUserId(userId, minQuitTime);
+        for (ImGroupMember quitMember : quitMembers) {
             // 3. 按原始 minId + 退群时间补齐该群退群前消息，并把成员记录写回 memberMap 供统一可见性过滤使用
-            List<ImGroupMessageDO> quitGroupMessages = groupMessageMapper.selectListByGroupIdAndMinIdAndQuitTimeBefore(
+            List<ImGroupMessage> quitGroupMessages = groupMessageMapper.selectListByGroupIdAndMinIdAndQuitTimeBefore(
                     quitMember.getGroupId(), minId, minSendTime, quitMember.getQuitTime(), size);
             if (CollUtil.isEmpty(quitGroupMessages)) {
                 continue;
@@ -288,14 +288,14 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     /**
      * 过滤一批原始群消息，得到当前用户可见的返回结果
      */
-    private List<ImGroupMessageDO> filterGroupMessageList(List<ImGroupMessageDO> messages,
-                                                          Map<Long, ImGroupMemberDO> memberMap,
+    private List<ImGroupMessage> filterGroupMessageList(List<ImGroupMessage> messages,
+                                                          Map<Long, ImGroupMember> memberMap,
                                                           Long userId, Integer size) {
         // 按可见性过滤（入群前不可见、定向消息排除），按 id 升序后仅取本页 size 条，
         // 避免「在群 + 退群前」多路合并时一次响应跨度过大、游标直接跳到全局最大 id 而漏拉中间消息
         return messages.stream()
                 .filter(msg -> isMessageVisible(msg, memberMap.get(msg.getGroupId()), userId))
-                .sorted(Comparator.comparing(ImGroupMessageDO::getId))
+                .sorted(Comparator.comparing(ImGroupMessage::getId))
                 .limit(size)
                 .toList();
     }
@@ -307,7 +307,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * 2. 回执已读人数（readCount）：仅对本人发送的回执消息，计算可见成员中的已读人数
      */
     @SuppressWarnings({"StatementWithEmptyBody", "DataFlowIssue"})
-    private void appendMessageStatusAndReceipt(Long userId, List<ImGroupMessageDO> messages) {
+    private void appendMessageStatusAndReceipt(Long userId, List<ImGroupMessage> messages) {
         if (CollUtil.isEmpty(messages)) {
             return;
         }
@@ -317,8 +317,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         }
         Map<Long, Long> readMaxMessageIdsByGroup = new HashMap<>(); // 群 → 已读位置
         Map<Long, Map<Long, Long>> readPositionsByGroup = new HashMap<>(); // 群 → (用户 → 已读位置)
-        Map<Long, List<ImGroupMemberDO>> membersByGroup = new HashMap<>(); // 群 → 全部成员列表
-        for (ImGroupMessageDO message : messages) {
+        Map<Long, List<ImGroupMember>> membersByGroup = new HashMap<>(); // 群 → 全部成员列表
+        for (ImGroupMessage message : messages) {
             // 消息已读态（status）：撤回 > 已读 > 未读
             Long groupId = message.getGroupId();
             long readMaxMessageId = readMaxMessageIdsByGroup.computeIfAbsent(groupId, gid -> {
@@ -340,7 +340,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             }
             Map<Long, Long> positions = readPositionsByGroup.computeIfAbsent(groupId,
                     gid -> groupMessageReadRedisDAO.getReadMaxMessageIdMap(gid));
-            List<ImGroupMemberDO> allMembers = membersByGroup.computeIfAbsent(groupId,
+            List<ImGroupMember> allMembers = membersByGroup.computeIfAbsent(groupId,
                     groupMemberService::getGroupMemberListByGroupId);
             Set<Long> visibleUserIds = getVisibleUserIds(message, allMembers);
             visibleUserIds.remove(message.getSenderId());
@@ -359,9 +359,9 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         }
         Assert.notNull(messageId, "已读消息编号不能为空");
         // 1.1 校验用户在群中（权限校验）
-        ImGroupMemberDO member = groupMemberService.validateMemberInGroup(groupId, userId);
+        ImGroupMember member = groupMemberService.validateMemberInGroup(groupId, userId);
         // 1.2 校验消息属于当前群，且对当前用户可见
-        ImGroupMessageDO message = groupMessageMapper.selectById(messageId);
+        ImGroupMessage message = groupMessageMapper.selectById(messageId);
         if (message == null
                 || ObjUtil.notEqual(message.getGroupId(), groupId)
                 || !isMessageVisible(message, member, userId)) {
@@ -387,9 +387,9 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             throw exception(MESSAGE_GROUP_READ_DISABLED);
         }
         // 1.1 校验用户在群中（权限校验）
-        ImGroupMemberDO operator = groupMemberService.validateMemberInGroup(groupId, userId);
+        ImGroupMember operator = groupMemberService.validateMemberInGroup(groupId, userId);
         // 1.2 获取消息；并校验消息归属于该群、对调用者可见、调用者是发送方
-        ImGroupMessageDO message = groupMessageMapper.selectById(messageId);
+        ImGroupMessage message = groupMessageMapper.selectById(messageId);
         if (message == null || ObjUtil.notEqual(message.getGroupId(), groupId)) {
             return Collections.emptyList();
         }
@@ -402,7 +402,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         }
 
         // 2. 获取所有成员和已读位置
-        List<ImGroupMemberDO> allMembers = groupMemberService.getGroupMemberListByGroupId(groupId);
+        List<ImGroupMember> allMembers = groupMemberService.getGroupMemberListByGroupId(groupId);
         Map<Long, Long> allPositions = groupMessageReadRedisDAO.getReadMaxMessageIdMap(groupId);
 
         // 3. 计算该消息的可见成员集合（排除发送者自己）
@@ -420,12 +420,12 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     }
 
     @Override
-    public List<ImGroupMessageDO> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo) {
+    public List<ImGroupMessage> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo) {
         // 1. 校验用户在群中
-        ImGroupMemberDO member = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), userId);
+        ImGroupMember member = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), userId);
 
         // 2. 查询历史消息（仅入群之后）
-        List<ImGroupMessageDO> messages = groupMessageMapper.selectHistoryList(
+        List<ImGroupMessage> messages = groupMessageMapper.selectHistoryList(
                 reqVo.getGroupId(), reqVo.getMaxId(), reqVo.getLimit(), member.getJoinTime());
 
         // 3. 过滤定向消息：仅保留当前用户可见的（receiverUserIds 为空 / 含当前用户 / 本人发送）
@@ -450,14 +450,14 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
                 ImGroupMessageDTO.ofRead(userId, groupId, newMaxMessageId));
 
         // 2. 刷新 (prevMaxMessageId, newMaxMessageId] 区间内的待回执消息
-        List<ImGroupMessageDO> pendingMessages = groupMessageMapper.selectListByGroupIdAndPendingReceipt(
+        List<ImGroupMessage> pendingMessages = groupMessageMapper.selectListByGroupIdAndPendingReceipt(
                 groupId, prevMaxMessageId, newMaxMessageId);
         if (CollUtil.isEmpty(pendingMessages)) {
             return;
         }
-        List<ImGroupMemberDO> activeMembers = groupMemberService.getActiveGroupMemberListByGroupId(groupId);
+        List<ImGroupMember> activeMembers = groupMemberService.getActiveGroupMemberListByGroupId(groupId);
         Map<Long, Long> allPositions = groupMessageReadRedisDAO.getReadMaxMessageIdMap(groupId);
-        for (ImGroupMessageDO message : pendingMessages) {
+        for (ImGroupMessage message : pendingMessages) {
             // 2.1.1 统计可见成员中的已读人数
             Set<Long> visibleUserIds = getVisibleUserIds(message, activeMembers);
             visibleUserIds.remove(message.getSenderId()); // 发送者自己不算已读
@@ -471,7 +471,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             Integer newReceiptStatus = ImGroupMessageReceiptStatusEnum.PENDING.getStatus();
             if (readCount >= visibleUserIds.size()) {
                 newReceiptStatus = ImGroupMessageReceiptStatusEnum.DONE.getStatus();
-                groupMessageMapper.updateById(new ImGroupMessageDO().setId(message.getId())
+                groupMessageMapper.updateById(new ImGroupMessage().setId(message.getId())
                         .setReceiptStatus(newReceiptStatus));
             }
 
@@ -490,7 +490,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * @param senderMember 发送人成员
      * @return 规范化后的 content
      */
-    private String normalizeQuoteContent(ImGroupMessageSendReqVo reqVo, ImGroupMemberDO senderMember) {
+    private String normalizeQuoteContent(ImGroupMessageSendReqVo reqVo, ImGroupMember senderMember) {
         // 解析客户端 content 里的 quote.messageId
         Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVo.getContent());
 
@@ -500,7 +500,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         }
 
         // 情况二：有 quoteMessageId，加载原消息并校验
-        ImGroupMessageDO original = groupMessageMapper.selectById(quoteMessageId);
+        ImGroupMessage original = groupMessageMapper.selectById(quoteMessageId);
         if (original == null
                 || ImMessageStatusEnum.RECALL.getStatus().equals(original.getStatus())) {
             throw exception(MESSAGE_QUOTE_INVALID);
@@ -529,8 +529,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * @param messageId 消息编号
      * @return 群聊消息
      */
-    private ImGroupMessageDO validateGroupMessageExists(Long messageId) {
-        ImGroupMessageDO message = groupMessageMapper.selectById(messageId);
+    private ImGroupMessage validateGroupMessageExists(Long messageId) {
+        ImGroupMessage message = groupMessageMapper.selectById(messageId);
         if (message == null) {
             throw exception(MESSAGE_NOT_EXISTS);
         }
@@ -545,7 +545,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * @param userId 当前用户编号（用于定向消息过滤）
      * @return 是否可见
      */
-    private boolean isMessageVisible(ImGroupMessageDO msg, ImGroupMemberDO member, Long userId) {
+    private boolean isMessageVisible(ImGroupMessage msg, ImGroupMember member, Long userId) {
         if (member == null) {
             return false;
         }
@@ -570,8 +570,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     /**
      * 计算一条群消息的可见成员集合（含发送者）
      */
-    private Set<Long> getVisibleUserIds(ImGroupMessageDO message, List<ImGroupMemberDO> members) {
-        return convertSet(members, ImGroupMemberDO::getUserId,
+    private Set<Long> getVisibleUserIds(ImGroupMessage message, List<ImGroupMember> members) {
+        return convertSet(members, ImGroupMember::getUserId,
                 member -> isMessageVisible(message, member, member.getUserId()));
     }
 
@@ -580,7 +580,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * <p>
      * 仅适用于「新消息」推送场景（{@code sendTime = now}），不涉及 joinTime / quitTime 判定，
      * 只应用 {@code receiverUserIds} 定向过滤；语义与
-     * {@link #isMessageVisible(ImGroupMessageDO, ImGroupMemberDO, Long)} 的第 3 步保持一致。
+     * {@link #isMessageVisible(ImGroupMessage, ImGroupMember, Long)} 的第 3 步保持一致。
      */
     private Set<Long> getVisibleUserIds(List<Long> receiverUserIds, Long senderId, Collection<Long> memberUserIds) {
         if (CollUtil.isEmpty(memberUserIds)) {
@@ -622,17 +622,17 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImGroupMessageDO> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo) {
+    public PageResult<ImGroupMessage> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo) {
         return groupMessageMapper.selectPage(reqVo);
     }
 
     @Override
-    public ImGroupMessageDO getGroupMessage(Long id) {
+    public ImGroupMessage getGroupMessage(Long id) {
         return groupMessageMapper.selectById(id);
     }
 
     @Override
-    public List<ImGroupMessageDO> getGroupMessageList(Collection<Long> ids) {
+    public List<ImGroupMessage> getGroupMessageList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return Collections.emptyList();
         }
@@ -640,8 +640,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     }
 
     @Override
-    public Map<Long, ImGroupMessageDO> getGroupMessageMap(Collection<Long> ids) {
-        return convertMap(getGroupMessageList(ids), ImGroupMessageDO::getId);
+    public Map<Long, ImGroupMessage> getGroupMessageMap(Collection<Long> ids) {
+        return convertMap(getGroupMessageList(ids), ImGroupMessage::getId);
     }
 
     private ImGroupMessageServiceImpl getSelf() {
@@ -663,7 +663,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     /**
      * 禁言状态校验：全群禁言 → 成员禁言；群主 / 管理员豁免全群禁言
      */
-    private void validateMuteStatus(ImGroupDO group, ImGroupMemberDO senderMember) {
+    private void validateMuteStatus(ImGroup group, ImGroupMember senderMember) {
         boolean isOwnerOrAdmin = ImGroupMemberRoleEnum.isOwnerOrAdmin(senderMember.getRole());
         // 1. 全群禁言：群主 / 管理员豁免
         if (Boolean.TRUE.equals(group.getMutedAll()) && !isOwnerOrAdmin) {

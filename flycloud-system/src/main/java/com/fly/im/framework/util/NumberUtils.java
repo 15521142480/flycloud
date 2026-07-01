@@ -6,7 +6,7 @@ import cn.hutool.core.convert.Convert;
  * 数字工具。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public class NumberUtils {
 

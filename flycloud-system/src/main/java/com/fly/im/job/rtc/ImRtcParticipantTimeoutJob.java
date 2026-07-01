@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * 振铃超时 Job：扫 INVITING 超过阈值的参与者，单人粒度标 NO_ANSWER + 推 RTC_CALL(REJECT) 让前端 banner 收敛
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Component
 @Slf4j

@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
  * 报表模块 Security 适配配置。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Configuration(value = "reportSecurityConfiguration", proxyBeanMethods = false)
 public class SecurityConfiguration {

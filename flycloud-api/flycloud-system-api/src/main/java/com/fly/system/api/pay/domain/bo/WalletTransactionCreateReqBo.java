@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 钱包流水创建请求对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "钱包流水创建请求对象")

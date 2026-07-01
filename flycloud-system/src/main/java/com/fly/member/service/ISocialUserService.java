@@ -9,7 +9,7 @@ import com.fly.system.api.member.domain.vo.AppSocialUserRespVo;
  * 社交用户 Service 接口。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 public interface ISocialUserService {
 

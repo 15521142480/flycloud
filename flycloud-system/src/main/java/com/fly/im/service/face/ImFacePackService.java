@@ -1,9 +1,9 @@
 package com.fly.im.service.face;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVo;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackSaveReqVo;
-import com.fly.im.dal.dataobject.face.ImFacePackDO;
+import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackSaveReqVo;
+import com.fly.system.api.im.domain.face.ImFacePack;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * IM 表情包 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImFacePackService {
 
@@ -23,7 +23,7 @@ public interface ImFacePackService {
      *
      * @return 启用的表情包列表
      */
-    List<ImFacePackDO> getEnabledFacePackList();
+    List<ImFacePack> getEnabledFacePackList();
 
     /**
      * 校验表情包存在
@@ -32,7 +32,7 @@ public interface ImFacePackService {
      * @return 表情包 DO
      */
     @SuppressWarnings("UnusedReturnValue")
-    ImFacePackDO validateFacePackExists(Long id);
+    ImFacePack validateFacePackExists(Long id);
 
     // ==================== 管理后台 ====================
 
@@ -42,7 +42,7 @@ public interface ImFacePackService {
      * @param reqVo 分页查询条件
      * @return 表情包分页
      */
-    PageResult<ImFacePackDO> getFacePackPage(ImFacePackPageReqVo reqVo);
+    PageResult<ImFacePack> getFacePackPage(ImFacePackPageReqVo reqVo);
 
     /**
      * 获取表情包详情
@@ -50,7 +50,7 @@ public interface ImFacePackService {
      * @param id 表情包编号
      * @return 表情包 DO
      */
-    ImFacePackDO getFacePack(Long id);
+    ImFacePack getFacePack(Long id);
 
     /**
      * 新增表情包

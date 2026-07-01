@@ -12,7 +12,7 @@ import java.util.List;
  * 移动端 - 购物车列表返回对象。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "移动端 - 购物车列表返回对象")

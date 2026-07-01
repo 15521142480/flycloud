@@ -13,7 +13,7 @@ import java.util.Collection;
  * IM Lambda 查询条件扩展。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
 

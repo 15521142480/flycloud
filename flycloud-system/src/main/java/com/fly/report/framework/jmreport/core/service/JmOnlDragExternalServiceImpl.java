@@ -12,7 +12,7 @@ import java.util.Map;
  * 积木仪表盘扩展服务。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public class JmOnlDragExternalServiceImpl implements IOnlDragExternalService {
 

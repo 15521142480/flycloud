@@ -3,7 +3,7 @@ package com.fly.im.controller.admin.manager.statistics;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.im.framework.util.LocalDateTimeUtils;
-import com.fly.im.controller.admin.manager.statistics.vo.*;
+import com.fly.system.api.im.domain.vo.admin.manager.statistics.*;
 import com.fly.im.service.statistics.ImStatisticsManagerService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;

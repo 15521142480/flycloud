@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
  * 报表模块安全请求自定义器。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 public interface AuthorizeRequestsCustomizer {
 

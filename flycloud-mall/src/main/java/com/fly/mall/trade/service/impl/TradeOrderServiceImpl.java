@@ -2,6 +2,7 @@ package com.fly.mall.trade.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
@@ -41,6 +42,7 @@ import com.fly.mall.trade.service.ICartService;
 import com.fly.mall.trade.service.ITradeOrderItemService;
 import com.fly.mall.trade.service.ITradeOrderService;
 import com.fly.system.api.pay.domain.bo.PayOrderCreateReqDto;
+import com.fly.system.api.pay.domain.vo.PayOrderRespVo;
 import com.fly.system.api.pay.feign.IPayOrderApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,7 +65,7 @@ import java.util.stream.Collectors;
  * 交易订单 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @RequiredArgsConstructor
 @Service
@@ -505,6 +507,39 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         result.put("uncommentedCount", countByUserAndStatus(userId, ORDER_STATUS_COMPLETED, false));
         result.put("afterSaleCount", 0L);
         return result;
+    }
+
+    /**
+     * 支付回调后更新订单为已支付。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOrderPaid(Long id, Long payOrderId) {
+        TradeOrder order = validateOrderExists(id);
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNPAID) || Boolean.TRUE.equals(order.getPayStatus())) {
+            if (Objects.equals(order.getPayOrderId(), payOrderId)) {
+                return;
+            }
+            throw new ServiceException("订单支付单不匹配");
+        }
+
+        PayOrderRespVo payOrder = validatePayOrderPaid(order, payOrderId);
+        TradeOrder updateOrder = new TradeOrder();
+        updateOrder.setStatus(ORDER_STATUS_UNDELIVERED);
+        updateOrder.setPayStatus(true);
+        updateOrder.setPayTime(LocalDateTime.now());
+        updateOrder.setPayChannelCode(payOrder.getChannelCode());
+        updateOrder.setUpdateBy(String.valueOf(order.getUserId()));
+        updateOrder.setUpdateTime(LocalDateTime.now());
+
+        LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
+        updateWrapper.eq(TradeOrder::getId, order.getId());
+        updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID);
+        updateWrapper.eq(TradeOrder::getPayStatus, false);
+        int updateCount = baseMapper.update(updateOrder, updateWrapper);
+        if (updateCount == 0) {
+            throw new ServiceException("订单状态不是待支付，更新支付状态失败");
+        }
     }
 
     /**
@@ -1019,6 +1054,32 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         createReqDto.setPrice(order.getPayPrice());
         createReqDto.setExpireTime(LocalDateTime.now().plusHours(2));
         return payOrderApi.createPayOrder(createReqDto).getCheckedData();
+    }
+
+    /**
+     * 校验支付订单已经支付且和商城订单匹配。
+     */
+    private PayOrderRespVo validatePayOrderPaid(TradeOrder order, Long payOrderId) {
+        if (payOrderId == null) {
+            throw new ServiceException("支付订单编号不能为空");
+        }
+        PayOrderRespVo payOrder = payOrderApi.getOrder(payOrderId).getCheckedData();
+        if (payOrder == null) {
+            throw new ServiceException("支付订单不存在");
+        }
+        if (!Objects.equals(payOrder.getStatus(), 10)) {
+            throw new ServiceException("支付订单未支付成功");
+        }
+        if (!Objects.equals(payOrder.getPrice(), order.getPayPrice())) {
+            throw new ServiceException("支付金额与商城订单金额不一致");
+        }
+        if (!Objects.equals(payOrder.getMerchantOrderId(), String.valueOf(order.getId()))) {
+            throw new ServiceException("支付订单与商城订单不匹配");
+        }
+        if (order.getPayOrderId() != null && !Objects.equals(order.getPayOrderId(), payOrderId)) {
+            throw new ServiceException("商城订单绑定的支付单不匹配");
+        }
+        return payOrder;
     }
 
     /**

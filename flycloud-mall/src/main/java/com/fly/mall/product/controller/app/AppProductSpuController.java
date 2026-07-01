@@ -26,7 +26,7 @@ import java.util.Set;
  * 移动端 - 商品 SPU 控制器。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor

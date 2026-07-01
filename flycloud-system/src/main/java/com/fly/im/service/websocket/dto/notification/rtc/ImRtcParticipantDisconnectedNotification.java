@@ -1,6 +1,6 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
  * 前端 callStore 把 userId 从 joinedUserIds 移除；胶囊条人数 -1
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -36,13 +36,13 @@ public class ImRtcParticipantDisconnectedNotification {
     private Long groupId;
 
     /**
-     * 构造参与者离开通知；按 {@link ImRtcCallDO} 抽通话上下文，仅 userId 是变量
+     * 构造参与者离开通知；按 {@link ImRtcCall} 抽通话上下文，仅 userId 是变量
      *
      * @param call    通话主表
      * @param userId  离开的参与者用户编号
      * @return 通知载荷
      */
-    public static ImRtcParticipantDisconnectedNotification of(ImRtcCallDO call, Long userId) {
+    public static ImRtcParticipantDisconnectedNotification of(ImRtcCall call, Long userId) {
         ImRtcParticipantDisconnectedNotification notification = new ImRtcParticipantDisconnectedNotification();
         notification.room = call.getRoom();
         notification.userId = userId;

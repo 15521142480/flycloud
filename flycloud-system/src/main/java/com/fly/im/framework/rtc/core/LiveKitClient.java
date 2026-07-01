@@ -33,7 +33,7 @@ import java.util.Objects;
  * 由 {@link com.fly.im.framework.rtc.config.ImRtcConfiguration} 注册为 Bean，本类不带 {@code @Component}
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Slf4j
 public class LiveKitClient {

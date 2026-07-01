@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 移动端 - 商品属性值明细返回对象。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "移动端 - 商品属性值明细返回对象")

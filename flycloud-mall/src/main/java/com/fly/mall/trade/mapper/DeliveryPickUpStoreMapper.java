@@ -8,7 +8,7 @@ import com.fly.mall.api.trade.domain.vo.DeliveryPickUpStoreVo;
  * 自提门店 Mapper 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface DeliveryPickUpStoreMapper extends BaseMapperPlus<DeliveryPickUpStoreMapper, DeliveryPickUpStore, DeliveryPickUpStoreVo> {
 

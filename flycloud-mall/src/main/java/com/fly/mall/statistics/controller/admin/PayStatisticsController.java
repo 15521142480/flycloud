@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 管理后台 - 支付统计 控制器。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor

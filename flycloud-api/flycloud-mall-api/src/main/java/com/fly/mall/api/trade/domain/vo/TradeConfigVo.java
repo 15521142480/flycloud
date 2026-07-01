@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 交易配置 视图对象。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class TradeConfigVo implements Serializable {

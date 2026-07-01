@@ -8,7 +8,7 @@ import com.fly.system.api.pay.domain.vo.PayWalletRechargePackageVo;
  * 支付钱包充值套餐 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface PayWalletRechargePackageMapper extends BaseMapperPlus<PayWalletRechargePackageMapper, PayWalletRechargePackage, PayWalletRechargePackageVo> {
 }

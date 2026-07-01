@@ -5,10 +5,10 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerPageReqVo;
-import com.fly.im.controller.admin.manager.message.vo.group.ImGroupMessageManagerRespVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
-import com.fly.im.dal.dataobject.message.ImGroupMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerRespVo;
+import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
 import com.fly.im.service.group.ImGroupService;
 import com.fly.im.service.message.ImGroupMessageService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -34,7 +34,7 @@ import static com.fly.common.domain.model.R.ok;
 import static com.fly.common.utils.collection.CollectionUtils.convertList;
 import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 import static com.fly.common.utils.collection.CollectionUtils.convertSetByFlatMap;
-import static com.fly.im.enums.ImCommonConstants.AT_USER_ID_ALL;
+import static com.fly.system.api.im.enums.ImCommonConstants.AT_USER_ID_ALL;
 
 @Tag(name = "管理后台 - IM 群聊消息")
 @RestController
@@ -55,13 +55,13 @@ public class ImGroupMessageManagerController {
     public R<PageResult<ImGroupMessageManagerRespVo>> getGroupMessagePage(
             @Valid ImGroupMessageManagerPageReqVo pageReqVo) {
         // 1. 分页查询
-        PageResult<ImGroupMessageDO> pageResult = groupMessageService.getGroupMessagePage(pageReqVo);
+        PageResult<ImGroupMessage> pageResult = groupMessageService.getGroupMessagePage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
         // 2.1 批量查询群名称、发送人昵称、@ 用户昵称（-1 表示 @所有人，跳过查询，由前端判断渲染）
-        Map<Long, ImGroupDO> groupMap = groupService.getGroupMap(
-                convertSet(pageResult.getList(), ImGroupMessageDO::getGroupId));
+        Map<Long, ImGroup> groupMap = groupService.getGroupMap(
+                convertSet(pageResult.getList(), ImGroupMessage::getGroupId));
         Set<Long> userIds = convertSetByFlatMap(pageResult.getList(), m -> Stream.concat(
                 Stream.of(m.getSenderId()),
                 CollUtil.emptyIfNull(m.getAtUserIds()).stream()
@@ -85,7 +85,7 @@ public class ImGroupMessageManagerController {
     @Parameter(name = "id", description = "消息编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:message:query')")
     public R<ImGroupMessageManagerRespVo> getGroupMessage(@RequestParam("id") Long id) {
-        ImGroupMessageDO message = groupMessageService.getGroupMessage(id);
+        ImGroupMessage message = groupMessageService.getGroupMessage(id);
         return ok(BeanUtils.toBean(message, ImGroupMessageManagerRespVo.class));
     }
 

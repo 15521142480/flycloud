@@ -27,12 +27,14 @@ import com.fly.system.api.pay.domain.bo.PayOrderCreateReqDto;
 import com.fly.system.api.pay.domain.vo.AppPayOrderSubmitRespVo;
 import com.fly.system.api.pay.domain.vo.PayOrderRespVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,8 +44,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * 支付订单 Service 业务层处理。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class PayOrderServiceImpl implements IPayOrderService {
@@ -57,6 +60,11 @@ public class PayOrderServiceImpl implements IPayOrderService {
      * 支付成功。
      */
     private static final int ORDER_STATUS_SUCCESS = 10;
+
+    /**
+     * 已退款。
+     */
+    private static final int ORDER_STATUS_REFUND = 20;
 
     /**
      * 支付关闭。
@@ -140,6 +148,52 @@ public class PayOrderServiceImpl implements IPayOrderService {
         lqw.eq(PayOrder::getNo, no);
         lqw.last("LIMIT 1");
         return payOrderMapper.selectVoOne(lqw);
+    }
+
+    /**
+     * 根据应用编号和商户订单号查询支付订单。
+     */
+    @Override
+    public PayOrderRespVo getOrder(Long appId, String merchantOrderId) {
+        if (appId == null || StringUtils.isBlank(merchantOrderId)) {
+            return null;
+        }
+        LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
+        lqw.eq(PayOrder::getIsDeleted, false);
+        lqw.eq(PayOrder::getAppId, appId);
+        lqw.eq(PayOrder::getMerchantOrderId, merchantOrderId);
+        lqw.last("LIMIT 1");
+        return payOrderMapper.selectVoOne(lqw);
+    }
+
+    /**
+     * 根据编号集合查询支付订单列表。
+     */
+    @Override
+    public List<PayOrderRespVo> getOrderList(Collection<Long> ids) {
+        LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
+        lqw.eq(PayOrder::getIsDeleted, false);
+        if (ids == null || ids.isEmpty()) {
+            lqw.apply("1 = 0");
+        } else {
+            lqw.in(PayOrder::getId, ids);
+        }
+        lqw.orderByDesc(PayOrder::getId);
+        return payOrderMapper.selectVoList(lqw);
+    }
+
+    /**
+     * 查询应用下的支付订单数量。
+     */
+    @Override
+    public Long getOrderCountByAppId(Long appId) {
+        if (appId == null) {
+            return 0L;
+        }
+        LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
+        lqw.eq(PayOrder::getIsDeleted, false);
+        lqw.eq(PayOrder::getAppId, appId);
+        return payOrderMapper.selectCount(lqw);
     }
 
     /**
@@ -253,24 +307,223 @@ public class PayOrderServiceImpl implements IPayOrderService {
         if (rechargeService != null) {
             rechargeService.updateWalletRechargePaid(order.getId(), order.getChannelCode());
         }
-        IPayNotifyService notifyService = payNotifyServiceProvider.getIfAvailable();
-        if (notifyService != null) {
-            notifyService.createPayNotifyTask(PayNotifyTypeEnum.ORDER.getType(), order.getId());
+        createOrderNotifyTask(order.getId());
+    }
+
+    /**
+     * 增加支付订单已退款金额。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOrderRefundPrice(Long id, Integer incrRefundPrice) {
+        if (id == null) {
+            throw new ServiceException("支付订单编号不能为空");
         }
+        if (incrRefundPrice == null || incrRefundPrice <= 0) {
+            throw new ServiceException("退款金额必须大于 0");
+        }
+        PayOrder order = payOrderMapper.selectById(id);
+        if (order == null || Boolean.TRUE.equals(order.getIsDeleted())) {
+            throw new ServiceException("支付订单不存在");
+        }
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_SUCCESS)
+                && !Objects.equals(order.getStatus(), ORDER_STATUS_REFUND)) {
+            throw new ServiceException("支付订单未支付，不能退款");
+        }
+
+        int refundPrice = order.getRefundPrice() == null ? 0 : order.getRefundPrice();
+        int newRefundPrice = refundPrice + incrRefundPrice;
+        if (order.getPrice() != null && newRefundPrice > order.getPrice()) {
+            throw new ServiceException("退款金额不能超过支付金额");
+        }
+
+        PayOrder updateOrder = new PayOrder();
+        updateOrder.setId(order.getId());
+        updateOrder.setRefundPrice(newRefundPrice);
+        updateOrder.setStatus(ORDER_STATUS_REFUND);
+        updateOrder.setUpdateTime(LocalDateTime.now());
+        payOrderMapper.updateById(updateOrder);
+    }
+
+    /**
+     * 修改待支付订单金额。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updatePayOrderPrice(Long id, Integer payPrice) {
+        if (id == null) {
+            throw new ServiceException("支付订单编号不能为空");
+        }
+        if (payPrice == null || payPrice <= 0) {
+            throw new ServiceException("支付金额必须大于 0");
+        }
+        PayOrder order = payOrderMapper.selectById(id);
+        if (order == null || Boolean.TRUE.equals(order.getIsDeleted())) {
+            throw new ServiceException("支付订单不存在");
+        }
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+            throw new ServiceException("只有待支付订单可以改价");
+        }
+
+        PayOrder updateOrder = new PayOrder();
+        updateOrder.setId(order.getId());
+        updateOrder.setPrice(payPrice);
+        updateOrder.setUpdateTime(LocalDateTime.now());
+        payOrderMapper.updateById(updateOrder);
+    }
+
+    /**
+     * 根据编号查询支付订单拓展单。
+     */
+    @Override
+    public PayOrderExtension getOrderExtension(Long id) {
+        if (id == null) {
+            return null;
+        }
+        PayOrderExtension extension = payOrderExtensionMapper.selectById(id);
+        if (extension == null || Boolean.TRUE.equals(extension.getIsDeleted())) {
+            return null;
+        }
+        return extension;
+    }
+
+    /**
+     * 根据支付订单号查询支付订单拓展单。
+     */
+    @Override
+    public PayOrderExtension getOrderExtensionByNo(String no) {
+        if (StringUtils.isBlank(no)) {
+            return null;
+        }
+        LambdaQueryWrapper<PayOrderExtension> lqw = Wrappers.lambdaQuery();
+        lqw.eq(PayOrderExtension::getIsDeleted, false);
+        lqw.eq(PayOrderExtension::getNo, no);
+        lqw.last("LIMIT 1");
+        return payOrderExtensionMapper.selectOne(lqw);
+    }
+
+    /**
+     * 同步支付订单状态。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int syncOrder(LocalDateTime minCreateTime) {
+        LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
+        lqw.eq(PayOrder::getIsDeleted, false);
+        lqw.eq(PayOrder::getStatus, ORDER_STATUS_WAITING);
+        lqw.ge(minCreateTime != null, PayOrder::getCreateTime, minCreateTime);
+        List<PayOrder> orders = payOrderMapper.selectList(lqw);
+
+        int count = 0;
+        for (PayOrder order : orders) {
+            if (syncLocalOrder(order)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 静默同步单个支付订单状态。
+     */
+    @Override
+    public void syncOrderQuietly(Long id) {
+        try {
+            if (id == null) {
+                return;
+            }
+            PayOrder order = payOrderMapper.selectById(id);
+            if (order != null && !Boolean.TRUE.equals(order.getIsDeleted())) {
+                syncLocalOrder(order);
+            }
+        } catch (Exception ex) {
+            log.warn("静默同步支付订单失败，id={}", id, ex);
+        }
+    }
+
+    /**
+     * 关闭已过期的待支付订单。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int expireOrder() {
+        LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
+        lqw.eq(PayOrder::getIsDeleted, false);
+        lqw.eq(PayOrder::getStatus, ORDER_STATUS_WAITING);
+        lqw.le(PayOrder::getExpireTime, LocalDateTime.now());
+        List<PayOrder> orders = payOrderMapper.selectList(lqw);
+        for (PayOrder order : orders) {
+            closeWaitingOrder(order);
+        }
+        return orders.size();
     }
 
     /**
      * 标记支付订单和拓展单支付成功。
      */
     private void markOrderSuccess(Long userId, PayOrder updateOrder, PayOrderExtension extension) {
+        updateOrder.setStatus(ORDER_STATUS_SUCCESS);
+        updateOrder.setSuccessTime(LocalDateTime.now());
+        PayOrderExtension updateExtension = new PayOrderExtension();
+        updateExtension.setId(extension.getId());
+        updateExtension.setStatus(ORDER_STATUS_SUCCESS);
+        updateExtension.setUpdateBy(String.valueOf(userId));
+        updateExtension.setUpdateTime(LocalDateTime.now());
+        payOrderExtensionMapper.updateById(updateExtension);
+    }
+
+    /**
+     * 根据本地拓展单和过期时间同步订单状态。
+     */
+    private boolean syncLocalOrder(PayOrder order) {
+        if (!Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+            return false;
+        }
+        PayOrderExtension extension = order.getExtensionId() == null ? null : getOrderExtension(order.getExtensionId());
+        if (extension != null && Objects.equals(extension.getStatus(), ORDER_STATUS_SUCCESS)) {
+            PayOrder updateOrder = new PayOrder();
+            updateOrder.setId(order.getId());
             updateOrder.setStatus(ORDER_STATUS_SUCCESS);
             updateOrder.setSuccessTime(LocalDateTime.now());
+            updateOrder.setUpdateTime(LocalDateTime.now());
+            payOrderMapper.updateById(updateOrder);
+            createOrderNotifyTask(order.getId());
+            return true;
+        }
+        if (order.getExpireTime() != null && !order.getExpireTime().isAfter(LocalDateTime.now())) {
+            closeWaitingOrder(order);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 关闭待支付订单和对应拓展单。
+     */
+    private void closeWaitingOrder(PayOrder order) {
+        PayOrder updateOrder = new PayOrder();
+        updateOrder.setId(order.getId());
+        updateOrder.setStatus(ORDER_STATUS_CLOSED);
+        updateOrder.setUpdateTime(LocalDateTime.now());
+        payOrderMapper.updateById(updateOrder);
+
+        if (order.getExtensionId() != null) {
             PayOrderExtension updateExtension = new PayOrderExtension();
-            updateExtension.setId(extension.getId());
-            updateExtension.setStatus(ORDER_STATUS_SUCCESS);
-            updateExtension.setUpdateBy(String.valueOf(userId));
+            updateExtension.setId(order.getExtensionId());
+            updateExtension.setStatus(ORDER_STATUS_CLOSED);
             updateExtension.setUpdateTime(LocalDateTime.now());
             payOrderExtensionMapper.updateById(updateExtension);
+        }
+    }
+
+    /**
+     * 创建支付订单通知任务。
+     */
+    private void createOrderNotifyTask(Long orderId) {
+        IPayNotifyService notifyService = payNotifyServiceProvider.getIfAvailable();
+        if (notifyService != null) {
+            notifyService.createPayNotifyTask(PayNotifyTypeEnum.ORDER.getType(), orderId);
+        }
     }
 
     /**

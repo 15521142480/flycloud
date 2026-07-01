@@ -1,11 +1,11 @@
 package com.fly.im.service.friend;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.friend.vo.ImFriendUpdateReqVo;
-import com.fly.im.controller.admin.manager.friend.vo.ImFriendManagerPageReqVo;
-import com.fly.im.dal.dataobject.friend.ImFriendDO;
-import com.fly.im.dal.dataobject.friend.ImFriendRequestDO;
-import com.fly.im.enums.friend.ImFriendStateEnum;
+import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageReqVo;
+import com.fly.system.api.im.domain.friend.ImFriend;
+import com.fly.system.api.im.domain.friend.ImFriendRequest;
+import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
  * 不再开放直接 add 接口；只有 {@link #becomeFriends} 是内部入口（被 agree 同意 / 管理员 import 触发）。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImFriendService {
 
@@ -41,27 +41,27 @@ public interface ImFriendService {
     /**
      * 获得当前用户的好友列表（含已删除状态）
      */
-    List<ImFriendDO> getFriendList(Long userId);
+    List<ImFriend> getFriendList(Long userId);
 
     /**
      * 获得当前用户的有效好友列表（仅 ENABLE 状态）
      */
-    List<ImFriendDO> getEnableFriendList(Long userId);
+    List<ImFriend> getEnableFriendList(Long userId);
 
     /**
      * 获得当前用户的双向有效好友列表（双方均 ENABLE 状态）
      */
-    List<ImFriendDO> getMutualEnableFriendList(Long userId);
+    List<ImFriend> getMutualEnableFriendList(Long userId);
 
     /**
      * 获得当前用户与指定用户之间的有效好友列表（仅 ENABLE 状态）
      */
-    List<ImFriendDO> getActiveFriendList(Long userId, Collection<Long> friendUserIds);
+    List<ImFriend> getActiveFriendList(Long userId, Collection<Long> friendUserIds);
 
     /**
      * 查询一个好友关系记录
      */
-    ImFriendDO getFriend(Long userId, Long friendUserId);
+    ImFriend getFriend(Long userId, Long friendUserId);
 
     // ==================== 内部入口 ====================
 
@@ -74,7 +74,7 @@ public interface ImFriendService {
      *
      * @param request 已同意的申请记录（决定 fromUserId / toUserId / addSource / displayName）
      */
-    void becomeFriends(ImFriendRequestDO request);
+    void becomeFriends(ImFriendRequest request);
 
     /**
      * 单向静默重新建立好友关系
@@ -120,6 +120,6 @@ public interface ImFriendService {
     /**
      * 【管理后台】分页查询好友关系
      */
-    PageResult<ImFriendDO> getFriendPage(ImFriendManagerPageReqVo reqVo);
+    PageResult<ImFriend> getFriendPage(ImFriendManagerPageReqVo reqVo);
 
 }

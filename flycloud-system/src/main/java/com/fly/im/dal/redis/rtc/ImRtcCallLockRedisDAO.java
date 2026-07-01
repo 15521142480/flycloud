@@ -1,6 +1,6 @@
 package com.fly.im.dal.redis.rtc;
 
-import com.fly.im.enums.ImConversationTypeEnum;
+import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
 import static com.fly.im.dal.redis.RedisKeyConstants.IM_RTC_CALL_LOCK;
-import static com.fly.im.enums.ErrorCodeConstants.RTC_INVITE_BUSY;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.RTC_INVITE_BUSY;
 
 /**
  * IM 通话同对 / 同群活跃唯一性的锁 Redis DAO
@@ -20,7 +20,7 @@ import static com.fly.im.enums.ErrorCodeConstants.RTC_INVITE_BUSY;
  * invite 入口包一层；锁内做「SELECT 已有活跃通话 → 命中即加入分支；否则 INSERT 新通话」
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Repository
 @Slf4j

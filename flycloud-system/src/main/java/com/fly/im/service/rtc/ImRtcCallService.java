@@ -1,11 +1,11 @@
 package com.fly.im.service.rtc;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.rtc.vo.ImRtcCallManagerPageReqVo;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallCreateReqVo;
-import com.fly.im.controller.admin.rtc.vo.ImRtcCallInviteReqVo;
-import com.fly.im.dal.dataobject.rtc.ImRtcCallDO;
-import com.fly.im.dal.dataobject.rtc.ImRtcParticipantDO;
+import com.fly.system.api.im.domain.vo.admin.manager.rtc.ImRtcCallManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallCreateReqVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallInviteReqVo;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.domain.rtc.ImRtcParticipant;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * IM 实时通话 Service
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImRtcCallService {
 
@@ -24,7 +24,7 @@ public interface ImRtcCallService {
      * @param reqVo  请求参数（scene / mediaType / peerUserId 或 groupId + inviteeIds）
      * @return 通话主表
      */
-    ImRtcCallDO createCall(Long userId, ImRtcCallCreateReqVo reqVo);
+    ImRtcCall createCall(Long userId, ImRtcCallCreateReqVo reqVo);
 
     /**
      * 通话中追加邀请：仅群通话场景可用；本人必须是房内 JOINED 参与者；给新邀请人推 RTC_CALL(INVITE)
@@ -41,7 +41,7 @@ public interface ImRtcCallService {
      * @param room   业务通话编号；从胶囊条 activeCall 拿
      * @return 通话主表
      */
-    ImRtcCallDO joinCall(Long userId, String room);
+    ImRtcCall joinCall(Long userId, String room);
 
     /**
      * 接听通话：参与者 INVITING → JOINED；主表 CREATED → RUNNING（首次有非发起人接通时）
@@ -50,7 +50,7 @@ public interface ImRtcCallService {
      * @param room   业务通话编号
      * @return 通话主表
      */
-    ImRtcCallDO acceptCall(Long userId, String room);
+    ImRtcCall acceptCall(Long userId, String room);
 
     /**
      * 拒绝通话；仅 INVITING 状态可拒；群通话拒绝等同于不参与，房间仍存在
@@ -85,7 +85,7 @@ public interface ImRtcCallService {
      * @param groupId 群编号
      * @return 通话主表；不存在返回 null
      */
-    ImRtcCallDO getActiveCall(Long userId, Long groupId);
+    ImRtcCall getActiveCall(Long userId, Long groupId);
 
     /**
      * 查询某通话的全部参与者明细；交给 Controller 拼装 inviteeIds / joinedUserIds
@@ -93,7 +93,7 @@ public interface ImRtcCallService {
      * @param room 业务通话编号
      * @return 参与者明细列表
      */
-    List<ImRtcParticipantDO> getCallParticipantList(String room);
+    List<ImRtcParticipant> getCallParticipantList(String room);
 
     /**
      * 签发指定用户进入该通话的 LiveKit Token；供 Controller 拼接到响应 VO
@@ -149,7 +149,7 @@ public interface ImRtcCallService {
      * @param reqVo 分页查询条件
      * @return 通话记录分页
      */
-    PageResult<ImRtcCallDO> getCallPage(ImRtcCallManagerPageReqVo reqVo);
+    PageResult<ImRtcCall> getCallPage(ImRtcCallManagerPageReqVo reqVo);
 
     /**
      * 【管理后台】获得通话记录
@@ -157,7 +157,7 @@ public interface ImRtcCallService {
      * @param id 通话编号
      * @return 通话记录
      */
-    ImRtcCallDO getCall(Long id);
+    ImRtcCall getCall(Long id);
 
     /**
      * 【管理后台】按通话编号查询参与者明细
@@ -165,6 +165,6 @@ public interface ImRtcCallService {
      * @param id 通话编号
      * @return 参与者明细列表；通话不存在时返回空集合
      */
-    List<ImRtcParticipantDO> getCallParticipantListByCallId(Long id);
+    List<ImRtcParticipant> getCallParticipantListByCallId(Long id);
 
 }

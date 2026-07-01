@@ -3,10 +3,10 @@ package com.fly.im.controller.admin.manager.face;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackPageReqVo;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackRespVo;
-import com.fly.im.controller.admin.manager.face.vo.pack.ImFacePackSaveReqVo;
-import com.fly.im.dal.dataobject.face.ImFacePackDO;
+import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackRespVo;
+import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackSaveReqVo;
+import com.fly.system.api.im.domain.face.ImFacePack;
 import com.fly.im.service.face.ImFacePackService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -69,7 +69,7 @@ public class ImFacePackManagerController {
     @Operation(summary = "获得表情包分页")
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack:query')")
     public R<PageResult<ImFacePackRespVo>> getFacePackPage(@Valid ImFacePackPageReqVo pageReqVo) {
-        PageResult<ImFacePackDO> pageResult = facePackService.getFacePackPage(pageReqVo);
+        PageResult<ImFacePack> pageResult = facePackService.getFacePackPage(pageReqVo);
         return ok(PageResult.convert(pageResult, ImFacePackRespVo.class));
     }
 
@@ -78,7 +78,7 @@ public class ImFacePackManagerController {
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack:query')")
     public R<ImFacePackRespVo> getFacePack(@RequestParam("id") Long id) {
-        ImFacePackDO pack = facePackService.getFacePack(id);
+        ImFacePack pack = facePackService.getFacePack(id);
         return ok(BeanUtils.toBean(pack, ImFacePackRespVo.class));
     }
 

@@ -3,8 +3,8 @@ package com.fly.im.dal.mysql.channel;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.channel.vo.channel.ImChannelPageReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelDO;
+import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
+import com.fly.system.api.im.domain.channel.ImChannel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,28 +13,28 @@ import java.util.List;
  * IM 频道 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImChannelMapper extends BaseMapperX<ImChannelDO> {
+public interface ImChannelMapper extends BaseMapperX<ImChannel> {
 
-    default ImChannelDO selectByCode(String code) {
-        return selectOne(ImChannelDO::getCode, code);
+    default ImChannel selectByCode(String code) {
+        return selectOne(ImChannel::getCode, code);
     }
 
-    default List<ImChannelDO> selectListByStatusOrderBySort(Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImChannelDO>()
-                .eq(ImChannelDO::getStatus, status)
-                .orderByAsc(ImChannelDO::getSort));
+    default List<ImChannel> selectListByStatusOrderBySort(Integer status) {
+        return selectList(new LambdaQueryWrapperX<ImChannel>()
+                .eq(ImChannel::getStatus, status)
+                .orderByAsc(ImChannel::getSort));
     }
 
-    default PageResult<ImChannelDO> selectPage(ImChannelPageReqVo reqVo) {
-        return selectPage(reqVo, new LambdaQueryWrapperX<ImChannelDO>()
-                .likeIfPresent(ImChannelDO::getCode, reqVo.getCode())
-                .likeIfPresent(ImChannelDO::getName, reqVo.getName())
-                .eqIfPresent(ImChannelDO::getStatus, reqVo.getStatus())
-                .orderByAsc(ImChannelDO::getSort)
-                .orderByDesc(ImChannelDO::getId));
+    default PageResult<ImChannel> selectPage(ImChannelPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImChannel>()
+                .likeIfPresent(ImChannel::getCode, reqVo.getCode())
+                .likeIfPresent(ImChannel::getName, reqVo.getName())
+                .eqIfPresent(ImChannel::getStatus, reqVo.getStatus())
+                .orderByAsc(ImChannel::getSort)
+                .orderByDesc(ImChannel::getId));
     }
 
 }

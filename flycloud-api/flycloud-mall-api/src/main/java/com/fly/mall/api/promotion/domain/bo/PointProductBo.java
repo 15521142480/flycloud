@@ -8,7 +8,7 @@ import lombok.Data;
  * 积分商城商品 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class PointProductBo extends BaseEntity {

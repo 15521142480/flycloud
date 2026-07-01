@@ -11,7 +11,7 @@ import java.util.List;
  * 商品 SPU 视图对象。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class ProductSpuVo implements Serializable {

@@ -5,10 +5,10 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerBanReqVo;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerPageReqVo;
-import com.fly.im.controller.admin.manager.group.vo.ImGroupManagerRespVo;
-import com.fly.im.dal.dataobject.group.ImGroupDO;
+import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerBanReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerRespVo;
+import com.fly.system.api.im.domain.group.ImGroup;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.service.group.ImGroupService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -47,15 +47,15 @@ public class ImGroupManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:group:query')")
     public R<PageResult<ImGroupManagerRespVo>> getGroupPage(@Valid ImGroupManagerPageReqVo pageReqVo) {
         // 1. 分页查询群
-        PageResult<ImGroupDO> pageResult = groupService.getGroupPage(pageReqVo);
+        PageResult<ImGroup> pageResult = groupService.getGroupPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
         }
         // 2.1 批量查询相关数据
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
-                convertSet(pageResult.getList(), ImGroupDO::getOwnerUserId));
+                convertSet(pageResult.getList(), ImGroup::getOwnerUserId));
         Map<Long, Long> memberCountMap = groupMemberService.getActiveMemberCountMap(
-                convertSet(pageResult.getList(), ImGroupDO::getId));
+                convertSet(pageResult.getList(), ImGroup::getId));
         // 2.2 转换为 VO，填充群主昵称、群成员数量
         return ok(PageResult.convert(pageResult, ImGroupManagerRespVo.class, vo -> {
             MapUtils.findAndThen(userMap, vo.getOwnerUserId(),
@@ -69,7 +69,7 @@ public class ImGroupManagerController {
     @Parameter(name = "id", description = "群编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:manager:group:query')")
     public R<ImGroupManagerRespVo> getGroup(@RequestParam("id") Long id) {
-        ImGroupDO group = groupService.getGroup(id);
+        ImGroup group = groupService.getGroup(id);
         return ok(BeanUtils.toBean(group, ImGroupManagerRespVo.class));
     }
 

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 移动端 - 装修页面 控制器。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 package com.fly.im.service.message.dto;
 
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
  * IM 私聊消息发送 DTO
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)

@@ -2,9 +2,9 @@ package com.fly.im.controller.admin.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.face.vo.pack.ImFacePackUserRespVo;
-import com.fly.im.dal.dataobject.face.ImFacePackDO;
-import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
+import com.fly.system.api.im.domain.vo.admin.face.pack.ImFacePackUserRespVo;
+import com.fly.system.api.im.domain.face.ImFacePack;
+import com.fly.system.api.im.domain.face.ImFacePackItem;
 import com.fly.im.service.face.ImFacePackItemService;
 import com.fly.im.service.face.ImFacePackService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,14 +37,14 @@ public class ImFacePackController {
     @Operation(summary = "获得启用的表情包列表（含表情）")
     public R<List<ImFacePackUserRespVo>> getFacePackList() {
         // 1.1 拉所有启用表情包
-        List<ImFacePackDO> packs = facePackService.getEnabledFacePackList();
+        List<ImFacePack> packs = facePackService.getEnabledFacePackList();
         if (packs.isEmpty()) {
             return ok(List.of());
         }
         // 1.2 拉这些包下所有启用表情，按 packId 分组
-        List<ImFacePackItemDO> items = facePackItemService.getEnabledItemListByPackIds(
-                convertList(packs, ImFacePackDO::getId));
-        Map<Long, List<ImFacePackItemDO>> itemsByPackId = convertMultiMap(items, ImFacePackItemDO::getPackId);
+        List<ImFacePackItem> items = facePackItemService.getEnabledItemListByPackIds(
+                convertList(packs, ImFacePack::getId));
+        Map<Long, List<ImFacePackItem>> itemsByPackId = convertMultiMap(items, ImFacePackItem::getPackId);
 
         // 2. 拼装：BeanUtils 把 pack 字段映射 + 自己塞 items
         List<ImFacePackUserRespVo> result = convertList(packs, pack -> {

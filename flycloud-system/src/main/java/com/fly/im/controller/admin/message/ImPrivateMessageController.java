@@ -2,10 +2,10 @@ package com.fly.im.controller.admin.message;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVo;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageRespVo;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVo;
-import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageListReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageRespVo;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageSendReqVo;
+import com.fly.system.api.im.domain.message.ImPrivateMessage;
 import com.fly.im.service.message.ImPrivateMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +34,7 @@ public class ImPrivateMessageController {
     @Operation(summary = "发送私聊消息")
     public R<ImPrivateMessageRespVo> sendPrivateMessage(
             @Valid @RequestBody ImPrivateMessageSendReqVo reqVo) {
-        ImPrivateMessageDO message = privateMessageService.sendPrivateMessage(getCurUserId(), reqVo);
+        ImPrivateMessage message = privateMessageService.sendPrivateMessage(getCurUserId(), reqVo);
         return ok(BeanUtils.toBean(message, ImPrivateMessageRespVo.class));
     }
 
@@ -45,7 +45,7 @@ public class ImPrivateMessageController {
     public R<List<ImPrivateMessageRespVo>> pullPrivateMessageList(
             @RequestParam("minId") Long minId,
             @RequestParam("size") @Min(value = 1, message = "拉取数量最小值为 1") Integer size) {
-        List<ImPrivateMessageDO> messages = privateMessageService.pullPrivateMessageList(getCurUserId(), minId, size);
+        List<ImPrivateMessage> messages = privateMessageService.pullPrivateMessageList(getCurUserId(), minId, size);
         return ok(BeanUtils.toBean(messages, ImPrivateMessageRespVo.class));
     }
 
@@ -71,14 +71,14 @@ public class ImPrivateMessageController {
     @Operation(summary = "撤回私聊消息")
     @Parameter(name = "id", description = "消息编号", required = true, example = "1")
     public R<ImPrivateMessageRespVo> recallPrivateMessage(@RequestParam("id") Long id) {
-        ImPrivateMessageDO message = privateMessageService.recallPrivateMessage(getCurUserId(), id);
+        ImPrivateMessage message = privateMessageService.recallPrivateMessage(getCurUserId(), id);
         return ok(BeanUtils.toBean(message, ImPrivateMessageRespVo.class));
     }
 
     @GetMapping("/list")
     @Operation(summary = "查询私聊历史消息")
     public R<List<ImPrivateMessageRespVo>> getPrivateMessageList(@Valid ImPrivateMessageListReqVo reqVo) {
-        List<ImPrivateMessageDO> messages = privateMessageService.getPrivateMessageList(getCurUserId(), reqVo);
+        List<ImPrivateMessage> messages = privateMessageService.getPrivateMessageList(getCurUserId(), reqVo);
         return ok(BeanUtils.toBean(messages, ImPrivateMessageRespVo.class));
     }
 

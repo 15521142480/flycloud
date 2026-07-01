@@ -26,7 +26,7 @@ import static com.fly.common.domain.model.R.ok;
  * 安全由请求签名（JWT + body sha256）保证，不走登录鉴权；伪造请求会被签名校验直接拒绝
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Tag(name = "LiveKit Webhook 回调")
 @RestController

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 支付示例订单创建请求对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class PayDemoOrderCreateReqBo implements Serializable {

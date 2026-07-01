@@ -15,7 +15,7 @@ import java.util.Map;
  * 支付订单拓展。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @TableName(value = "pay_order_extension", autoResultMap = true)
 @Data

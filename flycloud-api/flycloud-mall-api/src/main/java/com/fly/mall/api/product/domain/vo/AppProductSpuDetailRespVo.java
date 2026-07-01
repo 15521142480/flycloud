@@ -10,7 +10,7 @@ import java.util.List;
  * 移动端 - 商品 SPU 明细返回对象。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

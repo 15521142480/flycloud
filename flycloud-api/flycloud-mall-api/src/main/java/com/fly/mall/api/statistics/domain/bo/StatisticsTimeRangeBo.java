@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 统计时间范围查询对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 public class StatisticsTimeRangeBo {

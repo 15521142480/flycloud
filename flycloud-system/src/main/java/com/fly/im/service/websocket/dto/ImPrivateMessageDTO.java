@@ -3,8 +3,8 @@ package com.fly.im.service.websocket.dto;
 import cn.hutool.core.lang.Assert;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.domain.message.ImPrivateMessage;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.websocket.dto.notification.friend.BaseFriendNotification;
 import com.fly.im.service.websocket.dto.notification.group.BaseGroupNotification;
 import lombok.Data;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * 并统一复用 {@link #id} 字段表达目标消息或已读位置。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -73,7 +73,7 @@ public class ImPrivateMessageDTO {
      * @param message 私聊消息 DO
      * @return 私聊 DTO
      */
-    public static ImPrivateMessageDTO ofSend(ImPrivateMessageDO message) {
+    public static ImPrivateMessageDTO ofSend(ImPrivateMessage message) {
         return BeanUtils.toBean(message, ImPrivateMessageDTO.class);
     }
 

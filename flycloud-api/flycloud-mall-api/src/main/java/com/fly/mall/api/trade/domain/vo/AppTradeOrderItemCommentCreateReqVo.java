@@ -8,7 +8,7 @@ import lombok.Data;
  * 移动端 - 商品评价创建请求对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 public class AppTradeOrderItemCommentCreateReqVo implements Serializable {

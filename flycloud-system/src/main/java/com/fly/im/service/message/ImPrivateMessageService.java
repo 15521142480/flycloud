@@ -1,10 +1,10 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.message.vo.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageListReqVo;
-import com.fly.im.controller.admin.message.vo.privates.ImPrivateMessageSendReqVo;
-import com.fly.im.dal.dataobject.message.ImPrivateMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageListReqVo;
+import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageSendReqVo;
+import com.fly.system.api.im.domain.message.ImPrivateMessage;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * IM 私聊消息 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImPrivateMessageService {
 
@@ -27,7 +27,7 @@ public interface ImPrivateMessageService {
      * @param reqVo    发送请求
      * @return 消息
      */
-    ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo);
+    ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo);
 
     /**
      * 【系统调用】发送私聊消息
@@ -36,7 +36,7 @@ public interface ImPrivateMessageService {
      * @param dto      消息 DTO
      * @return 构造的消息 DO（持久化时 id 已回填）
      */
-    ImPrivateMessageDO sendPrivateMessage(Long senderId, ImPrivateMessageSendDTO dto);
+    ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageSendDTO dto);
 
     /**
      * 【用户调用】撤回私聊消息
@@ -45,7 +45,7 @@ public interface ImPrivateMessageService {
      * @param messageId 消息编号
      * @return 撤回后的消息
      */
-    ImPrivateMessageDO recallPrivateMessage(Long userId, Long messageId);
+    ImPrivateMessage recallPrivateMessage(Long userId, Long messageId);
 
     /**
      * 拉取私聊消息（增量）
@@ -55,7 +55,7 @@ public interface ImPrivateMessageService {
      * @param size   拉取数量
      * @return 消息列表
      */
-    List<ImPrivateMessageDO> pullPrivateMessageList(Long userId, Long minId, Integer size);
+    List<ImPrivateMessage> pullPrivateMessageList(Long userId, Long minId, Integer size);
 
     /**
      * 标记私聊消息已读
@@ -88,18 +88,18 @@ public interface ImPrivateMessageService {
      * @param reqVo  拉取请求
      * @return 消息列表（按 id 倒序）
      */
-    List<ImPrivateMessageDO> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo);
+    List<ImPrivateMessage> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo);
 
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询私聊消息
      */
-    PageResult<ImPrivateMessageDO> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo);
+    PageResult<ImPrivateMessage> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo);
 
     /**
      * 【管理后台】获取私聊消息详情
      */
-    ImPrivateMessageDO getPrivateMessage(Long id);
+    ImPrivateMessage getPrivateMessage(Long id);
 
 }

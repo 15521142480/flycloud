@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * 会员注册数量响应对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 public class MemberRegisterCountRespVo implements Serializable {

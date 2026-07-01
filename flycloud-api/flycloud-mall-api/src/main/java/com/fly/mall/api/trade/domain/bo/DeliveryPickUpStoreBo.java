@@ -10,7 +10,7 @@ import lombok.Data;
  * 自提门店 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class DeliveryPickUpStoreBo extends BaseEntity {

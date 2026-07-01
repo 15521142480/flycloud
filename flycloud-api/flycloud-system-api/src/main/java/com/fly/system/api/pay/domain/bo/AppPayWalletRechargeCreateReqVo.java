@@ -12,7 +12,7 @@ import java.util.Objects;
  * 移动端 - 创建钱包充值请求对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Schema(description = "移动端 - 创建钱包充值请求对象")

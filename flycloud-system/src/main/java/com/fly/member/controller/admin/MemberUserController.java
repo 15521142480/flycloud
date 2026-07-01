@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * 后台 - 会员用户控制器。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @RequiredArgsConstructor
 @RestController
@@ -122,7 +122,7 @@ public class MemberUserController {
      * 会员积分修改请求。
      *
      * @author lxs
-     * @date 2026-06-30
+     * @date 2026-07-02
      */
     @Data
     public static class MemberUserUpdatePointReq {

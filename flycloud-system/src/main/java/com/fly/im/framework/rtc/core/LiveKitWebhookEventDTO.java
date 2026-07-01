@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  * 文档参考：<a href="https://docs.livekit.io/home/server/webhook/">webhook 文档</a>
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 @Accessors(chain = true)

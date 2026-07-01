@@ -5,7 +5,7 @@ package com.fly.im.dal.redis;
  * IM Redis Key 枚举类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface RedisKeyConstants {
 
@@ -27,7 +27,7 @@ public interface RedisKeyConstants {
      * 好友关系状态缓存（合并「是否好友」+「是否拉黑」两态）
      * <p>
      * KEY 格式：friend_state:{userId}_{friendUserId}
-     * VALUE 数据类型：{@link com.fly.im.enums.friend.ImFriendStateEnum}
+     * VALUE 数据类型：{@link com.fly.system.api.im.enums.friend.ImFriendStateEnum}
      */
     String FRIEND_STATE = "friend_state";
 
@@ -35,7 +35,7 @@ public interface RedisKeyConstants {
      * 群信息缓存
      * <p>
      * KEY 格式：group:{groupId}
-     * VALUE 数据类型：ImGroupDO
+     * VALUE 数据类型：ImGroup
      */
     String GROUP = "group";
 

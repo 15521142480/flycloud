@@ -11,7 +11,7 @@ import java.util.List;
  * 商品 SKU BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class ProductSkuBo extends BaseEntity {

@@ -1,7 +1,7 @@
 package com.fly.im.service.group;
 
-import com.fly.im.controller.admin.group.vo.member.ImGroupMemberUpdateReqVo;
-import com.fly.im.dal.dataobject.group.ImGroupMemberDO;
+import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberUpdateReqVo;
+import com.fly.system.api.im.domain.group.ImGroupMember;
 import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import java.util.Map;
  * 群成员 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImGroupMemberService {
 
@@ -23,7 +23,7 @@ public interface ImGroupMemberService {
      * @param id 编号
      * @return 群成员
      */
-    ImGroupMemberDO getGroupMember(Long id);
+    ImGroupMember getGroupMember(Long id);
 
     /**
      * 获得群成员
@@ -32,7 +32,7 @@ public interface ImGroupMemberService {
      * @param userId  用户编号
      * @return 群成员
      */
-    ImGroupMemberDO getGroupMember(Long groupId, Long userId);
+    ImGroupMember getGroupMember(Long groupId, Long userId);
 
     /**
      * 批量查询群成员（包含所有状态）
@@ -41,7 +41,7 @@ public interface ImGroupMemberService {
      * @param userIds 用户编号集合
      * @return 群成员列表
      */
-    List<ImGroupMemberDO> getGroupMembers(Long groupId, Collection<Long> userIds);
+    List<ImGroupMember> getGroupMembers(Long groupId, Collection<Long> userIds);
 
     /**
      * 根据群组 id 查询群成员（包含所有状态）
@@ -49,7 +49,7 @@ public interface ImGroupMemberService {
      * @param groupId 群组id
      * @return 群成员列表
      */
-    List<ImGroupMemberDO> getGroupMemberListByGroupId(Long groupId);
+    List<ImGroupMember> getGroupMemberListByGroupId(Long groupId);
 
     /**
      * 根据群编号查询有效成员列表（仅 ENABLE 状态）
@@ -57,7 +57,7 @@ public interface ImGroupMemberService {
      * @param groupId 群编号
      * @return 有效群成员列表
      */
-    List<ImGroupMemberDO> getActiveGroupMemberListByGroupId(Long groupId);
+    List<ImGroupMember> getActiveGroupMemberListByGroupId(Long groupId);
 
     /**
      * 获取群里活跃的群主 + 管理员；用于审批通知定向推送
@@ -65,7 +65,7 @@ public interface ImGroupMemberService {
      * @param groupId 群编号
      * @return 群主 / 管理员的成员记录列表（按入群时间倒序的天然成员表顺序）
      */
-    List<ImGroupMemberDO> getGroupMemberListByOwnerAndAdmin(Long groupId);
+    List<ImGroupMember> getGroupMemberListByOwnerAndAdmin(Long groupId);
 
     /**
      * 根据群编号查询有效成员的 userId 列表（仅 ENABLE 状态）
@@ -85,7 +85,7 @@ public interface ImGroupMemberService {
      * @param userId 用户编号
      * @return 有效群成员记录列表
      */
-    List<ImGroupMemberDO> getActiveGroupMemberListByUserId(Long userId);
+    List<ImGroupMember> getActiveGroupMemberListByUserId(Long userId);
 
     /**
      * 查询用户已退群的群成员记录（DISABLE 状态）
@@ -94,7 +94,7 @@ public interface ImGroupMemberService {
      * @param minQuitTime 最早退群时间（含），可空
      * @return 已退群成员记录列表
      */
-    List<ImGroupMemberDO> getQuitGroupMemberListByUserId(Long userId, LocalDateTime minQuitTime);
+    List<ImGroupMember> getQuitGroupMemberListByUserId(Long userId, LocalDateTime minQuitTime);
 
     /**
      * 添加群成员（入群），角色默认 MEMBER
@@ -104,7 +104,7 @@ public interface ImGroupMemberService {
      * @return 群成员记录
      */
     @SuppressWarnings("UnusedReturnValue")
-    ImGroupMemberDO addGroupMember(Long groupId, Long userId);
+    ImGroupMember addGroupMember(Long groupId, Long userId);
 
     /**
      * 添加群成员（入群），并指定角色
@@ -113,11 +113,11 @@ public interface ImGroupMemberService {
      *
      * @param groupId 群编号
      * @param userId  用户编号
-     * @param role    成员角色，见 {@link com.fly.im.enums.group.ImGroupMemberRoleEnum}
+     * @param role    成员角色，见 {@link com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum}
      * @return 群成员记录
      */
     @SuppressWarnings("UnusedReturnValue")
-    ImGroupMemberDO addGroupMember(Long groupId, Long userId, Integer role);
+    ImGroupMember addGroupMember(Long groupId, Long userId, Integer role);
 
     /**
      * 添加群成员（入群），并指定角色 / 加入来源 / 邀请人
@@ -127,12 +127,12 @@ public interface ImGroupMemberService {
      * @param groupId       群编号
      * @param userId        用户编号
      * @param role          成员角色
-     * @param addSource     加入来源，见 {@link com.fly.im.enums.group.ImGroupAddSourceEnum}
+     * @param addSource     加入来源，见 {@link com.fly.system.api.im.enums.group.ImGroupAddSourceEnum}
      * @param inviterUserId 邀请人用户编号；NULL 表示主动申请
      * @return 群成员记录
      */
     @SuppressWarnings("UnusedReturnValue")
-    ImGroupMemberDO addGroupMember(Long groupId, Long userId, Integer role, Integer addSource, Long inviterUserId);
+    ImGroupMember addGroupMember(Long groupId, Long userId, Integer role, Integer addSource, Long inviterUserId);
 
     /**
      * 批量添加群成员（入群）
@@ -159,7 +159,7 @@ public interface ImGroupMemberService {
      * @param userId  用户编号
      * @return 群成员记录
      */
-    ImGroupMemberDO validateMemberInGroup(Long groupId, Long userId);
+    ImGroupMember validateMemberInGroup(Long groupId, Long userId);
 
     /**
      * 批量校验用户都是该群的有效成员；任一缺失 / 禁用即抛 {@code GROUP_MEMBER_NOT_IN_GROUP}
@@ -184,7 +184,7 @@ public interface ImGroupMemberService {
      *
      * @param groupId 群编号
      * @param userIds 用户编号集合
-     * @param role    新角色，见 {@link com.fly.im.enums.group.ImGroupMemberRoleEnum}
+     * @param role    新角色，见 {@link com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum}
      */
     int updateGroupMemberRole(Long groupId, Collection<Long> userIds, Integer role);
 

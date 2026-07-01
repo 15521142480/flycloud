@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * 自提门店 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "trade_delivery_pick_up_store", autoResultMap = true)
 @Data

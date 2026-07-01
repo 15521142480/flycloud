@@ -10,7 +10,7 @@ import lombok.Data;
  * 商品评价 BO。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @Data
 public class ProductCommentBo extends BaseEntity {

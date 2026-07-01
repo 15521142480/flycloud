@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * 支付渠道视图对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class PayChannelVo implements Serializable {

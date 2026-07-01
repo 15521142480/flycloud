@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * 售后单 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "trade_after_sale", autoResultMap = true)
 @Data

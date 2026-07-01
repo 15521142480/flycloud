@@ -6,13 +6,13 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVo;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageSendReqVo;
-import com.fly.im.dal.dataobject.channel.ImChannelMaterialDO;
-import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessagePageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageSendReqVo;
+import com.fly.system.api.im.domain.channel.ImChannelMaterial;
+import com.fly.system.api.im.domain.message.ImChannelMessage;
 import com.fly.im.dal.mysql.message.ImChannelMessageMapper;
 import com.fly.im.dal.redis.message.ImChannelMessageReadRedisDAO;
-import com.fly.im.enums.message.ImMessageTypeEnum;
+import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import com.fly.im.service.websocket.ImWebSocketService;
 import com.fly.im.service.websocket.dto.ImChannelMessageDTO;
@@ -30,13 +30,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
-import static com.fly.im.enums.ErrorCodeConstants.IM_CHANNEL_MESSAGE_NOT_EXISTS;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.IM_CHANNEL_MESSAGE_NOT_EXISTS;
 
 /**
  * IM 频道消息 Service 实现类
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -56,7 +56,7 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
     // ==================== 用户端 ====================
 
     @Override
-    public List<ImChannelMessageDO> getMessageListForPull(Long userId, Long minId, Integer size) {
+    public List<ImChannelMessage> getMessageListForPull(Long userId, Long minId, Integer size) {
         return channelMessageMapper.selectListByUserAndMinId(userId, minId, size);
     }
 
@@ -107,13 +107,13 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
     @Transactional(rollbackFor = Exception.class)
     public Long sendMessage(ImChannelMessageSendReqVo reqVo) {
         // 1. 校验素材存在
-        ImChannelMaterialDO material = channelMaterialService.validateMaterialExists(reqVo.getMaterialId());
+        ImChannelMaterial material = channelMaterialService.validateMaterialExists(reqVo.getMaterialId());
 
         // 2.1 组装 payload（不带富文本正文）；字段同名直接 BeanUtils 拷贝，materialId 单独 set 以兼容转发场景
         MaterialMessage payload = BeanUtils.toBean(material, MaterialMessage.class).setMaterialId(material.getId());
         String payloadJson = JsonUtils.toJsonString(payload);
         // 2.2 落库 1 行 message；reqVo 同名字段（materialId / receiverUserIds）自动拷贝，剩余字段补 set
-        ImChannelMessageDO message = BeanUtils.toBean(reqVo, ImChannelMessageDO.class).setChannelId(material.getChannelId())
+        ImChannelMessage message = BeanUtils.toBean(reqVo, ImChannelMessage.class).setChannelId(material.getChannelId())
                 .setType(ImMessageTypeEnum.MATERIAL.getType()).setContent(payloadJson).setSendTime(LocalDateTime.now());
         channelMessageMapper.insert(message);
 
@@ -128,7 +128,7 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
     }
 
     @Override
-    public PageResult<ImChannelMessageDO> getMessagePage(ImChannelMessagePageReqVo reqVo) {
+    public PageResult<ImChannelMessage> getMessagePage(ImChannelMessagePageReqVo reqVo) {
         return channelMessageMapper.selectPage(reqVo);
     }
 

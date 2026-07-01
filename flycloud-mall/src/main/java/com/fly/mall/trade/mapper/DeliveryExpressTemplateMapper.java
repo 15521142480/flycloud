@@ -8,7 +8,7 @@ import com.fly.mall.api.trade.domain.vo.DeliveryExpressTemplateVo;
  * 运费模板 Mapper 接口。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 public interface DeliveryExpressTemplateMapper extends BaseMapperPlus<DeliveryExpressTemplateMapper, DeliveryExpressTemplate, DeliveryExpressTemplateVo> {
 

@@ -17,15 +17,6 @@ spring:
     allow-bean-definition-overriding: true
     allow-circular-references: true
 
-# security授权公共配置
-security:
-  auth:
-    token:
-      # 登录态有效期，单位秒，默认2小时；接口请求认证成功后会滑动续期
-      login-timeout-seconds: 7200
-      # refresh token 有效期，默认30天，单位秒
-      refresh-token-timeout-seconds: 2592000
-
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
@@ -43,20 +34,20 @@ security:
       # 允许对象忽略json中不存在的属性
       fail_on_unknown_properties: false
   cloud:
-    # sentinel 配置
-    # sentinel:
-    #   # sentinel 开关
-    #   enabled: true
-    #   # 取消控制台懒加载
-    #   eager: true
-    #   transport:
-    #     # dashboard控制台服务名 用于服务发现
-    #     # 如无此配置将默认使用下方 dashboard 配置直接注册
-    #     server-name: ruoyi-sentinel-dashboard
-    #     # 客户端指定注册的ip 用于多网卡ip不稳点使用
-    #     # client-ip:
-    #     # 控制台地址 从1.3.0开始使用 server-name 注册
-    #     # dashboard: localhost:8718
+  # sentinel 配置
+  # sentinel:
+  #   # sentinel 开关
+  #   enabled: true
+  #   # 取消控制台懒加载
+  #   eager: true
+  #   transport:
+  #     # dashboard控制台服务名 用于服务发现
+  #     # 如无此配置将默认使用下方 dashboard 配置直接注册
+  #     server-name: ruoyi-sentinel-dashboard
+  #     # 客户端指定注册的ip 用于多网卡ip不稳点使用
+  #     # client-ip:
+  #     # 控制台地址 从1.3.0开始使用 server-name 注册
+  #     # dashboard: localhost:8718
 
   # redis 通用配置 子服务可以自行配置进行覆盖
   data:
@@ -65,11 +56,20 @@ security:
       host: 39.98.125.88
       port: 6379
       # 密码(如没有密码请注释掉password字段)
-      password: 
+      password:
       database: 0
-      timeout: 18s
+      timeout: 5s
+      connect-timeout: 5s
       ssl:
         enabled: false
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 16
+          max-idle: 8
+          min-idle: 2
+          max-wait: 3s
+        shutdown-timeout: 100ms
 
 
 # redisson 配置
@@ -94,6 +94,64 @@ redisson:
     timeout: 3000
     # 发布和订阅连接池大小
     subscriptionConnectionPoolSize: 50
+
+
+# security授权公共配置
+security:
+  auth:
+    token:
+      # 登录态有效期，单位秒，默认2小时；接口请求认证成功后会滑动续期
+      login-timeout-seconds: 7200
+      # refresh token 有效期，默认30天，单位秒
+      refresh-token-timeout-seconds: 2592000
+
+    # 白名单 (授权、swagger、监控中心等url)
+    ignore-urls:
+      - /oauth/**
+      - /auth/**
+      - /feign/**
+      - /gen/**
+      - /app/**
+      - /static/**
+      - /actuator/**
+      - /webjars/**
+      - /druid/**
+      - /assets/**
+      - /v2/api-docs/**
+      - /v3/api-docs/**
+      - /swagger/api-docs
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /doc.html
+
+    # 是否启用网关验证（是：接口都拦截验证；否：全部接口在网关服务都为白名单）
+    gateway-enable: true
+
+
+# 上传配置
+upload:
+  config:
+
+    # 使用的服务器类型 (1:本地服务, 2:ftp服务器, 3:sftp服务器, 4:阿里云oss对象存储, 5:华为云obs对象存储, 9:smb共享文件夹)
+    use-server-type: 3
+
+    # sftp服务器配置
+    local-server-config:
+      # 文件上传和读取的前缀真实路径
+      base-path: /Users/lxs/applicationFile/file/person/flycloud-server/
+      # 拼给前端或客户端展示的前缀url路径
+      base-url: http://localhost:8080/static/
+
+    # sftp服务器配置
+    sftp-server-config:
+      ip:
+      user: root
+      password:
+      port: 22
+      base-path: /project/upload-file/
+      # base-url: http://111.228.51.252:8080/static/
+      base-url: http://111.228.51.252:8888/static/
+
 
 
 # springdoc 配置

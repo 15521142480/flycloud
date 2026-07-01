@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  * 装修模板 表。
  *
  * @author lxs
- * @date 2026-06-28
+ * @date 2026-07-02
  */
 @TableName(value = "promotion_diy_template", autoResultMap = true)
 @Data

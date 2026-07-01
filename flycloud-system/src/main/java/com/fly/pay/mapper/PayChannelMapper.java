@@ -8,7 +8,7 @@ import com.fly.system.api.pay.domain.vo.PayChannelVo;
  * 支付渠道 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface PayChannelMapper extends BaseMapperPlus<PayChannelMapper, PayChannel, PayChannelVo> {
 }

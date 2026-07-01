@@ -1,9 +1,9 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessagePageReqVo;
-import com.fly.im.controller.admin.manager.message.vo.channel.ImChannelMessageSendReqVo;
-import com.fly.im.dal.dataobject.message.ImChannelMessageDO;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessagePageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageSendReqVo;
+import com.fly.system.api.im.domain.message.ImChannelMessage;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ import java.util.Map;
  * IM 频道消息 Service 接口
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImChannelMessageService {
 
@@ -28,7 +28,7 @@ public interface ImChannelMessageService {
      * @param size   返回条数
      * @return 频道消息列表；按 id 升序
      */
-    List<ImChannelMessageDO> getMessageListForPull(Long userId, Long minId, Integer size);
+    List<ImChannelMessage> getMessageListForPull(Long userId, Long minId, Integer size);
 
     /**
      * 上报频道消息已读位置；同步推 READ 事件给自己多端
@@ -64,7 +64,7 @@ public interface ImChannelMessageService {
      * @param reqVo 分页查询条件
      * @return 消息分页
      */
-    PageResult<ImChannelMessageDO> getMessagePage(ImChannelMessagePageReqVo reqVo);
+    PageResult<ImChannelMessage> getMessagePage(ImChannelMessagePageReqVo reqVo);
 
     /**
      * 删除消息

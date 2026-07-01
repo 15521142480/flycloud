@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Primary;
  * 积木报表配置。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Configuration(proxyBeanMethods = false)
 @ComponentScan(basePackages = "org.jeecg.modules.jmreport")

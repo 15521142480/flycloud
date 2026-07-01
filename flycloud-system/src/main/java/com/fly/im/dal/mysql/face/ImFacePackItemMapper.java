@@ -3,8 +3,8 @@ package com.fly.im.dal.mysql.face;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
-import com.fly.im.controller.admin.manager.face.vo.item.ImFacePackItemPageReqVo;
-import com.fly.im.dal.dataobject.face.ImFacePackItemDO;
+import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemPageReqVo;
+import com.fly.system.api.im.domain.face.ImFacePackItem;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Collection;
@@ -14,37 +14,37 @@ import java.util.List;
  * IM 表情包项 Mapper
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Mapper
-public interface ImFacePackItemMapper extends BaseMapperX<ImFacePackItemDO> {
+public interface ImFacePackItemMapper extends BaseMapperX<ImFacePackItem> {
 
-    default List<ImFacePackItemDO> selectListByPackIdsAndStatus(Collection<Long> packIds, Integer status) {
-        return selectList(new LambdaQueryWrapperX<ImFacePackItemDO>()
-                .in(ImFacePackItemDO::getPackId, packIds)
-                .eq(ImFacePackItemDO::getStatus, status)
-                .orderByAsc(ImFacePackItemDO::getPackId)
-                .orderByAsc(ImFacePackItemDO::getSort)
-                .orderByAsc(ImFacePackItemDO::getId));
+    default List<ImFacePackItem> selectListByPackIdsAndStatus(Collection<Long> packIds, Integer status) {
+        return selectList(new LambdaQueryWrapperX<ImFacePackItem>()
+                .in(ImFacePackItem::getPackId, packIds)
+                .eq(ImFacePackItem::getStatus, status)
+                .orderByAsc(ImFacePackItem::getPackId)
+                .orderByAsc(ImFacePackItem::getSort)
+                .orderByAsc(ImFacePackItem::getId));
     }
 
     default Long selectCountByPackId(Long packId) {
-        return selectCount(new LambdaQueryWrapperX<ImFacePackItemDO>()
-                .eq(ImFacePackItemDO::getPackId, packId));
+        return selectCount(new LambdaQueryWrapperX<ImFacePackItem>()
+                .eq(ImFacePackItem::getPackId, packId));
     }
 
     default Long selectCountByPackIds(Collection<Long> packIds) {
-        return selectCount(new LambdaQueryWrapperX<ImFacePackItemDO>()
-                .in(ImFacePackItemDO::getPackId, packIds));
+        return selectCount(new LambdaQueryWrapperX<ImFacePackItem>()
+                .in(ImFacePackItem::getPackId, packIds));
     }
 
-    default PageResult<ImFacePackItemDO> selectPage(ImFacePackItemPageReqVo reqVo) {
-        return selectPage(reqVo, new LambdaQueryWrapperX<ImFacePackItemDO>()
-                .eqIfPresent(ImFacePackItemDO::getPackId, reqVo.getPackId())
-                .likeIfPresent(ImFacePackItemDO::getName, reqVo.getName())
-                .eqIfPresent(ImFacePackItemDO::getStatus, reqVo.getStatus())
-                .orderByAsc(ImFacePackItemDO::getSort)
-                .orderByDesc(ImFacePackItemDO::getId));
+    default PageResult<ImFacePackItem> selectPage(ImFacePackItemPageReqVo reqVo) {
+        return selectPage(reqVo, new LambdaQueryWrapperX<ImFacePackItem>()
+                .eqIfPresent(ImFacePackItem::getPackId, reqVo.getPackId())
+                .likeIfPresent(ImFacePackItem::getName, reqVo.getName())
+                .eqIfPresent(ImFacePackItem::getStatus, reqVo.getStatus())
+                .orderByAsc(ImFacePackItem::getSort)
+                .orderByDesc(ImFacePackItem::getId));
     }
 
 }

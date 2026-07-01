@@ -10,7 +10,7 @@ import java.util.Map;
  * 返回的均为聚合后的简单结构，由 Controller 负责 VO 装配与昵称回填。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface ImStatisticsManagerService {
 

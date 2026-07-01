@@ -6,7 +6,7 @@ import org.springdoc.core.models.GroupedOpenApi;
  * IM Swagger 分组适配。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public class ImSwaggerAutoConfiguration {
 

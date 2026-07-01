@@ -10,7 +10,7 @@ import com.fly.system.api.member.domain.vo.MemberLevelRecordVo;
  * 会员等级记录 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IMemberLevelRecordService {
     PageVo<MemberLevelRecordVo> queryPageList(MemberLevelRecordBo bo, PageBo pageBo);

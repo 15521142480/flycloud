@@ -31,14 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
-import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
  * 移动端 - 交易订单 控制器。
  *
  * @author lxs
- * @date 2026-06-29
+ * @date 2026-07-02
  */
 @Validated
 @RequiredArgsConstructor
@@ -109,13 +108,8 @@ public class AppTradeOrderController {
      */
     @PostMapping("/update-paid")
     public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
-        TradeOrderBo bo = new TradeOrderBo();
-        bo.setId(Long.valueOf(req.getMerchantOrderId()));
-        bo.setPayOrderId(req.getPayOrderId());
-        bo.setPayStatus(true);
-        bo.setStatus(10);
-        bo.setPayTime(LocalDateTime.now());
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        tradeOrderService.updateOrderPaid(Long.valueOf(req.getMerchantOrderId()), req.getPayOrderId());
+        return R.ok(Boolean.TRUE);
     }
 
     /**

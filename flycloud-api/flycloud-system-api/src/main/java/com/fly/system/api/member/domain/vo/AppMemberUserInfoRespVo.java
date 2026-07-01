@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 移动端会员用户个人信息响应对象。
  *
  * @author lxs
- * @date 2026-07-01
+ * @date 2026-07-02
  */
 @Data
 public class AppMemberUserInfoRespVo implements Serializable {
@@ -39,7 +39,7 @@ public class AppMemberUserInfoRespVo implements Serializable {
      * 移动端会员等级摘要。
      *
      * @author lxs
-     * @date 2026-07-01
+     * @date 2026-07-02
      */
     @Data
     public static class Level implements Serializable {

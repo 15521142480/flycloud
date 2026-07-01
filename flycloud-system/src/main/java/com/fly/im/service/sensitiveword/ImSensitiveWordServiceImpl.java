@@ -3,15 +3,15 @@ package com.fly.im.service.sensitiveword;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import com.fly.im.framework.enums.CommonStatusEnum;
+import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.CacheUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.framework.tenant.TenantContextHolder;
 import com.fly.im.framework.tenant.TenantUtils;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordPageReqVo;
-import com.fly.im.controller.admin.manager.sensitiveword.vo.ImSensitiveWordSaveReqVo;
-import com.fly.im.dal.dataobject.sensitiveword.ImSensitiveWordDO;
+import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordPageReqVo;
+import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordSaveReqVo;
+import com.fly.system.api.im.domain.sensitiveword.ImSensitiveWord;
 import com.fly.im.dal.mysql.sensitiveword.ImSensitiveWordMapper;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import com.google.common.cache.CacheLoader;
@@ -33,9 +33,9 @@ import java.util.Objects;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
 import static com.fly.common.utils.collection.CollectionUtils.convertList;
-import static com.fly.im.enums.ErrorCodeConstants.MESSAGE_SENSITIVE_WORD_BLOCKED;
-import static com.fly.im.enums.ErrorCodeConstants.SENSITIVE_WORD_DUPLICATED;
-import static com.fly.im.enums.ErrorCodeConstants.SENSITIVE_WORD_NOT_EXISTS;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.MESSAGE_SENSITIVE_WORD_BLOCKED;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.SENSITIVE_WORD_DUPLICATED;
+import static com.fly.system.api.im.enums.ErrorCodeConstants.SENSITIVE_WORD_NOT_EXISTS;
 
 /**
  * IM 敏感词 Service 实现类
@@ -43,7 +43,7 @@ import static com.fly.im.enums.ErrorCodeConstants.SENSITIVE_WORD_NOT_EXISTS;
  * 词库匹配交给 houbb sensitive-word 库（trie 树 + 全/半角 / 大小写 / 繁简体 / 数字风格规范化）
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Service
 @Validated
@@ -108,10 +108,10 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
         return TenantUtils.execute(tenantId, () -> {
             // 先取基线时间再读词库：反过来在两次查询之间出现的新插入会被漏感知
             LocalDateTime maxUpdateTime = sensitiveWordMapper.selectMaxUpdateTime(tenantId);
-            List<ImSensitiveWordDO> words = sensitiveWordMapper.selectListByStatus(CommonStatusEnum.ENABLE.getStatus());
+            List<ImSensitiveWord> words = sensitiveWordMapper.selectListByStatus(CommonStatusEnum.ENABLE.getStatus());
             // 构建敏感词检测器
             SensitiveWordBs bs = SensitiveWordBs.newInstance()
-                    .wordDeny(() -> convertList(words, ImSensitiveWordDO::getWord))
+                    .wordDeny(() -> convertList(words, ImSensitiveWord::getWord))
                     .ignoreCase(true)
                     .ignoreWidth(true)         // 忽略全/半角
                     .ignoreNumStyle(true)      // 忽略数字风格（中文/阿拉伯）
@@ -150,12 +150,12 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImSensitiveWordDO> getSensitiveWordPage(ImSensitiveWordPageReqVo reqVo) {
+    public PageResult<ImSensitiveWord> getSensitiveWordPage(ImSensitiveWordPageReqVo reqVo) {
         return sensitiveWordMapper.selectPage(reqVo);
     }
 
     @Override
-    public ImSensitiveWordDO getSensitiveWord(Long id) {
+    public ImSensitiveWord getSensitiveWord(Long id) {
         return sensitiveWordMapper.selectById(id);
     }
 
@@ -165,7 +165,7 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
         validateWordUnique(null, reqVo.getWord());
 
         // 2.1 入库
-        ImSensitiveWordDO word = BeanUtils.toBean(reqVo, ImSensitiveWordDO.class);
+        ImSensitiveWord word = BeanUtils.toBean(reqVo, ImSensitiveWord.class);
         sensitiveWordMapper.insert(word);
         // 2.2 强制失效本机缓存（多实例靠定时刷新收敛）
         invalidateSensitiveWordBsCaches();
@@ -180,7 +180,7 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
         validateWordUnique(reqVo.getId(), reqVo.getWord());
 
         // 2.1 更新
-        ImSensitiveWordDO updateObj = BeanUtils.toBean(reqVo, ImSensitiveWordDO.class);
+        ImSensitiveWord updateObj = BeanUtils.toBean(reqVo, ImSensitiveWord.class);
         sensitiveWordMapper.updateById(updateObj);
         // 2.2 强制失效本机缓存
         invalidateSensitiveWordBsCaches();
@@ -219,7 +219,7 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
      * 校验敏感词唯一（修改时排除自身）
      */
     private void validateWordUnique(Long id, String word) {
-        ImSensitiveWordDO exist = sensitiveWordMapper.selectByWord(word);
+        ImSensitiveWord exist = sensitiveWordMapper.selectByWord(word);
         if (exist == null) {
             return;
         }

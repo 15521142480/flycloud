@@ -8,7 +8,7 @@ import com.fly.system.api.pay.domain.vo.PayOrderRespVo;
  * 支付订单 Mapper。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface PayOrderMapper extends BaseMapperPlus<PayOrderMapper, PayOrder, PayOrderRespVo> {
 }

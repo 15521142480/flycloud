@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 支付示例订单视图对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class PayDemoOrderVo implements Serializable {

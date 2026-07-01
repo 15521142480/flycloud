@@ -10,7 +10,7 @@ import java.util.Collection;
  * IM WebSocket 发送适配。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Component
 @RequiredArgsConstructor

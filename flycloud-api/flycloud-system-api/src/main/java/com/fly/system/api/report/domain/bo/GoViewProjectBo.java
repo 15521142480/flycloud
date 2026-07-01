@@ -1,7 +1,6 @@
 package com.fly.system.api.report.domain.bo;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,7 +9,7 @@ import java.io.Serializable;
  * GoView 项目业务对象。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class GoViewProjectBo implements Serializable {
@@ -25,7 +24,9 @@ public class GoViewProjectBo implements Serializable {
 
     private String content;
 
-    @NotNull(message = "发布状态不能为空")
+    /**
+     * 发布状态；创建项目时按业务默认未发布，更新时才会使用前端传入值。
+     */
     private Integer status;
 
     private String remark;

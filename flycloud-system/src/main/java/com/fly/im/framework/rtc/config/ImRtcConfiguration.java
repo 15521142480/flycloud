@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * im 模块的 RTC 组件的 Configuration
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Configuration(proxyBeanMethods = false)
 public class ImRtcConfiguration {

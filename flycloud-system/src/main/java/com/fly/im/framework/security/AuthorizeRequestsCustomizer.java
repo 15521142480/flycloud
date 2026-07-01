@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
  * 授权请求定制适配。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface AuthorizeRequestsCustomizer {
 

@@ -12,7 +12,7 @@ import com.fly.system.api.pay.domain.vo.PayWalletRespVo;
  * 支付钱包 Service 接口。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 public interface IPayWalletService {
 

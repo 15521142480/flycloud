@@ -15,7 +15,7 @@ import static com.fly.im.dal.redis.RedisKeyConstants.GROUP_MESSAGE_READ;
  * IM 群消息已读位置 Redis DAO
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Repository
 public class ImGroupMessageReadRedisDAO {

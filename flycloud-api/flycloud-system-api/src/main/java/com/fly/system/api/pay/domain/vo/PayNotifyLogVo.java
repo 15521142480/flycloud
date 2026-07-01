@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * 支付通知日志 VO。
  *
  * @author lxs
- * @date 2026-06-30
+ * @date 2026-07-02
  */
 @Data
 public class PayNotifyLogVo {
