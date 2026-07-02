@@ -121,7 +121,7 @@
         </el-row>
         <!--富文本编辑器组件-->
         <el-row>
-          <Editor v-model="activeNewsItem.content" :editor-config="editorConfig" />
+          <Editor v-model="activeNewsItem.content" :editor-config="editorConfig" directory="editor-mall" />
         </el-row>
       </div>
     </el-main>

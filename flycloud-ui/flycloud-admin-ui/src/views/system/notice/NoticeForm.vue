@@ -14,7 +14,7 @@
         />
       </el-form-item>
       <el-form-item :label="t('auto.views.system.notice.NoticeForm.k7d23960d')" prop="content">
-        <Editor v-model="formData.content" height="150px" />
+        <Editor v-model="formData.content" height="150px" directory="editor/system" />
       </el-form-item>
       <el-form-item :label="t('auto.views.system.notice.NoticeForm.kcd0d7920')" prop="type">
         <el-select

@@ -11,7 +11,7 @@
         :label="t('auto.views.system.mail.template.MailTemplateSendForm.kdc362463')"
         prop="content"
       >
-        <Editor :model-value="formData.content" height="150px" readonly />
+        <Editor :model-value="formData.content" height="150px" directory="editor/mall" />
       </el-form-item>
       <el-form-item
         :label="t('auto.views.system.mail.template.MailTemplateSendForm.k66104df4')"

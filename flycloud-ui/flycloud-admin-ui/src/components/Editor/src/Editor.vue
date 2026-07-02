@@ -6,8 +6,7 @@ import { propTypes } from '@/utils/propTypes'
 import { isNumber } from '@/utils/is'
 import { ElMessage } from 'element-plus'
 import { useLocaleStore } from '@/store/modules/locale'
-import { getAccessToken, getTenantId } from '@/utils/auth'
-import { getUploadUrl, normalizeUploadResult } from '@/components/UploadFile/src/useUpload'
+import { normalizeUploadResult, useUpload } from '@/components/UploadFile/src/useUpload'
 const { t } = useI18n()
 defineOptions({ name: 'Editor' })
 
@@ -27,10 +26,14 @@ const props = defineProps({
     default: () => undefined
   },
   readonly: propTypes.bool.def(false),
-  modelValue: propTypes.string.def('')
+  modelValue: propTypes.string.def(''),
+  directory: propTypes.string.def('editor-default')
 })
 
 const emit = defineEmits(['change', 'update:modelValue'])
+
+const { httpRequest: imageHttpRequest } = useUpload(`${props.directory}-image`)
+const { httpRequest: videoHttpRequest } = useUpload(`${props.directory}-video`)
 
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef<IDomEditor>()
@@ -48,6 +51,31 @@ const startUpload = (file: File) => {
 const finishUpload = () => {
   uploadNumber.value = Math.max(0, uploadNumber.value - 1)
   uploading.value = uploadNumber.value > 0
+}
+
+const uploadByHttpRequest = async (
+  file: File,
+  insertFn: InsertFnType,
+  httpRequest: ReturnType<typeof useUpload>['httpRequest'],
+  type: 'image' | 'mp4',
+  errorMessage: string
+) => {
+  startUpload(file)
+  try {
+    const res = await httpRequest({
+      file: file as any,
+      onProgress: () => {},
+      onSuccess: () => {},
+      onError: () => {}
+    } as any)
+    const uploadResult = normalizeUploadResult(res)
+    insertFn(uploadResult.url, type, uploadResult.url)
+  } catch (error: any) {
+    ElMessage.error(error?.msg || error?.message || errorMessage)
+    console.error('Upload error:', error)
+  } finally {
+    finishUpload()
+  }
 }
 
 watch(
@@ -102,7 +130,6 @@ const editorConfig = computed((): IEditorConfig => {
       scroll: true,
       MENU_CONF: {
         ['uploadImage']: {
-          server: getUploadUrl(),
           // 单个文件的最大体积限制，默认为 2M
           maxFileSize: 20 * 1024 * 1024,
           // 最多可上传几个文件，默认为 100
@@ -110,50 +137,12 @@ const editorConfig = computed((): IEditorConfig => {
           // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
           allowedFileTypes: ['image/*'],
 
-          // 自定义增加 http  header
-          headers: {
-            Accept: '*',
-            Authorization: 'Bearer ' + getAccessToken(),
-            'tenant-id': getTenantId()
-          },
-
-          // 超时时间，默认为 10 秒
-          timeout: 5 * 1000, // 5 秒
-
-          // form-data fieldName，后端接口参数名称，默认值wangeditor-uploaded-image
-          fieldName: 'file',
-
-          // 上传之前触发
-          onBeforeUpload(file: File) {
-            return startUpload(file)
-          },
-          // 上传进度的回调函数
-          onProgress(progress: number) {
-            // progress 是 0-100 的数字
-            console.log('progress', progress)
-          },
-          onSuccess(file: File, res: any) {
-            finishUpload()
-            console.log('onSuccess', file, res)
-          },
-          onFailed(file: File, res: any) {
-            finishUpload()
-            alert(res.message)
-            console.log('onFailed', file, res)
-          },
-          onError(file: File, err: any, res: any) {
-            finishUpload()
-            alert(err.message)
-            console.error('onError', file, err, res)
-          },
-          // 自定义插入图片
-          customInsert(res: any, insertFn: InsertFnType) {
-            const uploadResult = normalizeUploadResult(res)
-            insertFn(uploadResult.url, 'image', uploadResult.url)
+          // 使用 customUpload 实现逐个文件上传，复用项目的 httpRequest
+          customUpload(file: File, insertFn: InsertFnType) {
+            return uploadByHttpRequest(file, insertFn, imageHttpRequest, 'image', '图片上传失败')
           }
         },
         ['uploadVideo']: {
-          server: getUploadUrl(),
           // 单个文件的最大体积限制，默认为 10M
           maxFileSize: 100 * 1024 * 1024,
           // 最多可上传几个文件，默认为 100
@@ -161,46 +150,9 @@ const editorConfig = computed((): IEditorConfig => {
           // 选择文件时的类型限制，默认为 ['video/*'] 。如不想限制，则设置为 []
           allowedFileTypes: ['video/*'],
 
-          // 自定义增加 http  header
-          headers: {
-            Accept: '*',
-            Authorization: 'Bearer ' + getAccessToken(),
-            'tenant-id': getTenantId()
-          },
-
-          // 超时时间，默认为 30 秒
-          timeout: 15 * 1000, // 15 秒
-
-          // form-data fieldName，后端接口参数名称，默认值wangeditor-uploaded-image
-          fieldName: 'file',
-
-          // 上传之前触发
-          onBeforeUpload(file: File) {
-            return startUpload(file)
-          },
-          // 上传进度的回调函数
-          onProgress(progress: number) {
-            // progress 是 0-100 的数字
-            console.log('progress', progress)
-          },
-          onSuccess(file: File, res: any) {
-            finishUpload()
-            console.log('onSuccess', file, res)
-          },
-          onFailed(file: File, res: any) {
-            finishUpload()
-            alert(res.message)
-            console.log('onFailed', file, res)
-          },
-          onError(file: File, err: any, res: any) {
-            finishUpload()
-            alert(err.message)
-            console.error('onError', file, err, res)
-          },
-          // 自定义插入图片
-          customInsert(res: any, insertFn: InsertFnType) {
-            const uploadResult = normalizeUploadResult(res)
-            insertFn(uploadResult.url, 'mp4', uploadResult.url)
+          // 使用 customUpload 实现逐个文件上传，复用项目的 httpRequest
+          customUpload(file: File, insertFn: InsertFnType) {
+            return uploadByHttpRequest(file, insertFn, videoHttpRequest, 'mp4', '视频上传失败')
           }
         }
       },

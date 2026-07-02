@@ -45,7 +45,7 @@
         :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k5ea2e0cd')"
         prop="description"
       >
-        <Editor v-model="formData.description" height="150px" />
+        <Editor v-model="formData.description" height="150px" directory="editor/demo" />
       </el-form-item>
       <el-form-item
         :label="t('auto.views.infra.demo.demo01.Demo01ContactForm.k4ceeeb31')"

@@ -94,7 +94,7 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="文章内容">
-            <Editor v-model="formData.content" height="150px" />
+            <Editor v-model="formData.content" height="150px" directory="editor/mall" />
           </el-form-item>
         </el-col>
       </el-row>

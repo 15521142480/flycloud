@@ -45,7 +45,7 @@
         :label="t('auto.views.infra.demo.demo03.inner.Demo03StudentForm.k5ea2e0cd')"
         prop="description"
       >
-        <Editor v-model="formData.description" height="150px" />
+        <Editor v-model="formData.description" height="150px" directory="editor/demo" />
       </el-form-item>
     </el-form>
     <!-- 子表的表单 -->

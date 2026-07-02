@@ -39,7 +39,7 @@
       </el-form-item>
       <!-- 内容类型为「站内富文本」时展示 content 富文本编辑器；「外链」时展示 url 输入 -->
       <el-form-item v-if="formData.type === 1" label="正文" prop="content">
-        <Editor v-model="formData.content" height="320px" />
+        <Editor v-model="formData.content" height="320px" directory="editor/im" />
       </el-form-item>
       <el-form-item v-else label="跳转链接" prop="url">
         <el-input v-model="formData.url" placeholder="https://example.com/..." />
