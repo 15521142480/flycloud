@@ -1,6 +1,7 @@
 package com.fly.im.controller.admin.manager.face;
 
 import com.fly.common.domain.model.R;
+import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.BeanUtils;
@@ -34,6 +35,8 @@ public class ImFaceUserItemManagerController {
     private ImFaceUserItemService faceUserItemService;
     @Resource
     private AdminUserApi adminUserApi;
+    @Resource
+    private FileUrlService fileUrlService;
 
     @GetMapping("/page")
     @Operation(summary = "获得用户表情分页")
@@ -50,6 +53,7 @@ public class ImFaceUserItemManagerController {
             if (user != null) {
                 vo.setUserNickname(user.getName());
             }
+            vo.setUrl(fileUrlService.buildUrl(vo.getUrl()));
             return vo;
         });
         return ok(new PageResult<>(voList, pageResult.getTotal()));

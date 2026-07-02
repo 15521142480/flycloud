@@ -9,7 +9,7 @@ const FileApi = {
     });
     return new Promise((resolve, reject) => {
       uni.uploadFile({
-        url: baseUrl + apiPath + '/infra/file/upload',
+        url: baseUrl + apiPath + '/file/upload',
         filePath: file,
         name: 'file',
         header: {

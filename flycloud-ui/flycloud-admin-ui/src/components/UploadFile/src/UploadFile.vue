@@ -70,10 +70,12 @@
 import { propTypes } from '@/utils/propTypes'
 import type { UploadProps, UploadRawFile, UploadUserFile } from 'element-plus'
 import { isString } from '@/utils/is'
-import { useUpload } from '@/components/UploadFile/src/useUpload'
+import { normalizeUploadResult, useUpload } from '@/components/UploadFile/src/useUpload'
 import { UploadFile } from 'element-plus/es/components/upload/src/upload'
 
 defineOptions({ name: 'UploadFile' })
+
+type UploadUserFileWithPath = UploadUserFile & { path?: string }
 
 const message = useMessage() // 消息弹窗
 const emit = defineEmits(['update:modelValue'])
@@ -91,9 +93,10 @@ const props = defineProps({
 })
 
 // ========== 上传相关 ==========
-const uploadList = ref<UploadUserFile[]>([])
-const fileList = ref<UploadUserFile[]>([])
+const uploadList = ref<UploadUserFileWithPath[]>([])
+const fileList = ref<UploadUserFileWithPath[]>([])
 const uploadNumber = ref<number>(0)
+const previewUrlMap = ref<Record<string, string>>({})
 
 const { uploadUrl, httpRequest } = useUpload(props.directory)
 
@@ -132,13 +135,16 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
 // 文件上传成功
 const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
   message.success('上传成功')
-  const response = res as { data: string }
+  const uploadResult = normalizeUploadResult(res)
+  previewUrlMap.value[uploadResult.path] = uploadResult.url
   // 删除自身
   const index = fileList.value.findIndex(
-    (item) => (item.response as { data?: string } | undefined)?.data === response.data
+    (item) => normalizeUploadResult(item.response).path === uploadResult.path
   )
-  fileList.value.splice(index, 1)
-  uploadList.value.push({ name: response.data, url: response.data })
+  if (index >= 0) {
+    fileList.value.splice(index, 1)
+  }
+  uploadList.value.push({ name: uploadResult.path, url: uploadResult.url, path: uploadResult.path })
   if (uploadList.value.length == uploadNumber.value) {
     fileList.value.push(...uploadList.value)
     uploadList.value = []
@@ -158,8 +164,14 @@ const excelUploadError: UploadProps['onError'] = (): void => {
 }
 // 删除上传文件
 const handleRemove = (file: UploadFile) => {
-  const index = fileList.value.map((f) => f.name).indexOf(file.name)
+  const uploadPath = (file as UploadUserFileWithPath).path || file.url
+  const index = fileList.value.findIndex(
+    (item) => (item.path || item.url) === uploadPath || item.name === file.name
+  )
   if (index > -1) {
+    if (uploadPath) {
+      delete previewUrlMap.value[uploadPath]
+    }
     fileList.value.splice(index, 1)
     emitUpdateModelValue()
   }
@@ -180,14 +192,23 @@ watch(
     fileList.value = [] // 保障数据为空
     // 情况1：字符串
     if (isString(val)) {
+      const values = val.split(',').filter(Boolean)
       fileList.value.push(
-        ...val.split(',').map((url) => ({ name: url.substring(url.lastIndexOf('/') + 1), url }))
+        ...values.map((path) => ({
+          name: path.substring(path.lastIndexOf('/') + 1),
+          url: previewUrlMap.value[path] || path,
+          path
+        }))
       )
       return
     }
     // 情况2：数组
     fileList.value.push(
-      ...(val as string[]).map((url) => ({ name: url.substring(url.lastIndexOf('/') + 1), url }))
+      ...(val as string[]).map((path) => ({
+        name: path.substring(path.lastIndexOf('/') + 1),
+        url: previewUrlMap.value[path] || path,
+        path
+      }))
     )
   },
   { immediate: true, deep: true }
@@ -195,7 +216,7 @@ watch(
 // 发送文件链接列表更新
 const emitUpdateModelValue = () => {
   // 情况1：数组结果
-  let result: string | string[] = fileList.value.map((file) => file.url!)
+  let result: string | string[] = fileList.value.map((file) => file.path || file.url!)
   // 情况2：逗号分隔的字符串
   if (props.limit === 1 || isString(props.modelValue)) {
     result = result.join(',')

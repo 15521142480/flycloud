@@ -8,11 +8,13 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.file.factory.FileClientFactory;
 import com.fly.file.factory.service.FileClientService;
+import com.fly.file.service.FileUrlService;
 import com.fly.common.utils.file.FilePathUtils;
 import com.fly.common.utils.file.FileTypeUtils;
 import com.fly.file.mapper.FileMapper;
 import com.fly.file.service.FileService;
 import com.fly.system.api.file.domain.File;
+import com.fly.system.api.file.domain.vo.FileUploadRespVo;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,9 +51,10 @@ public class FileServiceImpl implements FileService {
 
     private final FileMapper fileMapper;
 
+    private final FileUrlService fileUrlService;
 
     @Override
-    public String uploadFile(byte[] content, String originalFilename, String directory, String type) throws Exception {
+    public FileUploadRespVo uploadFile(byte[] content, String originalFilename, String directory, String type) throws Exception {
 
         // 1.1 处理 name 的合法性，禁止携带目录路径
         String name = FilePathUtils.validateFileName(originalFilename);
@@ -98,7 +101,7 @@ public class FileServiceImpl implements FileService {
                 .setUpdateTime(LocalDateTime.now());
         fileMapper.insert(file);
 
-        return url;
+        return new FileUploadRespVo(url, fileUrlService.getBaseUrl(), path);
     }
 
 

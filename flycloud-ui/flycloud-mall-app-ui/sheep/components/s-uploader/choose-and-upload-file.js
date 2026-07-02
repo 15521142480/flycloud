@@ -252,7 +252,13 @@ async function uploadFiles(choosePromise, { onChooseFile, onUploadProgress, dire
     // 后端上传
     for (let file of files) {
       const { data } = await FileApi.uploadFile(file.path, directory);
-      file.url = data;
+      if (typeof data === 'string') {
+        file.url = data;
+        file.fileID = data;
+      } else {
+        file.url = data?.url || data?.path || '';
+        file.fileID = data?.path || data?.url || '';
+      }
     }
 
     return files;
@@ -282,7 +288,7 @@ function createFile(vo, file) {
   const fileVo = {
     configId: vo.configId,
     url: vo.url,
-    path: vo.path,
+    path: vo.path || vo.url,
     name: file.name,
     type: file.fileType,
     size: file.size,

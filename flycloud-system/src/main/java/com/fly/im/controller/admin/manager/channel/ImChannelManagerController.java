@@ -2,6 +2,7 @@ package com.fly.im.controller.admin.manager.channel;
 
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
+import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
@@ -30,6 +31,8 @@ public class ImChannelManagerController {
 
     @Resource
     private ImChannelService channelService;
+    @Resource
+    private FileUrlService fileUrlService;
 
     @PostMapping("/create")
     @Operation(summary = "新增频道")
@@ -60,7 +63,8 @@ public class ImChannelManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel:query')")
     public R<PageResult<ImChannelRespVo>> getChannelPage(@Valid ImChannelPageReqVo pageReqVo) {
         PageResult<ImChannel> pageResult = channelService.getChannelPage(pageReqVo);
-        return ok(PageResult.convert(pageResult, ImChannelRespVo.class));
+        return ok(PageResult.convert(pageResult, ImChannelRespVo.class,
+                vo -> vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar()))));
     }
 
     @GetMapping("/get")
@@ -69,7 +73,9 @@ public class ImChannelManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel:query')")
     public R<ImChannelRespVo> getChannel(@RequestParam("id") Long id) {
         ImChannel channel = channelService.getChannel(id);
-        return ok(BeanUtils.toBean(channel, ImChannelRespVo.class));
+        ImChannelRespVo vo = BeanUtils.toBean(channel, ImChannelRespVo.class);
+        vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar()));
+        return ok(vo);
     }
 
     @GetMapping("/simple-list")
@@ -77,7 +83,9 @@ public class ImChannelManagerController {
     public R<List<ImChannelRespVo>> getSimpleChannelList() {
         // getChannelListByStatus 统一命名
         List<ImChannel> list = channelService.getChannelListByStatus(CommonStatusEnum.ENABLE.getStatus());
-        return ok(BeanUtils.toBean(list, ImChannelRespVo.class));
+        List<ImChannelRespVo> respList = BeanUtils.toBean(list, ImChannelRespVo.class);
+        respList.forEach(vo -> vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar())));
+        return ok(respList);
     }
 
 }

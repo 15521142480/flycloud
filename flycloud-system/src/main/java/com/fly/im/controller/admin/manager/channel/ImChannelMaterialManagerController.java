@@ -2,6 +2,7 @@ package com.fly.im.controller.admin.manager.channel;
 
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
+import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
@@ -38,6 +39,8 @@ public class ImChannelMaterialManagerController {
     private ImChannelMaterialService channelMaterialService;
     @Resource
     private ImChannelService channelService;
+    @Resource
+    private FileUrlService fileUrlService;
 
     @PostMapping("/create")
     @Operation(summary = "新增素材")
@@ -75,8 +78,10 @@ public class ImChannelMaterialManagerController {
         List<ImChannel> channels = channelService.getChannelList(
                 convertSet(pageResult.getList(), ImChannelMaterial::getChannelId));
         Map<Long, ImChannel> channelMap = convertMap(channels, ImChannel::getId);
-        return ok(PageResult.convert(pageResult, ImChannelMaterialRespVo.class, vo ->
-                MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()))));
+        return ok(PageResult.convert(pageResult, ImChannelMaterialRespVo.class, vo -> {
+            MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()));
+            vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl()));
+        }));
     }
 
     @GetMapping("/get")
@@ -85,7 +90,9 @@ public class ImChannelMaterialManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel-material:query')")
     public R<ImChannelMaterialRespVo> getMaterial(@RequestParam("id") Long id) {
         ImChannelMaterial material = channelMaterialService.getMaterial(id);
-        return ok(BeanUtils.toBean(material, ImChannelMaterialRespVo.class));
+        ImChannelMaterialRespVo vo = BeanUtils.toBean(material, ImChannelMaterialRespVo.class);
+        vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl()));
+        return ok(vo);
     }
 
     @GetMapping("/simple-list")
@@ -93,7 +100,9 @@ public class ImChannelMaterialManagerController {
     @Parameter(name = "channelId", description = "频道编号", required = true, example = "1")
     public R<List<ImChannelMaterialRespVo>> getSimpleMaterialList(@RequestParam("channelId") Long channelId) {
         List<ImChannelMaterial> list = channelMaterialService.getMaterialListByChannelId(channelId);
-        return ok(BeanUtils.toBean(list, ImChannelMaterialRespVo.class));
+        List<ImChannelMaterialRespVo> respList = BeanUtils.toBean(list, ImChannelMaterialRespVo.class);
+        respList.forEach(vo -> vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl())));
+        return ok(respList);
     }
 
 }

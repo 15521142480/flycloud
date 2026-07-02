@@ -229,7 +229,7 @@
     if (!tempUrl) return;
     const files = await uploadFilesFromPath(tempUrl);
     if (files.length > 0) {
-      state.model.avatar = files[0].url;
+      state.model.avatar = files[0].fileID || files[0].url;
     }
   }
 
@@ -237,7 +237,7 @@
   async function onChangeAvatar() {
     const files = await chooseAndUploadFile({ type: 'image' });
     if (files.length > 0) {
-      state.model.avatar = files[0].url;
+      state.model.avatar = files[0].fileID || files[0].url;
     }
   }
 

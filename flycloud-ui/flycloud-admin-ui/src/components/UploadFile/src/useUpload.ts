@@ -8,6 +8,24 @@ import axios, { AxiosProgressEvent } from 'axios'
 
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
+export interface UploadResult {
+  url: string
+  baseUrl: string
+  path: string
+}
+
+export const normalizeUploadResult = (res: any): UploadResult => {
+  const data = res?.data ?? res
+  if (typeof data === 'string') {
+    return { url: data, baseUrl: '', path: data }
+  }
+  return {
+    url: data?.url || data?.path || '',
+    baseUrl: data?.baseUrl || '',
+    path: data?.path || data?.url || ''
+  }
+}
+
 
 /**
  * 获得上传 URL
@@ -48,7 +66,13 @@ export const useUpload = (directory?: string) => {
           // 1.4. 记录文件信息到后端（异步）
           createFile(presignedInfo, options.file, fileName)
           // 通知成功，数据格式保持与后端上传的返回结果一致
-          return { data: presignedInfo.url }
+          return {
+            data: {
+              url: presignedInfo.url,
+              baseUrl: '',
+              path: presignedInfo.path || presignedInfo.url
+            }
+          }
         })
     } else {
       // 模式二：后端上传

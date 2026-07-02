@@ -9,6 +9,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
+import com.fly.file.service.FileUrlService;
 import com.fly.member.mapper.MemberUserMapper;
 import com.fly.member.service.IMemberUserService;
 import com.fly.system.api.member.domain.MemberUser;
@@ -32,13 +33,17 @@ public class MemberUserServiceImpl implements IMemberUserService {
 
     private final MemberUserMapper memberUserMapper;
 
+    private final FileUrlService fileUrlService;
+
     @Override
     public PageVo<MemberUserVo> queryPageList(MemberUserBo bo, PageBo pageBo) {
         LambdaQueryWrapper<MemberUser> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(MemberUser::getId);
         Page<MemberUserVo> page = memberUserMapper.selectVoPage(pageBo.build(), lqw);
         PageVo<MemberUserVo> pageVo = new PageVo<>();
-        pageVo.setList(page.getRecords());
+        List<MemberUserVo> list = page.getRecords();
+        list.forEach(this::formatAvatar);
+        pageVo.setList(list);
         pageVo.setTotal(page.getTotal());
         pageVo.setPages(page.getPages());
         return pageVo;
@@ -48,12 +53,16 @@ public class MemberUserServiceImpl implements IMemberUserService {
     public List<MemberUserVo> queryList(MemberUserBo bo) {
         LambdaQueryWrapper<MemberUser> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(MemberUser::getId);
-        return memberUserMapper.selectVoList(lqw);
+        List<MemberUserVo> list = memberUserMapper.selectVoList(lqw);
+        list.forEach(this::formatAvatar);
+        return list;
     }
 
     @Override
     public MemberUserVo queryById(Long id) {
-        return memberUserMapper.selectVoById(id);
+        MemberUserVo user = memberUserMapper.selectVoById(id);
+        formatAvatar(user);
+        return user;
     }
 
     @Override
@@ -62,13 +71,18 @@ public class MemberUserServiceImpl implements IMemberUserService {
             return null;
         }
         MemberUser user = memberUserMapper.selectById(id);
-        return user == null || Boolean.TRUE.equals(user.getIsDeleted()) ? null : user;
+        if (user == null || Boolean.TRUE.equals(user.getIsDeleted())) {
+            return null;
+        }
+        user.setAvatar(fileUrlService.buildUrl(user.getAvatar()));
+        return user;
     }
 
     @Override
     public Boolean saveOrUpdate(MemberUserBo bo) {
         validateMobileUnique(bo.getId(), bo.getMobile());
         MemberUser user = BeanUtil.toBean(bo, MemberUser.class);
+        user.setAvatar(fileUrlService.toPath(user.getAvatar()));
         LocalDateTime now = LocalDateTime.now();
         String loginUserId = String.valueOf(UserUtils.getCurUserId());
         user.setUpdateBy(loginUserId);
@@ -195,6 +209,13 @@ public class MemberUserServiceImpl implements IMemberUserService {
         if (user != null && !user.getId().equals(id)) {
             throw new ServiceException("手机号已被会员使用");
         }
+    }
+
+    private void formatAvatar(MemberUserVo user) {
+        if (user == null) {
+            return;
+        }
+        user.setAvatar(fileUrlService.buildUrl(user.getAvatar()));
     }
 
 }

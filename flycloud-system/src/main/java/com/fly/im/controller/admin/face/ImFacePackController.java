@@ -2,6 +2,7 @@ package com.fly.im.controller.admin.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
+import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.domain.vo.admin.face.pack.ImFacePackUserRespVo;
 import com.fly.system.api.im.domain.face.ImFacePack;
 import com.fly.system.api.im.domain.face.ImFacePackItem;
@@ -32,6 +33,8 @@ public class ImFacePackController {
     private ImFacePackService facePackService;
     @Resource
     private ImFacePackItemService facePackItemService;
+    @Resource
+    private FileUrlService fileUrlService;
 
     @GetMapping("/list")
     @Operation(summary = "获得启用的表情包列表（含表情）")
@@ -50,6 +53,7 @@ public class ImFacePackController {
         List<ImFacePackUserRespVo> result = convertList(packs, pack -> {
             ImFacePackUserRespVo vo = BeanUtils.toBean(pack, ImFacePackUserRespVo.class);
             vo.setItems(BeanUtils.toBean(itemsByPackId.getOrDefault(pack.getId(), List.of()), ImFacePackUserRespVo.Item.class));
+            vo.getItems().forEach(item -> item.setUrl(fileUrlService.buildUrl(item.getUrl())));
             return vo;
         });
         return ok(result);

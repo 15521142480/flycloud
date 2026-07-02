@@ -18,6 +18,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.file.service.FileUrlService;
 import com.fly.system.api.system.domain.SysUserRole;
 import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
@@ -57,6 +58,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     private final ISysDeptService sysDeptService;
 
+    private final FileUrlService fileUrlService;
+
 
 
     /**
@@ -77,6 +80,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             sysUserVo.setRoleNames(String.join(",", sysUserRoleService.getRoleNameListByUserId(sysUserVo.getId())));
 
             sysUserVo.setDeptName(sysDeptService.queryDeptNameById(sysUserVo.getDeptId()));
+            formatAvatar(sysUserVo);
         }
         pageVo.setList(sysUserVoList);
 
@@ -91,7 +95,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     public List<SysUserVo> queryAllListSimple(SysUserBo bo) {
 
-        return baseMapper.selectAllListSimple(bo);
+        List<SysUserVo> list = baseMapper.selectAllListSimple(bo);
+        list.forEach(this::formatAvatar);
+        return list;
     }
 
     /**
@@ -105,6 +111,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         // 用户基本信息
         userDetailInfoVo.setUser(this.queryById(id));
         userDetailInfoVo.getUser().setPassword(null);
+        formatAvatar(userDetailInfoVo.getUser());
 
         // 权限信息
         userDetailInfoVo.setPermissionList(sysRoleService.getPermissionListByUserId(id));
@@ -120,7 +127,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      */
     @Override
     public SysUserVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        SysUserVo user = baseMapper.selectVoById(id);
+        formatAvatar(user);
+        return user;
     }
 
 
@@ -131,6 +140,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public int saveOrUpdate(SysUserBo bo) {
 
         SysUser sysUser = BeanUtil.toBean(bo, SysUser.class);
+        sysUser.setAvatar(fileUrlService.toPath(sysUser.getAvatar()));
         FlyUser curUser = UserUtils.getCurUser();
         boolean isUpdate = sysUser.getId() != null;
 
@@ -192,6 +202,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         return 1;
     }
 
+    /**
+     * 头像格式转换成url
+     *
+     * @param user
+    */
+    private void formatAvatar(SysUserVo user) {
+        if (user == null) {
+            return;
+        }
+        user.setAvatar(fileUrlService.buildUrl(user.getAvatar()));
+    }
+
 
     /**
      * 重置密码
@@ -232,7 +254,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     public List<SysUserVo> queryList(SysUserBo bo) {
         LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<SysUserVo> list = baseMapper.selectVoList(lqw);
+        list.forEach(this::formatAvatar);
+        return list;
     }
 
     private LambdaQueryWrapper<SysUser> buildQueryWrapper(SysUserBo bo) {
@@ -279,6 +303,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     public Boolean updateByBo(SysUserBo bo) {
         SysUser update = BeanUtil.toBean(bo, SysUser.class);
+        update.setAvatar(fileUrlService.toPath(update.getAvatar()));
         validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
     }
@@ -334,7 +359,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         if (ids == null || ids.isEmpty()){
             return new ArrayList<>();
         }
-        return this.baseMapper.selectVoBatchIds(ids);
+        List<SysUserVo> users = this.baseMapper.selectVoBatchIds(ids);
+        users.forEach(this::formatAvatar);
+        return users;
     }
 
     /**

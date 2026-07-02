@@ -47,9 +47,12 @@ import { ElNotification } from 'element-plus'
 import { createImageViewer } from '@/components/ImageViewer'
 
 import { propTypes } from '@/utils/propTypes'
-import { useUpload } from '@/components/UploadFile/src/useUpload'
+import { isString } from '@/utils/is'
+import { normalizeUploadResult, useUpload } from '@/components/UploadFile/src/useUpload'
 
 defineOptions({ name: 'UploadImgs' })
+
+type UploadUserFileWithPath = UploadUserFile & { path?: string }
 
 const message = useMessage() // 消息弹窗
 // 查看图片
@@ -93,9 +96,10 @@ const uploadStyle = computed(() => ({
 
 const { uploadUrl, httpRequest } = useUpload(props.directory)
 
-const fileList = ref<UploadUserFile[]>([])
+const fileList = ref<UploadUserFileWithPath[]>([])
 const uploadNumber = ref<number>(0)
-const uploadList = ref<UploadUserFile[]>([])
+const uploadList = ref<UploadUserFileWithPath[]>([])
+const previewUrlMap = ref<Record<string, string>>({})
 /**
  * @description 文件上传之前判断
  * @param rawFile 上传的文件
@@ -135,13 +139,16 @@ interface UploadEmits {
 const emit = defineEmits<UploadEmits>()
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
   message.success('上传成功')
-  const response = res as { data: string }
+  const uploadResult = normalizeUploadResult(res)
+  previewUrlMap.value[uploadResult.path] = uploadResult.url
   // 删除自身
   const index = fileList.value.findIndex(
-    (item) => (item.response as { data?: string } | undefined)?.data === response.data
+    (item) => normalizeUploadResult(item.response).path === uploadResult.path
   )
-  fileList.value.splice(index, 1)
-  uploadList.value.push({ name: response.data, url: response.data })
+  if (index >= 0) {
+    fileList.value.splice(index, 1)
+  }
+  uploadList.value.push({ name: uploadResult.path, url: uploadResult.url, path: uploadResult.path })
   if (uploadList.value.length == uploadNumber.value) {
     fileList.value.push(...uploadList.value)
     uploadList.value = []
@@ -159,26 +166,35 @@ watch(
       return
     }
 
+    const values = isString(val) ? val.split(',').filter(Boolean) : val
     fileList.value = [] // 保障数据为空
     fileList.value.push(
-      ...(val as string[]).map((url) => ({ name: url.substring(url.lastIndexOf('/') + 1), url }))
+      ...values.map((path) => ({
+        name: path.substring(path.lastIndexOf('/') + 1),
+        url: previewUrlMap.value[path] || path,
+        path
+      }))
     )
   },
   { immediate: true, deep: true }
 )
 // 发送图片链接列表更新
 const emitUpdateModelValue = () => {
-  let result: string[] = fileList.value.map((file) => file.url!)
+  let result: string[] = fileList.value.map((file) => file.path || file.url!)
   emit('update:modelValue', result)
 }
 // 删除图片
 const handleRemove = (uploadFile: UploadFile) => {
+  const uploadPath = (uploadFile as UploadUserFileWithPath).path || uploadFile.url
   fileList.value = fileList.value.filter(
-    (item) => item.url !== uploadFile.url || item.name !== uploadFile.name
+    (item) => (item.path || item.url) !== uploadPath || item.name !== uploadFile.name
   )
+  if (uploadPath) {
+    delete previewUrlMap.value[uploadPath]
+  }
   emit(
     'update:modelValue',
-    fileList.value.map((file) => file.url!)
+    fileList.value.map((file) => file.path || file.url!)
   )
 }
 

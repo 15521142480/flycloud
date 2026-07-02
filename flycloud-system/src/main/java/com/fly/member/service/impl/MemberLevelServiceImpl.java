@@ -9,6 +9,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
+import com.fly.file.service.FileUrlService;
 import com.fly.member.mapper.MemberLevelMapper;
 import com.fly.member.service.IMemberExperienceRecordService;
 import com.fly.member.service.IMemberLevelRecordService;
@@ -41,6 +42,7 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
     private final IMemberUserService memberUserService;
     private final IMemberLevelRecordService levelRecordService;
     private final IMemberExperienceRecordService experienceRecordService;
+    private final FileUrlService fileUrlService;
 
     @Override
     public PageVo<MemberLevelVo> queryPageList(MemberLevelBo bo, PageBo pageBo) {
@@ -48,7 +50,9 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
         lqw.orderByAsc(MemberLevel::getLevel);
         Page<MemberLevelVo> page = memberLevelMapper.selectVoPage(pageBo.build(), lqw);
         PageVo<MemberLevelVo> pageVo = new PageVo<>();
-        pageVo.setList(page.getRecords());
+        List<MemberLevelVo> list = page.getRecords();
+        list.forEach(this::formatFileUrls);
+        pageVo.setList(list);
         pageVo.setTotal(page.getTotal());
         pageVo.setPages(page.getPages());
         return pageVo;
@@ -58,18 +62,23 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
     public List<MemberLevelVo> queryList(MemberLevelBo bo) {
         LambdaQueryWrapper<MemberLevel> lqw = buildQueryWrapper(bo);
         lqw.orderByAsc(MemberLevel::getLevel);
-        return memberLevelMapper.selectVoList(lqw);
+        List<MemberLevelVo> list = memberLevelMapper.selectVoList(lqw);
+        list.forEach(this::formatFileUrls);
+        return list;
     }
 
     @Override
     public MemberLevelVo queryById(Long id) {
-        return memberLevelMapper.selectVoById(id);
+        MemberLevelVo level = memberLevelMapper.selectVoById(id);
+        formatFileUrls(level);
+        return level;
     }
 
     @Override
     public Long createLevel(MemberLevelBo bo) {
         validateLevelConfig(null, bo.getName(), bo.getLevel(), bo.getExperience());
         MemberLevel level = BeanUtil.toBean(bo, MemberLevel.class);
+        formatStoragePaths(level);
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());
         level.setIsDeleted(false);
@@ -85,6 +94,7 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
     public Boolean saveOrUpdate(MemberLevelBo bo) {
         validateLevelConfig(bo.getId(), bo.getName(), bo.getLevel(), bo.getExperience());
         MemberLevel level = BeanUtil.toBean(bo, MemberLevel.class);
+        formatStoragePaths(level);
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());
         level.setUpdateBy(userId);
@@ -212,6 +222,19 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
         record.setRemark(reason);
         record.setDescription("会员等级调整为：" + level.getName());
         levelRecordService.createLevelRecord(record);
+    }
+
+    private void formatFileUrls(MemberLevelVo level) {
+        if (level == null) {
+            return;
+        }
+        level.setIcon(fileUrlService.buildUrl(level.getIcon()));
+        level.setBackgroundUrl(fileUrlService.buildUrl(level.getBackgroundUrl()));
+    }
+
+    private void formatStoragePaths(MemberLevel level) {
+        level.setIcon(fileUrlService.toPath(level.getIcon()));
+        level.setBackgroundUrl(fileUrlService.toPath(level.getBackgroundUrl()));
     }
 
 }

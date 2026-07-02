@@ -4,6 +4,7 @@ import cn.hutool.core.io.IoUtil;
 import com.fly.common.domain.model.R;
 import com.fly.file.service.FileService;
 import com.fly.system.api.file.domain.vo.FileUploadReqVo;
+import com.fly.system.api.file.domain.vo.FileUploadRespVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,17 +34,17 @@ public class FileController {
     @Operation(summary = "上传文件", description = "上传文件")
     @Parameter(name = "file", description = "文件附件", required = true,
             schema = @Schema(type = "string", format = "binary"))
-    public R<String> uploadFile(@Valid FileUploadReqVo uploadReqVO) throws Exception {
+    public R<FileUploadRespVo> uploadFile(@Valid FileUploadReqVo uploadReqVO) throws Exception {
 
         MultipartFile file = uploadReqVO.getFile();
         byte[] content = IoUtil.readBytes(file.getInputStream());
-        String filePath = fileService.uploadFile(
+        FileUploadRespVo fileUploadRespVo = fileService.uploadFile(
                 content,
                 file.getOriginalFilename(),
                 uploadReqVO.getDirectory(),
                 file.getContentType()
         );
-        return R.ok(filePath);
+        return R.ok(fileUploadRespVo);
     }
 
 }

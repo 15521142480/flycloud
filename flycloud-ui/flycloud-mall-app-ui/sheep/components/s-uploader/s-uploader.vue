@@ -456,7 +456,7 @@
             errorTempFilePath.push(this.files[index].url);
           } else {
             this.files[index].errMsg = '';
-            this.files[index].fileID = item.url;
+            this.files[index].fileID = item.fileID || item.path || item.url;
             const reg = /cloud:\/\/([\w.]+\/?)\S*/;
             if (reg.test(item.url)) {
               this.files[index].url = await this.getTempFileURL(item.url);
@@ -557,7 +557,7 @@
         if (this.returnType === 'object') {
           data = this.backObject(this.files)[0];
           this.localValue = data ? data : null;
-          updateUrl = data ? data.url : '';
+          updateUrl = data ? data.fileID || data.url : '';
         } else {
           data = this.backObject(this.files);
           if (!this.localValue) {
@@ -566,7 +566,7 @@
           this.localValue = [...data];
           if (this.localValue.length > 0) {
             this.localValue.forEach((item) => {
-              updateUrl.push(item.url);
+              updateUrl.push(item.fileID || item.url);
             });
           }
         }

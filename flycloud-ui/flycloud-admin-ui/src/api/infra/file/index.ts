@@ -15,6 +15,14 @@ export interface FilePresignedUrlRespVO {
   uploadUrl: string
   // 文件 URL
   url: string
+  // 文件相对路径
+  path: string
+}
+
+export interface FileUploadRespVO {
+  url: string
+  baseUrl: string
+  path: string
 }
 
 // 查询文件列表
@@ -28,10 +36,10 @@ export const deleteFile = (id: number) => {
 }
 
 // 获取文件预签名地址
-export const getFilePresignedUrl = (path: string) => {
+export const getFilePresignedUrl = (name: string, directory?: string) => {
   return request.get<FilePresignedUrlRespVO>({
     url: `/${SYS_BASE_URL}/file/presigned-url`,
-    params: { path }
+    params: { name, directory }
   })
 }
 
@@ -41,6 +49,10 @@ export const createFile = (data: any) => {
 }
 
 // 上传文件
-export const updateFile = (data: any) => {
-  return request.upload({ url: `/${SYS_BASE_URL}/admin/file/upload`, data })
+export const updateFile = (data: any, onUploadProgress?: (evt: any) => void) => {
+  return request.upload<{ code: number; data: FileUploadRespVO }>({
+    url: `/${SYS_BASE_URL}/admin/file/upload`,
+    data,
+    onUploadProgress
+  })
 }

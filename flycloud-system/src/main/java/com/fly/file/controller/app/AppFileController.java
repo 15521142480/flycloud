@@ -4,6 +4,7 @@ import cn.hutool.core.io.IoUtil;
 import com.fly.common.domain.model.R;
 import com.fly.file.service.FileService;
 import com.fly.system.api.file.domain.vo.FileUploadReqVo;
+import com.fly.system.api.file.domain.vo.FileUploadRespVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 /**
  * app文件-控制器。
@@ -35,18 +34,24 @@ public class AppFileController {
     @Operation(summary = "上传文件", description = "上传文件")
     @Parameter(name = "file", description = "文件附件", required = true,
             schema = @Schema(type = "string", format = "binary"))
-    public R<String> uploadFile(@Valid FileUploadReqVo uploadReqVO) throws Exception {
+    public R<FileUploadRespVo> uploadFile(@Valid FileUploadReqVo uploadReqVO) throws Exception {
 
         MultipartFile file = uploadReqVO.getFile();
         byte[] content = IoUtil.readBytes(file.getInputStream());
         // app 多一个app文件夹区分
-        String filePath = fileService.uploadFile(
+        String directory = uploadReqVO.getDirectory();
+        if (directory == null || directory.isBlank()) {
+            directory = "app";
+        } else {
+            directory = "app/" + directory;
+        }
+        FileUploadRespVo uploadFile = fileService.uploadFile(
                 content,
                 file.getOriginalFilename(),
-                File.separator + "app" + File.separator + uploadReqVO.getDirectory(),
+                directory,
                 file.getContentType()
         );
-        return R.ok(filePath);
+        return R.ok(uploadFile);
     }
 
 }

@@ -14,14 +14,14 @@
       :on-success="uploadSuccess"
       :show-file-list="false"
     >
-      <template v-if="modelValue">
-        <img :src="modelValue" class="upload-image" />
+      <template v-if="previewUrl">
+        <img :src="previewUrl" class="upload-image" />
         <div class="upload-handle" @click.stop>
           <div v-if="!disabled" class="handle-icon" @click="editImg">
             <Icon icon="ep:edit" />
             <span v-if="showBtnText">{{ t('action.edit') }}</span>
           </div>
-          <div class="handle-icon" @click="imagePreview(modelValue)">
+          <div class="handle-icon" @click="imagePreview(previewUrl)">
             <Icon icon="ep:zoom-in" />
             <span v-if="showBtnText">{{ t('action.detail') }}</span>
           </div>
@@ -52,7 +52,7 @@ import type { UploadProps } from 'element-plus'
 import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { createImageViewer } from '@/components/ImageViewer'
-import { useUpload } from '@/components/UploadFile/src/useUpload'
+import { normalizeUploadResult, useUpload } from '@/components/UploadFile/src/useUpload'
 
 defineOptions({ name: 'UploadImg' })
 
@@ -102,8 +102,23 @@ const imagePreview = (imgUrl: string) => {
 }
 
 const emit = defineEmits(['update:modelValue'])
+const previewUrl = ref('')
+const lastUploadPath = ref('')
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    if (value === lastUploadPath.value && previewUrl.value) {
+      return
+    }
+    previewUrl.value = value || ''
+  },
+  { immediate: true }
+)
 
 const deleteImg = () => {
+  previewUrl.value = ''
+  lastUploadPath.value = ''
   emit('update:modelValue', '')
 }
 
@@ -126,7 +141,10 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 // 图片上传成功提示
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
   message.success('上传成功')
-  emit('update:modelValue', res.data)
+  const uploadResult = normalizeUploadResult(res)
+  previewUrl.value = uploadResult.url
+  lastUploadPath.value = uploadResult.path
+  emit('update:modelValue', uploadResult.path)
 }
 
 // 图片上传错误提示

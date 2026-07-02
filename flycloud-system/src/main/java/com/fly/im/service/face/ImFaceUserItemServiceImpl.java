@@ -1,6 +1,7 @@
 package com.fly.im.service.face;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
@@ -35,6 +36,8 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     private ImFaceUserItemMapper faceUserItemMapper;
     @Resource
     private ImProperties imProperties;
+    @Resource
+    private FileUrlService fileUrlService;
 
     @Override
     public List<ImFaceUserItem> getFaceUserItemList(Long userId) {
@@ -43,8 +46,9 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
 
     @Override
     public Long createFaceUserItem(Long userId, ImFaceUserItemSaveReqVo reqVo) {
+        String url = fileUrlService.toPath(reqVo.getUrl());
         // 1.1 同 URL 已存在则报错
-        if (faceUserItemMapper.selectByUserIdAndUrl(userId, reqVo.getUrl()) != null) {
+        if (faceUserItemMapper.selectByUserIdAndUrl(userId, url) != null) {
             throw exception(FACE_USER_ITEM_DUPLICATED);
         }
         // 1.2 超过最大数量限制则报错
@@ -55,6 +59,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
 
         // 2. 入库
         ImFaceUserItem item = BeanUtils.toBean(reqVo, ImFaceUserItem.class).setUserId(userId);
+        item.setUrl(url);
         try {
             faceUserItemMapper.insert(item);
         } catch (DuplicateKeyException ex) {

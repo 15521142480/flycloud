@@ -5,7 +5,6 @@ import com.fly.common.enums.bpm.BpmModelTypeEnum;
 import com.fly.common.validate.InEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +23,6 @@ public class BpmModelMetaInfoVO implements Serializable {
 
     @Schema(description = "流程图标", requiredMode = Schema.RequiredMode.REQUIRED, example = "https://www.iocoder.cn/yudao.jpg")
 //    @NotEmpty(message = "流程图标不能为空")
-    @URL(message = "流程图标格式不正确")
     private String icon;
 
     @Schema(description = "流程描述", example = "我是描述")

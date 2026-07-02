@@ -1,5 +1,7 @@
 package com.fly.file.service;
 
+import com.fly.system.api.file.domain.vo.FileUploadRespVo;
+
 /**
  * 文件服务 - 接口层
  *
@@ -10,13 +12,13 @@ public interface FileService {
 
 
     /**
-     * 上传并保存文件，最后返回文件的访问路径
+     * 上传并保存文件，最后返回文件访问信息
      *
      * @param content
      * @param originalFilename
      * @param directory
      * @param contentType
     */
-    String uploadFile(byte[] content, String originalFilename, String directory, String contentType) throws Exception;
+    FileUploadRespVo uploadFile(byte[] content, String originalFilename, String directory, String contentType) throws Exception;
 
 }

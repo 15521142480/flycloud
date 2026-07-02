@@ -92,7 +92,7 @@
       return;
     }
     let { data } = await FileApi.uploadFile(tempUrl);
-    state.model.avatar = data;
+    state.model.avatar = data?.path || data;
   }
 
   // 确认授权
