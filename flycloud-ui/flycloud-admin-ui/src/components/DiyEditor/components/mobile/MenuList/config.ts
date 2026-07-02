@@ -1,9 +1,7 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
 import { cloneDeep } from 'lodash-es'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 列表导航属性 */
-const { t } = useI18n()
 
+/** 列表导航属性 */
 export interface MenuListProperty {
   // 导航菜单列表
   list: MenuListItemProperty[]
@@ -28,16 +26,16 @@ export interface MenuListItemProperty {
 }
 
 export const EMPTY_MENU_LIST_ITEM_PROPERTY = {
-  title: t('auto.components.DiyEditor.components.mobile.MenuList.config.k748d7dc7'),
+  title: '标题',
   titleColor: '#333',
-  subtitle: t('auto.components.DiyEditor.components.mobile.MenuList.config.k8344831e'),
+  subtitle: '副标题',
   subtitleColor: '#bbb'
 }
 
 // 定义组件
 export const component = {
   id: 'MenuList',
-  name: t('auto.components.DiyEditor.components.mobile.MenuList.config.k92d14243'),
+  name: '列表导航',
   icon: 'fa-solid:list',
   property: {
     list: [cloneDeep(EMPTY_MENU_LIST_ITEM_PROPERTY)],

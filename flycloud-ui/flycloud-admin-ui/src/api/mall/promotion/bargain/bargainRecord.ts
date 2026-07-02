@@ -17,5 +17,5 @@ export interface BargainRecordVO {
 
 // 查询砍价记录列表
 export const getBargainRecordPage = async (params) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/bargain-record/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-record/page`, params })
 }

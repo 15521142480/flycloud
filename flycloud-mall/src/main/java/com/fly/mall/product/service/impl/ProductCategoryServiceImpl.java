@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.exception.ServiceException;
 import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -17,12 +18,14 @@ import com.fly.mall.api.product.domain.bo.ProductCategoryBo;
 import com.fly.mall.api.product.domain.vo.ProductCategoryVo;
 import com.fly.mall.product.mapper.ProductCategoryMapper;
 import com.fly.mall.product.service.IProductCategoryService;
+import com.fly.mall.product.service.IProductSpuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 商品分类 Service 业务层处理。
@@ -37,6 +40,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
 
     private final ProductCategoryMapper baseMapper;
     private final FileUrlFieldConverter fileUrlFieldConverter;
+    private final IProductSpuService productSpuService;
 
     /**
      * 查询商品分类详情。
@@ -86,6 +90,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
     @Override
     public Boolean saveOrUpdate(ProductCategoryBo bo) {
         fileUrlFieldConverter.toPath(bo, "picUrl");
+        validateParentCategory(bo.getId(), bo.getParentId());
         ProductCategory entity = BeanUtil.toBean(bo, ProductCategory.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();
@@ -109,6 +114,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
     @Override
     public Long createCategory(ProductCategoryBo bo) {
         fileUrlFieldConverter.toPath(bo, "picUrl");
+        validateParentCategory(null, bo.getParentId());
         ProductCategory entity = BeanUtil.toBean(bo, ProductCategory.class);
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());
@@ -127,6 +133,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         for (Long id : ids) {
+            validateCategoryCanDelete(id);
             ProductCategory entity = new ProductCategory();
             entity.setId(id);
             entity.setIsDeleted(true);
@@ -135,6 +142,44 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
             baseMapper.updateById(entity);
         }
         return true;
+    }
+
+    /**
+     * 校验父级商品分类可用。
+     */
+    private void validateParentCategory(Long id, Long parentId) {
+        if (parentId == null || Objects.equals(parentId, ProductCategory.PARENT_ID_ROOT)) {
+            return;
+        }
+        if (Objects.equals(id, parentId)) {
+            throw new ServiceException("父级商品分类不能选择自己");
+        }
+        ProductCategory parent = baseMapper.selectById(parentId);
+        if (parent == null || Boolean.TRUE.equals(parent.getIsDeleted())) {
+            throw new ServiceException("父级商品分类不存在");
+        }
+        if (!Objects.equals(parent.getParentId(), ProductCategory.PARENT_ID_ROOT)) {
+            throw new ServiceException("父级商品分类必须是一级分类");
+        }
+    }
+
+    /**
+     * 校验商品分类是否允许删除。
+     */
+    private void validateCategoryCanDelete(Long id) {
+        ProductCategory category = baseMapper.selectById(id);
+        if (category == null || Boolean.TRUE.equals(category.getIsDeleted())) {
+            throw new ServiceException("商品分类不存在");
+        }
+        LambdaQueryWrapper<ProductCategory> childrenWrapper = Wrappers.lambdaQuery();
+        childrenWrapper.eq(ProductCategory::getIsDeleted, false);
+        childrenWrapper.eq(ProductCategory::getParentId, id);
+        if (baseMapper.selectCount(childrenWrapper) > 0) {
+            throw new ServiceException("商品分类存在子分类，不能删除");
+        }
+        if (productSpuService.getSpuCountByCategoryId(id) > 0) {
+            throw new ServiceException("商品分类已绑定商品，不能删除");
+        }
     }
 
     /**

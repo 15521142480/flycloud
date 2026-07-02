@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 商品栏属性 */
-const { t } = useI18n()
 
+/** 商品栏属性 */
 export interface ProductListProperty {
   // 布局类型：双列 | 三列 | 水平滑动
   layoutType: 'twoCol' | 'threeCol' | 'horizSwiper'
@@ -42,7 +40,7 @@ export interface ProductListFieldProperty {
 // 定义组件
 export const component = {
   id: 'ProductList',
-  name: t('auto.components.DiyEditor.components.mobile.ProductList.config.k32327c12'),
+  name: '商品栏',
   icon: 'fluent:text-column-two-24-filled',
   property: {
     layoutType: 'twoCol',

@@ -13,7 +13,7 @@
         v-for="(item, index) in property.list"
         :key="index"
         class="flex flex-col items-center"
-        @click="handleActive(index)"
+        @click="handleActive"
       >
         <el-image :src="item.imgUrl" fit="contain" class="h-27px w-27px">
           <template #error>
@@ -49,18 +49,22 @@ const expanded = ref(false)
 const handleToggleFab = () => {
   expanded.value = !expanded.value
 }
+
+const handleActive = () => {
+  expanded.value = false
+}
 </script>
 
 <style scoped lang="scss">
 /* 模态背景 */
 .modal-bg {
   position: absolute;
-  left: calc(50% - 375px / 2);
   top: 0;
+  left: calc(50% - 375px / 2);
   z-index: 11;
   width: 375px;
   height: 100%;
-  background-color: rgba(#000000, 0.4);
+  background-color: rgb(0 0 0 / 40%);
 }
 
 .fab-icon {

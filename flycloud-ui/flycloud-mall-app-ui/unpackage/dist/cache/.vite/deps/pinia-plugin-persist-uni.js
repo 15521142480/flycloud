@@ -1,6 +1,6 @@
 import "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/pinia-plugin-persist-uni/dist/pinia-persist-uni.es.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/pinia-plugin-persist-uni/dist/pinia-persist-uni.es.js
 var _a;
 var _b;
 var isH5 = typeof uni !== "undefined" ? ["web", "h5", void 0].includes((_b = (_a = uni == null ? void 0 : uni.getSystemInfoSync()) == null ? void 0 : _a.uniPlatform) == null ? void 0 : _b.toLocaleLowerCase()) : true;

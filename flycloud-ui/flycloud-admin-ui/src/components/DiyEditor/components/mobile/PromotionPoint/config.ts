@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 积分商城属性 */
-const { t } = useI18n()
 
+/** 积分商城属性 */
 export interface PromotionPointProperty {
   // 布局类型：单列 | 三列
   layoutType: 'oneColBigImg' | 'oneColSmallImg' | 'twoCol'
@@ -64,7 +62,7 @@ export interface PromotionPointFieldProperty {
 // 定义组件
 export const component = {
   id: 'PromotionPoint',
-  name: t('auto.components.DiyEditor.components.mobile.PromotionPoint.config.k3b1b41c2'),
+  name: '积分商城',
   icon: 'ep:present',
   property: {
     layoutType: 'oneColBigImg',
@@ -79,7 +77,7 @@ export const component = {
     badge: { show: false, imgUrl: '' },
     btnBuy: {
       type: 'text',
-      text: t('auto.components.DiyEditor.components.mobile.PromotionPoint.config.kb19c3641'),
+      text: '立即兑换',
       bgBeginColor: '#FF6000',
       bgEndColor: '#FE832A',
       imgUrl: ''

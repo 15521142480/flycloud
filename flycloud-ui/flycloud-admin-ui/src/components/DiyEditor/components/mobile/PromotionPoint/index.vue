@@ -66,11 +66,10 @@
             v-if="property.fields.price.show"
             :style="{ color: property.fields.price.color }"
             class="text-16px"
-            >{{ spu.point }}{{ t('extra.k4b7324dd') }}
-            {{
-              !spu.pointPrice || spu.pointPrice === 0 ? '' : `+${fenToYuan(spu.pointPrice)}元`
-            }}</span
           >
+            {{ spu.point }}积分
+            {{ !spu.pointPrice || spu.pointPrice === 0 ? '' : `+${fenToYuan(spu.pointPrice)}元` }}
+          </span>
           <!-- 市场价 -->
           <span
             v-if="property.fields.marketPrice.show && spu.marketPrice"
@@ -85,14 +84,13 @@
           <span
             v-if="property.fields.salesCount.show"
             :style="{ color: property.fields.salesCount.color }"
-            >{{
-              t('extra.k8c3ea98f', { p0: (spu.pointTotalStock || 0) - (spu.pointStock || 0) })
-            }}</span
           >
+            已兑{{ (spu.pointTotalStock || 0) - (spu.pointStock || 0) }}件
+          </span>
           <!-- 库存 -->
-          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">{{
-            t('extra.k25334ade', { p0: spu.pointTotalStock || 0 })
-          }}</span>
+          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">
+            库存{{ spu.pointTotalStock || 0 }}
+          </span>
         </div>
       </div>
       <!-- 购买按钮 -->
@@ -125,7 +123,6 @@ import { PointActivityApi, PointActivityVO, SpuExtension0 } from '@/api/mall/pro
 import { fenToYuan } from '@/utils'
 
 /** 积分商城卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'PromotionPoint' })
 // 定义属性
 const props = defineProps<{ property: PromotionPointProperty }>()
@@ -165,10 +162,7 @@ watch(
         })
       }
     } catch (error) {
-      console.error(
-        t('auto.components.DiyEditor.components.mobile.PromotionPoint.index.k45691882'),
-        error
-      )
+      console.error('获取积分商城活动细节或 SPU 细节时出错:', error)
     }
   },
   {

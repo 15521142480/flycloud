@@ -28,7 +28,7 @@ export interface CouponTemplateVO {
 // 创建优惠劵模板
 export function createCouponTemplate(data: CouponTemplateVO) {
   return request.post({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/create`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/create`,
     data: data
   })
 }
@@ -36,7 +36,7 @@ export function createCouponTemplate(data: CouponTemplateVO) {
 // 更新优惠劵模板
 export function updateCouponTemplate(data: CouponTemplateVO) {
   return request.put({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/update`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/update`,
     data: data
   })
 }
@@ -48,7 +48,7 @@ export function updateCouponTemplateStatus(id: number, status: [0, 1]) {
     status
   }
   return request.put({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/update-status`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/update-status`,
     data: data
   })
 }
@@ -56,21 +56,21 @@ export function updateCouponTemplateStatus(id: number, status: [0, 1]) {
 // 删除优惠劵模板
 export function deleteCouponTemplate(id: number) {
   return request.delete({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/delete?id=` + id
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/delete?id=` + id
   })
 }
 
 // 获得优惠劵模板
 export function getCouponTemplate(id: number) {
   return request.get({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/get?id=` + id
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/get?id=` + id
   })
 }
 
 // 获得优惠劵模板分页
 export function getCouponTemplatePage(params: PageParam) {
   return request.get({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/page`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/page`,
     params: params
   })
 }
@@ -78,14 +78,14 @@ export function getCouponTemplatePage(params: PageParam) {
 // 获得优惠劵模板分页
 export function getCouponTemplateList(ids: number[]): Promise<CouponTemplateVO[]> {
   return request.get({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/list?ids=${ids}`
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/list?ids=${ids}`
   })
 }
 
 // 导出优惠劵模板 Excel
 export function exportCouponTemplateExcel(params: PageParam) {
   return request.get({
-    url: `/${MALL_BASE_URL}/promotion/coupon-template/export-excel`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/export-excel`,
     params: params,
     responseType: 'blob'
   })

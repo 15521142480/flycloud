@@ -1,10 +1,5 @@
 <template>
-  <Dialog
-    v-model="dialogVisible"
-    :title="t('auto.components.DiyEditor.components.mobile.HotZone.components.k51c58b78')"
-    width="780"
-    @close="handleClose"
-  >
+  <Dialog v-model="dialogVisible" title="设置热区" width="780" @close="handleClose">
     <div ref="container" class="relative h-full w-750px">
       <el-image :src="imgUrl" class="pointer-events-none h-full w-750px select-none" />
       <div
@@ -20,7 +15,7 @@
         @mousedown="handleMove(item, $event)"
         @dblclick="handleShowAppLinkDialog(item)"
       >
-        <span class="pointer-events-none select-none">{{ item.name || t('extra.k0898574e') }}</span>
+        <span class="pointer-events-none select-none">{{ item.name || '双击选择链接' }}</span>
         <Icon icon="ep:close" class="delete" :size="14" @click="handleRemove(item)" />
 
         <!-- 8个控制点 -->
@@ -36,11 +31,11 @@
     <template #footer>
       <el-button @click="handleAdd" type="primary" plain>
         <Icon icon="ep:plus" class="mr-5px" />
-        {{ t('extra.kc3dcee03') }}
+        添加热区
       </el-button>
       <el-button @click="handleSubmit" type="primary" plain>
         <Icon icon="ep:check" class="mr-5px" />
-        {{ t('extra.k89710fa0') }}
+        确定
       </el-button>
     </template>
   </Dialog>
@@ -61,8 +56,8 @@ import {
 } from './controller'
 import { AppLink } from '@/components/AppLinkInput/data'
 import { remove } from 'lodash-es'
+
 /** 热区编辑对话框 */
-const { t } = useI18n()
 defineOptions({ name: 'HotZoneEditDialog' })
 
 // 定义属性
@@ -197,39 +192,39 @@ const handleAppLinkChange = (appLink: AppLink) => {
 <style scoped lang="scss">
 .hot-zone {
   position: absolute;
-  background: var(--el-color-primary-light-7);
-  opacity: 0.8;
-  border: 1px solid var(--el-color-primary);
-  color: var(--el-color-primary);
-  font-size: 16px;
+  z-index: 10;
   display: flex;
+  font-size: 16px;
+  color: var(--el-color-primary);
+  cursor: move;
+  background: var(--el-color-primary-light-7);
+  border: 1px solid var(--el-color-primary);
+  opacity: 0.8;
   align-items: center;
   justify-content: center;
-  cursor: move;
-  z-index: 10;
 
   /* 控制点 */
   .ctrl-dot {
     position: absolute;
+    z-index: 11;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
-    border: inherit;
     background-color: #fff;
-    z-index: 11;
+    border: inherit;
+    border-radius: 50%;
   }
 
   .delete {
-    display: none;
     position: absolute;
     top: 0;
     right: 0;
+    display: none;
     padding: 2px 2px 6px 6px;
-    background-color: var(--el-color-primary);
-    border-radius: 0 0 0 80%;
-    cursor: pointer;
     color: #fff;
     text-align: right;
+    cursor: pointer;
+    background-color: var(--el-color-primary);
+    border-radius: 0 0 0 80%;
   }
 
   &:hover {

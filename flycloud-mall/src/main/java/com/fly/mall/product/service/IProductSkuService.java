@@ -36,6 +36,11 @@ public interface IProductSkuService {
     Boolean reduceStock(Long skuId, Integer count);
 
     /**
+     * 校验商品 SKU 列表。
+     */
+    void validateSkuList(List<ProductSkuBo> skuList, Boolean specType);
+
+    /**
      * 保存指定 SPU 的 SKU 列表。
      */
     Boolean saveSkuList(Long spuId, List<ProductSkuBo> skuList);

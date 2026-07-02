@@ -74,22 +74,22 @@
             v-if="property.fields.marketPrice.show && spu.marketPrice"
             class="ml-4px text-10px line-through"
             :style="{ color: property.fields.marketPrice.color }"
-            >￥{{ fenToYuan(spu.marketPrice) }}</span
           >
+            ￥{{ fenToYuan(spu.marketPrice) }}
+          </span>
         </div>
         <div class="text-12px">
           <!-- 销量 -->
           <span
             v-if="property.fields.salesCount.show"
             :style="{ color: property.fields.salesCount.color }"
-            >{{
-              t('extra.ka43aa0e5', { p0: (spu.salesCount || 0) + (spu.virtualSalesCount || 0) })
-            }}</span
           >
+            已售{{ (spu.salesCount || 0) + (spu.virtualSalesCount || 0) }}件
+          </span>
           <!-- 库存 -->
-          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">{{
-            t('extra.kbab900f5', { p0: spu.stock || 0 })
-          }}</span>
+          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">
+            库存{{ spu.stock || 0 }}
+          </span>
         </div>
       </div>
       <!-- 购买按钮 -->
@@ -120,8 +120,8 @@ import { PromotionSeckillProperty } from './config'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import * as SeckillActivityApi from '@/api/mall/promotion/seckill/seckillActivity'
 import { fenToYuan } from '@/utils'
+
 /** 秒杀卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'PromotionSeckill' })
 // 定义属性
 const props = defineProps<{ property: PromotionSeckillProperty }>()
@@ -162,10 +162,7 @@ watch(
         })
       }
     } catch (error) {
-      console.error(
-        t('auto.components.DiyEditor.components.mobile.PromotionSeckill.index.k15b110c5'),
-        error
-      )
+      console.error('获取秒杀活动细节或 SPU 细节时出错:', error)
     }
   },
   {

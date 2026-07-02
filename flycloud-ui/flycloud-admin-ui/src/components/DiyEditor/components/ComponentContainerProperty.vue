@@ -1,52 +1,26 @@
 <template>
   <el-tabs stretch>
     <!-- 每个组件的自定义内容 -->
-    <el-tab-pane
-      :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k163aec91')"
-      v-if="$slots.default"
-    >
+    <el-tab-pane label="内容" v-if="$slots.default">
       <slot></slot>
     </el-tab-pane>
 
     <!-- 每个组件的通用内容 -->
-    <el-tab-pane
-      :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k393a6c91')"
-      lazy
-    >
-      <el-card
-        :header="t('auto.components.DiyEditor.components.ComponentContainerProperty.k63d3704f')"
-        class="property-group"
-      >
+    <el-tab-pane label="样式" lazy>
+      <el-card header="组件样式" class="property-group">
         <el-form :model="formData" label-width="80px">
-          <el-form-item
-            :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k2f849f33')"
-            prop="bgType"
-          >
+          <el-form-item label="组件背景" prop="bgType">
             <el-radio-group v-model="formData.bgType">
-              <el-radio value="color">{{
-                t('auto.components.DiyEditor.components.ComponentContainerProperty.kc502e4a0')
-              }}</el-radio>
-              <el-radio value="img">{{
-                t('auto.components.DiyEditor.components.ComponentContainerProperty.kbe8da62e')
-              }}</el-radio>
+              <el-radio value="color">纯色</el-radio>
+              <el-radio value="img">图片</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item
-            :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k91732e25')"
-            prop="bgColor"
-            v-if="formData.bgType === 'color'"
-          >
+          <el-form-item label="选择颜色" prop="bgColor" v-if="formData.bgType === 'color'">
             <ColorInput v-model="formData.bgColor" />
           </el-form-item>
-          <el-form-item
-            :label="t('auto.components.DiyEditor.components.ComponentContainerProperty.k59b308c8')"
-            prop="bgImg"
-            v-else
-          >
-            <UploadImg v-model="formData.bgImg" directory="diy" :limit="1">
-              <template #tip>{{
-                t('auto.components.DiyEditor.components.ComponentContainerProperty.k54614dc3')
-              }}</template>
+          <el-form-item label="上传图片" prop="bgImg" v-else>
+            <UploadImg v-model="formData.bgImg" :limit="1">
+              <template #tip>建议宽度 750px</template>
             </UploadImg>
           </el-form-item>
           <el-tree :data="treeData" :expand-on-click-node="false" default-expand-all>
@@ -77,81 +51,82 @@
 </template>
 
 <script setup lang="ts">
-import { ComponentStyle, usePropertyForm } from '@/components/DiyEditor/util'
+import { ComponentStyle } from '@/components/DiyEditor/util'
+import { useVModel } from '@vueuse/core'
+
 /**
  * 组件容器属性：目前右边部分
  * 用于包裹组件，为组件提供 背景、外边距、内边距、边框等样式
  */
-const { t } = useI18n()
 defineOptions({ name: 'ComponentContainer' })
 
 const props = defineProps<{ modelValue: ComponentStyle }>()
 const emit = defineEmits(['update:modelValue'])
-const { formData } = usePropertyForm(props.modelValue, emit)
+const formData = useVModel(props, 'modelValue', emit)
 
 const treeData = [
   {
-    label: t('auto.components.DiyEditor.components.ComponentContainerProperty.ka0a8c031'),
+    label: '外部边距',
     prop: 'margin',
     children: [
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kb967ce84'),
+        label: '上',
         prop: 'marginTop'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.k851cdd60'),
+        label: '右',
         prop: 'marginRight'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.ka6caf2ef'),
+        label: '下',
         prop: 'marginBottom'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kdf3ee667'),
+        label: '左',
         prop: 'marginLeft'
       }
     ]
   },
   {
-    label: t('auto.components.DiyEditor.components.ComponentContainerProperty.k8292daed'),
+    label: '内部边距',
     prop: 'padding',
     children: [
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kb967ce84'),
+        label: '上',
         prop: 'paddingTop'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.k851cdd60'),
+        label: '右',
         prop: 'paddingRight'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.ka6caf2ef'),
+        label: '下',
         prop: 'paddingBottom'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kdf3ee667'),
+        label: '左',
         prop: 'paddingLeft'
       }
     ]
   },
   {
-    label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kf3486e92'),
+    label: '边框圆角',
     prop: 'borderRadius',
     children: [
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.k91ddc16d'),
+        label: '上左',
         prop: 'borderTopLeftRadius'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kcc2c87ba'),
+        label: '上右',
         prop: 'borderTopRightRadius'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.kab1eb0c0'),
+        label: '下右',
         prop: 'borderBottomRightRadius'
       },
       {
-        label: t('auto.components.DiyEditor.components.ComponentContainerProperty.k801f2acb'),
+        label: '下左',
         prop: 'borderBottomLeftRadius'
       }
     ]

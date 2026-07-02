@@ -1,17 +1,10 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <el-form label-width="40px" :model="formData">
-      <el-form-item
-        :label="
-          t('auto.components.DiyEditor.components.mobile.PromotionArticle.property.kad3fd0f4')
-        "
-        prop="id"
-      >
+      <el-form-item label="文章" prop="id">
         <el-select
           v-model="formData.id"
-          :placeholder="
-            t('auto.components.DiyEditor.components.mobile.PromotionArticle.property.kb44b07a8')
-          "
+          placeholder="请选择文章"
           class="w-full"
           filterable
           remote
@@ -32,16 +25,17 @@
 
 <script setup lang="ts">
 import { PromotionArticleProperty } from './config'
-import { usePropertyForm } from '@/components/DiyEditor/util'
+import { useVModel } from '@vueuse/core'
 import * as ArticleApi from '@/api/mall/promotion/article/index'
-const { t } = useI18n()
+
+// 营销文章属性面板
 defineOptions({ name: 'PromotionArticleProperty' })
 
 const props = defineProps<{ modelValue: PromotionArticleProperty }>()
 const emit = defineEmits(['update:modelValue'])
-const { formData } = usePropertyForm(props.modelValue, emit)
+const formData = useVModel(props, 'modelValue', emit)
 // 文章列表
-const articles = ref<ArticleApi.ArticleVO>([])
+const articles = ref<ArticleApi.ArticleVO[]>([])
 
 // 加载中
 const loading = ref(false)

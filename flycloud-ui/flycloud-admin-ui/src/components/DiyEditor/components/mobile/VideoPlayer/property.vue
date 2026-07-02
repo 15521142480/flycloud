@@ -1,10 +1,7 @@
 <template>
   <ComponentContainerProperty v-model="formData.style">
     <template #style>
-      <el-form-item
-        :label="t('auto.components.DiyEditor.components.mobile.VideoPlayer.property.keea51aa4')"
-        prop="height"
-      >
+      <el-form-item label="高度" prop="height">
         <el-slider
           v-model="formData.style.height"
           :max="500"
@@ -16,7 +13,7 @@
       </el-form-item>
     </template>
     <el-form label-width="80px" :model="formData">
-      <el-form-item :label="t('extra.kafddcb3b')" prop="videoUrl">
+      <el-form-item label="上传视频" prop="videoUrl">
         <UploadFile
           v-model="formData.videoUrl"
           :file-type="['mp4']"
@@ -25,7 +22,7 @@
           class="min-w-80px"
         />
       </el-form-item>
-      <el-form-item :label="t('extra.k9791798f')" prop="posterUrl">
+      <el-form-item label="上传封面" prop="posterUrl">
         <UploadImg
           v-model="formData.posterUrl"
           draggable="false"
@@ -33,12 +30,10 @@
           width="100%"
           class="min-w-80px"
         >
-          <template #tip>
-            {{ t('auto.components.DiyEditor.components.mobile.ImageBar.property.k2c75987f') }}
-          </template>
+          <template #tip> 建议宽度750 </template>
         </UploadImg>
       </el-form-item>
-      <el-form-item :label="t('extra.k54c6bb48')" prop="autoplay">
+      <el-form-item label="自动播放" prop="autoplay">
         <el-switch v-model="formData.autoplay" />
       </el-form-item>
     </el-form>
@@ -47,13 +42,14 @@
 
 <script setup lang="ts">
 import { VideoPlayerProperty } from './config'
-import { usePropertyForm } from '@/components/DiyEditor/util'
-const { t } = useI18n()
+import { useVModel } from '@vueuse/core'
+
+// 视频播放属性面板
 defineOptions({ name: 'VideoPlayerProperty' })
 
 const props = defineProps<{ modelValue: VideoPlayerProperty }>()
 const emit = defineEmits(['update:modelValue'])
-const { formData } = usePropertyForm(props.modelValue, emit)
+const formData = useVModel(props, 'modelValue', emit)
 </script>
 
 <style scoped lang="scss"></style>

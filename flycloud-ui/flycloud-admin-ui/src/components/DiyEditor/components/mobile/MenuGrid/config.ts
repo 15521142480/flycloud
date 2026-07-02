@@ -1,9 +1,7 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
 import { cloneDeep } from 'lodash-es'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 宫格导航属性 */
-const { t } = useI18n()
 
+/** 宫格导航属性 */
 export interface MenuGridProperty {
   // 列数
   column: number
@@ -41,9 +39,9 @@ export interface MenuGridItemProperty {
 }
 
 export const EMPTY_MENU_GRID_ITEM_PROPERTY = {
-  title: t('auto.components.DiyEditor.components.mobile.MenuGrid.config.k748d7dc7'),
+  title: '标题',
   titleColor: '#333',
-  subtitle: t('auto.components.DiyEditor.components.mobile.MenuGrid.config.k8344831e'),
+  subtitle: '副标题',
   subtitleColor: '#bbb',
   badge: {
     show: false,
@@ -55,7 +53,7 @@ export const EMPTY_MENU_GRID_ITEM_PROPERTY = {
 // 定义组件
 export const component = {
   id: 'MenuGrid',
-  name: t('auto.components.DiyEditor.components.mobile.MenuGrid.config.k1464f056'),
+  name: '宫格导航',
   icon: 'bi:grid-3x3-gap',
   property: {
     column: 3,

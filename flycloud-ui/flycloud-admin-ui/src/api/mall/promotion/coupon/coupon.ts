@@ -7,14 +7,14 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 // 删除优惠劵
 export const deleteCoupon = async (id: number) => {
   return request.delete({
-    url: `/${MALL_BASE_URL}/promotion/coupon/delete?id=${id}`
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon/delete?id=${id}`
   })
 }
 
 // 获得优惠劵分页
 export const getCouponPage = async (params: PageParam) => {
   return request.get({
-    url: `/${MALL_BASE_URL}/promotion/coupon/page`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon/page`,
     params: params
   })
 }
@@ -22,7 +22,7 @@ export const getCouponPage = async (params: PageParam) => {
 // 发送优惠券
 export const sendCoupon = async (data: any) => {
   return request.post({
-    url: `/${MALL_BASE_URL}/promotion/coupon/send`,
+    url: `/${MALL_BASE_URL}/admin/promotion/coupon/send`,
     data: data
   })
 }

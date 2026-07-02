@@ -17,13 +17,11 @@
             :group="{ name: 'component', pull: 'clone', put: false }"
             :clone="handleCloneComponent"
             :animation="200"
-            :force-fallback="true"
+            :force-fallback="false"
           >
             <template #item="{ element }">
               <div>
-                <div class="drag-placement">{{
-                  t('auto.components.DiyEditor.components.ComponentLibrary.kf809bcc0')
-                }}</div>
+                <div class="drag-placement">组件放置区域</div>
                 <div class="component">
                   <Icon :icon="element.icon" :size="32" />
                   <span class="mt-4px text-12px">{{ element.name }}</span>
@@ -42,8 +40,8 @@ import draggable from 'vuedraggable'
 import { componentConfigs } from '../components/mobile/index'
 import { cloneDeep } from 'lodash-es'
 import { DiyComponent, DiyComponentLibrary } from '@/components/DiyEditor/util'
+
 /** 组件库：目前左侧的【基础组件】、【图文组件】部分 */
-const { t } = useI18n()
 defineOptions({ name: 'ComponentLibrary' })
 
 // 组件列表
@@ -96,9 +94,9 @@ const handleCloneComponent = (component: DiyComponent<any>) => {
 <style scoped lang="scss">
 .editor-left {
   z-index: 1;
-  flex-shrink: 0;
-  user-select: none;
   box-shadow: 8px 0 8px -8px rgb(0 0 0 / 12%);
+  user-select: none;
+  flex-shrink: 0;
 
   :deep(.el-collapse) {
     border-top: none;

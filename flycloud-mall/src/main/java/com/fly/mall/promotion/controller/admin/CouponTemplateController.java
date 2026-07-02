@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,23 +34,24 @@ public class CouponTemplateController extends BaseController {
 
     private final ICouponTemplateService couponTemplateService;
 
-    /**
-     * 查询优惠券模板分页列表。
-     */
-    @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:list')")
-    @GetMapping("/list")
-    public R<PageVo<CouponTemplateVo>> list(CouponTemplateBo bo, PageBo page) {
-        return R.ok(couponTemplateService.queryPageList(bo, page));
-    }
+
 
     /**
      * 查询分页列表。
      */
-
-    @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:list')")
+//    @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:list')")
     @GetMapping("/page")
     public R<PageVo<CouponTemplateVo>> page(CouponTemplateBo bo, PageBo page) {
         return R.ok(couponTemplateService.queryPageList(bo, page));
+    }
+
+    /**
+     * 查询优惠券模板分页列表。
+     */
+//    @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:list')")
+    @GetMapping("/list")
+    public R<List<CouponTemplateVo>>list(@RequestParam("ids") Collection<Long> ids) {
+        return R.ok(couponTemplateService.queryList(ids));
     }
 
     /**

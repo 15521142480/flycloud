@@ -1,7 +1,6 @@
 import { DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-const { t } = useI18n()
 
+// 悬浮按钮属性
 export interface FloatingActionButtonProperty {
   // 展开方向
   direction: 'horizontal' | 'vertical'
@@ -26,7 +25,7 @@ export interface FloatingActionButtonItemProperty {
 // 定义组件
 export const component = {
   id: 'FloatingActionButton',
-  name: t('auto.components.DiyEditor.components.mobile.FloatingActionButton.config.k7cfd3ab9'),
+  name: '悬浮按钮',
   icon: 'tabler:float-right',
   position: 'fixed',
   property: {

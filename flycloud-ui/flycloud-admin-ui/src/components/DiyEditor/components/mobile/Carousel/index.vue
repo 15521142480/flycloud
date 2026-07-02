@@ -8,7 +8,7 @@
   </div>
   <div v-else class="relative">
     <el-carousel
-      height="174px"
+      :height="property.height + 'px'"
       :type="property.type === 'card' ? 'card' : ''"
       :autoplay="property.autoplay"
       :interval="property.interval * 1000"
@@ -22,8 +22,9 @@
     <div
       v-if="property.indicator === 'number'"
       class="absolute bottom-10px right-10px rounded-xl bg-black p-x-8px p-y-2px text-10px text-white opacity-40"
-      >{{ currentIndex }} / {{ property.items.length }}</div
     >
+      {{ currentIndex }} / {{ property.items.length }}
+    </div>
   </div>
 </template>
 <script setup lang="ts">

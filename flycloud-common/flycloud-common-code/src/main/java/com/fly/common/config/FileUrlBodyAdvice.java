@@ -35,14 +35,14 @@ import java.util.Set;
 public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements ResponseBodyAdvice<Object> {
 
     private static final Set<String> FILE_FIELD_NAMES = Set.of(
-            "avatar", "picUrl", "picUrls", "sliderPicUrls", "coverUrl", "logo", "icon",
+            "avatar", "picUrl", "picUrls", "sliderPicUrls", "coverUrl", "logo",
             "backgroundUrl", "fileUrl", "fileUrls", "previewPicUrls", "brokeragePosterUrls",
             "userAvatar", "materialCoverUrl", "images", "imgUrl", "bgImg", "bgImgUrl",
             "backgroundImage", "imageUrl", "skuPicUrl", "applyPicUrls", "qrCodeUrl"
     );
 
     private static final Set<String> FILE_FIELD_TOKENS = Set.of(
-            "avatar", "pic", "image", "img", "logo", "icon", "cover", "background", "file", "poster"
+            "avatar", "pic", "image", "img", "logo", "cover", "background", "file", "poster"
     );
 
     private final FileUrlConverter fileUrlConverter;

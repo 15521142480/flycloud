@@ -88,4 +88,9 @@ public interface IProductSpuService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
+    /**
+     * 查询指定分类绑定的商品 SPU 数量。
+     */
+    Long getSpuCountByCategoryId(Long categoryId);
+
 }

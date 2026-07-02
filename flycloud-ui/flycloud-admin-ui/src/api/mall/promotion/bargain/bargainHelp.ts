@@ -12,5 +12,5 @@ export interface BargainHelpVO {
 
 // 查询砍价记录列表
 export const getBargainHelpPage = async (params) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/bargain-help/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-help/page`, params })
 }

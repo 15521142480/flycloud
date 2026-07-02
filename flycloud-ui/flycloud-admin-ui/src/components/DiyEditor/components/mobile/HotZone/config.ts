@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 热区属性 */
-const { t } = useI18n()
 
+/** 热区属性 */
 export interface HotZoneProperty {
   // 图片地址
   imgUrl: string
@@ -31,7 +29,7 @@ export interface HotZoneItemProperty {
 // 定义组件
 export const component = {
   id: 'HotZone',
-  name: t('auto.components.DiyEditor.components.mobile.HotZone.config.k5edbb2d3'),
+  name: '热区',
   icon: 'tabler:hand-click',
   property: {
     imgUrl: '',

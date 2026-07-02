@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 标题栏属性 */
-const { t } = useI18n()
 
+/** 标题栏属性 */
 export interface TitleBarProperty {
   // 背景图
   bgImgUrl: string
@@ -26,6 +24,8 @@ export interface TitleBarProperty {
   titleColor: string
   // 描述颜色
   descriptionColor: string
+  // 高度
+  height: number
   // 查看更多
   more: {
     // 是否显示查看更多
@@ -44,11 +44,11 @@ export interface TitleBarProperty {
 // 定义组件
 export const component = {
   id: 'TitleBar',
-  name: t('auto.components.DiyEditor.components.mobile.TitleBar.config.ke8bef90e'),
+  name: '标题栏',
   icon: 'material-symbols:line-start',
   property: {
-    title: t('auto.components.DiyEditor.components.mobile.TitleBar.config.ke6dc2df4'),
-    description: t('auto.components.DiyEditor.components.mobile.TitleBar.config.k8344831e'),
+    title: '主标题',
+    description: '副标题',
     titleSize: 16,
     descriptionSize: 12,
     titleWeight: 400,
@@ -56,11 +56,13 @@ export const component = {
     descriptionWeight: 200,
     titleColor: 'rgba(50, 50, 51, 10)',
     descriptionColor: 'rgba(150, 151, 153, 10)',
+    marginLeft: 0,
+    height: 40,
     more: {
       //查看更多
       show: false,
       type: 'icon',
-      text: t('auto.components.DiyEditor.components.mobile.TitleBar.config.k120b8697'),
+      text: '查看更多',
       url: ''
     },
     style: {

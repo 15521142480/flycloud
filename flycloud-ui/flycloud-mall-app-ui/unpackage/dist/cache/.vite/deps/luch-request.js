@@ -1,6 +1,6 @@
 import "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/utils.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/utils.js
 var toString = Object.prototype.toString;
 function isArray(val) {
   return toString.call(val) === "[object Array]";
@@ -56,7 +56,7 @@ function isUndefined(val) {
   return typeof val === "undefined";
 }
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/helpers/buildURL.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/helpers/buildURL.js
 function encode(val) {
   return encodeURIComponent(val).replace(/%40/gi, "@").replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
 }
@@ -101,17 +101,17 @@ function buildURL(url, params, paramsSerializer) {
   return url;
 }
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/helpers/isAbsoluteURL.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/helpers/isAbsoluteURL.js
 function isAbsoluteURL(url) {
   return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
 }
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/helpers/combineURLs.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/helpers/combineURLs.js
 function combineURLs(baseURL, relativeURL) {
   return relativeURL ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "") : baseURL;
 }
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/buildFullPath.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/buildFullPath.js
 function buildFullPath(baseURL, requestedURL) {
   if (baseURL && !isAbsoluteURL(requestedURL)) {
     return combineURLs(baseURL, requestedURL);
@@ -119,7 +119,7 @@ function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 }
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/settle.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/settle.js
 function settle(resolve, reject, response) {
   const validateStatus2 = response.config.validateStatus;
   const status = response.statusCode;
@@ -130,7 +130,7 @@ function settle(resolve, reject, response) {
   }
 }
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/adapters/index.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/adapters/index.js
 var mergeKeys = (keys, config2) => {
   let config = {};
   keys.forEach((prop) => {
@@ -204,12 +204,12 @@ var adapters_default = (config) => {
   });
 };
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/dispatchRequest.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/dispatchRequest.js
 var dispatchRequest_default = (config) => {
   return adapters_default(config);
 };
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/InterceptorManager.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/InterceptorManager.js
 function InterceptorManager() {
   this.handlers = [];
 }
@@ -234,7 +234,7 @@ InterceptorManager.prototype.forEach = function forEach2(fn) {
 };
 var InterceptorManager_default = InterceptorManager;
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/mergeConfig.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/mergeConfig.js
 var mergeKeys2 = (keys, globalsConfig, config2) => {
   let config = {};
   keys.forEach((prop) => {
@@ -295,7 +295,7 @@ var mergeConfig_default = (globalsConfig, config2 = {}) => {
   return config;
 };
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/defaults.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/defaults.js
 var defaults_default = {
   baseURL: "",
   header: {},
@@ -313,7 +313,7 @@ var defaults_default = {
   forcedJSONParsing: true
 };
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/utils/clone.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/utils/clone.js
 var clone = function() {
   "use strict";
   function _instanceof(obj, type) {
@@ -510,7 +510,7 @@ var clone = function() {
 }();
 var clone_default = clone;
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/core/Request.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/core/Request.js
 var Request = class {
   /**
    * @param {Object} arg - 全局配置
@@ -651,7 +651,7 @@ var Request = class {
   }
 };
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/luch-request/src/lib/luch-request.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/luch-request/src/lib/luch-request.js
 var luch_request_default = Request;
 export {
   luch_request_default as default

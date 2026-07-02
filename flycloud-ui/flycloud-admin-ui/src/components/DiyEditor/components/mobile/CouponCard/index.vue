@@ -37,7 +37,7 @@
                 background: property.button.bgColor
               }"
             >
-              {{ t('extra.k01f221c9') }}
+              立即领取
             </div>
           </div>
         </div>
@@ -49,7 +49,13 @@
           <div class="flex flex-col justify-evenly gap-4px">
             <!-- 优惠值 -->
             <CouponDiscount :coupon="coupon" />
-            <div>{{ coupon.name }}</div>
+            <!-- 优惠描述 -->
+            <CouponDiscountDesc :coupon="coupon" />
+            <!-- 领取说明 -->
+            <div v-if="coupon.totalCount >= 0">
+              仅剩：{{ coupon.totalCount - coupon.takeCount }}张
+            </div>
+            <div v-else-if="coupon.totalCount === -1">仅剩：不限制</div>
           </div>
           <div class="flex flex-col">
             <div
@@ -59,7 +65,7 @@
                 background: property.button.bgColor
               }"
             >
-              {{ t('extra.k01f221c9') }}
+              立即领取
             </div>
           </div>
         </div>
@@ -67,7 +73,8 @@
         <div v-else class="flex flex-col items-center justify-around gap-4px p-4px">
           <!-- 优惠值 -->
           <CouponDiscount :coupon="coupon" />
-          <div>{{ coupon.name }}</div>
+          <!-- 优惠描述 -->
+          <CouponDiscountDesc :coupon="coupon" />
           <div
             class="rounded-20px p-x-8px p-y-2px"
             :style="{
@@ -75,7 +82,7 @@
               background: property.button.bgColor
             }"
           >
-            {{ t('extra.k01f221c9') }}
+            立即领取
           </div>
         </div>
       </div>
@@ -92,7 +99,6 @@ import {
 } from '@/components/DiyEditor/components/mobile/CouponCard/component'
 
 /** 商品卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'CouponCard' })
 // 定义属性
 const props = defineProps<{ property: CouponCardProperty }>()
@@ -125,7 +131,7 @@ watch(
   () => {
     // 每列的宽度为：（总宽度 - 间距 * (列数 - 1)）/ 列数
     couponWidth.value =
-      (phoneWidth.value * 0.95 - props.property.space * (props.property.columns - 1)) /
+      (phoneWidth.value - props.property.space * (props.property.columns - 1)) /
       props.property.columns
     // 显示滚动条
     scrollbarWidth.value = `${

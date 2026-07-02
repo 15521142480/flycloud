@@ -1,10 +1,8 @@
-import { ref, Ref } from 'vue'
 import { PageConfigProperty } from '@/components/DiyEditor/components/mobile/PageConfig/config'
 import { NavigationBarProperty } from '@/components/DiyEditor/components/mobile/NavigationBar/config'
 import { TabBarProperty } from '@/components/DiyEditor/components/mobile/TabBar/config'
-import { useI18n } from '@/hooks/web/useI18n'
-const { t } = useI18n()
 
+// 页面装修组件
 export interface DiyComponent<T> {
   // 用于区分同一种组件的不同实例
   uid?: number
@@ -79,38 +77,10 @@ export interface PageConfig {
 // 页面组件，只保留组件ID，组件属性
 export interface PageComponent extends Pick<DiyComponent<any>, 'id' | 'property'> {}
 
-// 属性表单监听
-export function usePropertyForm<T>(modelValue: T, emit: Function): { formData: Ref<T> } {
-  const formData = ref<T>()
-  // 监听属性数据变动
-  watch(
-    () => modelValue,
-    () => {
-      formData.value = modelValue
-    },
-    {
-      deep: true,
-      immediate: true
-    }
-  )
-  // 监听表单数据变动
-  watch(
-    () => formData.value,
-    () => {
-      emit('update:modelValue', formData.value)
-    },
-    {
-      deep: true
-    }
-  )
-
-  return { formData } as { formData: Ref<T> }
-}
-
 // 页面组件库
 export const PAGE_LIBS = [
   {
-    name: t('auto.components.DiyEditor.util.k35d9aa1a'),
+    name: '基础组件',
     extended: true,
     components: [
       'SearchBar',
@@ -123,7 +93,7 @@ export const PAGE_LIBS = [
     ]
   },
   {
-    name: t('auto.components.DiyEditor.util.k34b36418'),
+    name: '图文组件',
     extended: true,
     components: [
       'ImageBar',
@@ -135,18 +105,14 @@ export const PAGE_LIBS = [
       'HotZone'
     ]
   },
+  { name: '商品组件', extended: true, components: ['ProductCard', 'ProductList'] },
   {
-    name: t('auto.components.DiyEditor.util.k5beb7081'),
-    extended: true,
-    components: ['ProductCard', 'ProductList']
-  },
-  {
-    name: t('auto.components.DiyEditor.util.k9979f1d6'),
+    name: '用户组件',
     extended: true,
     components: ['UserCard', 'UserOrder', 'UserWallet', 'UserCoupon']
   },
   {
-    name: t('auto.components.DiyEditor.util.k20dd5fbc'),
+    name: '营销组件',
     extended: true,
     components: [
       'PromotionCombination',

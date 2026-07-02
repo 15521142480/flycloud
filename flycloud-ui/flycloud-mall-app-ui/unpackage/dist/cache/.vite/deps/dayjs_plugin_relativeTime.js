@@ -2,9 +2,9 @@ import {
   __commonJS
 } from "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/dayjs/plugin/relativeTime.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/dayjs/plugin/relativeTime.js
 var require_relativeTime = __commonJS({
-  "../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/dayjs/plugin/relativeTime.js"(exports, module) {
+  "../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/dayjs/plugin/relativeTime.js"(exports, module) {
     !function(r, e) {
       "object" == typeof exports && "undefined" != typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : (r = "undefined" != typeof globalThis ? globalThis : r || self).dayjs_plugin_relativeTime = e();
     }(exports, function() {

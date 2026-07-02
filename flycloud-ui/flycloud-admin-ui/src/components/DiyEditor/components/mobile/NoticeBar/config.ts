@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 公告栏属性 */
-const { t } = useI18n()
 
+/** 公告栏属性 */
 export interface NoticeBarProperty {
   // 图标地址
   iconUrl: string
@@ -27,7 +25,7 @@ export interface NoticeContentProperty {
 // 定义组件
 export const component = {
   id: 'NoticeBar',
-  name: t('auto.components.DiyEditor.components.mobile.NoticeBar.config.k18e7294c'),
+  name: '公告栏',
   icon: 'ep:bell',
   property: {
     iconUrl: 'http://mall.yudao.iocoder.cn/static/images/xinjian.png',

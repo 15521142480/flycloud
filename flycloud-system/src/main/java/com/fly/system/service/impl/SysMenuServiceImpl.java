@@ -293,7 +293,15 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
             this.handlerMenuIdById(id, resultIds);
             log.info("删除菜单ids为：{}", resultIds);
 
-            baseMapper.deleteByIds(resultIds);
+//            baseMapper.deleteByIds(resultIds);
+            for (Long deleteId : resultIds) {
+                SysMenu entity = new SysMenu();
+                entity.setId(deleteId);
+                entity.setIsDeleted(true);
+                entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+                entity.setUpdateTime(LocalDateTime.now());
+                baseMapper.updateById(entity);
+            }
         }
 
         return true;

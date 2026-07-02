@@ -21,23 +21,23 @@ export interface KeFuConversationRespVO {
 export const KeFuConversationApi = {
   // 获得客服会话列表
   getConversationList: async () => {
-    return await request.get({ url: `/${MALL_BASE_URL}/promotion/kefu-conversation/list` })
+    return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/list` })
   },
   // 获得客服会话
   getConversation: async (id: number) => {
-    return await request.get({ url: `/${MALL_BASE_URL}/promotion/kefu-conversation/get?id=` + id })
+    return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/get?id=` + id })
   },
   // 客服会话置顶
   updateConversationPinned: async (data: any) => {
     return await request.put({
-      url: `/${MALL_BASE_URL}/promotion/kefu-conversation/update-conversation-pinned`,
+      url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/update-conversation-pinned`,
       data
     })
   },
   // 删除客服会话
   deleteConversation: async (id: number) => {
     return await request.delete({
-      url: `/${MALL_BASE_URL}/promotion/kefu-conversation/delete?id=${id}`
+      url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/delete?id=${id}`
     })
   }
 }

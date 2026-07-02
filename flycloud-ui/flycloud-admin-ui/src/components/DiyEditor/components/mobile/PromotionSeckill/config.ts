@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 秒杀属性 */
-const { t } = useI18n()
 
+/** 秒杀属性 */
 export interface PromotionSeckillProperty {
   // 布局类型：单列 | 三列
   layoutType: 'oneColBigImg' | 'oneColSmallImg' | 'twoCol'
@@ -64,7 +62,7 @@ export interface PromotionSeckillFieldProperty {
 // 定义组件
 export const component = {
   id: 'PromotionSeckill',
-  name: t('auto.components.DiyEditor.components.mobile.PromotionSeckill.config.k9634c6eb'),
+  name: '秒杀',
   icon: 'mdi:calendar-time',
   property: {
     layoutType: 'oneColBigImg',
@@ -79,7 +77,7 @@ export const component = {
     badge: { show: false, imgUrl: '' },
     btnBuy: {
       type: 'text',
-      text: t('auto.components.DiyEditor.components.mobile.PromotionSeckill.config.k67ede427'),
+      text: '立即秒杀',
       bgBeginColor: '#FF6000',
       bgEndColor: '#FE832A',
       imgUrl: ''

@@ -1,9 +1,7 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
 import { cloneDeep } from 'lodash-es'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 菜单导航属性 */
-const { t } = useI18n()
 
+/** 菜单导航属性 */
 export interface MenuSwiperProperty {
   // 布局： 图标+文字 | 图标
   layout: 'iconText' | 'icon'
@@ -40,7 +38,7 @@ export interface MenuSwiperItemProperty {
 }
 
 export const EMPTY_MENU_SWIPER_ITEM_PROPERTY = {
-  title: t('auto.components.DiyEditor.components.mobile.MenuSwiper.config.k748d7dc7'),
+  title: '标题',
   titleColor: '#333',
   badge: {
     show: false,
@@ -52,7 +50,7 @@ export const EMPTY_MENU_SWIPER_ITEM_PROPERTY = {
 // 定义组件
 export const component = {
   id: 'MenuSwiper',
-  name: t('auto.components.DiyEditor.components.mobile.MenuSwiper.config.k1f832105'),
+  name: '菜单导航',
   icon: 'bi:grid-3x2-gap',
   property: {
     layout: 'iconText',

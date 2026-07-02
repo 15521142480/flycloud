@@ -33,32 +33,32 @@ export interface SpuExtension extends Spu {
 
 // 查询限时折扣活动列表
 export const getDiscountActivityPage = async (params) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/discount-activity/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/page`, params })
 }
 
 // 查询限时折扣活动详情
 export const getDiscountActivity = async (id: number) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/discount-activity/get?id=` + id })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/get?id=` + id })
 }
 
 // 新增限时折扣活动
 export const createDiscountActivity = async (data: DiscountActivityVO) => {
-  return await request.post({ url: `/${MALL_BASE_URL}/promotion/discount-activity/create`, data })
+  return await request.post({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/create`, data })
 }
 
 // 修改限时折扣活动
 export const updateDiscountActivity = async (data: DiscountActivityVO) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/promotion/discount-activity/update`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/update`, data })
 }
 
 // 关闭限时折扣活动
 export const closeDiscountActivity = async (id: number) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/promotion/discount-activity/close?id=` + id })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/close?id=` + id })
 }
 
 // 删除限时折扣活动
 export const deleteDiscountActivity = async (id: number) => {
   return await request.delete({
-    url: `/${MALL_BASE_URL}/promotion/discount-activity/delete?id=` + id
+    url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/delete?id=` + id
   })
 }

@@ -1,8 +1,6 @@
 import { DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 分割线属性 */
-const { t } = useI18n()
 
+/** 分割线属性 */
 export interface DividerProperty {
   // 高度
   height: number
@@ -19,7 +17,7 @@ export interface DividerProperty {
 // 定义组件
 export const component = {
   id: 'Divider',
-  name: t('auto.components.DiyEditor.components.mobile.Divider.config.kad8595ee'),
+  name: '分割线',
   icon: 'tdesign:component-divider-vertical',
   property: {
     height: 30,

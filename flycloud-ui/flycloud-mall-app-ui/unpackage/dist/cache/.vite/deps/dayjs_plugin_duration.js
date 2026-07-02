@@ -2,9 +2,9 @@ import {
   __commonJS
 } from "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/dayjs/plugin/duration.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/dayjs/plugin/duration.js
 var require_duration = __commonJS({
-  "../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/dayjs/plugin/duration.js"(exports, module) {
+  "../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/dayjs/plugin/duration.js"(exports, module) {
     !function(t, s) {
       "object" == typeof exports && "undefined" != typeof module ? module.exports = s() : "function" == typeof define && define.amd ? define(s) : (t = "undefined" != typeof globalThis ? globalThis : t || self).dayjs_plugin_duration = s();
     }(exports, function() {

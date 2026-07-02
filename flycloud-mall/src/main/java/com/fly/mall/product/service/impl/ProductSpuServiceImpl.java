@@ -9,10 +9,13 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.enums.mall.ProductSpuStatusEnum;
+import com.fly.common.exception.ServiceException;
 import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.mall.api.product.domain.ProductBrand;
+import com.fly.mall.api.product.domain.ProductCategory;
 import com.fly.mall.api.product.domain.ProductSpu;
 import com.fly.mall.api.product.domain.bo.ProductSkuBo;
 import com.fly.mall.api.product.domain.bo.ProductSpuBo;
@@ -22,6 +25,8 @@ import com.fly.mall.api.product.domain.vo.AppProductSpuDetailRespVo;
 import com.fly.mall.api.product.domain.vo.AppProductSpuRespVo;
 import com.fly.mall.api.product.domain.vo.ProductSkuVo;
 import com.fly.mall.api.product.domain.vo.ProductSpuVo;
+import com.fly.mall.product.mapper.ProductBrandMapper;
+import com.fly.mall.product.mapper.ProductCategoryMapper;
 import com.fly.mall.product.mapper.ProductSpuMapper;
 import com.fly.mall.product.service.IProductSkuService;
 import com.fly.mall.product.service.IProductSpuService;
@@ -50,8 +55,11 @@ import java.util.Objects;
 public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, ProductSpu> implements IProductSpuService {
 
     private static final int PRODUCT_ALERT_STOCK = 10;
+    private static final int PRODUCT_CATEGORY_LEVEL_MIN = 2;
 
     private final ProductSpuMapper baseMapper;
+    private final ProductCategoryMapper productCategoryMapper;
+    private final ProductBrandMapper productBrandMapper;
     private final IProductSkuService productSkuService;
     private final FileUrlFieldConverter fileUrlFieldConverter;
 
@@ -188,16 +196,24 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
      */
     @Override
     public List<AppProductSpuRespVo> queryAppListByIds(Collection<Long> ids) {
+
         List<ProductSpuVo> spus = queryListByIds(ids);
         if (CollectionUtils.isEmpty(spus)) {
             return Collections.emptyList();
         }
         List<AppProductSpuRespVo> list = new ArrayList<>(spus.size());
         for (ProductSpuVo spu : spus) {
-            if (StatusEnum.isEnable(spu.getStatus())) {
+            if (ProductSpuStatusEnum.isEnable(spu.getStatus())) {
                 list.add(convertAppProductSpu(spu));
             }
         }
+
+        if (!CollectionUtils.isEmpty(spus)) {
+            Map<Long, AppProductSpuRespVo> spuMap = CollectionUtils.convertMap(list, AppProductSpuRespVo::getId);
+            // 需要按照 ids 顺序返回。例如说：店铺装修选择了 [3, 1, 2] 三个商品，返回结果还是 [3, 1, 2]  这样的顺序
+            list = CollectionUtils.convertList(ids, spuMap::get);
+        }
+
         return list;
     }
 
@@ -207,6 +223,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveOrUpdate(ProductSpuBo bo) {
+        ProductSpu oldSpu = validateSpuForSave(bo);
 
         fileUrlFieldConverter.toPath(bo, "picUrl", "sliderPicUrls", "skus.picUrl");
 
@@ -224,6 +241,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
 
         boolean flag;
         if (isUpdate) {
+            entity.setStatus(oldSpu.getStatus());
             flag = baseMapper.updateById(entity) > 0;
         } else {
             entity.setCreateBy(userId);
@@ -243,6 +261,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createSpu(ProductSpuBo bo) {
+        validateSpuForSave(bo);
 
         fileUrlFieldConverter.toPath(bo, "picUrl", "sliderPicUrls", "skus.picUrl");
 
@@ -278,6 +297,71 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
             baseMapper.updateById(entity);
         }
         return true;
+    }
+
+    /**
+     * 校验商品 SPU 保存参数。
+     */
+    private ProductSpu validateSpuForSave(ProductSpuBo bo) {
+        ProductSpu oldSpu = null;
+        if (bo.getId() != null) {
+            oldSpu = baseMapper.selectById(bo.getId());
+            if (oldSpu == null || Boolean.TRUE.equals(oldSpu.getIsDeleted())) {
+                throw new ServiceException("商品 SPU 不存在");
+            }
+        }
+        validateCategory(bo.getCategoryId());
+        validateBrand(bo.getBrandId());
+        productSkuService.validateSkuList(bo.getSkus(), bo.getSpecType());
+        return oldSpu;
+    }
+
+    /**
+     * 校验商品分类存在、启用且层级满足商品挂载要求。
+     */
+    private void validateCategory(Long id) {
+        ProductCategory category = productCategoryMapper.selectById(id);
+        if (category == null || Boolean.TRUE.equals(category.getIsDeleted())) {
+            throw new ServiceException("商品分类不存在");
+        }
+        if (StatusEnum.isDisable(category.getStatus())) {
+            throw new ServiceException("商品分类(" + category.getName() + ")已禁用，无法使用");
+        }
+        if (getCategoryLevel(id) < PRODUCT_CATEGORY_LEVEL_MIN) {
+            throw new ServiceException("商品分类不正确，原因：必须使用第二级的商品分类及以下");
+        }
+    }
+
+    /**
+     * 计算商品分类层级。
+     */
+    private int getCategoryLevel(Long id) {
+        if (Objects.equals(id, ProductCategory.PARENT_ID_ROOT)) {
+            return 0;
+        }
+        int level = 1;
+        for (int i = 0; i < Byte.MAX_VALUE; i++) {
+            ProductCategory category = productCategoryMapper.selectById(id);
+            if (category == null || Objects.equals(category.getParentId(), ProductCategory.PARENT_ID_ROOT)) {
+                break;
+            }
+            level++;
+            id = category.getParentId();
+        }
+        return level;
+    }
+
+    /**
+     * 校验商品品牌存在且启用。
+     */
+    private void validateBrand(Long id) {
+        ProductBrand brand = productBrandMapper.selectById(id);
+        if (brand == null || Boolean.TRUE.equals(brand.getIsDeleted())) {
+            throw new ServiceException("品牌不存在");
+        }
+        if (StatusEnum.isDisable(brand.getStatus())) {
+            throw new ServiceException("品牌已禁用");
+        }
     }
 
     /**

@@ -128,6 +128,16 @@ public interface ITradeOrderService {
     Boolean receiveOrder(Long userId, Long id);
 
     /**
+     * 系统自动确认收货。
+     */
+    Integer receiveOrderBySystem();
+
+    /**
+     * 系统自动取消超时未支付订单。
+     */
+    Integer cancelOrderBySystem();
+
+    /**
      * 后台订单发货。
      */
     Boolean deliveryOrder(TradeOrderBo bo);

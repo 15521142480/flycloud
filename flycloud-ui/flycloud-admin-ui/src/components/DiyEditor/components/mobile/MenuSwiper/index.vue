@@ -51,7 +51,7 @@ const props = defineProps<{ property: MenuSwiperProperty }>()
 // 标题的高度
 const TITLE_HEIGHT = 20
 // 图标的高度
-const ICON_SIZE = 42
+const ICON_SIZE = 32
 // 垂直间距：一行上下的间距
 const SPACE_Y = 16
 
@@ -103,13 +103,16 @@ watch(
   .el-carousel__indicator {
     padding-top: 0;
     padding-bottom: 0;
+
     .el-carousel__button {
       --el-carousel-indicator-height: 6px;
       --el-carousel-indicator-width: 6px;
       --el-carousel-indicator-out-color: #ff6000;
+
       border-radius: 6px;
     }
   }
+
   .el-carousel__indicator.is-active {
     .el-carousel__button {
       --el-carousel-indicator-width: 12px;

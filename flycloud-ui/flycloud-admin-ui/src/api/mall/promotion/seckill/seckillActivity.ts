@@ -44,37 +44,37 @@ export interface SpuExtension extends Spu {
 
 // 查询秒杀活动列表
 export const getSeckillActivityPage = async (params) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/seckill-activity/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/page`, params })
 }
 
 // 查询秒杀活动列表，基于活动编号数组
 export const getSeckillActivityListByIds = (ids: number[]) => {
-  return request.get({ url: `/${MALL_BASE_URL}/promotion/seckill-activity/list-by-ids?ids=${ids}` })
+  return request.get({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/list-by-ids?ids=${ids}` })
 }
 
 // 查询秒杀活动详情
 export const getSeckillActivity = async (id: number) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/seckill-activity/get?id=` + id })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/get?id=` + id })
 }
 
 // 新增秒杀活动
 export const createSeckillActivity = async (data: SeckillActivityVO) => {
-  return await request.post({ url: `/${MALL_BASE_URL}/promotion/seckill-activity/create`, data })
+  return await request.post({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/create`, data })
 }
 
 // 修改秒杀活动
 export const updateSeckillActivity = async (data: SeckillActivityVO) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/promotion/seckill-activity/update`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/update`, data })
 }
 
 // 关闭秒杀活动
 export const closeSeckillActivity = async (id: number) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/promotion/seckill-activity/close?id=` + id })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/close?id=` + id })
 }
 
 // 删除秒杀活动
 export const deleteSeckillActivity = async (id: number) => {
   return await request.delete({
-    url: `/${MALL_BASE_URL}/promotion/seckill-activity/delete?id=` + id
+    url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/delete?id=` + id
   })
 }

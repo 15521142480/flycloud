@@ -13,13 +13,13 @@ import org.springframework.validation.annotation.Validated;
  * IM 模块全局配置
  * <p>
  * 各子模块用嵌套 inner class 区分（friend / group / face / message / rtc 等），
- * yaml 路径保持 yudao.im.{module}.{key} 与原有部署保持兼容
+ * yaml 路径使用 flycloud.im.{module}.{key}，和 flycloud 项目配置命名保持一致
  *
  * @author lxs
  * @date 2026-07-02
  */
 @Component
-@ConfigurationProperties(prefix = "yudao.im")
+@ConfigurationProperties(prefix = "flycloud.im")
 @Validated
 @Data
 @Accessors(chain = true)

@@ -30,6 +30,7 @@ public interface ICouponTemplateService {
      * 查询优惠券模板列表。
      */
     List<CouponTemplateVo> queryList(CouponTemplateBo bo);
+    List<CouponTemplateVo> queryList(Collection<Long> ids);
 
     /**
      * 新增或修改优惠券模板。

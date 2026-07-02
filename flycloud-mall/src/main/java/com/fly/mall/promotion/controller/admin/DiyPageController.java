@@ -38,7 +38,7 @@ public class DiyPageController extends BaseController {
      * 新增装修页面。
      */
     @Log(title = "装修页面", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:create')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PostMapping("/create")
     public R<Long> create(@RequestBody DiyPageBo bo) {
         return R.ok(diyPageService.createDiyPage(bo));
@@ -48,7 +48,7 @@ public class DiyPageController extends BaseController {
      * 修改装修页面。
      */
     @Log(title = "装修页面", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:update')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PutMapping("/update")
     public R<Void> update(@RequestBody DiyPageBo bo) {
         return R.ok(diyPageService.updateDiyPage(bo));
@@ -57,7 +57,7 @@ public class DiyPageController extends BaseController {
     /**
      * 查询装修页面分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:list')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:list')")
     @GetMapping("/list")
     public R<List<DiyPageRespVo>> list(@RequestParam("ids") List<Long> ids) {
         return R.ok(diyPageService.queryRespListByIds(ids));
@@ -67,7 +67,7 @@ public class DiyPageController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:list')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:list')")
     @GetMapping("/page")
     public R<PageVo<DiyPageRespVo>> page(DiyPageBo bo, PageBo page) {
         return R.ok(diyPageService.queryRespPageList(bo, page));
@@ -100,10 +100,10 @@ public class DiyPageController extends BaseController {
     /**
      * 获取装修页面详情。
      */
-    @GetMapping("/get")
-    public R<DiyPageRespVo> get(@RequestParam("id") Long id) {
-        return R.ok(diyPageService.queryRespById(id));
-    }
+//    @GetMapping("/get")
+//    public R<DiyPageRespVo> get(@RequestParam("id") Long id) {
+//        return R.ok(diyPageService.queryRespById(id));
+//    }
 
     /**
      * 获得详情。
@@ -125,7 +125,7 @@ public class DiyPageController extends BaseController {
      * 修改装修页面属性。
      */
     @Log(title = "装修页面属性", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:update')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PutMapping("/update-property")
     public R<Void> updateProperty(@RequestBody DiyPageBo bo) {
         return R.ok(diyPageService.updateDiyPageProperty(bo));
@@ -135,7 +135,7 @@ public class DiyPageController extends BaseController {
      * 新增或修改装修页面。
      */
     @Log(title = "装修页面", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiyPageBo bo) {
         return R.ok(diyPageService.saveOrUpdate(bo));
@@ -145,7 +145,7 @@ public class DiyPageController extends BaseController {
      * 删除装修页面。
      */
     @Log(title = "装修页面", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(diyPageService.deleteWithValidByIds(Arrays.asList(ids), true));
@@ -155,7 +155,7 @@ public class DiyPageController extends BaseController {
      * 删除装修页面。
      */
     @Log(title = "装修页面", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-page:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:delete')")
     @DeleteMapping("/delete")
     public R<Void> delete(@RequestParam("id") Long id) {
         return R.ok(diyPageService.deleteDiyPage(id));

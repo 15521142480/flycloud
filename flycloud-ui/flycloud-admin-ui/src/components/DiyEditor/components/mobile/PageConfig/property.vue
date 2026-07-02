@@ -1,31 +1,18 @@
 <template>
   <el-form label-width="80px" :model="formData" :rules="rules">
-    <el-form-item
-      :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k5d4f9172')"
-      prop="description"
-    >
+    <el-form-item label="页面描述" prop="description">
       <el-input
         type="textarea"
         v-model="formData!.description"
-        :placeholder="
-          t('auto.components.DiyEditor.components.mobile.PageConfig.property.kb105a0df')
-        "
+        placeholder="用户通过微信分享给朋友时，会自动显示页面描述"
       />
     </el-form-item>
-    <el-form-item
-      :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k4a2d8a28')"
-      prop="backgroundColor"
-    >
+    <el-form-item label="背景颜色" prop="backgroundColor">
       <ColorInput v-model="formData!.backgroundColor" />
     </el-form-item>
-    <el-form-item
-      :label="t('auto.components.DiyEditor.components.mobile.PageConfig.property.k8c841866')"
-      prop="backgroundImage"
-    >
-      <UploadImg v-model="formData!.backgroundImage" directory="diy" :limit="1">
-        <template #tip>{{
-          t('auto.components.DiyEditor.components.mobile.PageConfig.property.k54614dc3')
-        }}</template>
+    <el-form-item label="背景图片" prop="backgroundImage">
+      <UploadImg v-model="formData!.backgroundImage" :limit="1">
+        <template #tip>建议宽度 750px</template>
       </UploadImg>
     </el-form-item>
   </el-form>
@@ -33,15 +20,15 @@
 
 <script setup lang="ts">
 import { PageConfigProperty } from './config'
-import { usePropertyForm } from '@/components/DiyEditor/util'
-const { t } = useI18n()
+import { useVModel } from '@vueuse/core'
+// 导航栏属性面板
 defineOptions({ name: 'PageConfigProperty' })
 // 表单校验
 const rules = {}
 
 const props = defineProps<{ modelValue: PageConfigProperty }>()
 const emit = defineEmits(['update:modelValue'])
-const { formData } = usePropertyForm(props.modelValue, emit)
+const formData = useVModel(props, 'modelValue', emit)
 </script>
 
 <style scoped lang="scss"></style>

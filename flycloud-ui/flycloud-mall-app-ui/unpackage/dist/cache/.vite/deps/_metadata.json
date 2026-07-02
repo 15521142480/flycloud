@@ -1,61 +1,61 @@
 {
-  "hash": "7444b92b",
-  "configHash": "9a707af1",
+  "hash": "24494b14",
+  "configHash": "9a2cc353",
   "lockfileHash": "7762e4dd",
-  "browserHash": "5fbe1b8f",
+  "browserHash": "2be62818",
   "optimized": {
     "dayjs": {
       "src": "../../../../../node_modules/dayjs/dayjs.min.js",
       "file": "dayjs.js",
-      "fileHash": "39eb992e",
+      "fileHash": "edbea579",
       "needsInterop": true
     },
     "dayjs/locale/zh-cn": {
       "src": "../../../../../node_modules/dayjs/locale/zh-cn.js",
       "file": "dayjs_locale_zh-cn.js",
-      "fileHash": "aeea99d0",
+      "fileHash": "c6d474be",
       "needsInterop": true
     },
     "dayjs/plugin/duration": {
       "src": "../../../../../node_modules/dayjs/plugin/duration.js",
       "file": "dayjs_plugin_duration.js",
-      "fileHash": "8616d884",
+      "fileHash": "de610823",
       "needsInterop": true
     },
     "dayjs/plugin/relativeTime": {
       "src": "../../../../../node_modules/dayjs/plugin/relativeTime.js",
       "file": "dayjs_plugin_relativeTime.js",
-      "fileHash": "879c1567",
+      "fileHash": "451344a9",
       "needsInterop": true
     },
     "lodash-es": {
       "src": "../../../../../node_modules/lodash-es/lodash.js",
       "file": "lodash-es.js",
-      "fileHash": "7541e3bb",
+      "fileHash": "9faa682f",
       "needsInterop": false
     },
     "luch-request": {
       "src": "../../../../../node_modules/luch-request/src/lib/luch-request.js",
       "file": "luch-request.js",
-      "fileHash": "b06e2aa8",
+      "fileHash": "ab85712c",
       "needsInterop": false
     },
     "pinia-plugin-persist-uni": {
       "src": "../../../../../node_modules/pinia-plugin-persist-uni/dist/pinia-persist-uni.es.js",
       "file": "pinia-plugin-persist-uni.js",
-      "fileHash": "77e912f4",
+      "fileHash": "4f4bcf73",
       "needsInterop": false
     },
     "weixin-js-sdk": {
       "src": "../../../../../node_modules/weixin-js-sdk/index.js",
       "file": "weixin-js-sdk.js",
-      "fileHash": "11d44fa7",
+      "fileHash": "510b0480",
       "needsInterop": true
     }
   },
   "chunks": {
-    "chunk-DACNYCQ7": {
-      "file": "chunk-DACNYCQ7.js"
+    "chunk-AASXSIX6": {
+      "file": "chunk-AASXSIX6.js"
     },
     "chunk-Y2F7D3TJ": {
       "file": "chunk-Y2F7D3TJ.js"

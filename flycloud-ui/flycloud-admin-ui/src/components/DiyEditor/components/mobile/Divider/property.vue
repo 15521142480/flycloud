@@ -1,15 +1,9 @@
 <template>
   <el-form label-width="80px" :model="formData">
-    <el-form-item
-      :label="t('auto.components.DiyEditor.components.mobile.Divider.property.keea51aa4')"
-      prop="height"
-    >
+    <el-form-item label="高度" prop="height">
       <el-slider v-model="formData.height" :min="1" :max="100" show-input input-size="small" />
     </el-form-item>
-    <el-form-item
-      :label="t('auto.components.DiyEditor.components.mobile.Divider.property.k73d46404')"
-      prop="borderType"
-    >
+    <el-form-item label="选择样式" prop="borderType">
       <el-radio-group v-model="formData!.borderType">
         <el-tooltip
           placement="top"
@@ -24,38 +18,24 @@
       </el-radio-group>
     </el-form-item>
     <template v-if="formData.borderType !== 'none'">
-      <el-form-item
-        :label="t('auto.components.DiyEditor.components.mobile.Divider.property.k2db49230')"
-        prop="lineWidth"
-      >
+      <el-form-item label="线宽" prop="lineWidth">
         <el-slider v-model="formData.lineWidth" :min="1" :max="30" show-input input-size="small" />
       </el-form-item>
-      <el-form-item
-        :label="t('auto.components.DiyEditor.components.mobile.Divider.property.kd5a5526b')"
-        prop="paddingType"
-      >
+      <el-form-item label="左右边距" prop="paddingType">
         <el-radio-group v-model="formData!.paddingType">
-          <el-tooltip
-            :content="t('auto.components.DiyEditor.components.mobile.Divider.property.kd8a481cc')"
-            placement="top"
-          >
+          <el-tooltip content="无边距" placement="top">
             <el-radio-button value="none">
               <Icon icon="tabler:box-padding" />
             </el-radio-button>
           </el-tooltip>
-          <el-tooltip
-            :content="t('auto.components.DiyEditor.components.mobile.Divider.property.k987418f8')"
-            placement="top"
-          >
+          <el-tooltip content="左右留边" placement="top">
             <el-radio-button value="horizontal">
               <Icon icon="vaadin:padding" />
             </el-radio-button>
           </el-tooltip>
         </el-radio-group>
       </el-form-item>
-      <el-form-item
-        :label="t('auto.components.DiyEditor.components.mobile.Divider.property.k8ef48860')"
-      >
+      <el-form-item label="颜色">
         <!-- 分割线颜色 -->
         <ColorInput v-model="formData.lineColor" />
       </el-form-item>
@@ -65,33 +45,33 @@
 
 <script setup lang="ts">
 import { DividerProperty } from './config'
-import { usePropertyForm } from '@/components/DiyEditor/util'
-const { t } = useI18n()
+import { useVModel } from '@vueuse/core'
+// 导航栏属性面板
 defineOptions({ name: 'DividerProperty' })
 const props = defineProps<{ modelValue: DividerProperty }>()
 const emit = defineEmits(['update:modelValue'])
-const { formData } = usePropertyForm(props.modelValue, emit)
+const formData = useVModel(props, 'modelValue', emit)
 
 //线类型
 const BORDER_TYPES = [
   {
     icon: 'vaadin:line-h',
-    text: t('auto.components.DiyEditor.components.mobile.Divider.property.k165a7c44'),
+    text: '实线',
     type: 'solid'
   },
   {
     icon: 'tabler:line-dashed',
-    text: t('auto.components.DiyEditor.components.mobile.Divider.property.k12c09d03'),
+    text: '虚线',
     type: 'dashed'
   },
   {
     icon: 'tabler:line-dotted',
-    text: t('auto.components.DiyEditor.components.mobile.Divider.property.k1510a5c5'),
+    text: '点线',
     type: 'dotted'
   },
   {
     icon: 'entypo:progress-empty',
-    text: t('auto.components.DiyEditor.components.mobile.Divider.property.k72077749'),
+    text: '无',
     type: 'none'
   }
 ]

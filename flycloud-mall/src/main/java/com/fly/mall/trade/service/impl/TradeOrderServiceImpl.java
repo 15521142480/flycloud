@@ -37,6 +37,7 @@ import com.fly.mall.api.trade.domain.vo.TradeOrderItemVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.product.service.IProductSkuService;
 import com.fly.mall.product.service.IProductSpuService;
+import com.fly.mall.trade.config.TradeOrderProperties;
 import com.fly.mall.trade.mapper.TradeOrderItemMapper;
 import com.fly.mall.trade.mapper.TradeOrderMapper;
 import com.fly.mall.trade.service.ICartService;
@@ -124,6 +125,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     private final IProductSkuService productSkuService;
     private final IProductSpuService productSpuService;
     private final IPayOrderApi payOrderApi;
+    private final TradeOrderProperties tradeOrderProperties;
     private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
@@ -601,6 +603,67 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     }
 
     /**
+     * 系统自动确认收货。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer receiveOrderBySystem() {
+        LocalDateTime expireTime = LocalDateTime.now().minus(tradeOrderProperties.getReceiveExpireTime());
+        List<TradeOrder> orders = baseMapper.selectList(new LambdaQueryWrapper<TradeOrder>()
+                .eq(TradeOrder::getIsDeleted, false)
+                .eq(TradeOrder::getStatus, ORDER_STATUS_DELIVERED)
+                .lt(TradeOrder::getDeliveryTime, expireTime));
+        int count = 0;
+        for (TradeOrder order : orders) {
+            TradeOrder entity = new TradeOrder();
+            entity.setId(order.getId());
+            entity.setStatus(ORDER_STATUS_COMPLETED);
+            entity.setReceiveTime(LocalDateTime.now());
+            entity.setFinishTime(LocalDateTime.now());
+            entity.setUpdateBy("system");
+            entity.setUpdateTime(LocalDateTime.now());
+
+            LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
+            updateWrapper.eq(TradeOrder::getId, order.getId());
+            updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_DELIVERED);
+            count += baseMapper.update(entity, updateWrapper);
+        }
+        return count;
+    }
+
+    /**
+     * 系统自动取消超时未支付订单。
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer cancelOrderBySystem() {
+        LocalDateTime expireTime = LocalDateTime.now().minus(tradeOrderProperties.getPayExpireTime());
+        List<TradeOrder> orders = baseMapper.selectList(new LambdaQueryWrapper<TradeOrder>()
+                .eq(TradeOrder::getIsDeleted, false)
+                .eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID)
+                .lt(TradeOrder::getCreateTime, expireTime));
+        int count = 0;
+        for (TradeOrder order : orders) {
+            if (isPayOrderSuccess(order)) {
+                continue;
+            }
+            TradeOrder entity = new TradeOrder();
+            entity.setId(order.getId());
+            entity.setStatus(ORDER_STATUS_CANCELED);
+            entity.setCancelTime(LocalDateTime.now());
+            entity.setCancelType(20);
+            entity.setUpdateBy("system");
+            entity.setUpdateTime(LocalDateTime.now());
+
+            LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
+            updateWrapper.eq(TradeOrder::getId, order.getId());
+            updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID);
+            count += baseMapper.update(entity, updateWrapper);
+        }
+        return count;
+    }
+
+    /**
      * 后台订单发货。
      */
     @Override
@@ -928,6 +991,9 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             if (sku == null || spu == null) {
                 throw new ServiceException("购物车商品不存在");
             }
+            if (!StatusEnum.isEnable(spu.getStatus())) {
+                throw new ServiceException("商品不存在或已下架");
+            }
             Integer count = cart.getCount() == null ? 0 : cart.getCount();
             if (count <= 0) {
                 throw new ServiceException("购物车商品数量必须大于 0");
@@ -1084,6 +1150,17 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             throw new ServiceException("商城订单绑定的支付单不匹配");
         }
         return payOrder;
+    }
+
+    /**
+     * 判断支付单是否已经支付成功。
+     */
+    private boolean isPayOrderSuccess(TradeOrder order) {
+        if (order.getPayOrderId() == null) {
+            return false;
+        }
+        PayOrderRespVo payOrder = payOrderApi.getOrder(order.getPayOrderId()).getCheckedData();
+        return payOrder != null && Objects.equals(payOrder.getStatus(), 10);
     }
 
     /**

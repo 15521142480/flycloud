@@ -41,32 +41,32 @@ export interface SpuExtension extends Spu {
 
 // 查询砍价活动列表
 export const getBargainActivityPage = async (params: any) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/bargain-activity/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/page`, params })
 }
 
 // 查询砍价活动详情
 export const getBargainActivity = async (id: number) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/bargain-activity/get?id=` + id })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/get?id=` + id })
 }
 
 // 新增砍价活动
 export const createBargainActivity = async (data: BargainActivityVO) => {
-  return await request.post({ url: `/${MALL_BASE_URL}/promotion/bargain-activity/create`, data })
+  return await request.post({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/create`, data })
 }
 
 // 修改砍价活动
 export const updateBargainActivity = async (data: BargainActivityVO) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/promotion/bargain-activity/update`, data })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/update`, data })
 }
 
 // 关闭砍价活动
 export const closeBargainActivity = async (id: number) => {
-  return await request.put({ url: `/${MALL_BASE_URL}/promotion/bargain-activity/close?id=` + id })
+  return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/close?id=` + id })
 }
 
 // 删除砍价活动
 export const deleteBargainActivity = async (id: number) => {
   return await request.delete({
-    url: `/${MALL_BASE_URL}/promotion/bargain-activity/delete?id=` + id
+    url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/delete?id=` + id
   })
 }

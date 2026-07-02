@@ -60,6 +60,11 @@ public class CouponTemplateServiceImpl extends BaseServiceImpl<CouponTemplateMap
         return baseMapper.selectVoList(lqw);
     }
 
+    @Override
+    public List<CouponTemplateVo> queryList(Collection<Long> ids) {
+        return baseMapper.selectVoBatchIds(ids);
+    }
+
     /**
      * 新增或修改优惠券模板。
      */

@@ -1,8 +1,6 @@
 import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
-import { useI18n } from '@/hooks/web/useI18n'
-/** 广告魔方属性 */
-const { t } = useI18n()
 
+/** 广告魔方属性 */
 export interface MagicCubeProperty {
   // 上圆角
   borderRadiusTop: number
@@ -35,7 +33,7 @@ export interface MagicCubeItemProperty {
 // 定义组件
 export const component = {
   id: 'MagicCube',
-  name: t('auto.components.DiyEditor.components.mobile.MagicCube.config.k6ebc0588'),
+  name: '广告魔方',
   icon: 'bi:columns',
   property: {
     borderRadiusTop: 0,

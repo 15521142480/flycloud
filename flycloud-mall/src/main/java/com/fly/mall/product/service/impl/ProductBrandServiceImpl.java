@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.exception.ServiceException;
 import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 商品品牌 Service 业务层处理。
@@ -71,6 +73,7 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
     @Override
     public Boolean saveOrUpdate(ProductBrandBo bo) {
         fileUrlFieldConverter.toPath(bo, "picUrl");
+        validateBrandNameUnique(bo.getId(), bo.getName());
         ProductBrand entity = BeanUtil.toBean(bo, ProductBrand.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();
@@ -94,6 +97,7 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
     @Override
     public Long createBrand(ProductBrandBo bo) {
         fileUrlFieldConverter.toPath(bo, "picUrl");
+        validateBrandNameUnique(null, bo.getName());
         ProductBrand entity = BeanUtil.toBean(bo, ProductBrand.class);
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());
@@ -104,6 +108,22 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
         entity.setUpdateTime(now);
         baseMapper.insert(entity);
         return entity.getId();
+    }
+
+    /**
+     * 校验商品品牌名称唯一。
+     */
+    private void validateBrandNameUnique(Long id, String name) {
+        if (StringUtils.isBlank(name)) {
+            return;
+        }
+        LambdaQueryWrapper<ProductBrand> lqw = Wrappers.lambdaQuery();
+        lqw.eq(ProductBrand::getIsDeleted, false);
+        lqw.eq(ProductBrand::getName, name);
+        ProductBrand brand = baseMapper.selectOne(lqw);
+        if (brand != null && !Objects.equals(brand.getId(), id)) {
+            throw new ServiceException("商品品牌名称已存在");
+        }
     }
 
     /**

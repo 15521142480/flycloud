@@ -21,10 +21,10 @@ export interface CombinationRecordVO {
 
 // 查询拼团记录列表
 export const getCombinationRecordPage = async (params: any) => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/combination-record/page`, params })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/combination-record/page`, params })
 }
 
 // 获得拼团记录的概要信息
 export const getCombinationRecordSummary = async () => {
-  return await request.get({ url: `/${MALL_BASE_URL}/promotion/combination-record/get-summary` })
+  return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/combination-record/get-summary` })
 }

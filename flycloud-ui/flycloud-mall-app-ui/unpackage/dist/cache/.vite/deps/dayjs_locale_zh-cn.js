@@ -1,13 +1,13 @@
 import {
   require_dayjs_min
-} from "./chunk-DACNYCQ7.js";
+} from "./chunk-AASXSIX6.js";
 import {
   __commonJS
 } from "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/dayjs/locale/zh-cn.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/dayjs/locale/zh-cn.js
 var require_zh_cn = __commonJS({
-  "../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/dayjs/locale/zh-cn.js"(exports, module) {
+  "../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/dayjs/locale/zh-cn.js"(exports, module) {
     !function(e, _) {
       "object" == typeof exports && "undefined" != typeof module ? module.exports = _(require_dayjs_min()) : "function" == typeof define && define.amd ? define(["dayjs"], _) : (e = "undefined" != typeof globalThis ? globalThis : e || self).dayjs_locale_zh_cn = _(e.dayjs);
     }(exports, function(e) {

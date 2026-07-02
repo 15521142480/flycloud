@@ -14,7 +14,10 @@
       :key="index"
     >
       <!-- 角标 -->
-      <div v-if="property.badge.show" class="absolute left-0 top-0 z-1 items-center justify-center">
+      <div
+        v-if="property.badge.show && property.badge.imgUrl"
+        class="absolute left-0 top-0 z-1 items-center justify-center"
+      >
         <el-image fit="cover" :src="property.badge.imgUrl" class="h-26px w-38px" />
       </div>
       <!-- 商品封面图 -->
@@ -74,7 +77,8 @@
             v-if="property.fields.marketPrice.show && spu.marketPrice"
             class="ml-4px text-10px line-through"
             :style="{ color: property.fields.marketPrice.color }"
-            >￥{{ fenToYuan(spu.marketPrice) }}
+          >
+            ￥{{ fenToYuan(spu.marketPrice) }}
           </span>
         </div>
         <div class="text-12px">
@@ -82,14 +86,13 @@
           <span
             v-if="property.fields.salesCount.show"
             :style="{ color: property.fields.salesCount.color }"
-            >{{
-              t('extra.kdab35851', { p0: (spu.salesCount || 0) + (spu.virtualSalesCount || 0) })
-            }}</span
           >
+            已售{{ (spu.salesCount || 0) + (spu.virtualSalesCount || 0) }}件
+          </span>
           <!-- 库存 -->
-          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">{{
-            t('extra.kc602f07a', { p0: spu.stock || 0 })
-          }}</span>
+          <span v-if="property.fields.stock.show" :style="{ color: property.fields.stock.color }">
+            库存{{ spu.stock || 0 }}
+          </span>
         </div>
       </div>
       <!-- 购买按钮 -->
@@ -121,7 +124,6 @@ import * as ProductSpuApi from '@/api/mall/product/spu'
 import { fenToYuan } from '../../../../../utils'
 
 /** 商品卡片 */
-const { t } = useI18n()
 defineOptions({ name: 'ProductCard' })
 // 定义属性
 const props = defineProps<{ property: ProductCardProperty }>()

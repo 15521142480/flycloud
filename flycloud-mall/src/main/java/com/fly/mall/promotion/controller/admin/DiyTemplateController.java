@@ -38,7 +38,7 @@ public class DiyTemplateController extends BaseController {
      * 新增装修模板。
      */
     @Log(title = "装修模板", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:create')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PostMapping("/create")
     public R<Long> create(@RequestBody DiyTemplateBo bo) {
         return R.ok(diyTemplateService.createDiyTemplate(bo));
@@ -48,7 +48,7 @@ public class DiyTemplateController extends BaseController {
      * 修改装修模板。
      */
     @Log(title = "装修模板", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:update')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PutMapping("/update")
     public R<Void> update(@RequestBody DiyTemplateBo bo) {
         return R.ok(diyTemplateService.updateDiyTemplate(bo));
@@ -58,7 +58,7 @@ public class DiyTemplateController extends BaseController {
      * 使用装修模板。
      */
     @Log(title = "装修模板", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:update')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PutMapping("/use")
     public R<Void> use(@RequestParam("id") Long id) {
         return R.ok(diyTemplateService.useDiyTemplate(id));
@@ -67,7 +67,7 @@ public class DiyTemplateController extends BaseController {
     /**
      * 查询装修模板分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:list')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:list')")
     @GetMapping("/list")
     public R<PageVo<DiyTemplateRespVo>> list(DiyTemplateBo bo, PageBo page) {
         return R.ok(diyTemplateService.queryRespPageList(bo, page));
@@ -77,7 +77,7 @@ public class DiyTemplateController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:list')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:list')")
     @GetMapping("/page")
     public R<PageVo<DiyTemplateRespVo>> page(DiyTemplateBo bo, PageBo page) {
         return R.ok(diyTemplateService.queryRespPageList(bo, page));
@@ -102,10 +102,10 @@ public class DiyTemplateController extends BaseController {
     /**
      * 获取装修模板详情。
      */
-    @GetMapping("/get")
-    public R<DiyTemplateRespVo> get(@RequestParam("id") Long id) {
-        return R.ok(diyTemplateService.queryRespById(id));
-    }
+//    @GetMapping("/get")
+//    public R<DiyTemplateRespVo> get(@RequestParam("id") Long id) {
+//        return R.ok(diyTemplateService.queryRespById(id));
+//    }
 
     /**
      * 获得详情。
@@ -127,7 +127,7 @@ public class DiyTemplateController extends BaseController {
      * 修改装修模板属性。
      */
     @Log(title = "装修模板属性", businessType = BusinessType.UPDATE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:update')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PutMapping("/update-property")
     public R<Void> updateProperty(@RequestBody DiyTemplateBo bo) {
         return R.ok(diyTemplateService.updateDiyTemplateProperty(bo));
@@ -137,7 +137,7 @@ public class DiyTemplateController extends BaseController {
      * 新增或修改装修模板。
      */
     @Log(title = "装修模板", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:saveOrUpdate')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiyTemplateBo bo) {
         return R.ok(diyTemplateService.saveOrUpdate(bo));
@@ -147,7 +147,7 @@ public class DiyTemplateController extends BaseController {
      * 删除装修模板。
      */
     @Log(title = "装修模板", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(diyTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
@@ -157,7 +157,7 @@ public class DiyTemplateController extends BaseController {
      * 删除装修模板。
      */
     @Log(title = "装修模板", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:promotion:diy-template:delete')")
+    @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:delete')")
     @DeleteMapping("/delete")
     public R<Void> delete(@RequestParam("id") Long id) {
         return R.ok(diyTemplateService.deleteDiyTemplate(id));

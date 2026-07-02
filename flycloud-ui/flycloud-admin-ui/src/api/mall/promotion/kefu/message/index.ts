@@ -21,7 +21,7 @@ export const KeFuMessageApi = {
   // 发送客服消息
   sendKeFuMessage: async (data: any) => {
     return await request.post({
-      url: `/${MALL_BASE_URL}/promotion/kefu-message/send`,
+      url: `/${MALL_BASE_URL}/admin/promotion/kefu-message/send`,
       data
     })
   },
@@ -29,12 +29,12 @@ export const KeFuMessageApi = {
   updateKeFuMessageReadStatus: async (conversationId: number) => {
     return await request.put({
       url:
-        `/${MALL_BASE_URL}/promotion/kefu-message/update-read-status?conversationId=` +
+        `/${MALL_BASE_URL}/admin/promotion/kefu-message/update-read-status?conversationId=` +
         conversationId
     })
   },
   // 获得消息列表（流式加载）
   getKeFuMessageList: async (params: any) => {
-    return await request.get({ url: `/${MALL_BASE_URL}/promotion/kefu-message/list`, params })
+    return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/kefu-message/list`, params })
   }
 }

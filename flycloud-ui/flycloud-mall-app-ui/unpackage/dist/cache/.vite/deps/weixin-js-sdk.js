@@ -2,9 +2,9 @@ import {
   __commonJS
 } from "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/weixin-js-sdk/index.js
+// ../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/weixin-js-sdk/index.js
 var require_weixin_js_sdk = __commonJS({
-  "../../../../../../Users/lxs/applicationApp/git/github/yudao-cloud/yudao-mall-ui/node_modules/weixin-js-sdk/index.js"(exports, module) {
+  "../../../../../../Users/lxs/applicationApp/git/person/flycloud-server/flycloud-ui/flycloud-mall-app-ui/node_modules/weixin-js-sdk/index.js"(exports, module) {
     !function(e, n) {
       module.exports = n(e);
     }(typeof window === "object" && window, function(r, e) {
