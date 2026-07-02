@@ -173,7 +173,7 @@
               link
               type="primary"
               @click="openModelForm('update', scope.row.id)"
-              v-hasPermi="['bpm:manage:model:saveOrUpdate']"
+              v-hasPermi="['bpm:manage:model:update']"
               :disabled="!isManagerUser(scope.row)"
             >
               {{ t('extra.k4c512392') }}
@@ -193,7 +193,7 @@
               class="!ml-5px"
               type="primary"
               @click="handleDeploy(scope.row)"
-              v-hasPermi="['bpm:manage:model:designModel']"
+              v-hasPermi="['bpm:manage:model:publish']"
               :disabled="!isManagerUser(scope.row)"
             >
               {{ t('extra.kb464b4af') }}

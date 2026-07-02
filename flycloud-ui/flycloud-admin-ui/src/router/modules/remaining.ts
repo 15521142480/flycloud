@@ -264,6 +264,30 @@ const remainingRouter: AppRouteRecordRaw[] = [
         }
       },
       {
+        path: 'manager/model/edit',
+        component: () => import('@/views/bpm/model/editor/index.vue'),
+        name: 'BpmModelEditor',
+        meta: {
+          noCache: true,
+          hidden: true,
+          canTo: true,
+          title: 'auto.router.modules.remaining.kae3d7440',
+          activeMenu: '/bpm/manager/model'
+        }
+      },
+      {
+        path: 'manager/simple/model',
+        component: () => import('@/views/bpm/simple/SimpleModelDesign.vue'),
+        name: 'SimpleModelDesign',
+        meta: {
+          noCache: true,
+          hidden: true,
+          canTo: true,
+          title: 'auto.router.modules.remaining.k782f5842',
+          activeMenu: '/bpm/manager/model'
+        }
+      },
+      {
         path: 'manager/definition',
         component: () => import('@/views/bpm/definition/index.vue'),
         name: 'BpmProcessDefinition',
@@ -626,6 +650,58 @@ const remainingRouter: AppRouteRecordRaw[] = [
             meta: { hidden: true, title: '通讯录' }
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/ai',
+    component: Layout,
+    name: 'Ai',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: 'image/square',
+        component: () => import('@/views/ai/image/square/index.vue'),
+        name: 'AiImageSquare',
+        meta: {
+          title: 'auto.router.modules.remaining.k85439d81',
+          icon: 'ep:home-filled',
+          noCache: false
+        }
+      }
+    ]
+  },
+  {
+    path: '/iot',
+    component: Layout,
+    name: 'IOT',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: 'product/detail/:id',
+        name: 'IoTProductDetail',
+        meta: {
+          title: 'auto.router.modules.remaining.kd54d2698',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/iot/product'
+        },
+        component: () => import('@/views/iot/product/detail/index.vue')
+      },
+      {
+        path: 'device/detail/:id',
+        name: 'IoTDeviceDetail',
+        meta: {
+          title: 'auto.router.modules.remaining.k050563c4',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/iot/device'
+        },
+        component: () => import('@/views/iot/device/detail/index.vue')
       }
     ]
   }

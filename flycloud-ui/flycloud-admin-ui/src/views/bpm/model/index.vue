@@ -19,18 +19,20 @@
             clearable
             @keyup.enter="handleQuery"
             class="!w-240px"
-          >
-            <template #prefix>
-              <Icon icon="ep:search" class="mx-10px" />
-            </template>
-          </el-input>
+            style="margin-right: 10px"
+          />
+          <el-button @click="handleQuery">
+            <Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button>
+          <el-button @click="resetQuery">
+            <Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button>
         </el-form-item>
+
         <!-- 右上角：新建模型、更多操作 -->
         <el-form-item>
           <el-button
             type="primary"
             @click="openForm('create')"
-            v-hasPermi="['bpm:manage:model:saveOrUpdate']"
+            v-hasPermi="['bpm:manage:model:create']"
           >
             <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kac8ad8d0') }}
           </el-button>
@@ -127,6 +129,12 @@ const originalData: any = ref([]) // 原始数据
 /** 搜索按钮操作 */
 const handleQuery = () => {
   getList()
+}
+
+/** 重置按钮操作 */
+const resetQuery = () => {
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 /** 添加/修改操作 */
