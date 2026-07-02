@@ -135,7 +135,7 @@ upload:
     # 使用的服务器类型 (1:本地服务, 2:ftp服务器, 3:sftp服务器, 4:阿里云oss对象存储, 5:华为云obs对象存储, 9:smb共享文件夹)
     use-server-type: 3
 
-    # sftp服务器配置
+    # 本地服务器配置
     local-server-config:
       # 文件上传和读取的前缀真实路径
       base-path: /Users/lxs/applicationFile/file/person/flycloud-server/

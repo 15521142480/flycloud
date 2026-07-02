@@ -1,11 +1,11 @@
 package com.fly.file.service.impl;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.fly.common.security.util.UserUtils;
+import com.fly.common.utils.DateUtils;
 import com.fly.file.factory.FileClientFactory;
 import com.fly.file.factory.service.FileClientService;
 import com.fly.file.service.FileUrlService;
@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static cn.hutool.core.date.DatePattern.PURE_DATE_PATTERN;
-
 /**
  * 文件服务-实现类
  *
@@ -34,7 +32,7 @@ import static cn.hutool.core.date.DatePattern.PURE_DATE_PATTERN;
 public class FileServiceImpl implements FileService {
 
 
-    // 上传文件的前缀，是否包含日期（yyyyMMdd）; 目的：按照日期，进行分目录
+    // 上传文件的前缀，是否包含日期; 目的：按照日期分目录，如: yyyy/MM/dd
     static boolean PATH_PREFIX_DATE_ENABLE = true;
 
     // 上传文件的后缀，是否启用
@@ -45,9 +43,9 @@ public class FileServiceImpl implements FileService {
     // 后缀是否作为上级目录; true保留原文件名, false:后缀拼到文件名
     static boolean PATH_SUFFIX_AS_DIRECTORY = false;
 
-    // 上面三个属性如果设置为：true、true、false，推荐使用，则文件路径为：/20260701/xxx_178290301301859703.png
-    // 上面三个属性如果设置为：true、true、true，则文件路径为：/20260701/178290301301859703/xxx.png
-    // 上面三个属性如果设置为：true、false、false，则文件路径为：/20260701/xxx.png
+    // 上面三个属性如果设置为：true、true、false，推荐使用，则文件路径为：/2026/07/01/xxx_178290301301859703.png
+    // 上面三个属性如果设置为：true、true、true，则文件路径为：/2026/07/01/178290301301859703/xxx.png
+    // 上面三个属性如果设置为：true、false、false，则文件路径为：/2026/07/01/xxx.png
 
     private final FileMapper fileMapper;
 
@@ -121,7 +119,7 @@ public class FileServiceImpl implements FileService {
         // 1.2 生成前缀、后缀
         String prefix = null;
         if (PATH_PREFIX_DATE_ENABLE) {
-            prefix = LocalDateTimeUtil.format(LocalDateTimeUtil.now(), PURE_DATE_PATTERN);
+            prefix = DateUtils.datePath();
         }
         String suffix = null;
         if (PATH_SUFFIX_TIMESTAMP_ENABLE) {

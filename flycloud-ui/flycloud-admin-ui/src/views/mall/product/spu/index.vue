@@ -392,7 +392,7 @@ const resetQuery = () => {
 /** 新增或修改 */
 const openForm = (id?: number) => {
   // 修改
-  if (typeof id === 'number') {
+  if (id) {
     push({ name: 'ProductSpuEdit', params: { id } })
     return
   }
