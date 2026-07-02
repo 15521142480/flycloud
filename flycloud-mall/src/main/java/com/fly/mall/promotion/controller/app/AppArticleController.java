@@ -3,6 +3,7 @@ package com.fly.mall.promotion.controller.app;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.bo.ArticleBo;
 import com.fly.mall.api.promotion.domain.vo.ArticleVo;
 import com.fly.mall.promotion.service.IArticleService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 移动端 - 文章 控制器。
@@ -34,8 +37,8 @@ public class AppArticleController {
      * 查询移动端文章分页列表。
      */
     @RequestMapping("/list")
-    public R<PageVo<ArticleVo>> list(ArticleBo bo, PageBo page) {
-        return R.ok(articleService.queryPageList(bo, page));
+    public R<List<ArticleVo>> list(ArticleBo bo) {
+        return R.ok(articleService.queryList(bo));
     }
 
     /**
@@ -58,23 +61,20 @@ public class AppArticleController {
      * 获得详情。
      */
     @RequestMapping({"/get-detail", "/get"})
-    public R<ArticleVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(articleService.queryById(id));
+    public R<ArticleVo> getDetail(@RequestParam(value = "id", required = false) Long id,
+                                  @RequestParam(value = "title", required = false) String title) {
+        if (id != null) {
+            return R.ok(articleService.queryById(id));
+        }
+        return R.ok(StringUtils.isBlank(title) ? null : articleService.queryLastByTitle(title));
     }
 
     /**
      * 增加文章浏览次数。
      */
     @PutMapping("/add-browse-count")
-    public R<Void> addBrowseCount(@RequestParam("id") Long id) {
-        ArticleVo article = articleService.queryById(id);
-        if (article != null) {
-            ArticleBo bo = new ArticleBo();
-            bo.setId(id);
-            bo.setBrowseCount((article.getBrowseCount() == null ? 0 : article.getBrowseCount()) + 1);
-            articleService.saveOrUpdate(bo);
-        }
-        return R.ok();
+    public R<Boolean> addBrowseCount(@RequestParam("id") Long id) {
+        return R.ok(articleService.addBrowseCount(id));
     }
 
 }

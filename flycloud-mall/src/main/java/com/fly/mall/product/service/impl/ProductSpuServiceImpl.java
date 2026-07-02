@@ -34,10 +34,10 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 商品 SPU Service 业务层处理。
@@ -48,6 +48,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, ProductSpu> implements IProductSpuService {
+
+    private static final int PRODUCT_ALERT_STOCK = 10;
 
     private final ProductSpuMapper baseMapper;
     private final IProductSkuService productSkuService;
@@ -121,11 +123,13 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
      */
     @Override
     public Map<Integer, Long> queryStatusCount(ProductSpuBo bo) {
-        LambdaQueryWrapper<ProductSpu> lqw = buildQueryWrapper(bo);
-        lqw.select(ProductSpu::getStatus);
-        return baseMapper.selectList(lqw).stream()
-                .filter(item -> item.getStatus() != null)
-                .collect(Collectors.groupingBy(ProductSpu::getStatus, Collectors.counting()));
+        Map<Integer, Long> counts = new LinkedHashMap<>(5);
+        counts.put(ProductSpuBo.FOR_SALE, selectCountByTab(bo, ProductSpuBo.FOR_SALE));
+        counts.put(ProductSpuBo.IN_WAREHOUSE, selectCountByTab(bo, ProductSpuBo.IN_WAREHOUSE));
+        counts.put(ProductSpuBo.SOLD_OUT, selectCountByTab(bo, ProductSpuBo.SOLD_OUT));
+        counts.put(ProductSpuBo.ALERT_STOCK, selectCountByTab(bo, ProductSpuBo.ALERT_STOCK));
+        counts.put(ProductSpuBo.RECYCLE_BIN, selectCountByTab(bo, ProductSpuBo.RECYCLE_BIN));
+        return counts;
     }
 
     /**
@@ -277,20 +281,88 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     }
 
     /**
+     * 查询指定分类绑定的商品 SPU 数量。
+     */
+    @Override
+    public Long getSpuCountByCategoryId(Long categoryId) {
+        if (categoryId == null) {
+            return 0L;
+        }
+        LambdaQueryWrapper<ProductSpu> lqw = Wrappers.lambdaQuery();
+        lqw.eq(ProductSpu::getIsDeleted, false);
+        lqw.eq(ProductSpu::getCategoryId, categoryId);
+        return baseMapper.selectCount(lqw);
+    }
+
+    /**
      * 构建商品 SPU 查询条件。
      */
     private LambdaQueryWrapper<ProductSpu> buildQueryWrapper(ProductSpuBo bo) {
+        LambdaQueryWrapper<ProductSpu> lqw = buildBaseQueryWrapper(bo, true);
+        appendTabQuery(lqw, bo.getTabType());
+        return lqw;
+    }
+
+    /**
+     * 构建商品 SPU 基础查询条件。
+     */
+    private LambdaQueryWrapper<ProductSpu> buildBaseQueryWrapper(ProductSpuBo bo, boolean includeStatus) {
         LambdaQueryWrapper<ProductSpu> lqw = Wrappers.lambdaQuery();
         lqw.eq(ProductSpu::getIsDeleted, false);
         lqw.eq(bo.getId() != null, ProductSpu::getId, bo.getId());
         lqw.like(StringUtils.isNotBlank(bo.getName()), ProductSpu::getName, bo.getName());
         lqw.eq(bo.getCategoryId() != null, ProductSpu::getCategoryId, bo.getCategoryId());
         lqw.eq(bo.getBrandId() != null, ProductSpu::getBrandId, bo.getBrandId());
-        lqw.eq(bo.getStatus() != null, ProductSpu::getStatus, bo.getStatus());
+        lqw.eq(includeStatus && bo.getStatus() != null, ProductSpu::getStatus, bo.getStatus());
+        appendCreateTimeRange(lqw, bo);
         return lqw;
     }
 
+    /**
+     * 追加商品 SPU 创建时间查询范围。
+     */
+    private void appendCreateTimeRange(LambdaQueryWrapper<ProductSpu> lqw, ProductSpuBo bo) {
+        Object beginTime = bo.getParams().get("beginCreateTime");
+        Object endTime = bo.getParams().get("endCreateTime");
+        if (beginTime instanceof LocalDateTime begin && endTime instanceof LocalDateTime end) {
+            lqw.between(ProductSpu::getCreateTime, begin, end);
+        } else if (beginTime instanceof LocalDateTime begin) {
+            lqw.ge(ProductSpu::getCreateTime, begin);
+        } else if (endTime instanceof LocalDateTime end) {
+            lqw.le(ProductSpu::getCreateTime, end);
+        }
+    }
 
+    /**
+     * 查询指定商品 SPU Tab 的数量。
+     */
+    private Long selectCountByTab(ProductSpuBo bo, Integer tabType) {
+        LambdaQueryWrapper<ProductSpu> lqw = buildBaseQueryWrapper(bo, false);
+        appendTabQuery(lqw, tabType);
+        return baseMapper.selectCount(lqw);
+    }
+
+    /**
+     * 追加管理后台商品 SPU Tab 条件。
+     */
+    private void appendTabQuery(LambdaQueryWrapper<ProductSpu> lqw, Integer tabType) {
+        if (Objects.equals(ProductSpuBo.FOR_SALE, tabType)) {
+            lqw.eq(ProductSpu::getStatus, ProductSpuStatusEnum.ENABLE.getStatus());
+        }
+        if (Objects.equals(ProductSpuBo.IN_WAREHOUSE, tabType)) {
+            lqw.eq(ProductSpu::getStatus, ProductSpuStatusEnum.DISABLE.getStatus());
+        }
+        if (Objects.equals(ProductSpuBo.SOLD_OUT, tabType)) {
+            lqw.eq(ProductSpu::getStock, 0);
+        }
+        if (Objects.equals(ProductSpuBo.ALERT_STOCK, tabType)) {
+            lqw.le(ProductSpu::getStock, PRODUCT_ALERT_STOCK)
+                    .ne(ProductSpu::getStatus, ProductSpuStatusEnum.RECYCLE.getStatus());
+        }
+        if (Objects.equals(ProductSpuBo.RECYCLE_BIN, tabType)) {
+            lqw.eq(ProductSpu::getStatus, ProductSpuStatusEnum.RECYCLE.getStatus());
+        }
+    }
 
     /**
      * 基于 SKU 的信息，初始化 SPU 的信息

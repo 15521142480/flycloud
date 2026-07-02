@@ -15,6 +15,31 @@ import java.util.List;
 @Data
 public class ProductSpuBo extends BaseEntity {
 
+    /**
+     * 出售中商品。
+     */
+    public static final Integer FOR_SALE = 0;
+
+    /**
+     * 仓库中商品。
+     */
+    public static final Integer IN_WAREHOUSE = 1;
+
+    /**
+     * 已售空商品。
+     */
+    public static final Integer SOLD_OUT = 2;
+
+    /**
+     * 警戒库存商品。
+     */
+    public static final Integer ALERT_STOCK = 3;
+
+    /**
+     * 商品回收站。
+     */
+    public static final Integer RECYCLE_BIN = 4;
+
     @Schema(description = "SPU 编号", example = "1")
     private Long id;
 
@@ -47,6 +72,9 @@ public class ProductSpuBo extends BaseEntity {
 
     @Schema(description = "商品状态", example = "0")
     private Integer status;
+
+    @Schema(description = "前端请求的 Tab 类型", example = "1")
+    private Integer tabType;
 
     @Schema(description = "规格类型，false 单规格，true 多规格")
     private Boolean specType;

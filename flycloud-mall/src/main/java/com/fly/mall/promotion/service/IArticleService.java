@@ -22,6 +22,11 @@ public interface IArticleService {
     ArticleVo queryById(Long id);
 
     /**
+     * 根据标题查询最后一篇文章。
+     */
+    ArticleVo queryLastByTitle(String title);
+
+    /**
      * 分页查询文章。
      */
     PageVo<ArticleVo> queryPageList(ArticleBo bo, PageBo pageBo);
@@ -35,6 +40,11 @@ public interface IArticleService {
      * 新增或修改文章。
      */
     Boolean saveOrUpdate(ArticleBo bo);
+
+    /**
+     * 增加文章浏览次数。
+     */
+    Boolean addBrowseCount(Long id);
 
     /**
      * 校验并批量删除文章。

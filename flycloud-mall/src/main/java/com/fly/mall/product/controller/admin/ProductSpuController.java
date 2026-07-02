@@ -18,9 +18,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collection;
@@ -41,11 +44,24 @@ public class ProductSpuController extends BaseController {
     private final IProductSpuService productSpuService;
 
     /**
+     * 忽略 BaseEntity 单值创建时间绑定，避免 yudao 前端 createTime[0]/createTime[1] 查询参数绑定失败。
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("createTime", "createTime[0]", "createTime[1]");
+    }
+
+    /**
      * 查询商品 SPU 分页列表。
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
     @GetMapping(value = "/list", params = "!spuIds")
-    public R<PageVo<ProductSpuRespVo>> list(ProductSpuBo bo, PageBo page) {
+    public R<PageVo<ProductSpuRespVo>> list(ProductSpuBo bo, PageBo page,
+                                            @RequestParam(value = "createTime[0]", required = false)
+                                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime,
+                                            @RequestParam(value = "createTime[1]", required = false)
+                                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
+        setCreateTimeRange(bo, beginTime, endTime);
         return R.ok(convertPage(productSpuService.queryPageList(bo, page)));
     }
 
@@ -54,7 +70,12 @@ public class ProductSpuController extends BaseController {
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
     @GetMapping("/page")
-    public R<PageVo<ProductSpuRespVo>> page(ProductSpuBo bo, PageBo page) {
+    public R<PageVo<ProductSpuRespVo>> page(ProductSpuBo bo, PageBo page,
+                                            @RequestParam(value = "createTime[0]", required = false)
+                                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime,
+                                            @RequestParam(value = "createTime[1]", required = false)
+                                            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
+        setCreateTimeRange(bo, beginTime, endTime);
         return R.ok(convertPage(productSpuService.queryPageList(bo, page)));
     }
 
@@ -83,7 +104,12 @@ public class ProductSpuController extends BaseController {
      */
     @PreAuthorize("@pms.hasPermission('mall:product:spu:list')")
     @GetMapping("/get-count")
-    public R<Map<Integer, Long>> getSpuCount(ProductSpuBo bo) {
+    public R<Map<Integer, Long>> getSpuCount(ProductSpuBo bo,
+                                             @RequestParam(value = "createTime[0]", required = false)
+                                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime,
+                                             @RequestParam(value = "createTime[1]", required = false)
+                                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
+        setCreateTimeRange(bo, beginTime, endTime);
         return R.ok(productSpuService.queryStatusCount(bo));
     }
 
@@ -162,6 +188,18 @@ public class ProductSpuController extends BaseController {
         respPage.setTotal(page.getTotal());
         respPage.setPages(page.getPages());
         return respPage;
+    }
+
+    /**
+     * 设置商品 SPU 创建时间查询范围。
+     */
+    private void setCreateTimeRange(ProductSpuBo bo, LocalDateTime beginTime, LocalDateTime endTime) {
+        if (beginTime != null) {
+            bo.getParams().put("beginCreateTime", beginTime);
+        }
+        if (endTime != null) {
+            bo.getParams().put("endCreateTime", endTime);
+        }
     }
 
     /**

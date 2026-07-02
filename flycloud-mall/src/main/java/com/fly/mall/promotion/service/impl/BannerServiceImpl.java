@@ -59,7 +59,30 @@ public class BannerServiceImpl extends BaseServiceImpl<BannerMapper, Banner> imp
     @Override
     public List<BannerVo> queryList(BannerBo bo) {
         LambdaQueryWrapper<Banner> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(Banner::getSort).orderByDesc(Banner::getId);
         return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+    }
+
+    /**
+     * 根据位置查询轮播图列表。
+     */
+    @Override
+    public List<BannerVo> queryListByPosition(Integer position) {
+        BannerBo bo = new BannerBo();
+        bo.setPosition(position);
+        return queryList(bo);
+    }
+
+    /**
+     * 增加轮播图浏览次数。
+     */
+    @Override
+    public Boolean addBrowseCount(Long id) {
+        if (id == null || baseMapper.selectById(id) == null) {
+            return false;
+        }
+        baseMapper.updateBrowseCount(id);
+        return true;
     }
 
     /**

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 移动端 - 轮播图 控制器。
  *
@@ -34,8 +36,8 @@ public class AppBannerController {
      * 查询移动端轮播图分页列表。
      */
     @GetMapping("/list")
-    public R<PageVo<BannerVo>> list(BannerBo bo, PageBo page) {
-        return R.ok(bannerService.queryPageList(bo, page));
+    public R<List<BannerVo>> list(@RequestParam("position") Integer position) {
+        return R.ok(bannerService.queryListByPosition(position));
     }
 
     /**
@@ -66,15 +68,8 @@ public class AppBannerController {
      * 增加轮播图浏览次数。
      */
     @PutMapping("/add-browse-count")
-    public R<Void> addBrowseCount(@RequestParam("id") Long id) {
-        BannerVo banner = bannerService.queryById(id);
-        if (banner != null) {
-            BannerBo bo = new BannerBo();
-            bo.setId(id);
-            bo.setBrowseCount((banner.getBrowseCount() == null ? 0 : banner.getBrowseCount()) + 1);
-            bannerService.saveOrUpdate(bo);
-        }
-        return R.ok();
+    public R<Boolean> addBrowseCount(@RequestParam("id") Long id) {
+        return R.ok(bannerService.addBrowseCount(id));
     }
 
 }

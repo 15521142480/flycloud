@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Comparator;
 
 /**
  * 文章 Service 业务层处理。
@@ -44,6 +45,19 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     }
 
     /**
+     * 根据标题查询最后一篇文章。
+     */
+    @Override
+    public ArticleVo queryLastByTitle(String title) {
+        LambdaQueryWrapper<Article> lqw = Wrappers.lambdaQuery();
+        lqw.eq(Article::getIsDeleted, false);
+        lqw.eq(StringUtils.isNotBlank(title), Article::getTitle, title);
+        lqw.orderByAsc(Article::getId);
+        List<ArticleVo> list = fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return list.stream().max(Comparator.comparing(ArticleVo::getId)).orElse(null);
+    }
+
+    /**
      * 分页查询文章。
      */
     @Override
@@ -59,7 +73,20 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     @Override
     public List<ArticleVo> queryList(ArticleBo bo) {
         LambdaQueryWrapper<Article> lqw = buildQueryWrapper(bo);
+        lqw.orderByDesc(Article::getSort).orderByDesc(Article::getId);
         return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+    }
+
+    /**
+     * 增加文章浏览次数。
+     */
+    @Override
+    public Boolean addBrowseCount(Long id) {
+        if (id == null || baseMapper.selectById(id) == null) {
+            return false;
+        }
+        baseMapper.updateBrowseCount(id);
+        return true;
     }
 
     /**

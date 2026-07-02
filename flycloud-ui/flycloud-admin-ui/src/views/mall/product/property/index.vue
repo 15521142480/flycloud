@@ -1,177 +1,344 @@
 <template>
-  <doc-alert title="【商品】商品属性" url="https://doc.iocoder.cn/mall/product-property/" />
+  <div class="product-property-page">
+    <div class="property-layout">
+      <section class="table-panel property-list">
+        <div class="mini-toolbar" @keyup.enter="getPropertyList">
+          <div class="mini-fields">
+            <el-input
+              v-model.trim="propertyQuery.name"
+              clearable
+              placeholder="属性名称"
+              @keyup.enter="getPropertyList"
+            />
+          </div>
+          <div class="mini-actions">
+            <el-button @click="getPropertyList">查询</el-button>
+            <el-button @click="resetPropertyQuery">重置</el-button>
+            <el-button
+              v-hasPermi="['mall:product:property:saveOrUpdate']"
+              type="primary"
+              @click="openPropertyForm('create')"
+            >
+              新增属性
+            </el-button>
+          </div>
+        </div>
 
-  <!-- 搜索工作栏 -->
-  <ContentWrap>
-    <el-form
-      ref="queryFormRef"
-      :inline="true"
-      :model="queryParams"
-      class="-mb-15px"
-      label-width="68px"
-    >
-      <el-form-item label="名称" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          class="!w-240px"
-          clearable
-          placeholder="请输入名称"
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
-        <el-date-picker
-          v-model="queryParams.createTime"
-          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-          class="!w-240px"
-          end-placeholder="结束日期"
-          start-placeholder="开始日期"
-          type="daterange"
-          value-format="YYYY-MM-DD HH:mm:ss"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="handleQuery">
-          <Icon class="mr-5px" icon="ep:search" />
-          搜索
-        </el-button>
-        <el-button @click="resetQuery">
-          <Icon class="mr-5px" icon="ep:refresh" />
-          重置
-        </el-button>
-        <el-button
-          v-hasPermi="['mall:product:property:saveOrUpdate']"
-          plain
-          type="primary"
-          @click="openForm('create')"
+        <el-table
+          ref="propertyTableRef"
+          v-loading="propertyLoading"
+          :data="propertyList"
+          height="calc(100vh - 330px)"
+          highlight-current-row
+          row-key="id"
+          @current-change="selectProperty"
         >
-          <Icon class="mr-5px" icon="ep:plus" />
-          新增
-        </el-button>
-      </el-form-item>
-    </el-form>
-  </ContentWrap>
+          <el-table-column label="属性名称" min-width="140" prop="name" />
+          <el-table-column
+            :show-overflow-tooltip="true"
+            label="备注"
+            min-width="120"
+            prop="remark"
+          />
+          <el-table-column align="center" label="操作" width="170">
+            <template #default="{ row }">
+              <el-button
+                v-hasPermi="['mall:product:property:saveOrUpdate']"
+                link
+                type="primary"
+                @click.stop="openPropertyForm('update', row.id)"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-hasPermi="['mall:product:property:delete']"
+                link
+                type="danger"
+                @click.stop="handleDeleteProperty(row.id)"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
-  <!-- 列表 -->
-  <ContentWrap>
-    <el-table v-loading="loading" :data="list">
-      <el-table-column align="center" label="编号" min-width="60" prop="id" />
-      <el-table-column align="center" label="属性名称" prop="name" min-width="150" />
-      <el-table-column :show-overflow-tooltip="true" align="center" label="备注" prop="remark" />
-      <el-table-column
-        :formatter="dateFormatter"
-        align="center"
-        label="创建时间"
-        prop="createTime"
-        width="180"
-      />
-      <el-table-column align="center" label="操作">
-        <template #default="scope">
-          <el-button
-            v-hasPermi="['mall:product:property:saveOrUpdate']"
-            link
-            type="primary"
-            @click="openForm('update', scope.row.id)"
-          >
-            编辑
-          </el-button>
-          <el-button link type="primary" @click="goValueList(scope.row.id)">属性值</el-button>
-          <el-button
-            v-hasPermi="['mall:product:property:delete']"
-            link
-            type="danger"
-            @click="handleDelete(scope.row.id)"
-          >
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <Pagination
-      v-model:limit="queryParams.pageSize"
-      v-model:page="queryParams.pageNum"
-      :total="total"
-      @pagination="getList"
-    />
-  </ContentWrap>
+        <el-pagination
+          v-model:current-page="propertyQuery.pageNum"
+          v-model:page-size="propertyQuery.pageSize"
+          :total="propertyTotal"
+          layout="total, prev, pager, next"
+          @change="getPropertyList"
+        />
+      </section>
 
-  <!-- 表单弹窗：添加/修改 -->
-  <PropertyForm ref="formRef" @success="getList" />
+      <section class="table-panel property-values">
+        <div class="mini-toolbar" @keyup.enter="getValueList">
+          <div class="mini-fields">
+            <strong>{{ currentProperty?.name || '请选择属性' }}</strong>
+            <el-input
+              v-model.trim="valueQuery.name"
+              clearable
+              placeholder="属性值名称"
+              @keyup.enter="getValueList"
+            />
+          </div>
+          <div class="mini-actions">
+            <el-button :disabled="!currentProperty" @click="getValueList">查询</el-button>
+            <el-button :disabled="!currentProperty" @click="resetValueQuery">重置</el-button>
+            <el-button
+              v-hasPermi="['mall:product:property:saveOrUpdate']"
+              :disabled="!currentProperty"
+              type="primary"
+              @click="openValueForm('create')"
+            >
+              新增属性值
+            </el-button>
+          </div>
+        </div>
+
+        <el-table
+          v-loading="valueLoading"
+          :data="valueList"
+          height="calc(100vh - 330px)"
+          row-key="id"
+        >
+          <el-table-column label="属性值名称" min-width="150" prop="name" />
+          <el-table-column
+            :show-overflow-tooltip="true"
+            label="备注"
+            min-width="140"
+            prop="remark"
+          />
+          <el-table-column
+            :formatter="dateFormatter"
+            label="创建时间"
+            prop="createTime"
+            width="180"
+          />
+          <el-table-column align="center" fixed="right" label="操作" width="170">
+            <template #default="{ row }">
+              <el-button
+                v-hasPermi="['mall:product:property:saveOrUpdate']"
+                link
+                type="primary"
+                @click="openValueForm('update', row.id)"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-hasPermi="['mall:product:property:delete']"
+                link
+                type="danger"
+                @click="handleDeleteValue(row.id)"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <el-pagination
+          v-model:current-page="valueQuery.pageNum"
+          v-model:page-size="valueQuery.pageSize"
+          :total="valueTotal"
+          layout="total, prev, pager, next"
+          @change="getValueList"
+        />
+      </section>
+    </div>
+
+    <PropertyForm ref="propertyFormRef" @success="handlePropertyFormSuccess" />
+    <ValueForm ref="valueFormRef" @success="getValueList" />
+  </div>
 </template>
+
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
 import * as PropertyApi from '@/api/mall/product/property'
 import PropertyForm from './PropertyForm.vue'
-
-const { push } = useRouter()
+import ValueForm from './value/ValueForm.vue'
 
 defineOptions({ name: 'ProductProperty' })
 
-const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+const message = useMessage()
+const { t } = useI18n()
 
-const loading = ref(true) // 列表的加载中
-const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
-const queryParams = reactive({
+const propertyLoading = ref(false)
+const valueLoading = ref(false)
+const propertyList = ref<PropertyApi.PropertyVO[]>([])
+const valueList = ref<PropertyApi.PropertyValueVO[]>([])
+const currentProperty = ref<PropertyApi.PropertyVO>()
+const propertyTotal = ref(0)
+const valueTotal = ref(0)
+const propertyTableRef = ref()
+const propertyFormRef = ref()
+const valueFormRef = ref()
+
+const propertyQuery = reactive({
   pageNum: 1,
   pageSize: 10,
-  name: undefined,
-  createTime: []
+  name: ''
 })
-const queryFormRef = ref() // 搜索的表单
 
-/** 查询列表 */
-const getList = async () => {
-  loading.value = true
+const valueQuery = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  propertyId: undefined as number | undefined,
+  name: ''
+})
+
+const getPropertyList = async () => {
+  propertyLoading.value = true
   try {
-    const data = await PropertyApi.getPropertyPage(queryParams)
-    list.value = data.list
-    total.value = data.total
+    const data = await PropertyApi.getPropertyPage(propertyQuery)
+    propertyList.value = data.list
+    propertyTotal.value = Number(data.total || 0)
+    refreshCurrentProperty()
   } finally {
-    loading.value = false
+    propertyLoading.value = false
   }
 }
 
-/** 搜索按钮操作 */
-const handleQuery = () => {
-  queryParams.pageNum = 1
-  getList()
-}
-
-/** 重置按钮操作 */
-const resetQuery = () => {
-  queryFormRef.value.resetFields()
-  handleQuery()
-}
-
-/** 添加/修改操作 */
-const formRef = ref()
-const openForm = (type: string, id?: number) => {
-  formRef.value.open(type, id)
-}
-
-/** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const getValueList = async () => {
+  if (!currentProperty.value?.id) {
+    valueList.value = []
+    valueTotal.value = 0
+    return
+  }
+  valueLoading.value = true
   try {
-    // 删除的二次确认
+    valueQuery.propertyId = currentProperty.value.id
+    const data = await PropertyApi.getPropertyValuePage(valueQuery)
+    valueList.value = data.list
+    valueTotal.value = Number(data.total || 0)
+  } finally {
+    valueLoading.value = false
+  }
+}
+
+const refreshCurrentProperty = async () => {
+  if (!propertyList.value.length) {
+    currentProperty.value = undefined
+    valueList.value = []
+    valueTotal.value = 0
+    return
+  }
+  const currentId = currentProperty.value?.id
+  const nextProperty = propertyList.value.find((item) => item.id === currentId) || propertyList.value[0]
+  currentProperty.value = nextProperty
+  valueQuery.pageNum = 1
+  await nextTick()
+  propertyTableRef.value?.setCurrentRow(nextProperty)
+  await getValueList()
+}
+
+const selectProperty = (row?: PropertyApi.PropertyVO) => {
+  if (!row?.id || row.id === currentProperty.value?.id) return
+  currentProperty.value = row
+  valueQuery.pageNum = 1
+  getValueList()
+}
+
+const resetPropertyQuery = () => {
+  Object.assign(propertyQuery, { pageNum: 1, name: '' })
+  getPropertyList()
+}
+
+const resetValueQuery = () => {
+  Object.assign(valueQuery, { pageNum: 1, name: '' })
+  getValueList()
+}
+
+const openPropertyForm = (type: string, id?: number) => {
+  propertyFormRef.value.open(type, id)
+}
+
+const handlePropertyFormSuccess = async () => {
+  await getPropertyList()
+}
+
+const openValueForm = (type: string, id?: number) => {
+  if (!currentProperty.value?.id) return
+  valueFormRef.value.open(type, currentProperty.value.id, id)
+}
+
+const handleDeleteProperty = async (id: number) => {
+  try {
     await message.delConfirm()
-    // 发起删除
     await PropertyApi.deleteProperty(id)
     message.success(t('common.delSuccess'))
-    // 刷新列表
-    await getList()
+    if (currentProperty.value?.id === id) {
+      currentProperty.value = undefined
+    }
+    await getPropertyList()
   } catch {}
 }
 
-/** 跳转商品属性列表 */
-const goValueList = (id: number) => {
-  push({ name: 'ProductPropertyValue', params: { propertyId: id } })
+const handleDeleteValue = async (id: number) => {
+  try {
+    await message.delConfirm()
+    await PropertyApi.deletePropertyValue(id)
+    message.success(t('common.delSuccess'))
+    await getValueList()
+  } catch {}
 }
 
-/** 初始化 **/
 onMounted(() => {
-  getList()
+  getPropertyList()
 })
 </script>
+
+<style lang="scss" scoped>
+.property-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.property-list,
+.property-values {
+  min-width: 0;
+}
+
+.mini-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+
+  strong {
+    min-width: 120px;
+  }
+}
+
+.mini-fields,
+.mini-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mini-fields {
+  min-width: 0;
+
+  .el-input {
+    width: 188px;
+  }
+}
+
+.mini-actions {
+  justify-content: flex-end;
+
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .property-layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

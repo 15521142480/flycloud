@@ -32,9 +32,19 @@ public interface IBannerService {
     List<BannerVo> queryList(BannerBo bo);
 
     /**
+     * 根据位置查询轮播图列表。
+     */
+    List<BannerVo> queryListByPosition(Integer position);
+
+    /**
      * 新增或修改轮播图。
      */
     Boolean saveOrUpdate(BannerBo bo);
+
+    /**
+     * 增加轮播图浏览次数。
+     */
+    Boolean addBrowseCount(Long id);
 
     /**
      * 校验并批量删除轮播图。
