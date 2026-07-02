@@ -4,7 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.bpm.api.domain.BpmCategory;
 import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.api.domain.BpmProcessDefinitionInfo;
+import com.fly.bpm.api.domain.vo.model.BpmModelMetaInfoVO;
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
+import com.fly.bpm.common.service.BpmModelService;
 import com.fly.bpm.common.service.BpmProcessDefinitionService;
 import com.fly.bpm.common.service.IBpmCategoryService;
 import com.fly.bpm.common.service.IBpmFormService;
@@ -14,12 +16,15 @@ import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
+import com.fly.common.file.FileUrlConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.common.utils.json.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.repository.Deployment;
+import org.flowable.engine.repository.Model;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -48,6 +53,10 @@ public class BpmProcessDefinitionController extends BaseController {
     private final IBpmCategoryService bpmCategoryService;
 
     private final IBpmFormService bpmFormService;
+
+    private final BpmModelService modelService;
+
+    private final FileUrlConverter fileUrlConverter;
 
 
     /**
@@ -98,11 +107,19 @@ public class BpmProcessDefinitionController extends BaseController {
             return R.ok(Collections.emptyList());
         }
 
-        // 1.2 移除不可见的流程定义
-        Long userId = UserUtils.getCurUserId();
+        // 1.2 把flowable的ProcessDefinition转成自定义的实体BpmProcessDefinitionInfo
+        // 1.3 通过发布版本的流程定义id获取model的自定义字段metaInfo信息
         Map<String, BpmProcessDefinitionInfo> processDefinitionMap = bpmProcessDefinitionService.getProcessDefinitionInfoMap(
                 CollectionUtils.convertSet(list, ProcessDefinition::getId));
 
+        for (BpmProcessDefinitionInfo info : processDefinitionMap.values()) {
+            Model model = modelService.getModel(info.getModelId());
+            BpmModelMetaInfoVO modelMetaInfoVO = JsonUtils.parseObject(model.getMetaInfo(), BpmModelMetaInfoVO.class);
+            info.setIcon(fileUrlConverter.buildUrl(modelMetaInfoVO.getIcon()));
+        }
+
+        // 1.4 移除不可见的流程定义
+        Long userId = UserUtils.getCurUserId();
         list.removeIf(processDefinition -> {
             BpmProcessDefinitionInfo processDefinitionInfo = processDefinitionMap.get(processDefinition.getId());
             return processDefinitionInfo == null // 不存在
