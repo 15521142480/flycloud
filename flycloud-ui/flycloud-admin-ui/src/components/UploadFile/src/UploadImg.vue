@@ -1,6 +1,7 @@
 <template>
   <div class="upload-box" :style="uploadStyle">
     <el-upload
+      v-loading="uploading"
       :id="uuid"
       :accept="fileType.join(',')"
       :action="uploadUrl"
@@ -104,6 +105,7 @@ const imagePreview = (imgUrl: string) => {
 const emit = defineEmits(['update:modelValue'])
 const previewUrl = ref('')
 const lastUploadPath = ref('')
+const uploading = ref(false)
 
 watch(
   () => props.modelValue,
@@ -135,11 +137,14 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (!imgType.includes(rawFile.type as FileTypes))
     message.notifyWarning('上传图片不符合所需的格式！')
   if (!imgSize) message.notifyWarning(`上传图片大小不能超过 ${props.fileSize}M！`)
-  return imgType.includes(rawFile.type as FileTypes) && imgSize
+  const canUpload = imgType.includes(rawFile.type as FileTypes) && imgSize
+  uploading.value = canUpload
+  return canUpload
 }
 
 // 图片上传成功提示
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
+  uploading.value = false
   message.success('上传成功')
   const uploadResult = normalizeUploadResult(res)
   previewUrl.value = uploadResult.url
@@ -149,6 +154,7 @@ const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
 
 // 图片上传错误提示
 const uploadError = () => {
+  uploading.value = false
   message.notifyError('图片上传失败，请您重新上传！')
 }
 </script>

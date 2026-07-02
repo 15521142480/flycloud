@@ -1,6 +1,7 @@
 <template>
   <div class="upload-box" :style="uploadStyle">
     <el-upload
+      v-loading="uploading"
       v-model:file-list="fileList"
       :accept="fileType.join(',')"
       :action="uploadUrl"
@@ -100,6 +101,7 @@ const fileList = ref<UploadUserFileWithPath[]>([])
 const uploadNumber = ref<number>(0)
 const uploadList = ref<UploadUserFileWithPath[]>([])
 const previewUrlMap = ref<Record<string, string>>({})
+const uploading = ref(false)
 /**
  * @description 文件上传之前判断
  * @param rawFile 上传的文件
@@ -126,6 +128,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   // 只有在验证通过后才增加计数器
   if (isValidType && isValidSize) {
     uploadNumber.value++
+    uploading.value = true
   }
 
   return isValidType && isValidSize
@@ -137,6 +140,15 @@ interface UploadEmits {
 }
 
 const emit = defineEmits<UploadEmits>()
+const finishUploadBatch = () => {
+  if (uploadNumber.value === 0) {
+    fileList.value.push(...uploadList.value)
+    uploadList.value = []
+    emitUpdateModelValue()
+    uploading.value = false
+  }
+}
+
 const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
   message.success('上传成功')
   const uploadResult = normalizeUploadResult(res)
@@ -149,12 +161,8 @@ const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
     fileList.value.splice(index, 1)
   }
   uploadList.value.push({ name: uploadResult.path, url: uploadResult.url, path: uploadResult.path })
-  if (uploadList.value.length == uploadNumber.value) {
-    fileList.value.push(...uploadList.value)
-    uploadList.value = []
-    uploadNumber.value = 0
-    emitUpdateModelValue()
-  }
+  uploadNumber.value = Math.max(0, uploadNumber.value - 1)
+  finishUploadBatch()
 }
 
 // 监听模型绑定值变动
@@ -207,6 +215,7 @@ const uploadError = () => {
   })
   // 上传失败时减少计数器，避免后续上传被阻塞
   uploadNumber.value = Math.max(0, uploadNumber.value - 1)
+  finishUploadBatch()
 }
 
 // 文件数超出提示

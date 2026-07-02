@@ -7,7 +7,7 @@ import { isNumber } from '@/utils/is'
 import { ElMessage } from 'element-plus'
 import { useLocaleStore } from '@/store/modules/locale'
 import { getAccessToken, getTenantId } from '@/utils/auth'
-import { getUploadUrl } from '@/components/UploadFile/src/useUpload'
+import { getUploadUrl, normalizeUploadResult } from '@/components/UploadFile/src/useUpload'
 const { t } = useI18n()
 defineOptions({ name: 'Editor' })
 
@@ -36,6 +36,19 @@ const emit = defineEmits(['change', 'update:modelValue'])
 const editorRef = shallowRef<IDomEditor>()
 
 const valueHtml = ref('')
+const uploading = ref(false)
+const uploadNumber = ref(0)
+
+const startUpload = (file: File) => {
+  uploadNumber.value++
+  uploading.value = true
+  return file
+}
+
+const finishUpload = () => {
+  uploadNumber.value = Math.max(0, uploadNumber.value - 1)
+  uploading.value = uploadNumber.value > 0
+}
 
 watch(
   () => props.modelValue,
@@ -91,7 +104,7 @@ const editorConfig = computed((): IEditorConfig => {
         ['uploadImage']: {
           server: getUploadUrl(),
           // 单个文件的最大体积限制，默认为 2M
-          maxFileSize: 5 * 1024 * 1024,
+          maxFileSize: 20 * 1024 * 1024,
           // 最多可上传几个文件，默认为 100
           maxNumberOfFiles: 10,
           // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
@@ -112,8 +125,7 @@ const editorConfig = computed((): IEditorConfig => {
 
           // 上传之前触发
           onBeforeUpload(file: File) {
-            // console.log(file)
-            return file
+            return startUpload(file)
           },
           // 上传进度的回调函数
           onProgress(progress: number) {
@@ -121,25 +133,29 @@ const editorConfig = computed((): IEditorConfig => {
             console.log('progress', progress)
           },
           onSuccess(file: File, res: any) {
+            finishUpload()
             console.log('onSuccess', file, res)
           },
           onFailed(file: File, res: any) {
+            finishUpload()
             alert(res.message)
             console.log('onFailed', file, res)
           },
           onError(file: File, err: any, res: any) {
+            finishUpload()
             alert(err.message)
             console.error('onError', file, err, res)
           },
           // 自定义插入图片
           customInsert(res: any, insertFn: InsertFnType) {
-            insertFn(res.data, 'image', res.data)
+            const uploadResult = normalizeUploadResult(res)
+            insertFn(uploadResult.url, 'image', uploadResult.url)
           }
         },
         ['uploadVideo']: {
           server: getUploadUrl(),
           // 单个文件的最大体积限制，默认为 10M
-          maxFileSize: 10 * 1024 * 1024,
+          maxFileSize: 100 * 1024 * 1024,
           // 最多可上传几个文件，默认为 100
           maxNumberOfFiles: 10,
           // 选择文件时的类型限制，默认为 ['video/*'] 。如不想限制，则设置为 []
@@ -160,8 +176,7 @@ const editorConfig = computed((): IEditorConfig => {
 
           // 上传之前触发
           onBeforeUpload(file: File) {
-            // console.log(file)
-            return file
+            return startUpload(file)
           },
           // 上传进度的回调函数
           onProgress(progress: number) {
@@ -169,19 +184,23 @@ const editorConfig = computed((): IEditorConfig => {
             console.log('progress', progress)
           },
           onSuccess(file: File, res: any) {
+            finishUpload()
             console.log('onSuccess', file, res)
           },
           onFailed(file: File, res: any) {
+            finishUpload()
             alert(res.message)
             console.log('onFailed', file, res)
           },
           onError(file: File, err: any, res: any) {
+            finishUpload()
             alert(err.message)
             console.error('onError', file, err, res)
           },
           // 自定义插入图片
           customInsert(res: any, insertFn: InsertFnType) {
-            insertFn(res.data, 'mp4', res.data)
+            const uploadResult = normalizeUploadResult(res)
+            insertFn(uploadResult.url, 'mp4', uploadResult.url)
           }
         }
       },
@@ -221,7 +240,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="border-1 border-solid border-[var(--tags-view-border-color)] z-10">
+  <div v-loading="uploading" class="border-1 border-solid border-[var(--tags-view-border-color)] z-10">
     <!-- 工具栏 -->
     <Toolbar
       :editor="editorRef"

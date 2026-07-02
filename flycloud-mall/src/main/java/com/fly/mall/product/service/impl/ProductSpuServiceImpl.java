@@ -8,6 +8,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.ProductSpuStatusEnum;
 import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -133,7 +134,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     public PageVo<ProductSpuVo> queryPageList(ProductSpuBo bo, PageBo pageBo) {
         LambdaQueryWrapper<ProductSpu> lqw = buildQueryWrapper(bo);
-        lqw.orderByDesc(ProductSpu::getSort);
+        lqw.orderByDesc(ProductSpu::getSort).orderByDesc(ProductSpu::getCreateTime);
         Page<ProductSpuVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
         return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl", "sliderPicUrls");
     }
@@ -202,9 +203,12 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveOrUpdate(ProductSpuBo bo) {
+
         fileUrlFieldConverter.toPath(bo, "picUrl", "sliderPicUrls", "skus.picUrl");
-        refreshSkuSummary(bo);
+
+        initSpuFromSkus(bo, bo.getSkus());
         ProductSpu entity = BeanUtil.toBean(bo, ProductSpu.class);
+
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());
@@ -225,6 +229,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         if (flag && !CollectionUtils.isEmpty(bo.getSkus())) {
             productSkuService.saveSkuList(entity.getId(), bo.getSkus());
         }
+
         return flag;
     }
 
@@ -234,9 +239,12 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createSpu(ProductSpuBo bo) {
+
         fileUrlFieldConverter.toPath(bo, "picUrl", "sliderPicUrls", "skus.picUrl");
-        refreshSkuSummary(bo);
+
+        initSpuFromSkus(bo, bo.getSkus());
         ProductSpu entity = BeanUtil.toBean(bo, ProductSpu.class);
+
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());
         entity.setIsDeleted(false);
@@ -248,6 +256,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         if (!CollectionUtils.isEmpty(bo.getSkus())) {
             productSkuService.saveSkuList(entity.getId(), bo.getSkus());
         }
+
         return entity.getId();
     }
 
@@ -281,19 +290,45 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         return lqw;
     }
 
+
+
+    /**
+     * 基于 SKU 的信息，初始化 SPU 的信息
+     * 主要是计数相关的字段，例如说市场价、最大最小价、库存等等
+     *
+     * @param spu  商品 SPU
+     * @param skus 商品 SKU 数组
+     */
+    private void initSpuFromSkus(ProductSpuBo spu, List<ProductSkuBo> skus) {
+        // sku 单价最低的商品的价格
+        spu.setPrice(CollectionUtils.getMinValue(skus, ProductSkuBo::getPrice));
+        // sku 单价最低的商品的市场价格
+        spu.setMarketPrice(CollectionUtils.getMinValue(skus, ProductSkuBo::getMarketPrice));
+        // sku 单价最低的商品的成本价格
+        spu.setCostPrice(CollectionUtils.getMinValue(skus, ProductSkuBo::getCostPrice));
+        // skus 库存总数
+        spu.setStock(CollectionUtils.getSumValue(skus, ProductSkuBo::getStock, Math::addExact));
+        // 若是 spu 已有状态则不处理
+        if (spu.getStatus() == null) {
+            spu.setStatus(ProductSpuStatusEnum.ENABLE.getStatus()); // 默认状态为上架
+            spu.setSalesCount(0); // 默认商品销量
+            spu.setBrowseCount(0); // 默认商品浏览量
+        }
+    }
+
     /**
      * 根据 SKU 列表刷新 SPU 冗余价格和库存。
      */
-    private void refreshSkuSummary(ProductSpuBo bo) {
-        if (CollectionUtils.isEmpty(bo.getSkus())) {
-            return;
-        }
-        List<ProductSkuBo> skus = bo.getSkus();
-        bo.setPrice(skus.stream().map(ProductSkuBo::getPrice).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(0));
-        bo.setMarketPrice(skus.stream().map(ProductSkuBo::getMarketPrice).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(0));
-        bo.setCostPrice(skus.stream().map(ProductSkuBo::getCostPrice).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(0));
-        bo.setStock(skus.stream().map(ProductSkuBo::getStock).filter(Objects::nonNull).reduce(0, Integer::sum));
-    }
+//    private void refreshSkuSummary(ProductSpuBo bo) {
+//        if (CollectionUtils.isEmpty(bo.getSkus())) {
+//            return;
+//        }
+//        List<ProductSkuBo> skus = bo.getSkus();
+//        bo.setPrice(skus.stream().map(ProductSkuBo::getPrice).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(0));
+//        bo.setMarketPrice(skus.stream().map(ProductSkuBo::getMarketPrice).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(0));
+//        bo.setCostPrice(skus.stream().map(ProductSkuBo::getCostPrice).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(0));
+//        bo.setStock(skus.stream().map(ProductSkuBo::getStock).filter(Objects::nonNull).reduce(0, Integer::sum));
+//    }
 
     /**
      * 增加商品浏览量。

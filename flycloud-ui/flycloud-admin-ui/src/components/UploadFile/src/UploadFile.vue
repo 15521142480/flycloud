@@ -1,6 +1,7 @@
 <template>
   <div v-if="!disabled" class="upload-file">
     <el-upload
+      v-loading="uploading"
       ref="uploadRef"
       v-model:file-list="fileList"
       :action="uploadUrl"
@@ -97,6 +98,7 @@ const uploadList = ref<UploadUserFileWithPath[]>([])
 const fileList = ref<UploadUserFileWithPath[]>([])
 const uploadNumber = ref<number>(0)
 const previewUrlMap = ref<Record<string, string>>({})
+const uploading = ref(false)
 
 const { uploadUrl, httpRequest } = useUpload(props.directory)
 
@@ -126,6 +128,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
   message.success('正在上传文件，请稍候...')
   // 只有在验证通过后才增加计数器
   uploadNumber.value++
+  uploading.value = true
   return true
 }
 // 处理上传的文件发生变化
@@ -133,6 +136,15 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
 //   uploadRef.value.data.path = uploadFile.name
 // }
 // 文件上传成功
+const finishUploadBatch = () => {
+  if (uploadNumber.value === 0) {
+    fileList.value.push(...uploadList.value)
+    uploadList.value = []
+    emitUpdateModelValue()
+    uploading.value = false
+  }
+}
+
 const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
   message.success('上传成功')
   const uploadResult = normalizeUploadResult(res)
@@ -145,12 +157,8 @@ const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
     fileList.value.splice(index, 1)
   }
   uploadList.value.push({ name: uploadResult.path, url: uploadResult.url, path: uploadResult.path })
-  if (uploadList.value.length == uploadNumber.value) {
-    fileList.value.push(...uploadList.value)
-    uploadList.value = []
-    uploadNumber.value = 0
-    emitUpdateModelValue()
-  }
+  uploadNumber.value = Math.max(0, uploadNumber.value - 1)
+  finishUploadBatch()
 }
 // 文件数超出提示
 const handleExceed: UploadProps['onExceed'] = (): void => {
@@ -161,6 +169,7 @@ const excelUploadError: UploadProps['onError'] = (): void => {
   message.error('导入数据失败，请您重新上传！')
   // 上传失败时减少计数器，避免后续上传被阻塞
   uploadNumber.value = Math.max(0, uploadNumber.value - 1)
+  finishUploadBatch()
 }
 // 删除上传文件
 const handleRemove = (file: UploadFile) => {

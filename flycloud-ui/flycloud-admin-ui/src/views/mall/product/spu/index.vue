@@ -128,7 +128,7 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="商品编号" min-width="140" prop="id" />
+      <el-table-column label="商品编号" min-width="120" prop="id" />
       <el-table-column label="商品信息" min-width="300">
         <template #default="{ row }">
           <div class="flex">
@@ -148,12 +148,11 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="价格" min-width="160" prop="price">
+      <el-table-column align="center" label="价格" min-width="130" prop="price">
         <template #default="{ row }"> ¥ {{ fenToYuan(row.price) }}</template>
       </el-table-column>
       <el-table-column align="center" label="销量" min-width="90" prop="salesCount" />
       <el-table-column align="center" label="库存" min-width="90" prop="stock" />
-      <el-table-column align="center" label="排序" min-width="70" prop="sort" />
       <el-table-column align="center" label="销售状态" min-width="80">
         <template #default="{ row }">
           <template v-if="row.status >= 0">
@@ -172,6 +171,7 @@
           </template>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="排序" min-width="60" prop="sort" />
       <el-table-column
         :formatter="dateFormatter"
         align="center"
@@ -179,7 +179,7 @@
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" fixed="right" label="操作" min-width="200">
+      <el-table-column align="center" fixed="right" label="操作" min-width="155">
         <template #default="{ row }">
           <el-button link type="primary" @click="openDetail(row.id)"> 详情 </el-button>
           <el-button
