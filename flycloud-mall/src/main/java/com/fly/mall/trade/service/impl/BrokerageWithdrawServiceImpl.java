@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.trade.domain.BrokerageWithdraw;
@@ -32,13 +33,14 @@ import java.util.List;
 public class BrokerageWithdrawServiceImpl extends BaseServiceImpl<BrokerageWithdrawMapper, BrokerageWithdraw> implements IBrokerageWithdrawService {
 
     private final BrokerageWithdrawMapper baseMapper;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询佣金提现详情。
      */
     @Override
     public BrokerageWithdrawVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "qrCodeUrl");
     }
 
     /**
@@ -48,7 +50,7 @@ public class BrokerageWithdrawServiceImpl extends BaseServiceImpl<BrokerageWithd
     public PageVo<BrokerageWithdrawVo> queryPageList(BrokerageWithdrawBo bo, PageBo pageBo) {
         LambdaQueryWrapper<BrokerageWithdraw> lqw = buildQueryWrapper(bo);
         Page<BrokerageWithdrawVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "qrCodeUrl");
     }
 
     /**
@@ -57,7 +59,7 @@ public class BrokerageWithdrawServiceImpl extends BaseServiceImpl<BrokerageWithd
     @Override
     public List<BrokerageWithdrawVo> queryList(BrokerageWithdrawBo bo) {
         LambdaQueryWrapper<BrokerageWithdraw> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "qrCodeUrl");
     }
 
     /**
@@ -65,6 +67,7 @@ public class BrokerageWithdrawServiceImpl extends BaseServiceImpl<BrokerageWithd
      */
     @Override
     public Boolean saveOrUpdate(BrokerageWithdrawBo bo) {
+        fileUrlFieldConverter.toPath(bo, "qrCodeUrl");
         BrokerageWithdraw entity = BeanUtil.toBean(bo, BrokerageWithdraw.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

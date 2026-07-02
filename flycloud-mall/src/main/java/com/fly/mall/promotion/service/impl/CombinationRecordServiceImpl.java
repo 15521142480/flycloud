@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.CombinationRecord;
@@ -32,13 +33,14 @@ import java.util.List;
 public class CombinationRecordServiceImpl extends BaseServiceImpl<CombinationRecordMapper, CombinationRecord> implements ICombinationRecordService {
 
     private final CombinationRecordMapper baseMapper;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询拼团记录详情。
      */
     @Override
     public CombinationRecordVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl", "avatar");
     }
 
     /**
@@ -48,7 +50,7 @@ public class CombinationRecordServiceImpl extends BaseServiceImpl<CombinationRec
     public PageVo<CombinationRecordVo> queryPageList(CombinationRecordBo bo, PageBo pageBo) {
         LambdaQueryWrapper<CombinationRecord> lqw = buildQueryWrapper(bo);
         Page<CombinationRecordVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl", "avatar");
     }
 
     /**
@@ -57,7 +59,7 @@ public class CombinationRecordServiceImpl extends BaseServiceImpl<CombinationRec
     @Override
     public List<CombinationRecordVo> queryList(CombinationRecordBo bo) {
         LambdaQueryWrapper<CombinationRecord> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl", "avatar");
     }
 
     /**
@@ -65,6 +67,7 @@ public class CombinationRecordServiceImpl extends BaseServiceImpl<CombinationRec
      */
     @Override
     public Boolean saveOrUpdate(CombinationRecordBo bo) {
+        fileUrlFieldConverter.toPath(bo, "picUrl", "avatar");
         CombinationRecord entity = BeanUtil.toBean(bo, CombinationRecord.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

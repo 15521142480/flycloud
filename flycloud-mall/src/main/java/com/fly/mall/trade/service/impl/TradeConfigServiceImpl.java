@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.TradeConfig;
 import com.fly.mall.api.trade.domain.bo.TradeConfigBo;
@@ -31,6 +32,7 @@ import java.util.List;
 public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, TradeConfig> implements ITradeConfigService {
 
     private final TradeConfigMapper baseMapper;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 获得交易配置。
@@ -43,7 +45,7 @@ public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, T
         lqw.last("LIMIT 1");
         TradeConfigVo config = baseMapper.selectVoOne(lqw);
         if (config != null) {
-            return config;
+            return fileUrlFieldConverter.buildUrl(config, "brokeragePosterUrls");
         }
         TradeConfigVo defaultConfig = new TradeConfigVo();
         defaultConfig.setDeliveryExpressFreeEnabled(false);
@@ -58,7 +60,7 @@ public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, T
      */
     @Override
     public TradeConfigVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "brokeragePosterUrls");
     }
 
     /**
@@ -68,7 +70,7 @@ public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, T
     public PageVo<TradeConfigVo> queryPageList(TradeConfigBo bo, PageBo pageBo) {
         LambdaQueryWrapper<TradeConfig> lqw = buildQueryWrapper(bo);
         Page<TradeConfigVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "brokeragePosterUrls");
     }
 
     /**
@@ -77,7 +79,7 @@ public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, T
     @Override
     public List<TradeConfigVo> queryList(TradeConfigBo bo) {
         LambdaQueryWrapper<TradeConfig> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "brokeragePosterUrls");
     }
 
     /**
@@ -85,6 +87,7 @@ public class TradeConfigServiceImpl extends BaseServiceImpl<TradeConfigMapper, T
      */
     @Override
     public Boolean saveOrUpdate(TradeConfigBo bo) {
+        fileUrlFieldConverter.toPath(bo, "brokeragePosterUrls");
         TradeConfig entity = BeanUtil.toBean(bo, TradeConfig.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

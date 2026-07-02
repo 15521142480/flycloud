@@ -8,6 +8,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
@@ -49,13 +50,14 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
 
     private final ProductSpuMapper baseMapper;
     private final IProductSkuService productSkuService;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询商品 SPU 详情。
      */
     @Override
     public ProductSpuVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return buildFileUrl(baseMapper.selectVoById(id));
     }
 
     /**
@@ -68,7 +70,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
             return null;
         }
         spu.setSkus(productSkuService.queryListBySpuId(id));
-        return spu;
+        return buildFileUrl(spu);
     }
 
     /**
@@ -133,7 +135,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         LambdaQueryWrapper<ProductSpu> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(ProductSpu::getSort);
         Page<ProductSpuVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl", "sliderPicUrls");
     }
 
     /**
@@ -162,7 +164,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     public List<ProductSpuVo> queryList(ProductSpuBo bo) {
         LambdaQueryWrapper<ProductSpu> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(ProductSpu::getSort);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl", "sliderPicUrls");
     }
 
     /**
@@ -173,7 +175,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         if (CollectionUtils.isEmpty(ids)) {
             return List.of();
         }
-        return baseMapper.selectVoBatchIds(ids);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoBatchIds(ids), "picUrl", "sliderPicUrls");
     }
 
     /**
@@ -200,6 +202,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveOrUpdate(ProductSpuBo bo) {
+        fileUrlFieldConverter.toPath(bo, "picUrl", "sliderPicUrls", "skus.picUrl");
         refreshSkuSummary(bo);
         ProductSpu entity = BeanUtil.toBean(bo, ProductSpu.class);
         boolean isUpdate = entity.getId() != null;
@@ -231,6 +234,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createSpu(ProductSpuBo bo) {
+        fileUrlFieldConverter.toPath(bo, "picUrl", "sliderPicUrls", "skus.picUrl");
         refreshSkuSummary(bo);
         ProductSpu entity = BeanUtil.toBean(bo, ProductSpu.class);
         LocalDateTime now = LocalDateTime.now();
@@ -395,6 +399,11 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     private Integer calculateSalesCount(ProductSpuVo spu) {
         return Objects.requireNonNullElse(spu.getSalesCount(), 0)
                 + Objects.requireNonNullElse(spu.getVirtualSalesCount(), 0);
+    }
+
+    private ProductSpuVo buildFileUrl(ProductSpuVo spu) {
+        fileUrlFieldConverter.buildUrl(spu, "picUrl", "sliderPicUrls", "skus.picUrl");
+        return spu;
     }
 
 }

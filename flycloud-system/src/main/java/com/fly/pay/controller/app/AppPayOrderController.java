@@ -30,6 +30,8 @@ import java.util.Objects;
 @RequestMapping("/app/pay/order")
 public class AppPayOrderController {
 
+    private static final int ORDER_STATUS_WAITING = 0;
+
     private final IPayOrderService payOrderService;
 
     /**
@@ -46,6 +48,10 @@ public class AppPayOrderController {
         Long userId = UserUtils.getCurUserId();
         if (order.getUserId() != null && !Objects.equals(order.getUserId(), userId)) {
             return R.ok((PayOrderRespVo) null);
+        }
+        if (Boolean.TRUE.equals(sync) && Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+            payOrderService.syncOrderQuietly(order.getId());
+            order = payOrderService.getOrder(order.getId());
         }
         return R.ok(order);
     }

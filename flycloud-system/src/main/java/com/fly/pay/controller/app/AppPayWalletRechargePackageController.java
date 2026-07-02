@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,8 +31,11 @@ public class AppPayWalletRechargePackageController {
      */
     @GetMapping("/list")
     public R<List<AppPayWalletPackageRespVo>> list() {
-        return R.ok(cn.hutool.core.bean.BeanUtil.copyToList(
-                rechargePackageService.getWalletRechargePackageList(STATUS_ENABLE), AppPayWalletPackageRespVo.class));
+        List<AppPayWalletPackageRespVo> list = cn.hutool.core.bean.BeanUtil.copyToList(
+                rechargePackageService.getWalletRechargePackageList(STATUS_ENABLE), AppPayWalletPackageRespVo.class);
+        list.sort(Comparator.comparing(AppPayWalletPackageRespVo::getPayPrice,
+                Comparator.nullsLast(Integer::compareTo)));
+        return R.ok(list);
     }
 
 }

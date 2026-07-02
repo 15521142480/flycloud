@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.product.domain.ProductBrand;
@@ -33,13 +34,14 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
         implements IProductBrandService {
 
     private final ProductBrandMapper baseMapper;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询商品品牌详情。
      */
     @Override
     public ProductBrandVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
     }
 
     /**
@@ -50,7 +52,7 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
         LambdaQueryWrapper<ProductBrand> lqw = buildQueryWrapper(bo);
         lqw.orderByAsc(ProductBrand::getSort);
         Page<ProductBrandVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
     }
 
     /**
@@ -60,7 +62,7 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
     public List<ProductBrandVo> queryList(ProductBrandBo bo) {
         LambdaQueryWrapper<ProductBrand> lqw = buildQueryWrapper(bo);
         lqw.orderByAsc(ProductBrand::getSort);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
     }
 
     /**
@@ -68,6 +70,7 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
      */
     @Override
     public Boolean saveOrUpdate(ProductBrandBo bo) {
+        fileUrlFieldConverter.toPath(bo, "picUrl");
         ProductBrand entity = BeanUtil.toBean(bo, ProductBrand.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();
@@ -90,6 +93,7 @@ public class ProductBrandServiceImpl extends BaseServiceImpl<ProductBrandMapper,
      */
     @Override
     public Long createBrand(ProductBrandBo bo) {
+        fileUrlFieldConverter.toPath(bo, "picUrl");
         ProductBrand entity = BeanUtil.toBean(bo, ProductBrand.class);
         LocalDateTime now = LocalDateTime.now();
         String userId = String.valueOf(UserUtils.getCurUserId());

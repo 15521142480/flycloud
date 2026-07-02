@@ -8,6 +8,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.trade.domain.AfterSale;
@@ -67,13 +68,14 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     private final ITradeOrderService tradeOrderService;
     private final ITradeOrderItemService tradeOrderItemService;
     private final TradeOrderItemMapper tradeOrderItemMapper;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询售后单详情。
      */
     @Override
     public AfterSaleVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "applyPicUrls", "picUrl");
     }
 
     /**
@@ -95,7 +97,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     public PageVo<AfterSaleVo> queryPageList(AfterSaleBo bo, PageBo pageBo) {
         LambdaQueryWrapper<AfterSale> lqw = buildQueryWrapper(bo);
         Page<AfterSaleVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "applyPicUrls", "picUrl");
     }
 
     /**
@@ -104,7 +106,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     @Override
     public List<AfterSaleVo> queryList(AfterSaleBo bo) {
         LambdaQueryWrapper<AfterSale> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "applyPicUrls", "picUrl");
     }
 
     /**
@@ -117,6 +119,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
         TradeOrderVo order = tradeOrderService.queryByUserAndId(userId, orderItem.getOrderId());
         LocalDateTime now = LocalDateTime.now();
 
+        fileUrlFieldConverter.toPath(bo, "applyPicUrls", "picUrl");
         AfterSale entity = BeanUtil.toBean(bo, AfterSale.class);
         entity.setId(null);
         entity.setNo(generateAfterSaleNo());
@@ -131,6 +134,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
         entity.setSkuId(orderItem.getSkuId());
         entity.setProperties(bo.getProperties() == null ? java.util.List.copyOf(orderItem.getProperties()) : bo.getProperties());
         entity.setPicUrl(orderItem.getPicUrl());
+        fileUrlFieldConverter.toPath(entity, "applyPicUrls", "picUrl");
         entity.setCount(bo.getCount() == null ? orderItem.getCount() : bo.getCount());
         entity.setRefundPrice(bo.getRefundPrice() == null ? orderItem.getPayPrice() : bo.getRefundPrice());
         entity.setIsDeleted(false);
@@ -274,6 +278,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
      */
     @Override
     public Boolean saveOrUpdate(AfterSaleBo bo) {
+        fileUrlFieldConverter.toPath(bo, "applyPicUrls", "picUrl");
         AfterSale entity = BeanUtil.toBean(bo, AfterSale.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

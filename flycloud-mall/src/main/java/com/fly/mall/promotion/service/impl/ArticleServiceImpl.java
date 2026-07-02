@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.Article;
@@ -32,13 +33,14 @@ import java.util.List;
 public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> implements IArticleService {
 
     private final ArticleMapper baseMapper;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询文章详情。
      */
     @Override
     public ArticleVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
     }
 
     /**
@@ -48,7 +50,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     public PageVo<ArticleVo> queryPageList(ArticleBo bo, PageBo pageBo) {
         LambdaQueryWrapper<Article> lqw = buildQueryWrapper(bo);
         Page<ArticleVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
     }
 
     /**
@@ -57,7 +59,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     @Override
     public List<ArticleVo> queryList(ArticleBo bo) {
         LambdaQueryWrapper<Article> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
     }
 
     /**
@@ -65,6 +67,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
      */
     @Override
     public Boolean saveOrUpdate(ArticleBo bo) {
+        fileUrlFieldConverter.toPath(bo, "picUrl");
         Article entity = BeanUtil.toBean(bo, Article.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

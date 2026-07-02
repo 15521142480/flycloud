@@ -38,7 +38,7 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
             "avatar", "picUrl", "picUrls", "sliderPicUrls", "coverUrl", "logo", "icon",
             "backgroundUrl", "fileUrl", "fileUrls", "previewPicUrls", "brokeragePosterUrls",
             "userAvatar", "materialCoverUrl", "images", "imgUrl", "bgImg", "bgImgUrl",
-            "backgroundImage", "imageUrl"
+            "backgroundImage", "imageUrl", "skuPicUrl", "applyPicUrls", "qrCodeUrl"
     );
 
     private static final Set<String> FILE_FIELD_TOKENS = Set.of(

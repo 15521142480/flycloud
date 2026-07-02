@@ -9,6 +9,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
+import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.DiyTemplate;
@@ -48,15 +49,16 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
 
     private final DiyTemplateMapper baseMapper;
     private final IDiyPageService diyPageService;
+    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询装修模板详情。
      */
     @Override
     public DiyTemplateVo queryById(Long id) {
-        return baseMapper.selectVoOne(Wrappers.<DiyTemplate>lambdaQuery()
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoOne(Wrappers.<DiyTemplate>lambdaQuery()
             .eq(DiyTemplate::getId, id)
-            .eq(DiyTemplate::getIsDeleted, false));
+            .eq(DiyTemplate::getIsDeleted, false)), "previewPicUrls");
     }
 
     /**
@@ -74,7 +76,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
     public PageVo<DiyTemplateVo> queryPageList(DiyTemplateBo bo, PageBo pageBo) {
         LambdaQueryWrapper<DiyTemplate> lqw = buildQueryWrapper(bo);
         Page<DiyTemplateVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return this.build(result);
+        return fileUrlFieldConverter.buildUrlPage(this.build(result), "previewPicUrls");
     }
 
     /**
@@ -89,7 +91,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
         pageVo.setPages(result.getPages());
         pageVo.setTotal(result.getTotal());
         pageVo.setList(result.getRecords().stream().map(this::toRespVo).collect(Collectors.toList()));
-        return pageVo;
+        return fileUrlFieldConverter.buildUrlPage(pageVo, "previewPicUrls");
     }
 
     /**
@@ -99,7 +101,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
     public List<DiyTemplateVo> queryList(DiyTemplateBo bo) {
         LambdaQueryWrapper<DiyTemplate> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(DiyTemplate::getUsed, DiyTemplate::getId);
-        return baseMapper.selectVoList(lqw);
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "previewPicUrls");
     }
 
     /**
@@ -109,7 +111,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
     public List<DiyTemplateRespVo> queryRespList(DiyTemplateBo bo) {
         LambdaQueryWrapper<DiyTemplate> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(DiyTemplate::getUsed, DiyTemplate::getId);
-        return baseMapper.selectList(lqw).stream().map(this::toRespVo).collect(Collectors.toList());
+        return fileUrlFieldConverter.buildUrlList(baseMapper.selectList(lqw).stream().map(this::toRespVo).collect(Collectors.toList()), "previewPicUrls");
     }
 
     /**
@@ -119,6 +121,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
     @Transactional(rollbackFor = Exception.class)
     public Long createDiyTemplate(DiyTemplateBo bo) {
         validateNameUnique(null, bo.getName());
+        fileUrlFieldConverter.toPath(bo, "previewPicUrls");
         DiyTemplate entity = BeanUtil.toBean(bo, DiyTemplate.class);
         entity.setUsed(false);
         entity.setUsedTime(null);
@@ -139,6 +142,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
     public Boolean updateDiyTemplate(DiyTemplateBo bo) {
         validateExists(bo.getId());
         validateNameUnique(bo.getId(), bo.getName());
+        fileUrlFieldConverter.toPath(bo, "previewPicUrls");
         DiyTemplate entity = BeanUtil.toBean(bo, DiyTemplate.class);
         entity.setUsed(null);
         entity.setUsedTime(null);
@@ -233,6 +237,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
         DiyTemplate entity = new DiyTemplate();
         entity.setId(bo.getId());
         entity.setProperty(bo.getProperty());
+        fileUrlFieldConverter.toPath(bo, "previewPicUrls");
         entity.setPreviewPicUrls(bo.getPreviewPicUrls());
         fillUpdateInfo(entity);
         return baseMapper.updateById(entity) > 0;
@@ -243,11 +248,11 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
      */
     @Override
     public DiyTemplateVo queryUsedTemplate() {
-        return baseMapper.selectVoOne(Wrappers.<DiyTemplate>lambdaQuery()
+        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoOne(Wrappers.<DiyTemplate>lambdaQuery()
             .eq(DiyTemplate::getUsed, true)
             .eq(DiyTemplate::getIsDeleted, false)
             .orderByDesc(DiyTemplate::getUsedTime)
-            .last("limit 1"));
+            .last("limit 1")), "previewPicUrls");
     }
 
     /**
@@ -349,14 +354,14 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
      * 转换为后台装修模板响应对象。
      */
     private DiyTemplateRespVo toRespVo(DiyTemplate entity) {
-        return BeanUtil.toBean(entity, DiyTemplateRespVo.class);
+        return fileUrlFieldConverter.buildUrl(BeanUtil.toBean(entity, DiyTemplateRespVo.class), "previewPicUrls");
     }
 
     /**
      * 转换为后台装修模板属性响应对象。
      */
     private DiyTemplatePropertyRespVo toPropertyRespVo(DiyTemplate entity) {
-        DiyTemplatePropertyRespVo respVo = BeanUtil.toBean(entity, DiyTemplatePropertyRespVo.class);
+        DiyTemplatePropertyRespVo respVo = fileUrlFieldConverter.buildUrl(BeanUtil.toBean(entity, DiyTemplatePropertyRespVo.class), "previewPicUrls");
         List<DiyPagePropertyRespVo> pages = diyPageService.queryListByTemplateId(entity.getId()).stream()
             .map(this::toPagePropertyRespVo)
             .collect(Collectors.toList());
@@ -368,7 +373,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
      * 转换为移动端装修模板属性响应对象。
      */
     private AppDiyTemplatePropertyRespVo toAppPropertyRespVo(DiyTemplate entity) {
-        AppDiyTemplatePropertyRespVo respVo = BeanUtil.toBean(entity, AppDiyTemplatePropertyRespVo.class);
+        AppDiyTemplatePropertyRespVo respVo = fileUrlFieldConverter.buildUrl(BeanUtil.toBean(entity, AppDiyTemplatePropertyRespVo.class), "previewPicUrls");
         for (DiyPageVo page : diyPageService.queryListByTemplateId(entity.getId())) {
             if (INDEX_PAGE_NAME.equals(page.getName())) {
                 respVo.setHome(page.getProperty());
