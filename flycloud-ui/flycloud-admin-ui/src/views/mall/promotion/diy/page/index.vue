@@ -48,8 +48,8 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="预览图" align="center" prop="previewPicUrls">
+      <el-table-column label="编号" align="center" prop="id" width="120" />
+      <el-table-column label="预览图" align="center" prop="previewPicUrls" min-width="130">
         <template #default="scope">
           <el-image
             class="h-40px max-w-40px"
@@ -63,7 +63,7 @@
         </template>
       </el-table-column>
       <el-table-column label="页面名称" align="center" prop="name" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="备注" align="center" prop="remark" min-width="120" />
       <el-table-column
         label="创建时间"
         align="center"
@@ -71,7 +71,7 @@
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="180px" fixed="right">
         <template #default="scope">
           <el-button
             link

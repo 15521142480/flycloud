@@ -1,7 +1,10 @@
 <template>
   <Dialog v-model="dialogVisible" title="设置热区" width="780" @close="handleClose">
     <div ref="container" class="relative h-full w-750px">
-      <el-image :src="imgUrl" class="pointer-events-none h-full w-750px select-none" />
+      <el-image
+        :src="getFilePreviewUrl(imgUrl)"
+        class="pointer-events-none h-full w-750px select-none"
+      />
       <div
         v-for="(item, hotZoneIndex) in formData"
         :key="hotZoneIndex"
@@ -44,6 +47,7 @@
 
 <script setup lang="ts">
 import { HotZoneItemProperty } from '@/components/DiyEditor/components/mobile/HotZone/config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { array, string } from 'vue-types'
 import {
   CONTROL_DOT_LIST,

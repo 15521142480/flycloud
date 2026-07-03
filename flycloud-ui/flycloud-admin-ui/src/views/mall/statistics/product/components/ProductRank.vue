@@ -14,7 +14,7 @@
       <el-table-column label="商品图片" align="center" prop="picUrl" width="80">
         <template #default="{ row }">
           <el-image
-            :src="row.picUrl"
+            :src="getFilePreviewUrl(row.picUrl)"
             :preview-src-list="[row.picUrl]"
             class="h-30px w-30px"
             preview-teleported
@@ -54,6 +54,7 @@
 </template>
 <script lang="ts" setup>
 import { ProductStatisticsApi, ProductStatisticsVO } from '@/api/mall/statistics/product'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { CardTitle } from '@/components/Card'
 import { buildSortingField } from '@/utils'
 import { fenToYuanFormat } from '@/utils/formatter'

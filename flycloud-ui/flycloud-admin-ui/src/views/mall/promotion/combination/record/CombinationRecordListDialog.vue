@@ -6,7 +6,7 @@
         <el-table-column align="center" label="编号" prop="id" min-width="50" />
         <el-table-column align="center" label="头像" prop="avatar" min-width="80">
           <template #default="scope">
-            <el-avatar :src="scope.row.avatar" />
+            <el-avatar :src="getFilePreviewUrl(scope.row.avatar)" />
           </template>
         </el-table-column>
         <el-table-column align="center" label="昵称" prop="nickname" min-width="100" />
@@ -51,6 +51,7 @@
 
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as CombinationRecordApi from '@/api/mall/promotion/combination/combinationRecord'
 import { DICT_TYPE } from '@/utils/dict'
 

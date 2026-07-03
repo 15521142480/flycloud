@@ -40,7 +40,7 @@
       <el-table-column label="名称" min-width="240" prop="name" sortable />
       <el-table-column label="分类图标" align="center" min-width="80" prop="picUrl">
         <template #default="scope">
-          <img :src="scope.row.picUrl" alt="移动端分类图" class="h-36px" />
+          <img :src="getFilePreviewUrl(scope.row.picUrl)" alt="移动端分类图" class="h-36px" />
         </template>
       </el-table-column>
       <el-table-column label="排序" align="center" min-width="150" prop="sort" />
@@ -93,6 +93,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { handleTree } from '@/utils/tree'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ProductCategoryApi from '@/api/mall/product/category'

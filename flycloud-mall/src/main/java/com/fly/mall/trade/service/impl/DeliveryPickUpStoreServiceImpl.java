@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.trade.domain.DeliveryPickUpStore;
@@ -33,14 +32,13 @@ import java.util.List;
 public class DeliveryPickUpStoreServiceImpl extends BaseServiceImpl<DeliveryPickUpStoreMapper, DeliveryPickUpStore> implements IDeliveryPickUpStoreService {
 
     private final DeliveryPickUpStoreMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询自提门店详情。
      */
     @Override
     public DeliveryPickUpStoreVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "logo");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -50,7 +48,7 @@ public class DeliveryPickUpStoreServiceImpl extends BaseServiceImpl<DeliveryPick
     public PageVo<DeliveryPickUpStoreVo> queryPageList(DeliveryPickUpStoreBo bo, PageBo pageBo) {
         LambdaQueryWrapper<DeliveryPickUpStore> lqw = buildQueryWrapper(bo);
         Page<DeliveryPickUpStoreVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "logo");
+        return this.build(result);
     }
 
     /**
@@ -59,7 +57,7 @@ public class DeliveryPickUpStoreServiceImpl extends BaseServiceImpl<DeliveryPick
     @Override
     public List<DeliveryPickUpStoreVo> queryList(DeliveryPickUpStoreBo bo) {
         LambdaQueryWrapper<DeliveryPickUpStore> lqw = buildQueryWrapper(bo);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "logo");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -67,7 +65,6 @@ public class DeliveryPickUpStoreServiceImpl extends BaseServiceImpl<DeliveryPick
      */
     @Override
     public Boolean saveOrUpdate(DeliveryPickUpStoreBo bo) {
-        fileUrlFieldConverter.toPath(bo, "logo");
         DeliveryPickUpStore entity = BeanUtil.toBean(bo, DeliveryPickUpStore.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

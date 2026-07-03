@@ -5,7 +5,7 @@
       <el-image
         :initial-index="0"
         :preview-src-list="[picUrl]"
-        :src="picUrl"
+        :src="getFilePreviewUrl(picUrl)"
         class="product-warp-left-img"
         fit="contain"
         preview-teleported
@@ -29,6 +29,7 @@
 
 <script lang="ts" setup>
 import { fenToYuan } from '@/utils'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 const { push } = useRouter()
 

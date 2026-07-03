@@ -14,7 +14,7 @@
       >
         {{ item.badge.text }}
       </span>
-      <el-image v-if="item.iconUrl" class="h-28px w-28px" :src="item.iconUrl" />
+      <el-image v-if="item.iconUrl" class="h-28px w-28px" :src="getFilePreviewUrl(item.iconUrl)" />
       <span class="m-t-8px h-16px text-12px leading-16px" :style="{ color: item.titleColor }">
         {{ item.title }}
       </span>
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { MenuGridProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 /** 宫格导航 */
 defineOptions({ name: 'MenuGrid' })
 defineProps<{ property: MenuGridProperty }>()

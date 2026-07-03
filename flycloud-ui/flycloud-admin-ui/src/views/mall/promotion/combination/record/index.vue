@@ -119,7 +119,7 @@
       <el-table-column align="center" label="编号" prop="id" min-width="50" />
       <el-table-column align="center" label="头像" prop="avatar" min-width="80">
         <template #default="scope">
-          <el-avatar :src="scope.row.avatar" />
+          <el-avatar :src="getFilePreviewUrl(scope.row.avatar)" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="昵称" prop="nickname" min-width="100" />
@@ -146,9 +146,9 @@
       >
         <template #default="{ row }">
           <el-image
-            :src="row.picUrl"
+            :src="getFilePreviewUrl(row.picUrl)"
             class="mr-5px h-30px w-30px align-middle"
-            @click="imagePreview(row.picUrl)"
+            @click="imagePreview(getFilePreviewUrl(row.picUrl))"
           />
           <span class="align-middle">{{ row.spuName }}</span>
         </template>
@@ -204,6 +204,7 @@
 </template>
 <script lang="ts" setup>
 import CombinationRecordListDialog from './CombinationRecordListDialog.vue'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter, defaultShortcuts } from '@/utils/formatTime'
 import { createImageViewer } from '@/components/ImageViewer'

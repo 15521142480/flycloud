@@ -9,7 +9,6 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.member.mapper.MemberLevelMapper;
 import com.fly.member.service.IMemberExperienceRecordService;
 import com.fly.member.service.IMemberLevelRecordService;
@@ -42,7 +41,6 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
     private final IMemberUserService memberUserService;
     private final IMemberLevelRecordService levelRecordService;
     private final IMemberExperienceRecordService experienceRecordService;
-    private final FileUrlService fileUrlService;
 
     @Override
     public PageVo<MemberLevelVo> queryPageList(MemberLevelBo bo, PageBo pageBo) {
@@ -228,13 +226,13 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
         if (level == null) {
             return;
         }
-        level.setIcon(fileUrlService.buildUrl(level.getIcon()));
-        level.setBackgroundUrl(fileUrlService.buildUrl(level.getBackgroundUrl()));
+        level.setIcon(level.getIcon());
+        level.setBackgroundUrl(level.getBackgroundUrl());
     }
 
     private void formatStoragePaths(MemberLevel level) {
-        level.setIcon(fileUrlService.toPath(level.getIcon()));
-        level.setBackgroundUrl(fileUrlService.toPath(level.getBackgroundUrl()));
+        level.setIcon(level.getIcon());
+        level.setBackgroundUrl(level.getBackgroundUrl());
     }
 
 }

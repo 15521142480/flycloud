@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 //import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 
@@ -15,6 +16,7 @@ import org.springframework.web.reactive.config.ResourceHandlerRegistry;
  * @date: 2026/7/1
  */
 @AutoConfiguration
+@EnableConfigurationProperties(FileConfigProperties.class)
 @RequiredArgsConstructor
 public class FileStaticResourceConfig implements WebFluxConfigurer {
 

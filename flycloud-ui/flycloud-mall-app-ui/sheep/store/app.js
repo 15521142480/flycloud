@@ -1,4 +1,5 @@
 import DiyApi from '@/sheep/api/promotion/diy';
+import FileApi from '@/sheep/api/infra/file';
 import { getTenantByWebsite } from '@/sheep/api/infra/tenant';
 import { getTenantId } from '@/sheep/request';
 import { defineStore } from 'pinia';
@@ -7,6 +8,7 @@ import $router from '@/sheep/router';
 import user from './user';
 import sys from './sys';
 import { baseUrl, h5Url } from '@/sheep/config';
+import { setFileConfig } from '@/sheep/helper/fileConfig';
 
 const app = defineStore('app', {
   state: () => ({
@@ -64,6 +66,9 @@ const app = defineStore('app', {
 
       // 加载租户
       // await adaptTenant();
+
+      // 加载文件配置
+      await adaptFileConfig();
 
       // 加载装修配置
       await adaptTemplate(this.template, templateId);
@@ -130,6 +135,16 @@ const app = defineStore('app', {
     ],
   },
 });
+
+/** 初始化文件配置 */
+const adaptFileConfig = async () => {
+  try {
+    const { data } = await FileApi.getFileConfig();
+    setFileConfig(data);
+  } catch (error) {
+    console.error('adaptFileConfig 执行失败:', error);
+  }
+};
 
 /** 初始化租户编号 */
 const adaptTenant = async () => {

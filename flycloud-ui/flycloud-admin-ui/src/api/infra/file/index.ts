@@ -25,6 +25,11 @@ export interface FileUploadRespVO {
   path: string
 }
 
+export interface FileConfigRespVO {
+  basePath: string
+  baseUrl: string
+}
+
 // 查询文件列表
 export const getFilePage = (params: FilePageReqVO) => {
   return request.get({ url: `/${SYS_BASE_URL}/file/page`, params })
@@ -46,6 +51,11 @@ export const getFilePresignedUrl = (name: string, directory?: string) => {
 // 创建文件
 export const createFile = (data: any) => {
   return request.post({ url: `/${SYS_BASE_URL}/file/create`, data })
+}
+
+// 获取文件配置
+export const getFileConfig = () => {
+  return request.get<FileConfigRespVO>({ url: `/${SYS_BASE_URL}/admin/file/config` })
 }
 
 // 上传文件

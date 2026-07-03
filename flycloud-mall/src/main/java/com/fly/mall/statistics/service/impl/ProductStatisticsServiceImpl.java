@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.statistics.domain.ProductStatistics;
 import com.fly.mall.api.statistics.domain.bo.ProductStatisticsBo;
@@ -38,14 +37,13 @@ import java.util.Objects;
 public class ProductStatisticsServiceImpl extends BaseServiceImpl<ProductStatisticsMapper, ProductStatistics> implements IProductStatisticsService {
 
     private final ProductStatisticsMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询商品统计详情。
      */
     @Override
     public ProductStatisticsVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -55,7 +53,7 @@ public class ProductStatisticsServiceImpl extends BaseServiceImpl<ProductStatist
     public PageVo<ProductStatisticsVo> queryPageList(ProductStatisticsBo bo, PageBo pageBo) {
         LambdaQueryWrapper<ProductStatistics> lqw = buildQueryWrapper(bo);
         Page<ProductStatisticsVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
+        return this.build(result);
     }
 
     /**
@@ -64,7 +62,7 @@ public class ProductStatisticsServiceImpl extends BaseServiceImpl<ProductStatist
     @Override
     public List<ProductStatisticsVo> queryList(ProductStatisticsBo bo) {
         LambdaQueryWrapper<ProductStatistics> lqw = buildQueryWrapper(bo);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -82,9 +80,9 @@ public class ProductStatisticsServiceImpl extends BaseServiceImpl<ProductStatist
      */
     @Override
     public List<ProductStatisticsRespVo> getProductStatisticsList(StatisticsTimeRangeBo bo) {
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(buildRangeWrapper(bo)).stream()
+        return baseMapper.selectVoList(buildRangeWrapper(bo)).stream()
                 .map(this::convertRespVo)
-                .toList(), "picUrl");
+                .toList();
     }
 
     /**
@@ -102,7 +100,7 @@ public class ProductStatisticsServiceImpl extends BaseServiceImpl<ProductStatist
         PageVo<ProductStatisticsRespVo> result = new PageVo<>();
         result.setPages(page.getPages());
         result.setTotal(page.getTotal());
-        result.setList(fileUrlFieldConverter.buildUrlList(page.getRecords().stream().map(this::convertRespVo).toList(), "picUrl"));
+        result.setList(page.getRecords().stream().map(this::convertRespVo).toList());
         return result;
     }
 
@@ -111,7 +109,6 @@ public class ProductStatisticsServiceImpl extends BaseServiceImpl<ProductStatist
      */
     @Override
     public Boolean saveOrUpdate(ProductStatisticsBo bo) {
-        fileUrlFieldConverter.toPath(bo, "picUrl");
         ProductStatistics entity = BeanUtil.toBean(bo, ProductStatistics.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

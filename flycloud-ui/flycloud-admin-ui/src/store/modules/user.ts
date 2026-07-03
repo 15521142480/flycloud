@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { getAccessToken, removeToken } from '@/utils/auth'
 import { CACHE_KEY, useCache, deleteUserCache } from '@/hooks/web/useCache'
 import { getUserInfoApi, loginOut } from '@/api/login'
+import * as FileApi from '@/api/infra/file'
 
 const { wsCache } = useCache()
 
@@ -65,6 +66,9 @@ export const useUserStore = defineStore('admin-user', {
       this.roles = userInfo.roles
       this.user = userInfo.user
       this.isSetUser = true
+      if (!wsCache.get(CACHE_KEY.BASE_URL)) {
+        wsCache.set(CACHE_KEY.BASE_URL, await FileApi.getFileConfig())
+      }
       wsCache.set(CACHE_KEY.ROLE_ROUTERS, userInfo.menuTreeList) // 菜单
       wsCache.set(CACHE_KEY.USER, userInfo)
     },

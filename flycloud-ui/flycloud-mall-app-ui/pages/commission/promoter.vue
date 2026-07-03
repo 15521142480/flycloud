@@ -19,7 +19,7 @@
               <view class="num">
                 <text>{{ index + 1 }}</text>
               </view>
-              <image class="image" :src="item.avatar"></image>
+              <image class="image" :src="sheep.$url.cdn(item.avatar)"></image>
             </view>
             <view class="people">{{ item.brokerageUserCount }}人</view>
             <view class="nickname">{{ item.nickname }}</view>
@@ -32,7 +32,7 @@
         <view class="item" v-if="index > 2">
           <view class="num">{{ index + 1 }}</view>
           <view class="pictrue">
-            <image class="image" :src="item.avatar"></image>
+            <image class="image" :src="sheep.$url.cdn(item.avatar)"></image>
           </view>
           <view class="nickname">{{ item.nickname }}</view>
           <view class="people">{{ item.brokerageUserCount }}人</view>

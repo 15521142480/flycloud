@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.Article;
@@ -34,14 +33,13 @@ import java.util.Comparator;
 public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> implements IArticleService {
 
     private final ArticleMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询文章详情。
      */
     @Override
     public ArticleVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -53,7 +51,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
         lqw.eq(Article::getIsDeleted, false);
         lqw.eq(StringUtils.isNotBlank(title), Article::getTitle, title);
         lqw.orderByAsc(Article::getId);
-        List<ArticleVo> list = fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        List<ArticleVo> list = baseMapper.selectVoList(lqw);
         return list.stream().max(Comparator.comparing(ArticleVo::getId)).orElse(null);
     }
 
@@ -64,7 +62,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     public PageVo<ArticleVo> queryPageList(ArticleBo bo, PageBo pageBo) {
         LambdaQueryWrapper<Article> lqw = buildQueryWrapper(bo);
         Page<ArticleVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
+        return this.build(result);
     }
 
     /**
@@ -74,7 +72,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
     public List<ArticleVo> queryList(ArticleBo bo) {
         LambdaQueryWrapper<Article> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(Article::getSort).orderByDesc(Article::getId);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -94,7 +92,6 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article> 
      */
     @Override
     public Boolean saveOrUpdate(ArticleBo bo) {
-        fileUrlFieldConverter.toPath(bo, "picUrl");
         Article entity = BeanUtil.toBean(bo, Article.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

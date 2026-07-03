@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
 import com.fly.system.api.im.domain.channel.ImChannel;
@@ -33,11 +32,10 @@ public class ImChannelServiceImpl implements ImChannelService {
 
     @Resource
     private ImChannelMapper channelMapper;
+
     @Resource
     @Lazy // 延迟加载，解决循环依赖
     private ImChannelMaterialService channelMaterialService;
-    @Resource
-    private FileUrlService fileUrlService;
 
     // ==================== 用户端 ====================
 
@@ -82,7 +80,7 @@ public class ImChannelServiceImpl implements ImChannelService {
 
         // 插入
         ImChannel channel = BeanUtils.toBean(reqVo, ImChannel.class);
-        channel.setAvatar(fileUrlService.toPath(channel.getAvatar()));
+        channel.setAvatar(channel.getAvatar());
         channelMapper.insert(channel);
         return channel.getId();
     }
@@ -96,7 +94,7 @@ public class ImChannelServiceImpl implements ImChannelService {
 
         // 2. 更新
         ImChannel updateObj = BeanUtils.toBean(reqVo, ImChannel.class);
-        updateObj.setAvatar(fileUrlService.toPath(updateObj.getAvatar()));
+        updateObj.setAvatar(updateObj.getAvatar());
         channelMapper.updateById(updateObj);
     }
 

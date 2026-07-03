@@ -67,10 +67,10 @@
               <div class="mb-[10px] mr-[10px] flex items-start">
                 <div class="mr-[10px]">
                   <el-image
-                    :src="row.picUrl"
+                    :src="getFilePreviewUrl(row.picUrl)"
                     class="!h-[45px] !w-[45px]"
                     fit="contain"
-                    @click="imagePreview(row.picUrl)"
+                    @click="imagePreview(getFilePreviewUrl(row.picUrl))"
                   >
                     <template #error>
                       <div class="image-slot">
@@ -167,6 +167,7 @@
 </template>
 <script lang="ts" setup>
 import { nextTick, onMounted, onUnmounted, watch } from 'vue'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE } from '@/utils/dict'
 import { DeliveryTypeEnum } from '@/utils/constants'
 import { formatDate } from '@/utils/formatTime'

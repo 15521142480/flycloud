@@ -40,7 +40,7 @@
         <el-table-column label="用户编号" align="center" prop="id" min-width="80px" />
         <el-table-column label="头像" align="center" prop="avatar" width="70px">
           <template #default="scope">
-            <el-avatar :src="scope.row.avatar" />
+            <el-avatar :src="getFilePreviewUrl(scope.row.avatar)" />
           </template>
         </el-table-column>
         <el-table-column label="昵称" align="center" prop="nickname" min-width="80px" />
@@ -83,6 +83,7 @@
 
 <script setup lang="ts">
 import { dateFormatter } from '@/utils/formatTime'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as BrokerageUserApi from '@/api/mall/trade/brokerage/user'
 
 /** 推广人列表 */

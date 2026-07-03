@@ -21,7 +21,7 @@
       <el-image
         class="h-full w-full"
         fit="cover"
-        :src="item.imgUrl"
+        :src="getFilePreviewUrl(item.imgUrl)"
         :style="{
           borderTopLeftRadius: `${property.borderRadiusTop}px`,
           borderTopRightRadius: `${property.borderRadiusTop}px`,
@@ -49,6 +49,7 @@
 
 <script setup lang="ts">
 import { MagicCubeProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 广告魔方 */
 defineOptions({ name: 'MagicCube' })

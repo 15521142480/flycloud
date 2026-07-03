@@ -50,7 +50,7 @@
       <el-table-column label="发起用户" min-width="120">
         <template #default="scope">
           <el-image
-            :src="scope.row.avatar"
+            :src="getFilePreviewUrl(scope.row.avatar)"
             class="h-20px w-20px"
             :preview-src-list="[scope.row.avatar]"
             preview-teleported
@@ -121,6 +121,7 @@
 
 <script setup lang="ts">
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as BargainRecordApi from '@/api/mall/promotion/bargain/bargainRecord'
 import { fenToYuanFormat } from '@/utils/formatter'

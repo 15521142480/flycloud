@@ -19,7 +19,7 @@
       >
         <block v-for="(picUrl, index) in activeTimeConfig.sliderPicUrls" :key="index">
           <swiper-item class="borRadius14">
-            <image :src="picUrl" class="slide-image borRadius14" lazy-load />
+            <image :src="sheep.$url.cdn(picUrl)" class="slide-image borRadius14" lazy-load />
           </swiper-item>
         </block>
       </swiper>

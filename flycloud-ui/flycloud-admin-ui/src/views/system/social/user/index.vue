@@ -94,7 +94,11 @@
         prop="avatar"
       >
         <template #default="{ row }">
-          <el-image :src="row.avatar" class="h-30px w-30px" @click="imagePreview(row.avatar)" />
+          <el-image
+            :src="getFilePreviewUrl(row.avatar)"
+            class="h-30px w-30px"
+            @click="imagePreview(getFilePreviewUrl(row.avatar))"
+          />
         </template>
       </el-table-column>
       <el-table-column
@@ -139,6 +143,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as SocialUserApi from '@/api/system/social/user'
 import SocialUserDetail from './SocialUserDetail.vue'

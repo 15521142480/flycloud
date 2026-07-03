@@ -2,7 +2,6 @@ package com.fly.im.controller.admin.manager.channel;
 
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
-import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
@@ -39,8 +38,8 @@ public class ImChannelMaterialManagerController {
     private ImChannelMaterialService channelMaterialService;
     @Resource
     private ImChannelService channelService;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
 
     @PostMapping("/create")
     @Operation(summary = "新增素材")
@@ -80,7 +79,7 @@ public class ImChannelMaterialManagerController {
         Map<Long, ImChannel> channelMap = convertMap(channels, ImChannel::getId);
         return ok(PageResult.convert(pageResult, ImChannelMaterialRespVo.class, vo -> {
             MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()));
-            vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl()));
+            vo.setCoverUrl(vo.getCoverUrl());
         }));
     }
 
@@ -91,7 +90,7 @@ public class ImChannelMaterialManagerController {
     public R<ImChannelMaterialRespVo> getMaterial(@RequestParam("id") Long id) {
         ImChannelMaterial material = channelMaterialService.getMaterial(id);
         ImChannelMaterialRespVo vo = BeanUtils.toBean(material, ImChannelMaterialRespVo.class);
-        vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl()));
+        vo.setCoverUrl(vo.getCoverUrl());
         return ok(vo);
     }
 
@@ -101,7 +100,7 @@ public class ImChannelMaterialManagerController {
     public R<List<ImChannelMaterialRespVo>> getSimpleMaterialList(@RequestParam("channelId") Long channelId) {
         List<ImChannelMaterial> list = channelMaterialService.getMaterialListByChannelId(channelId);
         List<ImChannelMaterialRespVo> respList = BeanUtils.toBean(list, ImChannelMaterialRespVo.class);
-        respList.forEach(vo -> vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl())));
+        respList.forEach(vo -> vo.setCoverUrl(vo.getCoverUrl()));
         return ok(respList);
     }
 

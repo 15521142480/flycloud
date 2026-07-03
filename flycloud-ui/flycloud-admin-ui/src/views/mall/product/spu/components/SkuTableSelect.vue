@@ -11,7 +11,7 @@
       <el-table-column label="图片" min-width="80">
         <template #default="{ row }">
           <el-image
-            :src="row.picUrl"
+            :src="getFilePreviewUrl(row.picUrl)"
             class="h-30px w-30px"
             :preview-src-list="[row.picUrl]"
             preview-teleported
@@ -34,6 +34,7 @@
 
 <script lang="ts" setup>
 import { ElTable } from 'element-plus'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { propTypes } from '@/utils/propTypes'
 import { fenToYuan } from '@/utils'

@@ -22,7 +22,7 @@
     <!-- 展示上级推广人的信息 -->
     <el-descriptions v-if="bindUser" :column="1" border>
       <el-descriptions-item label="头像">
-        <el-avatar :src="bindUser.avatar" />
+        <el-avatar :src="getFilePreviewUrl(bindUser.avatar)" />
       </el-descriptions-item>
       <el-descriptions-item label="昵称">{{ bindUser.nickname }}</el-descriptions-item>
       <el-descriptions-item label="推广资格">
@@ -41,6 +41,7 @@
 </template>
 <script lang="ts" setup>
 import * as BrokerageUserApi from '@/api/mall/trade/brokerage/user'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { formatDate } from '@/utils/formatTime'
 
 /** 修改分销用户 */

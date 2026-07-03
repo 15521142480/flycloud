@@ -69,7 +69,11 @@
       <el-table-column align="center" label="分类名称" prop="name" min-width="240" />
       <el-table-column label="分类图图" min-width="80">
         <template #default="{ row }">
-          <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
+          <el-image
+            :src="getFilePreviewUrl(row.picUrl)"
+            class="h-30px w-30px"
+            @click="imagePreview(getFilePreviewUrl(row.picUrl))"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态" prop="status" min-width="150">
@@ -121,6 +125,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ArticleCategoryApi from '@/api/mall/promotion/articleCategory'
 import ArticleCategoryForm from './ArticleCategoryForm.vue'

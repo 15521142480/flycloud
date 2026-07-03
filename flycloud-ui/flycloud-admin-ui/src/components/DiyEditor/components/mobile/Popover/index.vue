@@ -10,7 +10,7 @@
     }"
     @click="handleActive(index)"
   >
-    <el-image :src="item.imgUrl" fit="contain" class="h-full w-full">
+    <el-image :src="getFilePreviewUrl(item.imgUrl)" fit="contain" class="h-full w-full">
       <template #error>
         <div class="h-full w-full flex items-center justify-center">
           <Icon icon="ep:picture" />
@@ -22,6 +22,7 @@
 </template>
 <script setup lang="ts">
 import { PopoverProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 弹窗广告 */
 defineOptions({ name: 'Popover' })

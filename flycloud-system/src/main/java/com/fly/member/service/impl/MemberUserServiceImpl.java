@@ -9,7 +9,6 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.member.mapper.MemberUserMapper;
 import com.fly.member.service.IMemberUserService;
 import com.fly.system.api.member.domain.MemberUser;
@@ -32,8 +31,6 @@ import java.util.List;
 public class MemberUserServiceImpl implements IMemberUserService {
 
     private final MemberUserMapper memberUserMapper;
-
-    private final FileUrlService fileUrlService;
 
     @Override
     public PageVo<MemberUserVo> queryPageList(MemberUserBo bo, PageBo pageBo) {
@@ -74,7 +71,7 @@ public class MemberUserServiceImpl implements IMemberUserService {
         if (user == null || Boolean.TRUE.equals(user.getIsDeleted())) {
             return null;
         }
-        user.setAvatar(fileUrlService.buildUrl(user.getAvatar()));
+        user.setAvatar(user.getAvatar());
         return user;
     }
 
@@ -82,7 +79,7 @@ public class MemberUserServiceImpl implements IMemberUserService {
     public Boolean saveOrUpdate(MemberUserBo bo) {
         validateMobileUnique(bo.getId(), bo.getMobile());
         MemberUser user = BeanUtil.toBean(bo, MemberUser.class);
-        user.setAvatar(fileUrlService.toPath(user.getAvatar()));
+        user.setAvatar(user.getAvatar());
         LocalDateTime now = LocalDateTime.now();
         String loginUserId = String.valueOf(UserUtils.getCurUserId());
         user.setUpdateBy(loginUserId);
@@ -215,7 +212,7 @@ public class MemberUserServiceImpl implements IMemberUserService {
         if (user == null) {
             return;
         }
-        user.setAvatar(fileUrlService.buildUrl(user.getAvatar()));
+        user.setAvatar(user.getAvatar());
     }
 
 }

@@ -1,7 +1,6 @@
 package com.fly.im.controller.admin.manager.face;
 
 import com.fly.common.domain.model.R;
-import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemPageReqVo;
@@ -31,8 +30,9 @@ public class ImFacePackItemManagerController {
 
     @Resource
     private ImFacePackItemService facePackItemService;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
+
 
     @PostMapping("/create")
     @Operation(summary = "新增表情")
@@ -74,7 +74,6 @@ public class ImFacePackItemManagerController {
     public R<PageResult<ImFacePackItemRespVo>> getFacePackItemPage(@Valid ImFacePackItemPageReqVo pageReqVo) {
         PageResult<ImFacePackItem> pageResult = facePackItemService.getFacePackItemPage(pageReqVo);
         PageResult<ImFacePackItemRespVo> result = PageResult.convert(pageResult, ImFacePackItemRespVo.class);
-        result.getList().forEach(this::buildUrl);
         return ok(result);
     }
 
@@ -84,14 +83,7 @@ public class ImFacePackItemManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:query')")
     public R<ImFacePackItemRespVo> getFacePackItem(@RequestParam("id") Long id) {
         ImFacePackItem item = facePackItemService.getFacePackItem(id);
-        return ok(buildUrl(BeanUtils.toBean(item, ImFacePackItemRespVo.class)));
-    }
-
-    private ImFacePackItemRespVo buildUrl(ImFacePackItemRespVo vo) {
-        if (vo != null) {
-            vo.setUrl(fileUrlService.buildUrl(vo.getUrl()));
-        }
-        return vo;
+        return ok(BeanUtils.toBean(item, ImFacePackItemRespVo.class));
     }
 
 }

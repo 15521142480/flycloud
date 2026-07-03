@@ -6,7 +6,11 @@
       class="item h-42px flex flex-row items-center justify-between gap-4px p-x-12px"
     >
       <div class="flex flex-1 flex-row items-center gap-8px">
-        <el-image v-if="item.iconUrl" class="h-16px w-16px" :src="item.iconUrl" />
+        <el-image
+          v-if="item.iconUrl"
+          class="h-16px w-16px"
+          :src="getFilePreviewUrl(item.iconUrl)"
+        />
         <span class="text-16px" :style="{ color: item.titleColor }">{{ item.title }}</span>
       </div>
       <div class="item-center flex flex-row justify-center gap-4px">
@@ -19,6 +23,7 @@
 
 <script setup lang="ts">
 import { MenuListProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 /** 列表导航 */
 defineOptions({ name: 'MenuList' })
 defineProps<{ property: MenuListProperty }>()

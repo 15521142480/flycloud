@@ -134,9 +134,9 @@
           <div class="flex">
             <el-image
               fit="cover"
-              :src="row.picUrl"
+              :src="getFilePreviewUrl(row.picUrl)"
               class="flex-none w-50px h-50px"
-              @click="imagePreview(row.picUrl)"
+              @click="imagePreview(getFilePreviewUrl(row.picUrl))"
             />
             <div class="ml-4 overflow-hidden">
               <el-tooltip effect="dark" :content="row.name" placement="top">
@@ -232,6 +232,7 @@
 </template>
 <script lang="ts" setup>
 import { TabsPaneContext } from 'element-plus'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { createImageViewer } from '@/components/ImageViewer'
 import { dateFormatter } from '@/utils/formatTime'
 import { defaultProps, handleTree, treeToString } from '@/utils/tree'

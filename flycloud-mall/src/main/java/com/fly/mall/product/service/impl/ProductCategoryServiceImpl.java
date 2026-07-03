@@ -8,7 +8,6 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.enums.StatusEnum;
@@ -39,7 +38,6 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
         implements IProductCategoryService {
 
     private final ProductCategoryMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
     private final IProductSpuService productSpuService;
 
     /**
@@ -47,7 +45,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
      */
     @Override
     public ProductCategoryVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -58,7 +56,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
         LambdaQueryWrapper<ProductCategory> lqw = buildQueryWrapper(bo);
         lqw.orderByAsc(ProductCategory::getSort);
         Page<ProductCategoryVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
+        return this.build(result);
     }
 
     /**
@@ -68,7 +66,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
     public List<ProductCategoryVo> queryList(ProductCategoryBo bo) {
         LambdaQueryWrapper<ProductCategory> lqw = buildQueryWrapper(bo);
         lqw.orderByAsc(ProductCategory::getSort);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -81,7 +79,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
         lqw.eq(ProductCategory::getStatus, StatusEnum.ENABLE.getStatus());
         lqw.in(!CollectionUtils.isEmpty(ids), ProductCategory::getId, ids);
         lqw.orderByAsc(ProductCategory::getSort);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -89,7 +87,6 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
      */
     @Override
     public Boolean saveOrUpdate(ProductCategoryBo bo) {
-        fileUrlFieldConverter.toPath(bo, "picUrl");
         validateParentCategory(bo.getId(), bo.getParentId());
         ProductCategory entity = BeanUtil.toBean(bo, ProductCategory.class);
         boolean isUpdate = entity.getId() != null;
@@ -113,7 +110,6 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategoryM
      */
     @Override
     public Long createCategory(ProductCategoryBo bo) {
-        fileUrlFieldConverter.toPath(bo, "picUrl");
         validateParentCategory(null, bo.getParentId());
         ProductCategory entity = BeanUtil.toBean(bo, ProductCategory.class);
         LocalDateTime now = LocalDateTime.now();

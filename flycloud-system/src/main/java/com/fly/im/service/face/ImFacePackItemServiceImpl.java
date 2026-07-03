@@ -1,7 +1,6 @@
 package com.fly.im.service.face;
 
 import cn.hutool.core.collection.CollUtil;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
@@ -34,8 +33,7 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
     private ImFacePackItemMapper facePackItemMapper;
     @Resource
     private ImFacePackService facePackService;
-    @Resource
-    private FileUrlService fileUrlService;
+
 
     // ==================== 用户端 ====================
 
@@ -79,7 +77,7 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
 
         // 2. 入库
         ImFacePackItem item = BeanUtils.toBean(reqVo, ImFacePackItem.class);
-        item.setUrl(fileUrlService.toPath(item.getUrl()));
+        item.setUrl(item.getUrl());
         facePackItemMapper.insert(item);
         return item.getId();
     }
@@ -93,7 +91,7 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
 
         // 2. 更新
         ImFacePackItem updateObj = BeanUtils.toBean(reqVo, ImFacePackItem.class);
-        updateObj.setUrl(fileUrlService.toPath(updateObj.getUrl()));
+        updateObj.setUrl(updateObj.getUrl());
         facePackItemMapper.updateById(updateObj);
     }
 

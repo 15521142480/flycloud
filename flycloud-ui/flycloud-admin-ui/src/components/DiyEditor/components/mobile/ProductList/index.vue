@@ -26,10 +26,18 @@
           v-if="property.badge.show"
           class="absolute left-0 top-0 z-1 items-center justify-center"
         >
-          <el-image fit="cover" :src="property.badge.imgUrl" class="h-26px w-38px" />
+          <el-image
+            fit="cover"
+            :src="getFilePreviewUrl(property.badge.imgUrl)"
+            class="h-26px w-38px"
+          />
         </div>
         <!-- 商品封面图 -->
-        <el-image fit="cover" :src="spu.picUrl" :style="{ width: imageSize, height: imageSize }" />
+        <el-image
+          fit="cover"
+          :src="getFilePreviewUrl(spu.picUrl)"
+          :style="{ width: imageSize, height: imageSize }"
+        />
         <div
           :class="[
             'flex flex-col gap-8px p-8px box-border',
@@ -64,6 +72,7 @@
 </template>
 <script setup lang="ts">
 import { ProductListProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { fenToYuan } from '@/utils'
 

@@ -122,9 +122,9 @@
         <template #default="{ row }">
           <div class="flex items-center">
             <el-image
-              :src="row.picUrl"
+              :src="getFilePreviewUrl(row.picUrl)"
               class="mr-10px h-30px w-30px"
-              @click="imagePreview(row.picUrl)"
+              @click="imagePreview(getFilePreviewUrl(row.picUrl))"
             />
             <span class="mr-10px">{{ row.spuName }}</span>
             <el-tag v-for="property in row.properties" :key="property.propertyId" class="mr-10px">
@@ -170,6 +170,7 @@
 </template>
 <script lang="ts" setup>
 import * as AfterSaleApi from '@/api/mall/trade/afterSale/index'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import { createImageViewer } from '@/components/ImageViewer'

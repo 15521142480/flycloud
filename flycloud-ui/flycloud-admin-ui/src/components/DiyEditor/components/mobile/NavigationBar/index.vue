@@ -3,7 +3,12 @@
     <div class="h-full w-full flex items-center">
       <div v-for="(cell, cellIndex) in cellList" :key="cellIndex" :style="getCellStyle(cell)">
         <span v-if="cell.type === 'text'">{{ cell.text }}</span>
-        <img v-else-if="cell.type === 'image'" :src="cell.imgUrl" alt="" class="h-full w-full" />
+        <img
+          v-else-if="cell.type === 'image'"
+          :src="getFilePreviewUrl(cell.imgUrl)"
+          alt=""
+          class="h-full w-full"
+        />
         <SearchBar v-else :property="getSearchProp(cell)" />
       </div>
     </div>
@@ -17,6 +22,7 @@
 </template>
 <script setup lang="ts">
 import { NavigationBarCellProperty, NavigationBarProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import SearchBar from '@/components/DiyEditor/components/mobile/SearchBar/index.vue'
 import { StyleValue } from 'vue'
 import { SearchProperty } from '@/components/DiyEditor/components/mobile/SearchBar/config'
@@ -30,7 +36,7 @@ const props = defineProps<{ property: NavigationBarProperty }>()
 const bgStyle = computed(() => {
   const background =
     props.property.bgType === 'img' && props.property.bgImg
-      ? `url(${props.property.bgImg}) no-repeat top center / 100% 100%`
+      ? `url(${getFilePreviewUrl(props.property.bgImg)}) no-repeat top center / 100% 100%`
       : props.property.bgColor
   return { background }
 })

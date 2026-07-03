@@ -6,7 +6,7 @@
         <el-table-column label="用户编号" prop="userId" min-width="80px" />
         <el-table-column label="用户头像" prop="avatar" min-width="80px">
           <template #default="scope">
-            <el-avatar :src="scope.row.avatar" />
+            <el-avatar :src="getFilePreviewUrl(scope.row.avatar)" />
           </template>
         </el-table-column>
         <el-table-column label="用户昵称" prop="nickname" min-width="100px" />
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { dateFormatter } from '@/utils/formatTime'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as BargainHelpApi from '@/api/mall/promotion/bargain/bargainHelp'
 import { fenToYuanFormat } from '@/utils/formatter'
 

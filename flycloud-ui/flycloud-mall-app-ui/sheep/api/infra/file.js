@@ -22,6 +22,18 @@ function normalizeUploadResult(result) {
 }
 
 const FileApi = {
+  // 获取文件配置
+  getFileConfig: () => {
+    return request({
+      url: getSystemBaseUrl() + apiPath + '/file/config',
+      method: 'GET',
+      custom: {
+        showLoading: false,
+        isToken: false,
+      },
+    });
+  },
+
   // 上传文件
   uploadFile: (file, directory = '') => {
     uni.showLoading({

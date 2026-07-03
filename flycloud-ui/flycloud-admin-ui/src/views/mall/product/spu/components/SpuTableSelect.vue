@@ -80,7 +80,7 @@
         <el-table-column label="商品图" min-width="80">
           <template #default="{ row }">
             <el-image
-              :src="row.picUrl"
+              :src="getFilePreviewUrl(row.picUrl)"
               class="h-30px w-30px"
               :preview-src-list="[row.picUrl]"
               preview-teleported
@@ -111,6 +111,7 @@
 
 <script lang="ts" setup>
 import { defaultProps, handleTree } from '@/utils/tree'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 import * as ProductCategoryApi from '@/api/mall/product/category'
 import * as ProductSpuApi from '@/api/mall/product/spu'

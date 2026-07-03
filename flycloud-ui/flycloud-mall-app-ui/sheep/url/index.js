@@ -1,5 +1,6 @@
 import $store from '@/sheep/store';
 import { baseUrl, staticUrl } from '@/sheep/config';
+import { getFileBaseUrl as getCachedFileBaseUrl } from '@/sheep/helper/fileConfig';
 
 const cdn = (url = '', cdnurl = '') => {
   if (!url) return '';
@@ -10,7 +11,7 @@ const cdn = (url = '', cdnurl = '') => {
     cdnurl = $store('app').info.cdnurl;
   }
   if (!cdnurl) {
-    cdnurl = String(url).indexOf('/static/') === 0 ? getGatewayBaseUrl() : getFileBaseUrl();
+    cdnurl = String(url).indexOf('/static/') === 0 ? getGatewayBaseUrl() : getFileResourceBaseUrl();
   }
   return joinUrl(cdnurl, url);
 };
@@ -96,9 +97,13 @@ function getGatewayBaseUrl() {
 }
 
 /**
- * 获取后端静态文件访问前缀。
+ * 获取文件资源访问前缀。
  */
-function getFileBaseUrl() {
+function getFileResourceBaseUrl() {
+  const cachedFileBaseUrl = getCachedFileBaseUrl();
+  if (cachedFileBaseUrl) {
+    return cachedFileBaseUrl;
+  }
   return joinUrl(getGatewayBaseUrl(), 'static');
 }
 

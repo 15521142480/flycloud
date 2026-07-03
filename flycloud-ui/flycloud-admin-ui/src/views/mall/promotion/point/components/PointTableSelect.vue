@@ -70,7 +70,7 @@
           <template #default="scope">
             <el-image
               :preview-src-list="[scope.row.picUrl]"
-              :src="scope.row.picUrl"
+              :src="getFilePreviewUrl(scope.row.picUrl)"
               class="h-40px w-40px"
               preview-teleported
             />
@@ -121,6 +121,7 @@
 
 <script lang="ts" setup>
 import { propTypes } from '@/utils/propTypes'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { CHANGE_EVENT } from 'element-plus'
 import { PointActivityApi, PointActivityVO } from '@/api/mall/promotion/point'
 import { fenToYuanFormat } from '@/utils/formatter'

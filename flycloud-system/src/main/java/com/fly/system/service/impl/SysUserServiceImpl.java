@@ -18,7 +18,6 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.system.domain.SysUserRole;
 import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
@@ -57,8 +56,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private final ISysMenuService sysMenuService;
 
     private final ISysDeptService sysDeptService;
-
-    private final FileUrlService fileUrlService;
 
 
 
@@ -140,7 +137,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public int saveOrUpdate(SysUserBo bo) {
 
         SysUser sysUser = BeanUtil.toBean(bo, SysUser.class);
-        sysUser.setAvatar(fileUrlService.toPath(sysUser.getAvatar()));
+        sysUser.setAvatar(sysUser.getAvatar());
         FlyUser curUser = UserUtils.getCurUser();
         boolean isUpdate = sysUser.getId() != null;
 
@@ -211,7 +208,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         if (user == null) {
             return;
         }
-        user.setAvatar(fileUrlService.buildUrl(user.getAvatar()));
+        user.setAvatar(user.getAvatar());
     }
 
 
@@ -303,7 +300,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     public Boolean updateByBo(SysUserBo bo) {
         SysUser update = BeanUtil.toBean(bo, SysUser.class);
-        update.setAvatar(fileUrlService.toPath(update.getAvatar()));
+        update.setAvatar(update.getAvatar());
         validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
     }

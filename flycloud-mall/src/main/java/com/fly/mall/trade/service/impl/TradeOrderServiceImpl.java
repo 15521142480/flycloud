@@ -10,7 +10,6 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.ServiceException;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
@@ -179,7 +178,6 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     private final IRewardActivityService rewardActivityService;
     private final IPayOrderApi payOrderApi;
     private final TradeOrderProperties tradeOrderProperties;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询交易订单详情。
@@ -1112,7 +1110,6 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setSkuId(cart.getSkuId());
             item.setProperties(convertSkuProperties(sku.getProperties()));
             item.setPicUrl(sku.getPicUrl() != null ? sku.getPicUrl() : spu.getPicUrl());
-            fileUrlFieldConverter.toPath(item, "picUrl");
             item.setCount(count);
             item.setCommentStatus(false);
             item.setPrice(price);
@@ -1153,7 +1150,6 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setSkuId(source.sku().getId());
             item.setProperties(convertSkuProperties(source.sku().getProperties()));
             item.setPicUrl(source.sku().getPicUrl() != null ? source.sku().getPicUrl() : source.spu().getPicUrl());
-            fileUrlFieldConverter.toPath(item, "picUrl");
             item.setCount(source.count());
             item.setCommentStatus(false);
             item.setPrice(price);

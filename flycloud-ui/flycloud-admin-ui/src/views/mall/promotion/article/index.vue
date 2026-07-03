@@ -83,7 +83,11 @@
       <el-table-column align="center" label="ID" min-width="180" prop="id" />
       <el-table-column align="center" label="封面" min-width="80" prop="picUrl">
         <template #default="{ row }">
-          <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
+          <el-image
+            :src="getFilePreviewUrl(row.picUrl)"
+            class="h-30px w-30px"
+            @click="imagePreview(getFilePreviewUrl(row.picUrl))"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" label="标题" min-width="180" prop="title" />
@@ -144,6 +148,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ArticleApi from '@/api/mall/promotion/article'
 import ArticleForm from './ArticleForm.vue'

@@ -22,11 +22,30 @@ public class FileUrlService {
 
 
     /**
-     * 获取baseUrl；如 http://localhost:8080/static/
-     *
-    */
-    public String getBaseUrl() {
+     * 获取当前启用文件存储的基础路径。
+     */
+    public String getBasePath() {
+        String basePath = null;
+        if (fileConfigProperties.getUseServerType() == LOCAL_SERVER_TYPE
+                && fileConfigProperties.getLocalServerConfig() != null) {
+            basePath = fileConfigProperties.getLocalServerConfig().getBasePath();
+        } else if (fileConfigProperties.getUseServerType() == SFTP_SERVER_TYPE
+                && fileConfigProperties.getSftpServerConfig() != null) {
+            basePath = fileConfigProperties.getSftpServerConfig().getBasePath();
+        }
+        if (StrUtil.isBlank(basePath) && fileConfigProperties.getLocalServerConfig() != null) {
+            basePath = fileConfigProperties.getLocalServerConfig().getBasePath();
+        }
+        if (StrUtil.isBlank(basePath) && fileConfigProperties.getSftpServerConfig() != null) {
+            basePath = fileConfigProperties.getSftpServerConfig().getBasePath();
+        }
+        return normalizePath(basePath);
+    }
 
+    /**
+     * 获取当前启用文件存储的访问基础地址。
+     */
+    public String getBaseUrl() {
         String baseUrl = null;
         if (fileConfigProperties.getUseServerType() == LOCAL_SERVER_TYPE
                 && fileConfigProperties.getLocalServerConfig() != null) {
@@ -41,50 +60,17 @@ public class FileUrlService {
         if (StrUtil.isBlank(baseUrl) && fileConfigProperties.getSftpServerConfig() != null) {
             baseUrl = fileConfigProperties.getSftpServerConfig().getBaseUrl();
         }
-
-        return normalizeBaseUrl(baseUrl);
+        return normalizePath(baseUrl);
     }
 
-    
     /**
-     * 构建url
-     * 
-     * @param path
-    */
-    public String buildUrl(String path) {
-        if (StrUtil.isBlank(path) || isAbsoluteUrl(path)) {
-            return path;
-        }
-        return getBaseUrl() + StrUtil.removePrefix(path, StrUtil.SLASH);
-    }
-
-    public String toPath(String urlOrPath) {
-        if (StrUtil.isBlank(urlOrPath)) {
-            return urlOrPath;
-        }
-        String baseUrl = getBaseUrl();
-        if (StrUtil.isNotBlank(baseUrl) && StrUtil.startWith(urlOrPath, baseUrl)) {
-            return StrUtil.removePrefix(urlOrPath, baseUrl);
-        }
-        return urlOrPath;
-    }
-
-    private String normalizeBaseUrl(String baseUrl) {
-        if (StrUtil.isBlank(baseUrl)) {
+     * 统一补齐配置路径末尾斜杠。
+     */
+    private String normalizePath(String path) {
+        if (StrUtil.isBlank(path)) {
             return StrUtil.EMPTY;
         }
-        return StrUtil.addSuffixIfNot(baseUrl, StrUtil.SLASH);
-    }
-
-    
-    /**
-     * 判断值是否是url
-     * 
-     * @param value
-    */
-    private boolean isAbsoluteUrl(String value) {
-        String lowerValue = StrUtil.toString(value).toLowerCase();
-        return StrUtil.startWithAny(lowerValue, "http://", "https://", "//", "data:", "blob:");
+        return StrUtil.addSuffixIfNot(path, StrUtil.SLASH);
     }
 
 }

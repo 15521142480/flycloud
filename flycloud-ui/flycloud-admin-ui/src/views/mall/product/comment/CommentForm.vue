@@ -13,7 +13,7 @@
       <el-form-item v-if="formData.spuId" label="商品规格" prop="skuId">
         <div class="h-60px w-60px" @click="handleSelectSku">
           <div v-if="skuData && skuData.picUrl">
-            <el-image :src="skuData.picUrl" />
+            <el-image :src="getFilePreviewUrl(skuData.picUrl)" />
           </div>
           <div v-else class="select-box">
             <Icon icon="ep:plus" />
@@ -36,7 +36,13 @@
         <el-rate v-model="formData.benefitScores" />
       </el-form-item>
       <el-form-item label="评论图片" prop="picUrls">
-        <UploadImgs v-model="formData.picUrls" directory="mall" :limit="9" height="60px" width="60px" />
+        <UploadImgs
+          v-model="formData.picUrls"
+          directory="mall"
+          :limit="9"
+          height="60px"
+          width="60px"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -48,6 +54,7 @@
 </template>
 <script lang="ts" setup>
 import * as CommentApi from '@/api/mall/product/comment'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import SpuShowcase from '@/views/mall/product/spu/components/SpuShowcase.vue'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import SkuTableSelect from '@/views/mall/product/spu/components/SkuTableSelect.vue'

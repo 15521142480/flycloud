@@ -19,7 +19,7 @@
           })
         "
       >
-        <image class="goods-img" :src="item.picUrl" mode="aspectFill" />
+        <image class="goods-img" :src="sheep.$url.cdn(item.picUrl)" mode="aspectFill" />
         <view class="ss-p-10">
           <view class="goods-title ss-line-1">{{ item.name }}</view>
         </view>

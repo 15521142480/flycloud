@@ -2,7 +2,6 @@ package com.fly.im.controller.admin.manager.group;
 
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
-import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
@@ -42,8 +41,8 @@ public class ImGroupManagerController {
 
     @Resource
     private AdminUserApi adminUserApi;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
 
     @GetMapping("/page")
     @Operation(summary = "获得群分页")
@@ -64,7 +63,7 @@ public class ImGroupManagerController {
             MapUtils.findAndThen(userMap, vo.getOwnerUserId(),
                     user -> vo.setOwnerNickname(user.getName()));
             vo.setMemberCount(memberCountMap.getOrDefault(vo.getId(), 0L).intValue());
-            vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar()));
+            vo.setAvatar(vo.getAvatar());
         }));
     }
 
@@ -75,7 +74,7 @@ public class ImGroupManagerController {
     public R<ImGroupManagerRespVo> getGroup(@RequestParam("id") Long id) {
         ImGroup group = groupService.getGroup(id);
         ImGroupManagerRespVo vo = BeanUtils.toBean(group, ImGroupManagerRespVo.class);
-        vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar()));
+        vo.setAvatar(vo.getAvatar());
         return ok(vo);
     }
 

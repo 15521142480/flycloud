@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.Banner;
@@ -33,14 +32,13 @@ import java.util.List;
 public class BannerServiceImpl extends BaseServiceImpl<BannerMapper, Banner> implements IBannerService {
 
     private final BannerMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询轮播图详情。
      */
     @Override
     public BannerVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -50,7 +48,7 @@ public class BannerServiceImpl extends BaseServiceImpl<BannerMapper, Banner> imp
     public PageVo<BannerVo> queryPageList(BannerBo bo, PageBo pageBo) {
         LambdaQueryWrapper<Banner> lqw = buildQueryWrapper(bo);
         Page<BannerVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
+        return this.build(result);
     }
 
     /**
@@ -60,7 +58,7 @@ public class BannerServiceImpl extends BaseServiceImpl<BannerMapper, Banner> imp
     public List<BannerVo> queryList(BannerBo bo) {
         LambdaQueryWrapper<Banner> lqw = buildQueryWrapper(bo);
         lqw.orderByDesc(Banner::getSort).orderByDesc(Banner::getId);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -90,7 +88,6 @@ public class BannerServiceImpl extends BaseServiceImpl<BannerMapper, Banner> imp
      */
     @Override
     public Boolean saveOrUpdate(BannerBo bo) {
-        fileUrlFieldConverter.toPath(bo, "picUrl");
         Banner entity = BeanUtil.toBean(bo, Banner.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

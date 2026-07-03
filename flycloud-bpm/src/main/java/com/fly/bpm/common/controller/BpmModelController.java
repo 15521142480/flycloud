@@ -14,7 +14,6 @@ import com.fly.bpm.common.service.IBpmFormService;
 import com.fly.bpm.flowable.convert.BpmModelConvert;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.model.R;
-import com.fly.common.file.FileUrlConverter;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import com.fly.system.api.system.feign.ISysUserApi;
@@ -56,8 +55,6 @@ public class BpmModelController {
 
     private final BpmProcessDefinitionService processDefinitionService;
 
-    private final FileUrlConverter fileUrlConverter;
-
     private final ISysUserApi iSysUserProvider;
 
 
@@ -98,7 +95,6 @@ public class BpmModelController {
         Map<Long, SysUserVo> userMap = iSysUserProvider.getUserMapByIds(userIds);
         List<BpmModelRespVO> result = BpmModelConvert.INSTANCE.buildModelList(list,
                 formMap, categoryMap, deploymentMap, processDefinitionMap, userMap);
-        result.forEach(this::buildIconUrl);
         return R.ok(result);
     }
 
@@ -144,7 +140,6 @@ public class BpmModelController {
 
         PageVo<BpmModelRespVO> result = BpmModelConvert.INSTANCE.buildModelPage(pageVo,
                 formMap, categoryMap, deploymentMap, processDefinitionMap, userMap);
-        result.getList().forEach(this::buildIconUrl);
         return R.ok(result);
     }
 
@@ -161,7 +156,7 @@ public class BpmModelController {
             return null;
         }
         byte[] bpmnBytes = modelService.getModelBpmnXML(id);
-        return R.ok(buildIconUrl(BpmModelConvert.INSTANCE.buildModel(model, bpmnBytes)));
+        return R.ok(BpmModelConvert.INSTANCE.buildModel(model, bpmnBytes));
     }
 
 
@@ -172,7 +167,6 @@ public class BpmModelController {
     @PreAuthorize("@pms.hasPermission('bpm:manage:model:create')")
     @PostMapping("/create")
     public R<String> createModel(@Valid @RequestBody BpmModelSaveReqVO createRetVO) {
-        createRetVO.setIcon(fileUrlConverter.toPath(createRetVO.getIcon()));
         return R.ok(modelService.createModel(createRetVO));
     }
 
@@ -184,16 +178,8 @@ public class BpmModelController {
     @PreAuthorize("@pms.hasPermission('bpm:manage:model:update')")
     @PutMapping("/update")
     public R<Boolean> updateModel(@Valid @RequestBody BpmModelSaveReqVO modelVO) {
-        modelVO.setIcon(fileUrlConverter.toPath(modelVO.getIcon()));
         modelService.updateModel(getCurUserId(), modelVO);
         return R.ok(true);
-    }
-
-    private BpmModelRespVO buildIconUrl(BpmModelRespVO vo) {
-        if (vo != null) {
-            vo.setIcon(fileUrlConverter.buildUrl(vo.getIcon()));
-        }
-        return vo;
     }
 
 

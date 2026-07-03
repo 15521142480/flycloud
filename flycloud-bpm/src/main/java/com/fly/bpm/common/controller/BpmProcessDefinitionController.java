@@ -16,7 +16,6 @@ import com.fly.common.database.web.controller.BaseController;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
-import com.fly.common.file.FileUrlConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.json.JsonUtils;
@@ -56,7 +55,6 @@ public class BpmProcessDefinitionController extends BaseController {
 
     private final BpmModelService modelService;
 
-    private final FileUrlConverter fileUrlConverter;
 
 
     /**
@@ -112,11 +110,10 @@ public class BpmProcessDefinitionController extends BaseController {
         Map<String, BpmProcessDefinitionInfo> processDefinitionMap = bpmProcessDefinitionService.getProcessDefinitionInfoMap(
                 CollectionUtils.convertSet(list, ProcessDefinition::getId));
 
-        for (BpmProcessDefinitionInfo info : processDefinitionMap.values()) {
-            Model model = modelService.getModel(info.getModelId());
-            BpmModelMetaInfoVO modelMetaInfoVO = JsonUtils.parseObject(model.getMetaInfo(), BpmModelMetaInfoVO.class);
-            info.setIcon(fileUrlConverter.buildUrl(modelMetaInfoVO.getIcon()));
-        }
+//        for (BpmProcessDefinitionInfo info : processDefinitionMap.values()) {
+//            Model model = modelService.getModel(info.getModelId());
+//            BpmModelMetaInfoVO modelMetaInfoVO = JsonUtils.parseObject(model.getMetaInfo(), BpmModelMetaInfoVO.class);
+//        }
 
         // 1.4 移除不可见的流程定义
         Long userId = UserUtils.getCurUserId();

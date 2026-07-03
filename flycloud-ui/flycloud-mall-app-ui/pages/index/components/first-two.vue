@@ -5,7 +5,7 @@
       <view class="goods-box" v-for="item in pagination?.list" :key="item.id">
         <view @click="sheep.$router.go('/pages/goods/index', { id: item.id })">
           <view class="goods-img">
-            <image class="goods-img" :src="item.picUrl" mode="aspectFit" />
+            <image class="goods-img" :src="sheep.$url.cdn(item.picUrl)" mode="aspectFit" />
           </view>
           <view class="goods-content">
             <view class="goods-title ss-line-1 ss-m-b-28">{{ item.name }}</view>

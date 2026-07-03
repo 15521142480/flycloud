@@ -7,7 +7,7 @@
     >
       <el-tooltip :content="seckillActivity.name">
         <div class="relative h-full w-full">
-          <el-image :src="seckillActivity.picUrl" class="h-full w-full" />
+          <el-image :src="getFilePreviewUrl(seckillActivity.picUrl)" class="h-full w-full" />
           <Icon
             v-show="!disabled"
             class="del-icon"
@@ -32,6 +32,7 @@
 </template>
 <script lang="ts" setup>
 import * as SeckillActivityApi from '@/api/mall/promotion/seckill/seckillActivity'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { propTypes } from '@/utils/propTypes'
 import { oneOfType } from 'vue-types'
 import { isArray } from '@/utils/is'

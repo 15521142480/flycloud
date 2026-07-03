@@ -180,10 +180,13 @@ import { useIcon } from '@/hooks/web/useIcon'
 import * as authUtil from '@/utils/auth'
 import { usePermissionStore } from '@/store/modules/permission'
 import * as LoginApi from '@/api/login'
+import * as FileApi from '@/api/infra/file'
+import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { LoginStateEnum, useFormValid, useLoginState } from './useLogin'
 import ImageTextClickCaptcha from './ImageTextClickCaptcha.vue'
 import type { TextCaptchaDataVo } from '@/entity/auth'
 const { t } = useI18n()
+const { wsCache } = useCache()
 defineOptions({ name: 'LoginForm' })
 // const iconHouse = useIcon({ icon: 'ep:house' })
 const iconAvatar = useIcon({ icon: 'ep:avatar' })
@@ -328,6 +331,7 @@ const handleLogin = async () => {
       authUtil.removeLoginForm()
     }
     authUtil.setToken(res.data)
+    wsCache.set(CACHE_KEY.BASE_URL, await FileApi.getFileConfig())
     if (!redirect.value) {
       redirect.value = '/'
     }

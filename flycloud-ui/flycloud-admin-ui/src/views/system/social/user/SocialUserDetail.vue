@@ -17,7 +17,7 @@
         :label="t('auto.views.system.social.user.SocialUserDetail.k2b78f76f')"
         min-width="120"
       >
-        <el-image :src="detailData.avatar" class="h-30px w-30px" />
+        <el-image :src="getFilePreviewUrl(detailData.avatar)" class="h-30px w-30px" />
       </el-descriptions>
       <el-descriptions-item
         :label="t('auto.views.system.social.user.SocialUserDetail.k7bfda319')"
@@ -64,6 +64,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as SocialUserApi from '@/api/system/social/user'
 const { t } = useI18n()
 const dialogVisible = ref(false) // 弹窗的是否展示

@@ -108,7 +108,7 @@
             <el-image
               v-for="(picUrl, index) in scope.row.picUrls"
               :key="index"
-              :src="picUrl"
+              :src="getFilePreviewUrl(picUrl)"
               :preview-src-list="scope.row.picUrls"
               :initial-index="Number(index)"
               class="h-40px w-40px"
@@ -172,6 +172,7 @@
 
 <script setup lang="ts">
 import { dateFormatter } from '@/utils/formatTime'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as CommentApi from '@/api/mall/product/comment'
 import CommentForm from './CommentForm.vue'
 import ReplyForm from './ReplyForm.vue'

@@ -18,7 +18,11 @@
     <el-table-column key="id" align="center" label="商品编号" prop="id" />
     <el-table-column label="商品图" min-width="80">
       <template #default="{ row }">
-        <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
+        <el-image
+          :src="getFilePreviewUrl(row.picUrl)"
+          class="h-30px w-30px"
+          @click="imagePreview(getFilePreviewUrl(row.picUrl))"
+        />
       </template>
     </el-table-column>
     <el-table-column :show-overflow-tooltip="true" label="商品名称" min-width="300" prop="name" />
@@ -43,6 +47,7 @@
 </template>
 <script generic="T extends Spu" lang="ts" setup>
 import { formatToFraction } from '@/utils'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { createImageViewer } from '@/components/ImageViewer'
 import { Spu } from '@/api/mall/product/spu'
 import { RuleConfig, SkuList } from '@/views/mall/product/spu/components'

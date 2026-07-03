@@ -1,7 +1,6 @@
 package com.fly.im.service.face;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.fly.file.service.FileUrlService;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
@@ -36,8 +35,8 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     private ImFaceUserItemMapper faceUserItemMapper;
     @Resource
     private ImProperties imProperties;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
 
     @Override
     public List<ImFaceUserItem> getFaceUserItemList(Long userId) {
@@ -46,7 +45,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
 
     @Override
     public Long createFaceUserItem(Long userId, ImFaceUserItemSaveReqVo reqVo) {
-        String url = fileUrlService.toPath(reqVo.getUrl());
+        String url = reqVo.getUrl();
         // 1.1 同 URL 已存在则报错
         if (faceUserItemMapper.selectByUserIdAndUrl(userId, url) != null) {
             throw exception(FACE_USER_ITEM_DUPLICATED);

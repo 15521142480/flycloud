@@ -68,7 +68,11 @@
       <el-table-column align="center" label="Banner标题" prop="title" />
       <el-table-column align="center" label="图片" min-width="80" prop="picUrl">
         <template #default="{ row }">
-          <el-image :src="row.picUrl" class="h-30px w-30px" @click="imagePreview(row.picUrl)" />
+          <el-image
+            :src="getFilePreviewUrl(row.picUrl)"
+            class="h-30px w-30px"
+            @click="imagePreview(getFilePreviewUrl(row.picUrl))"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态" prop="status">
@@ -127,6 +131,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as BannerApi from '@/api/mall/promotion/banner'
 import BannerForm from './BannerForm.vue'

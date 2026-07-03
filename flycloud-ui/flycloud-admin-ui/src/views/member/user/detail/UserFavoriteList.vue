@@ -6,7 +6,7 @@
       <el-table-column label="商品图" min-width="80">
         <template #default="{ row }">
           <el-image
-            :src="row.picUrl"
+            :src="getFilePreviewUrl(row.picUrl)"
             :preview-src-list="row.picUrl ? [row.picUrl] : []"
             class="h-30px w-30px"
             preview-teleported
@@ -43,6 +43,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as FavoriteApi from '@/api/mall/product/favorite'
 import { floatToFixed2 } from '@/utils'

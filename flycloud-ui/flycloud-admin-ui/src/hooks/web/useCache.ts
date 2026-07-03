@@ -16,6 +16,7 @@ export const CACHE_KEY = {
   THEME: 'theme',
   LAYOUT: 'layout',
   DICT_CACHE: 'dictCache',
+  BASE_URL: 'baseUrl',
   // 登录表单
   LoginForm: 'loginForm',
   TenantId: 'tenantId'

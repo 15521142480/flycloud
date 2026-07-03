@@ -30,7 +30,7 @@
               {{ index + 1 }}
             </view>
             <view class="pictrue">
-              <image :src="item.avatar" />
+              <image :src="sheep.$url.cdn(item.avatar)" />
             </view>
             <view class="text">{{ item.nickname }}</view>
             <view class="people">￥{{ fen2yuan(item.brokeragePrice) }}</view>

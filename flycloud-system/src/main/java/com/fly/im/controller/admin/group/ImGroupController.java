@@ -3,7 +3,6 @@ package com.fly.im.controller.admin.group;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.domain.vo.admin.group.*;
 import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberInviteReqVo;
 import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberRemoveReqVo;
@@ -41,8 +40,8 @@ public class ImGroupController {
     private ImGroupMemberService groupMemberService;
     @Resource
     private ImGroupMessageService groupMessageService;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
 
     // ==================== 群的写操作 ====================
 
@@ -52,7 +51,7 @@ public class ImGroupController {
         ImGroup group = groupService.createGroup(createReqVo, getCurUserId());
         // 新建群必无 pinnedMessages，跳过关联回填
         ImGroupRespVo vo = BeanUtils.toBean(group, ImGroupRespVo.class);
-        vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar()));
+        vo.setAvatar(vo.getAvatar());
         return ok(vo);
     }
 
@@ -199,7 +198,7 @@ public class ImGroupController {
         // 转换输出
         return convertList(groups, group -> {
             ImGroupRespVo vo = BeanUtils.toBean(group, ImGroupRespVo.class);
-            vo.setAvatar(fileUrlService.buildUrl(vo.getAvatar()));
+            vo.setAvatar(vo.getAvatar());
             if (!activeGroupIds.contains(group.getId()) || CollUtil.isEmpty(group.getPinnedMessageIds())) {
                 return vo;
             }

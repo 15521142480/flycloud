@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.exception.ServiceException;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.mall.api.product.domain.ProductProperty;
@@ -46,14 +45,13 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
     private final ProductPropertyMapper productPropertyMapper;
     private final ProductPropertyValueMapper productPropertyValueMapper;
     private final ProductSpuMapper productSpuMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询商品 SKU 详情。
      */
     @Override
     public ProductSkuVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -64,7 +62,7 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
         LambdaQueryWrapper<ProductSku> lqw = Wrappers.lambdaQuery();
         lqw.eq(ProductSku::getIsDeleted, false);
         lqw.eq(ProductSku::getSpuId, spuId);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -78,7 +76,7 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
         LambdaQueryWrapper<ProductSku> lqw = Wrappers.lambdaQuery();
         lqw.eq(ProductSku::getIsDeleted, false);
         lqw.in(ProductSku::getSpuId, spuIds);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -283,7 +281,6 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
         String userId = String.valueOf(UserUtils.getCurUserId());
         List<ProductSku> entities = new ArrayList<>();
         for (ProductSkuBo skuBo : skuList) {
-            fileUrlFieldConverter.toPath(skuBo, "picUrl");
             ProductSku sku = BeanUtil.toBean(skuBo, ProductSku.class);
             sku.setId(null);
             sku.setSpuId(spuId);

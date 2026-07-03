@@ -1,6 +1,11 @@
 <template>
   <div class="title-bar" :style="{ height: `${property.height}px` }">
-    <el-image v-if="property.bgImgUrl" :src="property.bgImgUrl" fit="cover" class="w-full" />
+    <el-image
+      v-if="property.bgImgUrl"
+      :src="getFilePreviewUrl(property.bgImgUrl)"
+      fit="cover"
+      class="w-full"
+    />
     <div class="absolute left-0 top-0 w-full h-full flex flex-col justify-center">
       <!-- 标题 -->
       <div
@@ -45,6 +50,7 @@
 </template>
 <script setup lang="ts">
 import { TitleBarProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 标题栏 */
 defineOptions({ name: 'TitleBar' })

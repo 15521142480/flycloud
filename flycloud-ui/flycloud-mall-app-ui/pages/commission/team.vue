@@ -140,7 +140,7 @@
                 style="display: flex; align-items: center"
               >
                 <view class="pictrue">
-                  <image :src="item.avatar" />
+                  <image :src="sheep.$url.cdn(item.avatar)" />
                 </view>
                 <view class="text">
                   <view class="name line1">{{ item.nickname }}</view>

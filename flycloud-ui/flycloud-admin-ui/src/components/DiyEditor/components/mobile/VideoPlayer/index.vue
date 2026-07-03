@@ -1,11 +1,15 @@
 <template>
   <div class="w-full" :style="{ height: `${property.style.height}px` }">
-    <el-image class="w-full w-full" :src="property.posterUrl" v-if="property.posterUrl" />
+    <el-image
+      class="w-full w-full"
+      :src="getFilePreviewUrl(property.posterUrl)"
+      v-if="property.posterUrl"
+    />
     <video
       v-else
       class="w-full w-full"
-      :src="property.videoUrl"
-      :poster="property.posterUrl"
+      :src="getFilePreviewUrl(property.videoUrl)"
+      :poster="getFilePreviewUrl(property.posterUrl)"
       :autoplay="property.autoplay"
       controls
     ></video>
@@ -13,6 +17,7 @@
 </template>
 <script setup lang="ts">
 import { VideoPlayerProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 视频播放 */
 defineOptions({ name: 'VideoPlayer' })

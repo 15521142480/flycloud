@@ -5,7 +5,7 @@
     </template>
     <el-row v-if="mode === 'member'">
       <el-col :span="4">
-        <ElAvatar :size="140" :src="user.avatar || undefined" shape="square" />
+        <ElAvatar :size="140" :src="getFilePreviewUrl(user.avatar || undefined)" shape="square" />
       </el-col>
       <el-col :span="20">
         <el-descriptions :column="2">
@@ -73,7 +73,7 @@
       </el-col>
     </el-row>
     <template v-if="mode === 'kefu'">
-      <ElAvatar :size="140" :src="user.avatar || undefined" shape="square" />
+      <ElAvatar :size="140" :src="getFilePreviewUrl(user.avatar || undefined)" shape="square" />
       <el-descriptions :column="1" class="kefu-descriptions">
         <el-descriptions-item>
           <template #label>
@@ -141,6 +141,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { formatDate } from '@/utils/formatTime'
 import * as UserApi from '@/api/member/user'
 import { DescriptionsItemLabel } from '@/components/Descriptions/index'

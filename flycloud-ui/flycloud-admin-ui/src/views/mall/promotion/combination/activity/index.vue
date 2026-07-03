@@ -71,7 +71,7 @@
         <template #default="scope">
           <el-image
             :preview-src-list="[scope.row.picUrl]"
-            :src="scope.row.picUrl"
+            :src="getFilePreviewUrl(scope.row.picUrl)"
             class="h-40px w-40px"
             preview-teleported
           />
@@ -150,6 +150,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter, formatDate } from '@/utils/formatTime'
 import * as CombinationActivityApi from '@/api/mall/promotion/combination/combinationActivity'
 import CombinationActivityForm from './CombinationActivityForm.vue'

@@ -8,7 +8,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.file.service.FileUrlService;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminAddReqVo;
@@ -86,8 +85,8 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Resource
     private ImProperties imProperties;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
 
     // ==================== 群的写操作 ====================
 
@@ -116,7 +115,7 @@ public class ImGroupServiceImpl implements ImGroupService {
         // 2.1 插入群记录
         ImGroup group = BeanUtils.toBean(createReqVo, ImGroup.class)
                 .setOwnerUserId(userId).setStatus(CommonStatusEnum.ENABLE.getStatus());
-        group.setAvatar(fileUrlService.toPath(group.getAvatar()));
+        group.setAvatar(group.getAvatar());
         groupMapper.insert(group);
         // 2.2 创建者作为 OWNER 入群
         groupMemberService.addGroupMember(group.getId(), userId, ImGroupMemberRoleEnum.OWNER.getRole());
@@ -146,7 +145,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
         // 2. 更新数据库（newGroup 仅含变更字段）
         ImGroup newGroup = BeanUtils.toBean(updateReqVo, ImGroup.class);
-        newGroup.setAvatar(fileUrlService.toPath(newGroup.getAvatar()));
+        newGroup.setAvatar(newGroup.getAvatar());
         groupMapper.updateById(newGroup);
 
         // 3. 按变更字段分别推送 GROUP_NAME / NOTICE / INFO_UPDATE 通知；活跃成员只查一次复用，避免 3 次 Redis GET
@@ -167,8 +166,8 @@ public class ImGroupServiceImpl implements ImGroupService {
             }
             if (avatarChanged) {
                 groupMessageService.sendGroupMessage(userId, memberUserIds, ImGroupMessageSendDTO.ofGroupInfoUpdate(
-                        groupId, userId, fileUrlService.buildUrl(group.getAvatar()),
-                        fileUrlService.buildUrl(newGroup.getAvatar())));
+                        groupId, userId, group.getAvatar(),
+                        newGroup.getAvatar()));
             }
         }
 

@@ -95,7 +95,7 @@
       <el-table-column align="center" label="用户编号" prop="id" width="120px" />
       <el-table-column align="center" label="头像" prop="avatar" width="80px">
         <template #default="scope">
-          <img :src="scope.row.avatar" style="width: 40px" />
+          <img :src="getFilePreviewUrl(scope.row.avatar)" style="width: 40px" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
@@ -213,6 +213,7 @@
 </template>
 <script lang="ts" setup>
 import { dateFormatter } from '@/utils/formatTime'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as UserApi from '@/api/member/user'
 import { DICT_TYPE } from '@/utils/dict'
 import UserForm from './UserForm.vue'

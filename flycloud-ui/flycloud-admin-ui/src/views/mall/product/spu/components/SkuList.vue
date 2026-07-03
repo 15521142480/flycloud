@@ -151,9 +151,9 @@
       <template #default="{ row }">
         <el-image
           v-if="row.picUrl"
-          :src="row.picUrl"
+          :src="getFilePreviewUrl(row.picUrl)"
           class="h-50px w-50px"
-          @click="imagePreview(row.picUrl)"
+          @click="imagePreview(getFilePreviewUrl(row.picUrl))"
         />
       </template>
     </el-table-column>
@@ -234,7 +234,11 @@
     <el-table-column v-if="isComponent" type="selection" width="45" />
     <el-table-column align="center" label="图片" min-width="80">
       <template #default="{ row }">
-        <el-image :src="row.picUrl" class="h-60px w-60px" @click="imagePreview(row.picUrl)" />
+        <el-image
+          :src="getFilePreviewUrl(row.picUrl)"
+          class="h-60px w-60px"
+          @click="imagePreview(getFilePreviewUrl(row.picUrl))"
+        />
       </template>
     </el-table-column>
     <template v-if="formData!.specType">
@@ -284,6 +288,7 @@
 </template>
 <script lang="ts" setup>
 import { PropType, Ref } from 'vue'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { copyValueToTarget, formatToFraction } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { UploadImg } from '@/components/UploadFile'

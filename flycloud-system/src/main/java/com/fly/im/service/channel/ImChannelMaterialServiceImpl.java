@@ -3,7 +3,6 @@ package com.fly.im.service.channel;
 import cn.hutool.core.collection.CollUtil;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialPageReqVo;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialSaveReqVo;
 import com.fly.system.api.im.domain.channel.ImChannelMaterial;
@@ -37,8 +36,7 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
     private ImChannelService channelService;
     @Resource
     private ImChannelMessageMapper channelMessageMapper;
-    @Resource
-    private FileUrlService fileUrlService;
+
 
     // ==================== 用户端 ====================
 
@@ -88,7 +86,7 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
 
         // 2. 插入素材
         ImChannelMaterial material = BeanUtils.toBean(reqVo, ImChannelMaterial.class);
-        material.setCoverUrl(fileUrlService.toPath(material.getCoverUrl()));
+        material.setCoverUrl(material.getCoverUrl());
         channelMaterialMapper.insert(material);
         return material.getId();
     }
@@ -102,7 +100,7 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
 
         // 2. 更新素材
         ImChannelMaterial updateObj = BeanUtils.toBean(reqVo, ImChannelMaterial.class);
-        updateObj.setCoverUrl(fileUrlService.toPath(updateObj.getCoverUrl()));
+        updateObj.setCoverUrl(updateObj.getCoverUrl());
         channelMaterialMapper.updateById(updateObj);
     }
 

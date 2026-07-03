@@ -7,7 +7,7 @@
     >
       <el-tooltip :content="pointActivity.spuName">
         <div class="relative h-full w-full">
-          <el-image :src="pointActivity.picUrl" class="h-full w-full" />
+          <el-image :src="getFilePreviewUrl(pointActivity.picUrl)" class="h-full w-full" />
           <Icon
             v-show="!disabled"
             class="del-icon"
@@ -32,6 +32,7 @@
 </template>
 <script lang="ts" setup>
 import PointTableSelect from './PointTableSelect.vue'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { PointActivityApi, PointActivityVO } from '@/api/mall/promotion/point'
 import { propTypes } from '@/utils/propTypes'
 import { oneOfType } from 'vue-types'

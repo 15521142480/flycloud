@@ -6,13 +6,13 @@
         background:
           property.style.bgType === 'color'
             ? property.style.bgColor
-            : `url(${property.style.bgImg})`,
+            : `url(${getFilePreviewUrl(property.style.bgImg)})`,
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat'
       }"
     >
       <div v-for="(item, index) in property.items" :key="index" class="tab-bar-item">
-        <el-image :src="index === 0 ? item.activeIconUrl : item.iconUrl">
+        <el-image :src="getFilePreviewUrl(index === 0 ? item.activeIconUrl : item.iconUrl)">
           <template #error>
             <div class="h-full w-full flex items-center justify-center">
               <Icon icon="ep:picture" />
@@ -28,6 +28,7 @@
 </template>
 <script setup lang="ts">
 import { TabBarProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 页面底部导航栏 */
 defineOptions({ name: 'TabBar' })

@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.trade.domain.TradeOrderItem;
@@ -33,14 +32,13 @@ import java.util.List;
 public class TradeOrderItemServiceImpl extends BaseServiceImpl<TradeOrderItemMapper, TradeOrderItem> implements ITradeOrderItemService {
 
     private final TradeOrderItemMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询交易订单项详情。
      */
     @Override
     public TradeOrderItemVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "picUrl");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -50,7 +48,7 @@ public class TradeOrderItemServiceImpl extends BaseServiceImpl<TradeOrderItemMap
     public PageVo<TradeOrderItemVo> queryPageList(TradeOrderItemBo bo, PageBo pageBo) {
         LambdaQueryWrapper<TradeOrderItem> lqw = buildQueryWrapper(bo);
         Page<TradeOrderItemVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "picUrl");
+        return this.build(result);
     }
 
     /**
@@ -59,7 +57,7 @@ public class TradeOrderItemServiceImpl extends BaseServiceImpl<TradeOrderItemMap
     @Override
     public List<TradeOrderItemVo> queryList(TradeOrderItemBo bo) {
         LambdaQueryWrapper<TradeOrderItem> lqw = buildQueryWrapper(bo);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -83,7 +81,7 @@ public class TradeOrderItemServiceImpl extends BaseServiceImpl<TradeOrderItemMap
         LambdaQueryWrapper<TradeOrderItem> lqw = Wrappers.lambdaQuery();
         lqw.eq(TradeOrderItem::getIsDeleted, false);
         lqw.in(TradeOrderItem::getOrderId, orderIds);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "picUrl");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -91,7 +89,6 @@ public class TradeOrderItemServiceImpl extends BaseServiceImpl<TradeOrderItemMap
      */
     @Override
     public Boolean saveOrUpdate(TradeOrderItemBo bo) {
-        fileUrlFieldConverter.toPath(bo, "picUrl");
         TradeOrderItem entity = BeanUtil.toBean(bo, TradeOrderItem.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

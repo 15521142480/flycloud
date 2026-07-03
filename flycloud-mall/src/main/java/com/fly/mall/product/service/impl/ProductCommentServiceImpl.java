@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.product.domain.ProductComment;
@@ -33,14 +32,13 @@ import java.util.List;
 public class ProductCommentServiceImpl extends BaseServiceImpl<ProductCommentMapper, ProductComment> implements IProductCommentService {
 
     private final ProductCommentMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询商品评价详情。
      */
     @Override
     public ProductCommentVo queryById(Long id) {
-        return buildFileUrl(baseMapper.selectVoById(id));
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -50,7 +48,7 @@ public class ProductCommentServiceImpl extends BaseServiceImpl<ProductCommentMap
     public PageVo<ProductCommentVo> queryPageList(ProductCommentBo bo, PageBo pageBo) {
         LambdaQueryWrapper<ProductComment> lqw = buildQueryWrapper(bo);
         Page<ProductCommentVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "userAvatar", "skuPicUrl", "picUrls");
+        return this.build(result);
     }
 
     /**
@@ -59,7 +57,7 @@ public class ProductCommentServiceImpl extends BaseServiceImpl<ProductCommentMap
     @Override
     public List<ProductCommentVo> queryList(ProductCommentBo bo) {
         LambdaQueryWrapper<ProductComment> lqw = buildQueryWrapper(bo);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "userAvatar", "skuPicUrl", "picUrls");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -67,7 +65,6 @@ public class ProductCommentServiceImpl extends BaseServiceImpl<ProductCommentMap
      */
     @Override
     public Boolean saveOrUpdate(ProductCommentBo bo) {
-        fileUrlFieldConverter.toPath(bo, "userAvatar", "skuPicUrl", "picUrls");
         ProductComment entity = BeanUtil.toBean(bo, ProductComment.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();
@@ -128,10 +125,6 @@ public class ProductCommentServiceImpl extends BaseServiceImpl<ProductCommentMap
             baseMapper.updateById(entity);
         }
         return true;
-    }
-
-    private ProductCommentVo buildFileUrl(ProductCommentVo vo) {
-        return fileUrlFieldConverter.buildUrl(vo, "userAvatar", "skuPicUrl", "picUrls");
     }
 
     /**

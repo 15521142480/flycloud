@@ -18,7 +18,11 @@
         v-if="property.badge.show && property.badge.imgUrl"
         class="absolute left-0 top-0 z-1 items-center justify-center"
       >
-        <el-image fit="cover" :src="property.badge.imgUrl" class="h-26px w-38px" />
+        <el-image
+          fit="cover"
+          :src="getFilePreviewUrl(property.badge.imgUrl)"
+          class="h-26px w-38px"
+        />
       </div>
       <!-- 商品封面图 -->
       <div
@@ -30,7 +34,7 @@
           }
         ]"
       >
-        <el-image fit="cover" class="h-full w-full" :src="spu.picUrl" />
+        <el-image fit="cover" class="h-full w-full" :src="getFilePreviewUrl(spu.picUrl)" />
       </div>
       <div
         :class="[
@@ -112,7 +116,7 @@
           v-else
           class="h-28px w-28px rounded-full"
           fit="cover"
-          :src="property.btnBuy.imgUrl"
+          :src="getFilePreviewUrl(property.btnBuy.imgUrl)"
         />
       </div>
     </div>
@@ -120,6 +124,7 @@
 </template>
 <script setup lang="ts">
 import { ProductCardProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { fenToYuan } from '../../../../../utils'
 

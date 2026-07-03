@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.trade.domain.DeliveryExpress;
@@ -33,14 +32,13 @@ import java.util.List;
 public class DeliveryExpressServiceImpl extends BaseServiceImpl<DeliveryExpressMapper, DeliveryExpress> implements IDeliveryExpressService {
 
     private final DeliveryExpressMapper baseMapper;
-    private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
      * 查询快递公司详情。
      */
     @Override
     public DeliveryExpressVo queryById(Long id) {
-        return fileUrlFieldConverter.buildUrl(baseMapper.selectVoById(id), "logo");
+        return baseMapper.selectVoById(id);
     }
 
     /**
@@ -50,7 +48,7 @@ public class DeliveryExpressServiceImpl extends BaseServiceImpl<DeliveryExpressM
     public PageVo<DeliveryExpressVo> queryPageList(DeliveryExpressBo bo, PageBo pageBo) {
         LambdaQueryWrapper<DeliveryExpress> lqw = buildQueryWrapper(bo);
         Page<DeliveryExpressVo> result = baseMapper.selectVoPage(pageBo.build(), lqw);
-        return fileUrlFieldConverter.buildUrlPage(this.build(result), "logo");
+        return this.build(result);
     }
 
     /**
@@ -59,7 +57,7 @@ public class DeliveryExpressServiceImpl extends BaseServiceImpl<DeliveryExpressM
     @Override
     public List<DeliveryExpressVo> queryList(DeliveryExpressBo bo) {
         LambdaQueryWrapper<DeliveryExpress> lqw = buildQueryWrapper(bo);
-        return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "logo");
+        return baseMapper.selectVoList(lqw);
     }
 
     /**
@@ -67,7 +65,6 @@ public class DeliveryExpressServiceImpl extends BaseServiceImpl<DeliveryExpressM
      */
     @Override
     public Boolean saveOrUpdate(DeliveryExpressBo bo) {
-        fileUrlFieldConverter.toPath(bo, "logo");
         DeliveryExpress entity = BeanUtil.toBean(bo, DeliveryExpress.class);
         boolean isUpdate = entity.getId() != null;
         LocalDateTime now = LocalDateTime.now();

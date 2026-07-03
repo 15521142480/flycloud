@@ -151,7 +151,7 @@
         <template #default="{ row }">
           <div class="flex items-center" v-for="item in row.items" :key="item.id">
             <el-image
-              :src="item.picUrl"
+              :src="getFilePreviewUrl(item.picUrl)"
               class="mr-10px h-30px w-30px flex-shrink-0"
               :preview-src-list="[item.picUrl]"
               preview-teleported
@@ -216,6 +216,7 @@
 
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as TradeOrderApi from '@/api/mall/trade/order'
 import * as PickUpStoreApi from '@/api/mall/trade/delivery/pickUpStore'
 import { DICT_TYPE } from '@/utils/dict'

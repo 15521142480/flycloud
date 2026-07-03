@@ -7,7 +7,7 @@
     >
       <el-tooltip :content="combinationActivity.name">
         <div class="relative h-full w-full">
-          <el-image :src="combinationActivity.picUrl" class="h-full w-full" />
+          <el-image :src="getFilePreviewUrl(combinationActivity.picUrl)" class="h-full w-full" />
           <Icon
             v-show="!disabled"
             class="del-icon"
@@ -32,6 +32,7 @@
 </template>
 <script lang="ts" setup>
 import * as CombinationActivityApi from '@/api/mall/promotion/combination/combinationActivity'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { propTypes } from '@/utils/propTypes'
 import { oneOfType } from 'vue-types'
 import { isArray } from '@/utils/is'
@@ -100,8 +101,7 @@ const openCombinationActivityTableSelect = () => {
  */
 const handleActivitySelected = (
   activityVOs:
-    | CombinationActivityApi.CombinationActivityVO
-    | CombinationActivityApi.CombinationActivityVO[]
+    CombinationActivityApi.CombinationActivityVO | CombinationActivityApi.CombinationActivityVO[]
 ) => {
   Activitys.value = isArray(activityVOs) ? activityVOs : [activityVOs]
   emitActivityChange()

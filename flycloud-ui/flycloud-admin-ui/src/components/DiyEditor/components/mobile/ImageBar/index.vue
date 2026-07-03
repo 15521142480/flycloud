@@ -3,10 +3,11 @@
   <div class="h-50px flex items-center justify-center bg-gray-3" v-if="!property.imgUrl">
     <Icon icon="ep:picture" class="text-gray-8 text-30px!" />
   </div>
-  <el-image class="min-h-30px" v-else :src="property.imgUrl" />
+  <el-image class="min-h-30px" v-else :src="getFilePreviewUrl(property.imgUrl)" />
 </template>
 <script setup lang="ts">
 import { ImageBarProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 图片展示 */
 defineOptions({ name: 'ImageBar' })

@@ -1,6 +1,9 @@
 <template>
   <div class="relative h-full min-h-30px w-full">
-    <el-image :src="property.imgUrl" class="pointer-events-none h-full w-full select-none" />
+    <el-image
+      :src="getFilePreviewUrl(property.imgUrl)"
+      class="pointer-events-none h-full w-full select-none"
+    />
     <div
       v-for="(item, index) in property.list"
       :key="index"
@@ -19,6 +22,7 @@
 
 <script setup lang="ts">
 import { HotZoneProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 热区 */
 defineOptions({ name: 'HotZone' })

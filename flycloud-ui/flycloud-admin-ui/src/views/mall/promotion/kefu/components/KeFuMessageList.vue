@@ -62,7 +62,7 @@
                     v-if="KeFuMessageContentTypeEnum.IMAGE === item.contentType"
                     :initial-index="0"
                     :preview-src-list="[getMessageContent(item).picUrl || item.content]"
-                    :src="getMessageContent(item).picUrl || item.content"
+                    :src="getFilePreviewUrl(getMessageContent(item).picUrl || item.content)"
                     class="w-200px mx-10px"
                     fit="contain"
                     preview-teleported
@@ -135,6 +135,7 @@
 
 <script lang="ts" setup>
 import { ElScrollbar as ElScrollbarType } from 'element-plus'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { KeFuMessageApi, KeFuMessageRespVO } from '@/api/mall/promotion/kefu/message'
 import { KeFuConversationRespVO } from '@/api/mall/promotion/kefu/conversation'
 import EmojiSelectPopover from './tools/EmojiSelectPopover.vue'

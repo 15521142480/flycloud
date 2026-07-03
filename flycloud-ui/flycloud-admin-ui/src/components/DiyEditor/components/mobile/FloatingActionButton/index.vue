@@ -15,7 +15,7 @@
         class="flex flex-col items-center"
         @click="handleActive"
       >
-        <el-image :src="item.imgUrl" fit="contain" class="h-27px w-27px">
+        <el-image :src="getFilePreviewUrl(item.imgUrl)" fit="contain" class="h-27px w-27px">
           <template #error>
             <div class="h-full w-full flex items-center justify-center">
               <Icon icon="ep:picture" :color="item.textColor" />
@@ -37,6 +37,7 @@
 </template>
 <script setup lang="ts">
 import { FloatingActionButtonProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 悬浮按钮 */
 defineOptions({ name: 'FloatingActionButton' })

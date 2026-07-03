@@ -23,7 +23,11 @@
             >
               {{ item.badge.text }}
             </span>
-            <el-image v-if="item.iconUrl" :src="item.iconUrl" class="h-full w-full" />
+            <el-image
+              v-if="item.iconUrl"
+              :src="getFilePreviewUrl(item.iconUrl)"
+              class="h-full w-full"
+            />
           </div>
           <!-- 标题 -->
           <span
@@ -45,6 +49,7 @@
 
 <script setup lang="ts">
 import { MenuSwiperProperty, MenuSwiperItemProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 /** 菜单导航 */
 defineOptions({ name: 'MenuSwiper' })
 const props = defineProps<{ property: MenuSwiperProperty }>()

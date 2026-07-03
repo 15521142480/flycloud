@@ -55,7 +55,7 @@
         <template #default="scope">
           <el-image
             :preview-src-list="[scope.row.picUrl]"
-            :src="scope.row.picUrl"
+            :src="getFilePreviewUrl(scope.row.picUrl)"
             class="h-40px w-40px"
             preview-teleported
           />
@@ -133,6 +133,7 @@
 
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import PointActivityForm from './PointActivityForm.vue'
 import { fenToYuanFormat } from '@/utils/formatter'

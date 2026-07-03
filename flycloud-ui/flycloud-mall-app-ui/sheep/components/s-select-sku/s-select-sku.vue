@@ -7,7 +7,7 @@
         <view class="header-left ss-m-r-30">
           <image
             class="sku-image"
-            :src="state.selectedSku.picUrl || goodsInfo.picUrl"
+            :src="sheep.$url.cdn(state.selectedSku.picUrl || goodsInfo.picUrl)"
             mode="aspectFill"
           />
         </view>

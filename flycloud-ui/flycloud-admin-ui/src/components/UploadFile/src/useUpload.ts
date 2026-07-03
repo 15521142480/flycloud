@@ -5,8 +5,10 @@ import {
   UploadProgressEvent
 } from 'element-plus/es/components/upload/src/upload'
 import axios, { AxiosProgressEvent } from 'axios'
+import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
+const { wsCache } = useCache()
 
 export interface UploadResult {
   url: string
@@ -64,19 +66,19 @@ export const getFilePreviewUrl = (pathOrUrl?: string): string => {
   ) {
     return pathOrUrl
   }
-  const baseUrl = import.meta.env.VITE_BASE_URL.replace(/\/$/, '')
-  if (pathOrUrl.startsWith('/static/')) {
-    return `${baseUrl}${pathOrUrl}`
-  }
-  return `${baseUrl}/static/${pathOrUrl.replace(/^\//, '')}`
+  const fileConfig = wsCache.get(CACHE_KEY.BASE_URL) as FileApi.FileConfigRespVO | undefined
+  const baseUrl = (fileConfig?.baseUrl || `${import.meta.env.VITE_BASE_URL}/static/`).replace(
+    /\/$/,
+    ''
+  )
+  return `${baseUrl}/${pathOrUrl.replace(/^\//, '')}`
 }
-
 
 /**
  * 获得上传 URL
  */
 export const getUploadUrl = (): string => {
-  return import.meta.env.VITE_BASE_URL +  `/${SYS_BASE_URL}/admin/file/upload`
+  return import.meta.env.VITE_BASE_URL + `/${SYS_BASE_URL}/admin/file/upload`
 }
 
 export const useUpload = (directory?: string) => {

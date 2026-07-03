@@ -15,7 +15,11 @@
     >
       <!-- 角标 -->
       <div v-if="property.badge.show" class="absolute left-0 top-0 z-1 items-center justify-center">
-        <el-image :src="property.badge.imgUrl" class="h-26px w-38px" fit="cover" />
+        <el-image
+          :src="getFilePreviewUrl(property.badge.imgUrl)"
+          class="h-26px w-38px"
+          fit="cover"
+        />
       </div>
       <!-- 商品封面图 -->
       <div
@@ -27,7 +31,7 @@
           }
         ]"
       >
-        <el-image :src="spu.picUrl" class="h-full w-full" fit="cover" />
+        <el-image :src="getFilePreviewUrl(spu.picUrl)" class="h-full w-full" fit="cover" />
       </div>
       <div
         :class="[
@@ -108,7 +112,7 @@
         <!-- 图片按钮 -->
         <el-image
           v-else
-          :src="property.btnBuy.imgUrl"
+          :src="getFilePreviewUrl(property.btnBuy.imgUrl)"
           class="h-28px w-28px rounded-full"
           fit="cover"
         />
@@ -118,6 +122,7 @@
 </template>
 <script lang="ts" setup>
 import { PromotionPointProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as ProductSpuApi from '@/api/mall/product/spu'
 import { PointActivityApi, PointActivityVO, SpuExtension0 } from '@/api/mall/promotion/point'
 import { fenToYuan } from '@/utils'

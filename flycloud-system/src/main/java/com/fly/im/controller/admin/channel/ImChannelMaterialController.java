@@ -2,7 +2,6 @@ package com.fly.im.controller.admin.channel;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialRespVo;
 import com.fly.system.api.im.domain.channel.ImChannelMaterial;
 import com.fly.im.service.channel.ImChannelMaterialService;
@@ -26,8 +25,8 @@ public class ImChannelMaterialController {
 
     @Resource
     private ImChannelMaterialService channelMaterialService;
-    @Resource
-    private FileUrlService fileUrlService;
+
+
 
     @GetMapping("/get")
     @Operation(summary = "获取素材详情；用于客户端点击图文卡片渲染详情页")
@@ -35,7 +34,7 @@ public class ImChannelMaterialController {
     public R<ImChannelMaterialRespVo> getMaterial(@RequestParam("id") Long id) {
         ImChannelMaterial material = channelMaterialService.validateMaterialExists(id);
         ImChannelMaterialRespVo vo = BeanUtils.toBean(material, ImChannelMaterialRespVo.class);
-        vo.setCoverUrl(fileUrlService.buildUrl(vo.getCoverUrl()));
+        vo.setCoverUrl(vo.getCoverUrl());
         return ok(vo);
     }
 

@@ -2,7 +2,6 @@ package com.fly.im.controller.admin.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.file.service.FileUrlService;
 import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemRespVo;
 import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
 import com.fly.system.api.im.domain.face.ImFaceUserItem;
@@ -28,15 +27,14 @@ public class ImFaceUserItemController {
 
     @Resource
     private ImFaceUserItemService faceUserItemService;
-    @Resource
-    private FileUrlService fileUrlService;
+
 
     @GetMapping("/list")
     @Operation(summary = "获得我的个人表情列表")
     public R<List<ImFaceUserItemRespVo>> getFaceUserItemList() {
         List<ImFaceUserItem> items = faceUserItemService.getFaceUserItemList(getCurUserId());
         List<ImFaceUserItemRespVo> result = BeanUtils.toBean(items, ImFaceUserItemRespVo.class);
-        result.forEach(vo -> vo.setUrl(fileUrlService.buildUrl(vo.getUrl())));
+        result.forEach(vo -> vo.setUrl(vo.getUrl()));
         return ok(result);
     }
 

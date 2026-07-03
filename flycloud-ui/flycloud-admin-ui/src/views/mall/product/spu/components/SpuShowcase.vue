@@ -3,7 +3,7 @@
     <div v-for="(spu, index) in productSpus" :key="spu.id" class="select-box spu-pic">
       <el-tooltip :content="spu.name">
         <div class="relative h-full w-full">
-          <el-image :src="spu.picUrl" class="h-full w-full" />
+          <el-image :src="getFilePreviewUrl(spu.picUrl)" class="h-full w-full" />
           <Icon
             v-show="!disabled"
             class="del-icon"
@@ -24,6 +24,7 @@
 </template>
 <script lang="ts" setup>
 import * as ProductSpuApi from '@/api/mall/product/spu'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import SpuTableSelect from '@/views/mall/product/spu/components/SpuTableSelect.vue'
 import { propTypes } from '@/utils/propTypes'
 import { oneOfType } from 'vue-types'
