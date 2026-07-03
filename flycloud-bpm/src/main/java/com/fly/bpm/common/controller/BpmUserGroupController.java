@@ -75,7 +75,7 @@ public class BpmUserGroupController extends BaseController {
     @PostMapping("/create")
     @PreAuthorize("@pms.hasPermission('bpm:manage:group:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmUserGroupBo bo) {
-        return R.ok(iBpmUserGroupService.insertByBo(bo));
+        return R.result(iBpmUserGroupService.insertByBo(bo));
     }
 
 
@@ -86,7 +86,7 @@ public class BpmUserGroupController extends BaseController {
     @PutMapping("/update")
     @PreAuthorize("@pms.hasPermission('bpm:manage:group:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmUserGroupBo bo) {
-        return R.ok(iBpmUserGroupService.updateByBo(bo));
+        return R.result(iBpmUserGroupService.updateByBo(bo));
     }
 
 
@@ -99,6 +99,6 @@ public class BpmUserGroupController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     @PreAuthorize("@pms.hasPermission('bpm:manage:group:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmUserGroupService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iBpmUserGroupService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 }

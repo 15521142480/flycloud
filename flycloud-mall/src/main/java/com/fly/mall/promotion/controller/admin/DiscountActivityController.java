@@ -95,7 +95,7 @@ public class DiscountActivityController extends BaseController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody DiscountActivityBo bo) {
-        return R.ok(discountActivityService.updateDiscountActivity(bo));
+        return R.result(discountActivityService.updateDiscountActivity(bo));
     }
 
     /**
@@ -103,7 +103,7 @@ public class DiscountActivityController extends BaseController {
      */
     @PutMapping("/close")
     public R<Boolean> close(@RequestParam("id") Long id) {
-        return R.ok(discountActivityService.closeDiscountActivity(id));
+        return R.result(discountActivityService.closeDiscountActivity(id));
     }
 
     /**
@@ -113,7 +113,7 @@ public class DiscountActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:discount-activity:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(discountActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(discountActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -121,7 +121,7 @@ public class DiscountActivityController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(discountActivityService.deleteDiscountActivity(id));
+        return R.result(discountActivityService.deleteDiscountActivity(id));
     }
 
 }

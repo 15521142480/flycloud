@@ -83,7 +83,7 @@ public class PointActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:point-activity:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody PointActivityBo bo) {
-        return R.ok(pointActivityService.saveOrUpdate(bo));
+        return R.result(pointActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class PointActivityController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody PointActivityBo bo) {
-        return R.ok(pointActivityService.saveOrUpdate(bo));
+        return R.result(pointActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -111,7 +111,7 @@ public class PointActivityController extends BaseController {
         PointActivityBo bo = new PointActivityBo();
         bo.setId(id);
         bo.setStatus(com.fly.common.enums.StatusEnum.DISABLE.getStatus());
-        return R.ok(pointActivityService.saveOrUpdate(bo));
+        return R.result(pointActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -121,7 +121,7 @@ public class PointActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:point-activity:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(pointActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(pointActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -129,7 +129,7 @@ public class PointActivityController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(pointActivityService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(pointActivityService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -76,13 +76,13 @@ public class MemberLevelController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody MemberLevelBo bo) {
-        return R.ok(levelService.saveOrUpdate(bo));
+        return R.result(levelService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:level:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(levelService.deleteById(id));
+        return R.result(levelService.deleteById(id));
     }
 
     /**
@@ -90,7 +90,7 @@ public class MemberLevelController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(levelService.deleteById(id));
+        return R.result(levelService.deleteById(id));
     }
 
     private PageVo<MemberLevelRespVo> convertPage(PageVo<MemberLevelVo> page) {

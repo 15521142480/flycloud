@@ -83,7 +83,7 @@ public class ImGroupManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:group:ban')")
     public R<Boolean> banGroup(@Valid @RequestBody ImGroupManagerBanReqVo reqVo) {
         groupService.banGroup(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/unban")
@@ -92,7 +92,7 @@ public class ImGroupManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:group:ban')")
     public R<Boolean> unbanGroup(@RequestParam("id") Long id) {
         groupService.unbanGroup(getCurUserId(), id);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/dissolve")
@@ -101,7 +101,7 @@ public class ImGroupManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:group:dissolve')")
     public R<Boolean> dissolveGroup(@RequestParam("id") Long id) {
         groupService.dissolveGroupByManager(getCurUserId(), id);
-        return ok(true);
+        return R.result(true);
     }
 
 }

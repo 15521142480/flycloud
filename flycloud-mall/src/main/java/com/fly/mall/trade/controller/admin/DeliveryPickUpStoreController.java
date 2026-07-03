@@ -65,7 +65,7 @@ public class DeliveryPickUpStoreController extends BaseController {
      */
     @PostMapping("/bind")
     public R<Void> bind(@RequestBody DeliveryPickUpStoreBo bo) {
-        return R.ok(deliveryPickUpStoreService.saveOrUpdate(bo));
+        return R.result(deliveryPickUpStoreService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class DeliveryPickUpStoreController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:delivery:pick-up-store:shop:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DeliveryPickUpStoreBo bo) {
-        return R.ok(deliveryPickUpStoreService.saveOrUpdate(bo));
+        return R.result(deliveryPickUpStoreService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class DeliveryPickUpStoreController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody DeliveryPickUpStoreBo bo) {
-        return R.ok(deliveryPickUpStoreService.saveOrUpdate(bo));
+        return R.result(deliveryPickUpStoreService.saveOrUpdate(bo));
     }
 
     /**
@@ -109,7 +109,7 @@ public class DeliveryPickUpStoreController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:delivery:pick-up-store:shop:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(deliveryPickUpStoreService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(deliveryPickUpStoreService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -117,7 +117,7 @@ public class DeliveryPickUpStoreController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(deliveryPickUpStoreService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(deliveryPickUpStoreService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

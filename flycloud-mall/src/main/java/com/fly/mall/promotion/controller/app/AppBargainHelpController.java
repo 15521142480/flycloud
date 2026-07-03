@@ -70,7 +70,7 @@ public class AppBargainHelpController {
     @PostMapping("/create")
     public R<Void> create(@RequestBody BargainHelpBo bo) {
         bo.setUserId(UserUtils.getCurUserId());
-        return R.ok(bargainHelpService.saveOrUpdate(bo));
+        return R.result(bargainHelpService.saveOrUpdate(bo));
     }
 
 }

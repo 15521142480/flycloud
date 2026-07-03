@@ -71,7 +71,7 @@ public class AppBrokerageWithdrawController {
     public R<Void> create(@RequestBody BrokerageWithdrawBo bo) {
         bo.setUserId(UserUtils.getCurUserId());
         bo.setStatus(0);
-        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+        return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
 }

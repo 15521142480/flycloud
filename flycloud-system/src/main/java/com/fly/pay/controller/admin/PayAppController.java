@@ -58,19 +58,19 @@ public class PayAppController {
     @PreAuthorize("@pms.hasPermission('pay:app:update')")
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody PayAppBo bo) {
-        return R.ok(payAppService.saveOrUpdate(bo));
+        return R.result(payAppService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:app:update')")
     @PutMapping("/update-status")
     public R<Boolean> updateStatus(@RequestBody PayAppUpdateStatusReq req) {
-        return R.ok(payAppService.updateStatus(req.getId(), req.getStatus()));
+        return R.result(payAppService.updateStatus(req.getId(), req.getStatus()));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:app:delete')")
     @DeleteMapping("/delete")
     public R<Boolean> delete(@RequestParam Long id) {
-        return R.ok(payAppService.deleteById(id));
+        return R.result(payAppService.deleteById(id));
     }
 
     @Data

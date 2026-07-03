@@ -105,7 +105,7 @@ public class ProductBrandController extends BaseController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody ProductBrandBo bo) {
-        return R.ok(productBrandService.saveOrUpdate(bo));
+        return R.result(productBrandService.saveOrUpdate(bo));
     }
 
     /**
@@ -115,7 +115,7 @@ public class ProductBrandController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:product:brand:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(productBrandService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(productBrandService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -123,7 +123,7 @@ public class ProductBrandController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(productBrandService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(productBrandService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
     /**

@@ -65,7 +65,7 @@ public class ImFriendRequestController {
     public R<Boolean> agreeFriendRequest(
             @RequestParam("id") @NotNull(message = "申请编号不能为空") Long id) {
         friendRequestService.agreeFriendRequest(getCurUserId(), id);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/refuse")
@@ -75,7 +75,7 @@ public class ImFriendRequestController {
             @RequestParam(value = "handleContent", required = false)
             @Size(max = 255, message = "处理理由最多 255 个字符") String handleContent) {
         friendRequestService.refuseFriendRequest(getCurUserId(), id, handleContent);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/list")

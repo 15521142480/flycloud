@@ -92,7 +92,7 @@ public class CombinationRecordController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-record:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CombinationRecordBo bo) {
-        return R.ok(combinationRecordService.saveOrUpdate(bo));
+        return R.result(combinationRecordService.saveOrUpdate(bo));
     }
 
     /**
@@ -100,7 +100,7 @@ public class CombinationRecordController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody CombinationRecordBo bo) {
-        return R.ok(combinationRecordService.saveOrUpdate(bo));
+        return R.result(combinationRecordService.saveOrUpdate(bo));
     }
 
     /**
@@ -110,7 +110,7 @@ public class CombinationRecordController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-record:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(combinationRecordService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(combinationRecordService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -118,7 +118,7 @@ public class CombinationRecordController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(combinationRecordService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(combinationRecordService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

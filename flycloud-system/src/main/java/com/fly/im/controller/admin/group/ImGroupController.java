@@ -67,7 +67,7 @@ public class ImGroupController {
     @Parameter(name = "id", description = "群编号", required = true)
     public R<Boolean> dissolveGroup(@RequestParam("id") Long id) {
         groupService.dissolveGroup(id, getCurUserId());
-        return ok(true);
+        return R.result(true);
     }
 
     // ==================== 群的读操作 ====================
@@ -94,7 +94,7 @@ public class ImGroupController {
     @Operation(summary = "邀请用户加入群")
     public R<Boolean> inviteGroupMember(@Valid @RequestBody ImGroupMemberInviteReqVo inviteReqVo) {
         groupService.inviteGroupMember(getCurUserId(), inviteReqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/quit")
@@ -102,35 +102,35 @@ public class ImGroupController {
     @Parameter(name = "groupId", description = "群编号", required = true)
     public R<Boolean> quitGroup(@RequestParam("groupId") Long groupId) {
         groupService.quitGroup(groupId, getCurUserId());
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/kicking")
     @Operation(summary = "移除群成员")
     public R<Boolean> removeGroupMember(@Valid @RequestBody ImGroupMemberRemoveReqVo removeReqVo) {
         groupService.removeGroupMember(getCurUserId(), removeReqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/add-admin")
     @Operation(summary = "添加群管理员")
     public R<Boolean> addGroupAdmin(@Valid @RequestBody ImGroupAdminAddReqVo reqVo) {
         groupService.addGroupAdmin(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/remove-admin")
     @Operation(summary = "撤销群管理员")
     public R<Boolean> removeGroupAdmin(@Valid @RequestBody ImGroupAdminRemoveReqVo reqVo) {
         groupService.removeGroupAdmin(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/transfer-owner")
     @Operation(summary = "转让群主")
     public R<Boolean> transferGroupOwner(@Valid @RequestBody ImGroupTransferOwnerReqVo transferReqVo) {
         groupService.transferGroupOwner(getCurUserId(), transferReqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     // ==================== 群消息置顶 ====================
@@ -139,14 +139,14 @@ public class ImGroupController {
     @Operation(summary = "置顶群消息（群主 / 管理员）")
     public R<Boolean> pinGroupMessage(@Valid @RequestBody ImGroupMessagePinReqVo reqVo) {
         groupService.pinGroupMessage(getCurUserId(), reqVo.getId(), reqVo.getMessageId());
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/unpin-message")
     @Operation(summary = "取消置顶群消息（群主 / 管理员）")
     public R<Boolean> unpinGroupMessage(@Valid @RequestBody ImGroupMessagePinReqVo reqVo) {
         groupService.unpinGroupMessage(getCurUserId(), reqVo.getId(), reqVo.getMessageId());
-        return ok(true);
+        return R.result(true);
     }
 
     // ==================== 群禁言 ====================
@@ -155,21 +155,21 @@ public class ImGroupController {
     @Operation(summary = "全群禁言 / 取消（群主 / 管理员）")
     public R<Boolean> muteAll(@Valid @RequestBody ImGroupMuteAllReqVo reqVo) {
         groupService.muteAll(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/mute-member")
     @Operation(summary = "禁言成员")
     public R<Boolean> muteMember(@Valid @RequestBody ImGroupMuteMemberReqVo reqVo) {
         groupService.muteMember(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/cancel-mute-member")
     @Operation(summary = "取消成员禁言")
     public R<Boolean> cancelMuteMember(@Valid @RequestBody ImGroupCancelMuteMemberReqVo reqVo) {
         groupService.cancelMuteMember(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     /** 单群转 VO + 关联回填 pinnedMessages（仅当登录用户是该群有效成员） */

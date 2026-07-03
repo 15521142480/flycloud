@@ -85,7 +85,7 @@ public class CouponTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CouponTemplateBo bo) {
-        return R.ok(couponTemplateService.saveOrUpdate(bo));
+        return R.result(couponTemplateService.saveOrUpdate(bo));
     }
 
     /**
@@ -93,7 +93,7 @@ public class CouponTemplateController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody CouponTemplateBo bo) {
-        return R.ok(couponTemplateService.saveOrUpdate(bo));
+        return R.result(couponTemplateService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class CouponTemplateController extends BaseController {
      */
     @PutMapping("/update-status")
     public R<Void> updateStatus(@RequestBody CouponTemplateBo bo) {
-        return R.ok(couponTemplateService.saveOrUpdate(bo));
+        return R.result(couponTemplateService.saveOrUpdate(bo));
     }
 
     /**
@@ -111,7 +111,7 @@ public class CouponTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:coupon-template:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(couponTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(couponTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -119,7 +119,7 @@ public class CouponTemplateController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(couponTemplateService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(couponTemplateService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

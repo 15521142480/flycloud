@@ -46,7 +46,7 @@ public class ImGroupMemberController {
     @Operation(summary = "更新群成员")
     public R<Boolean> updateGroupMember(@Valid @RequestBody ImGroupMemberUpdateReqVo updateReqVo) {
         groupMemberService.updateGroupMember(getCurUserId(), updateReqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/get")

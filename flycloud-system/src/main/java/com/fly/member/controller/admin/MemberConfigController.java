@@ -42,7 +42,7 @@ public class MemberConfigController {
     @PreAuthorize("@pms.hasPermission('member:config:save')")
     @PostMapping("/save")
     public R<Boolean> saveConfig(@RequestBody MemberConfigBo bo) {
-        return R.ok(configService.saveConfig(bo));
+        return R.result(configService.saveConfig(bo));
     }
 
     /**
@@ -51,7 +51,7 @@ public class MemberConfigController {
     @PreAuthorize("@pms.hasPermission('member:config:save')")
     @PutMapping("/save")
     public R<Boolean> yudaoSaveConfig(@RequestBody MemberConfigBo bo) {
-        return R.ok(configService.saveConfig(bo));
+        return R.result(configService.saveConfig(bo));
     }
 
 }

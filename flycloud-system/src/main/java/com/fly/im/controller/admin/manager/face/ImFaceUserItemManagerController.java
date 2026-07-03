@@ -64,7 +64,7 @@ public class ImFaceUserItemManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-user-item:delete')")
     public R<Boolean> deleteFaceUserItem(@RequestParam("id") Long id) {
         faceUserItemService.deleteFaceUserItem(id);
-        return ok(true);
+        return R.result(true);
     }
 
 }

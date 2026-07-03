@@ -83,7 +83,7 @@ public class SeckillConfigController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:seckill-config:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody SeckillConfigBo bo) {
-        return R.ok(seckillConfigService.saveOrUpdate(bo));
+        return R.result(seckillConfigService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class SeckillConfigController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody SeckillConfigBo bo) {
-        return R.ok(seckillConfigService.saveOrUpdate(bo));
+        return R.result(seckillConfigService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class SeckillConfigController extends BaseController {
      */
     @PutMapping("/update-status")
     public R<Void> updateStatus(@RequestBody SeckillConfigBo bo) {
-        return R.ok(seckillConfigService.saveOrUpdate(bo));
+        return R.result(seckillConfigService.saveOrUpdate(bo));
     }
 
     /**
@@ -109,7 +109,7 @@ public class SeckillConfigController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:seckill-config:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(seckillConfigService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(seckillConfigService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -117,7 +117,7 @@ public class SeckillConfigController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(seckillConfigService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(seckillConfigService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

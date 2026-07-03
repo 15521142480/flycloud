@@ -69,14 +69,14 @@ public class ImFriendController {
             @RequestParam("friendUserId") @NotNull(message = "好友用户编号不能为空") Long friendUserId,
             @RequestParam(value = "clear", required = false) Boolean clear) {
         friendService.deleteFriend(getCurUserId(), friendUserId, clear);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/update")
     @Operation(summary = "更新好友单边属性（备注 / 免打扰 / 联系人置顶）")
     public R<Boolean> updateFriend(@Valid @RequestBody ImFriendUpdateReqVo reqVo) {
         friendService.updateFriend(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/block")
@@ -85,7 +85,7 @@ public class ImFriendController {
     public R<Boolean> blockFriend(
             @RequestParam("friendUserId") @NotNull(message = "好友用户编号不能为空") Long friendUserId) {
         friendService.blockFriend(getCurUserId(), friendUserId);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/unblock")
@@ -94,7 +94,7 @@ public class ImFriendController {
     public R<Boolean> unblockFriend(
             @RequestParam("friendUserId") @NotNull(message = "好友用户编号不能为空") Long friendUserId) {
         friendService.unblockFriend(getCurUserId(), friendUserId);
-        return ok(true);
+        return R.result(true);
     }
 
     // ========== 私有方法：VO 组装 ==========

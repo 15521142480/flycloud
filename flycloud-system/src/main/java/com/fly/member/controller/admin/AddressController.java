@@ -82,7 +82,7 @@ public class AddressController {
     @PreAuthorize("@pms.hasPermission('member:address:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Boolean> saveOrUpdate(@RequestBody MemberAddressBo bo) {
-        return R.ok(addressService.saveOrUpdate(bo));
+        return R.result(addressService.saveOrUpdate(bo));
     }
 
     /**
@@ -90,7 +90,7 @@ public class AddressController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody MemberAddressBo bo) {
-        return R.ok(addressService.saveOrUpdate(bo));
+        return R.result(addressService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class AddressController {
     @PreAuthorize("@pms.hasPermission('member:address:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(addressService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(addressService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -107,7 +107,7 @@ public class AddressController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(addressService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(addressService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

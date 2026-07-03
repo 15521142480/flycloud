@@ -69,7 +69,7 @@ public class AppBannerController {
      */
     @PutMapping("/add-browse-count")
     public R<Boolean> addBrowseCount(@RequestParam("id") Long id) {
-        return R.ok(bannerService.addBrowseCount(id));
+        return R.result(bannerService.addBrowseCount(id));
     }
 
 }

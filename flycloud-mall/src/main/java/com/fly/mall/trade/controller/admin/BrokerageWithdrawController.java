@@ -84,7 +84,7 @@ public class BrokerageWithdrawController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:brokerage-withdraw:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BrokerageWithdrawBo bo) {
-        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+        return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
     /**
@@ -92,7 +92,7 @@ public class BrokerageWithdrawController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody BrokerageWithdrawBo bo) {
-        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+        return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
     /**
@@ -102,7 +102,7 @@ public class BrokerageWithdrawController extends BaseController {
     public R<Void> approve(@RequestBody BrokerageWithdrawBo bo) {
         bo.setStatus(10);
         bo.setAuditTime(LocalDateTime.now());
-        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+        return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
     /**
@@ -112,7 +112,7 @@ public class BrokerageWithdrawController extends BaseController {
     public R<Void> reject(@RequestBody BrokerageWithdrawBo bo) {
         bo.setStatus(20);
         bo.setAuditTime(LocalDateTime.now());
-        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+        return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
     /**
@@ -122,7 +122,7 @@ public class BrokerageWithdrawController extends BaseController {
     public R<Void> updateTransferred(@RequestBody BrokerageWithdrawBo bo) {
         bo.setStatus(30);
         bo.setTransferTime(LocalDateTime.now());
-        return R.ok(brokerageWithdrawService.saveOrUpdate(bo));
+        return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 
     /**
@@ -132,7 +132,7 @@ public class BrokerageWithdrawController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:brokerage-withdraw:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(brokerageWithdrawService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(brokerageWithdrawService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -140,7 +140,7 @@ public class BrokerageWithdrawController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(brokerageWithdrawService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(brokerageWithdrawService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -56,7 +56,7 @@ public class SysDeptApiController implements ISysDeptApi {
     @Override
     public R<Boolean> validateDeptByIds(Collection<Long> ids) {
 
-        return R.ok(sysDeptService.validateDeptByIds(ids));
+        return R.result(sysDeptService.validateDeptByIds(ids));
     }
 
 

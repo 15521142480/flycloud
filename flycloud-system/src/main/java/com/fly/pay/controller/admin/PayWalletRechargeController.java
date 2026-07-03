@@ -57,7 +57,7 @@ public class PayWalletRechargeController {
     @PostMapping("/update-paid")
     public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
         walletRechargeService.updateWalletRechargerPaid(Long.valueOf(req.getMerchantOrderId()), req.getPayOrderId());
-        return R.ok(true);
+        return R.result(true);
     }
 
     /**
@@ -66,7 +66,7 @@ public class PayWalletRechargeController {
     @PostMapping("/refund")
     public R<Boolean> refund(@RequestParam("id") Long id, HttpServletRequest request) {
         walletRechargeService.refundWalletRecharge(id, getClientIp(request));
-        return R.ok(true);
+        return R.result(true);
     }
 
     /**
@@ -76,7 +76,7 @@ public class PayWalletRechargeController {
     public R<Boolean> updateRefunded(@RequestBody PayRefundNotifyReq req) {
         walletRechargeService.updateWalletRechargeRefunded(Long.valueOf(req.getMerchantOrderId()),
                 req.getMerchantRefundId(), req.getPayRefundId());
-        return R.ok(true);
+        return R.result(true);
     }
 
     /**

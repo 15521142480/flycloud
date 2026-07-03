@@ -148,7 +148,7 @@ public class ProductSpuController extends BaseController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody ProductSpuBo bo) {
-        return R.ok(productSpuService.saveOrUpdate(bo));
+        return R.result(productSpuService.saveOrUpdate(bo));
     }
 
     /**
@@ -158,7 +158,7 @@ public class ProductSpuController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:product:spu:saveOrUpdate')")
     @PutMapping("/update-status")
     public R<Boolean> updateStatus(@RequestBody ProductSpuBo bo) {
-        return R.ok(productSpuService.updateStatus(bo.getId(), bo.getStatus()));
+        return R.result(productSpuService.updateStatus(bo.getId(), bo.getStatus()));
     }
 
     /**
@@ -168,7 +168,7 @@ public class ProductSpuController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:product:spu:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(productSpuService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(productSpuService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -176,7 +176,7 @@ public class ProductSpuController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(productSpuService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(productSpuService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
     /**

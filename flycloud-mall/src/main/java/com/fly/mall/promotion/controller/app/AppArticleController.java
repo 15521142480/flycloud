@@ -74,7 +74,7 @@ public class AppArticleController {
      */
     @PutMapping("/add-browse-count")
     public R<Boolean> addBrowseCount(@RequestParam("id") Long id) {
-        return R.ok(articleService.addBrowseCount(id));
+        return R.result(articleService.addBrowseCount(id));
     }
 
 }

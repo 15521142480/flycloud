@@ -43,7 +43,7 @@ public class ImFacePackManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack:update')")
     public R<Boolean> updateFacePack(@Valid @RequestBody ImFacePackSaveReqVo reqVo) {
         facePackService.updateFacePack(reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete")
@@ -52,7 +52,7 @@ public class ImFacePackManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack:delete')")
     public R<Boolean> deleteFacePack(@RequestParam("id") Long id) {
         facePackService.deleteFacePack(id);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete-list")
@@ -62,7 +62,7 @@ public class ImFacePackManagerController {
     public R<Boolean> deleteFacePackList(@RequestParam("ids")
                                                     @Size(max = 100, message = "批量删除最多 100 条") List<Long> ids) {
         facePackService.deleteFacePackList(ids);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/page")

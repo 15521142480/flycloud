@@ -51,7 +51,7 @@ public class DiyPageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PutMapping("/update")
     public R<Void> update(@RequestBody DiyPageBo bo) {
-        return R.ok(diyPageService.updateDiyPage(bo));
+        return R.result(diyPageService.updateDiyPage(bo));
     }
 
     /**
@@ -128,7 +128,7 @@ public class DiyPageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PutMapping("/update-property")
     public R<Void> updateProperty(@RequestBody DiyPageBo bo) {
-        return R.ok(diyPageService.updateDiyPageProperty(bo));
+        return R.result(diyPageService.updateDiyPageProperty(bo));
     }
 
     /**
@@ -138,7 +138,7 @@ public class DiyPageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiyPageBo bo) {
-        return R.ok(diyPageService.saveOrUpdate(bo));
+        return R.result(diyPageService.saveOrUpdate(bo));
     }
 
     /**
@@ -148,7 +148,7 @@ public class DiyPageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(diyPageService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(diyPageService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -158,7 +158,7 @@ public class DiyPageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:page:delete')")
     @DeleteMapping("/delete")
     public R<Void> delete(@RequestParam("id") Long id) {
-        return R.ok(diyPageService.deleteDiyPage(id));
+        return R.result(diyPageService.deleteDiyPage(id));
     }
 
 }

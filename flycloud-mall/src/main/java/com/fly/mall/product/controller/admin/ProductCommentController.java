@@ -91,7 +91,7 @@ public class ProductCommentController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:product:comment:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductCommentBo bo) {
-        return R.ok(productCommentService.saveOrUpdate(bo));
+        return R.result(productCommentService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class ProductCommentController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody ProductCommentBo bo) {
-        return R.ok(productCommentService.saveOrUpdate(bo));
+        return R.result(productCommentService.saveOrUpdate(bo));
     }
 
     /**
@@ -107,7 +107,7 @@ public class ProductCommentController extends BaseController {
      */
     @PutMapping("/reply")
     public R<Void> reply(@RequestBody ProductCommentBo bo) {
-        return R.ok(productCommentService.replyComment(bo));
+        return R.result(productCommentService.replyComment(bo));
     }
 
     /**
@@ -115,7 +115,7 @@ public class ProductCommentController extends BaseController {
      */
     @PutMapping("/update-visible")
     public R<Void> updateVisible(@RequestBody ProductCommentBo bo) {
-        return R.ok(productCommentService.updateCommentVisible(bo));
+        return R.result(productCommentService.updateCommentVisible(bo));
     }
 
     /**
@@ -125,7 +125,7 @@ public class ProductCommentController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:product:comment:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(productCommentService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(productCommentService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -133,7 +133,7 @@ public class ProductCommentController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(productCommentService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(productCommentService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

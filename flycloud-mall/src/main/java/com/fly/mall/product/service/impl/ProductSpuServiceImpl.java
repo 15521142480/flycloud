@@ -88,7 +88,7 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     @Override
     public ProductSpuVo queryAppDetailById(Long id) {
         ProductSpuVo spu = queryDetailById(id);
-        if (spu == null || !StatusEnum.isEnable(spu.getStatus())) {
+        if (spu == null || !ProductSpuStatusEnum.isEnable(spu.getStatus())) {
             return null;
         }
         increaseBrowseCount(id);

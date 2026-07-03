@@ -86,20 +86,20 @@ public class MemberUserController {
     @PreAuthorize("@pms.hasPermission('member:user:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Boolean> saveOrUpdate(@RequestBody MemberUserBo bo) {
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:user:update')")
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody MemberUserBo bo) {
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:user:update-level')")
     @PutMapping("/update-level")
     public R<Boolean> updateLevel(@Valid @RequestBody MemberUserUpdateLevelReq req) {
         memberLevelService.updateUserLevel(req.getId(), req.getLevelId(), req.getReason());
-        return R.ok(true);
+        return R.result(true);
     }
 
     @PreAuthorize("@pms.hasPermission('member:user:update-point')")
@@ -107,7 +107,7 @@ public class MemberUserController {
     public R<Boolean> updatePoint(@Valid @RequestBody MemberUserUpdatePointReq req) {
         memberPointRecordService.createPointRecord(req.getId(), req.getPoint(),
                 POINT_BIZ_TYPE_ADMIN, String.valueOf(UserUtils.getCurUserId()));
-        return R.ok(true);
+        return R.result(true);
     }
 
     @Data

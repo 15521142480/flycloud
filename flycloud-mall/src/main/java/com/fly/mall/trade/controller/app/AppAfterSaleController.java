@@ -81,7 +81,7 @@ public class AppAfterSaleController {
      */
     @DeleteMapping("/cancel")
     public R<Void> cancel(@RequestParam("id") Long id) {
-        return R.ok(afterSaleService.cancelAfterSale(UserUtils.getCurUserId(), id));
+        return R.result(afterSaleService.cancelAfterSale(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -89,7 +89,7 @@ public class AppAfterSaleController {
      */
     @PutMapping("/delivery")
     public R<Void> delivery(@RequestBody AfterSaleBo bo) {
-        return R.ok(afterSaleService.deliveryAfterSale(UserUtils.getCurUserId(), bo));
+        return R.result(afterSaleService.deliveryAfterSale(UserUtils.getCurUserId(), bo));
     }
 
 }

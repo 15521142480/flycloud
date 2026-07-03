@@ -75,13 +75,13 @@ public class MemberSignInConfigController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody MemberSignInConfigBo bo) {
-        return R.ok(signInConfigService.saveOrUpdate(bo));
+        return R.result(signInConfigService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:sign-in-config:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(signInConfigService.deleteById(id));
+        return R.result(signInConfigService.deleteById(id));
     }
 
     /**
@@ -89,7 +89,7 @@ public class MemberSignInConfigController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(signInConfigService.deleteById(id));
+        return R.result(signInConfigService.deleteById(id));
     }
 
     private PageVo<MemberSignInConfigRespVo> convertPage(PageVo<MemberSignInConfigVo> page) {

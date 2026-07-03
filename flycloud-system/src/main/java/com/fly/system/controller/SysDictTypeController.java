@@ -72,7 +72,7 @@ public class SysDictTypeController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:dict:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysDictTypeBo bo) {
-        return R.ok(iSysDictTypeService.saveOrUpdate(bo));
+        return R.result(iSysDictTypeService.saveOrUpdate(bo));
     }
 
 
@@ -86,7 +86,7 @@ public class SysDictTypeController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:dict:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysDictTypeService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysDictTypeService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**

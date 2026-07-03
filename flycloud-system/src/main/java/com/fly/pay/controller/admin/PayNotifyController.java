@@ -63,7 +63,7 @@ public class PayNotifyController {
     @Operation(summary = "手动执行到期的支付通知任务")
     @PreAuthorize("@pms.hasPermission('pay:notify:execute')")
     public R<Integer> executeNotify() {
-        return R.ok(notifyService.executeNotify());
+        return R.result(notifyService.executeNotify());
     }
 
     @PostMapping(value = "/order/{channelId}")

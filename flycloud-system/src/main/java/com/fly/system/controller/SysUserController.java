@@ -106,7 +106,7 @@ public class SysUserController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:user:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@RequestBody SysUserBo bo) {
-        return R.ok(iSysUserService.saveOrUpdate(bo));
+        return R.result(iSysUserService.saveOrUpdate(bo));
     }
 
 
@@ -117,7 +117,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/enable")
     public R<Void> enable(@RequestParam() Long id, @RequestParam() int status) {
 
-        return R.ok(iSysUserService.updateById(new SysUser().setId(id).setStatus(status)));
+        return R.result(iSysUserService.updateById(new SysUser().setId(id).setStatus(status)));
     }
 
     /**
@@ -126,7 +126,7 @@ public class SysUserController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:user:restartPassword')")
     @PostMapping("/resetPassword/{id}")
     public R<Void> resetPassword(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(iSysUserService.resetPassword(id));
+        return R.result(iSysUserService.resetPassword(id));
     }
 
     /**
@@ -138,7 +138,7 @@ public class SysUserController extends BaseController {
             @NotNull(message = "主键不能为空") @PathVariable Long id
             , @NotNull(message = "密码不能为空") @PathVariable String password
     ) {
-        return R.ok(iSysUserService.customResetPassword(id, password));
+        return R.result(iSysUserService.customResetPassword(id, password));
     }
 
 
@@ -151,7 +151,7 @@ public class SysUserController extends BaseController {
     @Log(title = "用户", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysUserService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysUserService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 

@@ -88,7 +88,7 @@ public class SysMenuController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:menu:saveOrUpdate')")
     @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SysMenuBo bo) {
-        return R.ok(iSysMenuService.insertByBo(bo));
+        return R.result(iSysMenuService.insertByBo(bo));
     }
 
 
@@ -99,7 +99,7 @@ public class SysMenuController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:menu:saveOrUpdate')")
     @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysMenuBo bo) {
-        return R.ok(iSysMenuService.updateByBo(bo));
+        return R.result(iSysMenuService.updateByBo(bo));
     }
 
 
@@ -121,7 +121,7 @@ public class SysMenuController extends BaseController {
     @PostMapping("/enable")
     public R<Void> enable(@RequestParam() Long id, @RequestParam() int status) {
 
-        return R.ok(iSysMenuService.updateById(new SysMenu().setId(id).setStatus(status)));
+        return R.result(iSysMenuService.updateById(new SysMenu().setId(id).setStatus(status)));
     }
 
     /**
@@ -133,7 +133,7 @@ public class SysMenuController extends BaseController {
     @Log(title = "菜单", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysMenuService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysMenuService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 

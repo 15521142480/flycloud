@@ -56,7 +56,7 @@ public class AppAuthController {
                              HttpServletRequest request) {
         String token = authorization == null ? request.getParameter("token") : authorization;
         memberAuthService.logout(token);
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**
@@ -84,7 +84,7 @@ public class AppAuthController {
     @PermitAll
     public R<Boolean> sendSmsCode(@Valid @RequestBody AppAuthSmsSendReqBo reqBo) {
         memberAuthService.sendSmsCode(UserUtils.getCurUserId(), reqBo);
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**
@@ -94,7 +94,7 @@ public class AppAuthController {
     @PermitAll
     public R<Boolean> validateSmsCode(@Valid @RequestBody AppAuthSmsValidateReqBo reqBo) {
         memberAuthService.validateSmsCode(UserUtils.getCurUserId(), reqBo);
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**

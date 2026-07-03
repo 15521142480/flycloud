@@ -43,7 +43,7 @@ public class AppProductFavoriteController {
      */
     @DeleteMapping("/delete")
     public R<Void> deleteFavorite(@RequestBody ProductFavoriteBo bo) {
-        return R.ok(productFavoriteService.deleteFavorite(UserUtils.getCurUserId(), bo.getSpuId()));
+        return R.result(productFavoriteService.deleteFavorite(UserUtils.getCurUserId(), bo.getSpuId()));
     }
 
     /**
@@ -59,7 +59,7 @@ public class AppProductFavoriteController {
      */
     @GetMapping({"/exists", "/exits"})
     public R<Boolean> isFavoriteExists(ProductFavoriteBo bo) {
-        return R.ok(productFavoriteService.isFavoriteExists(UserUtils.getCurUserId(), bo.getSpuId()));
+        return R.result(productFavoriteService.isFavoriteExists(UserUtils.getCurUserId(), bo.getSpuId()));
     }
 
     /**

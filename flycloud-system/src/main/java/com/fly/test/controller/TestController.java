@@ -34,7 +34,7 @@ public class TestController {
      */
     @GetMapping("/seataTest/{isRollback}")
     public R<Void> seataTest(@NotNull(message = "isRollback（是否回滚）不能为空") @PathVariable Integer isRollback) {
-        return R.ok(testService.seataTest(isRollback));
+        return R.result(testService.seataTest(isRollback));
     }
 
     /**
@@ -42,7 +42,7 @@ public class TestController {
      */
     @GetMapping("/esTest/{type}/{indexName}")
     public R<Void> seataTest(@NotNull(message = "type不能为空(1到4分别是增删改查)") @PathVariable Integer type, @NotNull(message = "indexName不能为空") @PathVariable String indexName) throws IOException {
-        return R.ok(testService.esTest(type, indexName));
+        return R.result(testService.esTest(type, indexName));
     }
 
 }

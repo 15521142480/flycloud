@@ -46,7 +46,7 @@ public class ImFacePackItemManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:update')")
     public R<Boolean> updateFacePackItem(@Valid @RequestBody ImFacePackItemSaveReqVo reqVo) {
         facePackItemService.updateFacePackItem(reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete")
@@ -55,7 +55,7 @@ public class ImFacePackItemManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:face-pack-item:delete')")
     public R<Boolean> deleteFacePackItem(@RequestParam("id") Long id) {
         facePackItemService.deleteFacePackItem(id);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete-list")
@@ -65,7 +65,7 @@ public class ImFacePackItemManagerController {
     public R<Boolean> deleteFacePackItemList(
             @RequestParam("ids") @Size(max = 100, message = "批量删除最多 100 条") List<Long> ids) {
         facePackItemService.deleteFacePackItemList(ids);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/page")

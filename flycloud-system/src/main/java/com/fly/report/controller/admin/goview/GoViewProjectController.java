@@ -37,14 +37,14 @@ public class GoViewProjectController {
     @PreAuthorize("@pms.hasPermission('report:go-view-project:update')")
     public R<Boolean> updateProject(@Valid @RequestBody GoViewProjectBo bo) {
         goViewProjectService.updateProject(bo);
-        return R.ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete")
     @PreAuthorize("@pms.hasPermission('report:go-view-project:delete')")
     public R<Boolean> deleteProject(@RequestParam("id") Long id) {
         goViewProjectService.deleteProject(id);
-        return R.ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/get")

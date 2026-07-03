@@ -83,7 +83,7 @@ public class SeckillProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:seckill-product:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody SeckillProductBo bo) {
-        return R.ok(seckillProductService.saveOrUpdate(bo));
+        return R.result(seckillProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class SeckillProductController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody SeckillProductBo bo) {
-        return R.ok(seckillProductService.saveOrUpdate(bo));
+        return R.result(seckillProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class SeckillProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:seckill-product:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(seckillProductService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(seckillProductService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class SeckillProductController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(seckillProductService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(seckillProductService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

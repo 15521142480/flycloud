@@ -87,7 +87,7 @@ public class SysDictDataController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:dict:optionDictData')") // todo 二级页面：操作字典数据， 后续可修改
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated @RequestBody SysDictDataBo bo) {
-        return R.ok(iSysDictService.saveOrUpdate(bo));
+        return R.result(iSysDictService.saveOrUpdate(bo));
     }
 
 
@@ -100,6 +100,6 @@ public class SysDictDataController extends BaseController {
     @Log(title = "字典数据", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysDictService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysDictService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 }

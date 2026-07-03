@@ -49,7 +49,7 @@ public class GenController extends BaseController {
             return R.failed("表["+tables+"]不存在");
         }
 
-        return R.ok(genTableService.generatorCode(tableNames));
+        return R.result(genTableService.generatorCode(tableNames));
     }
 
 

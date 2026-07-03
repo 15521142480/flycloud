@@ -72,7 +72,7 @@ public class SysDeptController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:dept:saveOrUpdate')")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated(AddGroup.class) @RequestBody SysDeptBo bo) {
-        return R.ok(iSysDeptService.saveOrUpdate(bo));
+        return R.result(iSysDeptService.saveOrUpdate(bo));
     }
 
 
@@ -86,7 +86,7 @@ public class SysDeptController extends BaseController {
     @PreAuthorize("@pms.hasPermission('sys:dept:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysDeptService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysDeptService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 

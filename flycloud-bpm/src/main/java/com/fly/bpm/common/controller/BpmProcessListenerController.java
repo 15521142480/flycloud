@@ -66,7 +66,7 @@ public class BpmProcessListenerController extends BaseController {
     @PostMapping("/create")
     @PreAuthorize("@pms.hasPermission('bpm:manage:listener:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmProcessListenerBo bo) {
-        return R.ok(iBpmProcessListenerService.insertByBo(bo));
+        return R.result(iBpmProcessListenerService.insertByBo(bo));
     }
 
 
@@ -77,7 +77,7 @@ public class BpmProcessListenerController extends BaseController {
     @PutMapping("/update")
     @PreAuthorize("@pms.hasPermission('bpm:manage:listener:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmProcessListenerBo bo) {
-        return R.ok(iBpmProcessListenerService.updateByBo(bo));
+        return R.result(iBpmProcessListenerService.updateByBo(bo));
     }
 
 
@@ -90,6 +90,6 @@ public class BpmProcessListenerController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     @PreAuthorize("@pms.hasPermission('bpm:manage:listener:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmProcessListenerService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iBpmProcessListenerService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 }

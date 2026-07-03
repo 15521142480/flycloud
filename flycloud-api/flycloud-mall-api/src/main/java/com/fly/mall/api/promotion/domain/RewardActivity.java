@@ -48,16 +48,16 @@ public class RewardActivity extends BaseEntity {
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<Rule> rules;
 
-    private Integer limit;
-
-    private Integer discountPrice;
-
-    private Boolean freeDelivery;
-
-    private Integer point;
-
-    @TableField(typeHandler = JacksonTypeHandler.class)
-    private Map<Long, Integer> giveCouponTemplateCounts;
+//    private Integer limit;
+//
+//    private Integer discountPrice;
+//
+//    private Boolean freeDelivery;
+//
+//    private Integer point;
+//
+//    @TableField(typeHandler = JacksonTypeHandler.class)
+//    private Map<Long, Integer> giveCouponTemplateCounts;
 
     /**
      * 满减送活动优惠规则。

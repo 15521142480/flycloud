@@ -86,7 +86,7 @@ public class TradeOrderController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:order:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.result(tradeOrderService.saveOrUpdate(bo));
     }
 
     /**
@@ -94,7 +94,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.saveOrUpdate(bo));
+        return R.result(tradeOrderService.saveOrUpdate(bo));
     }
 
     /**
@@ -118,7 +118,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/delivery")
     public R<Void> delivery(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.deliveryOrder(bo));
+        return R.result(tradeOrderService.deliveryOrder(bo));
     }
 
     /**
@@ -126,7 +126,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update-remark")
     public R<Void> updateRemark(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.updateOrderRemark(bo));
+        return R.result(tradeOrderService.updateOrderRemark(bo));
     }
 
     /**
@@ -134,7 +134,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update-price")
     public R<Void> updatePrice(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.updateOrderPrice(bo));
+        return R.result(tradeOrderService.updateOrderPrice(bo));
     }
 
     /**
@@ -142,7 +142,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/update-address")
     public R<Void> updateAddress(@RequestBody TradeOrderBo bo) {
-        return R.ok(tradeOrderService.updateOrderAddress(bo));
+        return R.result(tradeOrderService.updateOrderAddress(bo));
     }
 
     /**
@@ -150,7 +150,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/pick-up-by-id")
     public R<Void> pickUpById(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderService.pickUpOrderByAdmin(UserUtils.getCurUserId(), id));
+        return R.result(tradeOrderService.pickUpOrderByAdmin(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -158,7 +158,7 @@ public class TradeOrderController extends BaseController {
      */
     @PutMapping("/pick-up-by-verify-code")
     public R<Void> pickUpByVerifyCode(@RequestParam("pickUpVerifyCode") String pickUpVerifyCode) {
-        return R.ok(tradeOrderService.pickUpOrderByAdmin(UserUtils.getCurUserId(), pickUpVerifyCode));
+        return R.result(tradeOrderService.pickUpOrderByAdmin(UserUtils.getCurUserId(), pickUpVerifyCode));
     }
 
     /**
@@ -176,7 +176,7 @@ public class TradeOrderController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:order:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(tradeOrderService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(tradeOrderService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -184,7 +184,7 @@ public class TradeOrderController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(tradeOrderService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

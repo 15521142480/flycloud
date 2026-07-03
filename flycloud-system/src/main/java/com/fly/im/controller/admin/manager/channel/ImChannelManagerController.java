@@ -45,7 +45,7 @@ public class ImChannelManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel:update')")
     public R<Boolean> updateChannel(@Valid @RequestBody ImChannelSaveReqVo reqVo) {
         channelService.updateChannel(reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete")
@@ -54,7 +54,7 @@ public class ImChannelManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel:delete')")
     public R<Boolean> deleteChannel(@RequestParam("id") Long id) {
         channelService.deleteChannel(id);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/page")

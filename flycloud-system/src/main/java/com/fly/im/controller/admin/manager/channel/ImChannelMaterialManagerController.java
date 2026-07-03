@@ -53,7 +53,7 @@ public class ImChannelMaterialManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel-material:update')")
     public R<Boolean> updateMaterial(@Valid @RequestBody ImChannelMaterialSaveReqVo reqVo) {
         channelMaterialService.updateMaterial(reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete")
@@ -62,7 +62,7 @@ public class ImChannelMaterialManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel-material:delete')")
     public R<Boolean> deleteMaterial(@RequestParam("id") Long id) {
         channelMaterialService.deleteMaterial(id);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/page")

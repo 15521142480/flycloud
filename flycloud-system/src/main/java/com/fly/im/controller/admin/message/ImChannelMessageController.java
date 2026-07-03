@@ -69,7 +69,7 @@ public class ImChannelMessageController {
     public R<Boolean> readChannelMessages(@RequestParam("channelId") Long channelId,
                                                      @RequestParam("messageId") Long messageId) {
         channelMessageService.readChannelMessages(getCurUserId(), channelId, messageId);
-        return ok(true);
+        return R.result(true);
     }
 
 }

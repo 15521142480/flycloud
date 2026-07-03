@@ -9,6 +9,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.ProductSpuStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -1066,7 +1067,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
                 throw new ServiceException("商品 SKU 不存在");
             }
             ProductSpuVo spu = productSpuService.queryById(sku.getSpuId());
-            if (spu == null || !StatusEnum.isEnable(spu.getStatus())) {
+            if (spu == null || !ProductSpuStatusEnum.isEnable(spu.getStatus())) {
                 throw new ServiceException("商品不存在或已下架");
             }
             if (count <= 0) {
@@ -1091,7 +1092,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             if (sku == null || spu == null) {
                 throw new ServiceException("购物车商品不存在");
             }
-            if (!StatusEnum.isEnable(spu.getStatus())) {
+            if (!ProductSpuStatusEnum.isEnable(spu.getStatus())) {
                 throw new ServiceException("商品不存在或已下架");
             }
             Integer count = cart.getCount() == null ? 0 : cart.getCount();

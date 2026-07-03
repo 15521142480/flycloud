@@ -73,7 +73,7 @@ public class ${ClassName}Controller extends BaseController {
     @Log(title = "${functionName}", businessType = BusinessType.INSERT)
     @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ${ClassName}Bo bo) {
-        return R.ok(i${ClassName}Service.insertByBo(bo));
+        return R.result(i${ClassName}Service.insertByBo(bo));
     }
 
 
@@ -83,7 +83,7 @@ public class ${ClassName}Controller extends BaseController {
     @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Bo bo) {
-        return R.ok(i${ClassName}Service.updateByBo(bo));
+        return R.result(i${ClassName}Service.updateByBo(bo));
     }
 
 
@@ -95,7 +95,7 @@ public class ${ClassName}Controller extends BaseController {
     @Log(title = "${functionName}", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{${pkColumn.javaField}s}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
-        return R.ok(i${ClassName}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s), true));
+        return R.result(i${ClassName}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s), true));
     }
 
     /**

@@ -27,6 +27,6 @@ public class ITestController implements ITestApi {
     @Override
     @PostMapping(BpmFeignApiConstants.PROVIDER_TEST_SEATA)
     public R<Void> seataTest() {
-        return R.ok(testService.seataTest());
+        return R.result(testService.seataTest());
     }
 }

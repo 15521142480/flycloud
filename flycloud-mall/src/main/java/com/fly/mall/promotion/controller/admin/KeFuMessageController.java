@@ -83,7 +83,7 @@ public class KeFuMessageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:ke-fu-message:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody KeFuMessageBo bo) {
-        return R.ok(keFuMessageService.saveOrUpdate(bo));
+        return R.result(keFuMessageService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class KeFuMessageController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody KeFuMessageBo bo) {
-        return R.ok(keFuMessageService.saveOrUpdate(bo));
+        return R.result(keFuMessageService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class KeFuMessageController extends BaseController {
      */
     @PostMapping("/send")
     public R<Void> send(@RequestBody KeFuMessageBo bo) {
-        return R.ok(keFuMessageService.saveOrUpdate(bo));
+        return R.result(keFuMessageService.saveOrUpdate(bo));
     }
 
     /**
@@ -108,7 +108,7 @@ public class KeFuMessageController extends BaseController {
     @PutMapping("/update-read-status")
     public R<Void> updateReadStatus(@RequestBody KeFuMessageBo bo) {
         bo.setReadStatus(true);
-        return R.ok(keFuMessageService.saveOrUpdate(bo));
+        return R.result(keFuMessageService.saveOrUpdate(bo));
     }
 
     /**
@@ -118,7 +118,7 @@ public class KeFuMessageController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:ke-fu-message:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(keFuMessageService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(keFuMessageService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -126,7 +126,7 @@ public class KeFuMessageController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(keFuMessageService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(keFuMessageService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

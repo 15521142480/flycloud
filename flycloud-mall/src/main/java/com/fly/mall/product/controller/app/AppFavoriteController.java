@@ -41,7 +41,7 @@ public class AppFavoriteController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> deleteFavorite(@RequestBody ProductFavoriteBo bo) {
-        return R.ok(productFavoriteService.deleteFavorite(UserUtils.getCurUserId(), bo.getSpuId()));
+        return R.result(productFavoriteService.deleteFavorite(UserUtils.getCurUserId(), bo.getSpuId()));
     }
 
     /**

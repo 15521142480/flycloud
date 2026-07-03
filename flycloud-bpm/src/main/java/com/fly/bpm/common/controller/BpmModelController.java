@@ -179,7 +179,7 @@ public class BpmModelController {
     @PutMapping("/update")
     public R<Boolean> updateModel(@Valid @RequestBody BpmModelSaveReqVO modelVO) {
         modelService.updateModel(getCurUserId(), modelVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -192,7 +192,7 @@ public class BpmModelController {
     public R<Boolean> deployModel(@PathVariable("id") String id) {
 
         modelService.deployModel(getCurUserId(), id);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -205,7 +205,7 @@ public class BpmModelController {
     @PutMapping("/update-state")
     public R<Boolean> updateModelState(@Valid @RequestBody BpmModelUpdateStateReqVO reqVO) {
         modelService.updateModelState(getCurUserId(), reqVO.getId(), reqVO.getState());
-        return R.ok(true);
+        return R.result(true);
     }
 
     /**
@@ -216,7 +216,7 @@ public class BpmModelController {
     @PreAuthorize("@pms.hasPermission('bpm:manage:model:designModel')")
     public R<Boolean> updateModelBpmn(@Valid @RequestBody BpmModeUpdateBpmnReqVO reqVO) {
         modelService.updateModelBpmnXml(reqVO.getId(), reqVO.getBpmnXml());
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -226,7 +226,7 @@ public class BpmModelController {
     @PreAuthorize("@pms.hasPermission('bpm:manage:model:delete')")
     public R<Boolean> deleteModel(@RequestParam("id") String id) {
         modelService.deleteModel(getCurUserId(), id);
-        return R.ok(true);
+        return R.result(true);
     }
 
     // ========== 仿钉钉/飞书的精简模型 =========
@@ -243,7 +243,7 @@ public class BpmModelController {
     @PreAuthorize("@pms.hasPermission('bpm:model:update')")
     public R<Boolean> updateSimpleModel(@Valid @RequestBody BpmSimpleModelUpdateReqVO reqVO) {
         modelService.updateSimpleModel(getCurUserId(), reqVO);
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
 }

@@ -56,7 +56,7 @@ public class ImPrivateMessageController {
     public R<Boolean> readPrivateMessages(@RequestParam("receiverId") Long receiverId,
                                                      @RequestParam("messageId") Long messageId) {
         privateMessageService.readPrivateMessages(getCurUserId(), receiverId, messageId);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/max-read-message-id")

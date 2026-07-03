@@ -33,14 +33,15 @@
           row-key="id"
           @current-change="selectProperty"
         >
-          <el-table-column label="属性名称" min-width="140" prop="name" />
+          <el-table-column label="属性编号" min-width="100" prop="id" align="center" />
+          <el-table-column label="属性名称" min-width="150" prop="name" />
           <el-table-column
             :show-overflow-tooltip="true"
             label="备注"
             min-width="120"
             prop="remark"
           />
-          <el-table-column align="center" label="操作" width="170">
+          <el-table-column align="center" label="操作" width="120">
             <template #default="{ row }">
               <el-button
                 v-hasPermi="['mall:product:property:saveOrUpdate']"
@@ -102,7 +103,7 @@
           height="calc(100vh - 330px)"
           row-key="id"
         >
-          <el-table-column label="属性值名称" min-width="150" prop="name" />
+          <el-table-column label="属性值名称" min-width="170" prop="name" />
           <el-table-column
             :show-overflow-tooltip="true"
             label="备注"
@@ -115,7 +116,7 @@
             prop="createTime"
             width="180"
           />
-          <el-table-column align="center" fixed="right" label="操作" width="170">
+          <el-table-column align="center" fixed="right" label="操作" width="130">
             <template #default="{ row }">
               <el-button
                 v-hasPermi="['mall:product:property:saveOrUpdate']"

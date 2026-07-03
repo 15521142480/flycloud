@@ -83,7 +83,7 @@ public class BargainRecordController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-record:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BargainRecordBo bo) {
-        return R.ok(bargainRecordService.saveOrUpdate(bo));
+        return R.result(bargainRecordService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class BargainRecordController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody BargainRecordBo bo) {
-        return R.ok(bargainRecordService.saveOrUpdate(bo));
+        return R.result(bargainRecordService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class BargainRecordController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-record:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(bargainRecordService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(bargainRecordService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class BargainRecordController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(bargainRecordService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(bargainRecordService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

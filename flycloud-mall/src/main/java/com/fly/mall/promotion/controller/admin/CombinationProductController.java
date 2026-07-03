@@ -83,7 +83,7 @@ public class CombinationProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-product:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CombinationProductBo bo) {
-        return R.ok(combinationProductService.saveOrUpdate(bo));
+        return R.result(combinationProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class CombinationProductController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody CombinationProductBo bo) {
-        return R.ok(combinationProductService.saveOrUpdate(bo));
+        return R.result(combinationProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class CombinationProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-product:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(combinationProductService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(combinationProductService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class CombinationProductController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(combinationProductService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(combinationProductService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

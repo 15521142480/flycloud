@@ -76,7 +76,7 @@ public class SysPostController extends BaseController {
     @Log(title = "新增/修改岗位")
     @PostMapping("/saveOrUpdate")
     public R<Void> saveOrUpdate(@Validated(AddGroup.class) @RequestBody SysPostBo bo) {
-        return R.ok(iSysPostService.saveOrUpdate(bo));
+        return R.result(iSysPostService.saveOrUpdate(bo));
     }
 
 
@@ -86,7 +86,7 @@ public class SysPostController extends BaseController {
     @Log(title = "岗位", businessType = BusinessType.INSERT)
     @PostMapping("/create")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SysPostBo bo) {
-        return R.ok(iSysPostService.insertByBo(bo));
+        return R.result(iSysPostService.insertByBo(bo));
     }
 
 
@@ -96,7 +96,7 @@ public class SysPostController extends BaseController {
     @Log(title = "岗位", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SysPostBo bo) {
-        return R.ok(iSysPostService.updateByBo(bo));
+        return R.result(iSysPostService.updateByBo(bo));
     }
 
 
@@ -109,7 +109,7 @@ public class SysPostController extends BaseController {
     @Log(title = "岗位", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysPostService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysPostService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**

@@ -55,7 +55,7 @@ public class ImGroupMessageController {
     public R<Boolean> readGroupMessages(@RequestParam("groupId") Long groupId,
                                                    @RequestParam("messageId") Long messageId) {
         groupMessageService.readGroupMessages(getCurUserId(), groupId, messageId);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/recall")

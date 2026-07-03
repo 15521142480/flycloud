@@ -70,13 +70,13 @@ public class MemberGroupController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody MemberGroupBo bo) {
-        return R.ok(groupService.saveOrUpdate(bo));
+        return R.result(groupService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:group:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(groupService.deleteById(id));
+        return R.result(groupService.deleteById(id));
     }
 
     /**
@@ -84,7 +84,7 @@ public class MemberGroupController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(groupService.deleteById(id));
+        return R.result(groupService.deleteById(id));
     }
 
     private PageVo<MemberGroupRespVo> convertPage(PageVo<MemberGroupVo> page) {

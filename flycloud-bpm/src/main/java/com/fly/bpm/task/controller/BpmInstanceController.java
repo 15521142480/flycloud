@@ -184,7 +184,7 @@ public class BpmInstanceController {
     @Operation(summary = "用户取消流程实例", description = "取消发起的流程")
     public R<Boolean> cancelProcessInstanceByStartUser(@Valid @RequestBody BpmProcessInstanceCancelReqVO cancelReqVO) {
         bpmInstanceService.cancelProcessInstanceByStartUser(UserUtils.getCurUserId(), cancelReqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -198,7 +198,7 @@ public class BpmInstanceController {
     @Operation(summary = "管理员取消流程实例", description = "管理员撤回流程")
     public R<Boolean> cancelProcessInstanceByManager(@Valid @RequestBody BpmProcessInstanceCancelReqVO cancelReqVO) {
         bpmInstanceService.cancelProcessInstanceByAdmin(UserUtils.getCurUserId(), cancelReqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 

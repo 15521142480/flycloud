@@ -8,6 +8,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.ProductSpuStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.collection.CollectionUtils;
@@ -344,7 +345,7 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
             throw new ServiceException("商品库存不足");
         }
         ProductSpuVo spu = productSpuService.queryById(sku.getSpuId());
-        if (spu == null || !StatusEnum.isEnable(spu.getStatus())) {
+        if (spu == null || !ProductSpuStatusEnum.isEnable(spu.getStatus())) {
             throw new ServiceException("商品不存在或已下架");
         }
         return sku;
@@ -430,7 +431,7 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
     private boolean isInvalidCart(ProductSpuVo spu, ProductSkuVo sku, CartVo cart) {
         return spu == null
                 || sku == null
-                || !StatusEnum.isEnable(spu.getStatus())
+                || !ProductSpuStatusEnum.isEnable(spu.getStatus())
                 || Optional.ofNullable(spu.getStock()).orElse(0) <= 0
                 || Optional.ofNullable(sku.getStock()).orElse(0) < Optional.ofNullable(cart.getCount()).orElse(0);
     }

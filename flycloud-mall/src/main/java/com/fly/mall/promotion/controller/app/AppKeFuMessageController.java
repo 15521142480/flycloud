@@ -69,7 +69,7 @@ public class AppKeFuMessageController {
      */
     @PostMapping("/send")
     public R<Void> send(@RequestBody KeFuMessageBo bo) {
-        return R.ok(keFuMessageService.saveOrUpdate(bo));
+        return R.result(keFuMessageService.saveOrUpdate(bo));
     }
 
     /**
@@ -78,7 +78,7 @@ public class AppKeFuMessageController {
     @PutMapping("/update-read-status")
     public R<Void> updateReadStatus(@RequestBody KeFuMessageBo bo) {
         bo.setReadStatus(true);
-        return R.ok(keFuMessageService.saveOrUpdate(bo));
+        return R.result(keFuMessageService.saveOrUpdate(bo));
     }
 
 }

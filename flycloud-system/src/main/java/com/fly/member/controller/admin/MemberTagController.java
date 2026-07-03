@@ -75,13 +75,13 @@ public class MemberTagController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody MemberTagBo bo) {
-        return R.ok(tagService.saveOrUpdate(bo));
+        return R.result(tagService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('member:tag:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(tagService.deleteById(id));
+        return R.result(tagService.deleteById(id));
     }
 
     /**
@@ -89,7 +89,7 @@ public class MemberTagController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(tagService.deleteById(id));
+        return R.result(tagService.deleteById(id));
     }
 
     private PageVo<MemberTagRespVo> convertPage(PageVo<MemberTagVo> page) {

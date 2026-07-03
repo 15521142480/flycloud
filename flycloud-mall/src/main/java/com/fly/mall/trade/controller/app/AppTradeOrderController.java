@@ -109,7 +109,7 @@ public class AppTradeOrderController {
     @PostMapping("/update-paid")
     public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
         tradeOrderService.updateOrderPaid(Long.valueOf(req.getMerchantOrderId()), req.getPayOrderId());
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**
@@ -133,7 +133,7 @@ public class AppTradeOrderController {
      */
     @PutMapping("/receive")
     public R<Boolean> receiveOrder(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderService.receiveOrder(UserUtils.getCurUserId(), id));
+        return R.result(tradeOrderService.receiveOrder(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -141,7 +141,7 @@ public class AppTradeOrderController {
      */
     @DeleteMapping("/cancel")
     public R<Boolean> cancelOrder(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderService.cancelOrder(UserUtils.getCurUserId(), id));
+        return R.result(tradeOrderService.cancelOrder(UserUtils.getCurUserId(), id));
     }
 
     /**
@@ -149,7 +149,7 @@ public class AppTradeOrderController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> deleteOrder(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderService.deleteOrder(UserUtils.getCurUserId(), id));
+        return R.result(tradeOrderService.deleteOrder(UserUtils.getCurUserId(), id));
     }
 
     /**

@@ -72,7 +72,7 @@ public class AppBargainRecordController {
     @PostMapping("/create")
     public R<Void> create(@RequestBody BargainRecordBo bo) {
         bo.setUserId(UserUtils.getCurUserId());
-        return R.ok(bargainRecordService.saveOrUpdate(bo));
+        return R.result(bargainRecordService.saveOrUpdate(bo));
     }
 
     /**

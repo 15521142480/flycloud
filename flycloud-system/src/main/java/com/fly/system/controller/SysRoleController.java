@@ -83,7 +83,7 @@ public class SysRoleController extends BaseController {
     public R<Void> saveOrUpdate(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
         LoginUser loginUser = SecurityUtils.getCurUser(request);
-        return R.ok(iSysRoleService.saveOrUpdate(bo));
+        return R.result(iSysRoleService.saveOrUpdate(bo));
     }
 
     /**
@@ -94,7 +94,7 @@ public class SysRoleController extends BaseController {
     public R<Void> updateById(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
         LoginUser loginUser = SecurityUtils.getCurUser(request);
-        return R.ok(iSysRoleService.updateById(bo));
+        return R.result(iSysRoleService.updateById(bo));
     }
 
     /**
@@ -104,7 +104,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/updateMenuPermission")
     public R<Void> updateMenuPermission(@Validated @RequestBody SysRoleBo bo, HttpServletRequest request) {
 
-        return R.ok(iSysRoleService.updateMenuPermission(bo));
+        return R.result(iSysRoleService.updateMenuPermission(bo));
     }
 
 //    /**
@@ -127,7 +127,7 @@ public class SysRoleController extends BaseController {
     @Log(title = "角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysRoleService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysRoleService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 

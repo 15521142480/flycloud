@@ -45,7 +45,7 @@ public class AppCartController {
      */
     @PutMapping("/update-count")
     public R<Boolean> updateCartCount(@RequestBody CartBo bo) {
-        return R.ok(cartService.updateCartCount(UserUtils.getCurUserId(), bo));
+        return R.result(cartService.updateCartCount(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -53,7 +53,7 @@ public class AppCartController {
      */
     @PutMapping("/update-selected")
     public R<Boolean> updateCartSelected(@RequestBody CartBo bo) {
-        return R.ok(cartService.updateCartSelected(UserUtils.getCurUserId(), bo));
+        return R.result(cartService.updateCartSelected(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -61,7 +61,7 @@ public class AppCartController {
      */
     @PutMapping("/reset")
     public R<Boolean> resetCart(@RequestBody CartBo bo) {
-        return R.ok(cartService.resetCart(UserUtils.getCurUserId(), bo));
+        return R.result(cartService.resetCart(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -69,7 +69,7 @@ public class AppCartController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> deleteCart(@RequestParam("ids") List<Long> ids) {
-        return R.ok(cartService.deleteCart(UserUtils.getCurUserId(), ids));
+        return R.result(cartService.deleteCart(UserUtils.getCurUserId(), ids));
     }
 
     /**

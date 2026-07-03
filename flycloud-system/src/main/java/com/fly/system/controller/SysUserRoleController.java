@@ -68,7 +68,7 @@ public class SysUserRoleController extends BaseController {
     @Log(title = "用户角色", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SysUserRoleBo bo) {
-        return R.ok(iSysUserRoleService.updateByBo(bo));
+        return R.result(iSysUserRoleService.updateByBo(bo));
     }
 
 
@@ -81,7 +81,7 @@ public class SysUserRoleController extends BaseController {
     @Log(title = "用户角色", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iSysUserRoleService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iSysUserRoleService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 }

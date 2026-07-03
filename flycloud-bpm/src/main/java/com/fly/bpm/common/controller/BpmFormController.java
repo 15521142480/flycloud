@@ -75,7 +75,7 @@ public class BpmFormController extends BaseController {
     @PostMapping("/create")
     @PreAuthorize("@pms.hasPermission('bpm:manage:form:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmFormBo bo) {
-        return R.ok(iBpmFormService.insertByBo(bo));
+        return R.result(iBpmFormService.insertByBo(bo));
     }
 
 
@@ -86,7 +86,7 @@ public class BpmFormController extends BaseController {
     @PutMapping("/update")
     @PreAuthorize("@pms.hasPermission('bpm:manage:form:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmFormBo bo) {
-        return R.ok(iBpmFormService.updateByBo(bo));
+        return R.result(iBpmFormService.updateByBo(bo));
     }
 
 
@@ -99,7 +99,7 @@ public class BpmFormController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     @PreAuthorize("@pms.hasPermission('bpm:manage:form:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmFormService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iBpmFormService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 

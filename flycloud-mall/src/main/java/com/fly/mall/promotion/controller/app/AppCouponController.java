@@ -79,7 +79,7 @@ public class AppCouponController {
     public R<Boolean> take(@RequestBody CouponBo bo) {
         Long userId = UserUtils.getCurUserId();
         couponService.takeCoupon(bo.getTemplateId(), userId, null);
-        return R.ok(couponService.canTake(bo.getTemplateId(), userId));
+        return R.result(couponService.canTake(bo.getTemplateId(), userId));
     }
 
     /**

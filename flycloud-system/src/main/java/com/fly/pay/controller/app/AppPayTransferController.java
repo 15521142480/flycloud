@@ -27,7 +27,7 @@ public class AppPayTransferController {
     @GetMapping("/sync")
     public R<Boolean> syncTransfer(@RequestParam Long id) {
         transferService.syncTransfer(id);
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
 }

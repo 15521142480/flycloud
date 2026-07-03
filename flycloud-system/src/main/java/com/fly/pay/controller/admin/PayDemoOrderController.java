@@ -59,7 +59,7 @@ public class PayDemoOrderController {
     @PermitAll
     public R<Boolean> updateDemoOrderPaid(@RequestBody PayOrderNotifyReq notifyReq) {
         payDemoOrderService.updateDemoOrderPaid(Long.valueOf(notifyReq.getMerchantOrderId()), notifyReq.getPayOrderId());
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**
@@ -68,7 +68,7 @@ public class PayDemoOrderController {
     @PutMapping("/refund")
     public R<Boolean> refundDemoOrder(@RequestParam("id") Long id, HttpServletRequest request) {
         payDemoOrderService.refundDemoOrder(id, getClientIp(request));
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**
@@ -79,7 +79,7 @@ public class PayDemoOrderController {
     public R<Boolean> updateDemoOrderRefunded(@RequestBody PayRefundNotifyReq notifyReq) {
         payDemoOrderService.updateDemoOrderRefunded(Long.valueOf(notifyReq.getMerchantOrderId()),
                 notifyReq.getMerchantRefundId(), notifyReq.getPayRefundId());
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**

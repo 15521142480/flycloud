@@ -51,27 +51,11 @@ public class R<T> implements Serializable {
     private T data;
 
 
+    // ==================================== 成功 start
+
     public static <T> R<T> ok() {
         return restResult(null, CommonConstants.SUCCESS, SUCCESS_STRING_STR);
     }
-
-    /**
-     * 响应返回结果 (适用于增删改)
-     */
-    public static <T> R<T> ok(Boolean result) {
-        return result ? R.ok() : R.failed();
-    }
-
-    /**
-     * 响应返回结果 (适用于增删改)
-     */
-    public static <T> R<T> ok(int rows) {
-        return rows > 0 ? R.ok() : R.failed();
-    }
-    public static <T> R<T> ok(Integer rows) {
-        return rows > 0 ? R.ok() : R.failed();
-    }
-
 
     public static <T> R<T> ok(T data) {
         return restResult(data, CommonConstants.SUCCESS, SUCCESS_STRING_STR);
@@ -80,6 +64,11 @@ public class R<T> implements Serializable {
     public static <T> R<T> ok(T data, String msg) {
         return restResult(data, CommonConstants.SUCCESS, msg);
     }
+
+    // ==================================== 成功 end
+
+
+    // ==================================== 失败
 
     public static <T> R<T> failed() {
         return restResult(null, CommonConstants.FAIL, "操作失败");
@@ -100,6 +89,36 @@ public class R<T> implements Serializable {
     public static <T> R<T> failed(T data, String msg) {
         return restResult(data, CommonConstants.FAIL, msg);
     }
+
+    // ==================================== 失败 end
+
+
+    // ==================================== 根据操作结果返回成功或失败，适用于增删改 start
+
+    // R.result(false);    // 操作失败
+    // R.result(true);     // 操作成功
+    // R.result(1);        // 操作成功
+    // R.result(0);        // 操作失败
+
+    /**
+     * 根据操作结果返回成功或失败，适用于增删改
+     */
+    public static <T> R<T> result(Boolean result) {
+        return Boolean.TRUE.equals(result) ? R.ok() : R.failed();
+    }
+
+    /**
+     * 根据影响行数返回成功或失败，适用于增删改
+     */
+    public static <T> R<T> result(int rows) {
+        return rows > 0 ? R.ok() : R.failed();
+    }
+
+    public static <T> R<T> result(Integer rows) {
+        return rows != null && rows > 0 ? R.ok() : R.failed();
+    }
+
+    // ==================================== 根据操作结果返回成功或失败，适用于增删改 end
 
 
     /**
@@ -137,6 +156,7 @@ public class R<T> implements Serializable {
     public static boolean isSuccess(Integer code) {
         return Objects.equals(code, CommonConstants.SUCCESS);
     }
+
 
 
     // ========= 和 Exception 异常体系集成 =========

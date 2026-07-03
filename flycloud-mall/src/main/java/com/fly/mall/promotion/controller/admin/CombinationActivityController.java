@@ -83,7 +83,7 @@ public class CombinationActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-activity:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody CombinationActivityBo bo) {
-        return R.ok(combinationActivityService.saveOrUpdate(bo));
+        return R.result(combinationActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class CombinationActivityController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody CombinationActivityBo bo) {
-        return R.ok(combinationActivityService.saveOrUpdate(bo));
+        return R.result(combinationActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -111,7 +111,7 @@ public class CombinationActivityController extends BaseController {
         CombinationActivityBo bo = new CombinationActivityBo();
         bo.setId(id);
         bo.setStatus(com.fly.common.enums.StatusEnum.DISABLE.getStatus());
-        return R.ok(combinationActivityService.saveOrUpdate(bo));
+        return R.result(combinationActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -121,7 +121,7 @@ public class CombinationActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:combination-activity:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(combinationActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(combinationActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -129,7 +129,7 @@ public class CombinationActivityController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(combinationActivityService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(combinationActivityService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

@@ -83,7 +83,7 @@ public class DiscountProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:discount-product:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiscountProductBo bo) {
-        return R.ok(discountProductService.saveOrUpdate(bo));
+        return R.result(discountProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class DiscountProductController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody DiscountProductBo bo) {
-        return R.ok(discountProductService.saveOrUpdate(bo));
+        return R.result(discountProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class DiscountProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:discount-product:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(discountProductService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(discountProductService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class DiscountProductController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(discountProductService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(discountProductService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

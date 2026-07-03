@@ -69,7 +69,7 @@ public class ImGroupRequestController {
     public R<Boolean> agreeGroupRequest(
             @RequestParam("id") @NotNull(message = "申请编号不能为空") Long id) {
         groupRequestService.agreeGroupRequest(getCurUserId(), id);
-        return ok(true);
+        return R.result(true);
     }
 
     @PutMapping("/refuse")
@@ -79,7 +79,7 @@ public class ImGroupRequestController {
             @RequestParam(value = "handleContent", required = false)
             @Size(max = 255, message = "处理理由最多 255 个字符") String handleContent) {
         groupRequestService.refuseGroupRequest(getCurUserId(), id, handleContent);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/unhandled-list")

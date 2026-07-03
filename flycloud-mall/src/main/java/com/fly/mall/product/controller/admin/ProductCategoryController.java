@@ -105,7 +105,7 @@ public class ProductCategoryController extends BaseController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody ProductCategoryBo bo) {
-        return R.ok(productCategoryService.saveOrUpdate(bo));
+        return R.result(productCategoryService.saveOrUpdate(bo));
     }
 
     /**
@@ -115,7 +115,7 @@ public class ProductCategoryController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:product:category:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(productCategoryService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(productCategoryService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -123,7 +123,7 @@ public class ProductCategoryController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(productCategoryService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(productCategoryService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
     /**

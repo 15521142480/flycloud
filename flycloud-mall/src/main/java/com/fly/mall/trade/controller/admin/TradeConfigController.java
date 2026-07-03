@@ -83,7 +83,7 @@ public class TradeConfigController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:config:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeConfigBo bo) {
-        return R.ok(tradeConfigService.saveOrUpdate(bo));
+        return R.result(tradeConfigService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class TradeConfigController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody TradeConfigBo bo) {
-        return R.ok(tradeConfigService.saveOrUpdate(bo));
+        return R.result(tradeConfigService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class TradeConfigController extends BaseController {
      */
     @PutMapping("/save")
     public R<Void> save(@RequestBody TradeConfigBo bo) {
-        return R.ok(tradeConfigService.saveOrUpdate(bo));
+        return R.result(tradeConfigService.saveOrUpdate(bo));
     }
 
     /**
@@ -109,7 +109,7 @@ public class TradeConfigController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:config:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(tradeConfigService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(tradeConfigService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -117,7 +117,7 @@ public class TradeConfigController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(tradeConfigService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(tradeConfigService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

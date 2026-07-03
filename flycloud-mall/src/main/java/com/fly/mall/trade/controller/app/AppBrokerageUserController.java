@@ -75,7 +75,7 @@ public class AppBrokerageUserController {
     public R<Void> bind(@RequestBody BrokerageUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
         bo.setBindUserTime(LocalDateTime.now());
-        return R.ok(brokerageUserService.saveOrUpdate(bo));
+        return R.result(brokerageUserService.saveOrUpdate(bo));
     }
 
     /**

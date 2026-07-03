@@ -42,16 +42,16 @@ public class AdminUserApi {
 
     public R<Boolean> validateUserList(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
-            return R.ok(false);
+            return R.result(false);
         }
         Map<Long, SysUserVo> userMap = getUserMap(ids);
         ids.forEach(id -> validateUserExistsAndEnable(id, userMap.get(id)));
-        return R.ok(true);
+        return R.result(true);
     }
 
     public R<Boolean> validateUser(Long id) {
         validateUserExistsAndEnable(id, id == null ? null : sysUserService.queryById(id));
-        return R.ok(true);
+        return R.result(true);
     }
 
     /**

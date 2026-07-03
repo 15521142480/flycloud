@@ -83,7 +83,7 @@ public class BannerController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:banner:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BannerBo bo) {
-        return R.ok(bannerService.saveOrUpdate(bo));
+        return R.result(bannerService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class BannerController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody BannerBo bo) {
-        return R.ok(bannerService.saveOrUpdate(bo));
+        return R.result(bannerService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class BannerController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:banner:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(bannerService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(bannerService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class BannerController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(bannerService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(bannerService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

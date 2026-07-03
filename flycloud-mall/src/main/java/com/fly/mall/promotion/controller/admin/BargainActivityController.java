@@ -83,7 +83,7 @@ public class BargainActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-activity:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BargainActivityBo bo) {
-        return R.ok(bargainActivityService.saveOrUpdate(bo));
+        return R.result(bargainActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class BargainActivityController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody BargainActivityBo bo) {
-        return R.ok(bargainActivityService.saveOrUpdate(bo));
+        return R.result(bargainActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -102,7 +102,7 @@ public class BargainActivityController extends BaseController {
         BargainActivityBo bo = new BargainActivityBo();
         bo.setId(id);
         bo.setStatus(com.fly.common.enums.StatusEnum.DISABLE.getStatus());
-        return R.ok(bargainActivityService.saveOrUpdate(bo));
+        return R.result(bargainActivityService.saveOrUpdate(bo));
     }
 
     /**
@@ -112,7 +112,7 @@ public class BargainActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-activity:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(bargainActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(bargainActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -120,7 +120,7 @@ public class BargainActivityController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(bargainActivityService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(bargainActivityService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

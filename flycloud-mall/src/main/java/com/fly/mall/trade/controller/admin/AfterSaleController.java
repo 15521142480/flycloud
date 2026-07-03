@@ -84,7 +84,7 @@ public class AfterSaleController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody AfterSaleBo bo) {
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.result(afterSaleService.saveOrUpdate(bo));
     }
 
     /**
@@ -92,7 +92,7 @@ public class AfterSaleController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody AfterSaleBo bo) {
-        return R.ok(afterSaleService.saveOrUpdate(bo));
+        return R.result(afterSaleService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class AfterSaleController extends BaseController {
     @PutMapping("/agree")
     public R<Void> agree(@RequestBody(required = false) AfterSaleBo bo, @RequestParam(value = "id", required = false) Long id) {
         Long afterSaleId = id != null ? id : bo.getId();
-        return R.ok(afterSaleService.agreeAfterSale(UserUtils.getCurUserId(), afterSaleId));
+        return R.result(afterSaleService.agreeAfterSale(UserUtils.getCurUserId(), afterSaleId));
     }
 
     /**
@@ -109,7 +109,7 @@ public class AfterSaleController extends BaseController {
      */
     @PutMapping("/disagree")
     public R<Void> disagree(@RequestBody AfterSaleBo bo) {
-        return R.ok(afterSaleService.disagreeAfterSale(UserUtils.getCurUserId(), bo));
+        return R.result(afterSaleService.disagreeAfterSale(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -118,7 +118,7 @@ public class AfterSaleController extends BaseController {
     @PutMapping("/receive")
     public R<Void> receive(@RequestBody(required = false) AfterSaleBo bo, @RequestParam(value = "id", required = false) Long id) {
         Long afterSaleId = id != null ? id : bo.getId();
-        return R.ok(afterSaleService.receiveAfterSale(UserUtils.getCurUserId(), afterSaleId));
+        return R.result(afterSaleService.receiveAfterSale(UserUtils.getCurUserId(), afterSaleId));
     }
 
     /**
@@ -127,7 +127,7 @@ public class AfterSaleController extends BaseController {
     @PutMapping("/refund")
     public R<Void> refund(@RequestBody(required = false) AfterSaleBo bo, @RequestParam(value = "id", required = false) Long id) {
         Long afterSaleId = id != null ? id : bo.getId();
-        return R.ok(afterSaleService.refundAfterSale(UserUtils.getCurUserId(), afterSaleId));
+        return R.result(afterSaleService.refundAfterSale(UserUtils.getCurUserId(), afterSaleId));
     }
 
     /**
@@ -135,7 +135,7 @@ public class AfterSaleController extends BaseController {
      */
     @PutMapping("/refuse")
     public R<Void> refuse(@RequestBody AfterSaleBo bo) {
-        return R.ok(afterSaleService.refuseAfterSale(UserUtils.getCurUserId(), bo));
+        return R.result(afterSaleService.refuseAfterSale(UserUtils.getCurUserId(), bo));
     }
 
     /**
@@ -143,7 +143,7 @@ public class AfterSaleController extends BaseController {
      */
     @PostMapping("/update-refunded")
     public R<Void> updateRefunded(@RequestBody AfterSaleBo bo) {
-        return R.ok(afterSaleService.updateAfterSaleRefunded(bo.getId(), bo.getOrderId(), bo.getPayRefundId()));
+        return R.result(afterSaleService.updateAfterSaleRefunded(bo.getId(), bo.getOrderId(), bo.getPayRefundId()));
     }
 
     /**
@@ -153,7 +153,7 @@ public class AfterSaleController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(afterSaleService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(afterSaleService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -161,7 +161,7 @@ public class AfterSaleController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(afterSaleService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(afterSaleService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

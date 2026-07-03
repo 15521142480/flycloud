@@ -40,7 +40,7 @@ public class AppMemberUserController {
     @PostMapping("/update")
     public R<Boolean> updateUser(@RequestBody MemberUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -49,7 +49,7 @@ public class AppMemberUserController {
     @PutMapping("/update")
     public R<Boolean> yudaoUpdateUser(@RequestBody MemberUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -58,7 +58,7 @@ public class AppMemberUserController {
     @PutMapping("/update-mobile")
     public R<Boolean> updateMobile(@RequestBody MemberUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -67,7 +67,7 @@ public class AppMemberUserController {
     @PutMapping("/update-mobile-by-weixin")
     public R<Boolean> updateMobileByWeixin(@RequestBody MemberUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -76,7 +76,7 @@ public class AppMemberUserController {
     @PutMapping("/update-password")
     public R<Boolean> updatePassword(@RequestBody MemberUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -85,7 +85,7 @@ public class AppMemberUserController {
     @PutMapping("/reset-password")
     public R<Boolean> resetPassword(@RequestBody MemberUserBo bo) {
         bo.setId(UserUtils.getCurUserId());
-        return R.ok(memberUserService.saveOrUpdate(bo));
+        return R.result(memberUserService.saveOrUpdate(bo));
     }
 
     /**

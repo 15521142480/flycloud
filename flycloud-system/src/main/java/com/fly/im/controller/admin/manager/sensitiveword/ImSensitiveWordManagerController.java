@@ -52,7 +52,7 @@ public class ImSensitiveWordManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:sensitive-word:update')")
     public R<Boolean> updateSensitiveWord(@Valid @RequestBody ImSensitiveWordSaveReqVo reqVo) {
         sensitiveWordService.updateSensitiveWord(reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete")
@@ -61,7 +61,7 @@ public class ImSensitiveWordManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:sensitive-word:delete')")
     public R<Boolean> deleteSensitiveWord(@RequestParam("id") Long id) {
         sensitiveWordService.deleteSensitiveWord(id);
-        return ok(true);
+        return R.result(true);
     }
 
     @DeleteMapping("/delete-list")
@@ -72,7 +72,7 @@ public class ImSensitiveWordManagerController {
             @RequestParam("ids")
             @Size(max = 100, message = "批量删除最多 100 条") List<Long> ids) {
         sensitiveWordService.deleteSensitiveWordList(ids);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/page")

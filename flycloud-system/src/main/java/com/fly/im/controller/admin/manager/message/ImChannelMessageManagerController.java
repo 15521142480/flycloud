@@ -54,7 +54,7 @@ public class ImChannelMessageManagerController {
     @PreAuthorize("@pms.hasPermission('im:manager:channel-message:delete')")
     public R<Boolean> deleteMessage(@RequestParam("id") Long id) {
         channelMessageService.deleteMessage(id);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/page")

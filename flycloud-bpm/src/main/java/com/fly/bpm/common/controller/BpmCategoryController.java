@@ -85,7 +85,7 @@ public class BpmCategoryController extends BaseController {
     @PostMapping("/create")
     @PreAuthorize("@pms.hasPermission('bpm:manage:category:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmCategoryBo bo) {
-        return R.ok(iBpmCategoryService.insertByBo(bo));
+        return R.result(iBpmCategoryService.insertByBo(bo));
     }
 
 
@@ -96,7 +96,7 @@ public class BpmCategoryController extends BaseController {
     @PutMapping("/update")
     @PreAuthorize("@pms.hasPermission('bpm:manage:category:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmCategoryBo bo) {
-        return R.ok(iBpmCategoryService.updateByBo(bo));
+        return R.result(iBpmCategoryService.updateByBo(bo));
     }
 
 
@@ -109,6 +109,6 @@ public class BpmCategoryController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     @PreAuthorize("@pms.hasPermission('bpm:manage:category:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmCategoryService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iBpmCategoryService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 }

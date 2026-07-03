@@ -250,10 +250,6 @@ public class RewardActivityServiceImpl extends BaseServiceImpl<RewardActivityMap
         lqw.like(StringUtils.isNotBlank(bo.getRemark()), RewardActivity::getRemark, bo.getRemark());
         lqw.eq(bo.getConditionType() != null, RewardActivity::getConditionType, bo.getConditionType());
         lqw.eq(bo.getProductScope() != null, RewardActivity::getProductScope, bo.getProductScope());
-        lqw.eq(bo.getLimit() != null, RewardActivity::getLimit, bo.getLimit());
-        lqw.eq(bo.getDiscountPrice() != null, RewardActivity::getDiscountPrice, bo.getDiscountPrice());
-        lqw.eq(bo.getFreeDelivery() != null, RewardActivity::getFreeDelivery, bo.getFreeDelivery());
-        lqw.eq(bo.getPoint() != null, RewardActivity::getPoint, bo.getPoint());
         return lqw;
     }
 

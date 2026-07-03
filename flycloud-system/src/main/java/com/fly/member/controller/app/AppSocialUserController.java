@@ -59,7 +59,7 @@ public class AppSocialUserController {
      */
     @DeleteMapping("/unbind")
     public R<Boolean> socialUnbind(@RequestBody AppSocialUserUnbindReqBo reqBo) {
-        return R.ok(socialUserService.unbindSocialUser(UserUtils.getCurUserId(), USER_TYPE_MEMBER, reqBo));
+        return R.result(socialUserService.unbindSocialUser(UserUtils.getCurUserId(), USER_TYPE_MEMBER, reqBo));
     }
 
     /**

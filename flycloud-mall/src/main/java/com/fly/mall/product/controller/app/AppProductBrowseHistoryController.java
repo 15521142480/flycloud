@@ -36,7 +36,7 @@ public class AppProductBrowseHistoryController {
      */
     @DeleteMapping("/delete")
     public R<Void> deleteBrowseHistory(@RequestBody ProductBrowseHistoryBo bo) {
-        return R.ok(productBrowseHistoryService.hideUserBrowseHistory(UserUtils.getCurUserId(), List.of(bo.getSpuId())));
+        return R.result(productBrowseHistoryService.hideUserBrowseHistory(UserUtils.getCurUserId(), List.of(bo.getSpuId())));
     }
 
     /**
@@ -44,7 +44,7 @@ public class AppProductBrowseHistoryController {
      */
     @DeleteMapping("/clean")
     public R<Void> cleanBrowseHistory() {
-        return R.ok(productBrowseHistoryService.hideUserBrowseHistory(UserUtils.getCurUserId(), null));
+        return R.result(productBrowseHistoryService.hideUserBrowseHistory(UserUtils.getCurUserId(), null));
     }
 
     /**

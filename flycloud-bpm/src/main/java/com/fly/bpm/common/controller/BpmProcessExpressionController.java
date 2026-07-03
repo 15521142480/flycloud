@@ -66,7 +66,7 @@ public class BpmProcessExpressionController extends BaseController {
     @PostMapping("/create")
     @PreAuthorize("@pms.hasPermission('bpm:manage:expression:saveOrUpdate')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmProcessExpressionBo bo) {
-        return R.ok(iBpmProcessExpressionService.insertByBo(bo));
+        return R.result(iBpmProcessExpressionService.insertByBo(bo));
     }
 
 
@@ -77,7 +77,7 @@ public class BpmProcessExpressionController extends BaseController {
     @PutMapping("/update")
     @PreAuthorize("@pms.hasPermission('bpm:manage:expression:saveOrUpdate')")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmProcessExpressionBo bo) {
-        return R.ok(iBpmProcessExpressionService.updateByBo(bo));
+        return R.result(iBpmProcessExpressionService.updateByBo(bo));
     }
 
 
@@ -90,6 +90,6 @@ public class BpmProcessExpressionController extends BaseController {
     @DeleteMapping("/delete/{ids}")
     @PreAuthorize("@pms.hasPermission('bpm:manage:expression:delete')")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmProcessExpressionService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iBpmProcessExpressionService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 }

@@ -66,7 +66,7 @@ public class PayDemoWithdrawController {
     public R<Boolean> updateDemoWithdrawTransferred(@RequestBody PayTransferNotifyReq notifyReq) {
         payDemoWithdrawService.updateDemoWithdrawTransferred(Long.valueOf(notifyReq.getMerchantTransferId()),
                 notifyReq.getPayTransferId());
-        return R.ok(Boolean.TRUE);
+        return R.result(Boolean.TRUE);
     }
 
     /**

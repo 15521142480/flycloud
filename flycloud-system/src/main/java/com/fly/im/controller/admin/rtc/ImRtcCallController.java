@@ -50,7 +50,7 @@ public class ImRtcCallController {
     @Operation(summary = "通话中追加邀请；仅群通话可用")
     public R<Boolean> inviteCall(@Valid @RequestBody ImRtcCallInviteReqVo reqVo) {
         rtcCallService.inviteCall(getCurUserId(), reqVo);
-        return ok(true);
+        return R.result(true);
     }
 
     @PostMapping("/join")
@@ -74,7 +74,7 @@ public class ImRtcCallController {
     @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
     public R<Boolean> reject(@RequestParam("room") String room) {
         rtcCallService.rejectCall(getCurUserId(), room);
-        return ok(true);
+        return R.result(true);
     }
 
     @PostMapping("/cancel")
@@ -82,7 +82,7 @@ public class ImRtcCallController {
     @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
     public R<Boolean> cancel(@RequestParam("room") String room) {
         rtcCallService.cancelCall(getCurUserId(), room);
-        return ok(true);
+        return R.result(true);
     }
 
     @PostMapping("/leave")
@@ -90,7 +90,7 @@ public class ImRtcCallController {
     @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
     public R<Boolean> leave(@RequestParam("room") String room) {
         rtcCallService.leaveCall(getCurUserId(), room);
-        return ok(true);
+        return R.result(true);
     }
 
     @PostMapping("/no-answer-call-check")
@@ -98,7 +98,7 @@ public class ImRtcCallController {
     @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
     public R<Boolean> noAnswerCallCheck(@RequestParam("room") String room) {
         rtcCallService.noAnswerCallCheck(getCurUserId(), room);
-        return ok(true);
+        return R.result(true);
     }
 
     @GetMapping("/get-active-call")

@@ -83,7 +83,7 @@ public class BargainHelpController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-help:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BargainHelpBo bo) {
-        return R.ok(bargainHelpService.saveOrUpdate(bo));
+        return R.result(bargainHelpService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class BargainHelpController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody BargainHelpBo bo) {
-        return R.ok(bargainHelpService.saveOrUpdate(bo));
+        return R.result(bargainHelpService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class BargainHelpController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:bargain-help:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(bargainHelpService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(bargainHelpService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class BargainHelpController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(bargainHelpService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(bargainHelpService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

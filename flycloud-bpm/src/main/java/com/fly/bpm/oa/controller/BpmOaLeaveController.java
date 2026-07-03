@@ -68,7 +68,7 @@ public class BpmOaLeaveController extends BaseController {
     @PostMapping("/create")
     @PreAuthorize("@pms.hasPermission('bpm:oa:leave:create')")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BpmOALeaveCreateBo bo) {
-        return R.ok(iBpmOaLeaveService.insertByBo(bo));
+        return R.result(iBpmOaLeaveService.insertByBo(bo));
     }
 
 
@@ -78,7 +78,7 @@ public class BpmOaLeaveController extends BaseController {
     @Log(title = "OA 请假申请", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BpmOaLeaveBo bo) {
-        return R.ok(iBpmOaLeaveService.updateByBo(bo));
+        return R.result(iBpmOaLeaveService.updateByBo(bo));
     }
 
 
@@ -90,7 +90,7 @@ public class BpmOaLeaveController extends BaseController {
     @Log(title = "OA 请假申请", businessType = BusinessType.DELETE)
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(iBpmOaLeaveService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(iBpmOaLeaveService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
 

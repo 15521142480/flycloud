@@ -83,7 +83,7 @@ public class AfterSaleLogController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody AfterSaleLogBo bo) {
-        return R.ok(afterSaleLogService.saveOrUpdate(bo));
+        return R.result(afterSaleLogService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class AfterSaleLogController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody AfterSaleLogBo bo) {
-        return R.ok(afterSaleLogService.saveOrUpdate(bo));
+        return R.result(afterSaleLogService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class AfterSaleLogController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:after-sale:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(afterSaleLogService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(afterSaleLogService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class AfterSaleLogController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(afterSaleLogService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(afterSaleLogService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

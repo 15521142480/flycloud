@@ -141,7 +141,7 @@ public class TradeStatisticsController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:statistics:trade:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeStatisticsBo bo) {
-        return R.ok(tradeStatisticsService.saveOrUpdate(bo));
+        return R.result(tradeStatisticsService.saveOrUpdate(bo));
     }
 
     /**
@@ -149,7 +149,7 @@ public class TradeStatisticsController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody TradeStatisticsBo bo) {
-        return R.ok(tradeStatisticsService.saveOrUpdate(bo));
+        return R.result(tradeStatisticsService.saveOrUpdate(bo));
     }
 
     /**
@@ -159,7 +159,7 @@ public class TradeStatisticsController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:statistics:trade:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(tradeStatisticsService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(tradeStatisticsService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -167,7 +167,7 @@ public class TradeStatisticsController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(tradeStatisticsService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(tradeStatisticsService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

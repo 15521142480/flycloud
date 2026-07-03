@@ -189,7 +189,7 @@ public class BpmTaskController {
     @PutMapping("/reject")
     public R<Boolean> rejectTask(@Valid @RequestBody BpmTaskRejectReqVO reqVO) {
         taskService.rejectTask(UserUtils.getCurUserId(), reqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -219,7 +219,7 @@ public class BpmTaskController {
     @Operation(summary = "回退任务", description = "用于【流程详情】的【回退】按钮")
     public R<Boolean> returnTask(@Valid @RequestBody BpmTaskReturnReqVO reqVO) {
         taskService.returnTask(UserUtils.getCurUserId(), reqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -233,7 +233,7 @@ public class BpmTaskController {
     @PutMapping("/delegate")
     public R<Boolean> delegateTask(@Valid @RequestBody BpmTaskDelegateReqVO reqVO) {
         taskService.delegateTask(UserUtils.getCurUserId(), reqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -247,7 +247,7 @@ public class BpmTaskController {
     @PutMapping("/transfer")
     public R<Boolean> transferTask(@Valid @RequestBody BpmTaskTransferReqVO reqVO) {
         taskService.transferTask(UserUtils.getCurUserId(), reqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -261,7 +261,7 @@ public class BpmTaskController {
     @PutMapping("/createSign")
     public R<Boolean> createSignTask(@Valid @RequestBody BpmTaskSignCreateReqVO reqVO) {
         taskService.createSignTask(UserUtils.getCurUserId(), reqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 
@@ -275,7 +275,7 @@ public class BpmTaskController {
     @DeleteMapping("/deleteSign")
     public R<Boolean> deleteSignTask(@Valid @RequestBody BpmTaskSignDeleteReqVO reqVO) {
         taskService.deleteSignTask(UserUtils.getCurUserId(), reqVO);
-        return R.ok(true);
+        return R.result(true);
     }
 
 

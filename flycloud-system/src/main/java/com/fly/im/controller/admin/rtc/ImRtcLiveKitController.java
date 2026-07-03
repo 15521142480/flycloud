@@ -55,12 +55,12 @@ public class ImRtcLiveKitController {
         if (!liveKitClient.verifyWebhookSignature(request.getHeader("Authorization"), rawBody)) {
             log.warn("[webhook][签名校验失败 ip={} bodyLength={}]",
                     request.getRemoteAddr(), rawBody == null ? 0 : rawBody.length());
-            return ok(false);
+            return R.result(false);
         }
         // 1.2 解析事件载荷；非法 / 空 event 直接忽略
         LiveKitWebhookEventDTO event = JsonUtils.parseObject(rawBody, LiveKitWebhookEventDTO.class);
         if (event == null || StrUtil.isBlank(event.getEvent())) {
-            return ok(false);
+            return R.result(false);
         }
 
         // 2. 交给 service 处理；幂等由 service 自己保证
@@ -71,7 +71,7 @@ public class ImRtcLiveKitController {
         } catch (Exception e) {
             log.error("[webhook][事件处理失败 event={} body={}]", event.getEvent(), rawBody, e);
         }
-        return ok(true);
+        return R.result(true);
     }
 
 }

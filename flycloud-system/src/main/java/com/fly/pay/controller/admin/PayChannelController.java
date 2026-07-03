@@ -57,13 +57,13 @@ public class PayChannelController {
     @PreAuthorize("@pms.hasPermission('pay:channel:update')")
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody PayChannelBo bo) {
-        return R.ok(payChannelService.saveOrUpdate(bo));
+        return R.result(payChannelService.saveOrUpdate(bo));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:channel:delete')")
     @DeleteMapping("/delete")
     public R<Boolean> delete(@RequestParam Long id) {
-        return R.ok(payChannelService.deleteById(id));
+        return R.result(payChannelService.deleteById(id));
     }
 
     @PreAuthorize("@pms.hasPermission('pay:channel:list')")

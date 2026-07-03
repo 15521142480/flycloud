@@ -95,7 +95,7 @@ public class RewardActivityController extends BaseController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody RewardActivityBo bo) {
-        return R.ok(rewardActivityService.updateRewardActivity(bo));
+        return R.result(rewardActivityService.updateRewardActivity(bo));
     }
 
     /**
@@ -103,7 +103,7 @@ public class RewardActivityController extends BaseController {
      */
     @PutMapping("/close")
     public R<Boolean> close(@RequestParam("id") Long id) {
-        return R.ok(rewardActivityService.closeRewardActivity(id));
+        return R.result(rewardActivityService.closeRewardActivity(id));
     }
 
     /**
@@ -113,7 +113,7 @@ public class RewardActivityController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:reward-activity:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(rewardActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(rewardActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -121,7 +121,7 @@ public class RewardActivityController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(rewardActivityService.deleteRewardActivity(id));
+        return R.result(rewardActivityService.deleteRewardActivity(id));
     }
 
 }

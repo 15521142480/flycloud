@@ -83,7 +83,7 @@ public class ArticleController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:article:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ArticleBo bo) {
-        return R.ok(articleService.saveOrUpdate(bo));
+        return R.result(articleService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class ArticleController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody ArticleBo bo) {
-        return R.ok(articleService.saveOrUpdate(bo));
+        return R.result(articleService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class ArticleController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:article:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(articleService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(articleService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class ArticleController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(articleService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(articleService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

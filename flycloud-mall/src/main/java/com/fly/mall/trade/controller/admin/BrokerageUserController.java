@@ -84,7 +84,7 @@ public class BrokerageUserController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:brokerage-user:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody BrokerageUserBo bo) {
-        return R.ok(brokerageUserService.saveOrUpdate(bo));
+        return R.result(brokerageUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -92,7 +92,7 @@ public class BrokerageUserController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody BrokerageUserBo bo) {
-        return R.ok(brokerageUserService.saveOrUpdate(bo));
+        return R.result(brokerageUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class BrokerageUserController extends BaseController {
     @PutMapping("/update-brokerage-enable")
     public R<Void> updateBrokerageEnable(@RequestBody BrokerageUserBo bo) {
         bo.setBrokerageTime(LocalDateTime.now());
-        return R.ok(brokerageUserService.saveOrUpdate(bo));
+        return R.result(brokerageUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -110,7 +110,7 @@ public class BrokerageUserController extends BaseController {
     @PutMapping("/update-bind-user")
     public R<Void> updateBindUser(@RequestBody BrokerageUserBo bo) {
         bo.setBindUserTime(LocalDateTime.now());
-        return R.ok(brokerageUserService.saveOrUpdate(bo));
+        return R.result(brokerageUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -121,7 +121,7 @@ public class BrokerageUserController extends BaseController {
         BrokerageUserBo bo = new BrokerageUserBo();
         bo.setId(id);
         bo.setBindUserId(0L);
-        return R.ok(brokerageUserService.saveOrUpdate(bo));
+        return R.result(brokerageUserService.saveOrUpdate(bo));
     }
 
     /**
@@ -131,7 +131,7 @@ public class BrokerageUserController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:brokerage-user:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(brokerageUserService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(brokerageUserService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -139,7 +139,7 @@ public class BrokerageUserController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(brokerageUserService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(brokerageUserService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

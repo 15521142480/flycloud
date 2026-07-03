@@ -91,7 +91,7 @@ public class SysUserApiController implements ISysUserApi {
     @Override
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_VALID_IDS)
     public R<Boolean> validateDeptByIds(Collection<Long> ids) {
-        return R.ok(sysUserService.validateDeptByIds(ids));
+        return R.result(sysUserService.validateDeptByIds(ids));
     }
 
 

@@ -51,7 +51,7 @@ public class DiyTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PutMapping("/update")
     public R<Void> update(@RequestBody DiyTemplateBo bo) {
-        return R.ok(diyTemplateService.updateDiyTemplate(bo));
+        return R.result(diyTemplateService.updateDiyTemplate(bo));
     }
 
     /**
@@ -61,7 +61,7 @@ public class DiyTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PutMapping("/use")
     public R<Void> use(@RequestParam("id") Long id) {
-        return R.ok(diyTemplateService.useDiyTemplate(id));
+        return R.result(diyTemplateService.useDiyTemplate(id));
     }
 
     /**
@@ -130,7 +130,7 @@ public class DiyTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PutMapping("/update-property")
     public R<Void> updateProperty(@RequestBody DiyTemplateBo bo) {
-        return R.ok(diyTemplateService.updateDiyTemplateProperty(bo));
+        return R.result(diyTemplateService.updateDiyTemplateProperty(bo));
     }
 
     /**
@@ -140,7 +140,7 @@ public class DiyTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody DiyTemplateBo bo) {
-        return R.ok(diyTemplateService.saveOrUpdate(bo));
+        return R.result(diyTemplateService.saveOrUpdate(bo));
     }
 
     /**
@@ -150,7 +150,7 @@ public class DiyTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(diyTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(diyTemplateService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -160,7 +160,7 @@ public class DiyTemplateController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:diy:template:delete')")
     @DeleteMapping("/delete")
     public R<Void> delete(@RequestParam("id") Long id) {
-        return R.ok(diyTemplateService.deleteDiyTemplate(id));
+        return R.result(diyTemplateService.deleteDiyTemplate(id));
     }
 
 }

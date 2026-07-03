@@ -71,7 +71,7 @@ public class PayWalletController {
         PayWallet wallet = walletService.getOrCreateWallet(req.getUserId(), 2);
         walletService.addWalletBalance(wallet.getId(), String.valueOf(req.getUserId()),
                 PayWalletBizTypeEnum.UPDATE_BALANCE, req.getBalance());
-        return R.ok(true);
+        return R.result(true);
     }
 
     /**

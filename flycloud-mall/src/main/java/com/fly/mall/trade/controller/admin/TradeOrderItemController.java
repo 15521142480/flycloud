@@ -83,7 +83,7 @@ public class TradeOrderItemController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:trade-order-item:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody TradeOrderItemBo bo) {
-        return R.ok(tradeOrderItemService.saveOrUpdate(bo));
+        return R.result(tradeOrderItemService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class TradeOrderItemController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody TradeOrderItemBo bo) {
-        return R.ok(tradeOrderItemService.saveOrUpdate(bo));
+        return R.result(tradeOrderItemService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class TradeOrderItemController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:trade:trade-order-item:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(tradeOrderItemService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(tradeOrderItemService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class TradeOrderItemController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(tradeOrderItemService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(tradeOrderItemService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

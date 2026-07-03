@@ -83,7 +83,7 @@ public class PointProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:point-product:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody PointProductBo bo) {
-        return R.ok(pointProductService.saveOrUpdate(bo));
+        return R.result(pointProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class PointProductController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody PointProductBo bo) {
-        return R.ok(pointProductService.saveOrUpdate(bo));
+        return R.result(pointProductService.saveOrUpdate(bo));
     }
 
     /**
@@ -101,7 +101,7 @@ public class PointProductController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:point-product:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(pointProductService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(pointProductService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -109,7 +109,7 @@ public class PointProductController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(pointProductService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(pointProductService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }

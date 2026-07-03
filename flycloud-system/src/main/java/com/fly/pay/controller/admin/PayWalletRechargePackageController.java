@@ -81,7 +81,7 @@ public class PayWalletRechargePackageController {
      */
     @PutMapping("/update")
     public R<Boolean> yudaoUpdate(@RequestBody PayWalletRechargePackageBo bo) {
-        return R.ok(rechargePackageService.saveOrUpdate(bo));
+        return R.result(rechargePackageService.saveOrUpdate(bo));
     }
 
     /**
@@ -90,7 +90,7 @@ public class PayWalletRechargePackageController {
     @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:delete')")
     @DeleteMapping("/delete/{id}")
     public R<Boolean> remove(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(rechargePackageService.deleteById(id));
+        return R.result(rechargePackageService.deleteById(id));
     }
 
     /**
@@ -98,7 +98,7 @@ public class PayWalletRechargePackageController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(rechargePackageService.deleteById(id));
+        return R.result(rechargePackageService.deleteById(id));
     }
 
     /**

@@ -49,7 +49,7 @@ public class ImFaceUserItemController {
     @Parameter(name = "id", description = "编号", required = true, example = "4096")
     public R<Boolean> deleteFaceUserItem(@RequestParam("id") Long id) {
         faceUserItemService.deleteFaceUserItem(getCurUserId(), id);
-        return ok(true);
+        return R.result(true);
     }
 
 }

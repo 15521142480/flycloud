@@ -83,7 +83,7 @@ public class KeFuConversationController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:ke-fu-conversation:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody KeFuConversationBo bo) {
-        return R.ok(keFuConversationService.saveOrUpdate(bo));
+        return R.result(keFuConversationService.saveOrUpdate(bo));
     }
 
     /**
@@ -91,7 +91,7 @@ public class KeFuConversationController extends BaseController {
      */
     @PutMapping("/update")
     public R<Void> yudaoUpdate(@RequestBody KeFuConversationBo bo) {
-        return R.ok(keFuConversationService.saveOrUpdate(bo));
+        return R.result(keFuConversationService.saveOrUpdate(bo));
     }
 
     /**
@@ -99,7 +99,7 @@ public class KeFuConversationController extends BaseController {
      */
     @PutMapping("/update-conversation-pinned")
     public R<Void> updateConversationPinned(@RequestBody KeFuConversationBo bo) {
-        return R.ok(keFuConversationService.saveOrUpdate(bo));
+        return R.result(keFuConversationService.saveOrUpdate(bo));
     }
 
     /**
@@ -109,7 +109,7 @@ public class KeFuConversationController extends BaseController {
     @PreAuthorize("@pms.hasPermission('mall:promotion:ke-fu-conversation:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
-        return R.ok(keFuConversationService.deleteWithValidByIds(Arrays.asList(ids), true));
+        return R.result(keFuConversationService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
     /**
@@ -117,7 +117,7 @@ public class KeFuConversationController extends BaseController {
      */
     @DeleteMapping("/delete")
     public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(keFuConversationService.deleteWithValidByIds(java.util.List.of(id), true));
+        return R.result(keFuConversationService.deleteWithValidByIds(java.util.List.of(id), true));
     }
 
 }
