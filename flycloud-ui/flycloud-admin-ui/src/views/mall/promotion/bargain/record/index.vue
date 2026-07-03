@@ -52,7 +52,7 @@
           <el-image
             :src="getFilePreviewUrl(scope.row.avatar)"
             class="h-20px w-20px"
-            :preview-src-list="[scope.row.avatar]"
+            :preview-src-list="[getFilePreviewUrl(scope.row.avatar)]"
             preview-teleported
           />
           {{ scope.row.nickname }}

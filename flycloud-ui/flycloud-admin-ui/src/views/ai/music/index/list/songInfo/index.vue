@@ -1,6 +1,6 @@
 <template>
   <ContentWrap class="w-300px mb-[0!important] line-height-24px">
-    <el-image :src="currentSong.imageUrl" />
+    <el-image :src="getFilePreviewUrl(currentSong.imageUrl)" />
     <div class="">{{ currentSong.title }}</div>
     <div class="text-[var(--el-text-color-secondary)] text-12px line-clamp-1">
       {{ currentSong.desc }}
@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 const { t } = useI18n()
 defineOptions({ name: 'Index' })
 

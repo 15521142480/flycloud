@@ -15,7 +15,7 @@
         <template #default="{ row }">
           <el-image
             :src="getFilePreviewUrl(row.picUrl)"
-            :preview-src-list="[row.picUrl]"
+            :preview-src-list="[getFilePreviewUrl(row.picUrl)]"
             class="h-30px w-30px"
             preview-teleported
           />

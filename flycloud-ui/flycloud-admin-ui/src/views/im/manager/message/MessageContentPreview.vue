@@ -6,8 +6,8 @@
   <el-image
     v-else-if="isImage && imagePayload"
     class="w-60px h-60px rounded align-middle"
-    :src="imagePayload.thumbnailUrl || imagePayload.url"
-    :preview-src-list="[imagePayload.url]"
+    :src="getFilePreviewUrl(imagePayload.thumbnailUrl || imagePayload.url)"
+    :preview-src-list="[getFilePreviewUrl(imagePayload.url)]"
     :preview-teleported="true"
     fit="cover"
   />
@@ -35,7 +35,7 @@
       :title="videoPayload.url ? '点击新标签播放' : ''"
       @click="openVideo"
     >
-      <img :src="videoPayload.coverUrl" class="w-full h-full object-cover" />
+      <img :src="getFilePreviewUrl(videoPayload.coverUrl)" class="w-full h-full object-cover" />
       <Icon
         icon="ant-design:play-circle-filled"
         :size="22"
@@ -77,7 +77,7 @@
   <span v-else-if="isFace && facePayload" class="inline-flex gap-1.5 items-center">
     <img
       v-if="facePayload.url"
-      :src="facePayload.url"
+      :src="getFilePreviewUrl(facePayload.url)"
       :alt="facePayload.name || '表情'"
       class="w-30px h-30px rounded object-contain align-middle"
       draggable="false"
@@ -129,6 +129,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { computed } from 'vue'
 import Icon from '@/components/Icon/src/Icon.vue'
 import { formatFileSize } from '@/utils/file'

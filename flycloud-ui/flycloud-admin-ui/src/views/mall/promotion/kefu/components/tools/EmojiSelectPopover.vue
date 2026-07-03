@@ -17,7 +17,7 @@
           class="icon-item mr-2 mt-1 w-1/10 flex cursor-pointer items-center justify-center border border-solid p-2"
           @click="handleSelect(item)"
         >
-          <img :src="item.url" class="w-24px h-24px" />
+          <img :src="getFilePreviewUrl(item.url)" class="w-24px h-24px" />
         </li>
       </ul>
     </ElScrollbar>
@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 defineOptions({ name: 'EmojiSelectPopover' })
 import { Emoji, useEmoji } from './emoji'
 

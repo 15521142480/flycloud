@@ -5,7 +5,7 @@
         <el-row :gutter="16" justify="space-between">
           <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
             <div class="flex items-center">
-              <el-avatar :src="avatar" :size="70" class="mr-16px">
+              <el-avatar :src="getFilePreviewUrl(avatar)" :size="70" class="mr-16px">
                 <img src="@/assets/imgs/profile.png" alt="" />
               </el-avatar>
               <div>
@@ -142,7 +142,7 @@
         <el-skeleton :loading="loading" animated>
           <div v-for="(item, index) in notice" :key="`dynamics-${index}`" style="margin-left: 10px">
             <div class="flex items-center">
-              <!--              <el-avatar :src="avatar" :size="35" class="mr-16px">-->
+              <!--              <el-avatar :src="getFilePreviewUrl(avatar)" :size="35" class="mr-16px">-->
               <!--                <img src="@/assets/imgs/avatar.png" alt=""/>-->
               <!--              </el-avatar>-->
               <div>
@@ -164,6 +164,7 @@
   </el-row>
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { set } from 'lodash-es'
 import { EChartsOption } from 'echarts'
 import { formatTime } from '@/utils'

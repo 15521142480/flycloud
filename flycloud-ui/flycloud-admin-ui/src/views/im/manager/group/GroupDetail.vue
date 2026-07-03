@@ -5,7 +5,7 @@
       <el-descriptions-item label="群编号">{{ detail.id }}</el-descriptions-item>
       <el-descriptions-item label="群名称">{{ detail.name }}</el-descriptions-item>
       <el-descriptions-item label="头像">
-        <el-avatar :src="detail.avatar" :size="36">
+        <el-avatar :src="getFilePreviewUrl(detail.avatar)" :size="36">
           {{ detail.name?.charAt(0) ?? '?' }}
         </el-avatar>
       </el-descriptions-item>
@@ -40,7 +40,7 @@
     <el-table v-loading="loading" :data="filteredMembers" border>
       <el-table-column label="头像" width="80" align="center">
         <template #default="{ row }">
-          <el-avatar :src="row.avatar" :size="40">
+          <el-avatar :src="getFilePreviewUrl(row.avatar)" :size="40">
             {{ row.nickname?.charAt(0) ?? '?' }}
           </el-avatar>
         </template>
@@ -101,6 +101,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter, formatDate } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'

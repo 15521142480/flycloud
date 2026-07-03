@@ -76,7 +76,7 @@
         min-width="100"
       >
         <template #default="scope">
-          <el-image :src="scope.row.icon" class="h-32px w-32px" />
+          <el-image :src="getFilePreviewUrl(scope.row.icon)" class="h-32px w-32px" />
         </template>
       </el-table-column>
       <el-table-column
@@ -240,6 +240,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { formatDate } from '@/utils/formatTime'
 import * as ModelApi from '@/api/bpm/model'
 import * as FormApi from '@/api/bpm/form'

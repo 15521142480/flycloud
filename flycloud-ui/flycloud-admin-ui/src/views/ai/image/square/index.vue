@@ -13,7 +13,7 @@
     <div class="gallery">
       <!-- TODO @fan：这个图片的风格，要不和 ImageCard.vue 界面一致？（只有卡片，没有操作）；因为看着更有相框的感觉~~~ -->
       <div v-for="item in list" :key="item.id" class="gallery-item">
-        <img :src="item.picUrl" class="img" />
+        <img :src="getFilePreviewUrl(item.picUrl)" class="img" />
       </div>
     </div>
     <!-- TODO @fan：缺少翻页 -->
@@ -27,6 +27,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { ImageApi, ImageVO } from '@/api/ai/image'
 import { Search } from '@element-plus/icons-vue'
 const { t } = useI18n()

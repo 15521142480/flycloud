@@ -57,7 +57,7 @@
         <template #default="scope">
           <el-image
             v-if="scope.row.avatar"
-            :src="scope.row.avatar"
+            :src="getFilePreviewUrl(scope.row.avatar)"
             class="w-32px h-32px rounded"
             fit="contain"
           />
@@ -117,6 +117,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ChannelApi from '@/api/im/manager/channel'

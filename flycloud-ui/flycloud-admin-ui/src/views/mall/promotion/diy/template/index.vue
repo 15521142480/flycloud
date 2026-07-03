@@ -55,8 +55,8 @@
             class="h-40px max-w-40px"
             v-for="(url, index) in scope.row.previewPicUrls"
             :key="index"
-            :src="url"
-            :preview-src-list="scope.row.previewPicUrls"
+            :src="getFilePreviewUrl(url)"
+            :preview-src-list="getFilePreviewUrls(scope.row.previewPicUrls)"
             :initial-index="Number(index)"
             preview-teleported
           />
@@ -129,6 +129,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl, getFilePreviewUrls } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as DiyTemplateApi from '@/api/mall/promotion/diy/template'
 import DiyTemplateForm from './DiyTemplateForm.vue'

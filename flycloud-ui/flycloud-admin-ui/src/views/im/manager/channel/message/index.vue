@@ -47,7 +47,7 @@
         <template #default="scope">
           <el-image
             v-if="scope.row.materialCoverUrl"
-            :src="scope.row.materialCoverUrl"
+            :src="getFilePreviewUrl(scope.row.materialCoverUrl)"
             class="w-40px h-40px rounded"
             fit="cover"
           />
@@ -105,6 +105,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import * as MessageApi from '@/api/im/manager/channel/message'
 import ChannelSelect from '../list/components/ChannelSelect.vue'

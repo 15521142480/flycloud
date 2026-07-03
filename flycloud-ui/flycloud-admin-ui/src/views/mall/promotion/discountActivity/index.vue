@@ -75,7 +75,7 @@
       <!--          <el-image-->
       <!--            :src="getFilePreviewUrl(scope.row.picUrl)"-->
       <!--            class="h-40px w-40px"-->
-      <!--            :preview-src-list="[scope.row.picUrl]"-->
+      <!--            :preview-src-list="[getFilePreviewUrl(scope.row.picUrl)]"-->
       <!--            preview-teleported-->
       <!--          />-->
       <!--        </template>-->
@@ -137,6 +137,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as DiscountActivity from '@/api/mall/promotion/discount/discountActivity'

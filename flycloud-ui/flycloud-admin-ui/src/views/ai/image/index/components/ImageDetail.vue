@@ -10,8 +10,8 @@
       <div class="body">
         <el-image
           class="image"
-          :src="detail?.picUrl"
-          :preview-src-list="[detail.picUrl]"
+          :src="getFilePreviewUrl(detail?.picUrl)"
+          :preview-src-list="[getFilePreviewUrl(detail.picUrl)]"
           preview-teleported
         />
       </div>
@@ -139,13 +139,14 @@
     >
       <div class="tip">{{ t('auto.views.ai.image.index.components.ImageDetail.k5149ae9c') }}</div>
       <div class="body">
-        <el-image :src="detail.options.referImageUrl" />
+        <el-image :src="getFilePreviewUrl(detail.options.referImageUrl)" />
       </div>
     </div>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { ImageApi, ImageVO } from '@/api/ai/image'
 import {
   AiPlatformEnum,

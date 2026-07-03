@@ -85,7 +85,7 @@
         <el-table-column label="编号" align="center" prop="id" width="100" />
         <el-table-column label="头像" align="center" width="80">
           <template #default="{ row }">
-            <el-avatar :src="row.avatar" :size="32">
+            <el-avatar :src="getFilePreviewUrl(row.avatar)" :size="32">
               {{ row.name?.charAt(0) ?? '?' }}
             </el-avatar>
           </template>
@@ -119,6 +119,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as ManagerGroupApi from '@/api/im/manager/group'
 

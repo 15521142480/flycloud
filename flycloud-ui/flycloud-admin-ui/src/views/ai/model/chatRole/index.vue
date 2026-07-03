@@ -79,7 +79,7 @@
         prop="avatar"
       >
         <template #default="scope">
-          <el-image :src="scope?.row.avatar" class="w-32px h-32px" />
+          <el-image :src="getFilePreviewUrl(scope?.row.avatar)" class="w-32px h-32px" />
         </template>
       </el-table-column>
       <el-table-column
@@ -151,6 +151,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { getBoolDictOptions, DICT_TYPE } from '@/utils/dict'
 import { ChatRoleApi, ChatRoleVO } from '@/api/ai/model/chatRole'
 import ChatRoleForm from './ChatRoleForm.vue'

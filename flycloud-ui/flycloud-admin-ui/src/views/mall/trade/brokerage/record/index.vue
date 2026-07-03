@@ -69,7 +69,7 @@
       <el-table-column label="用户编号" align="center" prop="userId" min-width="80" />
       <el-table-column label="头像" align="center" prop="userAvatar" width="70px">
         <template #default="scope">
-          <el-avatar :src="scope.row.userAvatar" />
+          <el-avatar :src="getFilePreviewUrl(scope.row.userAvatar)" />
         </template>
       </el-table-column>
       <el-table-column label="昵称" align="center" prop="userNickname" min-width="80px" />
@@ -119,6 +119,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as BrokerageRecordApi from '@/api/mall/trade/brokerage/record'

@@ -82,8 +82,8 @@
           <div class="row flex items-center gap-x-4px">
             <el-image
               v-if="scope.row.skuPicUrl"
-              :src="scope.row.skuPicUrl"
-              :preview-src-list="[scope.row.skuPicUrl]"
+              :src="getFilePreviewUrl(scope.row.skuPicUrl)"
+              :preview-src-list="[getFilePreviewUrl(scope.row.skuPicUrl)]"
               class="h-40px w-40px shrink-0"
               preview-teleported
             />
@@ -109,7 +109,7 @@
               v-for="(picUrl, index) in scope.row.picUrls"
               :key="index"
               :src="getFilePreviewUrl(picUrl)"
-              :preview-src-list="scope.row.picUrls"
+              :preview-src-list="getFilePreviewUrls(scope.row.picUrls)"
               :initial-index="Number(index)"
               class="h-40px w-40px"
               preview-teleported
@@ -172,7 +172,7 @@
 
 <script setup lang="ts">
 import { dateFormatter } from '@/utils/formatTime'
-import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
+import { getFilePreviewUrl, getFilePreviewUrls } from '@/components/UploadFile/src/useUpload'
 import * as CommentApi from '@/api/mall/product/comment'
 import CommentForm from './CommentForm.vue'
 import ReplyForm from './ReplyForm.vue'

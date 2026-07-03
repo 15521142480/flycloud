@@ -100,7 +100,7 @@
                   class="drag-icon cursor-move text-#8a909c mr-10px"
                 />
               </el-tooltip>
-              <el-image :src="scope.row.icon" class="h-38px w-38px mr-10px rounded" />
+              <el-image :src="getFilePreviewUrl(scope.row.icon)" class="h-38px w-38px mr-10px rounded" />
               {{ scope.row.name }}
             </div>
           </template>
@@ -265,6 +265,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import ModelForm from './ModelForm.vue'
 import { CategoryApi, CategoryVO } from '@/api/bpm/category'
 import Sortable from 'sortablejs'

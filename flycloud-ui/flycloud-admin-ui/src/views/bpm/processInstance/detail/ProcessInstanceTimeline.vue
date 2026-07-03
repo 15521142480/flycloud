@@ -61,7 +61,7 @@
             :key="idx1"
             class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
           >
-            <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
+            <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="getFilePreviewUrl(user.avatar)" />
             <el-avatar class="!m-5px" :size="28" v-else>
               {{ user.name.substring(0, 1) }}
             </el-avatar>
@@ -84,7 +84,7 @@
                     class="!m-5px"
                     :size="28"
                     v-if="task.assigneeUser?.avatar"
-                    :src="task.assigneeUser?.avatar"
+                    :src="getFilePreviewUrl(task.assigneeUser?.avatar)"
                   />
                   <el-avatar class="!m-5px" :size="28" v-else>
                     {{ task.assigneeUser?.name.substring(0, 1) }}
@@ -96,7 +96,7 @@
                     class="!m-5px"
                     :size="28"
                     v-if="task.ownerUser?.avatar"
-                    :src="task.ownerUser?.avatar"
+                    :src="getFilePreviewUrl(task.ownerUser?.avatar)"
                   />
                   <el-avatar class="!m-5px" :size="28" v-else>
                     {{ task.ownerUser?.name.substring(0, 1) }}
@@ -131,7 +131,7 @@
             :key="idx1"
             class="bg-gray-100 h-35px rounded-3xl flex items-center pr-8px dark:color-gray-600 position-relative"
           >
-            <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="user.avatar" />
+            <el-avatar class="!m-5px" :size="28" v-if="user.avatar" :src="getFilePreviewUrl(user.avatar)" />
             <el-avatar class="!m-5px" :size="28" v-else>
               {{ user.name.substring(0, 1) }}
             </el-avatar>
@@ -156,6 +156,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { formatDate } from '@/utils/formatTime'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import { TaskStatusEnum } from '@/api/bpm/task'

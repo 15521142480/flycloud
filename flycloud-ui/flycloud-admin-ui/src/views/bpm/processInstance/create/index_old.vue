@@ -23,7 +23,7 @@
             >
               <template #default>
                 <div class="flex">
-                  <el-image :src="definition.icon" class="w-32px h-32px" />
+                  <el-image :src="getFilePreviewUrl(definition.icon)" class="w-32px h-32px" />
                   <el-text class="!ml-10px" size="large">{{ definition.name }}</el-text>
                 </div>
               </template>
@@ -93,6 +93,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as DefinitionApi from '@/api/bpm/definition'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 import { decodeFields, setConfAndFields2 } from '@/utils/formCreate'

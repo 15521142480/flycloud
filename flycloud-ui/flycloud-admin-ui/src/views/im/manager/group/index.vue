@@ -74,7 +74,7 @@
       <el-table-column label="编号" align="center" prop="id" width="100" />
       <el-table-column label="头像" align="center" width="80">
         <template #default="{ row }">
-          <el-avatar :src="row.avatar" :size="40">
+          <el-avatar :src="getFilePreviewUrl(row.avatar)" :size="40">
             {{ row.name?.charAt(0) ?? '?' }}
           </el-avatar>
         </template>
@@ -176,6 +176,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions, getBoolDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { CommonStatusEnum } from '@/utils/constants'

@@ -61,8 +61,8 @@
             class="h-40px max-w-40px"
             v-for="(url, index) in scope?.row.sliderPicUrls"
             :key="index"
-            :src="url"
-            :preview-src-list="scope?.row.sliderPicUrls"
+            :src="getFilePreviewUrl(url)"
+            :preview-src-list="getFilePreviewUrls(scope?.row.sliderPicUrls)"
             :initial-index="Number(index)"
             preview-teleported
           />
@@ -120,6 +120,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl, getFilePreviewUrls } from '@/components/UploadFile/src/useUpload'
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { SeckillConfigApi, SeckillConfigVO } from '@/api/mall/promotion/seckill/seckillConfig'

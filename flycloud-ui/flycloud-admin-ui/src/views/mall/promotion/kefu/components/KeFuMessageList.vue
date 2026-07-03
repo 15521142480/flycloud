@@ -38,7 +38,7 @@
             >
               <el-avatar
                 v-if="item.senderType === UserTypeEnum.MEMBER"
-                :src="conversation.userAvatar"
+                :src="getFilePreviewUrl(conversation.userAvatar)"
                 alt="avatar"
                 class="w-60px h-60px"
               />
@@ -61,7 +61,7 @@
                   <el-image
                     v-if="KeFuMessageContentTypeEnum.IMAGE === item.contentType"
                     :initial-index="0"
-                    :preview-src-list="[getMessageContent(item).picUrl || item.content]"
+                    :preview-src-list="[getFilePreviewUrl(getMessageContent(item).picUrl || item.content)]"
                     :src="getFilePreviewUrl(getMessageContent(item).picUrl || item.content)"
                     class="w-200px mx-10px"
                     fit="contain"

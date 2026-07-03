@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { resetRouter } from '@/router'
 import { deleteUserCache } from '@/hooks/web/useCache'
 import { useLockStore } from '@/store/modules/lock'
@@ -88,7 +89,7 @@ function handleShowForm(show = false) {
       <div :class="`${prefixCls}-entry`" v-show="!showDate">
         <div :class="`${prefixCls}-entry-content`">
           <div class="flex flex-col items-center">
-            <img :src="avatar" alt="" class="w-70px h-70px rounded-[50%]" />
+            <img :src="getFilePreviewUrl(avatar)" alt="" class="w-70px h-70px rounded-[50%]" />
             <span class="text-14px my-10px text-[var(--logo-title-text-color)]">
               {{ userName }}
             </span>

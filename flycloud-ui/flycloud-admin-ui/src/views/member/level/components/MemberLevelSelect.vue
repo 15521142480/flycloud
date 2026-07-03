@@ -2,13 +2,14 @@
   <el-select v-model="levelId" placeholder="请选择用户等级" clearable class="!w-240px">
     <el-option v-for="level in levelOptions" :key="level.id" :label="level.name" :value="level.id">
       <span class="flex items-center gap-x-8px">
-        <el-avatar :src="level.icon" size="small" />
+        <el-avatar :src="getFilePreviewUrl(level.icon)" size="small" />
         {{ level.name }}
       </span>
     </el-option>
   </el-select>
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as LevelApi from '@/api/member/level'
 
 /** 会员等级选择框 **/

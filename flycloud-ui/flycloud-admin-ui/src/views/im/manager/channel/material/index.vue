@@ -46,7 +46,7 @@
         <template #default="scope">
           <el-image
             v-if="scope.row.coverUrl"
-            :src="scope.row.coverUrl"
+            :src="getFilePreviewUrl(scope.row.coverUrl)"
             class="w-40px h-40px rounded"
             fit="cover"
           />
@@ -112,6 +112,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as MaterialApi from '@/api/im/manager/channel/material'

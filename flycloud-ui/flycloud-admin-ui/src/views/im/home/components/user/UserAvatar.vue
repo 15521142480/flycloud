@@ -14,8 +14,8 @@
     <el-image
       v-if="url && previewable"
       class="block overflow-hidden"
-      :src="url"
-      :preview-src-list="[url]"
+      :src="getFilePreviewUrl(url)"
+      :preview-src-list="[getFilePreviewUrl(url)]"
       :preview-teleported="true"
       :z-index="previewZIndex"
       :style="imgStyle"
@@ -24,7 +24,7 @@
     <img
       v-else-if="url"
       class="block overflow-hidden object-cover"
-      :src="url"
+      :src="getFilePreviewUrl(url)"
       :style="imgStyle"
       loading="lazy"
       :alt="name || 'avatar'"
@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { computed } from 'vue'
 
 import { useImUiStore } from '../../store/uiStore'

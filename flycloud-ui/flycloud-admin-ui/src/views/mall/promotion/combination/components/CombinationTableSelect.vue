@@ -87,7 +87,7 @@
             <el-image
               :src="getFilePreviewUrl(scope.row.picUrl)"
               class="h-40px w-40px"
-              :preview-src-list="[scope.row.picUrl]"
+              :preview-src-list="[getFilePreviewUrl(scope.row.picUrl)]"
               preview-teleported
             />
           </template>

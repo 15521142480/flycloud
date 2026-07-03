@@ -4,7 +4,7 @@
     <div class="product-warp-left mr-24px">
       <el-image
         :initial-index="0"
-        :preview-src-list="[picUrl]"
+        :preview-src-list="[getFilePreviewUrl(picUrl)]"
         :src="getFilePreviewUrl(picUrl)"
         class="product-warp-left-img"
         fit="contain"

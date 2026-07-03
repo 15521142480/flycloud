@@ -8,7 +8,7 @@
     <img
       v-if="payload.coverUrl"
       class="block w-full h-[200px] object-cover"
-      :src="payload.coverUrl"
+      :src="getFilePreviewUrl(payload.coverUrl)"
     />
     <div
       class="px-3.5 py-3 text-15px font-600 leading-[1.4] text-[var(--el-text-color-primary)] line-clamp-2"
@@ -40,7 +40,7 @@
       <img
         v-if="payload.coverUrl"
         class="flex-shrink-0 w-[60px] h-[60px] object-cover rounded bg-[var(--el-fill-color-light)]"
-        :src="payload.coverUrl"
+        :src="getFilePreviewUrl(payload.coverUrl)"
       />
     </div>
     <div
@@ -49,7 +49,7 @@
       <img
         v-if="sourceChannel?.avatar"
         class="w-4 h-4 rounded-full object-cover flex-shrink-0"
-        :src="sourceChannel.avatar"
+        :src="getFilePreviewUrl(sourceChannel.avatar)"
       />
       <Icon v-else icon="ep:promotion" :size="14" />
       <span class="truncate">{{ sourceChannel?.name || '频道消息' }}</span>
@@ -81,6 +81,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { computed, ref } from 'vue'
 import Icon from '@/components/Icon/src/Icon.vue'
 import { getChannelMaterial } from '@/api/im/channel/material'

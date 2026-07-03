@@ -26,7 +26,7 @@
             <el-avatar
               :size="28"
               v-if="processInstance?.startUser?.avatar"
-              :src="processInstance?.startUser?.avatar"
+              :src="getFilePreviewUrl(processInstance?.startUser?.avatar)"
             />
             <el-avatar :size="28" v-else-if="processInstance?.startUser?.name">
               {{ processInstance?.startUser?.name.substring(0, 1) }}
@@ -141,6 +141,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { formatDate } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { BpmModelType } from '@/utils/constants'

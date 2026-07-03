@@ -58,8 +58,8 @@
         <template #default="scope">
           <el-image
             v-if="scope.row.url"
-            :src="scope.row.url"
-            :preview-src-list="[scope.row.url]"
+            :src="getFilePreviewUrl(scope.row.url)"
+            :preview-src-list="[getFilePreviewUrl(scope.row.url)]"
             preview-teleported
             class="w-40px h-40px rounded"
             fit="contain"
@@ -120,6 +120,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as ManagerFacePackItemApi from '@/api/im/manager/face/item'
 import type { ImManagerFacePackVO } from '@/api/im/manager/face/pack'

@@ -70,7 +70,7 @@
       <el-table-column label="编号" min-width="80" prop="id" />
       <el-table-column label="门店 logo" min-width="100" prop="logo">
         <template #default="scope">
-          <img v-if="scope.row.logo" :src="scope.row.logo" alt="门店 logo" class="h-50px" />
+          <img v-if="scope.row.logo" :src="getFilePreviewUrl(scope.row.logo)" alt="门店 logo" class="h-50px" />
         </template>
       </el-table-column>
       <el-table-column label="门店名称" min-width="150" prop="name" />
@@ -130,6 +130,7 @@
   <DeliveryPickUpStoreBindForm ref="formBindRef" />
 </template>
 <script lang="ts" name="DeliveryPickUpStore" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as DeliveryPickUpStoreApi from '@/api/mall/trade/delivery/pickUpStore'
 import DeliveryPickUpStoreForm from './PickUpStoreForm.vue'
 import DeliveryPickUpStoreBindForm from './DeliveryPickUpStoreBindForm.vue'

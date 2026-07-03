@@ -80,7 +80,7 @@
     <!-- 图片 / 视频 / 表情贴图 / 频道素材缩略图 -->
     <img
       v-if="thumbnailUrl"
-      :src="thumbnailUrl"
+      :src="getFilePreviewUrl(thumbnailUrl)"
       class="flex-shrink-0 object-cover w-6 h-6 rounded"
       alt=""
     />
@@ -98,6 +98,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { computed } from 'vue'
 import Icon from '@/components/Icon/src/Icon.vue'
 import { formatSeconds } from '@/utils/formatTime'

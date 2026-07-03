@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { useValidator } from '@/hooks/web/useValidator'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useLockStore } from '@/store/modules/lock'
@@ -64,7 +65,7 @@ const handleLock = async () => {
     :title="dialogTitle"
   >
     <div class="flex flex-col items-center">
-      <img :src="avatar" alt="" class="w-70px h-70px rounded-[50%]" />
+      <img :src="getFilePreviewUrl(avatar)" alt="" class="w-70px h-70px rounded-[50%]" />
       <span class="text-14px my-10px text-[var(--top-header-text-color)]">
         {{ userName }}
       </span>

@@ -33,8 +33,8 @@
     <div class="image-wrapper" ref="cardImageRef">
       <el-image
         class="image"
-        :src="detail?.picUrl"
-        :preview-src-list="[detail.picUrl]"
+        :src="getFilePreviewUrl(detail?.picUrl)"
+        :preview-src-list="[getFilePreviewUrl(detail.picUrl)]"
         preview-teleported
       />
       <div v-if="detail?.status === AiImageStatusEnum.FAIL">
@@ -56,6 +56,7 @@
   </el-card>
 </template>
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { Delete, Download, More, RefreshRight } from '@element-plus/icons-vue'
 import { ImageVO, ImageMidjourneyButtonsVO } from '@/api/ai/image'
 import { PropType } from 'vue'

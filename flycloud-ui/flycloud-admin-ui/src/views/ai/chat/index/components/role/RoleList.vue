@@ -24,7 +24,7 @@
         </div>
         <!-- 角色信息 -->
         <div>
-          <img class="avatar" :src="role.avatar" />
+          <img class="avatar" :src="getFilePreviewUrl(role.avatar)" />
         </div>
         <div class="right-container">
           <div class="content-container">
@@ -43,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { ChatRoleVO } from '@/api/ai/model/chatRole'
 import { PropType, ref } from 'vue'
 import { More } from '@element-plus/icons-vue'

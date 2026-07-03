@@ -153,7 +153,7 @@
             <el-image
               :src="getFilePreviewUrl(item.picUrl)"
               class="mr-10px h-30px w-30px flex-shrink-0"
-              :preview-src-list="[item.picUrl]"
+              :preview-src-list="[getFilePreviewUrl(item.picUrl)]"
               preview-teleported
             />
             <span class="mr-10px">{{ item.spuName }}</span>

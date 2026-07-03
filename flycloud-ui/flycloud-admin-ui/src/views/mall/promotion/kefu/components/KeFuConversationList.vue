@@ -19,7 +19,7 @@
             :max="99"
             :value="item.adminUnreadMessageCount"
           >
-            <el-avatar :src="item.userAvatar" alt="avatar" />
+            <el-avatar :src="getFilePreviewUrl(item.userAvatar)" alt="avatar" />
           </el-badge>
         </div>
         <div class="ml-10px w-100%">
@@ -72,6 +72,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { KeFuConversationApi, KeFuConversationRespVO } from '@/api/mall/promotion/kefu/conversation'
 import { useEmoji } from './tools/emoji'
 import { formatPast } from '@/utils/formatTime'

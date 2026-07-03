@@ -55,7 +55,7 @@
           v-for="(item, index) in formData.applyPicUrls || []"
           :key="index"
           :src="item"
-          :preview-src-list="formData.applyPicUrls || []"
+          :preview-src-list="getFilePreviewUrls(formData.applyPicUrls || [])"
           class="mr-10px h-60px w-60px"
           preview-teleported
         />
@@ -149,6 +149,7 @@
   <UpdateAuditReasonForm ref="updateAuditReasonFormRef" @success="getDetail" />
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl, getFilePreviewUrls } from '@/components/UploadFile/src/useUpload'
 import * as AfterSaleApi from '@/api/mall/trade/afterSale/index'
 import { fenToYuan } from '@/utils'
 import { DICT_TYPE, getDictLabel, getDictObj } from '@/utils/dict'

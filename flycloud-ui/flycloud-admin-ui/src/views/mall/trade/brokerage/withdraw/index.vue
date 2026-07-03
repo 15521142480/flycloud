@@ -133,9 +133,9 @@
           <div v-if="scope.row.qrCodeUrl" class="mt-2">
             <div>收款码：</div>
             <el-image
-              :src="scope.row.qrCodeUrl"
+              :src="getFilePreviewUrl(scope.row.qrCodeUrl)"
               class="h-40px w-40px"
-              :preview-src-list="[scope.row.qrCodeUrl]"
+              :preview-src-list="[getFilePreviewUrl(scope.row.qrCodeUrl)]"
               preview-teleported
             />
           </div>
@@ -216,6 +216,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
 import { dateFormatter, formatDate } from '@/utils/formatTime'
 import * as BrokerageWithdrawApi from '@/api/mall/trade/brokerage/withdraw'

@@ -46,18 +46,18 @@
       <el-table-column label="等级图标" align="center" prop="icon" min-width="80">
         <template #default="scope">
           <el-image
-            :src="scope.row.icon"
+            :src="getFilePreviewUrl(scope.row.icon)"
             class="h-30px w-30px"
-            :preview-src-list="[scope.row.icon]"
+            :preview-src-list="[getFilePreviewUrl(scope.row.icon)]"
           />
         </template>
       </el-table-column>
       <el-table-column label="等级背景图" align="center" prop="backgroundUrl" min-width="100">
         <template #default="scope">
           <el-image
-            :src="scope.row.backgroundUrl"
+            :src="getFilePreviewUrl(scope.row.backgroundUrl)"
             class="h-30px w-30px"
-            :preview-src-list="[scope.row.backgroundUrl]"
+            :preview-src-list="[getFilePreviewUrl(scope.row.backgroundUrl)]"
           />
         </template>
       </el-table-column>
@@ -105,6 +105,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as LevelApi from '@/api/member/level'

@@ -52,6 +52,9 @@ export const getFilePreviewUrl = (pathOrUrl?: string): string => {
   if (!pathOrUrl) {
     return ''
   }
+  if (/^[a-z][a-z0-9-]*:[\w-]+$/i.test(pathOrUrl)) {
+    return pathOrUrl
+  }
   const cachedUrl = filePreviewUrlMap.get(pathOrUrl)
   if (cachedUrl) {
     return cachedUrl
@@ -72,6 +75,13 @@ export const getFilePreviewUrl = (pathOrUrl?: string): string => {
     ''
   )
   return `${baseUrl}/${pathOrUrl.replace(/^\//, '')}`
+}
+
+/**
+ * 将文件 path 数组转为前端可预览的 URL 数组。
+ */
+export const getFilePreviewUrls = (pathOrUrls?: string[]): string[] => {
+  return pathOrUrls?.map((item) => getFilePreviewUrl(item)).filter(Boolean) || []
 }
 
 /**

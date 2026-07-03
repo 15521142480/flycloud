@@ -59,7 +59,7 @@
       <el-table-column label="公司名称" prop="name" />
       <el-table-column label="公司 logo " prop="logo">
         <template #default="scope">
-          <img v-if="scope.row.logo" :src="scope.row.logo" alt="公司logo" class="h-40px" />
+          <img v-if="scope.row.logo" :src="getFilePreviewUrl(scope.row.logo)" alt="公司logo" class="h-40px" />
         </template>
       </el-table-column>
       <el-table-column label="排序" align="center" prop="sort" />
@@ -102,6 +102,7 @@
   <ExpressForm ref="formRef" @success="getList" />
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'

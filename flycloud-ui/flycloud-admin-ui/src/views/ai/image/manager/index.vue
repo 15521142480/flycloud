@@ -106,8 +106,8 @@
           <el-image
             class="h-80px w-80px"
             lazy
-            :src="row.picUrl"
-            :preview-src-list="[row.picUrl]"
+            :src="getFilePreviewUrl(row.picUrl)"
+            :preview-src-list="[getFilePreviewUrl(row.picUrl)]"
             preview-teleported
             fit="cover"
             v-if="row.picUrl?.length > 0"
@@ -214,6 +214,7 @@
 </template>
 
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { getIntDictOptions, DICT_TYPE, getStrDictOptions, getBoolDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { ImageApi, ImageVO } from '@/api/ai/image'

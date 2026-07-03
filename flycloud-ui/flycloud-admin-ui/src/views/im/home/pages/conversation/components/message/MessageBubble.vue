@@ -12,8 +12,8 @@
   <div v-else-if="isImage && imagePayload" class="relative inline-block">
     <el-image
       class="max-w-[220px] rounded cursor-zoom-in"
-      :src="imagePayload.thumbnailUrl || imagePayload.url"
-      :preview-src-list="isUploading ? [] : [imagePayload.url]"
+      :src="getFilePreviewUrl(imagePayload.thumbnailUrl || imagePayload.url)"
+      :preview-src-list="isUploading ? [] : [getFilePreviewUrl(imagePayload.url)]"
       :preview-teleported="true"
       fit="contain"
     />
@@ -76,7 +76,7 @@
   <div v-else-if="isVideo && videoPayload?.url" class="relative inline-block">
     <video
       class="max-w-[280px] max-h-[320px] rounded bg-black"
-      :src="videoPayload.url"
+      :src="getFilePreviewUrl(videoPayload.url)"
       :poster="videoPayload.coverUrl"
       :controls="!isUploading"
       preload="metadata"
@@ -99,7 +99,7 @@
   <!-- 表情贴图：裸 <img> 不套气泡 -->
   <div v-else-if="isFace && facePayload" class="inline-block">
     <img
-      :src="facePayload.url"
+      :src="getFilePreviewUrl(facePayload.url)"
       :alt="facePayload.name || '表情'"
       :title="facePayload.name || ''"
       :width="facePayload.width"
@@ -162,6 +162,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { computed, onBeforeUnmount } from 'vue'
 import Icon from '@/components/Icon/src/Icon.vue'
 import { formatFileSize } from '@/utils/file'

@@ -26,7 +26,7 @@
       <!-- 靠右 message：user 类型 -->
       <div class="right-message message-item" v-if="item.type === 'user'">
         <div class="avatar">
-          <el-avatar :src="userAvatar" />
+          <el-avatar :src="getFilePreviewUrl(userAvatar)" />
         </div>
         <div class="message">
           <div>
@@ -59,6 +59,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { PropType } from 'vue'
 import { formatDate } from '@/utils/formatTime'
 import MarkdownView from '@/components/MarkdownView/index.vue'

@@ -95,8 +95,8 @@
             v-if="row.type.includes('image')"
             class="h-80px w-80px"
             lazy
-            :src="row.url"
-            :preview-src-list="[row.url]"
+            :src="getFilePreviewUrl(row.url)"
+            :preview-src-list="[getFilePreviewUrl(row.url)]"
             preview-teleported
             fit="cover"
           />
@@ -152,6 +152,7 @@
   <FileForm ref="formRef" @success="getList" />
 </template>
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { fileSizeFormatter } from '@/utils'
 import { dateFormatter } from '@/utils/formatTime'
 import * as FileApi from '@/api/infra/file'

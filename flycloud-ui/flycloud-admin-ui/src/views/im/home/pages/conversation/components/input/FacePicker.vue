@@ -54,7 +54,7 @@
             @contextmenu.prevent="handleDeleteUserItem(item)"
           >
             <img
-              :src="item.url"
+              :src="getFilePreviewUrl(item.url)"
               :alt="item.name || '表情'"
               class="max-w-full max-h-full object-contain"
               draggable="false"
@@ -89,7 +89,7 @@
                 class="aspect-square w-full flex items-center justify-center bg-[var(--el-fill-color-lighter)] rounded"
               >
                 <img
-                  :src="item.url"
+                  :src="getFilePreviewUrl(item.url)"
                   :alt="item.name || '表情'"
                   class="max-w-full max-h-full object-contain"
                   draggable="false"
@@ -164,7 +164,7 @@
         >
           <img
             v-if="pack.icon"
-            :src="pack.icon"
+            :src="getFilePreviewUrl(pack.icon)"
             :alt="pack.name"
             class="w-[18px] h-[18px] object-contain"
             draggable="false"
@@ -187,6 +187,7 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { computed, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 
