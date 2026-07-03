@@ -137,9 +137,10 @@
     switch (type) {
       case 'image':
         const res = await FileApi.uploadFile(data.tempFiles[0].path);
+        const uploadResult = FileApi.normalizeUploadResult(res);
         msg = {
           contentType: KeFuMessageContentTypeEnum.IMAGE,
-          content: JSON.stringify({ picUrl: res.data?.path || res.data }),
+          content: JSON.stringify({ picUrl: uploadResult.path }),
         };
         break;
       case 'goods':

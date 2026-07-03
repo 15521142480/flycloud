@@ -82,27 +82,28 @@ public class RewardActivityController extends BaseController {
     @Log(title = "满减送活动", businessType = BusinessType.INSERT)
     @PreAuthorize("@pms.hasPermission('mall:promotion:reward-activity:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
-    public R<Void> saveOrUpdate(@RequestBody RewardActivityBo bo) {
-        return R.ok(rewardActivityService.saveOrUpdate(bo));
+    public R<Long> saveOrUpdate(@RequestBody RewardActivityBo bo) {
+        if (bo != null && bo.getId() != null) {
+            rewardActivityService.updateRewardActivity(bo);
+            return R.ok(bo.getId());
+        }
+        return R.ok(rewardActivityService.createRewardActivity(bo));
     }
 
     /**
      * 更新数据，兼容 yudao 前端接口。
      */
     @PutMapping("/update")
-    public R<Void> yudaoUpdate(@RequestBody RewardActivityBo bo) {
-        return R.ok(rewardActivityService.saveOrUpdate(bo));
+    public R<Boolean> yudaoUpdate(@RequestBody RewardActivityBo bo) {
+        return R.ok(rewardActivityService.updateRewardActivity(bo));
     }
 
     /**
      * 关闭满减送活动。
      */
     @PutMapping("/close")
-    public R<Void> close(@RequestParam("id") Long id) {
-        RewardActivityBo bo = new RewardActivityBo();
-        bo.setId(id);
-        bo.setStatus(com.fly.common.enums.StatusEnum.DISABLE.getStatus());
-        return R.ok(rewardActivityService.saveOrUpdate(bo));
+    public R<Boolean> close(@RequestParam("id") Long id) {
+        return R.ok(rewardActivityService.closeRewardActivity(id));
     }
 
     /**
@@ -111,7 +112,7 @@ public class RewardActivityController extends BaseController {
     @Log(title = "满减送活动", businessType = BusinessType.DELETE)
     @PreAuthorize("@pms.hasPermission('mall:promotion:reward-activity:delete')")
     @DeleteMapping("/delete/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
+    public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.ok(rewardActivityService.deleteWithValidByIds(Arrays.asList(ids), true));
     }
 
@@ -119,8 +120,8 @@ public class RewardActivityController extends BaseController {
      * 删除数据，兼容 yudao 前端接口。
      */
     @DeleteMapping("/delete")
-    public R<Void> yudaoDelete(@RequestParam("id") Long id) {
-        return R.ok(rewardActivityService.deleteWithValidByIds(java.util.List.of(id), true));
+    public R<Boolean> yudaoDelete(@RequestParam("id") Long id) {
+        return R.ok(rewardActivityService.deleteRewardActivity(id));
     }
 
 }

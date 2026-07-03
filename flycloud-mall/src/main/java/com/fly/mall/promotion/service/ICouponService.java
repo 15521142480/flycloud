@@ -32,6 +32,41 @@ public interface ICouponService {
     List<CouponVo> queryList(CouponBo bo);
 
     /**
+     * 领取优惠券。
+     */
+    Long takeCoupon(Long templateId, Long userId, Integer takeType);
+
+    /**
+     * 使用优惠券。
+     */
+    Boolean useCoupon(Long id, Long userId, Long orderId);
+
+    /**
+     * 退回已使用优惠券。
+     */
+    Boolean returnUsedCoupon(Long id);
+
+    /**
+     * 过期未使用优惠券。
+     */
+    Integer expireCoupon();
+
+    /**
+     * 查询未使用优惠券数量。
+     */
+    Long getUnusedCouponCount(Long userId);
+
+    /**
+     * 查询用户领取指定模板的数量。
+     */
+    Integer getTakeCount(Long templateId, Long userId);
+
+    /**
+     * 判断用户是否可继续领取模板优惠券。
+     */
+    Boolean canTake(Long templateId, Long userId);
+
+    /**
      * 新增或修改优惠券。
      */
     Boolean saveOrUpdate(CouponBo bo);

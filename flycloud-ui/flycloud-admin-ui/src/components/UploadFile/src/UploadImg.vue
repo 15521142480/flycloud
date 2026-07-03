@@ -53,7 +53,12 @@ import type { UploadProps } from 'element-plus'
 import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
 import { createImageViewer } from '@/components/ImageViewer'
-import { normalizeUploadResult, useUpload } from '@/components/UploadFile/src/useUpload'
+import {
+  cacheFilePreviewUrl,
+  getFilePreviewUrl,
+  normalizeUploadResult,
+  useUpload
+} from '@/components/UploadFile/src/useUpload'
 
 defineOptions({ name: 'UploadImg' })
 
@@ -113,7 +118,7 @@ watch(
     if (value === lastUploadPath.value && previewUrl.value) {
       return
     }
-    previewUrl.value = value || ''
+    previewUrl.value = getFilePreviewUrl(value)
   },
   { immediate: true }
 )
@@ -147,6 +152,7 @@ const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
   uploading.value = false
   message.success('上传成功')
   const uploadResult = normalizeUploadResult(res)
+  cacheFilePreviewUrl(uploadResult.path, uploadResult.url)
   previewUrl.value = uploadResult.url
   lastUploadPath.value = uploadResult.path
   emit('update:modelValue', uploadResult.path)

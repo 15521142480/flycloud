@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 /**
  * 移动端 - 优惠券 控制器。
  *
@@ -37,6 +39,7 @@ public class AppCouponController {
      */
     @GetMapping("/list")
     public R<PageVo<CouponVo>> list(CouponBo bo, PageBo page) {
+        bo.setUserId(UserUtils.getCurUserId());
         return R.ok(couponService.queryPageList(bo, page));
     }
 
@@ -45,6 +48,7 @@ public class AppCouponController {
      */
     @GetMapping("/page")
     public R<PageVo<CouponVo>> page(CouponBo bo, PageBo page) {
+        bo.setUserId(UserUtils.getCurUserId());
         return R.ok(couponService.queryPageList(bo, page));
     }
 
@@ -53,7 +57,11 @@ public class AppCouponController {
      */
     @GetMapping("/get/{id}")
     public R<CouponVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(couponService.queryById(id));
+        CouponVo coupon = couponService.queryById(id);
+        if (coupon == null || !Objects.equals(coupon.getUserId(), UserUtils.getCurUserId())) {
+            return R.ok((CouponVo) null);
+        }
+        return R.ok(coupon);
     }
 
     /**
@@ -61,16 +69,17 @@ public class AppCouponController {
      */
     @GetMapping({"/get-detail", "/get"})
     public R<CouponVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(couponService.queryById(id));
+        return getInfo(id);
     }
 
     /**
      * 领取优惠券。
      */
     @PostMapping("/take")
-    public R<Void> take(@RequestBody CouponBo bo) {
-        bo.setUserId(UserUtils.getCurUserId());
-        return R.ok(couponService.saveOrUpdate(bo));
+    public R<Boolean> take(@RequestBody CouponBo bo) {
+        Long userId = UserUtils.getCurUserId();
+        couponService.takeCoupon(bo.getTemplateId(), userId, null);
+        return R.ok(couponService.canTake(bo.getTemplateId(), userId));
     }
 
     /**
@@ -78,9 +87,7 @@ public class AppCouponController {
      */
     @GetMapping("/get-unused-count")
     public R<Long> getUnusedCount() {
-        CouponBo bo = new CouponBo();
-        bo.setUserId(UserUtils.getCurUserId());
-        return R.ok(couponService.queryList(bo).stream().filter(item -> item.getUseOrderId() == null).count());
+        return R.ok(couponService.getUnusedCouponCount(UserUtils.getCurUserId()));
     }
 
 }

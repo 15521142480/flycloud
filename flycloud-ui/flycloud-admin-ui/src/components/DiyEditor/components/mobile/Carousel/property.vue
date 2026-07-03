@@ -47,7 +47,10 @@
         </el-form-item>
       </el-card>
       <el-card header="内容设置" class="property-group" shadow="never">
-        <Draggable v-model="formData.items" :empty-item="{ type: 'img' }">
+        <Draggable
+          v-model="formData.items"
+          :empty-item="{ type: 'img', imgUrl: '', videoUrl: '', url: '' }"
+        >
           <template #default="{ element }">
             <el-form-item label="类型" prop="type" class="m-b-8px!" label-width="40px">
               <el-radio-group v-model="element.type">

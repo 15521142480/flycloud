@@ -91,8 +91,8 @@
     if (!tempUrl) {
       return;
     }
-    let { data } = await FileApi.uploadFile(tempUrl);
-    state.model.avatar = data?.path || data;
+    const uploadResult = FileApi.normalizeUploadResult(await FileApi.uploadFile(tempUrl));
+    state.model.avatar = uploadResult.path;
   }
 
   // 确认授权

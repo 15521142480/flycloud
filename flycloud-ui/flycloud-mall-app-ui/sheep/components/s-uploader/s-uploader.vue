@@ -288,25 +288,46 @@
         });
         return this.uploadFiles(files);
       },
+      /**
+       * 获取业务字段应保存的文件 path。
+       */
+      getStorageFileValue(file = {}) {
+        if (typeof file === 'string') {
+          return file;
+        }
+        return file.fileID || file.path || file.url || '';
+      },
+      /**
+       * 获取文件在当前环境下可直接预览的 URL。
+       */
+      getPreviewFileUrl(value = '') {
+        return sheep.$url.cdn(value);
+      },
       async setValue(newVal, oldVal) {
         const newData = async (v) => {
+          if (typeof v === 'string') {
+            return {
+              fileID: v,
+              path: v,
+              url: this.getPreviewFileUrl(v),
+            };
+          }
           const reg = /cloud:\/\/([\w.]+\/?)\S*/;
-          let url = '';
-          if (v.fileID) {
-            url = v.fileID;
-          } else {
-            url = v.url;
+          let fileValue = this.getStorageFileValue(v);
+          if (reg.test(fileValue)) {
+            v.fileID = fileValue;
+            v.path = fileValue;
+            v.url = await this.getTempFileURL(fileValue);
+          } else if (fileValue) {
+            v.fileID = v.fileID || v.path || fileValue;
+            v.path = v.fileID;
+            v.url = this.getPreviewFileUrl(v.url || fileValue);
           }
-          if (reg.test(url)) {
-            v.fileID = url;
-            v.url = await this.getTempFileURL(url);
-          }
-          if (v.url) v.path = v.url;
           return v;
         };
         if (this.returnType === 'object') {
           if (newVal) {
-            await newData(newVal);
+            newVal = await newData(newVal);
           } else {
             newVal = {};
           }
@@ -314,7 +335,7 @@
           if (!newVal) newVal = [];
           for (let i = 0; i < newVal.length; i++) {
             let v = newVal[i];
-            await newData(v);
+            newVal[i] = await newData(v);
           }
         }
         this.localValue = newVal;
@@ -457,11 +478,12 @@
           } else {
             this.files[index].errMsg = '';
             this.files[index].fileID = item.fileID || item.path || item.url;
+            this.files[index].path = this.files[index].fileID;
             const reg = /cloud:\/\/([\w.]+\/?)\S*/;
             if (reg.test(item.url)) {
               this.files[index].url = await this.getTempFileURL(item.url);
             } else {
-              this.files[index].url = item.url;
+              this.files[index].url = this.getPreviewFileUrl(item.url);
             }
 
             this.files[index].status = 'success';

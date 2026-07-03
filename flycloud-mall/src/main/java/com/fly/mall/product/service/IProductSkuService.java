@@ -36,6 +36,11 @@ public interface IProductSkuService {
     Boolean reduceStock(Long skuId, Integer count);
 
     /**
+     * 归还商品 SKU 库存。
+     */
+    Boolean increaseStock(Long skuId, Integer count);
+
+    /**
      * 校验商品 SKU 列表。
      */
     void validateSkuList(List<ProductSkuBo> skuList, Boolean specType);

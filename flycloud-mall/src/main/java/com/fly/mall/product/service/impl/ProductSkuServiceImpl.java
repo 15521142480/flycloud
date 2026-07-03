@@ -11,11 +11,13 @@ import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.mall.api.product.domain.ProductProperty;
 import com.fly.mall.api.product.domain.ProductPropertyValue;
 import com.fly.mall.api.product.domain.ProductSku;
+import com.fly.mall.api.product.domain.ProductSpu;
 import com.fly.mall.api.product.domain.bo.ProductSkuBo;
 import com.fly.mall.api.product.domain.vo.ProductSkuVo;
 import com.fly.mall.product.mapper.ProductPropertyMapper;
 import com.fly.mall.product.mapper.ProductPropertyValueMapper;
 import com.fly.mall.product.mapper.ProductSkuMapper;
+import com.fly.mall.product.mapper.ProductSpuMapper;
 import com.fly.mall.product.service.IProductSkuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,7 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
     private final ProductSkuMapper baseMapper;
     private final ProductPropertyMapper productPropertyMapper;
     private final ProductPropertyValueMapper productPropertyValueMapper;
+    private final ProductSpuMapper productSpuMapper;
     private final FileUrlFieldConverter fileUrlFieldConverter;
 
     /**
@@ -100,7 +103,56 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
         entity.setSalesCount((oldSku.getSalesCount() == null ? 0 : oldSku.getSalesCount()) + count);
         entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
         entity.setUpdateTime(LocalDateTime.now());
-        return baseMapper.updateById(entity) > 0;
+        boolean success = baseMapper.updateById(entity) > 0;
+        if (success) {
+            updateSpuStockSummary(oldSku.getSpuId(), -count, count);
+        }
+        return success;
+    }
+
+    /**
+     * 归还商品 SKU 库存，并回退已增加的销量。
+     */
+    @Override
+    public Boolean increaseStock(Long skuId, Integer count) {
+        ProductSku oldSku = baseMapper.selectById(skuId);
+        if (oldSku == null || Boolean.TRUE.equals(oldSku.getIsDeleted())) {
+            throw new ServiceException("商品 SKU 不存在");
+        }
+        if (count == null || count <= 0) {
+            throw new ServiceException("归还库存数量必须大于 0");
+        }
+        ProductSku entity = new ProductSku();
+        entity.setId(skuId);
+        entity.setStock((oldSku.getStock() == null ? 0 : oldSku.getStock()) + count);
+        entity.setSalesCount(Math.max(0, (oldSku.getSalesCount() == null ? 0 : oldSku.getSalesCount()) - count));
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        boolean success = baseMapper.updateById(entity) > 0;
+        if (success) {
+            updateSpuStockSummary(oldSku.getSpuId(), count, -count);
+        }
+        return success;
+    }
+
+    /**
+     * 同步刷新 SPU 的汇总库存和销量。
+     */
+    private void updateSpuStockSummary(Long spuId, Integer stockIncr, Integer salesIncr) {
+        if (spuId == null) {
+            return;
+        }
+        ProductSpu oldSpu = productSpuMapper.selectById(spuId);
+        if (oldSpu == null || Boolean.TRUE.equals(oldSpu.getIsDeleted())) {
+            return;
+        }
+        ProductSpu entity = new ProductSpu();
+        entity.setId(spuId);
+        entity.setStock(Math.max(0, (oldSpu.getStock() == null ? 0 : oldSpu.getStock()) + stockIncr));
+        entity.setSalesCount(Math.max(0, (oldSpu.getSalesCount() == null ? 0 : oldSpu.getSalesCount()) + salesIncr));
+        entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
+        entity.setUpdateTime(LocalDateTime.now());
+        productSpuMapper.updateById(entity);
     }
 
     /**

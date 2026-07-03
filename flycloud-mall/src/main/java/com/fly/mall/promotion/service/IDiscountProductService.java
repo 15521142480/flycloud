@@ -32,6 +32,16 @@ public interface IDiscountProductService {
     List<DiscountProductVo> queryList(DiscountProductBo bo);
 
     /**
+     * 查询活动下的限时折扣商品。
+     */
+    List<DiscountProductVo> queryListByActivityId(Long activityId);
+
+    /**
+     * 查询当前生效的 SKU 限时折扣商品。
+     */
+    List<DiscountProductVo> getMatchDiscountProductListBySkuIds(Collection<Long> skuIds);
+
+    /**
      * 新增或修改限时折扣商品。
      */
     Boolean saveOrUpdate(DiscountProductBo bo);

@@ -7,20 +7,24 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.file.FileUrlFieldConverter;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.SeckillConfig;
 import com.fly.mall.api.promotion.domain.bo.SeckillConfigBo;
+import com.fly.mall.api.promotion.domain.vo.AppSeckillConfigRespVo;
 import com.fly.mall.api.promotion.domain.vo.SeckillConfigVo;
 import com.fly.mall.promotion.mapper.SeckillConfigMapper;
 import com.fly.mall.promotion.service.ISeckillConfigService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 秒杀时段配置 Service 业务层处理。
@@ -60,6 +64,31 @@ public class SeckillConfigServiceImpl extends BaseServiceImpl<SeckillConfigMappe
     public List<SeckillConfigVo> queryList(SeckillConfigBo bo) {
         LambdaQueryWrapper<SeckillConfig> lqw = buildQueryWrapper(bo);
         return fileUrlFieldConverter.buildUrlList(baseMapper.selectVoList(lqw), "sliderPicUrls");
+    }
+
+    /**
+     * 查询启用的移动端秒杀时间段列表。
+     */
+    @Override
+    public List<AppSeckillConfigRespVo> queryAppList() {
+        SeckillConfigBo bo = new SeckillConfigBo();
+        bo.setStatus(StatusEnum.ENABLE.getStatus());
+        return queryList(bo).stream()
+                .map(this::convertAppConfig)
+                .toList();
+    }
+
+    /**
+     * 查询当前正在进行的秒杀时间段。
+     */
+    @Override
+    public SeckillConfigVo queryCurrentConfig() {
+        LocalTime now = LocalTime.now();
+        return queryList(new SeckillConfigBo()).stream()
+                .filter(config -> StatusEnum.isEnable(config.getStatus()))
+                .filter(config -> isCurrentTime(config.getStartTime(), config.getEndTime(), now))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -115,7 +144,41 @@ public class SeckillConfigServiceImpl extends BaseServiceImpl<SeckillConfigMappe
         lqw.like(StringUtils.isNotBlank(bo.getStartTime()), SeckillConfig::getStartTime, bo.getStartTime());
         lqw.like(StringUtils.isNotBlank(bo.getEndTime()), SeckillConfig::getEndTime, bo.getEndTime());
         lqw.eq(bo.getStatus() != null, SeckillConfig::getStatus, bo.getStatus());
+        lqw.orderByAsc(SeckillConfig::getStartTime);
         return lqw;
+    }
+
+    /**
+     * 转换移动端秒杀时间段返回对象。
+     */
+    private AppSeckillConfigRespVo convertAppConfig(SeckillConfigVo config) {
+        if (config == null) {
+            return null;
+        }
+        AppSeckillConfigRespVo respVo = new AppSeckillConfigRespVo();
+        respVo.setId(config.getId());
+        respVo.setStartTime(config.getStartTime());
+        respVo.setEndTime(config.getEndTime());
+        respVo.setSliderPicUrls(config.getSliderPicUrls());
+        return respVo;
+    }
+
+    /**
+     * 判断当前时间是否落在配置时段内。
+     */
+    private boolean isCurrentTime(String startTime, String endTime, LocalTime now) {
+        if (StringUtils.isBlank(startTime) || StringUtils.isBlank(endTime) || now == null) {
+            return false;
+        }
+        LocalTime start = LocalTime.parse(startTime);
+        LocalTime end = LocalTime.parse(endTime);
+        if (Objects.equals(start, end)) {
+            return true;
+        }
+        if (start.isBefore(end)) {
+            return !now.isBefore(start) && !now.isAfter(end);
+        }
+        return !now.isBefore(start) || !now.isAfter(end);
     }
 
 }

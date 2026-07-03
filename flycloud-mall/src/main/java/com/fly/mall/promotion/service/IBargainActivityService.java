@@ -3,6 +3,8 @@ package com.fly.mall.promotion.service;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.promotion.domain.bo.BargainActivityBo;
+import com.fly.mall.api.promotion.domain.vo.AppBargainActivityDetailRespVo;
+import com.fly.mall.api.promotion.domain.vo.AppBargainActivityRespVo;
 import com.fly.mall.api.promotion.domain.vo.BargainActivityVo;
 
 import java.util.Collection;
@@ -30,6 +32,21 @@ public interface IBargainActivityService {
      * 查询砍价活动列表。
      */
     List<BargainActivityVo> queryList(BargainActivityBo bo);
+
+    /**
+     * 移动端查询砍价活动列表。
+     */
+    List<AppBargainActivityRespVo> queryAppList(Integer count);
+
+    /**
+     * 移动端分页查询砍价活动。
+     */
+    PageVo<AppBargainActivityRespVo> queryAppPageList(PageBo pageBo);
+
+    /**
+     * 移动端查询砍价活动详情。
+     */
+    AppBargainActivityDetailRespVo queryAppDetail(Long id);
 
     /**
      * 新增或修改砍价活动。

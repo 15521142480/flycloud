@@ -32,6 +32,31 @@ public interface IRewardActivityService {
     List<RewardActivityVo> queryList(RewardActivityBo bo);
 
     /**
+     * 查询指定商品当前匹配的满减送活动。
+     */
+    List<RewardActivityVo> getMatchRewardActivityListBySpuIds(Collection<Long> spuIds);
+
+    /**
+     * 创建满减送活动。
+     */
+    Long createRewardActivity(RewardActivityBo bo);
+
+    /**
+     * 更新满减送活动。
+     */
+    Boolean updateRewardActivity(RewardActivityBo bo);
+
+    /**
+     * 关闭满减送活动。
+     */
+    Boolean closeRewardActivity(Long id);
+
+    /**
+     * 删除满减送活动。
+     */
+    Boolean deleteRewardActivity(Long id);
+
+    /**
      * 新增或修改满减送活动。
      */
     Boolean saveOrUpdate(RewardActivityBo bo);

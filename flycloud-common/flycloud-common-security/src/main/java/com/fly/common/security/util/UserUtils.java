@@ -19,6 +19,9 @@ public class UserUtils {
 	public static FlyUser getCurUser() {
 
 		Authentication authentication = getAuthentication();
+		if (authentication == null) {
+			return null;
+		}
 		Object principal = authentication.getPrincipal();
 		if (principal instanceof FlyUser) {
 			return (FlyUser) principal;

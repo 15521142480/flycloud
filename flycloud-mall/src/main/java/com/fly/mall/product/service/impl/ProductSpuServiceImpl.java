@@ -211,7 +211,9 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
         if (!CollectionUtils.isEmpty(spus)) {
             Map<Long, AppProductSpuRespVo> spuMap = CollectionUtils.convertMap(list, AppProductSpuRespVo::getId);
             // 需要按照 ids 顺序返回。例如说：店铺装修选择了 [3, 1, 2] 三个商品，返回结果还是 [3, 1, 2]  这样的顺序
-            list = CollectionUtils.convertList(ids, spuMap::get);
+            list = CollectionUtils.convertList(ids, spuMap::get).stream()
+                    .filter(Objects::nonNull)
+                    .toList();
         }
 
         return list;

@@ -48,6 +48,11 @@ public class RewardActivityVo implements Serializable {
 
     private Map<Long, Integer> giveCouponTemplateCounts;
 
+    /**
+     * 当前活动命中的商品 SPU 编号集合。
+     */
+    private List<Long> spuIds;
+
     private Boolean isDeleted;
 
     private LocalDateTime createTime;

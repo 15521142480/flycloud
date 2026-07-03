@@ -5,6 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.promotion.domain.bo.CouponTemplateBo;
 import com.fly.mall.api.promotion.domain.vo.CouponTemplateVo;
+import com.fly.mall.api.product.domain.vo.ProductSpuVo;
+import com.fly.mall.product.service.IProductSpuService;
+import com.fly.mall.promotion.service.ICouponService;
 import com.fly.mall.promotion.service.ICouponTemplateService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +33,20 @@ import java.util.List;
 public class AppCouponTemplateController {
 
     private final ICouponTemplateService couponTemplateService;
+    private final ICouponService couponService;
+    private final IProductSpuService productSpuService;
 
     /**
      * 查询移动端优惠券模板分页列表。
      */
     @GetMapping("/list")
-    public R<PageVo<CouponTemplateVo>> list(CouponTemplateBo bo, PageBo page) {
-        return R.ok(couponTemplateService.queryPageList(bo, page));
+    public R<List<CouponTemplateVo>> list(@RequestParam(value = "spuId", required = false) Long spuId,
+                                          @RequestParam(value = "productScope", required = false) Integer productScope,
+                                          @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
+        Long productScopeValue = getProductScopeValue(productScope, spuId);
+        List<CouponTemplateVo> list = couponTemplateService.queryCanTakeList(productScope, productScopeValue, count);
+        fillCanTake(list);
+        return R.ok(list);
     }
 
     /**
@@ -44,7 +54,9 @@ public class AppCouponTemplateController {
      */
     @GetMapping("/page")
     public R<PageVo<CouponTemplateVo>> page(CouponTemplateBo bo, PageBo page) {
-        return R.ok(couponTemplateService.queryPageList(bo, page));
+        PageVo<CouponTemplateVo> pageVo = couponTemplateService.queryPageList(bo, page);
+        fillCanTake(pageVo.getList());
+        return R.ok(pageVo);
     }
 
     /**
@@ -52,7 +64,12 @@ public class AppCouponTemplateController {
      */
     @GetMapping("/get/{id}")
     public R<CouponTemplateVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(couponTemplateService.queryById(id));
+        CouponTemplateVo template = couponTemplateService.queryById(id);
+        if (template == null) {
+            return R.ok((CouponTemplateVo) null);
+        }
+        fillCanTake(List.of(template));
+        return R.ok(template);
     }
 
     /**
@@ -60,7 +77,7 @@ public class AppCouponTemplateController {
      */
     @GetMapping({"/get-detail", "/get"})
     public R<CouponTemplateVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(couponTemplateService.queryById(id));
+        return getInfo(id);
     }
 
     /**
@@ -68,8 +85,38 @@ public class AppCouponTemplateController {
      */
     @GetMapping("/list-by-ids")
     public R<List<CouponTemplateVo>> listByIds(@RequestParam("ids") List<Long> ids) {
-        return R.ok(couponTemplateService.queryList(new CouponTemplateBo()).stream()
-                .filter(item -> ids.contains(item.getId())).toList());
+        List<CouponTemplateVo> list = couponTemplateService.queryList(ids);
+        fillCanTake(list);
+        return R.ok(list);
+    }
+
+    /**
+     * 计算优惠券模板范围值。
+     */
+    private Long getProductScopeValue(Integer productScope, Long spuId) {
+        if (spuId == null || productScope == null || productScope == 1) {
+            return null;
+        }
+        if (productScope == 3) {
+            ProductSpuVo spu = productSpuService.queryById(spuId);
+            return spu == null ? null : spu.getCategoryId();
+        }
+        return spuId;
+    }
+
+    /**
+     * 补充当前用户是否可领取。
+     */
+    private void fillCanTake(List<CouponTemplateVo> templates) {
+        if (templates == null) {
+            return;
+        }
+        Long userId = com.fly.common.security.util.UserUtils.getCurUserId();
+        for (CouponTemplateVo template : templates) {
+            if (template != null) {
+                template.setCanTake(couponService.canTake(template.getId(), userId));
+            }
+        }
     }
 
 }

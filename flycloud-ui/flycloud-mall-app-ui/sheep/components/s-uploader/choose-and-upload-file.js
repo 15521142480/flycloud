@@ -233,6 +233,8 @@ async function uploadFiles(choosePromise, { onChooseFile, onUploadProgress, dire
               createFile(presignedInfo, file);
               // 1.5. 重新赋值
               file.url = presignedInfo.url;
+              file.fileID = presignedInfo.path || presignedInfo.url;
+              file.path = file.fileID;
               resolve(file);
             },
             fail: (err) => {
@@ -251,14 +253,11 @@ async function uploadFiles(choosePromise, { onChooseFile, onUploadProgress, dire
   } else {
     // 后端上传
     for (let file of files) {
-      const { data } = await FileApi.uploadFile(file.path, directory);
-      if (typeof data === 'string') {
-        file.url = data;
-        file.fileID = data;
-      } else {
-        file.url = data?.url || data?.path || '';
-        file.fileID = data?.path || data?.url || '';
-      }
+      const result = await FileApi.uploadFile(file.path, directory);
+      const uploadResult = FileApi.normalizeUploadResult(result);
+      file.url = uploadResult.url;
+      file.fileID = uploadResult.path;
+      file.path = uploadResult.path;
     }
 
     return files;

@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.jeecg.modules.jmreport.api.JmReportTokenServiceI;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -38,6 +40,17 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
 
     private static final String JM_TOKEN_HEADER = "X-Access-Token";
     private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String[] JIMU_REPORT_PERMISSIONS = {
+            "drag:datasource:testConnection",
+            "drag:datasource:saveOrUpate",
+            "drag:datasource:delete",
+            "drag:analysis:sql",
+            "drag:design:getTotalData",
+            "drag:dataset:save",
+            "drag:dataset:delete",
+            "onl:drag:clear:recovery",
+            "onl:drag:page:delete"
+    };
 
     private final RedisUtils redisUtils;
 
@@ -81,7 +94,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         if (user == null) {
             return null;
         }
-        return new String[]{"admin"};
+        return hasJmReportAdminPermission() ? new String[]{"admin"} : null;
     }
 
     @Override
@@ -92,7 +105,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
 
     @Override
     public String[] getPermissions(String token) {
-        return resolveLoginUser(token) == null ? null : new String[]{"*:*:*"};
+        return resolveLoginUser(token) != null && hasJmReportAdminPermission() ? JIMU_REPORT_PERMISSIONS : null;
     }
 
     /**
@@ -130,6 +143,23 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     private FlyUser resolveLoginUser(String token) {
         FlyUser user = UserUtils.getCurUser();
         return user != null ? user : buildLoginUserByToken(token);
+    }
+
+    /**
+     * 判断当前用户是否拥有积木报表设计器权限。
+     */
+    private boolean hasJmReportAdminPermission() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return false;
+        }
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(StrUtil::isNotBlank)
+                .anyMatch(authority -> "*:*:*".equals(authority)
+                        || "report:*:*".equals(authority)
+                        || "report:jimu:*".equals(authority)
+                        || "report:jimu:admin".equals(authority));
     }
 
     /**

@@ -18,6 +18,11 @@ import com.fly.mall.api.product.domain.ProductSku;
 import com.fly.mall.api.product.domain.vo.AppProductPropertyValueDetailRespVo;
 import com.fly.mall.api.product.domain.vo.ProductSkuVo;
 import com.fly.mall.api.product.domain.vo.ProductSpuVo;
+import com.fly.mall.api.promotion.domain.RewardActivity;
+import com.fly.mall.api.promotion.domain.bo.CouponBo;
+import com.fly.mall.api.promotion.domain.vo.CouponVo;
+import com.fly.mall.api.promotion.domain.vo.DiscountProductVo;
+import com.fly.mall.api.promotion.domain.vo.RewardActivityVo;
 import com.fly.mall.api.trade.domain.TradeOrder;
 import com.fly.mall.api.trade.domain.TradeOrderItem;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
@@ -37,6 +42,9 @@ import com.fly.mall.api.trade.domain.vo.TradeOrderItemVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.product.service.IProductSkuService;
 import com.fly.mall.product.service.IProductSpuService;
+import com.fly.mall.promotion.service.ICouponService;
+import com.fly.mall.promotion.service.IDiscountProductService;
+import com.fly.mall.promotion.service.IRewardActivityService;
 import com.fly.mall.trade.config.TradeOrderProperties;
 import com.fly.mall.trade.mapper.TradeOrderItemMapper;
 import com.fly.mall.trade.mapper.TradeOrderMapper;
@@ -50,6 +58,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -118,12 +128,55 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      */
     private static final int DELIVERY_TYPE_PICK_UP = 2;
 
+    /**
+     * 限时折扣。
+     */
+    private static final int PROMOTION_TYPE_DISCOUNT_ACTIVITY = 4;
+
+    /**
+     * 满减送。
+     */
+    private static final int PROMOTION_TYPE_REWARD_ACTIVITY = 5;
+
+    /**
+     * 优惠类型：减价。
+     */
+    private static final int DISCOUNT_TYPE_PRICE = 1;
+
+    /**
+     * 优惠类型：折扣。
+     */
+    private static final int DISCOUNT_TYPE_PERCENT = 2;
+
+    /**
+     * 优惠券状态：未使用。
+     */
+    private static final int COUPON_STATUS_UNUSED = 1;
+
+    /**
+     * 商品范围：全部商品。
+     */
+    private static final int PRODUCT_SCOPE_ALL = 1;
+
+    /**
+     * 商品范围：指定商品。
+     */
+    private static final int PRODUCT_SCOPE_SPU = 2;
+
+    /**
+     * 商品范围：指定分类。
+     */
+    private static final int PRODUCT_SCOPE_CATEGORY = 3;
+
     private final TradeOrderMapper baseMapper;
     private final TradeOrderItemMapper tradeOrderItemMapper;
     private final ITradeOrderItemService tradeOrderItemService;
     private final ICartService cartService;
     private final IProductSkuService productSkuService;
     private final IProductSpuService productSpuService;
+    private final ICouponService couponService;
+    private final IDiscountProductService discountProductService;
+    private final IRewardActivityService rewardActivityService;
     private final IPayOrderApi payOrderApi;
     private final TradeOrderProperties tradeOrderProperties;
     private final FileUrlFieldConverter fileUrlFieldConverter;
@@ -369,8 +422,13 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Override
     public AppTradeOrderSettlementRespVo settlementOrder(Long userId, AppTradeOrderSettlementReqVo settlementReqVo) {
         List<OrderItemSource> sources = resolveOrderItemSources(userId, settlementReqVo == null ? null : settlementReqVo.getItems());
+        Map<Long, DiscountProductVo> discountProductMap = getMatchDiscountProductMap(
+                CollectionUtils.convertSet(sources, source -> source.sku().getId()));
         List<AppTradeOrderSettlementRespVo.Item> items = new ArrayList<>(sources.size());
         int totalPrice = 0;
+        int discountPrice = 0;
+        List<Long> spuIds = new ArrayList<>(sources.size());
+        List<Long> categoryIds = new ArrayList<>(sources.size());
         for (OrderItemSource source : sources) {
             AppTradeOrderSettlementRespVo.Item item = new AppTradeOrderSettlementRespVo.Item();
             item.setCategoryId(source.spu().getCategoryId());
@@ -384,13 +442,21 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setCount(source.count());
             items.add(item);
             totalPrice += item.getPrice() * item.getCount();
+            discountPrice += calculateDiscountPrice(item.getPrice(), discountProductMap.get(item.getSkuId())) * item.getCount();
+            spuIds.add(item.getSpuId());
+            categoryIds.add(item.getCategoryId());
         }
+        int couponBasePrice = Math.max(0, totalPrice - discountPrice);
+        List<AppTradeOrderSettlementRespVo.Coupon> coupons = buildSettlementCoupons(userId, couponBasePrice, spuIds, categoryIds);
+        int couponPrice = calculateSelectedCouponPrice(settlementReqVo == null ? null : settlementReqVo.getCouponId(),
+                coupons, couponBasePrice, true);
 
         AppTradeOrderSettlementRespVo respVo = new AppTradeOrderSettlementRespVo();
         respVo.setType(ORDER_TYPE_NORMAL);
         respVo.setItems(items);
-        respVo.setCoupons(Collections.emptyList());
-        respVo.setPrice(new AppTradeOrderSettlementRespVo.Price(totalPrice, 0, 0, 0, 0, 0, totalPrice));
+        respVo.setCoupons(coupons);
+        respVo.setPrice(new AppTradeOrderSettlementRespVo.Price(totalPrice, discountPrice, 0, couponPrice, 0, 0,
+                Math.max(0, couponBasePrice - couponPrice)));
         respVo.setUsePoint(0);
         respVo.setTotalPoint(0);
         respVo.setPromotions(Collections.emptyList());
@@ -405,20 +471,33 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         if (CollectionUtils.isEmpty(spuIds)) {
             return Collections.emptyList();
         }
-        Map<Long, List<ProductSkuVo>> skuMap = productSkuService.queryListBySpuIds(spuIds)
-                .stream().collect(Collectors.groupingBy(ProductSkuVo::getSpuId));
+        List<ProductSkuVo> allSkus = productSkuService.queryListBySpuIds(spuIds);
+        Map<Long, List<ProductSkuVo>> skuMap = allSkus.stream().collect(Collectors.groupingBy(ProductSkuVo::getSpuId));
+        Map<Long, DiscountProductVo> discountProductMap = getMatchDiscountProductMap(
+                CollectionUtils.convertSet(allSkus, ProductSkuVo::getId));
+        List<RewardActivityVo> rewardActivities = rewardActivityService.getMatchRewardActivityListBySpuIds(spuIds);
         List<AppTradeProductSettlementRespVo> list = new ArrayList<>(spuIds.size());
         for (Long spuId : spuIds) {
             AppTradeProductSettlementRespVo respVo = new AppTradeProductSettlementRespVo();
             respVo.setSpuId(spuId);
             List<AppTradeProductSettlementRespVo.Sku> skus = skuMap.getOrDefault(spuId, Collections.emptyList())
                     .stream().map(sku -> {
+                        DiscountProductVo discountProduct = discountProductMap.get(sku.getId());
                         AppTradeProductSettlementRespVo.Sku skuRespVo = new AppTradeProductSettlementRespVo.Sku();
                         skuRespVo.setId(sku.getId());
-                        skuRespVo.setPromotionPrice(defaultZero(sku.getPrice()));
+                        Integer discountPrice = calculateDiscountPrice(defaultZero(sku.getPrice()), discountProduct);
+                        if (discountPrice > 0) {
+                            skuRespVo.setPromotionPrice(Math.max(0, defaultZero(sku.getPrice()) - discountPrice));
+                            skuRespVo.setPromotionType(PROMOTION_TYPE_DISCOUNT_ACTIVITY);
+                            skuRespVo.setPromotionId(discountProduct.getId());
+                            skuRespVo.setPromotionEndTime(discountProduct.getActivityEndTime());
+                        } else {
+                            skuRespVo.setPromotionPrice(defaultZero(sku.getPrice()));
+                        }
                         return skuRespVo;
                     }).collect(Collectors.toList());
             respVo.setSkus(skus);
+            respVo.setRewardActivity(buildRewardActivityRespVo(spuId, rewardActivities));
             list.add(respVo);
         }
         return list;
@@ -431,10 +510,18 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Transactional(rollbackFor = Exception.class)
     public AppTradeOrderCreateRespVo createAppOrder(Long userId, AppTradeOrderCreateReqVo createReqVo) {
         List<OrderItemSource> sources = resolveOrderItemSources(userId, createReqVo == null ? null : createReqVo.getItems());
+        Map<Long, DiscountProductVo> discountProductMap = getMatchDiscountProductMap(
+                CollectionUtils.convertSet(sources, source -> source.sku().getId()));
         LocalDateTime now = LocalDateTime.now();
         String operator = String.valueOf(userId);
-        List<TradeOrderItem> items = buildAppOrderItems(userId, sources, operator, now);
-        int totalPrice = items.stream().map(TradeOrderItem::getPayPrice).filter(Objects::nonNull).reduce(0, Integer::sum);
+        List<TradeOrderItem> items = buildAppOrderItems(userId, sources, operator, now, discountProductMap);
+        int totalPrice = items.stream()
+                .map(item -> defaultZero(item.getPrice()) * defaultZero(item.getCount()))
+                .reduce(0, Integer::sum);
+        int discountPrice = items.stream().map(TradeOrderItem::getDiscountPrice).filter(Objects::nonNull).reduce(0, Integer::sum);
+        int couponPrice = calculateAppOrderCouponPrice(userId, createReqVo == null ? null : createReqVo.getCouponId(),
+                Math.max(0, totalPrice - discountPrice), sources);
+        applyCouponPriceToItems(items, couponPrice);
         int productCount = items.stream().map(TradeOrderItem::getCount).filter(Objects::nonNull).reduce(0, Integer::sum);
 
         TradeOrder order = new TradeOrder();
@@ -448,13 +535,14 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         order.setCommentStatus(false);
         order.setPayStatus(false);
         order.setTotalPrice(totalPrice);
-        order.setDiscountPrice(0);
+        order.setDiscountPrice(discountPrice);
         order.setDeliveryPrice(0);
         order.setAdjustPrice(0);
-        order.setCouponPrice(0);
+        order.setCouponId(createReqVo == null ? null : createReqVo.getCouponId());
+        order.setCouponPrice(couponPrice);
         order.setPointPrice(0);
         order.setVipPrice(0);
-        order.setPayPrice(totalPrice);
+        order.setPayPrice(Math.max(0, totalPrice - discountPrice - couponPrice));
         order.setDeliveryType(createReqVo == null || createReqVo.getDeliveryType() == null
                 ? DELIVERY_TYPE_EXPRESS : createReqVo.getDeliveryType());
         order.setReceiverName(createReqVo == null ? null : createReqVo.getReceiverName());
@@ -482,6 +570,9 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         List<Long> cartIds = sources.stream().map(source -> source.cartId()).filter(Objects::nonNull).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(cartIds)) {
             cartService.deleteCart(userId, cartIds);
+        }
+        if (order.getCouponId() != null) {
+            couponService.useCoupon(order.getCouponId(), userId, order.getId());
         }
 
         Long payOrderId = createPayOrder(userId, order);
@@ -550,6 +641,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      * 当前用户取消订单。
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean cancelOrder(Long userId, Long id) {
         TradeOrder order = validateUserOrder(userId, id);
         if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNPAID)) {
@@ -562,7 +654,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         entity.setCancelType(10);
         entity.setUpdateBy(String.valueOf(userId));
         entity.setUpdateTime(LocalDateTime.now());
-        return baseMapper.updateById(entity) > 0;
+        boolean success = baseMapper.updateById(entity) > 0;
+        if (success) {
+            returnOrderStock(order.getId());
+            returnOrderCoupon(order);
+        }
+        return success;
     }
 
     /**
@@ -658,7 +755,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
             updateWrapper.eq(TradeOrder::getId, order.getId());
             updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID);
-            count += baseMapper.update(entity, updateWrapper);
+            int updateCount = baseMapper.update(entity, updateWrapper);
+            if (updateCount > 0) {
+                returnOrderStock(order.getId());
+                returnOrderCoupon(order);
+            }
+            count += updateCount;
         }
         return count;
     }
@@ -1037,10 +1139,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     /**
      * 构建移动端订单项。
      */
-    private List<TradeOrderItem> buildAppOrderItems(Long userId, List<OrderItemSource> sources, String operator, LocalDateTime now) {
+    private List<TradeOrderItem> buildAppOrderItems(Long userId, List<OrderItemSource> sources, String operator,
+                                                    LocalDateTime now, Map<Long, DiscountProductVo> discountProductMap) {
         List<TradeOrderItem> items = new ArrayList<>(sources.size());
         for (OrderItemSource source : sources) {
             int price = defaultZero(source.sku().getPrice());
+            int discountPrice = calculateDiscountPrice(price, discountProductMap.get(source.sku().getId())) * source.count();
             TradeOrderItem item = new TradeOrderItem();
             item.setUserId(userId);
             item.setCartId(source.cartId());
@@ -1053,7 +1157,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setCount(source.count());
             item.setCommentStatus(false);
             item.setPrice(price);
-            item.setDiscountPrice(0);
+            item.setDiscountPrice(discountPrice);
             item.setDeliveryPrice(0);
             item.setAdjustPrice(0);
             item.setCouponPrice(0);
@@ -1061,7 +1165,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setUsePoint(0);
             item.setGivePoint(0);
             item.setVipPrice(0);
-            item.setPayPrice(price * source.count());
+            item.setPayPrice(Math.max(0, price * source.count() - discountPrice));
             item.setAfterSaleStatus(0);
             item.setIsDeleted(false);
             item.setCreateBy(operator);
@@ -1122,7 +1226,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         createReqDto.setSubject("商城订单 " + order.getNo());
         createReqDto.setBody("商城订单 " + order.getNo());
         createReqDto.setPrice(order.getPayPrice());
-        createReqDto.setExpireTime(LocalDateTime.now().plusHours(2));
+        createReqDto.setExpireTime(LocalDateTime.now().plus(tradeOrderProperties.getPayExpireTime()));
         return payOrderApi.createPayOrder(createReqDto).getCheckedData();
     }
 
@@ -1161,6 +1265,25 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         }
         PayOrderRespVo payOrder = payOrderApi.getOrder(order.getPayOrderId()).getCheckedData();
         return payOrder != null && Objects.equals(payOrder.getStatus(), 10);
+    }
+
+    /**
+     * 订单取消后归还订单项库存。
+     */
+    private void returnOrderStock(Long orderId) {
+        List<TradeOrderItemVo> items = tradeOrderItemService.queryListByOrderId(orderId);
+        for (TradeOrderItemVo item : items) {
+            productSkuService.increaseStock(item.getSkuId(), item.getCount());
+        }
+    }
+
+    /**
+     * 订单取消后退回已使用优惠券。
+     */
+    private void returnOrderCoupon(TradeOrder order) {
+        if (order.getCouponId() != null && defaultZero(order.getCouponPrice()) > 0) {
+            couponService.returnUsedCoupon(order.getCouponId());
+        }
     }
 
     /**
@@ -1356,7 +1479,8 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         respVo.setPayStatus(order.getPayStatus());
         respVo.setPayOrderId(order.getPayOrderId());
         respVo.setPayTime(order.getPayTime());
-        respVo.setPayExpireTime(order.getCreateTime() == null ? null : order.getCreateTime().plusHours(2));
+        respVo.setPayExpireTime(order.getCreateTime() == null ? null
+                : order.getCreateTime().plus(tradeOrderProperties.getPayExpireTime()));
         respVo.setPayChannelCode(order.getPayChannelCode());
         respVo.setPayChannelName(order.getPayChannelCode());
         respVo.setTotalPrice(order.getTotalPrice());
@@ -1441,6 +1565,227 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      */
     private Integer defaultZero(Integer value) {
         return value == null ? 0 : value;
+    }
+
+    /**
+     * 查询当前有效限时折扣，并按 SKU 编号聚合。
+     */
+    private Map<Long, DiscountProductVo> getMatchDiscountProductMap(Collection<Long> skuIds) {
+        if (CollectionUtils.isEmpty(skuIds)) {
+            return Collections.emptyMap();
+        }
+        return discountProductService.getMatchDiscountProductListBySkuIds(skuIds)
+                .stream().collect(Collectors.toMap(DiscountProductVo::getSkuId, item -> item, (first, second) -> first));
+    }
+
+    /**
+     * 计算限时折扣减免金额，保持和 yudao 的折扣语义一致。
+     */
+    private Integer calculateDiscountPrice(Integer price, DiscountProductVo discountProduct) {
+        if (discountProduct == null || price == null || price <= 0) {
+            return 0;
+        }
+        Integer newPrice;
+        if (Objects.equals(discountProduct.getDiscountType(), DISCOUNT_TYPE_PRICE)) {
+            newPrice = price - defaultZero(discountProduct.getDiscountPrice());
+        } else if (Objects.equals(discountProduct.getDiscountType(), DISCOUNT_TYPE_PERCENT)) {
+            newPrice = BigDecimal.valueOf(price)
+                    .multiply(BigDecimal.valueOf(defaultZero(discountProduct.getDiscountPercent())))
+                    .divide(BigDecimal.valueOf(10000), 0, RoundingMode.HALF_UP)
+                    .intValue();
+        } else {
+            return 0;
+        }
+        return Math.max(0, price - Math.max(0, newPrice));
+    }
+
+    /**
+     * 构建订单结算可用优惠券列表。
+     */
+    private List<AppTradeOrderSettlementRespVo.Coupon> buildSettlementCoupons(Long userId, int couponBasePrice,
+                                                                               List<Long> spuIds, List<Long> categoryIds) {
+        CouponBo couponBo = new CouponBo();
+        couponBo.setUserId(userId);
+        couponBo.setStatus(COUPON_STATUS_UNUSED);
+        return couponService.queryList(couponBo).stream()
+                .map(coupon -> buildSettlementCoupon(coupon, couponBasePrice, spuIds, categoryIds))
+                .toList();
+    }
+
+    /**
+     * 构建单张结算优惠券。
+     */
+    private AppTradeOrderSettlementRespVo.Coupon buildSettlementCoupon(CouponVo coupon, int couponBasePrice,
+                                                                       List<Long> spuIds, List<Long> categoryIds) {
+        AppTradeOrderSettlementRespVo.Coupon respVo = new AppTradeOrderSettlementRespVo.Coupon();
+        respVo.setId(coupon.getId());
+        respVo.setName(coupon.getName());
+        respVo.setUsePrice(coupon.getUsePrice());
+        respVo.setValidStartTime(coupon.getValidStartTime());
+        respVo.setValidEndTime(coupon.getValidEndTime());
+        respVo.setDiscountType(coupon.getDiscountType());
+        respVo.setDiscountPercent(coupon.getDiscountPercent());
+        respVo.setDiscountPrice(coupon.getDiscountPrice());
+        respVo.setDiscountLimitPrice(coupon.getDiscountLimitPrice());
+        String mismatchReason = getCouponMismatchReason(coupon, couponBasePrice, spuIds, categoryIds);
+        respVo.setMatch(mismatchReason == null);
+        respVo.setMismatchReason(mismatchReason);
+        return respVo;
+    }
+
+    /**
+     * 获取优惠券不可用原因。
+     */
+    private String getCouponMismatchReason(CouponVo coupon, int couponBasePrice, List<Long> spuIds, List<Long> categoryIds) {
+        LocalDateTime now = LocalDateTime.now();
+        if (coupon.getValidStartTime() != null && now.isBefore(coupon.getValidStartTime())) {
+            return "优惠券未到可用时间";
+        }
+        if (coupon.getValidEndTime() != null && now.isAfter(coupon.getValidEndTime())) {
+            return "优惠券已过期";
+        }
+        if (defaultZero(coupon.getUsePrice()) > couponBasePrice) {
+            return "订单金额未满足优惠券使用门槛";
+        }
+        if (Objects.equals(coupon.getProductScope(), PRODUCT_SCOPE_SPU)
+                && !hasIntersection(coupon.getProductScopeValues(), spuIds)) {
+            return "当前商品不在优惠券适用范围";
+        }
+        if (Objects.equals(coupon.getProductScope(), PRODUCT_SCOPE_CATEGORY)
+                && !hasIntersection(coupon.getProductScopeValues(), categoryIds)) {
+            return "当前分类不在优惠券适用范围";
+        }
+        return null;
+    }
+
+    /**
+     * 计算创建订单时选中优惠券优惠金额。
+     */
+    private int calculateAppOrderCouponPrice(Long userId, Long couponId, int couponBasePrice, List<OrderItemSource> sources) {
+        if (couponId == null) {
+            return 0;
+        }
+        List<Long> spuIds = sources.stream().map(source -> source.spu().getId()).toList();
+        List<Long> categoryIds = sources.stream().map(source -> source.spu().getCategoryId()).toList();
+        List<AppTradeOrderSettlementRespVo.Coupon> coupons = buildSettlementCoupons(userId, couponBasePrice, spuIds, categoryIds);
+        return calculateSelectedCouponPrice(couponId, coupons, couponBasePrice, false);
+    }
+
+    /**
+     * 计算选中优惠券金额。
+     */
+    private int calculateSelectedCouponPrice(Long couponId, List<AppTradeOrderSettlementRespVo.Coupon> coupons,
+                                             int couponBasePrice, boolean ignoreMismatch) {
+        if (couponId == null) {
+            return 0;
+        }
+        AppTradeOrderSettlementRespVo.Coupon coupon = coupons.stream()
+                .filter(item -> Objects.equals(item.getId(), couponId))
+                .findFirst()
+                .orElseThrow(() -> new ServiceException("优惠券不存在或不属于当前用户"));
+        if (!Boolean.TRUE.equals(coupon.getMatch())) {
+            if (ignoreMismatch) {
+                return 0;
+            }
+            throw new ServiceException(coupon.getMismatchReason());
+        }
+        return calculateCouponDiscountPrice(coupon, couponBasePrice);
+    }
+
+    /**
+     * 按优惠券规则计算优惠金额。
+     */
+    private int calculateCouponDiscountPrice(AppTradeOrderSettlementRespVo.Coupon coupon, int couponBasePrice) {
+        if (Objects.equals(coupon.getDiscountType(), DISCOUNT_TYPE_PRICE)) {
+            return Math.min(couponBasePrice, defaultZero(coupon.getDiscountPrice()));
+        }
+        if (Objects.equals(coupon.getDiscountType(), DISCOUNT_TYPE_PERCENT)) {
+            int newPrice = BigDecimal.valueOf(couponBasePrice)
+                    .multiply(BigDecimal.valueOf(defaultZero(coupon.getDiscountPercent())))
+                    .divide(BigDecimal.valueOf(10000), 0, RoundingMode.HALF_UP)
+                    .intValue();
+            int couponPrice = Math.max(0, couponBasePrice - newPrice);
+            return defaultZero(coupon.getDiscountLimitPrice()) > 0
+                    ? Math.min(couponPrice, coupon.getDiscountLimitPrice()) : couponPrice;
+        }
+        return 0;
+    }
+
+    /**
+     * 将订单优惠券金额分摊到订单项。
+     */
+    private void applyCouponPriceToItems(List<TradeOrderItem> items, int couponPrice) {
+        if (couponPrice <= 0 || CollectionUtils.isEmpty(items)) {
+            return;
+        }
+        List<TradeOrderItemVo> itemVos = items.stream().map(item -> {
+            TradeOrderItemVo itemVo = new TradeOrderItemVo();
+            itemVo.setPayPrice(item.getPayPrice());
+            return itemVo;
+        }).toList();
+        List<Integer> couponPrices = dividePrice(itemVos, -couponPrice);
+        for (int i = 0; i < items.size(); i++) {
+            int itemCouponPrice = Math.abs(couponPrices.get(i));
+            TradeOrderItem item = items.get(i);
+            item.setCouponPrice(itemCouponPrice);
+            item.setPayPrice(Math.max(0, defaultZero(item.getPayPrice()) - itemCouponPrice));
+        }
+    }
+
+    /**
+     * 判断两个编号列表是否存在交集。
+     */
+    private boolean hasIntersection(Collection<Long> first, Collection<Long> second) {
+        if (CollectionUtils.isEmpty(first) || CollectionUtils.isEmpty(second)) {
+            return false;
+        }
+        for (Long value : first) {
+            if (second.contains(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 构建商品命中的满减送活动信息。
+     */
+    private AppTradeProductSettlementRespVo.RewardActivity buildRewardActivityRespVo(
+            Long spuId, List<RewardActivityVo> rewardActivities) {
+        if (CollectionUtils.isEmpty(rewardActivities)) {
+            return null;
+        }
+        for (RewardActivityVo rewardActivity : rewardActivities) {
+            if (rewardActivity.getSpuIds() != null && rewardActivity.getSpuIds().contains(spuId)) {
+                AppTradeProductSettlementRespVo.RewardActivity respVo =
+                        new AppTradeProductSettlementRespVo.RewardActivity();
+                respVo.setId(rewardActivity.getId());
+                respVo.setConditionType(rewardActivity.getConditionType());
+                respVo.setRules(convertRewardActivityRules(rewardActivity.getRules()));
+                return respVo;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 转换满减送活动规则。
+     */
+    private List<AppTradeProductSettlementRespVo.RewardActivityRule> convertRewardActivityRules(
+            List<RewardActivity.Rule> rules) {
+        if (CollectionUtils.isEmpty(rules)) {
+            return List.of();
+        }
+        return rules.stream().map(rule -> {
+            AppTradeProductSettlementRespVo.RewardActivityRule respVo =
+                    new AppTradeProductSettlementRespVo.RewardActivityRule();
+            respVo.setLimit(rule.getLimit());
+            respVo.setDiscountPrice(rule.getDiscountPrice());
+            respVo.setFreeDelivery(rule.getFreeDelivery());
+            respVo.setPoint(rule.getPoint());
+            respVo.setGiveCouponTemplateCounts(rule.getGiveCouponTemplateCounts());
+            return respVo;
+        }).toList();
     }
 
     /**

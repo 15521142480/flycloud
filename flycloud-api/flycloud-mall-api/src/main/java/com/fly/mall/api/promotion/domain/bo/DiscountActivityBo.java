@@ -3,6 +3,7 @@ package com.fly.mall.api.promotion.domain.bo;
 import com.fly.common.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -31,5 +32,11 @@ public class DiscountActivityBo extends BaseEntity {
 
     @Schema(description = "remark")
     private String remark;
+
+    /**
+     * 活动商品列表。
+     */
+    @Schema(description = "products")
+    private List<DiscountProductBo> products;
 
 }

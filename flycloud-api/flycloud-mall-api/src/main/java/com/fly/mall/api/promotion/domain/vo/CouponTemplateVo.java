@@ -58,6 +58,11 @@ public class CouponTemplateVo implements Serializable {
 
     private Integer useCount;
 
+    /**
+     * 当前用户是否可以领取。
+     */
+    private Boolean canTake;
+
     private Boolean isDeleted;
 
     private LocalDateTime createTime;

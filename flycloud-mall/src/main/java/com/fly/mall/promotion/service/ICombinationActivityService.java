@@ -3,6 +3,8 @@ package com.fly.mall.promotion.service;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.promotion.domain.bo.CombinationActivityBo;
+import com.fly.mall.api.promotion.domain.vo.AppCombinationActivityDetailRespVo;
+import com.fly.mall.api.promotion.domain.vo.AppCombinationActivityRespVo;
 import com.fly.mall.api.promotion.domain.vo.CombinationActivityVo;
 
 import java.util.Collection;
@@ -30,6 +32,21 @@ public interface ICombinationActivityService {
      * 查询拼团活动列表。
      */
     List<CombinationActivityVo> queryList(CombinationActivityBo bo);
+
+    /**
+     * 移动端分页查询拼团活动。
+     */
+    PageVo<AppCombinationActivityRespVo> queryAppPageList(PageBo pageBo);
+
+    /**
+     * 移动端根据编号列表查询拼团活动。
+     */
+    List<AppCombinationActivityRespVo> queryAppListByIds(Collection<Long> ids);
+
+    /**
+     * 移动端查询拼团活动详情。
+     */
+    AppCombinationActivityDetailRespVo queryAppDetail(Long id);
 
     /**
      * 新增或修改拼团活动。

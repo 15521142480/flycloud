@@ -16,7 +16,7 @@
       @change="handleIndexChange"
     >
       <el-carousel-item v-for="(item, index) in property.items" :key="index">
-        <el-image class="h-full w-full" :src="item.imgUrl" />
+        <el-image class="h-full w-full" :src="getFilePreviewUrl(item.imgUrl)" />
       </el-carousel-item>
     </el-carousel>
     <div
@@ -29,6 +29,7 @@
 </template>
 <script setup lang="ts">
 import { CarouselProperty } from './config'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 /** 轮播图 */
 defineOptions({ name: 'Carousel' })

@@ -111,6 +111,13 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
         List<Long> spuIds = CollectionUtils.convertList(carts, CartVo::getSpuId);
         List<Long> skuIds = CollectionUtils.convertList(carts, CartVo::getSkuId);
         Map<Long, ProductSpuVo> spuMap = CollectionUtils.convertMap(productSpuService.queryListByIds(spuIds), ProductSpuVo::getId);
+        deleteCartIfSpuDeleted(userId, carts, spuMap);
+        if (CollectionUtils.isEmpty(carts)) {
+            AppCartListRespVo emptyRespVo = new AppCartListRespVo();
+            emptyRespVo.setValidList(Collections.emptyList());
+            emptyRespVo.setInvalidList(Collections.emptyList());
+            return emptyRespVo;
+        }
         Map<Long, ProductSkuVo> skuMap = new java.util.HashMap<>();
         for (Long skuId : skuIds) {
             Optional.ofNullable(productSkuService.queryById(skuId)).ifPresent(sku -> skuMap.put(sku.getId(), sku));
@@ -195,7 +202,19 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
         if (oldCart == null) {
             throw new ServiceException("购物车商品不存在");
         }
+        ProductSkuVo sku = checkProductSku(bo.getSkuId(), bo.getCount());
         deleteCart(userId, List.of(oldCart.getId()));
+        Cart newCart = selectByUserIdAndSkuId(userId, sku.getId());
+        if (newCart != null) {
+            Cart entity = new Cart();
+            entity.setId(newCart.getId());
+            entity.setCount(bo.getCount());
+            entity.setSelected(true);
+            entity.setUpdateBy(String.valueOf(userId));
+            entity.setUpdateTime(LocalDateTime.now());
+            baseMapper.updateById(entity);
+            return true;
+        }
         addCart(userId, bo);
         return true;
     }
@@ -362,6 +381,19 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
             deleteCart(UserUtils.getCurUserId(), deletedCartIds);
             list.removeIf(cart -> deletedCartIds.contains(cart.getId()));
         }
+    }
+
+    /**
+     * 删除 SPU 已不存在的购物项，移动端不再返回这类彻底失效的商品。
+     */
+    private void deleteCartIfSpuDeleted(Long userId, List<CartVo> carts, Map<Long, ProductSpuVo> spuMap) {
+        List<Long> deletedCartIds = CollectionUtils.convertList(carts, CartVo::getId,
+                cart -> !spuMap.containsKey(cart.getSpuId()));
+        if (CollectionUtils.isEmpty(deletedCartIds)) {
+            return;
+        }
+        deleteCart(userId, deletedCartIds);
+        carts.removeIf(cart -> deletedCartIds.contains(cart.getId()));
     }
 
     /**

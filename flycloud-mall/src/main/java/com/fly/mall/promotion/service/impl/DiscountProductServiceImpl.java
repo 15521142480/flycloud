@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.StatusEnum;
+import com.fly.common.utils.BeanUtils;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.mall.api.promotion.domain.DiscountProduct;
@@ -58,6 +60,23 @@ public class DiscountProductServiceImpl extends BaseServiceImpl<DiscountProductM
     public List<DiscountProductVo> queryList(DiscountProductBo bo) {
         LambdaQueryWrapper<DiscountProduct> lqw = buildQueryWrapper(bo);
         return baseMapper.selectVoList(lqw);
+    }
+
+    /**
+     * 查询活动下的限时折扣商品。
+     */
+    @Override
+    public List<DiscountProductVo> queryListByActivityId(Long activityId) {
+        return BeanUtils.toBean(baseMapper.selectListByActivityId(activityId), DiscountProductVo.class);
+    }
+
+    /**
+     * 查询当前生效的 SKU 限时折扣商品。
+     */
+    @Override
+    public List<DiscountProductVo> getMatchDiscountProductListBySkuIds(Collection<Long> skuIds) {
+        return BeanUtils.toBean(baseMapper.selectListBySkuIdsAndStatusAndNow(skuIds, StatusEnum.ENABLE.getStatus()),
+                DiscountProductVo.class);
     }
 
     /**

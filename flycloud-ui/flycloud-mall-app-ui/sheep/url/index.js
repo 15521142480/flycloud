@@ -1,15 +1,18 @@
 import $store from '@/sheep/store';
-import { staticUrl } from '@/sheep/config';
+import { baseUrl, staticUrl } from '@/sheep/config';
 
 const cdn = (url = '', cdnurl = '') => {
   if (!url) return '';
-  if (url.indexOf('http') === 0) {
+  if (isAbsoluteUrl(url)) {
     return url;
   }
   if (cdnurl === '') {
     cdnurl = $store('app').info.cdnurl;
   }
-  return cdnurl + url;
+  if (!cdnurl) {
+    cdnurl = String(url).indexOf('/static/') === 0 ? getGatewayBaseUrl() : getFileBaseUrl();
+  }
+  return joinUrl(cdnurl, url);
 };
 export default {
   // 添加cdn域名前缀
@@ -45,6 +48,59 @@ export default {
     return `url(${url})`;
   },
 };
+
+/**
+ * 判断地址是否已经是浏览器或小程序可直接访问的完整资源地址。
+ */
+function isAbsoluteUrl(url = '') {
+  const lowerUrl = String(url).toLowerCase();
+  return (
+    lowerUrl.indexOf('http://') === 0 ||
+    lowerUrl.indexOf('https://') === 0 ||
+    lowerUrl.indexOf('//') === 0 ||
+    lowerUrl.indexOf('data:') === 0 ||
+    lowerUrl.indexOf('blob:') === 0
+  );
+}
+
+/**
+ * 拼接 URL 前缀和相对路径，统一处理首尾斜杠。
+ */
+function joinUrl(prefix = '', path = '') {
+  return `${String(prefix).replace(/\/+$/, '')}/${String(path).replace(/^\/+/, '')}`;
+}
+
+/**
+ * 转义正则表达式特殊字符，用于安全匹配网关服务前缀。
+ */
+function escapeRegExp(value = '') {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * 获取网关根地址。
+ *
+ * 移动端接口默认走商城服务前缀，例如 /flycloud-mall；
+ * 静态文件访问是网关根路径下的 /static，所以需要去掉服务前缀。
+ */
+function getGatewayBaseUrl() {
+  const normalizedBaseUrl = String(baseUrl || '').replace(/\/+$/, '');
+  const mallPrefix = `/${String(import.meta.env.MALL_SERVER_PREFIX || '').replace(
+    /^\/+|\/+$/g,
+    '',
+  )}`;
+  if (!normalizedBaseUrl || mallPrefix === '/') {
+    return normalizedBaseUrl;
+  }
+  return normalizedBaseUrl.replace(new RegExp(`${escapeRegExp(mallPrefix)}$`), '');
+}
+
+/**
+ * 获取后端静态文件访问前缀。
+ */
+function getFileBaseUrl() {
+  return joinUrl(getGatewayBaseUrl(), 'static');
+}
 
 /**
  * 追加对象存储自动裁剪/压缩参数

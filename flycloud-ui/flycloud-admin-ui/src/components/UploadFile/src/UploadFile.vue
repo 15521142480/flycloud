@@ -71,7 +71,12 @@
 import { propTypes } from '@/utils/propTypes'
 import type { UploadProps, UploadRawFile, UploadUserFile } from 'element-plus'
 import { isString } from '@/utils/is'
-import { normalizeUploadResult, useUpload } from '@/components/UploadFile/src/useUpload'
+import {
+  cacheFilePreviewUrl,
+  getFilePreviewUrl,
+  normalizeUploadResult,
+  useUpload
+} from '@/components/UploadFile/src/useUpload'
 import { UploadFile } from 'element-plus/es/components/upload/src/upload'
 
 defineOptions({ name: 'UploadFile' })
@@ -148,6 +153,7 @@ const finishUploadBatch = () => {
 const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
   message.success('上传成功')
   const uploadResult = normalizeUploadResult(res)
+  cacheFilePreviewUrl(uploadResult.path, uploadResult.url)
   previewUrlMap.value[uploadResult.path] = uploadResult.url
   // 删除自身
   const index = fileList.value.findIndex(
@@ -205,7 +211,7 @@ watch(
       fileList.value.push(
         ...values.map((path) => ({
           name: path.substring(path.lastIndexOf('/') + 1),
-          url: previewUrlMap.value[path] || path,
+          url: previewUrlMap.value[path] || getFilePreviewUrl(path),
           path
         }))
       )
@@ -215,7 +221,7 @@ watch(
     fileList.value.push(
       ...(val as string[]).map((path) => ({
         name: path.substring(path.lastIndexOf('/') + 1),
-        url: previewUrlMap.value[path] || path,
+        url: previewUrlMap.value[path] || getFilePreviewUrl(path),
         path
       }))
     )

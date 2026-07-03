@@ -47,12 +47,23 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
 
     private final FileUrlConverter fileUrlConverter;
 
+    /**
+     * 启用请求体处理。
+     *
+     * @return true 表示所有 @RequestBody 入参都进入 afterBodyRead 统一转换
+     */
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType,
                             Class<? extends HttpMessageConverter<?>> converterType) {
         return true;
     }
 
+    /**
+     * 请求体读取完成后执行，将当前 base-url 下的完整 URL 还原为数据库需要存储的 path。
+     *
+     * @param body 反序列化后的请求对象
+     * @return 转换后的请求对象
+     */
     @Override
     public Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter,
                                 Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -60,11 +71,23 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
         return body;
     }
 
+    /**
+     * 启用响应体处理。
+     *
+     * @return true 表示所有响应对象都进入 beforeBodyWrite 统一转换
+     */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return true;
     }
 
+    /**
+     * 响应写出前执行，将文件字段中的 path 拼接为前端可展示的完整 URL。
+     *
+     * @param body 响应对象
+     * @param selectedContentType 响应类型，仅处理 JSON
+     * @return 转换后的响应对象
+     */
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
@@ -77,6 +100,13 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
         return body;
     }
 
+    /**
+     * 递归处理请求对象，把字符串里的当前 base-url 前缀去掉，避免完整 URL 入库。
+     *
+     * @param value 当前待处理对象
+     * @param visited 已访问对象，用于避免循环引用导致无限递归
+     * @return 转换后的对象；集合和普通 bean 会原地修改
+     */
     private Object convertRequestValue(Object value, IdentityHashMap<Object, Boolean> visited) {
         if (value == null || isSimpleValue(value)) {
             return value instanceof String text ? toPath(text) : value;
@@ -124,6 +154,14 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
         return value;
     }
 
+    /**
+     * 递归处理响应对象，只对文件字段把 path 拼接为完整 URL。
+     *
+     * @param fieldName 当前字段名，用于判断是否属于文件字段
+     * @param value 当前待处理对象
+     * @param visited 已访问对象，用于避免循环引用导致无限递归
+     * @return 转换后的对象；集合和普通 bean 会原地修改
+     */
     private Object convertResponseValue(String fieldName, Object value, IdentityHashMap<Object, Boolean> visited) {
         if (value == null) {
             return null;
@@ -167,6 +205,12 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
         return value;
     }
 
+    /**
+     * 获取当前类及其父类声明的所有字段。
+     *
+     * @param type 目标类型
+     * @return 字段集合
+     */
     private Collection<Field> getAllFields(Class<?> type) {
         java.util.List<Field> fields = new java.util.ArrayList<>();
         Class<?> current = type;
@@ -177,26 +221,56 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
         return fields;
     }
 
+    /**
+     * 判断字段是否跳过转换。
+     *
+     * @param field 字段对象
+     * @return true 表示不参与递归转换
+     */
     private boolean shouldSkipField(Field field) {
         int modifiers = field.getModifiers();
         return java.lang.reflect.Modifier.isStatic(modifiers);
     }
 
+    /**
+     * 替换 Map 中的 value，适用于不需要 key 参与判断的场景。
+     *
+     * @param map 待处理 Map
+     * @param valueConverter value 转换函数
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void replaceMapValues(Map<?, ?> map, java.util.function.Function<Object, Object> valueConverter) {
         ((Map) map).replaceAll((key, value) -> valueConverter.apply(value));
     }
 
+    /**
+     * 替换 Map 中的 value，适用于需要 key 作为字段名判断的场景。
+     *
+     * @param map 待处理 Map
+     * @param valueConverter key 和 value 转换函数
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void replaceMapValues(Map<?, ?> map, java.util.function.BiFunction<Object, Object, Object> valueConverter) {
         ((Map) map).replaceAll((key, value) -> valueConverter.apply(key, value));
     }
 
+    /**
+     * 替换 ListIterator 当前元素。
+     *
+     * @param iterator 当前列表迭代器
+     * @param value 新值
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void replaceListValue(java.util.ListIterator<?> iterator, Object value) {
         ((java.util.ListIterator) iterator).set(value);
     }
 
+    /**
+     * 判断对象是否为简单值，简单值不继续展开字段递归。
+     *
+     * @param value 待判断对象
+     * @return true 表示数字、布尔、日期、枚举、JDK 类型等简单值
+     */
     private boolean isSimpleValue(Object value) {
         Class<?> type = value.getClass();
         return type.isPrimitive()
@@ -209,10 +283,22 @@ public class FileUrlBodyAdvice extends RequestBodyAdviceAdapter implements Respo
                 || type.getName().startsWith("java.");
     }
 
+    /**
+     * 将当前 base-url 下的完整 URL 转为相对 path。
+     *
+     * @param urlOrPath 完整 URL 或相对 path
+     * @return 相对 path；非当前 base-url 地址保持原值
+     */
     private String toPath(String urlOrPath) {
         return fileUrlConverter.toPath(urlOrPath);
     }
 
+    /**
+     * 根据字段名判断是否应该按文件字段处理。
+     *
+     * @param fieldName 字段名
+     * @return true 表示响应时需要把 path 拼接为完整 URL
+     */
     private boolean isFileField(String fieldName) {
         if (StrUtil.isBlank(fieldName)) {
             return false;

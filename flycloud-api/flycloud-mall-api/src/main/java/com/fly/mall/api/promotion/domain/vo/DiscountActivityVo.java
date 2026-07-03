@@ -2,6 +2,7 @@ package com.fly.mall.api.promotion.domain.vo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -26,6 +27,11 @@ public class DiscountActivityVo implements Serializable {
     private LocalDateTime endTime;
 
     private String remark;
+
+    /**
+     * 限时折扣商品列表。
+     */
+    private List<DiscountProductVo> products;
 
     private Boolean isDeleted;
 

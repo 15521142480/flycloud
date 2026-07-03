@@ -1,19 +1,15 @@
 package com.fly.mall.promotion.controller.app;
 
-import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
-import com.fly.common.domain.vo.PageVo;
-import com.fly.mall.api.promotion.domain.bo.SeckillConfigBo;
-import com.fly.mall.api.promotion.domain.vo.SeckillConfigVo;
+import com.fly.mall.api.promotion.domain.vo.AppSeckillConfigRespVo;
 import com.fly.mall.promotion.service.ISeckillConfigService;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 移动端 - 秒杀时段配置 控制器。
@@ -30,35 +26,11 @@ public class AppSeckillConfigController {
     private final ISeckillConfigService seckillConfigService;
 
     /**
-     * 查询移动端秒杀时段配置分页列表。
+     * 获得秒杀时间段列表。
      */
     @GetMapping("/list")
-    public R<PageVo<SeckillConfigVo>> list(SeckillConfigBo bo, PageBo page) {
-        return R.ok(seckillConfigService.queryPageList(bo, page));
-    }
-
-    /**
-     * 获得分页列表。
-     */
-    @GetMapping("/page")
-    public R<PageVo<SeckillConfigVo>> page(SeckillConfigBo bo, PageBo page) {
-        return R.ok(seckillConfigService.queryPageList(bo, page));
-    }
-
-    /**
-     * 获取移动端秒杀时段配置详情。
-     */
-    @GetMapping("/get/{id}")
-    public R<SeckillConfigVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(seckillConfigService.queryById(id));
-    }
-
-    /**
-     * 获得详情。
-     */
-    @GetMapping({"/get-detail", "/get"})
-    public R<SeckillConfigVo> getDetail(@RequestParam("id") Long id) {
-        return R.ok(seckillConfigService.queryById(id));
+    public R<List<AppSeckillConfigRespVo>> list() {
+        return R.ok(seckillConfigService.queryAppList());
     }
 
 }

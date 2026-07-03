@@ -14,6 +14,8 @@ export interface UploadResult {
   path: string
 }
 
+const filePreviewUrlMap = new Map<string, string>()
+
 export const normalizeUploadResult = (res: any): UploadResult => {
   const data = res?.data ?? res
   if (typeof data === 'string') {
@@ -24,6 +26,49 @@ export const normalizeUploadResult = (res: any): UploadResult => {
     baseUrl: data?.baseUrl || '',
     path: data?.path || data?.url || ''
   }
+}
+
+/**
+ * 缓存上传接口返回的真实预览 URL。
+ *
+ * path 是业务字段的存储值，url 是当前环境下可直接访问的地址；
+ * 刚上传后优先使用缓存 URL，可避免前端环境变量和后端 base-url 不一致导致预览失败。
+ */
+export const cacheFilePreviewUrl = (path?: string, url?: string) => {
+  if (path && url) {
+    filePreviewUrlMap.set(path, url)
+  }
+}
+
+/**
+ * 将文件 path 转为前端可预览的 URL。
+ *
+ * 上传组件保存给业务表单的是 path；当表单回显或 DIY 编辑器直接预览 path 时，
+ * 需要临时拼接静态资源前缀用于展示，避免把完整 URL 写回业务字段。
+ */
+export const getFilePreviewUrl = (pathOrUrl?: string): string => {
+  if (!pathOrUrl) {
+    return ''
+  }
+  const cachedUrl = filePreviewUrlMap.get(pathOrUrl)
+  if (cachedUrl) {
+    return cachedUrl
+  }
+  const lowerValue = pathOrUrl.toLowerCase()
+  if (
+    lowerValue.startsWith('http://') ||
+    lowerValue.startsWith('https://') ||
+    lowerValue.startsWith('//') ||
+    lowerValue.startsWith('data:') ||
+    lowerValue.startsWith('blob:')
+  ) {
+    return pathOrUrl
+  }
+  const baseUrl = import.meta.env.VITE_BASE_URL.replace(/\/$/, '')
+  if (pathOrUrl.startsWith('/static/')) {
+    return `${baseUrl}${pathOrUrl}`
+  }
+  return `${baseUrl}/static/${pathOrUrl.replace(/^\//, '')}`
 }
 
 

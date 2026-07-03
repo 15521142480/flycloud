@@ -1,5 +1,25 @@
-import { baseUrl, apiPath, tenantId } from '@/sheep/config';
+import { apiPath, tenantId } from '@/sheep/config';
+import { getSystemBaseUrl } from '@/sheep/config/server';
 import request, { buildAuthorization, getAccessToken } from '@/sheep/request';
+
+/**
+ * 兼容旧字符串返回和新上传 VO，统一出预览 URL 与业务存储 path。
+ */
+function normalizeUploadResult(result) {
+  const data = result?.data ?? result;
+  if (typeof data === 'string') {
+    return {
+      url: data,
+      baseUrl: '',
+      path: data,
+    };
+  }
+  return {
+    url: data?.url || data?.path || '',
+    baseUrl: data?.baseUrl || '',
+    path: data?.path || data?.url || '',
+  };
+}
 
 const FileApi = {
   // 上传文件
@@ -9,7 +29,7 @@ const FileApi = {
     });
     return new Promise((resolve, reject) => {
       uni.uploadFile({
-        url: baseUrl + apiPath + '/file/upload',
+        url: getSystemBaseUrl() + apiPath + '/file/upload',
         filePath: file,
         name: 'file',
         header: {
@@ -41,6 +61,9 @@ const FileApi = {
       });
     });
   },
+
+  // 规范化上传接口返回值
+  normalizeUploadResult,
 
   // 获取文件预签名地址
   getFilePresignedUrl: (name, directory) => {
