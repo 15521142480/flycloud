@@ -8,7 +8,7 @@
         @tap="checked(item)"
       >
         <view class="store-img">
-          <image :src="item.logo" class="img" />
+          <image :src="sheep.$url.cdn(item.logo)" class="img" />
         </view>
         <view class="store-cent-left">
           <view class="store-name">{{ item.name }}</view>

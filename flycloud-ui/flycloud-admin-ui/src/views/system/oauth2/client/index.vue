@@ -80,7 +80,7 @@
         prop="logo"
       >
         <template #default="scope">
-          <img width="40px" height="40px" :src="scope.row.logo" />
+          <img width="40px" height="40px" :src="getFilePreviewUrl(scope.row.logo)" />
         </template>
       </el-table-column>
       <el-table-column :label="t('common.status')" align="center" prop="status">
@@ -170,6 +170,7 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as ClientApi from '@/api/system/oauth2/client'
 import ClientForm from './ClientForm.vue'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 const { t } = useI18n()
 defineOptions({ name: 'SystemOAuth2Client' })
 

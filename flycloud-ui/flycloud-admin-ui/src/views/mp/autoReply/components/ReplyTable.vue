@@ -37,8 +37,8 @@
           <WxVoicePlayer v-if="scope.row.responseMediaUrl" :url="scope.row.responseMediaUrl" />
         </div>
         <div v-else-if="scope.row.responseMessageType === 'image'">
-          <a target="_blank" :href="scope.row.responseMediaUrl">
-            <img :src="scope.row.responseMediaUrl" style="width: 100px" />
+          <a target="_blank" :href="getFilePreviewUrl(scope.row.responseMediaUrl)">
+            <img :src="getFilePreviewUrl(scope.row.responseMediaUrl)" style="width: 100px" />
           </a>
         </div>
         <div
@@ -101,6 +101,7 @@ import WxVideoPlayer from '@/views/mp/components/wx-video-play'
 import WxVoicePlayer from '@/views/mp/components/wx-voice-play'
 import WxMusic from '@/views/mp/components/wx-music'
 import WxNews from '@/views/mp/components/wx-news'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { MsgType } from './types'

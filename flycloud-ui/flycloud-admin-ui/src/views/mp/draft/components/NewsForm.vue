@@ -10,7 +10,7 @@
             @click="activeNewsIndex = index"
           >
             <div class="news-content">
-              <img class="material-img" :src="news.thumbUrl" />
+              <img class="material-img" :src="getFilePreviewUrl(news.thumbUrl)" />
               <div class="news-content-title">{{ news.title }}</div>
             </div>
             <div class="child" v-if="newsList.length > 1">
@@ -37,7 +37,7 @@
             <div class="news-content-item">
               <div class="news-content-item-title">{{ news.title }}</div>
               <div class="news-content-item-img">
-                <img class="material-img" :src="news.thumbUrl" width="100%" />
+                <img class="material-img" :src="getFilePreviewUrl(news.thumbUrl)" width="100%" />
               </div>
             </div>
             <div class="child">
@@ -121,7 +121,11 @@
         </el-row>
         <!--富文本编辑器组件-->
         <el-row>
-          <Editor v-model="activeNewsItem.content" :editor-config="editorConfig" directory="editor-mall" />
+          <Editor
+            v-model="activeNewsItem.content"
+            :editor-config="editorConfig"
+            directory="editor-mall"
+          />
         </el-row>
       </div>
     </el-main>
@@ -130,6 +134,7 @@
 
 <script lang="ts" setup>
 import { Editor } from '@/components/Editor'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { createEditorConfig } from '../editor-config'
 import CoverSelect from './CoverSelect.vue'
 import { type NewsItem, createEmptyNewsItem } from './types'

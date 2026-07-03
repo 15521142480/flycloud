@@ -29,7 +29,11 @@
         <el-button @click="resetQuery"
           ><Icon icon="ep:refresh" class="mr-5px" />{{ t('common.reset') }}</el-button
         >
-        <el-button type="primary" @click="openForm('create')" v-hasPermi="['mp:account:saveOrUpdate']">
+        <el-button
+          type="primary"
+          @click="openForm('create')"
+          v-hasPermi="['mp:account:saveOrUpdate']"
+        >
           <Icon icon="ep:plus" class="mr-5px" /> {{ t('extra.kf6e9f8c0') }}
         </el-button>
       </el-form-item>
@@ -65,7 +69,7 @@
         <template #default="scope">
           <img
             v-if="scope.row.qrCodeUrl"
-            :src="scope.row.qrCodeUrl"
+            :src="getFilePreviewUrl(scope.row.qrCodeUrl)"
             :alt="t('extra.k22b03c02')"
             style="display: inline-block; height: 100px"
           />
@@ -123,6 +127,7 @@
 </template>
 <script lang="ts" setup>
 import * as AccountApi from '@/api/mp/account'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import AccountForm from './AccountForm.vue'
 const { t } = useI18n()
 defineOptions({ name: 'MpAccount' })

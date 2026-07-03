@@ -10,7 +10,7 @@
     <div v-if="props.type === 'image'">
       <div class="waterfall" v-loading="loading">
         <div class="waterfall-item" v-for="item in list" :key="item.mediaId">
-          <img class="material-img" :src="item.url" />
+          <img class="material-img" :src="getFilePreviewUrl(item.url)" />
           <p class="item-name">{{ item.name }}</p>
           <el-row class="ope-row">
             <el-button type="success" @click="selectMaterialFun(item)">
@@ -164,6 +164,7 @@ import { NewsType } from './types'
 import * as MpMaterialApi from '@/api/mp/material'
 import * as MpFreePublishApi from '@/api/mp/freePublish'
 import * as MpDraftApi from '@/api/mp/draft'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 const { t } = useI18n()
 defineOptions({ name: 'WxMaterialSelect' })

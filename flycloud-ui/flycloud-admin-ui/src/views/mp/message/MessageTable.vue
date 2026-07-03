@@ -110,8 +110,8 @@
             <wx-voice-player :url="scope.row.mediaUrl" :content="scope.row.recognition" />
           </div>
           <div v-else-if="scope.row.type === MsgType.Image">
-            <a target="_blank" :href="scope.row.mediaUrl">
-              <img :src="scope.row.mediaUrl" style="width: 100px" />
+            <a target="_blank" :href="getFilePreviewUrl(scope.row.mediaUrl)">
+              <img :src="getFilePreviewUrl(scope.row.mediaUrl)" style="width: 100px" />
             </a>
           </div>
           <div v-else-if="scope.row.type === MsgType.Video || scope.row.type === 'shortvideo'">
@@ -177,6 +177,7 @@ import WxVoicePlayer from '@/views/mp/components/wx-voice-play'
 import WxLocation from '@/views/mp/components/wx-location'
 import WxMusic from '@/views/mp/components/wx-music'
 import WxNews from '@/views/mp/components/wx-news'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'
 import { MsgType } from '@/views/mp/components/wx-msg/types'
 const { t } = useI18n()

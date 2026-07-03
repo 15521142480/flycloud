@@ -5,7 +5,7 @@
       <el-image
         v-if="newsItem.thumbUrl"
         style="width: 300px; max-height: 300px"
-        :src="newsItem.thumbUrl"
+        :src="getFilePreviewUrl(newsItem.thumbUrl)"
         fit="contain"
       />
       <Icon
@@ -68,6 +68,7 @@ import WxMaterialSelect from '@/views/mp/components/wx-material-select'
 import { getAccessToken } from '@/utils/auth'
 import type { UploadFiles, UploadProps, UploadRawFile } from 'element-plus'
 import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { NewsItem } from './types'
 const { t } = useI18n()
 const message = useMessage()

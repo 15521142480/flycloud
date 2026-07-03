@@ -9,8 +9,8 @@
     </div>
 
     <div v-else-if="item.type === MsgType.Image">
-      <a target="_blank" :href="item.mediaUrl">
-        <img :src="item.mediaUrl" style="width: 100px" />
+      <a target="_blank" :href="getFilePreviewUrl(item.mediaUrl)">
+        <img :src="getFilePreviewUrl(item.mediaUrl)" style="width: 100px" />
       </a>
     </div>
 
@@ -56,6 +56,7 @@ import WxLocation from '@/views/mp/components/wx-location'
 import WxMusic from '@/views/mp/components/wx-music'
 import MsgEvent from './MsgEvent.vue'
 import { MsgType } from '../types'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 
 defineOptions({ name: 'Msg' })
 

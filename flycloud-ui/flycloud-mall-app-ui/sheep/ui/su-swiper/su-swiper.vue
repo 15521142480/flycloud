@@ -24,7 +24,7 @@
               v-if="item.type === 'image'"
               class="swiper-image"
               :mode="props.imageMode"
-              :src="item.src"
+              :src="sheep.$url.cdn(item.src)"
               width="100%"
               height="100%"
               @load="onImgLoad"

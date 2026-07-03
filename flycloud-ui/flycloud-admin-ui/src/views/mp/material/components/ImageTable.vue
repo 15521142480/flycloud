@@ -1,8 +1,8 @@
 <template>
   <div class="waterfall" v-loading="props.loading">
     <div class="waterfall-item" v-for="item in props.list" :key="item.id">
-      <a target="_blank" :href="item.url">
-        <img class="material-img" :src="item.url" />
+      <a target="_blank" :href="getFilePreviewUrl(item.url)">
+        <img class="material-img" :src="getFilePreviewUrl(item.url)" />
         <div class="item-name">{{ item.name }}</div>
       </a>
       <el-row justify="center">
@@ -20,6 +20,8 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
+
 const props = defineProps<{
   list: any[]
   loading: boolean

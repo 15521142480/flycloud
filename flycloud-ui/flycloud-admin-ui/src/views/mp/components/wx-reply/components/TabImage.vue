@@ -2,7 +2,7 @@
   <div>
     <!-- 情况一：已经选择好素材、或者上传好图片 -->
     <div class="select-item" v-if="reply.url">
-      <img class="material-img" :src="reply.url" />
+      <img class="material-img" :src="getFilePreviewUrl(reply.url)" />
       <p class="item-name" v-if="reply.name">{{ reply.name }}</p>
       <el-row class="ope-row" justify="center">
         <el-button type="danger" circle @click="onDelete">
@@ -64,6 +64,7 @@ import WxMaterialSelect from '@/views/mp/components/wx-material-select'
 import { UploadType, useBeforeUpload } from '@/views/mp/hooks/useUpload'
 import type { UploadRawFile } from 'element-plus'
 import { getAccessToken } from '@/utils/auth'
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { Reply } from './types'
 const { t } = useI18n()
 const message = useMessage()

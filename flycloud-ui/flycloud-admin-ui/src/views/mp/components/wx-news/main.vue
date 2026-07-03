@@ -13,7 +13,7 @@
         <div class="news-main">
           <div class="news-content">
             <el-image
-              :src="article.picUrl"
+              :src="getFilePreviewUrl(article.picUrl)"
               class="material-img"
               style="width: 100%; height: 120px"
             />
@@ -29,7 +29,7 @@
           <div class="news-content-item">
             <div class="news-content-item-title">{{ article.title }}</div>
             <div class="news-content-item-img">
-              <img :src="article.picUrl" class="material-img" height="100%" />
+              <img :src="getFilePreviewUrl(article.picUrl)" class="material-img" height="100%" />
             </div>
           </div>
         </div>
@@ -39,6 +39,8 @@
 </template>
 
 <script lang="ts" setup>
+import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
+
 defineOptions({ name: 'WxNews' })
 
 const props = withDefaults(
