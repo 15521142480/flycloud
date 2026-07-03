@@ -66,6 +66,7 @@
             >
               <UploadImg
                 v-model="element.imgUrl"
+                directory="diy"
                 draggable="false"
                 height="80px"
                 width="100%"
@@ -76,6 +77,7 @@
               <el-form-item label="封面" class="m-b-8px!" label-width="40px">
                 <UploadImg
                   v-model="element.imgUrl"
+                  directory="diy"
                   draggable="false"
                   height="80px"
                   width="100%"

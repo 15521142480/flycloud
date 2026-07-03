@@ -19,7 +19,7 @@
             <ColorInput v-model="formData.bgColor" />
           </el-form-item>
           <el-form-item label="上传图片" prop="bgImg" v-else>
-            <UploadImg v-model="formData.bgImg" :limit="1">
+            <UploadImg v-model="formData.bgImg" directory="diy" :limit="1">
               <template #tip>建议宽度 750px</template>
             </UploadImg>
           </el-form-item>

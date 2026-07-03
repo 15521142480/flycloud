@@ -36,7 +36,7 @@
         <el-rate v-model="formData.benefitScores" />
       </el-form-item>
       <el-form-item label="评论图片" prop="picUrls">
-        <UploadImgs v-model="formData.picUrls" :limit="9" height="60px" width="60px" />
+        <UploadImgs v-model="formData.picUrls" directory="mall" :limit="9" height="60px" width="60px" />
       </el-form-item>
     </el-form>
     <template #footer>

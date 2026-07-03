@@ -43,7 +43,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="背景图片" prop="bgImg">
-          <UploadImg v-model="formData.bgImg" height="80px" width="100%" class="min-w-160px" />
+          <UploadImg v-model="formData.bgImg" directory="diy" height="80px" width="100%" class="min-w-160px" />
         </el-form-item>
         <el-form-item label="文字颜色" prop="textColor">
           <ColorInput v-model="formData.textColor" />

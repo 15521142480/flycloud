@@ -57,7 +57,7 @@
             :label="t('auto.views.crm.followup.FollowUpRecordForm.kbe8da62e')"
             prop="picUrls"
           >
-            <UploadImgs v-model="formData.picUrls" class="min-w-80px" />
+            <UploadImgs v-model="formData.picUrls" directory="crm" class="min-w-80px" />
           </el-form-item>
         </el-col>
         <el-col :span="12">

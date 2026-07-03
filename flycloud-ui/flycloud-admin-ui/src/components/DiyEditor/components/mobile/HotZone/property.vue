@@ -3,7 +3,7 @@
     <!-- 表单 -->
     <el-form label-width="80px" :model="formData" class="m-t-8px">
       <el-form-item label="上传图片" prop="imgUrl">
-        <UploadImg v-model="formData.imgUrl" height="50px" width="auto" class="min-w-80px">
+        <UploadImg v-model="formData.imgUrl" directory="diy" height="50px" width="auto" class="min-w-80px">
           <template #tip>
             <el-text type="info" size="small"> 推荐宽度 750</el-text>
           </template>

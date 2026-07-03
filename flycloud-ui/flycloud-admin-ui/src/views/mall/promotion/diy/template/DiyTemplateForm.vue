@@ -14,7 +14,7 @@
         <el-input v-model="formData.remark" placeholder="请输入备注" type="textarea" />
       </el-form-item>
       <el-form-item label="预览图" prop="previewPicUrls">
-        <UploadImgs v-model="formData.previewPicUrls" />
+        <UploadImgs directory="mall" v-model="formData.previewPicUrls" />
       </el-form-item>
     </el-form>
     <template #footer>

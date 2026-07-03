@@ -35,7 +35,7 @@
         <ColorInput v-model="formData!.style.bgColor" />
       </el-form-item>
       <el-form-item label="选择图片" v-if="formData!.style.bgType === 'img'">
-        <UploadImg v-model="formData!.style.bgImg" width="100%" height="50px" class="min-w-200px">
+        <UploadImg v-model="formData!.style.bgImg" directory="diy" width="100%" height="50px" class="min-w-200px">
           <template #tip> 建议尺寸 375 * 50 </template>
         </UploadImg>
       </el-form-item>
@@ -48,6 +48,7 @@
             <div class="flex flex-col items-center justify-between">
               <UploadImg
                 v-model="element.iconUrl"
+                directory="diy"
                 width="40px"
                 height="40px"
                 :show-delete="false"
@@ -58,6 +59,7 @@
             <div>
               <UploadImg
                 v-model="element.activeIconUrl"
+                directory="diy"
                 width="40px"
                 height="40px"
                 :show-delete="false"

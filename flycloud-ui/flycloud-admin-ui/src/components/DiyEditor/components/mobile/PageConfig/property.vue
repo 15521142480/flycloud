@@ -11,7 +11,7 @@
       <ColorInput v-model="formData!.backgroundColor" />
     </el-form-item>
     <el-form-item label="背景图片" prop="backgroundImage">
-      <UploadImg v-model="formData!.backgroundImage" :limit="1">
+      <UploadImg v-model="formData!.backgroundImage" directory="diy" :limit="1">
         <template #tip>建议宽度 750px</template>
       </UploadImg>
     </el-form-item>

@@ -25,6 +25,7 @@
       <el-form-item label="上传封面" prop="posterUrl">
         <UploadImg
           v-model="formData.posterUrl"
+          directory="diy"
           draggable="false"
           height="80px"
           width="100%"

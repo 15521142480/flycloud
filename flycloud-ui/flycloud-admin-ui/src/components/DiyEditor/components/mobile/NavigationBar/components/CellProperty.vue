@@ -34,7 +34,7 @@
       <!-- 2. 图片 -->
       <template v-else-if="cell.type === 'image'">
         <el-form-item :prop="`cell[${cellIndex}].imgUrl`" label="图片">
-          <UploadImg v-model="cell.imgUrl" :limit="1" height="56px" width="56px">
+          <UploadImg v-model="cell.imgUrl" directory="diy" :limit="1" height="56px" width="56px">
             <template #tip>建议尺寸 56*56</template>
           </UploadImg>
         </el-form-item>

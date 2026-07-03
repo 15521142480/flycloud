@@ -26,7 +26,7 @@
         <Draggable v-model="formData.list" :empty-item="cloneDeep(EMPTY_MENU_SWIPER_ITEM_PROPERTY)">
           <template #default="{ element }">
             <el-form-item label="图标" prop="iconUrl">
-              <UploadImg v-model="element.iconUrl" height="80px" width="80px">
+              <UploadImg v-model="element.iconUrl" directory="diy" height="80px" width="80px">
                 <template #tip> 建议尺寸：98 * 98 </template>
               </UploadImg>
             </el-form-item>

@@ -15,7 +15,7 @@
       <Draggable v-model="formData.list" :empty-item="{ textColor: '#fff' }">
         <template #default="{ element, index }">
           <el-form-item label="图标" :prop="`list[${index}].imgUrl`">
-            <UploadImg v-model="element.imgUrl" height="56px" width="56px" />
+            <UploadImg v-model="element.imgUrl" directory="diy" height="56px" width="56px" />
           </el-form-item>
           <el-form-item label="文字" :prop="`list[${index}].text`">
             <InputWithColor v-model="element.text" v-model:color="element.textColor" />

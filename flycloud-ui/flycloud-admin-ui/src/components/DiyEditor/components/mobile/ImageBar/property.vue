@@ -4,6 +4,7 @@
       <el-form-item label="上传图片" prop="imgUrl">
         <UploadImg
           v-model="formData.imgUrl"
+          directory="diy"
           draggable="false"
           height="80px"
           width="100%"

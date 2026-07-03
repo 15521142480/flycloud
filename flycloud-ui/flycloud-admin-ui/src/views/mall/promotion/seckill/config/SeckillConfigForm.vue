@@ -25,7 +25,7 @@
         />
       </el-form-item>
       <el-form-item label="秒杀轮播图" prop="sliderPicUrls">
-        <UploadImgs v-model="sliderPicUrls" placeholder="请输入秒杀轮播图" />
+        <UploadImgs v-model="sliderPicUrls" directory="mall" placeholder="请输入秒杀轮播图" />
       </el-form-item>
       <el-form-item label="活动状态" prop="status">
         <el-radio-group v-model="formData.status">

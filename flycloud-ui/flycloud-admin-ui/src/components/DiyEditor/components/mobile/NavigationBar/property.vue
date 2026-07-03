@@ -32,7 +32,7 @@
     </el-form-item>
     <el-form-item label="背景图片" prop="bgImg" v-else>
       <div class="flex items-center">
-        <UploadImg v-model="formData.bgImg" :limit="1" width="56px" height="56px" />
+        <UploadImg v-model="formData.bgImg" directory="diy" :limit="1" width="56px" height="56px" />
         <span class="text-xs text-gray-400 ml-2 mb-2">建议宽度：750</span>
       </div>
     </el-form-item>

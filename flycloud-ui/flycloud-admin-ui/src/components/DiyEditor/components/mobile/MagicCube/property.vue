@@ -14,7 +14,7 @@
       <template v-for="(hotArea, index) in formData.list" :key="index">
         <template v-if="selectedHotAreaIndex === index">
           <el-form-item label="上传图片" :prop="`list[${index}].imgUrl`">
-            <UploadImg v-model="hotArea.imgUrl" height="80px" width="80px" />
+            <UploadImg v-model="hotArea.imgUrl" directory="diy" height="80px" width="80px" />
           </el-form-item>
           <el-form-item label="链接" :prop="`list[${index}].url`">
             <AppLinkInput v-model="hotArea.url" />
