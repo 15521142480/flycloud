@@ -1,5 +1,6 @@
 import request from '@/sheep/request';
 import { getAuthBaseUrl } from '@/sheep/config/server';
+import { apiPath } from '@/sheep/config';
 
 const CAPTCHA_IMAGE_WIDTH = Number(import.meta.env.CAPTCHA_IMAGE_WIDTH);
 const CAPTCHA_IMAGE_HEIGHT = Number(import.meta.env.CAPTCHA_IMAGE_HEIGHT);
@@ -11,8 +12,9 @@ const CaptchaApi = {
   // 获取图文点选验证码题目。
   getImageTextClickCaptcha: () => {
     return request({
-      baseURL: getAuthBaseUrl(),
-      url: '/auth/getImageTextClickCaptcha',
+      // baseURL: getAuthBaseUrl(),
+      // url: '/auth/getImageTextClickCaptcha',
+      url: getAuthBaseUrl() + apiPath + '/auth/getImageTextClickCaptcha',
       method: 'POST',
       custom: {
         isToken: false,
@@ -24,8 +26,7 @@ const CaptchaApi = {
   // 校验图文点选验证码坐标。
   checkImageTextClickCaptcha: (data) => {
     return request({
-      baseURL: getAuthBaseUrl(),
-      url: '/auth/checkGetImageTextClickCaptcha',
+      url: getAuthBaseUrl() + apiPath + '/auth/checkGetImageTextClickCaptcha',
       method: 'POST',
       data,
       custom: {

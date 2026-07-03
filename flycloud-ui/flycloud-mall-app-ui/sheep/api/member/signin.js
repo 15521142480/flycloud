@@ -1,24 +1,26 @@
 import request from '@/sheep/request';
+import { getSystemBaseUrl } from '@/sheep/config/server';
+import { apiPath } from '@/sheep/config';
 
 const SignInApi = {
   // 获得签到规则列表
   getSignInConfigList: () => {
     return request({
-      url: '/member/sign-in/config/list',
+      url: getSystemBaseUrl() + apiPath + '/member/sign-in/config/list',
       method: 'GET',
     });
   },
   // 获得个人签到统计
   getSignInRecordSummary: () => {
     return request({
-      url: '/member/sign-in/record/get-summary',
+      url: getSystemBaseUrl() + apiPath + '/member/sign-in/record/get-summary',
       method: 'GET',
     });
   },
   // 签到
   createSignInRecord: () => {
     return request({
-      url: '/member/sign-in/record/create',
+      url: getSystemBaseUrl() + apiPath + '/member/sign-in/record/create',
       method: 'POST',
     });
   },
@@ -28,7 +30,7 @@ const SignInApi = {
       .map((key) => encodeURIComponent(key) + '=' + params[key])
       .join('&');
     return request({
-      url: `/member/sign-in/record/page?${queryString}`,
+      url: getSystemBaseUrl() + apiPath + `/member/sign-in/record/page?${queryString}`,
       method: 'GET',
     });
   },

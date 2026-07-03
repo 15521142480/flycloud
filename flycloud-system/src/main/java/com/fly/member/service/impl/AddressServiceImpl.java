@@ -11,6 +11,7 @@ import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.common.utils.ip.AreaUtils;
 import com.fly.member.mapper.MemberAddressMapper;
 import com.fly.member.service.IAddressService;
 import com.fly.system.api.member.domain.MemberAddress;
@@ -265,6 +266,7 @@ public class AddressServiceImpl extends BaseServiceImpl<MemberAddressMapper, Mem
         respVo.setName(address.getName());
         respVo.setMobile(address.getMobile());
         respVo.setAreaId(address.getAreaId());
+        respVo.setAreaName(AreaUtils.format(Integer.valueOf(String.valueOf(address.getAreaId()))));
         respVo.setDetailAddress(address.getDetailAddress());
         respVo.setDefaultStatus(address.getDefaultStatus());
         return respVo;

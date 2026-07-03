@@ -1,13 +1,15 @@
 import request from '@/sheep/request';
+import { getSystemBaseUrl } from '@/sheep/config/server';
+import { apiPath } from '@/sheep/config';
 
 const SocialApi = {
   // 获得社交用户
   getSocialUser: (type) => {
     return request({
-      url: '/member/social-user/get',
+      url: getSystemBaseUrl() + apiPath + '/member/social-user/get',
       method: 'GET',
       params: {
-        type
+        type,
       },
       custom: {
         showLoading: false,
@@ -17,12 +19,12 @@ const SocialApi = {
   // 社交绑定
   socialBind: (type, code, state) => {
     return request({
-      url: '/member/social-user/bind',
+      url: getSystemBaseUrl() + apiPath + '/member/social-user/bind',
       method: 'POST',
       data: {
         type,
         code,
-        state
+        state,
       },
       custom: {
         custom: {
@@ -36,11 +38,11 @@ const SocialApi = {
   // 社交绑定
   socialUnbind: (type, openid) => {
     return request({
-      url: '/member/social-user/unbind',
+      url: getSystemBaseUrl() + apiPath + '/member/social-user/unbind',
       method: 'DELETE',
       data: {
         type,
-        openid
+        openid,
       },
       custom: {
         showLoading: false,
@@ -52,7 +54,7 @@ const SocialApi = {
   // 获取订阅消息模板列表
   getSubscribeTemplateList: () =>
     request({
-      url: '/member/social-user/get-subscribe-template-list',
+      url: getSystemBaseUrl() + apiPath + '/member/social-user/get-subscribe-template-list',
       method: 'GET',
       custom: {
         showError: false,
@@ -62,7 +64,7 @@ const SocialApi = {
   // 获取微信小程序码
   getWxaQrcode: async (path, query) => {
     return await request({
-      url: '/member/social-user/wxa-qrcode',
+      url: getSystemBaseUrl() + apiPath + '/member/social-user/wxa-qrcode',
       method: 'POST',
       data: {
         scene: query,

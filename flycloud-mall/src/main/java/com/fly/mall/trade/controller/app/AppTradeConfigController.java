@@ -64,7 +64,7 @@ public class AppTradeConfigController {
     /**
      * 获得详情。
      */
-    @GetMapping({"/get-detail", "/get"})
+    @GetMapping("/get-detail")
     public R<TradeConfigVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(tradeConfigService.queryById(id));
     }

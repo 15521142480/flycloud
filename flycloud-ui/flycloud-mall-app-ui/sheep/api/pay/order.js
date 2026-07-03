@@ -1,4 +1,6 @@
 import request from '@/sheep/request';
+import { getSystemBaseUrl } from '@/sheep/config/server';
+import { apiPath } from '@/sheep/config';
 
 const PayOrderApi = {
   // 获得支付订单
@@ -8,7 +10,7 @@ const PayOrderApi = {
     if (no) params.no = no;
     if (sync !== undefined) params.sync = sync;
     return request({
-      url: '/pay/order/get',
+      url: getSystemBaseUrl() + apiPath + '/pay/order/get',
       method: 'GET',
       params,
     });
@@ -16,7 +18,7 @@ const PayOrderApi = {
   // 提交支付订单
   submitOrder: (data) => {
     return request({
-      url: '/pay/order/submit',
+      url: getSystemBaseUrl() + apiPath + '/pay/order/submit',
       method: 'POST',
       data,
     });

@@ -1,6 +1,7 @@
 import request from '@/sheep/request';
-import { getAuthBaseUrl } from '@/sheep/config/server';
+import { getAuthBaseUrl, getSystemBaseUrl } from '@/sheep/config/server';
 import md5 from '@/sheep/helper/md5';
+import { apiPath } from '@/sheep/config';
 
 const BASIC_AUTHORIZATION = 'Basic Zmx5OmZseV9zZWNyZXQ=';
 
@@ -16,8 +17,9 @@ const AuthUtil = {
       ImageTextClickCaptchaSuccessValue: data.imageTextClickCaptchaSuccessValue,
     };
     return request({
-      baseURL: getAuthBaseUrl(),
-      url: '/oauth/token',
+      // baseURL: getAuthBaseUrl(),
+      // url: '/oauth/token',
+      url: getAuthBaseUrl() + '/oauth/token',
       method: 'POST',
       data: newData,
       header: {
@@ -37,7 +39,7 @@ const AuthUtil = {
   // 使用手机 + 密码登录
   login: (data) => {
     return request({
-      url: '/member/auth/login',
+      url: getAuthBaseUrl() + '/auth/login',
       method: 'POST',
       data,
       custom: {
@@ -50,7 +52,7 @@ const AuthUtil = {
   // 使用手机 + 验证码登录
   smsLogin: (data) => {
     return request({
-      url: '/member/auth/sms-login',
+      url: getAuthBaseUrl() + '/auth/sms-login',
       method: 'POST',
       data,
       custom: {
@@ -63,7 +65,7 @@ const AuthUtil = {
   // 发送手机验证码
   sendSmsCode: (mobile, scene) => {
     return request({
-      url: '/member/auth/send-sms-code',
+      url: getAuthBaseUrl() + '/auth/send-sms-code',
       method: 'POST',
       data: {
         mobile,
@@ -79,16 +81,14 @@ const AuthUtil = {
   // 登出系统
   logout: () => {
     return request({
-      baseURL: getAuthBaseUrl(),
-      url: '/oauth/logOut',
+      url: getAuthBaseUrl() + '/oauth/logOut',
       method: 'POST',
     });
   },
   // 刷新令牌
   refreshToken: (refreshToken) => {
     return request({
-      baseURL: getAuthBaseUrl(),
-      url: '/oauth/token',
+      url: getAuthBaseUrl() + '/oauth/token',
       method: 'POST',
       data: {
         grant_type: 'refresh_token',
@@ -108,7 +108,7 @@ const AuthUtil = {
   // 社交授权的跳转
   socialAuthRedirect: (type, redirectUri) => {
     return request({
-      url: '/member/auth/social-auth-redirect',
+      url: getAuthBaseUrl() + '/auth/social-auth-redirect',
       method: 'GET',
       params: {
         type,
@@ -123,7 +123,7 @@ const AuthUtil = {
   // 社交快捷登录
   socialLogin: (type, code, state) => {
     return request({
-      url: '/member/auth/social-login',
+      url: getAuthBaseUrl() + '/auth/social-login',
       method: 'POST',
       data: {
         type,
@@ -139,7 +139,7 @@ const AuthUtil = {
   // 微信小程序的一键登录
   weixinMiniAppLogin: (phoneCode, loginCode, state) => {
     return request({
-      url: '/member/auth/weixin-mini-app-login',
+      url: getAuthBaseUrl() + '/auth/weixin-mini-app-login',
       method: 'POST',
       data: {
         phoneCode,
@@ -156,7 +156,7 @@ const AuthUtil = {
   // 创建微信 JS SDK 初始化所需的签名
   createWeixinMpJsapiSignature: (url) => {
     return request({
-      url: '/member/auth/create-weixin-jsapi-signature',
+      url: getAuthBaseUrl() + '/auth/create-weixin-jsapi-signature',
       method: 'POST',
       params: {
         url,

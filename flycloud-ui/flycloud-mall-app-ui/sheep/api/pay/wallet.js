@@ -1,10 +1,12 @@
 import request from '@/sheep/request';
+import { getSystemBaseUrl } from '@/sheep/config/server';
+import { apiPath } from '@/sheep/config';
 
 const PayWalletApi = {
   // 获取钱包
   getPayWallet() {
     return request({
-      url: '/pay/wallet/get',
+      url: getSystemBaseUrl() + apiPath + '/pay/wallet/get',
       method: 'GET',
       custom: {
         showLoading: false,
@@ -18,7 +20,7 @@ const PayWalletApi = {
       .map((key) => encodeURIComponent(key) + '=' + params[key])
       .join('&');
     return request({
-      url: `/pay/wallet-transaction/page?${queryString}`,
+      url: getSystemBaseUrl() + apiPath + `/pay/wallet-transaction/page?${queryString}`,
       method: 'GET',
     });
   },
@@ -26,7 +28,7 @@ const PayWalletApi = {
   getWalletTransactionSummary: (params) => {
     const queryString = `createTime=${params.createTime[0]}&createTime=${params.createTime[1]}`;
     return request({
-      url: `/pay/wallet-transaction/get-summary?${queryString}`,
+      url: getSystemBaseUrl() + apiPath + `/pay/wallet-transaction/get-summary?${queryString}`,
       // url: `/pay/wallet-transaction/get-summary`,
       method: 'GET',
       // params: params
@@ -35,7 +37,7 @@ const PayWalletApi = {
   // 获得钱包充值套餐列表
   getWalletRechargePackageList: () => {
     return request({
-      url: '/pay/wallet-recharge-package/list',
+      url: getSystemBaseUrl() + apiPath + '/pay/wallet-recharge-package/list',
       method: 'GET',
       custom: {
         showError: false,
@@ -46,7 +48,7 @@ const PayWalletApi = {
   // 创建钱包充值记录（发起充值）
   createWalletRecharge: (data) => {
     return request({
-      url: '/pay/wallet-recharge/create',
+      url: getSystemBaseUrl() + apiPath + '/pay/wallet-recharge/create',
       method: 'POST',
       data,
     });
@@ -54,7 +56,7 @@ const PayWalletApi = {
   // 获得钱包充值记录分页
   getWalletRechargePage: (params) => {
     return request({
-      url: '/pay/wallet-recharge/page',
+      url: getSystemBaseUrl() + apiPath + '/pay/wallet-recharge/page',
       method: 'GET',
       params,
       custom: {

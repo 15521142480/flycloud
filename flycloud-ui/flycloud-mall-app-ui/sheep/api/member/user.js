@@ -1,17 +1,17 @@
 import request from '@/sheep/request';
 import { getSystemBaseUrl } from '@/sheep/config/server';
+// import { apiPath } from '@/sheep/config';
 
 const UserApi = {
   // 获得基本信息
   getUserInfo: () => {
     return request({
-      baseURL: getSystemBaseUrl(),
-      url: '/user/getUserInfo',
+      url: getSystemBaseUrl() + '/user/getUserInfo',
       method: 'GET',
       custom: {
         showLoading: false,
         auth: true,
-      }
+      },
     });
   },
   // getUserInfo: () => {

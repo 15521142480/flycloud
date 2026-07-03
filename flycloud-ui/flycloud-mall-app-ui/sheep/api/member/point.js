@@ -1,4 +1,6 @@
 import request from '@/sheep/request';
+import { getSystemBaseUrl } from '@/sheep/config/server';
+import { apiPath } from '@/sheep/config';
 
 const PointApi = {
   // 获得用户积分记录分页
@@ -10,7 +12,7 @@ const PointApi = {
       .map((key) => encodeURIComponent(key) + '=' + params[key])
       .join('&');
     return request({
-      url: `/member/point/record/page?${queryString}`,
+      url: getSystemBaseUrl() + apiPath + `/member/point/record/page?${queryString}`,
       method: 'GET',
     });
   }

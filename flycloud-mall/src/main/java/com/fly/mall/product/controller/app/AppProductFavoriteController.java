@@ -59,7 +59,7 @@ public class AppProductFavoriteController {
      */
     @GetMapping({"/exists", "/exits"})
     public R<Boolean> isFavoriteExists(ProductFavoriteBo bo) {
-        return R.result(productFavoriteService.isFavoriteExists(UserUtils.getCurUserId(), bo.getSpuId()));
+        return R.ok(productFavoriteService.isFavoriteExists(UserUtils.getCurUserId(), bo.getSpuId()));
     }
 
     /**

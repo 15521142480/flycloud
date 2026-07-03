@@ -88,6 +88,13 @@
             <artifactId>easy-captcha</artifactId>
         </dependency>
 
+        <!-- 热更新 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 
