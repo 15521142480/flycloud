@@ -10,6 +10,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.json.JsonUtils;
@@ -72,6 +73,7 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createPayNotifyTask(Integer type, Long dataId) {
+
         PayNotifyTask task = new PayNotifyTask();
         task.setType(type);
         task.setDataId(dataId);
@@ -79,6 +81,10 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
         task.setNextNotifyTime(LocalDateTime.now());
         task.setNotifyTimes(0);
         task.setMaxNotifyTimes(PayNotifyTask.NOTIFY_FREQUENCY.length + 1);
+        task.setCreateBy(String.valueOf(UserUtils.getCurUserId()));
+        task.setCreateTime(LocalDateTime.now());
+        task.setUpdateTime(LocalDateTime.now());
+
         fillNotifyTaskBusinessInfo(task);
         if (StringUtils.isBlank(task.getNotifyUrl())) {
             log.info("[createPayNotifyTask][type({}) dataId({}) 未配置 notifyUrl，跳过通知任务创建]", type, dataId);
@@ -197,11 +203,15 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
      * 处理并更新通知结果。
      */
     private Integer processNotifyResult(PayNotifyTask task, R<?> invokeResult, Throwable invokeException) {
+
         int nextNotifyTimes = (task.getNotifyTimes() == null ? 0 : task.getNotifyTimes()) + 1;
         PayNotifyTask updateTask = new PayNotifyTask();
         updateTask.setId(task.getId());
         updateTask.setLastExecuteTime(LocalDateTime.now());
         updateTask.setNotifyTimes(nextNotifyTimes);
+        updateTask.setUpdateBy(UserUtils.getCurUserIdStr());
+        updateTask.setUpdateTime(LocalDateTime.now());
+
         if (invokeResult != null && invokeResult.isSuccess()) {
             updateTask.setStatus(PayNotifyStatusEnum.SUCCESS.getStatus());
             notifyTaskMapper.updateById(updateTask);

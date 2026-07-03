@@ -8,8 +8,8 @@
         <div :style="{ width: orderTableHeadWidthList[1] + 'px' }" class="flex justify-center">
           单价(元)/数量
         </div>
-        <div :style="{ width: orderTableHeadWidthList[2] + 'px' }" class="flex justify-center">
-          售后状态
+        <div :style="{ width: orderTableHeadWidthList[6] + 'px' }" class="flex justify-center">
+          订单状态
         </div>
         <div :style="{ width: orderTableHeadWidthList[3] + 'px' }" class="flex justify-center">
           实付金额(元)
@@ -20,8 +20,8 @@
         <div :style="{ width: orderTableHeadWidthList[5] + 'px' }" class="flex justify-center">
           配送方式
         </div>
-        <div :style="{ width: orderTableHeadWidthList[6] + 'px' }" class="flex justify-center">
-          订单状态
+        <div :style="{ width: orderTableHeadWidthList[2] + 'px' }" class="flex justify-center">
+          售后状态
         </div>
         <div :style="{ width: orderTableHeadWidthList[7] + 'px' }" class="flex justify-center">
           操作
@@ -100,14 +100,13 @@
             {{ floatToFixed2(row.price) }} 元 / {{ row.count }}
           </template>
         </el-table-column>
-        <el-table-column label="售后状态" prop="afterSaleStatus" width="120">
-          <template #default="{ row }">
-            <dict-tag
-              :type="DICT_TYPE.TRADE_ORDER_ITEM_AFTER_SALE_STATUS"
-              :value="row.afterSaleStatus"
-            />
+
+        <el-table-column align="center" label="订单状态" width="120">
+          <template #default>
+            <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="scope.row.status" />
           </template>
         </el-table-column>
+
         <el-table-column align="center" label="实际支付" min-width="120" prop="payPrice">
           <template #default>
             {{ floatToFixed2(scope.row.payPrice) + '元' }}
@@ -151,9 +150,12 @@
             <dict-tag :type="DICT_TYPE.TRADE_DELIVERY_TYPE" :value="scope.row.deliveryType" />
           </template>
         </el-table-column>
-        <el-table-column align="center" label="订单状态" width="120">
-          <template #default>
-            <dict-tag :type="DICT_TYPE.TRADE_ORDER_STATUS" :value="scope.row.status" />
+        <el-table-column label="售后状态" prop="afterSaleStatus" width="120">
+          <template #default="{ row }">
+            <dict-tag
+              :type="DICT_TYPE.TRADE_ORDER_ITEM_AFTER_SALE_STATUS"
+              :value="row.afterSaleStatus"
+            />
           </template>
         </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" width="160">

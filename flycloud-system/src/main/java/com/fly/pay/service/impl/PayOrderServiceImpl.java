@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayChannelEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.StringUtils;
 import com.fly.pay.enums.PayNotifyTypeEnum;
@@ -239,12 +240,12 @@ public class PayOrderServiceImpl implements IPayOrderService {
         updateOrder.setUpdateBy(String.valueOf(userId));
         updateOrder.setUpdateTime(LocalDateTime.now());
 
-        if (Objects.equals("wallet", submitReqVo.getChannelCode())) {
+        if (Objects.equals(PayChannelEnum.WALLET.getCode(), submitReqVo.getChannelCode())) {
             PayWallet wallet = payWalletServiceProvider.getObject().getOrCreateWallet(userId, order.getUserType());
             payWalletServiceProvider.getObject().reduceWalletBalance(wallet.getId(), String.valueOf(order.getId()),
                     PayWalletBizTypeEnum.PAYMENT, order.getPrice());
             markOrderSuccess(userId, updateOrder, extension);
-        } else if (Objects.equals("mock", submitReqVo.getChannelCode())) {
+        } else if (Objects.equals(PayChannelEnum.MOCK.getCode(), submitReqVo.getChannelCode())) {
             markOrderSuccess(userId, updateOrder, extension);
         }
         payOrderMapper.updateById(updateOrder);

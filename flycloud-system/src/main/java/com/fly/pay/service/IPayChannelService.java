@@ -23,5 +23,10 @@ public interface IPayChannelService {
     Long createChannel(PayChannelBo bo);
     Boolean saveOrUpdate(PayChannelBo bo);
     Boolean deleteById(Long id);
+
+    /**
+     * 获得指定应用的开启的渠道列表
+     */
     Set<String> getEnableChannelCodeList(Long appId);
+
 }

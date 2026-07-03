@@ -38,6 +38,11 @@ public class UserUtils {
 		FlyUser flyUser = getCurUser();
 		return flyUser != null ? flyUser.getId() : null;
 	}
+	public static String getCurUserIdStr() {
+
+		FlyUser flyUser = getCurUser();
+		return flyUser != null ? String.valueOf(flyUser.getId()) : null;
+	}
 
 	/**
 	 * 获取用户名称

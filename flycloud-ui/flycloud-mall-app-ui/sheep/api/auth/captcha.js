@@ -14,7 +14,7 @@ const CaptchaApi = {
     return request({
       // baseURL: getAuthBaseUrl(),
       // url: '/auth/getImageTextClickCaptcha',
-      url: getAuthBaseUrl() + apiPath + '/auth/getImageTextClickCaptcha',
+      url: getAuthBaseUrl() + '/auth/getImageTextClickCaptcha',
       method: 'POST',
       custom: {
         isToken: false,
@@ -26,7 +26,7 @@ const CaptchaApi = {
   // 校验图文点选验证码坐标。
   checkImageTextClickCaptcha: (data) => {
     return request({
-      url: getAuthBaseUrl() + apiPath + '/auth/checkGetImageTextClickCaptcha',
+      url: getAuthBaseUrl() + '/auth/checkGetImageTextClickCaptcha',
       method: 'POST',
       data,
       custom: {
