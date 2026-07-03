@@ -87,6 +87,7 @@
               <el-form-item label="视频" class="m-b-8px!" label-width="40px">
                 <UploadFile
                   v-model="element.videoUrl"
+                  directory="diy"
                   :file-type="['mp4']"
                   :limit="1"
                   :file-size="100"

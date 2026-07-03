@@ -92,7 +92,7 @@
             :label="t('auto.views.erp.finance.receipt.FinanceReceiptForm.k99f6fe6c')"
             prop="fileUrl"
           >
-            <UploadFile :is-show-tip="false" v-model="formData.fileUrl" :limit="1" />
+            <UploadFile :is-show-tip="false" v-model="formData.fileUrl"  directory="erp" :limit="1" />
           </el-form-item>
         </el-col>
       </el-row>

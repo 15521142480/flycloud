@@ -19,6 +19,7 @@
         </template>
         <UploadFile
           v-hasPermi="['mp:material:upload-permanent']"
+          directory="mp"
           :type="UploadType.Image"
           @uploaded="getList"
         >
@@ -46,6 +47,7 @@
         </template>
         <UploadFile
           v-hasPermi="['mp:material:upload-permanent']"
+          directory="mp"
           :type="UploadType.Voice"
           @uploaded="getList"
         >

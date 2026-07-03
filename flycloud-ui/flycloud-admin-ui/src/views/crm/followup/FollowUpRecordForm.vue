@@ -65,7 +65,7 @@
             :label="t('auto.views.crm.followup.FollowUpRecordForm.k99f6fe6c')"
             prop="fileUrls"
           >
-            <UploadFile v-model="formData.fileUrls" class="min-w-80px" />
+            <UploadFile v-model="formData.fileUrls" directory="crm" class="min-w-80px" />
           </el-form-item>
         </el-col>
         <el-col :span="24" v-if="formData.bizType == BizTypeEnum.CRM_CUSTOMER">

@@ -16,6 +16,7 @@
       <el-form-item label="上传视频" prop="videoUrl">
         <UploadFile
           v-model="formData.videoUrl"
+          directory="diy"
           :file-type="['mp4']"
           :limit="1"
           :file-size="100"
