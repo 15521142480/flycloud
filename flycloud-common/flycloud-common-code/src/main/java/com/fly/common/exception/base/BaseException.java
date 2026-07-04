@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class BaseException extends RuntimeException {
+
+
     private static final long serialVersionUID = 1L;
 
     /**

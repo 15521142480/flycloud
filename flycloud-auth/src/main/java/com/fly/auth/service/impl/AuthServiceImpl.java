@@ -85,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
             case AuthConstants.GRANT_TYPE_CAPTCHA -> authenticateCaptcha(loginParam);
             case AuthConstants.GRANT_TYPE_SMS -> authenticateSms(loginParam);
             case AuthConstants.GRANT_TYPE_SOCIAL -> authenticateSocial(loginParam);
-            default -> throw new AuthException(CommonConstants.FAIL, "不支持该认证类型");
+            default -> throw new AuthException("不支持该认证类型");
         };
 
         issueToken(authLoginRespVo, authentication);
@@ -149,13 +149,13 @@ public class AuthServiceImpl implements AuthService {
 //        Object codeFromRedis = redisService.get(Oauth2Constants.CAPTCHA_KEY + key);
 //
 //        if (StrUtil.isBlank(code)) {
-//            throw new AuthException(CommonConstants.FAIL, "请输入验证码");
+//            throw new AuthException("请输入验证码");
 //        }
 //        if (codeFromRedis == null) {
-//            throw new AuthException(CommonConstants.FAIL, "验证码已过期");
+//            throw new AuthException("验证码已过期");
 //        }
 //        if (!StrUtil.equalsIgnoreCase(code, codeFromRedis.toString())) {
-//            throw new AuthException(CommonConstants.FAIL, "验证码不正确");
+//            throw new AuthException("验证码不正确");
 //        }
 //
 //        redisService.del(Oauth2Constants.CAPTCHA_KEY + key);
@@ -188,13 +188,13 @@ public class AuthServiceImpl implements AuthService {
         Object codeFromRedis = redisService.get(Oauth2Constants.SMS_CODE_KEY + mobile);
 
         if (StrUtil.isBlank(captchaCode)) {
-            throw new AuthException(CommonConstants.FAIL, "请输入验证码");
+            throw new AuthException("请输入验证码");
         }
         if (codeFromRedis == null) {
-            throw new AuthException(CommonConstants.FAIL, "验证码已过期");
+            throw new AuthException("验证码已过期");
         }
         if (!StrUtil.equalsIgnoreCase(captchaCode, codeFromRedis.toString())) {
-            throw new AuthException(CommonConstants.FAIL, "验证码不正确");
+            throw new AuthException("验证码不正确");
         }
 
         redisService.del(Oauth2Constants.SMS_CODE_KEY + mobile);
@@ -214,20 +214,20 @@ public class AuthServiceImpl implements AuthService {
         Object codeFromRedis = redisService.get(AuthConstants.SOCIAL_STATE_PREFIX + state);
 
         if (StrUtil.isBlank(code)) {
-            throw new AuthException(CommonConstants.FAIL, "未传入请求参数");
+            throw new AuthException("未传入请求参数");
         }
         if (codeFromRedis == null) {
-            throw new AuthException(CommonConstants.FAIL, "openId已过期,请重新发起授权请求");
+            throw new AuthException("openId已过期,请重新发起授权请求");
         }
 
         String[] codeParts = code.split("-", 2);
         if (codeParts.length != 2) {
-            throw new AuthException(CommonConstants.FAIL, "社交登录参数格式不正确");
+            throw new AuthException("社交登录参数格式不正确");
         }
 
         AuthRequestFactory factory = factoryProvider.getIfAvailable();
         if (factory == null) {
-            throw new AuthException(CommonConstants.FAIL, "未配置第三方登录");
+            throw new AuthException("未配置第三方登录");
         }
         AuthRequest authRequest = factory.get(codeParts[0]);
         AuthCallback authCallback = AuthCallback.builder().code(codeParts[1]).state(state).build();
@@ -239,7 +239,7 @@ public class AuthServiceImpl implements AuthService {
             authUser = (AuthUser) response.getData();
         }
         if (authUser == null) {
-            throw new AuthException(CommonConstants.FAIL, "社交登录失败");
+            throw new AuthException("社交登录失败");
         }
 
         Authentication authentication = new SocialAuthenticationToken(authUser);
@@ -253,19 +253,19 @@ public class AuthServiceImpl implements AuthService {
         try {
             Authentication authenticated = authenticationManager.authenticate(authentication);
             if (authenticated == null || !authenticated.isAuthenticated()) {
-                throw new AuthException(CommonConstants.FAIL, "认证失败: " + principal);
+                throw new AuthException("认证失败: " + principal);
             }
             return authenticated;
         } catch (AccountStatusException | BadCredentialsException e) {
             log.error("登录失败:", e);
             String errorMsg = e.getMessage();
             if (errorMsg != null && errorMsg.contains("Bad credentials")) {
-                throw new AuthException(CommonConstants.FAIL, Oauth2Constants.NAME_OR_PSD_ERROR);
+                throw new AuthException(Oauth2Constants.NAME_OR_PSD_ERROR);
             }
             if (errorMsg != null && errorMsg.contains("User is disabled")) {
-                throw new AuthException(CommonConstants.FAIL, Oauth2Constants.USER_DISABLED_ERROR);
+                throw new AuthException(Oauth2Constants.USER_DISABLED_ERROR);
             }
-            throw new AuthException(CommonConstants.FAIL, errorMsg);
+            throw new AuthException(errorMsg);
         }
     }
 
@@ -280,11 +280,11 @@ public class AuthServiceImpl implements AuthService {
     public AuthLoginRespVo handleRefreshToken(String refreshToken) {
 
         if (StrUtil.isBlank(refreshToken)) {
-            throw new AuthException(CommonConstants.FAIL, "refresh token不能为空");
+            throw new AuthException("refresh token不能为空");
         }
         AuthLoginRespVo nextClaims = cachedClaims(refreshToken);
         if (nextClaims == null) {
-            throw new AuthException(CommonConstants.FAIL, "refresh token无效或已过期");
+            throw new AuthException("refresh token无效或已过期");
         }
 
         buildTokenResponse(nextClaims);

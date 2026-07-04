@@ -113,7 +113,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         CaptchaChallenge challenge = JsonUtils.parseObject(value, CaptchaChallenge.class);
         if (!matches(challenge.getAnswers(), bo.getPoints())) {
             log.error("Click captcha verify failed. captchaId={}", bo.getCaptchaId());
-            throw new AuthException(CommonConstants.FAIL, "验证码错误，请重新验证");
+            throw new AuthException("验证码错误，请重新验证");
         }
 
         String verification = UUID.randomUUID().toString().replace("-", "");
@@ -133,11 +133,11 @@ public class CaptchaServiceImpl implements CaptchaService {
     public void consumeImageTextClickCaptchaVerify(String captchaVerification) {
 
         if (!StringUtils.hasText(captchaVerification)) {
-            throw new AuthException(CommonConstants.FAIL, "请先完成验证码验证!");
+            throw new AuthException("请先完成验证码验证!");
         }
         Boolean deleted = redisService.del(AuthConstants.VERIFIED_KEY_PREFIX + captchaVerification);
         if (!Boolean.TRUE.equals(deleted)) {
-            throw new AuthException(CommonConstants.FAIL, "验证码已过期，请重新验证!");
+            throw new AuthException("验证码已过期，请重新验证!");
         }
     }
 

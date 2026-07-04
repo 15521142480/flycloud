@@ -85,7 +85,7 @@ public class GoViewProjectServiceImpl implements IGoViewProjectService {
      */
     private void validateProjectExists(Long id) {
         if (id == null || goViewProjectMapper.selectById(id) == null) {
-            throw new ServiceException(ErrorCodeConstants.GO_VIEW_PROJECT_NOT_EXISTS);
+            throw new ServiceException(ErrorCodeConstants.GO_VIEW_PROJECT_NOT_EXISTS.getMsg());
         }
     }
 

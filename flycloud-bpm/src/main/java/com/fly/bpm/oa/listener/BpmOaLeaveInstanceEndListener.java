@@ -35,7 +35,7 @@ public class BpmOaLeaveInstanceEndListener implements ExecutionListener {
         String businessKey = delegateExecution.getProcessInstanceBusinessKey();
         String instanceId = delegateExecution.getProcessInstanceId();
         if (StringUtils.isBlank(businessKey) || StringUtils.isBlank(businessKey)) {
-            throw new BpmException(CommonConstants.FAIL, "businessKey || instanceId为空！");
+            throw new BpmException("businessKey || instanceId为空！");
         }
 
         // todo 2026/03/04 如下，涉及流程重要数据需要修改多处，设计上可以优化下；如抽出一个自定义的流程实例表记录流程实例的最新信息，而不是放在流程变量里？

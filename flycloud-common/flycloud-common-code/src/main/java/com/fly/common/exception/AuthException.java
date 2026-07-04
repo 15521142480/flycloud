@@ -10,25 +10,14 @@ import lombok.Getter;
  * @author: lxs
  * @date: 2025/11/23
  */
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 public class AuthException extends RuntimeException {
 
-    /**
-     * 业务错误码
-     *
-     */
-    @Getter
+    // 错误码
     private Integer code;
 
-    /**
-     * 错误提示
-     */
-    private String message;
 
-    /**
-     * 空构造方法，避免反序列化问题
-     */
     public AuthException() {
     }
 
@@ -36,24 +25,13 @@ public class AuthException extends RuntimeException {
         super(message);
     }
 
-
     public AuthException(Integer code, String message) {
+        super(message);
         this.code = code;
-        this.message = message;
     }
 
     public AuthException setCode(Integer code) {
         this.code = code;
-        return this;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public AuthException setMessage(String message) {
-        this.message = message;
         return this;
     }
 

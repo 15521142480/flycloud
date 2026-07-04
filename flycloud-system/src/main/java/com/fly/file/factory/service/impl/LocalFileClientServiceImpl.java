@@ -50,7 +50,7 @@ public class LocalFileClientServiceImpl implements FileClientService {
         Path basePath = Paths.get(fileConfigProperties.getLocalServerConfig().getBasePath()).toAbsolutePath().normalize();
         Path filePath = basePath.resolve(path).normalize();
         if (!filePath.startsWith(basePath)) {
-            throw new ServiceException(CacheConstants.FileErrorConstant.FILE_PATH_INVALID);
+            throw new ServiceException(CacheConstants.FileErrorConstant.FILE_PATH_INVALID.getMsg());
         }
         return filePath.toString();
     }

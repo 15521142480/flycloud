@@ -30,7 +30,7 @@ public class FilePathUtils {
             return name;
         }
         if (!isPathValid(name) || StrUtil.contains(name, StrUtil.SLASH) || !StrUtil.equals(name, FileUtil.getName(name))) {
-            throw new ServiceException(FileErrorConstant.FILE_PATH_INVALID);
+            throw new ServiceException(FileErrorConstant.FILE_PATH_INVALID.getMsg());
         }
         return name;
     }
@@ -52,7 +52,7 @@ public class FilePathUtils {
      */
     public static void validateDirectory(String directory) {
         if (!isDirectoryValid(directory)) {
-            throw new ServiceException(FileErrorConstant.FILE_PATH_INVALID);
+            throw new ServiceException(FileErrorConstant.FILE_PATH_INVALID.getMsg());
         }
     }
 
@@ -63,7 +63,7 @@ public class FilePathUtils {
      */
     public static void validatePath(String path) {
         if (StrUtil.isEmpty(path) || !isPathValid(path)) {
-            throw new ServiceException(FileErrorConstant.FILE_PATH_INVALID);
+            throw new ServiceException(FileErrorConstant.FILE_PATH_INVALID.getMsg());
         }
     }
 

@@ -10,32 +10,24 @@ import lombok.Getter;
  * @author: lxs
  * @date: 2026/03/03
  */
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 public class BpmException extends RuntimeException {
 
-    /**
-     * 业务错误码
-     *
-     */
-    @Getter
+    // 错误码
     private Integer code;
 
-    /**
-     * 错误提示
-     */
-    private String message;
 
-    /**
-     * 空构造方法，避免反序列化问题
-     */
     public BpmException() {
     }
 
+    public BpmException(String message) {
+        super(message);
+    }
 
     public BpmException(Integer code, String message) {
+        super(message);
         this.code = code;
-        this.message = message;
     }
 
     public BpmException setCode(Integer code) {
@@ -43,14 +35,5 @@ public class BpmException extends RuntimeException {
         return this;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public BpmException setMessage(String message) {
-        this.message = message;
-        return this;
-    }
 
 }
