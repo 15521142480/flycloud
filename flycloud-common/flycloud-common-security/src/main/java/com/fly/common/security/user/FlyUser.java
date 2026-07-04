@@ -7,13 +7,13 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 /**
- * 自定义授权用户
+ * NOTE 统一规范自定义授权用户信息
  *
  * <p>
  * 需继承spring security的User；用于自身密码的自动判断和角色权限判断，拓展的字段用于业务实现
  *
  * @author: lxs
- * @date: 2024/8/12
+ * @date: 2025/8/12
  */
 @Getter
 public class FlyUser extends User {
@@ -34,7 +34,7 @@ public class FlyUser extends User {
     /**
      * 手机号
      */
-    private final String phone;
+    private final String mobile;
 
     /**
      * 头像
@@ -49,7 +49,7 @@ public class FlyUser extends User {
     /**
      * 登录类型　1：用户名密码登录　2：手机号登录　3：社交登录 ...
      */
-    private final int loginType;
+    private final Integer loginType;
 
     /**
      * 系统权限标识组
@@ -60,13 +60,13 @@ public class FlyUser extends User {
     /**
      * 构造系统用户信息
      */
-    public FlyUser(Long id, int userType, int loginType, String deptId, String phone, String avatar, String roleIds, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public FlyUser(Long id, int userType, int loginType, String deptId, String mobile, String avatar, String roleIds, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
         this.userType = userType;
         this.loginType = loginType;
         this.deptId = deptId;
-        this.phone = phone;
+        this.mobile = mobile;
         this.avatar = avatar;
         this.roleIds = roleIds;
     }

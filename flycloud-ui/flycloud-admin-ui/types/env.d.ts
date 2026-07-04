@@ -31,6 +31,7 @@ interface ImportMetaEnv {
   readonly VITE_DROP_CONSOLE: string
   readonly VITE_SOURCEMAP: string
   readonly VITE_OUT_DIR: string
+  readonly VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY: string
 }
 
 declare global {

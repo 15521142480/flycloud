@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 安全异常捕获处理
  *
  * @author lxs
- * @date 2024/9/4
+ * @date 2026/9/4
  */
 @Slf4j
 @RestControllerAdvice

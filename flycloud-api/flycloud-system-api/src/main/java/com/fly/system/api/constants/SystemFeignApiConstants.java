@@ -22,7 +22,7 @@ public interface SystemFeignApiConstants {
     String PROVIDER_USER_ID = PROVIDER + "/user/id";
 
     /**
-     * 根据username查询用户信息
+     * 根据ids查询用户信息
      */
     String PROVIDER_USER_IDS = PROVIDER + "/user/ids";
 

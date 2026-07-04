@@ -12,7 +12,7 @@ import java.util.List;
  * 部门Service接口
  *
  * @author fly
- * @date 2024-12-01
+ * @date 2026-12-01
  */
 public interface ISysDeptService {
 

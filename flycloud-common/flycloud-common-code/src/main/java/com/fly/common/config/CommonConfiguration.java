@@ -1,6 +1,7 @@
 package com.fly.common.config;
 
 import com.fly.common.config.properties.AuthProperties;
+import com.fly.common.config.properties.RsaProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
@@ -11,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @date: 2026/6/26
  */
 @AutoConfiguration
-@EnableConfigurationProperties(AuthProperties.class)
-public class AuthTokenAutoConfiguration {
+@EnableConfigurationProperties({AuthProperties.class, RsaProperties.class})
+public class CommonConfiguration {
 
 }

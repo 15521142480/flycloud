@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
  * 跨域配置
  *
  * @author lxs
- * @date 2023/3/22
+ * @date 2026/3/22
  */
 @AutoConfiguration
 public class CorsConfig {

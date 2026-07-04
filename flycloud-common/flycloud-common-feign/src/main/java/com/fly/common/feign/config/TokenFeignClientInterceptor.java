@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * 发送FeignClient设置Header信息等
  *
  * @author: lxs
- * @date: 2024/8/13
+ * @date: 2025/8/13
  */
 public class TokenFeignClientInterceptor implements RequestInterceptor {
 

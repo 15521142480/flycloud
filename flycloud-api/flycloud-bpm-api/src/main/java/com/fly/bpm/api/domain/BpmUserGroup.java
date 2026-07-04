@@ -13,7 +13,7 @@ import java.util.Set;
  * BPM 用户组对象 bpm_user_group
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

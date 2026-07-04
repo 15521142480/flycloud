@@ -1,8 +1,8 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.fly.common.enums.RoleCodeEnum;
-import com.fly.common.enums.SysTypeEnum;
+import com.fly.common.enums.sys.RoleCodeEnum;
+import com.fly.common.enums.sys.SysTypeEnum;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -31,7 +31,7 @@ import java.util.*;
  * 菜单Service业务层处理
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2026-08-31
  */
 @RequiredArgsConstructor
 @Service

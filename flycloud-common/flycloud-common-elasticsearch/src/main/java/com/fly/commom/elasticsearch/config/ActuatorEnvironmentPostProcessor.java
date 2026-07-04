@@ -9,7 +9,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * 健康检查配置注入
  *
  * @author lxs
- * @date 2023/5/20
+ * @date 2026/5/20
  */
 public class ActuatorEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 

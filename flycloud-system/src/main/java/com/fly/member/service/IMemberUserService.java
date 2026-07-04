@@ -6,6 +6,7 @@ import com.fly.system.api.member.domain.MemberUser;
 import com.fly.system.api.member.domain.bo.MemberUserBo;
 import com.fly.system.api.member.domain.vo.MemberUserVo;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,14 +16,31 @@ import java.util.List;
  * @date 2026-07-02
  */
 public interface IMemberUserService {
+
     PageVo<MemberUserVo> queryPageList(MemberUserBo bo, PageBo pageBo);
     List<MemberUserVo> queryList(MemberUserBo bo);
     MemberUserVo queryById(Long id);
     MemberUser getUser(Long id);
+
+
+    /**
+     * 根据ids查询列表
+     */
+    List<MemberUserVo> queryByIds(Collection<Long> ids);
+
+    /**
+     * 根据手机号查询对象
+     */
+    MemberUserVo queryByMobile(String mobile);
+
+
     Boolean saveOrUpdate(MemberUserBo bo);
     Long countByGroupId(Long groupId);
     Long countByLevelId(Long levelId);
     Long countByTagId(Long tagId);
     void updatePoint(Long userId, Integer point);
     void updateExperienceAndLevel(Long userId, Integer experience, Long levelId);
+
+
+
 }

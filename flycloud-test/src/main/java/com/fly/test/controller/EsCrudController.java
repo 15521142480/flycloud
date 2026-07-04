@@ -14,7 +14,7 @@
 // * 搜索引擎 crud 演示案例
 // *
 // * @author lxs
-// * @date 2023/5/20
+// * @date 2026/5/20
 // */
 //@ConditionalOnProperty(value = "easy-es.enable", havingValue = "true")
 //@RestController

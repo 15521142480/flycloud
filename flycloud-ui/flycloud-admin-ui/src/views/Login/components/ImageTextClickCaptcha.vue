@@ -27,7 +27,7 @@
         </div>
         <div
           class="captcha-image-wrap"
-          :class="{ passed: Boolean(props.textCaptchaData.imageTextClickCaptchaSuccessValue) }"
+          :class="{ passed: Boolean(props.textCaptchaData.captchaCode) }"
         >
           <img
             v-if="captchaChallenge"
@@ -46,7 +46,7 @@
             {{ index + 1 }}
           </span>
           <div
-            v-if="props.textCaptchaData.imageTextClickCaptchaSuccessValue"
+            v-if="props.textCaptchaData.captchaCode"
             class="captcha-passed"
             >{{ t('textCaptcha.passed') }}</div
           >
@@ -73,7 +73,7 @@ const props = defineProps({
     default: () => ({
       imageTextClickCaptchaKey: '',
       imageTextClickCaptchaValue: '',
-      imageTextClickCaptchaSuccessValue: ''
+      captchaCode: ''
     })
   }
 })
@@ -137,7 +137,7 @@ const loadCaptcha = async () => {
 const handleCaptchaClick = async (event: MouseEvent) => {
   if (
     !captchaChallenge.value ||
-    props.textCaptchaData.imageTextClickCaptchaSuccessValue ||
+    props.textCaptchaData.captchaCode ||
     clickPoints.value.length >= 3
   ) {
     return
@@ -181,7 +181,7 @@ const checkCaptcha = async () => {
     })
     emit('update:textCaptchaData', {
       ...props.textCaptchaData,
-      imageTextClickCaptchaSuccessValue: result.captchaVerification ?? ''
+      captchaCode: result.captchaVerification ?? ''
     })
     // jq祖传问题，代码跳开跑，赋值有问题
     await nextTick()
@@ -201,7 +201,7 @@ const checkCaptcha = async () => {
  * 关闭弹窗
  */
 const handleCaptchaClosed = () => {
-  if (!props.textCaptchaData.imageTextClickCaptchaSuccessValue) {
+  if (!props.textCaptchaData.captchaCode) {
     captchaChallenge.value = undefined
     clickPoints.value = []
     resetTextCaptchaData()
@@ -213,7 +213,7 @@ const resetTextCaptchaData = () => {
     ...props.textCaptchaData,
     imageTextClickCaptchaKey: '',
     imageTextClickCaptchaValue: '',
-    imageTextClickCaptchaSuccessValue: ''
+    captchaCode: ''
   })
 }
 </script>

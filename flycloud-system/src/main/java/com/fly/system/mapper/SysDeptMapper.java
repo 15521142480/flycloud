@@ -8,7 +8,7 @@ import com.fly.system.api.system.domain.vo.SysDeptVo;
  * 部门Mapper接口
  *
  * @author fly
- * @date 2024-12-01
+ * @date 2026-12-01
  */
 public interface SysDeptMapper extends BaseMapperPlus<SysDeptMapper, SysDept, SysDeptVo> {
 

@@ -18,7 +18,7 @@ const listRef = ref<Nullable<{ generateMusic: (...args) => void }>>(null)
 /*
  *@Description: 拿到左侧配置信息调用右侧音乐生成的方法
  *@MethodAuthor: xiaohong
- *@Date: 2024-07-19 11:13:38
+ *@date: 2025-07-19 11:13:38
  */
 function generateMusic(args: { formData: Recordable }) {
   unref(listRef)?.generateMusic(args.formData)

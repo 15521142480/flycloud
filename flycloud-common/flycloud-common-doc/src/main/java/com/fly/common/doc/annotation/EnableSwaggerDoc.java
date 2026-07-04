@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * 开启 spring doc (只有在Application中添加如下注解才能启用文档)
  *
  * @author lxs
- * @date 2023/4/19
+ * @date 2026/4/19
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

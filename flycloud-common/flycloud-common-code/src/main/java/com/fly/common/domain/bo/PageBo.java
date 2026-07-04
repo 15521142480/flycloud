@@ -13,7 +13,7 @@ import java.util.Arrays;
  * 分页-bo
  *
  * @author lxs
- * @date 2023/3/22
+ * @date 2026/3/22
  */
 @Data
 public class PageBo implements Serializable {
@@ -76,7 +76,7 @@ public class PageBo implements Serializable {
      * build成iPage
      *
      * @author lxs
-     * @date 2023/3/22
+     * @date 2026/3/22
      */
     public <T> Page<T> build() {
 
@@ -102,7 +102,7 @@ public class PageBo implements Serializable {
      * 构建返回排序
      *
      * @author lxs
-     * @date 2023/3/22
+     * @date 2026/3/22
      */
 //    public List<OrderItem> buildOrderItem(){
 //
@@ -114,7 +114,7 @@ public class PageBo implements Serializable {
      * 获取排序字符字符串
      *
      * @author lxs
-     * @date 2023/3/22
+     * @date 2026/3/22
      */
     public String getOrderBy() {
         return getOrderByColumnsAndOrders(this.columns, this.orders);
@@ -125,7 +125,7 @@ public class PageBo implements Serializable {
      * 根据字段和排序标识获取排序字符串
      *
      * @author lxs
-     * @date 2023/3/22
+     * @date 2026/3/22
      */
     public static String getOrderByColumnsAndOrders(String[] columns, String[] orders) {
 

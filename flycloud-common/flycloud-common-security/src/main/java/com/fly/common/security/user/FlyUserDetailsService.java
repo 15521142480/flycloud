@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * 用户详细扩展
  *
  * @author: lxs
- * @date: 2024/8/12
+ * @date: 2025/8/12
  */
 public interface FlyUserDetailsService extends UserDetailsService {
 

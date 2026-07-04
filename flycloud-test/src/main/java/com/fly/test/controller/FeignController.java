@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Feign 服务调用 - 控制层
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/5/2
  */
 @RestController
 @RequestMapping("/feign")

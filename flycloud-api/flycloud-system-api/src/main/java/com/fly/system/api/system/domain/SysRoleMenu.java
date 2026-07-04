@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
  * 角色权限对象 sys_role_menu
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2026-08-31
  */
 @Data
 @Accessors(chain = true)

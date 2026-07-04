@@ -8,7 +8,7 @@ import com.fly.bpm.api.domain.vo.BpmFormVo;
  * BPM 单定义Mapper接口
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 public interface BpmFormMapper extends BaseMapperPlus<BpmFormMapper, BpmForm, BpmFormVo> {
 

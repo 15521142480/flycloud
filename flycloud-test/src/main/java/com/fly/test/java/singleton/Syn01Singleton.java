@@ -4,7 +4,7 @@ package com.fly.test.java.singleton;
  * 线程安全的单例 (通过静态内部类实现)
  *
  * @author lxs
- * @date 2023/5/25
+ * @date 2026/5/25
  */
 public class Syn01Singleton {
 

@@ -6,7 +6,7 @@ import lombok.Data;
  * 系统用户登录-bo
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/5/2
  */
 @Data
 public class UserLoginBo {

@@ -4,7 +4,7 @@ package com.fly.common.constant;
  * 服务名称集合
  *
  * @author lxs
- * @date 2023/2/13
+ * @date 2026/2/13
  */
 public interface ServerNames {
 

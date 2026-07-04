@@ -9,7 +9,7 @@ import com.fly.learn.thread.entity.LoginUserInfo;
  * ThreadLocal 能够隔离线程间的数据共享，提供线程级别的数据存储。
  *
  * @author: lxs
- * @date: 2024/8/24
+ * @date: 2025/8/24
  */
 public class ThreadLocalTest {
 

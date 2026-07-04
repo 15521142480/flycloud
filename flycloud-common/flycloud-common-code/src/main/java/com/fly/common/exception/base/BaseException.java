@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * 基础异常
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/5/2
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

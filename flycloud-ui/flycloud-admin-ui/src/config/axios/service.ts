@@ -39,7 +39,7 @@ export const isRelogin = { show: false }
 // let isRefreshToken = false
 
 // 请求白名单，无须token的接口
-const whiteList: string[] = ['/auth/code', '/login', '/refresh-token']
+const whiteList: string[] = ['/captcha/getCode', '/admin/auth/login', '/admin/auth/refresh-token']
 
 /**
  * 创建axios实例

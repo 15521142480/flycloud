@@ -10,7 +10,7 @@ import com.fly.common.domain.BaseEntity;
  * BPM 流程达式对象 bpm_process_expression
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

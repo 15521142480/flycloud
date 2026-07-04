@@ -7,7 +7,7 @@ import lombok.Getter;
  * 用户状态-枚举
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/5/2
  */
 @AllArgsConstructor
 @Getter

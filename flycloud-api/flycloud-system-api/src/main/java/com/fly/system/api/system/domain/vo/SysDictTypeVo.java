@@ -15,7 +15,7 @@ import java.util.Date;
  * 字典类型视图对象
  *
  * @author fly
- * @date 2024-12-08
+ * @date 2026-12-08
  */
 @Data
 @ExcelIgnoreUnannotated

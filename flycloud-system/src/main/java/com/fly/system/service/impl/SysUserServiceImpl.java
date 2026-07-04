@@ -1,15 +1,15 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.fly.common.config.properties.RsaProperties;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.enums.ErrorCodeConstants;
 import com.fly.common.enums.StatusEnum;
-import com.fly.common.enums.SysTypeEnum;
+import com.fly.common.enums.sys.SysTypeEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.exception.utils.ServiceExceptionUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
-import com.fly.common.utils.CryptoUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
@@ -18,12 +18,12 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.common.utils.crypto.RsaUtils;
 import com.fly.system.api.system.domain.SysUserRole;
 import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
 import com.fly.system.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.system.domain.bo.SysUserBo;
@@ -38,7 +38,7 @@ import java.util.*;
  * 用户Service业务层处理
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2026-08-31
  */
 @RequiredArgsConstructor
 @Service
@@ -56,6 +56,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private final ISysMenuService sysMenuService;
 
     private final ISysDeptService sysDeptService;
+
+    private final PasswordEncoder passwordEncoder;
+    private final RsaProperties rsaProperties;
 
 
 
@@ -77,7 +80,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             sysUserVo.setRoleNames(String.join(",", sysUserRoleService.getRoleNameListByUserId(sysUserVo.getId())));
 
             sysUserVo.setDeptName(sysDeptService.queryDeptNameById(sysUserVo.getDeptId()));
-            formatAvatar(sysUserVo);
         }
         pageVo.setList(sysUserVoList);
 
@@ -93,7 +95,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public List<SysUserVo> queryAllListSimple(SysUserBo bo) {
 
         List<SysUserVo> list = baseMapper.selectAllListSimple(bo);
-        list.forEach(this::formatAvatar);
         return list;
     }
 
@@ -108,7 +109,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         // 用户基本信息
         userDetailInfoVo.setUser(this.queryById(id));
         userDetailInfoVo.getUser().setPassword(null);
-        formatAvatar(userDetailInfoVo.getUser());
 
         // 权限信息
         userDetailInfoVo.setPermissionList(sysRoleService.getPermissionListByUserId(id));
@@ -125,7 +125,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     public SysUserVo queryById(Long id) {
         SysUserVo user = baseMapper.selectVoById(id);
-        formatAvatar(user);
         return user;
     }
 
@@ -155,8 +154,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
         if (!isUpdate) { // 新增
 
-            PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-            String newPassword = encoder.encode(sysUser.getPassword());
+            // rsa解密
+            String originalPassword = RsaUtils.decrypt(
+                    sysUser.getPassword(),
+                    rsaProperties.getFlyCloudLoginPassword().getPrivateKey()
+            );
+            String newPassword = passwordEncoder.encode(originalPassword);
             sysUser.setPassword(newPassword);
 
             sysUser.setCreateBy(curUser.getId().toString());
@@ -165,12 +168,17 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
         } else { // 修改
 
-            // 是否有修改密码 (不为空 且 不等于旧密码)
-            SysUser o_sysUser = baseMapper.selectById(sysUser.getId());
-            if (StringUtils.isNotBlank(sysUser.getPassword()) && !o_sysUser.getPassword().equals(sysUser.getPassword())) {
-                PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-                String newPassword = encoder.encode(sysUser.getPassword());
-                sysUser.setPassword(newPassword);
+            // 是否要修改修改密码 (不为空 且 不等于旧密码)
+            SysUser old_sysUser = baseMapper.selectById(sysUser.getId());
+            if (StringUtils.isNotBlank(sysUser.getPassword())) {
+                String originalPassword = RsaUtils.decrypt(
+                        sysUser.getPassword(),
+                        rsaProperties.getFlyCloudLoginPassword().getPrivateKey()
+                );
+                if (!passwordEncoder.matches(originalPassword, old_sysUser.getPassword())) {
+                    String newPassword = passwordEncoder.encode(originalPassword);
+                    sysUser.setPassword(newPassword);
+                }
             }
 
             sysUser.setUpdateBy(curUser.getId().toString());
@@ -199,17 +207,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         return 1;
     }
 
-    /**
-     * 头像格式转换成url
-     *
-     * @param user
-    */
-    private void formatAvatar(SysUserVo user) {
-        if (user == null) {
-            return;
-        }
-        user.setAvatar(user.getAvatar());
-    }
 
 
     /**
@@ -220,9 +217,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
         SysUser sysUser = baseMapper.selectById(id);
 
-        String md5str = CryptoUtils.encodeMD5(CommonConstants.INIT_USER_PASSWORD);
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        String initPassword = encoder.encode(md5str);
+//        String md5str = CryptoUtils.encodeMD5(CommonConstants.INIT_USER_PASSWORD);
+        String initPassword = passwordEncoder.encode(CommonConstants.INIT_USER_PASSWORD);
         sysUser.setPassword(initPassword);
 
         return baseMapper.updateById(sysUser);
@@ -236,9 +232,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
         SysUser sysUser = baseMapper.selectById(id);
 
-        String md5str = password;
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        String initPassword = encoder.encode(md5str);
+        // rsa解密
+        String originalPassword = RsaUtils.decrypt(
+                password,
+                rsaProperties.getFlyCloudLoginPassword().getPrivateKey()
+        );
+
+        String initPassword = passwordEncoder.encode(originalPassword);
         sysUser.setPassword(initPassword);
 
         return baseMapper.updateById(sysUser);
@@ -252,7 +252,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public List<SysUserVo> queryList(SysUserBo bo) {
         LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(bo);
         List<SysUserVo> list = baseMapper.selectVoList(lqw);
-        list.forEach(this::formatAvatar);
         return list;
     }
 
@@ -356,9 +355,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         if (ids == null || ids.isEmpty()){
             return new ArrayList<>();
         }
-        List<SysUserVo> users = this.baseMapper.selectVoBatchIds(ids);
-        users.forEach(this::formatAvatar);
-        return users;
+        return this.baseMapper.selectVoBatchIds(ids);
     }
 
     /**

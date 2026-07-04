@@ -9,7 +9,7 @@ import java.util.List;
  * 菜单树型vo
  *
  * @author: lxs
- * @date: 2024/8/31
+ * @date: 2025/8/31
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

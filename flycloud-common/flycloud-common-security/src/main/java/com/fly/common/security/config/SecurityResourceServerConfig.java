@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * security 资源服务配置
  *
  * @author lxs
- * @date 2023/4/28
+ * @date 2026/4/28
  */
 @Order(5)
 @AutoConfiguration

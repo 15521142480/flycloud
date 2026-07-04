@@ -5,7 +5,7 @@ import com.fly.auth.domain.bo.ImageTextClickCaptchaPointBo;
 import com.fly.auth.domain.bo.ImageTextClickCaptchaVerifyBo;
 import com.fly.auth.domain.vo.ImageTextClickCaptchaVerifyVo;
 import com.fly.auth.domain.vo.ImageTextClickCaptchaVo;
-import com.fly.auth.service.ValidateService;
+import com.fly.auth.service.CaptchaService;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
@@ -14,7 +14,6 @@ import com.fly.common.exception.CaptchaException;
 import com.fly.common.domain.model.R;
 import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.utils.json.JsonUtils;
-import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,7 +38,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ValidateServiceImpl implements ValidateService {
+public class CaptchaServiceImpl implements CaptchaService {
 
     private final RedisUtils redisService;
 

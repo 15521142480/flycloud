@@ -63,6 +63,7 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
     private final RedisUtils redisUtils;
     private final AuthProperties authProperties;
     private final ISocialUserService socialUserService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 手机号和密码登录。
@@ -269,7 +270,6 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
             return true;
         }
         try {
-            PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
             return passwordEncoder.matches(rawPassword, encodedPassword);
         } catch (Exception ex) {
             log.warn("[isPasswordMatch][会员密码格式不兼容，按不匹配处理]");
@@ -298,7 +298,7 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
         claims.put(Oauth2Constants.ROLE_IDS, "");
         claims.put(Oauth2Constants.AVATAR, user.getAvatar());
         claims.put(AuthConstants.DEPT_ID, "");
-        claims.put(AuthConstants.PHONE, user.getMobile());
+        claims.put(AuthConstants.MOBILE, user.getMobile());
         claims.put(AuthConstants.AUTHORITIES, List.of());
         return buildTokenResponse(claims, openid);
     }
@@ -373,7 +373,7 @@ public class MemberAuthServiceImpl implements IMemberAuthService {
         result.put(Oauth2Constants.ROLE_IDS, claims.get(Oauth2Constants.ROLE_IDS));
         result.put(Oauth2Constants.AVATAR, claims.get(Oauth2Constants.AVATAR));
         result.put(AuthConstants.DEPT_ID, claims.get(AuthConstants.DEPT_ID));
-        result.put(AuthConstants.PHONE, claims.get(AuthConstants.PHONE));
+        result.put(AuthConstants.MOBILE, claims.get(AuthConstants.MOBILE));
         result.put(AuthConstants.AUTHORITIES, claims.get(AuthConstants.AUTHORITIES));
         return result;
     }

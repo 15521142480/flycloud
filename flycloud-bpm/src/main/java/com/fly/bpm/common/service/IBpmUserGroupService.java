@@ -12,7 +12,7 @@ import java.util.List;
  * BPM 用户组Service接口
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 public interface IBpmUserGroupService {
 

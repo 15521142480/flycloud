@@ -10,7 +10,7 @@ import com.fly.common.domain.BaseEntity;
  * 字典类型业务对象
  *
  * @author fly
- * @date 2024-12-08
+ * @date 2026-12-08
  */
 
 @Data

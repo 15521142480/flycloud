@@ -1,4 +1,4 @@
-package com.fly.system.api.im.enums;
+package com.fly.common.enums.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

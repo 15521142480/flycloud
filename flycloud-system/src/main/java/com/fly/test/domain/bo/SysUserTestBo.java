@@ -6,7 +6,7 @@ import lombok.Data;
  * 用户信息业务对象
  *
  * @author fly
- * @date 2023-04-22
+ * @date 2026-04-22
  */
 
 @Data

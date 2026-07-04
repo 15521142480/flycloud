@@ -1,6 +1,5 @@
 package com.fly.system.api.member.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fly.common.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
 @Schema(name = "会员用户对象", description = "会员用户")
 public class MemberUser extends BaseEntity {
 
-    @TableId
     private Long id;
 
     private String mobile;
@@ -63,5 +61,15 @@ public class MemberUser extends BaseEntity {
     private Integer experience;
 
     private Long groupId;
+
+    private String createBy;
+
+    private LocalDateTime createTime;
+
+    private String updateBy;
+
+    private LocalDateTime updateTime;
+
+    private Boolean isDeleted;
 
 }

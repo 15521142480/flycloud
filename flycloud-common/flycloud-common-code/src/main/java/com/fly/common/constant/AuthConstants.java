@@ -27,7 +27,7 @@ public interface AuthConstants {
 
     String DEPT_ID = "deptId";
 
-    String PHONE = "phone";
+    String MOBILE = "mobile";
 
     /**
      * 图文点选验证码

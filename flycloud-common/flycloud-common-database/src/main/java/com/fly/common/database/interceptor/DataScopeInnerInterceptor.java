@@ -22,7 +22,7 @@ import java.util.Map;
  * 数据权限
  *
  * @author lxs
- * @date 2023/3/22
+ * @date 2026/3/22
  */
 public class DataScopeInnerInterceptor implements InnerInterceptor {
 

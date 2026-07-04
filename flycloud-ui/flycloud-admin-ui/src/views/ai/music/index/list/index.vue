@@ -58,7 +58,7 @@ provide('currentSong', currentSong)
 /*
  *@Description: 调接口生成音乐列表
  *@MethodAuthor: xiaohong
- *@Date: 2024-06-27 17:06:44
+ *@date: 2025-06-27 17:06:44
  */
 function generateMusic(formData: Recordable) {
   console.log(formData)
@@ -84,7 +84,7 @@ function generateMusic(formData: Recordable) {
 /*
  *@Description: 设置当前播放的音乐
  *@MethodAuthor: xiaohong
- *@Date: 2024-07-19 11:22:33
+ *@date: 2025-07-19 11:22:33
  */
 function setCurrentSong(music: Recordable) {
   currentSong.value = music

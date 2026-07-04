@@ -5,7 +5,7 @@ import type { ClickCaptchaVerifyDto } from '@/entity/auth'
 
 import { service } from '@/config/axios/service'
 import { Base64 } from 'js-base64'
-import md5 from 'js-md5'
+import { rsaEncrypt } from '@/utils/crypto/rsa'
 
 const AUTH_BASE_URL = import.meta.env.VITE_AUTH_SERVER
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
@@ -22,38 +22,27 @@ export interface SmsLoginVO {
 
 // ============================================== 授权
 
-// 获取验证码
-export const getCodeApi = () => {
-  return request.get({ url: `/${AUTH_BASE_URL}/auth/code` })
-}
-
-// 获取图文点选验证码‌
-export const getImageTextClickCaptchaApi = () => {
-  return request.post({ url: `/${AUTH_BASE_URL}/auth/getImageTextClickCaptcha` })
-}
-
-// 验证图文点选验证码‌
-export const checkImageTextClickCaptchaApi = (data: ClickCaptchaVerifyDto) => {
-  return request.post({ url: `/${AUTH_BASE_URL}/auth/checkGetImageTextClickCaptcha`, data })
-}
 
 // 登录
-export const login = (data: UserLoginVO) => {
+export const login = async (data: UserLoginVO) => {
   // const newData = data; // newData 只是 data 的引用（指向同一块内存）
   const newData = { ...data } // 浅拷贝
-  newData.password = md5(newData.password)
+  newData.password = await rsaEncrypt(
+    newData.password,
+    import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
+  )
   const method = 'POST'
   const params = null
   return service({
-    url: `/${AUTH_BASE_URL}/oauth/token`,
+    url: `/${AUTH_BASE_URL}/admin/auth/token`,
     method: method,
     params: params,
     data: newData,
     headers: {
       'Content-Type': 'application/json',
-      'Code-Key': newData.codeKey,
-      'Code-Value': newData.code,
-      ImageTextClickCaptchaSuccessValue: newData.imageTextClickCaptchaSuccessValue,
+      // 'Code-Key': newData.codeKey,
+      // 'Code-Value': newData.code,
+      captchaCode: newData.captchaCode,
       Authorization: `Basic ${Base64.encode(`fly:fly_secret`)}`
     }
   })
@@ -61,19 +50,39 @@ export const login = (data: UserLoginVO) => {
 
 // 登出
 export const loginOut = () => {
-  return request.post({ url: `/${AUTH_BASE_URL}/oauth/logOut` })
+  return request.post({ url: `/${AUTH_BASE_URL}/admin/auth/logOut` })
+}
+
+
+// 获取验证码
+export const getCodeApi = () => {
+  return request.get({ url: `/${AUTH_BASE_URL}/captcha/getCode` })
+}
+
+// 获取图文点选验证码‌
+export const getImageTextClickCaptchaApi = () => {
+  return request.post({ url: `/${AUTH_BASE_URL}/captcha/getImageTextClickCaptcha` })
+}
+
+// 验证图文点选验证码‌
+export const checkImageTextClickCaptchaApi = (data: ClickCaptchaVerifyDto) => {
+  return request.post({ url: `/${AUTH_BASE_URL}/captcha/checkGetImageTextClickCaptcha`, data })
 }
 
 // 注册
-export const register = (data: RegisterVO) => {
-  data.password = md5(data.password)
-  return request.post({ url: `/${SYS_BASE_URL}/user/register`, data })
+export const register = async (data: RegisterVO) => {
+  const newData = { ...data }
+  newData.password = await rsaEncrypt(
+    newData.password,
+    import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
+  )
+  return request.post({ url: `/${SYS_BASE_URL}/user/register`, newData })
 }
 
 // 刷新访问令牌
 export const refreshToken = () => {
   return request.post({
-    url: `/${AUTH_BASE_URL}/auth/refresh-token?refreshToken=` + getRefreshToken()
+    url: `/${AUTH_BASE_URL}/admin/auth/refresh-token?refreshToken=` + getRefreshToken()
   })
 }
 
@@ -108,7 +117,7 @@ export function socialLogin(type: string, code: string, state: string) {
 
 // 获取验证图片以及 token
 export const getCode = (data) => {
-  return request.postOriginal({ url: `/${AUTH_BASE_URL}/captcha/get`, data })
+  return request.postOriginal({ url: `/${AUTH_BASE_URL}/captcha/getCode`, data })
 }
 
 // 滑动或者点选验证

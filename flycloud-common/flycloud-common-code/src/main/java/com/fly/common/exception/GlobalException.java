@@ -4,7 +4,7 @@ package com.fly.common.exception;
  * 全局异常
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/5/2
  */
 public class GlobalException extends RuntimeException {
 

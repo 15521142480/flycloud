@@ -37,6 +37,11 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthProperties authProperties;
 
+
+
+    /**
+     * 接口拦截
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -73,9 +78,12 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         // 把当前用户信息放进spring-security的上下文
+        // 所以每次请求都能从spring-security的上下文获取当前用户信息：SecurityContextHolder.getContext().getAuthentication()
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
+
+
 
     private Map<String, Object> cachedClaims(String token) {
 
@@ -103,7 +111,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
                 Convert.toInt(claims.get(Oauth2Constants.USER_TYPE), 0),
                 Convert.toInt(claims.get(Oauth2Constants.LOGIN_TYPE), 0),
                 Convert.toStr(claims.get(AuthConstants.DEPT_ID), ""),
-                Convert.toStr(claims.get(AuthConstants.PHONE), ""),
+                Convert.toStr(claims.get(AuthConstants.MOBILE), ""),
                 Convert.toStr(claims.get(Oauth2Constants.AVATAR), ""),
                 Convert.toStr(claims.get(Oauth2Constants.ROLE_IDS), ""),
                 Convert.toStr(claims.get(Oauth2Constants.USER_NAME), ""),
@@ -115,6 +123,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
                 AuthorityUtils.createAuthorityList(authorities(claims))
         );
     }
+
 
     private String[] authorities(Map<String, Object> claims) {
         Object value = claims.get(AuthConstants.AUTHORITIES);

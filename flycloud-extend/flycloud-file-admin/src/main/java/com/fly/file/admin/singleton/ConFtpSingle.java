@@ -20,7 +20,7 @@ import java.util.Vector;
  * 连接的ftp的单例对象 (单例)
  *
  * @author lxs
- * @date 2023/4/24
+ * @date 2026/4/24
  */
 public class ConFtpSingle {
 

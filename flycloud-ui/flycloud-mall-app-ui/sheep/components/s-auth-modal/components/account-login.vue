@@ -117,9 +117,7 @@
   async function handleCaptchaSuccess(captchaVerification) {
     const loginData = {
       ...state.model,
-      captchaVerification,
-      imageTextClickCaptchaSuccessValue: captchaVerification,
-      ImageTextClickCaptchaSuccessValue: captchaVerification,
+      captchaCode: captchaVerification
     };
     const { code } = await AuthUtil.loginByAccount(loginData);
     if (code === 0) {

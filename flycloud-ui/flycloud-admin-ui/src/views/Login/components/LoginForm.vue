@@ -225,11 +225,11 @@ const loginData = reactive({
     grant_type: 'captcha',
     // grant_type: 'password',
     scope: 'all',
-    // 数字字母验证码_key_值
+    // 方案1:数字字母验证码_key_值
     codeKey: '',
     code: '',
-    // 图文点选验证码‌
-    imageTextClickCaptchaSuccessValue: '',
+    // 方案2:图文点选验证码‌
+    captchaCode: '',
     rememberMe: true // 默认记录我。如果不需要，可手动修改
   }
 })
@@ -238,15 +238,15 @@ const loginData = reactive({
 const textCaptchaData = ref<TextCaptchaDataVo>({
   imageTextClickCaptchaKey: '', // 图文点选验证码‌_key
   imageTextClickCaptchaValue: '', // 图文点选验证码‌_坐标信息
-  imageTextClickCaptchaSuccessValue: '' // 图文点选验证码‌_成功的值
+  captchaCode: '' // 图文点选验证码‌_成功的值
 })
 
-const socialList = [
-  { icon: 'ant-design:wechat-filled', type: 30 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
-  { icon: 'ant-design:github-filled', type: 0 },
-  { icon: 'ant-design:alipay-circle-filled', type: 0 }
-]
+// const socialList = [
+//   { icon: 'ant-design:wechat-filled', type: 30 },
+//   { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
+//   { icon: 'ant-design:github-filled', type: 0 },
+//   { icon: 'ant-design:alipay-circle-filled', type: 0 }
+// ]
 
 /**
  * 获取数字字母验证码
@@ -304,8 +304,8 @@ const handleLogin = async () => {
   }
 
   if (
-    !textCaptchaData.value.imageTextClickCaptchaSuccessValue ||
-    !loginData.loginForm.imageTextClickCaptchaSuccessValue
+    !textCaptchaData.value.captchaCode ||
+    !loginData.loginForm.captchaCode
   ) {
     ElMessage.warning(t('auto.views.login.components.LoginForm.kbe6f5b7d'))
     return
@@ -363,7 +363,7 @@ const clickImageTextClickCaptcha = () => {
  * @param data
  */
 const successImageTextClick = (data: TextCaptchaDataVo) => {
-  loginData.loginForm.imageTextClickCaptchaSuccessValue = data.imageTextClickCaptchaSuccessValue
+  loginData.loginForm.captchaCode = data.captchaCode
 }
 
 /**

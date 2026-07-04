@@ -6,7 +6,7 @@ import lombok.Data;
  * 用户信息
  *
  * @author lxs
- * @date 2023/4/24
+ * @date 2026/4/24
  */
 @Data
 public class UserBo {

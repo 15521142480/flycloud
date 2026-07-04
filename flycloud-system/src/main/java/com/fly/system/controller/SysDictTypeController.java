@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 字典类型控制器
  *
  * @author fly
- * @date 2024-12-08
+ * @date 2026-12-08
  */
 @Validated
 @RequiredArgsConstructor

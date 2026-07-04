@@ -7,7 +7,7 @@ import java.util.Properties;
  * 系统工具类
  *
  * @author: lxs
- * @date: 2024/8/15
+ * @date: 2025/8/15
  */
 public class SystemUtils {
 

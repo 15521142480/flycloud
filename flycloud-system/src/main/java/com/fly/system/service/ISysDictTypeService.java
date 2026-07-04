@@ -12,7 +12,7 @@ import java.util.List;
  * 字典类型 接口层
  *
  * @author fly
- * @date 2024-12-08
+ * @date 2026-12-08
  */
 public interface ISysDictTypeService {
 

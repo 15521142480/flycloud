@@ -1,6 +1,7 @@
-package com.fly.auth.controller;
+package com.fly.auth.controller.admin;
 
-import com.fly.auth.service.AuthTokenService;
+import com.fly.auth.domain.vo.AuthLoginRespVo;
+import com.fly.auth.service.AuthService;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.StringUtils;
@@ -17,18 +18,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 授权中心-控制层
+ * 后台授权中心-控制层
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/7/4
  */
 @RestController
-@RequestMapping("/oauth")
+@RequestMapping("/admin/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class OAuthController {
+public class AuthController {
 
-    private final AuthTokenService authTokenService;
+    private final AuthService authService;
 
     /**
      * 登录
@@ -36,9 +37,9 @@ public class OAuthController {
      * <p>
      * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
      */
-    @GetMapping("/token")
-    public R<Map<String, Object>> getAccessToken(HttpServletRequest request, @RequestParam Map<String, String> loginParam) {
-        return R.ok(authTokenService.createToken(loginParam, request));
+    @PostMapping("/token")
+    public R<AuthLoginRespVo> getAccessToken(@RequestParam Map<String, String> loginParam) {
+        return R.ok(authService.token(loginParam));
     }
 
     /**
@@ -53,15 +54,15 @@ public class OAuthController {
             @Parameter(name = "username", required = true,  description = "用户名", in = ParameterIn.QUERY),
             @Parameter(name = "password", required = true,  description = "密码", in = ParameterIn.QUERY),
             @Parameter(name = "scope", required = true,  description = "使用范围", in = ParameterIn.QUERY),
+            @Parameter(name = "captchaCode", required = false,  description = "验证码（授权类型使用验证码时必填）", in = ParameterIn.QUERY),
     })
-    public R<Map<String, Object>> postAccessToken(HttpServletRequest request,
-                                                  @RequestParam Map<String, String> requestParam,
-                                                  @RequestBody(required = false) Map<String, String> requestBody) {
+    public R<AuthLoginRespVo> postAccessToken(@RequestParam Map<String, String> requestParam,
+                                              @RequestBody(required = false) Map<String, String> requestBody) {
         Map<String, String> loginParam = new LinkedHashMap<>(requestParam);
         if (requestBody != null) {
             loginParam.putAll(requestBody);
         }
-        return R.ok(authTokenService.createToken(loginParam, request));
+        return R.ok(authService.token(loginParam));
     }
 
 
@@ -76,7 +77,7 @@ public class OAuthController {
     public R<?> logout(HttpServletRequest request) {
 
         if (StringUtils.isNotBlank(SecurityUtils.getHeaderToken(request))) {
-            authTokenService.revokeToken(SecurityUtils.getToken(request));
+            authService.revokeToken(SecurityUtils.getToken(request));
         }
 
         return R.ok(null, "登出成功");

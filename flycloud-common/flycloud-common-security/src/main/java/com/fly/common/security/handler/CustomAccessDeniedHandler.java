@@ -16,7 +16,7 @@ import java.io.IOException;
  * 自定义无权限异常
  *
  * @author lxs
- * @date 2023/5/4
+ * @date 2026/5/4
  */
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {

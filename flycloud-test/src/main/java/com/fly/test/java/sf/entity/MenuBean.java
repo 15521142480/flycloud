@@ -8,7 +8,7 @@ import java.util.List;
  * 菜单-bean
  *
  * @author lxs
- * @date 2023/5/31
+ * @date 2026/5/31
  */
 @Data
 public class MenuBean {

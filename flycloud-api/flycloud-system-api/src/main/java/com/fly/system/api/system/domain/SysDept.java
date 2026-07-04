@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 部门表
  *
  * @author: lxs
- * @date: 2024/11/29
+ * @date: 2025/11/29
  */
 @TableName("sys_dept")
 @Data

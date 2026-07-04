@@ -14,7 +14,7 @@ import java.util.Collection;
  * 权限判断
  *
  * @author: lxs
- * @date: 2024/8/24
+ * @date: 2025/8/24
  */
 @Component(value = "pms")
 public class PermissionService {

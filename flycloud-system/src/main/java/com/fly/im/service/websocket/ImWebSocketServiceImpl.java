@@ -1,7 +1,7 @@
 package com.fly.im.service.websocket;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.fly.system.api.im.enums.UserTypeEnum;
+import com.fly.common.enums.user.UserTypeEnum;
 import com.fly.im.service.websocket.dto.ImChannelMessageDTO;
 import com.fly.im.service.websocket.dto.ImGroupMessageDTO;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;

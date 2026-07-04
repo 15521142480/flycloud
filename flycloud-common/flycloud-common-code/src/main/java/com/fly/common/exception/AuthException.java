@@ -8,7 +8,7 @@ import lombok.Getter;
  * 授权异常
  *
  * @author: lxs
- * @date: 2024/11/23
+ * @date: 2025/11/23
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

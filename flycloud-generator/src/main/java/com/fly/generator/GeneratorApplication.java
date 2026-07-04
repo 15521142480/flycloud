@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 自动生成系统启动类
  *
  * @author lxs
- * @date 2023/2/13
+ * @date 2026/2/13
  */
 @EnableFeignClients
 @EnableDiscoveryClient

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * 网关日志过滤器
  *
  * @author: lxs
- * @date: 2024/8/14
+ * @date: 2025/8/14
  */
 @Slf4j
 @Component

@@ -11,7 +11,7 @@
 // * 安全授权配置属性
 // *
 // * @author lxs
-// * @date 2023/4/28
+// * @date 2026/4/28
 // */
 //@Component
 //@ConfigurationProperties(prefix = "security.oauth2.client")

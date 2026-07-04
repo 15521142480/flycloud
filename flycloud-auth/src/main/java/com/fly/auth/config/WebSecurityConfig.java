@@ -27,7 +27,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * todo 但springboot2.7版本后弃用WebSecurityConfigurerAdapter，改用配置注入Bean【SecurityFilterChain】的方式，后续再调整
  *
  * @author lxs
- * @date 2023/5/3
+ * @date 2026/5/3
  */
 @Order(4)
 @Configuration
@@ -64,18 +64,6 @@ public class WebSecurityConfig {
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers(
-                                "/oauth/token",
-                                "/oauth/check_token",
-                                "/oauth/token_key",
-                                "/auth/code",
-                                "/css/**",
-                                "/swagger-ui/index.html",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs"
-                        ).permitAll()
                         .requestMatchers(ignoreUrls).permitAll()
                         .anyRequest().authenticated())
                 .build();

@@ -10,7 +10,7 @@ import com.fly.common.domain.BaseEntity;
  * 菜单对象 sys_menu
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

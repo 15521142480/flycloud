@@ -14,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 授权服务
  *
  * @author lxs
- * @date 2023/4/28
+ * @date 2026/4/28
  */
 @SpringBootApplication(exclude = {
         DataSourceAutoConfiguration.class,

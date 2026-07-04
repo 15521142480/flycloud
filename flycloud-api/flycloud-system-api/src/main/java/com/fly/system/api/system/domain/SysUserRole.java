@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 用户角色对象 sys_user_role
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2026-08-31
  */
 @Data
 @TableName("sys_user_role")

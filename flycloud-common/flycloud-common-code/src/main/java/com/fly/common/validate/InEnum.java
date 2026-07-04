@@ -1,5 +1,6 @@
 package com.fly.common.validate;
 
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 
 import jakarta.validation.Constraint;
@@ -22,9 +23,9 @@ import java.lang.annotation.*;
 public @interface InEnum {
 
     /**
-     * @return 实现 EnumValuable 接口的
+     * @return 实现 ArrayValuable 接口的类
      */
-    Class<? extends IntArrayValuable> value();
+    Class<? extends ArrayValuable<?>> value();
 
     String message() default "必须在指定范围 {value}";
 

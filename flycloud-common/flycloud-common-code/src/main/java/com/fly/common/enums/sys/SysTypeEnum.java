@@ -1,4 +1,4 @@
-package com.fly.common.enums;
+package com.fly.common.enums.sys;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

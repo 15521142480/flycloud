@@ -4,7 +4,7 @@ package com.fly.learn.design;
  * 工厂模式
  *
  * @author: lxs
- * @date: 2024/8/24
+ * @date: 2025/8/24
  */
 public class Factory {
 

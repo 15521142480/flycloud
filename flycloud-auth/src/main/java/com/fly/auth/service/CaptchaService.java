@@ -10,7 +10,7 @@ import com.fly.common.domain.model.R;
  * 验证码业务类
  *
  */
-public interface ValidateService {
+public interface CaptchaService {
 
 
 	/**

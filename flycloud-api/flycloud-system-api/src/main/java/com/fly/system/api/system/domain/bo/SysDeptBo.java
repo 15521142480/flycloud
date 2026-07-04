@@ -8,7 +8,7 @@ import lombok.Data;
  * 部门-bo
  *
  * @author: lxs
- * @date: 2024/11/29
+ * @date: 2025/11/29
  */
 @Data
 public class SysDeptBo extends BaseEntity {

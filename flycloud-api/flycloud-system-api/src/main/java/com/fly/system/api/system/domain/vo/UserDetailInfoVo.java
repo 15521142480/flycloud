@@ -9,7 +9,7 @@ import java.util.List;
  * 用户详情信息 - vo
  *
  * @author: lxs
- * @date: 2024/9/2
+ * @date: 2025/9/2
  */
 @Data
 public class UserDetailInfoVo implements Serializable {

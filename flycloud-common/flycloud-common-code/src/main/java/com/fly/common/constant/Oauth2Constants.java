@@ -20,7 +20,7 @@ package com.fly.common.constant;
  * 认证URL常量
  *
  * @author lxs
- * @date 2023/5/3
+ * @date 2026/5/3
  */
 public class Oauth2Constants {
 
@@ -72,7 +72,7 @@ public class Oauth2Constants {
 	/**
 	 * 验证码 code
 	 */
-	public static final String VALIDATE_CODE_CODE = "code";
+	public static final String VALIDATE_CAPTCHA_CODE = "captchaCode";
 	/**
 	 * 认证类型参数 key
 	 */
@@ -92,7 +92,8 @@ public class Oauth2Constants {
 	/**
 	 * 验证
 	 */
-	public static final String NAME_OR_PSD_ERROR = "用户或密码不正确！";
+	public static final String USER_IS_NULL_ERROR = "用户不存在！"; // 含用户不存在
+	public static final String NAME_OR_PSD_ERROR = "用户或密码不正确！"; // 含用户不存在
 	public static final String USER_DISABLED_ERROR = "用户已被停用！";
 	public static final String CAPTCHA_ERROR = "验证码不正确！";
 
@@ -125,11 +126,9 @@ public class Oauth2Constants {
 
 	public static final String SMS_CODE_KEY = "fly.sms.code.";
 
-	public static final String CAPTCHA_HEADER_KEY = "Code-Key";
-
-	public static final String IMAGE_TEXT_CLICK_CAPTCHA_SUCCESS_VALUE = "ImageTextClickCaptchaSuccessValue";
-
-	public static final String CAPTCHA_HEADER_CODE = "Code-Value";
+//	public static final String CAPTCHA_HEADER_KEY = "Code-Key";
+//
+//	public static final String CAPTCHA_HEADER_CODE = "Code-Value";
 
 	/**
 	 * 登录类型相关

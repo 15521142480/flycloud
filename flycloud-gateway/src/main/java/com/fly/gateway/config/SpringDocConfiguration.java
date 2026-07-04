@@ -22,7 +22,7 @@ import java.util.Map;
  * SpringDoc 配置
  *
  * @author lxs
- * @date 2023/4/19
+ * @date 2026/4/19
  */
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)

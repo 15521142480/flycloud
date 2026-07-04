@@ -1,5 +1,5 @@
 import request from '@/config/axios'
-import md5 from 'js-md5'
+import {rsaEncrypt} from "@/utils/crypto/rsa";
 
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
@@ -84,9 +84,13 @@ export const getUser = (id: number) => {
 }
 
 // 新增用户
-export const createUser = (data: UserVO) => {
-  data.password = md5(data.password)
-  return request.post({ url: `/${SYS_BASE_URL}/user/saveOrUpdate`, data })
+export const createUser = async (data: UserVO) => {
+  const newData = { ...data }
+  newData.password = await rsaEncrypt(
+    newData.password,
+    import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
+  )
+  return request.post({ url: `/${SYS_BASE_URL}/user/saveOrUpdate`, newData })
 }
 
 // 修改用户

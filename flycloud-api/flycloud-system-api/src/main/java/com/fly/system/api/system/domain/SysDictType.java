@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
  * 字典类型对象 sys_dict_type
  *
  * @author fly
- * @date 2024-12-08
+ * @date 2026-12-08
  */
 @Data
 @Accessors(chain = true)

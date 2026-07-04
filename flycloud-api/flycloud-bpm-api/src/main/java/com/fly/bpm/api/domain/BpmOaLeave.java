@@ -12,7 +12,7 @@ import com.fly.common.domain.BaseEntity;
  * OA 请假申请对象 bpm_oa_leave
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

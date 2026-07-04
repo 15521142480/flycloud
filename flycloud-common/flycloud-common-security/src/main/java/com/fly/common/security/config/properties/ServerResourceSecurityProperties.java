@@ -11,7 +11,7 @@
 // * 服务资源安全配置
 // *
 // * @author lxs
-// * @date 2024/08/13
+// * @date 2026/08/13
 // */
 //@Component
 //@ConfigurationProperties(prefix = "server.resource.security")

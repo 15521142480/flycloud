@@ -6,7 +6,7 @@ import lombok.Data;
  * 连接ftp的参数
  *
  * @author lxs
- * @date 2023/4/24
+ * @date 2026/4/24
  */
 @Data
 public class ConnectFtpBo {

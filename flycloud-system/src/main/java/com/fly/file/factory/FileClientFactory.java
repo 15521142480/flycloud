@@ -1,7 +1,7 @@
 package com.fly.file.factory;
 
 import com.fly.common.config.properties.FileConfigProperties;
-import com.fly.common.enums.FileUseServerTypeEnum;
+import com.fly.common.enums.sys.FileUseServerTypeEnum;
 import com.fly.file.factory.service.FileClientService;
 import com.fly.file.factory.service.impl.LocalFileClientServiceImpl;
 import com.fly.file.factory.service.impl.SftpFileClientServiceImpl;

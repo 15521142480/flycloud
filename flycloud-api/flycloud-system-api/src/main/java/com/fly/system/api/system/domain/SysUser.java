@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * 用户对象 sys_user
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2026-08-31
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

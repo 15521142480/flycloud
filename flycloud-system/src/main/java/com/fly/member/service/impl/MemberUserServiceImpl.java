@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,7 +31,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @Service
-public class MemberUserServiceImpl implements IMemberUserService {
+public class MemberUserServiceImpl extends BaseServiceImpl<MemberUserMapper, MemberUser> implements IMemberUserService {
 
     private final MemberUserMapper memberUserMapper;
 
@@ -73,6 +76,23 @@ public class MemberUserServiceImpl implements IMemberUserService {
         }
         user.setAvatar(user.getAvatar());
         return user;
+    }
+
+
+    @Override
+    public List<MemberUserVo> queryByIds(Collection<Long> ids) {
+
+        if (ids == null || ids.isEmpty()){
+            return new ArrayList<>();
+        }
+        return this.memberUserMapper.selectVoBatchIds(ids);
+    }
+
+
+    @Override
+    public MemberUserVo queryByMobile(String mobile) {
+
+        return memberUserMapper.selectVoOne(MemberUser::getMobile, mobile);
     }
 
     @Override
@@ -160,6 +180,7 @@ public class MemberUserServiceImpl implements IMemberUserService {
         updateUser.setUpdateTime(LocalDateTime.now());
         memberUserMapper.updateById(updateUser);
     }
+
 
     /**
      * 构建会员用户查询条件。

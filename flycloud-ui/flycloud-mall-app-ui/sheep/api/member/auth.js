@@ -13,8 +13,7 @@ const AuthUtil = {
       password: md5(data.password),
       grant_type: 'captcha',
       scope: 'all',
-      imageTextClickCaptchaSuccessValue: data.imageTextClickCaptchaSuccessValue,
-      ImageTextClickCaptchaSuccessValue: data.imageTextClickCaptchaSuccessValue,
+      captchaCode: data.captchaCode
     };
     return request({
       // baseURL: getAuthBaseUrl(),
@@ -24,7 +23,6 @@ const AuthUtil = {
       data: newData,
       header: {
         'Content-Type': 'application/json',
-        ImageTextClickCaptchaSuccessValue: newData.imageTextClickCaptchaSuccessValue,
         Authorization: BASIC_AUTHORIZATION,
       },
       custom: {

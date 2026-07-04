@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * 全局异常捕获处理
  *
  * @author lxs
- * @date 2023/5/3
+ * @date 2026/5/3
  */
 @Slf4j
 @RestControllerAdvice // 等于@ResponseBody和 + ControllerAdvice；默认拦截所有controller (可指定包，如basePackages = "com.xxx.controller"))

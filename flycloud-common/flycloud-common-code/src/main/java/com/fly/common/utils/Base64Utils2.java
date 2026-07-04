@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * Base64 工具类 (jdk11 版)
  *
  * @author lxs
- * @date 2023/4/24
+ * @date 2026/4/24
  */
 public class Base64Utils2 {
 

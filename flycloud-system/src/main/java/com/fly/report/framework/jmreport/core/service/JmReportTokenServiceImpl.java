@@ -196,7 +196,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
                 Convert.toInt(claims.get(Oauth2Constants.USER_TYPE), 0),
                 Convert.toInt(claims.get(Oauth2Constants.LOGIN_TYPE), 0),
                 Convert.toStr(claims.get(AuthConstants.DEPT_ID), ""),
-                Convert.toStr(claims.get(AuthConstants.PHONE), ""),
+                Convert.toStr(claims.get(AuthConstants.MOBILE), ""),
                 Convert.toStr(claims.get(Oauth2Constants.AVATAR), ""),
                 Convert.toStr(claims.get(Oauth2Constants.ROLE_IDS), ""),
                 Convert.toStr(claims.get(Oauth2Constants.USER_NAME), ""),

@@ -10,7 +10,7 @@ import com.fly.common.domain.BaseEntity;
  * 角色对象 sys_role
  *
  * @author fly
- * @date 2024-08-31
+ * @date 2026-08-31
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

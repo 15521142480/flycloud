@@ -10,7 +10,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
  * 获取i18n资源文件
  *
  * @author lxs
- * @date 2023/5/2
+ * @date 2026/5/2
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MessageUtils {

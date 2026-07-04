@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  * BPM 流程实例抄送对象 bpm_process_instance_copy
  *
  * @author fly
- * @date 2024-11-24
+ * @date 2026-11-24
  */
 @TableName("bpm_process_instance_copy")
 @Data

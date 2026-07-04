@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 菜单按钮权限
  *
  * @author: lxs
- * @date: 2024/8/31
+ * @date: 2025/8/31
  */
 @Data
 public class SysMenuButtonPermissionVo implements Serializable {

@@ -2,22 +2,28 @@ package com.fly.auth.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.fly.auth.service.AuthTokenService;
-import com.fly.auth.service.ValidateService;
+import com.fly.auth.domain.vo.AuthLoginRespVo;
+import com.fly.auth.domain.vo.AuthTokenClaimsVo;
+import com.fly.auth.service.AuthService;
+import com.fly.auth.service.CaptchaService;
 import com.fly.auth.sms.SmsCodeAuthenticationToken;
 import com.fly.auth.social.SocialAuthenticationToken;
+import com.fly.auth.utils.JwtUtils;
 import com.fly.common.config.properties.AuthProperties;
+import com.fly.common.config.properties.RsaProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.constant.Oauth2Constants;
+import com.fly.common.enums.auth.LoginTypeEnum;
+import com.fly.common.enums.user.UserTypeEnum;
 import com.fly.common.exception.AuthException;
 import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.security.user.FlyUser;
+import com.fly.common.utils.crypto.RsaUtils;
+import com.fly.common.utils.json.JsonUtils;
 import com.xkcoding.justauth.AuthRequestFactory;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.enums.AuthResponseStatus;
@@ -35,14 +41,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 基于 Spring Security 6 的 Token 认证实现。
@@ -52,7 +51,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthTokenServiceImpl implements AuthTokenService {
+public class AuthServiceImpl implements AuthService {
 
 
     private final AuthenticationManager authenticationManager;
@@ -61,33 +60,47 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 
     private final ObjectProvider<AuthRequestFactory> factoryProvider;
 
-    private final AuthProperties authTokenProperties;
+    private final AuthProperties authProperties;
 
-    private final ValidateService validateService;
+    private final CaptchaService captchaService;
+
+    private final RsaProperties rsaProperties;
 
 
     @Override
-    public Map<String, Object> createToken(Map<String, String> loginParam, HttpServletRequest request) {
+    public AuthLoginRespVo token(Map<String, String> loginParam) {
 
+        AuthLoginRespVo authLoginRespVo = new AuthLoginRespVo();
         String grantType = loginParam.get(Oauth2Constants.GRANT_TYPE);
         if (StrUtil.isBlank(grantType)) {
             grantType = Oauth2Constants.PASSWORD;
         }
 
         if (Oauth2Constants.REFRESH_TOKEN.equals(grantType)) {
-            return refreshToken(loginParam);
+            return handleRefreshToken(loginParam.get(Oauth2Constants.REFRESH_TOKEN));
         }
 
         Authentication authentication = switch (grantType) {
             case Oauth2Constants.PASSWORD -> authenticatePassword(loginParam);
-            case AuthConstants.GRANT_TYPE_CAPTCHA -> authenticateCaptcha(loginParam, request);
+            case AuthConstants.GRANT_TYPE_CAPTCHA -> authenticateCaptcha(loginParam);
             case AuthConstants.GRANT_TYPE_SMS -> authenticateSms(loginParam);
             case AuthConstants.GRANT_TYPE_SOCIAL -> authenticateSocial(loginParam);
             default -> throw new AuthException(CommonConstants.FAIL, "不支持该认证类型");
         };
 
-        return issueToken(authentication);
+        issueToken(authLoginRespVo, authentication);
+
+        return authLoginRespVo;
     }
+
+
+
+    @Override
+    public AuthLoginRespVo refreshToken(String refreshToken) {
+        return handleRefreshToken(refreshToken);
+    }
+
+
 
     @Override
     public void revokeToken(String token) {
@@ -107,9 +120,16 @@ public class AuthTokenServiceImpl implements AuthTokenService {
      * @param loginParam
     */
     private Authentication authenticatePassword(Map<String, String> loginParam) {
+
         String username = loginParam.get("username");
-        String password = loginParam.get("password");
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+//        String password = loginParam.get("password");
+        // rsa解密
+        String originalPassword = RsaUtils.decrypt(
+                loginParam.get("password"),
+                rsaProperties.getFlyCloudLoginPassword().getPrivateKey()
+        );
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, originalPassword);
         return doAuthenticate(authentication, loginParam, username);
     }
 
@@ -147,15 +167,11 @@ public class AuthTokenServiceImpl implements AuthTokenService {
      * NOTE 验证码授权方式_图文点选验证
      *
      * @param loginParam
-     * @param request
     */
-    private Authentication authenticateCaptcha(Map<String, String> loginParam, HttpServletRequest request) {
+    private Authentication authenticateCaptcha(Map<String, String> loginParam) {
 
-        String successValue = firstNotBlank(
-                request.getHeader(Oauth2Constants.IMAGE_TEXT_CLICK_CAPTCHA_SUCCESS_VALUE),
-                loginParam.get(Oauth2Constants.IMAGE_TEXT_CLICK_CAPTCHA_SUCCESS_VALUE)
-        );
-        validateService.consumeImageTextClickCaptchaVerify(successValue);
+        String successValue = loginParam.get(Oauth2Constants.VALIDATE_CAPTCHA_CODE);
+        captchaService.consumeImageTextClickCaptchaVerify(successValue);
 
         return authenticatePassword(loginParam);
     }
@@ -168,16 +184,16 @@ public class AuthTokenServiceImpl implements AuthTokenService {
     */
     private Authentication authenticateSms(Map<String, String> loginParam) {
         String mobile = loginParam.get(Oauth2Constants.DEFAULT_PARAMETER_NAME_MOBILE);
-        String code = loginParam.get(Oauth2Constants.VALIDATE_CODE_CODE);
+        String captchaCode = loginParam.get(Oauth2Constants.VALIDATE_CAPTCHA_CODE);
         Object codeFromRedis = redisService.get(Oauth2Constants.SMS_CODE_KEY + mobile);
 
-        if (StrUtil.isBlank(code)) {
+        if (StrUtil.isBlank(captchaCode)) {
             throw new AuthException(CommonConstants.FAIL, "请输入验证码");
         }
         if (codeFromRedis == null) {
             throw new AuthException(CommonConstants.FAIL, "验证码已过期");
         }
-        if (!StrUtil.equalsIgnoreCase(code, codeFromRedis.toString())) {
+        if (!StrUtil.equalsIgnoreCase(captchaCode, codeFromRedis.toString())) {
             throw new AuthException(CommonConstants.FAIL, "验证码不正确");
         }
 
@@ -253,26 +269,32 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         }
     }
 
-    private Map<String, Object> issueToken(Authentication authentication) {
+    private void issueToken(AuthLoginRespVo authLoginRespVo, Authentication authentication) {
         FlyUser user = (FlyUser) authentication.getPrincipal();
-        Map<String, Object> claims = userClaims(user);
-        return buildTokenResponse(claims);
+        buildAuthLoginUserInfo(authLoginRespVo, user);
+        buildTokenResponse(authLoginRespVo);
     }
 
-    private Map<String, Object> refreshToken(Map<String, String> loginParam) {
-        String refreshToken = loginParam.get(Oauth2Constants.REFRESH_TOKEN);
+
+
+    public AuthLoginRespVo handleRefreshToken(String refreshToken) {
+
         if (StrUtil.isBlank(refreshToken)) {
             throw new AuthException(CommonConstants.FAIL, "refresh token不能为空");
         }
-        Map<String, Object> nextClaims = cachedClaims(refreshToken);
+        AuthLoginRespVo nextClaims = cachedClaims(refreshToken);
         if (nextClaims == null) {
             throw new AuthException(CommonConstants.FAIL, "refresh token无效或已过期");
         }
 
-        return buildTokenResponse(nextClaims);
+        buildTokenResponse(nextClaims);
+
+        return nextClaims;
     }
 
-    private Map<String, Object> cachedClaims(String refreshToken) {
+
+
+    private AuthLoginRespVo cachedClaims(String refreshToken) {
 
         Object cached = redisService.get(AuthConstants.REFRESH_TOKEN_KEY + refreshToken);
         if (cached == null) {
@@ -281,98 +303,68 @@ public class AuthTokenServiceImpl implements AuthTokenService {
         if (cached instanceof Map<?, ?> map) {
             Map<String, Object> nextClaims = new LinkedHashMap<>();
             map.forEach((key, value) -> nextClaims.put(String.valueOf(key), value));
-            return nextClaims;
+            return JSON.parseObject(JsonUtils.toJsonString(nextClaims), AuthLoginRespVo.class);
         }
 
         // 兼容升级前已签发的 refresh token。
         Claims claims = Jwts.parser()
-                .verifyWith(signingKey())
+                .verifyWith(JwtUtils.signingKey())
                 .build()
                 .parseSignedClaims(refreshToken)
                 .getPayload();
 
-        Map<String, Object> nextClaims = new LinkedHashMap<>();
-        nextClaims.put(Oauth2Constants.USER_ID, claims.get(Oauth2Constants.USER_ID));
-        nextClaims.put(Oauth2Constants.USER_NAME, claims.get(Oauth2Constants.USER_NAME));
-        nextClaims.put(Oauth2Constants.USER_TYPE, claims.get(Oauth2Constants.USER_TYPE));
-        nextClaims.put(Oauth2Constants.LOGIN_TYPE, claims.get(Oauth2Constants.LOGIN_TYPE));
-        nextClaims.put(Oauth2Constants.ROLE_IDS, claims.get(Oauth2Constants.ROLE_IDS));
-        nextClaims.put(Oauth2Constants.AVATAR, claims.get(Oauth2Constants.AVATAR));
-        nextClaims.put(AuthConstants.DEPT_ID, claims.get(AuthConstants.DEPT_ID));
-        nextClaims.put(AuthConstants.PHONE, claims.get(AuthConstants.PHONE));
-        nextClaims.put(AuthConstants.AUTHORITIES, claims.get(AuthConstants.AUTHORITIES));
-        return nextClaims;
+        return JSON.parseObject(JsonUtils.toJsonString(claims), AuthLoginRespVo.class);
     }
 
-    private Map<String, Object> buildTokenResponse(Map<String, Object> claims) {
-        String accessJti = UUID.randomUUID().toString();
-        String refreshJti = UUID.randomUUID().toString();
-//        String accessToken = jwt(claims, accessJti, Duration.ofHours(2));
-        String accessToken = jwt(tokenClaims(claims), accessJti, authTokenProperties.getToken().getLoginTimeout());
-        String refreshToken = jwt(tokenClaims(claims), refreshJti, authTokenProperties.getToken().getRefreshTokenTimeout());
 
-        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getToken().getLoginTimeout());
-        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, claims, authTokenProperties.getToken().getLoginTimeout());
-        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, claims, authTokenProperties.getToken().getRefreshTokenTimeout());
+    private void buildTokenResponse(AuthLoginRespVo authLoginRespVo) {
 
-        Map<String, Object> resultData = new LinkedHashMap<>(claims);
-        resultData.put("accessToken", accessToken);
-        resultData.put("refreshToken", refreshToken);
-        resultData.put("jti", accessJti);
-        resultData.put("expiresIn", authTokenProperties.getToken().getLoginTimeoutSeconds());
-        return resultData;
+        AuthTokenClaimsVo authTokenClaimsVo = buildTokenClaims(authLoginRespVo);
+        JwtUtils.TokenJwtInfo accessTokenInfo = JwtUtils.buildTokenJwt(authTokenClaimsVo, authProperties.getToken().getLoginTimeout());
+        JwtUtils.TokenJwtInfo refreshTokenInfo = JwtUtils.buildTokenJwt(authTokenClaimsVo, authProperties.getToken().getLoginTimeout());
+        String accessToken = accessTokenInfo.token();
+        String refreshToken = refreshTokenInfo.token();
+        String accessId = refreshTokenInfo.accessId();
+
+        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, authLoginRespVo, authProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, authLoginRespVo, authProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, authLoginRespVo, authProperties.getToken().getRefreshTokenTimeout());
+
+        authLoginRespVo.setAccessToken(accessToken);
+        authLoginRespVo.setRefreshToken(refreshToken);
+        authLoginRespVo.setJti(accessId);
+        authLoginRespVo.setExpiresTime(authProperties.getToken().getLoginTimeoutSeconds());
     }
 
-    private Map<String, Object> tokenClaims(Map<String, Object> claims) {
 
-        Map<String, Object> tokenClaims = new LinkedHashMap<>();
-        tokenClaims.put(Oauth2Constants.USER_ID, claims.get(Oauth2Constants.USER_ID));
-        tokenClaims.put(Oauth2Constants.USER_NAME, claims.get(Oauth2Constants.USER_NAME));
-        tokenClaims.put(Oauth2Constants.USER_TYPE, claims.get(Oauth2Constants.USER_TYPE));
-        tokenClaims.put(Oauth2Constants.LOGIN_TYPE, claims.get(Oauth2Constants.LOGIN_TYPE));
-        tokenClaims.put(Oauth2Constants.ROLE_IDS, claims.get(Oauth2Constants.ROLE_IDS));
-        tokenClaims.put(AuthConstants.DEPT_ID, claims.get(AuthConstants.DEPT_ID));
-        return tokenClaims;
+
+    private AuthTokenClaimsVo buildTokenClaims(AuthLoginRespVo authLoginRespVo) {
+
+        AuthTokenClaimsVo authTokenClaimsVo = new AuthTokenClaimsVo();
+        authTokenClaimsVo.setUserId(authLoginRespVo.getUserId());
+        authTokenClaimsVo.setUserName(authLoginRespVo.getUserName());
+        authTokenClaimsVo.setUserType(UserTypeEnum.ADMIN.getValue());
+        authTokenClaimsVo.setLoginType(LoginTypeEnum.ADMIN_ACCOUNT_PASSWORD.getType());
+        authTokenClaimsVo.setRoleIds(authLoginRespVo.getRoleIds());
+        authTokenClaimsVo.setDeptId(authLoginRespVo.getDeptId());
+        return authTokenClaimsVo;
     }
 
-    private Map<String, Object> userClaims(FlyUser user) {
-        Map<String, Object> claims = new LinkedHashMap<>();
-        claims.put(Oauth2Constants.USER_ID, user.getId());
-        claims.put(Oauth2Constants.USER_NAME, user.getUsername());
-        claims.put(Oauth2Constants.USER_TYPE, user.getUserType());
-        claims.put(Oauth2Constants.LOGIN_TYPE, user.getLoginType());
-        claims.put(Oauth2Constants.ROLE_IDS, user.getRoleIds());
-        claims.put(Oauth2Constants.AVATAR, user.getAvatar());
-        claims.put(AuthConstants.DEPT_ID, user.getDeptId());
-        claims.put(AuthConstants.PHONE, user.getPhone());
-        claims.put(AuthConstants.AUTHORITIES, user.getAuthorities().stream()
+
+    private void buildAuthLoginUserInfo(AuthLoginRespVo authLoginRespVo, FlyUser user) {
+
+        authLoginRespVo.setUserId(user.getId());
+        authLoginRespVo.setMobile(user.getMobile());
+        authLoginRespVo.setUserName(user.getUsername());
+        authLoginRespVo.setUserType(UserTypeEnum.ADMIN.getValue());
+        authLoginRespVo.setLoginType(LoginTypeEnum.ADMIN_ACCOUNT_PASSWORD.getType());
+        authLoginRespVo.setRoleIds(user.getRoleIds());
+        authLoginRespVo.setAvatar(user.getAvatar());
+        authLoginRespVo.setDeptId(user.getDeptId());
+        authLoginRespVo.setAuthorities(user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList());
-        return claims;
     }
 
-    private String jwt(Map<String, Object> claims, String jti, Duration ttl) {
-        Instant now = Instant.now();
-        return Jwts.builder()
-                .claims(claims)
-                .id(jti)
-                .subject(String.valueOf(claims.get(Oauth2Constants.USER_NAME)))
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plus(ttl)))
-                .signWith(signingKey())
-                .compact();
-    }
 
-    private SecretKey signingKey() {
-        byte[] source = Oauth2Constants.SIGN_KEY.getBytes(StandardCharsets.UTF_8);
-        byte[] key = new byte[32];
-        for (int i = 0; i < key.length; i++) {
-            key[i] = source[i % source.length];
-        }
-        return Keys.hmacShaKeyFor(key);
-    }
-
-    private String firstNotBlank(String first, String second) {
-        return StrUtil.isNotBlank(first) ? first : second;
-    }
 }

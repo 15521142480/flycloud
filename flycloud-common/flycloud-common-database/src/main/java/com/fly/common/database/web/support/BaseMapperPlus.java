@@ -198,6 +198,10 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         return BeanUtils.toBean(obj, voClass);
     }
 
+    default V selectVoOne(SFunction<T, ?> field, Object value) {
+        return selectVoOne(new LambdaQueryWrapper<T>().eq(field, value));
+    }
+
     default List<V> selectVoList(Wrapper<T> wrapper) {
         return selectVoList(wrapper, this.currentVoClass());
     }

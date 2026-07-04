@@ -8,7 +8,7 @@ import com.fly.test.domain.vo.SysUserTestVo;
  * 用户信息Mapper接口
  *
  * @author fly
- * @date 2023-04-22
+ * @date 2026-04-22
  */
 public interface SysUserTestMapper extends BaseMapperPlus<SysUserTestMapper, SysUserTest, SysUserTestVo> {
 

@@ -11,7 +11,7 @@
 // * 服务资源安全配置
 // *
 // * @author lxs
-// * @date 2024/08/14
+// * @date 2026/08/14
 // */
 //@Component
 //@ConfigurationProperties(prefix = "gateway.server.security")

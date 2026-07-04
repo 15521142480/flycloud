@@ -107,8 +107,9 @@ security:
 
     # 白名单 (授权、swagger、监控中心等url)
     ignore-urls:
-      - /oauth/**
-      - /auth/**
+      - /admin/auth/**
+      - /app/auth/**
+      - /captcha/**
       - /feign/**
       - /gen/**
       - /app/**
@@ -117,15 +118,37 @@ security:
       - /webjars/**
       - /druid/**
       - /assets/**
-      - /v2/api-docs/**
-      - /v3/api-docs/**
-      - /swagger/api-docs
+      - /css/**
+      - /swagger-ui/index.html
       - /swagger-ui.html
+      - /swagger-ui/**
+      - /swagger/api-docs
       - /swagger-resources/**
       - /doc.html
+      - /v2/api-docs/**
+      - /v3/api-docs
+      - /v3/api-docs/**
 
     # 是否启用网关验证（是：接口都拦截验证；否：全部接口在网关服务都为白名单）
     gateway-enable: true
+
+  # ras密钥对配置
+  rsa:
+    keys:
+      # 登录密码
+      fly_cloud_login_password:
+        public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqG/pmVfnO8KrCL1zHzsnx2hlwmbvFqSGna89QU9a5q0JO+pdeppBhHbHI8Lao/Hsk4jSQbA1C+vSKi018A6a4WILlbRMYZaStouc2abYCZsejL/SMccsCFz+c06WPzFJ5VkxAoTTmVJ0pCViVJEZdQuXMc7GtQRP7VME+DhrVDThII6s/2oxJLNhPxCejGZz84jhekHIedF38/SRz2gj5QQH3v+zYC2SWjH+WAoyLckFQ7A3FBYt9qaFTLA1ObpSmKEeZZvxWadovMW2gw6tQPWbzxalY00Dhei7hGi8yU29bhF032SQaMIgyuIiYW4wLdk2wdjOY1JtJDGgjhmjXwIDAQAB
+        private-key: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCob+mZV+c7wqsIvXMfOyfHaGXCZu8WpIadrz1BT1rmrQk76l16mkGEdscjwtqj8eyTiNJBsDUL69IqLTXwDprhYguVtExhlpK2i5zZptgJmx6Mv9IxxywIXP5zTpY/MUnlWTEChNOZUnSkJWJUkRl1C5cxzsa1BE/tUwT4OGtUNOEgjqz/ajEks2E/EJ6MZnPziOF6Qch50Xfz9JHPaCPlBAfe/7NgLZJaMf5YCjItyQVDsDcUFi32poVMsDU5ulKYoR5lm/FZp2i8xbaDDq1A9ZvPFqVjTQOF6LuEaLzJTb1uEXTfZJBowiDK4iJhbjAt2TbB2M5jUm0kMaCOGaNfAgMBAAECggEAAjZzMgp7CVv2CDs1ajBVYfzRYveAYG3LAZ6jhN0kVeMK3TUiHu83cOclxIVjq20HlZrAdsgOZR+WZ77e3UjHqKb2W/RAohkJZGgfEiyi/cXV4Dr9Tb9y67MH/4/TW8NKR2A4usCAmXVPNjgIdhxq0ZvqkOyzDmJGAm+0kIHyRntZRO5bkAWEv/NW+hMhb2TkybORq6XVH76ugeniUgL2DiAv2um6uOc1fgXYJL4axA0HdK67K8XGjRmgdzRgZmFxeg2AfnNhbMfvKxAR+p0imnzpgLIBlckR7ZPiyqhT06GgCsfU4Aj/j302fX44vLhBkmfAiqTOw7uomLnTjlpd+QKBgQDh1mrknQpDjpD4tHUabERcffiNp/o6oks4olq7DWgMsem2c8qN2nHB43bD9vgXmHMqCcvl36BSC+SfOS+JS7a/HRCktoxxktDz6HWUsvjy1L6G5FITqW2rMmCnmXUZuEhu0eiQGBlAjDYxGyFO6PMwu0A0CCF9f1j0oB2OCmRFJwKBgQC+7uzTjSz2J3lGoUpjVPu5diSRuOtzE6Czgm5czcJMnpMybqWy83hhBh9kdFMkyGYHFk8sqxzpt1cd/vsIady0S8Fc384msqWTmyg6t1n1GZyNZyENddRw78lpPqIzI5FaaMS7AgoPZ5mP+aWLIn8JBlfUNugvt6CbYRDJ6fZDCQKBgAP6BJPV+BJMdl0KwG0grut6BGBqLsvNg8mRgkt85vIiR91AmLZ6vDoPyU2WEbRIqO56ka6Qi4AmWXY8SYv/W05uMpbT6BEv5qIE290scZnFCT3S02cpOpcjIfSRjTBQwGXDKHcxFXC/h0zCD4oWLAIVqgHAiuZs0aItF5gisrVNAoGAayLaFOL0xbLkpDNA8HfxP+IBJxuiUlJDLDcWAlEao6+fXP8lT0K624Z5+v4i4VLpnTRxfNkPQj20ToqTBeeRBkIz4A9dN+2qZyb67eeQPK4AYH/r1ge2CyEh3UJd9WAR4a9EJMNCLd6uFlG5CFd0/PVoNxYQNyZMoqNWrlXv7zECgYAPYlBo3g674eI3Qb0CGpb5o0zLzV5jR+6ubJ1nkwr9X9YJOAJ/8QtbrRfE1DCjQ/p5p/rdl4YKEeZWidZcrIJCdKjCPj1sN91vVVWUmGs8J35lcABC70zgO43jxlHNpel/rpuztrVqZBBGez/7TPfYthzdgh8cD5SkweUVaQQ0Cw==
+
+      # 支付密码
+      fly_cloud_pay_password:
+        public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAolvhZzAaDugJQ/kADME7zxv2EbQR4377PWliPTbk8cZh+PoSi6EviwN1syWMLJGs8RwuaGFcUQwvXvrTCo/E2nrg1c7odOYTHnEi172Wu9mVUUGoxZ6vNCTXnwyK34u+136IcTunepP/LC+RxSzB/Qk81PJX+Fx3ffXoAclcQWvI2ssTabVYyf8zKnEF5F151qp0PuYYDGNOrYXbbblUjg0BbhVVPINUz7lhMENqPFwz2lAk6GCLlYMvkbIhN9mjcDMCQu3uPTtjadpMaypBniwVuXfqTGMvQ5LxWfHzMutiKNjTU3F4qsTbXslPLMlclIDRCu648Bkj7tB+19tQuQIDAQAB
+        private-key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCiW+FnMBoO6AlD+QAMwTvPG/YRtBHjfvs9aWI9NuTxxmH4+hKLoS+LA3WzJYwskazxHC5oYVxRDC9e+tMKj8TaeuDVzuh05hMecSLXvZa72ZVRQajFnq80JNefDIrfi77XfohxO6d6k/8sL5HFLMH9CTzU8lf4XHd99egByVxBa8jayxNptVjJ/zMqcQXkXXnWqnQ+5hgMY06thdttuVSODQFuFVU8g1TPuWEwQ2o8XDPaUCToYIuVgy+RsiE32aNwMwJC7e49O2Np2kxrKkGeLBW5d+pMYy9DkvFZ8fMy62Io2NNTcXiqxNteyU8syVyUgNEK7rjwGSPu0H7X21C5AgMBAAECggEAScNyud3pyOH067PiKOlV0ffDKTHlerVDUhhh8KvTAmF+O47qBBQcNI1C2Txy3gDlULnb/8JUHeJqVz2fykmdRyHSqnERvaKWBxuhl+Dj7b6iD0PEeNxqf0dJy1H4ei3Ua7VqKf/PTGqW4S1PjgSSsfKTd7AO9aCVDV4+pSklx/aF+2l4Gq/HsjBCu5GcbCdEK6s1Bbi+yk6kO6WK1noB/14owQxI38mfR/IX5eUO3nMx9wsh8LjMpuZzhi9FQmIrWUXjhG5zjCy/wnE5X2IWVUKfiXwDtxYzMtFQTb8X8Nw7sub1AaApceedgFNrWzYHy+ks/5MtZGiIlZsav5WPXQKBgQDR4XS9iwK4WPhMGOoAfOCYPfi3tm/GofuhxWgIKdQu/K4HXhUBhLGpva/5ZPfURCklpGlCpxofKM4e1QUBPk8SVB7Gs6iwnFnwQRMtWwuY92pQFc2mhzfstHg0taREoHEK7EYXaskCekng29Qv/Cv4+agkufeOE1oJeCprjh+LCwKBgQDGCSdCCI2MtbTqHRJDSOZDC3AADWUgaFrgkYnV4PhOpR5sYJaZr7uY2MfZMw3Y0C0RX1wW4isUSn7lPmkWKLa8co3II8oYKZDy9KHXwYyIYXwUcivbn7wdEoa5c5W1Yc3dHuNL3ZvA5S4gtlAdggYyR5pA9R0O7EZY20wl0amNywKBgQDP9zIBGvxwBKDMbqd4IkU+NbH9AAZT8W/whTYnWKNKh9A9tqjj30NYKYB0g+raZ0vKY9Z1WDUXCQztGjEiYUZip/3y8FTH47VuzlydRakBQrASePhU+Ymdv9mYiSAjbEN3ClYNoB9bmCcaa1kezyYXR/Knqao2GtDNr0eBWcvBrwKBgB7y20HEmGp/EzDrLil5wRKFPRGlBkLUTC+ATywvpl6UC3cgeSi3f/fZGRJmmiliD0kBwCCLY/Qd2Er3P/EIl9ZHiMTYYwL3rAFsHcbcJpxBr+R6G0SNaBabCJb+60yXZlbCNv9qOKciqdzO4SJbaaB99Ctmow3r+up0Cyh15auVAoGBAKHy4T304eNlo35KvI4MTY2FiXIXvuYc7HaXA9jyeqNdk3uhluT/6M9VWPFk+UzX07mQPtxP2qV8ADWuzon46ZeNXmzXXlMN6vQPJDBX8vfwEhAWv0GUc1rkxmjkQbOeDUx/mYDSDJUtO4kTN2DqMrm93XNqvezavznr02/hJZl8
+
+      # 开放接口
+      fly_cloud_open_api:
+        public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs7IakV0YmQLRbqT2Vlv2s4ODvb7d7PMeaDyz7g5jvKbuIkxdUU7KRHl+PXXdzH4MiBpl3sq8+oAYfZqwq8+wYkdgZhuAqjIoW6DHoQZXRXF1SrQ6kF4j5PuangfAfh1xp5MkHkc2Xy3qvshplh5eE7odhO3mYhnM9GpRB4w8uJItEX9K0X0XuVhX7t+P9nwBkCm13JBS1WdTxPF9rom+SPxisgsEqhEks9uPyW9ioTL4zsLsHskgy3XsTARla9uI3ggUVLD0Y/yqII5sZ97hUc0GvzoDHysnQmB7jp1MTjspojD+zXmB+aT/NvDi++iN2x9UXbhY/YAcDCexORVEDwIDAQAB
+        private-key: MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCzshqRXRiZAtFupPZWW/azg4O9vt3s8x5oPLPuDmO8pu4iTF1RTspEeX49dd3MfgyIGmXeyrz6gBh9mrCrz7BiR2BmG4CqMihboMehBldFcXVKtDqQXiPk+5qeB8B+HXGnkyQeRzZfLeq+yGmWHl4Tuh2E7eZiGcz0alEHjDy4ki0Rf0rRfRe5WFfu34/2fAGQKbXckFLVZ1PE8X2uib5I/GKyCwSqESSz24/Jb2KhMvjOwuweySDLdexMBGVr24jeCBRUsPRj/Kogjmxn3uFRzQa/OgMfKydCYHuOnUxOOymiMP7NeYH5pP828OL76I3bH1RduFj9gBwMJ7E5FUQPAgMBAAECggEAB6cxC3owDIA6uYrMClnd/r+TUkxOjli9CvUe4qd5PEp4ajyKCDxMpVrunfZ8TPPHW9qSoR5NqyDef3xMREeoUZ827f0DifwbN5Ui5hWWN5kWmj5lH3Xq8xsmIXnfYF+np1qUbLeytfNc2TrsMvO1z62bCT4f6ZNYunDMD6q7gU7MmJdsEvh7CgWhlH59Lax72SlvbqcwCq9sB06kWxKLBN6ztB+pi/j5n/lh59Zq8m06jIsakyF5BItqchyBj3p5/IDshymblIme9VJq3U0n7bsIPFmItBzL2j/6Gek+gH2zxyP2/lyeTVqT4ASC0pFy6T3aRoLPKqolq75IU3dqrQKBgQD9BodKx2rvHbMMSHUzlQ1GrwqBlZyqjszzLkC8edS5IVVzpFJeg7hv2XioUn0B8uz7JCKuhO+JE+e5HvF+Oky2BQ4C5Y27SllCFN7L2BIqD92XapXF8dEdACjeD2k1/uqc2X5RvzQuih85NWRMLanqaM7ZTe8WXlOpwwH2AwDK+wKBgQC1zuRPvJwxdWI5nbIpAO4vcIMbYgc0uQ4XJb1OHF2DSlEEl70NFz3a0Ev0g6aP3l0DqhOv94z+m46ZJgvqshEND0g1eKnvNUHtCrgYELzna3yy6DDiLfaTQBurkhDQddkX35MY8nw8EL48RH+YV6DmnMlBoNCkfLhU0uGjwSXe/QKBgQCzgw45X4HeY5PEAyQjlHv2yfkKNrsPxoBhh08maMkjDyMxCEPoCkuwDvorcVp/J3o6M0jnyCipeBXOoMV0aKhD+xIVvAbx+a2Z1HS86m74qIjuBBB+fzF9Ab/8y7I5PMH2xdd45859tkCwtdCSu1Lxm6olQcV+eS2iI1gg0cCeQQKBgQCmPKqeDgNzZbWOoRaKT4N6dRIsM5ILLzonCCb0CROoPIef/26pTZsNPHB2/vmJivTZqOWffGa7V1knx5YV3wOgQVzxJ4eaZcQGDksOFh/kKnA21f/8j7JqKbAjTMd7FIaQQamqoe3eriCD0s4oadeBhdKv429jN3cEeF5A8RbDsQKBgQCPqT+L2LuvaonAixmXe+OWsS4xvqt4OjpqSV5WenBcC5AjGpMtpOKpeToTif7wK5XNgRulArg+zogFxRHMT4b+V3u6GrXLpLUbKGC/JkEG5rO9YtGLFcyHsC9J8Tsw9j2f9VZvzelVMT4fRhXp4cW6U1FM/3kP9otOjvEmjiLBbA==
 
 
 # 上传配置

@@ -11,7 +11,7 @@ import javax.sql.DataSource;
  * 数据源配置
  *
  * @author: lxs
- * @date: 2024/8/19
+ * @date: 2025/8/19
  */
 @AutoConfiguration
 public class DataSourceConfig {

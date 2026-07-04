@@ -8,7 +8,7 @@
 // * easy-es 配置
 // *
 // * @author lxs
-// * @date 2023/5/20
+// * @date 2026/5/20
 // */
 //@Configuration
 //@ConditionalOnProperty(value = "easy-es.enable", havingValue = "true")

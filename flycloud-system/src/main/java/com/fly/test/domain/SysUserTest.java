@@ -8,7 +8,7 @@ import com.fly.common.domain.BaseEntity;
  * 用户信息对象 sys_user
  *
  * @author fly
- * @date 2023-04-22
+ * @date 2026-04-22
  */
 @Data
 //@EqualsAndHashCode(callSuper = true)

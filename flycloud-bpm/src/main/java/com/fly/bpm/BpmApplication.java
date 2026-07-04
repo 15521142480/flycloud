@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 工作流-系统启动类
  *
  * @author lxs
- * @date 2024/11/24
+ * @date 2026/11/24
  */
 @SpringBootApplication(scanBasePackages = { "com.fly.**" }) // , "com.fly.common.security.*"
 @EnableDiscoveryClient

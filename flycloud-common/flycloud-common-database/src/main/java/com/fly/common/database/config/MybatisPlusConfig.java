@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * todo 使用 Spring Boot 自动配置机制实现多模块下第三方 bean 注入 spring 容器
  *
  * @author lxs
- * @date 2023/3/22
+ * @date 2026/3/22
  */
 @EnableTransactionManagement(proxyTargetClass = true)
 @AutoConfiguration

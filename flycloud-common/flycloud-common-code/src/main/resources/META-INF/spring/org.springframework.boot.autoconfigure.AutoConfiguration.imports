@@ -1,5 +1,5 @@
+com.fly.common.config.CommonConfiguration
 com.fly.common.config.CorsConfig
 com.fly.common.config.ExceptionConfiguration
 com.fly.common.config.JacksonConfig
-com.fly.common.config.AuthTokenAutoConfiguration
 com.fly.common.config.FileStaticResourceConfig

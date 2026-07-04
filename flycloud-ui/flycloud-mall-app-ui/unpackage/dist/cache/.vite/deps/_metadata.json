@@ -1,55 +1,55 @@
 {
-  "hash": "24494b14",
+  "hash": "79019297",
   "configHash": "9a2cc353",
-  "lockfileHash": "7762e4dd",
-  "browserHash": "2be62818",
+  "lockfileHash": "94019f8d",
+  "browserHash": "8b4fd7d7",
   "optimized": {
     "dayjs": {
       "src": "../../../../../node_modules/dayjs/dayjs.min.js",
       "file": "dayjs.js",
-      "fileHash": "edbea579",
+      "fileHash": "9b08cde3",
       "needsInterop": true
     },
     "dayjs/locale/zh-cn": {
       "src": "../../../../../node_modules/dayjs/locale/zh-cn.js",
       "file": "dayjs_locale_zh-cn.js",
-      "fileHash": "c6d474be",
+      "fileHash": "5f0d816b",
       "needsInterop": true
     },
     "dayjs/plugin/duration": {
       "src": "../../../../../node_modules/dayjs/plugin/duration.js",
       "file": "dayjs_plugin_duration.js",
-      "fileHash": "de610823",
+      "fileHash": "9d91d309",
       "needsInterop": true
     },
     "dayjs/plugin/relativeTime": {
       "src": "../../../../../node_modules/dayjs/plugin/relativeTime.js",
       "file": "dayjs_plugin_relativeTime.js",
-      "fileHash": "451344a9",
+      "fileHash": "b80cb80c",
       "needsInterop": true
     },
     "lodash-es": {
       "src": "../../../../../node_modules/lodash-es/lodash.js",
       "file": "lodash-es.js",
-      "fileHash": "9faa682f",
+      "fileHash": "eb7a42e4",
       "needsInterop": false
     },
     "luch-request": {
       "src": "../../../../../node_modules/luch-request/src/lib/luch-request.js",
       "file": "luch-request.js",
-      "fileHash": "ab85712c",
+      "fileHash": "87e7d3ef",
       "needsInterop": false
     },
     "pinia-plugin-persist-uni": {
       "src": "../../../../../node_modules/pinia-plugin-persist-uni/dist/pinia-persist-uni.es.js",
       "file": "pinia-plugin-persist-uni.js",
-      "fileHash": "4f4bcf73",
+      "fileHash": "91dad462",
       "needsInterop": false
     },
     "weixin-js-sdk": {
       "src": "../../../../../node_modules/weixin-js-sdk/index.js",
       "file": "weixin-js-sdk.js",
-      "fileHash": "510b0480",
+      "fileHash": "16ac4413",
       "needsInterop": true
     }
   },

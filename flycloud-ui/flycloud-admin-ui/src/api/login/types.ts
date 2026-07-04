@@ -7,7 +7,7 @@ export type UserLoginVO = {
   code: string
   codeKey: string
   // 图文点选验证码‌
-  imageTextClickCaptchaSuccessValue: string
+  captchaCode: string
   socialType?: string
   socialCode?: string
   socialState?: string
