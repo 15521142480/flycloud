@@ -90,7 +90,7 @@ public class SecurityUtils {
 			claims = TokenUtils.getClaims(token);
 			if (claims == null) {
 				log.error("token已过期");
-//				throw new TokenException("token已过期");
+				throw new TokenException("token已过期");
 			}
 		}
 		return claims;

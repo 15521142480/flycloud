@@ -18,6 +18,7 @@ import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.crypto.RsaUtils;
+import com.fly.common.utils.json.JsonUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.system.api.member.domain.vo.MemberUserVo;
 import com.fly.system.api.member.feign.IMemberUserApi;
@@ -153,9 +154,9 @@ public class AppAuthServiceImpl implements AppAuthService {
         String refreshToken = refreshTokenInfo.token();
         String accessId = refreshTokenInfo.accessId();
 
-        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, authTokenClaimsVo, authProperties.getToken().getLoginTimeout());
-        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, authTokenClaimsVo, authProperties.getToken().getLoginTimeout());
-        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, authTokenClaimsVo, authProperties.getToken().getRefreshTokenTimeout());
+        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, JsonUtils.toJsonString(authTokenClaimsVo), authProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, JsonUtils.toJsonString(authTokenClaimsVo), authProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, JsonUtils.toJsonString(authTokenClaimsVo), authProperties.getToken().getRefreshTokenTimeout());
 
 
         AppAuthLoginRespVo respVo = new AppAuthLoginRespVo();

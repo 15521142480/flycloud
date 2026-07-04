@@ -326,9 +326,9 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = refreshTokenInfo.token();
         String accessId = refreshTokenInfo.accessId();
 
-        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, authLoginRespVo, authProperties.getToken().getLoginTimeout());
-        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, authLoginRespVo, authProperties.getToken().getLoginTimeout());
-        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, authLoginRespVo, authProperties.getToken().getRefreshTokenTimeout());
+        redisService.set(AuthConstants.ACCESS_TOKEN_KEY + accessToken, JsonUtils.toJsonString(authLoginRespVo), authProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + accessToken, JsonUtils.toJsonString(authLoginRespVo), authProperties.getToken().getLoginTimeout());
+        redisService.set(AuthConstants.REFRESH_TOKEN_KEY + refreshToken, JsonUtils.toJsonString(authLoginRespVo), authProperties.getToken().getRefreshTokenTimeout());
 
         authLoginRespVo.setAccessToken(accessToken);
         authLoginRespVo.setRefreshToken(refreshToken);

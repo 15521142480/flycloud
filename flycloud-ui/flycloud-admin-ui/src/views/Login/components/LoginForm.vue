@@ -342,7 +342,7 @@ const handleLogin = async () => {
     } else {
       await push({ path: redirect.value || permissionStore.addRouters[0].path })
     }
-    await nextTick()
+    // await nextTick()
   } finally {
     if (!keepLoading) {
       loginLoading.value = false

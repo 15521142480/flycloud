@@ -71,15 +71,6 @@ public class SecurityResourceServerConfig {
                 .addFilterBefore(bearerTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers(ignoreUrls).permitAll()
-                        .requestMatchers(
-                                "/test/**",
-                                "/css/**",
-                                "/swagger-ui/index.html",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs"
-                        ).permitAll()
                         .anyRequest().authenticated())
                 .build();
     }

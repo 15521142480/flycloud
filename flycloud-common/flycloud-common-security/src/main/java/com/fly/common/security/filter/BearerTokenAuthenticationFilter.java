@@ -2,6 +2,7 @@ package com.fly.common.security.filter;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
@@ -9,6 +10,7 @@ import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.auth.TokenUtils;
+import com.fly.common.utils.json.JsonUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -37,7 +40,20 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthProperties authProperties;
 
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
+
+    /**
+     * 过滤白名单接口
+     */
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+
+        String requestUri = request.getRequestURI();
+        return authProperties.getIgnoreUrls()
+                .stream()
+                .anyMatch(url -> pathMatcher.match(url, requestUri));
+    }
 
     /**
      * 接口拦截
@@ -91,11 +107,20 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         if (cached == null) {
             cached = redisUtils.get(AuthConstants.ACCESS_TOKEN_KEY + token);
         }
+        if (cached == null) {
+            return null;
+        }
+
+        // redis设值的时候建议固定类型
+        if (cached instanceof String json) {
+            return JsonUtils.parseObject(json, new TypeReference<Map<String, Object>>() {});
+        }
         if (cached instanceof Map<?, ?> map) {
             Map<String, Object> claims = new LinkedHashMap<>();
             map.forEach((key, value) -> claims.put(String.valueOf(key), value));
             return claims;
         }
+
         return null;
     }
 
