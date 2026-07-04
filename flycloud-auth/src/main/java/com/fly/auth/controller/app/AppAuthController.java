@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2026/7/4
  */
 @RestController
-@RequestMapping("/admin/auth")
+@RequestMapping("/app/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AppAuthController {

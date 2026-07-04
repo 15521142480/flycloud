@@ -1,6 +1,7 @@
 package com.fly.common.enums.bpm;
 
 
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.Arrays;
  */
 @Getter
 @AllArgsConstructor
-public enum BpmUserTaskTimeoutHandlerTypeEnum implements IntArrayValuable {
+public enum BpmUserTaskTimeoutHandlerTypeEnum implements ArrayValuable<Integer> {
 
     REMINDER(1,"自动提醒"),
     APPROVE(2, "自动同意"),
@@ -23,10 +24,10 @@ public enum BpmUserTaskTimeoutHandlerTypeEnum implements IntArrayValuable {
     private final Integer type;
     private final String name;
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(BpmUserTaskTimeoutHandlerTypeEnum::getType).toArray();
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(BpmUserTaskTimeoutHandlerTypeEnum::getType).toArray(Integer[]::new);
 
     @Override
-    public int[] array() {
+    public Integer[] array() {
         return ARRAYS;
     }
 

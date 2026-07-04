@@ -1,6 +1,7 @@
 package com.fly.common.enums;
 
 import cn.hutool.core.util.ObjUtil;
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +15,13 @@ import java.util.Arrays;
  */
 @Getter
 @AllArgsConstructor
-public enum StatusEnum implements IntArrayValuable {
+public enum StatusEnum implements ArrayValuable<Integer> {
 
     ENABLE(0, "开启"),
     DISABLE(1, "关闭"),
     ;
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(StatusEnum::getStatus).toArray();
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(StatusEnum::getStatus).toArray(Integer[]::new);
 
     // 状态
     final Integer status;
@@ -30,7 +31,7 @@ public enum StatusEnum implements IntArrayValuable {
 
 
     @Override
-    public int[] array() {
+    public Integer[] array() {
         return ARRAYS;
     }
 

@@ -1,5 +1,6 @@
 package com.fly.common.validate;
 
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 
 import jakarta.validation.ConstraintValidator;
@@ -11,15 +12,16 @@ import java.util.stream.Collectors;
 
 public class InEnumValidator implements ConstraintValidator<InEnum, Integer> {
 
-    private List<Integer> values;
+    private List<?> values;
 
     @Override
     public void initialize(InEnum annotation) {
-        IntArrayValuable[] values = annotation.value().getEnumConstants();
+//        IntArrayValuable[] values = annotation.value().getEnumConstants();
+        ArrayValuable<?>[] values = annotation.value().getEnumConstants();
         if (values.length == 0) {
             this.values = Collections.emptyList();
         } else {
-            this.values = Arrays.stream(values[0].array()).boxed().collect(Collectors.toList());
+            this.values = Arrays.asList(values[0].array());
         }
     }
 

@@ -58,7 +58,8 @@ public class AppAuthServiceImpl implements AppAuthService {
         // 校验验证码
         captchaService.consumeImageTextClickCaptchaVerify(reqVo.getCaptchaCode());
 
-        MemberUserVo user = this.getUserByMobileAndPassword(reqVo.getMobile(), reqVo.getPassword());
+        // 校验用户
+        MemberUserVo user = this.getAndCheckUserByMobileAndPassword(reqVo.getMobile(), reqVo.getPassword());
 
         // 如果 socialType 非空，说明需要绑定社交用户
         String openId = null;
@@ -97,7 +98,7 @@ public class AppAuthServiceImpl implements AppAuthService {
      * @param mobile
      * @param password
      */
-    public MemberUserVo getUserByMobileAndPassword(String mobile, String password) {
+    public MemberUserVo getAndCheckUserByMobileAndPassword(String mobile, String password) {
 
         // 是否账号存在
         MemberUserVo user = memberUserApi.getMemberUserByMobile(mobile).getCheckedData();
@@ -133,8 +134,8 @@ public class AppAuthServiceImpl implements AppAuthService {
     private AppAuthLoginRespVo createToken(MemberUserVo user) {
 
         // 三个参数
-        // 当前认证用户：自定义build，无需继承spring security的user
-        // 登录凭证：已自定义验证（），设置null，不需要spring security执行authenticationManager.authenticate验证
+        // 当前认证用户：自定义build
+        // 登录凭证：已自定义验证（getAndCheckUserByMobileAndPassword），设置null，不需要spring security执行authenticationManager.authenticate验证
         // 权限：app端目前不涉及权限
         new UsernamePasswordAuthenticationToken(
                 buildFlyUser(user),

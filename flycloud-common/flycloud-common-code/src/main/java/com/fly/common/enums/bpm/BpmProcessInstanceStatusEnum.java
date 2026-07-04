@@ -1,6 +1,7 @@
 package com.fly.common.enums.bpm;
 
 
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 import com.fly.common.utils.ObjectUtils;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Arrays;
  */
 @Getter
 @AllArgsConstructor
-public enum BpmProcessInstanceStatusEnum implements IntArrayValuable {
+public enum BpmProcessInstanceStatusEnum implements ArrayValuable<Integer> {
 
     NOT_START(-1, "未开始"),
     RUNNING(1, "审批中"),
@@ -22,7 +23,7 @@ public enum BpmProcessInstanceStatusEnum implements IntArrayValuable {
     REJECT(3, "审批不通过"),
     CANCEL(4, "已取消");
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(BpmProcessInstanceStatusEnum::getStatus).toArray();
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(BpmProcessInstanceStatusEnum::getStatus).toArray(Integer[]::new);
 
     /**
      * 状态
@@ -34,7 +35,7 @@ public enum BpmProcessInstanceStatusEnum implements IntArrayValuable {
     private final String desc;
 
     @Override
-    public int[] array() {
+    public Integer[] array() {
         return ARRAYS;
     }
 

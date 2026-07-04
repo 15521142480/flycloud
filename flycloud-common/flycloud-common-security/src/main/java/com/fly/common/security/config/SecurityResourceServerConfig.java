@@ -19,6 +19,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -84,14 +86,14 @@ public class SecurityResourceServerConfig {
 
 
     /**
-     * 自定义授权相关处理器
-     * todo 2024-9-4: 无论是这里重写还是自己注入bean，貌似都会被全局异常拦截，目前的做法是新建对于该异常的拦截器：SecurityExceptionHandler
-     *
+     * 密码加密模式
      */
-//    @Override
-//    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-//        resources.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-//                .accessDeniedHandler(new CustomAccessDeniedHandler());
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        return new BCryptPasswordEncoder();
+    }
+
 
 }

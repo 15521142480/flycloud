@@ -94,15 +94,7 @@ public class WebSecurityConfig {
 
 
 
-    /**
-     * 密码加密模式
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
 
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        return new BCryptPasswordEncoder();
-    }
 
 //    public static void main(String[] args) {
 //

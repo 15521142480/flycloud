@@ -2,6 +2,7 @@ package com.fly.common.enums.bpm;
 
 import cn.hutool.core.util.ArrayUtil;
 
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 @Getter
 @AllArgsConstructor
-public enum BpmUserTaskRejectHandlerType implements IntArrayValuable {
+public enum BpmUserTaskRejectHandlerType implements ArrayValuable<Integer> {
 
     FINISH_PROCESS_INSTANCE(1, "终止流程"),
     RETURN_USER_TASK(2, "驳回到指定任务节点");
@@ -23,14 +24,14 @@ public enum BpmUserTaskRejectHandlerType implements IntArrayValuable {
     private final Integer type;
     private final String name;
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(BpmUserTaskRejectHandlerType::getType).toArray();
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(BpmUserTaskRejectHandlerType::getType).toArray(Integer[]::new);
 
     public static BpmUserTaskRejectHandlerType typeOf(Integer type) {
         return ArrayUtil.firstMatch(item -> item.getType().equals(type), values());
     }
 
     @Override
-    public int[] array() {
+    public Integer[] array() {
         return ARRAYS;
     }
 }

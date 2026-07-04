@@ -1,6 +1,7 @@
 package com.fly.common.constant.bpm;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 @Getter
 @AllArgsConstructor
-public enum BpmTaskCandidateStrategyEnum implements IntArrayValuable {
+public enum BpmTaskCandidateStrategyEnum implements ArrayValuable<Integer> {
 
     ROLE(10, "角色"),
     DEPT_MEMBER(20, "部门的成员"), // 包括负责人
@@ -23,7 +24,8 @@ public enum BpmTaskCandidateStrategyEnum implements IntArrayValuable {
     MULTI_DEPT_LEADER_MULTI(23, "连续多级部门的负责人"),
     POST(22, "岗位"),
     USER(30, "用户"),
-    START_USER_SELECT(35, "发起人自选"), // 申请人自己，可在提交申请时选择此节点的审批人
+    APPROVE_USER_SELECT(34, "审批人自选"), // 当前审批人，可在审批时，选择下一个节点的审批人
+    START_USER_SELECT(35, "发起人自选"), // 申请人自己，可在提交申请时，选择此节点的审批人
     START_USER(36, "发起人自己"), // 申请人自己, 一般紧挨开始节点，常用于发起人信息审核场景
     START_USER_DEPT_LEADER(37, "发起人部门负责人"),
     START_USER_DEPT_LEADER_MULTI(38, "发起人连续多级部门的负责人"),
@@ -34,7 +36,7 @@ public enum BpmTaskCandidateStrategyEnum implements IntArrayValuable {
     ASSIGN_EMPTY(1, "审批人为空"),
     ;
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(BpmTaskCandidateStrategyEnum::getStrategy).toArray();
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(BpmTaskCandidateStrategyEnum::getStrategy).toArray(Integer[]::new);
 
     /**
      * 类型
@@ -50,7 +52,7 @@ public enum BpmTaskCandidateStrategyEnum implements IntArrayValuable {
     }
 
     @Override
-    public int[] array() {
+    public Integer[] array() {
         return ARRAYS;
     }
 

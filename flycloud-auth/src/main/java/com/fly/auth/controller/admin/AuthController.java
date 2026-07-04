@@ -36,17 +36,6 @@ public class AuthController {
      *
      * <p>
      * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
-     */
-    @PostMapping("/token")
-    public R<AuthLoginRespVo> getAccessToken(@RequestParam Map<String, String> loginParam) {
-        return R.ok(authService.token(loginParam));
-    }
-
-    /**
-     * 登录
-     *
-     * <p>
-     * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
     */
     @PostMapping("/token")
     @Parameters({
@@ -65,6 +54,16 @@ public class AuthController {
         return R.ok(authService.token(loginParam));
     }
 
+    /**
+     * 登录
+     *
+     * <p>
+     * 除普通参数之外，header还需传Authorization，也就是oauth的客户端，格式是：Basic 客户端key:客户端secret，如 Basic Zmx5OmZseV9zZWNyZXQ=
+     */
+//    @GetMapping("/token")
+//    public R<AuthLoginRespVo> getAccessToken(@RequestParam Map<String, String> loginParam) {
+//        return R.ok(authService.token(loginParam));
+//    }
 
     /**
      * 登出

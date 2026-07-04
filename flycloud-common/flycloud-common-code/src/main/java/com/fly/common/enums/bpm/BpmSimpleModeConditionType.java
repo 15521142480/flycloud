@@ -2,6 +2,7 @@ package com.fly.common.enums.bpm;
 
 import cn.hutool.core.util.ArrayUtil;
 
+import com.fly.common.core.ArrayValuable;
 import com.fly.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +16,12 @@ import java.util.Arrays;
  */
 @Getter
 @AllArgsConstructor
-public enum BpmSimpleModeConditionType implements IntArrayValuable {
+public enum BpmSimpleModeConditionType implements ArrayValuable<Integer> {
 
     EXPRESSION(1, "条件表达式"),
     RULE(2, "条件规则");
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(BpmSimpleModeConditionType::getType).toArray();
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(BpmSimpleModeConditionType::getType).toArray(Integer[]::new);
 
     private final Integer type;
 
@@ -31,7 +32,7 @@ public enum BpmSimpleModeConditionType implements IntArrayValuable {
     }
 
     @Override
-    public int[] array() {
+    public Integer[] array() {
         return ARRAYS;
     }
 }
