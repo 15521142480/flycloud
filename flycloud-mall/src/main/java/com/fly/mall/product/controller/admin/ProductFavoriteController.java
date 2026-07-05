@@ -36,7 +36,7 @@ public class ProductFavoriteController extends BaseController {
     /**
      * 查询商品收藏分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:list')")
+//    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:list')")
     @GetMapping("/list")
     public R<PageVo<ProductFavoriteVo>> list(ProductFavoriteBo bo, PageBo page) {
         return R.ok(productFavoriteService.queryPageList(bo, page));
@@ -46,7 +46,7 @@ public class ProductFavoriteController extends BaseController {
      * 查询分页列表。
      */
 
-    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:list')")
+//    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:list')")
     @GetMapping("/page")
     public R<PageVo<ProductFavoriteVo>> page(ProductFavoriteBo bo, PageBo page) {
         return R.ok(productFavoriteService.queryPageList(bo, page));
@@ -80,7 +80,7 @@ public class ProductFavoriteController extends BaseController {
      * 新增或修改商品收藏。
      */
     @Log(title = "商品收藏", businessType = BusinessType.INSERT)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:saveOrUpdate')")
+//    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Void> saveOrUpdate(@RequestBody ProductFavoriteBo bo) {
         return R.result(productFavoriteService.saveOrUpdate(bo));
@@ -98,7 +98,7 @@ public class ProductFavoriteController extends BaseController {
      * 删除商品收藏。
      */
     @Log(title = "商品收藏", businessType = BusinessType.DELETE)
-    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:delete')")
+//    @PreAuthorize("@pms.hasPermission('mall:product:product-favorite:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.result(productFavoriteService.deleteWithValidByIds(Arrays.asList(ids), true));
