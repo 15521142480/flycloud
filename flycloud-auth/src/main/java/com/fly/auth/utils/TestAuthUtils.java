@@ -15,9 +15,9 @@ public class TestAuthUtils {
 
         // 加密
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        String password = encoder.encode("123456");
-        System.out.println("123456的密码为：");
-        System.out.println(password);
+        String password = "abc123456";
+        String passwordEncode = encoder.encode(password);
+        System.out.println(password + "的密码为：" + passwordEncode);
     }
 
 

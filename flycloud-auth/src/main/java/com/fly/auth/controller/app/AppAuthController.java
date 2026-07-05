@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class AppAuthController {
      */
     @PostMapping("/token")
     @Operation(summary = "使用手机 + 密码登录")
-    public R<AppAuthLoginRespVo> getAccessToken(AppAuthLoginReqVo appAuthLoginReqVo) {
+    public R<AppAuthLoginRespVo> getAccessToken(@RequestBody @Valid AppAuthLoginReqVo appAuthLoginReqVo) {
         return R.ok(appAuthService.login(appAuthLoginReqVo));
     }
 

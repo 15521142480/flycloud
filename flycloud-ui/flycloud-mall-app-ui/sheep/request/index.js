@@ -111,6 +111,7 @@ http.interceptors.request.use(
  */
 http.interceptors.response.use(
   (response) => {
+
     // 约定：登录或刷新令牌接口返回 accessToken 时，自动保存令牌。
     if (isTokenResponse(response.config.url) && response.data?.data?.accessToken) {
       $store('user').setToken(response.data.data.accessToken, response.data.data.refreshToken);

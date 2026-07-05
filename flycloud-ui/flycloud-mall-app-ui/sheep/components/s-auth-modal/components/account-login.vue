@@ -71,8 +71,8 @@
   const state = reactive({
     showCaptcha: false, // 是否展示图文点选验证码
     model: {
-      mobile: 'admin-app', // 账号
-      password: 'admin123', // 密码
+      mobile: '15521142480', // 账号
+      password: 'abc123456', // 密码
     },
     rules: {
       mobile: {
@@ -117,7 +117,7 @@
   async function handleCaptchaSuccess(captchaVerification) {
     const loginData = {
       ...state.model,
-      captchaCode: captchaVerification
+      captchaCode: captchaVerification,
     };
     const { code } = await AuthUtil.loginByAccount(loginData);
     if (code === 0) {

@@ -27,7 +27,7 @@ public class AppAuthLoginReqVo {
 
     @Schema(description = "密码", requiredMode = Schema.RequiredMode.REQUIRED, example = "buzhidao")
     @NotEmpty(message = "密码不能为空")
-    @Length(min = 4, max = 16, message = "密码长度为 4-16 位")
+    @Length(min = 4, max = 512, message = "密码长度为 4-512 位")
     private String password;
 
     // ========== 绑定社交登录时，需要传递如下参数 ==========

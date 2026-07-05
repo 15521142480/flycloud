@@ -29,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -141,10 +142,10 @@ public class AppAuthServiceImpl implements AppAuthService {
         new UsernamePasswordAuthenticationToken(
                 buildFlyUser(user),
                 null,
-                null
+                Collections.emptyList()
         );
 
-        log.info("用户id【{}】登录系统;手机号:{},用户类型{}", user.getId(), user.getMobile(), UserTypeEnum.MEMBER.getValue());
+        log.info("\n用户id【{}】登录系统;手机号:{},用户类型:{}\n", user.getId(), user.getMobile(), UserTypeEnum.MEMBER.getValue());
 
 
         AuthTokenClaimsVo authTokenClaimsVo = buildTokenClaims(user);
@@ -201,7 +202,7 @@ public class AppAuthServiceImpl implements AppAuthService {
                 true
                 , true
                 , true
-                , null
+                , Collections.emptyList()
         );
     }
 

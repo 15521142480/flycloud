@@ -13,8 +13,8 @@ const CaptchaApi = {
   getImageTextClickCaptcha: () => {
     return request({
       // baseURL: getAuthBaseUrl(),
-      // url: '/auth/getImageTextClickCaptcha',
-      url: getAuthBaseUrl() + '/auth/getImageTextClickCaptcha',
+      // url: '/captcha/getImageTextClickCaptcha',
+      url: getAuthBaseUrl() + '/captcha/getImageTextClickCaptcha',
       method: 'POST',
       custom: {
         isToken: false,
@@ -26,7 +26,7 @@ const CaptchaApi = {
   // 校验图文点选验证码坐标。
   checkImageTextClickCaptcha: (data) => {
     return request({
-      url: getAuthBaseUrl() + '/auth/checkGetImageTextClickCaptcha',
+      url: getAuthBaseUrl() + '/captcha/checkGetImageTextClickCaptcha',
       method: 'POST',
       data,
       custom: {

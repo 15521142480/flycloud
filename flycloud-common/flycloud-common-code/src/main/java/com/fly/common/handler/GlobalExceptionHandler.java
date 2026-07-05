@@ -6,6 +6,8 @@ import com.fly.common.exception.TokenException;
 import com.fly.common.domain.model.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -41,21 +43,11 @@ public class GlobalExceptionHandler {
     }
 
 
-
-
     /**
      * 登录授权相关异常处理
      *
      * @param e 所属异常
      */
-//    @ExceptionHandler(TokenException.class)
-////    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    public R handleTokenException(TokenException e) {
-//
-//        log.error("=====授权相关异常: {}", e.getMessage(), e);
-//        return R.failed(e.getMessage());
-//    }
-
     @ExceptionHandler(TokenException.class)
     public R<?> handleTokenException(HttpServletRequest request, TokenException e) {
 
@@ -65,18 +57,20 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * 接口权限相关异常处理
-     *
-     * @param e 所属异常
+     * 请求参数校验异常
      */
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    public R handleAuthException(Exception e) {
-//
-//        log.error("=====xxx: {}", e.getMessage(), e);
-//        return R.failed(e.getMessage());
-//    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public R<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
+        FieldError fieldError = e.getBindingResult().getFieldError();
+        String message = fieldError != null
+                ? fieldError.getDefaultMessage()
+                : "请求参数校验失败";
+
+        log.error("=====请求参数校验异常: {}", message);
+
+        return R.failed(message);
+    }
 
 
 }
