@@ -117,13 +117,13 @@ export const importUserTemplate = () => {
 }
 
 // 用户密码重置
-export const resetUserPwd = (id: number, password: string) => {
-  // const data = {
-  //   id,
-  //   password
-  // }
+export const resetUserPwd = async (id: number, password: string) => {
+  const newPassword = await rsaEncrypt(
+    password,
+    import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
+  )
   return request.post({
-    url: `/${SYS_BASE_URL}/user/customResetPassword/` + id + '/' + md5(password)
+    url: `/${SYS_BASE_URL}/user/customResetPassword/` + id + '/' + (newPassword)
   })
 }
 
