@@ -34,7 +34,6 @@ public class MemberLevelRecordController {
     /**
      * 获取会员等级记录详情。
      */
-    @PreAuthorize("@pms.hasPermission('member:level:query')")
     @GetMapping("/get")
     public R<MemberLevelRecordVo> get(Long id) {
         return R.ok(levelRecordService.queryById(id));

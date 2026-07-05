@@ -79,7 +79,7 @@ public class PayOrderController {
     /**
      * 获取支付订单详情。
      */
-    @PreAuthorize("@pms.hasPermission('pay:order:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:order:query')")
     @GetMapping("/get/{id}")
     public R<PayOrderRespVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(payOrderService.getOrder(id));
@@ -88,7 +88,7 @@ public class PayOrderController {
     /**
      * 获取支付订单详情，兼容 yudao 前端接口。
      */
-    @PreAuthorize("@pms.hasPermission('pay:order:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:order:query')")
     @GetMapping("/get")
     public R<PayOrderRespVo> get(@RequestParam("id") Long id,
                                  @RequestParam(value = "sync", required = false) Boolean sync) {
@@ -103,7 +103,7 @@ public class PayOrderController {
     /**
      * 获取支付订单详情，兼容 yudao 前端接口。
      */
-    @PreAuthorize("@pms.hasPermission('pay:order:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:order:query')")
     @GetMapping("/get-detail")
     public R<PayOrderDetailsRespVo> getDetail(@RequestParam("id") Long id) {
         PayOrderRespVo order = payOrderService.getOrder(id);

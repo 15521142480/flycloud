@@ -41,7 +41,7 @@ public class MemberGroupController {
         return R.ok(BeanUtil.copyToList(groupService.queryList(bo), MemberGroupSimpleRespVo.class));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:group:query')")
+
     @GetMapping("/get/{id}")
     public R<MemberGroupRespVo> getInfo(@PathVariable Long id) {
         return R.ok(BeanUtil.toBean(groupService.queryById(id), MemberGroupRespVo.class));

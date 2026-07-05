@@ -36,7 +36,7 @@ public class PayWalletRechargeController {
     /**
      * 查询支付钱包充值记录分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet-recharge:list')")
+//    @PreAuthorize("@pms.hasPermission('pay:wallet-recharge:list')")
     @GetMapping("/list")
     public R<PageVo<PayWalletRechargeVo>> list(PayWalletRechargeBo bo, PageBo pageBo) {
         return R.ok(walletRechargeService.queryPageList(bo, pageBo));
@@ -45,7 +45,6 @@ public class PayWalletRechargeController {
     /**
      * 查询支付钱包充值记录分页列表，兼容 yudao 前端接口。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet-recharge:list')")
     @GetMapping("/page")
     public R<PageVo<PayWalletRechargeVo>> page(PayWalletRechargeBo bo, PageBo pageBo) {
         return R.ok(walletRechargeService.queryPageList(bo, pageBo));

@@ -32,7 +32,7 @@ public class PayWalletTransactionController {
     /**
      * 查询支付钱包流水分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet-transaction:list')")
+//    @PreAuthorize("@pms.hasPermission('pay:wallet-transaction:list')")
     @GetMapping("/list")
     public R<PageVo<PayWalletTransactionRespVo>> list(PayWalletTransactionBo bo, PageBo pageBo) {
         return R.ok(convertPage(walletTransactionService.queryPageList(bo, pageBo)));
@@ -41,7 +41,6 @@ public class PayWalletTransactionController {
     /**
      * 查询支付钱包流水分页列表，兼容 yudao 前端接口。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet-transaction:list')")
     @GetMapping("/page")
     public R<PageVo<PayWalletTransactionRespVo>> page(PayWalletTransactionBo bo, PageBo pageBo) {
         return R.ok(convertPage(walletTransactionService.queryPageList(bo, pageBo)));

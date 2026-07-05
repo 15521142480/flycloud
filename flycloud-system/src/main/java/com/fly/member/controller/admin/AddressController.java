@@ -43,7 +43,7 @@ public class AddressController {
     /**
      * 查询会员收件地址列表。
      */
-    @PreAuthorize("@pms.hasPermission('member:address:list')")
+//    @PreAuthorize("@pms.hasPermission('member:address:list')")
     @GetMapping("/list")
     public R<List<AddressRespVo>> list(MemberAddressBo bo) {
         return R.ok(BeanUtil.copyToList(addressService.queryList(bo), AddressRespVo.class));
@@ -52,7 +52,7 @@ public class AddressController {
     /**
      * 查询会员收件地址分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('member:address:list')")
+//    @PreAuthorize("@pms.hasPermission('member:address:list')")
     @GetMapping("/page")
     public R<PageVo<MemberAddressVo>> page(MemberAddressBo bo, PageBo page) {
         return R.ok(addressService.queryPageList(bo, page));
@@ -61,7 +61,7 @@ public class AddressController {
     /**
      * 查询会员收件地址列表。
      */
-    @PreAuthorize("@pms.hasPermission('member:address:list')")
+//    @PreAuthorize("@pms.hasPermission('member:address:list')")
     @GetMapping("/allList")
     public R<List<AddressRespVo>> allList(MemberAddressBo bo) {
         return R.ok(BeanUtil.copyToList(addressService.queryList(bo), AddressRespVo.class));
@@ -70,7 +70,6 @@ public class AddressController {
     /**
      * 获取会员收件地址详情。
      */
-    @PreAuthorize("@pms.hasPermission('member:address:query')")
     @GetMapping("/get/{id}")
     public R<MemberAddressVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
         return R.ok(addressService.queryById(id));
@@ -79,7 +78,7 @@ public class AddressController {
     /**
      * 新增或修改会员收件地址。
      */
-    @PreAuthorize("@pms.hasPermission('member:address:saveOrUpdate')")
+//    @PreAuthorize("@pms.hasPermission('member:address:saveOrUpdate')")
     @PostMapping({"/saveOrUpdate", "/create"})
     public R<Boolean> saveOrUpdate(@RequestBody MemberAddressBo bo) {
         return R.result(addressService.saveOrUpdate(bo));
@@ -96,7 +95,7 @@ public class AddressController {
     /**
      * 删除会员收件地址。
      */
-    @PreAuthorize("@pms.hasPermission('member:address:delete')")
+//    @PreAuthorize("@pms.hasPermission('member:address:delete')")
     @DeleteMapping("/delete/{ids}")
     public R<Boolean> remove(@NotEmpty(message = "主键不能为空") @PathVariable Long[] ids) {
         return R.result(addressService.deleteWithValidByIds(Arrays.asList(ids), true));

@@ -56,4 +56,12 @@ public class MemberUserVo implements Serializable {
     private Integer experience;
 
     private Long groupId;
+
+    private String createBy;
+    private String updateBy;
+
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+
+    private Boolean isDeleted;
 }

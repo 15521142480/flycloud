@@ -12,5 +12,5 @@ export interface WalletTransactionVO {
 
 // 查询会员钱包流水列表
 export const getWalletTransactionPage = async (params) => {
-  return await request.get({ url: `/${SYS_BASE_URL}/pay/wallet-transaction/page`, params })
+  return await request.get({ url: `/${SYS_BASE_URL}/admin/pay/wallet-transaction/page`, params })
 }

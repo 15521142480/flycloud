@@ -43,25 +43,25 @@ public class PayAppController {
         return R.ok(payAppService.queryList(bo).stream().map(this::buildPayAppRespVo).toList());
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:app:query')")
     @GetMapping("/get")
     public R<PayAppRespVo> get(@RequestParam Long id) {
         return R.ok(buildPayAppRespVo(payAppService.queryById(id)));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:app:create')")
+
+    @PreAuthorize("@pms.hasPermission('pay:app:saveOrUpdate')")
     @PostMapping("/create")
     public R<Long> create(@RequestBody PayAppBo bo) {
         return R.ok(payAppService.createApp(bo));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:app:update')")
+    @PreAuthorize("@pms.hasPermission('pay:app:saveOrUpdate')")
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody PayAppBo bo) {
         return R.result(payAppService.saveOrUpdate(bo));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:app:update')")
+    @PreAuthorize("@pms.hasPermission('pay:app:saveOrUpdate')")
     @PutMapping("/update-status")
     public R<Boolean> updateStatus(@RequestBody PayAppUpdateStatusReq req) {
         return R.result(payAppService.updateStatus(req.getId(), req.getStatus()));

@@ -163,7 +163,6 @@
             link
             type="primary"
             @click="openDetail(scope.row.id)"
-            v-hasPermi="['pay:notify:query']"
           >
             查看详情
           </el-button>

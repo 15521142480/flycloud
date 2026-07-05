@@ -46,7 +46,6 @@ public class MemberTagController {
         return R.ok(BeanUtil.copyToList(tagService.queryList(bo), MemberTagRespVo.class));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:tag:query')")
     @GetMapping("/get/{id}")
     public R<MemberTagRespVo> getInfo(@PathVariable Long id) {
         return R.ok(BeanUtil.toBean(tagService.queryById(id), MemberTagRespVo.class));

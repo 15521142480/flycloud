@@ -46,7 +46,6 @@ public class MemberSignInConfigController {
         return R.ok(BeanUtil.copyToList(signInConfigService.queryList(bo), MemberSignInConfigRespVo.class));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:sign-in-config:query')")
     @GetMapping("/get/{id}")
     public R<MemberSignInConfigRespVo> getInfo(@PathVariable Long id) {
         return R.ok(BeanUtil.toBean(signInConfigService.queryById(id), MemberSignInConfigRespVo.class));

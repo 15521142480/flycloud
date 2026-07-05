@@ -56,7 +56,7 @@ public class PayWalletRechargePackageController {
     /**
      * 获取支付钱包充值套餐详情。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:wallet-recharge-package:query')")
     @GetMapping("/get")
     public R<WalletRechargePackageRespVo> get(@RequestParam("id") Long id) {
         return R.ok(cn.hutool.core.bean.BeanUtil.toBean(rechargePackageService.getWalletRechargePackage(id),

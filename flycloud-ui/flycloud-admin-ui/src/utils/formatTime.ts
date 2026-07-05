@@ -73,6 +73,11 @@ export function formatDate(date: Date, format?: string): string {
   return date ? dayjs(date).format(format ?? 'YYYY-MM-DD HH:mm:ss') : ''
 }
 
+
+export function formatDateArray (date: string): string[] {
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss').split(' ')
+}
+
 /**
  * 获取当前的日期+时间
  */

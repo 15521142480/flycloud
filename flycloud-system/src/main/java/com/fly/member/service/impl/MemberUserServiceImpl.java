@@ -38,7 +38,7 @@ public class MemberUserServiceImpl extends BaseServiceImpl<MemberUserMapper, Mem
     @Override
     public PageVo<MemberUserVo> queryPageList(MemberUserBo bo, PageBo pageBo) {
         LambdaQueryWrapper<MemberUser> lqw = buildQueryWrapper(bo);
-        lqw.orderByDesc(MemberUser::getId);
+        lqw.orderByDesc(MemberUser::getCreateTime);
         Page<MemberUserVo> page = memberUserMapper.selectVoPage(pageBo.build(), lqw);
         PageVo<MemberUserVo> pageVo = new PageVo<>();
         List<MemberUserVo> list = page.getRecords();

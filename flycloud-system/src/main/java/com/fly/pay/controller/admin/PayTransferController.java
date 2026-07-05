@@ -34,11 +34,11 @@ public class PayTransferController {
         return R.ok(payTransferService.queryPageList(bo, pageBo));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:transfer:query')")
     @GetMapping("/get")
     public R<PayTransferVo> get(@RequestParam Long id) {
         return R.ok(payTransferService.queryById(id));
     }
+
 
     @PreAuthorize("@pms.hasPermission('pay:transfer:download')")
     @GetMapping("/export-excel")

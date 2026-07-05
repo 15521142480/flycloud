@@ -15,7 +15,7 @@ export interface ChannelVO {
 
 // 查询列表支付渠道
 export const getChannelPage = (params: PageParam) => {
-  return request.get({ url: `/${SYS_BASE_URL}/pay/channel/page`, params })
+  return request.get({ url: `/${SYS_BASE_URL}/admin/pay/channel/page`, params })
 }
 
 // 查询详情支付渠道
@@ -24,25 +24,25 @@ export const getChannel = (appId: string, code: string) => {
     appId: appId,
     code: code
   }
-  return request.get({ url: `/${SYS_BASE_URL}/pay/channel/get`, params: params })
+  return request.get({ url: `/${SYS_BASE_URL}/admin/pay/channel/get`, params: params })
 }
 
 // 新增支付渠道
 export const createChannel = (data: ChannelVO) => {
-  return request.post({ url: `/${SYS_BASE_URL}/pay/channel/create`, data })
+  return request.post({ url: `/${SYS_BASE_URL}/admin/pay/channel/create`, data })
 }
 
 // 修改支付渠道
 export const updateChannel = (data: ChannelVO) => {
-  return request.put({ url: `/${SYS_BASE_URL}/pay/channel/update`, data })
+  return request.put({ url: `/${SYS_BASE_URL}/admin/pay/channel/update`, data })
 }
 
 // 删除支付渠道
 export const deleteChannel = (id: number) => {
-  return request.delete({ url: `/${SYS_BASE_URL}/pay/channel/delete?id=` + id })
+  return request.delete({ url: `/${SYS_BASE_URL}/admin/pay/channel/delete?id=` + id })
 }
 
 // 导出支付渠道
 export const exportChannel = (params) => {
-  return request.download({ url: `/${SYS_BASE_URL}/pay/channel/export-excel`, params })
+  return request.download({ url: `/${SYS_BASE_URL}/admin/pay/channel/export-excel`, params })
 }

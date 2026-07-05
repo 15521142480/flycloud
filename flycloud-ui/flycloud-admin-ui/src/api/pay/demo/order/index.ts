@@ -10,7 +10,7 @@ export interface DemoOrderVO {
 // 创建示例订单
 export function createDemoOrder(data: DemoOrderVO) {
   return request.post({
-    url: `/${SYS_BASE_URL}/pay/demo-order/create`,
+    url: `/${SYS_BASE_URL}/admin/pay/demo-order/create`,
     data: data
   })
 }
@@ -18,7 +18,7 @@ export function createDemoOrder(data: DemoOrderVO) {
 // 获得示例订单分页
 export function getDemoOrderPage(query: PageParam) {
   return request.get({
-    url: `/${SYS_BASE_URL}/pay/demo-order/page`,
+    url: `/${SYS_BASE_URL}/admin/pay/demo-order/page`,
     params: query
   })
 }
@@ -26,6 +26,6 @@ export function getDemoOrderPage(query: PageParam) {
 // 退款示例订单
 export function refundDemoOrder(id: number) {
   return request.put({
-    url: `/${SYS_BASE_URL}/pay/demo-order/refund?id=` + id
+    url: `/${SYS_BASE_URL}/admin/pay/demo-order/refund?id=` + id
   })
 }

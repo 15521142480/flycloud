@@ -77,7 +77,7 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
-        <el-button v-hasPermi="['promotion:coupon:send']" @click="openCoupon">发送优惠券</el-button>
+        <el-button v-hasPermi="['member:user:send-coupon']" @click="openCoupon">发送优惠券</el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
@@ -87,27 +87,28 @@
     <el-table
       v-loading="loading"
       :data="list"
-      :show-overflow-tooltip="true"
+      :show-overflow-tooltip="false"
       :stripe="true"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" />
-      <el-table-column align="center" label="用户编号" prop="id" width="120px" />
+      <el-table-column type="selection" width="35" />
+      <el-table-column align="center" label="用户编号" prop="id" min-width="95px" />
       <el-table-column align="center" label="头像" prop="avatar" width="80px">
         <template #default="scope">
           <img :src="getFilePreviewUrl(scope.row.avatar)" style="width: 40px" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号" prop="mobile" width="120px" />
-      <el-table-column align="center" label="邮箱" prop="email" width="180px" />
-      <el-table-column align="center" label="昵称" prop="nickname" width="80px" />
-      <el-table-column align="center" label="等级" prop="levelName" width="100px" />
-      <el-table-column align="center" label="分组" prop="groupName" width="100px" />
+      <el-table-column align="center" label="邮箱" prop="email" min-width="110px" />
+      <el-table-column align="center" label="昵称" prop="nickname" min-width="100px" />
+      <el-table-column align="center" label="等级" prop="levelName" width="80px" />
+      <el-table-column align="center" label="分组" prop="groupName" width="80px" />
       <el-table-column
         :show-overflow-tooltip="false"
         align="center"
         label="用户标签"
         prop="tagNames"
+        width="80px"
       >
         <template #default="scope">
           <el-tag v-for="(tagName, index) in scope.row.tagNames" :key="index" class="mr-5px">
@@ -115,79 +116,77 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="积分" prop="point" width="100px" />
-      <el-table-column align="center" label="状态" prop="status" width="100px">
+      <el-table-column align="center" label="积分" prop="point" width="90px" />
+      <el-table-column align="center" label="状态" prop="status" width="80px">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
-        :formatter="dateFormatter"
         align="center"
         label="登录时间"
         prop="loginDate"
-        width="180px"
-      />
+        width="110px"
+      >
+        <template #default="{ row }">
+          <div v-if="row.loginDate">
+            <div>{{ formatDateArray(row.loginDate)[0] }}</div>
+            <div>{{ formatDateArray(row.loginDate)[1] }}</div>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         :formatter="dateFormatter"
         align="center"
         label="注册时间"
         prop="createTime"
-        width="180px"
-      />
+        width="110px"
+      >
+        <template #default="{ row }">
+          <div v-if="row.createTime">
+            <div>{{ formatDateArray(row.createTime)[0] }}</div>
+            <div>{{ formatDateArray(row.createTime)[1] }}</div>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         :show-overflow-tooltip="false"
         align="center"
         fixed="right"
         label="操作"
-        width="100px"
+        min-width="180px"
       >
         <template #default="scope">
-          <div class="flex items-center justify-center">
-            <el-button link type="primary" @click="openDetail(scope.row.id)">详情</el-button>
-            <el-dropdown
-              v-hasPermi="[
-                'member:user:update',
-                'member:user:update-level',
-                'member:user:update-point',
-                'pay:wallet:update-balance'
-              ]"
-              @command="(command) => handleCommand(command, scope.row)"
-            >
-              <el-button link type="primary">
-                <Icon icon="ep:d-arrow-right" />
-                更多
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:saveOrUpdate'])"
-                    command="handleUpdate"
-                  >
-                    编辑
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-level'])"
-                    command="handleUpdateLevel"
-                  >
-                    修改等级
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['member:user:update-point'])"
-                    command="handleUpdatePoint"
-                  >
-                    修改积分
-                  </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="checkPermi(['pay:wallet:update-balance'])"
-                    command="handleUpdateBlance"
-                  >
-                    修改余额
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
+<!--          <div class="flex items-center justify-center">-->
+          <el-button link type="primary" @click="openDetail(scope.row.id)">
+            详情
+          </el-button>
+
+          <el-button link type="primary"
+                     v-if="checkPermi(['member:user:saveOrUpdate'])"
+                     @click="handleCommand('handleUpdate', scope.row)">
+            编辑
+          </el-button>
+
+          <el-button link type="primary"
+                     v-if="checkPermi(['member:user:update-level'])"
+                     @click="handleCommand('handleUpdateLevel', scope.row)">
+            修改等级
+          </el-button>
+
+          <el-button link type="primary"
+                     v-if="checkPermi(['member:user:update-point'])"
+                     @click="handleCommand('handleUpdatePoint', scope.row)">
+            修改积分
+          </el-button>
+
+          <el-button link type="primary"
+                     v-if="checkPermi(['member:user:update-balance'])"
+                     @click="handleCommand('handleUpdateBlance', scope.row)">
+            修改余额
+          </el-button>
+
+<!--          </div>-->
         </template>
       </el-table-column>
     </el-table>
@@ -225,6 +224,7 @@ import UserPointUpdateForm from './components/UserPointUpdateForm.vue'
 import UserBalanceUpdateForm from './components/UserBalanceUpdateForm.vue'
 import { CouponSendForm } from '@/views/mall/promotion/coupon/components'
 import { checkPermi } from '@/utils/permission'
+import { formatDateArray } from '@/utils/formatTime'
 
 defineOptions({ name: 'MemberUser' })
 

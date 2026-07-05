@@ -47,7 +47,6 @@ public class MemberLevelController {
         return R.ok(BeanUtil.copyToList(levelService.queryList(bo), MemberLevelRespVo.class));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:level:query')")
     @GetMapping("/get/{id}")
     public R<MemberLevelRespVo> getInfo(@PathVariable Long id) {
         return R.ok(BeanUtil.toBean(levelService.queryById(id), MemberLevelRespVo.class));

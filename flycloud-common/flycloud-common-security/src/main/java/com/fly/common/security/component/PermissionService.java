@@ -21,7 +21,7 @@ public class PermissionService {
 
 
     /**
-     * 判断接口是否有权限
+     * 是否拥有某个权限
      *
      * <p>
      * 格式为xxx:xxx或xxx:xxx:xxx，如 @PreAuthorize("@pms.hasPermission('sys:user:add')")
@@ -41,6 +41,23 @@ public class PermissionService {
                 .map(GrantedAuthority::getAuthority)
                 .filter(StringUtils::hasText)
                 .anyMatch(x -> PatternMatchUtils.simpleMatch(permission, x));
+    }
+
+
+    /**
+     * 是否拥有某组权限的任意一个
+     *
+     * <p>
+     * 格式为 @PreAuthorize("@pms.hasPermission({'member:user:update-balance', 'pay:wallet:balance:update-balance'})")
+     *
+     */
+    public boolean hasAnyPermission(Collection<String> permissions) {
+        
+        if (permissions == null || permissions.isEmpty()) {
+            return false;
+        }
+
+        return permissions.stream().anyMatch(this::hasPermission);
     }
 
 }

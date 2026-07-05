@@ -25,7 +25,7 @@ public class MemberExperienceRecordController {
 
     private final IMemberExperienceRecordService experienceRecordService;
 
-    @PreAuthorize("@pms.hasPermission('member:experience:list')")
+//    @PreAuthorize("@pms.hasPermission('member:experience:list')")
     @GetMapping({"/list", "/page"})
     public R<PageVo<MemberExperienceRecordVo>> list(MemberExperienceRecordBo bo, PageBo pageBo) {
         return R.ok(experienceRecordService.queryPageList(bo, pageBo));
@@ -34,7 +34,6 @@ public class MemberExperienceRecordController {
     /**
      * 获取会员经验记录详情。
      */
-    @PreAuthorize("@pms.hasPermission('member:experience:query')")
     @GetMapping("/get")
     public R<MemberExperienceRecordVo> get(Long id) {
         return R.ok(experienceRecordService.queryById(id));

@@ -82,8 +82,10 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 每次请求刷新token
-        refreshTokenExpire(token);
+        // todo 目前版本只刷新redis的token，但是JWT的exp（过期时间）无法刷新（JwtUtils的buildTokenJwt的Jwts.builder()）
+        //  但是不给 JWT 设置 exp， JWT 自身失去过期控制
+        //  所以后续需把refreshToken接口和前端无感知刷新功能完善，over后需把此处的refreshTokenExpire(token)删除了
+        refreshTokenExpire(token); // 每次请求刷新token
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 buildPrincipal(claims),

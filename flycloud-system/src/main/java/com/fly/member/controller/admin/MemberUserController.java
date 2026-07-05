@@ -59,7 +59,7 @@ public class MemberUserController {
         return R.ok(buildMemberUserRespPage(memberUserService.queryPageList(bo, pageBo)));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:user:query')")
+    @PreAuthorize("@pms.hasPermission('member:user:list')")
     @GetMapping("/page")
     public R<PageVo<MemberUserRespVo>> page(MemberUserBo bo, PageBo pageBo) {
         return R.ok(buildMemberUserRespPage(memberUserService.queryPageList(bo, pageBo)));
@@ -71,13 +71,12 @@ public class MemberUserController {
         return R.ok(memberUserService.queryList(bo));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:user:query')")
+
     @GetMapping("/get/{id}")
     public R<MemberUserRespVo> getInfo(@PathVariable Long id) {
         return R.ok(buildMemberUserResp(memberUserService.queryById(id)));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:user:query')")
     @GetMapping("/get")
     public R<MemberUserRespVo> get(@RequestParam("id") Long id) {
         return R.ok(buildMemberUserResp(memberUserService.queryById(id)));
@@ -89,7 +88,7 @@ public class MemberUserController {
         return R.result(memberUserService.saveOrUpdate(bo));
     }
 
-    @PreAuthorize("@pms.hasPermission('member:user:update')")
+    @PreAuthorize("@pms.hasPermission('member:user:saveOrUpdate')")
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody MemberUserBo bo) {
         return R.result(memberUserService.saveOrUpdate(bo));

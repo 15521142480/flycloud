@@ -28,19 +28,18 @@ public class PayChannelController {
 
     private final IPayChannelService payChannelService;
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:list')")
+//    @PreAuthorize("@pms.hasPermission('pay:channel:list')")
     @GetMapping("/page")
     public R<PageVo<PayChannelVo>> page(PayChannelBo bo, PageBo pageBo) {
         return R.ok(payChannelService.queryPageList(bo, pageBo));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:list')")
+//    @PreAuthorize("@pms.hasPermission('pay:channel:list')")
     @GetMapping("/list")
     public R<List<PayChannelRespVo>> list(PayChannelBo bo) {
         return R.ok(BeanUtil.copyToList(payChannelService.queryList(bo), PayChannelRespVo.class));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:query')")
     @GetMapping("/get")
     public R<PayChannelRespVo> get(@RequestParam(value = "id", required = false) Long id,
                                    @RequestParam(value = "appId", required = false) Long appId,
@@ -48,25 +47,25 @@ public class PayChannelController {
         return R.ok(payChannelService.getChannel(id, appId, code));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:create')")
+//    @PreAuthorize("@pms.hasPermission('pay:channel:saveOrUpdate')")
     @PostMapping("/create")
     public R<Long> create(@RequestBody PayChannelBo bo) {
         return R.ok(payChannelService.createChannel(bo));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:update')")
+//    @PreAuthorize("@pms.hasPermission('pay:channel:saveOrUpdate')")
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody PayChannelBo bo) {
         return R.result(payChannelService.saveOrUpdate(bo));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:delete')")
+//    @PreAuthorize("@pms.hasPermission('pay:channel:delete')")
     @DeleteMapping("/delete")
     public R<Boolean> delete(@RequestParam Long id) {
         return R.result(payChannelService.deleteById(id));
     }
 
-    @PreAuthorize("@pms.hasPermission('pay:channel:list')")
+
     @GetMapping("/get-enable-code-list")
     public R<Set<String>> getEnableChannelCodeList(@RequestParam Long appId) {
         return R.ok(payChannelService.getEnableChannelCodeList(appId));

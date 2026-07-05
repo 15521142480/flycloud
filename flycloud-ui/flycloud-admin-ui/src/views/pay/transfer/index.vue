@@ -112,7 +112,7 @@
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['pay:transfer:export']"
+          v-hasPermi="['pay:transfer:download']"
         >
           <Icon icon="ep:download" class="mr-5px" /> 导出
         </el-button>

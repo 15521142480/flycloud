@@ -33,14 +33,14 @@ export interface NotifyTaskVO {
 // 获得支付通知明细
 export const getNotifyTaskDetail = (id: number) => {
   return request.get<NotifyTaskVO>({
-    url: `/${SYS_BASE_URL}/pay/notify/get-detail?id=` + id
+    url: `/${SYS_BASE_URL}/admin/pay/notify/get-detail?id=` + id
   })
 }
 
 // 获得支付通知分页
 export const getNotifyTaskPage = (query: any) => {
   return request.get<PageResult<NotifyTaskVO[]>>({
-    url: `/${SYS_BASE_URL}/pay/notify/page`,
+    url: `/${SYS_BASE_URL}/admin/pay/notify/page`,
     params: query
   })
 }

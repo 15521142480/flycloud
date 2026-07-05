@@ -36,7 +36,7 @@ public class PayWalletController {
     /**
      * 查询支付钱包分页列表。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet:list')")
+    @PreAuthorize("@pms.hasPermission('pay:wallet:balance:list')")
     @GetMapping("/list")
     public R<PageVo<PayWalletRespVo>> list(PayWalletBo bo, PageBo pageBo) {
         return R.ok(walletService.queryPageList(bo, pageBo));
@@ -45,7 +45,7 @@ public class PayWalletController {
     /**
      * 查询支付钱包分页列表，兼容 yudao 前端接口。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet:list')")
+    @PreAuthorize("@pms.hasPermission('pay:wallet:balance:list')")
     @GetMapping("/page")
     public R<PageVo<PayWalletRespVo>> page(PayWalletBo bo, PageBo pageBo) {
         return R.ok(walletService.queryPageList(bo, pageBo));
@@ -54,7 +54,7 @@ public class PayWalletController {
     /**
      * 获取支付钱包详情。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:wallet:balance:query')")
     @GetMapping("/get")
     public R<PayWalletRespVo> get(PayWalletBo bo) {
         PayWallet wallet = bo.getId() != null ? walletService.getWallet(bo.getId())
@@ -65,7 +65,7 @@ public class PayWalletController {
     /**
      * 更新会员用户余额。
      */
-    @PreAuthorize("@pms.hasPermission('pay:wallet:update-balance')")
+    @PreAuthorize("@pms.hasAnyPermission({'member:user:update-balance', 'pay:wallet:balance:update-balance'})")
     @PutMapping("/update-balance")
     public R<Boolean> updateBalance(@RequestBody UpdateBalanceReq req) {
         PayWallet wallet = walletService.getOrCreateWallet(req.getUserId(), 2);
