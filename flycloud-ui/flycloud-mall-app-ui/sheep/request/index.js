@@ -327,14 +327,14 @@ export const buildAuthorization = (token) => {
 };
 
 function isTokenResponse(url = '') {
-  return url.indexOf('/member/auth/') >= 0 || url.indexOf('/oauth/token') >= 0;
+  return url.indexOf('/app/auth/') >= 0 || url.indexOf('/admin/auth/token') >= 0;
 }
 
 function isRefreshTokenRequest(config) {
   return (
     config.custom?.isRefreshToken ||
-    config.url?.indexOf('/member/auth/refresh-token') >= 0 ||
-    (config.url?.indexOf('/oauth/token') >= 0 && config.data?.grant_type === 'refresh_token')
+    config.url?.indexOf('/app/auth/refresh-token') >= 0 ||
+    (config.url?.indexOf('/admin/auth/token') >= 0 && config.data?.grant_type === 'refresh_token')
   );
 }
 

@@ -55,15 +55,15 @@ public class AppBrokerageUserController {
     /**
      * 获取移动端分销用户详情。
      */
-    @GetMapping("/get/{id}")
-    public R<BrokerageUserVo> getInfo(@NotNull(message = "主键不能为空") @PathVariable Long id) {
-        return R.ok(brokerageUserService.queryById(id));
+    @GetMapping("/get")
+    public R<BrokerageUserVo> getInfo() {
+        return R.ok(brokerageUserService.queryById(UserUtils.getCurUserId()));
     }
 
     /**
      * 获得详情。
      */
-    @GetMapping({"/get-detail", "/get"})
+    @GetMapping("/get-detail")
     public R<BrokerageUserVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(brokerageUserService.queryById(id));
     }

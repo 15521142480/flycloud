@@ -21,7 +21,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -40,20 +39,6 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final AuthProperties authProperties;
 
-    private final AntPathMatcher pathMatcher = new AntPathMatcher();
-
-
-    /**
-     * 过滤白名单接口
-     */
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-
-        String requestUri = request.getRequestURI();
-        return authProperties.getIgnoreUrls()
-                .stream()
-                .anyMatch(url -> pathMatcher.match(url, requestUri));
-    }
 
     /**
      * 接口拦截
@@ -76,7 +61,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         Claims tokenClaims = SecurityUtils.getClaims(token);
-        Map<String, Object> claims = cachedClaims(token);
+        Map<String, Object> claims = getTokenClaims(token);
         if (tokenClaims == null || claims == null) {
             filterChain.doFilter(request, response);
             return;
@@ -87,10 +72,12 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         //  所以后续需把refreshToken接口和前端无感知刷新功能完善，over后需把此处的refreshTokenExpire(token)删除了
         refreshTokenExpire(token); // 每次请求刷新token
 
+        String[] authoritiesInfo = this.getAuthoritiesList(claims.get(AuthConstants.AUTHORITIES));
+
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                buildPrincipal(claims),
+                buildPrincipal(claims, authoritiesInfo),
                 null,
-                AuthorityUtils.createAuthorityList(authorities(claims))
+                AuthorityUtils.createAuthorityList(authoritiesInfo)
         );
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -103,36 +90,78 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-    private Map<String, Object> cachedClaims(String token) {
+    /**
+     * 获取tokenClaims信息（登录是存放的用户信息体）
+     */
+    private Map<String, Object> getTokenClaims(String token) {
 
-        Object cached = redisUtils.get(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token);
+        Object cached = redisUtils.get(
+                AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token
+        );
+
         if (cached == null) {
-            cached = redisUtils.get(AuthConstants.ACCESS_TOKEN_KEY + token);
+            cached = redisUtils.get(
+                    AuthConstants.ACCESS_TOKEN_KEY + token
+            );
         }
+
         if (cached == null) {
             return null;
         }
 
-        // redis设值的时候建议固定类型
         if (cached instanceof String json) {
-            return JsonUtils.parseObject(json, new TypeReference<Map<String, Object>>() {});
+            return JsonUtils.parseObject(
+                    json,
+                    new TypeReference<Map<String, Object>>() {}
+            );
         }
+
         if (cached instanceof Map<?, ?> map) {
             Map<String, Object> claims = new LinkedHashMap<>();
-            map.forEach((key, value) -> claims.put(String.valueOf(key), value));
+            map.forEach(
+                    (key, value) -> claims.put(String.valueOf(key), value)
+            );
             return claims;
         }
 
         return null;
     }
 
+
+    /**
+     * 刷新token时间
+     *
+     * @param token
+    */
     private void refreshTokenExpire(String token) {
-        long timeout = authProperties.getToken().getLoginTimeoutSeconds();
-        redisUtils.expire(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token, timeout);
-        redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, timeout);
+
+        long timeout = authProperties
+                .getToken()
+                .getLoginTimeoutSeconds();
+
+        redisUtils.expire(
+                AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token,
+                timeout
+        );
+
+        redisUtils.expire(
+                AuthConstants.ACCESS_TOKEN_KEY + token,
+                timeout
+        );
     }
 
-    private FlyUser buildPrincipal(Map<String, Object> claims) {
+
+    /**
+     * 构建自定义spring security的用户信息
+     *
+     * @param claims
+     * @param authorities
+    */
+    private FlyUser buildPrincipal(
+
+            Map<String, Object> claims,
+            String[] authorities) {
+
         return new FlyUser(
                 Convert.toLong(claims.get(Oauth2Constants.USER_ID)),
                 Convert.toInt(claims.get(Oauth2Constants.USER_TYPE), 0),
@@ -147,31 +176,36 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
                 true,
                 true,
                 true,
-                AuthorityUtils.createAuthorityList(authorities(claims))
+                AuthorityUtils.createAuthorityList(authorities)
         );
     }
 
 
-    private String[] authorities(Map<String, Object> claims) {
-        Object value = claims.get(AuthConstants.AUTHORITIES);
-        if (value instanceof Collection<?> collection) {
+
+    /**
+     * 获取授权的权限组（登录存放的AuthConstants.AUTHORITIES）
+     *
+     * @param authorities
+    */
+    private String[] getAuthoritiesList(Object authorities) {
+
+        // 包含List、Map、Set等
+        if (authorities instanceof Collection<?> collection) {
             return collection.stream()
                     .map(Convert::toStr)
                     .filter(StrUtil::isNotBlank)
                     .toArray(String[]::new);
         }
-        if (value instanceof String[] array) {
+
+        if (authorities instanceof String[] array) {
             return array;
         }
-        if (value instanceof String text) {
+
+        if (authorities instanceof String text) {
             return StrUtil.splitToArray(text, ',');
         }
-        if (value instanceof List<?> list) {
-            return list.stream()
-                    .map(Convert::toStr)
-                    .filter(StrUtil::isNotBlank)
-                    .toArray(String[]::new);
-        }
+
         return new String[0];
     }
+
 }

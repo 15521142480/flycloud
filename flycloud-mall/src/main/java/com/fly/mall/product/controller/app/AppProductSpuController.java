@@ -4,6 +4,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.ProductSpuStatusEnum;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.product.domain.bo.ProductSpuBo;
 import com.fly.mall.api.product.domain.vo.AppProductSpuDetailRespVo;
@@ -42,7 +43,7 @@ public class AppProductSpuController {
      */
     @GetMapping("/list")
     public R<PageVo<AppProductSpuRespVo>> list(ProductSpuBo bo, PageBo page) {
-        bo.setStatus(StatusEnum.ENABLE.getStatus());
+        bo.setStatus(ProductSpuStatusEnum.ENABLE.getStatus());
         return R.ok(productSpuService.queryAppPageList(bo, page));
     }
 
@@ -59,7 +60,7 @@ public class AppProductSpuController {
      */
     @GetMapping("/page")
     public R<PageVo<AppProductSpuRespVo>> getSpuPage(ProductSpuBo bo, PageBo page) {
-        bo.setStatus(StatusEnum.ENABLE.getStatus());
+        bo.setStatus(ProductSpuStatusEnum.ENABLE.getStatus());
         return R.ok(productSpuService.queryAppPageList(bo, page));
     }
 

@@ -6,7 +6,7 @@ const UserApi = {
   // 获得基本信息
   getUserInfo: () => {
     return request({
-      url: getSystemBaseUrl() + '/user/getUserInfo',
+      url: getSystemBaseUrl() + '/app/member/user/get',
       method: 'GET',
       custom: {
         showLoading: false,

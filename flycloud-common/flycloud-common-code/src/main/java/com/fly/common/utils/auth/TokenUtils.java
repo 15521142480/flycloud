@@ -29,14 +29,17 @@ public class TokenUtils {
 	 */
 	public static String getToken(String auth) {
 
-		if ((auth != null) && (auth.length() > AUTH_LENGTH)) {
-			String headStr = auth.substring(0, 6);  // .toLowerCase();
-			if (headStr.compareTo(CommonConstants.AUTHORIZATION_BEARER) == 0) { // bearer
-				auth = auth.substring(7);
-			}
-			return auth;
+		if (auth == null || auth.length() <= AUTH_LENGTH) {
+			return null;
 		}
-		return null;
+
+		// 只认Bearer
+		String headStr = auth.substring(0, 6);
+		if (headStr.compareToIgnoreCase(CommonConstants.AUTHORIZATION_BEARER) != 0) {
+			return null;
+		}
+
+		return auth.substring(7);
 	}
 
 
