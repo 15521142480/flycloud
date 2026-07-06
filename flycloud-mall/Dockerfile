@@ -11,7 +11,7 @@ EXPOSE 8081
 # 设置容器内jar工作目录
 WORKDIR /flycloud
 
-# 创建非 root 用户并创建日志目录
+
 # 创建固定 UID/GID 的非 root 用户
 RUN groupadd -r -g 10001 flycloud && \
     useradd -r -u 10001 -g 10001 -m -d /home/flycloud flycloud && \
