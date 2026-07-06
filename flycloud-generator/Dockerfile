@@ -6,7 +6,7 @@ FROM eclipse-temurin:21-jre
 LABEL maintainer="lxs <2570078967@qq.com>"
 
 # 暴露端口
-EXPOSE 8085
+EXPOSE 8089
 
 # 设置容器内jar工作目录
 WORKDIR /flycloud
@@ -25,7 +25,7 @@ ENV TZ=Asia/Shanghai
 ENV JAVA_OPTS=""
 
 # 将jar包添加到容器中
-COPY --chown=flycloud:flycloud flycloud-system.jar app.jar
+COPY --chown=flycloud:flycloud flycloud-generator.jar app.jar
 
 # 使用非 root 用户运行
 USER flycloud

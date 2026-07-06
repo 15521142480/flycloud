@@ -1,0 +1,91 @@
+
+# version: "3"
+services:
+
+
+  # 网关服务
+  flycloud-gateway:
+    build:
+      context: /project/flycloud-service/flycloud-gateway
+      dockerfile: Dockerfile
+    image: flycloud-gateway
+    container_name: flycloud-gateway
+    ports:
+      - "8080:8080"
+    volumes:
+      - /project/flycloud-service/flycloud-gateway/logs/:/flycloud/logs
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+
+
+  # 授权服务
+  flycloud-auth:
+    build:
+      context: /project/flycloud-service/flycloud-auth
+      dockerfile: Dockerfile
+    image: flycloud-auth
+    container_name: flycloud-auth
+    ports:
+      - "8088:8088"
+    volumes:
+      - /project/flycloud-service/flycloud-auth/logs/:/flycloud/logs
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+  
+
+  # 系统平台服务
+  flycloud-system:
+    build:
+      context: /project/flycloud-service/flycloud-system
+      dockerfile: Dockerfile
+    image: flycloud-system
+    container_name: flycloud-system
+    ports:
+      - "8085:8085"
+    volumes:
+      - /project/flycloud-service/flycloud-system/logs/:/flycloud/logs
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+  
+
+  # 工作流服务
+  flycloud-bpm:
+    build:
+      context: /project/flycloud-service/flycloud-bpm
+      dockerfile: Dockerfile
+    image: flycloud-bpm
+    container_name: flycloud-bpm
+    ports:
+      - "8090:8090"
+    volumes:
+      - /project/flycloud-service/flycloud-bpm/logs/:/flycloud/logs
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+
+
+  # 商城流服务
+  flycloud-mall:
+    build:
+      context: /project/flycloud-service/flycloud-mall
+      dockerfile: Dockerfile
+    image: flycloud-mall
+    container_name: flycloud-mall
+    ports:
+      - "8081:8081"
+    volumes:
+      - /project/flycloud-service/flycloud-mall/logs/:/flycloud/logs
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+
+
+
+
+
+
+
+
