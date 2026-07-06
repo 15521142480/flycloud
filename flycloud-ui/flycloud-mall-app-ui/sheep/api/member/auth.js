@@ -1,6 +1,6 @@
 import request from '@/sheep/request';
 import { getAuthBaseUrl } from '@/sheep/config/server';
-import { rsaEncrypt } from '@/utils/crypto/rsa';
+import { rsaEncrypt } from '@/utils/crypto';
 // import { apiPath } from '@/sheep/config';
 
 const BASIC_AUTHORIZATION = 'Basic Zmx5OmZseV9zZWNyZXQ=';
