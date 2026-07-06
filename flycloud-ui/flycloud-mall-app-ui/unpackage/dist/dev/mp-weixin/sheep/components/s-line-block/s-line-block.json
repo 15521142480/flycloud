@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-subline": "../../ui/su-subline/su-subline"
+  }
+}

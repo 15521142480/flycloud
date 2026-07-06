@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "签到中心",
+  "usingComponents": {
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "su-popup": "../../sheep/ui/su-popup/su-popup",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

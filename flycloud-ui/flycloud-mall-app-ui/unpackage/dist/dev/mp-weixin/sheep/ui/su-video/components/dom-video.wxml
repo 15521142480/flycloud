@@ -1,0 +1,1 @@
+<view id="dom-video" class="dom-video data-v-5caf547c" eventDrive="{{b}}" change:eventDrive="{{c}}" videoSrc="{{d}}" change:videoSrc="{{e}}" videoProps="{{f}}" change:videoProps="{{g}}" randomNum="{{h}}" change:randomNum="{{i}}"><rich-text class="data-v-5caf547c" nodes="{{a}}"/></view>

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "商品评价",
+  "usingComponents": {
+    "su-tabs": "../../../sheep/ui/su-tabs/su-tabs",
+    "s-empty": "../../../sheep/components/s-empty/s-empty",
+    "uni-load-more": "../../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../../sheep/components/s-layout/s-layout",
+    "comment-item": "../components/detail/comment-item"
+  }
+}

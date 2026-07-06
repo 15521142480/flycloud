@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-popup": "../../ui/su-popup/su-popup",
+    "account-login": "./components/account-login",
+    "sms-login": "./components/sms-login",
+    "reset-password": "./components/reset-password",
+    "change-mobile": "./components/change-mobile",
+    "change-password": "./components/change-password",
+    "mp-authorization": "./components/mp-authorization"
+  }
+}

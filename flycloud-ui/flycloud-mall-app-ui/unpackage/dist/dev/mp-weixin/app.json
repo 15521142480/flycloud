@@ -1,0 +1,144 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/user",
+    "pages/index/category",
+    "pages/index/cart",
+    "pages/index/login",
+    "pages/index/search",
+    "pages/index/page"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/goods",
+      "pages": [
+        "index",
+        "groupon",
+        "seckill",
+        "point",
+        "list",
+        "comment/add",
+        "comment/list"
+      ]
+    },
+    {
+      "root": "pages/order",
+      "pages": [
+        "detail",
+        "confirm",
+        "list",
+        "aftersale/apply",
+        "aftersale/return-delivery",
+        "aftersale/list",
+        "aftersale/detail",
+        "aftersale/log",
+        "express/log"
+      ]
+    },
+    {
+      "root": "pages/user",
+      "pages": [
+        "info",
+        "goods-collect",
+        "goods-log",
+        "address/list",
+        "address/edit",
+        "goods_details_store/index",
+        "wallet/money",
+        "wallet/score"
+      ]
+    },
+    {
+      "root": "pages/commission",
+      "pages": [
+        "index",
+        "wallet",
+        "goods",
+        "order",
+        "team",
+        "promoter",
+        "commission-ranking",
+        "withdraw"
+      ]
+    },
+    {
+      "root": "pages/app",
+      "pages": [
+        "sign"
+      ]
+    },
+    {
+      "root": "pages/public",
+      "pages": [
+        "setting",
+        "richtext",
+        "faq",
+        "error",
+        "webview"
+      ]
+    },
+    {
+      "root": "pages/coupon",
+      "pages": [
+        "list",
+        "detail"
+      ]
+    },
+    {
+      "root": "pages/chat",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "pages/pay",
+      "pages": [
+        "index",
+        "result",
+        "recharge",
+        "recharge-log"
+      ]
+    },
+    {
+      "root": "pages/activity",
+      "pages": [
+        "groupon/detail",
+        "groupon/order",
+        "index",
+        "groupon/list",
+        "seckill/list",
+        "point/list"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "飞翔云商城",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index"
+      },
+      {
+        "pagePath": "pages/index/category"
+      },
+      {
+        "pagePath": "pages/index/cart"
+      },
+      {
+        "pagePath": "pages/index/user"
+      }
+    ]
+  },
+  "plugins": {},
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {},
+  "requiredPrivateInfos": [
+    "chooseAddress"
+  ],
+  "usingComponents": {}
+}

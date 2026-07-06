@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-status-bar": "../../../../sheep/ui/su-status-bar/su-status-bar",
+    "su-fixed": "../../../../sheep/ui/su-fixed/su-fixed"
+  }
+}

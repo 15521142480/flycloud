@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "navbar": "./components/navbar",
+    "navbar-item": "./components/navbar-item"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "领券中心",
+  "usingComponents": {
+    "su-tabs": "../../sheep/ui/su-tabs/su-tabs",
+    "su-sticky": "../../sheep/ui/su-sticky/su-sticky",
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "s-coupon-list": "../../sheep/components/s-coupon-list/s-coupon-list",
+    "uni-load-more": "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

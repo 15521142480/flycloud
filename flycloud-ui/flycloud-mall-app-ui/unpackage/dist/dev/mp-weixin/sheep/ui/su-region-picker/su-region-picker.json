@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-toolbar": "../su-toolbar/su-toolbar",
+    "su-popup": "../su-popup/su-popup"
+  }
+}

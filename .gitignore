@@ -7,7 +7,7 @@ target/
 
 node_modules/
 **/node_modules/
-**/unpackage/disk/
+**/unpackage/
 
 ### STS ###
 .apt_generated

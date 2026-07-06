@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-status-bar": "../su-status-bar/su-status-bar",
+    "su-fixed": "../su-fixed/su-fixed"
+  }
+}

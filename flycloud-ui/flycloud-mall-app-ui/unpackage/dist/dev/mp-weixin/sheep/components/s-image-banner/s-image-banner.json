@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-swiper": "../../ui/su-swiper/su-swiper"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "s-goods-item": "../../../sheep/components/s-goods-item/s-goods-item"
+  }
+}

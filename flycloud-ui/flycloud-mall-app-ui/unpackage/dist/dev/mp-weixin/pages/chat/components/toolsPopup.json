@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "s-uploader": "../../../sheep/components/s-uploader/s-uploader",
+    "su-popup": "../../../sheep/ui/su-popup/su-popup"
+  }
+}

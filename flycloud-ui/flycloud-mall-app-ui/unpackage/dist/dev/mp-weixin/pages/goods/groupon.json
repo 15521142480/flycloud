@@ -1,0 +1,16 @@
+{
+  "navigationBarTitleText": "拼团商品",
+  "usingComponents": {
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "su-swiper": "../../sheep/ui/su-swiper/su-swiper",
+    "s-select-groupon-sku": "../../sheep/components/s-select-groupon-sku/s-select-groupon-sku",
+    "s-layout": "../../sheep/components/s-layout/s-layout",
+    "detail-navbar": "./components/detail/detail-navbar",
+    "detail-cell-sku": "./components/detail/detail-cell-sku",
+    "detail-tabbar": "./components/detail/detail-tabbar",
+    "detail-skeleton": "./components/detail/detail-skeleton",
+    "detail-comment-card": "./components/detail/detail-comment-card",
+    "detail-content-card": "./components/detail/detail-content-card",
+    "groupon-card-list": "./components/groupon/groupon-card-list"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-popup": "../../../sheep/ui/su-popup/su-popup"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "uni-load-more": "../../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "su-popup": "../../../sheep/ui/su-popup/su-popup",
+    "goods-item": "./goods",
+    "order-item": "./order"
+  }
+}

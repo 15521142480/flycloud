@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "推广商品",
+  "usingComponents": {
+    "s-goods-item": "../../sheep/components/s-goods-item/s-goods-item",
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "uni-load-more": "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

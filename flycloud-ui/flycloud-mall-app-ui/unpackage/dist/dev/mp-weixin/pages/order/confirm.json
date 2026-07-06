@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "确认订单",
+  "usingComponents": {
+    "s-goods-item": "../../sheep/components/s-goods-item/s-goods-item",
+    "uni-easyinput": "../../uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput",
+    "s-coupon-select": "../../sheep/components/s-coupon-select/s-coupon-select",
+    "s-discount-list": "../../sheep/components/s-discount-list/s-discount-list",
+    "su-fixed": "../../sheep/ui/su-fixed/su-fixed",
+    "s-layout": "../../sheep/components/s-layout/s-layout",
+    "address-selection": "./addressSelection"
+  }
+}

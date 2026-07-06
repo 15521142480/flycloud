@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "优惠券",
+  "usingComponents": {
+    "uni-collapse-item": "../../uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item",
+    "uni-collapse": "../../uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
+    "su-tabs": "../../sheep/ui/su-tabs/su-tabs",
+    "su-sticky": "../../sheep/ui/su-sticky/su-sticky",
+    "s-goods-column": "../../sheep/components/s-goods-column/s-goods-column",
+    "uni-load-more": "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

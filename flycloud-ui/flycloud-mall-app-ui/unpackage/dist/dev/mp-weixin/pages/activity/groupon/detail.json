@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "拼团详情",
+  "usingComponents": {
+    "s-goods-item": "../../../sheep/components/s-goods-item/s-goods-item",
+    "s-select-groupon-sku": "../../../sheep/components/s-select-groupon-sku/s-select-groupon-sku",
+    "s-empty": "../../../sheep/components/s-empty/s-empty",
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

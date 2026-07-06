@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-tabbar-item": "../../ui/su-tabbar-item/su-tabbar-item",
+    "su-tabbar": "../../ui/su-tabbar/su-tabbar"
+  }
+}

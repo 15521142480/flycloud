@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "购物车",
+  "usingComponents": {
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "su-number-box": "../../sheep/ui/su-number-box/su-number-box",
+    "s-goods-item": "../../sheep/components/s-goods-item/s-goods-item",
+    "su-fixed": "../../sheep/ui/su-fixed/su-fixed",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

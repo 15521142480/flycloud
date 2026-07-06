@@ -1,0 +1,1 @@
+<view class="ss-flex ss-col-center notice-wrap data-v-587c9010"><image class="icon-img data-v-587c9010" src="{{a}}" mode="heightFix"></image><su-notice-bar wx:if="{{c}}" class="data-v-587c9010" style="flex:1" bindtap="{{b}}" u-i="587c9010-0" bind:__l="__l" u-p="{{c}}"/></view>

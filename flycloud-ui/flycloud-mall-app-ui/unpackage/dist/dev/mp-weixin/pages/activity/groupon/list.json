@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "拼团活动",
+  "usingComponents": {
+    "s-goods-column": "../../../sheep/components/s-goods-column/s-goods-column",
+    "uni-load-more": "../../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

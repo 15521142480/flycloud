@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "l-painter": "../../../../uni_modules/lime-painter/components/l-painter/l-painter",
+    "su-popup": "../../../ui/su-popup/su-popup"
+  }
+}

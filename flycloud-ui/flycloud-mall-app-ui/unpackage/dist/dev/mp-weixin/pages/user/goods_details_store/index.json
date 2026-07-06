@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "自提门店",
+  "usingComponents": {
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

@@ -1,0 +1,1 @@
+<view class="ss-flex ss-col-center data-v-af274eda"><view class="progress-title ss-m-r-10 data-v-af274eda"> 已抢{{a}}% </view><view class="progress-box ss-flex ss-col-center data-v-af274eda"><view class="progerss-active data-v-af274eda" style="{{'width:' + b}}"></view></view></view>

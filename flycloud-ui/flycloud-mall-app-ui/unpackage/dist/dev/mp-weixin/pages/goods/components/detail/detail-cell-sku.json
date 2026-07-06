@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "detail-cell": "./detail-cell"
+  }
+}

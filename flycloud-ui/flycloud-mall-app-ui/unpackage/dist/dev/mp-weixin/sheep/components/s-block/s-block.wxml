@@ -1,0 +1,1 @@
+<view style="{{a + ';' + b}}"><slot/></view>

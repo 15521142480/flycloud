@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-navbar": "../../ui/su-navbar/su-navbar",
+    "s-custom-navbar": "../s-custom-navbar/s-custom-navbar",
+    "su-inner-navbar": "../../ui/su-inner-navbar/su-inner-navbar",
+    "s-tabbar": "../s-tabbar/s-tabbar",
+    "s-auth-modal": "../s-auth-modal/s-auth-modal",
+    "s-share-modal": "../s-share-modal/s-share-modal",
+    "s-menu-tools": "../s-menu-tools/s-menu-tools"
+  }
+}

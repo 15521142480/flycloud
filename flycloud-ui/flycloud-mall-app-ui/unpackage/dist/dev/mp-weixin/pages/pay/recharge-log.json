@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "充值记录",
+  "usingComponents": {
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "uni-load-more": "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

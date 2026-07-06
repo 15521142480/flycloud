@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "客服",
+  "usingComponents": {
+    "s-layout": "../../sheep/components/s-layout/s-layout",
+    "message-list": "./components/messageList",
+    "tools-popup": "./components/toolsPopup",
+    "message-input": "./components/messageInput",
+    "select-popup": "./components/select-popup"
+  }
+}

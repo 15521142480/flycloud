@@ -1,0 +1,16 @@
+{
+  "navigationBarTitleText": "秒杀商品",
+  "usingComponents": {
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "su-swiper": "../../sheep/ui/su-swiper/su-swiper",
+    "s-select-seckill-sku": "../../sheep/components/s-select-seckill-sku/s-select-seckill-sku",
+    "s-layout": "../../sheep/components/s-layout/s-layout",
+    "detail-navbar": "./components/detail/detail-navbar",
+    "detail-cell-sku": "./components/detail/detail-cell-sku",
+    "detail-tabbar": "./components/detail/detail-tabbar",
+    "detail-skeleton": "./components/detail/detail-skeleton",
+    "detail-comment-card": "./components/detail/detail-comment-card",
+    "detail-content-card": "./components/detail/detail-content-card",
+    "detail-progress": "./components/detail/detail-progress"
+  }
+}

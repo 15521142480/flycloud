@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "评价商品",
+  "usingComponents": {
+    "s-goods-item": "../../../sheep/components/s-goods-item/s-goods-item",
+    "uni-rate": "../../../uni_modules/uni-rate/components/uni-rate/uni-rate",
+    "uni-easyinput": "../../../uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput",
+    "s-uploader": "../../../sheep/components/s-uploader/s-uploader",
+    "su-fixed": "../../../sheep/ui/su-fixed/su-fixed",
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "售后进度",
+  "usingComponents": {
+    "s-layout": "../../../sheep/components/s-layout/s-layout",
+    "log-item": "./log-item"
+  }
+}

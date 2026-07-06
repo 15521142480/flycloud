@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "常见问题",
+  "usingComponents": {
+    "uni-collapse-item": "../../uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item",
+    "uni-collapse": "../../uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
+    "s-empty": "../../sheep/components/s-empty/s-empty",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

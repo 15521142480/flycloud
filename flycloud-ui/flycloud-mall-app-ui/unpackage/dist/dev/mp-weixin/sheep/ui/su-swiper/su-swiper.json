@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-video": "../su-video/su-video"
+  }
+}

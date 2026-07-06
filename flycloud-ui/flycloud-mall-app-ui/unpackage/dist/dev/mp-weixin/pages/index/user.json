@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "个人中心",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "s-block-item": "../../sheep/components/s-block-item/s-block-item",
+    "s-block": "../../sheep/components/s-block/s-block",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

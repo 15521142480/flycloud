@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "系统设置",
+  "usingComponents": {
+    "uni-list-item": "../../uni_modules/uni-list/components/uni-list-item/uni-list-item",
+    "uni-list": "../../uni_modules/uni-list/components/uni-list/uni-list",
+    "su-fixed": "../../sheep/ui/su-fixed/su-fixed",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

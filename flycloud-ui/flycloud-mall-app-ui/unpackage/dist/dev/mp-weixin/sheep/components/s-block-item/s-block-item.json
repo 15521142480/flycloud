@@ -1,0 +1,31 @@
+{
+  "component": true,
+  "usingComponents": {
+    "s-search-block": "../s-search-block/s-search-block",
+    "s-notice-block": "../s-notice-block/s-notice-block",
+    "s-menu-button": "../s-menu-button/s-menu-button",
+    "s-menu-list": "../s-menu-list/s-menu-list",
+    "s-menu-grid": "../s-menu-grid/s-menu-grid",
+    "s-popup-image": "../s-popup-image/s-popup-image",
+    "s-float-menu": "../s-float-menu/s-float-menu",
+    "s-image-block": "../s-image-block/s-image-block",
+    "s-image-banner": "../s-image-banner/s-image-banner",
+    "s-title-block": "../s-title-block/s-title-block",
+    "s-image-cube": "../s-image-cube/s-image-cube",
+    "s-video-block": "../s-video-block/s-video-block",
+    "s-line-block": "../s-line-block/s-line-block",
+    "s-hotzone-block": "../s-hotzone-block/s-hotzone-block",
+    "s-goods-card": "../s-goods-card/s-goods-card",
+    "s-goods-shelves": "../s-goods-shelves/s-goods-shelves",
+    "s-groupon-block": "../s-groupon-block/s-groupon-block",
+    "s-seckill-block": "../s-seckill-block/s-seckill-block",
+    "s-point-block": "../s-point-block/s-point-block",
+    "s-live-block": "../s-live-block/s-live-block",
+    "s-coupon-block": "../s-coupon-block/s-coupon-block",
+    "s-richtext-block": "../s-richtext-block/s-richtext-block",
+    "s-user-card": "../s-user-card/s-user-card",
+    "s-order-card": "../s-order-card/s-order-card",
+    "s-wallet-card": "../s-wallet-card/s-wallet-card",
+    "s-coupon-card": "../s-coupon-card/s-coupon-card"
+  }
+}

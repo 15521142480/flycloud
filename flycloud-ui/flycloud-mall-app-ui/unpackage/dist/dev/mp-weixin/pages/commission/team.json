@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的团队",
+  "usingComponents": {
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

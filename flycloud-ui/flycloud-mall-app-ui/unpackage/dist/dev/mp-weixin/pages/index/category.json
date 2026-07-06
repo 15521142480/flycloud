@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "商品分类",
+  "usingComponents": {
+    "uni-load-more": "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../sheep/components/s-layout/s-layout",
+    "second-one": "./components/second-one",
+    "first-one": "./components/first-one",
+    "first-two": "./components/first-two"
+  }
+}

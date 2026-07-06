@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-fixed": "../../../sheep/ui/su-fixed/su-fixed",
+    "message-list-item": "./messageListItem"
+  }
+}

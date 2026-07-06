@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "收货地址",
+  "usingComponents": {
+    "s-address-item": "../../../sheep/components/s-address-item/s-address-item",
+    "su-fixed": "../../../sheep/ui/su-fixed/su-fixed",
+    "s-empty": "../../../sheep/components/s-empty/s-empty",
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

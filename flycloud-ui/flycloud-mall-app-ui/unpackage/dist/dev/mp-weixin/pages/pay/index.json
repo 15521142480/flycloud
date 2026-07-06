@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "收银台",
+  "usingComponents": {
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

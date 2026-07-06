@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "推广人排行榜",
+  "usingComponents": {
+    "uni-load-more": "../../uni_modules/uni-load-more/components/uni-load-more/uni-load-more",
+    "s-layout": "../../sheep/components/s-layout/s-layout"
+  }
+}

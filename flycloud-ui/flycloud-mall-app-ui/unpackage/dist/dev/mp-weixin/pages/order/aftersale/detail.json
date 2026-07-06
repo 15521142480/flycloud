@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "售后详情",
+  "usingComponents": {
+    "s-goods-item": "../../../sheep/components/s-goods-item/s-goods-item",
+    "s-empty": "../../../sheep/components/s-empty/s-empty",
+    "su-fixed": "../../../sheep/ui/su-fixed/su-fixed",
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

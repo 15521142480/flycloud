@@ -1,0 +1,165 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.ui-navbar-box.data-v-81e1f503 {
+  background-color: transparent;
+  width: 100%;
+}
+.ui-navbar-box .ui-bar.data-v-81e1f503 {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+}
+.ui-navbar-box .ui-bar .left.data-v-81e1f503 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ui-navbar-box .ui-bar .left .back.data-v-81e1f503 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ui-navbar-box .ui-bar .left .back .back-icon.data-v-81e1f503 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56rpx;
+  height: 56rpx;
+  margin: 0 10rpx;
+  font-size: 46rpx !important;
+}
+.ui-navbar-box .ui-bar .left .back .back-icon.opacityIcon.data-v-81e1f503 {
+  position: relative;
+  border-radius: 50%;
+  background-color: rgba(127, 127, 127, 0.5);
+}
+.ui-navbar-box .ui-bar .left .back .back-icon.opacityIcon.data-v-81e1f503::after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 200%;
+  width: 200%;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  transform: scale(0.5);
+  transform-origin: 0 0;
+  opacity: 0.1;
+  border: 1px solid currentColor;
+  pointer-events: none;
+}
+.ui-navbar-box .ui-bar .left .back .back-icon.opacityIcon.data-v-81e1f503::before {
+  transform: scale(0.9);
+}
+.ui-navbar-box .ui-bar .left .capsule.data-v-81e1f503 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 100px;
+  position: relative;
+}
+.ui-navbar-box .ui-bar .left .capsule.dark.data-v-81e1f503 {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.ui-navbar-box .ui-bar .left .capsule.light.data-v-81e1f503 {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+.ui-navbar-box .ui-bar .left .capsule.data-v-81e1f503::after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 60%;
+  width: 1px;
+  left: 50%;
+  top: 20%;
+  background-color: currentColor;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.ui-navbar-box .ui-bar .left .capsule.data-v-81e1f503::before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 200%;
+  width: 200%;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
+  transform: scale(0.5);
+  transform-origin: 0 0;
+  opacity: 0.1;
+  border: 1px solid currentColor;
+  pointer-events: none;
+}
+.ui-navbar-box .ui-bar .left .capsule .capsule-back.data-v-81e1f503,
+.ui-navbar-box .ui-bar .left .capsule .capsule-home.data-v-81e1f503 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.ui-navbar-box .ui-bar .left .capsule.isFristPage .capsule-back.data-v-81e1f503, .ui-navbar-box .ui-bar .left .capsule.isFristPage.data-v-81e1f503::after {
+  display: none;
+}
+.ui-navbar-box .ui-bar .right.data-v-81e1f503 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ui-navbar-box .ui-bar .right .right-content.data-v-81e1f503 {
+  display: flex;
+  flex-direction: row;
+  flex-direction: row-reverse;
+}
+.ui-navbar-box .ui-bar .center.data-v-81e1f503 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-overflow: ellipsis;
+  text-align: center;
+  flex: 1;
+}
+.ui-navbar-box .ui-bar .center .image.data-v-81e1f503 {
+  display: block;
+  height: 36px;
+  max-width: calc(100vw - 200px);
+}
+.ui-navbar-box .ui-bar-bg.data-v-81e1f503 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+}

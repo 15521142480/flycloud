@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "s-coupon-list": "../s-coupon-list/s-coupon-list",
+    "su-popup": "../../ui/su-popup/su-popup"
+  }
+}

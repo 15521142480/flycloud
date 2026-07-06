@@ -1,0 +1,1 @@
+<s-goods-item wx:if="{{a}}" u-i="2d073e78-0" bind:__l="__l" u-p="{{a}}"/>

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "分销",
+  "usingComponents": {
+    "s-layout": "../../sheep/components/s-layout/s-layout",
+    "commission-info": "./components/commission-info",
+    "account-info": "./components/account-info",
+    "commission-log": "./components/commission-log",
+    "commission-menu": "./components/commission-menu",
+    "commission-auth": "./components/commission-auth"
+  }
+}

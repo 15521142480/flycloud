@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-status-bar": "../../ui/su-status-bar/su-status-bar",
+    "su-popup": "../../ui/su-popup/su-popup"
+  }
+}

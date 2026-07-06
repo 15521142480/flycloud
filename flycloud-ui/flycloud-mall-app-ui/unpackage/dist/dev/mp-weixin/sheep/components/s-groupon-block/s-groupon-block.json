@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "s-goods-column": "../s-goods-column/s-goods-column"
+  }
+}

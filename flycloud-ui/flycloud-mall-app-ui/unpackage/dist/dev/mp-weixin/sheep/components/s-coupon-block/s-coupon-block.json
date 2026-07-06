@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-coupon": "../../ui/su-coupon/su-coupon"
+  }
+}

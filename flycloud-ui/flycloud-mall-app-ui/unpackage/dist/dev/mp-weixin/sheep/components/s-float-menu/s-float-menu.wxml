@@ -1,0 +1,1 @@
+<view wx:if="{{a}}" class="modal-bg data-v-4cc25f94" bindtap="{{b}}"></view><uni-fab wx:if="{{e}}" class="r data-v-4cc25f94" u-r="fabRef" bindtrigger="{{d}}" u-i="4cc25f94-0" bind:__l="__l" u-p="{{e}}"/>

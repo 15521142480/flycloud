@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "申请售后",
+  "usingComponents": {
+    "s-goods-item": "../../../sheep/components/s-goods-item/s-goods-item",
+    "uni-easyinput": "../../../uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput",
+    "s-uploader": "../../../sheep/components/s-uploader/s-uploader",
+    "uni-forms": "../../../uni_modules/uni-forms/components/uni-forms/uni-forms",
+    "su-fixed": "../../../sheep/ui/su-fixed/su-fixed",
+    "su-popup": "../../../sheep/ui/su-popup/su-popup",
+    "s-layout": "../../../sheep/components/s-layout/s-layout"
+  }
+}

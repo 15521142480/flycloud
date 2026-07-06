@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "su-popup": "../../ui/su-popup/su-popup",
+    "canvas-poster": "./canvas-poster/index"
+  }
+}

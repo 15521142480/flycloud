@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "s-empty": "../../../../sheep/components/s-empty/s-empty",
+    "comment-item": "./comment-item"
+  }
+}

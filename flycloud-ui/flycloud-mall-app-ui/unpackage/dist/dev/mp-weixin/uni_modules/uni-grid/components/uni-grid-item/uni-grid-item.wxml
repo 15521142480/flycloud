@@ -1,0 +1,1 @@
+<view style="{{h}}" class="uni-grid-item grid-item data-v-7a807eb7"><view class="{{[a && 'uni-grid-item--border', b && 'uni-grid-item--border-top', c && 'uni-highlight', 'uni-grid-item__box', 'data-v-7a807eb7']}}" style="{{'border-right-color:' + d + ';' + ('border-bottom-color:' + e) + ';' + ('border-top-color:' + f)}}" bindtap="{{g}}"><slot/></view></view>

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "l-painter": "../../uni_modules/lime-painter/components/l-painter/l-painter"
+  }
+}
