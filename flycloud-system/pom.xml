@@ -36,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-bpm</artifactId>
+            <artifactId>flycloud-bpm-api</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
