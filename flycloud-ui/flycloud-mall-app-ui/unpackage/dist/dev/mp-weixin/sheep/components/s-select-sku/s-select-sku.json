@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "su-number-box": "../../ui/su-number-box/su-number-box",
-    "su-popup": "../../ui/su-popup/su-popup"
-  }
-}

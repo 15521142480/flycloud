@@ -1,1 +1,0 @@
-<view class="detail-cell-wrap ss-flex ss-col-center ss-row-between data-v-4e5c0150" bindtap="{{c}}"><view class="label-text data-v-4e5c0150">{{a}}</view><view class="cell-content ss-line-1 ss-flex-1 data-v-4e5c0150">{{b}}</view><button class="ss-reset-button data-v-4e5c0150"><text class="_icon-forward right-forwrad-icon data-v-4e5c0150"></text></button></view>

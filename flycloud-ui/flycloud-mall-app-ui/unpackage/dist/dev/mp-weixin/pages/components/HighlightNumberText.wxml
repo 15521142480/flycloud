@@ -1,1 +1,0 @@
-<view class="content-container data-v-732c0235"><label wx:for="{{a}}" wx:for-item="part" wx:key="b" bindtap="{{part.c}}" class="{{['data-v-732c0235', part.d && 'highlight-number', part.e && 'phone-number']}}">{{part.a}}</label></view>

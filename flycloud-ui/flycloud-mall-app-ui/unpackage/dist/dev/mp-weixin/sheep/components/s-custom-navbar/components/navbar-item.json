@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "s-search-block": "../../s-search-block/s-search-block"
-  }
-}

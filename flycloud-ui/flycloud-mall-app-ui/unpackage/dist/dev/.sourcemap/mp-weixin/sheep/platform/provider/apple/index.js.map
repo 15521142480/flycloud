@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sources":["sheep/platform/provider/apple/index.js"],"sourcesContent":["// #ifdef APP-PLUS\nimport service from './app';\n// #endif\n\nlet apple = {};\nif (typeof service !== 'undefined') {\n  apple = service;\n}\nexport default apple;\n"],"names":[],"mappings":";AAIA,IAAI,QAAQ,CAAA;AACZ,IAAI,OAAO,YAAY,aAAa;AAClC,UAAQ;AACV;AACA,MAAA,UAAe;;"}

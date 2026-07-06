@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "s-live-card": "../s-live-card/s-live-card"
-  }
-}

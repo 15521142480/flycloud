@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "错误页面",
-  "usingComponents": {
-    "s-empty": "../../sheep/components/s-empty/s-empty"
-  }
-}

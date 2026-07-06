@@ -1,6 +1,0 @@
-
-.lime-painter,
-	.lime-painter__canvas {
-
-		width: 100%;
-}

@@ -1,1 +1,0 @@
-<view bindtap="{{b}}"><su-image wx:if="{{a}}" u-i="bfefa4a2-0" bind:__l="__l" u-p="{{a}}"/></view>

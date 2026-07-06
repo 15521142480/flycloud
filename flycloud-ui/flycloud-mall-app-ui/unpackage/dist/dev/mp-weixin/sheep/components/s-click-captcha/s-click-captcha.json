@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "su-popup": "../../ui/su-popup/su-popup"
-  }
-}

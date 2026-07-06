@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "su-notice-bar": "../../ui/su-notice-bar/su-notice-bar"
-  }
-}

@@ -1,1 +1,0 @@
-<s-layout wx:if="{{b}}" u-s="{{['d']}}" u-i="905907d8-0" bind:__l="__l" u-p="{{b}}"><s-block wx:for="{{a}}" wx:for-item="item" wx:key="c" u-s="{{['d']}}" u-i="{{item.d}}" bind:__l="__l" u-p="{{item.e}}"><s-block-item wx:if="{{item.b}}" u-i="{{item.a}}" bind:__l="__l" u-p="{{item.b}}"/></s-block></s-layout>

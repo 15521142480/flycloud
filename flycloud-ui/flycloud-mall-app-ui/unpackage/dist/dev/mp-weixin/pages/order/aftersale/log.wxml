@@ -1,1 +1,0 @@
-<s-layout wx:if="{{b}}" class="data-v-2fedae8f" u-s="{{['d']}}" u-i="2fedae8f-0" bind:__l="__l" u-p="{{b}}"><view class="log-box data-v-2fedae8f"><view wx:for="{{a}}" wx:for-item="item" wx:key="c" class="data-v-2fedae8f"><log-item wx:if="{{item.b}}" class="data-v-2fedae8f" u-i="{{item.a}}" bind:__l="__l" u-p="{{item.b}}"/></view></view></s-layout>
