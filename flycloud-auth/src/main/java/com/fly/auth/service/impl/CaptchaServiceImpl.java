@@ -213,7 +213,8 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     private void drawWord(Graphics2D graphics, CaptchaWord word) {
 
-        Font font = new Font("SansSerif", Font.BOLD, word.getFontSize());
+//        Font font = new Font("SansSerif", Font.BOLD, word.getFontSize());
+        Font font = new Font("Noto Sans CJK SC", Font.BOLD, word.getFontSize());
         FontMetrics metrics = graphics.getFontMetrics(font);
         int textWidth = metrics.stringWidth(word.getText());
         int textHeight = metrics.getAscent();

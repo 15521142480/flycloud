@@ -55,7 +55,7 @@ public interface ISysUserService extends IService<SysUser> {
     /**
      * 自定义重置密码
      */
-    int customResetPassword(Long id, String password);
+    int customResetPassword(SysUserBo bo);
 
     /**
      * 查询用户列表

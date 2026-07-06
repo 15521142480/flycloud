@@ -133,12 +133,9 @@ public class SysUserController extends BaseController {
      * 自定义重置密码
      */
     @PreAuthorize("@pms.hasPermission('sys:user:restartPassword')")
-    @PostMapping("/customResetPassword/{id}/{password}")
-    public R<Void> customResetPassword(
-            @NotNull(message = "主键不能为空") @PathVariable Long id
-            , @NotNull(message = "密码不能为空") @PathVariable String password
-    ) {
-        return R.result(iSysUserService.customResetPassword(id, password));
+    @PostMapping("/customResetPassword")
+    public R<Void> customResetPassword(@RequestBody SysUserBo bo) {
+        return R.result(iSysUserService.customResetPassword(bo));
     }
 
 

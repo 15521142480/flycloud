@@ -181,7 +181,7 @@
               <el-button
                 type="danger"
                 link
-                @click="handleDelete(scope.row)"
+                @click="handleDelete(scope.row.id)"
                 v-hasPermi="['sys:user:delete']"
               >
                 <Icon icon="ep:delete" />{{ t('action.delete') }}
@@ -315,21 +315,21 @@ const handleExport = async () => {
 }
 
 /** 操作分发 */
-const handleCommand = (command: string, row: UserApi.UserVO) => {
-  switch (command) {
-    case 'handleDelete':
-      handleDelete(row.id)
-      break
-    case 'handleResetPwd':
-      handleResetPwd(row)
-      break
-    case 'handleRole':
-      handleRole(row)
-      break
-    default:
-      break
-  }
-}
+// const handleCommand = (command: string, row: UserApi.UserVO) => {
+//   switch (command) {
+//     case 'handleDelete':
+//       handleDelete(row.id)
+//       break
+//     case 'handleResetPwd':
+//       handleResetPwd(row)
+//       break
+//     case 'handleRole':
+//       handleRole(row)
+//       break
+//     default:
+//       break
+//   }
+// }
 
 /** 删除按钮操作 */
 const handleDelete = async (id: number) => {

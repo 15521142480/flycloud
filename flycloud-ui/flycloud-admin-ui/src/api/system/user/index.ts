@@ -101,7 +101,7 @@ export const updateUser = (data: UserVO) => {
 
 // 删除用户
 export const deleteUser = (id: number) => {
-  const ids = []
+  const ids: number[] = []
   ids.push(id)
   return request.delete({ url: `/${SYS_BASE_URL}/user/delete/` + ids })
 }
@@ -118,12 +118,16 @@ export const importUserTemplate = () => {
 
 // 用户密码重置
 export const resetUserPwd = async (id: number, password: string) => {
-  const newPassword = await rsaEncrypt(
+  const data = {
+    id: id,
+    password: ''
+  }
+  data.password = await rsaEncrypt(
     password,
     import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
   )
   return request.post({
-    url: `/${SYS_BASE_URL}/user/customResetPassword/` + id + '/' + (newPassword)
+    url: `/${SYS_BASE_URL}/user/customResetPassword`, data
   })
 }
 

@@ -228,13 +228,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * 重置密码
      */
     @Override
-    public int customResetPassword(Long id, String password) {
+    public int customResetPassword(SysUserBo bo) {
 
-        SysUser sysUser = baseMapper.selectById(id);
+        SysUser sysUser = baseMapper.selectById(bo.getId());
 
         // rsa解密
         String originalPassword = RsaUtils.decrypt(
-                password,
+                bo.getPassword(),
                 rsaProperties.getFlyCloudLoginPassword().getPrivateKey()
         );
 

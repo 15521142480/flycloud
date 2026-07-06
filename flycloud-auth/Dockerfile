@@ -11,6 +11,13 @@ EXPOSE 8088
 # 设置容器内jar工作目录
 WORKDIR /flycloud
 
+# 中文字体（如：验证码含有中文）
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        fontconfig \
+        fonts-noto-cjk && \
+    fc-cache -fv && \
+    rm -rf /var/lib/apt/lists/*
 
 # 创建固定 UID/GID 的非 root 用户
 RUN groupadd -r -g 10001 flycloud && \
