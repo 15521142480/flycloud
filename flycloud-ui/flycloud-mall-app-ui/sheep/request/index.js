@@ -4,7 +4,8 @@
  */
 
 import Request from 'luch-request';
-import { apiPath, baseUrl, tenantId } from '@/sheep/config';
+import { apiPath, tenantId } from '@/sheep/config';
+import { getMallBaseUrl } from '@/sheep/config/server';
 import $store from '@/sheep/store';
 import $platform from '@/sheep/platform';
 import { showAuthModal } from '@/sheep/hooks/useModal';
@@ -48,7 +49,9 @@ function closeLoading() {
  * @description 请求基础配置 可直接使用访问自定义请求
  */
 const http = new Request({
-  baseURL: baseUrl + apiPath,
+
+  // 默认接口为mall服务
+  baseURL: getMallBaseUrl() + apiPath,
   timeout: 8000,
   method: 'GET',
   header: {

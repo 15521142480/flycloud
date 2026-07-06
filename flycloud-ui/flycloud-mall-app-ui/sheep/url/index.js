@@ -1,6 +1,7 @@
 import $store from '@/sheep/store';
 import { baseUrl, staticUrl } from '@/sheep/config';
 import { getFileBaseUrl as getCachedFileBaseUrl } from '@/sheep/helper/fileConfig';
+import { getMallBaseUrl } from '@/sheep/config/server';
 
 const cdn = (url = '', cdnurl = '') => {
   if (!url) return '';
@@ -85,15 +86,7 @@ function escapeRegExp(value = '') {
  * 静态文件访问是网关根路径下的 /static，所以需要去掉服务前缀。
  */
 function getGatewayBaseUrl() {
-  const normalizedBaseUrl = String(baseUrl || '').replace(/\/+$/, '');
-  const mallPrefix = `/${String(import.meta.env.MALL_SERVER_PREFIX || '').replace(
-    /^\/+|\/+$/g,
-    '',
-  )}`;
-  if (!normalizedBaseUrl || mallPrefix === '/') {
-    return normalizedBaseUrl;
-  }
-  return normalizedBaseUrl.replace(new RegExp(`${escapeRegExp(mallPrefix)}$`), '');
+  return getMallBaseUrl().replace(/\/flycloud-mall\/?$/, '');
 }
 
 /**

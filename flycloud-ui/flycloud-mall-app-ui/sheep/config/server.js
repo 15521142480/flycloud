@@ -1,36 +1,44 @@
 import { baseUrl } from '@/sheep/config';
 
-const AUTH_SERVER_PREFIX = import.meta.env.AUTH_SERVER_PREFIX;
-const MALL_SERVER_PREFIX = import.meta.env.MALL_SERVER_PREFIX;
-const SYSTEM_SERVER_PREFIX = import.meta.env.SYSTEM_SERVER_PREFIX;
+/**
+ * 后端服务，默认使用mall，即/flycloud-mall
+ */
+const SERVER_PREFIX = {
+  mall: '/flycloud-mall',
+  auth: '/flycloud-auth',
+  system: '/flycloud-system',
+};
 
-function normalizePrefix(prefix) {
-  return `/${String(prefix || '').replace(/^\/+|\/+$/g, '')}`;
-}
+/**
+ * 获取指定服务网关地址
+ */
+export function getServerBaseUrl(server = 'mall') {
+  const prefix = SERVER_PREFIX[server];
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function replaceServerPrefix(targetPrefix) {
-  if (!baseUrl) {
-    return '';
+  if (!prefix) {
+    throw new Error(`未知的服务类型：${server}`);
   }
-  const mallPrefix = normalizePrefix(MALL_SERVER_PREFIX);
-  const serverPrefix = normalizePrefix(targetPrefix);
-  return baseUrl
-    .replace(new RegExp(`${escapeRegExp(mallPrefix)}/?$`), serverPrefix)
-    .replace(/\/$/, '');
+
+  return `${baseUrl.replace(/\/$/, '')}${prefix}`;
 }
 
+/**
+ * 商城服务
+ */
+export function getMallBaseUrl() {
+  return getServerBaseUrl('mall');
+}
 
-// 获取认证服务网关地址，供授权、验证码等认证服务接口复用
+/**
+ * 认证服务
+ */
 export function getAuthBaseUrl() {
-  return replaceServerPrefix(AUTH_SERVER_PREFIX);
+  return getServerBaseUrl('auth');
 }
 
-
-// 系统服务
+/**
+ * 系统服务
+ */
 export function getSystemBaseUrl() {
-  return replaceServerPrefix(SYSTEM_SERVER_PREFIX);
+  return getServerBaseUrl('system');
 }
