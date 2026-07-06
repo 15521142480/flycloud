@@ -12,10 +12,11 @@ EXPOSE 8088
 WORKDIR /flycloud
 
 # 创建非 root 用户并创建日志目录
-RUN groupadd -r flycloud && \
-    useradd -r -g flycloud flycloud && \
+# 创建固定 UID/GID 的非 root 用户
+RUN groupadd -r -g 10001 flycloud && \
+    useradd -r -u 10001 -g 10001 -m -d /home/flycloud flycloud && \
     mkdir -p /flycloud/logs && \
-    chown -R flycloud:flycloud /flycloud
+    chown -R 10001:10001 /flycloud /home/flycloud
 
 # 声明日志卷，容器内应用生成的日志将被存储在这个位置
 VOLUME /flycloud/logs
@@ -25,10 +26,10 @@ ENV TZ=Asia/Shanghai
 ENV JAVA_OPTS=""
 
 # 将jar包添加到容器中
-COPY --chown=flycloud:flycloud flycloud-auth.jar app.jar
+COPY --chown=10001:10001 flycloud-auth.jar app.jar
 
 # 使用非 root 用户运行
-USER flycloud
+USER 10001:10001
 
 # 启动命令
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
