@@ -3,6 +3,9 @@ package com.fly.system.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
+import com.fly.common.enums.ErrorCodeConstants;
+import com.fly.common.enums.StatusEnum;
+import com.fly.common.exception.utils.ServiceExceptionUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -10,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fly.common.utils.collection.CollectionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.fly.system.api.system.domain.bo.SysPostBo;
@@ -19,9 +23,7 @@ import com.fly.system.mapper.SysPostMapper;
 import com.fly.system.service.ISysPostService;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 岗位 业务层
@@ -69,6 +71,11 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
 
     @Override
     public List<SysPostVo> queryListByIds(Set<Long> ids) {
+
+        return baseMapper.selectVoBatchIds(ids);
+    }
+
+    public List<SysPostVo> queryListByIds(Collection<Long> ids) {
 
         return baseMapper.selectVoBatchIds(ids);
     }
@@ -168,6 +175,31 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
             entity.setUpdateTime(LocalDateTime.now());
             baseMapper.updateById(entity);
         }
+        return true;
+    }
+
+
+    @Override
+    public Boolean validatePostByIds(Collection<Long> ids) {
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return false;
+        }
+        List<SysPostVo> sysPostVoList = this.queryListByIds(ids);
+        Map<Long, SysPostVo> dataMap = CollectionUtils.convertMap(sysPostVoList, SysPostVo :: getId);
+
+        // 校验
+        ids.forEach(id -> {
+
+            SysPostVo data = dataMap.get(id);
+            if (data == null) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.POST_NOT_FOUND);
+            }
+            if (!Objects.equals(StatusEnum.ENABLE.getStatus(), data.getStatus())) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.POST_NOT_ENABLE, data.getName());
+            }
+        });
+
         return true;
     }
 

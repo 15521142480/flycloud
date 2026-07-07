@@ -10,6 +10,7 @@ import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户Service接口
@@ -120,6 +121,21 @@ public interface ISysUserService extends IService<SysUser> {
      */
     Boolean validateDeptByIds(Collection<Long> ids);
 
+
+    /**
+     * 根据岗位ids查询用户列表
+     *
+     * @param postIds
+    */
+    List<SysUserVo> getUserListByPostIds(Set<Long> postIds);
+
+
+    /**
+     * 根据角色ids查询用户列表
+     *
+     * @param roleIds
+    */
+    List<SysUserVo> getUserListByRoleIds(Set<Long> roleIds);
 
 
     /**

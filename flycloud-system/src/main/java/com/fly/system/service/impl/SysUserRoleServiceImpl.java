@@ -1,6 +1,7 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -80,6 +81,20 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, S
     @Override
     public List<SysUserRoleVo> queryList(SysUserRoleBo bo) {
         LambdaQueryWrapper<SysUserRole> lqw = buildQueryWrapper(bo);
+        return baseMapper.selectVoList(lqw);
+    }
+
+
+    @Override
+    public List<SysUserRoleVo> selectListByRoleIds(Set<Long> roleIds) {
+
+        if (CollUtil.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
+
+        LambdaQueryWrapper<SysUserRole> lqw = Wrappers.lambdaQuery();
+        lqw.in(SysUserRole::getRoleId, roleIds);
+
         return baseMapper.selectVoList(lqw);
     }
 

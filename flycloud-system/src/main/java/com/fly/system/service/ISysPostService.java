@@ -57,5 +57,10 @@ public interface ISysPostService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
+    /**
+     * 根据ids验证
+     */
+    Boolean validatePostByIds(Collection<Long> ids);
+
 //    List<String> queryNameByIds(Set<Long> );
 }

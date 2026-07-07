@@ -27,6 +27,16 @@ public interface SystemFeignApiConstants {
     String PROVIDER_USER_IDS = PROVIDER + "/user/ids";
 
     /**
+     * 根据岗位ids查询用户列表
+     */
+    String PROVIDER_USER_LIST_BY_POST_IDS = PROVIDER + "/user/getListByPostIds";
+
+    /**
+     * 根据岗位ids查询用户列表
+     */
+    String PROVIDER_USER_LIST_BY_ROLE_IDS = PROVIDER + "/user/getListByRoleIds";
+
+    /**
      * 根据username查询用户信息
      */
     String PROVIDER_USER_USERNAME = PROVIDER + "/user/username";
@@ -41,12 +51,17 @@ public interface SystemFeignApiConstants {
 
 
 
-    // ================================================== 菜单角色
-    /**
-     * 根据roleId查询menuId列表
-     */
-    String PROVIDER_ROLE_PERMISSION = PROVIDER + "/role-permission/permission";
+    // ================================================== 角色
 
+    String PROVIDER_ROLE_VALID_IDS = PROVIDER + "/role/valid/ids";
+
+
+
+    // ================================================== 菜单
+    /**
+     * 根据角色Id查询菜单列表
+     */
+    String PROVIDER_MENU_BY_ROLE_ID = PROVIDER + "/menu/getListByRoleId";
 
 
     // ================================================== 字典
@@ -71,6 +86,9 @@ public interface SystemFeignApiConstants {
 
     // 根据ids验证部门
     String PROVIDER_DEPT_VALID_IDS = PROVIDER + "/dept/valid/ids";
+
+    // 根据ids验证岗位
+    String PROVIDER_POST_VALID_IDS = PROVIDER + "/post/valid/ids";
 
 
 

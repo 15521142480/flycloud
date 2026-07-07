@@ -1,6 +1,7 @@
 package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.fly.common.config.properties.RsaProperties;
 import com.fly.common.constant.CommonConstants;
 import com.fly.common.enums.ErrorCodeConstants;
@@ -21,6 +22,7 @@ import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.crypto.RsaUtils;
 import com.fly.system.api.system.domain.SysUserRole;
 import com.fly.system.api.system.domain.vo.SysPostVo;
+import com.fly.system.api.system.domain.vo.SysUserRoleVo;
 import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
 import com.fly.system.service.*;
@@ -396,6 +398,41 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         });
 
         return true;
+    }
+
+
+    @Override
+    public List<SysUserVo> getUserListByPostIds(Set<Long> postIds) {
+
+        if (CollUtil.isEmpty(postIds)) {
+            return Collections.emptyList();
+        }
+        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.and(wrapper -> {
+            for (Long postId : postIds) {
+                wrapper.or().apply(
+                        "JSON_CONTAINS(post_ids, CAST({0} AS JSON))"
+                        , postId
+                );
+            }
+        });
+
+        return baseMapper.selectVoList(queryWrapper);
+    }
+
+
+    @Override
+    public List<SysUserVo> getUserListByRoleIds(Set<Long> roleIds) {
+
+        if (CollUtil.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
+        Set<Long> userIds = CollectionUtils.convertSet(sysUserRoleService.selectListByRoleIds(roleIds), SysUserRoleVo::getUserId);
+        if (CollUtil.isEmpty(userIds)) {
+            return Collections.emptyList();
+        }
+
+        return baseMapper.selectVoBatchIds(userIds);
     }
 
 

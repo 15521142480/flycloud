@@ -58,7 +58,11 @@ export const updateModelState = async (id: number, state: number) => {
 }
 
 export const updateModelSortBatch = async (ids: number[]) => {
-  return await request.put({ url: `/${BPM_BASE_URL}/model/update-sort-batch`, data: ids })
+  return await request.put({ url: `/${BPM_BASE_URL}/model/update-sort-batch`,
+    params: {
+      ids: ids.join(',')
+    }
+  })
 }
 
 export const createModel = async (data: ModelVO) => {

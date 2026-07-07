@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 用户调用类
@@ -41,6 +42,24 @@ public interface ISysUserApi {
      */
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_IDS)
     R<List<SysUserVo>> getUserListByIds(@RequestParam("ids") Collection<Long> ids);
+
+
+    /**
+     * 根据岗位ids查询用户列表
+     *
+     * @param postIds
+    */
+    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_POST_IDS)
+    R<List<SysUserVo>> getUserListByPostIds(Set<Long> postIds);
+
+    /**
+     * 根据角色ids查询用户列表
+     *
+     * @param roleIds
+     */
+    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_ROLE_IDS)
+    R<List<SysUserVo>> getUserListByRoleIds(Set<Long> roleIds);
+
 
     /**
      * 根据userName查询用户信息
@@ -81,6 +100,5 @@ public interface ISysUserApi {
         List<SysUserVo> users = this.getUserListByIds(ids).getCheckedData();
         return CollectionUtils.convertMap(users, SysUserVo::getId);
     }
-
 
 }

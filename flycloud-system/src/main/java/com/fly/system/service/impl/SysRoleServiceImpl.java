@@ -2,10 +2,12 @@ package com.fly.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
+import com.fly.common.enums.ErrorCodeConstants;
 import com.fly.common.enums.sys.RoleCodeEnum;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.enums.sys.SysTypeEnum;
 import com.fly.common.exception.ServiceException;
+import com.fly.common.exception.utils.ServiceExceptionUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -15,6 +17,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.system.domain.SysRoleMenu;
 import com.fly.system.api.system.domain.bo.SysMenuBo;
 import com.fly.system.api.system.domain.bo.SysRoleMenuBo;
@@ -372,6 +375,36 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         return resultList;
     }
 
+    
+    public List<SysRoleVo> queryListByIds(Collection<Long> ids) {
+
+        return baseMapper.selectVoBatchIds(ids);
+    }
+
+    
+    @Override
+    public Boolean validateRoleByIds(Set<Long> ids) {
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return false;
+        }
+        List<SysRoleVo> sysRoleVoList = this.queryListByIds(ids);
+        Map<Long, SysRoleVo> dataMap = CollectionUtils.convertMap(sysRoleVoList, SysRoleVo :: getId);
+
+        // 校验
+        ids.forEach(id -> {
+
+            SysRoleVo data = dataMap.get(id);
+            if (data == null) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.ROLE_NOT_EXISTS);
+            }
+            if (!Objects.equals(StatusEnum.ENABLE.getStatus(), data.getStatus())) {
+                throw ServiceExceptionUtils.exception(ErrorCodeConstants.ROLE_IS_DISABLE, data.getName());
+            }
+        });
+
+        return true;
+    }
 
 
 }

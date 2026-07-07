@@ -12,6 +12,7 @@ import com.fly.common.database.annotation.DataPermission;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.enums.bpm.BpmUserTaskApproveTypeEnum;
 import com.fly.common.enums.bpm.BpmUserTaskAssignStartUserHandlerTypeEnum;
+import com.fly.common.exception.BpmException;
 import com.fly.common.utils.ObjectUtils;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import com.fly.system.api.system.feign.ISysUserApi;
@@ -46,12 +47,16 @@ public class BpmTaskCandidateInvoker {
      * @param strategyList
      * @param sysUserProvider
     */
-    public BpmTaskCandidateInvoker(List<BpmTaskCandidateStrategy> strategyList,
-                                   ISysUserApi sysUserProvider) {
+    public BpmTaskCandidateInvoker(List<BpmTaskCandidateStrategy> strategyList, ISysUserApi sysUserProvider) {
+
         strategyList.forEach(strategy -> {
             BpmTaskCandidateStrategy oldStrategy = strategyMap.put(strategy.getStrategy(), strategy);
-            Assert.isNull(oldStrategy, "策略(%s) 重复", strategy.getStrategy());
+            if (oldStrategy == null) {
+                throw new BpmException("策略【"+strategy.getStrategy().getDescription()+"】重复!");
+            }
+//            Assert.isNull(oldStrategy, "策略(%s) 重复", strategy.getStrategy());
         });
+
         this.iSysUserProvider = sysUserProvider;
     }
 
@@ -193,11 +198,23 @@ public class BpmTaskCandidateInvoker {
         assigneeUserIds.remove(startUserId);
     }
 
+    /**
+     * 验证审批策略
+     *
+     * @param strategy
+    */
     private BpmTaskCandidateStrategy getCandidateStrategy(Integer strategy) {
+
         BpmTaskCandidateStrategyEnum strategyEnum = BpmTaskCandidateStrategyEnum.valueOf(strategy);
-        Assert.notNull(strategyEnum, "策略(%s) 不存在", strategy);
+        if (strategyEnum == null) {
+            throw new BpmException("策略【"+strategy+"】不存在!");
+        }
+
         BpmTaskCandidateStrategy strategyObj = strategyMap.get(strategyEnum);
-        Assert.notNull(strategyObj, "策略(%s) 不存在", strategy);
+        if (strategyObj == null) {
+            throw new BpmException("策略【"+strategyEnum.getDescription()+"】虽存在，但还没实现!");
+        }
+
         return strategyObj;
     }
 

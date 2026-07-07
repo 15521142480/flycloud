@@ -8,6 +8,7 @@ import com.fly.common.domain.bo.PageBo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 角色Service接口
@@ -72,4 +73,10 @@ public interface ISysRoleService {
      */
     List<String> getPermissionListByUserId(Long userId);
 
+    /**
+     * 根据ids验证
+     *
+     * @param ids
+    */
+    Boolean validateRoleByIds(Set<Long> ids);
 }

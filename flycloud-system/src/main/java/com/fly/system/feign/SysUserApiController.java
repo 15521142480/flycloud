@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 系统内部接口-用户-控制层
@@ -58,6 +59,31 @@ public class SysUserApiController implements ISysUserApi {
     public R<List<SysUserVo>> getUserListByIds(Collection<Long> ids) {
 
         List<SysUserVo> sysUserList = sysUserService.getByIds(ids);
+        return R.ok(sysUserList);
+    }
+
+
+    /**
+     * 根据岗位ids查询用户列表
+     */
+    @Override
+    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_POST_IDS)
+    public R<List<SysUserVo>> getUserListByPostIds(Set<Long> postIds) {
+
+        List<SysUserVo> sysUserList = sysUserService.getUserListByPostIds(postIds);
+        return R.ok(sysUserList);
+    }
+
+
+    /**
+     * 根据角色ids查询用户列表
+     *
+     * @param roleIds
+    */
+    @Override
+    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_ROLE_IDS)
+    public R<List<SysUserVo>> getUserListByRoleIds(Set<Long> roleIds) {
+        List<SysUserVo> sysUserList = sysUserService.getUserListByRoleIds(roleIds);
         return R.ok(sysUserList);
     }
 

@@ -7,6 +7,7 @@ import com.fly.common.domain.bo.PageBo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户角色Service接口
@@ -42,6 +43,14 @@ public interface ISysUserRoleService {
      * 查询用户角色列表
      */
     List<SysUserRoleVo> queryList(SysUserRoleBo bo);
+
+
+    /**
+     *  查询用户角色列表
+     *
+     * @param roleIds
+    */
+    List<SysUserRoleVo> selectListByRoleIds(Set<Long> roleIds);
 
     /**
      * 修改用户角色
