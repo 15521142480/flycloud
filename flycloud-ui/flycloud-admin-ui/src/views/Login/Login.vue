@@ -5,14 +5,13 @@
   >
     <div class="relative mx-auto h-full flex">
       <div
-        :class="`${prefixCls}__left w-[55%] relative p-30px lt-xl:hidden overflow-x-hidden overflow-y-auto`"
+        :class="`${prefixCls}__left w-[55%] relative p-30px lt-xl:hidden overflow-x-hidden`"
       >
         <!-- 左上角的 logo + 系统标题 -->
         <div class="login-logo-box relative flex items-center text-white">
           <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
-          <span class="text-20px font-bold" style="font-size: 24px; font-weight: 700">{{
-            t('app.title')
-          }}</span>
+          <span class="text-20px font-bold" style="font-size: 24px; font-weight: 700">
+            {{t('app.title')}}123123</span>
         </div>
 
         <!-- 左边的背景图 + 提示语 -->
@@ -34,7 +33,7 @@
 
       <!--   右边区域   -->
       <div
-        class="relative w-[45%] lt-xl:w-full p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden overflow-y-auto"
+        class="relative w-[45%] lt-xl:w-full p-30px dark:bg-[var(--login-bg-color)] lt-sm:p-10px overflow-x-hidden"
       >
         <!-- 右上角的主题、语言选择 -->
         <div
@@ -90,9 +89,10 @@ const prefixCls = getPrefixCls('login')
 $prefix-cls: #{$namespace}-login;
 
 .#{$prefix-cls} {
-  overflow: auto;
+  overflow: hidden;
 
   &__left {
+    overflow: hidden;
     background-color: #fff;
 
     &::before {
