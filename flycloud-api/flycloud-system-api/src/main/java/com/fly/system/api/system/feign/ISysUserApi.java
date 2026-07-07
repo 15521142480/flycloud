@@ -50,7 +50,7 @@ public interface ISysUserApi {
      * @param postIds
     */
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_POST_IDS)
-    R<List<SysUserVo>> getUserListByPostIds(Set<Long> postIds);
+    R<List<SysUserVo>> getUserListByPostIds(@RequestParam("postIds") Set<Long> postIds);
 
     /**
      * 根据角色ids查询用户列表
@@ -58,7 +58,7 @@ public interface ISysUserApi {
      * @param roleIds
      */
     @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_ROLE_IDS)
-    R<List<SysUserVo>> getUserListByRoleIds(Set<Long> roleIds);
+    R<List<SysUserVo>> getUserListByRoleIds(@RequestParam("roleIds") Set<Long> roleIds);
 
 
     /**

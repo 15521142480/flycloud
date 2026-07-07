@@ -5,6 +5,7 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import com.fly.bpm.api.domain.bo.BpmOALeaveCreateBo;
 import com.fly.bpm.api.domain.dto.instance.BpmProcessInstanceCreateReqDTO;
 import com.fly.bpm.api.feign.IBpmInstanceApi;
+import com.fly.bpm.task.service.BpmInstanceService;
 import com.fly.common.enums.bpm.BpmTaskStatusEnum;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -41,7 +42,8 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
 
     private final BpmOaLeaveMapper baseMapper;
 
-    private final IBpmInstanceApi bpmInstanceApi;
+//    private final IBpmInstanceApi bpmInstanceApi;
+    private final BpmInstanceService bpmInstanceService;
 
 
 
@@ -125,12 +127,14 @@ public class BpmOaLeaveServiceImpl extends BaseServiceImpl<BpmOaLeaveMapper, Bpm
         // 2. 发起 BPM 流程
         Map<String, Object> processInstanceVariables = new HashMap<>();
         processInstanceVariables.put("day", day);
-        String processInstanceId = bpmInstanceApi.createInstance(curUserId,
+        // 因为oa这个例子就在bpm服务里，如果是其他服务要发起流程实例，则用流程的api接口调用，如：bpmInstanceApi.createInstance
+//        String processInstanceId = bpmInstanceApi.createInstance(curUserId,
+        String processInstanceId = bpmInstanceService.createProcessInstance(curUserId,
                 new BpmProcessInstanceCreateReqDTO()
                         .setProcessDefinitionKey(PROCESS_KEY)
                         .setVariables(processInstanceVariables)
                         .setBusinessKey(String.valueOf(add.getId()))
-                        .setStartUserSelectAssignees(bo.getStartUserSelectAssignees())).getCheckedData();
+                        .setStartUserSelectAssignees(bo.getStartUserSelectAssignees()));
 
         // 3. 将流程实例编号更新到 OA 请假单中
         baseMapper.updateById(new BpmOaLeave().setId(add.getId()).setProcessInstanceId(processInstanceId));

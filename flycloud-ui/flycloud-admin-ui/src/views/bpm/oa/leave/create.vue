@@ -26,7 +26,7 @@
         clearable
         :placeholder="t('auto.views.bpm.oa.leave.create.k96870563')"
         type="datetime"
-        value-format="x"
+        value-format="YYYY-MM-DD HH:mm:ss"
       />
     </el-form-item>
     <el-form-item :label="t('auto.views.bpm.oa.leave.create.ka0bb9f49')" prop="endTime">
@@ -35,7 +35,7 @@
         clearable
         :placeholder="t('auto.views.bpm.oa.leave.create.k53579ed9')"
         type="datetime"
-        value-format="x"
+        value-format="YYYY-MM-DD HH:mm:ss"
       />
     </el-form-item>
     <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1ff9c3d0')" prop="reason">

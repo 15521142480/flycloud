@@ -51,10 +51,10 @@ public class BpmTaskCandidateInvoker {
 
         strategyList.forEach(strategy -> {
             BpmTaskCandidateStrategy oldStrategy = strategyMap.put(strategy.getStrategy(), strategy);
-            if (oldStrategy == null) {
-                throw new BpmException("策略【"+strategy.getStrategy().getDescription()+"】重复!");
-            }
-//            Assert.isNull(oldStrategy, "策略(%s) 重复", strategy.getStrategy());
+//            if (oldStrategy == null) {
+//                throw new BpmException("策略【"+strategy.getStrategy().getDescription()+"】重复!");
+//            }
+            Assert.isNull(oldStrategy, "策略【"+strategy.getStrategy().getDescription()+"】 重复");
         });
 
         this.iSysUserProvider = sysUserProvider;

@@ -25,6 +25,6 @@ public interface ISysRoleApi {
      * @param roleIds
     */
     @GetMapping(SystemFeignApiConstants.PROVIDER_ROLE_VALID_IDS)
-    R<Boolean> validateRoleByIds(Set<Long> roleIds);
+    R<Boolean> validateRoleByIds(@RequestParam("roleIds") Set<Long> roleIds);
 
 }
