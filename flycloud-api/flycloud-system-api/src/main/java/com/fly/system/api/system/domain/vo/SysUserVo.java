@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.fly.common.annotation.ExcelDictFormat;
-import com.fly.common.convert.ExcelDictConvert;
 import lombok.Data;
-import java.util.Date;
-
+import java.util.Set;
 
 
 /**
@@ -148,5 +145,15 @@ public class SysUserVo implements Serializable {
     @ExcelProperty(value = "用户角色名称")
     private String roleNames;
 
+    /**
+     * 岗位编号数组
+     */
+    private Set<Long> postIds;
+
+    /**
+     * 用户岗位名称
+     */
+    @ExcelProperty(value = "用户岗位名称")
+    private String postNames;
 
 }

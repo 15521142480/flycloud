@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" :title="dialogTitle">
+  <Dialog v-model="dialogVisible" :title="dialogTitle" width="50%">
     <el-form
       ref="formRef"
       v-loading="formLoading"
@@ -57,38 +57,6 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item :label="t('system.user.phone')" prop="telephone">
-            <el-input
-              v-model="formData.telephone"
-              maxlength="11"
-              :placeholder="t('system.user.phonePlaceholder')"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item :label="t('system.user.email')" prop="email">
-            <el-input
-              v-model="formData.email"
-              maxlength="50"
-              :placeholder="t('system.user.emailPlaceholder')"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item :label="t('system.user.sex')">
-            <el-select v-model="formData.sex" :placeholder="t('common.selectText')">
-              <el-option
-                v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item :label="t('common.status')" prop="status">
             <el-select
               v-model="formData.status"
@@ -104,19 +72,57 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <!--        <el-col :span="12">-->
-        <!--          <el-form-item :label="t('extra.k06ba448d')">-->
-        <!--            <el-select v-model="formData.postIds" multiple :placeholder="t('extra.k15cfe2ff')">-->
-        <!--              <el-option-->
-        <!--                v-for="item in postList"-->
-        <!--                :key="item.id"-->
-        <!--                :label="item.name"-->
-        <!--                :value="item.id!"-->
-        <!--              />-->
-        <!--            </el-select>-->
-        <!--          </el-form-item>-->
-        <!--        </el-col>-->
+        <el-col :span="12">
+          <el-form-item :label="t('system.user.phone')" prop="telephone">
+            <el-input
+              v-model="formData.telephone"
+              maxlength="11"
+              :placeholder="t('system.user.phonePlaceholder')"
+            />
+          </el-form-item>
+
+        </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item :label="t('system.user.email')" prop="email">
+            <el-input
+              v-model="formData.email"
+              maxlength="50"
+              :placeholder="t('system.user.emailPlaceholder')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+
+          <el-form-item :label="t('system.user.sex')">
+            <el-select v-model="formData.sex" :placeholder="t('common.selectText')">
+              <el-option
+                v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_USER_SEX)"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="24">
+          <el-form-item :label="t('extra.k06ba448d')">
+            <el-select v-model="formData.postIds" multiple :placeholder="t('extra.k15cfe2ff')">
+              <el-option
+                v-for="item in postList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id!"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-row>
         <el-col :span="24">
           <el-form-item :label="t('system.user.avatar')" prop="picUrl">
@@ -219,7 +225,7 @@ const open = async (type: string, id?: number) => {
   // 加载部门树
   deptList.value = handleTree(await DeptApi.getSimpleDeptList())
   // 加载岗位列表
-  // postList.value = await PostApi.getSimplePostList()
+  postList.value = await PostApi.getSimplePostList()
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 

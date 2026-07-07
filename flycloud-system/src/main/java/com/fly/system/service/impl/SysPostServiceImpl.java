@@ -21,6 +21,7 @@ import com.fly.system.service.ISysPostService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * 岗位 业务层
@@ -64,6 +65,12 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
 
         LambdaQueryWrapper<SysPost> lqw = buildQueryWrapper(bo);
         return baseMapper.selectVoList(lqw);
+    }
+
+    @Override
+    public List<SysPostVo> queryListByIds(Set<Long> ids) {
+
+        return baseMapper.selectVoBatchIds(ids);
     }
 
 

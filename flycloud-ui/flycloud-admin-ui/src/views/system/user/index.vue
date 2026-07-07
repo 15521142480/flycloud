@@ -97,7 +97,12 @@
 
       <ContentWrap>
         <el-table v-loading="loading" :data="list" height="calc(100vh - 355px)">
-          <el-table-column :label="t('system.user.id')" align="center" key="id" prop="id" />
+          <el-table-column :label="t('system.user.id')" align="center" key="id" prop="id" width="110" />
+          <el-table-column label="头像" align="center" width="70" prop="avatar">
+            <template #default="scope">
+              <img :src="getFilePreviewUrl(scope.row.avatar)" alt="头像" class="w-45px h-45px rounded-[50%]" />
+            </template>
+          </el-table-column>
           <el-table-column
             :label="t('system.user.account')"
             align="center"
@@ -125,12 +130,19 @@
             :show-overflow-tooltip="true"
           />
           <el-table-column
+            label="岗位"
+            align="center"
+            key="postNames"
+            prop="postNames"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
             :label="t('system.user.phone')"
             align="center"
             prop="telephone"
             width="120"
           />
-          <el-table-column :label="t('common.status')" key="status" width="100">
+          <el-table-column :label="t('common.status')" key="status" width="80">
             <template #default="scope">
               <el-switch
                 v-model="scope.row.status"
@@ -141,13 +153,26 @@
               />
             </template>
           </el-table-column>
+<!--          <el-table-column-->
+<!--            :label="t('common.createTime')"-->
+<!--            align="center"-->
+<!--            prop="createTime"-->
+<!--            :formatter="dateFormatter"-->
+<!--            width="180"-->
+<!--          />-->
           <el-table-column
-            :label="t('common.createTime')"
             align="center"
+            :label="t('common.createTime')"
             prop="createTime"
-            :formatter="dateFormatter"
-            width="180"
-          />
+            width="110px"
+          >
+            <template #default="{ row }">
+              <div v-if="row.createTime">
+                <div>{{ formatDateArray(row.createTime)[0] }}</div>
+                <div>{{ formatDateArray(row.createTime)[1] }}</div>
+              </div>
+            </template>
+          </el-table-column>
 
           <el-table-column :label="t('common.operation')" align="center" width="220" fixed="right">
             <template #default="scope">
@@ -209,7 +234,7 @@
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { checkPermi } from '@/utils/permission'
-import { dateFormatter } from '@/utils/formatTime'
+import {dateFormatter, formatDateArray} from '@/utils/formatTime'
 import download from '@/utils/download'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as UserApi from '@/api/system/user'
@@ -217,6 +242,7 @@ import UserForm from './UserForm.vue'
 import UserImportForm from './UserImportForm.vue'
 import UserAssignRoleForm from './UserAssignRoleForm.vue'
 import DeptTree from './DeptTree.vue'
+import {getFilePreviewUrl} from "@/components/UploadFile/src/useUpload";
 const { t } = useI18n()
 defineOptions({ name: 'SystemUser' })
 
@@ -289,6 +315,7 @@ const handleStatusChange = async (row: UserApi.UserVO) => {
     await message.confirm(t('system.user.statusConfirm', { action: text, account: row.account }))
     // 发起修改状态
     await UserApi.updateUserStatus(row.id, row.status)
+    message.success(text + t('common.success'))
     // 刷新列表
     await getList()
   } catch {

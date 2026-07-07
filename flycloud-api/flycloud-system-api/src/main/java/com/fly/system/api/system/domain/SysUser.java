@@ -1,10 +1,12 @@
 package com.fly.system.api.system.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
+import java.util.Set;
 
 import com.fly.common.domain.BaseEntity;
 import lombok.experimental.Accessors;
@@ -18,7 +20,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_user")
+@TableName(value = "sys_user", autoResultMap = true)
 public class SysUser extends BaseEntity {
 
     private static final long serialVersionUID=1L;
@@ -72,10 +74,18 @@ public class SysUser extends BaseEntity {
      * 性别
      */
     private Integer sex;
+
     /**
      * 部门id
      */
     private Long deptId;
+
+    /**
+     * 岗位编号数组
+     */
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Set<Long> postIds;
+
     /**
      * 状态
      */

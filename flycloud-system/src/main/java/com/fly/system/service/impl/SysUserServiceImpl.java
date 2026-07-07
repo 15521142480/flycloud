@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.crypto.RsaUtils;
 import com.fly.system.api.system.domain.SysUserRole;
+import com.fly.system.api.system.domain.vo.SysPostVo;
 import com.fly.system.api.system.domain.vo.UserDetailInfoVo;
 import com.fly.system.mapper.SysUserRoleMapper;
 import com.fly.system.service.*;
@@ -33,6 +34,7 @@ import com.fly.system.mapper.SysUserMapper;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户Service业务层处理
@@ -48,6 +50,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private final SysUserMapper baseMapper;
 
     private final ISysRoleService sysRoleService;
+    private final ISysPostService sysPostService;
 
     private final ISysUserRoleService sysUserRoleService;
 
@@ -78,8 +81,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             sysUserVo.setUserTypeName(SysTypeEnum.getSysTypeNameByType(sysUserVo.getUserType()));
             sysUserVo.setRoleIds(String.join(",", sysUserRoleService.getRoleIdListByUserId(sysUserVo.getId())));
             sysUserVo.setRoleNames(String.join(",", sysUserRoleService.getRoleNameListByUserId(sysUserVo.getId())));
-
             sysUserVo.setDeptName(sysDeptService.queryDeptNameById(sysUserVo.getDeptId()));
+
+            if (!CollectionUtils.isEmpty(sysUserVo.getPostIds())) {
+                List<SysPostVo> sysPostVoList = sysPostService.queryListByIds(sysUserVo.getPostIds());
+                sysUserVo.setPostNames(
+                        sysPostVoList.stream()
+                                .map(SysPostVo::getName)
+                                .collect(Collectors.joining(","))
+                );
+            }
         }
         pageVo.setList(sysUserVoList);
 

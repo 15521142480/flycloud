@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
 
 import java.util.Date;
+import java.util.Set;
 
 import com.fly.common.domain.BaseEntity;
 
@@ -115,6 +116,10 @@ public class SysUserBo extends BaseEntity {
     @ExcelProperty(value = "用户角色")
     private String roleIds;
 
+    /**
+     * 岗位编号数组
+     */
+    private Set<Long> postIds;
 
 
 }

@@ -7,6 +7,7 @@ import com.fly.common.domain.bo.PageBo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 岗位 接口层
@@ -32,6 +33,11 @@ public interface ISysPostService {
     List<SysPostVo> queryList(SysPostBo bo);
 
     /**
+     * 查询岗位列表
+     */
+    List<SysPostVo> queryListByIds(Set<Long> ids);
+
+    /**
      * 新增/修改岗位
      */
     int saveOrUpdate(SysPostBo bo);
@@ -51,4 +57,5 @@ public interface ISysPostService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
+//    List<String> queryNameByIds(Set<Long> );
 }
