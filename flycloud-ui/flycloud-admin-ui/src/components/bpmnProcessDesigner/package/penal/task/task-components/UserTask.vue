@@ -172,7 +172,13 @@ const resetTaskForm = () => {
     } else {
       userTaskForm.value.candidateParam = businessObject.candidateParam
         .split(',')
-        .map((item) => +item)
+        .map((item) => {
+          const num = Number(item)
+          return Number.isSafeInteger(num) ? num : item
+        })
+      // userTaskForm.value.candidateParam = businessObject.candidateParam
+      //   .split(',')
+      //   .map((item) => +item)
     }
   } else {
     userTaskForm.value.candidateParam = []
