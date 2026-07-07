@@ -109,6 +109,17 @@ public interface BpmModelService {
      */
     BpmnModel getBpmnModelByDefinitionId(String processDefinitionId);
 
+
+    /**
+     * 批量修改模型排序
+     *
+     * @param curUserId
+     * @param ids
+     */
+    void updateModelSortBatch(Long curUserId, List<String> ids);
+
+
+
     // ========== 仿钉钉/飞书的精简模型 =========
 
     /**
@@ -126,5 +137,6 @@ public interface BpmModelService {
      * @param reqVO 请求信息
      */
     void updateSimpleModel(Long userId, @Valid BpmSimpleModelUpdateReqVO reqVO);
+
 
 }

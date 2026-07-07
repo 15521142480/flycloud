@@ -170,4 +170,11 @@ public interface BpmProcessDefinitionService {
      */
     Deployment getDeployment(String id);
 
+    /**
+     * 更新排序
+     *
+     * @param modelId
+     * @param sort
+    */
+    void updateProcessDefinitionSortByModelId(String modelId, long sort);
 }

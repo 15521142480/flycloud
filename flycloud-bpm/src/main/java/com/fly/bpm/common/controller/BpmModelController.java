@@ -14,6 +14,7 @@ import com.fly.bpm.common.service.IBpmFormService;
 import com.fly.bpm.flowable.convert.BpmModelConvert;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.model.R;
+import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import com.fly.system.api.system.feign.ISysUserApi;
@@ -228,6 +229,16 @@ public class BpmModelController {
         modelService.deleteModel(getCurUserId(), id);
         return R.result(true);
     }
+
+
+    @PutMapping("/update-sort-batch")
+    @Operation(summary = "批量修改模型排序")
+    @Parameter(name = "ids", description = "编号数组", required = true, example = "1,2,3")
+    public R<Boolean> updateModelSortBatch(@RequestParam("ids") List<String> ids) {
+        modelService.updateModelSortBatch(UserUtils.getCurUserId(), ids);
+        return R.ok(true);
+    }
+
 
     // ========== 仿钉钉/飞书的精简模型 =========
 

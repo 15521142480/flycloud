@@ -113,4 +113,9 @@ public class BpmProcessDefinitionInfo extends BaseEntity {
     @TableField(typeHandler = StringListTypeHandler.class) // 为了可以使用 find_in_set 进行过滤
     private List<Long> managerUserIds;
 
+    /**
+     * 排序值
+     */
+    private Long sort;
+
 }

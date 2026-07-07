@@ -110,10 +110,13 @@ public class BpmProcessDefinitionController extends BaseController {
         Map<String, BpmProcessDefinitionInfo> processDefinitionMap = bpmProcessDefinitionService.getProcessDefinitionInfoMap(
                 CollectionUtils.convertSet(list, ProcessDefinition::getId));
 
-//        for (BpmProcessDefinitionInfo info : processDefinitionMap.values()) {
-//            Model model = modelService.getModel(info.getModelId());
-//            BpmModelMetaInfoVO modelMetaInfoVO = JsonUtils.parseObject(model.getMetaInfo(), BpmModelMetaInfoVO.class);
-//        }
+        for (BpmProcessDefinitionInfo info : processDefinitionMap.values()) {
+            Model model = modelService.getModel(info.getModelId());
+            BpmModelMetaInfoVO modelMetaInfoVO = JsonUtils.parseObject(model.getMetaInfo(), BpmModelMetaInfoVO.class);
+            if (modelMetaInfoVO != null) {
+                info.setIcon(modelMetaInfoVO.getIcon());
+            }
+        }
 
         // 1.4 移除不可见的流程定义
         Long userId = UserUtils.getCurUserId();

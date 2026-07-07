@@ -182,6 +182,15 @@ public class BpmProcessDefinitionServiceImpl extends BaseServiceImpl<BpmProcessD
 
 
     @Override
+    public void updateProcessDefinitionSortByModelId(String modelId, long sort) {
+
+        LambdaQueryWrapper<BpmProcessDefinitionInfo> lqw = Wrappers.lambdaQuery();
+        lqw.eq(BpmProcessDefinitionInfo::getModelId, modelId);
+        processDefinitionMapper.update(new BpmProcessDefinitionInfo().setSort(sort), lqw);
+    }
+
+
+    @Override
     public String createProcessDefinition(Model model, BpmModelMetaInfoVO modelMetaInfo,
                                           byte[] bpmnBytes, byte[] simpleBytes, BpmForm form) {
         // 创建 Deployment 部署

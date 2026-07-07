@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fly.bpm.api.domain.BpmForm;
+import com.fly.bpm.api.domain.BpmProcessDefinitionInfo;
 import com.fly.bpm.api.domain.vo.model.BpmModelMetaInfoVO;
 import com.fly.bpm.api.domain.vo.model.BpmModelPageReqVO;
 import com.fly.bpm.api.domain.vo.model.BpmModelSaveReqVO;
@@ -21,6 +22,7 @@ import com.fly.bpm.flowable.utils.SimpleModelUtils;
 import com.fly.common.database.util.PageUtils;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.bpm.BpmModelFormTypeEnum;
+import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.validation.ValidationUtils;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,7 @@ import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fly.common.exception.utils.ServiceExceptionUtils.exception;
@@ -306,6 +309,33 @@ public class BpmModelServiceImpl implements BpmModelService {
     @Override
     public BpmnModel getBpmnModelByDefinitionId(String processDefinitionId) {
         return repositoryService.getBpmnModel(processDefinitionId);
+    }
+
+    @Override
+    public void updateModelSortBatch(Long curUserId, List<String> ids) {
+
+        // 1.1 校验流程模型存在
+        List<Model> models = repositoryService.createModelQuery()
+                .modelTenantId(FlowableUtils.getTenantId()).list();
+        models.removeIf(model -> !ids.contains(model.getId()));
+        if (ids.size() != models.size()) {
+            throw exception(MODEL_NOT_EXISTS);
+        }
+//        // 1.2 校验是否为管理员
+//        ids.forEach(id -> validateModelManager(id, curUserId));
+
+        // 保存排序
+        Map<String, Model> modelMap = CollectionUtils.convertMap(models, Model::getId);
+        long sort = System.currentTimeMillis(); // 使用时间戳 - i 作为排序
+        for (int i = ids.size() - 1; i > 0; i--) {
+            Model model = modelMap.get(ids.get(i));
+            // 更新模型
+            BpmModelMetaInfoVO metaInfo = BpmModelConvert.INSTANCE.parseMetaInfo(model).setSort(sort);
+            model.setMetaInfo(JsonUtils.toJsonString(metaInfo));
+            repositoryService.saveModel(model);
+            processDefinitionService.updateProcessDefinitionSortByModelId(model.getId(), sort);
+            sort--;
+        }
     }
 
     @Override
