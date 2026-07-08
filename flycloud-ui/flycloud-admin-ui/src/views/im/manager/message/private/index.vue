@@ -125,7 +125,7 @@
             link
             type="primary"
             @click="openDetail(row)"
-            v-hasPermi="['im:manager:message:query']"
+            v-hasPermi="['im:friend:message:list']"
           >
             详情
           </el-button>

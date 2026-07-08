@@ -189,7 +189,7 @@
             link
             type="primary"
             @click="openDetail(scope.row)"
-            v-hasPermi="['infra:api-access-log:query']"
+            v-hasPermi="['infra:api-access-log:list']"
           >
             {{ t('extra.k1f0a3a1c') }}
           </el-button>

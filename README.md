@@ -2,7 +2,7 @@
 ### 1、项目说明:
 - flycloud 是一款基于Spring Cloud Alibaba的微服务架构。
 - 目前整合了 JDK 21、Spring Boot 3.5.3、Spring Cloud 2025.0.3、Spring Cloud Alibaba 2025.0.0.0、Nacos 3.0.3、Mysql 8.4、Spring Security、Flowable 6.8.0 + bpmn.js、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
-- 主要以系统后台、工作流、商城、小程序的一个飞翔云系统。
+- 主要以系统后台、商城后台、商城移动端（h5/小程序）、工作流、报表、即时通讯等功能的一个飞翔云系统。
 
 
 ### 2、地址

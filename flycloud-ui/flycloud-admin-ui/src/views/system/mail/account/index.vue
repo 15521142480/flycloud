@@ -46,7 +46,7 @@
           link
           type="primary"
           @click="openDetail(row.id)"
-          v-hasPermi="['system:mail-account:query']"
+          v-hasPermi="['system:mail-account:list']"
         >
           {{ t('action.detail') }}
         </el-button>

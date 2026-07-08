@@ -148,7 +148,7 @@
             link
             type="primary"
             @click="openDetail(scope.row)"
-            v-hasPermi="['infra:operate-log:query']"
+            v-hasPermi="['infra:operate-log:list']"
           >
             {{ t('extra.kea731f93') }}
           </el-button>

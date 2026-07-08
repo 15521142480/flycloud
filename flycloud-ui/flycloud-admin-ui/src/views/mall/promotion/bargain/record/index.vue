@@ -99,7 +99,7 @@
             link
             type="primary"
             @click="openRecordListDialog(scope.row.id)"
-            v-hasPermi="['promotion:bargain-help:query']"
+            v-hasPermi="['promotion:bargain-help:list']"
           >
             助力
           </el-button>

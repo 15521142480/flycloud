@@ -65,7 +65,7 @@
         >
           <Icon icon="ep:download" class="mr-5px" /> {{ t('extra.kb3081d0c') }}
         </el-button>
-        <el-button type="info" plain @click="handleJobLog()" v-hasPermi="['infra:job:query']">
+        <el-button type="info" plain @click="handleJobLog()" v-hasPermi="['infra:job:list']">
           <Icon icon="ep:zoom-in" class="mr-5px" /> {{ t('extra.k9a8378ea') }}
         </el-button>
       </el-form-item>
@@ -137,7 +137,7 @@
           </el-button>
           <el-dropdown
             @command="(command) => handleCommand(command, scope.row)"
-            v-hasPermi="['infra:job:trigger', 'infra:job:query']"
+            v-hasPermi="['infra:job:trigger', 'infra:job:list']"
           >
             <el-button type="primary" link
               ><Icon icon="ep:d-arrow-right" /> {{ t('action.more') }}</el-button
@@ -147,10 +147,10 @@
                 <el-dropdown-item command="handleRun" v-if="checkPermi(['infra:job:trigger'])">
                   {{ t('extra.k1bc974f4') }}
                 </el-dropdown-item>
-                <el-dropdown-item command="openDetail" v-if="checkPermi(['infra:job:query'])">
+                <el-dropdown-item command="openDetail" v-if="checkPermi(['infra:job:list'])">
                   {{ t('auto.views.infra.job.JobDetail.kcb1587a2') }}
                 </el-dropdown-item>
-                <el-dropdown-item command="handleJobLog" v-if="checkPermi(['infra:job:query'])">
+                <el-dropdown-item command="handleJobLog" v-if="checkPermi(['infra:job:list'])">
                   {{ t('auto.router.modules.remaining.ka3756839') }}
                 </el-dropdown-item>
               </el-dropdown-menu>

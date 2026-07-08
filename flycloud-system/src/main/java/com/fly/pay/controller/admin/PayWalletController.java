@@ -54,7 +54,7 @@ public class PayWalletController {
     /**
      * 获取支付钱包详情。
      */
-//    @PreAuthorize("@pms.hasPermission('pay:wallet:balance:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:wallet:balance:list')")
     @GetMapping("/get")
     public R<PayWalletRespVo> get(PayWalletBo bo) {
         PayWallet wallet = bo.getId() != null ? walletService.getWallet(bo.getId())

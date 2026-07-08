@@ -280,7 +280,7 @@
             {{ t('extra.k68aad05a') }}
           </el-button>
           <el-button
-            v-hasPermi="['crm:contract:query']"
+            v-hasPermi="['crm:contract:list']"
             link
             type="primary"
             @click="openDetail(scope.row.id)"

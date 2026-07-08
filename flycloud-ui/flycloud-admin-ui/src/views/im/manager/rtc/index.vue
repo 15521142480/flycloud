@@ -155,7 +155,7 @@
             link
             type="primary"
             @click="openDetail(row)"
-            v-hasPermi="['im:manager:rtc:query']"
+            v-hasPermi="['im:rtc:list']"
           >
             详情
           </el-button>

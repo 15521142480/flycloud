@@ -180,7 +180,7 @@
       <el-table-column align="center" fixed="right" label="操作">
         <template #default="scope">
           <el-button
-            v-hasPermi="['promotion:combination-record:query']"
+            v-hasPermi="['promotion:combination-record:list']"
             link
             type="primary"
             @click="openRecordListDialog(scope.row)"

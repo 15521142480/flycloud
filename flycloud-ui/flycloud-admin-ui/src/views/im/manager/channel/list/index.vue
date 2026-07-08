@@ -42,7 +42,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['im:manager:channel:saveOrUpdate']"
+          v-hasPermi="['im:channel:list:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增
         </el-button>
@@ -90,7 +90,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['im:manager:channel:saveOrUpdate']"
+            v-hasPermi="['im:channel:list:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -98,7 +98,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['im:manager:channel:delete']"
+            v-hasPermi="['im:channel:list:delete']"
           >
             删除
           </el-button>

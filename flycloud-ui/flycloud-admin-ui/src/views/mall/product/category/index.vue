@@ -71,7 +71,7 @@
             type="primary"
             v-if="scope.row.parentId > 0"
             @click="handleViewSpu(scope.row.id)"
-            v-hasPermi="['mall:product:spu:query']"
+            v-hasPermi="['mall:product:spu:list']"
           >
             查看商品
           </el-button>

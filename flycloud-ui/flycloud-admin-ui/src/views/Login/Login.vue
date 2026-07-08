@@ -11,7 +11,7 @@
         <div class="login-logo-box relative flex items-center text-white">
           <img alt="" class="mr-10px h-48px w-48px" src="@/assets/imgs/logo.png" />
           <span class="text-20px font-bold" style="font-size: 24px; font-weight: 700">
-            {{t('app.title')}}123123</span>
+            {{t('app.title')}}</span>
         </div>
 
         <!-- 左边的背景图 + 提示语 -->

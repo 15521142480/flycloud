@@ -189,14 +189,14 @@
           <el-dropdown
             class="!align-middle ml-5px"
             @command="(command) => handleCommand(command, scope.row)"
-            v-hasPermi="['bpm:process-definition:query', 'bpm:model:update', 'bpm:model:delete']"
+            v-hasPermi="['bpm:process-definition:list', 'bpm:model:update', 'bpm:model:delete']"
           >
             <el-button type="primary" link>{{ t('action.more') }}</el-button>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item
                   command="handleDefinitionList"
-                  v-if="checkPermi(['bpm:process-definition:query'])"
+                  v-if="checkPermi(['bpm:process-definition:list'])"
                 >
                   {{ t('extra.kc827d8db') }}
                 </el-dropdown-item>

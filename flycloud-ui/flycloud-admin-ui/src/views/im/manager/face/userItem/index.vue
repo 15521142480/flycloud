@@ -96,7 +96,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['im:manager:face-user-item:delete']"
+            v-hasPermi="['im:face-pack:user:delete']"
           >
             删除
           </el-button>

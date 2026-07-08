@@ -211,7 +211,7 @@
             link
             type="primary"
             @click="openDetail(scope.row)"
-            v-hasPermi="['system:sms-log:query']"
+            v-hasPermi="['system:sms-log:list']"
           >
             {{ t('action.detail') }}
           </el-button>

@@ -32,7 +32,7 @@
           type="primary"
           plain
           @click="openSendForm"
-          v-hasPermi="['im:manager:channel-message:send']"
+          v-hasPermi="['im:channel:message:send']"
         >
           <Icon icon="ep:promotion" class="mr-5px" />立即推送
         </el-button>
@@ -86,7 +86,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['im:manager:channel-message:delete']"
+            v-hasPermi="['im:channel:message:delete']"
           >
             删除
           </el-button>

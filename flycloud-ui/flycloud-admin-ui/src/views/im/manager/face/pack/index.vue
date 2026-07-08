@@ -45,7 +45,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['im:manager:face-pack:saveOrUpdate']"
+          v-hasPermi="['im:face-pack:sys:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增
         </el-button>
@@ -54,7 +54,7 @@
           plain
           :disabled="checkedIds.length === 0"
           @click="handleDeleteBatch"
-          v-hasPermi="['im:manager:face-pack:delete']"
+          v-hasPermi="['im:face-pack:sys:delete']"
         >
           <Icon icon="ep:delete" class="mr-5px" />批量删除
         </el-button>
@@ -105,7 +105,7 @@
             link
             type="primary"
             @click="openItemDrawer(scope.row)"
-            v-hasPermi="['im:manager:face-pack-item:query']"
+            v-hasPermi="['im:face-pack:sys:list']"
           >
             管理表情
           </el-button>
@@ -113,7 +113,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['im:manager:face-pack:saveOrUpdate']"
+            v-hasPermi="['im:face-pack:sys:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -121,7 +121,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['im:manager:face-pack:delete']"
+            v-hasPermi="['im:face-pack:sys:delete']"
           >
             删除
           </el-button>

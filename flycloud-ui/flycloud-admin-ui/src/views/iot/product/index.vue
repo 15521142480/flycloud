@@ -89,7 +89,7 @@
             link
             type="primary"
             @click="openDetail(scope.row.id)"
-            v-hasPermi="['iot:product:query']"
+            v-hasPermi="['iot:product:list']"
           >
             {{ t('auto.components.UploadFile.src.UploadImgs.kf7acefd2') }}
           </el-button>

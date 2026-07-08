@@ -126,7 +126,7 @@
             link
             type="primary"
             @click="openDetail(row)"
-            v-hasPermi="['im:manager:group:query']"
+            v-hasPermi="['im:group:list:list']"
           >
             详情
           </el-button>
@@ -136,7 +136,7 @@
             link
             type="danger"
             @click="openBanDialog(row)"
-            v-hasPermi="['im:manager:group:ban']"
+            v-hasPermi="['im:group:list:ban']"
           >
             封禁
           </el-button>
@@ -145,7 +145,7 @@
             link
             type="primary"
             @click="handleUnban(row)"
-            v-hasPermi="['im:manager:group:ban']"
+            v-hasPermi="['im:group:list:ban']"
           >
             解封
           </el-button>
@@ -154,7 +154,7 @@
             link
             type="danger"
             @click="handleDissolve(row)"
-            v-hasPermi="['im:manager:group:dissolve']"
+            v-hasPermi="['im:group:list:dissolve']"
           >
             解散
           </el-button>

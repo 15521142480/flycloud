@@ -48,13 +48,13 @@ public class GoViewProjectController {
     }
 
     @GetMapping("/get")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:query')")
+    @PreAuthorize("@pms.hasPermission('report:go-view-project:list')")
     public R<GoViewProjectRespVo> getProject(@RequestParam("id") Long id) {
         return R.ok(goViewProjectService.queryById(id));
     }
 
     @GetMapping("/my-page")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:query')")
+    @PreAuthorize("@pms.hasPermission('report:go-view-project:list')")
     public R<PageVo<GoViewProjectRespVo>> getMyProjectPage(PageBo pageBo) {
         return R.ok(goViewProjectService.getMyProjectPage(pageBo, UserUtils.getCurUserId()));
     }

@@ -236,7 +236,7 @@
           <el-button
             link
             @click="openForm('detail', scope.row.id)"
-            v-hasPermi="['erp:finance-receipt:query']"
+            v-hasPermi="['erp:finance-receipt:list']"
           >
             {{ t('action.detail') }}
           </el-button>

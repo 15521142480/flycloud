@@ -1,0 +1,169 @@
+package com.fly.im.controller.client.rtc;
+
+import com.fly.common.domain.model.R;
+import com.fly.common.utils.collection.CollectionUtils;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallCreateReqVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallInviteReqVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallRespVo;
+import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcGroupCallRespVo;
+import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.domain.rtc.ImRtcParticipant;
+import com.fly.system.api.im.enums.rtc.ImRtcCallStatusEnum;
+import com.fly.system.api.im.enums.rtc.ImRtcParticipantStatusEnum;
+import com.fly.im.framework.config.ImProperties;
+import com.fly.im.service.rtc.ImRtcCallService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import static com.fly.common.domain.model.R.ok;
+import static com.fly.common.security.util.UserUtils.getCurUserId;
+
+@Tag(name = "管理后台 - IM 实时通话")
+@RestController
+@RequestMapping({"/im/rtc", "/admin/im/rtc"})
+@Validated
+public class ImRtcCallController {
+
+    @Resource
+    private ImRtcCallService rtcCallService;
+    @Resource
+    private ImProperties imProperties;
+
+    @PostMapping("/create")
+    @Operation(summary = "创建新通话；按 conversationType 区分私聊 / 群聊")
+    public R<ImRtcCallRespVo> createCall(@Valid @RequestBody ImRtcCallCreateReqVo reqVo) {
+        Long userId = getCurUserId();
+        ImRtcCall call = rtcCallService.createCall(userId, reqVo);
+        return ok(buildCallRespVo(call, userId));
+    }
+
+    @PostMapping("/invite")
+    @Operation(summary = "通话中追加邀请；仅群通话可用")
+    public R<Boolean> inviteCall(@Valid @RequestBody ImRtcCallInviteReqVo reqVo) {
+        rtcCallService.inviteCall(getCurUserId(), reqVo);
+        return R.result(true);
+    }
+
+    @PostMapping("/join")
+    @Operation(summary = "加入已有群通话；用于胶囊条「加入」按钮")
+    @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
+    public R<ImRtcCallRespVo> joinCall(@RequestParam("room") String room) {
+        Long userId = getCurUserId();
+        return ok(buildCallRespVo(rtcCallService.joinCall(userId, room), userId));
+    }
+
+    @PostMapping("/accept")
+    @Operation(summary = "接听通话")
+    @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
+    public R<ImRtcCallRespVo> accept(@RequestParam("room") String room) {
+        Long userId = getCurUserId();
+        return ok(buildCallRespVo(rtcCallService.acceptCall(userId, room), userId));
+    }
+
+    @PostMapping("/reject")
+    @Operation(summary = "拒绝通话")
+    @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
+    public R<Boolean> reject(@RequestParam("room") String room) {
+        rtcCallService.rejectCall(getCurUserId(), room);
+        return R.result(true);
+    }
+
+    @PostMapping("/cancel")
+    @Operation(summary = "取消邀请；主叫接通前调用")
+    @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
+    public R<Boolean> cancel(@RequestParam("room") String room) {
+        rtcCallService.cancelCall(getCurUserId(), room);
+        return R.result(true);
+    }
+
+    @PostMapping("/leave")
+    @Operation(summary = "离开通话；接通后调用")
+    @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
+    public R<Boolean> leave(@RequestParam("room") String room) {
+        rtcCallService.leaveCall(getCurUserId(), room);
+        return R.result(true);
+    }
+
+    @PostMapping("/no-answer-call-check")
+    @Operation(summary = "前端 RUNNING 端 timer 兜底；触发后端立即扫描该 room 的振铃超时（接口静默）")
+    @Parameter(name = "room", description = "业务通话编号", required = true, example = "f47ac10b58cc4372a567")
+    public R<Boolean> noAnswerCallCheck(@RequestParam("room") String room) {
+        rtcCallService.noAnswerCallCheck(getCurUserId(), room);
+        return R.result(true);
+    }
+
+    @GetMapping("/get-active-call")
+    @Operation(summary = "查询当前进行中的通话；用于群聊顶部「N 人正在通话」胶囊条")
+    @Parameter(name = "groupId", description = "群编号", required = true, example = "2048")
+    public R<ImRtcGroupCallRespVo> getActiveCall(@RequestParam("groupId") Long groupId) {
+        ImRtcCall call = rtcCallService.getActiveCall(getCurUserId(), groupId);
+        return ok(buildGroupActiveRespVo(call));
+    }
+
+    // ========== VO 拼装 ==========
+
+    /**
+     * 拼装 invite / join / accept / refresh-token 的响应 VO；含 token + 参与者分桶
+     *
+     * @param call   通话主表
+     * @param userId 当前用户编号；token 按该用户签发
+     * @return 响应 VO；call 为空返回 null
+     */
+    private ImRtcCallRespVo buildCallRespVo(ImRtcCall call, Long userId) {
+        if (call == null) {
+            return null;
+        }
+        List<ImRtcParticipant> participants = rtcCallService.getCallParticipantList(call.getRoom());
+        boolean ended = ImRtcCallStatusEnum.isEnded(call.getStatus());
+        return new ImRtcCallRespVo()
+                .setRoom(call.getRoom())
+                .setLivekitUrl(imProperties.getRtc().getLivekitUrl())
+                // 仅非 ENDED 场景才签 token，ENDED 场景不签，前端根据 token 是否存在，来判断是否展示「通话已结束」的提示
+                .setToken(ended ? null : rtcCallService.signCallToken(userId, call.getRoom()))
+                .setConversationType(call.getConversationType()).setMediaType(call.getMediaType())
+                .setStatus(call.getStatus()).setEndReason(call.getEndReason())
+                .setInviterId(call.getInviterUserId()).setGroupId(call.getGroupId())
+                .setInviteeIds(filterUserIds(participants, ImRtcParticipantStatusEnum.INVITING))
+                .setJoinedUserIds(filterUserIds(participants, ImRtcParticipantStatusEnum.JOINED));
+    }
+
+    /**
+     * 拼装 get-active-call 的响应 VO
+     *
+     * @param call 通话主表
+     * @return 响应 VO：只用于群聊胶囊条，不含 token
+     */
+    private ImRtcGroupCallRespVo buildGroupActiveRespVo(ImRtcCall call) {
+        if (call == null) {
+            return null;
+        }
+        List<ImRtcParticipant> participants = rtcCallService.getCallParticipantList(call.getRoom());
+        return new ImRtcGroupCallRespVo().setRoom(call.getRoom()).setMediaType(call.getMediaType())
+                .setGroupId(call.getGroupId()).setInviterId(call.getInviterUserId())
+                .setJoinedUserIds(filterUserIds(participants, ImRtcParticipantStatusEnum.JOINED))
+                .setInviteeIds(filterUserIds(participants, ImRtcParticipantStatusEnum.INVITING));
+    }
+
+    /**
+     * 按状态过滤参与者 userId；用 LinkedHashSet 保留前端展示顺序
+     *
+     * @param participants 参与者列表
+     * @param status       目标状态
+     * @return userId 集合
+     */
+    private static Set<Long> filterUserIds(List<ImRtcParticipant> participants,
+                                           ImRtcParticipantStatusEnum status) {
+        return CollectionUtils.convertLinkedSet(participants, ImRtcParticipant::getUserId,
+                participant -> Objects.equals(participant.getStatus(), status.getStatus()));
+    }
+
+}

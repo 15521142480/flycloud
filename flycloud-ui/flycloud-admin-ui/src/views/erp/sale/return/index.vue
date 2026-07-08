@@ -270,7 +270,7 @@
           <el-button
             link
             @click="openForm('detail', scope.row.id)"
-            v-hasPermi="['erp:sale-return:query']"
+            v-hasPermi="['erp:sale-return:list']"
           >
             {{ t('action.detail') }}
           </el-button>

@@ -134,7 +134,7 @@
             type="primary"
             link
             @click="openDetail(scope.row.id)"
-            v-hasPermi="['infra:job:query']"
+            v-hasPermi="['infra:job:list']"
           >
             {{ t('extra.k1f0a3a1c') }}
           </el-button>

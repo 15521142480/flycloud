@@ -118,7 +118,7 @@
             link
             type="primary"
             @click="openDetail(scope.row)"
-            v-hasPermi="['infra:login-log:query']"
+            v-hasPermi="['infra:login-log:list']"
           >
             {{ t('action.detail') }}
           </el-button>

@@ -34,7 +34,7 @@ public class PayRefundController {
         return R.ok(payRefundService.queryPageList(bo, pageBo));
     }
 
-//    @PreAuthorize("@pms.hasPermission('pay:refund:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:refund:list')")
     @GetMapping("/get")
     public R<PayRefundVo> get(@RequestParam Long id) {
         return R.ok(payRefundService.queryById(id));

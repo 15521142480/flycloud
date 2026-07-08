@@ -118,7 +118,7 @@
       <el-table-column align="center" fixed="right" :label="t('common.operation')">
         <template #default="scope">
           <el-button
-            v-hasPermi="['system:social-user:query']"
+            v-hasPermi="['system:social-user:list']"
             link
             type="primary"
             @click="openDetail(scope.row.id)"

@@ -45,7 +45,7 @@
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['im:manager:sensitive-word:saveOrUpdate']"
+          v-hasPermi="['im:sensitive-word:saveOrUpdate']"
         >
           <Icon icon="ep:plus" class="mr-5px" />新增
         </el-button>
@@ -54,7 +54,7 @@
           plain
           :disabled="checkedIds.length === 0"
           @click="handleDeleteBatch"
-          v-hasPermi="['im:manager:sensitive-word:delete']"
+          v-hasPermi="['im:sensitive-word:delete']"
         >
           <Icon icon="ep:delete" class="mr-5px" />批量删除
         </el-button>
@@ -93,7 +93,7 @@
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['im:manager:sensitive-word:saveOrUpdate']"
+            v-hasPermi="['im:sensitive-word:saveOrUpdate']"
           >
             编辑
           </el-button>
@@ -101,7 +101,7 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['im:manager:sensitive-word:delete']"
+            v-hasPermi="['im:sensitive-word:delete']"
           >
             删除
           </el-button>

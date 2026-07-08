@@ -26,7 +26,7 @@
           link
           type="primary"
           @click="openDetail(row.id)"
-          v-hasPermi="['system:mail-log:query']"
+          v-hasPermi="['system:mail-log:list']"
         >
           {{ t('extra.k8357c03b') }}
         </el-button>

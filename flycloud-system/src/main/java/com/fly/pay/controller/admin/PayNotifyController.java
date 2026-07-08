@@ -47,7 +47,7 @@ public class PayNotifyController {
     @GetMapping("/get-detail")
     @Operation(summary = "获得回调通知的明细")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
-//    @PreAuthorize("@pms.hasPermission('pay:notify:query')")
+//    @PreAuthorize("@pms.hasPermission('pay:notify:list')")
     public R<PayNotifyTaskDetailVo> getNotifyTaskDetail(@RequestParam("id") Long id) {
         return R.ok(notifyService.getNotifyTaskDetail(id));
     }
