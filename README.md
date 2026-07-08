@@ -2,16 +2,16 @@
 ### 1、项目说明:
 - flycloud 是一款基于Spring Cloud Alibaba的微服务架构。
 - 目前整合了 JDK 21、Spring Boot 3.5.3、Spring Cloud 2025.0.3、Spring Cloud Alibaba 2025.0.0.0、Nacos 3.0.3、Mysql 8.4、Spring Security、Flowable 6.8.0 + bpmn.js、ElasticSearch、MyBatis Plus、Seata、Redis、Rabbitmq 等主流技术。
-- 主要以系统后台功能项目为主，扩展项目为辅的一个飞翔云系统。
-- 开发情况：系统后台开发完毕，拓展业务陆续开发中...
+- 主要以系统后台、工作流、商城、小程序的一个飞翔云系统。
 
 
 ### 2、地址
-### 👉 演示地址：http://www.laixueshi.cn  （飞翔云平台系统）
-| 账号        | 密码          |
-|-----------|-------------|
-| admin     | admin123    |
-| fileadmin | admin123456 |
+### 👉 演示地址1：www.laixueshi.cn  （飞翔云平台系统）
+### 👉 演示地址2：www.laixueshi.cn/mall-app  （飞翔商城h5）
+| 账号        | 密码       |
+|-----------|----------|
+| admin     | admin123 |
+| fileadmin | 123456   |
 
 
 ### 👉 项目地址：
@@ -63,6 +63,7 @@ flycloud
 ├─flycloud-api              -- 内网接口（实体和feign等api层）
 │  ├─flycloud_bpm_api                   -- 工作流api
 │  ├─flycloud_system_api                -- 系统api
+│  ├─flycloud_mall_api                  -- 商城api
 ├─flycloud-auth             -- 授权服务
 ├─flycloud-bpm              -- 工作流服务
 ├─flycloud-common           -- 公共模块
@@ -85,6 +86,7 @@ flycloud
 └─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
 └─flycloud-ui               -- 系统的ui前端模块
 │  ├─flycloud-admin-ui                  -- 平台管理后台ui 
+│  ├─flycloud-mall-app-ui               -- 商城ui（兼容h5和小程序等） 
 └─logs     -- 系统日志 
 ```
 
