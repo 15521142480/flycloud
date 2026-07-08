@@ -3,6 +3,7 @@ package com.fly.im.service.message;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.extra.spring.SpringUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
@@ -115,6 +116,8 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
         // 2.2 落库 1 行 message；reqVo 同名字段（materialId / receiverUserIds）自动拷贝，剩余字段补 set
         ImChannelMessage message = BeanUtils.toBean(reqVo, ImChannelMessage.class).setChannelId(material.getChannelId())
                 .setType(ImMessageTypeEnum.MATERIAL.getType()).setContent(payloadJson).setSendTime(LocalDateTime.now());
+        material.setCreateBy(UserUtils.getCurUserIdStr());
+        material.setCreateTime(LocalDateTime.now());
         channelMessageMapper.insert(message);
 
         // 3. 异步推 WebSocket：指定用户走点对点；全员（receiverUserIds 为空）走广播

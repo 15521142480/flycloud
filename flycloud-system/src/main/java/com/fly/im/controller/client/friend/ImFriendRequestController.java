@@ -13,6 +13,7 @@ import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -101,6 +102,22 @@ public class ImFriendRequestController {
             return ok((ImFriendRequestRespVo) null);
         }
         return ok(CollUtil.getFirst(buildList(Collections.singletonList(request))));
+    }
+
+
+    @GetMapping("/pull")
+    @Operation(summary = "增量拉取「我相关」的好友申请（重连 / 离线补偿）")
+    @Parameters({
+            @Parameter(name = "lastUpdateTime", description = "上次拉取到的最新更新时间（毫秒时间戳）；首次拉取不传"),
+            @Parameter(name = "lastId", description = "上次拉取到的最后一条记录 id；首次拉取不传"),
+            @Parameter(name = "limit", description = "单次拉取条数", required = true)
+    })
+    public R<List<ImFriendRequestRespVo>> pullMyFriendRequestList(
+            @RequestParam(value = "lastUpdateTime", required = false) Long lastUpdateTime,
+            @RequestParam(value = "lastId", required = false) Long lastId,
+            @RequestParam("limit") @Min(1) @Max(200) Integer limit) {
+        List<ImFriendRequest> list = friendRequestService.pullFriendRequestList(getCurUserId(), lastUpdateTime, lastId, limit);
+        return R.ok(buildList(list));
     }
 
     // ========== 私有方法：VO 组装 ==========

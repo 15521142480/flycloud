@@ -1,6 +1,7 @@
 package com.fly.im.service.face;
 
 import cn.hutool.core.collection.CollUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
@@ -12,6 +13,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -78,6 +80,8 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
         // 2. 入库
         ImFacePackItem item = BeanUtils.toBean(reqVo, ImFacePackItem.class);
         item.setUrl(item.getUrl());
+        item.setCreateBy(UserUtils.getCurUserIdStr());
+        item.setCreateTime(LocalDateTime.now());
         facePackItemMapper.insert(item);
         return item.getId();
     }
@@ -92,6 +96,8 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
         // 2. 更新
         ImFacePackItem updateObj = BeanUtils.toBean(reqVo, ImFacePackItem.class);
         updateObj.setUrl(updateObj.getUrl());
+        updateObj.setUpdateBy(UserUtils.getCurUserIdStr());
+        updateObj.setUpdateTime(LocalDateTime.now());
         facePackItemMapper.updateById(updateObj);
     }
 

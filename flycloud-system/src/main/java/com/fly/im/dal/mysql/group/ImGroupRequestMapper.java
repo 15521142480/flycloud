@@ -1,5 +1,6 @@
 package com.fly.im.dal.mysql.group;
 
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
@@ -65,7 +66,9 @@ public interface ImGroupRequestMapper extends BaseMapperX<ImGroupRequest> {
                 .set(ImGroupRequest::getHandleUserId, null)
                 .set(ImGroupRequest::getHandleContent, null)
                 .set(ImGroupRequest::getHandleTime, null)
-                .set(ImGroupRequest::getUpdateTime, updateTime));
+                .set(ImGroupRequest::getUpdateBy, UserUtils.getCurUserIdStr())
+                .set(ImGroupRequest::getUpdateTime, updateTime)
+        );
     }
 
     default int updateInviteByIdReset(Long id, Long inviterUserId, Integer addSource, LocalDateTime updateTime) {
@@ -77,7 +80,9 @@ public interface ImGroupRequestMapper extends BaseMapperX<ImGroupRequest> {
                 .set(ImGroupRequest::getHandleUserId, null)
                 .set(ImGroupRequest::getHandleContent, null)
                 .set(ImGroupRequest::getHandleTime, null)
-                .set(ImGroupRequest::getUpdateTime, updateTime));
+                .set(ImGroupRequest::getUpdateBy, UserUtils.getCurUserIdStr())
+                .set(ImGroupRequest::getUpdateTime, updateTime)
+        );
     }
 
     default PageResult<ImGroupRequest> selectPage(ImGroupRequestManagerPageReqVo reqVo) {

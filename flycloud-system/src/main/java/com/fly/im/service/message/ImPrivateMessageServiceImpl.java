@@ -4,9 +4,11 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
+import com.fly.system.api.im.domain.message.ImGroupMessage;
 import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
 import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageListReqVo;
 import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageSendReqVo;
@@ -85,6 +87,8 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         // 2.2 构建并保存消息
         ImPrivateMessage message = BeanUtils.toBean(reqVo, ImPrivateMessage.class, m -> m
                 .setSenderId(senderId).setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now()));
+        message.setCreateBy(UserUtils.getCurUserIdStr());
+        message.setCreateTime(LocalDateTime.now());
         privateMessageMapper.insert(message);
 
         // 3. WebSocket 异步推送：接收方 + 发送方多端同步
@@ -111,6 +115,8 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
                 ? dto.getPersistent()
                 : ImMessageTypeEnum.validate(dto.getType()).isPersistent();
         if (persistent) {
+            message.setCreateBy(UserUtils.getCurUserIdStr());
+            message.setCreateTime(LocalDateTime.now());
             privateMessageMapper.insert(message);
         }
 
@@ -146,7 +152,10 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         }
 
         // 2. 更新原消息状态为撤回
-        privateMessageMapper.updateById(new ImPrivateMessage().setId(messageId)
+        ImPrivateMessage imPrivateMessage = new ImPrivateMessage();
+        imPrivateMessage.setUpdateBy(userId.toString());
+        imPrivateMessage.setUpdateTime(LocalDateTime.now());
+        privateMessageMapper.updateById(imPrivateMessage.setId(messageId)
                 .setStatus(ImMessageStatusEnum.RECALL.getStatus()));
 
         // 3. 发送撤回事件

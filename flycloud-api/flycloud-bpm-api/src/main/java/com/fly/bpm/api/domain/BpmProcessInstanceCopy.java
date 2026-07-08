@@ -82,7 +82,7 @@ public class BpmProcessInstanceCopy extends BaseEntity {
     /**
      * 用户编号（被抄送的用户编号）
      *
-     * 关联 system_users 的 id 属性
+     * 关联 sys_user 的 id 属性
      */
     private Long userId;
 

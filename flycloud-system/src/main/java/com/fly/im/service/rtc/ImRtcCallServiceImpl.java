@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.im.domain.vo.admin.manager.rtc.ImRtcCallManagerPageReqVo;
@@ -212,6 +213,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
     private ImRtcCall createCall0(Long inviterId, ImRtcCallCreateReqVo reqVo) {
         // 1. 构造参数：room 用 UUID；解析被邀请池
         String room = IdUtil.fastSimpleUUID();
+        String curUserId = UserUtils.getCurUserIdStr();
         LocalDateTime now = LocalDateTime.now();
         Set<Long> invitees = resolveInvitees(reqVo, inviterId);
 
@@ -220,15 +222,25 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
                 .setConversationType(reqVo.getConversationType()).setMediaType(reqVo.getMediaType())
                 .setInviterUserId(inviterId).setGroupId(reqVo.getGroupId())
                 .setStatus(ImRtcCallStatusEnum.CREATED.getStatus()).setStartTime(now);
+        call.setCreateBy(curUserId);
+        call.setCreateTime(now);
         rtcCallMapper.insert(call);
         // 2.2 批量 INSERT 参与表：发起人即时 JOINED，被邀请人 INVITING 等接通
         List<ImRtcParticipant> participants = new ArrayList<>(invitees.size() + 1);
-        participants.add(new ImRtcParticipant().setCallId(call.getId()).setRoom(room).setUserId(inviterId)
+
+        ImRtcParticipant imRtcParticipant = new ImRtcParticipant();
+        imRtcParticipant.setCreateBy(UserUtils.getCurUserIdStr());
+        imRtcParticipant.setCreateTime(now);
+        participants.add(imRtcParticipant.setCallId(call.getId()).setRoom(room).setUserId(inviterId)
                 .setRole(ImRtcParticipantRoleEnum.INVITER.getRole())
                 .setStatus(ImRtcParticipantStatusEnum.JOINED.getStatus())
                 .setInviteTime(now).setAcceptTime(now));
         for (Long inviteeId : invitees) {
-            participants.add(new ImRtcParticipant()
+
+            ImRtcParticipant imRtcParticipant2 = new ImRtcParticipant();
+            imRtcParticipant2.setCreateBy(UserUtils.getCurUserIdStr());
+            imRtcParticipant2.setCreateTime(now);
+            participants.add(imRtcParticipant2
                     .setCallId(call.getId()).setRoom(room).setUserId(inviteeId)
                     .setRole(ImRtcParticipantRoleEnum.INVITEE.getRole())
                     .setStatus(ImRtcParticipantStatusEnum.INVITING.getStatus())
@@ -297,11 +309,17 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
         }
 
         // 2. 批量 INSERT 新邀请人
+        Long curUserIdStr = UserUtils.getCurUserId();
         LocalDateTime now = LocalDateTime.now();
-        List<ImRtcParticipant> participants = CollectionUtils.convertList(incomingUserIds, inviteeId ->
-                new ImRtcParticipant().setCallId(call.getId()).setRoom(call.getRoom()).setUserId(inviteeId)
-                        .setRole(ImRtcParticipantRoleEnum.INVITEE.getRole())
-                        .setStatus(ImRtcParticipantStatusEnum.INVITING.getStatus()).setInviteTime(now));
+        ImRtcParticipant imRtcParticipant = new ImRtcParticipant();
+        imRtcParticipant.setCreateBy(curUserIdStr.toString());
+        imRtcParticipant.setCreateTime(now);
+
+        imRtcParticipant.setCallId(call.getId()).setRoom(call.getRoom()).setUserId(curUserIdStr)
+                .setRole(ImRtcParticipantRoleEnum.INVITEE.getRole())
+                .setStatus(ImRtcParticipantStatusEnum.INVITING.getStatus()).setInviteTime(now);
+
+        List<ImRtcParticipant> participants = CollectionUtils.convertList(incomingUserIds, inviteeId -> imRtcParticipant);
         rtcParticipantMapper.insertBatch(participants);
 
         // 3. 推送通知：RTC_CALL(INVITE) 给每个新邀请人
@@ -790,7 +808,10 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
 
         // 2. 无参与记录：以主动加入者身份新增
         try {
-            rtcParticipantMapper.insert(new ImRtcParticipant()
+            ImRtcParticipant imRtcParticipant = new ImRtcParticipant();
+            imRtcParticipant.setCreateBy(userId.toString());
+            imRtcParticipant.setCreateTime(now);
+            rtcParticipantMapper.insert(imRtcParticipant
                     .setCallId(call.getId()).setRoom(call.getRoom())
                     .setUserId(userId).setRole(ImRtcParticipantRoleEnum.JOINER.getRole())
                     .setStatus(ImRtcParticipantStatusEnum.JOINED.getStatus()).setInviteTime(now).setAcceptTime(now));
@@ -816,7 +837,10 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
             return;
         }
         // 更新状态和接听时间
-        rtcParticipantMapper.updateById(new ImRtcParticipant().setId(participant.getId())
+        ImRtcParticipant imRtcParticipant = new ImRtcParticipant();
+        imRtcParticipant.setUpdateBy(UserUtils.getCurUserIdStr());
+        imRtcParticipant.setUpdateTime(now);
+        rtcParticipantMapper.updateById(imRtcParticipant.setId(participant.getId())
                 .setStatus(ImRtcParticipantStatusEnum.JOINED.getStatus()).setAcceptTime(now));
     }
 

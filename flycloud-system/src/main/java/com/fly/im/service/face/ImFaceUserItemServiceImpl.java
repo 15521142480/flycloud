@@ -1,6 +1,7 @@
 package com.fly.im.service.face;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
@@ -13,6 +14,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
@@ -60,6 +62,8 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
         ImFaceUserItem item = BeanUtils.toBean(reqVo, ImFaceUserItem.class).setUserId(userId);
         item.setUrl(url);
         try {
+            item.setCreateBy(UserUtils.getCurUserIdStr());
+            item.setCreateTime(LocalDateTime.now());
             faceUserItemMapper.insert(item);
         } catch (DuplicateKeyException ex) {
             throw exception(FACE_USER_ITEM_DUPLICATED);

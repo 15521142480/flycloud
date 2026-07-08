@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +59,21 @@ public class ImFriendController {
     public R<ImFriendRespVo> getFriend(@RequestParam("friendUserId") Long friendUserId) {
         ImFriend friend = friendService.getFriend(getCurUserId(), friendUserId);
         return ok(buildFriendRespVo(friend));
+    }
+
+    @GetMapping("/pull")
+    @Operation(summary = "增量拉取当前用户的好友关系（重连 / 离线补偿）")
+    @Parameters({
+            @Parameter(name = "lastUpdateTime", description = "上次拉取到的最新更新时间（毫秒时间戳）；首次拉取不传"),
+            @Parameter(name = "lastId", description = "上次拉取到的最后一条记录 id；首次拉取不传"),
+            @Parameter(name = "limit", description = "单次拉取条数", required = true)
+    })
+    public R<List<ImFriendRespVo>> pullMyFriendList(
+            @RequestParam(value = "lastUpdateTime", required = false) Long lastUpdateTime,
+            @RequestParam(value = "lastId", required = false) Long lastId,
+            @RequestParam("limit") @Min(1) @Max(200) Integer limit) {
+        List<ImFriend> list = friendService.pullFriendList(getCurUserId(), lastUpdateTime, lastId, limit);
+        return R.ok(buildFriendRespVoList(list));
     }
 
     @DeleteMapping("/delete")

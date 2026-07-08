@@ -23,7 +23,7 @@ public class ImSensitiveWordPageReqVo extends PageBo {
     private String word;
 
     @Schema(description = "状态", example = "0")
-    @InEnum(value = CommonStatusEnum.class, message = "状态必须是 {value}")
+//    @InEnum(value = CommonStatusEnum.class, message = "状态必须是 {value}")
     private Integer status; // 参见 CommonStatusEnum 枚举类（0 启用 / 1 禁用）
 
     @Schema(description = "创建时间", example = "[2026-04-01 00:00:00, 2026-04-30 23:59:59]")

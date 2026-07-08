@@ -266,6 +266,8 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
                 .setUserId(userId).setInviterUserId(null)
                 .setHandleResult(ImGroupRequestHandleResultEnum.UNHANDLED.getResult());
         try {
+            request.setCreateBy(userId.toString());
+            request.setCreateTime(LocalDateTime.now());
             groupRequestMapper.insert(request);
             return request;
         } catch (DuplicateKeyException ex) {
@@ -300,6 +302,8 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
         request = new ImGroupRequest().setGroupId(groupId).setUserId(userId).setInviterUserId(inviterUserId)
                 .setAddSource(inviteSource).setHandleResult(ImGroupRequestHandleResultEnum.UNHANDLED.getResult());
         try {
+            request.setCreateBy(userId.toString());
+            request.setCreateTime(LocalDateTime.now());
             groupRequestMapper.insert(request);
             return request;
         } catch (DuplicateKeyException ex) {

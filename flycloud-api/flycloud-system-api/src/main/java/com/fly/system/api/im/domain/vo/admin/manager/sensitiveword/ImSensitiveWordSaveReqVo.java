@@ -24,7 +24,7 @@ public class ImSensitiveWordSaveReqVo {
 
     @Schema(description = "状态", requiredMode = Schema.RequiredMode.REQUIRED, example = "0")
     @NotNull(message = "状态不能为空")
-    @InEnum(value = CommonStatusEnum.class, message = "状态必须是 {value}")
+//    @InEnum(value = CommonStatusEnum.class, message = "状态必须是 {value}")
     private Integer status; // 参见 CommonStatusEnum 枚举类（0 启用 / 1 禁用）
 
 }

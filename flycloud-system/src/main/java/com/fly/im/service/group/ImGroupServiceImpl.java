@@ -6,6 +6,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
@@ -116,6 +117,8 @@ public class ImGroupServiceImpl implements ImGroupService {
         ImGroup group = BeanUtils.toBean(createReqVo, ImGroup.class)
                 .setOwnerUserId(userId).setStatus(CommonStatusEnum.ENABLE.getStatus());
         group.setAvatar(group.getAvatar());
+        group.setCreateBy(userId.toString());
+        group.setCreateTime(LocalDateTime.now());
         groupMapper.insert(group);
         // 2.2 创建者作为 OWNER 入群
         groupMemberService.addGroupMember(group.getId(), userId, ImGroupMemberRoleEnum.OWNER.getRole());
@@ -146,6 +149,8 @@ public class ImGroupServiceImpl implements ImGroupService {
         // 2. 更新数据库（newGroup 仅含变更字段）
         ImGroup newGroup = BeanUtils.toBean(updateReqVo, ImGroup.class);
         newGroup.setAvatar(newGroup.getAvatar());
+        newGroup.setUpdateBy(userId.toString());
+        newGroup.setUpdateTime(LocalDateTime.now());
         groupMapper.updateById(newGroup);
 
         // 3. 按变更字段分别推送 GROUP_NAME / NOTICE / INFO_UPDATE 通知；活跃成员只查一次复用，避免 3 次 Redis GET
@@ -431,7 +436,10 @@ public class ImGroupServiceImpl implements ImGroupService {
             throw exception(GROUP_MEMBER_NOT_IN_GROUP);
         }
         // 2.2 更新群主编号
-        groupMapper.updateById(new ImGroup().setId(groupId).setOwnerUserId(newOwnerUserId));
+        ImGroup imGroup = new ImGroup();
+        imGroup.setUpdateBy(userId.toString());
+        imGroup.setUpdateTime(LocalDateTime.now());
+        groupMapper.updateById(imGroup.setId(groupId).setOwnerUserId(newOwnerUserId));
 
         // 3. 推送 GROUP_OWNER_TRANSFER 通知给全员
         groupMessageService.sendGroupMessage(userId,
@@ -468,7 +476,11 @@ public class ImGroupServiceImpl implements ImGroupService {
             throw exception(GROUP_MESSAGE_PIN_MAX_LIMIT, pinMaxCount);
         }
         pinned.add(messageId);
-        groupMapper.updateById(new ImGroup().setId(groupId).setPinnedMessageIds(pinned));
+
+        ImGroup imGroup = new ImGroup();
+        imGroup.setUpdateBy(userId.toString());
+        imGroup.setUpdateTime(LocalDateTime.now());
+        groupMapper.updateById(imGroup.setId(groupId).setPinnedMessageIds(pinned));
 
         // 3. 推送 GROUP_MESSAGE_PIN 通知给全员
         groupMessageService.sendGroupMessage(userId,
@@ -487,7 +499,11 @@ public class ImGroupServiceImpl implements ImGroupService {
             throw exception(GROUP_MESSAGE_NOT_PINNED);
         }
         pinned.remove(messageId);
-        groupMapper.updateById(new ImGroup().setId(groupId).setPinnedMessageIds(pinned));
+
+        ImGroup imGroup = new ImGroup();
+        imGroup.setUpdateBy(userId.toString());
+        imGroup.setUpdateTime(LocalDateTime.now());
+        groupMapper.updateById(imGroup.setId(groupId).setPinnedMessageIds(pinned));
 
         // 3. 推送 GROUP_MESSAGE_UNPIN 通知给全员
         groupMessageService.sendGroupMessage(userId,
@@ -646,7 +662,10 @@ public class ImGroupServiceImpl implements ImGroupService {
         }
 
         // 3. 更新封禁状态
-        groupMapper.updateById(new ImGroup().setId(banReqVo.getId())
+        ImGroup imGroup = new ImGroup();
+        imGroup.setUpdateBy(UserUtils.getCurUserIdStr());
+        imGroup.setUpdateTime(LocalDateTime.now());
+        groupMapper.updateById(imGroup.setId(banReqVo.getId())
                 .setBanned(true).setBannedReason(banReqVo.getReason()).setBannedTime(LocalDateTime.now()));
 
         // 4. 广播通知
@@ -663,7 +682,10 @@ public class ImGroupServiceImpl implements ImGroupService {
         }
 
         // 2. 解封（保留 bannedReason / bannedTime 作为历史记录）
-        groupMapper.updateById(new ImGroup().setId(id).setBanned(false));
+        ImGroup imGroup = new ImGroup();
+        imGroup.setUpdateBy(UserUtils.getCurUserIdStr());
+        imGroup.setUpdateTime(LocalDateTime.now());
+        groupMapper.updateById(imGroup.setId(id).setBanned(false));
 
         // 3. 广播通知
         groupMessageService.sendGroupMessage(operatorUserId,
@@ -691,7 +713,10 @@ public class ImGroupServiceImpl implements ImGroupService {
         validateGroupOwnerOrAdmin(reqVo.getId(), userId);
 
         // 2. 更新 mutedAll
-        groupMapper.updateById(new ImGroup().setId(reqVo.getId()).setMutedAll(reqVo.getMutedAll()));
+        ImGroup imGroup = new ImGroup();
+        imGroup.setUpdateBy(userId.toString());
+        imGroup.setUpdateTime(LocalDateTime.now());
+        groupMapper.updateById(imGroup.setId(reqVo.getId()).setMutedAll(reqVo.getMutedAll()));
 
         // 3. 广播通知
         ImGroupMessageSendDTO messageSendDTO = Boolean.TRUE.equals(reqVo.getMutedAll())

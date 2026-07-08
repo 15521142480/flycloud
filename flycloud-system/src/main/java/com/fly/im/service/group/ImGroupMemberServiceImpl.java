@@ -2,6 +2,8 @@ package com.fly.im.service.group;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.fly.common.security.util.UserUtils;
+import com.fly.common.utils.StringUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberUpdateReqVo;
@@ -150,6 +152,8 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
                 .setStatus(CommonStatusEnum.ENABLE.getStatus()).setJoinTime(now)
                 .setRole(role).setAddSource(addSource).setInviterUserId(inviterUserId);
         try {
+            member.setCreateBy(UserUtils.getCurUserIdStr());
+            member.setCreateTime(LocalDateTime.now());
             groupMemberMapper.insert(member);
             return member;
         } catch (DuplicateKeyException e) {
@@ -167,7 +171,10 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
     @Override
     @CacheEvict(cacheNames = GROUP_MEMBER_IDS, key = "#groupId")
     public void addGroupMembers(Long groupId, Collection<Long> userIds, Integer addSource, Long inviterUserId) {
+
+        String curUserId = UserUtils.getCurUserIdStr();
         LocalDateTime now = LocalDateTime.now();
+
         Integer role = ImGroupMemberRoleEnum.NORMAL.getRole();
         // 1.1 查询已有记录（含已退群的 DISABLE 记录）
         List<ImGroupMember> existMembers = groupMemberMapper.selectListByGroupIdAndUserIds(groupId, userIds);
@@ -176,13 +183,25 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
         List<ImGroupMember> inserts = new ArrayList<>();
         List<ImGroupMember> updates = new ArrayList<>();
         for (Long userId : userIds) {
+
             ImGroupMember exist = existMap.get(userId);
             if (exist == null) {
-                inserts.add(new ImGroupMember().setGroupId(groupId).setUserId(userId)
+
+                ImGroupMember imGroupMember = new ImGroupMember();
+                imGroupMember.setCreateBy(curUserId);
+                imGroupMember.setCreateTime(now);
+                inserts.add(imGroupMember.setGroupId(groupId).setUserId(userId)
                         .setStatus(CommonStatusEnum.ENABLE.getStatus()).setRole(role).setJoinTime(now)
                         .setAddSource(addSource).setInviterUserId(inviterUserId));
+
             } else if (CommonStatusEnum.DISABLE.getStatus().equals(exist.getStatus())) {
-                updates.add(new ImGroupMember().setId(exist.getId())
+
+                ImGroupMember imGroupMember = new ImGroupMember();
+                imGroupMember.setCreateBy(StringUtils.isNotBlank(exist.getCreateBy()) ? exist.getCreateBy() : curUserId);
+                imGroupMember.setCreateTime(exist.getCreateTime() != null ? exist.getCreateTime() : now);
+                imGroupMember.setUpdateBy(curUserId);
+                imGroupMember.setUpdateTime(now);
+                updates.add(imGroupMember.setId(exist.getId())
                         .setStatus(CommonStatusEnum.ENABLE.getStatus()).setRole(role).setJoinTime(now)
                         .setAddSource(addSource).setInviterUserId(inviterUserId));
             }
@@ -258,6 +277,8 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
         // 2. 更新群成员信息
         ImGroupMember updateObj = BeanUtils.toBean(updateReqVo, ImGroupMember.class)
                 .setId(member.getId());
+        updateObj.setCreateBy(userId.toString());
+        updateObj.setCreateTime(LocalDateTime.now());
         groupMemberMapper.updateById(updateObj);
 
         // 3.1 displayUserName 是公开字段，单独走 GROUP_MEMBER_NICKNAME_UPDATE 广播给全员；空串视为「清空昵称」也要广播；与旧值相同跳过
@@ -283,7 +304,10 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
         // 1. 校验是群的有效成员
         ImGroupMember member = validateMemberInGroup(groupId, userId);
         // 2. 更新为退群状态
-        groupMemberMapper.updateById(new ImGroupMember().setId(member.getId())
+        ImGroupMember imGroupMember = new ImGroupMember();
+        imGroupMember.setUpdateBy(userId.toString());
+        imGroupMember.setUpdateTime(LocalDateTime.now());
+        groupMemberMapper.updateById(imGroupMember.setId(member.getId())
                 .setStatus(CommonStatusEnum.DISABLE.getStatus())
                 .setQuitTime(LocalDateTime.now()));
     }
@@ -315,7 +339,10 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
         ImGroupMember member = validateMemberInGroup(groupId, userId);
         if (muteEndTime != null) {
             // 禁言：直接更新到期时间
-            groupMemberMapper.updateById(new ImGroupMember().setId(member.getId()).setMuteEndTime(muteEndTime));
+            ImGroupMember imGroupMember = new ImGroupMember();
+            imGroupMember.setUpdateBy(userId.toString());
+            imGroupMember.setUpdateTime(LocalDateTime.now());
+            groupMemberMapper.updateById(imGroupMember.setId(member.getId()).setMuteEndTime(muteEndTime));
         } else {
             // 取消禁言
             groupMemberMapper.updateMuteEndTimeNull(member.getId());

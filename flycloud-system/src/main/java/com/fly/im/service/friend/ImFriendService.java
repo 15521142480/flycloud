@@ -6,6 +6,8 @@ import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageR
 import com.fly.system.api.im.domain.friend.ImFriend;
 import com.fly.system.api.im.domain.friend.ImFriendRequest;
 import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.util.Collection;
 import java.util.List;
@@ -115,11 +117,26 @@ public interface ImFriendService {
      */
     void unblockFriend(Long userId, Long friendUserId);
 
+    /**
+     * 增量拉取当前用户的好友关系（重连 / 离线补偿：含已删除，按 update_time + id 游标）
+     *
+     * @param userId
+     * @param lastUpdateTime
+     * @param lastId
+     * @param limit
+     */
+    List<ImFriend> pullFriendList(Long userId, Long lastUpdateTime, Long lastId, Integer limit);
+
+
+
+
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询好友关系
      */
     PageResult<ImFriend> getFriendPage(ImFriendManagerPageReqVo reqVo);
+
+
 
 }

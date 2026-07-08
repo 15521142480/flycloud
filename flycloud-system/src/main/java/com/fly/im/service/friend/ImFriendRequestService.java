@@ -4,6 +4,8 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
 import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerPageReqVo;
 import com.fly.system.api.im.domain.friend.ImFriendRequest;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.util.List;
 
@@ -56,11 +58,27 @@ public interface ImFriendRequestService {
      */
     ImFriendRequest getFriendRequest(Long id);
 
+
+    /**
+     * 增量拉取「我相关」的好友申请（重连 / 离线补偿：双向 OR，按 update_time + id 游标）
+     *
+     * @param curUserId         用户编号
+     * @param lastUpdateTime 上次拉取到的最新更新时间（毫秒时间戳）；首次拉取传 null
+     * @param lastId         上次拉取到的最后一条记录 id；首次拉取传 null
+     * @param limit          单次拉取条数
+     * @return 申请记录列表，按更新时间、id 正序
+     */
+    List<ImFriendRequest> pullFriendRequestList(Long curUserId, Long lastUpdateTime, Long lastId, Integer limit);
+
+
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询好友申请记录
      */
     PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo);
+
+
+
 
 }

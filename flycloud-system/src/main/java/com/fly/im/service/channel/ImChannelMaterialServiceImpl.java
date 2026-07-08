@@ -1,6 +1,7 @@
 package com.fly.im.service.channel;
 
 import cn.hutool.core.collection.CollUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialPageReqVo;
@@ -12,6 +13,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -87,6 +89,8 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
         // 2. 插入素材
         ImChannelMaterial material = BeanUtils.toBean(reqVo, ImChannelMaterial.class);
         material.setCoverUrl(material.getCoverUrl());
+        material.setCreateBy(UserUtils.getCurUserIdStr());
+        material.setCreateTime(LocalDateTime.now());
         channelMaterialMapper.insert(material);
         return material.getId();
     }
@@ -101,6 +105,8 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
         // 2. 更新素材
         ImChannelMaterial updateObj = BeanUtils.toBean(reqVo, ImChannelMaterial.class);
         updateObj.setCoverUrl(updateObj.getCoverUrl());
+        updateObj.setUpdateBy(UserUtils.getCurUserIdStr());
+        updateObj.setUpdateTime(LocalDateTime.now());
         channelMaterialMapper.updateById(updateObj);
     }
 

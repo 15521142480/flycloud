@@ -3,6 +3,7 @@ package com.fly.im.service.friend;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
@@ -150,7 +151,10 @@ public class ImFriendServiceImpl implements ImFriendService {
         }
 
         // 2. 更新好友属性（备注 / 免打扰 / 联系人置顶）
-        friendMapper.updateById(new ImFriend().setId(friend.getId())
+        ImFriend imFriend = new ImFriend();
+        imFriend.setUpdateBy(userId.toString());
+        imFriend.setUpdateTime(LocalDateTime.now());
+        friendMapper.updateById(imFriend.setId(friend.getId())
                 .setSilent(reqVo.getSilent()).setDisplayName(reqVo.getDisplayName()).setPinned(reqVo.getPinned()));
 
         // 3. 推 FRIEND_UPDATE 给 A 多端：所有单边属性变更合并为单条通知，避免多通知顺序竞争
@@ -242,7 +246,10 @@ public class ImFriendServiceImpl implements ImFriendService {
         }
 
         // 2. 单边更新
-        friendMapper.updateById(new ImFriend().setId(friend.getId()).setBlocked(true));
+        ImFriend imFriend = new ImFriend();
+        imFriend.setUpdateBy(userId.toString());
+        imFriend.setUpdateTime(LocalDateTime.now());
+        friendMapper.updateById(imFriend.setId(friend.getId()).setBlocked(true));
 
         // 3. 推 FRIEND_BLOCK 给 A 多端
         FriendBlockNotification payload = (FriendBlockNotification) new FriendBlockNotification()
@@ -268,7 +275,10 @@ public class ImFriendServiceImpl implements ImFriendService {
         }
 
         // 2. 单边更新
-        friendMapper.updateById(new ImFriend().setId(friend.getId()).setBlocked(false));
+        ImFriend imFriend = new ImFriend();
+        imFriend.setUpdateBy(userId.toString());
+        imFriend.setUpdateTime(LocalDateTime.now());
+        friendMapper.updateById(imFriend.setId(friend.getId()).setBlocked(false));
 
         // 3. 推 FRIEND_UNBLOCK 给 A 多端
         FriendUnblockNotification payload = (FriendUnblockNotification) new FriendUnblockNotification()
@@ -305,6 +315,8 @@ public class ImFriendServiceImpl implements ImFriendService {
                 .silent(false).pinned(false).blocked(false)
                 .displayName(displayName).addSource(addSource)
                 .status(CommonStatusEnum.ENABLE.getStatus()).addTime(LocalDateTime.now()).build();
+        friend.setCreateBy(UserUtils.getCurUserIdStr());
+        friend.setCreateTime(LocalDateTime.now());
         friendMapper.insert(friend);
     }
 
@@ -320,9 +332,17 @@ public class ImFriendServiceImpl implements ImFriendService {
         if (exists == null || CommonStatusEnum.isDisable(exists.getStatus())) {
             return false;
         }
-        friendMapper.updateById(new ImFriend().setId(exists.getId())
+        ImFriend imFriend = new ImFriend();
+        imFriend.setUpdateBy(userId.toString());
+        imFriend.setUpdateTime(LocalDateTime.now());
+        friendMapper.updateById(imFriend.setId(exists.getId())
                 .setStatus(CommonStatusEnum.DISABLE.getStatus()).setDeleteTime(LocalDateTime.now()));
         return true;
+    }
+
+    @Override
+    public List<ImFriend> pullFriendList(Long userId, Long lastUpdateTime, Long lastId, Integer limit) {
+        return friendMapper.selectPullListByUserId(userId, lastUpdateTime, lastId, limit);
     }
 
     // ==================== 管理后台 ====================
@@ -331,5 +351,6 @@ public class ImFriendServiceImpl implements ImFriendService {
     public PageResult<ImFriend> getFriendPage(ImFriendManagerPageReqVo reqVo) {
         return friendMapper.selectPage(reqVo);
     }
+
 
 }

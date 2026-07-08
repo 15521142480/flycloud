@@ -1,6 +1,7 @@
 package com.fly.im.service.face;
 
 import cn.hutool.core.collection.CollUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
@@ -70,6 +72,8 @@ public class ImFacePackServiceImpl implements ImFacePackService {
     @Override
     public Long createFacePack(ImFacePackSaveReqVo reqVo) {
         ImFacePack pack = BeanUtils.toBean(reqVo, ImFacePack.class);
+        pack.setCreateBy(UserUtils.getCurUserIdStr());
+        pack.setCreateTime(LocalDateTime.now());
         facePackMapper.insert(pack);
         return pack.getId();
     }
@@ -81,6 +85,8 @@ public class ImFacePackServiceImpl implements ImFacePackService {
 
         // 2. 更新
         ImFacePack updateObj = BeanUtils.toBean(reqVo, ImFacePack.class);
+        updateObj.setUpdateBy(UserUtils.getCurUserIdStr());
+        updateObj.setUpdateTime(LocalDateTime.now());
         facePackMapper.updateById(updateObj);
     }
 

@@ -53,7 +53,7 @@ public class ImStatisticsManagerController {
 
     @GetMapping("/overview")
     @Operation(summary = "获得数据概览")
-    @PreAuthorize("@pms.hasPermission('im:manager:statistics:list')")
+    @PreAuthorize("@pms.hasPermission('im:statistics:list')")
     public R<ImStatisticsManagerOverviewRespVo> getOverview() {
         LocalDateTime todayBegin = LocalDate.now().atStartOfDay();
         LocalDateTime tomorrowBegin = todayBegin.plusDays(1);
@@ -78,7 +78,7 @@ public class ImStatisticsManagerController {
     @GetMapping("/message-trend")
     @Operation(summary = "获得消息趋势（私聊 / 群聊双线）")
     @Parameter(name = "days", description = "回看天数（含今日）", example = "7")
-    @PreAuthorize("@pms.hasPermission('im:manager:statistics:list')")
+    @PreAuthorize("@pms.hasPermission('im:statistics:list')")
     public R<ImStatisticsManagerTrendRespVo> getMessageTrend(
             @RequestParam(value = "days", defaultValue = "7") @Min(1) @Max(90) int days) {
         List<LocalDateTime> dates = LocalDateTimeUtils.getLatestDays(days);
@@ -96,7 +96,7 @@ public class ImStatisticsManagerController {
     @GetMapping("/user-trend")
     @Operation(summary = "获得用户趋势（新增注册 / 日活双线）")
     @Parameter(name = "days", description = "回看天数（含今日）", example = "7")
-    @PreAuthorize("@pms.hasPermission('im:manager:statistics:list')")
+    @PreAuthorize("@pms.hasPermission('im:statistics:list')")
     public R<ImStatisticsManagerTrendRespVo> getUserTrend(
             @RequestParam(value = "days", defaultValue = "7") @Min(1) @Max(90) int days) {
         List<LocalDateTime> dates = LocalDateTimeUtils.getLatestDays(days);
@@ -113,7 +113,7 @@ public class ImStatisticsManagerController {
 
     @GetMapping("/message-type-distribution")
     @Operation(summary = "获得消息类型分布（最近 30 天）")
-    @PreAuthorize("@pms.hasPermission('im:manager:statistics:list')")
+    @PreAuthorize("@pms.hasPermission('im:statistics:list')")
     public R<List<ImStatisticsManagerMessageTypeRespVo>> getMessageTypeDistribution() {
         LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
         LocalDateTime beginTime = endTime.minusDays(DISTRIBUTION_WINDOW_DAYS);
@@ -125,7 +125,7 @@ public class ImStatisticsManagerController {
 
     @GetMapping("/group-size-distribution")
     @Operation(summary = "获得群规模分布")
-    @PreAuthorize("@pms.hasPermission('im:manager:statistics:list')")
+    @PreAuthorize("@pms.hasPermission('im:statistics:list')")
     public R<List<ImStatisticsManagerGroupSizeRespVo>> getGroupSizeDistribution() {
         Map<String, Long> groupSizeMap = statisticsService.getGroupSizeCountMap();
         // 转换格式
@@ -135,7 +135,7 @@ public class ImStatisticsManagerController {
 
     @GetMapping("/top-senders")
     @Operation(summary = "获得消息 TOP 发送者（最近 30 天）")
-    @PreAuthorize("@pms.hasPermission('im:manager:statistics:list')")
+    @PreAuthorize("@pms.hasPermission('im:statistics:list')")
     public R<List<ImStatisticsManagerTopSenderRespVo>> getTopSenders() {
         LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
         LocalDateTime beginTime = endTime.minusDays(DISTRIBUTION_WINDOW_DAYS);

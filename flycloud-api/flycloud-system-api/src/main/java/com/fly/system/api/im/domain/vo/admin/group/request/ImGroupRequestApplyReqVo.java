@@ -22,7 +22,7 @@ public class ImGroupRequestApplyReqVo {
     private String applyContent;
 
     @Schema(description = "加入来源", example = "1")
-    @InEnum(ImGroupAddSourceEnum.class)
+//    @InEnum(ImGroupAddSourceEnum.class)
     private Integer addSource;
 
 }

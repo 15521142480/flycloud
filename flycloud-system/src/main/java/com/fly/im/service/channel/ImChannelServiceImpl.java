@@ -2,6 +2,7 @@ package com.fly.im.service.channel;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -81,6 +83,8 @@ public class ImChannelServiceImpl implements ImChannelService {
         // 插入
         ImChannel channel = BeanUtils.toBean(reqVo, ImChannel.class);
         channel.setAvatar(channel.getAvatar());
+        channel.setCreateBy(UserUtils.getCurUserIdStr());
+        channel.setCreateTime(LocalDateTime.now());
         channelMapper.insert(channel);
         return channel.getId();
     }
@@ -95,6 +99,8 @@ public class ImChannelServiceImpl implements ImChannelService {
         // 2. 更新
         ImChannel updateObj = BeanUtils.toBean(reqVo, ImChannel.class);
         updateObj.setAvatar(updateObj.getAvatar());
+        updateObj.setUpdateBy(UserUtils.getCurUserIdStr());
+        updateObj.setUpdateTime(LocalDateTime.now());
         channelMapper.updateById(updateObj);
     }
 

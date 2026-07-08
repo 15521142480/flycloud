@@ -3,6 +3,7 @@ package com.fly.im.service.friend;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
@@ -138,6 +139,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
      * @return 申请记录
      */
     private ImFriendRequest createOrResetRequest(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+
         Long toUserId = reqVo.getToUserId();
         ImFriendRequest request = friendRequestMapper.selectByFromUserIdAndToUserId(fromUserId, toUserId);
         if (request == null) {
@@ -145,6 +147,8 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
             request = BeanUtils.toBean(reqVo, ImFriendRequest.class)
                     .setFromUserId(fromUserId).setToUserId(toUserId)
                     .setHandleResult(ImFriendRequestHandleResultEnum.UNHANDLED.getResult());
+//            request.setCreateBy(UserUtils.getCurUserIdStr());
+//            request.setCreateTime(LocalDateTime.now());
             try {
                 friendRequestMapper.insert(request);
                 return request;
@@ -237,6 +241,11 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     @Override
     public ImFriendRequest getFriendRequest(Long id) {
         return friendRequestMapper.selectById(id);
+    }
+
+    @Override
+    public List<ImFriendRequest> pullFriendRequestList(Long userId, Long lastUpdateTime, Long lastId, Integer limit) {
+        return friendRequestMapper.selectPullListByUserId(userId, lastUpdateTime, lastId, limit);
     }
 
     @Override

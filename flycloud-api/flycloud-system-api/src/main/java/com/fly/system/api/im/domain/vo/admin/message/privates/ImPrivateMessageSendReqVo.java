@@ -28,7 +28,7 @@ public class ImPrivateMessageSendReqVo {
 
     @Schema(description = "消息类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "0")
     @NotNull(message = "消息类型不能为空")
-    @InEnum(ImMessageTypeEnum.class)
+//    @InEnum(ImMessageTypeEnum.class)
     private Integer type;
 
     @Schema(description = "消息内容，JSON 格式", requiredMode = Schema.RequiredMode.REQUIRED, example = "{\"content\":\"你好\"}")

@@ -6,6 +6,7 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
@@ -111,6 +112,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         ImGroupMessage message = BeanUtils.toBean(reqVo, ImGroupMessage.class, m -> m
                 .setSenderId(senderId).setStatus(ImMessageStatusEnum.UNREAD.getStatus()).setSendTime(LocalDateTime.now())
                 .setReceiptStatus(resolveReceiptStatus(reqVo.getReceipt())));
+        message.setCreateBy(UserUtils.getCurUserIdStr());
+        message.setCreateTime(LocalDateTime.now());
         groupMessageMapper.insert(message);
 
         // 3. WebSocket 异步推送（群内可见成员 + 发送方多端同步）
@@ -143,6 +146,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
                 .setReceiptStatus(resolveReceiptStatus(dto.getReceipt()));
         // 1.3 按 type.persistent 决定是否入库
         if (ImMessageTypeEnum.validate(dto.getType()).isPersistent()) {
+            message.setCreateBy(UserUtils.getCurUserIdStr());
+            message.setCreateTime(LocalDateTime.now());
             groupMessageMapper.insert(message);
         }
 
@@ -176,7 +181,10 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         }
 
         // 2. 更新原消息状态为撤回
-        groupMessageMapper.updateById(new ImGroupMessage().setId(messageId)
+        ImGroupMessage imGroupMessage = new ImGroupMessage();
+        imGroupMessage.setUpdateBy(userId.toString());
+        imGroupMessage.setUpdateTime(LocalDateTime.now());
+        groupMessageMapper.updateById(imGroupMessage.setId(messageId)
                 .setStatus(ImMessageStatusEnum.RECALL.getStatus()));
 
         // 3. 发送撤回事件
@@ -471,7 +479,11 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             Integer newReceiptStatus = ImGroupMessageReceiptStatusEnum.PENDING.getStatus();
             if (readCount >= visibleUserIds.size()) {
                 newReceiptStatus = ImGroupMessageReceiptStatusEnum.DONE.getStatus();
-                groupMessageMapper.updateById(new ImGroupMessage().setId(message.getId())
+
+                ImGroupMessage imGroupMessage = new ImGroupMessage();
+                imGroupMessage.setUpdateBy(userId.toString());
+                imGroupMessage.setUpdateTime(LocalDateTime.now());
+                groupMessageMapper.updateById(imGroupMessage.setId(message.getId())
                         .setReceiptStatus(newReceiptStatus));
             }
 

@@ -19,12 +19,12 @@ public class ImRtcCallCreateReqVo {
 
     @Schema(description = "会话类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     @NotNull(message = "会话类型不能为空")
-    @InEnum(ImConversationTypeEnum.class)
+//    @InEnum(ImConversationTypeEnum.class)
     private Integer conversationType;
 
     @Schema(description = "媒体类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     @NotNull(message = "媒体类型不能为空")
-    @InEnum(ImRtcCallMediaTypeEnum.class)
+//    @InEnum(ImRtcCallMediaTypeEnum.class)
     private Integer mediaType;
 
     @Schema(description = "群编号；群聊场景必填", example = "2048")

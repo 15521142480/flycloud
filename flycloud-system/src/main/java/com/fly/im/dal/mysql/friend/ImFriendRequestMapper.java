@@ -1,5 +1,7 @@
 package com.fly.im.dal.mysql.friend;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
@@ -66,7 +68,9 @@ public interface ImFriendRequestMapper extends BaseMapperX<ImFriendRequest> {
                 .set(ImFriendRequest::getHandleResult, ImFriendRequestHandleResultEnum.UNHANDLED.getResult())
                 .set(ImFriendRequest::getHandleContent, null)
                 .set(ImFriendRequest::getHandleTime, null)
-                .set(ImFriendRequest::getUpdateTime, updateTime));
+                .set(ImFriendRequest::getUpdateBy, UserUtils.getCurUserIdStr())
+                .set(ImFriendRequest::getUpdateTime, updateTime)
+        );
     }
 
     default PageResult<ImFriendRequest> selectPage(ImFriendRequestManagerPageReqVo reqVo) {
@@ -77,6 +81,31 @@ public interface ImFriendRequestMapper extends BaseMapperX<ImFriendRequest> {
                 .eqIfPresent(ImFriendRequest::getAddSource, reqVo.getAddSource())
                 .betweenIfPresent(ImFriendRequest::getCreateTime, reqVo.getCreateTime())
                 .orderByDesc(ImFriendRequest::getId));
+    }
+
+    /**
+     * 增量拉取「我相关」的好友申请（双向 OR，按 update_time + id 正向游标）
+     *
+     * @param userId         当前用户编号
+     * @param lastUpdateTime 上次拉取到的更新时间；首次拉取传 null
+     * @param lastId         上次拉取到的记录编号；首次拉取传 null
+     * @param limit          拉取数量
+     * @return 好友申请列表
+     */
+    default List<ImFriendRequest> selectPullListByUserId(Long userId, Long lastUpdateTime, Long lastId, Integer limit) {
+
+        LambdaQueryWrapperX<ImFriendRequest> query = new LambdaQueryWrapperX<>();
+        query.and(w -> w.eq(ImFriendRequest::getFromUserId, userId)
+                .or().eq(ImFriendRequest::getToUserId, userId));
+
+        if (lastUpdateTime != null && lastId != null) {
+            LocalDateTime lastTime = LocalDateTimeUtil.of(lastUpdateTime);
+            query.and(w -> w.gt(ImFriendRequest::getUpdateTime, lastTime)
+                    .or(n -> n.eq(ImFriendRequest::getUpdateTime, lastTime).gt(ImFriendRequest::getId, lastId)));
+        }
+
+        return selectList(query.orderByAsc(ImFriendRequest::getUpdateTime).orderByAsc(ImFriendRequest::getId)
+                .last("LIMIT " + limit));
     }
 
 }

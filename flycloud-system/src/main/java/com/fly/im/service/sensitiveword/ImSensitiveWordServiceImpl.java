@@ -3,6 +3,7 @@ package com.fly.im.service.sensitiveword;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.CacheUtils;
@@ -166,6 +167,8 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
 
         // 2.1 入库
         ImSensitiveWord word = BeanUtils.toBean(reqVo, ImSensitiveWord.class);
+        word.setCreateBy(UserUtils.getCurUserIdStr());
+        word.setCreateTime(LocalDateTime.now());
         sensitiveWordMapper.insert(word);
         // 2.2 强制失效本机缓存（多实例靠定时刷新收敛）
         invalidateSensitiveWordBsCaches();
@@ -181,6 +184,8 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
 
         // 2.1 更新
         ImSensitiveWord updateObj = BeanUtils.toBean(reqVo, ImSensitiveWord.class);
+        updateObj.setUpdateBy(UserUtils.getCurUserIdStr());
+        updateObj.setUpdateTime(LocalDateTime.now());
         sensitiveWordMapper.updateById(updateObj);
         // 2.2 强制失效本机缓存
         invalidateSensitiveWordBsCaches();

@@ -32,7 +32,7 @@ public class ImFriendRequestApplyReqVo {
     private String displayName;
 
     @Schema(description = "添加来源", example = "1")
-    @InEnum(ImFriendAddSourceEnum.class)
+//    @InEnum(ImFriendAddSourceEnum.class)
     private Integer addSource;
 
 }

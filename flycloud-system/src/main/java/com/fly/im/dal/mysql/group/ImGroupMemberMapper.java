@@ -1,6 +1,7 @@
 package com.fly.im.dal.mysql.group;
 
 import cn.hutool.core.collection.CollUtil;
+import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.mybatis.BaseMapperX;
 import com.fly.im.framework.mybatis.LambdaQueryWrapperX;
@@ -145,7 +146,10 @@ public interface ImGroupMemberMapper extends BaseMapperX<ImGroupMember> {
                 .set(ImGroupMember::getAddSource, addSource)
                 .set(ImGroupMember::getInviterUserId, inviterUserId)
                 .set(ImGroupMember::getQuitTime, null)
-                .set(ImGroupMember::getMuteEndTime, null));
+                .set(ImGroupMember::getMuteEndTime, null)
+                .set(ImGroupMember::getUpdateBy, UserUtils.getCurUserIdStr())
+                .set(ImGroupMember::getUpdateTime, LocalDateTime.now())
+        );
     }
 
 }
