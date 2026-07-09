@@ -3,7 +3,9 @@ package com.fly.common.config;
 import com.fly.common.factory.YamlPropertySourceFactory;
 import com.fly.common.handler.GlobalExceptionHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
@@ -12,6 +14,8 @@ import org.springframework.context.annotation.PropertySource;
  * @author xuzhanfu
  */
 @AutoConfiguration
+@ConditionalOnClass(name = "jakarta.servlet.http.HttpServletRequest")
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ComponentScan(value="com.fly.common.handler")
 @PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:common-error.yml")
 public class ExceptionConfiguration {

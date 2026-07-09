@@ -3,7 +3,7 @@ package com.fly.system.api.websocket.path;
 import com.fly.common.constant.CommonConstants;
 
 /**
- * member用户常量
+ * websocket请求api路径
  *
  */
 public interface WebsocketApiPaths {

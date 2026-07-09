@@ -5,6 +5,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.system.api.websocket.bo.WebSocketSendBo;
 import com.fly.system.api.websocket.path.WebsocketApiPaths;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public interface WebSocketSenderApi {
      * @return 操作结果
      */
     @PostMapping(WebsocketApiPaths.PROVIDER_WEBSOCKET_SEND_API)
-    R<Boolean> send(@RequestBody WebSocketSendBo bo);
+    R<Boolean> send(@Valid @RequestBody WebSocketSendBo bo);
 
     /**
      * 发送对象消息给指定用户。
