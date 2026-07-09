@@ -654,6 +654,25 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
+    path: '/workbench',
+    component: Layout,
+    name: 'Workbench',
+    meta: { hidden: true },
+    children: [
+      {
+        path: 'conversation',
+        component: () => import('@/views/im/workbench/conversation/index.vue'),
+        name: 'ImWorkbenchConversation',
+        meta: {
+          hidden: true,
+          title: '开始聊天',
+          icon: 'fa-solid:comment-dots',
+          activeMenu: '/workbench/conversation'
+        }
+      }
+    ]
+  },
+  {
     path: '/ai',
     component: Layout,
     name: 'Ai',

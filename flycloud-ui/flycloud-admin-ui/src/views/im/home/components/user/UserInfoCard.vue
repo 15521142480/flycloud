@@ -109,8 +109,10 @@ function handleSendMessage() {
     user.value.avatar || '',
     { silent: !!friend?.silent }
   )
-  // 跳转会话 Tab（如果不在的话），并且不管当前路由是啥都先切到会话列表页
-  if (router.currentRoute.value.name !== 'ImHomeConversation') {
+  // 跳转会话页；菜单内嵌版停留在内嵌路由，避免发消息时被带回全屏版
+  const currentRouteName = String(router.currentRoute.value.name || '')
+  const conversationRouteNames = ['ImHomeConversation', 'ImWorkbenchConversation']
+  if (!conversationRouteNames.includes(currentRouteName)) {
     router.push({ name: 'ImHomeConversation' })
   }
   uiStore.closeUserInfoCard()

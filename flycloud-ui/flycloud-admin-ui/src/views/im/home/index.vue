@@ -5,14 +5,19 @@
     - 右侧 <router-view>：按路由渲染 MessagePage / FriendPage / GroupPage
     - 挂载全局弹层：UserInfoCard / GroupInfoCard / ContextMenu
   -->
-  <div class="flex w-full h-full overflow-hidden">
-    <ToolBar />
+  <div class="flex w-full h-full min-h-0 overflow-hidden bg-[var(--el-bg-color)]">
+    <ToolBar v-if="props.showToolBar" />
     <!--
       keep-alive 缓存子页面：
       - 切 Tab 不重建组件，MessagePanel 滚动位置、输入框草稿等 UI 状态不丢
       - Vue 3 里 keep-alive 不能直接包 <router-view>（会有警告），必须走 v-slot 拿 Component
     -->
-    <router-view v-if="childRouteReady" v-slot="{ Component }">
+    <!-- 内嵌菜单模式：复用本壳的初始化、弹层和 WebSocket，只把具体页面交给外部插槽渲染 -->
+    <template v-if="props.embedded">
+      <slot v-if="childRouteReady"></slot>
+    </template>
+
+    <router-view v-else-if="childRouteReady" v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
       </keep-alive>
@@ -55,6 +60,19 @@ import ContextMenu from './components/ContextMenu.vue'
 import RtcCallContainer from './components/rtc/RtcCallContainer.vue'
 
 defineOptions({ name: 'ImIndex' })
+
+const props = withDefaults(
+  defineProps<{
+    /** 是否作为后台菜单内嵌页使用 */
+    embedded?: boolean
+    /** 是否显示 IM 全屏版左侧工具栏 */
+    showToolBar?: boolean
+  }>(),
+  {
+    embedded: false,
+    showToolBar: true
+  }
+)
 
 const route = useRoute()
 const appStore = useAppStore()

@@ -70,8 +70,10 @@ function handleChat(group: GroupLite) {
     { silent: !!cached?.silent }
   )
 
-  // 如果不在会话页，先跳过去（如果在了，MessagePanel 会自己感知会话变化刷新）
-  if (router.currentRoute.value.name !== 'ImHomeConversation') {
+  // 如果不在会话页，先跳过去；菜单内嵌版保持在内嵌路由，避免被带回全屏版
+  const currentRouteName = String(router.currentRoute.value.name || '')
+  const conversationRouteNames = ['ImHomeConversation', 'ImWorkbenchConversation']
+  if (!conversationRouteNames.includes(currentRouteName)) {
     router.push({ name: 'ImHomeConversation' })
   }
   handleClose()
