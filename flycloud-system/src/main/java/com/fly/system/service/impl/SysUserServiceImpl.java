@@ -8,6 +8,7 @@ import com.fly.common.enums.ErrorCodeConstants;
 import com.fly.common.enums.StatusEnum;
 import com.fly.common.enums.sys.SysTypeEnum;
 import com.fly.common.exception.ServiceException;
+import com.fly.common.exception.user.UserException;
 import com.fly.common.exception.utils.ServiceExceptionUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
@@ -118,6 +119,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public UserDetailInfoVo getDetailInfo(Long id) {
 
         UserDetailInfoVo userDetailInfoVo = new UserDetailInfoVo();
+        if (userDetailInfoVo.getUser() == null) {
+            throw new UserException("用户不存在！id:" + id);
+        }
 
         // 用户基本信息
         userDetailInfoVo.setUser(this.queryById(id));

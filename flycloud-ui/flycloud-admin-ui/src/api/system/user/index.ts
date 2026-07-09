@@ -4,7 +4,7 @@ import {rsaEncrypt} from "@/utils/crypto/rsa";
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface UserVO {
-  id: number
+  id: string
   account: string
   username?: string
   password: string
@@ -46,12 +46,6 @@ const normalizeSimpleUser = (user: UserVO): UserVO => {
   }
 }
 
-// 按用户编号查询用户精简信息（IM 名片等新版业务使用）
-export const getSimpleUser = async (id: number | string): Promise<UserVO> => {
-  const user = await request.get({ url: `/${SYS_BASE_URL}/user/getDetailInfo/` + id })
-  return normalizeSimpleUser(user)
-}
-
 // 按昵称/姓名模糊搜索用户（IM 加好友使用）
 export const getSimpleUserListByNickname = async (nickname: string): Promise<UserVO[]> => {
   const list = await request.get({
@@ -68,7 +62,7 @@ export const getAllUser = () => {
 }
 
 // 根据用户编号列表查询用户
-export const getUserList = async (ids: number[]): Promise<UserVO[]> => {
+export const getUserList = async (ids: string[]): Promise<UserVO[]> => {
   if (!ids?.length) return []
   const list = await request.get({
     url: `/${SYS_BASE_URL}/user/list`,
@@ -78,18 +72,21 @@ export const getUserList = async (ids: number[]): Promise<UserVO[]> => {
   return rows.map(normalizeSimpleUser)
 }
 
-// 查询用户详情
-export const getUser = (id: number) => {
+// 查询用户详情信息：用户详情、用户菜单、用户权限
+export const getDetailInfo = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/user/getDetailInfo/` + id })
 }
 
-export const getUserDetail = (id: number) => {
+// 用户详情
+export const getUserDetail = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/user/get/` + id })
 }
 
+// 当前用户详情
 export const getCurUser = () => {
   return request.get({ url: `/${SYS_BASE_URL}/user/get`})
 }
+
 
 // 新增用户
 export const createUser = async (data: UserVO) => {

@@ -206,7 +206,7 @@ const deptList = ref<Tree[]>([]) // 树形结构
 const postList = ref([] as PostApi.PostVO[]) // 岗位列表
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -215,7 +215,7 @@ const open = async (type: string, id?: number) => {
   if (id) {
     formLoading.value = true
     try {
-      let userInfo = await UserApi.getUser(id)
+      let userInfo = await UserApi.getDetailInfo(id)
       let userData = userInfo.user
       formData.value = userData
     } finally {

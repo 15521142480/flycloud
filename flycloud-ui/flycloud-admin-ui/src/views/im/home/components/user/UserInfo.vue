@@ -187,7 +187,7 @@ import { useMessage } from '@/hooks/web/useMessage'
 import UserAvatar from './UserAvatar.vue'
 import FriendAddDialog from '../friend/FriendAddDialog.vue'
 import RecommendCardDialog from './RecommendCardDialog.vue'
-import { getSimpleUser, type UserVO } from '@/api/system/user'
+import { getUserDetail, type UserVO } from '@/api/system/user'
 import { useFriendStore } from '../../store/friendStore'
 import { ImFriendAddSource } from '../../../utils/constants'
 import { toUserCardTarget } from '../../../utils/message'
@@ -240,7 +240,7 @@ const emit = defineEmits<{
 const message = useMessage()
 const friendStore = useFriendStore()
 
-/** 起手 user + getSimpleUser 合并后的完整对象（性别 / 部门补齐用） */
+/** 起手 user + getUserDetail 合并后的完整对象（性别 / 部门补齐用） */
 const full = ref<User | null>(props.user)
 
 /** 主标题：备注优先（好友场景），其次原昵称 */
@@ -266,7 +266,7 @@ const remarkInputRef = ref<InputInstance | null>(null)
 
 /**
  * user.id 变化的统一处理：
- * 1. 起手用 prop 兜底首屏（full = props.user），再 getSimpleUser 命中后合并替换
+ * 1. 起手用 prop 兜底首屏（full = props.user），再 getUserDetail 命中后合并替换
  * 2. 顺便复位备注编辑态，避免上一个用户的脏输入泄漏到下一个
  * 3. 竞态用 id 比对丢弃陈旧响应
  */
@@ -278,7 +278,7 @@ watch(
     if (!id) {
       return
     }
-    const data = (await getSimpleUser(id)) as User
+    const data = (await getUserDetail(id)) as User
     if (props.user?.id !== id) {
       return
     }

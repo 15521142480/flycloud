@@ -297,13 +297,14 @@ export type ChannelDO = import('@/api/im/manager/channel').ImManagerChannelVO
 
 // 用户精简信息（对齐后端 UserSimpleRespVO，名片 / 头像 hover 等场景共用）
 export interface User {
-  id: number
+  id: string
   nickname?: string
   avatar?: string
   sex?: number
   deptId?: number
   deptName?: string
 }
+
 
 // ==================== 列表行展示用 Lite 类型 ====================
 

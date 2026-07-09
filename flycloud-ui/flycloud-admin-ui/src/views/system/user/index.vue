@@ -234,14 +234,14 @@
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { checkPermi } from '@/utils/permission'
-import {dateFormatter, formatDateArray} from '@/utils/formatTime'
+import {formatDateArray} from '@/utils/formatTime'
 import download from '@/utils/download'
 import { CommonStatusEnum } from '@/utils/constants'
 import * as UserApi from '@/api/system/user'
 import UserForm from './UserForm.vue'
 import UserImportForm from './UserImportForm.vue'
 import UserAssignRoleForm from './UserAssignRoleForm.vue'
-import DeptTree from './DeptTree.vue'
+// import DeptTree from './DeptTree.vue'
 import {getFilePreviewUrl} from "@/components/UploadFile/src/useUpload";
 const { t } = useI18n()
 defineOptions({ name: 'SystemUser' })
@@ -287,14 +287,14 @@ const resetQuery = () => {
 }
 
 /** 处理部门被点击 */
-const handleDeptNodeClick = async (row) => {
-  queryParams.deptId = row.id
-  await getList()
-}
+// const handleDeptNodeClick = async (row) => {
+//   queryParams.deptId = row.id
+//   await getList()
+// }
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 

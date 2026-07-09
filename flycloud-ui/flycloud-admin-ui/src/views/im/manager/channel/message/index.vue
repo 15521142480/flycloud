@@ -42,8 +42,8 @@
 
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="80" />
-      <el-table-column label="封面" align="center" prop="materialCoverUrl" width="80">
+      <el-table-column label="编号" align="center" prop="id" width="120" />
+      <el-table-column label="封面" align="center" prop="materialCoverUrl" width="90">
         <template #default="scope">
           <el-image
             v-if="scope.row.materialCoverUrl"

@@ -115,12 +115,12 @@ const suffixIcon = computed(() => {
 })
 
 /** 根据 ID 查询用户信息（用于编辑回显） */
-const resolveItemById = async (id: number | number[] | undefined) => {
+const resolveItemById = async (id: string | string[] | undefined) => {
   if (id === null || id === undefined) {
     selectedItems.value = []
     return
   }
-  const ids: number[] = Array.isArray(id) ? id : [id]
+  const ids: string[] = Array.isArray(id) ? id : [id]
   if (
     selectedItems.value.length === ids.length &&
     selectedItems.value.every((item) => ids.includes(item.id))
