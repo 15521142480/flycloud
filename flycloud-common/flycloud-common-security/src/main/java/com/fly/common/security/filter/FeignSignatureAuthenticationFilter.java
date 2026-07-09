@@ -1,8 +1,10 @@
 package com.fly.common.security.filter;
 
+import cn.hutool.core.util.StrUtil;
 import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.ResponseUtils;
+import com.fly.common.utils.auth.TokenResolveUtils;
 import com.fly.common.utils.feign.FeignSignatureUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,12 +31,14 @@ public class FeignSignatureAuthenticationFilter extends OncePerRequestFilter {
     private final AuthProperties authProperties;
 
     /**
-     * 校验/feign开头的内部接口签名，校验成功后写入Spring Security认证上下文。
+     * 校验/feign开头的内部接口签名。请求携带用户Token时，继续交给Bearer过滤器解析当前用户；
+     * 请求没有用户Token时，写入内部服务认证上下文。
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String path = FeignSignatureUtils.normalizePath(request.getRequestURI());
         if (!FeignSignatureUtils.isFeignPath(path)) {
             filterChain.doFilter(request, response);
@@ -54,12 +58,14 @@ public class FeignSignatureAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                "feign-internal",
-                null,
-                AuthorityUtils.NO_AUTHORITIES);
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (StrUtil.isBlank(TokenResolveUtils.resolve(request))) {
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    "feign-internal",
+                    null,
+                    AuthorityUtils.NO_AUTHORITIES);
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         filterChain.doFilter(request, response);
     }
 

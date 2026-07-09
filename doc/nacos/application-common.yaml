@@ -103,15 +103,19 @@ websocket:
   # local、redis；local：单机部署，如flycloud-system 只有一个实例
   sender-type: local
 
+
 # security授权公共配置
 security:
   auth:
+
+    # token配置
     token:
       # 登录态有效期，单位秒，默认2小时；接口请求认证成功后会滑动续期
       login-timeout-seconds: 7200
       # refresh token 有效期，默认30天，单位秒
       refresh-token-timeout-seconds: 2592000
 
+    # feign配置
     feign:
       # 是否启用服务间Feign内部接口签名验证
       enabled: true
@@ -120,13 +124,13 @@ security:
       # Feign签名时间戳有效期，单位秒
       expire-seconds: 300
 
-    # 白名单 (授权、swagger、监控中心等url)
+    # 白名单配置 (授权、swagger、监控中心等url)
     ignore-urls:
       - /admin/auth/**
       - /app/auth/**
       - /captcha/**
-      - /gen/**
       - /app/**
+      - /gen/**
       - /static/**
       - /actuator/**
       - /webjars/**
