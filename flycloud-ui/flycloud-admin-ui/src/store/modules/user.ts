@@ -8,7 +8,7 @@ import * as FileApi from '@/api/infra/file'
 const { wsCache } = useCache()
 
 interface UserVO {
-  id: number
+  id: string
   avatar: string
   name: string
   deptId: number
@@ -28,7 +28,7 @@ export const useUserStore = defineStore('admin-user', {
     roles: [],
     isSetUser: false,
     user: {
-      id: 0,
+      id: '',
       avatar: '',
       name: '',
       deptId: 0
@@ -116,7 +116,7 @@ export const useUserStore = defineStore('admin-user', {
       this.roles = []
       this.isSetUser = false
       this.user = {
-        id: 0,
+        id: '',
         avatar: '',
         name: '',
         deptId: 0

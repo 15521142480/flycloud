@@ -26,6 +26,7 @@ export interface ProfileVO {
   }[]
   email: string
   mobile: string
+  telephone: string
   sex: number
   avatar: string
   status: number
@@ -36,6 +37,7 @@ export interface ProfileVO {
 }
 
 export interface UserProfileUpdateReqVO {
+  id: string
   nickname?: string
   email?: string
   mobile?: string
@@ -71,6 +73,6 @@ export const updateUserPassword = async (newPassword: string) => {
 }
 
 // 用户头像上传
-export const uploadAvatar = (data) => {
-  return request.upload({ url: '/user/profile/update-avatar', data: data })
-}
+// export const uploadAvatar = (data) => {
+//   return request.upload({ url: '/user/profile/update-avatar', data: data })
+// }

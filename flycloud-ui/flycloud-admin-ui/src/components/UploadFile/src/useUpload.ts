@@ -48,9 +48,14 @@ export const cacheFilePreviewUrl = (path?: string, url?: string) => {
  * 上传组件保存给业务表单的是 path；当表单回显或 DIY 编辑器直接预览 path 时，
  * 需要临时拼接静态资源前缀用于展示，避免把完整 URL 写回业务字段。
  */
-export const getFilePreviewUrl = (pathOrUrl?: string): string => {
+export const getFilePreviewUrl = (pathOrUrl?: unknown): string => {
   if (!pathOrUrl) {
     return ''
+  }
+  if (typeof pathOrUrl !== 'string') {
+    const value = (pathOrUrl as { url?: unknown; path?: unknown })?.url ??
+      (pathOrUrl as { url?: unknown; path?: unknown })?.path
+    return typeof value === 'string' ? getFilePreviewUrl(value) : ''
   }
   if (/^[a-z][a-z0-9-]*:[\w-]+$/i.test(pathOrUrl)) {
     return pathOrUrl

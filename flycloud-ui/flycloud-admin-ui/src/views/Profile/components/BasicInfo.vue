@@ -52,8 +52,13 @@ const schema = reactive<FormSchema[]>([
     label: t('profile.user.name'),
     component: 'Input'
   },
+  // {
+  //   field: 'mobile',
+  //   label: t('profile.user.mobile'),
+  //   component: 'Input'
+  // },
   {
-    field: 'mobile',
+    field: 'telephone',
     label: t('profile.user.mobile'),
     component: 'Input'
   },

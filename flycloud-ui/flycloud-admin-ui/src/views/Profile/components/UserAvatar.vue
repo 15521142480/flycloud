@@ -35,8 +35,11 @@ const handelUpload = async ({ data }) => {
       filename: 'avatar.png'
     } as UploadRequestOptions)) as unknown as { data: any }
   ).data
-  const avatar = uploadData.path
-  await updateUserProfile({ avatar })
+  const userUpdateData = {
+    id: userStore.getUser.id,
+    avatar: uploadData.path,
+  }
+  await updateUserProfile(userUpdateData)
 
   // 关闭弹窗，并更新 userStore
   cropperRef.value.close()

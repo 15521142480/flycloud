@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-center">
-      <UserAvatar :img="userInfo?.avatar" />
+      <UserAvatar :img="getFilePreviewUrl(userInfo?.avatar)" />
     </div>
     <ul class="list-group list-group-striped">
       <li class="list-group-item">
@@ -12,7 +12,7 @@
       <li class="list-group-item">
         <Icon class="mr-5px" icon="ep:phone" />
         {{ t('profile.user.mobile') }}
-        <div class="pull-right">{{ userInfo?.mobile }}</div>
+        <div class="pull-right">{{ userInfo?.mobile || userInfo.telephone }}</div>
       </li>
       <li class="list-group-item">
         <Icon class="mr-5px" icon="fontisto:email" />
@@ -51,6 +51,7 @@ import { formatDate } from '@/utils/formatTime'
 import UserAvatar from './UserAvatar.vue'
 
 import { getUserProfile, ProfileVO } from '@/api/system/user/profile'
+import {getFilePreviewUrl} from "@/components/UploadFile/src/useUpload";
 const { t } = useI18n()
 defineOptions({ name: 'ProfileUser' })
 const userInfo = ref({} as ProfileVO)
