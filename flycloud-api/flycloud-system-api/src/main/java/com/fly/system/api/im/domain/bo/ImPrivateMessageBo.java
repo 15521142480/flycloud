@@ -30,6 +30,7 @@ public class ImPrivateMessageBo {
     @Schema(description = "拉取数量", example = "20")
     private Integer limit;
 
+    // ImMessageTypeEnum
     @Schema(description = "消息类型", example = "0")
     private Integer type;
 

@@ -1,9 +1,11 @@
 package com.fly.im.service.websocket;
 
 import com.fly.common.enums.user.UserTypeEnum;
+import com.fly.im.service.websocket.bo.ImNotificationWebSocketBo;
 import com.fly.im.service.websocket.dto.ImChannelMessageDTO;
 import com.fly.im.service.websocket.dto.ImGroupMessageDTO;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
+import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import com.fly.system.api.websocket.feign.WebSocketSenderApi;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -38,77 +40,59 @@ public class ImWebSocketServiceImpl implements ImWebSocketService {
     @Override
     public void sendPrivateMessageAsync(Collection<Long> userIds, ImPrivateMessageDTO dto) {
         // 说明：通过 executeAfterTransaction 保证事务提交后再推送，避免客户端收到消息后查询数据库时事务尚未提交
-        executeAfterTransaction(() -> doSendPrivateMessage(userIds, dto));
+        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.PRIVATE.getType(), dto.getType(), dto);
+        executeAfterTransaction(() -> doSendNotification(userIds, notification));
     }
 
     @Override
     public void sendGroupMessageAsync(Collection<Long> userIds, ImGroupMessageDTO dto) {
-        executeAfterTransaction(() -> doSendGroupMessage(userIds, dto));
+        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.GROUP.getType(), dto.getType(), dto);
+        executeAfterTransaction(() -> doSendNotification(userIds, notification));
     }
 
     @Override
     public void sendChannelMessageAsync(Collection<Long> userIds, ImChannelMessageDTO dto) {
-        executeAfterTransaction(() -> doSendChannelMessage(userIds, dto));
+        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.CHANNEL.getType(), dto.getType(), dto);
+        executeAfterTransaction(() -> doSendNotification(userIds, notification));
     }
 
     @Override
     public void broadcastChannelMessageAsync(ImChannelMessageDTO dto) {
-        executeAfterTransaction(() -> doBroadcastChannelMessage(dto));
+        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.CHANNEL.getType(), dto.getType(), dto);
+        executeAfterTransaction(() -> doBroadcastNotification(notification));
     }
 
     /**
-     * 异步发送私聊 WebSocket 消息；多收件人共享同一 dto，避免按收件人重复注册 afterCommit 回调
+     * 异步发送 IM WebSocket 通知；多收件人共享同一通知对象，避免按收件人重复注册 afterCommit 回调
      */
-    public void doSendPrivateMessage(Collection<Long> userIds, ImPrivateMessageDTO dto) {
+    public void doSendNotification(Collection<Long> userIds, ImNotificationWebSocketBo notification) {
         for (Long userId : getDistinctUserIds(userIds)) {
             try {
                 webSocketSenderApi.sendObject(UserTypeEnum.ADMIN.getValue(), userId,
-                        ImPrivateMessageDTO.TYPE, dto);
+                        ImNotificationWebSocketBo.TYPE, notification);
             } catch (Exception e) {
-                log.error("[doSendPrivateMessage][userId({}) dto({}) 发送失败]", userId, dto, e);
+                log.error("[doSendNotification][userId({}) notification({}) 发送失败]", userId, notification, e);
             }
         }
     }
 
     /**
-     * 异步发送群聊 WebSocket 消息
+     * 异步广播 IM WebSocket 通知给当前所有在线管理端用户
      */
-    public void doSendGroupMessage(Collection<Long> userIds, ImGroupMessageDTO dto) {
-        for (Long userId : getDistinctUserIds(userIds)) {
-            try {
-                webSocketSenderApi.sendObject(UserTypeEnum.ADMIN.getValue(), userId,
-                        ImGroupMessageDTO.TYPE, dto);
-            } catch (Exception e) {
-                log.error("[doSendGroupMessage][userId({}) dto({}) 发送失败]", userId, dto, e);
-            }
-        }
-    }
-
-    /**
-     * 异步发送频道 WebSocket 消息
-     */
-    public void doSendChannelMessage(Collection<Long> userIds, ImChannelMessageDTO dto) {
-        for (Long userId : getDistinctUserIds(userIds)) {
-            try {
-                webSocketSenderApi.sendObject(UserTypeEnum.ADMIN.getValue(), userId,
-                        ImChannelMessageDTO.TYPE, dto);
-            } catch (Exception e) {
-                log.error("[doSendChannelMessage][userId({}) dto({}) 发送失败]", userId, dto, e);
-            }
-        }
-    }
-
-    /**
-     * 异步广播频道 WebSocket 消息给当前所有在线管理端用户；
-     * 依赖 infra WebSocketSenderApi 按 UserType 广播能力，离线用户由客户端上线 pull 兜底
-     */
-    public void doBroadcastChannelMessage(ImChannelMessageDTO dto) {
+    public void doBroadcastNotification(ImNotificationWebSocketBo notification) {
         try {
             webSocketSenderApi.sendObject(UserTypeEnum.ADMIN.getValue(),
-                    ImChannelMessageDTO.TYPE, dto);
+                    ImNotificationWebSocketBo.TYPE, notification);
         } catch (Exception e) {
-            log.error("[doBroadcastChannelMessage][dto({}) 广播失败]", dto, e);
+            log.error("[doBroadcastNotification][notification({}) 广播失败]", notification, e);
         }
+    }
+
+    private static ImNotificationWebSocketBo buildNotification(Integer conversationType, Integer contentType, Object payload) {
+        return new ImNotificationWebSocketBo()
+                .setConversationType(conversationType)
+                .setContentType(contentType)
+                .setPayload(payload);
     }
 
     private static Set<Long> getDistinctUserIds(Collection<Long> userIds) {

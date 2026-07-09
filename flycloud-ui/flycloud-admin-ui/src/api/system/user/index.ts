@@ -98,7 +98,7 @@ export const createUser = async (data: UserVO) => {
     newData.password,
     import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
   )
-  return request.post({ url: `/${SYS_BASE_URL}/user/saveOrUpdate`, newData })
+  return request.post({ url: `/${SYS_BASE_URL}/user/saveOrUpdate`, data: newData })
 }
 
 // 修改用户
