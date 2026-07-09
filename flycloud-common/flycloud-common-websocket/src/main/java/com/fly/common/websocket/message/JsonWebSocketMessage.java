@@ -1,6 +1,6 @@
-package com.fly.common.websocket.core.message;
+package com.fly.common.websocket.message;
 
-import com.fly.common.websocket.core.listener.WebSocketMessageListener;
+import com.fly.common.websocket.listener.WebSocketMessageListener;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

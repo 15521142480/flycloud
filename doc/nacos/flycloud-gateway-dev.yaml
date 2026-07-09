@@ -26,7 +26,7 @@ spring:
 
             # websocket网关配置；/flycloud-system/ws -> /ws
             - id: flycloud-system-websocket
-              uri: lb://flycloud-system
+              uri: lb:ws://flycloud-system
               order: 0
               predicates:
                 - Path=/flycloud-system/ws,/flycloud-system/ws/**

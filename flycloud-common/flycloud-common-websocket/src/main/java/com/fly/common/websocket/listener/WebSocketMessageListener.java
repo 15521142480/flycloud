@@ -1,4 +1,4 @@
-package com.fly.common.websocket.core.listener;
+package com.fly.common.websocket.listener;
 
 import org.springframework.web.socket.WebSocketSession;
 

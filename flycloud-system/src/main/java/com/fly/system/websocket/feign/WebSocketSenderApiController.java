@@ -2,7 +2,7 @@ package com.fly.system.websocket.feign;
 
 import cn.hutool.core.util.StrUtil;
 import com.fly.common.domain.model.R;
-import com.fly.common.websocket.core.sender.WebSocketMessageSender;
+import com.fly.common.websocket.sender.WebSocketMessageSender;
 import com.fly.system.api.websocket.bo.WebSocketSendBo;
 import com.fly.system.api.websocket.feign.WebSocketSenderApi;
 import jakarta.validation.Valid;

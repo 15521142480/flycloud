@@ -57,6 +57,12 @@
 
         <dependency>
             <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-websocket</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-seata</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -81,11 +87,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.flycloud</groupId>
-            <artifactId>flycloud-common-websocket</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.github.whvcse</groupId>

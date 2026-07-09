@@ -1,4 +1,4 @@
-package com.fly.common.websocket.core.sender;
+package com.fly.common.websocket.sender;
 
 import com.fly.common.utils.json.JsonUtils;
 

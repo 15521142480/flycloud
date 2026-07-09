@@ -1,4 +1,4 @@
-package com.fly.common.websocket.core.session;
+package com.fly.common.websocket.session;
 
 import org.springframework.web.socket.WebSocketSession;
 

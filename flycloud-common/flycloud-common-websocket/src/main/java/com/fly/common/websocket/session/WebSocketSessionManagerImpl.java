@@ -1,8 +1,8 @@
-package com.fly.common.websocket.core.session;
+package com.fly.common.websocket.session;
 
 import cn.hutool.core.collection.CollUtil;
 import com.fly.common.security.user.FlyUser;
-import com.fly.common.websocket.core.util.WebSocketFrameworkUtils;
+import com.fly.common.websocket.util.WebSocketFrameworkUtils;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.ArrayList;

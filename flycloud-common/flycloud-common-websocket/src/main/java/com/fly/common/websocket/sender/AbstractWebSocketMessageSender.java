@@ -1,10 +1,10 @@
-package com.fly.common.websocket.core.sender;
+package com.fly.common.websocket.sender;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fly.common.utils.json.JsonUtils;
-import com.fly.common.websocket.core.message.JsonWebSocketMessage;
-import com.fly.common.websocket.core.session.WebSocketSessionManager;
+import com.fly.common.websocket.message.JsonWebSocketMessage;
+import com.fly.common.websocket.session.WebSocketSessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;

@@ -1,4 +1,4 @@
-package com.fly.common.websocket.core.util;
+package com.fly.common.websocket.util;
 
 import com.fly.common.security.user.FlyUser;
 import org.springframework.web.socket.WebSocketSession;

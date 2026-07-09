@@ -1,13 +1,13 @@
 package com.fly.common.websocket.config;
 
-import com.fly.common.websocket.core.handler.JsonWebSocketMessageHandler;
-import com.fly.common.websocket.core.listener.WebSocketMessageListener;
-import com.fly.common.websocket.core.security.LoginUserHandshakeInterceptor;
-import com.fly.common.websocket.core.sender.WebSocketMessageSender;
-import com.fly.common.websocket.core.sender.local.LocalWebSocketMessageSender;
-import com.fly.common.websocket.core.session.WebSocketSessionHandlerDecorator;
-import com.fly.common.websocket.core.session.WebSocketSessionManager;
-import com.fly.common.websocket.core.session.WebSocketSessionManagerImpl;
+import com.fly.common.websocket.handler.JsonWebSocketMessageHandler;
+import com.fly.common.websocket.listener.WebSocketMessageListener;
+import com.fly.common.websocket.security.LoginUserHandshakeInterceptor;
+import com.fly.common.websocket.sender.WebSocketMessageSender;
+import com.fly.common.websocket.sender.local.LocalWebSocketMessageSender;
+import com.fly.common.websocket.session.WebSocketSessionHandlerDecorator;
+import com.fly.common.websocket.session.WebSocketSessionManager;
+import com.fly.common.websocket.session.WebSocketSessionManagerImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,7 +1,7 @@
-package com.fly.common.websocket.core.security;
+package com.fly.common.websocket.security;
 
 import com.fly.common.security.user.FlyUser;
-import com.fly.common.websocket.core.util.WebSocketFrameworkUtils;
+import com.fly.common.websocket.util.WebSocketFrameworkUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
