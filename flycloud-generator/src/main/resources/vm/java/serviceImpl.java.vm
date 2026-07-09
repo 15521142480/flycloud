@@ -5,7 +5,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.utils.StringUtils;
-import com.fly.common.security.util.UserUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 #end
@@ -146,14 +145,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper,
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        for (Long id : ids) {
-            ${ClassName} entity = new ${ClassName}();
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        return baseMapper.deleteBatchIds(ids) > 0;
     }
 
 }

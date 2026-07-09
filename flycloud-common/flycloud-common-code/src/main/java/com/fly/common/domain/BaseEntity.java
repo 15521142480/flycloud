@@ -64,8 +64,8 @@ public class BaseEntity implements Serializable {
     /**
      * 是否删除
      */
-    // NOTE: 弃用逻辑删除方案，一棍子打死不合适实际业务需求
-//    @TableLogic // 逻辑删除; 已删除 isDeleted = 1,  未删除 isDeleted: 0
+    // NOTE: 启用逻辑删除方案
+    @TableLogic // 逻辑删除; 已删除 isDeleted = 1,  未删除 isDeleted: 0
     private Boolean isDeleted;
 
 
