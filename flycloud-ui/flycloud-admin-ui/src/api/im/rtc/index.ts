@@ -7,13 +7,13 @@ export interface ImRtcCallCreateReqVO {
   conversationType: number
   mediaType: number
   groupId?: number
-  inviteeIds: number[] // 被邀请的用户编号集合；私聊必传 1 个对端，群聊必传至少 1 人
+  inviteeIds: string[] // 被邀请的用户编号集合；私聊必传 1 个对端，群聊必传至少 1 人
 }
 
 // 通话中追加邀请请求 VO；仅群通话可用
 export interface ImRtcCallInviteReqVO {
   room: string
-  inviteeIds: number[]
+  inviteeIds: string[]
 }
 
 // 通话会话 VO；create / join / accept / refreshToken 共用
@@ -25,10 +25,10 @@ export interface ImRtcCallRespVO {
   mediaType: number
   status: number
   endReason?: number // 结束原因；仅 status=ENDED 时有值
-  inviterId: number
+  inviterId: string
   groupId?: number
-  inviteeIds?: number[]
-  joinedUserIds?: number[]
+  inviteeIds?: string[]
+  joinedUserIds?: string[]
 }
 
 // 群活跃通话查询响应；不含 token
@@ -36,9 +36,9 @@ export interface ImRtcGroupCallRespVO {
   room: string
   groupId: number
   mediaType: number
-  inviterId: number
-  joinedUserIds?: number[]
-  inviteeIds?: number[]
+  inviterId: string
+  joinedUserIds?: string[]
+  inviteeIds?: string[]
 }
 
 // 创建新通话；私聊或群聊根据 conversationType 区分

@@ -406,7 +406,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
           status: ImMessageStatus.NORMAL,
           receiptStatus: isActive ? ImMessageReceiptStatus.DONE : ImMessageReceiptStatus.PENDING,
           sendTime: sendTimeMs,
-          senderId: 0,
+          senderId: '0',
           targetId: websocketMessage.channelId,
           selfSend: false,
           materialId: websocketMessage.materialId
@@ -884,7 +884,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
      * 算 FRIEND_ADD / FRIEND_DELETE 帧的「对端 userId」：
      *    becomeFriends 单条入库后双方收到同一份 payload，payload.friendUserId 固定是 toUserId，本端真正的对端要从帧 sender / receiver 反推
      */
-    computeFriendPeerId(frame: ImPrivateMessageNotification): number {
+    computeFriendPeerId(frame: ImPrivateMessageNotification): string {
       const currentUserId = getCurrentUserId()
       return getPrivateMessagePeerId(frame, currentUserId)
     },

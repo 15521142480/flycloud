@@ -10,7 +10,7 @@ export interface RecordVO {
   description: string
   point: number
   totalPoint: number
-  userId: number
+  userId: string
   createDate: Date
 }
 

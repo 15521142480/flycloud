@@ -71,11 +71,11 @@ defineOptions({ name: 'UserSelectV2', inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number | number[] // 绑定的用户 ID
+    modelValue?: string | string[] // 绑定的用户 ID
     defaultCurrentUser?: boolean // 默认选中当前用户
     multiple?: boolean // 是否多选
     disabled?: boolean // 是否禁用
-    disabledIds?: number[] // 禁用的用户 ID
+    disabledIds?: string[] // 禁用的用户 ID
     clearable?: boolean // 是否允许清空
     placeholder?: string // 占位文字
     deptId?: number // 部门 ID
@@ -89,7 +89,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: number | number[] | undefined]
+  'update:modelValue': [value: string | string[] | undefined]
   change: [item: UserApi.UserVO | UserApi.UserVO[] | undefined]
 }>()
 
@@ -165,10 +165,14 @@ const handleClick = (e: MouseEvent) => {
     return
   }
   // 打开弹窗，传入当前选中 ID 用于预选高亮
-  const selectedIds = props.multiple
-    ? props.modelValue || []
+  const selectedIds: string[] = props.multiple
+    ? Array.isArray(props.modelValue)
+      ? props.modelValue
+      : props.modelValue
+        ? [props.modelValue]
+        : []
     : props.modelValue !== null && props.modelValue !== undefined
-      ? [props.modelValue]
+      ? [String(props.modelValue)]
       : []
   dialogRef.value.open(selectedIds, props.disabledIds)
 }
@@ -209,7 +213,7 @@ onMounted(() => {
   if (props.defaultCurrentUser && !hasValidPresetValue()) {
     const userStore = useUserStoreWithOut()
     const user = userStore.getUser
-    const currentUserId = user?.id
+    const currentUserId = user?.id ? String(user.id) : ''
     if (currentUserId) {
       if (props.multiple) {
         emit('update:modelValue', [currentUserId])

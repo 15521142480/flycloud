@@ -139,13 +139,13 @@ const props = withDefaults(
     /** 全量好友列表 */
     friends: FriendLite[]
     /** 已选好友 id（v-model）；按数组顺序即为点击顺序 */
-    selectedIds: number[]
+    selectedIds: string[]
     /** 锁定 id：默认勾选、不可取消、计入已选数（典型：私聊侧 +建群锁定对方） */
-    lockedIds?: number[]
+    lockedIds?: string[]
     /** 禁用 id：列表里展示置灰、不可勾选、不计入已选数（典型：邀请入群时已在群成员） */
-    disabledIds?: number[]
+    disabledIds?: string[]
     /** 隐藏 id：不展示（hide > locked > disabled） */
-    hideIds?: number[]
+    hideIds?: string[]
     /** 已选数上限；不传或 <=0 时不限 */
     maxSize?: number
   }>(),
@@ -158,7 +158,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  'update:selectedIds': [value: number[]]
+  'update:selectedIds': [value: string[]]
 }>()
 
 const message = useMessage()
@@ -167,7 +167,7 @@ const keyword = ref('')
 
 /** id → friend 映射，已选反查 / 三态判定共用，避免每次 O(N) 扫 */
 const byId = computed(() => {
-  const map = new Map<number, FriendLite>()
+  const map = new Map<string, FriendLite>()
   for (const friend of props.friends) {
     map.set(friend.id, friend)
   }

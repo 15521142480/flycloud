@@ -5,8 +5,8 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 // IM 好友申请 Response VO
 export interface ImFriendRequestRespVO {
   id: number // 申请编号
-  fromUserId: number // 发起方用户编号
-  toUserId: number // 接收方用户编号
+  fromUserId: string // 发起方用户编号
+  toUserId: string // 接收方用户编号
   handleResult: number // 处理结果；0=未处理；1=同意；2=拒绝
   applyContent?: string // 申请理由
   handleContent?: string // 处理理由（接收方拒绝时可选填）
@@ -23,7 +23,7 @@ export interface ImFriendRequestRespVO {
 
 // IM 好友申请发起 Request VO
 export interface ImFriendRequestApplyReqVO {
-  toUserId: number // 接收方用户编号
+  toUserId: string // 接收方用户编号
   applyContent?: string // 申请理由
   displayName?: string // 对接收方的备注（仅自己可见）
   addSource?: number // 添加来源

@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface NotifyMessageVO {
   id: number
-  userId: number
+  userId: string
   userType: number
   templateId: number
   templateCode: string

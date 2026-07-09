@@ -13,7 +13,7 @@ export interface NotifyTemplateVO {
 }
 
 export interface NotifySendReqVO {
-  userId: number | null
+  userId: string | null
   templateCode: string
   templateParams: Map<String, Object>
 }

@@ -54,12 +54,12 @@ const groupStore = useGroupStore()
 
 const visible = ref(false)
 const submitting = ref(false)
-const lockedIds = ref<number[]>([])
-const selectedIds = ref<number[]>([])
+const lockedIds = ref<string[]>([])
+const selectedIds = ref<string[]>([])
 
 defineExpose({
   /** 打开发起群聊弹窗：reset → 灌参 → visible=true */
-  open(opts?: { lockedIds?: number[] }) {
+  open(opts?: { lockedIds?: string[] }) {
     lockedIds.value = opts?.lockedIds ? [...opts.lockedIds] : []
     selectedIds.value = []
     submitting.value = false
@@ -75,7 +75,7 @@ const canSubmit = computed(() => selectedIds.value.length > 0)
 
 /** 拿到所有要进群的好友（locked + selected）；建群默认群名按这批人生成 */
 function resolveMembersToInvite(): FriendLite[] {
-  const seen = new Set<number>()
+  const seen = new Set<string>()
   const result: FriendLite[] = []
   const byId = new Map(friends.value.map((f) => [f.id, f]))
   for (const id of lockedIds.value) {

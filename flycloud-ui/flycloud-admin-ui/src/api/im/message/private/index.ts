@@ -6,8 +6,8 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImPrivateMessageRespVO {
   id: number // 消息编号
   clientMessageId: string // 客户端消息编号
-  senderId: number // 发送人编号
-  receiverId: number // 接收人编号
+  senderId: string // 发送人编号
+  receiverId: string // 接收人编号
   type: number // 内容类型
   content: string // 消息内容（JSON 格式）
   status: number // 消息状态（正常 / 已撤回）
@@ -18,7 +18,7 @@ export interface ImPrivateMessageRespVO {
 // 私聊消息发送 Request VO
 export interface ImPrivateMessageSendReqVO {
   clientMessageId: string // 客户端消息编号
-  receiverId: number // 接收人编号
+  receiverId: string // 接收人编号
   type: number // 内容类型
   content: string // 消息内容（JSON 格式）
   receipt?: boolean // 是否需要回执；不传后端默认 true（普通私聊用户消息）
@@ -26,7 +26,7 @@ export interface ImPrivateMessageSendReqVO {
 
 // 私聊历史消息列表 Request VO
 export interface ImPrivateMessageListReqVO {
-  receiverId: number | string // 接收人编号（对方）
+  receiverId: string // 接收人编号（对方）
   maxId?: number | string // 起始消息编号（不含），为空则从最新消息开始
   limit: number // 拉取数量（1 ~ 200）
 }
@@ -60,7 +60,7 @@ export const getPrivateMessageList = (params: ImPrivateMessageListReqVO) => {
 }
 
 // 标记私聊消息已读
-export const readPrivateMessages = (receiverId: number | string, messageId: number | string) => {
+export const readPrivateMessages = (receiverId: string, messageId: number | string) => {
   return request.put<boolean>({
     url: `/${SYS_BASE_URL}/im/message/private/read`,
     params: { receiverId, messageId }

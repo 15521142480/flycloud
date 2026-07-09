@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface PermissionAssignUserRoleReqVO {
-  userId: number
+  userId: string
   roleIds: number[]
 }
 
@@ -34,7 +34,7 @@ export const assignRoleDataScope = async (data: PermissionAssignRoleDataScopeReq
 }
 
 // 查询用户拥有的角色数组
-export const getUserRoleList = async (userId: number) => {
+export const getUserRoleList = async (userId: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/userRole/getRoleIdsByUserId/` + userId })
 }
 

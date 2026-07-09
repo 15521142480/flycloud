@@ -242,7 +242,7 @@ function handleSelectRequest(request: FriendRequest) {
 }
 
 /** 申请详情里点「发消息」：直接进与对端的私聊会话 */
-function handleChatPeer(peerUserId: number) {
+function handleChatPeer(peerUserId: string) {
   const friend = friendStore.getFriend(peerUserId)
   const conversationName = friend ? getFriendDisplayName(friend) : String(peerUserId)
   conversationStore.openConversation(

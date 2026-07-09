@@ -5,7 +5,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 export interface BargainHelpVO {
   id: number
   record: number
-  userId: number
+  userId: string
   reducePrice: number
   endTime: Date
 }

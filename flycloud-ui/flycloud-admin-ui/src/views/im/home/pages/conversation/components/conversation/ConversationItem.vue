@@ -10,7 +10,7 @@
     <div class="relative">
       <GroupAvatar
         v-if="isGroup"
-        :group-id="conversation.targetId"
+        :group-id="Number(conversation.targetId)"
         :url="conversation.avatar"
         :name="conversation.name"
         :size="40"
@@ -233,7 +233,7 @@ const requestText = computed(() => {
     return ''
   }
   const count =
-    groupRequestStore.getUnhandledGroupRequestCountMap.get(props.conversation.targetId) ?? 0
+    groupRequestStore.getUnhandledGroupRequestCountMap.get(Number(props.conversation.targetId)) ?? 0
   return count > 0 ? `[${count}条进群申请]` : ''
 })
 
@@ -258,8 +258,8 @@ function handleMuted() {
   conversationStore.setConversationSilent(type, targetId, next)
   const sync =
     type === ImConversationType.PRIVATE
-      ? friendStore.setFriendSilent(targetId, next)
-      : groupStore.setGroupSilent(targetId, next)
+      ? friendStore.setFriendSilent(String(targetId), next)
+      : groupStore.setGroupSilent(Number(targetId), next)
   sync.catch((e) => {
     console.error('[IM] 切换免打扰失败', e)
     conversationStore.setConversationSilent(type, targetId, !next)

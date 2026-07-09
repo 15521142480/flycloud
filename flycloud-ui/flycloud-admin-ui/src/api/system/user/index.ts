@@ -105,8 +105,8 @@ export const updateUser = (data: UserVO) => {
 }
 
 // 删除用户
-export const deleteUser = (id: number) => {
-  const ids: number[] = []
+export const deleteUser = (id: string) => {
+  const ids: string[] = []
   ids.push(id)
   return request.delete({ url: `/${SYS_BASE_URL}/user/delete/` + ids })
 }
@@ -122,7 +122,7 @@ export const importUserTemplate = () => {
 }
 
 // 用户密码重置
-export const resetUserPwd = async (id: number, password: string) => {
+export const resetUserPwd = async (id: string, password: string) => {
   const data = {
     id: id,
     password: ''
@@ -137,7 +137,7 @@ export const resetUserPwd = async (id: number, password: string) => {
 }
 
 // 用户状态修改
-export const updateUserStatus = (id: number, status: number) => {
+export const updateUserStatus = (id: string, status: number) => {
   // const data = {
   //   id,
   //   status

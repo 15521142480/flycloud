@@ -57,8 +57,8 @@ const visible = ref(false)
 const submitting = ref(false)
 const groupId = ref(0)
 const members = ref<GroupMemberLite[]>([])
-const hideIds = ref<number[]>([])
-const selectedIds = ref<number[]>([])
+const hideIds = ref<string[]>([])
+const selectedIds = ref<string[]>([])
 
 defineExpose({
   /** 打开转让群主弹窗：reset → 灌参 → visible=true */
@@ -66,7 +66,7 @@ defineExpose({
     groupId: number
     members: GroupMemberLite[]
     /** 隐藏 userId：当前用户（不能转给自己） */
-    hideIds?: number[]
+    hideIds?: string[]
   }) {
     groupId.value = opts.groupId
     members.value = opts.members

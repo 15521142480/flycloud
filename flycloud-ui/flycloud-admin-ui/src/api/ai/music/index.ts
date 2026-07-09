@@ -3,7 +3,7 @@ import request from '@/config/axios'
 // AI 音乐 VO
 export interface MusicVO {
   id: number // 编号
-  userId: number // 用户编号
+  userId: string // 用户编号
   title: string // 音乐名称
   lyric: string // 歌词
   imageUrl: string // 图片地址

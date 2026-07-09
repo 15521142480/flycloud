@@ -49,7 +49,7 @@ const { success: successMessage } = useMessage()
 const visible = ref(false)
 const loading = ref(false)
 const groupId = ref(0)
-const userId = ref(0)
+const userId = ref('')
 const memberName = ref('')
 const selected = ref(600) // 默认 10 分钟
 
@@ -64,7 +64,7 @@ const presets = [
 ]
 
 /** 打开弹窗 */
-function open(gid: number, uid: number, name: string) {
+function open(gid: number, uid: string, name: string) {
   groupId.value = gid
   userId.value = uid
   memberName.value = name

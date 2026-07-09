@@ -16,13 +16,13 @@ export interface DeliveryPickUpStoreVO {
   latitude?: number
   longitude?: number
   status: number
-  verifyUserIds?: number[] // 绑定用户编号组数
+  verifyUserIds?: string[] // 绑定用户编号组数
   verifyUsers?: UserVO[] // 绑定用户列表
 }
 
 export interface DeliveryPickUpStoreBindReqVO {
   id: number
-  verifyUserIds: number[]
+  verifyUserIds: string[]
 }
 
 // 查询自提门店列表

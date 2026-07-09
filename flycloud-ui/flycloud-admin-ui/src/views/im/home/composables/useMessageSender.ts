@@ -27,9 +27,9 @@ import { getCurrentUserId } from '@/utils/auth'
 
 /** 非文本消息的扩展选项（通用） */
 interface SendExtOptions {
-  atUserIds?: number[] // 群聊 @ 的用户编号列表
+  atUserIds?: string[] // 群聊 @ 的用户编号列表
   receipt?: boolean // 是否需要群回执（默认 false）
-  targetId?: number // 覆盖默认的 targetId
+  targetId?: number | string // 覆盖默认的 targetId
   /**
    * 显式指定目标会话（转发 / 名片推荐场景）
    *
@@ -65,9 +65,9 @@ export const useMessageSender = () => {
   const buildLocalMessage = (opts: {
     clientMessageId: string
     content: string
-    targetId: number
+    targetId: number | string
     type: number
-    atUserIds?: number[]
+    atUserIds?: string[]
   }): Message => {
     return {
       clientMessageId: opts.clientMessageId,
@@ -139,7 +139,7 @@ export const useMessageSender = () => {
       if (conversation.type === ImConversationType.PRIVATE) {
         const data = await apiSendPrivateMessage({
           clientMessageId,
-          receiverId: realTarget,
+          receiverId: String(realTarget),
           type,
           content
         })
@@ -155,7 +155,7 @@ export const useMessageSender = () => {
       } else if (conversation.type === ImConversationType.GROUP) {
         const data = await apiSendGroupMessage({
           clientMessageId,
-          groupId: realTarget,
+          groupId: Number(realTarget),
           type,
           content,
           atUserIds: options?.atUserIds,
@@ -266,11 +266,11 @@ export const useMessageSender = () => {
     }
     try {
       if (isPrivate) {
-        await apiReadPrivateMessages(conversation.targetId, maxMessageId)
+        await apiReadPrivateMessages(String(conversation.targetId), maxMessageId)
       } else if (isGroup) {
-        await apiReadGroupMessages(conversation.targetId, maxMessageId)
+        await apiReadGroupMessages(Number(conversation.targetId), maxMessageId)
       } else {
-        await apiReadChannelMessages(conversation.targetId, maxMessageId)
+        await apiReadChannelMessages(Number(conversation.targetId), maxMessageId)
       }
       conversationStore.markConversationReadReported(
         conversation.type,
@@ -293,7 +293,7 @@ export const useMessageSender = () => {
    *    把对方 maxReadId 同步到本地消息 status，避免对方明明读了、本端却仍显示未读
    * 2. 仅私聊使用：群聊已读位置在每条消息的 readCount / receiptStatus 字段，离线拉取自带回
    */
-  const syncPrivateReadStatus = async (peerId: number) => {
+  const syncPrivateReadStatus = async (peerId: string) => {
     if (!peerId) {
       return
     }

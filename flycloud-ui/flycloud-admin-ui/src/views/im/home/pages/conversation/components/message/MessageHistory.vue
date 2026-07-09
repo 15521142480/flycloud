@@ -339,8 +339,8 @@ function senderDisplayNameOf(message: Message): string {
 }
 
 /** 群广播事件 segments 的成员名解析器；按当前会话 targetId 走 getSenderDisplayName */
-function resolveGroupMemberName(message: Message): (userId: number) => string {
-  return (id: number) => getSenderDisplayName(id, ImConversationType.GROUP, message.targetId ?? 0)
+function resolveGroupMemberName(message: Message): (userId: string) => string {
+  return (id: string) => getSenderDisplayName(id, ImConversationType.GROUP, message.targetId ?? 0)
 }
 
 /** 单条消息的发送人真实昵称：给 UserAvatar 色卡 / alt 用，永远是 nickname 不掺备注 */
@@ -398,7 +398,7 @@ type ActiveFilter =
   | { kind: 'image' }
   | { kind: 'voice' }
   | { kind: 'date'; day: string } // YYYY-MM-DD
-  | { kind: 'member'; userId: number; nickname: string }
+  | { kind: 'member'; userId: string; nickname: string }
 
 const keyword = ref('')
 const activeFilter = ref<ActiveFilter | null>(null)
@@ -579,7 +579,7 @@ async function loadEarlier() {
     let pageLength = 0
     if (requestedIsGroup) {
       const list = await apiGetGroupMessageList({
-        groupId: requestedTargetId,
+        groupId: Number(requestedTargetId),
         maxId,
         limit: HISTORY_PAGE_SIZE
       })
@@ -587,7 +587,7 @@ async function loadEarlier() {
       pageLength = list?.length ?? 0
     } else {
       const list = await apiGetPrivateMessageList({
-        receiverId: requestedTargetId,
+        receiverId: String(requestedTargetId),
         maxId,
         limit: HISTORY_PAGE_SIZE
       })

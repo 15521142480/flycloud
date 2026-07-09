@@ -36,7 +36,7 @@ let storeEpoch = 0
  * key 必须带 userId——账号切换时 A 的请求不能被 B 复用，否则 IIFE 内部的 saveGroupMemberList 会把 A 的成员数据写进 B 的 IDB 桶
  */
 const pendingMemberFetches = new Map<string, Promise<GroupMember[]>>()
-const pendingMemberKey = (userId: number, groupId: number) => `${userId}:${groupId}`
+const pendingMemberKey = (userId: string, groupId: number) => `${userId}:${groupId}`
 
 /**
  * fetchGroupMember 单成员并发去重表：同 (groupId, memberUserId) 同时进的请求共用一个 Promise
@@ -45,7 +45,7 @@ const pendingMemberKey = (userId: number, groupId: number) => `${userId}:${group
  */
 const pendingSingleMemberFetches = new Map<string, Promise<GroupMember | null>>()
 
-const pendingSingleMemberKey = (userId: number, groupId: number, memberUserId: number) =>
+const pendingSingleMemberKey = (userId: string, groupId: number, memberUserId: string) =>
   `${userId}:${groupId}:${memberUserId}`
 
 /** 构建群 IndexedDB 记录 */
@@ -93,14 +93,14 @@ export const useGroupStore = defineStore('imGroupStore', {
   getters: {
     getGroup:
       (state) =>
-      (id: number): Group | undefined => {
-        return state.groups.find((g) => g.id === id)
+      (id: number | string): Group | undefined => {
+        return state.groups.find((g) => String(g.id) === String(id))
       },
     /** 群成员 userId → GroupMember 索引；调用方按 userId 反查昵称 / 头像等元信息 */
     getGroupMemberMap:
       (state) =>
-      (id: number): Map<number, GroupMember> => {
-        const group = state.groups.find((g) => g.id === id)
+      (id: number | string): Map<string, GroupMember> => {
+        const group = state.groups.find((g) => String(g.id) === String(id))
         return new Map((group?.members || []).map((m) => [m.userId, m]))
       }
   },
@@ -433,7 +433,7 @@ export const useGroupStore = defineStore('imGroupStore', {
      * 跟 fetchGroupMemberList 区别：只拉这一个成员，不动 me 的 silent / groupRemark（不是 me 的话拿不到）；
      * 命中时把成员 upsert 进 group.members 数组并落 IDB，让后续渲染能用 displayUserName
      */
-    fetchGroupMember(groupId: number, memberUserId: number): Promise<GroupMember | null> {
+    fetchGroupMember(groupId: number, memberUserId: string): Promise<GroupMember | null> {
       // in-memory 命中直接返回，不打接口
       const cached = this.getGroup(groupId)?.members?.find((m) => m.userId === memberUserId)
       if (cached) {
@@ -543,7 +543,7 @@ export const useGroupStore = defineStore('imGroupStore', {
     },
 
     /** 批量更新群成员角色；本地不命中则忽略，等 fetchGroupMemberList 兜底 */
-    updateGroupMemberRoleList(groupId: number, userIds: number[], role: number) {
+    updateGroupMemberRoleList(groupId: number, userIds: string[], role: number) {
       const group = this.getGroup(groupId)
       if (!group?.members?.length) {
         return
@@ -566,7 +566,7 @@ export const useGroupStore = defineStore('imGroupStore', {
     },
 
     /** 群主转让：群表 ownerUserId 改为新值；旧群主 role → NORMAL；新群主 role → OWNER */
-    transferGroupOwner(groupId: number, oldOwnerId: number, newOwnerId: number) {
+    transferGroupOwner(groupId: number, oldOwnerId: string, newOwnerId: string) {
       const group = this.getGroup(groupId)
       if (!group) {
         return
@@ -580,7 +580,7 @@ export const useGroupStore = defineStore('imGroupStore', {
     },
 
     /** 本地剔除群成员（GROUP_MEMBER_QUIT / KICK 事件）；不命中则等 fetchGroupMemberList 兜底 */
-    removeLocalGroupMemberList(groupId: number, userIds: number[]) {
+    removeLocalGroupMemberList(groupId: number, userIds: string[]) {
       const group = this.getGroup(groupId)
       if (!group?.members?.length || !userIds.length) {
         return
@@ -596,7 +596,7 @@ export const useGroupStore = defineStore('imGroupStore', {
     },
 
     /** 本地更新群成员的 status（自己退群 / 被踢的本地预置；让 isMember 立即收敛到 stranger，不依赖 removeGroup 的整群移除） */
-    updateGroupMemberStatus(groupId: number, userId: number, status: number) {
+    updateGroupMemberStatus(groupId: number, userId: string, status: number) {
       const group = this.getGroup(groupId)
       const member = group?.members?.find((m) => m.userId === userId)
       if (!member || member.status === status) {
@@ -607,7 +607,7 @@ export const useGroupStore = defineStore('imGroupStore', {
     },
 
     /** 本地更新群成员的 displayUserName（GROUP_MEMBER_NICKNAME_UPDATE 事件）；不命中则等 fetchGroupMemberList 兜底 */
-    updateGroupMemberDisplayUserName(groupId: number, userId: number, displayUserName: string) {
+    updateGroupMemberDisplayUserName(groupId: number, userId: string, displayUserName: string) {
       const group = this.getGroup(groupId)
       const member = group?.members?.find((m) => m.userId === userId)
       if (!member || member.displayUserName === displayUserName) {

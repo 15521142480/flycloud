@@ -5,10 +5,10 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 export interface KeFuMessageRespVO {
   id: number // 编号
   conversationId: number // 会话编号
-  senderId: number // 发送人编号
+  senderId: string // 发送人编号
   senderAvatar: string // 发送人头像
   senderType: number // 发送人类型
-  receiverId: number // 接收人编号
+  receiverId: string // 接收人编号
   receiverType: number // 接收人类型
   contentType: number // 消息类型
   content: string // 消息

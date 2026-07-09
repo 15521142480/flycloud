@@ -13,7 +13,7 @@ export interface WriteVO {
   format: number // 格式
   tone: number // 语气
   language: number // 语言
-  userId?: number // 用户编号
+  userId?: string // 用户编号
   platform?: string // 平台
   model?: string // 模型
   generatedContent?: string // 生成的内容
@@ -22,7 +22,7 @@ export interface WriteVO {
 }
 
 export interface AiWritePageReqVO extends PageParam {
-  userId?: number // 用户编号
+  userId?: string // 用户编号
   type?: AiWriteTypeEnum //  写作类型
   platform?: string // 平台
   createTime?: [string, string] // 创建时间
@@ -30,7 +30,7 @@ export interface AiWritePageReqVO extends PageParam {
 
 export interface AiWriteRespVo {
   id: number
-  userId: number
+  userId: string
   type: number
   platform: string
   model: string

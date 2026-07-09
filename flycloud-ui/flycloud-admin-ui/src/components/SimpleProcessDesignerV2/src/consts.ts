@@ -215,7 +215,7 @@ export type AssignEmptyHandler = {
   // 审批人为空的处理类型
   type: AssignEmptyHandlerType
   // 指定用户的编号数组
-  userIds?: number[]
+  userIds?: string[]
 }
 
 // 审批拒绝类型枚举

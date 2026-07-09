@@ -7,7 +7,7 @@ export interface ImManagerRtcCallVO {
   room: string
   conversationType: number
   mediaType: number
-  inviterUserId: number
+  inviterUserId: string
   inviterNickname?: string
   groupId?: number
   groupName?: string
@@ -22,7 +22,7 @@ export interface ImManagerRtcCallVO {
 export interface ImManagerRtcParticipantVO {
   id: number
   callId: number
-  userId: number
+  userId: string
   userNickname?: string
   role: number
   status: number

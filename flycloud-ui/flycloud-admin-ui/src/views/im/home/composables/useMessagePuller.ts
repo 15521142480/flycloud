@@ -121,7 +121,7 @@ export const useMessagePuller = () => {
       status: ImMessageStatus.NORMAL, // 频道无撤回，恒为正常
       receiptStatus: message.receiptStatus, // 频道已读态：DONE 已读 / PENDING 未读
       sendTime: new Date(message.sendTime).getTime(),
-      senderId: 0, // 系统下发，无发送人
+      senderId: '0', // 系统下发，无发送人
       targetId: message.channelId, // 会话归属到频道编号
       selfSend: false,
       materialId: message.materialId // 详情页拉富文本用
@@ -169,7 +169,7 @@ export const useMessagePuller = () => {
     conversationType: number,
     startMinId: number,
     startEpoch: number,
-    startUserId: number,
+    startUserId: string,
     signal: AbortSignal
   ) => {
     // 私聊 / 群聊 / 频道各自一套接口；按 conversationType 分支调度。翻页机制（minId 游标 / 空页判断 / 防死翻）交给 runMinIdPull

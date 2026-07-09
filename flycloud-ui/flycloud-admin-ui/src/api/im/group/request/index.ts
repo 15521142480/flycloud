@@ -6,12 +6,12 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImGroupRequestRespVO {
   id: number // 申请编号
   groupId: number // 群编号
-  userId: number // 申请人 / 被邀请人用户编号
-  inviterUserId?: number // 邀请人；NULL 表示用户主动申请
+  userId: string // 申请人 / 被邀请人用户编号
+  inviterUserId?: string // 邀请人；NULL 表示用户主动申请
   handleResult: number // 处理结果；0=未处理；1=同意；2=拒绝
   applyContent?: string // 申请理由
   handleContent?: string // 处理理由（拒绝时可选填）
-  handleUserId?: number // 处理人用户编号
+  handleUserId?: string // 处理人用户编号
   addSource?: number // 加入来源；参见 ImGroupAddSourceEnum
   handleTime?: string // 处理时间
   createTime: string // 申请创建时间

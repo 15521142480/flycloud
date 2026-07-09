@@ -99,7 +99,7 @@ import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'UserCouponList' })
 
-const { userId }: { userId: number } = defineProps({
+const { userId }: { userId: string } = defineProps({
   userId: {
     type: Number,
     required: true

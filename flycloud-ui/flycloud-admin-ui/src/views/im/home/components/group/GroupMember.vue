@@ -36,7 +36,7 @@ defineOptions({ name: 'ImGroupMember' })
 
 /** 群成员结构（跨多处使用，放这里做窄接口；独立于 types/index.ts） */
 export interface GroupMemberLite {
-  userId: number // 用户编号；特殊值见 IM_AT_ALL_USER_ID（@ 全体成员）
+  userId: string // 用户编号；特殊值见 IM_AT_ALL_USER_ID（@ 全体成员）
   nickname: string // 真实昵称：永远是用户的 nickname，专给 UserAvatar 色卡用，保证同一个人色卡首字母在所有界面一致
   showName: string // 展示昵称：好友备注 > 用户群备注（displayUserName） > 真实昵称（nickname），给"显示给用户看"的位置用（行内文字、@候选标签等）
   avatar?: string

@@ -4,7 +4,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface KeFuConversationRespVO {
   id: number // 编号
-  userId: number // 会话所属用户
+  userId: string // 会话所属用户
   userAvatar: string // 会话所属用户头像
   userNickname: string // 会话所属用户昵称
   lastMessageTime: Date // 最后聊天时间

@@ -247,7 +247,7 @@ function handleMutedChange(value: boolean | string | number) {
   if (type !== ImConversationType.PRIVATE) {
     return
   }
-  friendStore.setFriendSilent(targetId, next).catch((error) => {
+  friendStore.setFriendSilent(String(targetId), next).catch((error) => {
     console.error('[IM ConversationPrivateSide] 切换免打扰失败', { targetId }, error)
     conversationStore.setConversationSilent(type, targetId, !next)
   })

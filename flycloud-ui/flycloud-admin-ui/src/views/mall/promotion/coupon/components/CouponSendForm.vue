@@ -111,7 +111,7 @@ const queryParams = ref({
 }) // 查询参数
 const queryFormRef = ref() // 搜索的表单
 // 领取人的编号列表
-let userIds: number[] = []
+let userIds: string[] = []
 
 /** 打开弹窗 */
 const open = (ids: number[]) => {

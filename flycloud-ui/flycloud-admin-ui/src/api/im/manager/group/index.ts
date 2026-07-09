@@ -7,7 +7,7 @@ export interface ImManagerGroupVO {
   name: string
   avatar?: string
   notice?: string
-  ownerUserId: number
+  ownerUserId: string
   ownerNickname?: string
   memberCount?: number
   status: number
@@ -20,7 +20,7 @@ export interface ImManagerGroupVO {
 }
 
 export interface ImManagerGroupMemberVO {
-  userId: number
+  userId: string
   nickname?: string
   avatar?: string
   displayUserName?: string

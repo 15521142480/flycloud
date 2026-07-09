@@ -312,8 +312,8 @@ function placeCaretAtEnd(el: HTMLElement) {
  *
  * atUserIds 走 Set 去重：用户 @ 张三两次时 atUserIds 只出现一次；trim 末尾空白
  */
-function collectFromEditor(root: HTMLElement): { text: string; atUserIds: number[] } {
-  const userIds: number[] = []
+function collectFromEditor(root: HTMLElement): { text: string; atUserIds: string[] } {
+  const userIds: string[] = []
   let text = ''
 
   function walk(node: Node) {
@@ -332,8 +332,8 @@ function collectFromEditor(root: HTMLElement): { text: string; atUserIds: number
     }
     if (tag === 'span' && el.dataset.id) {
       text += el.textContent || ''
-      const id = Number(el.dataset.id)
-      if (!Number.isNaN(id)) {
+      const id = el.dataset.id
+      if (id) {
         userIds.push(id)
       }
       return

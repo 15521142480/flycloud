@@ -135,7 +135,7 @@ const target = ref<CardTarget | null>(null)
 /** 当前视图：默认会话选择，「创建聊天」入口切到好友选择 */
 const view = ref<'conversation' | 'contact'>('conversation')
 const selectedKeys = ref<string[]>([])
-const selectedFriendIds = ref<number[]>([])
+const selectedFriendIds = ref<string[]>([])
 const leaveMessage = ref('')
 const sending = ref(false)
 /** 表情面板显隐：右侧 smile icon 切换 */

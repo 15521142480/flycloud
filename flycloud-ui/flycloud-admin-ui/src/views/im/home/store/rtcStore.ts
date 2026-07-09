@@ -28,13 +28,13 @@ export interface ImRtcCallNotification {
   // INVITE 专属：被叫接通需要的 LiveKit 连接参数 + 主叫展示信息
   livekitUrl?: string
   token?: string
-  inviterUserId?: number
+  inviterUserId?: string
   inviterNickname?: string
   inviterAvatar?: string
   // INVITE 专属：本次被邀请人列表；包含收件人自身，前端来电小条按需过滤展示「邀请的其他人」
-  inviteeIds?: number[]
+  inviteeIds?: string[]
   // REJECT 专属：操作者展示信息（其它子类型走 RTC_CALL_END）
-  operatorUserId?: number
+  operatorUserId?: string
   operatorNickname?: string
   operatorAvatar?: string
 }
@@ -42,18 +42,18 @@ export interface ImRtcCallNotification {
 // RTC_PARTICIPANT_CONNECTED 通话参与者加入载荷（LiveKit webhook 转推）
 export interface ImRtcParticipantConnectedNotification {
   room: string
-  userId: number
+  userId: string
   conversationType: number
   groupId?: number
   // 群聊场景非邀请成员首次填充胶囊条用
   mediaType?: number
-  inviterUserId?: number
+  inviterUserId?: string
 }
 
 // RTC_PARTICIPANT_DISCONNECTED 通话参与者离开载荷（LiveKit webhook 转推）
 export interface ImRtcParticipantDisconnectedNotification {
   room: string
-  userId: number
+  userId: string
   conversationType: number
   groupId?: number
 }
@@ -66,7 +66,7 @@ export interface ImRtcCallEndNotification {
   endReason: ImRtcCallEndReasonValue
   durationSeconds?: number
   // 操作者聚合字段：HANGUP/CANCEL/REJECT 触发人；webhook 兜底为 null
-  operatorUserId?: number
+  operatorUserId?: string
   operatorNickname?: string
   operatorAvatar?: string
 }
@@ -116,7 +116,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   })
 
   /** 私聊场景对端 userId：自己是主叫则取首个 invitee，否则取 inviter */
-  function resolvePrivatePeerUserId(c: ImRtcCallRespVO): number | undefined {
+  function resolvePrivatePeerUserId(c: ImRtcCallRespVO): string | undefined {
     const myId = getCurrentUserId()
     return c.inviterId === myId ? c.inviteeIds?.[0] : c.inviterId
   }
@@ -128,15 +128,15 @@ export const useRtcStore = defineStore('imRtc', () => {
    * 已退出 / 已拒绝的用户编号集合；群通话场景内 pending 占位渲染时排除；
    * 来源：参与者离开通知 + 群通话单人拒绝的 operatorUserId；通话结束（reset）时清空
    */
-  const leftUserIds = ref<Set<number>>(new Set())
+  const leftUserIds = ref<Set<string>>(new Set())
 
   /** 是否已记录某 userId 已退出 / 拒绝 */
-  function isUserLeft(userId: number): boolean {
+  function isUserLeft(userId: string): boolean {
     return leftUserIds.value.has(userId)
   }
 
   /** 标记某个 userId 已退出 / 拒绝；用于 pending 占位渲染时排除 */
-  function markUserLeft(userId: number) {
+  function markUserLeft(userId: string) {
     if (!userId || leftUserIds.value.has(userId)) {
       return
     }
@@ -178,7 +178,7 @@ export const useRtcStore = defineStore('imRtc', () => {
       room: payload.room,
       groupId: payload.groupId,
       mediaType: payload.mediaType,
-      inviterId: payload.inviterUserId ?? 0,
+      inviterId: payload.inviterUserId ?? '',
       joinedUserIds: payload.inviterUserId ? [payload.inviterUserId] : [],
       inviteeIds: payload.inviteeIds
     })
@@ -205,9 +205,9 @@ export const useRtcStore = defineStore('imRtc', () => {
     room: string
     groupId?: number
     mediaType: number
-    inviterId: number
-    joinedUserIds?: number[]
-    inviteeIds?: number[]
+    inviterId: string
+    joinedUserIds?: string[]
+    inviteeIds?: string[]
   }) {
     if (input.conversationType !== ImConversationType.GROUP || !input.groupId) {
       return
@@ -233,7 +233,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 通话中追加被邀请人；让 participants 网格出现 pending 占位、胶囊条同步更新 */
-  function appendInvitees(userIds: number[]) {
+  function appendInvitees(userIds: string[]) {
     if (!call.value || userIds.length === 0) {
       return
     }
@@ -337,7 +337,7 @@ export const useRtcStore = defineStore('imRtc', () => {
         room: payload.room,
         groupId: payload.groupId,
         mediaType: payload.mediaType ?? 0,
-        inviterId: payload.inviterUserId ?? 0,
+        inviterId: payload.inviterUserId ?? '',
         joinedUserIds: [payload.userId],
         inviteeIds: []
       })
@@ -384,7 +384,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 从指定群活跃通话的 joined / pending 列表里同步移除某用户；用于 disconnect / reject 让胶囊条不再展示 */
-  function dropFromGroupActiveCall(groupId: number, room: string, userId: number) {
+  function dropFromGroupActiveCall(groupId: number, room: string, userId: string) {
     const existing = groupActiveCalls.value.get(groupId)
     if (!existing || existing.room !== room) {
       return

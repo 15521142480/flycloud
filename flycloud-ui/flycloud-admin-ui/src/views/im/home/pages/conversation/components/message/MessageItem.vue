@@ -160,7 +160,7 @@
               <MessageReadStatus
                 v-else-if="showGroupReadStatus"
                 :message="message"
-                :group-id="conversationStore.activeConversation?.targetId || 0"
+                :group-id="Number(conversationStore.activeConversation?.targetId || 0)"
                 :group-members="groupMembersForReadStatus"
                 class="text-12px whitespace-nowrap text-[var(--el-text-color-secondary)]"
               />
@@ -282,7 +282,7 @@ const emit = defineEmits<{
   /** 引用块点击 → MessagePanel 滚定位 + 高亮 */
   locate: [messageId: number]
   /** 禁言：需要父组件打开时长选择弹窗 */
-  mute: [groupId: number, userId: number, displayName: string]
+  mute: [groupId: number, userId: string, displayName: string]
   /** 数据变更后刷新群信息 */
   reload: []
 }>()
@@ -366,7 +366,7 @@ const isGroupNotificationMessage = computed(() => isGroupNotification(props.mess
 
 /** 群广播事件 segments */
 const groupNotificationSegments = computed(() =>
-  resolveGroupNotificationSegments(props.message, (id: number) =>
+  resolveGroupNotificationSegments(props.message, (id: string) =>
     getSenderDisplayName(id, ImConversationType.GROUP, props.message.targetId ?? 0)
   )
 )
@@ -445,7 +445,7 @@ function handleCardClick(card: CardMessage, e: MouseEvent) {
   }
   if (card.targetType === ImConversationType.PRIVATE) {
     uiStore.openUserInfoCardAtEvent(
-      { id: card.targetId, nickname: card.name, avatar: card.avatar },
+      { id: String(card.targetId), nickname: card.name, avatar: card.avatar },
       e,
       ImFriendAddSource.CARD
     )
@@ -454,7 +454,7 @@ function handleCardClick(card: CardMessage, e: MouseEvent) {
   if (card.targetType === ImConversationType.GROUP) {
     uiStore.openGroupInfoCardAtEvent(
       {
-        id: card.targetId,
+        id: Number(card.targetId),
         name: card.name,
         showImage: card.avatar,
         memberCount: card.memberCount

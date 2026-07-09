@@ -6,14 +6,14 @@ export interface ImManagerGroupRequestVO {
   id: number
   groupId: number
   groupName?: string
-  userId: number
+  userId: string
   userNickname?: string
-  inviterUserId?: number
+  inviterUserId?: string
   inviterNickname?: string
   applyContent?: string
   addSource?: number
   handleResult: number
-  handleUserId?: number
+  handleUserId?: string
   handleNickname?: string
   handleContent?: string
   handleTime?: Date

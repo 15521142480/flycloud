@@ -10,7 +10,7 @@ import {
   type RemoteParticipant
 } from 'livekit-client'
 
-type ParticipantEventHandler = (userId: number) => void
+type ParticipantEventHandler = (userId: string) => void
 
 /** LiveKit Room 连接 / 设备 / 事件的薄封装；UI 组件只关心响应式状态 */
 export function useLiveKitRoom() {
@@ -232,10 +232,9 @@ export function useLiveKitRoom() {
     return () => participantDisconnectedHandlers.delete(cb)
   }
 
-  /** identity 是后端签 token 时塞的 userId 字符串，转 number 返回；非数字（兼容性兜底）返回 null */
-  function parseUserId(identity: string): number | null {
-    const id = Number(identity)
-    return Number.isNaN(id) ? null : id
+  /** identity 是后端签 token 时塞的 userId 字符串，保持字符串避免长整型精度丢失 */
+  function parseUserId(identity: string): string | null {
+    return identity || null
   }
 
   /**

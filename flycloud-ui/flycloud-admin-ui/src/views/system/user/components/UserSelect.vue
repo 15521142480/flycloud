@@ -28,7 +28,7 @@ defineOptions({ name: 'UserSelect' })
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number
+    modelValue?: string
     disabled?: boolean
     clearable?: boolean
     placeholder?: string
@@ -41,7 +41,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: number | undefined]
+  'update:modelValue': [value: string | undefined]
   change: [item: UserApi.UserVO | undefined]
 }>()
 
@@ -68,7 +68,7 @@ const handleFilter = (query: string) => {
 }
 
 /** 选中变化 */
-const handleChange = (val: number | undefined) => {
+const handleChange = (val: string | undefined) => {
   const item = allList.value.find((o) => o.id === val)
   emit('change', item)
 }

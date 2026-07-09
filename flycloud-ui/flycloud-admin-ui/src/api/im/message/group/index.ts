@@ -6,14 +6,14 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImGroupMessageRespVO {
   id: number // 消息编号
   clientMessageId: string // 客户端消息编号
-  senderId: number // 发送人编号
+  senderId: string // 发送人编号
   groupId: number // 群编号
   type: number // 内容类型
   content: string // 消息内容（JSON 格式）
   status: number // 消息状态
   sendTime: string // 发送时间
-  atUserIds?: number[] // @ 目标用户编号列表
-  receiverUserIds?: number[] // 定向接收用户编号列表
+  atUserIds?: string[] // @ 目标用户编号列表
+  receiverUserIds?: string[] // 定向接收用户编号列表
   receiptStatus?: number // 回执状态
   readCount?: number // 已读人数（回执消息、且发送人为当前用户时有值）
 }
@@ -24,7 +24,7 @@ export interface ImGroupMessageSendReqVO {
   groupId: number // 群编号
   type: number // 内容类型
   content: string // 消息内容（JSON 格式）
-  atUserIds?: number[] // @ 目标用户编号列表
+  atUserIds?: string[] // @ 目标用户编号列表
   receipt?: boolean // 是否需要回执
 }
 
@@ -81,7 +81,7 @@ export const getGroupReadUsers = (params: {
   groupId: number | string
   messageId: number | string
 }) => {
-  return request.get<number[]>({
+  return request.get<string[]>({
     url: `/${SYS_BASE_URL}/im/message/group/get-read-user-ids`,
     params
   })

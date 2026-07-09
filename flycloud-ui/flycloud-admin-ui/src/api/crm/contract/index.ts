@@ -10,7 +10,7 @@ export interface ContractVO {
   businessId: number
   businessName: string
   contactLastTime: Date
-  ownerUserId: number
+  ownerUserId: string
   ownerUserName?: string
   ownerUserDeptName?: string
   processInstanceId: number

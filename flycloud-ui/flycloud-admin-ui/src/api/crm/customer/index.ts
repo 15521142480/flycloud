@@ -8,7 +8,7 @@ export interface CustomerVO {
   contactLastTime: Date // 最后跟进时间
   contactLastContent: string // 最后跟进内容
   contactNextTime: Date // 下次联系时间
-  ownerUserId: number // 负责人的用户编号
+  ownerUserId: string // 负责人的用户编号
   ownerUserName?: string // 负责人的用户名称
   ownerUserDept?: string // 负责人的部门名称
   lockStatus?: boolean
@@ -119,7 +119,7 @@ export const receiveCustomer = async (ids: any[]) => {
 }
 
 // 分配公海给对应负责人
-export const distributeCustomer = async (ids: any[], ownerUserId: number) => {
+export const distributeCustomer = async (ids: any[], ownerUserId: string) => {
   return await request.put({
     url: '/crm/customer/distribute',
     data: { ids: ids, ownerUserId }

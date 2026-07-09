@@ -79,7 +79,7 @@ const messageStore = useMessageStore()
 const popVisible = ref(false)
 const activeTab = ref<'read' | 'unread'>('read')
 // 服务端返回的"已读这条消息的 userId 列表"，未读靠 visibleMembers 减去这份得到
-const readUserIds = ref<number[]>([])
+const readUserIds = ref<string[]>([])
 
 /**
  * 标签文案：

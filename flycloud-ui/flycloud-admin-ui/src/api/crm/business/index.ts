@@ -9,7 +9,7 @@ export interface BusinessVO {
   followUpStatus: boolean
   contactLastTime: Date
   contactNextTime: Date
-  ownerUserId: number
+  ownerUserId: string
   ownerUserName?: string // 负责人的用户名称
   ownerUserDept?: string // 负责人的部门名称
   statusTypeId: number

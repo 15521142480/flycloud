@@ -80,11 +80,11 @@ export const useChannelStore = defineStore('imChannelStore', {
         if (conversation.type !== ImConversationType.CHANNEL) {
           return
         }
-        const channel = indexed.get(conversation.targetId)
+        const channel = indexed.get(Number(conversation.targetId))
         if (!channel) {
           return
         }
-        conversationStore.updateConversation(ImConversationType.CHANNEL, conversation.targetId, {
+        conversationStore.updateConversation(ImConversationType.CHANNEL, Number(conversation.targetId), {
           name: channel.name,
           avatar: channel.avatar
         })

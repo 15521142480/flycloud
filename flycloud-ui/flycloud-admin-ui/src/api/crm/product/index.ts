@@ -10,7 +10,7 @@ export interface ProductVO {
   categoryId: number
   categoryName?: string
   description: string
-  ownerUserId: number
+  ownerUserId: string
 }
 
 // 查询产品列表

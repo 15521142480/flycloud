@@ -4,7 +4,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BrokerageWithdrawVO {
   id: number
-  userId: number
+  userId: string
   price: number
   feePrice: number
   totalPrice: number

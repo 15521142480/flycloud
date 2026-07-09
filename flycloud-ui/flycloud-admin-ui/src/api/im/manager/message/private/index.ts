@@ -5,9 +5,9 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImManagerPrivateMessageVO {
   id: number
   clientMessageId?: string
-  senderId: number
+  senderId: string
   senderNickname?: string
-  receiverId: number
+  receiverId: string
   receiverNickname?: string
   type: number
   content: string

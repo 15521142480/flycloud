@@ -7,7 +7,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImGroupRespVO {
   id: number // 编号
   name: string // 群名称
-  ownerUserId: number // 群主用户编号
+  ownerUserId: string // 群主用户编号
   avatar?: string // 群头像
   notice?: string // 群公告
   banned?: boolean // 是否封禁
@@ -32,7 +32,7 @@ export interface ImGroupMessagePinReqVO {
 // 群创建 Request VO
 export interface ImGroupCreateReqVO {
   name: string // 群名称
-  memberUserIds?: number[] // 初始成员用户编号列表（建群同时邀请的好友，不含创建者自己）
+  memberUserIds?: string[] // 初始成员用户编号列表（建群同时邀请的好友，不含创建者自己）
   joinApproval?: boolean // 进群是否需审批；不传默认 false 自由进群
 }
 
@@ -48,13 +48,13 @@ export interface ImGroupUpdateReqVO {
 // 添加 / 撤销群管理员 Request VO
 export interface ImGroupAdminReqVO {
   id: number // 群编号
-  userIds: number[] // 目标用户编号列表
+  userIds: string[] // 目标用户编号列表
 }
 
 // 群主转让 Request VO
 export interface ImGroupTransferOwnerReqVO {
   id: number // 群编号
-  newOwnerUserId: number // 新群主用户编号
+  newOwnerUserId: string // 新群主用户编号
 }
 
 // 全群禁言 / 取消 Request VO
@@ -66,14 +66,14 @@ export interface ImGroupMuteAllReqVO {
 // 成员禁言 Request VO
 export interface ImGroupMuteMemberReqVO {
   id: number // 群编号
-  userId: number // 被禁言的用户编号
+  userId: string // 被禁言的用户编号
   mutedSeconds: number // 禁言时长（秒），0 表示永久禁言
 }
 
 // 取消成员禁言 Request VO
 export interface ImGroupCancelMuteMemberReqVO {
   id: number // 群编号
-  userId: number // 被取消禁言的用户编号
+  userId: string // 被取消禁言的用户编号
 }
 
 // 获得当前登录用户的群列表

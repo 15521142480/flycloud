@@ -38,7 +38,7 @@ type PickerMode = 'invite' | 'add'
 
 const emit = defineEmits<{
   /** 选完点完成；携带选中的 userId 列表 */
-  success: [selectedIds: number[]]
+  success: [selectedIds: string[]]
 }>()
 
 const groupStore = useGroupStore()
@@ -50,9 +50,9 @@ const groupId = ref(0)
 /** 弹窗用途；invite=发起群通话选邀请人 / add=通话中追加成员 */
 const mode = ref<PickerMode>('invite')
 /** 置灰的 userId 列表；add 场景把已在通话内的人禁用 */
-const excludeUserIds = ref<number[]>([])
+const excludeUserIds = ref<string[]>([])
 /** 当前选中的 userId 列表；GroupMemberPickerPanel v-model 绑过来 */
-const selectedIds = ref<number[]>([])
+const selectedIds = ref<string[]>([])
 
 /** 标题；按用途切换 */
 const title = computed(() => (mode.value === 'add' ? '添加成员' : '选择成员'))
@@ -71,19 +71,19 @@ const members = computed<GroupMemberLite[]>(() => {
 })
 
 /** 自己不出现在选项里 */
-const hideIds = computed<number[]>(() => {
+const hideIds = computed<string[]>(() => {
   const myId = getCurrentUserId()
   return myId ? [myId] : []
 })
 
 /** 已在通话内的成员置灰 */
-const disabledIds = computed<number[]>(() => excludeUserIds.value)
+const disabledIds = computed<string[]>(() => excludeUserIds.value)
 
 /** 是否可提交：至少选 1 个 */
 const canSubmit = computed(() => selectedIds.value.length > 0)
 
 /** 打开弹窗；excludeUserIds 用于「添加成员」时把已在通话内的人置灰 */
-function open(opts: { groupId: number; mode?: PickerMode; excludeUserIds?: number[] }) {
+function open(opts: { groupId: number; mode?: PickerMode; excludeUserIds?: string[] }) {
   groupId.value = opts.groupId
   mode.value = opts.mode || 'invite'
   excludeUserIds.value = opts.excludeUserIds || []

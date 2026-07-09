@@ -13,11 +13,11 @@ import { computed, type ComputedRef, type Ref } from 'vue'
  * Panel 内部的 isLocked / isDisabled / isSelected 等模板判定函数仍各自维护，本 composable 只承担派生量
  */
 export function useSelectedItems<T>(
-  selectedIds: () => readonly number[],
-  lockedIds: () => readonly number[],
-  disabledIds: () => readonly number[],
-  hideIds: () => readonly number[],
-  byId: Ref<Map<number, T>> | ComputedRef<Map<number, T>>
+  selectedIds: () => readonly string[],
+  lockedIds: () => readonly string[],
+  disabledIds: () => readonly string[],
+  hideIds: () => readonly string[],
+  byId: Ref<Map<string, T>> | ComputedRef<Map<string, T>>
 ): {
   selectedCount: ComputedRef<number>
   selectedItems: ComputedRef<T[]>
@@ -26,7 +26,7 @@ export function useSelectedItems<T>(
   const disabledSet = computed(() => new Set(disabledIds()))
 
   const selectedCount = computed(() => {
-    const merged = new Set<number>()
+    const merged = new Set<string>()
     for (const id of selectedIds()) {
       if (hideSet.value.has(id) || disabledSet.value.has(id)) {
         continue
@@ -44,7 +44,7 @@ export function useSelectedItems<T>(
   })
 
   const selectedItems = computed(() => {
-    const seen = new Set<number>()
+    const seen = new Set<string>()
     const result: T[] = []
     // locked 在前；仅被 hide 过滤
     for (const id of lockedIds()) {

@@ -420,18 +420,22 @@ export function getDb(): DbClient {
 }
 
 /** 当前用户会话主键 */
-export function getClientConversationId(type: number, targetId: number): string {
+export function getClientConversationId(type: number, targetId: number | string): string {
   return `${type}:${targetId}`
 }
 
 /** 解析当前用户会话主键 */
 export function parseClientConversationId(
   clientConversationId: string
-): { type: number; targetId: number } | null {
+): { type: number; targetId: number | string } | null {
   const [typeText, targetIdText] = clientConversationId.split(':')
   const type = Number(typeText)
-  const targetId = Number(targetIdText)
-  if (!Number.isFinite(type) || !Number.isFinite(targetId) || targetId <= 0) {
+  if (!Number.isFinite(type) || !targetIdText) {
+    return null
+  }
+  const targetId =
+    type === ImConversationType.PRIVATE ? targetIdText : Number(targetIdText)
+  if (type !== ImConversationType.PRIVATE && (!Number.isFinite(targetId as number) || (targetId as number) <= 0)) {
     return null
   }
   return { type, targetId }

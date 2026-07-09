@@ -128,13 +128,13 @@ const props = withDefaults(
     /** 群成员列表 */
     members: GroupMemberLite[]
     /** 已选 userId（v-model）；按数组顺序即为点击顺序 */
-    selectedIds: number[]
+    selectedIds: string[]
     /** 锁定 userId：默认勾选、不可取消、计入已选数 */
-    lockedIds?: number[]
+    lockedIds?: string[]
     /** 禁用 userId：列表里展示置灰、不可勾选、不计入已选数 */
-    disabledIds?: number[]
+    disabledIds?: string[]
     /** 隐藏 userId：不展示（hide > locked > disabled） */
-    hideIds?: number[]
+    hideIds?: string[]
     /** 已选数上限；不传或 <=0 时不限 */
     maxSize?: number
     /** 已选区展示形态：默认 list 对齐微信新视觉 */
@@ -150,7 +150,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  'update:selectedIds': [value: number[]]
+  'update:selectedIds': [value: string[]]
 }>()
 
 const message = useMessage()
@@ -159,7 +159,7 @@ const keyword = ref('')
 
 /** userId → member 映射，已选反查 / 三态判定共用 */
 const byId = computed(() => {
-  const map = new Map<number, GroupMemberLite>()
+  const map = new Map<string, GroupMemberLite>()
   for (const member of props.members) {
     map.set(member.userId, member)
   }

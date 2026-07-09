@@ -76,9 +76,9 @@ export function getGroupDisplayName(group: Pick<Group, 'name' | 'groupRemark'>):
  * - 其他人 → 返回 undefined，让 deriveLastSenderDisplayName 走兜底拉成员
  */
 export function tryGetSenderDisplayName(
-  senderId: number,
+  senderId: string,
   conversationType: number,
-  conversationTargetId: number
+  conversationTargetId: number | string
 ): string | undefined {
   if (conversationType === ImConversationType.GROUP) {
     const group = useGroupStore().getGroup(conversationTargetId)
@@ -113,9 +113,9 @@ export function tryGetSenderDisplayName(
  * - 查不到：fallbackName || (self 走 userStore.nickname) || String(senderId)
  */
 export function getSenderDisplayName(
-  senderId: number,
+  senderId: string,
   conversationType: number,
-  conversationTargetId: number,
+  conversationTargetId: number | string,
   fallbackName?: string
 ): string {
   const real = tryGetSenderDisplayName(senderId, conversationType, conversationTargetId)
@@ -143,9 +143,9 @@ export function getSenderDisplayName(
  * 专给 UserAvatar 的 :name 用——色卡首字母 / alt 文本要保证同一个人在所有界面一致，不跟备注变
  */
 export function getSenderRealNickname(
-  senderId: number,
+  senderId: string,
   conversationType: number,
-  conversationTargetId: number
+  conversationTargetId: number | string
 ): string {
   const userStore = useUserStore()
   const selfUserId = getCurrentUserId()
@@ -186,9 +186,9 @@ export function getSenderRealNickname(
  * - 查不到：返回空串，调用方走 UserAvatar 色卡兜底
  */
 export function getSenderAvatar(
-  senderId: number,
+  senderId: string,
   conversationType: number,
-  conversationTargetId: number
+  conversationTargetId: number | string
 ): string {
   const userStore = useUserStore()
   if (senderId === getCurrentUserId()) {
@@ -211,7 +211,7 @@ export function getSenderAvatar(
  * 直接剔除会让短前缀候选（如「@张」）抢吃「@张三」的前缀，错绑到唯一的「张」用户
  */
 export function getMentionCandidates(
-  atUserIds: number[] | undefined,
+  atUserIds: string[] | undefined,
   conversation: Pick<Conversation, 'type' | 'targetId'> | null | undefined
 ): MentionCandidate[] {
   if (!atUserIds || atUserIds.length === 0) {
@@ -277,7 +277,7 @@ export function getMentionCandidates(
  * @全体成员 是广播 mention 没有具体用户实体，对齐微信 PC 不弹卡片
  */
 export function openMentionUserInfoCardAtEvent(
-  userId: number,
+  userId: string,
   event: MouseEvent,
   fallbackName?: string
 ): void {

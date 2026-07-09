@@ -13,7 +13,7 @@ export interface ReceivablePlanVO {
   customerName?: string
   contractId?: number
   contractNo?: string
-  ownerUserId: number
+  ownerUserId: string
   ownerUserName?: string
   remark: string
   creator: string // 创建人

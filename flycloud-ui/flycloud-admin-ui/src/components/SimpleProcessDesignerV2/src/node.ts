@@ -105,7 +105,7 @@ export type UserTaskFormType = {
   roleIds?: number[] // 角色
   deptIds?: number[] // 部门
   deptLevel?: number // 部门层级
-  userIds?: number[] // 用户
+  userIds?: string[] // 用户
   userGroups?: number[] // 用户组
   postIds?: number[] // 岗位
   expression?: string // 流程表达式
@@ -130,7 +130,7 @@ export type CopyTaskFormType = {
   roleIds?: number[] // 角色
   deptIds?: number[] // 部门
   deptLevel?: number // 部门层级
-  userIds?: number[] // 用户
+  userIds?: string[] // 用户
   userGroups?: number[] // 用户组
   postIds?: number[] // 岗位
   formUser?: string // 表单内用户字段

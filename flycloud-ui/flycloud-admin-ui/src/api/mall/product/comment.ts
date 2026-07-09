@@ -4,7 +4,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface CommentVO {
   id: number
-  userId: number
+  userId: string
   userNickname: string
   userAvatar: string
   anonymous: boolean

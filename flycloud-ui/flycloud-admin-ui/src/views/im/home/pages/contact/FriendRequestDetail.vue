@@ -100,7 +100,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  chat: [peerUserId: number]
+  chat: [peerUserId: string]
 }>()
 
 const friendStore = useFriendStore()

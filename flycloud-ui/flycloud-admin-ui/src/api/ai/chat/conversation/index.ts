@@ -3,7 +3,7 @@ import request from '@/config/axios'
 // AI 聊天对话 VO
 export interface ChatConversationVO {
   id: number // ID 编号
-  userId: number // 用户编号
+  userId: string // 用户编号
   title: string // 对话标题
   pinned: boolean // 是否置顶
   roleId: number // 角色编号

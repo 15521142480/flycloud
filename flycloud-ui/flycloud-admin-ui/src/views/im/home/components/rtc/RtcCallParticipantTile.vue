@@ -72,7 +72,7 @@ import UserAvatar from '../user/UserAvatar.vue'
 import { useMediaStreamElement } from '../../composables/useMediaStreamElement'
 
 export interface CallParticipantVM {
-  userId: number
+  userId: string
   nickname: string
   avatar?: string
   isLocal: boolean

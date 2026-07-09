@@ -15,7 +15,7 @@ import { runIncrementalPull } from '../../utils/pull'
 import { getCurrentUserId } from '@/utils/auth'
 import type { GroupRequestDO } from '../types'
 
-type PendingRequest = { epoch: number; userId: number; promise: Promise<void> }
+type PendingRequest = { epoch: number; userId: string; promise: Promise<void> }
 
 /** clear() 时递增；旧账号 in-flight 的 pullGroupRequests 结果 resolve 后比对一致才写 store，防跨账号红点污染（与 friendStore 同口径） */
 let storeEpoch = 0

@@ -4,7 +4,7 @@ export interface LoginLogVO {
   id: number
   logType: number
   traceId: number
-  userId: number
+  userId: string
   userType: number
   username: string
   result: number

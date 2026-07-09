@@ -6,7 +6,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImConversationReadRespVO {
   id: number // 读位置编号（增量拉取游标用）
   conversationType: number // 会话类型，参见 ImConversationType
-  targetId: number // 会话目标编号
+  targetId: number | string // 会话目标编号
   messageId: number // 最大已读消息编号
   updateTime?: number // 最近更新时间（毫秒时间戳，增量拉取游标用）
 }

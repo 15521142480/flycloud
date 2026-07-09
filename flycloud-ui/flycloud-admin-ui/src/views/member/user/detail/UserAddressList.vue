@@ -24,7 +24,7 @@ import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as AddressApi from '@/api/member/address'
 
-const { userId }: { userId: number } = defineProps({
+const { userId }: { userId: string } = defineProps({
   userId: {
     type: Number,
     required: true

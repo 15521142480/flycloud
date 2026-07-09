@@ -35,7 +35,7 @@ import {
 import type { Message } from '../home/types'
 
 /** 会话主键：`type-targetId` 拼成稳定字符串，给 v-for :key、active 比对、map key 等场景共用 */
-export function getConversationKey(conversation: { type: number; targetId: number }): string {
+export function getConversationKey(conversation: { type: number; targetId: number | string }): string {
   return `${conversation.type}-${conversation.targetId}`
 }
 
@@ -65,10 +65,10 @@ export function buildFacePreviewText(facePayload: { name?: string } | null | und
  * senderId 缺失时不挂 mention 段，避免点出错号；算不出真名降级为「对方」纯文本
  */
 export function buildRecallTipSegments(
-  senderId: number,
+  senderId: string,
   selfSend: boolean,
   conversationType: number,
-  conversationTargetId: number,
+  conversationTargetId: number | string,
   fallbackName?: string
 ): TipSegment[] {
   if (selfSend) {
@@ -88,10 +88,10 @@ export function buildRecallTipSegments(
 
 /** 撤回提示文案：自己撤回固定文案，对方撤回带 sender 名（实时算 + fallbackName 兜底） */
 export function buildRecallTip(
-  senderId: number,
+  senderId: string,
   selfSend: boolean,
   conversationType: number,
-  conversationTargetId: number,
+  conversationTargetId: number | string,
   fallbackName?: string
 ): string {
   return segmentsToText(
@@ -147,7 +147,7 @@ export function summarizeMessageContent(
 export function resolveConversationLastContent(
   message: Message,
   conversationType: number,
-  conversationTargetId: number,
+  conversationTargetId: number | string,
   fallbackName?: string
 ): string {
   if (message.type === ImContentType.RECALL) {

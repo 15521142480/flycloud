@@ -210,7 +210,7 @@ watch(
     await readActive()
     // 私聊补一次"对方已读到哪条"，弥补离线 / 多端漏掉的 RECEIPT 推送
     if (type === ImConversationType.PRIVATE) {
-      void syncPrivateReadStatus(targetId)
+      void syncPrivateReadStatus(String(targetId))
     }
   }
 )

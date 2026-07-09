@@ -149,7 +149,7 @@ const resetQuery = async () => {
 }
 
 /** 打开消息发送窗口 */
-const handleSend = async (userId: number) => {
+const handleSend = async (userId: string) => {
   messageBox.userId = userId
   messageBox.show = true
 }

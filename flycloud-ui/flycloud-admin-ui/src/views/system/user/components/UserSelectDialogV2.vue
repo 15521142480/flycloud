@@ -10,7 +10,7 @@
   Events:
     selected(rows: UserVO[]) — 确认选择后触发，单选时数组长度为 1
   Expose:
-    open(selectedIds?: number[]) — 打开弹窗，可传入已选 ID 用于预选高亮
+    open(selectedIds?: string[]) — 打开弹窗，可传入已选 ID 用于预选高亮
 -->
 <template>
   <Dialog :title="title" v-model="dialogVisible" width="80%" align-center append-to-body>
@@ -198,10 +198,10 @@ const handleDeptNodeClick = (row: { id?: number } | undefined) => {
 // ==================== 选中状态 ====================
 const tableRef = ref() // 表格 Ref
 const selectedRows = ref<UserSelectRow[]>([]) // 多选模式：选中行
-const selectedRadioId = ref<number>() // 单选模式：选中 ID
+const selectedRadioId = ref<string>() // 单选模式：选中 ID
 const currentRadioRow = ref<UserSelectRow>() // 单选模式：选中行对象
-const preSelectedIds = ref<number[]>([]) // 打开弹窗时传入的已选 ID
-const preDisabledIds = ref<number[]>([]) // 打开弹窗时传入的禁选 ID
+const preSelectedIds = ref<string[]>([]) // 打开弹窗时传入的已选 ID
+const preDisabledIds = ref<string[]>([]) // 打开弹窗时传入的禁选 ID
 
 /** 多选：是否可以选中 */
 const selectable = (row: UserSelectRow) => {
@@ -336,7 +336,7 @@ const confirmSelect = () => {
 // ==================== 打开弹窗 ====================
 
 /** 打开弹窗，可传入已选 ID 用于预选高亮 */
-const open = async (selectedIds?: number[], disabledIds?: number[], _activityId?: any) => {
+const open = async (selectedIds?: string[], disabledIds?: string[], _activityId?: any) => {
   preDisabledIds.value = disabledIds ?? []
   activityId.value = _activityId
   dialogVisible.value = true

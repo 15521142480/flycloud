@@ -31,7 +31,7 @@ import { getCurrentUserId } from '@/utils/auth'
 import { getFriendDisplayName } from '../../utils/user'
 import type { Friend, FriendDO, FriendLite, FriendRequest, FriendRequestDO } from '../types'
 
-type PendingRequest = { epoch: number; userId: number; promise: Promise<void> }
+type PendingRequest = { epoch: number; userId: string; promise: Promise<void> }
 
 /** 当前正在进行的好友列表拉取；多 dispatcher 同时触发时复用同一 Promise，避免雪崩重拉 */
 let pendingFetchFriends: PendingRequest | null = null
@@ -46,14 +46,14 @@ const pendingFetchFriendInfos = new Map<string, Promise<void>>()
 let storeEpoch = 0
 
 /** 构建好友详情请求去重 key */
-function getPendingFriendInfoKey(userId: number, friendUserId: number): string {
+function getPendingFriendInfoKey(userId: string, friendUserId: string): string {
   return `${userId}:${friendUserId}`
 }
 
 /** 好友通知 payload（对齐后端 BaseFriendNotification + 子类裁减后的字段） */
 export interface FriendNotificationPayload {
-  operatorUserId: number
-  friendUserId: number
+  operatorUserId: string
+  friendUserId: string
   // FRIEND_REQUEST_* 系列：申请记录的核心字段（避免 payload 携带完整 DO）
   requestId?: number
   applyContent?: string
@@ -96,16 +96,16 @@ export const useFriendStore = defineStore('imFriendStore', {
      * 消息渲染需要按 senderId 反查发送人头像 / 备注，每条消息渲染都会 getFriend；
      * 直接 find 时 N 条消息 × M 好友 = O(N×M)；建索引后单次读 O(1)，重建只在写好友（fetchFriendList / upsertFriend 等）时发生
      */
-    getFriendMap: (state): Map<number, Friend> => {
-      const map = new Map<number, Friend>()
+    getFriendMap: (state): Map<string, Friend> => {
+      const map = new Map<string, Friend>()
       for (const friend of state.friends) {
         map.set(friend.friendUserId, friend)
       }
       return map
     },
     /** 按 friendUserId 找好友（含已软删的 DISABLE 记录，调用方自行判定） */
-    getFriend(): (friendUserId: number) => Friend | undefined {
-      return (friendUserId: number) => this.getFriendMap.get(friendUserId)
+    getFriend(): (friendUserId: string) => Friend | undefined {
+      return (friendUserId: string) => this.getFriendMap.get(friendUserId)
     },
     /** 当前生效的好友列表（过滤掉 DISABLE 软删记录） */
     getActiveFriendList: (state): Friend[] => {
@@ -124,7 +124,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
     /** 判断对方是否是当前用户的有效好友（存在 + 非 DISABLE） */
     isActiveFriend() {
-      return (friendUserId: number): boolean => {
+      return (friendUserId: string): boolean => {
         const entry = this.getFriend(friendUserId)
         return !!entry && entry.status !== CommonStatusEnum.DISABLE
       }
@@ -307,7 +307,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 按 friendUserId 获取详情并合并到本地（保证 nickname / avatar 最新） */
-    async fetchFriendInfo(friendUserId: number) {
+    async fetchFriendInfo(friendUserId: string) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       if (!requestUserId) {
@@ -530,7 +530,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     // ==================== 好友关系操作 ====================
 
     /** 删除好友（单向软删，本端置 DISABLE）；clear=true 时级联清理本地相关数据（如私聊会话），并透传后端给多端同步 */
-    async deleteFriend(friendUserId: number, clear: boolean = true) {
+    async deleteFriend(friendUserId: string, clear: boolean = true) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       await apiDeleteFriend(friendUserId, clear)
@@ -541,7 +541,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 切换免打扰：同步会话的 silent 字段，避免会话列表 silent 图标等 1210 推到才更新 */
-    async setFriendSilent(friendUserId: number, silent: boolean) {
+    async setFriendSilent(friendUserId: string, silent: boolean) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       await apiUpdateFriend({ friendUserId, silent })
@@ -558,7 +558,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 切换联系人置顶 */
-    async setFriendPinned(friendUserId: number, pinned: boolean) {
+    async setFriendPinned(friendUserId: string, pinned: boolean) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       await apiUpdateFriend({ friendUserId, pinned })
@@ -573,7 +573,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 拉黑好友：本端乐观更新 + 调接口；后端 FRIEND_BLOCK 推到时由 dispatcher 兜底同步多端 */
-    async blockFriend(friendUserId: number) {
+    async blockFriend(friendUserId: string) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       await apiBlockFriend(friendUserId)
@@ -588,7 +588,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 移出黑名单：本端乐观更新 + 调接口；后端 FRIEND_UNBLOCK 推到时由 dispatcher 兜底同步多端 */
-    async unblockFriend(friendUserId: number) {
+    async unblockFriend(friendUserId: string) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       await apiUnblockFriend(friendUserId)
@@ -603,7 +603,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 修改好友展示备注（仅自己可见） */
-    async setFriendDisplayName(friendUserId: number, displayName: string) {
+    async setFriendDisplayName(friendUserId: string, displayName: string) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       const value = displayName.trim()
@@ -658,7 +658,7 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 本地标记删除（WebSocket FRIEND_DELETE 事件触发；clear=true 时级联清相关数据如私聊会话） */
-    removeFriend(friendUserId: number, clear: boolean = true) {
+    removeFriend(friendUserId: string, clear: boolean = true) {
       const friend = this.getFriend(friendUserId)
       if (friend) {
         // blocked 不动，跟后端 deleteFriend0「删好友期间保留拉黑状态」对齐
@@ -729,7 +729,7 @@ export const useFriendStore = defineStore('imFriendStore', {
      * peerUserId 由 websocketStore 按帧 sender / receiver 算好传入：becomeFriends 单条入库后双方收到同一份 payload，
      * 本端真正的「对端」是帧上的另一个用户，不是 payload.friendUserId（payload 里固定是 toUserId）。
      */
-    applyFriendAddNotification(_payload: FriendNotificationPayload, peerUserId: number) {
+    applyFriendAddNotification(_payload: FriendNotificationPayload, peerUserId: string) {
       if (this.isActiveFriend(peerUserId)) {
         return
       }
@@ -740,7 +740,7 @@ export const useFriendStore = defineStore('imFriendStore', {
      * FRIEND_DELETE(1205)：好友被删除；本端清理 + 按 payload.clear 决定是否级联清会话（多端跟主操作端一致）
      * peerUserId 由 websocketStore 按帧 sender / receiver 算好传入；与 FRIEND_ADD 保持一致的 peer 推断
      */
-    applyFriendDeleteNotification(payload: FriendNotificationPayload, peerUserId: number) {
+    applyFriendDeleteNotification(payload: FriendNotificationPayload, peerUserId: string) {
       this.removeFriend(peerUserId, payload.clear !== false)
     },
 

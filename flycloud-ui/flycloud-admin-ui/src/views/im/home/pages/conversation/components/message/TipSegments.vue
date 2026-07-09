@@ -38,13 +38,13 @@ defineProps<{
 }>()
 
 /** @全体成员是广播 mention，仅高亮配色，不挂可点击交互 */
-function isClickableMention(segment: { userId: number }): boolean {
+function isClickableMention(segment: { userId: string }): boolean {
   return segment.userId !== IM_AT_ALL_USER_ID
 }
 
 /** mention 段点击：fallbackName 取 segment 文本，避免 friend / member 都查不到时弹空 */
 function handleMentionClick(
-  segment: { type: 'mention'; userId: number; text: string },
+  segment: { type: 'mention'; userId: string; text: string },
   event: MouseEvent
 ) {
   if (!isClickableMention(segment)) {

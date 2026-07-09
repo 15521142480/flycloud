@@ -5,7 +5,7 @@ import { getSenderAvatar, getSenderDisplayName } from '../../utils/user'
 
 /** 群通话成员视图模型：已加入 + 接入中；pending 头像 UI 半透明，joined 不透明 */
 export interface GroupCallMember {
-  userId: number
+  userId: string
   nickname: string
   avatar?: string
   pending: boolean
@@ -20,7 +20,7 @@ export interface GroupCallMember {
  */
 export function useGroupCallMembers(
   groupId: Ref<number | undefined>,
-  fallbackInviterId?: Ref<number | undefined>
+  fallbackInviterId?: Ref<string | undefined>
 ): ComputedRef<GroupCallMember[]> {
   const rtcStore = useRtcStore()
   return computed(() => {
@@ -42,7 +42,7 @@ export function useGroupCallMembers(
 }
 
 /** 把 userId 翻译成视图模型，统一走 user.ts helper 解析昵称 / 头像 */
-function toVM(userId: number, groupId: number, pending: boolean): GroupCallMember {
+function toVM(userId: string, groupId: number, pending: boolean): GroupCallMember {
   return {
     userId,
     nickname: getSenderDisplayName(userId, ImConversationType.GROUP, groupId),

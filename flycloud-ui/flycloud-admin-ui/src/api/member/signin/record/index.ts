@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface SignInRecordVO {
   id: number
-  userId: number
+  userId: string
   day: number
   point: number
 }

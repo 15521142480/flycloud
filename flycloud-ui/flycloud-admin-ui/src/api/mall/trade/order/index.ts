@@ -9,7 +9,7 @@ export interface OrderVO {
   createTime?: Date | null // 下单时间
   type?: number | null // 订单类型
   terminal?: number | null // 订单来源
-  userId?: number | null // 用户编号
+  userId?: string | null // 用户编号
   userIp?: string // 用户 IP
   userRemark?: string // 用户备注
   status?: number | null // 订单状态
@@ -58,13 +58,13 @@ export interface OrderVO {
   items?: OrderItemRespVO[] // 订单项列表
   // 下单用户信息
   user?: {
-    id?: number | null
+    id?: string | null
     nickname?: string
     avatar?: string
   }
   // 推广用户信息
   brokerageUser?: {
-    id?: number | null
+    id?: string | null
     nickname?: string
     avatar?: string
   }
@@ -81,7 +81,7 @@ export interface OrderLogRespVO {
 export interface OrderItemRespVO {
   // ========== 订单项基本信息 ==========
   id?: number | null // 编号
-  userId?: number | null // 用户编号
+  userId?: string | null // 用户编号
   orderId?: number | null // 订单编号
   // ========== 商品基本信息 ==========
   spuId?: number | null // 商品 SPU 编号

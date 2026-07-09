@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 export interface MailLogVO {
   id: number
-  userId: number
+  userId: string
   userType: number
   toMail: string
   accountId: number

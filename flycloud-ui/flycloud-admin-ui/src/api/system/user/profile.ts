@@ -36,10 +36,11 @@ export interface ProfileVO {
 }
 
 export interface UserProfileUpdateReqVO {
-  name: string
-  email: string
-  mobile: string
-  sex: number
+  nickname?: string
+  email?: string
+  mobile?: string
+  sex?: number
+  avatar?: string
 }
 
 // 查询用户个人信息

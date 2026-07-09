@@ -38,7 +38,7 @@ const ackMergingPromises = new Map<string, Promise<void>>()
 
 interface MessageConversationInfo {
   type: number
-  targetId: number
+  targetId: number | string
   name: string
   avatar: string
   silent?: boolean
@@ -58,12 +58,12 @@ export type PulledMessage =
   | {
       kind: 'recall'
       conversationType: number
-      targetId: number
+      targetId: number | string
       recallSignalContent: string
     }
 
 /** 获取会话的消息缓存 key */
-function getMessageCacheKey(type: number, targetId: number): string {
+function getMessageCacheKey(type: number, targetId: number | string): string {
   return getClientConversationId(type, targetId)
 }
 
@@ -125,7 +125,7 @@ function buildMessageFromDO(message: MessageDO): Message {
 /** 算出末条消息的发送人快照 */
 function deriveLastSenderDisplayName(
   conversation: Conversation,
-  senderId: number
+  senderId: string
 ): string | undefined {
   // 1. 优先使用当前内存中的好友 / 群成员信息
   const liveSenderName = tryGetSenderDisplayName(senderId, conversation.type, conversation.targetId)
@@ -141,8 +141,8 @@ function deriveLastSenderDisplayName(
     }
     const fetchPromise =
       group?.membersLoaded && !group.membersExpired
-        ? groupStore.fetchGroupMember(conversation.targetId, senderId)
-        : groupStore.fetchGroupMemberList(conversation.targetId)
+        ? groupStore.fetchGroupMember(Number(conversation.targetId), senderId)
+        : groupStore.fetchGroupMemberList(Number(conversation.targetId))
     fetchPromise.catch((e) =>
       console.warn(
         '[IM messageStore] 兜底拉群成员失败',
@@ -241,7 +241,7 @@ export const useMessageStore = defineStore('imMessageStore', {
   state: () => ({
     messagesByConversation: {} as Record<string, Message[]>,
     loadedConversationKeys: [] as string[],
-    privateReadMaxIds: {} as Partial<Record<number, number>>,
+    privateReadMaxIds: {} as Partial<Record<string, number>>,
     privateMessageMaxId: 0,
     groupMessageMaxId: 0,
     channelMessageMaxId: 0
@@ -307,12 +307,12 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 获取私聊对方已读位置缓存 */
-    getPrivateReadMaxId(peerId: number): number | undefined {
+    getPrivateReadMaxId(peerId: string | number): number | undefined {
       return this.privateReadMaxIds[peerId]
     },
 
     /** 更新私聊对方已读位置缓存 */
-    updatePrivateReadMaxId(peerId: number, maxReadId?: number | null): number {
+    updatePrivateReadMaxId(peerId: string | number, maxReadId?: number | null): number {
       if (!peerId) {
         return 0
       }
@@ -385,7 +385,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 获取内存消息数组 */
-    getMessageList(conversationType: number, targetId: number): Message[] {
+    getMessageList(conversationType: number, targetId: number | string): Message[] {
       const key = getMessageCacheKey(conversationType, targetId)
       if (!this.messagesByConversation[key]) {
         this.messagesByConversation[key] = []
@@ -427,7 +427,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 应用撤回到内存 */
     applyRecallMessageInMemory(
       conversationType: number,
-      targetId: number,
+      targetId: number | string,
       recallSignalContent: string
     ) {
       // 1. 定位被撤回的原消息
@@ -594,7 +594,7 @@ export const useMessageStore = defineStore('imMessageStore', {
       // 1. 先处理消息带来的群资料变更
       if (conversationInfo.type === ImConversationType.GROUP && isGroupNotification(message.type)) {
         useGroupStore().applyGroupNotification(
-          conversationInfo.targetId,
+          Number(conversationInfo.targetId),
           message.type,
           message.content
         )
@@ -682,7 +682,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** ack 合并 */
     ackMessage(
       conversationType: number,
-      targetId: number,
+      targetId: number | string,
       clientMessageId: string,
       updates: Partial<Message>
     ) {
@@ -706,7 +706,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 执行 ack 合并 */
     async doAckMessage(
       conversationType: number,
-      targetId: number,
+      targetId: number | string,
       clientMessageId: string,
       updates: Partial<Message>
     ) {
@@ -751,7 +751,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 局部更新消息 */
     patchMessage(
       conversationType: number,
-      targetId: number,
+      targetId: number | string,
       clientMessageId: string,
       patch: Partial<Message>
     ) {
@@ -780,7 +780,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 撤回消息 */
     async recallMessage(
       conversationType: number,
-      targetId: number,
+      targetId: number | string,
       recallSignalContent: string
     ): Promise<void> {
       const conversationStore = useConversationStore()
@@ -806,7 +806,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 应用已读回执 */
     applyMessageReadReceipt(options: {
       conversationType: number
-      targetId: number
+      targetId: number | string
       privateReadMaxId?: number
       groupMessageId?: number
       readCount?: number
@@ -855,7 +855,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 前置历史消息 */
-    prependMessageList(conversationType: number, targetId: number, earlierMessages: Message[]) {
+    prependMessageList(conversationType: number, targetId: number | string, earlierMessages: Message[]) {
       if (earlierMessages.length === 0) {
         return
       }
@@ -882,7 +882,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 删除单条消息 */
     removeMessage(
       conversationType: number,
-      targetId: number,
+      targetId: number | string,
       key: { id?: number; clientMessageId?: string }
     ) {
       // 1. 定位会话和消息
@@ -915,7 +915,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 删除会话全部消息 */
-    deleteConversationMessageList(conversationType: number, targetId: number) {
+    deleteConversationMessageList(conversationType: number, targetId: number | string) {
       // 1. 清理内存消息和媒体资源
       const clientConversationId = getClientConversationId(conversationType, targetId)
       const messages = this.messagesByConversation[clientConversationId] || []

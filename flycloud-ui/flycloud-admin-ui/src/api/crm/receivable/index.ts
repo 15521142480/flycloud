@@ -18,7 +18,7 @@ export interface ReceivableVO {
   returnTime: Date
   returnType: number
   price: number
-  ownerUserId: number
+  ownerUserId: string
   ownerUserName?: string
   remark: string
   creator: string // 创建人

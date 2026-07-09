@@ -184,10 +184,10 @@ const participants = computed<CallParticipantVM[]>(() => {
   })
 
   // 已加入的远端：实际推流；屏幕共享在网格里独占该成员的格子，无则降级 Camera
-  const joined = new Set<number>()
+  const joined = new Set<string>()
   for (const rp of lk.remoteParticipants.value) {
-    const userId = Number(rp.identity)
-    if (Number.isNaN(userId)) {
+    const userId = String(rp.identity || '')
+    if (!userId) {
       continue
     }
     joined.add(userId)
@@ -467,7 +467,7 @@ function openAddMember() {
 }
 
 /** picker 选完成员；走 invite 追加邀请接口，后端推 RTC_INVITE 给新成员 */
-async function handleAddMemberSuccess(userIds: number[]) {
+async function handleAddMemberSuccess(userIds: string[]) {
   const call = rtcStore.call
   if (!call?.room || userIds.length === 0) {
     return

@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ExperienceRecordVO {
   id: number
-  userId: number
+  userId: string
   bizId: string
   bizType: number
   title: string

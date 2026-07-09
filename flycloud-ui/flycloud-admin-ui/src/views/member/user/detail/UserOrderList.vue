@@ -194,7 +194,7 @@ import { DeliveryTypeEnum } from '@/utils/constants'
 const { push } = useRouter() // 路由跳转
 
 const { userId } = defineProps<{
-  userId: number
+  userId: string
 }>()
 
 const loading = ref(true) // 列表的加载中

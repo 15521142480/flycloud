@@ -9,7 +9,7 @@ export interface TradeAfterSaleVO {
   status?: number | null // 退款状态
   way?: number | null // 售后方式
   type?: number | null // 售后类型
-  userId?: number | null // 用户编号
+  userId?: string | null // 用户编号
   applyReason?: string // 申请原因
   applyDescription?: string // 补充描述
   applyPicUrls?: string[] // 补充凭证图片

@@ -23,8 +23,8 @@ export interface ImNoConversationNotification {
 export interface ImPrivateMessageNotification {
   id: number // 消息编号
   clientMessageId: string // 客户端消息编号
-  senderId: number // 发送人编号
-  receiverId: number // 接收人编号
+  senderId: string // 发送人编号
+  receiverId: string // 接收人编号
   type: number // 内容类型
   content: string // 消息内容
   status: number // 消息状态
@@ -36,14 +36,14 @@ export interface ImPrivateMessageNotification {
 export interface ImGroupMessageNotification {
   id: number // 消息编号
   clientMessageId: string // 客户端消息编号
-  senderId: number // 发送人编号
+  senderId: string // 发送人编号
   groupId: number // 群编号
   type: number // 内容类型
   content: string // 消息内容
   status: number // 消息状态
   sendTime: string // 发送时间
-  atUserIds?: number[] // 群 @ 目标用户列表
-  receiverUserIds?: number[] // 群定向接收用户列表
+  atUserIds?: string[] // 群 @ 目标用户列表
+  receiverUserIds?: string[] // 群定向接收用户列表
   readCount?: number // 群回执已读人数（type = RECEIPT 时使用）
   receiptStatus?: number // 群回执状态（type = RECEIPT 时使用）
   readId?: number // 已读位置
@@ -53,8 +53,8 @@ export interface ImGroupMessageNotification {
 export interface ImMessageReadNotification {
   id: number // 已读位置
   type: number // 内容类型
-  senderId?: number // 发送人编号
-  receiverId?: number // 私聊接收人编号
+  senderId?: string // 发送人编号
+  receiverId?: string // 私聊接收人编号
   groupId?: number // 群编号
   channelId?: number // 频道编号
   readId?: number // 已读位置
@@ -64,8 +64,8 @@ export interface ImMessageReadNotification {
 export interface ImMessageReceiptNotification {
   id: number // 消息编号
   type: number // 内容类型
-  senderId?: number // 已读方用户编号
-  receiverId?: number // 私聊接收人编号
+  senderId?: string // 已读方用户编号
+  receiverId?: string // 私聊接收人编号
   groupId?: number // 群编号
   readCount?: number // 群回执已读人数
   receiptStatus?: number // 群回执状态
@@ -76,7 +76,7 @@ export interface ImMessageReceiptNotification {
 /** 引用消息 */
 export interface QuoteMessage {
   messageId: number // 引用消息编号
-  senderId: number // 引用消息发送人编号
+  senderId: string // 引用消息发送人编号
   type: number // 引用内容类型
   content: string // 引用消息内容
 }
@@ -84,7 +84,7 @@ export interface QuoteMessage {
 // 会话数据结构（前端自有结构，后端无对应实体）
 export interface Conversation {
   // ========== 核心标识 ==========
-  targetId: number // 会话目标编号：私聊=对方 userId；群聊=groupId
+  targetId: number | string // 会话目标编号：私聊=对方 userId；群聊=groupId
   type: number // 会话类型，对齐 ImConversationType
 
   // ========== 展示字段 ==========
@@ -95,7 +95,7 @@ export interface Conversation {
   // ========== 最后一条消息事实索引 ==========
   lastContent: string // 会话列表展示的最后一条消息摘要
   lastSendTime: number // 最后一条消息时间，用于排序
-  lastSenderId?: number // 发送人编号
+  lastSenderId?: string // 发送人编号
   lastMessageType?: number // 内容类型，对齐 ImContentType
   lastMessageId?: number // 最后一条服务端消息编号
   lastClientMessageId?: string // 最后一条客户端消息编号
@@ -127,9 +127,9 @@ export interface Message {
   content: string // 消息内容，JSON 字符串
   status: number // 消息状态，对齐 ImMessageStatus
   sendTime: number // 发送时间（前端转毫秒时间戳；后端为 LocalDateTime 字符串）
-  senderId: number // 发送人编号
-  atUserIds?: number[] // 群 @ 目标用户列表
-  receiverUserIds?: number[] // 群定向接收用户列表
+  senderId: string // 发送人编号
+  atUserIds?: string[] // 群 @ 目标用户列表
+  receiverUserIds?: string[] // 群定向接收用户列表
   receiptStatus?: number // 回执状态，对齐 ImMessageReceiptStatus（私聊 / 群 / 频道通用）
   readCount?: number // 群回执已读人数（仅群消息）
   materialId?: number // 关联频道素材编号（仅频道消息 type=MATERIAL）
@@ -137,7 +137,7 @@ export interface Message {
   // ========== 前端扩展字段 ==========
   // 发送人显示名一律渲染时实时算：utils/user.getSenderDisplayName / getSenderRealNickname
   // 不在 Message 上存任何名字快照，避免备注 / 群昵称变更后历史消息显示陈旧
-  targetId: number // 会话目标编号（私聊=对端 userId / 群聊=groupId），与 Conversation.targetId 一致
+  targetId: number | string // 会话目标编号（私聊=对端 userId / 群聊=groupId），与 Conversation.targetId 一致
   selfSend: boolean // 是否自己发送（前端按 senderId 计算）
   uploadProgress?: number // 媒体消息上传进度（0-100）；status=SENDING 期间持续更新；ack 后置 undefined
   // 媒体消息内存中保留的原始 File；下划线前缀表示不进 JSON / 不持久化（IDB 恢复后必为 undefined）
@@ -155,7 +155,7 @@ export interface ConversationDO extends Conversation {
 
 export interface ConversationRead {
   conversationType: number // 会话类型，对齐 ImConversationType
-  targetId: number // 会话目标编号
+  targetId: number | string // 会话目标编号
   messageId: number // 当前用户已读到的最大消息编号
   updateTime?: number // 更新时间
 }
@@ -188,7 +188,7 @@ export interface Group {
   name: string // 群名称
   avatar?: string // 群头像
   notice?: string // 群公告
-  ownerUserId?: number // 群主用户编号
+  ownerUserId?: string // 群主用户编号
   pinnedMessages?: Message[] // 群置顶消息列表
   mutedAll?: boolean // 是否全群禁言
   banned?: boolean // 是否被管理员封禁
@@ -223,7 +223,7 @@ export interface GroupMember {
   // ========== 后端字段（对齐 ImGroupMemberRespVO） ==========
   id?: number // 群成员关系记录编号
   groupId: number // 群编号
-  userId: number // 用户编号
+  userId: string // 用户编号
   avatar?: string // 头像
   nickname: string // 用户昵称
   displayUserName?: string // 该成员在群内自定义昵称（每个 member 一份；不与 nickname 合并，由消费方按需取舍）
@@ -244,7 +244,7 @@ export type GroupMemberDO = GroupMember
 export interface Friend {
   // ========== 后端字段（对齐 ImFriendRespVO） ==========
   id?: number // 好友关系记录编号（本地乐观新增时可能暂缺）
-  friendUserId: number // 好友用户编号（与 Conversation.targetId 对齐）
+  friendUserId: string // 好友用户编号（与 Conversation.targetId 对齐）
   nickname: string // 好友昵称（对方真实昵称，永远不被备注覆盖；UI 显示走 displayName || nickname）
   nicknamePinyin?: string // 昵称的拼音（后端用 Pinyin4j 算好回填，小写无空格）
   avatar?: string // 好友头像
@@ -268,8 +268,8 @@ export type FriendDO = Friend
 export interface FriendRequest {
   // ========== 后端字段（对齐 ImFriendRequestRespVO） ==========
   id: number // 申请编号
-  fromUserId: number // 发起方用户编号
-  toUserId: number // 接收方用户编号
+  fromUserId: string // 发起方用户编号
+  toUserId: string // 接收方用户编号
   handleResult: number // 处理结果：0=未处理；1=同意；2=拒绝
   applyContent?: string // 申请理由（发起方填写）
   handleContent?: string // 处理理由（接收方拒绝时可选填）
@@ -314,7 +314,7 @@ export interface User {
  * - 软删（status === DISABLE）由上游 friendStore.getActiveFriendList / getActiveFriendLiteList 统一过滤掉
  */
 export interface FriendLite {
-  id: number
+  id: string
   nickname: string
   nicknamePinyin?: string // 昵称拼音（用于字母分桶 / 拼音搜索）
   avatar?: string
@@ -334,6 +334,6 @@ export interface GroupLite {
   showImage?: string
   showImageThumb?: string
   memberCount?: number
-  ownerId?: number
+  ownerId?: string
   joinApproval?: boolean // 进群是否需群主 / 管理员审批
 }

@@ -44,12 +44,10 @@ export function isSameUserId(left?: number | string | null, right?: number | str
  * 和 useMessagePuller.getPrivatePeerId），结构类型只要 senderId / receiverId 两个字段，REST 与 WS DTO 都满足
  */
 export function getPrivateMessagePeerId(
-  message: { senderId: number | string; receiverId: number | string },
+  message: { senderId: string; receiverId: string },
   currentUserId: number | string
-): number {
-  return (isSameUserId(message.senderId, currentUserId)
-    ? message.receiverId
-    : message.senderId) as unknown as number
+): string {
+  return isSameUserId(message.senderId, currentUserId) ? message.receiverId : message.senderId
 }
 
 // ==================== 文本片段（tip 文案 + TEXT 气泡共用） ====================
@@ -59,12 +57,12 @@ export function getPrivateMessagePeerId(
 
 export type TipSegment =
   | { type: 'text'; text: string }
-  | { type: 'mention'; userId: number; text: string }
+  | { type: 'mention'; userId: string; text: string }
   | { type: 'link'; href: string; text: string }
 
 export const tipText = (text: string): TipSegment => ({ type: 'text', text })
 
-export const tipMention = (userId: number, text: string): TipSegment => ({
+export const tipMention = (userId: string, text: string): TipSegment => ({
   type: 'mention',
   userId,
   text
@@ -81,9 +79,9 @@ export const segmentsToText = (segments: TipSegment[]): string =>
 
 /** 多个 userId 用同一个分隔符插值成 segments，每个 user 单独成 mention 段 */
 export function joinMentionSegments(
-  userIds: number[],
+  userIds: string[],
   separator: string,
-  resolveName: (userId: number) => string
+  resolveName: (userId: string) => string
 ): TipSegment[] {
   return userIds.flatMap((id, index) =>
     index === 0
@@ -94,7 +92,7 @@ export function joinMentionSegments(
 
 /** mention 候选；name 用于匹配文本字面量，displayName 用于覆盖渲染（不传则按 name 渲染） */
 export interface MentionCandidate {
-  userId: number
+  userId: string
   /** 用来在 content 中前缀匹配的字面量（不含 @） */
   name: string
   /**
@@ -253,7 +251,7 @@ export interface CardMessage extends Quotable {
   /** 名片对象类型 */
   targetType: ImConversationTypeValue
   /** 目标对象编号：PRIVATE 时 = userId；GROUP 时 = groupId */
-  targetId: number
+  targetId: number | string
   /** 显示名快照：PRIVATE 时 = 用户昵称；GROUP 时 = 群名 */
   name: string
   /** 头像（快照） */
@@ -326,7 +324,7 @@ export interface MergeMessageItem {
   /** 原消息编号；仅做溯源标识 */
   messageId: number
   /** 发送人编号 */
-  senderId: number
+  senderId: string
   /** 发送人昵称快照；对端可能不在原会话里，无法实时查到 */
   senderNickname: string
   /** 发送人头像快照 */
@@ -369,15 +367,15 @@ interface SenderSnapshot {
  * 群聊从 group.members 一次性 indexBy；私聊只需 self + friend；外加全体 senderId 上做 friend 兜底
  */
 function buildSenderSnapshotMap(
-  senderIds: number[],
+  senderIds: string[],
   conversation: Conversation
-): Map<number, SenderSnapshot> {
+): Map<string, SenderSnapshot> {
   const userStore = useUserStore()
   const friendStore = useFriendStore()
   const selfUserId = getCurrentUserId()
-  const result = new Map<number, SenderSnapshot>()
+  const result = new Map<string, SenderSnapshot>()
 
-  let groupMembers: Map<number, { nickname: string; avatar?: string }> | null = null
+  let groupMembers: Map<string, { nickname: string; avatar?: string }> | null = null
   if (conversation.type === ImConversationType.GROUP) {
     const group = useGroupStore().getGroup(conversation.targetId)
     groupMembers = new Map((group?.members || []).map((m) => [m.userId, m]))
@@ -411,7 +409,7 @@ function buildSenderSnapshotMap(
 /** 把单条 Message 转成 MergeMessageItem 快照；剥离 quote 防引用穿透 */
 function mapMessageToMergeItem(
   message: Message,
-  senderSnapshots: Map<number, SenderSnapshot>
+  senderSnapshots: Map<string, SenderSnapshot>
 ): MergeMessageItem {
   const snapshot = senderSnapshots.get(message.senderId)
   return {
@@ -675,9 +673,9 @@ export const formatJson = (content?: string): string => {
 
 // 群广播事件 payload；对齐后端 GroupNotificationMessage 子类聚合字段
 export type GroupNotificationPayload = {
-  operatorUserId?: number
-  memberUserIds?: number[]
-  newOwnerUserId?: number
+  operatorUserId?: string
+  memberUserIds?: string[]
+  newOwnerUserId?: string
   oldName?: string
   newName?: string
   oldNotice?: string
@@ -689,23 +687,23 @@ export type GroupNotificationPayload = {
   displayUserName?: string
   messageId?: number
   // 禁言事件
-  mutedUserId?: number
+  mutedUserId?: string
   muteEndTime?: string
   // 全群封禁
   banned?: boolean
   // 自由进群事件
-  entrantUserId?: number
+  entrantUserId?: string
   addSource?: number
   // PIN 事件携带的被置顶消息展示数据
   message?: {
     id: number
-    senderId: number
+    senderId: string
     groupId: number
     type: number
     content: string
     sendTime: string
-    atUserIds?: number[]
-    receiverUserIds?: number[]
+    atUserIds?: string[]
+    receiverUserIds?: string[]
   }
 }
 
@@ -716,8 +714,8 @@ export type GroupNotificationPayload = {
  * operatorNameOverride 仅覆盖 operator 段文案，mention userId 仍用 payload.operatorUserId
  */
 export function resolveGroupNotificationSegments(
-  message: { type?: number; content?: string; targetId?: number },
-  resolveName: (userId: number) => string,
+  message: { type?: number; content?: string; targetId?: number | string },
+  resolveName: (userId: string) => string,
   operatorNameOverride?: string
 ): TipSegment[] {
   let payload: GroupNotificationPayload = {}
@@ -808,8 +806,8 @@ export function resolveGroupNotificationSegments(
 
 /** 群广播事件中文文案 */
 export function resolveGroupNotificationText(
-  message: { type?: number; content?: string; targetId?: number },
-  resolveName: (userId: number) => string,
+  message: { type?: number; content?: string; targetId?: number | string },
+  resolveName: (userId: string) => string,
   operatorNameOverride?: string
 ): string {
   return segmentsToText(
@@ -843,7 +841,7 @@ export type RtcCallStartPayload = {
   room?: string
   conversationType?: number
   mediaType?: number
-  inviterUserId?: number
+  inviterUserId?: string
   inviterNickname?: string
   inviterAvatar?: string
 }
@@ -855,7 +853,7 @@ export type RtcCallEndPayload = {
   mediaType?: number
   endReason?: number
   durationSeconds?: number
-  operatorUserId?: number
+  operatorUserId?: string
   operatorNickname?: string
   operatorAvatar?: string
 }

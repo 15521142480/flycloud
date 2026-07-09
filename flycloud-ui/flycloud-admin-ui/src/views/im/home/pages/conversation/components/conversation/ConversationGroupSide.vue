@@ -492,7 +492,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  reload: [friendIds?: number[]] // 邀请 / 移除 / 修改群资料后，父组件重新拉群数据；邀请新成员场景透出 friendIds 让上层可选精准刷新
+  reload: [friendIds?: string[]] // 邀请 / 移除 / 修改群资料后，父组件重新拉群数据；邀请新成员场景透出 friendIds 让上层可选精准刷新
   'open-history': [] // 点击 "查找聊天内容" 行 → 父组件打开 MessageHistory 弹窗
 }>()
 
@@ -549,7 +549,7 @@ const visibleMembers = computed(() => {
     .sort((a, b) => {
       const roleA = a.role ?? ImGroupMemberRole.NORMAL
       const roleB = b.role ?? ImGroupMemberRole.NORMAL
-      return roleA !== roleB ? roleA - roleB : a.userId - b.userId
+      return roleA !== roleB ? roleA - roleB : a.userId.localeCompare(b.userId)
     })
 })
 
@@ -686,7 +686,7 @@ function onMutedChange(value: boolean | string | number) {
   const next = !!value
   const { type, targetId } = props.conversation
   conversationStore.setConversationSilent(type, targetId, next)
-  groupStore.setGroupSilent(targetId, next).catch((error) => {
+  groupStore.setGroupSilent(Number(targetId), next).catch((error) => {
     console.error('[IM ConversationGroupSide] setGroupSilent 失败', { targetId }, error)
     conversationStore.setConversationSilent(type, targetId, !next)
   })
@@ -812,7 +812,7 @@ function handleOpenRemove() {
   if (!props.group?.id) {
     return
   }
-  const hideIds: number[] = []
+  const hideIds: string[] = []
   if (props.group.ownerId) {
     hideIds.push(props.group.ownerId)
   }

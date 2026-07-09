@@ -11,13 +11,13 @@ export interface ImManagerChannelMessageVO {
   materialCoverUrl?: string
   type: number
   content?: string
-  receiverUserIds?: number[]
+  receiverUserIds?: string[]
   sendTime?: Date
 }
 
 export interface ImManagerChannelMessageSendReqVO {
   materialId: number
-  receiverUserIds?: number[]
+  receiverUserIds?: string[]
 }
 
 // 立即推送频道消息

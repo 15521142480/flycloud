@@ -56,8 +56,8 @@ const visible = ref(false)
 const submitting = ref(false)
 const groupId = ref(0)
 const members = ref<GroupMemberLite[]>([])
-const hideIds = ref<number[]>([])
-const selectedIds = ref<number[]>([])
+const hideIds = ref<string[]>([])
+const selectedIds = ref<string[]>([])
 
 defineExpose({
   /** 打开移除群成员弹窗：reset → 灌参 → visible=true */
@@ -65,7 +65,7 @@ defineExpose({
     groupId: number
     members: GroupMemberLite[]
     /** 隐藏 userId：群主始终隐藏；管理员视角额外隐藏其它管理员 */
-    hideIds?: number[]
+    hideIds?: string[]
   }) {
     groupId.value = opts.groupId
     members.value = opts.members

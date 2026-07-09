@@ -55,7 +55,7 @@ defineOptions({ name: 'ImContactFriendList' })
 const props = defineProps<{
   friends: FriendLite[]
   keyword: string
-  activeId?: number
+  activeId?: string
 }>()
 
 const emit = defineEmits<{

@@ -182,7 +182,7 @@ defineOptions({ name: 'UserAfterSaleList' })
 
 const { push } = useRouter() // 路由跳转
 const props = defineProps<{
-  userId: number
+  userId: string
 }>()
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数

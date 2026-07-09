@@ -220,7 +220,7 @@ export const useMediaUploader = () => {
    */
   const markMediaFailed = (
     conversationType: number,
-    targetId: number,
+    targetId: number | string,
     clientMessageId: string
   ): void => {
     messageStore.patchMessage(conversationType, targetId, clientMessageId, {

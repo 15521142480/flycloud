@@ -58,7 +58,7 @@ const formData = ref({
   channelId: undefined as number | undefined,
   materialId: undefined as number | undefined,
   receiverUserType: 'all' as 'all' | 'users', // 接收用户类型：全员 / 指定用户
-  receiverUserIds: [] as number[]
+  receiverUserIds: [] as string[]
 })
 
 const formRules = reactive({

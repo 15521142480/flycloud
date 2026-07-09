@@ -5,7 +5,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 // IM 好友 Response VO
 export interface ImFriendRespVO {
   id: number // 关系记录编号
-  friendUserId: number // 好友的用户编号
+  friendUserId: string // 好友的用户编号
   silent?: boolean // 是否免打扰
   displayName?: string // 好友展示备注（仅自己可见）
   displayNamePinyin?: string // 备注的拼音（小写无空格，前端按首字母分桶 / 拼音搜索）
@@ -24,7 +24,7 @@ export interface ImFriendRespVO {
 
 // IM 好友更新 Request VO
 export interface ImFriendUpdateReqVO {
-  friendUserId: number // 好友的用户编号
+  friendUserId: string // 好友的用户编号
   silent?: boolean // 是否免打扰
   displayName?: string // 好友展示备注
   pinned?: boolean // 是否置顶联系人
@@ -45,7 +45,7 @@ export const pullMyFriendList = (params: {
 }
 
 // 获得好友详情
-export const getFriend = (friendUserId: number | string) => {
+export const getFriend = (friendUserId: string) => {
   return request.get<ImFriendRespVO>({
     url: `/${SYS_BASE_URL}/im/friend/get`,
     params: { friendUserId }
@@ -53,7 +53,7 @@ export const getFriend = (friendUserId: number | string) => {
 }
 
 // 删除好友（单向软删除）
-export const deleteFriend = (friendUserId: number | string, clear: boolean) => {
+export const deleteFriend = (friendUserId: string, clear: boolean) => {
   return request.delete<boolean>({
     url: `/${SYS_BASE_URL}/im/friend/delete`,
     params: { friendUserId, clear }
@@ -66,12 +66,12 @@ export const updateFriend = (data: ImFriendUpdateReqVO) => {
 }
 
 // 拉黑好友（必须先是好友；单边屏蔽对方私聊消息）
-export const blockFriend = (friendUserId: number | string) => {
+export const blockFriend = (friendUserId: string) => {
   return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/friend/block`, params: { friendUserId } })
 }
 
 // 移出黑名单
-export const unblockFriend = (friendUserId: number | string) => {
+export const unblockFriend = (friendUserId: string) => {
   return request.put<boolean>({
     url: `/${SYS_BASE_URL}/im/friend/unblock`,
     params: { friendUserId }

@@ -76,7 +76,7 @@ export interface UserDetailInfo {
 }
 
 export interface SysUserRoleUpdate {
-  userId: number
+  userId: string
   roleIds: number[]
 }
 

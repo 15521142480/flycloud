@@ -6,7 +6,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImGroupMemberRespVO {
   id: number // 编号
   groupId: number // 群编号
-  userId: number // 用户编号
+  userId: string // 用户编号
   displayUserName?: string // 组内显示名（群主设置的备注）
   groupRemark?: string // 群备注（当前用户对群的备注）
   silent?: boolean // 是否免打扰
@@ -24,13 +24,13 @@ export interface ImGroupMemberRespVO {
 // 群成员邀请 Request VO
 export interface ImGroupMemberInviteReqVO {
   groupId: number // 群编号
-  memberUserIds: number[] // 被邀请的用户编号列表
+  memberUserIds: string[] // 被邀请的用户编号列表
 }
 
 // 群成员移除 Request VO
 export interface ImGroupMemberRemoveReqVO {
   groupId: number // 群编号
-  memberUserIds: number[] // 被移除的用户编号列表
+  memberUserIds: string[] // 被移除的用户编号列表
 }
 
 // 群成员更新 Request VO
@@ -57,7 +57,7 @@ export const removeGroupMember = (data: ImGroupMemberRemoveReqVO) => {
 }
 
 // 获得群成员详情
-export const getGroupMember = (groupId: number, userId: number) => {
+export const getGroupMember = (groupId: number, userId: string) => {
   return request.get<ImGroupMemberRespVO>({
     url: `/${SYS_BASE_URL}/im/group-member/get`,
     params: { groupId, userId }

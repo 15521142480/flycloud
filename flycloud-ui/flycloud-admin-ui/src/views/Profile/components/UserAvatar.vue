@@ -12,9 +12,11 @@
 </template>
 <script lang="ts" setup>
 import { propTypes } from '@/utils/propTypes'
-import { uploadAvatar } from '@/api/system/user/profile'
+import { updateUserProfile } from '@/api/system/user/profile'
 import { CropperAvatar } from '@/components/Cropper'
 import { useUserStore } from '@/store/modules/user'
+import { useUpload } from '@/components/UploadFile/src/useUpload'
+import { UploadRequestOptions } from 'element-plus/es/components/upload/src/upload'
 
 defineOptions({ name: 'UserAvatar' })
 
@@ -26,9 +28,19 @@ const userStore = useUserStore()
 
 const cropperRef = ref()
 const handelUpload = async ({ data }) => {
-  const res = await uploadAvatar({ avatarFile: data })
+  const { httpRequest } = useUpload()
+  const uploadData = (
+    (await httpRequest({
+      file: data,
+      filename: 'avatar.png'
+    } as UploadRequestOptions)) as unknown as { data: any }
+  ).data
+  const avatar = uploadData.path
+  await updateUserProfile({ avatar })
+
+  // 关闭弹窗，并更新 userStore
   cropperRef.value.close()
-  userStore.setUserAvatarAction(res.data)
+  await userStore.setUserAvatarAction(uploadData.url)
 }
 </script>
 

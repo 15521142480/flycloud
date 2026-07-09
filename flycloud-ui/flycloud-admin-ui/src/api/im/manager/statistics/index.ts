@@ -32,7 +32,7 @@ export interface ImStatisticsGroupSizeVO {
 }
 
 export interface ImStatisticsTopSenderVO {
-  userId: number
+  userId: string
   nickname: string
   messageCount: number
 }

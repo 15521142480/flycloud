@@ -4,13 +4,13 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 /** 用户钱包查询参数 */
 export interface PayWalletUserReqVO {
-  userId: number
+  userId: string
 }
 
 /** 钱包 VO */
 export interface WalletVO {
   id: number
-  userId: number
+  userId: string
   userType: number
   balance: number
   totalExpense: number
@@ -20,7 +20,7 @@ export interface WalletVO {
 
 /** 修改会员钱包余额 Request VO */
 export interface WalletBalanceUpdateReqVO {
-  userId: number
+  userId: string
   balance: number
 }
 

@@ -31,7 +31,7 @@ const pendingDraftConversations = new Set<Conversation>()
 /** 创建会话读位置记录 */
 function createConversationRead(
   type: number,
-  targetId: number,
+  targetId: number | string,
   messageId: number
 ): ConversationRead {
   return {
@@ -152,7 +152,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 查找会话 */
     getConversation:
       (state) =>
-      (type: number, targetId: number): Conversation | undefined =>
+      (type: number, targetId: number | string): Conversation | undefined =>
         state.conversations.find(
           (conversation) => conversation.type === type && conversation.targetId === targetId
         ),
@@ -160,7 +160,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 查找会话读位置 */
     getConversationRead:
       (state) =>
-      (type: number, targetId: number): ConversationRead | undefined =>
+      (type: number, targetId: number | string): ConversationRead | undefined =>
         state.conversationReads[getClientConversationId(type, targetId)]
   },
 
@@ -290,7 +290,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 判断会话读位置是否覆盖消息编号 */
-    isReadPositionCovered(type: number, targetId: number, messageId?: number): boolean {
+    isReadPositionCovered(type: number, targetId: number | string, messageId?: number): boolean {
       if (!messageId) {
         return false
       }
@@ -299,7 +299,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 判断服务端已读位置是否覆盖消息编号 */
-    isReportedReadPositionCovered(type: number, targetId: number, messageId?: number): boolean {
+    isReportedReadPositionCovered(type: number, targetId: number | string, messageId?: number): boolean {
       if (!messageId) {
         return false
       }
@@ -513,7 +513,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 确保会话存在 */
     ensureConversation(info: {
       type: number
-      targetId: number
+      targetId: number | string
       name: string
       avatar: string
       silent?: boolean
@@ -554,7 +554,7 @@ export const useConversationStore = defineStore('imConversationStore', {
 
     /** 打开或创建会话 */
     openConversation(
-      targetId: number,
+      targetId: number | string,
       type: number,
       name: string,
       avatar: string,
@@ -588,7 +588,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 创建空会话 */
     createEmptyConversation(
       type: number,
-      targetId: number,
+      targetId: number | string,
       name: string,
       avatar: string,
       silent = false
@@ -610,7 +610,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 设置置顶 */
-    setConversationTop(type: number, targetId: number, top: boolean) {
+    setConversationTop(type: number, targetId: number | string, top: boolean) {
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
         return
@@ -620,7 +620,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 设置免打扰 */
-    setConversationSilent(type: number, targetId: number, silent: boolean) {
+    setConversationSilent(type: number, targetId: number | string, silent: boolean) {
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
         return
@@ -630,7 +630,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 删除会话 */
-    removeConversation(type: number, targetId: number) {
+    removeConversation(type: number, targetId: number | string) {
       // 1. 标记会话删除
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
@@ -647,7 +647,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 删除私聊会话 */
-    removePrivateConversation(friendId: number) {
+    removePrivateConversation(friendId: string) {
       this.removeConversation(ImConversationType.PRIVATE, friendId)
     },
 
@@ -657,7 +657,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 标记会话已读 */
-    markConversationRead(type: number, targetId: number, messageId?: number): void {
+    markConversationRead(type: number, targetId: number | string, messageId?: number): void {
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
         return
@@ -702,7 +702,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 标记会话已上报服务端读位置 */
-    markConversationReadReported(type: number, targetId: number, messageId?: number): void {
+    markConversationReadReported(type: number, targetId: number | string, messageId?: number): void {
       if (!messageId) {
         return
       }
@@ -760,7 +760,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 同步会话展示元数据 */
     updateConversation(
       type: number,
-      targetId: number,
+      targetId: number | string,
       info: { name?: string; avatar?: string; silent?: boolean }
     ) {
       const conversation = this.getConversation(type, targetId)
@@ -790,14 +790,14 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 获取草稿 */
     getConversationDraft(conversation: {
       type: number
-      targetId: number
+      targetId: number | string
     }): Conversation['draft'] | undefined {
       return this.getConversation(conversation.type, conversation.targetId)?.draft
     },
 
     /** 设置草稿 */
     setConversationDraft(
-      conversation: { type: number; targetId: number },
+      conversation: { type: number; targetId: number | string },
       snapshot: NonNullable<Conversation['draft']>
     ): void {
       if (!snapshot.plain.trim() && !snapshot.reply) {
@@ -813,7 +813,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 清除草稿 */
-    clearConversationDraft(conversation: { type: number; targetId: number }): void {
+    clearConversationDraft(conversation: { type: number; targetId: number | string }): void {
       const target = this.getConversation(conversation.type, conversation.targetId)
       if (!target?.draft) {
         return
@@ -824,7 +824,7 @@ export const useConversationStore = defineStore('imConversationStore', {
 
     /** 设置回复草稿 */
     setConversationReplyDraft(
-      conversation: { type: number; targetId: number },
+      conversation: { type: number; targetId: number | string },
       quote: NonNullable<Conversation['draft']>['reply']
     ) {
       if (!quote) {
@@ -839,7 +839,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 清除回复草稿 */
-    clearConversationReplyDraft(conversation: { type: number; targetId: number }): void {
+    clearConversationReplyDraft(conversation: { type: number; targetId: number | string }): void {
       const existing = this.getConversationDraft(conversation)
       if (!existing?.reply) {
         return

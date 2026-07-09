@@ -5,7 +5,7 @@ export type UserGroupVO = {
   id: number
   name: string
   description: string
-  userIds: number[]
+  userIds: string[]
   status: number
   remark: string
   createTime: string

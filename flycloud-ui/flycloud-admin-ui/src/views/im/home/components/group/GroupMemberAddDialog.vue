@@ -47,7 +47,7 @@ defineOptions({ name: 'ImGroupMemberAddDialog' })
 
 const emit = defineEmits<{
   /** 邀请成功，携带被邀请的好友 id 列表；父侧通常用来 reload 群成员 */
-  reload: [friendIds: number[]]
+  reload: [friendIds: string[]]
 }>()
 
 const message = useMessage()
@@ -57,7 +57,7 @@ const groupStore = useGroupStore()
 const visible = ref(false)
 const submitting = ref(false)
 const groupId = ref(0)
-const selectedIds = ref<number[]>([])
+const selectedIds = ref<string[]>([])
 
 defineExpose({
   /** 打开添加群成员弹窗：reset → 灌参 → visible=true */
@@ -86,7 +86,7 @@ const members = computed<GroupMemberLite[]>(() => {
 const friends = computed(() => friendStore.getActiveFriendLiteList)
 
 /** 已在群里的好友 id：传给 Panel 的 disabledIds 置灰 + 不计入已选 */
-const disabledIds = computed<number[]>(() =>
+const disabledIds = computed<string[]>(() =>
   members.value
     .filter((member) => member.status !== CommonStatusEnum.DISABLE)
     .map((member) => member.userId)

@@ -11,7 +11,7 @@ export interface SmsLogVO {
   templateParams: Map<string, object> | null
   apiTemplateId: string
   mobile: string
-  userId: number | null
+  userId: string | null
   userType: number | null
   sendStatus: number | null
   sendTime: Date | null

@@ -52,10 +52,10 @@ const submitting = ref(false)
 const groupId = ref(0)
 const members = ref<GroupMemberLite[]>([])
 /** 当前管理员 userId 列表：默认勾选 + 提交时 diff */
-const currentAdminIds = ref<number[]>([])
-const hideIds = ref<number[]>([])
+const currentAdminIds = ref<string[]>([])
+const hideIds = ref<string[]>([])
 const maxSize = ref(GROUP_ADMIN_MAX_COUNT)
-const selectedIds = ref<number[]>([])
+const selectedIds = ref<string[]>([])
 
 defineExpose({
   /** 打开设置管理员弹窗：reset → 灌参 → visible=true */
@@ -63,9 +63,9 @@ defineExpose({
     groupId: number
     members: GroupMemberLite[]
     /** 当前管理员 userId 列表（默认勾选） */
-    currentAdminIds: number[]
+    currentAdminIds: string[]
     /** 隐藏 userId（群主） */
-    hideIds?: number[]
+    hideIds?: string[]
     /** 已选数上限；不传走 GROUP_ADMIN_MAX_COUNT */
     maxSize?: number
   }) {

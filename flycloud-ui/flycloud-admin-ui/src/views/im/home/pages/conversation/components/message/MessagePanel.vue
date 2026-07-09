@@ -98,19 +98,19 @@
         <!-- 群通话胶囊条：仅群聊 + 该群有活跃通话时显示；点击展开看成员 + 加入按钮 -->
         <RtcGroupCallBanner
           v-if="isGroup && !isQuitGroup && conversationStore.activeConversation"
-          :group-id="conversationStore.activeConversation.targetId"
+          :group-id="Number(conversationStore.activeConversation.targetId)"
         />
 
         <!-- 群置顶消息：第二行嵌入 header；仅群聊 + 有置顶时显示 -->
         <GroupPinnedMessage
           v-if="isGroup && conversationStore.activeConversation"
-          :group-id="conversationStore.activeConversation.targetId"
+          :group-id="Number(conversationStore.activeConversation.targetId)"
           @locate="handleLocate"
         />
         <!-- 群顶部「待处理加群申请」横幅：仅群聊 + owner / admin + count > 0 时显示 -->
         <GroupRequestPending
           v-if="isGroup && !isQuitGroup && conversationStore.activeConversation"
-          :group-id="conversationStore.activeConversation.targetId"
+          :group-id="Number(conversationStore.activeConversation.targetId)"
         />
         <!-- 私聊：对方不再是有效好友（我删了对方 / 从未加过；单边设计下「被对方删除」本端 friendStore 不更新故不会触发）；胶囊嵌在 header 内（跟群置顶同级），点击弹 UserInfoCard -->
         <div
@@ -338,7 +338,7 @@ const showNotFriendBanner = computed(() => {
   if (!conversation || conversation.type !== ImConversationType.PRIVATE) {
     return false
   }
-  return !friendStore.isActiveFriend(conversation.targetId)
+  return !friendStore.isActiveFriend(String(conversation.targetId))
 })
 
 /** 点击「对方还不是你的朋友」胶囊：打开 UserInfoCard，引导用户重新添加 */
@@ -350,7 +350,7 @@ function handleNotFriendClick(event: MouseEvent) {
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   uiStore.openUserInfoCard(
     {
-      id: conversation.targetId,
+      id: String(conversation.targetId),
       nickname: conversation.name,
       avatar: conversation.avatar
     },
@@ -396,7 +396,7 @@ const groupInfo = computed<
       notice?: string
       remarkNickName?: string
       groupRemark?: string
-      ownerId?: number
+      ownerId?: string
     })
   | undefined
 >(() => {
@@ -408,7 +408,7 @@ const groupInfo = computed<
   const selfMember = group?.members?.find((member) => member.userId === getCurrentUserId())
   const showGroupName = group ? getGroupDisplayName(group) : conversation.name
   return {
-    id: conversation.targetId,
+    id: Number(conversation.targetId),
     name: group?.name || conversation.name,
     showGroupName,
     showImage: group?.avatar || conversation.avatar,
@@ -471,8 +471,8 @@ function reloadGroupData() {
   if (!conversation || conversation.type !== ImConversationType.GROUP) {
     return
   }
-  groupStore.fetchGroupInfo(conversation.targetId, true)
-  groupStore.fetchGroupMemberList(conversation.targetId, true)
+  groupStore.fetchGroupInfo(Number(conversation.targetId), true)
+  groupStore.fetchGroupMemberList(Number(conversation.targetId), true)
 }
 
 /** 历史消息抽屉 ref：「聊天历史」icon / 抽屉「查找聊天内容」入口都调 open() 触发 */
@@ -484,7 +484,7 @@ const callMemberPickerRef = ref<InstanceType<typeof RtcCallMemberPickerDialog>>(
 const pendingMediaType = ref<number | null>(null)
 
 /** 消息右键菜单「禁言」→ 打开时长选择弹窗 */
-function handleMuteMember(groupId: number, userId: number, displayName: string) {
+function handleMuteMember(groupId: number, userId: string, displayName: string) {
   muteMemberDialogRef.value?.open(groupId, userId, displayName)
 }
 
@@ -505,7 +505,7 @@ async function startPrivateCall(mediaType: number) {
   await doInvite({
     conversationType: ImConversationType.PRIVATE,
     mediaType,
-    inviteeIds: [conversation.targetId]
+    inviteeIds: [String(conversation.targetId)]
   })
 }
 
@@ -516,11 +516,11 @@ function handleGroupCall() {
     return
   }
   pendingMediaType.value = ImRtcCallMediaType.VOICE
-  callMemberPickerRef.value?.open({ groupId: conversation.targetId, mode: 'invite' })
+  callMemberPickerRef.value?.open({ groupId: Number(conversation.targetId), mode: 'invite' })
 }
 
 /** 选人弹窗确认；带选中 ID 发起群通话 */
-async function onCallMemberPicked(selectedIds: number[]) {
+async function onCallMemberPicked(selectedIds: string[]) {
   const conversation = conversationStore.activeConversation
   const mediaType = pendingMediaType.value
   pendingMediaType.value = null
@@ -530,7 +530,7 @@ async function onCallMemberPicked(selectedIds: number[]) {
   await doInvite({
     conversationType: ImConversationType.GROUP,
     mediaType,
-    groupId: conversation.targetId,
+    groupId: Number(conversation.targetId),
     inviteeIds: selectedIds
   })
 }
@@ -540,7 +540,7 @@ async function doInvite(reqVO: {
   conversationType: number
   mediaType: number
   groupId?: number
-  inviteeIds: number[]
+  inviteeIds: string[]
 }) {
   if (callInviting.value) {
     return
@@ -570,7 +570,7 @@ const privateFriend = computed(() => {
   if (!conversation || conversation.type !== ImConversationType.PRIVATE) {
     return undefined
   }
-  return friendStore.getFriend(conversation.targetId)
+  return friendStore.getFriend(String(conversation.targetId))
 })
 
 /** 计算距离底部的像素 */
@@ -742,7 +742,7 @@ watch(
     scrollToBottom()
     // 仅群聊预拉详情 / 成员（私聊对端在首屏 fetchFriendList 时就拉了）
     if (targetId && type === ImConversationType.GROUP) {
-      ensureGroupData(targetId)
+      ensureGroupData(Number(targetId))
     }
   },
   { immediate: true }

@@ -4,9 +4,9 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerFriendRequestVO {
   id: number
-  fromUserId: number
+  fromUserId: string
   fromNickname?: string
-  toUserId: number
+  toUserId: string
   toNickname?: string
   applyContent?: string
   displayName?: string
