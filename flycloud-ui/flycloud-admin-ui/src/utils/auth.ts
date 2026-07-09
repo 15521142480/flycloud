@@ -37,10 +37,18 @@ export const formatToken = (token: string): string => {
 // ========== 账号相关 ==========
 
 /** 获取当前登录用户编号 */
-export const getCurrentUserId = (): number => {
+export const getCurrentUserId = (): string => {
   const userInfo = wsCache.get(CACHE_KEY.USER)
-  return Number(userInfo?.user?.id ?? userInfo?.id ?? userInfo?.userId) || 0
+  const userId = userInfo?.user?.id ?? userInfo?.id ?? userInfo?.userId
+  return userId == null ? '' : String(userId)
 }
+
+/** 获取当前登录用户编号文本，避免雪花 Long 转 number 后精度丢失 */
+// export const getCurrentUserIdText = (): string => {
+//   const userInfo = wsCache.get(CACHE_KEY.USER)
+//   const userId = userInfo?.user?.id ?? userInfo?.id ?? userInfo?.userId
+//   return userId == null ? '' : String(userId)
+// }
 
 export type LoginFormType = {
   // tenantName: string

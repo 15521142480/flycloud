@@ -76,7 +76,7 @@ export const register = async (data: RegisterVO) => {
     newData.password,
     import.meta.env.VITE_FLY_CLOUD_LOGIN_PASSWORD_PUBLIC_KEY
   )
-  return request.post({ url: `/${SYS_BASE_URL}/user/register`, newData })
+  return request.post({ url: `/${SYS_BASE_URL}/user/register`, data: newData })
 }
 
 // 刷新访问令牌

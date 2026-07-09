@@ -53,7 +53,7 @@ export const updateUserProfile = (data: UserProfileUpdateReqVO) => {
 }
 
 // 用户密码重置
-export const updateUserPassword = async (oldPassword: string, newPassword: string) => {
+export const updateUserPassword = async (newPassword: string) => {
   const { wsCache } = useCache()
   const userInfo = wsCache.get(CACHE_KEY.USER)
   const data = {

@@ -58,7 +58,8 @@ const submit = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
     if (valid) {
-      await updateUserPassword(password.oldPassword, password.newPassword)
+      // await updateUserPassword(password.oldPassword, password.newPassword)
+      await updateUserPassword(password.newPassword)
       message.success(t('common.updateSuccess'))
     }
   })

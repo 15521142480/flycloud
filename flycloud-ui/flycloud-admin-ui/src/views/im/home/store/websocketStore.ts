@@ -18,6 +18,7 @@ import {
 } from '../../utils/constants'
 import {
   getPrivateMessagePeerId,
+  isSameUserId,
   parseRtcCallPayload,
   playAudioTip,
   resolveCallEndReasonText
@@ -49,7 +50,7 @@ import type { ImChannelMessageRespVO } from '@/api/im/message/channel'
 import { buildChannelConversationStub } from '../../utils/channel'
 import type {
   WebSocketFrame,
-  ImNotificationWebSocketDTO,
+  ImNotificationWebSocketBo,
   ImNoConversationNotification,
   ImPrivateMessageNotification,
   ImGroupMessageNotification,
@@ -122,7 +123,7 @@ function isValidRtcInvitePayload(payload: ImRtcCallNotification): boolean {
  */
 const convertPrivateMessage = (
   websocketMessage: ImPrivateMessageNotification,
-  currentUserId: number
+  currentUserId: number | string
 ): Message => ({
   id: websocketMessage.id,
   clientMessageId: websocketMessage.clientMessageId,
@@ -133,7 +134,7 @@ const convertPrivateMessage = (
   sendTime: new Date(websocketMessage.sendTime).getTime(),
   senderId: websocketMessage.senderId,
   targetId: getPrivateMessagePeerId(websocketMessage, currentUserId),
-  selfSend: websocketMessage.senderId === currentUserId
+  selfSend: isSameUserId(websocketMessage.senderId, currentUserId)
 })
 
 /**
@@ -143,7 +144,7 @@ const convertPrivateMessage = (
  */
 const convertGroupMessage = (
   websocketMessage: ImGroupMessageNotification,
-  currentUserId: number
+  currentUserId: number | string
 ): Message => ({
   id: websocketMessage.id,
   clientMessageId: websocketMessage.clientMessageId,
@@ -153,7 +154,7 @@ const convertGroupMessage = (
   sendTime: new Date(websocketMessage.sendTime).getTime(),
   senderId: websocketMessage.senderId,
   targetId: websocketMessage.groupId,
-  selfSend: websocketMessage.senderId === currentUserId,
+  selfSend: isSameUserId(websocketMessage.senderId, currentUserId),
   atUserIds: websocketMessage.atUserIds || [],
   receiverUserIds: websocketMessage.receiverUserIds || [],
   receiptStatus: websocketMessage.receiptStatus,
@@ -294,7 +295,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
         return
       }
 
-      const notification = this.safeParse(frame.content) as ImNotificationWebSocketDTO | null
+      const notification = this.safeParse(frame.content) as ImNotificationWebSocketBo | null
       if (!notification?.payload || !notification.contentType) {
         return
       }
@@ -566,10 +567,15 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
       //    （FRIEND_* 等系统通知也走这条通道，但 fromUserId=senderId、toUserId=receiverId 仍是当前用户视角）
       if (
         currentUserId &&
-        websocketMessage.senderId !== currentUserId &&
-        websocketMessage.receiverId !== currentUserId
+        !isSameUserId(websocketMessage.senderId, currentUserId) &&
+        !isSameUserId(websocketMessage.receiverId, currentUserId)
       ) {
-        console.warn('[IM WS] 丢弃不属于当前用户的私聊帧', websocketMessage)
+        console.warn('[IM WS] 丢弃不属于当前用户的私聊帧', {
+          currentUserId,
+          senderId: websocketMessage.senderId,
+          receiverId: websocketMessage.receiverId,
+          websocketMessage
+        })
         return Promise.resolve()
       }
 
@@ -583,7 +589,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
       }
 
       // 2. selfSend / peerId：自己发的消息属于「发给 receiverId 的会话」，别人发的属于「发送者的会话」
-      const selfSend = websocketMessage.senderId === currentUserId
+      const selfSend = isSameUserId(websocketMessage.senderId, currentUserId)
       const peerId = getPrivateMessagePeerId(websocketMessage, currentUserId)
       // 未知对端（陌生人加好友前先收到消息等场景）：异步补拉一次，下次再渲染就有 name/avatar
       const friend = friendStore.getFriend(peerId)
@@ -722,7 +728,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
       const conversationStore = useConversationStore()
       const groupStore = useGroupStore()
       const currentUserId = getCurrentUserId()
-      const selfSend = websocketMessage.senderId === currentUserId
+      const selfSend = isSameUserId(websocketMessage.senderId, currentUserId)
 
       // 0. 防御层：定向群消息 receiverUserIds 非空且未包含当前用户时丢弃
       //    自己发的（selfSend）始终通过；全员可见（receiverUserIds 为空 / 缺失）也通过
@@ -732,9 +738,13 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
         !selfSend &&
         Array.isArray(receiverUserIds) &&
         receiverUserIds.length > 0 &&
-        !receiverUserIds.includes(currentUserId)
+        !receiverUserIds.some((receiverUserId) => isSameUserId(receiverUserId, currentUserId))
       ) {
-        console.warn('[IM WS] 丢弃不属于当前用户的定向群消息', websocketMessage)
+        console.warn('[IM WS] 丢弃不属于当前用户的定向群消息', {
+          currentUserId,
+          receiverUserIds,
+          websocketMessage
+        })
         return Promise.resolve()
       }
 

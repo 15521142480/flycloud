@@ -32,6 +32,11 @@ export const generateClientMessageId = (): string => {
 
 // ==================== 私聊对端 userId ====================
 
+/** 用户编号等值判断，兼容后端 Long 大数按字符串下发的场景 */
+export function isSameUserId(left?: number | string | null, right?: number | string | null): boolean {
+  return left != null && right != null && String(left) === String(right)
+}
+
 /**
  * 私聊消息 / DTO 的对端 userId：自己发的对端是 receiver，别人发的对端是 sender
  *
@@ -39,10 +44,12 @@ export const generateClientMessageId = (): string => {
  * 和 useMessagePuller.getPrivatePeerId），结构类型只要 senderId / receiverId 两个字段，REST 与 WS DTO 都满足
  */
 export function getPrivateMessagePeerId(
-  message: { senderId: number; receiverId: number },
-  currentUserId: number
+  message: { senderId: number | string; receiverId: number | string },
+  currentUserId: number | string
 ): number {
-  return message.senderId === currentUserId ? message.receiverId : message.senderId
+  return (isSameUserId(message.senderId, currentUserId)
+    ? message.receiverId
+    : message.senderId) as unknown as number
 }
 
 // ==================== 文本片段（tip 文案 + TEXT 气泡共用） ====================

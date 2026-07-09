@@ -51,7 +51,7 @@ export const StorageKeys = {
 } as const
 
 let currentDb: IDBDatabase | null = null
-let currentUserId: number | null = null
+let currentUserId: string | null = null
 let currentSession = 0
 
 /** 校验当前 IM IndexedDB session 仍有效 */
@@ -65,7 +65,7 @@ export function getDbSession(): number {
 }
 
 /** 拼接当前用户 IM DB 名称 */
-function getDbName(userId: number): string {
+function getDbName(userId: string): string {
   return `im:${userId}`
 }
 
@@ -166,7 +166,7 @@ function openDb(name: string): Promise<IDBDatabase> {
 /** 初始化当前用户 IM DB */
 export async function initDb(): Promise<void> {
   const userId = getCurrentUserId()
-  if (!Number.isFinite(userId) || userId <= 0) {
+  if (userId == null) {
     throw new Error('当前用户不存在，无法初始化 IM DB')
   }
   if (currentDb && currentUserId === userId) {

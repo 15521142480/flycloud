@@ -6,8 +6,8 @@ export interface WebSocketFrame {
   content: string // 帧内容（JSON 字符串）
 }
 
-// IM WebSocket 通知 DTO（对齐后端 ImNotificationWebSocketDTO）
-export interface ImNotificationWebSocketDTO {
+// IM WebSocket 通知 Bo（对齐后端 ImNotificationWebSocketBo）
+export interface ImNotificationWebSocketBo {
   conversationType: number // 会话类型
   contentType: number // 内容类型
   payload: Record<string, any> // 负载数据
