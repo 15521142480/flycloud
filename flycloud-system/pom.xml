@@ -83,8 +83,9 @@
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-websocket</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.github.whvcse</groupId>

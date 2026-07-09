@@ -54,7 +54,6 @@ client:
         - /v2/api-docs-ext
         - /cas/sso/**
         - /sso/**
-        - /im/ws/**
 
   elasticsearch:
     rest:

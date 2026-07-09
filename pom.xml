@@ -629,7 +629,7 @@
                 <profiles.active>dev</profiles.active>
                 <!-- nacos注册地址 -->
                 <!-- 111.228.51.252  39.98.125.88  laixueshi.cn  除了项目在服务器上域名可以代替ip；本地运行不行，但可以在host新增域名映射ip可实现 -->
-                <nacos.server>39.98.125.88:8848</nacos.server>
+                <nacos.server></nacos.server>
                 <!--
                     nacos命名空间 https://github.com/alibaba/nacos/issues/3460
                     默认的命名空间不要去设置namespace  (命名空间的概念是: 新增命名空间可以实现开发/生产等环境)
@@ -639,8 +639,8 @@
                 <!-- nacos分组 (分组的概念是: 两个配置文件名称可以相同,但所属的分组一定要不同) -->
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
-                <nacos.username>nacos</nacos.username>
-                <nacos.password>nacos</nacos.password>
+                <nacos.username></nacos.username>
+                <nacos.password></nacos.password>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -652,12 +652,12 @@
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <nacos.server>39.98.125.88:8848</nacos.server>
-                <nacos.namespace>c5ab8826-7c54-44ee-a089-49a3dd530652</nacos.namespace>
+                <nacos.server></nacos.server>
+                <nacos.namespace></nacos.namespace>
                 <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
                 <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
-                <nacos.username>nacos</nacos.username>
-                <nacos.password>nacos</nacos.password>
+                <nacos.username></nacos.username>
+                <nacos.password></nacos.password>
             </properties>
         </profile>
     </profiles>

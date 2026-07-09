@@ -96,6 +96,12 @@ redisson:
     subscriptionConnectionPoolSize: 50
 
 
+# websocket公共配置
+websocket:
+  enabled: true
+  path: /ws
+  sender-type: local
+
 # security授权公共配置
 security:
   auth:

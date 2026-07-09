@@ -5,7 +5,7 @@ import com.fly.common.enums.user.UserTypeEnum;
 import com.fly.im.service.websocket.dto.ImChannelMessageDTO;
 import com.fly.im.service.websocket.dto.ImGroupMessageDTO;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
-import com.fly.im.framework.websocket.WebSocketSenderApi;
+import com.fly.system.api.websocket.feign.WebSocketSenderApi;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
