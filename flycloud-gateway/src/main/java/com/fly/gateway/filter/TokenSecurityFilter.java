@@ -10,6 +10,7 @@ import com.fly.common.utils.ResponseUtils;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.StringPoolUtils;
 import com.fly.common.utils.auth.TokenResolveUtils;
+import com.fly.common.utils.feign.FeignSignatureUtils;
 //import com.fly.gateway.config.properties.GatewayServerSecurityProperties;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
@@ -74,6 +75,12 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
+        if (FeignSignatureUtils.isFeignPath(serverPath)) {
+            return verifyFeignSignature(exchange, serverPath)
+                    ? chain.filter(exchange)
+                    : unAuthorized(response, "Feign内部接口签名无效");
+        }
+
         // 验证token是否有效
         String token = TokenResolveUtils.resolve(
                 exchange.getRequest().getHeaders().getFirst(Oauth2Constants.HEADER_TOKEN_KEY),
@@ -136,6 +143,27 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
             return path.substring(path.indexOf(StringPoolUtils.SLASH, FROM_INDEX));
         }
         return path;
+    }
+
+    /**
+     * 校验通过网关访问的Feign内部接口签名。
+     *
+     * @param exchange 网关请求上下文
+     * @param serverPath 去除服务名前缀后的路径
+     * @return 是否校验通过
+     */
+    private boolean verifyFeignSignature(ServerWebExchange exchange, String serverPath) {
+        if (!authProperties.getFeign().isEnabled()) {
+            return false;
+        }
+        return FeignSignatureUtils.verify(
+                authProperties.getFeign().getSecret(),
+                exchange.getRequest().getMethod().name(),
+                serverPath,
+                exchange.getRequest().getHeaders().getFirst(FeignSignatureUtils.HEADER_TIMESTAMP),
+                exchange.getRequest().getHeaders().getFirst(FeignSignatureUtils.HEADER_NONCE),
+                exchange.getRequest().getHeaders().getFirst(FeignSignatureUtils.HEADER_SIGNATURE),
+                authProperties.getFeign().getExpireSeconds());
     }
 
     /**

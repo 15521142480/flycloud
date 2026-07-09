@@ -1,4 +1,4 @@
-package com.fly.system.api.constants;
+package com.fly.system.api.member.path;
 
 import com.fly.common.constant.CommonConstants;
 
@@ -6,7 +6,7 @@ import com.fly.common.constant.CommonConstants;
  * member用户常量
  *
  */
-public interface MemberFeignApiConstants {
+public interface MemberApiPaths {
 
 
     /**

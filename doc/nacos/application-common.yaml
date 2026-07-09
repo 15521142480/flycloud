@@ -112,12 +112,19 @@ security:
       # refresh token 有效期，默认30天，单位秒
       refresh-token-timeout-seconds: 2592000
 
+    feign:
+      # 是否启用服务间Feign内部接口签名验证
+      enabled: true
+      # Feign内部接口签名密钥，各个服务必须保持一致
+      secret: flycloud-feign-secret
+      # Feign签名时间戳有效期，单位秒
+      expire-seconds: 300
+
     # 白名单 (授权、swagger、监控中心等url)
     ignore-urls:
       - /admin/auth/**
       - /app/auth/**
       - /captcha/**
-      - /feign/**
       - /gen/**
       - /app/**
       - /static/**

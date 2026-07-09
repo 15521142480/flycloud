@@ -1,6 +1,6 @@
 package com.fly.bpm.feign;
 
-import com.fly.bpm.api.constants.BpmFeignApiConstants;
+import com.fly.bpm.api.path.BpmApiPaths;
 import com.fly.bpm.api.domain.dto.instance.BpmProcessInstanceCreateReqDTO;
 import com.fly.bpm.api.feign.IBpmInstanceApi;
 import com.fly.bpm.task.service.BpmInstanceService;
@@ -37,7 +37,7 @@ public class IBpmInstanceApiController implements IBpmInstanceApi {
      * @param createReqDTO 创建流程实例参数
      */
     @Override
-    @PostMapping(BpmFeignApiConstants.PROVIDER_INSTANCE_CREATE)
+    @PostMapping(BpmApiPaths.PROVIDER_INSTANCE_CREATE)
     public R<String> createInstance(@RequestParam("userId") Long userId, @Valid @RequestBody BpmProcessInstanceCreateReqDTO createReqDTO) {
         return R.ok(bpmInstanceService.createProcessInstance(userId, createReqDTO));
     }

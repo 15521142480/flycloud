@@ -3,7 +3,7 @@ package com.fly.system.api.system.feign;
 import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.system.api.constants.SystemFeignApiConstants;
+import com.fly.system.api.system.path.SystemApiPaths;
 import com.fly.system.api.system.domain.vo.SysDeptVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ public interface ISysDeptApi {
      * @param id　部门id
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_DEPT_ID)
+    @GetMapping(SystemApiPaths.PROVIDER_DEPT_ID)
     R<SysDeptVo> getDeptById(@RequestParam("id") Long id);
 
 
@@ -37,7 +37,7 @@ public interface ISysDeptApi {
      * @param ids　部门ids
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_DEPT_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_DEPT_IDS)
     R<List<SysDeptVo>> getDeptListByIds(@RequestParam("ids") Collection<Long> ids);
 
 
@@ -46,7 +46,7 @@ public interface ISysDeptApi {
      * @param ids　部门ids
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_DEPT_VALID_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_DEPT_VALID_IDS)
     R<Boolean> validateDeptByIds(@RequestParam("ids") Collection<Long> ids);
 
 

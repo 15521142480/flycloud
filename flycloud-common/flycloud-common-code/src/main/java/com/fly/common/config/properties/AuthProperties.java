@@ -30,6 +30,11 @@ public class AuthProperties {
      */
     private boolean gatewayEnable = true;
 
+    /**
+     * Feign内部接口签名配置。
+     */
+    private Feign feign = new Feign();
+
 //    private String clientId;
 //    private String clientSecret;
 //    private String[] scopes;
@@ -57,6 +62,25 @@ public class AuthProperties {
         public Duration getRefreshTokenTimeout() {
             return Duration.ofSeconds(refreshTokenTimeoutSeconds);
         }
+    }
+
+    @Data
+    public static class Feign {
+
+        /**
+         * 是否启用Feign内部接口签名验证。
+         */
+        private boolean enabled = true;
+
+        /**
+         * Feign内部接口签名密钥，各个服务必须保持一致。
+         */
+        private String secret = "flycloud-feign-secret";
+
+        /**
+         * Feign签名时间戳有效期，单位秒。
+         */
+        private long expireSeconds = 300;
     }
 
 

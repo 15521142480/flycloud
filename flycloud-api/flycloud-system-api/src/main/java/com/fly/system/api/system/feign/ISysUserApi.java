@@ -3,7 +3,7 @@ package com.fly.system.api.system.feign;
 import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.system.api.constants.SystemFeignApiConstants;
+import com.fly.system.api.system.path.SystemApiPaths;
 import com.fly.system.api.system.common.UserInfo;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -32,7 +32,7 @@ public interface ISysUserApi {
      * @param id id
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_ID)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_ID)
     R<SysUserVo> getUserById(@RequestParam("id") Long id);
 
     /**
@@ -40,7 +40,7 @@ public interface ISysUserApi {
      * @param ids　用户名
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_IDS)
     R<List<SysUserVo>> getUserListByIds(@RequestParam("ids") Collection<Long> ids);
 
 
@@ -49,7 +49,7 @@ public interface ISysUserApi {
      *
      * @param postIds
     */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_POST_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_LIST_BY_POST_IDS)
     R<List<SysUserVo>> getUserListByPostIds(@RequestParam("postIds") Set<Long> postIds);
 
     /**
@@ -57,7 +57,7 @@ public interface ISysUserApi {
      *
      * @param roleIds
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_ROLE_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_LIST_BY_ROLE_IDS)
     R<List<SysUserVo>> getUserListByRoleIds(@RequestParam("roleIds") Set<Long> roleIds);
 
 
@@ -66,7 +66,7 @@ public interface ISysUserApi {
      * @param userName　用户名
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_USERNAME)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_USERNAME)
     R<UserInfo> getUserByUserName(@RequestParam("userName") String userName);
 
     /**
@@ -74,7 +74,7 @@ public interface ISysUserApi {
      * @param mobile　手机号码
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_MOBILE)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_MOBILE)
     R<UserInfo> getUserByMobile(@RequestParam("mobile") String mobile);
 
 
@@ -83,7 +83,7 @@ public interface ISysUserApi {
      * @param ids　用户ids
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_VALID_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_VALID_IDS)
     R<Boolean> validateDeptByIds(@RequestParam("ids") Collection<Long> ids);
 
 

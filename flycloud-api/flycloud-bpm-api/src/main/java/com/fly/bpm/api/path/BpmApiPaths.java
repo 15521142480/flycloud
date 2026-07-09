@@ -1,4 +1,4 @@
-package com.fly.bpm.api.constants;
+package com.fly.bpm.api.path;
 
 import com.fly.common.constant.CommonConstants;
 
@@ -6,7 +6,7 @@ import com.fly.common.constant.CommonConstants;
  * 工作流api常量
  *
  */
-public interface BpmFeignApiConstants {
+public interface BpmApiPaths {
 
 
     /**

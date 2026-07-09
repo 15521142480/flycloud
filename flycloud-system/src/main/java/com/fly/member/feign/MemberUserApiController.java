@@ -2,7 +2,7 @@ package com.fly.member.feign;
 
 import com.fly.common.domain.model.R;
 import com.fly.member.service.IMemberUserService;
-import com.fly.system.api.constants.MemberFeignApiConstants;
+import com.fly.system.api.member.path.MemberApiPaths;
 import com.fly.system.api.member.domain.vo.MemberUserVo;
 import com.fly.system.api.member.feign.IMemberUserApi;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class MemberUserApiController implements IMemberUserApi {
      * 根据用户id查询member用户信息
      */
     @Override
-    @GetMapping(MemberFeignApiConstants.PROVIDER_MEMBER_USER_ID)
+    @GetMapping(MemberApiPaths.PROVIDER_MEMBER_USER_ID)
     public R<MemberUserVo> getMemberUserById(Long id) {
 
         MemberUserVo userVo = memberUserService.queryById(id);
@@ -43,7 +43,7 @@ public class MemberUserApiController implements IMemberUserApi {
      * 根据用户ids查询member用户列表
      */
     @Override
-    @GetMapping(MemberFeignApiConstants.PROVIDER_MEMBER_USER_IDS)
+    @GetMapping(MemberApiPaths.PROVIDER_MEMBER_USER_IDS)
     public R<List<MemberUserVo>> getMemberUserListByIds(Collection<Long> ids) {
 
         List<MemberUserVo> userVoList = memberUserService.queryByIds(ids);
@@ -54,7 +54,7 @@ public class MemberUserApiController implements IMemberUserApi {
      * 根据用户手机号查询member用户信息
      */
     @Override
-    @GetMapping(MemberFeignApiConstants.PROVIDER_MEMBER_USER_MOBILE)
+    @GetMapping(MemberApiPaths.PROVIDER_MEMBER_USER_MOBILE)
     public R<MemberUserVo> getMemberUserByMobile(String mobile) {
 
         MemberUserVo userVo = memberUserService.queryByMobile(mobile);

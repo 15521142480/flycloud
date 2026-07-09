@@ -4,6 +4,7 @@ import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.system.api.websocket.bo.WebSocketSendBo;
+import com.fly.system.api.websocket.path.WebsocketApiPaths;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public interface WebSocketSenderApi {
      * @param bo 发送参数
      * @return 操作结果
      */
-    @PostMapping("/provider/sys/websocket/send")
+    @PostMapping(WebsocketApiPaths.PROVIDER_WEBSOCKET_SEND_API)
     R<Boolean> send(@RequestBody WebSocketSendBo bo);
 
     /**

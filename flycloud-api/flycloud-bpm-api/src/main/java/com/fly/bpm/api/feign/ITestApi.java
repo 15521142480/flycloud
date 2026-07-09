@@ -1,6 +1,6 @@
 package com.fly.bpm.api.feign;
 
-import com.fly.bpm.api.constants.BpmFeignApiConstants;
+import com.fly.bpm.api.path.BpmApiPaths;
 import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,7 +19,7 @@ public interface ITestApi {
     /**
      * seata 测试
      */
-    @PostMapping(BpmFeignApiConstants.PROVIDER_TEST_SEATA)
+    @PostMapping(BpmApiPaths.PROVIDER_TEST_SEATA)
     R<Void> seataTest();
 
 

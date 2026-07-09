@@ -1,6 +1,6 @@
 package com.fly.system.feign;
 
-import com.fly.system.api.constants.SystemFeignApiConstants;
+import com.fly.system.api.system.path.SystemApiPaths;
 import com.fly.common.domain.model.R;
 import com.fly.system.api.system.common.UserInfo;
 import com.fly.system.api.system.domain.SysUser;
@@ -41,7 +41,7 @@ public class SysUserApiController implements ISysUserApi {
      * 根据用户id查询用户信息
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_ID)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_ID)
     public R<SysUserVo> getUserById(Long id) {
 
         SysUserVo sysUserVo = sysUserService.queryById(id);
@@ -55,7 +55,7 @@ public class SysUserApiController implements ISysUserApi {
      * 根据用户ids查询用户列表
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_IDS)
     public R<List<SysUserVo>> getUserListByIds(Collection<Long> ids) {
 
         List<SysUserVo> sysUserList = sysUserService.getByIds(ids);
@@ -67,7 +67,7 @@ public class SysUserApiController implements ISysUserApi {
      * 根据岗位ids查询用户列表
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_POST_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_LIST_BY_POST_IDS)
     public R<List<SysUserVo>> getUserListByPostIds(Set<Long> postIds) {
 
         List<SysUserVo> sysUserList = sysUserService.getUserListByPostIds(postIds);
@@ -81,7 +81,7 @@ public class SysUserApiController implements ISysUserApi {
      * @param roleIds
     */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_LIST_BY_ROLE_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_LIST_BY_ROLE_IDS)
     public R<List<SysUserVo>> getUserListByRoleIds(Set<Long> roleIds) {
         List<SysUserVo> sysUserList = sysUserService.getUserListByRoleIds(roleIds);
         return R.ok(sysUserList);
@@ -92,7 +92,7 @@ public class SysUserApiController implements ISysUserApi {
      * 根据用户名查询用户信息
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_USERNAME)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_USERNAME)
     public R<UserInfo> getUserByUserName(String userName) {
 
         SysUser sysUser = sysUserService.queryOneUserByUser(new SysUser().setAccount(userName));
@@ -104,7 +104,7 @@ public class SysUserApiController implements ISysUserApi {
      * 根据用户手机号查询用户信息
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_MOBILE)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_MOBILE)
     public R<UserInfo> getUserByMobile(String mobile) {
 
         SysUser sysUser = sysUserService.queryOneUserByUser(new SysUser().setTelephone(mobile));
@@ -115,7 +115,7 @@ public class SysUserApiController implements ISysUserApi {
      * 根据ids验证用户
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_USER_VALID_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_USER_VALID_IDS)
     public R<Boolean> validateDeptByIds(Collection<Long> ids) {
         return R.result(sysUserService.validateDeptByIds(ids));
     }

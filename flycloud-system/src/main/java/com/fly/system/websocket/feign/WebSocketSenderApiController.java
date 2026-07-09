@@ -5,6 +5,7 @@ import com.fly.common.domain.model.R;
 import com.fly.common.websocket.sender.WebSocketMessageSender;
 import com.fly.system.api.websocket.bo.WebSocketSendBo;
 import com.fly.system.api.websocket.feign.WebSocketSenderApi;
+import com.fly.system.api.websocket.path.WebsocketApiPaths;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -29,8 +30,9 @@ public class WebSocketSenderApiController implements WebSocketSenderApi {
      * 按会话、用户或用户类型发送 WebSocket 消息。
      */
     @Override
-    @PostMapping("/provider/sys/websocket/send")
+    @PostMapping(WebsocketApiPaths.PROVIDER_WEBSOCKET_SEND_API)
     public R<Boolean> send(@Valid @RequestBody WebSocketSendBo bo) {
+
         if (StrUtil.isNotBlank(bo.getSessionId())) {
             webSocketMessageSender.send(bo.getSessionId(), bo.getMessageType(), bo.getMessageContent());
             return R.ok(Boolean.TRUE);

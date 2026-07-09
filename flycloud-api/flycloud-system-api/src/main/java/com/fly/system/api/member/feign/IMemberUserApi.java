@@ -3,7 +3,7 @@ package com.fly.system.api.member.feign;
 import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.system.api.constants.MemberFeignApiConstants;
+import com.fly.system.api.member.path.MemberApiPaths;
 import com.fly.system.api.member.domain.vo.MemberUserVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ public interface IMemberUserApi {
      * @param id id
      * @return Result
      */
-    @GetMapping(MemberFeignApiConstants.PROVIDER_MEMBER_USER_ID)
+    @GetMapping(MemberApiPaths.PROVIDER_MEMBER_USER_ID)
     R<MemberUserVo> getMemberUserById(@RequestParam("id") Long id);
 
     /**
@@ -37,7 +37,7 @@ public interface IMemberUserApi {
      * @param ids　用户名
      * @return Result
      */
-    @GetMapping(MemberFeignApiConstants.PROVIDER_MEMBER_USER_IDS)
+    @GetMapping(MemberApiPaths.PROVIDER_MEMBER_USER_IDS)
     R<List<MemberUserVo>> getMemberUserListByIds(@RequestParam("ids") Collection<Long> ids);
 
 
@@ -47,7 +47,7 @@ public interface IMemberUserApi {
      * @param mobile
      * @return Result
      */
-    @GetMapping(MemberFeignApiConstants.PROVIDER_MEMBER_USER_MOBILE)
+    @GetMapping(MemberApiPaths.PROVIDER_MEMBER_USER_MOBILE)
     R<MemberUserVo> getMemberUserByMobile(@RequestParam("mobile") String mobile);
 
     /**

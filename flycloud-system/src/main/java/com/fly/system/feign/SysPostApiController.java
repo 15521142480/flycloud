@@ -1,7 +1,7 @@
 package com.fly.system.feign;
 
 import com.fly.common.domain.model.R;
-import com.fly.system.api.constants.SystemFeignApiConstants;
+import com.fly.system.api.system.path.SystemApiPaths;
 import com.fly.system.api.system.feign.ISysPostApi;
 import com.fly.system.service.ISysPostService;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class SysPostApiController implements ISysPostApi {
      *
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_POST_VALID_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_POST_VALID_IDS)
     public R<Boolean> validatePostByIds(Collection<Long> ids) {
 
         return R.result(sysPostService.validatePostByIds(ids));

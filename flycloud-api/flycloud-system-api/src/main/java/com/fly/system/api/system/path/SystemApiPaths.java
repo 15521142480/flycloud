@@ -1,4 +1,4 @@
-package com.fly.system.api.constants;
+package com.fly.system.api.system.path;
 
 import com.fly.common.constant.CommonConstants;
 
@@ -6,11 +6,11 @@ import com.fly.common.constant.CommonConstants;
  * 系统api常量
  *
  */
-public interface SystemFeignApiConstants {
+public interface SystemApiPaths {
 
 
     /**
-     * 远程调用公共前缀
+     * 远程调用公共前缀；如：/feign + /sys
      */
     String PROVIDER = CommonConstants.FEIGN_API_PREFIX +  "/sys";
 

@@ -1,6 +1,6 @@
 package com.fly.bpm.feign;
 
-import com.fly.bpm.api.constants.BpmFeignApiConstants;
+import com.fly.bpm.api.path.BpmApiPaths;
 import com.fly.bpm.api.feign.ITestApi;
 import com.fly.bpm.test.service.ITestService;
 import com.fly.common.domain.model.R;
@@ -25,7 +25,7 @@ public class ITestController implements ITestApi {
 
 
     @Override
-    @PostMapping(BpmFeignApiConstants.PROVIDER_TEST_SEATA)
+    @PostMapping(BpmApiPaths.PROVIDER_TEST_SEATA)
     public R<Void> seataTest() {
         return R.result(testService.seataTest());
     }

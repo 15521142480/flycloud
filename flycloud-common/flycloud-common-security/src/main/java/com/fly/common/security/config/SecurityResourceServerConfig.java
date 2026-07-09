@@ -3,6 +3,7 @@ package com.fly.common.security.config;
 import cn.hutool.core.convert.Convert;
 import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.security.component.PermissionService;
+import com.fly.common.security.filter.FeignSignatureAuthenticationFilter;
 import com.fly.common.security.handler.CustomAccessDeniedHandler;
 import com.fly.common.security.handler.CustomAuthenticationEntryPoint;
 import com.fly.common.security.handler.CustomAuthenticationFailureHandler;
@@ -36,6 +37,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //@EnableConfigurationProperties({ServerResourceSecurityProperties.class})
 @Import({
         PermissionService.class,
+        FeignSignatureAuthenticationFilter.class,
         BearerTokenAuthenticationFilter.class,
         CustomAccessDeniedHandler.class,
         CustomAuthenticationEntryPoint.class,
@@ -58,6 +60,7 @@ public class SecurityResourceServerConfig {
     public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity httpSecurity,
                                                                  CustomAuthenticationEntryPoint authenticationEntryPoint,
                                                                  CustomAccessDeniedHandler accessDeniedHandler,
+                                                                 FeignSignatureAuthenticationFilter feignSignatureAuthenticationFilter,
                                                                  BearerTokenAuthenticationFilter bearerTokenAuthenticationFilter) throws Exception {
 
         String[] ignoreUrls = Convert.toStrArray(authProperties.getIgnoreUrls());
@@ -68,6 +71,7 @@ public class SecurityResourceServerConfig {
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler))
+                .addFilterBefore(feignSignatureAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(bearerTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers(ignoreUrls).permitAll()

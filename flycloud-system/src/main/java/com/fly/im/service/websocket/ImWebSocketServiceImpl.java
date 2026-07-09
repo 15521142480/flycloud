@@ -7,13 +7,13 @@ import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
 import com.fly.system.api.websocket.feign.WebSocketSenderApi;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -34,9 +34,6 @@ public class ImWebSocketServiceImpl implements ImWebSocketService {
 
     @Resource
     private WebSocketSenderApi webSocketSenderApi;
-
-    @Resource
-    private TaskExecutor taskExecutor;
 
     @Override
     public void sendPrivateMessageAsync(Collection<Long> userIds, ImPrivateMessageDTO dto) {
@@ -131,7 +128,7 @@ public class ImWebSocketServiceImpl implements ImWebSocketService {
      * @param task 待执行的推送任务
      */
     private void executeAfterTransaction(Runnable task) {
-        Runnable asyncTask = () -> taskExecutor.execute(task);
+        Runnable asyncTask = () -> CompletableFuture.runAsync(task);
         // 情况一：没有事务，直接执行
         if (!TransactionSynchronizationManager.isSynchronizationActive()) {
             asyncTask.run();

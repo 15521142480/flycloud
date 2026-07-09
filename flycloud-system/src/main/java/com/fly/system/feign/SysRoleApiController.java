@@ -1,7 +1,7 @@
 package com.fly.system.feign;
 
 import com.fly.common.domain.model.R;
-import com.fly.system.api.constants.SystemFeignApiConstants;
+import com.fly.system.api.system.path.SystemApiPaths;
 import com.fly.system.api.system.feign.ISysRoleApi;
 import com.fly.system.service.ISysRoleService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -55,7 +54,7 @@ public class SysRoleApiController implements ISysRoleApi {
      *
      */
     @Override
-    @GetMapping(SystemFeignApiConstants.PROVIDER_ROLE_VALID_IDS)
+    @GetMapping(SystemApiPaths.PROVIDER_ROLE_VALID_IDS)
     public R<Boolean> validateRoleByIds(Set<Long> ids) {
 
         return R.result(sysRoleService.validateRoleByIds(ids));

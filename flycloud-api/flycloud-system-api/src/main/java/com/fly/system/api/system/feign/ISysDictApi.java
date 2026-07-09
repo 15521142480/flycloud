@@ -2,7 +2,7 @@ package com.fly.system.api.system.feign;
 
 import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
-import com.fly.system.api.constants.SystemFeignApiConstants;
+import com.fly.system.api.system.path.SystemApiPaths;
 import com.fly.system.api.system.domain.SysDictData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public interface ISysDictApi {
      * @param dictKey key
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_DICT_VALUE)
+    @GetMapping(SystemApiPaths.PROVIDER_DICT_VALUE)
     R<String> getValue(@RequestParam("code") String code, @RequestParam("dictKey") String dictKey);
 
     /**
@@ -31,7 +31,7 @@ public interface ISysDictApi {
      * @param code　code
      * @return Result
      */
-    @GetMapping(SystemFeignApiConstants.PROVIDER_DICT_LIST)
+    @GetMapping(SystemApiPaths.PROVIDER_DICT_LIST)
     R<List<SysDictData>> getList(@RequestParam("code") String code);
 
 }
