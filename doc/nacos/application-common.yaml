@@ -96,10 +96,11 @@ redisson:
     subscriptionConnectionPoolSize: 50
 
 
-# websocket公共配置
+# websocket公共配置；此处path: /ws目前由flycloud-system统一引入websocket模块实现，其他服务调用api接口WebSocketSenderApi即可
 websocket:
   enabled: true
   path: /ws
+  # local、redis；local：单机部署，如flycloud-system 只有一个实例
   sender-type: local
 
 # security授权公共配置

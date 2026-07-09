@@ -9,7 +9,7 @@ import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.utils.ResponseUtils;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.StringPoolUtils;
-import com.fly.common.utils.auth.TokenUtils;
+import com.fly.common.utils.auth.TokenResolveUtils;
 //import com.fly.gateway.config.properties.GatewayServerSecurityProperties;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
@@ -75,13 +75,14 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
         }
 
         // 验证token是否有效
-        String headerToken = exchange.getRequest().getHeaders().getFirst(Oauth2Constants.HEADER_TOKEN_KEY);
-        if (headerToken == null) {
+        String token = TokenResolveUtils.resolve(
+                exchange.getRequest().getHeaders().getFirst(Oauth2Constants.HEADER_TOKEN_KEY),
+                exchange.getRequest().getQueryParams());
+        if (token == null) {
             log.error("没有携带Token信息！");
             return unAuthorized(response, "没有携带Token信息！");
         }
 
-        String token = TokenUtils.getToken(headerToken);
         Claims claims = SecurityUtils.getClaims(token);
         if (claims == null) {
             return this.unAuthorized(response, "token已过期！");
@@ -89,7 +90,9 @@ public class TokenSecurityFilter implements GlobalFilter, Ordered {
 
         // 判断token是否存在于redis,对于只允许一台设备场景适用。
         // 如只允许一台设备登录，需要在登录成功后，查询key是否存在，如存在，则删除此key，提供思路。
-        boolean hasKey = redisUtils.hasKey(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token);
+        boolean hasKey = redisUtils.hasKey(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token)
+                || redisUtils.hasKey(AuthConstants.ACCESS_TOKEN_KEY + token)
+                || redisUtils.hasKey(AuthConstants.REFRESH_TOKEN_KEY + token);
         log.debug("查询token是否存在: {}", hasKey);
         if (!hasKey) {
             return unAuthorized(response, "登录超时，请重新登录");

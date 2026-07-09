@@ -10,6 +10,7 @@ import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.auth.TokenUtils;
+import com.fly.common.utils.auth.TokenResolveUtils;
 import com.fly.common.utils.json.JsonUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -53,8 +54,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String headerToken = request.getHeader(Oauth2Constants.HEADER_TOKEN_KEY);
-        String token = TokenUtils.getToken(headerToken);
+        String token = TokenResolveUtils.resolve(request);
         if (StrUtil.isBlank(token)) {
             filterChain.doFilter(request, response);
             return;
@@ -106,6 +106,12 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (cached == null) {
+            cached = redisUtils.get(
+                    AuthConstants.REFRESH_TOKEN_KEY + token
+            );
+        }
+
+        if (cached == null) {
             return null;
         }
 
@@ -147,6 +153,11 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         redisUtils.expire(
                 AuthConstants.ACCESS_TOKEN_KEY + token,
                 timeout
+        );
+
+        redisUtils.expire(
+                AuthConstants.REFRESH_TOKEN_KEY + token,
+                authProperties.getToken().getRefreshTokenTimeoutSeconds()
         );
     }
 

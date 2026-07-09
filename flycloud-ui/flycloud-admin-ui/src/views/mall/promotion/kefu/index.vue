@@ -14,6 +14,7 @@ import { KeFuConversationList, KeFuMessageList, MemberInfo } from './components'
 import { WebSocketMessageTypeConstants } from './components/tools/constants'
 import { KeFuConversationRespVO } from '@/api/mall/promotion/kefu/conversation'
 import { getRefreshToken } from '@/utils/auth'
+import { buildSystemWebSocketUrl } from '@/utils/websocket'
 import { useWebSocket } from '@vueuse/core'
 import { useMallKefuStore } from '@/store/modules/mall/kefu'
 
@@ -23,11 +24,7 @@ const message = useMessage() // 消息弹窗
 const kefuStore = useMallKefuStore() // 客服缓存
 
 // ======================= WebSocket start =======================
-const server = ref(
-  (import.meta.env.VITE_BASE_URL + '/infra/ws').replace('http', 'ws') +
-    '?token=' +
-    getRefreshToken() // 使用 getRefreshToken() 方法，而不使用 getAccessToken() 方法的原因：WebSocket 无法方便的刷新访问令牌
-) // WebSocket 服务地址
+const server = ref(buildSystemWebSocketUrl(getRefreshToken())) // WebSocket 服务地址
 
 /** 发起 WebSocket 连接 */
 const { data, close, open } = useWebSocket(server.value, {

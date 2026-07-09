@@ -35,6 +35,7 @@ export const staticUrl = import.meta.env.SHOPRO_STATIC_URL;
 export const tenantId = import.meta.env.SHOPRO_TENANT_ID;
 export const websocketPath = import.meta.env.SHOPRO_WEBSOCKET_PATH;
 export const h5Url = import.meta.env.SHOPRO_H5_URL;
+export const systemServer = import.meta.env.SHOPRO_SYSTEM_SERVER;
 
 export default {
   baseUrl,
@@ -42,5 +43,6 @@ export default {
   staticUrl,
   tenantId,
   websocketPath,
+  systemServer,
   h5Url,
 };

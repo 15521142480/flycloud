@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { store } from '@/store'
 import { getCurrentUserId, getRefreshToken } from '@/utils/auth'
+import { buildSystemWebSocketUrl } from '@/utils/websocket'
 
 import {
   ImWebSocketMessageType,
@@ -214,7 +215,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
 
     /**
      * 连接 WebSocket
-     * 复用 yudao 内置 /infra/ws 通道，后端通过 sendObject(type, content) 下发
+     * 复用系统服务 /flycloud-system/ws 通道，后端通过 sendObject(type, content) 下发
      *
      * 调用契约：切账号 / token 刷新前必须先 `disconnect()` 再 `connect()`；
      * 本方法不感知 token 变化，旧 socket 在 CONNECTING / OPEN 状态会直接复用旧 token，可能拿到错误身份
@@ -243,7 +244,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
         existingSocket.onclose = null
         this.socket = null
       }
-      const url = `${this.buildWsUrl()}/infra/ws?token=${refreshToken}`
+      const url = buildSystemWebSocketUrl(refreshToken)
       this.socket = new WebSocket(url)
 
       // 连接建立：标记上线 + 启动心跳保活；重连退避计数归零
@@ -282,19 +283,6 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
         this.isConnected = false
         this.socket?.close()
       }
-    },
-
-    /** 拼接 WebSocket 基础地址 */
-    buildWsUrl(): string {
-      // VITE_BASE_URL 可能是 http:// 或 https:// 开头，替换成 ws:// 或 wss://；如果没配置，就用当前页面的协议 + host
-      const baseUrl = (import.meta as any).env?.VITE_BASE_URL as string | undefined
-      if (baseUrl && baseUrl.length > 0) {
-        return baseUrl.replace(/^http/, 'ws')
-      }
-      // 当前页面协议 + host（如 http://localhost:8080），替换成 ws://localhost:8080
-      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-      const host = window.location.host
-      return `${protocol}//${host}`
     },
 
     /**

@@ -1,7 +1,7 @@
 import { onBeforeUnmount, reactive, ref } from 'vue';
-import { baseUrl, websocketPath } from '@/sheep/config';
 import { copyValueToTarget } from '@/sheep/helper/utils';
 import { getRefreshToken } from '@/sheep/request';
+import { getSystemWebSocketUrl } from '@/sheep/config/server';
 
 /**
  * WebSocket 创建 hook
@@ -10,7 +10,7 @@ import { getRefreshToken } from '@/sheep/request';
  */
 export function useWebSocket(opt) {
   const options = reactive({
-    url: (baseUrl + websocketPath).replace('http', 'ws') + '?token=' + getRefreshToken(), // ws 地址
+    url: getSystemWebSocketUrl(getRefreshToken()), // ws 地址
     isReconnecting: false, // 正在重新连接
     reconnectInterval: 3000, // 重连间隔，单位毫秒
     heartBeatInterval: 5000, // 心跳间隔，单位毫秒
