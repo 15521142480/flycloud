@@ -4,10 +4,10 @@ import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelRespVo;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
-import com.fly.system.api.im.domain.channel.ImChannel;
+import com.fly.system.api.im.domain.bo.ImChannelPageBo;
+import com.fly.system.api.im.domain.vo.ImChannelVo;
+import com.fly.system.api.im.domain.bo.ImChannelBo;
+import com.fly.system.api.im.domain.ImChannel;
 import com.fly.im.service.channel.ImChannelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,14 +36,14 @@ public class ImChannelManagerController {
     @PostMapping("/create")
     @Operation(summary = "新增频道")
     @PreAuthorize("@pms.hasPermission('im:channel:list:saveOrUpdate')")
-    public R<Long> createChannel(@Valid @RequestBody ImChannelSaveReqVo reqVo) {
+    public R<Long> createChannel(@Valid @RequestBody ImChannelBo reqVo) {
         return ok(channelService.createChannel(reqVo));
     }
 
     @PutMapping("/update")
     @Operation(summary = "修改频道")
     @PreAuthorize("@pms.hasPermission('im:channel:list:saveOrUpdate')")
-    public R<Boolean> updateChannel(@Valid @RequestBody ImChannelSaveReqVo reqVo) {
+    public R<Boolean> updateChannel(@Valid @RequestBody ImChannelBo reqVo) {
         channelService.updateChannel(reqVo);
         return R.result(true);
     }
@@ -60,9 +60,9 @@ public class ImChannelManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得频道分页")
     @PreAuthorize("@pms.hasPermission('im:channel:list:list')")
-    public R<PageResult<ImChannelRespVo>> getChannelPage(@Valid ImChannelPageReqVo pageReqVo) {
+    public R<PageResult<ImChannelVo>> getChannelPage(@Valid ImChannelPageBo pageReqVo) {
         PageResult<ImChannel> pageResult = channelService.getChannelPage(pageReqVo);
-        return ok(PageResult.convert(pageResult, ImChannelRespVo.class,
+        return ok(PageResult.convert(pageResult, ImChannelVo.class,
                 vo -> vo.setAvatar(vo.getAvatar())));
     }
 
@@ -70,19 +70,19 @@ public class ImChannelManagerController {
     @Operation(summary = "获得频道详情")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:channel:list:list')")
-    public R<ImChannelRespVo> getChannel(@RequestParam("id") Long id) {
+    public R<ImChannelVo> getChannel(@RequestParam("id") Long id) {
         ImChannel channel = channelService.getChannel(id);
-        ImChannelRespVo vo = BeanUtils.toBean(channel, ImChannelRespVo.class);
+        ImChannelVo vo = BeanUtils.toBean(channel, ImChannelVo.class);
         vo.setAvatar(vo.getAvatar());
         return ok(vo);
     }
 
     @GetMapping("/simple-list")
     @Operation(summary = "获得启用的频道精简列表；前端表单选择频道时调用")
-    public R<List<ImChannelRespVo>> getSimpleChannelList() {
+    public R<List<ImChannelVo>> getSimpleChannelList() {
         // getChannelListByStatus 统一命名
         List<ImChannel> list = channelService.getChannelListByStatus(CommonStatusEnum.ENABLE.getStatus());
-        List<ImChannelRespVo> respList = BeanUtils.toBean(list, ImChannelRespVo.class);
+        List<ImChannelVo> respList = BeanUtils.toBean(list, ImChannelVo.class);
         respList.forEach(vo -> vo.setAvatar(vo.getAvatar()));
         return ok(respList);
     }

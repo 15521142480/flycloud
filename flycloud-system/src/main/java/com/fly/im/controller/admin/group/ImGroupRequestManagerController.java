@@ -4,10 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupRequestManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupRequestManagerRespVo;
-import com.fly.system.api.im.domain.group.ImGroup;
-import com.fly.system.api.im.domain.group.ImGroupRequest;
+import com.fly.system.api.im.domain.bo.ImGroupRequestManagerPageBo;
+import com.fly.system.api.im.domain.vo.ImGroupRequestManagerVo;
+import com.fly.system.api.im.domain.ImGroup;
+import com.fly.system.api.im.domain.ImGroupRequest;
 import com.fly.im.service.group.ImGroupRequestService;
 import com.fly.im.service.group.ImGroupService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -47,8 +47,8 @@ public class ImGroupRequestManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得加群申请分页")
     @PreAuthorize("@pms.hasPermission('im:group:request:list')")
-    public R<PageResult<ImGroupRequestManagerRespVo>> getGroupRequestPage(
-            @Valid ImGroupRequestManagerPageReqVo pageReqVo) {
+    public R<PageResult<ImGroupRequestManagerVo>> getGroupRequestPage(
+            @Valid ImGroupRequestManagerPageBo pageReqVo) {
         // 1. 分页查询
         PageResult<ImGroupRequest> pageResult = groupRequestService.getGroupRequestPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
@@ -63,7 +63,7 @@ public class ImGroupRequestManagerController {
         // 2.2 批量聚合群信息（取群名）
         Set<Long> groupIds = convertSet(pageResult.getList(), ImGroupRequest::getGroupId);
         Map<Long, ImGroup> groupMap = groupService.getGroupMap(groupIds);
-        return ok(PageResult.convert(pageResult, ImGroupRequestManagerRespVo.class, vo -> {
+        return ok(PageResult.convert(pageResult, ImGroupRequestManagerVo.class, vo -> {
             MapUtils.findAndThen(userMap, vo.getUserId(), user -> vo.setUserNickname(user.getName()));
             MapUtils.findAndThen(userMap, vo.getInviterUserId(), user -> vo.setInviterNickname(user.getName()));
             MapUtils.findAndThen(userMap, vo.getHandleUserId(), user -> vo.setHandleNickname(user.getName()));

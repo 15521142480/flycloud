@@ -1,9 +1,9 @@
 package com.fly.im.service.group;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.group.request.ImGroupRequestApplyReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupRequestManagerPageReqVo;
-import com.fly.system.api.im.domain.group.ImGroupRequest;
+import com.fly.system.api.im.domain.bo.ImGroupRequestBo;
+import com.fly.system.api.im.domain.bo.ImGroupRequestManagerPageBo;
+import com.fly.system.api.im.domain.ImGroupRequest;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ public interface ImGroupRequestService {
      * @param reqVo  申请请求
      * @return 申请记录；自由进群直进时返回 null
      */
-    ImGroupRequest applyJoinGroup(Long userId, @Valid ImGroupRequestApplyReqVo reqVo);
+    ImGroupRequest applyJoinGroup(Long userId, @Valid ImGroupRequestBo reqVo);
 
     /**
      * 同意加群申请（群主或管理员）；处理前校验入群人数上限
@@ -88,6 +88,6 @@ public interface ImGroupRequestService {
     /**
      * 【管理后台】分页查询加群申请记录
      */
-    PageResult<ImGroupRequest> getGroupRequestPage(ImGroupRequestManagerPageReqVo reqVo);
+    PageResult<ImGroupRequest> getGroupRequestPage(ImGroupRequestManagerPageBo reqVo);
 
 }

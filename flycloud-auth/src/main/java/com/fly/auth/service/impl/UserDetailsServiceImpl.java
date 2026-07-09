@@ -6,7 +6,7 @@ import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.TokenException;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.user.FlyUserDetailsService;
-import com.fly.system.api.system.domain.common.UserInfo;
+import com.fly.system.api.system.common.UserInfo;
 import com.fly.system.api.system.feign.ISysUserApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

@@ -8,12 +8,12 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.message.ImGroupMessage;
-import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageListReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageSendReqVo;
-import com.fly.system.api.im.domain.message.ImPrivateMessage;
-import com.fly.im.dal.mysql.message.ImPrivateMessageMapper;
+import com.fly.system.api.im.domain.ImGroupMessage;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageManagerPageBo;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageBo;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageBo;
+import com.fly.system.api.im.domain.ImPrivateMessage;
+import com.fly.im.mapper.ImPrivateMessageMapper;
 import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.framework.config.ImProperties;
@@ -64,7 +64,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     private ImProperties imProperties;
 
     @Override
-    public ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo) {
+    public ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageBo reqVo) {
         // 1.1 幂等校验：根据 senderId + clientMessageId 查重
         ImPrivateMessage existing = privateMessageMapper.selectBySenderIdAndClientMessageId(
                 senderId, reqVo.getClientMessageId());
@@ -170,7 +170,7 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
      * @param senderId 发送人编号
      * @return 规范化后的 content
      */
-    private String normalizeQuoteContent(ImPrivateMessageSendReqVo reqVo, Long senderId) {
+    private String normalizeQuoteContent(ImPrivateMessageBo reqVo, Long senderId) {
         // 解析客户端 content 里的 quote.messageId
         Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVo.getContent());
 
@@ -248,14 +248,14 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
     }
 
     @Override
-    public List<ImPrivateMessage> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo) {
+    public List<ImPrivateMessage> getPrivateMessageList(Long userId, ImPrivateMessageBo reqVo) {
         return privateMessageMapper.selectHistoryList(userId, reqVo.getReceiverId(), reqVo.getMaxId(), reqVo.getLimit());
     }
 
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImPrivateMessage> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo) {
+    public PageResult<ImPrivateMessage> getPrivateMessagePage(ImPrivateMessageManagerPageBo reqVo) {
         return privateMessageMapper.selectPage(reqVo);
     }
 

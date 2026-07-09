@@ -6,9 +6,9 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberUpdateReqVo;
-import com.fly.system.api.im.domain.group.ImGroupMember;
-import com.fly.im.dal.mysql.group.ImGroupMemberMapper;
+import com.fly.system.api.im.domain.bo.ImGroupMemberBo;
+import com.fly.system.api.im.domain.ImGroupMember;
+import com.fly.im.mapper.ImGroupMemberMapper;
 import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
 import com.fly.im.service.message.ImGroupMessageService;
 import com.fly.im.service.message.dto.ImGroupMessageSendDTO;
@@ -269,7 +269,7 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
     }
 
     @Override
-    public void updateGroupMember(Long userId, ImGroupMemberUpdateReqVo updateReqVo) {
+    public void updateGroupMember(Long userId, ImGroupMemberBo updateReqVo) {
         Long groupId = updateReqVo.getGroupId();
         // 1. 校验是群的有效成员
         ImGroupMember member = validateMemberInGroup(groupId, userId);

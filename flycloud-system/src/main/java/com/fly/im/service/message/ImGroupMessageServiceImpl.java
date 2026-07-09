@@ -11,13 +11,13 @@ import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageListReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageSendReqVo;
-import com.fly.system.api.im.domain.group.ImGroup;
-import com.fly.system.api.im.domain.group.ImGroupMember;
-import com.fly.system.api.im.domain.message.ImGroupMessage;
-import com.fly.im.dal.mysql.message.ImGroupMessageMapper;
+import com.fly.system.api.im.domain.bo.ImGroupMessageManagerPageBo;
+import com.fly.system.api.im.domain.bo.ImGroupMessageBo;
+import com.fly.system.api.im.domain.bo.ImGroupMessageBo;
+import com.fly.system.api.im.domain.ImGroup;
+import com.fly.system.api.im.domain.ImGroupMember;
+import com.fly.system.api.im.domain.ImGroupMessage;
+import com.fly.im.mapper.ImGroupMessageMapper;
 import com.fly.im.dal.redis.message.ImGroupMessageReadRedisDAO;
 import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
 import com.fly.system.api.im.enums.message.ImGroupMessageReceiptStatusEnum;
@@ -85,7 +85,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     private ImProperties imProperties;
 
     @Override
-    public ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo) {
+    public ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageBo reqVo) {
         // 1.1 幂等校验：根据 senderId + clientMessageId 查重
         ImGroupMessage existing = groupMessageMapper.selectBySenderIdAndClientMessageId(
                 senderId, reqVo.getClientMessageId());
@@ -428,7 +428,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     }
 
     @Override
-    public List<ImGroupMessage> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo) {
+    public List<ImGroupMessage> getGroupMessageList(Long userId, ImGroupMessageBo reqVo) {
         // 1. 校验用户在群中
         ImGroupMember member = groupMemberService.validateMemberInGroup(reqVo.getGroupId(), userId);
 
@@ -502,7 +502,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
      * @param senderMember 发送人成员
      * @return 规范化后的 content
      */
-    private String normalizeQuoteContent(ImGroupMessageSendReqVo reqVo, ImGroupMember senderMember) {
+    private String normalizeQuoteContent(ImGroupMessageBo reqVo, ImGroupMember senderMember) {
         // 解析客户端 content 里的 quote.messageId
         Long quoteMessageId = ImMessageUtils.parseQuoteMessageId(reqVo.getContent());
 
@@ -634,7 +634,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImGroupMessage> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo) {
+    public PageResult<ImGroupMessage> getGroupMessagePage(ImGroupMessageManagerPageBo reqVo) {
         return groupMessageMapper.selectPage(reqVo);
     }
 

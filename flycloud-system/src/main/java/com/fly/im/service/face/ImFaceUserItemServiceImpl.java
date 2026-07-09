@@ -4,10 +4,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.face.useritem.ImFaceUserItemManagerPageReqVo;
-import com.fly.system.api.im.domain.face.ImFaceUserItem;
-import com.fly.im.dal.mysql.face.ImFaceUserItemMapper;
+import com.fly.system.api.im.domain.bo.ImFaceUserItemBo;
+import com.fly.system.api.im.domain.bo.ImFaceUserItemManagerPageBo;
+import com.fly.system.api.im.domain.ImFaceUserItem;
+import com.fly.im.mapper.ImFaceUserItemMapper;
 import com.fly.im.framework.config.ImProperties;
 import jakarta.annotation.Resource;
 import org.springframework.dao.DuplicateKeyException;
@@ -46,7 +46,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     }
 
     @Override
-    public Long createFaceUserItem(Long userId, ImFaceUserItemSaveReqVo reqVo) {
+    public Long createFaceUserItem(Long userId, ImFaceUserItemBo reqVo) {
         String url = reqVo.getUrl();
         // 1.1 同 URL 已存在则报错
         if (faceUserItemMapper.selectByUserIdAndUrl(userId, url) != null) {
@@ -90,7 +90,7 @@ public class ImFaceUserItemServiceImpl implements ImFaceUserItemService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFaceUserItem> getFaceUserItemPage(ImFaceUserItemManagerPageReqVo reqVo) {
+    public PageResult<ImFaceUserItem> getFaceUserItemPage(ImFaceUserItemManagerPageBo reqVo) {
         return faceUserItemMapper.selectPage(reqVo);
     }
 

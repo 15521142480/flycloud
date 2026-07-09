@@ -6,10 +6,10 @@ import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.im.framework.util.NumberUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordRespVo;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordSaveReqVo;
-import com.fly.system.api.im.domain.sensitiveword.ImSensitiveWord;
+import com.fly.system.api.im.domain.bo.ImSensitiveWordPageBo;
+import com.fly.system.api.im.domain.vo.ImSensitiveWordVo;
+import com.fly.system.api.im.domain.bo.ImSensitiveWordBo;
+import com.fly.system.api.im.domain.ImSensitiveWord;
 import com.fly.im.service.sensitiveword.ImSensitiveWordService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -43,14 +43,14 @@ public class ImSensitiveWordManagerController {
     @PostMapping("/create")
     @Operation(summary = "新增敏感词")
     @PreAuthorize("@pms.hasPermission('im:sensitive-word:saveOrUpdate')")
-    public R<Long> createSensitiveWord(@Valid @RequestBody ImSensitiveWordSaveReqVo reqVo) {
+    public R<Long> createSensitiveWord(@Valid @RequestBody ImSensitiveWordBo reqVo) {
         return ok(sensitiveWordService.createSensitiveWord(reqVo));
     }
 
     @PutMapping("/update")
     @Operation(summary = "修改敏感词")
     @PreAuthorize("@pms.hasPermission('im:sensitive-word:saveOrUpdate')")
-    public R<Boolean> updateSensitiveWord(@Valid @RequestBody ImSensitiveWordSaveReqVo reqVo) {
+    public R<Boolean> updateSensitiveWord(@Valid @RequestBody ImSensitiveWordBo reqVo) {
         sensitiveWordService.updateSensitiveWord(reqVo);
         return R.result(true);
     }
@@ -78,8 +78,8 @@ public class ImSensitiveWordManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得敏感词分页")
     @PreAuthorize("@pms.hasPermission('im:sensitive-word:list')")
-    public R<PageResult<ImSensitiveWordRespVo>> getSensitiveWordPage(
-            @Valid ImSensitiveWordPageReqVo pageReqVo) {
+    public R<PageResult<ImSensitiveWordVo>> getSensitiveWordPage(
+            @Valid ImSensitiveWordPageBo pageReqVo) {
         // 1. 分页查询
         PageResult<ImSensitiveWord> pageResult = sensitiveWordService.getSensitiveWordPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
@@ -89,7 +89,7 @@ public class ImSensitiveWordManagerController {
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(convertSet(pageResult.getList(),
                 word -> NumberUtils.parseLong(word.getCreator())));
         // 2.2 转换为 VO，填充创建人昵称
-        return ok(PageResult.convert(pageResult, ImSensitiveWordRespVo.class, vo ->
+        return ok(PageResult.convert(pageResult, ImSensitiveWordVo.class, vo ->
                 MapUtils.findAndThen(userMap, NumberUtils.parseLong(vo.getCreator()),
                         user -> vo.setCreatorName(user.getName()))));
     }
@@ -97,9 +97,9 @@ public class ImSensitiveWordManagerController {
     @GetMapping("/get")
     @Operation(summary = "获得敏感词详情")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    public R<ImSensitiveWordRespVo> getSensitiveWord(@RequestParam("id") Long id) {
+    public R<ImSensitiveWordVo> getSensitiveWord(@RequestParam("id") Long id) {
         ImSensitiveWord word = sensitiveWordService.getSensitiveWord(id);
-        return ok(BeanUtils.toBean(word, ImSensitiveWordRespVo.class));
+        return ok(BeanUtils.toBean(word, ImSensitiveWordVo.class));
     }
 
 }

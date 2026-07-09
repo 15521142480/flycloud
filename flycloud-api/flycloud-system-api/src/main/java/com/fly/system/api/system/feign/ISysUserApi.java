@@ -4,7 +4,7 @@ import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.system.api.constants.SystemFeignApiConstants;
-import com.fly.system.api.system.domain.common.UserInfo;
+import com.fly.system.api.system.common.UserInfo;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,8 +1,8 @@
 package com.fly.im.service.conversation;
 
 import cn.hutool.core.collection.CollUtil;
-import com.fly.im.dal.mysql.conversation.ImConversationReadMapper;
-import com.fly.system.api.im.domain.conversation.ImConversationRead;
+import com.fly.im.mapper.ImConversationReadMapper;
+import com.fly.system.api.im.domain.ImConversationRead;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;

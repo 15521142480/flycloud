@@ -1,9 +1,9 @@
 package com.fly.im.service.sensitiveword;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordSaveReqVo;
-import com.fly.system.api.im.domain.sensitiveword.ImSensitiveWord;
+import com.fly.system.api.im.domain.bo.ImSensitiveWordPageBo;
+import com.fly.system.api.im.domain.bo.ImSensitiveWordBo;
+import com.fly.system.api.im.domain.ImSensitiveWord;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface ImSensitiveWordService {
     /**
      * 【管理后台】分页查询敏感词
      */
-    PageResult<ImSensitiveWord> getSensitiveWordPage(ImSensitiveWordPageReqVo reqVo);
+    PageResult<ImSensitiveWord> getSensitiveWordPage(ImSensitiveWordPageBo reqVo);
 
     /**
      * 【管理后台】获取敏感词详情
@@ -38,12 +38,12 @@ public interface ImSensitiveWordService {
     /**
      * 【管理后台】新增敏感词，返回新增 id
      */
-    Long createSensitiveWord(@Valid ImSensitiveWordSaveReqVo reqVo);
+    Long createSensitiveWord(@Valid ImSensitiveWordBo reqVo);
 
     /**
      * 【管理后台】修改敏感词
      */
-    void updateSensitiveWord(@Valid ImSensitiveWordSaveReqVo reqVo);
+    void updateSensitiveWord(@Valid ImSensitiveWordBo reqVo);
 
     /**
      * 【管理后台】删除敏感词

@@ -1,6 +1,6 @@
 package com.fly.im.service.message.dto;
 
-import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.domain.ImGroupMessage;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.websocket.dto.notification.group.*;
 import jakarta.validation.constraints.NotNull;

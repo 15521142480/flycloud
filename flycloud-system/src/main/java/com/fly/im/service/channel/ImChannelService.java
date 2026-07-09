@@ -1,9 +1,9 @@
 package com.fly.im.service.channel;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
-import com.fly.system.api.im.domain.channel.ImChannel;
+import com.fly.system.api.im.domain.bo.ImChannelPageBo;
+import com.fly.system.api.im.domain.bo.ImChannelBo;
+import com.fly.system.api.im.domain.ImChannel;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -65,7 +65,7 @@ public interface ImChannelService {
      * @param reqVo 分页查询条件
      * @return 频道分页
      */
-    PageResult<ImChannel> getChannelPage(ImChannelPageReqVo reqVo);
+    PageResult<ImChannel> getChannelPage(ImChannelPageBo reqVo);
 
     /**
      * 获取频道详情
@@ -81,14 +81,14 @@ public interface ImChannelService {
      * @param reqVo 新增请求
      * @return 新增频道编号
      */
-    Long createChannel(@Valid ImChannelSaveReqVo reqVo);
+    Long createChannel(@Valid ImChannelBo reqVo);
 
     /**
      * 修改频道
      *
      * @param reqVo 修改请求
      */
-    void updateChannel(@Valid ImChannelSaveReqVo reqVo);
+    void updateChannel(@Valid ImChannelBo reqVo);
 
     /**
      * 删除频道；频道下有素材或消息时拒绝

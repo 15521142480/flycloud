@@ -1,7 +1,7 @@
 package com.fly.im.mq.consumer.friend;
 
 import cn.hutool.core.collection.CollUtil;
-import com.fly.system.api.im.domain.friend.ImFriend;
+import com.fly.system.api.im.domain.ImFriend;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.service.websocket.ImWebSocketService;

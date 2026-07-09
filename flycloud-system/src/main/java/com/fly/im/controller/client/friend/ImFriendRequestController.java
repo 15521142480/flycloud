@@ -5,9 +5,9 @@ import cn.hutool.core.util.ObjUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
-import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestRespVo;
-import com.fly.system.api.im.domain.friend.ImFriendRequest;
+import com.fly.system.api.im.domain.bo.ImFriendRequestBo;
+import com.fly.system.api.im.domain.vo.ImFriendRequestVo;
+import com.fly.system.api.im.domain.ImFriendRequest;
 import com.fly.im.service.friend.ImFriendRequestService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -55,7 +55,7 @@ public class ImFriendRequestController {
 
     @PostMapping("/apply")
     @Operation(summary = "发起好友申请")
-    public R<Long> applyFriend(@Valid @RequestBody ImFriendRequestApplyReqVo reqVo) {
+    public R<Long> applyFriend(@Valid @RequestBody ImFriendRequestBo reqVo) {
         ImFriendRequest request = friendRequestService.applyFriend(getCurUserId(), reqVo);
         return ok(request != null ? request.getId() : null);
     }
@@ -81,7 +81,7 @@ public class ImFriendRequestController {
 
     @GetMapping("/list")
     @Operation(summary = "查询「我相关」的好友申请列表（游标分页：传 maxId 加载更多）")
-    public R<List<ImFriendRequestRespVo>> getMyFriendRequestList(
+    public R<List<ImFriendRequestVo>> getMyFriendRequestList(
             @Parameter(description = "当前列表最旧记录的 id；首页不传")
             @RequestParam(value = "maxId", required = false) Long maxId,
             @Parameter(description = "单次拉取条数", required = true)
@@ -93,13 +93,13 @@ public class ImFriendRequestController {
     @GetMapping("/get")
     @Operation(summary = "按 id 单查「我相关」的申请记录（带越权过滤；WebSocket 通知到达后用）")
     @Parameter(name = "id", description = "申请记录编号", required = true)
-    public R<ImFriendRequestRespVo> getMyFriendRequest(@RequestParam("id") Long id) {
+    public R<ImFriendRequestVo> getMyFriendRequest(@RequestParam("id") Long id) {
         ImFriendRequest request = friendRequestService.getFriendRequest(id);
         // 越权过滤：fromUser / toUser 必有一方是当前用户，否则当不存在返回 null
         Long currentUserId = getCurUserId();
         if (request == null || (ObjUtil.notEqual(request.getFromUserId(), currentUserId)
                 && ObjUtil.notEqual(request.getToUserId(), currentUserId))) {
-            return ok((ImFriendRequestRespVo) null);
+            return ok((ImFriendRequestVo) null);
         }
         return ok(CollUtil.getFirst(buildList(Collections.singletonList(request))));
     }
@@ -112,7 +112,7 @@ public class ImFriendRequestController {
             @Parameter(name = "lastId", description = "上次拉取到的最后一条记录 id；首次拉取不传"),
             @Parameter(name = "limit", description = "单次拉取条数", required = true)
     })
-    public R<List<ImFriendRequestRespVo>> pullMyFriendRequestList(
+    public R<List<ImFriendRequestVo>> pullMyFriendRequestList(
             @RequestParam(value = "lastUpdateTime", required = false) Long lastUpdateTime,
             @RequestParam(value = "lastId", required = false) Long lastId,
             @RequestParam("limit") @Min(1) @Max(200) Integer limit) {
@@ -122,7 +122,7 @@ public class ImFriendRequestController {
 
     // ========== 私有方法：VO 组装 ==========
 
-    private List<ImFriendRequestRespVo> buildList(List<ImFriendRequest> list) {
+    private List<ImFriendRequestVo> buildList(List<ImFriendRequest> list) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }
@@ -131,7 +131,7 @@ public class ImFriendRequestController {
                 request -> Stream.of(request.getFromUserId(), request.getToUserId()));
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(userIds);
         return convertList(list, request -> {
-            ImFriendRequestRespVo vo = BeanUtils.toBean(request, ImFriendRequestRespVo.class);
+            ImFriendRequestVo vo = BeanUtils.toBean(request, ImFriendRequestVo.class);
             MapUtils.findAndThen(userMap, request.getFromUserId(), user ->
                     vo.setFromNickname(user.getName()).setFromAvatar(user.getAvatar()));
             MapUtils.findAndThen(userMap, request.getToUserId(), user ->

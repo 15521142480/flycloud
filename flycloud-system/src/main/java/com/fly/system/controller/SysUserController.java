@@ -90,6 +90,12 @@ public class SysUserController extends BaseController {
     }
 
 
+    @GetMapping("/get")
+    public R<SysUserVo> get() {
+        return R.ok(iSysUserService.queryById(UserUtils.getCurUserId()));
+    }
+
+
     /**
      * 用户注册
      */

@@ -7,11 +7,11 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerPageReqVo;
-import com.fly.system.api.im.domain.friend.ImFriend;
-import com.fly.system.api.im.domain.friend.ImFriendRequest;
-import com.fly.im.dal.mysql.friend.ImFriendRequestMapper;
+import com.fly.system.api.im.domain.bo.ImFriendRequestBo;
+import com.fly.system.api.im.domain.bo.ImFriendRequestManagerPageBo;
+import com.fly.system.api.im.domain.ImFriend;
+import com.fly.system.api.im.domain.ImFriendRequest;
+import com.fly.im.mapper.ImFriendRequestMapper;
 import com.fly.system.api.im.enums.friend.ImFriendRequestHandleResultEnum;
 import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
@@ -67,7 +67,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImFriendRequest applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+    public ImFriendRequest applyFriend(Long fromUserId, ImFriendRequestBo reqVo) {
         Long toUserId = reqVo.getToUserId();
         // 1.1 校验：不能加自己
         if (Objects.equals(fromUserId, toUserId)) {
@@ -138,7 +138,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
      * @param reqVo      申请请求
      * @return 申请记录
      */
-    private ImFriendRequest createOrResetRequest(Long fromUserId, ImFriendRequestApplyReqVo reqVo) {
+    private ImFriendRequest createOrResetRequest(Long fromUserId, ImFriendRequestBo reqVo) {
 
         Long toUserId = reqVo.getToUserId();
         ImFriendRequest request = friendRequestMapper.selectByFromUserIdAndToUserId(fromUserId, toUserId);
@@ -249,7 +249,7 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
     }
 
     @Override
-    public PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo) {
+    public PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageBo reqVo) {
         return friendRequestMapper.selectPage(reqVo);
     }
 

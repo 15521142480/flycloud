@@ -5,10 +5,10 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerBanReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerRespVo;
-import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupManagerPageBo;
+import com.fly.system.api.im.domain.vo.ImGroupManagerVo;
+import com.fly.system.api.im.domain.ImGroup;
 import com.fly.im.service.group.ImGroupMemberService;
 import com.fly.im.service.group.ImGroupService;
 import com.fly.im.framework.system.AdminUserApi;
@@ -47,7 +47,7 @@ public class ImGroupManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得群分页")
     @PreAuthorize("@pms.hasPermission('im:group:list:list')")
-    public R<PageResult<ImGroupManagerRespVo>> getGroupPage(@Valid ImGroupManagerPageReqVo pageReqVo) {
+    public R<PageResult<ImGroupManagerVo>> getGroupPage(@Valid ImGroupManagerPageBo pageReqVo) {
         // 1. 分页查询群
         PageResult<ImGroup> pageResult = groupService.getGroupPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
@@ -59,7 +59,7 @@ public class ImGroupManagerController {
         Map<Long, Long> memberCountMap = groupMemberService.getActiveMemberCountMap(
                 convertSet(pageResult.getList(), ImGroup::getId));
         // 2.2 转换为 VO，填充群主昵称、群成员数量
-        return ok(PageResult.convert(pageResult, ImGroupManagerRespVo.class, vo -> {
+        return ok(PageResult.convert(pageResult, ImGroupManagerVo.class, vo -> {
             MapUtils.findAndThen(userMap, vo.getOwnerUserId(),
                     user -> vo.setOwnerNickname(user.getName()));
             vo.setMemberCount(memberCountMap.getOrDefault(vo.getId(), 0L).intValue());
@@ -71,9 +71,9 @@ public class ImGroupManagerController {
     @Operation(summary = "获得群详情")
     @Parameter(name = "id", description = "群编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:group:list:list')")
-    public R<ImGroupManagerRespVo> getGroup(@RequestParam("id") Long id) {
+    public R<ImGroupManagerVo> getGroup(@RequestParam("id") Long id) {
         ImGroup group = groupService.getGroup(id);
-        ImGroupManagerRespVo vo = BeanUtils.toBean(group, ImGroupManagerRespVo.class);
+        ImGroupManagerVo vo = BeanUtils.toBean(group, ImGroupManagerVo.class);
         vo.setAvatar(vo.getAvatar());
         return ok(vo);
     }
@@ -81,7 +81,7 @@ public class ImGroupManagerController {
     @PutMapping("/ban")
     @Operation(summary = "封禁群")
     @PreAuthorize("@pms.hasPermission('im:group:list:ban')")
-    public R<Boolean> banGroup(@Valid @RequestBody ImGroupManagerBanReqVo reqVo) {
+    public R<Boolean> banGroup(@Valid @RequestBody ImGroupBo reqVo) {
         groupService.banGroup(getCurUserId(), reqVo);
         return R.result(true);
     }

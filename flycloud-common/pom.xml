@@ -24,6 +24,7 @@
         <module>flycloud-common-redis</module>
         <module>flycloud-common-elasticsearch</module>
         <module>flycloud-common-feign</module>
+        <module>flycloud-common-websocket</module>
     </modules>
 
 </project>

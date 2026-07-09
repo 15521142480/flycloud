@@ -1,7 +1,7 @@
 package com.fly.im.service.conversation;
 
 
-import com.fly.system.api.im.domain.conversation.ImConversationRead;
+import com.fly.system.api.im.domain.ImConversationRead;
 
 import java.util.Collection;
 import java.util.List;

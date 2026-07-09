@@ -1,10 +1,10 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.manager.message.group.ImGroupMessageManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageListReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageSendReqVo;
-import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.domain.bo.ImGroupMessageManagerPageBo;
+import com.fly.system.api.im.domain.bo.ImGroupMessageBo;
+import com.fly.system.api.im.domain.bo.ImGroupMessageBo;
+import com.fly.system.api.im.domain.ImGroupMessage;
 import com.fly.im.service.message.dto.ImGroupMessageSendDTO;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ public interface ImGroupMessageService {
      * @param reqVo    发送请求
      * @return 消息
      */
-    ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageSendReqVo reqVo);
+    ImGroupMessage sendGroupMessage(Long senderId, ImGroupMessageBo reqVo);
 
     /**
      * 【系统调用】发送群聊消息：内部查 active 成员 + 推送
@@ -97,7 +97,7 @@ public interface ImGroupMessageService {
      * @param reqVo  拉取请求
      * @return 消息列表（按 id 倒序）
      */
-    List<ImGroupMessage> getGroupMessageList(Long userId, ImGroupMessageListReqVo reqVo);
+    List<ImGroupMessage> getGroupMessageList(Long userId, ImGroupMessageBo reqVo);
 
     /**
      * 清理用户在某群的已读位置缓存
@@ -133,7 +133,7 @@ public interface ImGroupMessageService {
     /**
      * 【管理后台】分页查询群聊消息
      */
-    PageResult<ImGroupMessage> getGroupMessagePage(ImGroupMessageManagerPageReqVo reqVo);
+    PageResult<ImGroupMessage> getGroupMessagePage(ImGroupMessageManagerPageBo reqVo);
 
     /**
      * 【管理后台】获取群聊消息详情

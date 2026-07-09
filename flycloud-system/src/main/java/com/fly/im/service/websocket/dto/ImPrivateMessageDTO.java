@@ -3,7 +3,7 @@ package com.fly.im.service.websocket.dto;
 import cn.hutool.core.lang.Assert;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.message.ImPrivateMessage;
+import com.fly.system.api.im.domain.ImPrivateMessage;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.websocket.dto.notification.friend.BaseFriendNotification;
 import com.fly.im.service.websocket.dto.notification.group.BaseGroupNotification;

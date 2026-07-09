@@ -1,10 +1,10 @@
 package com.fly.im.service.friend;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageReqVo;
-import com.fly.system.api.im.domain.friend.ImFriend;
-import com.fly.system.api.im.domain.friend.ImFriendRequest;
+import com.fly.system.api.im.domain.bo.ImFriendBo;
+import com.fly.system.api.im.domain.bo.ImFriendManagerPageBo;
+import com.fly.system.api.im.domain.ImFriend;
+import com.fly.system.api.im.domain.ImFriendRequest;
 import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -105,7 +105,7 @@ public interface ImFriendService {
     /**
      * 更新好友单边属性（备注 / 免打扰 / 联系人置顶）
      */
-    void updateFriend(Long userId, ImFriendUpdateReqVo reqVo);
+    void updateFriend(Long userId, ImFriendBo reqVo);
 
     /**
      * 拉黑好友（必须先是好友）
@@ -135,7 +135,7 @@ public interface ImFriendService {
     /**
      * 【管理后台】分页查询好友关系
      */
-    PageResult<ImFriend> getFriendPage(ImFriendManagerPageReqVo reqVo);
+    PageResult<ImFriend> getFriendPage(ImFriendManagerPageBo reqVo);
 
 
 

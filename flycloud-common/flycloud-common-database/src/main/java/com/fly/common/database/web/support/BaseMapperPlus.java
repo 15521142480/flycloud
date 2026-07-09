@@ -59,6 +59,42 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
     }
 
     /**
+     * 根据 ID 集合查询列表，兼容迁移业务里的批量查询写法。
+     */
+    default List<T> selectByIds(Collection<? extends Serializable> idList) {
+        return this.selectBatchIds(idList);
+    }
+
+    /**
+     * 根据字段查询单条记录。
+     */
+    default <V> T selectOne(SFunction<T, ?> field, V value) {
+        return selectOne(new LambdaQueryWrapper<T>().eq(field, value));
+    }
+
+    /**
+     * 根据字段查询列表。
+     */
+    default <V> List<T> selectList(SFunction<T, ?> field, V value) {
+        return selectList(new LambdaQueryWrapper<T>().eq(field, value));
+    }
+
+    /**
+     * 根据字段统计数量。
+     */
+    default <V> Long selectCount(SFunction<T, ?> field, V value) {
+        return selectCount(new LambdaQueryWrapper<T>().eq(field, value));
+    }
+
+    /**
+     * 查询最后一条记录。
+     */
+    default T selectLastOne(LambdaQueryWrapper<T> wrapper) {
+        wrapper.last("LIMIT 1");
+        return selectOne(wrapper);
+    }
+
+    /**
      * 批量插入
      */
     default boolean insertBatch(Collection<T> entityList) {

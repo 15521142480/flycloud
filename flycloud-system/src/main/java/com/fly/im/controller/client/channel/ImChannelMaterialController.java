@@ -2,8 +2,8 @@ package com.fly.im.controller.client.channel;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialRespVo;
-import com.fly.system.api.im.domain.channel.ImChannelMaterial;
+import com.fly.system.api.im.domain.vo.ImChannelMaterialVo;
+import com.fly.system.api.im.domain.ImChannelMaterial;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,9 +31,9 @@ public class ImChannelMaterialController {
     @GetMapping("/get")
     @Operation(summary = "获取素材详情；用于客户端点击图文卡片渲染详情页")
     @Parameter(name = "id", description = "素材编号", required = true, example = "1024")
-    public R<ImChannelMaterialRespVo> getMaterial(@RequestParam("id") Long id) {
+    public R<ImChannelMaterialVo> getMaterial(@RequestParam("id") Long id) {
         ImChannelMaterial material = channelMaterialService.validateMaterialExists(id);
-        ImChannelMaterialRespVo vo = BeanUtils.toBean(material, ImChannelMaterialRespVo.class);
+        ImChannelMaterialVo vo = BeanUtils.toBean(material, ImChannelMaterialVo.class);
         vo.setCoverUrl(vo.getCoverUrl());
         return ok(vo);
     }

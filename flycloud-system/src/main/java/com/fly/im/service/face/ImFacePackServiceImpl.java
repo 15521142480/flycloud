@@ -5,10 +5,10 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackSaveReqVo;
-import com.fly.system.api.im.domain.face.ImFacePack;
-import com.fly.im.dal.mysql.face.ImFacePackMapper;
+import com.fly.system.api.im.domain.bo.ImFacePackPageBo;
+import com.fly.system.api.im.domain.bo.ImFacePackBo;
+import com.fly.system.api.im.domain.ImFacePack;
+import com.fly.im.mapper.ImFacePackMapper;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ public class ImFacePackServiceImpl implements ImFacePackService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFacePack> getFacePackPage(ImFacePackPageReqVo reqVo) {
+    public PageResult<ImFacePack> getFacePackPage(ImFacePackPageBo reqVo) {
         return facePackMapper.selectPage(reqVo);
     }
 
@@ -70,7 +70,7 @@ public class ImFacePackServiceImpl implements ImFacePackService {
     }
 
     @Override
-    public Long createFacePack(ImFacePackSaveReqVo reqVo) {
+    public Long createFacePack(ImFacePackBo reqVo) {
         ImFacePack pack = BeanUtils.toBean(reqVo, ImFacePack.class);
         pack.setCreateBy(UserUtils.getCurUserIdStr());
         pack.setCreateTime(LocalDateTime.now());
@@ -79,7 +79,7 @@ public class ImFacePackServiceImpl implements ImFacePackService {
     }
 
     @Override
-    public void updateFacePack(ImFacePackSaveReqVo reqVo) {
+    public void updateFacePack(ImFacePackBo reqVo) {
         // 1. 校验存在
         validateFacePackExists(reqVo.getId());
 

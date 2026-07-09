@@ -1,7 +1,7 @@
 package com.fly.im.service.websocket.dto;
 
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.domain.ImGroupMessage;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;

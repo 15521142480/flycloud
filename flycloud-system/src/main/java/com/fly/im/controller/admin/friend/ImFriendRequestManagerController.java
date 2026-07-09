@@ -4,9 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerRespVo;
-import com.fly.system.api.im.domain.friend.ImFriendRequest;
+import com.fly.system.api.im.domain.bo.ImFriendRequestManagerPageBo;
+import com.fly.system.api.im.domain.vo.ImFriendRequestManagerVo;
+import com.fly.system.api.im.domain.ImFriendRequest;
 import com.fly.im.service.friend.ImFriendRequestService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -41,8 +41,8 @@ public class ImFriendRequestManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得好友申请分页")
     @PreAuthorize("@pms.hasPermission('im:friend:request:list')")
-    public R<PageResult<ImFriendRequestManagerRespVo>> getFriendRequestPage(
-            @Valid ImFriendRequestManagerPageReqVo pageReqVo) {
+    public R<PageResult<ImFriendRequestManagerVo>> getFriendRequestPage(
+            @Valid ImFriendRequestManagerPageBo pageReqVo) {
         // 1. 分页查询
         PageResult<ImFriendRequest> pageResult = friendRequestService.getFriendRequestPage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
@@ -54,7 +54,7 @@ public class ImFriendRequestManagerController {
                 request -> Stream.of(request.getFromUserId(), request.getToUserId()));
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(userIds);
         // 2.2 转换为 VO，填充昵称
-        return ok(PageResult.convert(pageResult, ImFriendRequestManagerRespVo.class, vo -> {
+        return ok(PageResult.convert(pageResult, ImFriendRequestManagerVo.class, vo -> {
             MapUtils.findAndThen(userMap, vo.getFromUserId(),
                     user -> vo.setFromNickname(user.getName()));
             MapUtils.findAndThen(userMap, vo.getToUserId(),

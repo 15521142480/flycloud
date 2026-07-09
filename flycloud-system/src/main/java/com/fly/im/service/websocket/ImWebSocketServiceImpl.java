@@ -154,7 +154,8 @@ public class ImWebSocketServiceImpl implements ImWebSocketService {
      * 获得自身的代理对象，解决 @Async AOP 代理问题
      */
     private ImWebSocketServiceImpl getSelf() {
-        return SpringUtil.getBean(getClass());
+//        return SpringUtil.getBean(getClass());
+        return SpringUtil.getBean(ImWebSocketServiceImpl.class);
     }
 
 }

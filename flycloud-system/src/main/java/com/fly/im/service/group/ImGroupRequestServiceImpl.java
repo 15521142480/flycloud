@@ -4,12 +4,12 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.group.request.ImGroupRequestApplyReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupRequestManagerPageReqVo;
-import com.fly.system.api.im.domain.group.ImGroup;
-import com.fly.system.api.im.domain.group.ImGroupMember;
-import com.fly.system.api.im.domain.group.ImGroupRequest;
-import com.fly.im.dal.mysql.group.ImGroupRequestMapper;
+import com.fly.system.api.im.domain.bo.ImGroupRequestBo;
+import com.fly.system.api.im.domain.bo.ImGroupRequestManagerPageBo;
+import com.fly.system.api.im.domain.ImGroup;
+import com.fly.system.api.im.domain.ImGroupMember;
+import com.fly.system.api.im.domain.ImGroupRequest;
+import com.fly.im.mapper.ImGroupRequestMapper;
 import com.fly.system.api.im.enums.group.ImGroupAddSourceEnum;
 import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
 import com.fly.system.api.im.enums.group.ImGroupRequestHandleResultEnum;
@@ -73,7 +73,7 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImGroupRequest applyJoinGroup(Long userId, ImGroupRequestApplyReqVo reqVo) {
+    public ImGroupRequest applyJoinGroup(Long userId, ImGroupRequestBo reqVo) {
         Long groupId = reqVo.getGroupId();
         // 1.1 校验群存在 + 未封禁 / 未解散
         ImGroup group = groupService.validateGroupExists(groupId);
@@ -242,7 +242,7 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
     }
 
     @Override
-    public PageResult<ImGroupRequest> getGroupRequestPage(ImGroupRequestManagerPageReqVo reqVo) {
+    public PageResult<ImGroupRequest> getGroupRequestPage(ImGroupRequestManagerPageBo reqVo) {
         return groupRequestMapper.selectPage(reqVo);
     }
 
@@ -254,7 +254,7 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
      * @param reqVo   申请请求
      * @return 申请记录
      */
-    private ImGroupRequest createOrResetApplyRequest(Long groupId, Long userId, ImGroupRequestApplyReqVo reqVo) {
+    private ImGroupRequest createOrResetApplyRequest(Long groupId, Long userId, ImGroupRequestBo reqVo) {
         // 1. 已有申请：覆盖本次申请内容，并重置为未处理
         ImGroupRequest request = groupRequestMapper.selectByGroupIdAndUserId(groupId, userId);
         if (request != null) {
@@ -323,7 +323,7 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
      * @param request 申请记录
      * @param reqVo   申请请求
      */
-    private void resetApplyRequest(ImGroupRequest request, ImGroupRequestApplyReqVo reqVo) {
+    private void resetApplyRequest(ImGroupRequest request, ImGroupRequestBo reqVo) {
         // 1. 更新申请内容、来源和处理状态
         LocalDateTime now = LocalDateTime.now();
         groupRequestMapper.updateApplyByIdReset(request.getId(),

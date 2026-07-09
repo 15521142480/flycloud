@@ -5,9 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerRespVo;
-import com.fly.system.api.im.domain.message.ImPrivateMessage;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageManagerPageBo;
+import com.fly.system.api.im.domain.vo.ImPrivateMessageManagerVo;
+import com.fly.system.api.im.domain.ImPrivateMessage;
 import com.fly.im.service.message.ImPrivateMessageService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -43,8 +43,8 @@ public class ImPrivateMessageManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得私聊消息分页")
     @PreAuthorize("@pms.hasPermission('im:friend:message:list')")
-    public R<PageResult<ImPrivateMessageManagerRespVo>> getPrivateMessagePage(
-            @Valid ImPrivateMessageManagerPageReqVo pageReqVo) {
+    public R<PageResult<ImPrivateMessageManagerVo>> getPrivateMessagePage(
+            @Valid ImPrivateMessageManagerPageBo pageReqVo) {
         // 1. 分页查询
         PageResult<ImPrivateMessage> pageResult = privateMessageService.getPrivateMessagePage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
@@ -54,7 +54,7 @@ public class ImPrivateMessageManagerController {
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(convertSetByFlatMap(pageResult.getList(),
                 m -> Stream.of(m.getSenderId(), m.getReceiverId())));
         // 2.2 转换为 VO，填充昵称
-        return ok(PageResult.convert(pageResult, ImPrivateMessageManagerRespVo.class, vo -> {
+        return ok(PageResult.convert(pageResult, ImPrivateMessageManagerVo.class, vo -> {
             MapUtils.findAndThen(userMap, vo.getSenderId(), user -> vo.setSenderNickname(user.getName()));
             MapUtils.findAndThen(userMap, vo.getReceiverId(), user -> vo.setReceiverNickname(user.getName()));
         }));
@@ -64,9 +64,9 @@ public class ImPrivateMessageManagerController {
     @Operation(summary = "获得私聊消息详情")
     @Parameter(name = "id", description = "消息编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:friend:message:list')")
-    public R<ImPrivateMessageManagerRespVo> getPrivateMessage(@RequestParam("id") Long id) {
+    public R<ImPrivateMessageManagerVo> getPrivateMessage(@RequestParam("id") Long id) {
         ImPrivateMessage message = privateMessageService.getPrivateMessage(id);
-        return ok(BeanUtils.toBean(message, ImPrivateMessageManagerRespVo.class));
+        return ok(BeanUtils.toBean(message, ImPrivateMessageManagerVo.class));
     }
 
 }

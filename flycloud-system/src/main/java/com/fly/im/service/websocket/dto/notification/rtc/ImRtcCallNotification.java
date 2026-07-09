@@ -1,6 +1,6 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
-import com.fly.system.api.im.domain.rtc.ImRtcCall;
+import com.fly.system.api.im.domain.ImRtcCall;
 import com.fly.system.api.im.enums.rtc.ImRtcParticipantStatusEnum;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import lombok.Data;

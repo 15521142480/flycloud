@@ -5,10 +5,10 @@ import cn.hutool.core.util.ObjUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.channel.ImChannelSaveReqVo;
-import com.fly.system.api.im.domain.channel.ImChannel;
-import com.fly.im.dal.mysql.channel.ImChannelMapper;
+import com.fly.system.api.im.domain.bo.ImChannelPageBo;
+import com.fly.system.api.im.domain.bo.ImChannelBo;
+import com.fly.system.api.im.domain.ImChannel;
+import com.fly.im.mapper.ImChannelMapper;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class ImChannelServiceImpl implements ImChannelService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImChannel> getChannelPage(ImChannelPageReqVo reqVo) {
+    public PageResult<ImChannel> getChannelPage(ImChannelPageBo reqVo) {
         return channelMapper.selectPage(reqVo);
     }
 
@@ -76,7 +76,7 @@ public class ImChannelServiceImpl implements ImChannelService {
     }
 
     @Override
-    public Long createChannel(ImChannelSaveReqVo reqVo) {
+    public Long createChannel(ImChannelBo reqVo) {
         // 校验 code 唯一
         validateCodeUnique(null, reqVo.getCode());
 
@@ -90,7 +90,7 @@ public class ImChannelServiceImpl implements ImChannelService {
     }
 
     @Override
-    public void updateChannel(ImChannelSaveReqVo reqVo) {
+    public void updateChannel(ImChannelBo reqVo) {
         // 1.1 校验存在
         validateChannelExists(reqVo.getId());
         // 1.2 校验 code 唯一

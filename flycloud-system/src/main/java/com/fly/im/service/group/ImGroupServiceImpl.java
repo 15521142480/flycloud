@@ -11,23 +11,23 @@ import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminAddReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminRemoveReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupCancelMuteMemberReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupCreateReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupMuteAllReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupMuteMemberReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupTransferOwnerReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupUpdateReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberInviteReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberRemoveReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerBanReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerPageReqVo;
-import com.fly.system.api.im.domain.friend.ImFriend;
-import com.fly.system.api.im.domain.group.ImGroup;
-import com.fly.system.api.im.domain.group.ImGroupMember;
-import com.fly.system.api.im.domain.message.ImGroupMessage;
-import com.fly.im.dal.mysql.group.ImGroupMapper;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupMemberBo;
+import com.fly.system.api.im.domain.bo.ImGroupMemberBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupManagerPageBo;
+import com.fly.system.api.im.domain.ImFriend;
+import com.fly.system.api.im.domain.ImGroup;
+import com.fly.system.api.im.domain.ImGroupMember;
+import com.fly.system.api.im.domain.ImGroupMessage;
+import com.fly.im.mapper.ImGroupMapper;
 import com.fly.system.api.im.enums.group.ImGroupAddSourceEnum;
 import com.fly.im.framework.config.ImProperties;
 import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
@@ -93,7 +93,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ImGroup createGroup(ImGroupCreateReqVo createReqVo, Long userId) {
+    public ImGroup createGroup(ImGroupBo createReqVo, Long userId) {
         // 1.1 处理初始成员列表（去重 + 排除创建者自己）
         Set<Long> initialMemberUserIds = createReqVo.getMemberUserIds() == null
                 ? new HashSet<>() : new HashSet<>(createReqVo.getMemberUserIds());
@@ -138,7 +138,7 @@ public class ImGroupServiceImpl implements ImGroupService {
     @Override
     @CacheEvict(cacheNames = GROUP, key = "#updateReqVo.id")
     @Transactional(rollbackFor = Exception.class)
-    public ImGroup updateGroup(ImGroupUpdateReqVo updateReqVo, Long userId) {
+    public ImGroup updateGroup(ImGroupBo updateReqVo, Long userId) {
         // 1.1 校验群存在：group 留作老值备份，通知里 oldXXX 字段从这里取
         ImGroup group = validateGroupExists(updateReqVo.getId());
         // 1.2 校验操作人是群主
@@ -213,7 +213,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void inviteGroupMember(Long userId, ImGroupMemberInviteReqVo inviteReqVo) {
+    public void inviteGroupMember(Long userId, ImGroupMemberBo inviteReqVo) {
         Long groupId = inviteReqVo.getGroupId();
         // 1.1 校验群存在 + 当前用户是群成员；同时拿到 role 供下面审批分支判断
         ImGroup group = validateGroupExists(groupId);
@@ -287,7 +287,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeGroupMember(Long userId, ImGroupMemberRemoveReqVo removeReqVo) {
+    public void removeGroupMember(Long userId, ImGroupMemberBo removeReqVo) {
         Long groupId = removeReqVo.getGroupId();
         Set<Long> targetUserIds = new HashSet<>(removeReqVo.getMemberUserIds());
         // 1.1 校验群存在 + 操作者是群主或管理员
@@ -327,7 +327,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addGroupAdmin(Long userId, ImGroupAdminAddReqVo reqVo) {
+    public void addGroupAdmin(Long userId, ImGroupBo reqVo) {
         Long groupId = reqVo.getId();
         Set<Long> targetUserIds = new HashSet<>(reqVo.getUserIds());
         // 1.1 仅群主可操作
@@ -365,7 +365,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeGroupAdmin(Long userId, ImGroupAdminRemoveReqVo reqVo) {
+    public void removeGroupAdmin(Long userId, ImGroupBo reqVo) {
         Long groupId = reqVo.getId();
         Set<Long> targetUserIds = new HashSet<>(reqVo.getUserIds());
         // 1.1 仅群主可操作
@@ -412,7 +412,7 @@ public class ImGroupServiceImpl implements ImGroupService {
     @Override
     @CacheEvict(cacheNames = GROUP, key = "#transferReqVo.id")
     @Transactional(rollbackFor = Exception.class)
-    public void transferGroupOwner(Long userId, ImGroupTransferOwnerReqVo transferReqVo) {
+    public void transferGroupOwner(Long userId, ImGroupBo transferReqVo) {
         Long groupId = transferReqVo.getId();
         Long newOwnerUserId = transferReqVo.getNewOwnerUserId();
         // 1.1 仅老群主可执行
@@ -641,13 +641,13 @@ public class ImGroupServiceImpl implements ImGroupService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImGroup> getGroupPage(ImGroupManagerPageReqVo pageReqVo) {
+    public PageResult<ImGroup> getGroupPage(ImGroupManagerPageBo pageReqVo) {
         return groupMapper.selectPage(pageReqVo);
     }
 
     @Override
     @CacheEvict(cacheNames = GROUP, key = "#banReqVo.id")
-    public void banGroup(Long operatorUserId, ImGroupManagerBanReqVo banReqVo) {
+    public void banGroup(Long operatorUserId, ImGroupBo banReqVo) {
         // 1. 校验群存在且未解散
         ImGroup group = getSelf().getGroup(banReqVo.getId());
         if (group == null) {
@@ -708,7 +708,7 @@ public class ImGroupServiceImpl implements ImGroupService {
     @Override
     @CacheEvict(cacheNames = GROUP, key = "#reqVo.id")
     @Transactional(rollbackFor = Exception.class)
-    public void muteAll(Long userId, ImGroupMuteAllReqVo reqVo) {
+    public void muteAll(Long userId, ImGroupBo reqVo) {
         // 1. 校验群主或管理员
         validateGroupOwnerOrAdmin(reqVo.getId(), userId);
 
@@ -727,7 +727,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void muteMember(Long userId, ImGroupMuteMemberReqVo reqVo) {
+    public void muteMember(Long userId, ImGroupBo reqVo) {
         // 1.1 不能禁言自己
         if (ObjUtil.equal(userId, reqVo.getUserId())) {
             throw exception(GROUP_MUTE_MEMBER_SELF);
@@ -753,7 +753,7 @@ public class ImGroupServiceImpl implements ImGroupService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void cancelMuteMember(Long userId, ImGroupCancelMuteMemberReqVo reqVo) {
+    public void cancelMuteMember(Long userId, ImGroupBo reqVo) {
         // 1.1 校验群存在且未封禁
         validateGroupExists(reqVo.getId());
         // 1.2 校验操作人和目标都在群中

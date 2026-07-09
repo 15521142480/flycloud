@@ -1,7 +1,7 @@
 package com.fly.im.service.statistics;
 
 import cn.hutool.core.convert.Convert;
-import com.fly.im.dal.mysql.statistics.ImStatisticsManagerMapper;
+import com.fly.im.mapper.ImStatisticsManagerMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

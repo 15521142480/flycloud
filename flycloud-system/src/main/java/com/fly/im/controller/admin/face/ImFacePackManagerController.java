@@ -3,10 +3,10 @@ package com.fly.im.controller.admin.face;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackRespVo;
-import com.fly.system.api.im.domain.vo.admin.manager.face.pack.ImFacePackSaveReqVo;
-import com.fly.system.api.im.domain.face.ImFacePack;
+import com.fly.system.api.im.domain.bo.ImFacePackPageBo;
+import com.fly.system.api.im.domain.vo.ImFacePackVo;
+import com.fly.system.api.im.domain.bo.ImFacePackBo;
+import com.fly.system.api.im.domain.ImFacePack;
 import com.fly.im.service.face.ImFacePackService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,14 +34,14 @@ public class ImFacePackManagerController {
     @PostMapping("/create")
     @Operation(summary = "新增表情包")
     @PreAuthorize("@pms.hasPermission('im:face-pack:sys:saveOrUpdate')")
-    public R<Long> createFacePack(@Valid @RequestBody ImFacePackSaveReqVo reqVo) {
+    public R<Long> createFacePack(@Valid @RequestBody ImFacePackBo reqVo) {
         return ok(facePackService.createFacePack(reqVo));
     }
 
     @PutMapping("/update")
     @Operation(summary = "修改表情包")
     @PreAuthorize("@pms.hasPermission('im:face-pack:sys:saveOrUpdate')")
-    public R<Boolean> updateFacePack(@Valid @RequestBody ImFacePackSaveReqVo reqVo) {
+    public R<Boolean> updateFacePack(@Valid @RequestBody ImFacePackBo reqVo) {
         facePackService.updateFacePack(reqVo);
         return R.result(true);
     }
@@ -68,18 +68,18 @@ public class ImFacePackManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得表情包分页")
     @PreAuthorize("@pms.hasPermission('im:face-pack:sys:list')")
-    public R<PageResult<ImFacePackRespVo>> getFacePackPage(@Valid ImFacePackPageReqVo pageReqVo) {
+    public R<PageResult<ImFacePackVo>> getFacePackPage(@Valid ImFacePackPageBo pageReqVo) {
         PageResult<ImFacePack> pageResult = facePackService.getFacePackPage(pageReqVo);
-        return ok(PageResult.convert(pageResult, ImFacePackRespVo.class));
+        return ok(PageResult.convert(pageResult, ImFacePackVo.class));
     }
 
     @GetMapping("/get")
     @Operation(summary = "获得表情包详情")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@pms.hasPermission('im:face-pack:sys:list')")
-    public R<ImFacePackRespVo> getFacePack(@RequestParam("id") Long id) {
+    public R<ImFacePackVo> getFacePack(@RequestParam("id") Long id) {
         ImFacePack pack = facePackService.getFacePack(id);
-        return ok(BeanUtils.toBean(pack, ImFacePackRespVo.class));
+        return ok(BeanUtils.toBean(pack, ImFacePackVo.class));
     }
 
 }

@@ -4,12 +4,12 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.common.domain.model.R;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.im.framework.util.MapUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessagePageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageRespVo;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageSendReqVo;
-import com.fly.system.api.im.domain.channel.ImChannel;
-import com.fly.system.api.im.domain.channel.ImChannelMaterial;
-import com.fly.system.api.im.domain.message.ImChannelMessage;
+import com.fly.system.api.im.domain.bo.ImChannelMessagePageBo;
+import com.fly.system.api.im.domain.vo.ImChannelMessageVo;
+import com.fly.system.api.im.domain.bo.ImChannelMessageBo;
+import com.fly.system.api.im.domain.ImChannel;
+import com.fly.system.api.im.domain.ImChannelMaterial;
+import com.fly.system.api.im.domain.ImChannelMessage;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import com.fly.im.service.message.ImChannelMessageService;
 import com.fly.im.service.channel.ImChannelService;
@@ -43,7 +43,7 @@ public class ImChannelMessageManagerController {
     @PostMapping("/send")
     @Operation(summary = "立即推送频道消息")
     @PreAuthorize("@pms.hasPermission('im:channel:message:send')")
-    public R<Long> sendMessage(@Valid @RequestBody ImChannelMessageSendReqVo reqVo) {
+    public R<Long> sendMessage(@Valid @RequestBody ImChannelMessageBo reqVo) {
         return ok(channelMessageService.sendMessage(reqVo));
     }
 
@@ -59,7 +59,7 @@ public class ImChannelMessageManagerController {
     @GetMapping("/page")
     @Operation(summary = "获得频道消息分页；回填频道名 / 素材标题")
     @PreAuthorize("@pms.hasPermission('im:channel:message:list')")
-    public R<PageResult<ImChannelMessageRespVo>> getMessagePage(@Valid ImChannelMessagePageReqVo pageReqVo) {
+    public R<PageResult<ImChannelMessageVo>> getMessagePage(@Valid ImChannelMessagePageBo pageReqVo) {
         PageResult<ImChannelMessage> pageResult = channelMessageService.getMessagePage(pageReqVo);
         if (CollUtil.isEmpty(pageResult.getList())) {
             return ok(PageResult.empty(pageResult.getTotal()));
@@ -69,7 +69,7 @@ public class ImChannelMessageManagerController {
                 convertSet(pageResult.getList(), ImChannelMessage::getChannelId));
         Map<Long, ImChannelMaterial> materialMap = channelMaterialService.getMaterialMap(
                 convertSet(pageResult.getList(), ImChannelMessage::getMaterialId));
-        return ok(PageResult.convert(pageResult, ImChannelMessageRespVo.class, vo -> {
+        return ok(PageResult.convert(pageResult, ImChannelMessageVo.class, vo -> {
             MapUtils.findAndThen(channelMap, vo.getChannelId(), c -> vo.setChannelName(c.getName()));
             MapUtils.findAndThen(materialMap, vo.getMaterialId(),
                     material -> vo.setMaterialTitle(material.getTitle()).setMaterialCoverUrl(material.getCoverUrl()));

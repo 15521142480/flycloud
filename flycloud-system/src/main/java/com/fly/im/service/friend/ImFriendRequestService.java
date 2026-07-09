@@ -1,9 +1,9 @@
 package com.fly.im.service.friend;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.friend.request.ImFriendRequestApplyReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendRequestManagerPageReqVo;
-import com.fly.system.api.im.domain.friend.ImFriendRequest;
+import com.fly.system.api.im.domain.bo.ImFriendRequestBo;
+import com.fly.system.api.im.domain.bo.ImFriendRequestManagerPageBo;
+import com.fly.system.api.im.domain.ImFriendRequest;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
@@ -24,7 +24,7 @@ public interface ImFriendRequestService {
      * @param reqVo      申请请求
      * @return 申请记录
      */
-    ImFriendRequest applyFriend(Long fromUserId, ImFriendRequestApplyReqVo reqVo);
+    ImFriendRequest applyFriend(Long fromUserId, ImFriendRequestBo reqVo);
 
     /**
      * 同意好友申请
@@ -76,7 +76,7 @@ public interface ImFriendRequestService {
     /**
      * 【管理后台】分页查询好友申请记录
      */
-    PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageReqVo reqVo);
+    PageResult<ImFriendRequest> getFriendRequestPage(ImFriendRequestManagerPageBo reqVo);
 
 
 

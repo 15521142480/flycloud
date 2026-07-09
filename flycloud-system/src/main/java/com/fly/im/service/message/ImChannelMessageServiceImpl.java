@@ -7,11 +7,11 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessagePageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageSendReqVo;
-import com.fly.system.api.im.domain.channel.ImChannelMaterial;
-import com.fly.system.api.im.domain.message.ImChannelMessage;
-import com.fly.im.dal.mysql.message.ImChannelMessageMapper;
+import com.fly.system.api.im.domain.bo.ImChannelMessagePageBo;
+import com.fly.system.api.im.domain.bo.ImChannelMessageBo;
+import com.fly.system.api.im.domain.ImChannelMaterial;
+import com.fly.system.api.im.domain.ImChannelMessage;
+import com.fly.im.mapper.ImChannelMessageMapper;
 import com.fly.im.dal.redis.message.ImChannelMessageReadRedisDAO;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.channel.ImChannelMaterialService;
@@ -106,7 +106,7 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long sendMessage(ImChannelMessageSendReqVo reqVo) {
+    public Long sendMessage(ImChannelMessageBo reqVo) {
         // 1. 校验素材存在
         ImChannelMaterial material = channelMaterialService.validateMaterialExists(reqVo.getMaterialId());
 
@@ -131,7 +131,7 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
     }
 
     @Override
-    public PageResult<ImChannelMessage> getMessagePage(ImChannelMessagePageReqVo reqVo) {
+    public PageResult<ImChannelMessage> getMessagePage(ImChannelMessagePageBo reqVo) {
         return channelMessageMapper.selectPage(reqVo);
     }
 

@@ -4,8 +4,8 @@ import com.fly.common.domain.model.R;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.service.conversation.ImConversationReadService;
-import com.fly.system.api.im.domain.conversation.ImConversationRead;
-import com.fly.system.api.im.domain.vo.admin.conversation.ImConversationReadRespVo;
+import com.fly.system.api.im.domain.ImConversationRead;
+import com.fly.system.api.im.domain.vo.ImConversationReadVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -38,7 +38,7 @@ public class ImConversationReadController {
             @Parameter(name = "lastId", description = "上次拉取到的最后一条记录 id；首次拉取不传"),
             @Parameter(name = "limit", description = "单次拉取条数", required = true)
     })
-    public R<List<ImConversationReadRespVo>> pullMyConversationRead(
+    public R<List<ImConversationReadVo>> pullMyConversationRead(
             @RequestParam(value = "lastUpdateTime", required = false) Long lastUpdateTime,
             @RequestParam(value = "lastId", required = false) Long lastId,
             @RequestParam("limit") @Min(1) @Max(200) Integer limit) {
@@ -46,7 +46,7 @@ public class ImConversationReadController {
         List<ImConversationRead> list = conversationReadService.pullConversationReadList(
                 UserUtils.getCurUserId(), lastUpdateTime, lastId, limit);
 
-        return R.ok(BeanUtils.toBean(list, ImConversationReadRespVo.class));
+        return R.ok(BeanUtils.toBean(list, ImConversationReadVo.class));
     }
 
 }

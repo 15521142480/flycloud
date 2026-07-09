@@ -1,9 +1,9 @@
 package com.fly.im.service.face;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemSaveReqVo;
-import com.fly.system.api.im.domain.face.ImFacePackItem;
+import com.fly.system.api.im.domain.bo.ImFacePackItemPageBo;
+import com.fly.system.api.im.domain.bo.ImFacePackItemBo;
+import com.fly.system.api.im.domain.ImFacePackItem;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -51,7 +51,7 @@ public interface ImFacePackItemService {
      * @param reqVo 分页查询条件
      * @return 表情包项分页
      */
-    PageResult<ImFacePackItem> getFacePackItemPage(ImFacePackItemPageReqVo reqVo);
+    PageResult<ImFacePackItem> getFacePackItemPage(ImFacePackItemPageBo reqVo);
 
     /**
      * 获取表情包项详情
@@ -67,14 +67,14 @@ public interface ImFacePackItemService {
      * @param reqVo 新增请求
      * @return 新增表情包项编号
      */
-    Long createFacePackItem(@Valid ImFacePackItemSaveReqVo reqVo);
+    Long createFacePackItem(@Valid ImFacePackItemBo reqVo);
 
     /**
      * 修改表情包项
      *
      * @param reqVo 修改请求
      */
-    void updateFacePackItem(@Valid ImFacePackItemSaveReqVo reqVo);
+    void updateFacePackItem(@Valid ImFacePackItemBo reqVo);
 
     /**
      * 删除表情包项

@@ -1,10 +1,10 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.manager.message.privates.ImPrivateMessageManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageListReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.privates.ImPrivateMessageSendReqVo;
-import com.fly.system.api.im.domain.message.ImPrivateMessage;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageManagerPageBo;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageBo;
+import com.fly.system.api.im.domain.bo.ImPrivateMessageBo;
+import com.fly.system.api.im.domain.ImPrivateMessage;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface ImPrivateMessageService {
      * @param reqVo    发送请求
      * @return 消息
      */
-    ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageSendReqVo reqVo);
+    ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageBo reqVo);
 
     /**
      * 【系统调用】发送私聊消息
@@ -88,14 +88,14 @@ public interface ImPrivateMessageService {
      * @param reqVo  拉取请求
      * @return 消息列表（按 id 倒序）
      */
-    List<ImPrivateMessage> getPrivateMessageList(Long userId, ImPrivateMessageListReqVo reqVo);
+    List<ImPrivateMessage> getPrivateMessageList(Long userId, ImPrivateMessageBo reqVo);
 
     // ==================== 管理后台 ====================
 
     /**
      * 【管理后台】分页查询私聊消息
      */
-    PageResult<ImPrivateMessage> getPrivateMessagePage(ImPrivateMessageManagerPageReqVo reqVo);
+    PageResult<ImPrivateMessage> getPrivateMessagePage(ImPrivateMessageManagerPageBo reqVo);
 
     /**
      * 【管理后台】获取私聊消息详情

@@ -7,13 +7,13 @@ import cn.hutool.core.util.StrUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.collection.CollectionUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.rtc.ImRtcCallManagerPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallCreateReqVo;
-import com.fly.system.api.im.domain.vo.admin.rtc.ImRtcCallInviteReqVo;
-import com.fly.system.api.im.domain.rtc.ImRtcCall;
-import com.fly.system.api.im.domain.rtc.ImRtcParticipant;
-import com.fly.im.dal.mysql.rtc.ImRtcCallMapper;
-import com.fly.im.dal.mysql.rtc.ImRtcParticipantMapper;
+import com.fly.system.api.im.domain.bo.ImRtcCallManagerPageBo;
+import com.fly.system.api.im.domain.bo.ImRtcCallBo;
+import com.fly.system.api.im.domain.bo.ImRtcCallBo;
+import com.fly.system.api.im.domain.ImRtcCall;
+import com.fly.system.api.im.domain.ImRtcParticipant;
+import com.fly.im.mapper.ImRtcCallMapper;
+import com.fly.im.mapper.ImRtcParticipantMapper;
 import com.fly.im.dal.redis.rtc.ImRtcCallLockRedisDAO;
 import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
@@ -106,7 +106,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
     @Override
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
-    public ImRtcCall createCall(Long userId, ImRtcCallCreateReqVo reqVo) {
+    public ImRtcCall createCall(Long userId, ImRtcCallBo reqVo) {
         validateEnabled();
         // 1. 校验入参与场景
         validateCreateCall(userId, reqVo);
@@ -127,7 +127,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
      * @param reqVo  创建请求
      * @return 通话主表（可能 status=ENDED 表示自身忙线）
      */
-    private ImRtcCall createGroupCall(Long userId, ImRtcCallCreateReqVo reqVo) {
+    private ImRtcCall createGroupCall(Long userId, ImRtcCallBo reqVo) {
         // 1.1 同群有活跃通话 → 直接抛异常（UI 应已拦截），引导用户走 inviteCall / joinCall；避免重复开通
         ImRtcCall active = rtcCallMapper.selectLastOneByGroupIdAndStatusIn(
                 reqVo.getGroupId(), ImRtcCallStatusEnum.ACTIVE_STATUSES);
@@ -157,7 +157,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
      * @param peerUserId 对端编号；来自 reqVo.inviteeIds 的唯一元素
      * @return 通话主表（可能 status=ENDED 表示忙线）
      */
-    private ImRtcCall createPrivateCall(Long userId, ImRtcCallCreateReqVo reqVo, Long peerUserId) {
+    private ImRtcCall createPrivateCall(Long userId, ImRtcCallBo reqVo, Long peerUserId) {
         // 1.1 双方已在同一通话 → 数据异常（UI 应已拦截），直接抛
         if (getActivePrivateCallByPair(userId, peerUserId) != null) {
             throw exception(RTC_SELF_BUSY);
@@ -183,7 +183,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
     @Override
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
-    public void inviteCall(Long userId, ImRtcCallInviteReqVo reqVo) {
+    public void inviteCall(Long userId, ImRtcCallBo reqVo) {
         validateEnabled();
         // 1.1 校验通话存在且活跃
         ImRtcCall call = validateCallActive(reqVo.getRoom());
@@ -210,7 +210,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
      * @param reqVo     创建请求
      * @return 通话主表
      */
-    private ImRtcCall createCall0(Long inviterId, ImRtcCallCreateReqVo reqVo) {
+    private ImRtcCall createCall0(Long inviterId, ImRtcCallBo reqVo) {
         // 1. 构造参数：room 用 UUID；解析被邀请池
         String room = IdUtil.fastSimpleUUID();
         String curUserId = UserUtils.getCurUserIdStr();
@@ -868,7 +868,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
      * @param userId 发起人编号
      * @param reqVo  创建请求
      */
-    private void validateCreateCall(Long userId, ImRtcCallCreateReqVo reqVo) {
+    private void validateCreateCall(Long userId, ImRtcCallBo reqVo) {
         Integer conversationType = reqVo.getConversationType();
         if (ImConversationTypeEnum.isPrivate(conversationType)) {
             // 私聊必须 1 个对端
@@ -903,7 +903,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
      * @param inviterId 发起人编号；自己不进被邀请池
      * @return 被邀请人 userId 集合
      */
-    private Set<Long> resolveInvitees(ImRtcCallCreateReqVo reqVo, Long inviterId) {
+    private Set<Long> resolveInvitees(ImRtcCallBo reqVo, Long inviterId) {
         // 1. 私聊：inviteeIds 已在 validateCreateCall 校验仅 1 个对端，直接复用
         if (ImConversationTypeEnum.isPrivate(reqVo.getConversationType())) {
             return new LinkedHashSet<>(reqVo.getInviteeIds());
@@ -974,7 +974,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
                     call.getRoom(), operatorId, reason);
             return;
         }
-        // 【特殊】同步内存 call：让 createCall 这类调用方拿到的 DO 立即反映 ENDED 终态，Controller 拼 RespVo 能直接用
+        // 【特殊】同步内存 call：让 createCall 这类调用方拿到的 DO 立即反映 ENDED 终态，Controller 拼 Vo 能直接用
         call.setStatus(ImRtcCallStatusEnum.ENDED.getStatus()).setEndReason(reason.getReason()).setEndTime(now);
         // 1.2 更新参与表为已结束：残留 INVITING 改 NO_ANSWER；残留 JOINED 改 LEFT 并写 leaveTime
         rtcParticipantMapper.updateByRoomAndStatus(call.getRoom(), ImRtcParticipantStatusEnum.INVITING.getStatus(),
@@ -1198,7 +1198,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImRtcCall> getCallPage(ImRtcCallManagerPageReqVo reqVo) {
+    public PageResult<ImRtcCall> getCallPage(ImRtcCallManagerPageBo reqVo) {
         return rtcCallMapper.selectPage(reqVo);
     }
 

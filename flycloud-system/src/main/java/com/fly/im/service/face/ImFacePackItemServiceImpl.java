@@ -5,10 +5,10 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.face.item.ImFacePackItemSaveReqVo;
-import com.fly.system.api.im.domain.face.ImFacePackItem;
-import com.fly.im.dal.mysql.face.ImFacePackItemMapper;
+import com.fly.system.api.im.domain.bo.ImFacePackItemPageBo;
+import com.fly.system.api.im.domain.bo.ImFacePackItemBo;
+import com.fly.system.api.im.domain.ImFacePackItem;
+import com.fly.im.mapper.ImFacePackItemMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -63,7 +63,7 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFacePackItem> getFacePackItemPage(ImFacePackItemPageReqVo reqVo) {
+    public PageResult<ImFacePackItem> getFacePackItemPage(ImFacePackItemPageBo reqVo) {
         return facePackItemMapper.selectPage(reqVo);
     }
 
@@ -73,7 +73,7 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
     }
 
     @Override
-    public Long createFacePackItem(ImFacePackItemSaveReqVo reqVo) {
+    public Long createFacePackItem(ImFacePackItemBo reqVo) {
         // 1. 校验所属表情包存在
         facePackService.validateFacePackExists(reqVo.getPackId());
 
@@ -87,7 +87,7 @@ public class ImFacePackItemServiceImpl implements ImFacePackItemService {
     }
 
     @Override
-    public void updateFacePackItem(ImFacePackItemSaveReqVo reqVo) {
+    public void updateFacePackItem(ImFacePackItemBo reqVo) {
         // 1.1 校验存在
         validateFacePackItemExists(reqVo.getId());
         // 1.2 校验所属表情包存在

@@ -10,10 +10,10 @@ import com.fly.im.framework.util.CacheUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.framework.tenant.TenantContextHolder;
 import com.fly.im.framework.tenant.TenantUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.sensitiveword.ImSensitiveWordSaveReqVo;
-import com.fly.system.api.im.domain.sensitiveword.ImSensitiveWord;
-import com.fly.im.dal.mysql.sensitiveword.ImSensitiveWordMapper;
+import com.fly.system.api.im.domain.bo.ImSensitiveWordPageBo;
+import com.fly.system.api.im.domain.bo.ImSensitiveWordBo;
+import com.fly.system.api.im.domain.ImSensitiveWord;
+import com.fly.im.mapper.ImSensitiveWordMapper;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -151,7 +151,7 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImSensitiveWord> getSensitiveWordPage(ImSensitiveWordPageReqVo reqVo) {
+    public PageResult<ImSensitiveWord> getSensitiveWordPage(ImSensitiveWordPageBo reqVo) {
         return sensitiveWordMapper.selectPage(reqVo);
     }
 
@@ -161,7 +161,7 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     }
 
     @Override
-    public Long createSensitiveWord(ImSensitiveWordSaveReqVo reqVo) {
+    public Long createSensitiveWord(ImSensitiveWordBo reqVo) {
         // 1. 校验唯一
         validateWordUnique(null, reqVo.getWord());
 
@@ -176,7 +176,7 @@ public class ImSensitiveWordServiceImpl implements ImSensitiveWordService {
     }
 
     @Override
-    public void updateSensitiveWord(ImSensitiveWordSaveReqVo reqVo) {
+    public void updateSensitiveWord(ImSensitiveWordBo reqVo) {
         // 1.1 校验存在
         validateSensitiveWordExists(reqVo.getId());
         // 1.2 校验唯一（排除自身）

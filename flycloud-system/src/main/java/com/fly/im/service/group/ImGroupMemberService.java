@@ -1,7 +1,7 @@
 package com.fly.im.service.group;
 
-import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberUpdateReqVo;
-import com.fly.system.api.im.domain.group.ImGroupMember;
+import com.fly.system.api.im.domain.bo.ImGroupMemberBo;
+import com.fly.system.api.im.domain.ImGroupMember;
 import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
@@ -177,7 +177,7 @@ public interface ImGroupMemberService {
      * @param userId      当前登录用户编号
      * @param updateReqVo 更新信息
      */
-    void updateGroupMember(Long userId, @Valid ImGroupMemberUpdateReqVo updateReqVo);
+    void updateGroupMember(Long userId, @Valid ImGroupMemberBo updateReqVo);
 
     /**
      * 批量更新群成员角色

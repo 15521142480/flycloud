@@ -4,11 +4,11 @@ import cn.hutool.core.collection.CollUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialPageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.channel.material.ImChannelMaterialSaveReqVo;
-import com.fly.system.api.im.domain.channel.ImChannelMaterial;
-import com.fly.im.dal.mysql.channel.ImChannelMaterialMapper;
-import com.fly.im.dal.mysql.message.ImChannelMessageMapper;
+import com.fly.system.api.im.domain.bo.ImChannelMaterialPageBo;
+import com.fly.system.api.im.domain.bo.ImChannelMaterialBo;
+import com.fly.system.api.im.domain.ImChannelMaterial;
+import com.fly.im.mapper.ImChannelMaterialMapper;
+import com.fly.im.mapper.ImChannelMessageMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -72,7 +72,7 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
     }
 
     @Override
-    public PageResult<ImChannelMaterial> getMaterialPage(ImChannelMaterialPageReqVo reqVo) {
+    public PageResult<ImChannelMaterial> getMaterialPage(ImChannelMaterialPageBo reqVo) {
         return channelMaterialMapper.selectPage(reqVo);
     }
 
@@ -82,7 +82,7 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
     }
 
     @Override
-    public Long createMaterial(ImChannelMaterialSaveReqVo reqVo) {
+    public Long createMaterial(ImChannelMaterialBo reqVo) {
         // 1. 校验所属频道存在
         channelService.validateChannelExists(reqVo.getChannelId());
 
@@ -96,7 +96,7 @@ public class ImChannelMaterialServiceImpl implements ImChannelMaterialService {
     }
 
     @Override
-    public void updateMaterial(ImChannelMaterialSaveReqVo reqVo) {
+    public void updateMaterial(ImChannelMaterialBo reqVo) {
         // 1.1 校验存在
         validateMaterialExists(reqVo.getId());
         // 1.2 校验所属频道存在

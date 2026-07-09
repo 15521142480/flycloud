@@ -1,9 +1,9 @@
 package com.fly.im.service.message;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessagePageReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.message.channel.ImChannelMessageSendReqVo;
-import com.fly.system.api.im.domain.message.ImChannelMessage;
+import com.fly.system.api.im.domain.bo.ImChannelMessagePageBo;
+import com.fly.system.api.im.domain.bo.ImChannelMessageBo;
+import com.fly.system.api.im.domain.ImChannelMessage;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -56,7 +56,7 @@ public interface ImChannelMessageService {
      * @param reqVo 推送请求
      * @return 消息编号
      */
-    Long sendMessage(@Valid ImChannelMessageSendReqVo reqVo);
+    Long sendMessage(@Valid ImChannelMessageBo reqVo);
 
     /**
      * 分页查询消息
@@ -64,7 +64,7 @@ public interface ImChannelMessageService {
      * @param reqVo 分页查询条件
      * @return 消息分页
      */
-    PageResult<ImChannelMessage> getMessagePage(ImChannelMessagePageReqVo reqVo);
+    PageResult<ImChannelMessage> getMessagePage(ImChannelMessagePageBo reqVo);
 
     /**
      * 删除消息

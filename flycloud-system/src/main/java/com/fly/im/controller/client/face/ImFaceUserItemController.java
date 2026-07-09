@@ -2,9 +2,9 @@ package com.fly.im.controller.client.face;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemRespVo;
-import com.fly.system.api.im.domain.vo.admin.face.userItem.ImFaceUserItemSaveReqVo;
-import com.fly.system.api.im.domain.face.ImFaceUserItem;
+import com.fly.system.api.im.domain.vo.ImFaceUserItemVo;
+import com.fly.system.api.im.domain.bo.ImFaceUserItemBo;
+import com.fly.system.api.im.domain.ImFaceUserItem;
 import com.fly.im.service.face.ImFaceUserItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,16 +31,16 @@ public class ImFaceUserItemController {
 
     @GetMapping("/list")
     @Operation(summary = "获得我的个人表情列表")
-    public R<List<ImFaceUserItemRespVo>> getFaceUserItemList() {
+    public R<List<ImFaceUserItemVo>> getFaceUserItemList() {
         List<ImFaceUserItem> items = faceUserItemService.getFaceUserItemList(getCurUserId());
-        List<ImFaceUserItemRespVo> result = BeanUtils.toBean(items, ImFaceUserItemRespVo.class);
+        List<ImFaceUserItemVo> result = BeanUtils.toBean(items, ImFaceUserItemVo.class);
         result.forEach(vo -> vo.setUrl(vo.getUrl()));
         return ok(result);
     }
 
     @PostMapping("/create")
     @Operation(summary = "添加个人表情")
-    public R<Long> createFaceUserItem(@Valid @RequestBody ImFaceUserItemSaveReqVo reqVo) {
+    public R<Long> createFaceUserItem(@Valid @RequestBody ImFaceUserItemBo reqVo) {
         return ok(faceUserItemService.createFaceUserItem(getCurUserId(), reqVo));
     }
 

@@ -6,11 +6,11 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.friend.ImFriendManagerPageReqVo;
-import com.fly.system.api.im.domain.friend.ImFriend;
-import com.fly.system.api.im.domain.friend.ImFriendRequest;
-import com.fly.im.dal.mysql.friend.ImFriendMapper;
+import com.fly.system.api.im.domain.bo.ImFriendBo;
+import com.fly.system.api.im.domain.bo.ImFriendManagerPageBo;
+import com.fly.system.api.im.domain.ImFriend;
+import com.fly.system.api.im.domain.ImFriendRequest;
+import com.fly.im.mapper.ImFriendMapper;
 import com.fly.system.api.im.enums.friend.ImFriendStateEnum;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.message.ImPrivateMessageService;
@@ -139,7 +139,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     }
 
     @Override
-    public void updateFriend(Long userId, ImFriendUpdateReqVo reqVo) {
+    public void updateFriend(Long userId, ImFriendBo reqVo) {
         // 1.1 校验：至少改一个字段（无字段变更，直接结束）
         if (reqVo.getDisplayName() == null && reqVo.getSilent() == null && reqVo.getPinned() == null) {
             return;
@@ -348,7 +348,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     // ==================== 管理后台 ====================
 
     @Override
-    public PageResult<ImFriend> getFriendPage(ImFriendManagerPageReqVo reqVo) {
+    public PageResult<ImFriend> getFriendPage(ImFriendManagerPageBo reqVo) {
         return friendMapper.selectPage(reqVo);
     }
 

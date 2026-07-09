@@ -1,19 +1,19 @@
 package com.fly.im.service.group;
 
 import com.fly.im.framework.pojo.PageResult;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminAddReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupAdminRemoveReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupCancelMuteMemberReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupCreateReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupMuteAllReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupMuteMemberReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupTransferOwnerReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.ImGroupUpdateReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberInviteReqVo;
-import com.fly.system.api.im.domain.vo.admin.group.member.ImGroupMemberRemoveReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerBanReqVo;
-import com.fly.system.api.im.domain.vo.admin.manager.group.ImGroupManagerPageReqVo;
-import com.fly.system.api.im.domain.group.ImGroup;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupMemberBo;
+import com.fly.system.api.im.domain.bo.ImGroupMemberBo;
+import com.fly.system.api.im.domain.bo.ImGroupBo;
+import com.fly.system.api.im.domain.bo.ImGroupManagerPageBo;
+import com.fly.system.api.im.domain.ImGroup;
 import jakarta.validation.Valid;
 
 import java.util.Collection;
@@ -39,7 +39,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号（群主）
      * @return 创建后的群信息
      */
-    ImGroup createGroup(@Valid ImGroupCreateReqVo createReqVo, Long userId);
+    ImGroup createGroup(@Valid ImGroupBo createReqVo, Long userId);
 
     /**
      * 更新群信息
@@ -48,7 +48,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号
      * @return 更新后的群信息
      */
-    ImGroup updateGroup(@Valid ImGroupUpdateReqVo updateReqVo, Long userId);
+    ImGroup updateGroup(@Valid ImGroupBo updateReqVo, Long userId);
 
     /**
      * 解散群
@@ -121,7 +121,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号
      * @param inviteReqVo 邀请信息
      */
-    void inviteGroupMember(Long userId, @Valid ImGroupMemberInviteReqVo inviteReqVo);
+    void inviteGroupMember(Long userId, @Valid ImGroupMemberBo inviteReqVo);
 
     /**
      * 退群
@@ -141,7 +141,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号
      * @param removeReqVo 移除信息
      */
-    void removeGroupMember(Long userId, @Valid ImGroupMemberRemoveReqVo removeReqVo);
+    void removeGroupMember(Long userId, @Valid ImGroupMemberBo removeReqVo);
 
     /**
      * 添加群管理员（仅群主可执行）
@@ -149,7 +149,7 @@ public interface ImGroupService {
      * @param userId 当前登录用户编号（群主）
      * @param reqVo  添加信息（含群编号、目标用户编号列表）
      */
-    void addGroupAdmin(Long userId, @Valid ImGroupAdminAddReqVo reqVo);
+    void addGroupAdmin(Long userId, @Valid ImGroupBo reqVo);
 
     /**
      * 撤销群管理员（仅群主可执行）
@@ -157,7 +157,7 @@ public interface ImGroupService {
      * @param userId 当前登录用户编号（群主）
      * @param reqVo  撤销信息（含群编号、目标用户编号列表）
      */
-    void removeGroupAdmin(Long userId, @Valid ImGroupAdminRemoveReqVo reqVo);
+    void removeGroupAdmin(Long userId, @Valid ImGroupBo reqVo);
 
     /**
      * 转让群主（仅老群主可执行）
@@ -167,7 +167,7 @@ public interface ImGroupService {
      * @param userId      当前登录用户编号（旧群主）
      * @param transferReqVo 转让信息
      */
-    void transferGroupOwner(Long userId, @Valid ImGroupTransferOwnerReqVo transferReqVo);
+    void transferGroupOwner(Long userId, @Valid ImGroupBo transferReqVo);
 
     /**
      * 置顶群消息（仅群主或管理员可执行）
@@ -197,7 +197,7 @@ public interface ImGroupService {
      * @param userId 当前登录用户编号
      * @param reqVo  禁言信息
      */
-    void muteAll(Long userId, @Valid ImGroupMuteAllReqVo reqVo);
+    void muteAll(Long userId, @Valid ImGroupBo reqVo);
 
     /**
      * 禁言单个成员（三档分层权限）
@@ -205,7 +205,7 @@ public interface ImGroupService {
      * @param userId 当前登录用户编号
      * @param reqVo  禁言信息
      */
-    void muteMember(Long userId, @Valid ImGroupMuteMemberReqVo reqVo);
+    void muteMember(Long userId, @Valid ImGroupBo reqVo);
 
     /**
      * 取消成员禁言（三档分层权限）
@@ -213,7 +213,7 @@ public interface ImGroupService {
      * @param userId 当前登录用户编号
      * @param reqVo  取消禁言信息
      */
-    void cancelMuteMember(Long userId, @Valid ImGroupCancelMuteMemberReqVo reqVo);
+    void cancelMuteMember(Long userId, @Valid ImGroupBo reqVo);
 
     // ==================== 管理后台 ====================
 
@@ -223,7 +223,7 @@ public interface ImGroupService {
      * @param pageReqVo 分页查询条件
      * @return 群分页列表
      */
-    PageResult<ImGroup> getGroupPage(ImGroupManagerPageReqVo pageReqVo);
+    PageResult<ImGroup> getGroupPage(ImGroupManagerPageBo pageReqVo);
 
     /**
      * 【管理后台】封禁群
@@ -231,7 +231,7 @@ public interface ImGroupService {
      * @param operatorUserId 操作人用户编号
      * @param banReqVo 封禁信息（含群编号、封禁原因）
      */
-    void banGroup(Long operatorUserId, @Valid ImGroupManagerBanReqVo banReqVo);
+    void banGroup(Long operatorUserId, @Valid ImGroupBo banReqVo);
 
     /**
      * 【管理后台】解封群

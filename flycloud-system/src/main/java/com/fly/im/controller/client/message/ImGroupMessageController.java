@@ -2,10 +2,10 @@ package com.fly.im.controller.client.message;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.utils.BeanUtils;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageListReqVo;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageRespVo;
-import com.fly.system.api.im.domain.vo.admin.message.group.ImGroupMessageSendReqVo;
-import com.fly.system.api.im.domain.message.ImGroupMessage;
+import com.fly.system.api.im.domain.bo.ImGroupMessageBo;
+import com.fly.system.api.im.domain.vo.ImGroupMessageVo;
+import com.fly.system.api.im.domain.bo.ImGroupMessageBo;
+import com.fly.system.api.im.domain.ImGroupMessage;
 import com.fly.im.service.message.ImGroupMessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,20 +32,20 @@ public class ImGroupMessageController {
 
     @PostMapping("/send")
     @Operation(summary = "发送群聊消息")
-    public R<ImGroupMessageRespVo> sendGroupMessage(@Valid @RequestBody ImGroupMessageSendReqVo reqVo) {
+    public R<ImGroupMessageVo> sendGroupMessage(@Valid @RequestBody ImGroupMessageBo reqVo) {
         ImGroupMessage message = groupMessageService.sendGroupMessage(getCurUserId(), reqVo);
-        return ok(BeanUtils.toBean(message, ImGroupMessageRespVo.class));
+        return ok(BeanUtils.toBean(message, ImGroupMessageVo.class));
     }
 
     @GetMapping("/pull")
     @Operation(summary = "拉取群聊消息（增量）")
     @Parameter(name = "minId", description = "最小消息 id", required = true, example = "0")
     @Parameter(name = "size", description = "拉取数量", required = true, example = "100")
-    public R<List<ImGroupMessageRespVo>> pullGroupMessageList(
+    public R<List<ImGroupMessageVo>> pullGroupMessageList(
             @RequestParam("minId") Long minId,
             @RequestParam("size") @Min(value = 1, message = "拉取数量最小值为 1") Integer size) {
         List<ImGroupMessage> messages = groupMessageService.pullGroupMessageList(getCurUserId(), minId, size);
-        return ok(BeanUtils.toBean(messages, ImGroupMessageRespVo.class));
+        return ok(BeanUtils.toBean(messages, ImGroupMessageVo.class));
     }
 
     @PutMapping("/read")
@@ -61,9 +61,9 @@ public class ImGroupMessageController {
     @DeleteMapping("/recall")
     @Operation(summary = "撤回群聊消息")
     @Parameter(name = "id", description = "消息编号", required = true, example = "1")
-    public R<ImGroupMessageRespVo> recallGroupMessage(@RequestParam("id") Long id) {
+    public R<ImGroupMessageVo> recallGroupMessage(@RequestParam("id") Long id) {
         ImGroupMessage message = groupMessageService.recallGroupMessage(getCurUserId(), id);
-        return ok(BeanUtils.toBean(message, ImGroupMessageRespVo.class));
+        return ok(BeanUtils.toBean(message, ImGroupMessageVo.class));
     }
 
     @GetMapping("/get-read-user-ids")
@@ -77,9 +77,9 @@ public class ImGroupMessageController {
 
     @GetMapping("/list")
     @Operation(summary = "查询群聊历史消息")
-    public R<List<ImGroupMessageRespVo>> getGroupMessageList(@Valid ImGroupMessageListReqVo reqVo) {
+    public R<List<ImGroupMessageVo>> getGroupMessageList(@Valid ImGroupMessageBo reqVo) {
         List<ImGroupMessage> messages = groupMessageService.getGroupMessageList(getCurUserId(), reqVo);
-        return ok(BeanUtils.toBean(messages, ImGroupMessageRespVo.class));
+        return ok(BeanUtils.toBean(messages, ImGroupMessageVo.class));
     }
 
 }

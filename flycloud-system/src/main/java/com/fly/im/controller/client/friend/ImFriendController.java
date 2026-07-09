@@ -5,9 +5,9 @@ import com.fly.common.domain.model.R;
 import com.fly.im.framework.util.MapUtils;
 import com.fly.common.utils.BeanUtils;
 import com.fly.im.framework.util.StrUtils;
-import com.fly.system.api.im.domain.vo.admin.friend.ImFriendRespVo;
-import com.fly.system.api.im.domain.vo.admin.friend.ImFriendUpdateReqVo;
-import com.fly.system.api.im.domain.friend.ImFriend;
+import com.fly.system.api.im.domain.vo.ImFriendVo;
+import com.fly.system.api.im.domain.bo.ImFriendBo;
+import com.fly.system.api.im.domain.ImFriend;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -47,18 +47,18 @@ public class ImFriendController {
 
     @GetMapping("/list")
     @Operation(summary = "获得当前登录用户的好友列表")
-    public R<List<ImFriendRespVo>> getMyFriendList() {
+    public R<List<ImFriendVo>> getMyFriendList() {
         // 含 DISABLE 历史好友：保留给前端展示「已删除好友」的历史对话信息；前端按 status 决定会话级联清理
         List<ImFriend> friends = friendService.getFriendList(getCurUserId());
-        return ok(buildFriendRespVoList(friends));
+        return ok(buildFriendVoList(friends));
     }
 
     @GetMapping("/get")
     @Operation(summary = "获得好友详情")
     @Parameter(name = "friendUserId", description = "好友的用户编号", required = true, example = "2048")
-    public R<ImFriendRespVo> getFriend(@RequestParam("friendUserId") Long friendUserId) {
+    public R<ImFriendVo> getFriend(@RequestParam("friendUserId") Long friendUserId) {
         ImFriend friend = friendService.getFriend(getCurUserId(), friendUserId);
-        return ok(buildFriendRespVo(friend));
+        return ok(buildFriendVo(friend));
     }
 
     @GetMapping("/pull")
@@ -68,12 +68,12 @@ public class ImFriendController {
             @Parameter(name = "lastId", description = "上次拉取到的最后一条记录 id；首次拉取不传"),
             @Parameter(name = "limit", description = "单次拉取条数", required = true)
     })
-    public R<List<ImFriendRespVo>> pullMyFriendList(
+    public R<List<ImFriendVo>> pullMyFriendList(
             @RequestParam(value = "lastUpdateTime", required = false) Long lastUpdateTime,
             @RequestParam(value = "lastId", required = false) Long lastId,
             @RequestParam("limit") @Min(1) @Max(200) Integer limit) {
         List<ImFriend> list = friendService.pullFriendList(getCurUserId(), lastUpdateTime, lastId, limit);
-        return R.ok(buildFriendRespVoList(list));
+        return R.ok(buildFriendVoList(list));
     }
 
     @DeleteMapping("/delete")
@@ -91,7 +91,7 @@ public class ImFriendController {
 
     @PutMapping("/update")
     @Operation(summary = "更新好友单边属性（备注 / 免打扰 / 联系人置顶）")
-    public R<Boolean> updateFriend(@Valid @RequestBody ImFriendUpdateReqVo reqVo) {
+    public R<Boolean> updateFriend(@Valid @RequestBody ImFriendBo reqVo) {
         friendService.updateFriend(getCurUserId(), reqVo);
         return R.result(true);
     }
@@ -116,7 +116,7 @@ public class ImFriendController {
 
     // ========== 私有方法：VO 组装 ==========
 
-    private List<ImFriendRespVo> buildFriendRespVoList(Collection<ImFriend> friends) {
+    private List<ImFriendVo> buildFriendVoList(Collection<ImFriend> friends) {
         if (CollUtil.isEmpty(friends)) {
             return Collections.emptyList();
         }
@@ -124,7 +124,7 @@ public class ImFriendController {
         Map<Long, SysUserVo> userMap = adminUserApi.getUserMap(
                 convertList(friends, ImFriend::getFriendUserId));
         return convertList(friends, friend -> {
-            ImFriendRespVo vo = BeanUtils.toBean(friend, ImFriendRespVo.class);
+            ImFriendVo vo = BeanUtils.toBean(friend, ImFriendVo.class);
             MapUtils.findAndThen(userMap, friend.getFriendUserId(), user ->
                     vo.setNickname(user.getName()).setAvatar(user.getAvatar()));
             // 备注 / 昵称的拼音，给前端做字母分桶 + 拼音搜索
@@ -134,11 +134,11 @@ public class ImFriendController {
         });
     }
 
-    private ImFriendRespVo buildFriendRespVo(ImFriend friend) {
+    private ImFriendVo buildFriendVo(ImFriend friend) {
         if (friend == null) {
             return null;
         }
-        return CollUtil.getFirst(buildFriendRespVoList(singleton(friend)));
+        return CollUtil.getFirst(buildFriendVoList(singleton(friend)));
     }
 
 }

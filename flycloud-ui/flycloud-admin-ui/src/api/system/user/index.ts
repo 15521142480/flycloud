@@ -83,6 +83,14 @@ export const getUser = (id: number) => {
   return request.get({ url: `/${SYS_BASE_URL}/user/getDetailInfo/` + id })
 }
 
+export const getUserDetail = (id: number) => {
+  return request.get({ url: `/${SYS_BASE_URL}/user/get/` + id })
+}
+
+export const getCurUser = () => {
+  return request.get({ url: `/${SYS_BASE_URL}/user/get`})
+}
+
 // 新增用户
 export const createUser = async (data: UserVO) => {
   const newData = { ...data }
