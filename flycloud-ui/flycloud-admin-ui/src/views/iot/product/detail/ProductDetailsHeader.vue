@@ -81,10 +81,10 @@ const goToManagement = (productId: string) => {
 /** 操作修改 */
 const emit = defineEmits(['refresh']) // 定义 Emits
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
-const confirmPublish = async (id: number) => {
+const confirmPublish = async (id: string) => {
   try {
     await ProductApi.updateProductStatus(id, 1)
     message.success(t('auto.views.iot.product.detail.ProductDetailsHeader.kec002336'))
@@ -94,7 +94,7 @@ const confirmPublish = async (id: number) => {
     message.error(t('auto.views.iot.product.detail.ProductDetailsHeader.k7e7f5d44'))
   }
 }
-const confirmUnpublish = async (id: number) => {
+const confirmUnpublish = async (id: string) => {
   try {
     await ProductApi.updateProductStatus(id, 0)
     message.success(t('auto.views.iot.product.detail.ProductDetailsHeader.kfd4c4060'))

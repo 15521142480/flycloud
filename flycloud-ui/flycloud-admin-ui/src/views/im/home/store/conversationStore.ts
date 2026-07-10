@@ -13,6 +13,7 @@ import { getClientConversationId, getDb, StorageKeys, type DbTransaction } from 
 import { runIncrementalPull } from '../../utils/pull'
 import { getCurrentUserId } from '@/utils/auth'
 import { useMessageStore } from './messageStore'
+import { compareId, isPositiveId, maxId } from '../../utils/id'
 import {
   pullMyConversationReadList as apiPullMyConversationReadList,
   type ImConversationReadRespVO
@@ -31,8 +32,8 @@ const pendingDraftConversations = new Set<Conversation>()
 /** 创建会话读位置记录 */
 function createConversationRead(
   type: number,
-  targetId: number | string,
-  messageId: number
+  targetId: string,
+  messageId: string
 ): ConversationRead {
   return {
     conversationType: type,
@@ -103,19 +104,19 @@ function isValidConversationReadRecord(record: ImConversationReadRespVO): boolea
 /** 获取对方普通消息最大编号 */
 function getMaxIncomingNormalMessageId(
   messages: Array<Pick<MessageDO, 'id' | 'selfSend' | 'type' | 'status'>>
-): number {
+): string {
   return messages.reduce((maxMessageId, message) => {
     if (
       message.id &&
       !message.selfSend &&
       isNormalMessage(message.type) &&
       message.status !== ImMessageStatus.RECALL &&
-      message.id > maxMessageId
+      compareId(message.id, maxMessageId) > 0
     ) {
       return message.id
     }
     return maxMessageId
-  }, 0)
+  }, '0')
 }
 
 export const useConversationStore = defineStore('imConversationStore', {
@@ -152,7 +153,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 查找会话 */
     getConversation:
       (state) =>
-      (type: number, targetId: number | string): Conversation | undefined =>
+      (type: number, targetId: string): Conversation | undefined =>
         state.conversations.find(
           (conversation) => conversation.type === type && conversation.targetId === targetId
         ),
@@ -160,7 +161,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 查找会话读位置 */
     getConversationRead:
       (state) =>
-      (type: number, targetId: number | string): ConversationRead | undefined =>
+      (type: number, targetId: string): ConversationRead | undefined =>
         state.conversationReads[getClientConversationId(type, targetId)]
   },
 
@@ -265,7 +266,7 @@ export const useConversationStore = defineStore('imConversationStore', {
           getClientConversationId(conversation.type, conversation.targetId)
         )
         const maxIncomingMessageId = getMaxIncomingNormalMessageId(messages)
-        if (maxIncomingMessageId > 0 && maxIncomingMessageId <= record.messageId) {
+        if (isPositiveId(maxIncomingMessageId) && compareId(maxIncomingMessageId, record.messageId) <= 0) {
           conversation.unreadCount = 0
           conversation.atMe = false
           conversation.atAll = false
@@ -280,36 +281,36 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 判断消息是否已被会话读位置覆盖 */
     isMessageCoveredByReadPosition(
       conversation: Pick<Conversation, 'type' | 'targetId'>,
-      message?: { id?: number } | null
+      message?: { id?: string } | null
     ): boolean {
       if (!message?.id) {
         return false
       }
       const record = this.getConversationRead(conversation.type, conversation.targetId)
-      return !!record && message.id <= record.messageId
+      return !!record && compareId(message.id, record.messageId) <= 0
     },
 
     /** 判断会话读位置是否覆盖消息编号 */
-    isReadPositionCovered(type: number, targetId: number | string, messageId?: number): boolean {
+    isReadPositionCovered(type: number, targetId: string, messageId?: string): boolean {
       if (!messageId) {
         return false
       }
       const record = this.getConversationRead(type, targetId)
-      return !!record && record.messageId >= messageId
+      return !!record && compareId(record.messageId, messageId) >= 0
     },
 
     /** 判断服务端已读位置是否覆盖消息编号 */
-    isReportedReadPositionCovered(type: number, targetId: number | string, messageId?: number): boolean {
+    isReportedReadPositionCovered(type: number, targetId: string, messageId?: string): boolean {
       if (!messageId) {
         return false
       }
       const conversation = this.getConversation(type, targetId)
-      return (conversation?.reportedReadMessageId || 0) >= messageId
+      return compareId(conversation?.reportedReadMessageId, messageId) >= 0
     },
 
     /** 应用读位置到会话 */
-    applyReadToConversation(conversation: Conversation, messageId: number): boolean {
-      if (!conversation.lastMessageId || conversation.lastMessageId > messageId) {
+    applyReadToConversation(conversation: Conversation, messageId: string): boolean {
+      if (!conversation.lastMessageId || compareId(conversation.lastMessageId, messageId) > 0) {
         return false
       }
       if (conversation.unreadCount === 0 && !conversation.atMe && !conversation.atAll) {
@@ -359,13 +360,13 @@ export const useConversationStore = defineStore('imConversationStore', {
           return storedMessages
         }
         const current = this.conversationReads[clientConversationId]
-        const messageId = Math.max(record.messageId, current?.messageId || 0)
+        const messageId = maxId(record.messageId, current?.messageId)
         const conversation = this.getConversation(record.conversationType, record.targetId)
-        if (conversation && record.messageId > (conversation.reportedReadMessageId || 0)) {
+        if (conversation && compareId(record.messageId, conversation.reportedReadMessageId) > 0) {
           conversation.reportedReadMessageId = record.messageId
           changedConversations.set(clientConversationId, conversation)
         }
-        if (!current || messageId > current.messageId) {
+        if (!current || compareId(messageId, current.messageId) > 0) {
           const next = {
             conversationType: record.conversationType,
             targetId: record.targetId,
@@ -380,7 +381,7 @@ export const useConversationStore = defineStore('imConversationStore', {
           changedConversations.set(clientConversationId, conversation)
         } else if (conversation) {
           const maxIncomingMessageId = getMaxIncomingNormalMessageId(await getStoredMessages())
-          if (maxIncomingMessageId > 0 && maxIncomingMessageId <= messageId) {
+          if (isPositiveId(maxIncomingMessageId) && compareId(maxIncomingMessageId, messageId) <= 0) {
             conversation.unreadCount = 0
             conversation.atMe = false
             conversation.atAll = false
@@ -394,7 +395,7 @@ export const useConversationStore = defineStore('imConversationStore', {
         for (const message of memoryMessages) {
           if (
             message.id &&
-            message.id <= messageId &&
+            compareId(message.id, messageId) <= 0 &&
             message.receiptStatus !== ImMessageReceiptStatus.DONE
           ) {
             message.receiptStatus = ImMessageReceiptStatus.DONE
@@ -403,7 +404,7 @@ export const useConversationStore = defineStore('imConversationStore', {
         for (const message of await getStoredMessages()) {
           if (
             message.id &&
-            message.id <= messageId &&
+            compareId(message.id, messageId) <= 0 &&
             message.receiptStatus !== ImMessageReceiptStatus.DONE
           ) {
             message.receiptStatus = ImMessageReceiptStatus.DONE
@@ -513,7 +514,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 确保会话存在 */
     ensureConversation(info: {
       type: number
-      targetId: number | string
+      targetId: string
       name: string
       avatar: string
       silent?: boolean
@@ -554,7 +555,7 @@ export const useConversationStore = defineStore('imConversationStore', {
 
     /** 打开或创建会话 */
     openConversation(
-      targetId: number | string,
+      targetId: string,
       type: number,
       name: string,
       avatar: string,
@@ -588,7 +589,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 创建空会话 */
     createEmptyConversation(
       type: number,
-      targetId: number | string,
+      targetId: string,
       name: string,
       avatar: string,
       silent = false
@@ -610,7 +611,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 设置置顶 */
-    setConversationTop(type: number, targetId: number | string, top: boolean) {
+    setConversationTop(type: number, targetId: string, top: boolean) {
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
         return
@@ -620,7 +621,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 设置免打扰 */
-    setConversationSilent(type: number, targetId: number | string, silent: boolean) {
+    setConversationSilent(type: number, targetId: string, silent: boolean) {
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
         return
@@ -630,7 +631,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 删除会话 */
-    removeConversation(type: number, targetId: number | string) {
+    removeConversation(type: number, targetId: string) {
       // 1. 标记会话删除
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
@@ -652,19 +653,19 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 删除群聊会话 */
-    removeGroupConversation(groupId: number) {
+    removeGroupConversation(groupId: string) {
       this.removeConversation(ImConversationType.GROUP, groupId)
     },
 
     /** 标记会话已读 */
-    markConversationRead(type: number, targetId: number | string, messageId?: number): void {
+    markConversationRead(type: number, targetId: string, messageId?: string): void {
       const conversation = this.getConversation(type, targetId)
       if (!conversation) {
         return
       }
       const key = getClientConversationId(type, targetId)
       const current = this.conversationReads[key]
-      const readMessageIdAdvanced = !!messageId && messageId > (current?.messageId || 0)
+      const readMessageIdAdvanced = !!messageId && compareId(messageId, current?.messageId) > 0
       if (
         conversation.unreadCount === 0 &&
         !conversation.atMe &&
@@ -702,12 +703,12 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 标记会话已上报服务端读位置 */
-    markConversationReadReported(type: number, targetId: number | string, messageId?: number): void {
+    markConversationReadReported(type: number, targetId: string, messageId?: string): void {
       if (!messageId) {
         return
       }
       const conversation = this.getConversation(type, targetId)
-      if (!conversation || messageId <= (conversation.reportedReadMessageId || 0)) {
+      if (!conversation || compareId(messageId, conversation.reportedReadMessageId) <= 0) {
         return
       }
       conversation.reportedReadMessageId = messageId
@@ -760,7 +761,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 同步会话展示元数据 */
     updateConversation(
       type: number,
-      targetId: number | string,
+      targetId: string,
       info: { name?: string; avatar?: string; silent?: boolean }
     ) {
       const conversation = this.getConversation(type, targetId)
@@ -790,14 +791,14 @@ export const useConversationStore = defineStore('imConversationStore', {
     /** 获取草稿 */
     getConversationDraft(conversation: {
       type: number
-      targetId: number | string
+      targetId: string
     }): Conversation['draft'] | undefined {
       return this.getConversation(conversation.type, conversation.targetId)?.draft
     },
 
     /** 设置草稿 */
     setConversationDraft(
-      conversation: { type: number; targetId: number | string },
+      conversation: { type: number; targetId: string },
       snapshot: NonNullable<Conversation['draft']>
     ): void {
       if (!snapshot.plain.trim() && !snapshot.reply) {
@@ -813,7 +814,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 清除草稿 */
-    clearConversationDraft(conversation: { type: number; targetId: number | string }): void {
+    clearConversationDraft(conversation: { type: number; targetId: string }): void {
       const target = this.getConversation(conversation.type, conversation.targetId)
       if (!target?.draft) {
         return
@@ -824,7 +825,7 @@ export const useConversationStore = defineStore('imConversationStore', {
 
     /** 设置回复草稿 */
     setConversationReplyDraft(
-      conversation: { type: number; targetId: number | string },
+      conversation: { type: number; targetId: string },
       quote: NonNullable<Conversation['draft']>['reply']
     ) {
       if (!quote) {
@@ -839,7 +840,7 @@ export const useConversationStore = defineStore('imConversationStore', {
     },
 
     /** 清除回复草稿 */
-    clearConversationReplyDraft(conversation: { type: number; targetId: number | string }): void {
+    clearConversationReplyDraft(conversation: { type: number; targetId: string }): void {
       const existing = this.getConversationDraft(conversation)
       if (!existing?.reply) {
         return

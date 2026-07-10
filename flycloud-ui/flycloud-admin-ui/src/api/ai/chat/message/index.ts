@@ -5,13 +5,13 @@ import { config } from '@/config/axios/config'
 
 // 聊天VO
 export interface ChatMessageVO {
-  id: number // 编号
-  conversationId: number // 对话编号
+  id: string // 编号
+  conversationId: string // 对话编号
   type: string // 消息类型
   userId: string // 用户编号
   roleId: string // 角色编号
   model: number // 模型标志
-  modelId: number // 模型编号
+  modelId: string // 模型编号
   content: string // 聊天内容
   tokens: number // 消耗 Token 数量
   createTime: Date // 创建时间
@@ -22,7 +22,7 @@ export interface ChatMessageVO {
 // AI chat 聊天
 export const ChatMessageApi = {
   // 消息列表
-  getChatMessageListByConversationId: async (conversationId: number | null) => {
+  getChatMessageListByConversationId: async (conversationId: string | null) => {
     return await request.get({
       url: `/ai/chat/message/list-by-conversation-id?conversationId=${conversationId}`
     })
@@ -31,7 +31,7 @@ export const ChatMessageApi = {
   // 发送 Stream 消息
   // 为什么不用 axios 呢？因为它不支持 SSE 调用
   sendChatMessageStream: async (
-    conversationId: number,
+    conversationId: string,
     content: string,
     ctrl,
     enableContext: boolean,
@@ -65,7 +65,7 @@ export const ChatMessageApi = {
   },
 
   // 删除指定对话的消息
-  deleteByConversationId: async (conversationId: number) => {
+  deleteByConversationId: async (conversationId: string) => {
     return await request.delete({
       url: `/ai/chat/message/delete-by-conversation-id?conversationId=${conversationId}`
     })
@@ -77,7 +77,7 @@ export const ChatMessageApi = {
   },
 
   // 管理员删除消息
-  deleteChatMessageByAdmin: async (id: number) => {
+  deleteChatMessageByAdmin: async (id: string) => {
     return await request.delete({ url: `/ai/chat/message/delete-by-admin/${id}` })
   }
 }

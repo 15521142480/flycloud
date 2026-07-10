@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // AI 绘图 VO
 export interface ImageVO {
-  id: number // 编号
+  id: string // 编号
   platform: string // 平台
   model: string // 模型
   prompt: string // 提示词
@@ -13,7 +13,7 @@ export interface ImageVO {
   picUrl: string // 任务地址
   errorMessage: string // 错误信息
   options: any // 配置 Map<string, string>
-  taskId: number // 任务编号
+  taskId: string // 任务编号
   buttons: ImageMidjourneyButtonsVO[] // mj 操作按钮
   createTime: Date // 创建时间
   finishTime: Date // 完成时间
@@ -39,7 +39,7 @@ export interface ImageMidjourneyImagineReqVO {
 }
 
 export interface ImageMidjourneyActionVO {
-  id: number // 图片编号
+  id: string // 图片编号
   customId: string // MJ::JOB::upsample::1::85a4b4c1-8835-46c5-a15c-aea34fad1862 动作标识
 }
 
@@ -57,11 +57,11 @@ export const ImageApi = {
     return await request.get({ url: `/ai/image/my-page`, params })
   },
   // 获取【我的】绘图记录
-  getImageMy: async (id: number) => {
+  getImageMy: async (id: string) => {
     return await request.get({ url: `/ai/image/get-my/${id}` })
   },
   // 获取【我的】绘图记录列表
-  getImageListMyByIds: async (ids: number[]) => {
+  getImageListMyByIds: async (ids: string[]) => {
     return await request.get({ url: `/ai/image/my-list-by-ids`, params: { ids: ids.join(',') } })
   },
   // 生成图片
@@ -69,7 +69,7 @@ export const ImageApi = {
     return await request.post({ url: `/ai/image/draw`, data })
   },
   // 删除【我的】绘画记录
-  deleteImageMy: async (id: number) => {
+  deleteImageMy: async (id: string) => {
     return await request.delete({ url: `/ai/image/delete-my/${id}` })
   },
 
@@ -97,7 +97,7 @@ export const ImageApi = {
   },
 
   // 删除绘画
-  deleteImage: async (id: number) => {
+  deleteImage: async (id: string) => {
     return await request.delete({ url: `/ai/image/delete/` + id })
   }
 }

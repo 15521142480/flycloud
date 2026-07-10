@@ -2,7 +2,7 @@ import request from '@/config/axios'
 import { TransferReqVO } from '@/api/crm/permission'
 
 export interface ClueVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 线索名称
   followUpStatus: boolean // 跟进状态
   contactLastTime: Date // 最后跟进时间
@@ -12,17 +12,17 @@ export interface ClueVO {
   ownerUserName?: string // 负责人的用户名称
   ownerUserDept?: string // 负责人的部门名称
   transformStatus: boolean // 转化状态
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   customerName?: string // 客户名称
   mobile: string // 手机号
   telephone: string // 电话
   qq: string // QQ
   wechat: string // wechat
   email: string // email
-  areaId: number // 所在地
+  areaId: string // 所在地
   areaName?: string // 所在地名称
   detailAddress: string // 详细地址
-  industryId: number // 所属行业
+  industryId: string // 所属行业
   level: number // 客户等级
   source: number // 客户来源
   remark: string // 备注
@@ -38,7 +38,7 @@ export const getCluePage = async (params: any) => {
 }
 
 // 查询线索详情
-export const getClue = async (id: number) => {
+export const getClue = async (id: string) => {
   return await request.get({ url: `/crm/clue/get/` + id })
 }
 
@@ -53,7 +53,7 @@ export const updateClue = async (data: ClueVO) => {
 }
 
 // 删除线索
-export const deleteClue = async (id: number) => {
+export const deleteClue = async (id: string) => {
   return await request.delete({ url: `/crm/clue/delete/` + id })
 }
 
@@ -68,7 +68,7 @@ export const transferClue = async (data: TransferReqVO) => {
 }
 
 // 线索转化为客户
-export const transformClue = async (id: number) => {
+export const transformClue = async (id: string) => {
   return await request.put({ url: '/crm/clue/transform', params: { id } })
 }
 

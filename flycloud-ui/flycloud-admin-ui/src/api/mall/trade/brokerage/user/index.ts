@@ -3,8 +3,8 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BrokerageUserVO {
-  id: number
-  bindUserId: number
+  id: string
+  bindUserId: string
   bindUserTime: Date
   brokerageEnabled: boolean
   brokerageTime: Date
@@ -29,7 +29,7 @@ export const getBrokerageUserPage = async (params: any) => {
 }
 
 // 查询分销用户详情
-export const getBrokerageUser = async (id: number) => {
+export const getBrokerageUser = async (id: string) => {
   return await request.get<BrokerageUserVO>({
     url: `/${MALL_BASE_URL}/admin/trade/brokerage-user/get?id=` + id
   })

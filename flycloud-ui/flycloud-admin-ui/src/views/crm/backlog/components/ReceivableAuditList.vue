@@ -222,17 +222,17 @@ const handleProcessDetail = (row: ReceivableApi.ReceivableVO) => {
 
 /** 打开回款详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmReceivableDetail', params: { id } })
 }
 
 /** 打开客户详情 */
-const openCustomerDetail = (id: number) => {
+const openCustomerDetail = (id: string) => {
   push({ name: 'CrmCustomerDetail', params: { id } })
 }
 
 /** 打开合同详情 */
-const openContractDetail = (id: number) => {
+const openContractDetail = (id: string) => {
   push({ name: 'CrmContractDetail', params: { id } })
 }
 

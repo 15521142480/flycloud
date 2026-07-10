@@ -71,7 +71,7 @@ const queryParams = reactive({
 })
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   queryParams.accountId = id
   queryParams.pageNum = 1
   getList()

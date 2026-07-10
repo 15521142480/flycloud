@@ -108,7 +108,7 @@ import { DICT_TYPE } from '@/utils/dict'
 const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const props = defineProps<{
-  customerId: number
+  customerId: string
 }>()
 defineOptions({ name: 'ContactListModal' })
 
@@ -177,7 +177,7 @@ const submitForm = async () => {
 
 /** 打开联系人详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmContactDetail', params: { id } })
 }
 </script>

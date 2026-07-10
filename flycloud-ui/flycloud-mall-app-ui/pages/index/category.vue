@@ -138,7 +138,7 @@
     const id = tabbarParams.id;
     appStore.clearParamsForTabbar(); // 使用完后清理，避免影响下次跳转
     // 首页点击分类的处理：查找满足条件的分类
-    const foundCategory = state.categoryList.find((category) => category.id === Number(id));
+    const foundCategory = state.categoryList.find((category) => category.id === String(id));
     // 如果找到则调用 onMenu 自动勾选相应分类，否则调用 onMenu(0) 勾选第一个分类
     onMenu(foundCategory ? state.categoryList.indexOf(foundCategory) : 0);
   }

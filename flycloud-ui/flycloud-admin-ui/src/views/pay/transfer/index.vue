@@ -212,8 +212,8 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   no: null as string | null,
-  appId: null as number | null,
-  channelId: null as number | null,
+  appId: null as string | null,
+  channelId: null as string | null,
   channelCode: null as string | null,
   merchantTransferId: null as string | null,
   type: null as string | null,
@@ -271,7 +271,7 @@ const handleExport = async () => {
 
 /** 添加/修改操作 */
 const detailRef = ref()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   detailRef.value.open(id)
 }
 

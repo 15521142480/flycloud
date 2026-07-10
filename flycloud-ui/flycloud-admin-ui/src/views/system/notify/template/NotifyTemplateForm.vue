@@ -26,15 +26,6 @@
         />
       </el-form-item>
       <el-form-item
-        :label="t('auto.views.system.notify.template.NotifyTemplateForm.k389b3376')"
-        prop="name"
-      >
-        <el-input
-          v-model="formData.name"
-          :placeholder="t('auto.views.system.notify.template.NotifyTemplateForm.k7afd6071')"
-        />
-      </el-form-item>
-      <el-form-item
         :label="t('auto.views.system.notify.template.NotifyTemplateForm.kdc362463')"
         prop="content"
       >
@@ -105,7 +96,6 @@ const formType = ref('') // 表单的类型
 const formData = ref<NotifyTemplateApi.NotifyTemplateVO>({
   id: undefined,
   name: '',
-  name: '',
   code: '',
   content: '',
   type: undefined,
@@ -142,13 +132,6 @@ const formRules = reactive({
       trigger: 'blur'
     }
   ],
-  name: [
-    {
-      required: true,
-      message: t('auto.views.system.notify.template.NotifyTemplateForm.kd8c3db1e'),
-      trigger: 'blur'
-    }
-  ],
   content: [
     {
       required: true,
@@ -160,7 +143,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = type
   formType.value = type
@@ -205,7 +188,6 @@ const submitForm = async () => {
 const resetForm = () => {
   formData.value = {
     id: undefined,
-    name: '',
     name: '',
     code: '',
     content: '',

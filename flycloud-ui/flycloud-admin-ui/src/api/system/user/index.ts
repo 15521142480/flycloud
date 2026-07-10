@@ -10,7 +10,7 @@ export interface UserVO {
   password: string
   name: string
   nickname?: string
-  deptId: number
+  deptId: string
   deptName?: string
   postIds?: string[]
   // postIds: string[]

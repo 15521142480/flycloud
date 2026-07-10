@@ -35,7 +35,7 @@ import { isArray } from '@/utils/is'
 defineOptions({ name: 'SpuShowcase' })
 
 const props = defineProps({
-  modelValue: oneOfType<number | Array<number>>([Number, Array]).isRequired,
+  modelValue: oneOfType<string | Array<string>>([String, Array]).isRequired,
   // 限制数量：默认不限制
   limit: propTypes.number.def(Number.MAX_VALUE),
   disabled: propTypes.bool.def(false)
@@ -107,7 +107,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const emitSpuChange = () => {
   if (props.limit === 1) {
     const spu = productSpus.value.length > 0 ? productSpus.value[0] : null
-    emit('update:modelValue', spu?.id || 0)
+    emit('update:modelValue', spu?.id || '')
     emit('change', spu)
   } else {
     emit(

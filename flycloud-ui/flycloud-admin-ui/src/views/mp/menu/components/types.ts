@@ -19,9 +19,9 @@ export type MenuType =
 
 interface _RawMenu {
   // db
-  id: number
-  parentId: number
-  accountId: number
+  id: string
+  parentId: string
+  accountId: string
   appId: string
   createTime: number
 
@@ -50,7 +50,7 @@ export type RawMenu = Partial<_RawMenu>
 
 interface _Reply {
   type: string
-  accountId: number
+  accountId: string
   content: string
   mediaId: string
   url: string

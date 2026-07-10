@@ -72,7 +72,7 @@ const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formData = ref({
-  id: undefined as number | undefined,
+  id: undefined as string | undefined,
   name: '',
   verifyUsers: [] as UserVO[]
 })
@@ -81,7 +81,7 @@ const formRef = ref() // 表单 Ref
 const storeStaffTableSelect = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   dialogTitle.value = '绑定自提门店员工'
   resetForm()
@@ -126,7 +126,7 @@ const handleSelect = (checkedUsers: UserVO[]) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   const index = formData.value.verifyUsers.findIndex((item) => item.id === id)
   formData.value.verifyUsers.splice(index, 1)
 }

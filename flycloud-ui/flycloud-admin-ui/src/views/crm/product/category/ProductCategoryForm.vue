@@ -83,7 +83,7 @@ const formRef = ref() // 表单 Ref
 const productCategoryList = ref<any[]>([]) // 产品分类树
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -98,7 +98,7 @@ const open = async (type: string, id?: number) => {
     }
   }
   // 获得分类树
-  productCategoryList.value = await ProductCategoryApi.getProductCategoryList({ parentId: 0 })
+  productCategoryList.value = await ProductCategoryApi.getProductCategoryList({ parentId: '0' })
 }
 defineExpose({ open }) // 提供 open 方法，用于打开弹窗
 

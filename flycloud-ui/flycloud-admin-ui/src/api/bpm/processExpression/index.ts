@@ -3,7 +3,7 @@ const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
 // BPM 流程表达式 VO
 export interface ProcessExpressionVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 表达式名字
   status: number // 表达式状态
   expression: string // 表达式
@@ -17,7 +17,7 @@ export const ProcessExpressionApi = {
   },
 
   // 查询BPM 流程表达式详情
-  getProcessExpression: async (id: number) => {
+  getProcessExpression: async (id: string) => {
     return await request.get({ url: `/${BPM_BASE_URL}/processExpression/get/` + id })
   },
 
@@ -32,7 +32,7 @@ export const ProcessExpressionApi = {
   },
 
   // 删除BPM 流程表达式
-  deleteProcessExpression: async (id: number) => {
+  deleteProcessExpression: async (id: string) => {
     return await request.delete({ url: `/${BPM_BASE_URL}/processExpression/delete/` + id })
   },
 

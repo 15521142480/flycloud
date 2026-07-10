@@ -10,12 +10,12 @@ export interface RoleVO {
   sort: number
   status: number
   // dataScope: number
-  // dataScopeDeptIds: number[]
+  // dataScopeDeptIds: string[]
   createTime: Date
 }
 
 export interface UpdateStatusReqVO {
-  id: number
+  id: string
   status: number
 }
 
@@ -33,12 +33,12 @@ export const getSimpleRoleList = async (): Promise<RoleVO[]> => {
 }
 
 // 查询角色详情
-export const getRole = async (id: number) => {
+export const getRole = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/role/get/` + id })
 }
 
 // 查询角色菜单列表
-export const getRoleMenuTreeList = async (id: number) => {
+export const getRoleMenuTreeList = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/role/getRoleMenuTreeList/` + id })
 }
 
@@ -63,7 +63,7 @@ export const updateRoleStatus = async (data: UpdateStatusReqVO) => {
 }
 
 // 删除角色
-export const deleteRole = async (id: number) => {
+export const deleteRole = async (id: string) => {
   return await request.delete({ url: `/${SYS_BASE_URL}/role/delete/` + id })
 }
 

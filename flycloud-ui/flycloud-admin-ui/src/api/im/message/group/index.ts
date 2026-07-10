@@ -4,10 +4,10 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // 群聊消息 Response VO
 export interface ImGroupMessageRespVO {
-  id: number // 消息编号
+  id: string // 消息编号
   clientMessageId: string // 客户端消息编号
   senderId: string // 发送人编号
-  groupId: number // 群编号
+  groupId: string // 群编号
   type: number // 内容类型
   content: string // 消息内容（JSON 格式）
   status: number // 消息状态
@@ -21,7 +21,7 @@ export interface ImGroupMessageRespVO {
 // 群聊消息发送 Request VO
 export interface ImGroupMessageSendReqVO {
   clientMessageId: string // 客户端消息编号
-  groupId: number // 群编号
+  groupId: string // 群编号
   type: number // 内容类型
   content: string // 消息内容（JSON 格式）
   atUserIds?: string[] // @ 目标用户编号列表
@@ -30,8 +30,8 @@ export interface ImGroupMessageSendReqVO {
 
 // 群聊历史消息列表 Request VO
 export interface ImGroupMessageListReqVO {
-  groupId: number | string // 群编号
-  maxId?: number | string // 起始消息编号（不含），为空则从最新消息开始
+  groupId: string // 群编号
+  maxId?: string // 起始消息编号（不含），为空则从最新消息开始
   limit: number // 拉取数量（1 ~ 200）
 }
 
@@ -42,7 +42,7 @@ export const sendGroupMessage = (data: ImGroupMessageSendReqVO) => {
 
 // 拉取群聊消息（增量）
 export const pullGroupMessageList = (
-  params: { minId: number | string; size: number },
+  params: { minId: string; size: number },
   signal?: AbortSignal
 ) => {
   return request.get<ImGroupMessageRespVO[]>({
@@ -61,7 +61,7 @@ export const getGroupMessageList = (params: ImGroupMessageListReqVO) => {
 }
 
 // 标记群聊消息已读
-export const readGroupMessages = (groupId: number | string, messageId: number | string) => {
+export const readGroupMessages = (groupId: string, messageId: string) => {
   return request.put<boolean>({
     url: `/${SYS_BASE_URL}/im/message/group/read`,
     params: { groupId, messageId }
@@ -69,7 +69,7 @@ export const readGroupMessages = (groupId: number | string, messageId: number | 
 }
 
 // 撤回群聊消息
-export const recallGroupMessage = (id: number | string) => {
+export const recallGroupMessage = (id: string) => {
   return request.delete<ImGroupMessageRespVO>({
     url: `/${SYS_BASE_URL}/im/message/group/recall`,
     params: { id }
@@ -78,8 +78,8 @@ export const recallGroupMessage = (id: number | string) => {
 
 // 获取群消息已读用户列表
 export const getGroupReadUsers = (params: {
-  groupId: number | string
-  messageId: number | string
+  groupId: string
+  messageId: string
 }) => {
   return request.get<string[]>({
     url: `/${SYS_BASE_URL}/im/message/group/get-read-user-ids`,

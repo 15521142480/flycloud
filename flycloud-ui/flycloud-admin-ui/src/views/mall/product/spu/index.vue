@@ -287,7 +287,7 @@ const queryParams = ref({
   pageSize: 10,
   tabType: 0,
   name: '',
-  categoryId: undefined as number | undefined,
+  categoryId: undefined as string | undefined,
   createTime: undefined
 }) // 查询参数
 const queryFormRef = ref() // 搜索的表单Ref
@@ -357,7 +357,7 @@ const handleStatusChange = async (row: any) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -391,7 +391,7 @@ const resetQuery = () => {
 }
 
 /** 新增或修改 */
-const openForm = (id?: number) => {
+const openForm = (id?: string) => {
   // 修改
   if (id) {
     push({ name: 'ProductSpuEdit', params: { id } })
@@ -402,7 +402,7 @@ const openForm = (id?: number) => {
 }
 
 /** 查看商品详情 */
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'ProductSpuDetail', params: { id } })
 }
 
@@ -423,7 +423,7 @@ const handleExport = async () => {
 
 /** 获取分类的节点的完整结构 */
 const categoryList = ref() // 分类树
-const formatCategoryName = (categoryId: number) => {
+const formatCategoryName = (categoryId: string) => {
   return treeToString(categoryList.value, categoryId)
 }
 
@@ -436,7 +436,7 @@ onActivated(() => {
 onMounted(async () => {
   // 解析路由的 categoryId
   if (route.query.categoryId) {
-    queryParams.value.categoryId = Number(route.query.categoryId)
+    queryParams.value.categoryId = String(route.query.categoryId)
   }
   // 获得商品信息
   await getTabsCount()

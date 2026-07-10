@@ -231,7 +231,7 @@ const FACE_TAB = {
   EMOJI: 'emoji',
   MINE: 'mine'
 } as const
-const packTabKey = (packId: number) => `pack:${packId}`
+const packTabKey = (packId: string) => `pack:${packId}`
 
 /** 当前激活的 tab */
 const activeTab = ref<string>(FACE_TAB.EMOJI)
@@ -294,8 +294,8 @@ async function onUploadPicked(e: Event) {
   try {
     const form = new FormData()
     form.append('file', file)
-    const uploadRes = (await updateFile(form)) as { data?: string }
-    const url = uploadRes?.data
+    const uploadRes = (await updateFile(form)) as unknown as { data?: string | { url?: string } }
+    const url = typeof uploadRes?.data === 'string' ? uploadRes.data : uploadRes?.data?.url
     if (!url) {
       ElMessage.error('上传失败')
       return

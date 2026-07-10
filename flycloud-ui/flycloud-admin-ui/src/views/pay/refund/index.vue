@@ -221,8 +221,8 @@ const list = ref<RefundApi.RefundDetailVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  merchantId: undefined as number | undefined,
-  appId: undefined as number | undefined,
+  merchantId: undefined as string | undefined,
+  appId: undefined as string | undefined,
   channelCode: undefined as string | undefined,
   merchantOrderId: undefined as string | undefined,
   merchantRefundId: undefined as string | undefined,
@@ -279,7 +279,7 @@ const handleExport = async () => {
 
 /** 预览详情 */
 const detailRef = ref()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   detailRef.value.open(id)
 }
 

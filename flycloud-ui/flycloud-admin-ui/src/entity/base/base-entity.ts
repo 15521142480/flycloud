@@ -12,7 +12,7 @@ export interface PageResult<T> {
 }
 
 export interface BaseEntity {
-  id?: number
+  id?: string
   status?: number
   createTime?: string
   remark?: string

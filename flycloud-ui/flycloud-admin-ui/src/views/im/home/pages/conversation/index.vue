@@ -208,7 +208,7 @@ function handleOpenCreateGroup() {
 }
 
 /** 处理建群成功 */
-function handleGroupCreated(groupId: number) {
+function handleGroupCreated(groupId: string) {
   // GroupCreateDialog 已经 upsertGroup 把新群写进 store，这里只 get + 打开会话
   const group = groupStore.getGroup(groupId)
   if (!group) {

@@ -25,7 +25,7 @@ const total = ref(0) // 总数
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  userId: 0,
+  userId: '0',
   userDeleted: false
 })
 const skipGetMessageList = computed(() => {

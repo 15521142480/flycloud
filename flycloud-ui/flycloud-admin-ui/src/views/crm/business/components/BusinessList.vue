@@ -96,9 +96,9 @@ const message = useMessage() // 消息
 defineOptions({ name: 'CrmBusinessList' })
 const props = defineProps<{
   bizType: number // 业务类型
-  bizId: number // 业务编号
-  customerId?: number // 关联联系人与商机时，需要传入 customerId 进行筛选
-  contactId?: number // 特殊：联系人编号；在【联系人】详情中，可以传递联系人编号，默认新建的商机关联到该联系人
+  bizId: string // 业务编号
+  customerId?: string // 关联联系人与商机时，需要传入 customerId 进行筛选
+  contactId?: string // 特殊：联系人编号；在【联系人】详情中，可以传递联系人编号，默认新建的商机关联到该联系人
 }>()
 
 const loading = ref(true) // 列表的加载中
@@ -108,7 +108,7 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   customerId: undefined as unknown, // 允许 undefined + number
-  contactId: undefined as unknown // 允许 undefined + number
+  contactId: undefined as unknown // 允许 undefined + string
 })
 
 /** 查询列表 */
@@ -153,7 +153,7 @@ const openForm = () => {
 
 /** 打开联系人详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmBusinessDetail', params: { id } })
 }
 
@@ -162,7 +162,7 @@ const businessModalRef = ref()
 const openBusinessModal = () => {
   businessModalRef.value.open()
 }
-const createContactBusinessList = async (businessIds: number[]) => {
+const createContactBusinessList = async (businessIds: string[]) => {
   const data = {
     contactId: props.bizId,
     businessIds: businessIds

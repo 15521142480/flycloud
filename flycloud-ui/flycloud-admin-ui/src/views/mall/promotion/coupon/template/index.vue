@@ -244,7 +244,7 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
@@ -265,7 +265,7 @@ const handleStatusChange = async (row: any) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.confirm('是否确认删除优惠劵编号为"' + id + '"的数据项?')

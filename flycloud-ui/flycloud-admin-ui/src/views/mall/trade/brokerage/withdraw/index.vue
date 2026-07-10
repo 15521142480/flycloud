@@ -273,12 +273,12 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (id: number) => {
+const openForm = (id: string) => {
   formRef.value.open(id)
 }
 
 /** 审核通过 */
-const handleApprove = async (id: number) => {
+const handleApprove = async (id: string) => {
   try {
     loading.value = true
     await message.confirm('确定要审核通过吗？')
@@ -291,7 +291,7 @@ const handleApprove = async (id: number) => {
 }
 
 /** 重新转账 */
-const handleRetryTransfer = async (id: number) => {
+const handleRetryTransfer = async (id: string) => {
   try {
     loading.value = true
     await message.confirm('确定要重新转账吗？')

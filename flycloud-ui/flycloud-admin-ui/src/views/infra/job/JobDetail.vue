@@ -62,7 +62,7 @@ const detailData = ref({} as JobApi.JobVO) // 详情数据
 const nextTimes = ref([]) // 下一轮执行时间的数组
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   // 查看，设置数据
   if (id) {

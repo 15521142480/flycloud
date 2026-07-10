@@ -197,7 +197,7 @@ const list = ref<PayNotifyApi.NotifyTaskVO[]>([]) // 列表的数据
 const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
-  appId: null as number | null,
+  appId: null as string | null,
   type: null as number | null,
   dataId: null as string | null,
   status: null as number | null,
@@ -236,7 +236,7 @@ const resetQuery = () => {
 
 /** 详情按钮操作 */
 const detailRef = ref()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   detailRef.value.open(id)
 }
 

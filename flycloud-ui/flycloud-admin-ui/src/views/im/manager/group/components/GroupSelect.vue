@@ -57,7 +57,7 @@ defineOptions({ name: 'GroupSelect', inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: number // 绑定的群 ID
+    modelValue?: string // 绑定的群 ID
     disabled?: boolean // 是否禁用
     clearable?: boolean // 是否允许清空
     placeholder?: string // 占位文字
@@ -70,7 +70,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: number | undefined]
+  'update:modelValue': [value: string | undefined]
   change: [item: ManagerGroupApi.ImManagerGroupVO | undefined]
 }>()
 
@@ -96,7 +96,7 @@ const suffixIcon = computed(() => {
 })
 
 /** 根据 ID 单条查询群信息（用于编辑回显） */
-const resolveItemById = async (id: number | undefined) => {
+const resolveItemById = async (id: string | undefined) => {
   if (id == null) {
     selectedItem.value = undefined
     return

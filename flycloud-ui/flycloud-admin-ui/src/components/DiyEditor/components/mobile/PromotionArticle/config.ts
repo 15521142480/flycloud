@@ -3,7 +3,7 @@ import { ComponentStyle, DiyComponent } from '@/components/DiyEditor/util'
 /** 营销文章属性 */
 export interface PromotionArticleProperty {
   // 文章编号
-  id: number
+  id: string
   // 组件样式
   style: ComponentStyle
 }

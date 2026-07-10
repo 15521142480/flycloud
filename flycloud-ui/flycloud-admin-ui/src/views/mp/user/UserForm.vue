@@ -65,7 +65,7 @@ const formRef = ref() // 表单 Ref
 const tagList = ref([]) // 公众号标签列表
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   resetForm()
   // 修改时，设置数据

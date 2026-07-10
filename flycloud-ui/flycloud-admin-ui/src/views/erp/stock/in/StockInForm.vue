@@ -121,7 +121,7 @@ const subTabsName = ref('item')
 const itemFormRef = ref()
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

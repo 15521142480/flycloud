@@ -55,8 +55,8 @@ const message = useMessage() // 消息弹窗
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中
 const formData = ref({
-  channelId: undefined as number | undefined,
-  materialId: undefined as number | undefined,
+  channelId: undefined as string | undefined,
+  materialId: undefined as string | undefined,
   receiverUserType: 'all' as 'all' | 'users', // 接收用户类型：全员 / 指定用户
   receiverUserIds: [] as string[]
 })

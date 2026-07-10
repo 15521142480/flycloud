@@ -74,7 +74,7 @@ import { DICT_TYPE, getDictLabel } from '@/utils/dict'
 import { getCurrentUserId } from '@/utils/auth'
 
 const props = defineProps<{
-  groupId: number
+  groupId: string
 }>()
 
 defineOptions({ name: 'ImRtcGroupCallBanner' })

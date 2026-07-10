@@ -1,13 +1,13 @@
 import request from '@/config/axios'
 
 export interface MailLogVO {
-  id: number
+  id: string
   userId: string
   userType: number
   toMail: string
-  accountId: number
+  accountId: string
   fromMail: string
-  templateId: number
+  templateId: string
   templateCode: string
   templateNickname: string
   templateTitle: string
@@ -25,6 +25,6 @@ export const getMailLogPage = async (params: PageParam) => {
 }
 
 // 查询邮件日志详情
-export const getMailLog = async (id: number) => {
+export const getMailLog = async (id: string) => {
   return await request.get({ url: '/system/mail-log/get/' + id })
 }

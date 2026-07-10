@@ -4,7 +4,7 @@ import { DiyPageVO } from '@/api/mall/promotion/diy/page'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface DiyTemplateVO {
-  id?: number
+  id?: string
   name: string
   used: boolean
   usedTime?: Date
@@ -23,7 +23,7 @@ export const getDiyTemplatePage = async (params: any) => {
 }
 
 // 查询装修模板详情
-export const getDiyTemplate = async (id: number) => {
+export const getDiyTemplate = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/diy-template/get?id=` + id })
 }
 
@@ -38,17 +38,17 @@ export const updateDiyTemplate = async (data: DiyTemplateVO) => {
 }
 
 // 删除装修模板
-export const deleteDiyTemplate = async (id: number) => {
+export const deleteDiyTemplate = async (id: string) => {
   return await request.delete({ url: `/${MALL_BASE_URL}/admin/promotion/diy-template/delete?id=` + id })
 }
 
 // 使用装修模板
-export const useDiyTemplate = async (id: number) => {
+export const useDiyTemplate = async (id: string) => {
   return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/diy-template/use?id=` + id })
 }
 
 // 获得装修模板属性
-export const getDiyTemplateProperty = async (id: number) => {
+export const getDiyTemplateProperty = async (id: string) => {
   return await request.get<DiyTemplatePropertyVO>({
     url: `/${MALL_BASE_URL}/admin/promotion/diy-template/get-property?id=` + id
   })

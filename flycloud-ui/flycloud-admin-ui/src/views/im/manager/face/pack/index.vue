@@ -191,7 +191,7 @@ const resetQuery = () => {
 
 /** 打开表情包新增 / 修改弹窗 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
@@ -202,7 +202,7 @@ const openItemDrawer = (pack: ManagerFacePackApi.ImManagerFacePackVO) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     await message.delConfirm()
   } catch {
@@ -214,7 +214,7 @@ const handleDelete = async (id: number) => {
 }
 
 /** 表格选中变化 */
-const checkedIds = ref<number[]>([])
+const checkedIds = ref<string[]>([])
 const handleRowCheckboxChange = (rows: ManagerFacePackApi.ImManagerFacePackVO[]) => {
   checkedIds.value = rows.map((row) => row.id)
 }

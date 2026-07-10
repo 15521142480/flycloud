@@ -2,9 +2,9 @@ import request from '@/config/axios'
 import { TransferReqVO } from '@/api/crm/permission'
 
 export interface BusinessVO {
-  id: number
+  id: string
   name: string
-  customerId: number
+  customerId: string
   customerName?: string
   followUpStatus: boolean
   contactLastTime: Date
@@ -12,9 +12,9 @@ export interface BusinessVO {
   ownerUserId: string
   ownerUserName?: string // 负责人的用户名称
   ownerUserDept?: string // 负责人的部门名称
-  statusTypeId: number
+  statusTypeId: string
   statusTypeName?: string
-  statusId: number
+  statusId: string
   statusName?: string
   endStatus: number
   endRemark: string
@@ -29,8 +29,8 @@ export interface BusinessVO {
   updateTime: Date // 更新时间
   products?: [
     {
-      id: number
-      productId: number
+      id: string
+      productId: string
       productName: string
       productNo: string
       productUnit: number
@@ -53,7 +53,7 @@ export const getBusinessPageByCustomer = async (params) => {
 }
 
 // 查询 CRM 商机详情
-export const getBusiness = async (id: number) => {
+export const getBusiness = async (id: string) => {
   return await request.get({ url: `/crm/business/get/` + id })
 }
 
@@ -78,7 +78,7 @@ export const updateBusinessStatus = async (data: BusinessVO) => {
 }
 
 // 删除 CRM 商机
-export const deleteBusiness = async (id: number) => {
+export const deleteBusiness = async (id: string) => {
   return await request.delete({ url: `/crm/business/delete/` + id })
 }
 

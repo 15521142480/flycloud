@@ -27,13 +27,13 @@ defineOptions({ name: 'IoTDeviceDetail' })
 
 const route = useRoute()
 const message = useMessage()
-const id = Number(route.params.id) // 编号
+const id = String(route.params.id) // 编号
 const loading = ref(true) // 加载中
 const product = ref<ProductVO>({} as ProductVO) // 产品详情
 const device = ref<DeviceVO>({} as DeviceVO) // 设备详情
 
 /** 获取设备详情 */
-const getDeviceData = async (id: number) => {
+const getDeviceData = async (id: string) => {
   loading.value = true
   try {
     device.value = await DeviceApi.getDevice(id)
@@ -45,7 +45,7 @@ const getDeviceData = async (id: number) => {
 }
 
 /** 获取产品详情 */
-const getProductData = async (id: number) => {
+const getProductData = async (id: string) => {
   product.value = await ProductApi.getProduct(id)
   console.log(product.value)
 }

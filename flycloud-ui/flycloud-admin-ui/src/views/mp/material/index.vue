@@ -124,7 +124,7 @@ const queryParams = reactive({
 const showCreateVideo = ref(false) // 是否新建视频的弹窗
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   accountId.value = id
   queryParams.accountId = id
   queryParams.pageNum = 1
@@ -162,7 +162,7 @@ const onTabChange = () => {
 }
 
 /** 处理删除操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   await message.confirm(t('auto.views.mp.material.index.k3fa63288'))
   await MpMaterialApi.deletePermanentMaterial(id)
   message.alertSuccess(t('auto.views.mp.material.index.k86e8d12a'))

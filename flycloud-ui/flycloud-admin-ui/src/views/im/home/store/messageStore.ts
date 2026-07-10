@@ -30,6 +30,7 @@ import { getCurrentUserId } from '@/utils/auth'
 import { isGroupQuit, tryGetSenderDisplayName } from '../../utils/user'
 import { useGroupStore } from './groupStore'
 import { useConversationStore } from './conversationStore'
+import { compareId } from '../../utils/id'
 import type { Conversation, Message, MessageDO } from '../types'
 
 const MESSAGE_CACHE_RECENT_CONVERSATION_LIMIT = 5
@@ -38,7 +39,7 @@ const ackMergingPromises = new Map<string, Promise<void>>()
 
 interface MessageConversationInfo {
   type: number
-  targetId: number | string
+  targetId: string
   name: string
   avatar: string
   silent?: boolean
@@ -58,12 +59,12 @@ export type PulledMessage =
   | {
       kind: 'recall'
       conversationType: number
-      targetId: number | string
+      targetId: string
       recallSignalContent: string
     }
 
 /** 获取会话的消息缓存 key */
-function getMessageCacheKey(type: number, targetId: number | string): string {
+function getMessageCacheKey(type: number, targetId: string): string {
   return getClientConversationId(type, targetId)
 }
 
@@ -141,8 +142,8 @@ function deriveLastSenderDisplayName(
     }
     const fetchPromise =
       group?.membersLoaded && !group.membersExpired
-        ? groupStore.fetchGroupMember(Number(conversation.targetId), senderId)
-        : groupStore.fetchGroupMemberList(Number(conversation.targetId))
+        ? groupStore.fetchGroupMember(String(conversation.targetId), senderId)
+        : groupStore.fetchGroupMemberList(String(conversation.targetId))
     fetchPromise.catch((e) =>
       console.warn(
         '[IM messageStore] 兜底拉群成员失败',
@@ -218,7 +219,7 @@ function applyServerMessageUpdate(message: Message, updates: Partial<Message>): 
     revokeBlobUrlsInContent(message.content)
   }
   Object.assign(message, updates)
-  if (updates.id === 0) {
+  if (updates.id === '0') {
     message.id = undefined
   }
   if (updates.status !== undefined && updates.status !== ImMessageStatus.SENDING) {
@@ -241,10 +242,10 @@ export const useMessageStore = defineStore('imMessageStore', {
   state: () => ({
     messagesByConversation: {} as Record<string, Message[]>,
     loadedConversationKeys: [] as string[],
-    privateReadMaxIds: {} as Partial<Record<string, number>>,
-    privateMessageMaxId: 0,
-    groupMessageMaxId: 0,
-    channelMessageMaxId: 0
+    privateReadMaxIds: {} as Partial<Record<string, string>>,
+    privateMessageMaxId: '0',
+    groupMessageMaxId: '0',
+    channelMessageMaxId: '0'
   }),
 
   getters: {
@@ -258,7 +259,7 @@ export const useMessageStore = defineStore('imMessageStore', {
   actions: {
     /** 清空消息内存 */
     clear() {
-      Object.values(this.messagesByConversation).forEach((messages) => {
+      Object.values(this.messagesByConversation as Record<string, Message[]>).forEach((messages) => {
         messages.forEach((message) => {
           revokeBlobUrlsInContent(message.content)
           message._localFile = undefined
@@ -267,9 +268,9 @@ export const useMessageStore = defineStore('imMessageStore', {
       this.messagesByConversation = {}
       this.loadedConversationKeys = []
       this.privateReadMaxIds = {}
-      this.privateMessageMaxId = 0
-      this.groupMessageMaxId = 0
-      this.channelMessageMaxId = 0
+      this.privateMessageMaxId = '0'
+      this.groupMessageMaxId = '0'
+      this.channelMessageMaxId = '0'
       ackMergingPromises.clear()
     },
 
@@ -277,48 +278,48 @@ export const useMessageStore = defineStore('imMessageStore', {
     async loadMessageCursorList() {
       const db = getDb()
       const [privateMaxId, groupMaxId, channelMaxId] = await Promise.all([
-        db.getSetting<number>(StorageKeys.settings.privateMessageMaxId),
-        db.getSetting<number>(StorageKeys.settings.groupMessageMaxId),
-        db.getSetting<number>(StorageKeys.settings.channelMessageMaxId)
+        db.getSetting<string>(StorageKeys.settings.privateMessageMaxId),
+        db.getSetting<string>(StorageKeys.settings.groupMessageMaxId),
+        db.getSetting<string>(StorageKeys.settings.channelMessageMaxId)
       ])
-      this.privateMessageMaxId = privateMaxId || 0
-      this.groupMessageMaxId = groupMaxId || 0
-      this.channelMessageMaxId = channelMaxId || 0
+      this.privateMessageMaxId = privateMaxId || '0'
+      this.groupMessageMaxId = groupMaxId || '0'
+      this.channelMessageMaxId = channelMaxId || '0'
     },
 
     /** 更新内存游标 */
-    updateMessageCursor(conversationType: number, messageId?: number) {
+    updateMessageCursor(conversationType: number, messageId?: string) {
       if (!messageId) {
         return
       }
-      if (conversationType === ImConversationType.PRIVATE && messageId > this.privateMessageMaxId) {
+      if (conversationType === ImConversationType.PRIVATE && compareId(messageId, this.privateMessageMaxId) > 0) {
         this.privateMessageMaxId = messageId
       } else if (
         conversationType === ImConversationType.GROUP &&
-        messageId > this.groupMessageMaxId
+        compareId(messageId, this.groupMessageMaxId) > 0
       ) {
         this.groupMessageMaxId = messageId
       } else if (
         conversationType === ImConversationType.CHANNEL &&
-        messageId > this.channelMessageMaxId
+        compareId(messageId, this.channelMessageMaxId) > 0
       ) {
         this.channelMessageMaxId = messageId
       }
     },
 
     /** 获取私聊对方已读位置缓存 */
-    getPrivateReadMaxId(peerId: string | number): number | undefined {
+    getPrivateReadMaxId(peerId: string): string | undefined {
       return this.privateReadMaxIds[peerId]
     },
 
     /** 更新私聊对方已读位置缓存 */
-    updatePrivateReadMaxId(peerId: string | number, maxReadId?: number | null): number {
+    updatePrivateReadMaxId(peerId: string, maxReadId?: string | null): string {
       if (!peerId) {
-        return 0
+        return '0'
       }
-      const nextMaxReadId = maxReadId || 0
+      const nextMaxReadId = maxReadId || '0'
       const current = this.getPrivateReadMaxId(peerId)
-      if (current !== undefined && nextMaxReadId <= current) {
+      if (current !== undefined && compareId(nextMaxReadId, current) <= 0) {
         return current
       }
       this.privateReadMaxIds = { ...this.privateReadMaxIds, [peerId]: nextMaxReadId }
@@ -385,7 +386,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 获取内存消息数组 */
-    getMessageList(conversationType: number, targetId: number | string): Message[] {
+    getMessageList(conversationType: number, targetId: string): Message[] {
       const key = getMessageCacheKey(conversationType, targetId)
       if (!this.messagesByConversation[key]) {
         this.messagesByConversation[key] = []
@@ -419,7 +420,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 保存消息游标 */
-    async saveMessageCursor(conversationType: number, messageId?: number, tx?: DbTransaction) {
+    async saveMessageCursor(conversationType: number, messageId?: string, tx?: DbTransaction) {
       await setMessageMaxId(conversationType, messageId, tx)
       this.updateMessageCursor(conversationType, messageId)
     },
@@ -427,7 +428,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 应用撤回到内存 */
     applyRecallMessageInMemory(
       conversationType: number,
-      targetId: number | string,
+      targetId: string,
       recallSignalContent: string
     ) {
       // 1. 定位被撤回的原消息
@@ -459,7 +460,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     async applyPulledMessageList(
       pulledMessages: PulledMessage[],
       conversationType: number,
-      maxMessageId?: number
+      maxMessageId?: string
     ) {
       if (pulledMessages.length === 0) {
         // 1. 空批次只推进游标
@@ -546,7 +547,7 @@ export const useMessageStore = defineStore('imMessageStore', {
         if (message.id) {
           for (let index = 0; index < messages.length; index++) {
             const existing = messages[index]
-            if (existing.id && message.id < existing.id) {
+            if (existing.id && compareId(message.id, existing.id) < 0) {
               insertIndex = index
               break
             }
@@ -594,7 +595,7 @@ export const useMessageStore = defineStore('imMessageStore', {
       // 1. 先处理消息带来的群资料变更
       if (conversationInfo.type === ImConversationType.GROUP && isGroupNotification(message.type)) {
         useGroupStore().applyGroupNotification(
-          Number(conversationInfo.targetId),
+          String(conversationInfo.targetId),
           message.type,
           message.content
         )
@@ -652,7 +653,7 @@ export const useMessageStore = defineStore('imMessageStore', {
       if (message.id) {
         for (let index = 0; index < messages.length; index++) {
           const existing = messages[index]
-          if (existing.id && message.id < existing.id) {
+          if (existing.id && compareId(message.id, existing.id) < 0) {
             insertIndex = index
             break
           }
@@ -682,7 +683,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** ack 合并 */
     ackMessage(
       conversationType: number,
-      targetId: number | string,
+      targetId: string,
       clientMessageId: string,
       updates: Partial<Message>
     ) {
@@ -706,7 +707,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 执行 ack 合并 */
     async doAckMessage(
       conversationType: number,
-      targetId: number | string,
+      targetId: string,
       clientMessageId: string,
       updates: Partial<Message>
     ) {
@@ -751,7 +752,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 局部更新消息 */
     patchMessage(
       conversationType: number,
-      targetId: number | string,
+      targetId: string,
       clientMessageId: string,
       patch: Partial<Message>
     ) {
@@ -780,7 +781,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 撤回消息 */
     async recallMessage(
       conversationType: number,
-      targetId: number | string,
+      targetId: string,
       recallSignalContent: string
     ): Promise<void> {
       const conversationStore = useConversationStore()
@@ -806,9 +807,9 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 应用已读回执 */
     applyMessageReadReceipt(options: {
       conversationType: number
-      targetId: number | string
-      privateReadMaxId?: number
-      groupMessageId?: number
+      targetId: string
+      privateReadMaxId?: string
+      groupMessageId?: string
       readCount?: number
       receiptStatus?: number
     }) {
@@ -821,7 +822,7 @@ export const useMessageStore = defineStore('imMessageStore', {
           if (
             message.selfSend &&
             message.id &&
-            message.id <= options.privateReadMaxId! &&
+            compareId(message.id, options.privateReadMaxId) <= 0 &&
             message.receiptStatus === ImMessageReceiptStatus.PENDING
           ) {
             message.receiptStatus = ImMessageReceiptStatus.DONE
@@ -855,7 +856,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 前置历史消息 */
-    prependMessageList(conversationType: number, targetId: number | string, earlierMessages: Message[]) {
+    prependMessageList(conversationType: number, targetId: string, earlierMessages: Message[]) {
       if (earlierMessages.length === 0) {
         return
       }
@@ -864,7 +865,7 @@ export const useMessageStore = defineStore('imMessageStore', {
       const fresh = earlierMessages
         .map(ensureClientMessageId)
         .filter((message) => message.id && !existingIds.has(message.id))
-        .sort((messageA, messageB) => (messageA.id || 0) - (messageB.id || 0))
+        .sort((messageA, messageB) => compareId(messageA.id, messageB.id))
       if (fresh.length === 0) {
         return
       }
@@ -882,8 +883,8 @@ export const useMessageStore = defineStore('imMessageStore', {
     /** 删除单条消息 */
     removeMessage(
       conversationType: number,
-      targetId: number | string,
-      key: { id?: number; clientMessageId?: string }
+      targetId: string,
+      key: { id?: string; clientMessageId?: string }
     ) {
       // 1. 定位会话和消息
       const conversationStore = useConversationStore()
@@ -915,7 +916,7 @@ export const useMessageStore = defineStore('imMessageStore', {
     },
 
     /** 删除会话全部消息 */
-    deleteConversationMessageList(conversationType: number, targetId: number | string) {
+    deleteConversationMessageList(conversationType: number, targetId: string) {
       // 1. 清理内存消息和媒体资源
       const clientConversationId = getClientConversationId(conversationType, targetId)
       const messages = this.messagesByConversation[clientConversationId] || []

@@ -112,7 +112,7 @@ const resetQuery = () => {
 
 const { userId } = defineProps({
   userId: {
-    type: Number,
+    type: String,
     required: true
   }
 })

@@ -142,7 +142,7 @@ const route = useRoute() // 路由
 const { push, currentRoute } = useRouter() // 路由
 const { delView } = useTagsViewStore() // 视图操作
 
-const id = ref<number>() // 支付单号
+const id = ref<string>() // 支付单号
 const returnUrl = ref<string | undefined>(undefined) // 支付完的回调地址
 const loading = ref(false) // 支付信息的 loading
 const payOrder = ref<PayOrderApi.OrderVO>({} as PayOrderApi.OrderVO) // 支付信息
@@ -458,7 +458,7 @@ const goReturnUrl = (payResult) => {
 /** 初始化 */
 onMounted(() => {
   if (typeof route.query.id === 'string') {
-    id.value = Number(route.query.id)
+    id.value = String(route.query.id)
   }
   if (typeof route.query.returnUrl === 'string') {
     returnUrl.value = decodeURIComponent(route.query.returnUrl)

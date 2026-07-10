@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface KeFuConversationRespVO {
-  id: number // 编号
+  id: string // 编号
   userId: string // 会话所属用户
   userAvatar: string // 会话所属用户头像
   userNickname: string // 会话所属用户昵称
@@ -24,7 +24,7 @@ export const KeFuConversationApi = {
     return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/list` })
   },
   // 获得客服会话
-  getConversation: async (id: number) => {
+  getConversation: async (id: string) => {
     return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/get?id=` + id })
   },
   // 客服会话置顶
@@ -35,7 +35,7 @@ export const KeFuConversationApi = {
     })
   },
   // 删除客服会话
-  deleteConversation: async (id: number) => {
+  deleteConversation: async (id: string) => {
     return await request.delete({
       url: `/${MALL_BASE_URL}/admin/promotion/kefu-conversation/delete?id=${id}`
     })

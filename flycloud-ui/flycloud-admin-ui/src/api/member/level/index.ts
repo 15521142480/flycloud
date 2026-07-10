@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface LevelVO {
-  id: number
+  id: string
   name: string
   experience: number
   value: number
@@ -19,7 +19,7 @@ export const getLevelList = async (params) => {
 }
 
 // 查询会员等级详情
-export const getLevel = async (id: number) => {
+export const getLevel = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/admin/member/level/get?id=` + id })
 }
 
@@ -39,6 +39,6 @@ export const updateLevel = async (data: LevelVO) => {
 }
 
 // 删除会员等级
-export const deleteLevel = async (id: number) => {
+export const deleteLevel = async (id: string) => {
   return await request.delete({ url: `/${SYS_BASE_URL}/admin/member/level/delete?id=` + id })
 }

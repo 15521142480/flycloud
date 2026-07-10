@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 采购退货 VO
 export interface PurchaseReturnVO {
-  id: number // 采购退货编号
+  id: string // 采购退货编号
   no: string // 采购退货号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   returnTime: Date // 退货时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -20,7 +20,7 @@ export const PurchaseReturnApi = {
   },
 
   // 查询采购退货详情
-  getPurchaseReturn: async (id: number) => {
+  getPurchaseReturn: async (id: string) => {
     return await request.get({ url: `/erp/purchase-return/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const PurchaseReturnApi = {
   },
 
   // 更新采购退货的状态
-  updatePurchaseReturnStatus: async (id: number, status: number) => {
+  updatePurchaseReturnStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/purchase-return/update-status`,
       params: {
@@ -46,7 +46,7 @@ export const PurchaseReturnApi = {
   },
 
   // 删除采购退货
-  deletePurchaseReturn: async (ids: number[]) => {
+  deletePurchaseReturn: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/purchase-return/delete`,
       params: {

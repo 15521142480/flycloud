@@ -3,10 +3,10 @@ import qs from 'qs'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface NotifyMessageVO {
-  id: number
+  id: string
   userId: string
   userType: number
-  templateId: number
+  templateId: string
   templateCode: string
   templateNickname: string
   templateContent: string

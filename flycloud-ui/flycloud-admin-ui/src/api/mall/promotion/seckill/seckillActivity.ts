@@ -4,8 +4,8 @@ import { Sku, Spu } from '@/api/mall/product/spu'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface SeckillActivityVO {
-  id?: number
-  spuId?: number
+  id?: string
+  spuId?: string
   name?: string
   picUrl?: string
   status?: number
@@ -27,8 +27,8 @@ export interface SeckillActivityVO {
 
 // 秒杀活动所需属性
 export interface SeckillProductVO {
-  skuId: number
-  spuId: number
+  skuId: string
+  spuId: string
   seckillPrice: number
   stock: number
 }
@@ -48,12 +48,12 @@ export const getSeckillActivityPage = async (params) => {
 }
 
 // 查询秒杀活动列表，基于活动编号数组
-export const getSeckillActivityListByIds = (ids: number[]) => {
+export const getSeckillActivityListByIds = (ids: string[]) => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/list-by-ids?ids=${ids}` })
 }
 
 // 查询秒杀活动详情
-export const getSeckillActivity = async (id: number) => {
+export const getSeckillActivity = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/get?id=` + id })
 }
 
@@ -68,12 +68,12 @@ export const updateSeckillActivity = async (data: SeckillActivityVO) => {
 }
 
 // 关闭秒杀活动
-export const closeSeckillActivity = async (id: number) => {
+export const closeSeckillActivity = async (id: string) => {
   return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/close?id=` + id })
 }
 
 // 删除秒杀活动
-export const deleteSeckillActivity = async (id: number) => {
+export const deleteSeckillActivity = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/seckill-activity/delete?id=` + id
   })

@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // 用户端表情包项（精简版）
 export interface ImFacePackUserItemVO {
-  id: number
+  id: string
   url: string
   name?: string
   width: number
@@ -13,7 +13,7 @@ export interface ImFacePackUserItemVO {
 
 // 用户端表情包 + 嵌套 items
 export interface ImFacePackUserVO {
-  id: number
+  id: string
   name: string
   icon?: string
   items: ImFacePackUserItemVO[]

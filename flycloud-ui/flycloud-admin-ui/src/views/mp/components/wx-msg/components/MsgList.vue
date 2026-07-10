@@ -34,7 +34,7 @@ defineOptions({ name: 'MsgList' })
 
 const props = defineProps<{
   list: any[]
-  accountId: number
+  accountId: string
   user: User
 }>()
 

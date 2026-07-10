@@ -55,7 +55,7 @@ const getMessageContent = computed(() =>
 )
 
 /** 查看订单详情 */
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   console.log(getMessageContent)
   push({ name: 'TradeOrderDetail', params: { id } })
 }

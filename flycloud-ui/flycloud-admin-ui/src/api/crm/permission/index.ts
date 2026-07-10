@@ -1,21 +1,21 @@
 import request from '@/config/axios'
 
 export interface PermissionVO {
-  id?: number // 数据权限编号
+  id?: string // 数据权限编号
   userId: string // 用户编号
   bizType: number // Crm 类型
-  bizId: number // Crm 类型数据编号
+  bizId: string // Crm 类型数据编号
   level: number // 权限级别
   toBizTypes?: number[] // 同时添加至
   deptName?: string // 部门名称
   name?: string // 用户昵称
   postNames?: string[] // 岗位名称数组
   createTime?: Date
-  ids?: number[]
+  ids?: string[]
 }
 
 export interface TransferReqVO {
-  id: number // 模块编号
+  id: string // 模块编号
   newOwnerUserId: string // 新负责人的用户编号
   oldOwnerPermissionLevel?: number // 老负责人加入团队后的权限级别
   toBizTypes?: number[] // 转移客户时，需要额外有【联系人】【商机】【合同】的 checkbox 选择
@@ -67,6 +67,6 @@ export const deletePermissionBatch = async (val: number[]) => {
 }
 
 // 删除自己的数据权限（退出团队）
-export const deleteSelfPermission = async (id: number) => {
+export const deleteSelfPermission = async (id: string) => {
   return await request.delete({ url: '/crm/permission/delete-self/' + id })
 }

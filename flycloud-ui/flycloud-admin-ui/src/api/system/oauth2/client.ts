@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface OAuth2ClientVO {
-  id: number
+  id: string
   clientId: string
   secret: string
   name: string
@@ -27,7 +27,7 @@ export const getOAuth2ClientPage = (params: PageParam) => {
 }
 
 // 查询 OAuth2 客户端的详情
-export const getOAuth2Client = (id: number) => {
+export const getOAuth2Client = (id: string) => {
   return request.get({ url: '/system/oauth2-client/get/' + id })
 }
 
@@ -42,6 +42,6 @@ export const updateOAuth2Client = (data: OAuth2ClientVO) => {
 }
 
 // 删除 OAuth2
-export const deleteOAuth2Client = (id: number) => {
+export const deleteOAuth2Client = (id: string) => {
   return request.delete({ url: '/system/oauth2-client/delete/' + id })
 }

@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface Demo01ContactVO {
-  id: number
+  id: string
   name: string
   sex: number
   birthday: Date
@@ -15,7 +15,7 @@ export const getDemo01ContactPage = async (params) => {
 }
 
 // 查询示例联系人详情
-export const getDemo01Contact = async (id: number) => {
+export const getDemo01Contact = async (id: string) => {
   return await request.get({ url: `/infra/demo01-contact/get/` + id })
 }
 
@@ -30,7 +30,7 @@ export const updateDemo01Contact = async (data: Demo01ContactVO) => {
 }
 
 // 删除示例联系人
-export const deleteDemo01Contact = async (id: number) => {
+export const deleteDemo01Contact = async (id: string) => {
   return await request.delete({ url: `/infra/demo01-contact/delete/` + id })
 }
 

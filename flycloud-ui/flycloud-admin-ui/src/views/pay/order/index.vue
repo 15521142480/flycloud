@@ -205,7 +205,7 @@ const list = ref<OrderApi.OrderDetailVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  appId: null as number | null,
+  appId: null as string | null,
   channelCode: null as string | null,
   merchantOrderId: null as string | null,
   channelOrderNo: null as string | null,
@@ -258,7 +258,7 @@ const handleExport = async () => {
 
 /** 预览详情 */
 const detailRef = ref()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   detailRef.value.open(id)
 }
 

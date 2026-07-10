@@ -225,7 +225,7 @@ const checkedSpus = ref<Spu[]>([])
 const checkedStatus = ref<Record<string, boolean>>({})
 
 // 选中的商品 spuId
-const selectedSpuId = ref()
+const selectedSpuId = ref<string>()
 /** 单选中时触发 */
 const handleSingleSelected = (spu: Spu) => {
   emits(CHANGE_EVENT, spu)

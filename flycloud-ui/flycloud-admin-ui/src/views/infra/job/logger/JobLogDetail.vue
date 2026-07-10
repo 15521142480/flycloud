@@ -50,7 +50,7 @@ const detailLoading = ref(false) // 表单的加载中
 const detailData = ref({} as JobLogApi.JobLogVO) // 详情数据
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   // 查看，设置数据
   if (id) {

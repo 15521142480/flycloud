@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface CustomerLimitConfigVO {
-  id?: number
+  id?: string
   type?: number
   userIds?: string
   deptIds?: string
@@ -29,7 +29,7 @@ export const getCustomerLimitConfigPage = async (params) => {
 }
 
 // 查询客户限制配置详情
-export const getCustomerLimitConfig = async (id: number) => {
+export const getCustomerLimitConfig = async (id: string) => {
   return await request.get({ url: `/crm/customer-limit-config/get/` + id })
 }
 
@@ -44,6 +44,6 @@ export const updateCustomerLimitConfig = async (data: CustomerLimitConfigVO) => 
 }
 
 // 删除客户限制配置
-export const deleteCustomerLimitConfig = async (id: number) => {
+export const deleteCustomerLimitConfig = async (id: string) => {
   return await request.delete({ url: `/crm/customer-limit-config/delete/` + id })
 }

@@ -77,13 +77,13 @@ const message = useMessage() // 消息
 
 const props = defineProps<{
   bizType: number // 模块类型
-  bizId: number | undefined // 模块数据编号
+  bizId: string | undefined // 模块数据编号
   showAction: boolean //是否展示操作按钮
 }>()
 const loading = ref(true) // 列表的加载中
 const list = ref<PermissionApi.PermissionVO[]>([]) // 列表的数据
 const formData = ref({
-  ownerUserId: 0
+  ownerUserId: '0'
 })
 const userStore = useUserStoreWithOut() // 用户信息缓存
 

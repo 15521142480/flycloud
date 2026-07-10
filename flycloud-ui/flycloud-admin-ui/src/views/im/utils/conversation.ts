@@ -35,7 +35,7 @@ import {
 import type { Message } from '../home/types'
 
 /** 会话主键：`type-targetId` 拼成稳定字符串，给 v-for :key、active 比对、map key 等场景共用 */
-export function getConversationKey(conversation: { type: number; targetId: number | string }): string {
+export function getConversationKey(conversation: { type: number; targetId: string }): string {
   return `${conversation.type}-${conversation.targetId}`
 }
 
@@ -68,7 +68,7 @@ export function buildRecallTipSegments(
   senderId: string,
   selfSend: boolean,
   conversationType: number,
-  conversationTargetId: number | string,
+  conversationTargetId: string,
   fallbackName?: string
 ): TipSegment[] {
   if (selfSend) {
@@ -91,7 +91,7 @@ export function buildRecallTip(
   senderId: string,
   selfSend: boolean,
   conversationType: number,
-  conversationTargetId: number | string,
+  conversationTargetId: string,
   fallbackName?: string
 ): string {
   return segmentsToText(
@@ -147,7 +147,7 @@ export function summarizeMessageContent(
 export function resolveConversationLastContent(
   message: Message,
   conversationType: number,
-  conversationTargetId: number | string,
+  conversationTargetId: string,
   fallbackName?: string
 ): string {
   if (message.type === ImContentType.RECALL) {
@@ -164,7 +164,7 @@ export function resolveConversationLastContent(
   }
   if (isGroupNotification(message.type)) {
     return resolveGroupNotificationText(message, (id) =>
-      getSenderDisplayName(id, ImConversationType.GROUP, message.targetId ?? 0)
+      getSenderDisplayName(id, ImConversationType.GROUP, message.targetId ?? '')
     )
   }
   if (isRtcCallTip(message.type)) {

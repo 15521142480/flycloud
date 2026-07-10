@@ -9,7 +9,7 @@ export interface BrandVO {
   /**
    * 品牌编号
    */
-  id?: number
+  id?: string
   /**
    * 品牌名称
    */
@@ -43,12 +43,12 @@ export const updateBrand = (data: BrandVO) => {
 }
 
 // 删除商品品牌
-export const deleteBrand = (id: number) => {
+export const deleteBrand = (id: string) => {
   return request.delete({ url: `/${MALL_BASE_URL}/admin/product/brand/delete?id=${id}` })
 }
 
 // 获得商品品牌
-export const getBrand = (id: number) => {
+export const getBrand = (id: string) => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/product/brand/get?id=${id}` })
 }
 

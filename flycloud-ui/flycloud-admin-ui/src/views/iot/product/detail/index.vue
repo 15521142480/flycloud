@@ -36,13 +36,13 @@ const { currentRoute } = useRouter()
 
 const route = useRoute()
 const message = useMessage()
-const id = Number(route.params.id) // 编号
+const id = String(route.params.id) // 编号
 const loading = ref(true) // 加载中
 const product = ref<ProductVO>({} as ProductVO) // 详情
 const activeTab = ref('info') // 默认激活的标签页
 
 /** 获取详情 */
-const getProductData = async (id: number) => {
+const getProductData = async (id: string) => {
   loading.value = true
   try {
     product.value = await ProductApi.getProduct(id)
@@ -53,7 +53,7 @@ const getProductData = async (id: number) => {
 }
 
 // 查询设备数量
-const getDeviceCount = async (productId: number) => {
+const getDeviceCount = async (productId: string) => {
   try {
     const count = await DeviceApi.getDeviceCount(productId)
     console.log('Device count response:', count)

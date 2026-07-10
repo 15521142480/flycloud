@@ -9,7 +9,7 @@ export type Task = {
 }
 
 export type ProcessInstanceVO = {
-  id: number
+  id: string
   name: string
   processDefinitionId: string
   category: string
@@ -26,14 +26,14 @@ export type ProcessInstanceVO = {
 
 // 用户信息
 export type User = {
-  id: number
+  id: string
   name: string
   avatar: string
 }
 
 // 审批任务信息
 export type ApprovalTaskInfo = {
-  id: number
+  id: string
   ownerUser: User
   assigneeUser: User
   status: number
@@ -42,7 +42,7 @@ export type ApprovalTaskInfo = {
 
 // 审批节点信息
 export type ApprovalNodeInfo = {
-  id: number
+  id: string
   name: string
   nodeType: NodeType
   status: number
@@ -64,7 +64,7 @@ export const createProcessInstance = async (data) => {
   return await request.post({ url: `/${BPM_BASE_URL}/instance/create`, data: data })
 }
 
-export const cancelProcessInstanceByStartUser = async (id: number, reason: string) => {
+export const cancelProcessInstanceByStartUser = async (id: string, reason: string) => {
   const data = {
     id: id,
     reason: reason
@@ -72,7 +72,7 @@ export const cancelProcessInstanceByStartUser = async (id: number, reason: strin
   return await request.delete({ url: `/${BPM_BASE_URL}/instance/cancelByStartUser`, data: data })
 }
 
-export const cancelProcessInstanceByAdmin = async (id: number, reason: string) => {
+export const cancelProcessInstanceByAdmin = async (id: string, reason: string) => {
   const data = {
     id: id,
     reason: reason

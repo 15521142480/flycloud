@@ -99,7 +99,7 @@ const showImageDialog = ref(false)
 const fileList = ref<UploadFiles>([])
 interface UploadData {
   type: UploadType
-  accountId: number
+  accountId: string
 }
 const uploadData: UploadData = reactive({
   type: UploadType.Image,

@@ -206,7 +206,7 @@ const formRules = reactive<FormRules>({
 
 /** 打开弹窗 */
 // TODO @fan：title 是不是收敛到 type 判断生成 title，会更合理
-const open = async (type: string, id?: number, title?: string) => {
+const open = async (type: string, id?: string, title?: string) => {
   dialogVisible.value = true
   dialogTitle.value = title || t('action.' + type)
   formType.value = type

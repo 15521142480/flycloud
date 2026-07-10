@@ -54,7 +54,7 @@ defineOptions({ name: 'ImUserAvatar', inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
-    id?: string | number // 用户 id；传了才能点开名片
+    id?: string // 用户 id；传了才能点开名片
     url?: string // 头像图片 URL；为空时走色卡文字
     name?: string // 用户名（色卡文字 + 名片备用）
     size?: number // 尺寸（px），正方形；优先于 width/height

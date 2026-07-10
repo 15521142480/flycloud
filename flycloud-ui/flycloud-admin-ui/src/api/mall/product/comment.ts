@@ -3,16 +3,16 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface CommentVO {
-  id: number
+  id: string
   userId: string
   userNickname: string
   userAvatar: string
   anonymous: boolean
-  orderId: number
-  orderItemId: number
-  spuId: number
+  orderId: string
+  orderItemId: string
+  spuId: string
   spuName: string
-  skuId: number
+  skuId: string
   visible: boolean
   scores: number
   descriptionScores: number
@@ -20,7 +20,7 @@ export interface CommentVO {
   content: string
   picUrls: string
   replyStatus: boolean
-  replyUserId: number
+  replyUserId: string
   replyContent: string
   replyTime: Date
 }
@@ -31,7 +31,7 @@ export const getCommentPage = async (params) => {
 }
 
 // 查询商品评论详情
-export const getComment = async (id: number) => {
+export const getComment = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/product/comment/get?id=` + id })
 }
 

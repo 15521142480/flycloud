@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 销售退货 VO
 export interface SaleReturnVO {
-  id: number // 销售退货编号
+  id: string // 销售退货编号
   no: string // 销售退货号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   returnTime: Date // 退货时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -20,7 +20,7 @@ export const SaleReturnApi = {
   },
 
   // 查询销售退货详情
-  getSaleReturn: async (id: number) => {
+  getSaleReturn: async (id: string) => {
     return await request.get({ url: `/erp/sale-return/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const SaleReturnApi = {
   },
 
   // 更新销售退货的状态
-  updateSaleReturnStatus: async (id: number, status: number) => {
+  updateSaleReturnStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/sale-return/update-status`,
       params: {
@@ -46,7 +46,7 @@ export const SaleReturnApi = {
   },
 
   // 删除销售退货
-  deleteSaleReturn: async (ids: number[]) => {
+  deleteSaleReturn: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/sale-return/delete`,
       params: {

@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 销售出库 VO
 export interface SaleOutVO {
-  id: number // 销售出库编号
+  id: string // 销售出库编号
   no: string // 销售出库号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   outTime: Date // 出库时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -20,7 +20,7 @@ export const SaleOutApi = {
   },
 
   // 查询销售出库详情
-  getSaleOut: async (id: number) => {
+  getSaleOut: async (id: string) => {
     return await request.get({ url: `/erp/sale-out/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const SaleOutApi = {
   },
 
   // 更新销售出库的状态
-  updateSaleOutStatus: async (id: number, status: number) => {
+  updateSaleOutStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/sale-out/update-status`,
       params: {
@@ -46,7 +46,7 @@ export const SaleOutApi = {
   },
 
   // 删除销售出库
-  deleteSaleOut: async (ids: number[]) => {
+  deleteSaleOut: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/sale-out/delete`,
       params: {

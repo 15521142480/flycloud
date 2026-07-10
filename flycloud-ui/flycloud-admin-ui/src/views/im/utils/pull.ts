@@ -1,4 +1,5 @@
 import { getDb } from './db'
+import { compareId, maxId } from './id'
 
 /**
  * IM 状态事件补偿（增量拉取）通用编排
@@ -11,12 +12,12 @@ import { getDb } from './db'
 /** 增量拉取游标：上次拉到的位置 */
 export interface PullCursor {
   lastUpdateTime?: number
-  lastId?: number
+  lastId?: string
 }
 
 /** 可作为游标的拉取记录：服务端按 update_time + id 返回，客户端取最后一条推进游标 */
 interface PullRecord {
-  id: number
+  id: string
   updateTime?: number
 }
 
@@ -44,7 +45,7 @@ export async function getPullCursor(key: string): Promise<PullCursor> {
  */
 export async function runIncrementalPull<T extends PullRecord>(
   cursorKey: string,
-  fetchPage: (params: { lastUpdateTime?: number; lastId?: number; limit: number }) => Promise<T[]>,
+  fetchPage: (params: { lastUpdateTime?: number; lastId?: string; limit: number }) => Promise<T[]>,
   apply: (records: T[]) => boolean | Promise<boolean>,
   isActive?: () => boolean
 ): Promise<void> {
@@ -52,7 +53,7 @@ export async function runIncrementalPull<T extends PullRecord>(
   const highWater = { ...storedCursor }
   let cursor =
     storedCursor.lastUpdateTime != null
-      ? { lastUpdateTime: Math.max(0, storedCursor.lastUpdateTime - PULL_OVERLAP_MS), lastId: 0 }
+      ? { lastUpdateTime: Math.max(0, storedCursor.lastUpdateTime - PULL_OVERLAP_MS), lastId: '0' }
       : {}
   for (let page = 0; page < PULL_MAX_PAGES; page++) {
     if (isActive && !isActive()) {
@@ -84,7 +85,7 @@ export async function runIncrementalPull<T extends PullRecord>(
         highWater.lastUpdateTime == null ||
         cursor.lastUpdateTime > highWater.lastUpdateTime ||
         (cursor.lastUpdateTime === highWater.lastUpdateTime &&
-          cursor.lastId > (highWater.lastId ?? 0))
+          compareId(cursor.lastId, highWater.lastId) > 0)
       ) {
         highWater.lastUpdateTime = cursor.lastUpdateTime
         highWater.lastId = cursor.lastId
@@ -112,17 +113,17 @@ export async function runIncrementalPull<T extends PullRecord>(
  * @param isActive     每次 await 前后自检：取消 / 切账号时返回 false，丢弃本批不入库、不再翻页
  * @param maxPages     单轮翻页上限
  */
-export async function runMinIdPull<T extends { id?: number }>(options: {
-  initialMinId: number
+export async function runMinIdPull<T extends { id?: string }>(options: {
+  initialMinId: string
   pageSize: number
-  fetchPage: (params: { minId: number; size: number }) => Promise<T[]>
-  applyPage: (records: T[], nextMinId?: number) => Promise<boolean | void>
+  fetchPage: (params: { minId: string; size: number }) => Promise<T[]>
+  applyPage: (records: T[], nextMinId?: string) => Promise<boolean | void>
   isActive?: () => boolean
   maxPages?: number
 }): Promise<void> {
   const { initialMinId, pageSize, fetchPage, applyPage, isActive } = options
   const maxPages = options.maxPages ?? MIN_ID_PULL_MAX_PAGES
-  let minId = initialMinId || 0
+  let minId = initialMinId || '0'
   for (let page = 0; page < maxPages; page++) {
     if (isActive && !isActive()) {
       return
@@ -136,14 +137,14 @@ export async function runMinIdPull<T extends { id?: number }>(options: {
       return
     }
     // 本批最大消息 id 作为下次游标；无有效 id 则本批 apply 后停（无法继续翻页）
-    const validIds = list.map((record) => record.id).filter((id): id is number => id != null)
-    const nextMinId = validIds.length > 0 ? Math.max(...validIds) : undefined
+    const validIds = list.map((record) => record.id).filter((id): id is string => id != null)
+    const nextMinId = validIds.length > 0 ? validIds.reduce((max, id) => maxId(max, id), '0') : undefined
     // applyPage 返回 false：本页未落地（如入库失败），不推进游标并终止，避免漏消息
     if ((await applyPage(list, nextMinId)) === false) {
       return
     }
     // 无有效 id，或游标没前进（后端契约是 id > minId，理论不会出现）：停，防御死翻
-    if (nextMinId == null || nextMinId <= minId) {
+    if (nextMinId == null || compareId(nextMinId, minId) <= 0) {
       return
     }
     minId = nextMinId

@@ -131,7 +131,7 @@ const formData = ref({
   introduction: undefined,
   sort: 0,
   status: 0,
-  spuId: 0,
+  spuId: '0',
   recommendHot: false,
   recommendBanner: false,
   content: undefined
@@ -149,11 +149,11 @@ const formRules = reactive({
 })
 const formRef = ref() // 表单 Ref
 const spuSelectRef = ref() // 商品和属性选择 Ref
-const selectSpu = (spuId: number) => {
+const selectSpu = (spuId: string) => {
   formData.value.spuId = spuId
 }
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -207,7 +207,7 @@ const resetForm = () => {
     introduction: undefined,
     sort: 0,
     status: 0,
-    spuId: 0,
+    spuId: '0',
     recommendHot: false,
     recommendBanner: false,
     content: undefined

@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface DemoOrderVO {
-  spuId: number
+  spuId: string
   createTime: Date
 }
 
@@ -24,7 +24,7 @@ export function getDemoOrderPage(query: PageParam) {
 }
 
 // 退款示例订单
-export function refundDemoOrder(id: number) {
+export function refundDemoOrder(id: string) {
   return request.put({
     url: `/${SYS_BASE_URL}/admin/pay/demo-order/refund?id=` + id
   })

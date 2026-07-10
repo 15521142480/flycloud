@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerPrivateMessageVO {
-  id: number
+  id: string
   clientMessageId?: string
   senderId: string
   senderNickname?: string
@@ -23,6 +23,6 @@ export const getManagerPrivateMessagePage = (params: PageParam) => {
 }
 
 // 获得私聊消息详情
-export const getManagerPrivateMessage = (id: number) => {
+export const getManagerPrivateMessage = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/message/private/get`, params: { id } })
 }

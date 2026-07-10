@@ -686,7 +686,7 @@ function onMutedChange(value: boolean | string | number) {
   const next = !!value
   const { type, targetId } = props.conversation
   conversationStore.setConversationSilent(type, targetId, next)
-  groupStore.setGroupSilent(Number(targetId), next).catch((error) => {
+  groupStore.setGroupSilent(String(targetId), next).catch((error) => {
     console.error('[IM ConversationGroupSide] setGroupSilent 失败', { targetId }, error)
     conversationStore.setConversationSilent(type, targetId, !next)
   })

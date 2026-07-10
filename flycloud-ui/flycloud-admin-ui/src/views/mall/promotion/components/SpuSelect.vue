@@ -158,11 +158,11 @@ const isExpand = ref(false) // 控制 SKU 列表显示
 const expandRowKeys = ref<string[]>() // 控制展开行需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。
 
 //============ 商品选择相关 ============
-const selectedSpuId = ref<number>(0) // 选中的商品 spuId
-const selectedSkuIds = ref<number[]>([]) // 选中的商品 skuIds
+const selectedSpuId = ref<string>('') // 选中的商品 spuId
+const selectedSkuIds = ref<string[]>([]) // 选中的商品 skuIds
 const selectSku = (val: ProductSpuApi.Sku[]) => {
   const skuTable = skuListRef.value?.getSkuTableRef()
-  if (selectedSpuId.value === 0) {
+  if (!selectedSpuId.value) {
     message.warning('请先选择商品再选择相应的规格！！！')
     skuTable?.clearSelection()
     return
@@ -188,7 +188,7 @@ const selectSku = (val: ProductSpuApi.Sku[]) => {
 }
 const selectSpu = (val: ProductSpuApi.Spu[]) => {
   if (val.length === 0) {
-    selectedSpuId.value = 0
+    selectedSpuId.value = ''
     return
   }
   // 只选择一个
@@ -212,7 +212,7 @@ const selectSpu = (val: ProductSpuApi.Spu[]) => {
 const expandChange = async (row: ProductSpuApi.Spu, expandedRows?: ProductSpuApi.Spu[]) => {
   // 判断需要展开的 spuId === 选择的 spuId。如果选择了 A 就展开 A 的 skuList。如果选择了 A 手动展开 B 则阻断
   // 目的防止误选 sku
-  if (selectedSpuId.value !== 0) {
+  if (selectedSpuId.value) {
     if (row.id !== selectedSpuId.value) {
       message.warning('你已选择商品请先取消')
       expandRowKeys.value = [String(selectedSpuId.value)]
@@ -232,7 +232,7 @@ const expandChange = async (row: ProductSpuApi.Spu, expandedRows?: ProductSpuApi
     return
   }
   // 获取 SPU 详情
-  const res = (await ProductSpuApi.getSpu(row.id as number)) as ProductSpuApi.Spu
+  const res = (await ProductSpuApi.getSpu(row.id!)) as ProductSpuApi.Spu
   res.skus?.forEach((item) => {
     item.price = floatToFixed2(item.price)
     item.marketPrice = floatToFixed2(item.marketPrice)
@@ -248,13 +248,13 @@ const expandChange = async (row: ProductSpuApi.Spu, expandedRows?: ProductSpuApi
 
 // 确认选择时的触发事件
 const emits = defineEmits<{
-  (e: 'confirm', spuId: number, skuIds?: number[]): void
+  (e: 'confirm', spuId: string, skuIds?: string[]): void
 }>()
 /**
  * 确认选择返回选中的 spu 和 sku (如果需要选择sku的话)
  */
 const confirm = () => {
-  if (selectedSpuId.value === 0) {
+  if (!selectedSpuId.value) {
     message.warning('没有选择任何商品')
     return
   }
@@ -268,7 +268,7 @@ const confirm = () => {
     : emits('confirm', selectedSpuId.value)
   // 关闭弹窗
   dialogVisible.value = false
-  selectedSpuId.value = 0
+  selectedSpuId.value = ''
   selectedSkuIds.value = []
 }
 

@@ -70,7 +70,7 @@
   import OrderApi from '@/sheep/api/trade/order';
 
   const state = reactive({
-    activityId: 0, // 获得编号
+    activityId: '0', // 获得编号
     activityInfo: {}, // 获得信息
 
     pagination: {

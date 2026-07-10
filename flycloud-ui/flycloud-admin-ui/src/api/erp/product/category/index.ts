@@ -2,8 +2,8 @@ import request from '@/config/axios'
 
 // ERP 产品分类 VO
 export interface ProductCategoryVO {
-  id: number // 分类编号
-  parentId: number // 父分类编号
+  id: string // 分类编号
+  parentId: string // 父分类编号
   name: string // 分类名称
   code: string // 分类编码
   sort: number // 分类排序
@@ -23,7 +23,7 @@ export const ProductCategoryApi = {
   },
 
   // 查询产品分类详情
-  getProductCategory: async (id: number) => {
+  getProductCategory: async (id: string) => {
     return await request.get({ url: `/erp/product-category/get/` + id })
   },
 
@@ -38,7 +38,7 @@ export const ProductCategoryApi = {
   },
 
   // 删除产品分类
-  deleteProductCategory: async (id: number) => {
+  deleteProductCategory: async (id: string) => {
     return await request.delete({ url: `/erp/product-category/delete/` + id })
   },
 

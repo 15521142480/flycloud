@@ -36,7 +36,7 @@ const { push } = useRouter()
 defineOptions({ name: 'ProductItem' })
 defineProps({
   spuId: {
-    type: Number,
+    type: String,
     default: 0
   },
   picUrl: {
@@ -62,7 +62,7 @@ defineProps({
 })
 
 /** 查看商品详情 */
-const openDetail = (spuId: number) => {
+const openDetail = (spuId: string) => {
   push({ name: 'ProductSpuDetail', params: { id: spuId } })
 }
 </script>

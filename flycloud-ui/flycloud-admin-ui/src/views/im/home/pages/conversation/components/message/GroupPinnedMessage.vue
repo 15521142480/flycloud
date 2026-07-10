@@ -89,12 +89,12 @@ defineOptions({ name: 'ImGroupPinnedMessage' })
 
 const props = defineProps<{
   /** 当前群编号（自行从 groupStore 拿完整 Group，跟随响应式） */
-  groupId: number
+  groupId: string
 }>()
 
 const emit = defineEmits<{
   /** 点击置顶消息 → 父级 MessagePanel 滚动定位到原消息位置 */
-  locate: [messageId: number]
+  locate: [messageId: string]
 }>()
 
 const groupStore = useGroupStore()
@@ -104,7 +104,7 @@ const message = useMessage()
 const group = computed(() => groupStore.getGroup(props.groupId))
 
 const expanded = ref(false)
-const removingId = ref<number | null>(null)
+const removingId = ref<string | null>(null)
 
 // 切群时重置展开 / 移除中状态：本地 ref 不跟随 groupId，否则上一群"展开"或"移除中"会带到新群
 watch(

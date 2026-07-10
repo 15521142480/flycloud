@@ -3,8 +3,8 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface DiyPageVO {
-  id?: number
-  templateId?: number
+  id?: string
+  templateId?: string
   name: string
   remark: string
   previewPicUrls: string[]
@@ -17,7 +17,7 @@ export const getDiyPagePage = async (params: any) => {
 }
 
 // 查询装修页面详情
-export const getDiyPage = async (id: number) => {
+export const getDiyPage = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/diy-page/get?id=` + id })
 }
 
@@ -32,12 +32,12 @@ export const updateDiyPage = async (data: DiyPageVO) => {
 }
 
 // 删除装修页面
-export const deleteDiyPage = async (id: number) => {
+export const deleteDiyPage = async (id: string) => {
   return await request.delete({ url: `/${MALL_BASE_URL}/admin/promotion/diy-page/delete?id=` + id })
 }
 
 // 获得装修页面属性
-export const getDiyPageProperty = async (id: number) => {
+export const getDiyPageProperty = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/diy-page/get-property?id=` + id })
 }
 

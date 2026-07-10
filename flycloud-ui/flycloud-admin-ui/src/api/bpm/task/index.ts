@@ -47,7 +47,7 @@ export enum TaskStatusEnum {
 }
 
 export type TaskVO = {
-  id: number
+  id: string
 }
 
 export const getTaskTodoPage = async (params: any) => {

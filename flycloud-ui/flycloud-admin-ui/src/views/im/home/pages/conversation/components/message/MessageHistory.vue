@@ -182,7 +182,7 @@
                        不参与右侧栏 flex 排版（避免隐藏时占位让"我"和内容之间留空）；
                        仅有真实 id 的消息才支持（本地占位消息不行） -->
                   <span
-                    v-if="message.id && message.id > 0"
+                    v-if="isPositiveId(message.id)"
                     class="im-message-history__locate"
                     @click="locateMessage(message.id!)"
                   >
@@ -289,6 +289,7 @@ import {
 } from '@/views/im/utils/message'
 import type { Message } from '@/views/im/home/types'
 import { getClientConversationId } from '@/views/im/utils/db'
+import { compareId, isPositiveId } from '@/views/im/utils/id'
 import UserAvatar from '../../../../components/user/UserAvatar.vue'
 import MessageBubble from './MessageBubble.vue'
 import GroupMember, { type GroupMemberLite } from '../../../../components/group/GroupMember.vue'
@@ -298,7 +299,7 @@ defineOptions({ name: 'ImMessageHistory' })
 
 const emit = defineEmits<{
   // 历史消息行上的"定位"按钮：通知父组件 MessagePanel 滚到对应消息位置 + 关掉自己
-  locate: [messageId: number]
+  locate: [messageId: string]
 }>()
 
 const userStore = useUserStore()
@@ -334,13 +335,13 @@ function senderDisplayNameOf(message: Message): string {
   return getSenderDisplayName(
     message.senderId,
     conversation.value?.type ?? 0,
-    conversation.value?.targetId ?? 0
+    conversation.value?.targetId ?? ''
   )
 }
 
 /** 群广播事件 segments 的成员名解析器；按当前会话 targetId 走 getSenderDisplayName */
 function resolveGroupMemberName(message: Message): (userId: string) => string {
-  return (id: string) => getSenderDisplayName(id, ImConversationType.GROUP, message.targetId ?? 0)
+  return (id: string) => getSenderDisplayName(id, ImConversationType.GROUP, message.targetId ?? '')
 }
 
 /** 单条消息的发送人真实昵称：给 UserAvatar 色卡 / alt 用，永远是 nickname 不掺备注 */
@@ -348,7 +349,7 @@ function senderRealNicknameOf(message: Message): string {
   return getSenderRealNickname(
     message.senderId,
     conversation.value?.type ?? 0,
-    conversation.value?.targetId ?? 0
+    conversation.value?.targetId ?? ''
   )
 }
 
@@ -358,7 +359,7 @@ function recallTipOf(message: Message): string {
     message.senderId,
     message.selfSend,
     conversation.value?.type ?? 0,
-    conversation.value?.targetId ?? 0
+    conversation.value?.targetId ?? ''
   )
 }
 
@@ -368,7 +369,7 @@ function recallTipSegmentsOf(message: Message) {
     message.senderId,
     message.selfSend,
     conversation.value?.type ?? 0,
-    conversation.value?.targetId ?? 0
+    conversation.value?.targetId ?? ''
   )
 }
 
@@ -569,9 +570,12 @@ async function loadEarlier() {
     // 本地乐观占位消息没有服务端 id，要剔除
     // 全是占位 / 列表为空时 reduce 不更新初值（POSITIVE_INFINITY），转成 undefined → 后端从最新拉
     const earliestId = allMessages.value
-      .filter((message) => !!message.id && message.id > 0)
-      .reduce((min, message) => Math.min(min, message.id || min), Number.POSITIVE_INFINITY)
-    const maxId = Number.isFinite(earliestId) ? earliestId : undefined
+      .filter((message) => isPositiveId(message.id))
+      .reduce<string | undefined>(
+        (min, message) => (!min || compareId(message.id, min) < 0 ? message.id : min),
+        undefined
+      )
+    const maxId = earliestId
 
     // 调后端 list 接口：私聊 / 群聊接口签名不同，分支调度；返回结果用 useMessagePuller
     // 暴露的 convert 函数转成本地 Message（与 puller 同一份字段映射，避免分歧）
@@ -579,7 +583,7 @@ async function loadEarlier() {
     let pageLength = 0
     if (requestedIsGroup) {
       const list = await apiGetGroupMessageList({
-        groupId: Number(requestedTargetId),
+        groupId: String(requestedTargetId),
         maxId,
         limit: HISTORY_PAGE_SIZE
       })
@@ -701,7 +705,7 @@ function textSnippetOf(message: Message): string {
  * 定位到聊天位置：emit 给 MessagePanel 走 scrollIntoView + 短暂高亮，再关掉自己
  * messageId === 0（本地占位消息）跳过——还没拿到真实 id，DOM 上没法 querySelector
  */
-function locateMessage(messageId: number) {
+function locateMessage(messageId: string) {
   if (!messageId) {
     return
   }

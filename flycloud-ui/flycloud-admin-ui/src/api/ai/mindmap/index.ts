@@ -5,7 +5,7 @@ import request from '@/config/axios' // AI 思维导图 VO
 
 // AI 思维导图 VO
 export interface MindMapVO {
-  id: number // 编号
+  id: string // 编号
   userId: string // 用户编号
   prompt: string // 生成内容提示
   generatedContent: string // 生成的思维导图内容
@@ -54,7 +54,7 @@ export const AiMindMapApi = {
     return await request.get({ url: `/ai/mind-map/page`, params })
   },
   // 删除思维导图
-  deleteMindMap: async (id: number) => {
+  deleteMindMap: async (id: string) => {
     return await request.delete({ url: `/ai/mind-map/delete/` + id })
   }
 }

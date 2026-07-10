@@ -110,7 +110,7 @@ import { erpPriceTableColumnFormatter } from '@/utils'
 const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 const props = defineProps<{
-  customerId: number
+  customerId: string
 }>()
 defineOptions({ name: 'BusinessListModal' })
 
@@ -181,7 +181,7 @@ const submitForm = async () => {
 
 /** 打开商机详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmBusinessDetail', params: { id } })
 }
 </script>

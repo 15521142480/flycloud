@@ -6,7 +6,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
  * 商品属性
  */
 export interface PropertyVO {
-  id?: number
+  id?: string
   /** 名称 */
   name: string
   /** 备注 */
@@ -17,9 +17,9 @@ export interface PropertyVO {
  * 属性值
  */
 export interface PropertyValueVO {
-  id?: number
+  id?: string
   /** 属性项的编号 */
-  propertyId?: number
+  propertyId?: string
   /** 名称 */
   name: string
   /** 备注 */
@@ -39,12 +39,12 @@ export const updateProperty = (data: PropertyVO) => {
 }
 
 // 删除属性项
-export const deleteProperty = (id: number) => {
+export const deleteProperty = (id: string) => {
   return request.delete({ url: `/${MALL_BASE_URL}/admin/product/property/delete?id=${id}` })
 }
 
 // 获得属性项
-export const getProperty = (id: number): Promise<PropertyVO> => {
+export const getProperty = (id: string): Promise<PropertyVO> => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/product/property/get?id=${id}` })
 }
 
@@ -66,7 +66,7 @@ export const getPropertyValuePage = (params: PageParam & any) => {
 }
 
 // 获得属性值
-export const getPropertyValue = (id: number): Promise<PropertyValueVO> => {
+export const getPropertyValue = (id: string): Promise<PropertyValueVO> => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/product/property/value/get?id=${id}` })
 }
 
@@ -81,12 +81,12 @@ export const updatePropertyValue = (data: PropertyValueVO) => {
 }
 
 // 删除属性值
-export const deletePropertyValue = (id: number) => {
+export const deletePropertyValue = (id: string) => {
   return request.delete({ url: `/${MALL_BASE_URL}/admin/product/property/value/delete?id=${id}` })
 }
 
 // 获得属性值精简列表
-export const getPropertyValueSimpleList = (propertyId: number): Promise<PropertyValueVO[]> => {
+export const getPropertyValueSimpleList = (propertyId: string): Promise<PropertyValueVO[]> => {
   return request.get({
     url: `/${MALL_BASE_URL}/admin/product/property/value/simple-list`,
     params: { propertyId }

@@ -4,7 +4,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface OrderVO {
   // ========== 订单基本信息 ==========
-  id?: number | null // 订单编号
+  id?: string | null // 订单编号
   no?: string // 订单流水号
   createTime?: Date | null // 下单时间
   type?: number | null // 订单类型
@@ -20,7 +20,7 @@ export interface OrderVO {
   remark?: string // 商家备注
 
   // ========== 价格 + 支付基本信息 ==========
-  payOrderId?: number | null // 支付订单编号
+  payOrderId?: string | null // 支付订单编号
   payStatus?: boolean // 是否已支付
   payTime?: Date | null // 付款时间
   payChannelCode?: string // 支付渠道
@@ -31,17 +31,17 @@ export interface OrderVO {
   payPrice?: number | null // 应付金额（总）
   // ========== 收件 + 物流基本信息 ==========
   deliveryType?: number | null // 发货方式
-  pickUpStoreId?: number // 自提门店编号
+  pickUpStoreId?: string // 自提门店编号
   pickUpVerifyCode?: string // 自提核销码
-  deliveryTemplateId?: number | null // 配送模板编号
-  logisticsId?: number | null // 发货物流公司编号
+  deliveryTemplateId?: string | null // 配送模板编号
+  logisticsId?: string | null // 发货物流公司编号
   logisticsNo?: string // 发货物流单号
   deliveryTime?: Date | null // 发货时间
   receiveTime?: Date | null // 收货时间
   receiverName?: string // 收件人名称
   receiverMobile?: string // 收件人手机
   receiverPostCode?: number | null // 收件人邮编
-  receiverAreaId?: number | null // 收件人地区编号
+  receiverAreaId?: string | null // 收件人地区编号
   receiverAreaName?: string //收件人地区名字
   receiverDetailAddress?: string // 收件人详细地址
 
@@ -50,7 +50,7 @@ export interface OrderVO {
   refundPrice?: number | null // 退款金额
 
   // ========== 营销基本信息 ==========
-  couponId?: number | null // 优惠劵编号
+  couponId?: string | null // 优惠劵编号
   couponPrice?: number | null // 优惠劵减免金额
   pointPrice?: number | null // 积分抵扣的金额
   vipPrice?: number | null // VIP 减免金额
@@ -80,13 +80,13 @@ export interface OrderLogRespVO {
 
 export interface OrderItemRespVO {
   // ========== 订单项基本信息 ==========
-  id?: number | null // 编号
+  id?: string | null // 编号
   userId?: string | null // 用户编号
-  orderId?: number | null // 订单编号
+  orderId?: string | null // 订单编号
   // ========== 商品基本信息 ==========
-  spuId?: number | null // 商品 SPU 编号
+  spuId?: string | null // 商品 SPU 编号
   spuName?: string //商品 SPU 名称
-  skuId?: number | null // 商品 SKU 编号
+  skuId?: string | null // 商品 SKU 编号
   picUrl?: string //商品图片
   count?: number | null //购买数量
   // ========== 价格 + 支付基本信息 ==========
@@ -104,9 +104,9 @@ export interface OrderItemRespVO {
 }
 
 export interface ProductPropertiesVO {
-  propertyId?: number | null // 属性的编号
+  propertyId?: string | null // 属性的编号
   propertyName?: string // 属性的名称
-  valueId?: number | null //属性值的编号
+  valueId?: string | null //属性值的编号
   valueName?: string // 属性值的名称
 }
 
@@ -139,20 +139,20 @@ export const getOrderSummary = async (params: any) => {
 }
 
 // 查询交易订单详情
-export const getOrder = async (id: number | null) => {
+export const getOrder = async (id: string | null) => {
   return await request.get<OrderVO>({ url: `/${MALL_BASE_URL}/admin/trade/order/get-detail?id=` + id })
 }
 
 // 查询交易订单物流详情
-export const getExpressTrackList = async (id: number | null) => {
+export const getExpressTrackList = async (id: string | null) => {
   return await request.get<Array<{ time?: Date | string; content?: string }>>({
     url: `/${MALL_BASE_URL}/admin/trade/order/get-express-track-list?id=` + id
   })
 }
 
 export interface DeliveryVO {
-  id?: number // 订单编号
-  logisticsId: number | null // 物流公司编号
+  id?: string // 订单编号
+  logisticsId: string | null // 物流公司编号
   logisticsNo: string // 物流编号
 }
 
@@ -177,7 +177,7 @@ export const updateOrderAddress = async (data: any) => {
 }
 
 // 订单核销
-export const pickUpOrder = async (id: number) => {
+export const pickUpOrder = async (id: string) => {
   return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/order/pick-up-by-id?id=${id}` })
 }
 

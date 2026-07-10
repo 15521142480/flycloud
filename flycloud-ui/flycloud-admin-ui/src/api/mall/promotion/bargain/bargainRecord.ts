@@ -3,15 +3,15 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BargainRecordVO {
-  id: number
-  activityId: number
+  id: string
+  activityId: string
   userId: string
-  spuId: number
-  skuId: number
+  spuId: string
+  skuId: string
   bargainFirstPrice: number
   bargainPrice: number
   status: number
-  orderId: number
+  orderId: string
   endTime: Date
 }
 

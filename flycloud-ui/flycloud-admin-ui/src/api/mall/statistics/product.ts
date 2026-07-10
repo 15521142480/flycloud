@@ -4,9 +4,9 @@ import { DataComparisonRespVO } from '@/api/mall/statistics/common'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface ProductStatisticsVO {
-  id: number
+  id: string
   day: string
-  spuId: number
+  spuId: string
   spuName: string
   spuPicUrl: string
   browseCount: number

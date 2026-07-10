@@ -21,7 +21,7 @@ export interface ImNoConversationNotification {
 
 // 私聊消息 DTO（对齐后端 ImPrivateMessageNotification）
 export interface ImPrivateMessageNotification {
-  id: number // 消息编号
+  id: string // 消息编号
   clientMessageId: string // 客户端消息编号
   senderId: string // 发送人编号
   receiverId: string // 接收人编号
@@ -34,10 +34,10 @@ export interface ImPrivateMessageNotification {
 
 // 群聊消息 DTO（对齐后端 ImGroupMessageNotification）
 export interface ImGroupMessageNotification {
-  id: number // 消息编号
+  id: string // 消息编号
   clientMessageId: string // 客户端消息编号
   senderId: string // 发送人编号
-  groupId: number // 群编号
+  groupId: string // 群编号
   type: number // 内容类型
   content: string // 消息内容
   status: number // 消息状态
@@ -46,27 +46,27 @@ export interface ImGroupMessageNotification {
   receiverUserIds?: string[] // 群定向接收用户列表
   readCount?: number // 群回执已读人数（type = RECEIPT 时使用）
   receiptStatus?: number // 群回执状态（type = RECEIPT 时使用）
-  readId?: number // 已读位置
+  readId?: string // 已读位置
 }
 
 // 消息已读同步通知（对齐后端 ImMessageReadNotification）
 export interface ImMessageReadNotification {
-  id: number // 已读位置
+  id: string // 已读位置
   type: number // 内容类型
   senderId?: string // 发送人编号
   receiverId?: string // 私聊接收人编号
-  groupId?: number // 群编号
-  channelId?: number // 频道编号
-  readId?: number // 已读位置
+  groupId?: string // 群编号
+  channelId?: string // 频道编号
+  readId?: string // 已读位置
 }
 
 // 消息回执通知（对齐后端 ImMessageReceiptNotification）
 export interface ImMessageReceiptNotification {
-  id: number // 消息编号
+  id: string // 消息编号
   type: number // 内容类型
   senderId?: string // 已读方用户编号
   receiverId?: string // 私聊接收人编号
-  groupId?: number // 群编号
+  groupId?: string // 群编号
   readCount?: number // 群回执已读人数
   receiptStatus?: number // 群回执状态
 }
@@ -75,7 +75,7 @@ export interface ImMessageReceiptNotification {
 
 /** 引用消息 */
 export interface QuoteMessage {
-  messageId: number // 引用消息编号
+  messageId: string // 引用消息编号
   senderId: string // 引用消息发送人编号
   type: number // 引用内容类型
   content: string // 引用消息内容
@@ -84,7 +84,7 @@ export interface QuoteMessage {
 // 会话数据结构（前端自有结构，后端无对应实体）
 export interface Conversation {
   // ========== 核心标识 ==========
-  targetId: number | string // 会话目标编号：私聊=对方 userId；群聊=groupId
+  targetId: string // 会话目标编号：私聊=对方 userId；群聊=groupId
   type: number // 会话类型，对齐 ImConversationType
 
   // ========== 展示字段 ==========
@@ -97,7 +97,7 @@ export interface Conversation {
   lastSendTime: number // 最后一条消息时间，用于排序
   lastSenderId?: string // 发送人编号
   lastMessageType?: number // 内容类型，对齐 ImContentType
-  lastMessageId?: number // 最后一条服务端消息编号
+  lastMessageId?: string // 最后一条服务端消息编号
   lastClientMessageId?: string // 最后一条客户端消息编号
   lastMessageStatus?: number // 最后一条消息状态
   lastReceiptStatus?: number // 最后一条群回执状态
@@ -110,7 +110,7 @@ export interface Conversation {
   silent?: boolean // 是否免打扰（不展示未读徽标 + 不响提示音）
   atMe?: boolean // 群聊：是否有人 @我
   atAll?: boolean // 群聊：是否有人 @全体成员
-  reportedReadMessageId?: number // 已上报到服务端的最大已读消息编号
+  reportedReadMessageId?: string // 已上报到服务端的最大已读消息编号
   draft?: {
     html: string // 输入框 HTML
     plain: string // 输入框纯文本
@@ -121,7 +121,7 @@ export interface Conversation {
 // 消息数据结构
 export interface Message {
   // ========== 后端字段（对齐 ImPrivateMessageNotification / ImGroupMessageNotification） ==========
-  id?: number // 服务端消息编号，发送中为空
+  id?: string // 服务端消息编号，发送中为空
   clientMessageId: string // 客户端消息编号，本地生成用于合并去重
   type: number // 内容类型，对齐 ImContentType
   content: string // 消息内容，JSON 字符串
@@ -132,12 +132,12 @@ export interface Message {
   receiverUserIds?: string[] // 群定向接收用户列表
   receiptStatus?: number // 回执状态，对齐 ImMessageReceiptStatus（私聊 / 群 / 频道通用）
   readCount?: number // 群回执已读人数（仅群消息）
-  materialId?: number // 关联频道素材编号（仅频道消息 type=MATERIAL）
+  materialId?: string // 关联频道素材编号（仅频道消息 type=MATERIAL）
 
   // ========== 前端扩展字段 ==========
   // 发送人显示名一律渲染时实时算：utils/user.getSenderDisplayName / getSenderRealNickname
   // 不在 Message 上存任何名字快照，避免备注 / 群昵称变更后历史消息显示陈旧
-  targetId: number | string // 会话目标编号（私聊=对端 userId / 群聊=groupId），与 Conversation.targetId 一致
+  targetId: string // 会话目标编号（私聊=对端 userId / 群聊=groupId），与 Conversation.targetId 一致
   selfSend: boolean // 是否自己发送（前端按 senderId 计算）
   uploadProgress?: number // 媒体消息上传进度（0-100）；status=SENDING 期间持续更新；ack 后置 undefined
   // 媒体消息内存中保留的原始 File；下划线前缀表示不进 JSON / 不持久化（IDB 恢复后必为 undefined）
@@ -155,8 +155,8 @@ export interface ConversationDO extends Conversation {
 
 export interface ConversationRead {
   conversationType: number // 会话类型，对齐 ImConversationType
-  targetId: number | string // 会话目标编号
-  messageId: number // 当前用户已读到的最大消息编号
+  targetId: string // 会话目标编号
+  messageId: string // 当前用户已读到的最大消息编号
   updateTime?: number // 更新时间
 }
 
@@ -184,7 +184,7 @@ export interface SettingDO<T = unknown> {
 // 群实体（前端内部结构）
 export interface Group {
   // ========== 后端字段（对齐 ImGroupRespVO） ==========
-  id: number // 群编号
+  id: string // 群编号
   name: string // 群名称
   avatar?: string // 群头像
   notice?: string // 群公告
@@ -221,8 +221,8 @@ export type GroupDO = Omit<
 // 群成员实体（前端内部结构）
 export interface GroupMember {
   // ========== 后端字段（对齐 ImGroupMemberRespVO） ==========
-  id?: number // 群成员关系记录编号
-  groupId: number // 群编号
+  id?: string // 群成员关系记录编号
+  groupId: string // 群编号
   userId: string // 用户编号
   avatar?: string // 头像
   nickname: string // 用户昵称
@@ -243,7 +243,7 @@ export type GroupMemberDO = GroupMember
 // 好友实体（前端内部结构）
 export interface Friend {
   // ========== 后端字段（对齐 ImFriendRespVO） ==========
-  id?: number // 好友关系记录编号（本地乐观新增时可能暂缺）
+  id?: string // 好友关系记录编号（本地乐观新增时可能暂缺）
   friendUserId: string // 好友用户编号（与 Conversation.targetId 对齐）
   nickname: string // 好友昵称（对方真实昵称，永远不被备注覆盖；UI 显示走 displayName || nickname）
   nicknamePinyin?: string // 昵称的拼音（后端用 Pinyin4j 算好回填，小写无空格）
@@ -267,7 +267,7 @@ export type FriendDO = Friend
  */
 export interface FriendRequest {
   // ========== 后端字段（对齐 ImFriendRequestRespVO） ==========
-  id: number // 申请编号
+  id: string // 申请编号
   fromUserId: string // 发起方用户编号
   toUserId: string // 接收方用户编号
   handleResult: number // 处理结果：0=未处理；1=同意；2=拒绝
@@ -301,7 +301,7 @@ export interface User {
   nickname?: string
   avatar?: string
   sex?: number
-  deptId?: number
+  deptId?: string
   deptName?: string
 }
 
@@ -328,7 +328,7 @@ export interface FriendLite {
  * - showImageThumb：高频列表用缩略图，避免拉原图阻塞滚动
  */
 export interface GroupLite {
-  id: number
+  id: string
   name?: string
   showGroupName?: string
   showImage?: string

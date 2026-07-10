@@ -87,16 +87,16 @@ const ruleConfig: RuleConfig[] = [
 ]
 const spuList = ref<DiscountActivityApi.SpuExtension[]>([]) // 选择的 spu
 const spuPropertyList = ref<SpuProperty<DiscountActivityApi.SpuExtension>[]>([])
-const spuIds = ref<number[]>([])
-const selectSpu = (spuId: number, skuIds: number[]) => {
+const spuIds = ref<string[]>([])
+const selectSpu = (spuId: string, skuIds: string[]) => {
   getSpuDetails(spuId, skuIds)
 }
 /**
  * 获取 SPU 详情
  */
 const getSpuDetails = async (
-  spuId: number,
-  skuIds: number[] | undefined,
+  spuId: string,
+  skuIds: string[] | undefined,
   products?: DiscountActivityApi.DiscountProductVO[],
   type?: string
 ) => {
@@ -147,7 +147,7 @@ const getSpuDetails = async (
 // ================= end =================
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -252,7 +252,7 @@ const resetForm = async () => {
 /**
  * 删除 SPU
  */
-const deleteSpu = (spuId: number) => {
+const deleteSpu = (spuId: string) => {
   spuIds.value.splice(
     spuIds.value.findIndex((item) => item == spuId),
     1

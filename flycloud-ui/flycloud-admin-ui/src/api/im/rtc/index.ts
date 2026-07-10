@@ -6,7 +6,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 export interface ImRtcCallCreateReqVO {
   conversationType: number
   mediaType: number
-  groupId?: number
+  groupId?: string
   inviteeIds: string[] // 被邀请的用户编号集合；私聊必传 1 个对端，群聊必传至少 1 人
 }
 
@@ -26,7 +26,7 @@ export interface ImRtcCallRespVO {
   status: number
   endReason?: number // 结束原因；仅 status=ENDED 时有值
   inviterId: string
-  groupId?: number
+  groupId?: string
   inviteeIds?: string[]
   joinedUserIds?: string[]
 }
@@ -34,7 +34,7 @@ export interface ImRtcCallRespVO {
 // 群活跃通话查询响应；不含 token
 export interface ImRtcGroupCallRespVO {
   room: string
-  groupId: number
+  groupId: string
   mediaType: number
   inviterId: string
   joinedUserIds?: string[]
@@ -85,7 +85,7 @@ export const noAnswerCallCheck = (room: string) => {
 }
 
 // 查询当前进行中的通话；目前仅群聊场景（胶囊条），返回 null 表示无活跃通话
-export const getActiveCall = (groupId: number) => {
+export const getActiveCall = (groupId: string) => {
   return request.get<ImRtcGroupCallRespVO | null>({
     url: `/${SYS_BASE_URL}/im/rtc/get-active-call`,
     params: { groupId }

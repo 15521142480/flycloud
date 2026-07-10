@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BargainHelpVO {
-  id: number
+  id: string
   record: number
   userId: string
   reducePrice: number

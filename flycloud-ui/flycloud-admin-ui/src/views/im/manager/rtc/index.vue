@@ -190,7 +190,7 @@ const list = ref<ManagerRtcCallApi.ImManagerRtcCallVO[]>([])
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  inviterUserId: undefined as number | undefined,
+  inviterUserId: undefined as string | undefined,
   conversationType: undefined as number | undefined,
   mediaType: undefined as number | undefined,
   status: undefined as number | undefined,

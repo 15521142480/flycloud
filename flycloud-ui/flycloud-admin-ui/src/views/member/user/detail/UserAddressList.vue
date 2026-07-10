@@ -26,7 +26,7 @@ import * as AddressApi from '@/api/member/address'
 
 const { userId }: { userId: string } = defineProps({
   userId: {
-    type: Number,
+    type: String,
     required: true
   }
 })

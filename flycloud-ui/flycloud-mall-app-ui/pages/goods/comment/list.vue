@@ -35,7 +35,7 @@
   import commentItem from '../components/detail/comment-item.vue';
 
   const state = reactive({
-    id: 0, // 商品 SPU 编号
+    id: '0', // 商品 SPU 编号
     type: [
       { type: 0, name: '全部' },
       { type: 1, name: '好评' },

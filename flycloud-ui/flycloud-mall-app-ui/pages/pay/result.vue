@@ -73,7 +73,7 @@
   import { WxaSubscribeTemplate } from '@/sheep/helper/const';
 
   const state = reactive({
-    id: 0, // 支付单号
+    id: '0', // 支付单号
     orderType: 'goods', // 订单类型
     result: 'unpaid', // 支付状态
     orderInfo: {}, // 支付订单信息

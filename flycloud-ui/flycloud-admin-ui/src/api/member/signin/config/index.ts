@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface SignInConfigVO {
-  id?: number
+  id?: string
   day?: number
   point?: number
   experience?: number
@@ -16,7 +16,7 @@ export const getSignInConfigList = async () => {
 }
 
 // 查询积分签到规则详情
-export const getSignInConfig = async (id: number) => {
+export const getSignInConfig = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/admin/member/sign-in/config/get?id=` + id })
 }
 
@@ -31,7 +31,7 @@ export const updateSignInConfig = async (data: SignInConfigVO) => {
 }
 
 // 删除积分签到规则
-export const deleteSignInConfig = async (id: number) => {
+export const deleteSignInConfig = async (id: string) => {
   return await request.delete({
     url: `/${SYS_BASE_URL}/admin/member/sign-in/config/delete?id=` + id
   })

@@ -242,14 +242,14 @@ const queryParams = reactive({
   loginDate: [],
   createTime: [],
   tagIds: [],
-  levelId: undefined as number | undefined,
-  groupId: undefined as number | undefined
+  levelId: undefined as string | undefined,
+  groupId: undefined as string | undefined
 })
 const queryFormRef = ref() // 搜索的表单
 const updateLevelFormRef = ref() // 修改会员等级表单
 const updatePointFormRef = ref() // 修改会员积分表单
 const UpdateBalanceFormRef = ref() // 修改用户余额表单
-const selectedIds = ref<number[]>([]) // 表格的选中 ID 数组
+const selectedIds = ref<string[]>([]) // 表格的选中 ID 数组
 
 /** 查询列表 */
 const getList = async () => {
@@ -277,13 +277,13 @@ const resetQuery = () => {
 
 /** 打开会员详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'MemberUserDetail', params: { id } })
 }
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 

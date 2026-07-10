@@ -112,7 +112,7 @@ const decryptSpm = async (spm) => {
   let shareParamsArray = spm.split('.');
   let shareParams = {
     spm,
-    shareId: 0,
+    shareId: '0',
     page: '',
     query: {},
     platform: '',

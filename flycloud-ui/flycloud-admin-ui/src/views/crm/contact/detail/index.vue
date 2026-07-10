@@ -77,7 +77,7 @@ const getContact = async () => {
 
 /** 编辑 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
@@ -89,7 +89,7 @@ const transfer = () => {
 
 /** 获取操作日志 */
 const logList = ref<OperateLogVO[]>([]) // 操作日志列表
-const getOperateLog = async (contactId: number) => {
+const getOperateLog = async (contactId: string) => {
   if (!contactId) {
     return
   }

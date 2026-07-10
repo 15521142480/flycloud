@@ -166,6 +166,25 @@ export enum DICT_TYPE {
   MP_AUTO_REPLY_REQUEST_MATCH = 'mp_auto_reply_request_match', // 自动回复请求匹配类型
   MP_MESSAGE_TYPE = 'mp_message_type', // 消息类型
 
+  // ========== IM 即时通讯模块 ==========
+  IM_CHANNEL_MATERIAL_TYPE = 'im_channel_material_type',
+  IM_CONTENT_TYPE = 'im_content_type',
+  IM_FRIEND_ADD_SOURCE = 'im_friend_add_source',
+  IM_FRIEND_REQUEST_HANDLE_RESULT = 'im_friend_request_handle_result',
+  IM_FRIEND_STATUS = 'im_friend_status',
+  IM_GROUP_ADD_SOURCE = 'im_group_add_source',
+  IM_GROUP_MEMBER_ROLE = 'im_group_member_role',
+  IM_GROUP_REQUEST_HANDLE_RESULT = 'im_group_request_handle_result',
+  IM_GROUP_STATUS = 'im_group_status',
+  IM_MESSAGE_RECEIPT_STATUS = 'im_message_receipt_status',
+  IM_MESSAGE_STATUS = 'im_message_status',
+  IM_RTC_CALL_CONVERSATION_TYPE = 'im_rtc_call_conversation_type',
+  IM_RTC_CALL_END_REASON = 'im_rtc_call_end_reason',
+  IM_RTC_CALL_MEDIA_TYPE = 'im_rtc_call_media_type',
+  IM_RTC_CALL_STATUS = 'im_rtc_call_status',
+  IM_RTC_PARTICIPANT_ROLE = 'im_rtc_participant_role',
+  IM_RTC_PARTICIPANT_STATUS = 'im_rtc_participant_status',
+
   // ========== Member 会员模块 ==========
   MEMBER_POINT_BIZ_TYPE = 'member_point_biz_type', // 积分的业务类型
   MEMBER_EXPERIENCE_BIZ_TYPE = 'member_experience_biz_type', // 会员经验业务类型

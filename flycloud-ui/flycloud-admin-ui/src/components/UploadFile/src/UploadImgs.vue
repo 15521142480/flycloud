@@ -82,7 +82,7 @@ type FileTypes =
   | 'image/x-icon'
 
 const props = defineProps({
-  modelValue: propTypes.oneOfType<string | string[]>([String, Array<String>]).isRequired,
+  modelValue: propTypes.oneOfType<string[]>([String, Array<String>]).isRequired,
   drag: propTypes.bool.def(true), // 是否支持拖拽上传 ==> 非必传（默认为 true）
   disabled: propTypes.bool.def(false), // 是否禁用上传组件 ==> 非必传（默认为 false）
   limit: propTypes.number.def(5), // 最大图片上传数 ==> 非必传（默认为 5张）
@@ -174,7 +174,7 @@ const uploadSuccess: UploadProps['onSuccess'] = (res: any): void => {
 // 监听模型绑定值变动
 watch(
   () => props.modelValue,
-  (val: string | string[]) => {
+  (val: string[]) => {
     if (!val) {
       fileList.value = [] // fix：处理掉缓存，表单重置后上传组件的内容并没有重置
       return

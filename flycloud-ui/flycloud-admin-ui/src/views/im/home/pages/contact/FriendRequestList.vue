@@ -87,7 +87,7 @@ defineOptions({ name: 'ImContactFriendRequestList' })
 
 const props = defineProps<{
   requests: FriendRequest[]
-  activeId?: number
+  activeId?: string
 }>()
 
 const emit = defineEmits<{

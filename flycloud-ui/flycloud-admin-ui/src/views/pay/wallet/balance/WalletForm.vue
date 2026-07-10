@@ -12,7 +12,7 @@ const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题
 const walletId = ref(0)
 /** 打开弹窗 */
-const open = async (theWalletId: number) => {
+const open = async (theWalletId: string) => {
   dialogVisible.value = true
   dialogTitle.value = '钱包余额明细'
   walletId.value = theWalletId

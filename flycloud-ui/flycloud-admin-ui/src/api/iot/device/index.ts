@@ -2,14 +2,14 @@ import request from '@/config/axios'
 
 // IoT 设备 VO
 export interface DeviceVO {
-  id: number // 设备 ID，主键，自增
+  id: string // 设备 ID，主键，自增
   deviceKey: string // 设备唯一标识符
   deviceName: string // 设备名称
-  productId: number // 产品编号
+  productId: string // 产品编号
   productKey: string // 产品标识
   deviceType: number // 设备类型
   name: string // 设备备注名称
-  gatewayId: number // 网关设备 ID
+  gatewayId: string // 网关设备 ID
   status: number // 设备状态
   statusLastUpdateTime: Date // 设备状态最后更新时间
   lastOnlineTime: Date // 最后上线时间
@@ -25,13 +25,13 @@ export interface DeviceVO {
   authType: string // 认证类型
   latitude: number // 设备位置的纬度
   longitude: number // 设备位置的经度
-  areaId: number // 地区编码
+  areaId: string // 地区编码
   address: string // 设备详细地址
   serialNumber: string // 设备序列号
 }
 
 export interface DeviceUpdateStatusVO {
-  id: number // 设备 ID，主键，自增
+  id: string // 设备 ID，主键，自增
   status: number // 设备状态
 }
 
@@ -43,7 +43,7 @@ export const DeviceApi = {
   },
 
   // 查询设备详情
-  getDevice: async (id: number) => {
+  getDevice: async (id: string) => {
     return await request.get({ url: `/iot/device/get/` + id })
   },
 
@@ -63,12 +63,12 @@ export const DeviceApi = {
   },
 
   // 删除设备
-  deleteDevice: async (id: number) => {
+  deleteDevice: async (id: string) => {
     return await request.delete({ url: `/iot/device/delete/` + id })
   },
 
   // 获取设备数量
-  getDeviceCount: async (productId: number) => {
+  getDeviceCount: async (productId: string) => {
     return await request.get({ url: `/iot/device/count?productId=` + productId })
   }
 }

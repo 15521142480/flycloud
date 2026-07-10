@@ -46,21 +46,21 @@ export const useGroupRequestStore = defineStore('imGroupRequestStore', {
     /**
      * 各群下未处理申请数的 Map；O(N) 扫一次缓存供 ConversationItem 等 N 处复用，避免 N×M 重复 filter
      */
-    getUnhandledGroupRequestCountMap(state): Map<number, number> {
-      const map = new Map<number, number>()
+    getUnhandledGroupRequestCountMap(state): Map<string, number> {
+      const map = new Map<string, number>()
       for (const request of state.unhandledList) {
         map.set(request.groupId, (map.get(request.groupId) ?? 0) + 1)
       }
       return map
     },
     /** 指定群下的未处理申请数 */
-    getUnhandledGroupRequestCount(): (groupId: number) => number {
-      return (groupId: number) => this.getUnhandledGroupRequestCountMap.get(groupId) ?? 0
+    getUnhandledGroupRequestCount(): (groupId: string) => number {
+      return (groupId: string) => this.getUnhandledGroupRequestCountMap.get(groupId) ?? 0
     },
     /** 指定群下的未处理申请列表 */
     getUnhandledGroupRequestListByGroupId:
       (state) =>
-      (groupId: number): ImGroupRequestRespVO[] =>
+      (groupId: string): ImGroupRequestRespVO[] =>
         state.unhandledList.filter((r) => r.groupId === groupId)
   },
 
@@ -74,7 +74,7 @@ export const useGroupRequestStore = defineStore('imGroupRequestStore', {
         }
         this.unhandledList = cached
           .filter((request) => request.handleResult === ImGroupRequestHandleResult.UNHANDLED)
-          .sort((requestA, requestB) => requestB.id - requestA.id)
+          .sort((requestA, requestB) => requestB.id.localeCompare(requestA.id))
         return true
       } catch (e) {
         console.warn('[IM groupRequestStore] 本地加群申请缓存读取失败', e)
@@ -142,7 +142,7 @@ export const useGroupRequestStore = defineStore('imGroupRequestStore', {
      *
      * 同一对 group_id, user_id 复用记录时 requestId 不变但 applyContent / inviterUserId 会刷新，所以无条件 fetch + 排到头部
      */
-    async addGroupRequestById(requestId: number) {
+    async addGroupRequestById(requestId: string) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       const request = await apiGetMyGroupRequest(requestId)
@@ -205,7 +205,7 @@ export const useGroupRequestStore = defineStore('imGroupRequestStore', {
     },
 
     /** WS 收到 1505 / 1506 或本端处理完一条：按 requestId 从列表移除 */
-    removeGroupRequestById(requestId: number) {
+    removeGroupRequestById(requestId: string) {
       this.unhandledList = this.unhandledList.filter((r) => r.id !== requestId)
       void getDb()
         .delete('groupRequests', requestId)
@@ -213,19 +213,19 @@ export const useGroupRequestStore = defineStore('imGroupRequestStore', {
     },
 
     /** 删除单条加群申请 */
-    async removeGroupRequestByIdForPull(requestId: number): Promise<void> {
+    async removeGroupRequestByIdForPull(requestId: string): Promise<void> {
       this.unhandledList = this.unhandledList.filter((r) => r.id !== requestId)
       await getDb().delete('groupRequests', requestId)
     },
 
     /** 同意申请；本端处理后立即从列表移除，避免被反复点击 */
-    async agreeGroupRequest(requestId: number) {
+    async agreeGroupRequest(requestId: string) {
       await apiAgreeGroupRequest(requestId)
       this.removeGroupRequestById(requestId)
     },
 
     /** 拒绝申请 */
-    async refuseGroupRequest(requestId: number, handleContent?: string) {
+    async refuseGroupRequest(requestId: string, handleContent?: string) {
       await apiRefuseGroupRequest(requestId, handleContent)
       this.removeGroupRequestById(requestId)
     },

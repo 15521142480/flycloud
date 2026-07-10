@@ -5,8 +5,8 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 // 积分商城活动 VO
 export interface PointActivityVO {
-  id: number // 积分商城活动编号
-  spuId: number // 积分商城活动商品
+  id: string // 积分商城活动编号
+  spuId: string // 积分商城活动商品
   status: number // 活动状态
   stock: number // 积分商城活动库存
   totalStock: number // 积分商城活动总库存
@@ -27,10 +27,10 @@ export interface PointActivityVO {
 
 // 秒杀活动所需属性
 export interface PointProductVO {
-  id?: number // 积分商城商品编号
-  activityId?: number // 积分商城活动 id
-  spuId?: number // 商品 SPU 编号
-  skuId: number // 商品 SKU 编号
+  id?: string // 积分商城商品编号
+  activityId?: string // 积分商城活动 id
+  spuId?: string // 商品 SPU 编号
+  skuId: string // 商品 SKU 编号
   count: number // 可兑换数量
   point: number // 兑换积分
   price: number // 兑换金额，单位：分
@@ -62,12 +62,12 @@ export const PointActivityApi = {
   },
 
   // 查询积分商城活动详情
-  getPointActivity: async (id: number) => {
+  getPointActivity: async (id: string) => {
     return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/point-activity/get?id=` + id })
   },
 
   // 查询积分商城活动列表，基于活动编号数组
-  getPointActivityListByIds: async (ids: number[]) => {
+  getPointActivityListByIds: async (ids: string[]) => {
     return request.get({ url: `/${MALL_BASE_URL}/admin/promotion/point-activity/list-by-ids?ids=${ids}` })
   },
 
@@ -82,14 +82,14 @@ export const PointActivityApi = {
   },
 
   // 删除积分商城活动
-  deletePointActivity: async (id: number) => {
+  deletePointActivity: async (id: string) => {
     return await request.delete({
       url: `/${MALL_BASE_URL}/admin/promotion/point-activity/delete?id=` + id
     })
   },
 
   // 关闭秒杀活动
-  closePointActivity: async (id: number) => {
+  closePointActivity: async (id: string) => {
     return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/point-activity/close?id=` + id })
   }
 }

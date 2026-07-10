@@ -342,12 +342,12 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (ids: number[]) => {
+const handleDelete = async (ids: string[]) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -361,7 +361,7 @@ const handleDelete = async (ids: number[]) => {
 }
 
 /** 审批/反审批操作 */
-const handleUpdateStatus = async (id: number, status: number) => {
+const handleUpdateStatus = async (id: string, status: number) => {
   try {
     // 审批的二次确认
     await message.confirm(

@@ -18,7 +18,7 @@ export interface CouponCardProperty {
   // 间距
   space: number
   // 优惠券编号列表
-  couponIds: number[]
+  couponIds: string[]
   // 组件样式
   style: ComponentStyle
 }

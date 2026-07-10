@@ -43,7 +43,7 @@ defineOptions({ name: 'ImContactGroupList' })
 const props = defineProps<{
   groups: GroupLite[]
   keyword: string
-  activeId?: number
+  activeId?: string
 }>()
 
 const emit = defineEmits<{ select: [group: GroupLite] }>()

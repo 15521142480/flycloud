@@ -297,10 +297,10 @@ const handlePickUp = async () => {
 /** 获得详情 */
 const { params } = useRoute() // 查询参数
 const props = defineProps({
-  id: propTypes.number.def(undefined), // 订单ID
+  id: propTypes.string.def(undefined), // 订单ID
   showPickUp: propTypes.bool.def(true) // 显示核销按钮
 })
-const id = Number(params.id || props.id)
+const id = String(params.id || props.id)
 const getDetail = async () => {
   if (id) {
     const res = (await TradeOrderApi.getOrder(id)) as TradeOrderApi.OrderVO

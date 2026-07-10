@@ -114,7 +114,7 @@ const queryFormRef = ref() // 搜索的表单
 let userIds: string[] = []
 
 /** 打开弹窗 */
-const open = (ids: number[]) => {
+const open = (ids: string[]) => {
   userIds = ids
   // 打开时重置查询，防止发送列表剩余数量未更新的问题
   resetQuery()
@@ -148,7 +148,7 @@ const resetQuery = () => {
 }
 
 /** 发送操作 **/
-const handleSendCoupon = async (templateId: number) => {
+const handleSendCoupon = async (templateId: string) => {
   try {
     sendLoading.value = true
     await CouponApi.sendCoupon({ templateId, userIds })

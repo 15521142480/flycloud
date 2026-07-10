@@ -4,11 +4,11 @@ import type { UserVO } from '@/api/system/user'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface DeliveryPickUpStoreVO {
-  id?: number
+  id?: string
   name: string
   introduction: string
   phone: string
-  areaId?: number
+  areaId?: string
   detailAddress: string
   logo: string
   openingTime?: string
@@ -21,7 +21,7 @@ export interface DeliveryPickUpStoreVO {
 }
 
 export interface DeliveryPickUpStoreBindReqVO {
-  id: number
+  id: string
   verifyUserIds: string[]
 }
 
@@ -34,7 +34,7 @@ export const getDeliveryPickUpStorePage = async (params: any) => {
 }
 
 // 查询自提门店详情
-export const getDeliveryPickUpStore = async (id: number) => {
+export const getDeliveryPickUpStore = async (id: string) => {
   return await request.get<DeliveryPickUpStoreVO>({
     url: `/${MALL_BASE_URL}/admin/trade/delivery/pick-up-store/get?id=` + id
   })
@@ -58,7 +58,7 @@ export const updateDeliveryPickUpStore = async (data: DeliveryPickUpStoreVO) => 
 }
 
 // 删除自提门店
-export const deleteDeliveryPickUpStore = async (id: number) => {
+export const deleteDeliveryPickUpStore = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/trade/delivery/pick-up-store/delete?id=` + id
   })

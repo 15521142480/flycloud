@@ -134,7 +134,7 @@ const deptTree = ref() // 树形结构
 const userList = ref<UserApi.UserVO[]>([]) // 用户列表
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -201,7 +201,7 @@ const resetForm = () => {
 const getTree = async () => {
   deptTree.value = []
   const data = await DeptApi.getSimpleDeptList()
-  let dept: Tree = { id: 0, name: t('auto.views.system.dept.DeptForm.kc01998c0'), children: [] }
+  let dept: Tree = { id: '0', name: t('auto.views.system.dept.DeptForm.kc01998c0'), children: [] }
   dept.children = handleTree(data)
   deptTree.value.push(dept)
 }

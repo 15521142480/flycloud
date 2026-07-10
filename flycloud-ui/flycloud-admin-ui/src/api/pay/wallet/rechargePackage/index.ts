@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface WalletRechargePackageVO {
-  id: number
+  id: string
   name: string
   payPrice: number
   bonusPrice: number
@@ -16,7 +16,7 @@ export const getWalletRechargePackagePage = async (params) => {
 }
 
 // 查询套餐充值详情
-export const getWalletRechargePackage = async (id: number) => {
+export const getWalletRechargePackage = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/admin/pay/wallet-recharge-package/get?id=` + id })
 }
 
@@ -31,7 +31,7 @@ export const updateWalletRechargePackage = async (data: WalletRechargePackageVO)
 }
 
 // 删除套餐充值
-export const deleteWalletRechargePackage = async (id: number) => {
+export const deleteWalletRechargePackage = async (id: string) => {
   return await request.delete({
     url: `/${SYS_BASE_URL}/admin/pay/wallet-recharge-package/delete?id=` + id
   })

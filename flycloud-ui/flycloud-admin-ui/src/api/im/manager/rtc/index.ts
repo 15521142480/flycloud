@@ -3,13 +3,13 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerRtcCallVO {
-  id: number
+  id: string
   room: string
   conversationType: number
   mediaType: number
   inviterUserId: string
   inviterNickname?: string
-  groupId?: number
+  groupId?: string
   groupName?: string
   status: number
   endReason?: number
@@ -20,8 +20,8 @@ export interface ImManagerRtcCallVO {
 }
 
 export interface ImManagerRtcParticipantVO {
-  id: number
-  callId: number
+  id: string
+  callId: string
   userId: string
   userNickname?: string
   role: number
@@ -37,6 +37,6 @@ export const getManagerRtcCallPage = (params: PageParam) => {
 }
 
 // 获得通话参与者列表
-export const getManagerRtcCallParticipantList = (id: number) => {
+export const getManagerRtcCallParticipantList = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/rtc/participant-list`, params: { id } })
 }

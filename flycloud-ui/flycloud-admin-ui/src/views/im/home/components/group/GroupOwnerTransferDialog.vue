@@ -55,7 +55,7 @@ const message = useMessage()
 
 const visible = ref(false)
 const submitting = ref(false)
-const groupId = ref(0)
+const groupId = ref('')
 const members = ref<GroupMemberLite[]>([])
 const hideIds = ref<string[]>([])
 const selectedIds = ref<string[]>([])
@@ -63,7 +63,7 @@ const selectedIds = ref<string[]>([])
 defineExpose({
   /** 打开转让群主弹窗：reset → 灌参 → visible=true */
   open(opts: {
-    groupId: number
+    groupId: string
     members: GroupMemberLite[]
     /** 隐藏 userId：当前用户（不能转给自己） */
     hideIds?: string[]

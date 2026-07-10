@@ -203,7 +203,7 @@ const registerData = reactive({
   registerForm: {
     tenantName: import.meta.env.VITE_APP_DEFAULT_LOGIN_TENANT || '',
     name: '',
-    tenantId: 0,
+    tenantId: '0',
     username: '',
     password: '',
     confirmPassword: '',

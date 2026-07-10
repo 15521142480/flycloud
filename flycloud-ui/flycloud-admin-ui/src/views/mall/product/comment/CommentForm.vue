@@ -67,12 +67,12 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined as number | undefined,
-  userId: undefined as number | undefined,
+  id: undefined as string | undefined,
+  userId: undefined as string | undefined,
   userNickname: undefined as string | undefined,
   userAvatar: undefined as string | undefined,
-  spuId: 0,
-  skuId: undefined as number | undefined,
+  spuId: '0',
+  skuId: undefined as string | undefined,
   descriptionScores: 5,
   benefitScores: 5,
   content: undefined as string | undefined,
@@ -91,7 +91,7 @@ const formRef = ref() // 表单 Ref
 const skuData = ref<ProductSpuApi.Sku>()
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -137,7 +137,7 @@ const resetForm = () => {
     userId: undefined,
     userNickname: undefined,
     userAvatar: undefined,
-    spuId: 0,
+    spuId: '0',
     skuId: undefined,
     descriptionScores: 5,
     benefitScores: 5,

@@ -31,7 +31,7 @@ const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的显示
 const formLoading = ref(false) // 提交的加载中
-const formData = reactive({ id: 0, groupName: '', reason: '' }) // 封禁表单
+const formData = reactive({ id: '0', groupName: '', reason: '' }) // 封禁表单
 const formRef = ref() // 表单 Ref
 const formRules = {
   reason: [{ required: true, whitespace: true, message: '封禁原因不能为空', trigger: 'blur' }]

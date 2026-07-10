@@ -14,7 +14,7 @@ export type UserLoginVO = {
 }
 
 export type TokenType = {
-  id: number // 编号
+  id: string // 编号
   accessToken: string // 访问令牌
   refreshToken: string // 刷新令牌
   userId: string // 用户编号
@@ -24,10 +24,10 @@ export type TokenType = {
 }
 
 export type UserVO = {
-  id: number
+  id: string
   username: string
   name: string
-  deptId: number
+  deptId: string
   email: string
   mobile: string
   sex: number

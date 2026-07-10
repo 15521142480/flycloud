@@ -21,11 +21,11 @@ defineOptions({ name: 'ProductCategorySelect' })
 
 const props = defineProps({
   // 选中的ID
-  modelValue: oneOfType<number | number[]>([Number, Array<Number>]),
+  modelValue: oneOfType<string | string[]>([String, Array<String>]),
   // 是否多选
   multiple: propTypes.bool.def(false),
   // 上级品类的编号
-  parentId: propTypes.number.def(undefined)
+  parentId: propTypes.string.def(undefined)
 })
 
 /** 选中的分类 ID */
@@ -33,7 +33,7 @@ const selectCategoryId = computed({
   get: () => {
     return props.modelValue
   },
-  set: (val: number | number[]) => {
+  set: (val: string | string[]) => {
     emit('update:modelValue', val)
   }
 })

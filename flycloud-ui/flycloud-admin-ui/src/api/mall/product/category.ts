@@ -9,11 +9,11 @@ export interface CategoryVO {
   /**
    * 分类编号
    */
-  id?: number
+  id?: string
   /**
    * 父分类编号
    */
-  parentId?: number
+  parentId?: string
   /**
    * 分类名称
    */
@@ -43,12 +43,12 @@ export const updateCategory = (data: CategoryVO) => {
 }
 
 // 删除商品分类
-export const deleteCategory = (id: number) => {
+export const deleteCategory = (id: string) => {
   return request.delete({ url: `/${MALL_BASE_URL}/admin/product/category/delete?id=${id}` })
 }
 
 // 获得商品分类
-export const getCategory = (id: number) => {
+export const getCategory = (id: string) => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/product/category/get?id=${id}` })
 }
 

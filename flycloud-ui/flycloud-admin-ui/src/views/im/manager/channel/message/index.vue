@@ -122,7 +122,7 @@ const list = ref<MessageApi.ImManagerChannelMessageVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  channelId: undefined as number | undefined,
+  channelId: undefined as string | undefined,
   sendTime: [] as string[]
 })
 const queryFormRef = ref() // 搜索的表单
@@ -158,7 +158,7 @@ const openSendForm = () => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

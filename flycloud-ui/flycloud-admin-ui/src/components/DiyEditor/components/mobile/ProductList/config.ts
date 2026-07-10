@@ -25,7 +25,7 @@ export interface ProductListProperty {
   // 间距
   space: number
   // 商品编号列表
-  spuIds: number[]
+  spuIds: string[]
   // 组件样式
   style: ComponentStyle
 }

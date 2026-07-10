@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface DeliveryExpressTemplateVO {
-  id?: number
+  id?: string
   name: string
   chargeMode: number
   sort: number
@@ -12,7 +12,7 @@ export interface DeliveryExpressTemplateVO {
 }
 
 export declare type ExpressTemplateChargeVO = {
-  areaIds: number[]
+  areaIds: string[]
   startCount: number
   startPrice: number
   extraCount: number
@@ -20,7 +20,7 @@ export declare type ExpressTemplateChargeVO = {
 }
 
 export declare type ExpressTemplateFreeVO = {
-  areaIds: number[]
+  areaIds: string[]
   freeCount: number
   freePrice: number
 }
@@ -34,7 +34,7 @@ export const getDeliveryExpressTemplatePage = async (params: PageParam) => {
 }
 
 // 查询快递运费模板详情
-export const getDeliveryExpressTemplate = async (id: number) => {
+export const getDeliveryExpressTemplate = async (id: string) => {
   return await request.get<DeliveryExpressTemplateVO>({
     url: `/${MALL_BASE_URL}/admin/trade/delivery/express-template/get?id=` + id
   })
@@ -64,7 +64,7 @@ export const updateDeliveryExpressTemplate = async (data: DeliveryExpressTemplat
 }
 
 // 删除快递运费模板
-export const deleteDeliveryExpressTemplate = async (id: number) => {
+export const deleteDeliveryExpressTemplate = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/trade/delivery/express-template/delete?id=` + id
   })

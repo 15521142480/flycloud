@@ -128,8 +128,8 @@
 
   const form = ref(null);
   const state = reactive({
-    orderId: 0, // 订单编号
-    itemId: 0, // 订单项编号
+    orderId: '0', // 订单编号
+    itemId: '0', // 订单项编号
     order: {}, // 订单
     item: {}, // 订单项
     config: {}, // 交易配置
@@ -203,7 +203,7 @@
       return;
     }
     state.orderId = options.orderId;
-    state.itemId = parseInt(options.itemId);
+    state.itemId = String(options.itemId);
 
     // 读取订单信息
     const { code, data } = await OrderApi.getOrderDetail(state.orderId);

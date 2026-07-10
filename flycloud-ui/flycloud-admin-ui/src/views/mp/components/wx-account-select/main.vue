@@ -27,7 +27,7 @@ const account: MpAccountApi.AccountVO = reactive({
 const accountList = ref<MpAccountApi.AccountVO[]>([])
 
 const emit = defineEmits<{
-  (e: 'change', id: number, name: string)
+  (e: 'change', id: string, name: string)
 }>()
 
 const handleQuery = async () => {
@@ -48,7 +48,7 @@ const handleQuery = async () => {
   }
 }
 
-const onChanged = (id?: number) => {
+const onChanged = (id?: string) => {
   const found = accountList.value.find((v) => v.id === id)
   if (account.id) {
     account.name = found ? found.name : ''

@@ -101,7 +101,7 @@ defineOptions({ name: 'UserCouponList' })
 
 const { userId }: { userId: string } = defineProps({
   userId: {
-    type: Number,
+    type: String,
     required: true
   }
 }) //用户编号
@@ -117,7 +117,7 @@ const queryParams = reactive({
   pageSize: 10,
   createTime: [],
   status: undefined,
-  userIds: undefined as number | undefined
+  userIds: undefined as string | undefined
 })
 const queryFormRef = ref() // 搜索的表单
 
@@ -156,7 +156,7 @@ const resetQuery = () => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 二次确认
     await message.confirm(

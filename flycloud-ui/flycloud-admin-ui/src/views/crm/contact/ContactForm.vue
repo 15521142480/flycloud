@@ -247,7 +247,7 @@ const formData = ref({
   name: undefined,
   customerId: undefined,
   contactNextTime: undefined,
-  ownerUserId: 0,
+  ownerUserId: '0',
   mobile: undefined,
   telephone: undefined,
   qq: undefined,
@@ -280,7 +280,7 @@ const customerList = ref<CustomerApi.CustomerVO[]>([]) // 客户列表
 const contactList = ref<ContactApi.ContactVO[]>([]) // 联系人列表
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number, customerId?: number, businessId?: number) => {
+const open = async (type: string, id?: string, customerId?: string, businessId?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -351,7 +351,7 @@ const resetForm = () => {
     name: undefined,
     customerId: undefined,
     contactNextTime: undefined,
-    ownerUserId: 0,
+    ownerUserId: '0',
     mobile: undefined,
     telephone: undefined,
     qq: undefined,

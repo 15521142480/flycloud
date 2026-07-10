@@ -144,7 +144,7 @@
     showFilter: false,
     iconStatus: false, // true - 单列布局；false - 双列布局
     keyword: '',
-    categoryId: 0,
+    categoryId: '0',
     tabList: [
       {
         name: '综合推荐',

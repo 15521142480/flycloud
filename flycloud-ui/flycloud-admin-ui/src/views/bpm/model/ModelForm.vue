@@ -186,7 +186,7 @@ defineOptions({ name: 'ModelForm' })
 const message = useMessage() // 消息弹窗
 const userStore = useUserStoreWithOut() // 用户信息缓存
 const props = defineProps({
-  categoryId: propTypes.number
+  categoryId: propTypes.string
 })
 const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题

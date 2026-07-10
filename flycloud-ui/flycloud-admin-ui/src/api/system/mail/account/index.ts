@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface MailAccountVO {
-  id: number
+  id: string
   mail: string
   username: string
   password: string
@@ -17,7 +17,7 @@ export const getMailAccountPage = async (params: PageParam) => {
 }
 
 // 查询邮箱账号详情
-export const getMailAccount = async (id: number) => {
+export const getMailAccount = async (id: string) => {
   return await request.get({ url: '/system/mail-account/get/' + id })
 }
 
@@ -32,7 +32,7 @@ export const updateMailAccount = async (data: MailAccountVO) => {
 }
 
 // 删除邮箱账号
-export const deleteMailAccount = async (id: number) => {
+export const deleteMailAccount = async (id: string) => {
   return await request.delete({ url: '/system/mail-account/delete/' + id })
 }
 

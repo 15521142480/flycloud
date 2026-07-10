@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BannerVO {
-  id: number
+  id: string
   title: string
   picUrl: string
   status: number
@@ -19,7 +19,7 @@ export const getBannerPage = async (params) => {
 }
 
 // 查询Banner管理详情
-export const getBanner = async (id: number) => {
+export const getBanner = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/banner/get?id=` + id })
 }
 
@@ -34,6 +34,6 @@ export const updateBanner = async (data: BannerVO) => {
 }
 
 // 删除Banner管理
-export const deleteBanner = async (id: number) => {
+export const deleteBanner = async (id: string) => {
   return await request.delete({ url: `/${MALL_BASE_URL}/admin/promotion/banner/delete?id=` + id })
 }

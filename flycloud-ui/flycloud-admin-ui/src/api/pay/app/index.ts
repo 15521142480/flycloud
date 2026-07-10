@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface AppVO {
-  id: number
+  id: string
   appKey: string
   name: string
   status: number
@@ -11,7 +11,7 @@ export interface AppVO {
   payNotifyUrl: string
   refundNotifyUrl: string
   transferNotifyUrl: string
-  merchantId: number
+  merchantId: string
   merchantName: string
   createTime: Date
 }
@@ -28,7 +28,7 @@ export interface AppPageReqVO extends PageParam {
 }
 
 export interface AppUpdateStatusReqVO {
-  id: number
+  id: string
   status: number
 }
 
@@ -38,7 +38,7 @@ export const getAppPage = (params: AppPageReqVO) => {
 }
 
 // 查询详情支付应用
-export const getApp = (id: number) => {
+export const getApp = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/admin/pay/app/get?id=` + id })
 }
 
@@ -58,7 +58,7 @@ export const changeAppStatus = (data: AppUpdateStatusReqVO) => {
 }
 
 // 删除支付应用
-export const deleteApp = (id: number) => {
+export const deleteApp = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/admin/pay/app/delete?id=` + id })
 }
 

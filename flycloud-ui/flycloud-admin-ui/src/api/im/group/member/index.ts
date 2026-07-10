@@ -4,8 +4,8 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // 群成员 Response VO
 export interface ImGroupMemberRespVO {
-  id: number // 编号
-  groupId: number // 群编号
+  id: string // 编号
+  groupId: string // 群编号
   userId: string // 用户编号
   displayUserName?: string // 组内显示名（群主设置的备注）
   groupRemark?: string // 群备注（当前用户对群的备注）
@@ -23,19 +23,19 @@ export interface ImGroupMemberRespVO {
 
 // 群成员邀请 Request VO
 export interface ImGroupMemberInviteReqVO {
-  groupId: number // 群编号
+  groupId: string // 群编号
   memberUserIds: string[] // 被邀请的用户编号列表
 }
 
 // 群成员移除 Request VO
 export interface ImGroupMemberRemoveReqVO {
-  groupId: number // 群编号
+  groupId: string // 群编号
   memberUserIds: string[] // 被移除的用户编号列表
 }
 
 // 群成员更新 Request VO
 export interface ImGroupMemberUpdateReqVO {
-  groupId: number // 群编号
+  groupId: string // 群编号
   displayUserName?: string // 群内昵称
   groupRemark?: string // 群备注
   silent?: boolean // 是否免打扰
@@ -47,7 +47,7 @@ export const inviteGroupMember = (data: ImGroupMemberInviteReqVO) => {
 }
 
 // 退出群
-export const quitGroup = (groupId: number | string) => {
+export const quitGroup = (groupId: string) => {
   return request.delete<boolean>({ url: `/${SYS_BASE_URL}/im/group/quit`, params: { groupId } })
 }
 
@@ -57,7 +57,7 @@ export const removeGroupMember = (data: ImGroupMemberRemoveReqVO) => {
 }
 
 // 获得群成员详情
-export const getGroupMember = (groupId: number, userId: string) => {
+export const getGroupMember = (groupId: string, userId: string) => {
   return request.get<ImGroupMemberRespVO>({
     url: `/${SYS_BASE_URL}/im/group-member/get`,
     params: { groupId, userId }
@@ -65,7 +65,7 @@ export const getGroupMember = (groupId: number, userId: string) => {
 }
 
 // 获得指定群的成员列表（聚合 AdminUser 昵称 / 头像）
-export const getGroupMemberList = (groupId: number | string) => {
+export const getGroupMemberList = (groupId: string) => {
   return request.get<ImGroupMemberRespVO[]>({
     url: `/${SYS_BASE_URL}/im/group-member/list`,
     params: { groupId }

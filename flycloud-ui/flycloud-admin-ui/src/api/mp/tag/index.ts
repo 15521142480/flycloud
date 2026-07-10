@@ -1,9 +1,9 @@
 import request from '@/config/axios'
 
 export interface TagVO {
-  id?: number
+  id?: string
   name: string
-  accountId: number
+  accountId: string
   createTime: Date
 }
 
@@ -24,14 +24,14 @@ export const updateTag = (data: TagVO) => {
 }
 
 // 删除公众号标签
-export const deleteTag = (id: number) => {
+export const deleteTag = (id: string) => {
   return request.delete({
     url: '/mp/tag/delete/' + id
   })
 }
 
 // 获得公众号标签
-export const getTag = (id: number) => {
+export const getTag = (id: string) => {
   return request.get({
     url: '/mp/tag/get/' + id
   })
@@ -53,7 +53,7 @@ export const getSimpleTagList = () => {
 }
 
 // 同步公众号标签
-export const syncTag = (accountId: number) => {
+export const syncTag = (accountId: string) => {
   return request.post({
     url: '/mp/tag/sync?accountId=' + accountId
   })

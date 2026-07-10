@@ -110,8 +110,8 @@ const list = ref<ExperienceRecordApi.ExperienceRecordVO[]>([]) // 列表的数�
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  userId: undefined as number | undefined,
-  bizId: undefined as number | undefined,
+  userId: undefined as string | undefined,
+  bizId: undefined as string | undefined,
   bizType: undefined as number | undefined,
   title: undefined as string | undefined,
   description: undefined as string | undefined,
@@ -146,7 +146,7 @@ const resetQuery = () => {
 
 const { userId } = defineProps({
   userId: {
-    type: Number,
+    type: String,
     required: true
   }
 })

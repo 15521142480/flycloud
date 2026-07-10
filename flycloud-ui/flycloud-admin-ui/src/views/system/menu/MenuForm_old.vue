@@ -184,7 +184,7 @@ const formData = ref({
   permission: '',
   type: SystemMenuTypeEnum.DIR,
   sort: Number(undefined),
-  parentId: 0,
+  parentId: '0',
   path: '',
   icon: '',
   component: '',
@@ -211,7 +211,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number, parentId?: number) => {
+const open = async (type: string, id?: string, parentId?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -280,7 +280,7 @@ const menuTree = ref<Tree[]>([]) // 树形结构
 const getTree = async () => {
   menuTree.value = []
   const res = await MenuApi.getMenusList()
-  let menu: Tree = { id: 0, name: t('auto.views.system.menu.MenuForm_old.k3eaad510'), children: [] }
+  let menu: Tree = { id: '0', name: t('auto.views.system.menu.MenuForm_old.k3eaad510'), children: [] }
   menu.children = handleTree(res)
   menuTree.value.push(menu)
 }
@@ -293,7 +293,7 @@ const resetForm = () => {
     permission: '',
     type: SystemMenuTypeEnum.DIR,
     sort: Number(undefined),
-    parentId: 0,
+    parentId: '0',
     path: '',
     icon: '',
     component: '',

@@ -9,7 +9,7 @@ export interface PayWalletUserReqVO {
 
 /** 钱包 VO */
 export interface WalletVO {
-  id: number
+  id: string
   userId: string
   userType: number
   balance: number

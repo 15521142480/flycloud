@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface PostVO {
-  id?: number
+  id?: string
   name: string
   code: string
   sort: number
@@ -23,7 +23,7 @@ export const getSimplePostList = async (): Promise<PostVO[]> => {
 }
 
 // 查询岗位详情
-export const getPost = async (id: number) => {
+export const getPost = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/post/get/` + id })
 }
 
@@ -43,7 +43,7 @@ export const saveOrUpdate = async (data: PostVO) => {
 // }
 
 // 删除岗位
-export const deletePost = async (id: number) => {
+export const deletePost = async (id: string) => {
   return await request.delete({ url: `/${SYS_BASE_URL}/post/delete/` + id })
 }
 

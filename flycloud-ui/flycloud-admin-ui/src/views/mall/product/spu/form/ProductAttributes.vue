@@ -122,7 +122,7 @@ const showInput = async (index: number) => {
 
 /** 输入框失去焦点或点击回车时触发 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
-const handleInputConfirm = async (index: number, propertyId: number) => {
+const handleInputConfirm = async (index: number, propertyId: string) => {
   if (inputValue.value) {
     // 1. 重复添加校验
     const values = attributeList.value[index]!.values || []
@@ -160,7 +160,7 @@ const handleInputConfirm = async (index: number, propertyId: number) => {
 }
 
 /** 获取商品属性下拉选项 */
-const getAttributeOptions = async (propertyId: number) => {
+const getAttributeOptions = async (propertyId: string) => {
   attributeOptions.value = await PropertyApi.getPropertyValueSimpleList(propertyId)
 }
 </script>

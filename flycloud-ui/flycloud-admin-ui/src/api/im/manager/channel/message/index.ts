@@ -3,10 +3,10 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerChannelMessageVO {
-  id: number
-  channelId: number
+  id: string
+  channelId: string
   channelName?: string
-  materialId: number
+  materialId: string
   materialTitle?: string
   materialCoverUrl?: string
   type: number
@@ -16,7 +16,7 @@ export interface ImManagerChannelMessageVO {
 }
 
 export interface ImManagerChannelMessageSendReqVO {
-  materialId: number
+  materialId: string
   receiverUserIds?: string[]
 }
 
@@ -26,7 +26,7 @@ export const sendManagerChannelMessage = (data: ImManagerChannelMessageSendReqVO
 }
 
 // 删除频道消息
-export const deleteManagerChannelMessage = (id: number) => {
+export const deleteManagerChannelMessage = (id: string) => {
   return request.delete({
     url: `/${SYS_BASE_URL}/im/manager/channel-message/delete`,
     params: { id }

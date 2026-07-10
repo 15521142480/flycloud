@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // AI 音乐 VO
 export interface MusicVO {
-  id: number // 编号
+  id: string // 编号
   userId: string // 用户编号
   title: string // 音乐名称
   lyric: string // 歌词
@@ -35,7 +35,7 @@ export const MusicApi = {
   },
 
   // 删除音乐
-  deleteMusic: async (id: number) => {
+  deleteMusic: async (id: string) => {
     return await request.delete({ url: `/ai/music/delete/` + id })
   }
 }

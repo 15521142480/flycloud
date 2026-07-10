@@ -152,7 +152,7 @@ const close = () => {
 /** 初始化 **/
 onMounted(async () => {
   // 场景一：新增表单
-  const id = query.id as unknown as number
+  const id = String(query.id)
   if (!id) {
     return
   }

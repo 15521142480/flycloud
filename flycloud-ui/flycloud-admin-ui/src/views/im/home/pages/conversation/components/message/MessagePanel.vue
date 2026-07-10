@@ -98,19 +98,19 @@
         <!-- 群通话胶囊条：仅群聊 + 该群有活跃通话时显示；点击展开看成员 + 加入按钮 -->
         <RtcGroupCallBanner
           v-if="isGroup && !isQuitGroup && conversationStore.activeConversation"
-          :group-id="Number(conversationStore.activeConversation.targetId)"
+          :group-id="String(conversationStore.activeConversation.targetId)"
         />
 
         <!-- 群置顶消息：第二行嵌入 header；仅群聊 + 有置顶时显示 -->
         <GroupPinnedMessage
           v-if="isGroup && conversationStore.activeConversation"
-          :group-id="Number(conversationStore.activeConversation.targetId)"
+          :group-id="String(conversationStore.activeConversation.targetId)"
           @locate="handleLocate"
         />
         <!-- 群顶部「待处理加群申请」横幅：仅群聊 + owner / admin + count > 0 时显示 -->
         <GroupRequestPending
           v-if="isGroup && !isQuitGroup && conversationStore.activeConversation"
-          :group-id="Number(conversationStore.activeConversation.targetId)"
+          :group-id="String(conversationStore.activeConversation.targetId)"
         />
         <!-- 私聊：对方不再是有效好友（我删了对方 / 从未加过；单边设计下「被对方删除」本端 friendStore 不更新故不会触发）；胶囊嵌在 header 内（跟群置顶同级），点击弹 UserInfoCard -->
         <div
@@ -408,7 +408,7 @@ const groupInfo = computed<
   const selfMember = group?.members?.find((member) => member.userId === getCurrentUserId())
   const showGroupName = group ? getGroupDisplayName(group) : conversation.name
   return {
-    id: Number(conversation.targetId),
+    id: String(conversation.targetId),
     name: group?.name || conversation.name,
     showGroupName,
     showImage: group?.avatar || conversation.avatar,
@@ -443,7 +443,7 @@ const groupMembers = computed<GroupMemberLite[]>(() => {
 })
 
 /** 切换到群会话时同步群信息 + 成员 */
-async function ensureGroupData(groupId: number) {
+async function ensureGroupData(groupId: string) {
   // 远程拉群信息（群名 / 公告 / 群主等元数据）
   await groupStore.fetchGroupInfo(groupId).catch((error) => {
     console.warn('[IM MessagePanel] fetchGroupInfo 失败', { groupId }, error)
@@ -471,8 +471,8 @@ function reloadGroupData() {
   if (!conversation || conversation.type !== ImConversationType.GROUP) {
     return
   }
-  groupStore.fetchGroupInfo(Number(conversation.targetId), true)
-  groupStore.fetchGroupMemberList(Number(conversation.targetId), true)
+  groupStore.fetchGroupInfo(String(conversation.targetId), true)
+  groupStore.fetchGroupMemberList(String(conversation.targetId), true)
 }
 
 /** 历史消息抽屉 ref：「聊天历史」icon / 抽屉「查找聊天内容」入口都调 open() 触发 */
@@ -484,7 +484,7 @@ const callMemberPickerRef = ref<InstanceType<typeof RtcCallMemberPickerDialog>>(
 const pendingMediaType = ref<number | null>(null)
 
 /** 消息右键菜单「禁言」→ 打开时长选择弹窗 */
-function handleMuteMember(groupId: number, userId: string, displayName: string) {
+function handleMuteMember(groupId: string, userId: string, displayName: string) {
   muteMemberDialogRef.value?.open(groupId, userId, displayName)
 }
 
@@ -516,7 +516,7 @@ function handleGroupCall() {
     return
   }
   pendingMediaType.value = ImRtcCallMediaType.VOICE
-  callMemberPickerRef.value?.open({ groupId: Number(conversation.targetId), mode: 'invite' })
+  callMemberPickerRef.value?.open({ groupId: String(conversation.targetId), mode: 'invite' })
 }
 
 /** 选人弹窗确认；带选中 ID 发起群通话 */
@@ -530,7 +530,7 @@ async function onCallMemberPicked(selectedIds: string[]) {
   await doInvite({
     conversationType: ImConversationType.GROUP,
     mediaType,
-    groupId: Number(conversation.targetId),
+    groupId: String(conversation.targetId),
     inviteeIds: selectedIds
   })
 }
@@ -539,7 +539,7 @@ async function onCallMemberPicked(selectedIds: string[]) {
 async function doInvite(reqVO: {
   conversationType: number
   mediaType: number
-  groupId?: number
+  groupId?: string
   inviteeIds: string[]
 }) {
   if (callInviting.value) {
@@ -678,7 +678,7 @@ function waitMediaSettled(): Promise<void> {
  * 4. 加 --highlight class 短暂高亮，提示用户"就是这条"
  * 5. 找不到 wrapper(原消息已分页出去)时弹 warning 提示,与微信"消息已不在窗口"观感一致
  */
-async function handleLocate(messageId: number) {
+async function handleLocate(messageId: string) {
   if (!messageId) {
     return
   }
@@ -742,7 +742,7 @@ watch(
     scrollToBottom()
     // 仅群聊预拉详情 / 成员（私聊对端在首屏 fetchFriendList 时就拉了）
     if (targetId && type === ImConversationType.GROUP) {
-      ensureGroupData(Number(targetId))
+      ensureGroupData(String(targetId))
     }
   },
   { immediate: true }

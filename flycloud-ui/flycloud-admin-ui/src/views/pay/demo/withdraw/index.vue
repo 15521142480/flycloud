@@ -150,7 +150,7 @@ const openForm = (type: string) => {
 }
 
 /** 处理转账操作 */
-const handleTransfer = async (id: number) => {
+const handleTransfer = async (id: string) => {
   try {
     // 转账操作的二次确认
     await message.confirm('确认要执行转账操作吗?')

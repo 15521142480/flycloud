@@ -4,9 +4,9 @@ import { Sku, Spu } from '@/api/mall/product/spu'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface CombinationActivityVO {
-  id?: number
+  id?: string
   name?: string
-  spuId?: number
+  spuId?: string
   spuName?: string
   picUrl?: string
   totalLimitCount?: number
@@ -26,8 +26,8 @@ export interface CombinationActivityVO {
 
 // 拼团活动所需属性
 export interface CombinationProductVO {
-  spuId: number
-  skuId: number
+  spuId: string
+  skuId: string
   combinationPrice: number // 拼团价格
 }
 
@@ -46,12 +46,12 @@ export const getCombinationActivityPage = async (params: any) => {
 }
 
 // 查询拼团活动详情
-export const getCombinationActivity = async (id: number) => {
+export const getCombinationActivity = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/combination-activity/get?id=` + id })
 }
 
 // 获得拼团活动列表，基于活动编号数组
-export const getCombinationActivityListByIds = (ids: number[]) => {
+export const getCombinationActivityListByIds = (ids: string[]) => {
   return request.get({
     url: `/${MALL_BASE_URL}/admin/promotion/combination-activity/list-by-ids?ids=${ids}`
   })
@@ -71,14 +71,14 @@ export const updateCombinationActivity = async (data: CombinationActivityVO) => 
 }
 
 // 关闭拼团活动
-export const closeCombinationActivity = async (id: number) => {
+export const closeCombinationActivity = async (id: string) => {
   return await request.put({
     url: `/${MALL_BASE_URL}/admin/promotion/combination-activity/close?id=` + id
   })
 }
 
 // 删除拼团活动
-export const deleteCombinationActivity = async (id: number) => {
+export const deleteCombinationActivity = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/combination-activity/delete?id=` + id
   })

@@ -214,12 +214,12 @@
   const statusBarHeight = sheep.$platform.device.statusBarHeight * 2;
   const state = reactive({
     data: {}, // 拼团详情
-    goodsId: 0, // 商品ID
+    goodsId: '0', // 商品ID
     goodsInfo: {}, // 商品信息
     showSelectSku: false, // 显示规格弹框
     selectedSkuPrice: {}, // 选中的规格价格
     activity: {}, // 团购活动
-    grouponId: 0, // 团购ID
+    grouponId: '0', // 团购ID
     grouponNum: 0, // 团购人数
     grouponAction: 'create', // 团购操作
     combinationHeadId: null, // 拼团团长编号

@@ -4,7 +4,7 @@ const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
 // BPM 流程分类 VO
 export interface CategoryVO {
-  id: number // 分类编号
+  id: string // 分类编号
   name: string // 分类名
   code: string // 分类标志
   status: number // 分类状态
@@ -24,7 +24,7 @@ export const CategoryApi = {
   },
 
   // 查询流程分类详情
-  getCategory: async (id: number) => {
+  getCategory: async (id: string) => {
     return await request.get({ url: `/${BPM_BASE_URL}/category/get/` + id })
   },
 
@@ -39,12 +39,12 @@ export const CategoryApi = {
   },
 
   // 批量修改流程分类排序
-  updateCategorySortBatch: async (ids: number[]) => {
+  updateCategorySortBatch: async (ids: string[]) => {
     return await request.put({ url: `/${BPM_BASE_URL}/category/update-sort-batch`, data: ids })
   },
 
   // 删除流程分类
-  deleteCategory: async (id: number) => {
+  deleteCategory: async (id: string) => {
     return await request.delete({ url: `/${BPM_BASE_URL}/category/delete/` + id })
   }
 }

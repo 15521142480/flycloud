@@ -43,7 +43,7 @@ import { isArray } from '@/utils/is'
 defineOptions({ name: 'PointShowcase' })
 
 const props = defineProps({
-  modelValue: oneOfType<number | Array<number>>([Number, Array]).isRequired,
+  modelValue: oneOfType<string | Array<string>>([String, Array]).isRequired,
   // 限制数量：默认不限制
   limit: propTypes.number.def(Number.MAX_VALUE),
   disabled: propTypes.bool.def(false)
@@ -116,7 +116,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const emitActivityChange = () => {
   if (props.limit === 1) {
     const pointActivity = pointActivityList.value.length > 0 ? pointActivityList.value[0] : null
-    emit('update:modelValue', pointActivity?.id || 0)
+    emit('update:modelValue', pointActivity?.id || '')
     emit('change', pointActivity)
   } else {
     emit(

@@ -94,7 +94,7 @@ const detailData = ref<OrderApi.OrderDetailVO>({
 })
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   // 设置数据
   detailLoading.value = true
   dialogVisible.value = true

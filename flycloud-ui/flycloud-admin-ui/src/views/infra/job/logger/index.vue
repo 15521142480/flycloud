@@ -206,7 +206,7 @@ const resetQuery = () => {
 
 /** 查看操作 */
 const detailRef = ref()
-const openDetail = (rowId?: number) => {
+const openDetail = (rowId?: string) => {
   detailRef.value.open(rowId)
 }
 

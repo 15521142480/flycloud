@@ -11,8 +11,8 @@ import * as MaterialApi from '@/api/im/manager/channel/material'
 defineOptions({ name: 'ImMaterialSelect' })
 
 const props = defineProps({
-  modelValue: { type: Number, default: undefined },
-  channelId: { type: Number, default: undefined }
+  modelValue: { type: String, default: undefined },
+  channelId: { type: String, default: undefined }
 })
 const emit = defineEmits(['update:modelValue'])
 

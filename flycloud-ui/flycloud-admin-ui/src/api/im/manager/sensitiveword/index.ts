@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerSensitiveWordVO {
-  id: number
+  id: string
   word: string
   status: number
   creator?: string
@@ -17,7 +17,7 @@ export const getManagerSensitiveWordPage = (params: PageParam) => {
 }
 
 // 获得敏感词详情
-export const getManagerSensitiveWord = (id: number) => {
+export const getManagerSensitiveWord = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/sensitive-word/get`, params: { id } })
 }
 
@@ -32,7 +32,7 @@ export const updateManagerSensitiveWord = (data: ImManagerSensitiveWordVO) => {
 }
 
 // 删除敏感词
-export const deleteManagerSensitiveWord = (id: number) => {
+export const deleteManagerSensitiveWord = (id: string) => {
   return request.delete({
     url: `/${SYS_BASE_URL}/im/manager/sensitive-word/delete`,
     params: { id }
@@ -40,7 +40,7 @@ export const deleteManagerSensitiveWord = (id: number) => {
 }
 
 // 批量删除敏感词
-export const deleteManagerSensitiveWordList = (ids: number[]) => {
+export const deleteManagerSensitiveWordList = (ids: string[]) => {
   return request.delete({
     url: `/${SYS_BASE_URL}/im/manager/sensitive-word/delete-list`,
     params: { ids: ids.join(',') }

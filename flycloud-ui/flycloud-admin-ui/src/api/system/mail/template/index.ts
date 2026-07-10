@@ -1,11 +1,10 @@
 import request from '@/config/axios'
 
 export interface MailTemplateVO {
-  id: number
+  id: string
   name: string
   code: string
-  accountId: number
-  name: string
+  accountId: string
   title: string
   content: string
   params: string
@@ -25,7 +24,7 @@ export const getMailTemplatePage = async (params: PageParam) => {
 }
 
 // 查询邮件模版详情
-export const getMailTemplate = async (id: number) => {
+export const getMailTemplate = async (id: string) => {
   return await request.get({ url: '/system/mail-template/get/' + id })
 }
 
@@ -40,7 +39,7 @@ export const updateMailTemplate = async (data: MailTemplateVO) => {
 }
 
 // 删除邮件模版
-export const deleteMailTemplate = async (id: number) => {
+export const deleteMailTemplate = async (id: string) => {
   return await request.delete({ url: '/system/mail-template/delete/' + id })
 }
 

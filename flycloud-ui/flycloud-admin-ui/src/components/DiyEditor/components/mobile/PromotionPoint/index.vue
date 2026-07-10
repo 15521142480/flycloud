@@ -133,7 +133,7 @@ defineOptions({ name: 'PromotionPoint' })
 const props = defineProps<{ property: PromotionPointProperty }>()
 // 商品列表
 const spuList = ref<SpuExtension0[]>([])
-const spuIdList = ref<number[]>([])
+const spuIdList = ref<string[]>([])
 const pointActivityList = ref<PointActivityVO[]>([])
 
 watch(
@@ -149,7 +149,9 @@ watch(
 
         // 获取积分商城活动的 SPU 详情列表
         spuList.value = []
-        spuIdList.value = pointActivityList.value.map((activity) => activity.spuId)
+        spuIdList.value = pointActivityList.value
+          .map((activity) => activity.spuId)
+          .filter((spuId): spuId is string => typeof spuId === 'string' && spuId.length > 0)
         if (spuIdList.value.length > 0) {
           spuList.value = await ProductSpuApi.getSpuDetailList(spuIdList.value)
         }

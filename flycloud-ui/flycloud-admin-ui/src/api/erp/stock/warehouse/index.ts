@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // ERP 仓库 VO
 export interface WarehouseVO {
-  id: number // 仓库编号
+  id: string // 仓库编号
   name: string // 仓库名称
   address: string // 仓库地址
   sort: number // 排序
@@ -27,7 +27,7 @@ export const WarehouseApi = {
   },
 
   // 查询仓库详情
-  getWarehouse: async (id: number) => {
+  getWarehouse: async (id: string) => {
     return await request.get({ url: `/erp/warehouse/get/` + id })
   },
 
@@ -42,7 +42,7 @@ export const WarehouseApi = {
   },
 
   // 修改仓库默认状态
-  updateWarehouseDefaultStatus: async (id: number, defaultStatus: boolean) => {
+  updateWarehouseDefaultStatus: async (id: string, defaultStatus: boolean) => {
     return await request.put({
       url: `/erp/warehouse/update-default-status`,
       params: {
@@ -53,7 +53,7 @@ export const WarehouseApi = {
   },
 
   // 删除仓库
-  deleteWarehouse: async (id: number) => {
+  deleteWarehouse: async (id: string) => {
     return await request.delete({ url: `/erp/warehouse/delete/` + id })
   },
 

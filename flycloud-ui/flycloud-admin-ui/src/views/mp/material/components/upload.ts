@@ -9,7 +9,7 @@ interface UploadData {
   type: UploadType
   title: string
   introduction: string
-  accountId: number
+  accountId: string
 }
 
 const beforeImageUpload: UploadProps['beforeUpload'] = (rawFile: UploadRawFile) =>

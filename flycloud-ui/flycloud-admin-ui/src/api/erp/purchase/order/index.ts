@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 采购订单 VO
 export interface PurchaseOrderVO {
-  id: number // 订单工单编号
+  id: string // 订单工单编号
   no: string // 采购订单号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   orderTime: Date // 订单时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -22,7 +22,7 @@ export const PurchaseOrderApi = {
   },
 
   // 查询采购订单详情
-  getPurchaseOrder: async (id: number) => {
+  getPurchaseOrder: async (id: string) => {
     return await request.get({ url: `/erp/purchase-order/get/` + id })
   },
 
@@ -37,7 +37,7 @@ export const PurchaseOrderApi = {
   },
 
   // 更新采购订单的状态
-  updatePurchaseOrderStatus: async (id: number, status: number) => {
+  updatePurchaseOrderStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/purchase-order/update-status`,
       params: {
@@ -48,7 +48,7 @@ export const PurchaseOrderApi = {
   },
 
   // 删除采购订单
-  deletePurchaseOrder: async (ids: number[]) => {
+  deletePurchaseOrder: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/purchase-order/delete`,
       params: {

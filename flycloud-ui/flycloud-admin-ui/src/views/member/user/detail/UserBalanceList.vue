@@ -35,7 +35,7 @@ import { fenToYuan } from '@/utils'
 defineOptions({ name: 'UserBalanceList' })
 const props = defineProps({
   walletId: {
-    type: Number,
+    type: String,
     required: false
   }
 })

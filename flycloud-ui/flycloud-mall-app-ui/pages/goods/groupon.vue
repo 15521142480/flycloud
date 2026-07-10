@@ -169,13 +169,13 @@
   onPageScroll(() => {});
   const state = reactive({
     skeletonLoading: true, // 骨架屏
-    goodsId: 0, // 商品ID
+    goodsId: '0', // 商品ID
     goodsInfo: {}, // 商品信息
     goodsSwiper: [], // 商品轮播图
     showSelectSku: false, // 显示规格弹框
     selectedSku: {}, // 选中的规格属性
     activity: {}, // 团购活动
-    grouponId: 0, // 团购ID
+    grouponId: '0', // 团购ID
     grouponNum: 0, // 团购人数
     grouponAction: 'create', // 团购操作
     combinationHeadId: null, // 拼团团长编号

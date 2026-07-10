@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface ApiErrorLogVO {
-  id: number
+  id: string
   traceId: string
   userId: string
   userType: number
@@ -20,7 +20,7 @@ export interface ApiErrorLogVO {
   exceptionFileName: string
   exceptionMethodName: string
   exceptionLineNumber: number
-  processUserId: number
+  processUserId: string
   processStatus: number
   processTime: Date
   resultCode: number
@@ -33,7 +33,7 @@ export const getApiErrorLogPage = (params: PageParam) => {
 }
 
 // 更新 API 错误日志的处理状态
-export const updateApiErrorLogPage = (id: number, processStatus: number) => {
+export const updateApiErrorLogPage = (id: string, processStatus: number) => {
   return request.put({
     url: '/infra/api-error-log/update-status/' + id + '&processStatus=' + processStatus
   })

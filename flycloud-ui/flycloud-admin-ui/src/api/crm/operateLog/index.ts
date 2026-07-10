@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 export interface OperateLogVO extends PageParam {
   bizType: number
-  bizId: number
+  bizId: string
 }
 
 // 获得操作日志

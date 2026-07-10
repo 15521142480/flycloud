@@ -73,7 +73,7 @@ const getList = async () => {
 
 const { userId } = defineProps({
   userId: {
-    type: Number,
+    type: String,
     required: true
   }
 })

@@ -39,7 +39,7 @@
   import DeliveryApi from '@/sheep/api/trade/delivery';
 
   const state = reactive({
-    id: 0, // 售后编号
+    id: '0', // 售后编号
 		expressIndex: 0, // 选中的 expresses 下标
 		expresses: [], // 可选的快递列表
 	})

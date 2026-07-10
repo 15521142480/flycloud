@@ -4,8 +4,8 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // IM 加群申请 Response VO
 export interface ImGroupRequestRespVO {
-  id: number // 申请编号
-  groupId: number // 群编号
+  id: string // 申请编号
+  groupId: string // 群编号
   userId: string // 申请人 / 被邀请人用户编号
   inviterUserId?: string // 邀请人；NULL 表示用户主动申请
   handleResult: number // 处理结果；0=未处理；1=同意；2=拒绝
@@ -27,7 +27,7 @@ export interface ImGroupRequestRespVO {
 
 // IM 加群申请发起 Request VO
 export interface ImGroupRequestApplyReqVO {
-  groupId: number // 群编号
+  groupId: string // 群编号
   applyContent?: string // 申请理由
   addSource?: number // 加入来源
 }
@@ -38,12 +38,12 @@ export const applyJoinGroup = (data: ImGroupRequestApplyReqVO) => {
 }
 
 // 同意加群申请（群主或管理员）
-export const agreeGroupRequest = (id: number | string) => {
+export const agreeGroupRequest = (id: string) => {
   return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/group-request/agree`, params: { id } })
 }
 
 // 拒绝加群申请（群主或管理员）
-export const refuseGroupRequest = (id: number | string, handleContent?: string) => {
+export const refuseGroupRequest = (id: string, handleContent?: string) => {
   return request.put<boolean>({
     url: `/${SYS_BASE_URL}/im/group-request/refuse`,
     params: { id, handleContent }
@@ -58,7 +58,7 @@ export const getUnhandledRequestList = () => {
 }
 
 // 查询指定群下的全部加群申请（含已处理）；仅群主 / 管理员可查
-export const getGroupRequestListByGroupId = (groupId: number) => {
+export const getGroupRequestListByGroupId = (groupId: string) => {
   return request.get<ImGroupRequestRespVO[]>({
     url: `/${SYS_BASE_URL}/im/group-request/list-by-group`,
     params: { groupId }
@@ -66,7 +66,7 @@ export const getGroupRequestListByGroupId = (groupId: number) => {
 }
 
 // 按 id 单查申请记录（带越权过滤；WebSocket 通知到达后用）
-export const getMyGroupRequest = (id: number) => {
+export const getMyGroupRequest = (id: string) => {
   return request.get<ImGroupRequestRespVO | null>({
     url: `/${SYS_BASE_URL}/im/group-request/get`,
     params: { id }
@@ -76,7 +76,7 @@ export const getMyGroupRequest = (id: number) => {
 // 增量拉取我管理的所有群下加群申请变更（重连 / 离线补偿）
 export const pullMyGroupRequestList = (params: {
   lastUpdateTime?: number
-  lastId?: number
+  lastId?: string
   limit: number
 }) => {
   return request.get<ImGroupRequestRespVO[]>({

@@ -97,7 +97,7 @@ const ruleConfig: RuleConfig[] = [
     message: '商品活动库存不能小于 1 ！！！'
   }
 ]
-const selectSpu = (spuId: number, skuIds: number[]) => {
+const selectSpu = (spuId: string, skuIds: string[]) => {
   formRef.value.setValues({ spuId })
   getSpuDetails(spuId, skuIds)
 }
@@ -105,8 +105,8 @@ const selectSpu = (spuId: number, skuIds: number[]) => {
  * 获取 SPU 详情
  */
 const getSpuDetails = async (
-  spuId: number,
-  skuIds: number[] | undefined,
+  spuId: string,
+  skuIds: string[] | undefined,
   products?: BargainProductVO[]
 ) => {
   const spuProperties: SpuProperty<BargainActivityApi.SpuExtension>[] = []
@@ -150,7 +150,7 @@ const getSpuDetails = async (
 // ================= end =================
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

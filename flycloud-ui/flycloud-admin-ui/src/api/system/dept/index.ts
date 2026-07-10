@@ -3,12 +3,12 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface DeptVO {
-  id?: number
+  id?: string
   name: string
-  parentId: number
+  parentId: string
   status: number
   sort: number
-  leaderUserId: number
+  leaderUserId: string
   phone: string
   email: string
   createTime: Date
@@ -25,7 +25,7 @@ export const getDeptPage = async (params: PageParam) => {
 }
 
 // 查询部门详情
-export const getDept = async (id: number) => {
+export const getDept = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/dept/get/` + id })
 }
 
@@ -35,6 +35,6 @@ export const saveOrUpdate = async (data: DeptVO) => {
 }
 
 // 删除部门
-export const deleteDept = async (id: number) => {
+export const deleteDept = async (id: string) => {
   return await request.delete({ url: `/${SYS_BASE_URL}/dept/delete/` + id })
 }

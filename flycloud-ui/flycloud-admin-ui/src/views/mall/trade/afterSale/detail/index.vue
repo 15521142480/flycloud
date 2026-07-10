@@ -187,7 +187,7 @@ const getUserTypeColor = (type: number) => {
 
 /** 获得详情 */
 const getDetail = async () => {
-  const id = Number(params.id)
+  const id = String(params.id)
   if (id) {
     const res = await AfterSaleApi.getAfterSale(id)
     // 没有表单信息则关闭页面返回

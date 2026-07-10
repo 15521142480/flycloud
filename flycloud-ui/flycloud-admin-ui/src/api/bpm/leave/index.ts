@@ -2,7 +2,7 @@ import request from '@/config/axios'
 const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
 export type LeaveVO = {
-  id: number
+  id: string
   status: number
   type: number
   reason: string
@@ -23,6 +23,6 @@ export const createLeave = async (data: LeaveVO) => {
 }
 
 // 获得请假申请
-export const getLeave = async (id: number) => {
+export const getLeave = async (id: string) => {
   return await request.get({ url: `/${BPM_BASE_URL}/oa/leave/get/` + id })
 }

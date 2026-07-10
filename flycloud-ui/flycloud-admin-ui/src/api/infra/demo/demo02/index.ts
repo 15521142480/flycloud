@@ -1,9 +1,9 @@
 import request from '@/config/axios'
 
 export interface Demo02CategoryVO {
-  id: number
+  id: string
   name: string
-  parentId: number
+  parentId: string
 }
 
 // 查询示例分类列表
@@ -12,7 +12,7 @@ export const getDemo02CategoryList = async () => {
 }
 
 // 查询示例分类详情
-export const getDemo02Category = async (id: number) => {
+export const getDemo02Category = async (id: string) => {
   return await request.get({ url: `/infra/demo02-category/get/` + id })
 }
 
@@ -27,7 +27,7 @@ export const updateDemo02Category = async (data: Demo02CategoryVO) => {
 }
 
 // 删除示例分类
-export const deleteDemo02Category = async (id: number) => {
+export const deleteDemo02Category = async (id: string) => {
   return await request.delete({ url: `/infra/demo02-category/delete/` + id })
 }
 

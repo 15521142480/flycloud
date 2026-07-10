@@ -24,12 +24,12 @@ defineOptions({ name: 'CrmProductDetail' })
 
 const route = useRoute()
 const message = useMessage()
-const id = Number(route.params.id) // 编号
+const id = String(route.params.id) // 编号
 const loading = ref(true) // 加载中
 const product = ref<ProductApi.ProductVO>({} as ProductApi.ProductVO) // 详情
 
 /** 获取详情 */
-const getProductData = async (id: number) => {
+const getProductData = async (id: string) => {
   loading.value = true
   try {
     product.value = await ProductApi.getProduct(id)
@@ -41,7 +41,7 @@ const getProductData = async (id: number) => {
 
 /** 获取操作日志 */
 const logList = ref<OperateLogVO[]>([]) // 操作日志列表
-const getOperateLog = async (productId: number) => {
+const getOperateLog = async (productId: string) => {
   if (!productId) {
     return
   }

@@ -19,8 +19,8 @@ export const useChannelStore = defineStore('imChannelStore', {
   }),
 
   getters: {
-    getChannel(state): (id: number) => ImManagerChannelVO | undefined {
-      return (id: number) => state.channels.find((c) => c.id === id)
+    getChannel(state): (id: string) => ImManagerChannelVO | undefined {
+      return (id: string) => state.channels.find((c) => c.id === id)
     }
   },
 
@@ -75,16 +75,16 @@ export const useChannelStore = defineStore('imChannelStore', {
     /** 用最新的频道信息覆盖已有 CHANNEL 会话的 name / avatar */
     syncChannelConversationMetadata() {
       const conversationStore = useConversationStore()
-      const indexed = new Map(this.channels.map((c) => [c.id, c]))
+      const indexed = new Map<string, ImManagerChannelVO>(this.channels.map((c) => [c.id, c]))
       conversationStore.conversations.forEach((conversation) => {
         if (conversation.type !== ImConversationType.CHANNEL) {
           return
         }
-        const channel = indexed.get(Number(conversation.targetId))
+        const channel = indexed.get(String(conversation.targetId))
         if (!channel) {
           return
         }
-        conversationStore.updateConversation(ImConversationType.CHANNEL, Number(conversation.targetId), {
+        conversationStore.updateConversation(ImConversationType.CHANNEL, String(conversation.targetId), {
           name: channel.name,
           avatar: channel.avatar
         })

@@ -143,7 +143,7 @@ const formRef = ref() // 表单 Ref
 const chatModelList = ref([] as ChatModelVO[]) // 聊天模型列表
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   resetForm()
   // 修改时，设置数据

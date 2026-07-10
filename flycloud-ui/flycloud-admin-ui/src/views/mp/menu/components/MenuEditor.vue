@@ -136,7 +136,7 @@ const { t } = useI18n()
 const message = useMessage()
 
 const props = defineProps<{
-  accountId: number
+  accountId: string
   modelValue: any
   isParent: boolean
 }>()

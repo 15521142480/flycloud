@@ -29,7 +29,7 @@ export interface AiWritePageReqVO extends PageParam {
 }
 
 export interface AiWriteRespVo {
-  id: number
+  id: string
   userId: string
   type: number
   platform: string
@@ -79,7 +79,7 @@ export const WriteApi = {
     return request.get<PageResult<AiWriteRespVo[]>>({ url: `/ai/write/page`, params })
   },
   // 删除写作
-  deleteWrite(id: number) {
+  deleteWrite(id: string) {
     return request.delete({ url: `/ai/write/delete`, params: { id } })
   }
 }

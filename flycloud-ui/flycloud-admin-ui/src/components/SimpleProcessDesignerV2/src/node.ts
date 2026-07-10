@@ -102,12 +102,12 @@ export type UserTaskFormType = {
   //candidateParamArray: any[]
   candidateStrategy: CandidateStrategy
   approveMethod: ApproveMethodType
-  roleIds?: number[] // 角色
-  deptIds?: number[] // 部门
+  roleIds?: string[] // 角色
+  deptIds?: string[] // 部门
   deptLevel?: number // 部门层级
   userIds?: string[] // 用户
   userGroups?: number[] // 用户组
-  postIds?: number[] // 岗位
+  postIds?: string[] // 岗位
   expression?: string // 流程表达式
   formUser?: string // 表单内用户字段
   formDept?: string // 表单内部门字段
@@ -117,7 +117,7 @@ export type UserTaskFormType = {
   timeoutHandlerEnable?: boolean
   timeoutHandlerType?: number
   assignEmptyHandlerType?: AssignEmptyHandlerType
-  assignEmptyHandlerUserIds?: number[]
+  assignEmptyHandlerUserIds?: string[]
   assignStartUserHandlerType?: AssignStartUserHandlerType
   timeDuration?: number
   maxRemindCount?: number
@@ -127,12 +127,12 @@ export type UserTaskFormType = {
 export type CopyTaskFormType = {
   // candidateParamArray: any[]
   candidateStrategy: CandidateStrategy
-  roleIds?: number[] // 角色
-  deptIds?: number[] // 部门
+  roleIds?: string[] // 角色
+  deptIds?: string[] // 部门
   deptLevel?: number // 部门层级
   userIds?: string[] // 用户
   userGroups?: number[] // 用户组
-  postIds?: number[] // 岗位
+  postIds?: string[] // 岗位
   formUser?: string // 表单内用户字段
   formDept?: string // 表单内部门字段
   expression?: string // 流程表达式

@@ -22,6 +22,7 @@ import {
 import { ImContentType, ImMessageStatus, ImConversationType } from '../../utils/constants'
 import { MESSAGE_PRIVATE_READ_ENABLED, MESSAGE_GROUP_READ_ENABLED } from '../../utils/config'
 import { getClientConversationId } from '../../utils/db'
+import { compareId, isPositiveId, maxId } from '../../utils/id'
 import type { Conversation, Message } from '../types'
 import { getCurrentUserId } from '@/utils/auth'
 
@@ -29,7 +30,7 @@ import { getCurrentUserId } from '@/utils/auth'
 interface SendExtOptions {
   atUserIds?: string[] // 群聊 @ 的用户编号列表
   receipt?: boolean // 是否需要群回执（默认 false）
-  targetId?: number | string // 覆盖默认的 targetId
+  targetId?: string // 覆盖默认的 targetId
   /**
    * 显式指定目标会话（转发 / 名片推荐场景）
    *
@@ -65,7 +66,7 @@ export const useMessageSender = () => {
   const buildLocalMessage = (opts: {
     clientMessageId: string
     content: string
-    targetId: number | string
+    targetId: string
     type: number
     atUserIds?: string[]
   }): Message => {
@@ -155,7 +156,7 @@ export const useMessageSender = () => {
       } else if (conversation.type === ImConversationType.GROUP) {
         const data = await apiSendGroupMessage({
           clientMessageId,
-          groupId: Number(realTarget),
+          groupId: realTarget,
           type,
           content,
           atUserIds: options?.atUserIds,
@@ -231,12 +232,12 @@ export const useMessageSender = () => {
     }
     const loadedMaxMessageId = messageStore
       .getMessages(getClientConversationId(conversation.type, conversation.targetId))
-      .reduce<number>(
+      .reduce<string>(
         (maxMessageId, message) =>
-          message.id && message.id > maxMessageId ? message.id : maxMessageId,
-        0
+          message.id && compareId(message.id, maxMessageId) > 0 ? message.id : maxMessageId,
+        '0'
       )
-    const maxMessageId = Math.max(loadedMaxMessageId, conversation.lastMessageId || 0)
+    const maxMessageId = maxId(loadedMaxMessageId, conversation.lastMessageId)
     const readReported = conversationStore.isReportedReadPositionCovered(
       conversation.type,
       conversation.targetId,
@@ -251,7 +252,7 @@ export const useMessageSender = () => {
     const isChannel = conversation.type === ImConversationType.CHANNEL
     // 本地标记已读：未读数清零（UI 立刻响应）
     conversationStore.markConversationRead(conversation.type, conversation.targetId, maxMessageId)
-    if (!maxMessageId) {
+    if (!isPositiveId(maxMessageId)) {
       return
     }
     // 接口调用：按会话类型分发，并按对应已读开关控制
@@ -268,9 +269,9 @@ export const useMessageSender = () => {
       if (isPrivate) {
         await apiReadPrivateMessages(String(conversation.targetId), maxMessageId)
       } else if (isGroup) {
-        await apiReadGroupMessages(Number(conversation.targetId), maxMessageId)
+        await apiReadGroupMessages(String(conversation.targetId), maxMessageId)
       } else {
-        await apiReadChannelMessages(Number(conversation.targetId), maxMessageId)
+        await apiReadChannelMessages(String(conversation.targetId), maxMessageId)
       }
       conversationStore.markConversationReadReported(
         conversation.type,
@@ -303,7 +304,7 @@ export const useMessageSender = () => {
     }
     const cachedMaxReadId = messageStore.getPrivateReadMaxId(peerId)
     if (cachedMaxReadId !== undefined) {
-      if (cachedMaxReadId > 0) {
+      if (isPositiveId(cachedMaxReadId)) {
         messageStore.applyMessageReadReceipt({
           conversationType: ImConversationType.PRIVATE,
           targetId: peerId,

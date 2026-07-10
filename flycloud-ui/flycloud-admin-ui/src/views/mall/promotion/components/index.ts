@@ -3,7 +3,7 @@ import SpuAndSkuList from './SpuAndSkuList.vue'
 import { PropertyAndValues } from '@/views/mall/product/spu/components'
 
 type SpuProperty<T> = {
-  spuId: number
+  spuId: string
   spuDetail: T
   propertyList: PropertyAndValues[]
 }

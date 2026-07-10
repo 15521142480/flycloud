@@ -182,14 +182,14 @@ const groupRequestStore = useGroupRequestStore()
 
 const visible = ref(false)
 /** 当前展示的群编号；undefined 时走全局未处理列表（store.unhandledList） */
-const groupId = ref<number | undefined>()
+const groupId = ref<string | undefined>()
 const loading = ref(false)
 const groupList = ref<ImGroupRequestRespVO[]>([])
-const actingId = ref<number | null>(null)
+const actingId = ref<string | null>(null)
 
 defineExpose({
   /** 打开进群申请弹窗：reset → 灌参 → visible=true；不传 groupId 走全局未处理列表 */
-  open(opts?: { groupId?: number }) {
+  open(opts?: { groupId?: string }) {
     groupId.value = opts?.groupId
     actingId.value = null
     visible.value = true
@@ -250,7 +250,7 @@ watch(
 )
 
 let fetchSeq = 0 // 单调递增请求序号；同群也会因为 WS 1503 推送触发额外 fetch，乱序返回时旧响应不能覆盖新数据
-async function fetchList(targetGroupId: number) {
+async function fetchList(targetGroupId: string) {
   const seq = ++fetchSeq
   loading.value = true
   try {
@@ -302,7 +302,7 @@ async function handleRefuse(item: ImGroupRequestRespVO) {
 }
 
 /** 单群模式下处理后更新 groupList 里的 handleResult，按钮转「已同意 / 已拒绝」灰态；全局模式 store 直接移除该项无需更新 */
-function updateLocalResult(id: number, handleResult: number) {
+function updateLocalResult(id: string, handleResult: number) {
   const target = groupList.value.find((r) => r.id === id)
   if (target) {
     target.handleResult = handleResult

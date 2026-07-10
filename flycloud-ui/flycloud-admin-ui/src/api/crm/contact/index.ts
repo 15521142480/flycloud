@@ -2,9 +2,9 @@ import request from '@/config/axios'
 import { TransferReqVO } from '@/api/crm/permission'
 
 export interface ContactVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 联系人名称
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   customerName?: string // 客户名称
   contactLastTime: Date // 最后跟进时间
   contactLastContent: string // 最后跟进内容
@@ -17,13 +17,13 @@ export interface ContactVO {
   qq: string // QQ
   wechat: string // wechat
   email: string // email
-  areaId: number // 所在地
+  areaId: string // 所在地
   areaName?: string // 所在地名称
   detailAddress: string // 详细地址
   sex: number // 性别
   master: boolean // 是否主联系人
   post: string // 职务
-  parentId: number // 上级联系人编号
+  parentId: string // 上级联系人编号
   parentName?: string // 上级联系人名称
   remark: string // 备注
   creator: string // 创建人
@@ -33,13 +33,13 @@ export interface ContactVO {
 }
 
 export interface ContactBusinessReqVO {
-  contactId: number
-  businessIds: number[]
+  contactId: string
+  businessIds: string[]
 }
 
 export interface ContactBusiness2ReqVO {
-  businessId: number
-  contactIds: number[]
+  businessId: string
+  contactIds: string[]
 }
 
 // 查询 CRM 联系人列表
@@ -58,7 +58,7 @@ export const getContactPageByBusiness = async (params: any) => {
 }
 
 // 查询 CRM 联系人详情
-export const getContact = async (id: number) => {
+export const getContact = async (id: string) => {
   return await request.get({ url: `/crm/contact/get/` + id })
 }
 
@@ -73,7 +73,7 @@ export const updateContact = async (data: ContactVO) => {
 }
 
 // 删除 CRM 联系人
-export const deleteContact = async (id: number) => {
+export const deleteContact = async (id: string) => {
   return await request.delete({ url: `/crm/contact/delete/` + id })
 }
 

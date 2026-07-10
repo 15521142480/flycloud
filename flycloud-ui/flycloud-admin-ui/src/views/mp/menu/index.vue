@@ -116,7 +116,7 @@ const tempSelfObj = ref<{
 const dialogNewsVisible = ref(false) // 跳转图文时的素材选择弹窗
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number, name: string) => {
+const onAccountChanged = (id: string, name: string) => {
   accountId.value = id
   accountName.value = name
   getList()

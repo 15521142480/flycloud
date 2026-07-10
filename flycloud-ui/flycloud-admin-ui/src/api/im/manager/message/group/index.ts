@@ -3,9 +3,9 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerGroupMessageVO {
-  id: number
+  id: string
   clientMessageId?: string
-  groupId: number
+  groupId: string
   groupName?: string
   senderId: string
   senderNickname?: string
@@ -26,6 +26,6 @@ export const getManagerGroupMessagePage = (params: PageParam) => {
 }
 
 // 获得群聊消息详情
-export const getManagerGroupMessage = (id: number) => {
+export const getManagerGroupMessage = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/message/group/get`, params: { id } })
 }

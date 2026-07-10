@@ -1,20 +1,20 @@
 import request from '@/config/axios'
 
 export interface ReceivableVO {
-  id: number
+  id: string
   no: string
-  planId?: number
-  customerId?: number
+  planId?: string
+  customerId?: string
   customerName?: string
-  contractId?: number
+  contractId?: string
   contract?: {
-    id?: number
+    id?: string
     name?: string
     no: string
     totalPrice: number
   }
   auditStatus: number
-  processInstanceId: number
+  processInstanceId: string
   returnTime: Date
   returnType: number
   price: number
@@ -38,7 +38,7 @@ export const getReceivablePageByCustomer = async (params) => {
 }
 
 // 查询回款详情
-export const getReceivable = async (id: number) => {
+export const getReceivable = async (id: string) => {
   return await request.get({ url: `/crm/receivable/get/` + id })
 }
 
@@ -53,7 +53,7 @@ export const updateReceivable = async (data: ReceivableVO) => {
 }
 
 // 删除回款
-export const deleteReceivable = async (id: number) => {
+export const deleteReceivable = async (id: string) => {
   return await request.delete({ url: `/crm/receivable/delete/` + id })
 }
 
@@ -63,7 +63,7 @@ export const exportReceivable = async (params) => {
 }
 
 // 提交审核
-export const submitReceivable = async (id: number) => {
+export const submitReceivable = async (id: string) => {
   return await request.put({ url: `/crm/receivable/submit/${id}` })
 }
 

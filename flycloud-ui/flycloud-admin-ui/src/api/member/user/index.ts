@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface UserVO {
-  id?: number
+  id?: string
   avatar?: string
   birthday?: number
   createTime?: number
@@ -18,11 +18,11 @@ export interface UserVO {
   registerIp?: string
   sex?: number
   status?: number
-  areaId?: number
+  areaId?: string
   areaName?: string
-  tagIds?: number[]
-  groupId?: number
-  levelId?: number
+  tagIds?: string[]
+  groupId?: string
+  levelId?: string
   levelName?: string | null
   point?: number | null
   totalPoint?: number | null
@@ -30,13 +30,13 @@ export interface UserVO {
 }
 
 export interface UserLevelUpdateReqVO {
-  id: number
-  levelId: number
+  id: string
+  levelId: string
   reason: string
 }
 
 export interface UserPointUpdateReqVO {
-  id: number
+  id: string
   point: number
 }
 
@@ -49,7 +49,7 @@ export const getUserPage = async (params) => {
 }
 
 // 查询会员用户详情
-export const getUser = async (id: number) => {
+export const getUser = async (id: string) => {
   return await request.get<UserVO>({ url: `/${SYS_BASE_URL}/admin/member/user/get?id=` + id })
 }
 

@@ -21,7 +21,7 @@ const selectAndUpload = async () => {
   const files: any = await getFiles()
   message.success('图片发送中请稍等。。。')
   const res = await FileApi.updateFile({ file: files[0].file })
-  emits('send-picture', res.data)
+  emits('send-picture', res.data.url)
 }
 
 /**

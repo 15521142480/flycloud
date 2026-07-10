@@ -146,7 +146,7 @@ const treeRef = ref() // 菜单树组件 Ref
 const checkStrictly = ref(true) // 是否严格模式，即父子不关联
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

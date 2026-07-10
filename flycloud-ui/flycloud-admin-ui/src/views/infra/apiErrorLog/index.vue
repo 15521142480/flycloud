@@ -258,7 +258,7 @@ const openDetail = (data: ApiErrorLogApi.ApiErrorLogVO) => {
 }
 
 /** 处理已处理 / 已忽略的操作 **/
-const handleProcess = async (id: number, processStatus: number) => {
+const handleProcess = async (id: string, processStatus: number) => {
   try {
     // 操作的二次确认
     const type =

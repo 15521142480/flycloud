@@ -117,8 +117,8 @@ const message = useMessage() // 消息弹窗
 
 // 定义属性
 const searchName = ref<string>('') // 对话搜索
-const activeConversationId = ref<number | null>(null) // 选中的对话，默认为 null
-const hoverConversationId = ref<number | null>(null) // 悬浮上去的对话
+const activeConversationId = ref<string | null>(null) // 选中的对话，默认为 null
+const hoverConversationId = ref<string | null>(null) // 悬浮上去的对话
 const conversationList = ref([] as ChatConversationVO[]) // 对话列表
 const conversationMap = ref<any>({}) // 对话分组 (置顶、今天、三天前、一星期前、一个月前)
 const loading = ref<boolean>(false) // 加载中
@@ -155,7 +155,7 @@ const searchConversation = async (e) => {
 }
 
 /** 点击对话 */
-const handleConversationClick = async (id: number) => {
+const handleConversationClick = async (id: string) => {
   // 过滤出选中的对话
   const filterConversation = conversationList.value.filter((item) => {
     return item.id === id

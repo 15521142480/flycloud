@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface SignInRecordVO {
-  id: number
+  id: string
   userId: string
   day: number
   point: number

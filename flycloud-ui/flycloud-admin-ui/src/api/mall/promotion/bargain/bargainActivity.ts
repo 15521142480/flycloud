@@ -4,7 +4,7 @@ import { Sku, Spu } from '@/api/mall/product/spu'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BargainActivityVO {
-  id?: number
+  id?: string
   name?: string
   startTime?: Date
   endTime?: Date
@@ -12,8 +12,8 @@ export interface BargainActivityVO {
   helpMaxCount?: number // 达到该人数，才能砍到低价
   bargainCount?: number // 最大帮砍次数
   totalLimitCount?: number // 最大购买次数
-  spuId: number
-  skuId: number
+  spuId: string
+  skuId: string
   bargainFirstPrice: number // 砍价起始价格，单位分
   bargainMinPrice: number // 砍价底价
   stock: number // 活动库存
@@ -23,8 +23,8 @@ export interface BargainActivityVO {
 
 // 砍价活动所需属性。选择的商品和属性的时候使用方便使用活动的通用封装
 export interface BargainProductVO {
-  spuId: number
-  skuId: number
+  spuId: string
+  skuId: string
   bargainFirstPrice: number // 砍价起始价格，单位分
   bargainMinPrice: number // 砍价底价
   stock: number // 活动库存
@@ -45,7 +45,7 @@ export const getBargainActivityPage = async (params: any) => {
 }
 
 // 查询砍价活动详情
-export const getBargainActivity = async (id: number) => {
+export const getBargainActivity = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/get?id=` + id })
 }
 
@@ -60,12 +60,12 @@ export const updateBargainActivity = async (data: BargainActivityVO) => {
 }
 
 // 关闭砍价活动
-export const closeBargainActivity = async (id: number) => {
+export const closeBargainActivity = async (id: string) => {
   return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/close?id=` + id })
 }
 
 // 删除砍价活动
-export const deleteBargainActivity = async (id: number) => {
+export const deleteBargainActivity = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/bargain-activity/delete?id=` + id
   })

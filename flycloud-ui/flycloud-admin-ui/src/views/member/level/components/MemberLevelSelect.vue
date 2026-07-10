@@ -18,7 +18,7 @@ defineOptions({ name: 'MemberLevelSelect' })
 const props = defineProps({
   /** 下拉框选中值 **/
   modelValue: {
-    type: Number,
+    type: String,
     default: undefined
   }
 })

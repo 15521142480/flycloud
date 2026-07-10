@@ -86,7 +86,7 @@ const formRules = reactive({
 })
 const formRef = ref() // 表单 Ref
 
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   resetForm()
   // 设置数据

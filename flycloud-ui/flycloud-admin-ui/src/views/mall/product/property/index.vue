@@ -184,7 +184,7 @@ const propertyQuery = reactive({
 const valueQuery = reactive({
   pageNum: 1,
   pageSize: 10,
-  propertyId: undefined as number | undefined,
+  propertyId: undefined as string | undefined,
   name: ''
 })
 
@@ -250,7 +250,7 @@ const resetValueQuery = () => {
   getValueList()
 }
 
-const openPropertyForm = (type: string, id?: number) => {
+const openPropertyForm = (type: string, id?: string) => {
   propertyFormRef.value.open(type, id)
 }
 
@@ -258,12 +258,12 @@ const handlePropertyFormSuccess = async () => {
   await getPropertyList()
 }
 
-const openValueForm = (type: string, id?: number) => {
+const openValueForm = (type: string, id?: string) => {
   if (!currentProperty.value?.id) return
   valueFormRef.value.open(type, currentProperty.value.id, id)
 }
 
-const handleDeleteProperty = async (id: number) => {
+const handleDeleteProperty = async (id: string) => {
   try {
     await message.delConfirm()
     await PropertyApi.deleteProperty(id)
@@ -275,7 +275,7 @@ const handleDeleteProperty = async (id: number) => {
   } catch {}
 }
 
-const handleDeleteValue = async (id: number) => {
+const handleDeleteValue = async (id: string) => {
   try {
     await message.delConfirm()
     await PropertyApi.deletePropertyValue(id)

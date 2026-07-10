@@ -5,7 +5,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // 群 Response VO
 export interface ImGroupRespVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 群名称
   ownerUserId: string // 群主用户编号
   avatar?: string // 群头像
@@ -25,8 +25,8 @@ export interface ImGroupRespVO {
 
 // 群消息置顶 / 取消置顶 Request VO
 export interface ImGroupMessagePinReqVO {
-  id: number // 群编号
-  messageId: number // 消息编号
+  id: string // 群编号
+  messageId: string // 消息编号
 }
 
 // 群创建 Request VO
@@ -38,7 +38,7 @@ export interface ImGroupCreateReqVO {
 
 // 群更新 Request VO
 export interface ImGroupUpdateReqVO {
-  id: number // 群编号
+  id: string // 群编号
   name?: string // 群名称
   avatar?: string // 群头像
   notice?: string // 群公告
@@ -47,32 +47,32 @@ export interface ImGroupUpdateReqVO {
 
 // 添加 / 撤销群管理员 Request VO
 export interface ImGroupAdminReqVO {
-  id: number // 群编号
+  id: string // 群编号
   userIds: string[] // 目标用户编号列表
 }
 
 // 群主转让 Request VO
 export interface ImGroupTransferOwnerReqVO {
-  id: number // 群编号
+  id: string // 群编号
   newOwnerUserId: string // 新群主用户编号
 }
 
 // 全群禁言 / 取消 Request VO
 export interface ImGroupMuteAllReqVO {
-  id: number // 群编号
+  id: string // 群编号
   mutedAll: boolean // 是否全群禁言
 }
 
 // 成员禁言 Request VO
 export interface ImGroupMuteMemberReqVO {
-  id: number // 群编号
+  id: string // 群编号
   userId: string // 被禁言的用户编号
   mutedSeconds: number // 禁言时长（秒），0 表示永久禁言
 }
 
 // 取消成员禁言 Request VO
 export interface ImGroupCancelMuteMemberReqVO {
-  id: number // 群编号
+  id: string // 群编号
   userId: string // 被取消禁言的用户编号
 }
 
@@ -82,7 +82,7 @@ export const getMyGroupList = () => {
 }
 
 // 获得群详情
-export const getGroup = (id: number | string) => {
+export const getGroup = (id: string) => {
   return request.get<ImGroupRespVO>({ url: `/${SYS_BASE_URL}/im/group/get`, params: { id } })
 }
 
@@ -97,7 +97,7 @@ export const updateGroup = (data: ImGroupUpdateReqVO) => {
 }
 
 // 解散群
-export const dissolveGroup = (id: number | string) => {
+export const dissolveGroup = (id: string) => {
   return request.delete<boolean>({ url: `/${SYS_BASE_URL}/im/group/dissolve`, params: { id } })
 }
 

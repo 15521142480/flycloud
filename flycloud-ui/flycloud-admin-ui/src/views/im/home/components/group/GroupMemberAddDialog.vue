@@ -56,12 +56,12 @@ const groupStore = useGroupStore()
 
 const visible = ref(false)
 const submitting = ref(false)
-const groupId = ref(0)
+const groupId = ref('')
 const selectedIds = ref<string[]>([])
 
 defineExpose({
   /** 打开添加群成员弹窗：reset → 灌参 → visible=true */
-  open(opts: { groupId: number }) {
+  open(opts: { groupId: string }) {
     groupId.value = opts.groupId
     selectedIds.value = []
     submitting.value = false

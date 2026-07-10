@@ -332,7 +332,7 @@ watch(
 )
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -418,7 +418,7 @@ const handleCustomerChange = () => {
 }
 
 /** 处理商机变化 */
-const handleBusinessChange = async (businessId: number) => {
+const handleBusinessChange = async (businessId: string) => {
   const business = await BusinessApi.getBusiness(businessId)
   business.products.forEach((item) => {
     item.contractPrice = item.businessPrice

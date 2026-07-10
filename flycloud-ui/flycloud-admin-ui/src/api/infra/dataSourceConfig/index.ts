@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface DataSourceConfigVO {
-  id: number | undefined
+  id: string | undefined
   name: string
   url: string
   username: string
@@ -20,12 +20,12 @@ export const updateDataSourceConfig = (data: DataSourceConfigVO) => {
 }
 
 // 删除数据源配置
-export const deleteDataSourceConfig = (id: number) => {
+export const deleteDataSourceConfig = (id: string) => {
   return request.delete({ url: '/infra/data-source-config/delete/' + id })
 }
 
 // 查询数据源配置详情
-export const getDataSourceConfig = (id: number) => {
+export const getDataSourceConfig = (id: string) => {
   return request.get({ url: '/infra/data-source-config/get/' + id })
 }
 

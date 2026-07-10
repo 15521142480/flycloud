@@ -3,7 +3,7 @@ const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
 // BPM 流程监听器 VO
 export interface ProcessListenerVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 监听器名字
   type: string // 监听器类型
   status: number // 监听器状态
@@ -20,7 +20,7 @@ export const ProcessListenerApi = {
   },
 
   // 查询流程监听器详情
-  getProcessListener: async (id: number) => {
+  getProcessListener: async (id: string) => {
     return await request.get({ url: `/${BPM_BASE_URL}/processListener/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const ProcessListenerApi = {
   },
 
   // 删除流程监听器
-  deleteProcessListener: async (id: number) => {
+  deleteProcessListener: async (id: string) => {
     return await request.delete({ url: `/${BPM_BASE_URL}/processListener/delete/` + id })
   }
 }

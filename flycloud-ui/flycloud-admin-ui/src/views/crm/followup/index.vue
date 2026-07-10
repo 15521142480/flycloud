@@ -114,7 +114,7 @@ const { t } = useI18n()
 defineOptions({ name: 'FollowUpRecord' })
 const props = defineProps<{
   bizType: number
-  bizId: number
+  bizId: string
 }>()
 const message = useMessage() // 消息弹窗
 
@@ -125,7 +125,7 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   bizType: 0,
-  bizId: 0
+  bizId: '0'
 })
 
 /** 查询列表 */
@@ -147,7 +147,7 @@ const openForm = () => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -161,12 +161,12 @@ const handleDelete = async (id: number) => {
 
 /** 打开联系人详情 */
 const { push } = useRouter()
-const openContactDetail = (id: number) => {
+const openContactDetail = (id: string) => {
   push({ name: 'CrmContactDetail', params: { id } })
 }
 
 /** 打开商机详情 */
-const openBusinessDetail = (id: number) => {
+const openBusinessDetail = (id: string) => {
   push({ name: 'CrmBusinessDetail', params: { id } })
 }
 

@@ -71,7 +71,7 @@ const formLoading = ref(false) // 表单的加载中
 const uploadRef = ref()
 const fileList = ref<UploadUserFile[]>([]) // 文件列表
 const updateSupport = ref(false) // 是否更新已经存在的客户数据
-const ownerUserId = ref<undefined | number>() // 负责人编号
+const ownerUserId = ref<undefined | string>() // 负责人编号
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 
 /** 打开弹窗 */

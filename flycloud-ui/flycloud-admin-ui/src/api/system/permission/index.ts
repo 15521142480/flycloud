@@ -4,22 +4,22 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface PermissionAssignUserRoleReqVO {
   userId: string
-  roleIds: number[]
+  roleIds: string[]
 }
 
 export interface PermissionAssignRoleMenuReqVO {
-  roleId: number
-  menuIds: number[]
+  roleId: string
+  menuIds: string[]
 }
 
 export interface PermissionAssignRoleDataScopeReqVO {
-  roleId: number
+  roleId: string
   dataScope: number
-  dataScopeDeptIds: number[]
+  dataScopeDeptIds: string[]
 }
 
 // 查询角色拥有的菜单权限
-export const getRoleMenuList = async (roleId: number) => {
+export const getRoleMenuList = async (roleId: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/permission/list-role-menus?roleId=` + roleId })
 }
 

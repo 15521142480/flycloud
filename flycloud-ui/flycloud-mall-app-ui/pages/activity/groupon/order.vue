@@ -82,7 +82,7 @@
       pageSize: 5,
     },
     loadStatus: '',
-    deleteOrderId: 0,
+    deleteOrderId: '0',
   });
 
   const tabMaps = [

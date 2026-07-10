@@ -2,7 +2,7 @@ import request from '@/config/axios'
 import { TransferReqVO } from '@/api/crm/permission'
 
 export interface CustomerVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 客户名称
   followUpStatus: boolean // 跟进状态
   contactLastTime: Date // 最后跟进时间
@@ -18,10 +18,10 @@ export interface CustomerVO {
   qq: string // QQ
   wechat: string // wechat
   email: string // email
-  areaId: number // 所在地
+  areaId: string // 所在地
   areaName?: string // 所在地名称
   detailAddress: string // 详细地址
-  industryId: number // 所属行业
+  industryId: string // 所属行业
   level: number // 客户等级
   source: number // 客户来源
   remark: string // 备注
@@ -57,7 +57,7 @@ export const getFollowCustomerCount = async () => {
 }
 
 // 查询客户详情
-export const getCustomer = async (id: number) => {
+export const getCustomer = async (id: string) => {
   return await request.get({ url: `/crm/customer/get/` + id })
 }
 
@@ -72,12 +72,12 @@ export const updateCustomer = async (data: CustomerVO) => {
 }
 
 // 更新客户的成交状态
-export const updateCustomerDealStatus = async (id: number, dealStatus: boolean) => {
+export const updateCustomerDealStatus = async (id: string, dealStatus: boolean) => {
   return await request.put({ url: `/crm/customer/update-deal-status`, params: { id, dealStatus } })
 }
 
 // 删除客户
-export const deleteCustomer = async (id: number) => {
+export const deleteCustomer = async (id: string) => {
   return await request.delete({ url: `/crm/customer/delete/` + id })
 }
 
@@ -109,7 +109,7 @@ export const transferCustomer = async (data: TransferReqVO) => {
 }
 
 // 锁定/解锁客户
-export const lockCustomer = async (id: number, lockStatus: boolean) => {
+export const lockCustomer = async (id: string, lockStatus: boolean) => {
   return await request.put({ url: `/crm/customer/lock`, data: { id, lockStatus } })
 }
 
@@ -127,6 +127,6 @@ export const distributeCustomer = async (ids: any[], ownerUserId: string) => {
 }
 
 // 客户放入公海
-export const putCustomerPool = async (id: number) => {
+export const putCustomerPool = async (id: string) => {
   return await request.put({ url: `/crm/customer/put-pool/${id}` })
 }

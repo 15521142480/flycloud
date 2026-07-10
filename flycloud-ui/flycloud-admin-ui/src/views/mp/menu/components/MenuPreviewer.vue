@@ -65,7 +65,7 @@ const props = defineProps<{
   modelValue: Menu[]
   activeIndex: string
   parentIndex: number
-  accountId: number
+  accountId: string
 }>()
 
 const emit = defineEmits<{

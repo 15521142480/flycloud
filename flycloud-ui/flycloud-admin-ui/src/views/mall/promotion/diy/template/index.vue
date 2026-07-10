@@ -178,12 +178,12 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -210,7 +210,7 @@ const handleUse = async (row: DiyTemplateApi.DiyTemplateVO) => {
 
 /** 打开装修页面 */
 const { push } = useRouter()
-const handleDecorate = (id: number) => {
+const handleDecorate = (id: string) => {
   push({ name: 'DiyTemplateDecorate', params: { id } })
 }
 

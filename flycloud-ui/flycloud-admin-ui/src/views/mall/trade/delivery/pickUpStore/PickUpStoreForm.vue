@@ -165,7 +165,7 @@ const areaList = ref() // 区域树
 const tencentLbsUrl = ref('') // 腾讯位置服务 url
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

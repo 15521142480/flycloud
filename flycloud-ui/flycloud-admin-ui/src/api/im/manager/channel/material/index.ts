@@ -3,8 +3,8 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerChannelMaterialVO {
-  id: number
-  channelId: number
+  id: string
+  channelId: string
   channelName?: string
   type: number
   title: string
@@ -21,7 +21,7 @@ export const getManagerChannelMaterialPage = (params: PageParam) => {
 }
 
 // 获得指定频道下的素材精简列表
-export const getSimpleManagerChannelMaterialList = (channelId: number) => {
+export const getSimpleManagerChannelMaterialList = (channelId: string) => {
   return request.get({
     url: `/${SYS_BASE_URL}/im/manager/channel-material/simple-list`,
     params: { channelId }
@@ -29,7 +29,7 @@ export const getSimpleManagerChannelMaterialList = (channelId: number) => {
 }
 
 // 获得素材详情
-export const getManagerChannelMaterial = (id: number) => {
+export const getManagerChannelMaterial = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/channel-material/get`, params: { id } })
 }
 
@@ -44,7 +44,7 @@ export const updateManagerChannelMaterial = (data: ImManagerChannelMaterialVO) =
 }
 
 // 删除素材
-export const deleteManagerChannelMaterial = (id: number) => {
+export const deleteManagerChannelMaterial = (id: string) => {
   return request.delete({
     url: `/${SYS_BASE_URL}/im/manager/channel-material/delete`,
     params: { id }

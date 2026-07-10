@@ -2,7 +2,7 @@ import request from '@/config/axios'
 const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
 export type FormVO = {
-  id: number
+  id: string
   name: string
   conf: string
   fields: string[]
@@ -43,14 +43,14 @@ export const updateForm = async (data: FormVO) => {
 }
 
 // 删除工作流的表单定义
-export const deleteForm = async (id: number) => {
+export const deleteForm = async (id: string) => {
   return await request.delete({
     url: `/${BPM_BASE_URL}/form/delete/` + id
   })
 }
 
 // 获得工作流的表单定义
-export const getForm = async (id: number) => {
+export const getForm = async (id: string) => {
   return await request.get({
     url: `/${BPM_BASE_URL}/form/get/` + id
   })

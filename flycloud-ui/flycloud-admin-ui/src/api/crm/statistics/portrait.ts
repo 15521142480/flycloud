@@ -7,7 +7,7 @@ export interface CrmStatisticCustomerBaseRespVO {
 }
 
 export interface CrmStatisticCustomerIndustryRespVO extends CrmStatisticCustomerBaseRespVO {
-  industryId: number
+  industryId: string
   industryPortion: string | number
 }
 
@@ -22,7 +22,7 @@ export interface CrmStatisticCustomerLevelRespVO extends CrmStatisticCustomerBas
 }
 
 export interface CrmStatisticCustomerAreaRespVO extends CrmStatisticCustomerBaseRespVO {
-  areaId: number
+  areaId: string
   areaName: string
   areaPortion: string | number
 }

@@ -53,7 +53,7 @@ const receivablePlan = ref<ReceivablePlanApi.ReceivablePlanVO>(
 const permissionListRef = ref<InstanceType<typeof PermissionList>>() // 团队成员列表 Ref
 
 /** 获取详情 */
-const getReceivablePlan = async (id: number) => {
+const getReceivablePlan = async (id: string) => {
   loading.value = true
   try {
     receivablePlan.value = await ReceivablePlanApi.getReceivablePlan(id)
@@ -65,13 +65,13 @@ const getReceivablePlan = async (id: number) => {
 
 /** 编辑 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 获取操作日志 */
 const logList = ref<OperateLogVO[]>([]) // 操作日志列表
-const getOperateLog = async (receivablePlanId: number) => {
+const getOperateLog = async (receivablePlanId: string) => {
   if (!receivablePlanId) {
     return
   }

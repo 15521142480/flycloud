@@ -2,8 +2,8 @@ import request from '@/config/axios'
 
 // AI 聊天角色 VO
 export interface ChatRoleVO {
-  id: number // 角色编号
-  modelId: number // 模型编号
+  id: string // 角色编号
+  modelId: string // 模型编号
   name: string // 角色名称
   avatar: string // 角色头像
   category: string // 角色类别
@@ -32,7 +32,7 @@ export const ChatRoleApi = {
   },
 
   // 查询聊天角色详情
-  getChatRole: async (id: number) => {
+  getChatRole: async (id: string) => {
     return await request.get({ url: `/ai/chat-role/get/` + id })
   },
 
@@ -47,7 +47,7 @@ export const ChatRoleApi = {
   },
 
   // 删除聊天角色
-  deleteChatRole: async (id: number) => {
+  deleteChatRole: async (id: string) => {
     return await request.delete({ url: `/ai/chat-role/delete/` + id })
   },
 
@@ -74,7 +74,7 @@ export const ChatRoleApi = {
   },
 
   // 删除角色 my
-  deleteMy: async (id: number) => {
+  deleteMy: async (id: string) => {
     return await request.delete({ url: `/ai/chat-role/delete-my/` + id })
   }
 }

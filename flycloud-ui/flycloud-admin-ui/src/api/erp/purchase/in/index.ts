@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 采购入库 VO
 export interface PurchaseInVO {
-  id: number // 入库工单编号
+  id: string // 入库工单编号
   no: string // 采购入库号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   inTime: Date // 入库时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -22,7 +22,7 @@ export const PurchaseInApi = {
   },
 
   // 查询采购入库详情
-  getPurchaseIn: async (id: number) => {
+  getPurchaseIn: async (id: string) => {
     return await request.get({ url: `/erp/purchase-in/get/` + id })
   },
 
@@ -37,7 +37,7 @@ export const PurchaseInApi = {
   },
 
   // 更新采购入库的状态
-  updatePurchaseInStatus: async (id: number, status: number) => {
+  updatePurchaseInStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/purchase-in/update-status`,
       params: {
@@ -48,7 +48,7 @@ export const PurchaseInApi = {
   },
 
   // 删除采购入库
-  deletePurchaseIn: async (ids: number[]) => {
+  deletePurchaseIn: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/purchase-in/delete`,
       params: {

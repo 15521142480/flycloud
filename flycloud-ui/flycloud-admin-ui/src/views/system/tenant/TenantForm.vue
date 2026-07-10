@@ -168,7 +168,7 @@ const formRef = ref() // 表单 Ref
 const packageList = ref([] as TenantPackageApi.TenantPackageVO[]) // 租户套餐
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

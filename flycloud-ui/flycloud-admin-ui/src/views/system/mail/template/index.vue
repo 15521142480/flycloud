@@ -88,18 +88,18 @@ const { getList, setSearchParams } = tableMethods
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 删除按钮操作 */
-const handleDelete = (id: number) => {
+const handleDelete = (id: string) => {
   tableMethods.delList(id, false)
 }
 
 /** 发送测试操作 */
 const sendFormRef = ref()
-const openSendForm = (id: number) => {
+const openSendForm = (id: string) => {
   sendFormRef.value.open(id)
 }
 

@@ -1,17 +1,17 @@
 import request from '@/config/axios'
 
 export interface ReceivablePlanVO {
-  id: number
+  id: string
   period: number
-  receivableId: number
+  receivableId: string
   price: number
   returnTime: Date
   remindDays: number
   returnType: number
   remindTime: Date
-  customerId: number
+  customerId: string
   customerName?: string
-  contractId?: number
+  contractId?: string
   contractNo?: string
   ownerUserId: string
   ownerUserName?: string
@@ -37,12 +37,12 @@ export const getReceivablePlanPageByCustomer = async (params) => {
 }
 
 // 查询回款计划详情
-export const getReceivablePlan = async (id: number) => {
+export const getReceivablePlan = async (id: string) => {
   return await request.get({ url: `/crm/receivable-plan/get/` + id })
 }
 
 // 查询回款计划下拉数据
-export const getReceivablePlanSimpleList = async (customerId: number, contractId: number) => {
+export const getReceivablePlanSimpleList = async (customerId: string, contractId: string) => {
   return await request.get({
     url: `/crm/receivable-plan/simple-list?customerId=${customerId}&contractId=${contractId}`
   })
@@ -59,7 +59,7 @@ export const updateReceivablePlan = async (data: ReceivablePlanVO) => {
 }
 
 // 删除回款计划
-export const deleteReceivablePlan = async (id: number) => {
+export const deleteReceivablePlan = async (id: string) => {
   return await request.delete({ url: `/crm/receivable-plan/delete/` + id })
 }
 

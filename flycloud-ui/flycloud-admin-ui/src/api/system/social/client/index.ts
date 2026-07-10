@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface SocialClientVO {
-  id: number
+  id: string
   name: string
   socialType: number
   userType: number
@@ -17,7 +17,7 @@ export const getSocialClientPage = async (params) => {
 }
 
 // 查询社交客户端详情
-export const getSocialClient = async (id: number) => {
+export const getSocialClient = async (id: string) => {
   return await request.get({ url: `/system/social-client/get/` + id })
 }
 
@@ -32,6 +32,6 @@ export const updateSocialClient = async (data: SocialClientVO) => {
 }
 
 // 删除社交客户端
-export const deleteSocialClient = async (id: number) => {
+export const deleteSocialClient = async (id: string) => {
   return await request.delete({ url: `/system/social-client/delete/` + id })
 }

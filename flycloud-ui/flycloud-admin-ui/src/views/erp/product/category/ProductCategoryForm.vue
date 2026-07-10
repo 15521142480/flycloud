@@ -130,7 +130,7 @@ const formRef = ref() // 表单 Ref
 const productCategoryTree = ref() // 树形结构
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -190,7 +190,7 @@ const getProductCategoryTree = async () => {
   productCategoryTree.value = []
   const data = await ProductCategoryApi.getProductCategoryList()
   const root: Tree = {
-    id: 0,
+    id: '0',
     name: t('auto.views.erp.product.category.ProductCategoryForm.k0bff7b6b'),
     children: []
   }

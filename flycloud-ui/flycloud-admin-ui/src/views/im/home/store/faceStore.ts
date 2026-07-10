@@ -109,7 +109,7 @@ export const useFaceStore = defineStore('imFace', () => {
   }
 
   /** 删除个人表情；本地立即移除 */
-  async function removeFaceUserItem(id: number): Promise<boolean> {
+  async function removeFaceUserItem(id: string): Promise<boolean> {
     const requestEpoch = storeEpoch
     try {
       await apiDeleteFaceUserItem(id)

@@ -1071,12 +1071,12 @@ async function uploadAndSendVideo(file: File) {
   //     失败兜底为 url=undefined，由 step 3 拿不到 url 时收尾
   const videoForm = new FormData()
   videoForm.append('file', file)
-  const videoUploadPromise: Promise<{ data?: string }> = (async () => {
+  const videoUploadPromise: Promise<{ data?: string | { url?: string } }> = (async () => {
     try {
       return (await updateFile(
         videoForm,
         createUploadProgressHandler(conversation, clientMessageId)
-      )) as { data?: string }
+      )) as unknown as { data?: string | { url?: string } }
     } catch (e) {
       console.warn('[IM] 视频本体上传失败', e)
       return { data: undefined }
@@ -1098,7 +1098,11 @@ async function uploadAndSendVideo(file: File) {
         'file',
         new File([probe.cover], `cover-${Date.now()}.jpg`, { type: 'image/jpeg' })
       )
-      const coverUrl = ((await updateFile(coverForm)) as { data?: string })?.data || undefined
+      const coverUploadRes = (await updateFile(coverForm)) as unknown as {
+        data?: string | { url?: string }
+      }
+      const coverUrl =
+        typeof coverUploadRes?.data === 'string' ? coverUploadRes.data : coverUploadRes?.data?.url
       return { probe, coverUrl }
     } catch (e) {
       console.warn('[IM] 视频封面上传失败', e)
@@ -1113,7 +1117,7 @@ async function uploadAndSendVideo(file: File) {
     coverUploadPromise
   ])
   // 3.2 视频本体没 url：占位置 FAILED，让用户决定重试 / 删除（_localFile 在内存里）
-  const url = videoRes?.data
+  const url = typeof videoRes?.data === 'string' ? videoRes.data : videoRes?.data?.url
   if (!url) {
     markMediaFailed(conversation.type, conversation.targetId, clientMessageId)
     return

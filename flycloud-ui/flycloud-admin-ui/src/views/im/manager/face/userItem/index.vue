@@ -128,7 +128,7 @@ const list = ref<ManagerFaceUserItemApi.ImManagerFaceUserItemVO[]>([])
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  userId: undefined as number | undefined,
+  userId: undefined as string | undefined,
   name: undefined as string | undefined,
   createTime: [] as string[]
 })
@@ -157,7 +157,7 @@ const resetQuery = () => {
 }
 
 /** 删除用户表情（运营审计场景） */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     await message.delConfirm()
   } catch {

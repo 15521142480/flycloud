@@ -27,11 +27,11 @@ defineOptions({ name: 'BpmOALeaveDetail' })
 const { query } = useRoute() // 查询参数
 
 const props = defineProps({
-  id: propTypes.number.def(undefined)
+  id: propTypes.string.def(undefined)
 })
 const detailLoading = ref(false) // 表单的加载中
 const detailData = ref<any>({}) // 详情数据
-const queryId = query.id as unknown as number // 从 URL 传递过来的 id 编号
+const queryId = String(query.id) // 从 URL 传递过来的 id 编号
 
 /** 获得数据 */
 const getInfo = async () => {

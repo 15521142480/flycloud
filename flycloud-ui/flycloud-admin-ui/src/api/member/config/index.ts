@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ConfigVO {
-  id?: number
+  id?: string
   pointTradeDeductEnable: boolean
   pointTradeDeductUnitPrice: number
   pointTradeDeductMaxPrice: number

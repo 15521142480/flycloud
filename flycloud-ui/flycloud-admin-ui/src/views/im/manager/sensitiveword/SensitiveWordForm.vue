@@ -49,7 +49,7 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create / update
 const formData = ref({
-  id: undefined as number | undefined,
+  id: undefined as string | undefined,
   word: '',
   status: CommonStatusEnum.ENABLE
 })
@@ -60,7 +60,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = type === 'create' ? '新增敏感词' : '修改敏感词'
   formType.value = type

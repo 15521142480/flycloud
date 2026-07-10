@@ -11,14 +11,14 @@ export type ProcessDefinitionVO = {
 }
 
 export type ModelVO = {
-  id: number
+  id: string
   formName: string
   key: string
   name: string
   description: string
   category: string
   formType: number
-  formId: number
+  formId: string
   formCustomCreatePath: string
   formCustomViewPath: string
   processDefinition: ProcessDefinitionVO
@@ -49,7 +49,7 @@ export const updateModelBpmn = async (data: ModelVO) => {
 }
 
 // 任务状态修改
-export const updateModelState = async (id: number, state: number) => {
+export const updateModelState = async (id: string, state: number) => {
   const data = {
     id: id,
     state: state
@@ -57,7 +57,7 @@ export const updateModelState = async (id: number, state: number) => {
   return await request.put({ url: `/${BPM_BASE_URL}/model/update-state`, data: data })
 }
 
-export const updateModelSortBatch = async (ids: number[]) => {
+export const updateModelSortBatch = async (ids: string[]) => {
   return await request.put({ url: `/${BPM_BASE_URL}/model/update-sort-batch`,
     params: {
       ids: ids.join(',')
@@ -69,10 +69,10 @@ export const createModel = async (data: ModelVO) => {
   return await request.post({ url: `/${BPM_BASE_URL}/model/create`, data: data })
 }
 
-export const deleteModel = async (id: number) => {
+export const deleteModel = async (id: string) => {
   return await request.delete({ url: `/${BPM_BASE_URL}/model/delete/` + id })
 }
 
-export const deployModel = async (id: number) => {
+export const deployModel = async (id: string) => {
   return await request.post({ url: `/${BPM_BASE_URL}/model/deploy/` + id })
 }

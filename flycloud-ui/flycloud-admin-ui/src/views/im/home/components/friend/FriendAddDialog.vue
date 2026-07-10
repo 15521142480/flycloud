@@ -211,7 +211,7 @@ function resetAll() {
 
 /** 预填模式下的申请理由话术：群聊「我是"XX 群"的 YY」；其它「我是 YY」 */
 function buildPresetApplyContent(): string {
-  const myNickname = userStore.getUser?.nickname || ''
+  const myNickname = userStore.getUser?.name || ''
   if (!myNickname) {
     return ''
   }
@@ -238,7 +238,7 @@ async function handleSearch() {
 /** 进入申请步骤：预填申请理由「我是 ${当前用户昵称}」（对齐微信交互） */
 function enterApply(user: UserVO) {
   targetUser.value = user
-  const myNickname = userStore.getUser?.nickname || ''
+  const myNickname = userStore.getUser?.name || ''
   applyContent.value = myNickname ? `我是${myNickname}` : ''
   displayName.value = ''
   step.value = 'apply'

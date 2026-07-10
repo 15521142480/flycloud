@@ -46,7 +46,7 @@ const emit = defineEmits<{
 }>()
 
 /** 打开弹窗 */
-const open = async (type: 'create' | 'update', accountId: number, id?: number) => {
+const open = async (type: 'create' | 'update', accountId: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

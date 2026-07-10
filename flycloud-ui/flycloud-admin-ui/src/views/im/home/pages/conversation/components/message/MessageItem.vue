@@ -160,7 +160,7 @@
               <MessageReadStatus
                 v-else-if="showGroupReadStatus"
                 :message="message"
-                :group-id="Number(conversationStore.activeConversation?.targetId || 0)"
+                :group-id="String(conversationStore.activeConversation?.targetId || '')"
                 :group-members="groupMembersForReadStatus"
                 class="text-12px whitespace-nowrap text-[var(--el-text-color-secondary)]"
               />
@@ -280,9 +280,9 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   /** 引用块点击 → MessagePanel 滚定位 + 高亮 */
-  locate: [messageId: number]
+  locate: [messageId: string]
   /** 禁言：需要父组件打开时长选择弹窗 */
-  mute: [groupId: number, userId: string, displayName: string]
+  mute: [groupId: string, userId: string, displayName: string]
   /** 数据变更后刷新群信息 */
   reload: []
 }>()
@@ -351,7 +351,7 @@ const recallTipSegments = computed(() => {
     props.message.senderId,
     props.message.selfSend,
     conversation?.type ?? 0,
-    conversation?.targetId ?? 0
+    conversation?.targetId ?? ''
   )
 })
 
@@ -367,7 +367,7 @@ const isGroupNotificationMessage = computed(() => isGroupNotification(props.mess
 /** 群广播事件 segments */
 const groupNotificationSegments = computed(() =>
   resolveGroupNotificationSegments(props.message, (id: string) =>
-    getSenderDisplayName(id, ImConversationType.GROUP, props.message.targetId ?? 0)
+    getSenderDisplayName(id, ImConversationType.GROUP, props.message.targetId ?? '')
   )
 )
 
@@ -454,7 +454,7 @@ function handleCardClick(card: CardMessage, e: MouseEvent) {
   if (card.targetType === ImConversationType.GROUP) {
     uiStore.openGroupInfoCardAtEvent(
       {
-        id: Number(card.targetId),
+        id: String(card.targetId),
         name: card.name,
         showImage: card.avatar,
         memberCount: card.memberCount
@@ -506,7 +506,7 @@ const senderRealNickname = computed(() => {
   return getSenderRealNickname(
     props.message.senderId,
     conversation?.type ?? 0,
-    conversation?.targetId ?? 0
+    conversation?.targetId ?? ''
   )
 })
 
@@ -516,7 +516,7 @@ const senderDisplayName = computed(() => {
   return getSenderDisplayName(
     props.message.senderId,
     conversation?.type ?? 0,
-    conversation?.targetId ?? 0
+    conversation?.targetId ?? ''
   )
 })
 

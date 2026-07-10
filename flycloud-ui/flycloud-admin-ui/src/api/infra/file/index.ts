@@ -10,7 +10,7 @@ export interface FilePageReqVO extends PageParam {
 // 文件预签名地址 Response VO
 export interface FilePresignedUrlRespVO {
   // 文件配置编号
-  configId: number
+  configId: string
   // 文件上传 URL
   uploadUrl: string
   // 文件 URL
@@ -36,7 +36,7 @@ export const getFilePage = (params: FilePageReqVO) => {
 }
 
 // 删除文件
-export const deleteFile = (id: number) => {
+export const deleteFile = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/file/delete/` + id })
 }
 

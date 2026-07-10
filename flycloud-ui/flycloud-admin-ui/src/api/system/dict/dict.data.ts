@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export type DictDataVO = {
-  id: number | undefined
+  id: string | undefined
   sort: number | undefined
   label: string
   value: string
@@ -26,7 +26,7 @@ export const getDictDataPage = (params: PageParam) => {
 }
 
 // 查询字典数据详情
-export const getDictData = (id: number) => {
+export const getDictData = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/dictData/get/` + id })
 }
 
@@ -36,7 +36,7 @@ export const saveOrUpdate = (data: DictDataVO) => {
 }
 
 // 删除字典数据
-export const deleteDictData = (id: number) => {
+export const deleteDictData = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/dictData/delete/` + id })
 }
 

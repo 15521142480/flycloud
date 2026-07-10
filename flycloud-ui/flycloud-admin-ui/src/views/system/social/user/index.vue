@@ -196,7 +196,7 @@ const imagePreview = (imgUrl: string) => {
 
 /** 详情操作 */
 const detailRef = ref()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   detailRef.value.open(id)
 }
 

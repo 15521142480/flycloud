@@ -2,11 +2,11 @@ import request from '@/config/axios'
 
 // ERP 产品 VO
 export interface ProductVO {
-  id: number // 产品编号
+  id: string // 产品编号
   name: string // 产品名称
   barCode: string // 产品条码
-  categoryId: number // 产品类型编号
-  unitId: number // 单位编号
+  categoryId: string // 产品类型编号
+  unitId: string // 单位编号
   unitName?: string // 单位名字
   status: number // 产品状态
   standard: string // 产品规格
@@ -31,7 +31,7 @@ export const ProductApi = {
   },
 
   // 查询产品详情
-  getProduct: async (id: number) => {
+  getProduct: async (id: string) => {
     return await request.get({ url: `/erp/product/get/` + id })
   },
 
@@ -46,7 +46,7 @@ export const ProductApi = {
   },
 
   // 删除产品
-  deleteProduct: async (id: number) => {
+  deleteProduct: async (id: string) => {
     return await request.delete({ url: `/erp/product/delete/` + id })
   },
 

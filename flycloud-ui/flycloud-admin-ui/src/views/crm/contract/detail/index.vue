@@ -67,7 +67,7 @@ import ReceivableList from '@/views/crm/receivable/components/ReceivableList.vue
 import ReceivablePlanList from '@/views/crm/receivable/plan/components/ReceivablePlanList.vue'
 const { t } = useI18n()
 defineOptions({ name: 'CrmContractDetail' })
-const props = defineProps<{ id?: number }>()
+const props = defineProps<{ id?: string }>()
 
 const route = useRoute()
 const message = useMessage()
@@ -78,7 +78,7 @@ const permissionListRef = ref<InstanceType<typeof PermissionList>>() // 团队�
 
 /** 编辑 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
@@ -95,7 +95,7 @@ const getContractData = async () => {
 
 /** 获取操作日志 */
 const logList = ref<OperateLogVO[]>([]) // 操作日志列表
-const getOperateLog = async (contractId: number) => {
+const getOperateLog = async (contractId: string) => {
   if (!contractId) {
     return
   }

@@ -196,7 +196,7 @@ const handleSelectionChange = (rows: SaleOutVO[]) => {
 }
 
 /** 打开弹窗 */
-const open = async (customerId: number) => {
+const open = async (customerId: string) => {
   dialogVisible.value = true
   await nextTick() // 等待，避免 queryFormRef 为空
   // 加载可出库的订单列表

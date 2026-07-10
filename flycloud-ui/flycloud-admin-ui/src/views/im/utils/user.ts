@@ -72,13 +72,13 @@ export function getGroupDisplayName(group: Pick<Group, 'name' | 'groupRemark'>):
  * 给需要"是否真名"信号的调用方用——比如 conversationStore 决定要不要写 lastSenderDisplayName 快照、要不要触发 fetchGroupMemberList 兜底拉成员
  *
  * GROUP 场景下 member 已就位优先 displayUserName / 好友备注 / 真实昵称；member 缺失时区分两种 sender：
- * - self → 直接拿 userStore.nickname 兜底（本端永远知道自己的昵称，不需要 fetch；同时避免 self 退群后 GROUP_MEMBER_QUIT 通知触发兜底拉成员 → 403）
+ * - self → 直接拿 userStore.name 兜底（本端永远知道自己的昵称，不需要 fetch；同时避免 self 退群后 GROUP_MEMBER_QUIT 通知触发兜底拉成员 → 403）
  * - 其他人 → 返回 undefined，让 deriveLastSenderDisplayName 走兜底拉成员
  */
 export function tryGetSenderDisplayName(
   senderId: string,
   conversationType: number,
-  conversationTargetId: number | string
+  conversationTargetId: string
 ): string | undefined {
   if (conversationType === ImConversationType.GROUP) {
     const group = useGroupStore().getGroup(conversationTargetId)
@@ -88,14 +88,14 @@ export function tryGetSenderDisplayName(
       return getMemberDisplayName(member, friend)
     }
     if (senderId === getCurrentUserId()) {
-      return useUserStore().getUser?.nickname || undefined
+      return useUserStore().getUser?.name || undefined
     }
     return undefined
   }
 
   // PRIVATE / 未知会话类型：self 走 userStore，对方走 friend
   if (senderId === getCurrentUserId()) {
-    return useUserStore().getUser?.nickname || undefined
+    return useUserStore().getUser?.name || undefined
   }
   if (conversationType === ImConversationType.PRIVATE) {
     const friend = useFriendStore().getFriend(senderId)
@@ -107,15 +107,15 @@ export function tryGetSenderDisplayName(
 /**
  * 消息发送者显示名：渲染时实时算，按 WeChat 优先级
  *
- * - 自己：userStore.nickname
+ * - 自己：userStore.name
  * - 私聊对方：好友备注 > 真实昵称
  * - 群聊对方：好友备注 > 群备注（displayUserName） > 真实昵称
- * - 查不到：fallbackName || (self 走 userStore.nickname) || String(senderId)
+ * - 查不到：fallbackName || (self 走 userStore.name) || String(senderId)
  */
 export function getSenderDisplayName(
   senderId: string,
   conversationType: number,
-  conversationTargetId: number | string,
+  conversationTargetId: string,
   fallbackName?: string
 ): string {
   const real = tryGetSenderDisplayName(senderId, conversationType, conversationTargetId)
@@ -128,7 +128,7 @@ export function getSenderDisplayName(
   // self 在 GROUP members 没加载时，至少用真实昵称兜底渲染（比 String(senderId) 友好）；兜底拉成员由 conversationStore 触发，回来后 try 版本能命中真名自然刷新
   const userStore = useUserStore()
   if (senderId === getCurrentUserId()) {
-    return userStore.getUser?.nickname || String(senderId)
+    return userStore.getUser?.name || String(senderId)
   }
   return String(senderId)
 }
@@ -136,7 +136,7 @@ export function getSenderDisplayName(
 /**
  * 消息发送者「真实昵称」：永远是 nickname，不掺备注
  *
- * - 自己：userStore.nickname
+ * - 自己：userStore.name
  * - 私聊对方：friend.nickname
  * - 群聊对方：member.nickname
  *
@@ -145,7 +145,7 @@ export function getSenderDisplayName(
 export function getSenderRealNickname(
   senderId: string,
   conversationType: number,
-  conversationTargetId: number | string
+  conversationTargetId: string
 ): string {
   const userStore = useUserStore()
   const selfUserId = getCurrentUserId()
@@ -158,21 +158,21 @@ export function getSenderRealNickname(
       return member.nickname
     }
     if (senderId === selfUserId) {
-      return userStore.getUser?.nickname || String(senderId)
+      return userStore.getUser?.name || String(senderId)
     }
     return String(senderId)
   }
 
   if (conversationType === ImConversationType.PRIVATE) {
     if (senderId === selfUserId) {
-      return userStore.getUser?.nickname || String(senderId)
+      return userStore.getUser?.name || String(senderId)
     }
     const friend = useFriendStore().getFriend(senderId)
     return friend?.nickname || String(senderId)
   }
 
   if (senderId === selfUserId) {
-    return userStore.getUser?.nickname || String(senderId)
+    return userStore.getUser?.name || String(senderId)
   }
   return String(senderId)
 }
@@ -188,7 +188,7 @@ export function getSenderRealNickname(
 export function getSenderAvatar(
   senderId: string,
   conversationType: number,
-  conversationTargetId: number | string
+  conversationTargetId: string
 ): string {
   const userStore = useUserStore()
   if (senderId === getCurrentUserId()) {
@@ -292,7 +292,7 @@ export function openMentionUserInfoCardAtEvent(
   const user: User = {
     id: userId,
     nickname: friend?.nickname || member?.nickname || fallbackName || String(userId),
-    avatar: getSenderAvatar(userId, conversation?.type ?? 0, conversation?.targetId ?? 0)
+    avatar: getSenderAvatar(userId, conversation?.type ?? 0, conversation?.targetId ?? '')
   }
   useImUiStore().openUserInfoCardAtEvent(
     user,

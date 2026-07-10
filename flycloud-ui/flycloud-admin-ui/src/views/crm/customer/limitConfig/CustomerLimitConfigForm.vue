@@ -110,7 +110,7 @@ const deptTree = ref() // 部门树形结构
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 
 /** 打开弹窗 */
-const open = async (type: string, limitConfType: LimitConfType, id?: number) => {
+const open = async (type: string, limitConfType: LimitConfType, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

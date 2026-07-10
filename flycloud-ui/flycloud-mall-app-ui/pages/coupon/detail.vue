@@ -156,8 +156,8 @@
   import { resetPagination } from '@/sheep/helper/utils';
 
   const state = reactive({
-    id: 0, // 优惠劵模版编号 templateId
-    couponId: 0, // 用户优惠劵编号 couponId
+    id: '0', // 优惠劵模版编号 templateId
+    couponId: '0', // 用户优惠劵编号 couponId
     coupon: {}, // 优惠劵信息
 
     pagination: {
@@ -166,7 +166,7 @@
       pageNum: 1,
       pageSize: 8,
     },
-    categoryId: 0, // 选中的商品分类编号
+    categoryId: '0', // 选中的商品分类编号
     tabMaps: [], // 指定分类时，每个分类构成一个 tab
     currentTab: 0, // 选中的 tabMaps 下标
     loadStatus: '',

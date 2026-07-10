@@ -3,11 +3,11 @@ import { useI18n } from '@/hooks/web/useI18n'
 const { t } = useI18n()
 
 export interface BusinessStatusTypeVO {
-  id: number
+  id: string
   name: string
-  deptIds: number[]
+  deptIds: string[]
   statuses?: {
-    id: number
+    id: string
     name: string
     percent: number
   }
@@ -50,12 +50,12 @@ export const updateBusinessStatus = async (data: BusinessStatusTypeVO) => {
 }
 
 // 查询商机状态类型详情
-export const getBusinessStatus = async (id: number) => {
+export const getBusinessStatus = async (id: string) => {
   return await request.get({ url: `/crm/business-status/get/` + id })
 }
 
 // 删除商机状态
-export const deleteBusinessStatus = async (id: number) => {
+export const deleteBusinessStatus = async (id: string) => {
   return await request.delete({ url: `/crm/business-status/delete/` + id })
 }
 
@@ -65,6 +65,6 @@ export const getBusinessStatusTypeSimpleList = async () => {
 }
 
 // 获得商机阶段列表
-export const getBusinessStatusSimpleList = async (typeId: number) => {
+export const getBusinessStatusSimpleList = async (typeId: string) => {
   return await request.get({ url: `/crm/business-status/status-simple-list`, params: { typeId } })
 }

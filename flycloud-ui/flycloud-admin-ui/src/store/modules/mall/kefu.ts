@@ -6,26 +6,26 @@ import { isEmpty } from '@/utils/is'
 
 interface MallKefuInfoVO {
   conversationList: KeFuConversationRespVO[] // 会话列表
-  conversationMessageList: Map<number, KeFuMessageRespVO[]> // 会话消息
+  conversationMessageList: Map<string, KeFuMessageRespVO[]> // 会话消息
 }
 
 export const useMallKefuStore = defineStore('mall-kefu', {
   state: (): MallKefuInfoVO => ({
     conversationList: [],
-    conversationMessageList: new Map<number, KeFuMessageRespVO[]>() // key 会话，value 会话消息列表
+    conversationMessageList: new Map<string, KeFuMessageRespVO[]>() // key 会话，value 会话消息列表
   }),
   getters: {
     getConversationList(): KeFuConversationRespVO[] {
       return this.conversationList
     },
-    getConversationMessageList(): (conversationId: number) => KeFuMessageRespVO[] | undefined {
-      return (conversationId: number) => this.conversationMessageList.get(conversationId)
+    getConversationMessageList(): (conversationId: string) => KeFuMessageRespVO[] | undefined {
+      return (conversationId: string) => this.conversationMessageList.get(conversationId)
     }
   },
   actions: {
     // ======================= 会话消息相关 =======================
     /** 缓存历史消息 */
-    saveMessageList(conversationId: number, messageList: KeFuMessageRespVO[]) {
+    saveMessageList(conversationId: string, messageList: KeFuMessageRespVO[]) {
       this.conversationMessageList.set(conversationId, messageList)
     },
 
@@ -36,7 +36,7 @@ export const useMallKefuStore = defineStore('mall-kefu', {
       this.conversationSort()
     },
     /** 更新会话缓存已读 */
-    async updateConversationStatus(conversationId: number) {
+    async updateConversationStatus(conversationId: string) {
       if (isEmpty(this.conversationList)) {
         return
       }
@@ -44,7 +44,7 @@ export const useMallKefuStore = defineStore('mall-kefu', {
       conversation && (conversation.adminUnreadMessageCount = 0)
     },
     /** 更新会话缓存 */
-    async updateConversation(conversationId: number) {
+    async updateConversation(conversationId: string) {
       if (isEmpty(this.conversationList)) {
         return
       }
@@ -55,7 +55,7 @@ export const useMallKefuStore = defineStore('mall-kefu', {
       this.conversationSort()
     },
     /** 删除会话缓存 */
-    deleteConversation(conversationId: number) {
+    deleteConversation(conversationId: string) {
       const index = this.conversationList.findIndex((item) => item.id === conversationId)
       // 存在则删除
       if (index > -1) {

@@ -4,7 +4,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 // 秒杀时段 VO
 export interface SeckillConfigVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 秒杀时段名称
   startTime: string // 开始时间点
   endTime: string // 结束时间点
@@ -25,7 +25,7 @@ export const SeckillConfigApi = {
   },
 
   // 查询秒杀时段详情
-  getSeckillConfig: async (id: number) => {
+  getSeckillConfig: async (id: string) => {
     return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/seckill-config/get?id=` + id })
   },
 
@@ -40,14 +40,14 @@ export const SeckillConfigApi = {
   },
 
   // 删除秒杀时段
-  deleteSeckillConfig: async (id: number) => {
+  deleteSeckillConfig: async (id: string) => {
     return await request.delete({
       url: `/${MALL_BASE_URL}/admin/promotion/seckill-config/delete?id=` + id
     })
   },
 
   // 修改时段配置状态
-  updateSeckillConfigStatus: async (id: number, status: number) => {
+  updateSeckillConfigStatus: async (id: string, status: number) => {
     const data = {
       id,
       status

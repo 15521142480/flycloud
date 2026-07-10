@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface DeliveryExpressVO {
-  id?: number
+  id?: string
   code: string
   name: string
   logo: string
@@ -20,7 +20,7 @@ export const getDeliveryExpressPage = async (params: PageParam) => {
 }
 
 // 查询快递公司详情
-export const getDeliveryExpress = async (id: number) => {
+export const getDeliveryExpress = async (id: string) => {
   return await request.get<DeliveryExpressVO>({
     url: `/${MALL_BASE_URL}/admin/trade/delivery/express/get?id=` + id
   })
@@ -44,7 +44,7 @@ export const updateDeliveryExpress = async (data: DeliveryExpressVO) => {
 }
 
 // 删除快递公司
-export const deleteDeliveryExpress = async (id: number) => {
+export const deleteDeliveryExpress = async (id: string) => {
   return await request.delete({ url: `/${MALL_BASE_URL}/admin/trade/delivery/express/delete?id=` + id })
 }
 

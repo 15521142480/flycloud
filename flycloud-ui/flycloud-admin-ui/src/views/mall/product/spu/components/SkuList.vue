@@ -483,7 +483,7 @@ const generateTableData = (propertyList: any[]) => {
  * 生成 skus 前置校验
  */
 const validateData = (propertyList: any[]) => {
-  const skuPropertyIds: number[] = []
+  const skuPropertyIds: string[] = []
   formData.value!.skus!.forEach((sku) =>
     sku.properties
       ?.map((property) => property.propertyId)

@@ -45,7 +45,7 @@
               <div class="relative">
                 <GroupAvatar
                   v-if="conversation.type === ImConversationType.GROUP"
-                  :group-id="Number(conversation.targetId)"
+                  :group-id="String(conversation.targetId)"
                   :url="conversation.avatar"
                   :name="conversation.name"
                   :size="36"
@@ -134,7 +134,7 @@
           </span>
           <GroupAvatar
             v-if="conversation.type === ImConversationType.GROUP"
-            :group-id="Number(conversation.targetId)"
+            :group-id="String(conversation.targetId)"
             :url="conversation.avatar"
             :name="conversation.name"
             :size="32"
@@ -181,7 +181,7 @@
         >
           <GroupAvatar
             v-if="conversation.type === ImConversationType.GROUP"
-              :group-id="Number(conversation.targetId)"
+              :group-id="String(conversation.targetId)"
             :url="conversation.avatar"
             :name="conversation.name"
             :size="32"

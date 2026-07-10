@@ -19,7 +19,7 @@ export interface GroupCallMember {
  * @param fallbackInviterId 兜底主叫；缓存为空时填一个头像，标记为已加入而非 pending
  */
 export function useGroupCallMembers(
-  groupId: Ref<number | undefined>,
+  groupId: Ref<string | undefined>,
   fallbackInviterId?: Ref<string | undefined>
 ): ComputedRef<GroupCallMember[]> {
   const rtcStore = useRtcStore()
@@ -42,7 +42,7 @@ export function useGroupCallMembers(
 }
 
 /** 把 userId 翻译成视图模型，统一走 user.ts helper 解析昵称 / 头像 */
-function toVM(userId: string, groupId: number, pending: boolean): GroupCallMember {
+function toVM(userId: string, groupId: string, pending: boolean): GroupCallMember {
   return {
     userId,
     nickname: getSenderDisplayName(userId, ImConversationType.GROUP, groupId),

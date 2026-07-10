@@ -43,7 +43,7 @@ import CombinationTableSelect from '@/views/mall/promotion/combination/component
 defineOptions({ name: 'CombinationShowcase' })
 
 const props = defineProps({
-  modelValue: oneOfType<number | Array<number>>([Number, Array]).isRequired,
+  modelValue: oneOfType<string | Array<string>>([String, Array]).isRequired,
   // 限制数量：默认不限制
   limit: propTypes.number.def(Number.MAX_VALUE),
   disabled: propTypes.bool.def(false)
@@ -119,7 +119,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const emitActivityChange = () => {
   if (props.limit === 1) {
     const combinationActivity = Activitys.value.length > 0 ? Activitys.value[0] : null
-    emit('update:modelValue', combinationActivity?.id || 0)
+    emit('update:modelValue', combinationActivity?.id || '')
     emit('change', combinationActivity)
   } else {
     emit(

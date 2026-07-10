@@ -126,7 +126,7 @@ const treeRef = ref<InstanceType<typeof ElTree>>() // 树组件 Ref
 const treeNodeAll = ref(false) // 全选/全不选
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -141,7 +141,7 @@ const open = async (type: string, id?: number) => {
       // 设置选中
       formData.value = res
       // 设置选中
-      res.menuIds.forEach((menuId: number) => {
+      res.menuIds.forEach((menuId: string) => {
         treeRef.value!.setChecked(menuId, true, false)
       })
     } finally {

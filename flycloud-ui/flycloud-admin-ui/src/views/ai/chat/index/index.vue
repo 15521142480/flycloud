@@ -129,7 +129,7 @@ const message = useMessage() // 消息弹窗
 
 // 聊天对话
 const conversationListRef = ref()
-const activeConversationId = ref<number | null>(null) // 选中的对话编号
+const activeConversationId = ref<string | null>(null) // 选中的对话编号
 const activeConversation = ref<ChatConversationVO | null>(null) // 选中的 Conversation
 const conversationInProgress = ref(false) // 对话是否正在进行中。目前只有【发送】消息时，会更新为 true，避免切换对话、删除对话等操作
 
@@ -155,7 +155,7 @@ const receiveMessageDisplayedText = ref('')
 // =========== 【聊天对话】相关 ===========
 
 /** 获取对话信息 */
-const getConversation = async (id: number | null) => {
+const getConversation = async (id: string | null) => {
   if (!id) {
     return
   }
@@ -276,7 +276,7 @@ const messageList = computed(() => {
   if (activeConversation.value?.systemMessage) {
     return [
       {
-        id: 0,
+        id: '0',
         type: 'system',
         content: activeConversation.value.systemMessage
       }
@@ -560,7 +560,7 @@ const textRoll = async () => {
 onMounted(async () => {
   // 如果有 conversationId 参数，则默认选中
   if (route.query.conversationId) {
-    const id = route.query.conversationId as unknown as number
+    const id = String(route.query.conversationId)
     activeConversationId.value = id
     await getConversation(id)
   }

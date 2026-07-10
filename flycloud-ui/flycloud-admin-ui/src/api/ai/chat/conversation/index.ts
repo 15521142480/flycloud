@@ -2,12 +2,12 @@ import request from '@/config/axios'
 
 // AI 聊天对话 VO
 export interface ChatConversationVO {
-  id: number // ID 编号
+  id: string // ID 编号
   userId: string // 用户编号
   title: string // 对话标题
   pinned: boolean // 是否置顶
-  roleId: number // 角色编号
-  modelId: number // 模型编号
+  roleId: string // 角色编号
+  modelId: string // 模型编号
   model: string // 模型标志
   temperature: number // 温度参数
   maxTokens: number // 单条回复的最大 Token 数量
@@ -24,7 +24,7 @@ export interface ChatConversationVO {
 // AI 聊天对话 API
 export const ChatConversationApi = {
   // 获得【我的】聊天对话
-  getChatConversationMy: async (id: number) => {
+  getChatConversationMy: async (id: string) => {
     return await request.get({ url: `/ai/chat/conversation/get-my/${id}` })
   },
 
@@ -59,7 +59,7 @@ export const ChatConversationApi = {
   },
 
   // 管理员删除消息
-  deleteChatConversationByAdmin: async (id: number) => {
+  deleteChatConversationByAdmin: async (id: string) => {
     return await request.delete({ url: `/ai/chat/conversation/delete-by-admin/${id}` })
   }
 }

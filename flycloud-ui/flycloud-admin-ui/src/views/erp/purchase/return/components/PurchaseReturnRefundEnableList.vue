@@ -229,7 +229,7 @@ const handleSelectionChange = (rows: SaleReturnVO[]) => {
 }
 
 /** 打开弹窗 */
-const open = async (supplierId: number) => {
+const open = async (supplierId: string) => {
   dialogVisible.value = true
   await nextTick() // 等待，避免 queryFormRef 为空
   // 加载列表

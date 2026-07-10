@@ -7,7 +7,7 @@ type InsertFnType = (url: string, alt: string, href: string) => void
 
 export const createEditorConfig = (
   server: string,
-  accountId: number | undefined
+  accountId: string | undefined
 ): Partial<IEditorConfig> => {
   return {
     MENU_CONF: {

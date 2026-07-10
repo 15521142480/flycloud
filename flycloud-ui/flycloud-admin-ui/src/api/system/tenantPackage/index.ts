@@ -1,14 +1,14 @@
 import request from '@/config/axios'
 
 export interface TenantPackageVO {
-  id: number
+  id: string
   name: string
   status: number
   remark: string
   creator: string
   updater: string
   updateTime: string
-  menuIds: number[]
+  menuIds: string[]
   createTime: Date
 }
 
@@ -18,7 +18,7 @@ export const getTenantPackagePage = (params: PageParam) => {
 }
 
 // 获得租户
-export const getTenantPackage = (id: number) => {
+export const getTenantPackage = (id: string) => {
   return request.get({ url: '/system/tenant-package/get/' + id })
 }
 
@@ -33,7 +33,7 @@ export const updateTenantPackage = (data: TenantPackageVO) => {
 }
 
 // 删除租户套餐
-export const deleteTenantPackage = (id: number) => {
+export const deleteTenantPackage = (id: string) => {
   return request.delete({ url: '/system/tenant-package/delete/' + id })
 }
 // 获取租户套餐精简信息列表

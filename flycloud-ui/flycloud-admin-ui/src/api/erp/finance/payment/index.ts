@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 付款单 VO
 export interface FinancePaymentVO {
-  id: number // 付款单编号
+  id: string // 付款单编号
   no: string // 付款单号
-  supplierId: number // 供应商编号
+  supplierId: string // 供应商编号
   paymentTime: Date // 付款时间
   totalPrice: number // 合计金额，单位：元
   status: number // 状态
@@ -19,7 +19,7 @@ export const FinancePaymentApi = {
   },
 
   // 查询付款单详情
-  getFinancePayment: async (id: number) => {
+  getFinancePayment: async (id: string) => {
     return await request.get({ url: `/erp/finance-payment/get/` + id })
   },
 
@@ -34,7 +34,7 @@ export const FinancePaymentApi = {
   },
 
   // 更新付款单的状态
-  updateFinancePaymentStatus: async (id: number, status: number) => {
+  updateFinancePaymentStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/finance-payment/update-status`,
       params: {
@@ -45,7 +45,7 @@ export const FinancePaymentApi = {
   },
 
   // 删除付款单
-  deleteFinancePayment: async (ids: number[]) => {
+  deleteFinancePayment: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/finance-payment/delete`,
       params: {

@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // IM 好友 Response VO
 export interface ImFriendRespVO {
-  id: number // 关系记录编号
+  id: string // 关系记录编号
   friendUserId: string // 好友的用户编号
   silent?: boolean // 是否免打扰
   displayName?: string // 好友展示备注（仅自己可见）
@@ -38,7 +38,7 @@ export const getMyFriendList = () => {
 // 增量拉取当前用户的好友关系（重连 / 离线补偿）
 export const pullMyFriendList = (params: {
   lastUpdateTime?: number
-  lastId?: number
+  lastId?: string
   limit: number
 }) => {
   return request.get<ImFriendRespVO[]>({ url: `/${SYS_BASE_URL}/im/friend/pull`, params })

@@ -265,7 +265,7 @@ const resetQuery = () => {
 }
 
 /** 新增方法，跳转到写作页面 **/
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   switch (type) {
     case 'create':
       router.push('/ai/write')
@@ -274,7 +274,7 @@ const openForm = (type: string, id?: number) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

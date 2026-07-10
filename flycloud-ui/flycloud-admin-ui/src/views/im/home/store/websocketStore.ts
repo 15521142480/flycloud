@@ -123,7 +123,7 @@ function isValidRtcInvitePayload(payload: ImRtcCallNotification): boolean {
  */
 const convertPrivateMessage = (
   websocketMessage: ImPrivateMessageNotification,
-  currentUserId: number | string
+  currentUserId: string
 ): Message => ({
   id: websocketMessage.id,
   clientMessageId: websocketMessage.clientMessageId,
@@ -144,7 +144,7 @@ const convertPrivateMessage = (
  */
 const convertGroupMessage = (
   websocketMessage: ImGroupMessageNotification,
-  currentUserId: number | string
+  currentUserId: string
 ): Message => ({
   id: websocketMessage.id,
   clientMessageId: websocketMessage.clientMessageId,
@@ -948,7 +948,7 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
      * 加群申请通知统一入口：分发到 groupRequestStore，驱动横幅 + Drawer 同步
      */
     handleGroupRequestNotification(websocketMessage: ImNoConversationNotification) {
-      const payload = websocketMessage as { requestId?: number }
+      const payload = websocketMessage as { requestId?: string }
       if (!payload.requestId) {
         return
       }

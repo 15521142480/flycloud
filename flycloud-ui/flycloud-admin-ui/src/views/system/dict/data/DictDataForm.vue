@@ -162,7 +162,7 @@ const colorTypeOptions = readonly([
 ])
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number, dictType?: string) => {
+const open = async (type: string, id?: string, dictType?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

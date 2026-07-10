@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerFacePackVO {
-  id: number
+  id: string
   name: string
   icon?: string
   sort: number
@@ -17,7 +17,7 @@ export const getManagerFacePackPage = (params: PageParam) => {
 }
 
 // 获得表情包详情
-export const getManagerFacePack = (id: number) => {
+export const getManagerFacePack = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/face-pack/get`, params: { id } })
 }
 
@@ -32,12 +32,12 @@ export const updateManagerFacePack = (data: ImManagerFacePackVO) => {
 }
 
 // 删除表情包
-export const deleteManagerFacePack = (id: number) => {
+export const deleteManagerFacePack = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/im/manager/face-pack/delete`, params: { id } })
 }
 
 // 批量删除表情包
-export const deleteManagerFacePackList = (ids: number[]) => {
+export const deleteManagerFacePackList = (ids: string[]) => {
   return request.delete({
     url: `/${SYS_BASE_URL}/im/manager/face-pack/delete-list`,
     params: { ids: ids.join(',') }

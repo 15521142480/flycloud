@@ -3,16 +3,16 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface Property {
-  propertyId?: number // 属性编号
+  propertyId?: string // 属性编号
   propertyName?: string // 属性名称
-  valueId?: number // 属性值编号
+  valueId?: string // 属性值编号
   valueName?: string // 属性值名称
 }
 
 export interface Sku {
-  id?: number // 商品 SKU 编号
+  id?: string // 商品 SKU 编号
   name?: string // 商品 SKU 名称
-  spuId?: number // SPU 编号
+  spuId?: string // SPU 编号
   properties?: Property[] // 属性数组
   price?: number | string // 商品价格
   marketPrice?: number | string // 市场价
@@ -28,22 +28,22 @@ export interface Sku {
 }
 
 export interface GiveCouponTemplate {
-  id?: number
+  id?: string
   name?: string // 优惠券名称
 }
 
 export interface Spu {
-  id?: number
+  id?: string
   name?: string // 商品名称
-  categoryId?: number // 商品分类
+  categoryId?: string // 商品分类
   keyword?: string // 关键字
   unit?: number | undefined // 单位
   picUrl?: string // 商品封面图
   sliderPicUrls?: string[] // 商品轮播图
   introduction?: string // 商品简介
   deliveryTypes?: number[] // 配送方式
-  deliveryTemplateId?: number | undefined // 运费模版
-  brandId?: number // 商品品牌编号
+  deliveryTemplateId?: string | undefined // 运费模版
+  brandId?: string // 商品品牌编号
   specType?: boolean // 商品规格
   subCommissionType?: boolean // 分销类型
   skus?: Sku[] // sku数组
@@ -83,22 +83,22 @@ export const updateSpu = (data: Spu) => {
 }
 
 // 更新商品 Spu status
-export const updateStatus = (data: { id: number; status: number }) => {
+export const updateStatus = (data: { id: string; status: number }) => {
   return request.put({ url: `/${MALL_BASE_URL}/admin/product/spu/update-status`, data })
 }
 
 // 获得商品 Spu
-export const getSpu = (id: number) => {
+export const getSpu = (id: string) => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/get-detail?id=${id}` })
 }
 
 // 获得商品 Spu 详情列表
-export const getSpuDetailList = (ids: number[]) => {
+export const getSpuDetailList = (ids: string[]) => {
   return request.get({ url: `/${MALL_BASE_URL}/admin/product/spu/list?spuIds=${ids}` })
 }
 
 // 删除商品 Spu
-export const deleteSpu = (id: number) => {
+export const deleteSpu = (id: string) => {
   return request.delete({ url: `/${MALL_BASE_URL}/admin/product/spu/delete?id=${id}` })
 }
 

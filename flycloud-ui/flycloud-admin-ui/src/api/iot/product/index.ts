@@ -2,11 +2,11 @@ import request from '@/config/axios'
 
 // IoT 产品 VO
 export interface ProductVO {
-  id: number // 产品编号
+  id: string // 产品编号
   name: string // 产品名称
   productKey: string // 产品标识
-  protocolId: number // 协议编号
-  categoryId: number // 产品所属品类标识符
+  protocolId: string // 协议编号
+  categoryId: string // 产品所属品类标识符
   description: string // 产品描述
   validateType: number // 数据校验级别
   status: number // 产品状态
@@ -26,7 +26,7 @@ export const ProductApi = {
   },
 
   // 查询产品详情
-  getProduct: async (id: number) => {
+  getProduct: async (id: string) => {
     return await request.get({ url: `/iot/product/get/` + id })
   },
 
@@ -41,7 +41,7 @@ export const ProductApi = {
   },
 
   // 删除产品
-  deleteProduct: async (id: number) => {
+  deleteProduct: async (id: string) => {
     return await request.delete({ url: `/iot/product/delete/` + id })
   },
 
@@ -51,7 +51,7 @@ export const ProductApi = {
   },
 
   // 更新产品状态
-  updateProductStatus: async (id: number, status: number) => {
+  updateProductStatus: async (id: string, status: number) => {
     return await request.put({ url: `/iot/product/update-status/` + id + `&status=` + status })
   },
 

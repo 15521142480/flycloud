@@ -24,7 +24,7 @@ export interface ImRtcCallNotification {
   room: string
   conversationType: number
   mediaType: number
-  groupId?: number
+  groupId?: string
   // INVITE 专属：被叫接通需要的 LiveKit 连接参数 + 主叫展示信息
   livekitUrl?: string
   token?: string
@@ -44,7 +44,7 @@ export interface ImRtcParticipantConnectedNotification {
   room: string
   userId: string
   conversationType: number
-  groupId?: number
+  groupId?: string
   // 群聊场景非邀请成员首次填充胶囊条用
   mediaType?: number
   inviterUserId?: string
@@ -55,7 +55,7 @@ export interface ImRtcParticipantDisconnectedNotification {
   room: string
   userId: string
   conversationType: number
-  groupId?: number
+  groupId?: string
 }
 
 // RTC_CALL_END 通话结束载荷（入消息流；私聊渲染消息气泡，群聊渲染系统提示行）
@@ -95,7 +95,7 @@ export const useRtcStore = defineStore('imRtc', () => {
     const c = call.value
     if (!c) return ''
     if (c.conversationType === ImConversationType.GROUP) {
-      return useGroupStore().getGroup(c.groupId ?? 0)?.name || ''
+      return useGroupStore().getGroup(c.groupId ?? '0')?.name || ''
     }
     const peerUserId = resolvePrivatePeerUserId(c)
     return (peerUserId && useFriendStore().getFriend(peerUserId)?.nickname) || ''
@@ -109,7 +109,7 @@ export const useRtcStore = defineStore('imRtc', () => {
     const c = call.value
     if (!c) return ''
     if (c.conversationType === ImConversationType.GROUP) {
-      return useGroupStore().getGroup(c.groupId ?? 0)?.avatar || ''
+      return useGroupStore().getGroup(c.groupId ?? '0')?.avatar || ''
     }
     const peerUserId = resolvePrivatePeerUserId(c)
     return (peerUserId && useFriendStore().getFriend(peerUserId)?.avatar) || ''
@@ -122,7 +122,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 群活跃通话索引；groupId -> 群通话摘要；用于群聊顶部胶囊条 */
-  const groupActiveCalls = ref<Map<number, GroupActiveCallCache>>(new Map())
+  const groupActiveCalls = ref<Map<string, GroupActiveCallCache>>(new Map())
 
   /**
    * 已退出 / 已拒绝的用户编号集合；群通话场景内 pending 占位渲染时排除；
@@ -203,7 +203,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   function syncGroupActiveCall(input: {
     conversationType: number
     room: string
-    groupId?: number
+    groupId?: string
     mediaType: number
     inviterId: string
     joinedUserIds?: string[]
@@ -278,7 +278,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 清空指定群的通话缓存 */
-  function clearGroupCallCache(groupId?: number) {
+  function clearGroupCallCache(groupId?: string) {
     if (!groupId) {
       groupActiveCalls.value = new Map()
       return
@@ -289,7 +289,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 判断群通话是否已补齐 */
-  function isGroupCallParticipantsLoaded(groupId: number, room?: string): boolean {
+  function isGroupCallParticipantsLoaded(groupId: string, room?: string): boolean {
     const call = groupActiveCalls.value.get(groupId)
     return !!groupId && !!room && !!call && call.room === room && !!call.participantsLoaded
   }
@@ -306,7 +306,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 群通话结束：从 groupActiveCalls 移除；胶囊条消失 */
-  function removeGroupCall(groupId: number, room?: string) {
+  function removeGroupCall(groupId: string, room?: string) {
     if (!groupId) {
       return
     }
@@ -319,7 +319,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 获取群当前活跃通话；用于胶囊条按 groupId 查询 */
-  function getGroupCall(groupId: number): ImRtcGroupCallRespVO | undefined {
+  function getGroupCall(groupId: string): ImRtcGroupCallRespVO | undefined {
     return groupActiveCalls.value.get(groupId)
   }
 
@@ -384,7 +384,7 @@ export const useRtcStore = defineStore('imRtc', () => {
   }
 
   /** 从指定群活跃通话的 joined / pending 列表里同步移除某用户；用于 disconnect / reject 让胶囊条不再展示 */
-  function dropFromGroupActiveCall(groupId: number, room: string, userId: string) {
+  function dropFromGroupActiveCall(groupId: string, room: string, userId: string) {
     const existing = groupActiveCalls.value.get(groupId)
     if (!existing || existing.room !== room) {
       return

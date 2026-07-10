@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface GroupVO {
-  id: number
+  id: string
   name: string
   remark: string
   status: number
@@ -15,7 +15,7 @@ export const getGroupPage = async (params: any) => {
 }
 
 // 查询用户分组详情
-export const getGroup = async (id: number) => {
+export const getGroup = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/admin/member/group/get?id=` + id })
 }
 
@@ -35,6 +35,6 @@ export const updateGroup = async (data: GroupVO) => {
 }
 
 // 删除用户分组
-export const deleteGroup = async (id: number) => {
+export const deleteGroup = async (id: string) => {
   return await request.delete({ url: `/${SYS_BASE_URL}/admin/member/group/delete?id=` + id })
 }

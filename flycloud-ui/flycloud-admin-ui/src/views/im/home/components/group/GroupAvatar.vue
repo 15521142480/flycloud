@@ -25,7 +25,7 @@ defineOptions({ name: 'ImGroupAvatar' })
 
 const props = withDefaults(
   defineProps<{
-    groupId: number // 群编号；用于查 store 拿成员头像
+    groupId: string // 群编号；用于查 store 拿成员头像
     url?: string // 服务端已设置的群头像 URL；非空则直接用，不拼图
     name?: string // 群名；色卡兜底文字
     size?: number // 尺寸（px），正方形

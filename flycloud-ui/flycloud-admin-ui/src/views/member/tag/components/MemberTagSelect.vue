@@ -57,7 +57,7 @@ const getList = async () => {
 
 /** 添加用户标签表单弹框 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 

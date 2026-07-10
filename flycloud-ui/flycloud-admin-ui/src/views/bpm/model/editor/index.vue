@@ -82,7 +82,7 @@ const close = () => {
 
 /** 初始化 */
 onMounted(async () => {
-  const modelId = query.modelId as unknown as number
+  const modelId = String(query.modelId)
   if (!modelId) {
     message.error(t('auto.views.bpm.model.editor.index.kfc1baec9'))
     return

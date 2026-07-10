@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // ERP 客户 VO
 export interface CustomerVO {
-  id: number // 客户编号
+  id: string // 客户编号
   name: string // 客户名称
   contact: string // 联系人
   mobile: string // 手机号码
@@ -32,7 +32,7 @@ export const CustomerApi = {
   },
 
   // 查询客户详情
-  getCustomer: async (id: number) => {
+  getCustomer: async (id: string) => {
     return await request.get({ url: `/erp/customer/get/` + id })
   },
 
@@ -47,7 +47,7 @@ export const CustomerApi = {
   },
 
   // 删除客户
-  deleteCustomer: async (id: number) => {
+  deleteCustomer: async (id: string) => {
     return await request.delete({ url: `/erp/customer/delete/` + id })
   },
 

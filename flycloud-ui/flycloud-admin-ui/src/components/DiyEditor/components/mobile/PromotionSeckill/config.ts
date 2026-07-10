@@ -46,7 +46,7 @@ export interface PromotionSeckillProperty {
   // 间距
   space: number
   // 秒杀活动编号
-  activityIds: number[]
+  activityIds: string[]
   // 组件样式
   style: ComponentStyle
 }
@@ -85,6 +85,7 @@ export const component = {
     borderRadiusTop: 8,
     borderRadiusBottom: 8,
     space: 8,
+    activityIds: [],
     style: {
       bgType: 'color',
       bgColor: '',

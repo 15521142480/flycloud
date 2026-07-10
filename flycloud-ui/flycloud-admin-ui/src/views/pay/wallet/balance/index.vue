@@ -145,7 +145,7 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (id?: number) => {
+const openForm = (id?: string) => {
   formRef.value.open(id)
 }
 

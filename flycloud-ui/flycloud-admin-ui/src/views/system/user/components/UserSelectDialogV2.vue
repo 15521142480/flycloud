@@ -167,7 +167,7 @@ const props = withDefaults(
   defineProps<{
     title?: string
     multiple?: boolean // true 多选（checkbox），false 单选（radio）
-    deptId?: number // 部门 ID
+    deptId?: string // 部门 ID
   }>(),
   {
     title: '人员选择',
@@ -190,7 +190,7 @@ const activityId = ref()
 const deptTreeRef = ref() // 部门树 Ref
 
 /** 部门节点点击 */
-const handleDeptNodeClick = (row: { id?: number } | undefined) => {
+const handleDeptNodeClick = (row: { id?: string } | undefined) => {
   queryParams.deptId = row?.id
   handleQuery()
 }
@@ -254,7 +254,7 @@ const queryParams = reactive({
   name: undefined as string | undefined, // 用户昵称
   mobile: undefined as string | undefined, // 手机号码
   status: CommonStatusEnum.ENABLE as number | undefined, // 状态：默认只查启用
-  deptId: undefined as number | undefined // 部门 ID（从左侧树选择）
+  deptId: undefined as string | undefined // 部门 ID（从左侧树选择）
 })
 
 /** 查询用户列表 */

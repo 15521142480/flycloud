@@ -3,10 +3,10 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface AddressVO {
-  id: number
+  id: string
   name: string
   mobile: string
-  areaId: number
+  areaId: string
   detailAddress: string
   defaultStatus: boolean
 }

@@ -112,11 +112,11 @@ const queryFormRef = ref<FormInstance | null>(null) // 搜索的表单
 // 消息对话框
 const messageBox = reactive({
   show: false,
-  userId: 0
+  userId: '0'
 })
 
 /** 侦听accountId */
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   queryParams.accountId = id
   queryParams.pageNum = 1
   handleQuery()

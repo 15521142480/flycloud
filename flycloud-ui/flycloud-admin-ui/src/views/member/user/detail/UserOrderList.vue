@@ -266,7 +266,7 @@ const getList = async () => {
 }
 
 /** 查看订单详情 */
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'TradeOrderDetail', params: { id } })
 }
 

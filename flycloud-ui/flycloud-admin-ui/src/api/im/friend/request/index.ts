@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // IM 好友申请 Response VO
 export interface ImFriendRequestRespVO {
-  id: number // 申请编号
+  id: string // 申请编号
   fromUserId: string // 发起方用户编号
   toUserId: string // 接收方用户编号
   handleResult: number // 处理结果；0=未处理；1=同意；2=拒绝
@@ -35,12 +35,12 @@ export const applyFriendRequest = (data: ImFriendRequestApplyReqVO) => {
 }
 
 // 同意好友申请
-export const agreeFriendRequest = (id: number | string) => {
+export const agreeFriendRequest = (id: string) => {
   return request.put<boolean>({ url: `/${SYS_BASE_URL}/im/friend-request/agree`, params: { id } })
 }
 
 // 拒绝好友申请
-export const refuseFriendRequest = (id: number | string, handleContent?: string) => {
+export const refuseFriendRequest = (id: string, handleContent?: string) => {
   return request.put<boolean>({
     url: `/${SYS_BASE_URL}/im/friend-request/refuse`,
     params: { id, handleContent }
@@ -48,8 +48,8 @@ export const refuseFriendRequest = (id: number | string, handleContent?: string)
 }
 
 // 查询「我相关」的好友申请列表（游标分页：传 maxId 加载更多）
-export const getMyFriendRequestList = (limit: number, maxId?: number) => {
-  const params: Record<string, number> = { limit }
+export const getMyFriendRequestList = (limit: number, maxId?: string) => {
+  const params: Record<string, string | number> = { limit }
   if (maxId != null) {
     params.maxId = maxId
   }
@@ -62,7 +62,7 @@ export const getMyFriendRequestList = (limit: number, maxId?: number) => {
 // 增量拉取「我相关」的好友申请变更（重连 / 离线补偿）
 export const pullMyFriendRequestList = (params: {
   lastUpdateTime?: number
-  lastId?: number
+  lastId?: string
   limit: number
 }) => {
   return request.get<ImFriendRequestRespVO[]>({
@@ -72,7 +72,7 @@ export const pullMyFriendRequestList = (params: {
 }
 
 // 按 id 单查「我相关」的申请记录（带越权过滤；WebSocket 通知到达后用）
-export const getMyFriendRequest = (id: number) => {
+export const getMyFriendRequest = (id: string) => {
   return request.get<ImFriendRequestRespVO | null>({
     url: `/${SYS_BASE_URL}/im/friend-request/get`,
     params: { id }

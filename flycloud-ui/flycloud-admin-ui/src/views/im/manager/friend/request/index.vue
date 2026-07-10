@@ -146,8 +146,8 @@ const list = ref<ManagerFriendRequestApi.ImManagerFriendRequestVO[]>([]) // åˆ—è
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  fromUserId: undefined as number | undefined,
-  toUserId: undefined as number | undefined,
+  fromUserId: undefined as string | undefined,
+  toUserId: undefined as string | undefined,
   handleResult: undefined as number | undefined,
   addSource: undefined as number | undefined,
   createTime: [] as string[]

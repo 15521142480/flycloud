@@ -106,7 +106,7 @@ const isCreating = ref(true)
 const isSubmitting = ref(false)
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   accountId.value = id
   queryParams.pageNum = 1
   getList()

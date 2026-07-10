@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface ArticleCategoryVO {
-  id: number
+  id: string
   name: string
   picUrl: string
   status: number
@@ -21,7 +21,7 @@ export const getSimpleArticleCategoryList = async () => {
 }
 
 // 查询文章分类详情
-export const getArticleCategory = async (id: number) => {
+export const getArticleCategory = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/article-category/get?id=` + id })
 }
 
@@ -36,7 +36,7 @@ export const updateArticleCategory = async (data: ArticleCategoryVO) => {
 }
 
 // 删除文章分类
-export const deleteArticleCategory = async (id: number) => {
+export const deleteArticleCategory = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/article-category/delete?id=` + id
   })

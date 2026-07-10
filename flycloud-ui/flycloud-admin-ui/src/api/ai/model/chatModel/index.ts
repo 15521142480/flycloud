@@ -2,8 +2,8 @@ import request from '@/config/axios'
 
 // AI 聊天模型 VO
 export interface ChatModelVO {
-  id: number // 编号
-  keyId: number // API 秘钥编号
+  id: string // 编号
+  keyId: string // API 秘钥编号
   name: string // 模型名字
   model: string // 模型标识
   platform: string // 模型平台
@@ -32,7 +32,7 @@ export const ChatModelApi = {
   },
 
   // 查询聊天模型详情
-  getChatModel: async (id: number) => {
+  getChatModel: async (id: string) => {
     return await request.get({ url: `/ai/chat-model/get/` + id })
   },
 
@@ -47,7 +47,7 @@ export const ChatModelApi = {
   },
 
   // 删除聊天模型
-  deleteChatModel: async (id: number) => {
+  deleteChatModel: async (id: string) => {
     return await request.delete({ url: `/ai/chat-model/delete/` + id })
   }
 }

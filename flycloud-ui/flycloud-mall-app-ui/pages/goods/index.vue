@@ -246,7 +246,7 @@
   };
   const isLogin = computed(() => sheep.$store('user').isLogin);
   let state = reactive({
-    goodsId: 0,
+    goodsId: '0',
     skeletonLoading: true, // SPU 加载中
     goodsInfo: {}, // SPU 信息
     showSelectSku: false, // 是否展示 SKU 选择弹窗

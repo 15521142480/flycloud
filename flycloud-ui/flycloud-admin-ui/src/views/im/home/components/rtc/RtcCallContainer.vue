@@ -170,7 +170,7 @@ const participants = computed<CallParticipantVM[]>(() => {
     return []
   }
   const conversationType = call.conversationType
-  const targetId = call.groupId ?? 0
+  const targetId = call.groupId ?? ''
   const myId = getCurrentUserId()
   const result: CallParticipantVM[] = []
 

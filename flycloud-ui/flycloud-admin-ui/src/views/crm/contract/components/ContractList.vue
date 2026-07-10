@@ -81,7 +81,7 @@ const { t } = useI18n()
 defineOptions({ name: 'CrmContractList' })
 const props = defineProps<{
   bizType: number // 业务类型
-  bizId: number // 业务编号
+  bizId: string // 业务编号
 }>()
 
 const loading = ref(true) // 列表的加载中
@@ -90,7 +90,7 @@ const list = ref([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  customerId: undefined as unknown // 允许 undefined + number
+  customerId: undefined as unknown // 允许 undefined + string
 })
 
 /** 查询列表 */
@@ -134,7 +134,7 @@ const openForm = () => {
 
 /** 打开合同详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmContractDetail', params: { id } })
 }
 

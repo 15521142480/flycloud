@@ -172,7 +172,7 @@ defineOptions({ name: 'WxMaterialSelect' })
 const props = withDefaults(
   defineProps<{
     type: string
-    accountId: number
+    accountId: string
     newsType?: NewsType
   }>(),
   {

@@ -39,7 +39,7 @@ import { getOperateLogPage } from '@/api/crm/operateLog'
 import ReceivableForm from '@/views/crm/receivable/ReceivableForm.vue'
 const { t } = useI18n()
 defineOptions({ name: 'CrmReceivablePlanDetail' })
-const props = defineProps<{ id?: number }>()
+const props = defineProps<{ id?: string }>()
 
 const route = useRoute()
 const message = useMessage()
@@ -49,7 +49,7 @@ const receivable = ref<ReceivableApi.ReceivableVO>({} as ReceivableApi.Receivabl
 const permissionListRef = ref<InstanceType<typeof PermissionList>>() // 团队成员列表 Ref
 
 /** 获取详情 */
-const getReceivable = async (id: number) => {
+const getReceivable = async (id: string) => {
   loading.value = true
   try {
     receivable.value = await ReceivableApi.getReceivable(id)
@@ -61,13 +61,13 @@ const getReceivable = async (id: number) => {
 
 /** 编辑 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 获取操作日志 */
 const logList = ref<OperateLogVO[]>([]) // 操作日志列表
-const getOperateLog = async (receivableId: number) => {
+const getOperateLog = async (receivableId: string) => {
   if (!receivableId) {
     return
   }

@@ -97,7 +97,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (type: 'create' | 'update', bizType: number, bizId: number, ids?: number[]) => {
+const open = async (type: 'create' | 'update', bizType: number, bizId: string, ids?: string[]) => {
   dialogVisible.value = true
   dialogTitle.value =
     t('action.' + type) + t('auto.views.crm.permission.components.PermissionForm.k7de0251f')
@@ -112,8 +112,8 @@ const open = async (type: 'create' | 'update', bizType: number, bizId: number, i
 const open0 = async (
   type: 'create' | 'update',
   bizType: number,
-  bizId: number,
-  id: number,
+  bizId: string,
+  id: string,
   level: number
 ) => {
   dialogVisible.value = true
@@ -154,7 +154,7 @@ const submitForm = async () => {
 }
 
 /** 重置表单 */
-const resetForm = (bizType: number, bizId: number) => {
+const resetForm = (bizType: number, bizId: string) => {
   formRef.value?.resetFields()
   formData.value = {} as PermissionApi.PermissionVO
   formData.value = { ...formData.value, bizType, bizId }

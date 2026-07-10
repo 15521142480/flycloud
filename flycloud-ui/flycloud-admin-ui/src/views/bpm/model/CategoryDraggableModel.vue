@@ -524,7 +524,7 @@ const handleDeleteCategory = async () => {
 
 /** 添加流程模型弹窗 */
 const modelFormRef = ref()
-const openModelForm = (type: string, id?: number) => {
+const openModelForm = (type: string, id?: string) => {
   modelFormRef.value.open(type, id)
 }
 

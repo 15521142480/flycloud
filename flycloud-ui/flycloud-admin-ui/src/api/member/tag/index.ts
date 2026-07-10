@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface TagVO {
-  id: number
+  id: string
   name: string
 }
 
@@ -13,7 +13,7 @@ export const getMemberTagPage = async (params: any) => {
 }
 
 // 查询会员标签详情
-export const getMemberTag = async (id: number) => {
+export const getMemberTag = async (id: string) => {
   return await request.get({ url: `/${SYS_BASE_URL}/admin/member/tag/get?id=` + id })
 }
 
@@ -33,6 +33,6 @@ export const updateMemberTag = async (data: TagVO) => {
 }
 
 // 删除会员标签
-export const deleteMemberTag = async (id: number) => {
+export const deleteMemberTag = async (id: string) => {
   return await request.delete({ url: `/${SYS_BASE_URL}/admin/member/tag/delete?id=` + id })
 }

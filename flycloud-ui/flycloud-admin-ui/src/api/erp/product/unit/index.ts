@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // ERP 产品单位 VO
 export interface ProductUnitVO {
-  id: number // 单位编号
+  id: string // 单位编号
   name: string // 单位名字
   status: number // 单位状态
 }
@@ -20,7 +20,7 @@ export const ProductUnitApi = {
   },
 
   // 查询产品单位详情
-  getProductUnit: async (id: number) => {
+  getProductUnit: async (id: string) => {
     return await request.get({ url: `/erp/product-unit/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const ProductUnitApi = {
   },
 
   // 删除产品单位
-  deleteProductUnit: async (id: number) => {
+  deleteProductUnit: async (id: string) => {
     return await request.delete({ url: `/erp/product-unit/delete/` + id })
   },
 

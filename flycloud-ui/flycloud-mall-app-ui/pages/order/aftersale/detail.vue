@@ -149,7 +149,7 @@
   const statusBarHeight = sheep.$platform.device.statusBarHeight * 2;
   const headerBg = sheep.$url.css('/static/img/shop/order/order_bg.png');
   const state = reactive({
-    id: 0, // 售后编号
+    id: '0', // 售后编号
     info: {}, // 收货信息
     loading: false,
     active: 0, // 在 list 的激活位置

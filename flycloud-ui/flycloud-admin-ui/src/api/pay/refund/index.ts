@@ -3,10 +3,10 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface RefundVO {
-  id: number
-  merchantId: number
-  appId: number
-  channelId: number
+  id: string
+  merchantId: string
+  appId: string
+  channelId: string
   channelCode: string
   orderId: string
   tradeNo: string
@@ -36,7 +36,7 @@ export interface RefundDetailVO {
   channelRefundNo?: string
   merchantOrderId?: string
   channelOrderNo?: string
-  appId?: number
+  appId?: string
   appName?: string
   payPrice?: number
   refundPrice?: number
@@ -62,7 +62,7 @@ export const getRefundPage = (params: any) => {
 }
 
 // 查询详情退款订单
-export const getRefund = (id: number) => {
+export const getRefund = (id: string) => {
   return request.get<RefundDetailVO>({ url: `/${SYS_BASE_URL}/admin/pay/refund/get?id=` + id })
 }
 
@@ -77,7 +77,7 @@ export const updateRefund = (data: RefundVO) => {
 }
 
 // 删除退款订单
-export const deleteRefund = (id: number) => {
+export const deleteRefund = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/admin/pay/refund/delete?id=` + id })
 }
 

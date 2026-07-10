@@ -13,5 +13,5 @@ export enum MsgType {
 export interface User {
   name: string
   avatar: string
-  accountId: number
+  accountId: string
 }

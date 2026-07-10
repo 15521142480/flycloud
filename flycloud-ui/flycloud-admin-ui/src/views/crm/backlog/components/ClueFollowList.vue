@@ -195,7 +195,7 @@ const handleQuery = () => {
 
 /** 打开线索详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmClueDetail', params: { id } })
 }
 

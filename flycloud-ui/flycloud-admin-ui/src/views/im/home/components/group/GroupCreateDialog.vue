@@ -45,7 +45,7 @@ defineOptions({ name: 'ImGroupCreateDialog' })
 
 const emit = defineEmits<{
   /** 创建成功，携带新群编号；父侧通常用来跳转到新群会话 */
-  created: [groupId: number]
+  created: [groupId: string]
 }>()
 
 const message = useMessage()

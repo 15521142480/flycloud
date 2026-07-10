@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // AI API 密钥 VO
 export interface ApiKeyVO {
-  id: number // 编号
+  id: string // 编号
   name: string // 名称
   apiKey: string // 密钥
   platform: string // 平台
@@ -23,7 +23,7 @@ export const ApiKeyApi = {
   },
 
   // 查询 API 密钥详情
-  getApiKey: async (id: number) => {
+  getApiKey: async (id: string) => {
     return await request.get({ url: `/ai/api-key/get/` + id })
   },
 
@@ -38,7 +38,7 @@ export const ApiKeyApi = {
   },
 
   // 删除 API 密钥
-  deleteApiKey: async (id: number) => {
+  deleteApiKey: async (id: string) => {
     return await request.delete({ url: `/ai/api-key/delete/` + id })
   }
 }

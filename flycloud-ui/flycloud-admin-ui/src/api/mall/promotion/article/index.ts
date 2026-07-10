@@ -3,8 +3,8 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface ArticleVO {
-  id: number
-  categoryId: number
+  id: string
+  categoryId: string
   title: string
   author: string
   picUrl: string
@@ -12,7 +12,7 @@ export interface ArticleVO {
   browseCount: string
   sort: number
   status: number
-  spuId: number
+  spuId: string
   recommendHot: boolean
   recommendBanner: boolean
   content: string
@@ -24,7 +24,7 @@ export const getArticlePage = async (params: any) => {
 }
 
 // 查询文章管理详情
-export const getArticle = async (id: number) => {
+export const getArticle = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/article/get?id=` + id })
 }
 
@@ -39,6 +39,6 @@ export const updateArticle = async (data: ArticleVO) => {
 }
 
 // 删除文章管理
-export const deleteArticle = async (id: number) => {
+export const deleteArticle = async (id: string) => {
   return await request.delete({ url: `/${MALL_BASE_URL}/admin/promotion/article/delete?id=` + id })
 }

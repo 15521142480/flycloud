@@ -97,11 +97,11 @@ const imagePreview = (imgUrl: string) => {
 
 // 删除时的触发事件
 const emits = defineEmits<{
-  (e: 'delete', spuId: number): void
+  (e: 'delete', spuId: string): void
 }>()
 
 /** 多选时可以删除 SPU **/
-const deleteSpu = async (spuId: number) => {
+const deleteSpu = async (spuId: string) => {
   await message.confirm('是否删除商品编号为' + spuId + '的数据？')
   const index = spuData.value.findIndex((item) => item.id == spuId)
   spuData.value.splice(index, 1)

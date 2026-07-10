@@ -246,12 +246,12 @@ const tabClick = async (tab: TabsPaneContext) => {
 }
 
 /** 处理退款 */
-const openAfterSaleDetail = (id: number) => {
+const openAfterSaleDetail = (id: string) => {
   push({ name: 'TradeAfterSaleDetail', params: { id } })
 }
 
 /** 查看订单详情 */
-const openOrderDetail = (id: number) => {
+const openOrderDetail = (id: string) => {
   push({ name: 'TradeOrderDetail', params: { id } })
 }
 

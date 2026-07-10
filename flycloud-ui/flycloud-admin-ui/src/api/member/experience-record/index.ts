@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ExperienceRecordVO {
-  id: number
+  id: string
   userId: string
   bizId: string
   bizType: number
@@ -22,7 +22,7 @@ export const getExperienceRecordPage = async (params) => {
 }
 
 // 查询会员经验记录详情
-export const getExperienceRecord = async (id: number) => {
+export const getExperienceRecord = async (id: string) => {
   return await request.get<ExperienceRecordVO>({
     url: `/${SYS_BASE_URL}/admin/member/experience-record/get?id=` + id
   })

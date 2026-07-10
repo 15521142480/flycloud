@@ -99,7 +99,7 @@ const dbTableList = ref<CodegenApi.DatabaseTableVO[]>([]) // 表的列表
 const queryParams = reactive({
   name: undefined,
   comment: undefined,
-  dataSourceConfigId: 0
+  dataSourceConfigId: '0'
 })
 const queryFormRef = ref() // 搜索的表单
 const dataSourceConfigList = ref<DataSourceConfigApi.DataSourceConfigVO[]>([]) // 数据源列表

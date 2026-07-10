@@ -284,7 +284,7 @@ const formData = ref({
   buttonPermission: '',
   type: SystemTypeEnum.TYPE_0,
   sort: Number(undefined),
-  parentId: 0,
+  parentId: '0',
   path: '',
   icon: '',
   component: '',
@@ -322,7 +322,7 @@ const buttonPermissionList = ref<any>([]) // 按钮权限列表
 const dialogHeight = window.innerHeight
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number, parentId?: number) => {
+const open = async (type: string, id?: string, parentId?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -403,7 +403,7 @@ const getTree = async () => {
     searchStatusAll: true
   }
   const res = await MenuApi.getMenuTreeList(queryParam)
-  let menu: Tree = { id: 0, name: t('auto.views.system.menu.MenuForm.k3eaad510'), children: [] }
+  let menu: Tree = { id: '0', name: t('auto.views.system.menu.MenuForm.k3eaad510'), children: [] }
   // menu.children = handleTree(res)
   menu.children = res
   menuTree.value.push(menu)
@@ -418,7 +418,7 @@ const resetForm = () => {
     buttonPermission: '',
     type: SystemTypeEnum.TYPE_0,
     sort: Number(undefined),
-    parentId: 0,
+    parentId: '0',
     path: '',
     icon: '',
     component: '',

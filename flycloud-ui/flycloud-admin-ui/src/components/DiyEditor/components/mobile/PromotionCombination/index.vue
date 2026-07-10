@@ -132,7 +132,7 @@ defineOptions({ name: 'PromotionCombination' })
 const props = defineProps<{ property: PromotionCombinationProperty }>()
 // 商品列表
 const spuList = ref<ProductSpuApi.Spu[]>([])
-const spuIdList = ref<number[]>([])
+const spuIdList = ref<string[]>([])
 const combinationActivityList = ref<CombinationActivityApi.CombinationActivityVO[]>([])
 
 watch(
@@ -151,7 +151,7 @@ watch(
         spuList.value = []
         spuIdList.value = combinationActivityList.value
           .map((activity) => activity.spuId)
-          .filter((spuId): spuId is number => typeof spuId === 'number')
+          .filter((spuId): spuId is string => typeof spuId === 'string' && spuId.length > 0)
         if (spuIdList.value.length > 0) {
           spuList.value = await ProductSpuApi.getSpuDetailList(spuIdList.value)
         }

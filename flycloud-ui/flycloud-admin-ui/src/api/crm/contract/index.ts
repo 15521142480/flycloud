@@ -2,18 +2,18 @@ import request from '@/config/axios'
 import { TransferReqVO } from '@/api/crm/permission'
 
 export interface ContractVO {
-  id: number
+  id: string
   name: string
   no: string
-  customerId: number
+  customerId: string
   customerName?: string
-  businessId: number
+  businessId: string
   businessName: string
   contactLastTime: Date
   ownerUserId: string
   ownerUserName?: string
   ownerUserDeptName?: string
-  processInstanceId: number
+  processInstanceId: string
   auditStatus: number
   orderDate: Date
   startTime: Date
@@ -22,9 +22,9 @@ export interface ContractVO {
   discountPercent: number
   totalPrice: number
   totalReceivablePrice: number
-  signContactId: number
+  signContactId: string
   signContactName?: string
-  signUserId: number
+  signUserId: string
   signUserName: string
   remark: string
   createTime?: Date
@@ -33,8 +33,8 @@ export interface ContractVO {
   updateTime?: Date
   products?: [
     {
-      id: number
-      productId: number
+      id: string
+      productId: string
       productName: string
       productNo: string
       productUnit: number
@@ -62,12 +62,12 @@ export const getContractPageByBusiness = async (params: any) => {
 }
 
 // 查询 CRM 合同详情
-export const getContract = async (id: number) => {
+export const getContract = async (id: string) => {
   return await request.get({ url: `/crm/contract/get/` + id })
 }
 
 // 查询 CRM 合同下拉列表
-export const getContractSimpleList = async (customerId: number) => {
+export const getContractSimpleList = async (customerId: string) => {
   return await request.get({
     url: `/crm/contract/simple-list?customerId=${customerId}`
   })
@@ -84,7 +84,7 @@ export const updateContract = async (data: ContractVO) => {
 }
 
 // 删除 CRM 合同
-export const deleteContract = async (id: number) => {
+export const deleteContract = async (id: string) => {
   return await request.delete({ url: `/crm/contract/delete/` + id })
 }
 
@@ -94,7 +94,7 @@ export const exportContract = async (params) => {
 }
 
 // 提交审核
-export const submitContract = async (id: number) => {
+export const submitContract = async (id: string) => {
   return await request.put({ url: `/crm/contract/submit/${id}` })
 }
 

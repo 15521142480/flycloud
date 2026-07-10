@@ -234,7 +234,7 @@ const interfaceSummaryOption = reactive({
 })
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   accountId.value = id
   getSummary()
 }

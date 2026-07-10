@@ -2,22 +2,22 @@ import request from '@/config/axios'
 
 // 跟进记录 VO
 export interface FollowUpRecordVO {
-  id: number // 编号
+  id: string // 编号
   bizType: number // 数据类型
-  bizId: number // 数据编号
+  bizId: string // 数据编号
   type: number // 跟进类型
   content: string // 跟进内容
   picUrls: string[] // 图片
   fileUrls: string[] // 附件
   nextTime: Date // 下次联系时间
-  businessIds: number[] // 关联的商机编号数组
+  businessIds: string[] // 关联的商机编号数组
   businesses: {
-    id: number
+    id: string
     name: string
   }[] // 关联的商机数组
-  contactIds: number[] // 关联的联系人编号数组
+  contactIds: string[] // 关联的联系人编号数组
   contacts: {
-    id: number
+    id: string
     name: string
   }[] // 关联的联系人数组
   creator: string
@@ -37,7 +37,7 @@ export const FollowUpRecordApi = {
   },
 
   // 删除跟进记录
-  deleteFollowUpRecord: async (id: number) => {
+  deleteFollowUpRecord: async (id: string) => {
     return await request.delete({ url: `/crm/follow-up-record/delete/` + id })
   }
 }

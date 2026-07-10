@@ -2,7 +2,7 @@ import SkuList from './SkuList.vue'
 import { Spu } from '@/api/mall/product/spu'
 
 interface PropertyAndValues {
-  id: number
+  id: string
   name: string
   values?: PropertyAndValues[]
 }

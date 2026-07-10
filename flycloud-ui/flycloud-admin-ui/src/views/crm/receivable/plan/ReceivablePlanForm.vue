@@ -228,7 +228,7 @@ const customerList = ref<CustomerApi.CustomerVO[]>([]) // 客户列表
 const contractList = ref<ContractApi.ContractVO[]>([]) // 合同列表
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number, customerId?: number, contractId?: number) => {
+const open = async (type: string, id?: string, customerId?: string, contractId?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type
@@ -297,7 +297,7 @@ const resetForm = () => {
 }
 
 /** 处理切换客户 */
-const handleCustomerChange = async (customerId: number) => {
+const handleCustomerChange = async (customerId: string) => {
   // 重置合同编号
   formData.value.contractId = undefined
   // 获得合同列表

@@ -225,7 +225,7 @@ const openImportTable = () => {
 }
 
 /** 编辑操作 */
-const handleUpdate = (id: number) => {
+const handleUpdate = (id: string) => {
   push('/codegen/edit/' + id)
 }
 
@@ -236,7 +236,7 @@ const handlePreview = (row: CodegenApi.CodegenTableVO) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

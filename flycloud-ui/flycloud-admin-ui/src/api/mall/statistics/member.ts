@@ -28,7 +28,7 @@ export interface MemberAnalyseComparisonRespVO {
 
 /** 会员地区统计 Response VO */
 export interface MemberAreaStatisticsRespVO {
-  areaId: number
+  areaId: string
   areaName: string
   userCount: number
   orderCreateUserCount: number

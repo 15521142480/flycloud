@@ -109,7 +109,7 @@ const queryParams = reactive({
 const formRef = ref<InstanceType<typeof TagForm> | null>(null)
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   queryParams.accountId = id
   queryParams.pageNum = 1
   getList()
@@ -128,12 +128,12 @@ const getList = async () => {
 }
 
 /** 添加/修改操作 */
-const openForm = (type: 'create' | 'update', id?: number) => {
+const openForm = (type: 'create' | 'update', id?: string) => {
   formRef.value?.open(type, queryParams.accountId, id)
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

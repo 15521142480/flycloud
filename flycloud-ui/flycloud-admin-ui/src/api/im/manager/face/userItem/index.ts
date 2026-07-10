@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerFaceUserItemVO {
-  id: number
+  id: string
   userId: string
   userNickname?: string
   url: string
@@ -19,7 +19,7 @@ export const getManagerFaceUserItemPage = (params: PageParam) => {
 }
 
 // 删除用户表情
-export const deleteManagerFaceUserItem = (id: number) => {
+export const deleteManagerFaceUserItem = (id: string) => {
   return request.delete({
     url: `/${SYS_BASE_URL}/im/manager/face-user-item/delete`,
     params: { id }

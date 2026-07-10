@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface JobVO {
-  id: number
+  id: string
   name: string
   status: number
   handlerName: string
@@ -19,7 +19,7 @@ export const getJobPage = (params: PageParam) => {
 }
 
 // 任务详情
-export const getJob = (id: number) => {
+export const getJob = (id: string) => {
   return request.get({ url: '/infra/job/get/' + id })
 }
 
@@ -34,7 +34,7 @@ export const updateJob = (data: JobVO) => {
 }
 
 // 删除定时任务调度
-export const deleteJob = (id: number) => {
+export const deleteJob = (id: string) => {
   return request.delete({ url: '/infra/job/delete/' + id })
 }
 
@@ -44,7 +44,7 @@ export const exportJob = (params) => {
 }
 
 // 任务状态修改
-export const updateJobStatus = (id: number, status: number) => {
+export const updateJobStatus = (id: string, status: number) => {
   const params = {
     id,
     status
@@ -53,11 +53,11 @@ export const updateJobStatus = (id: number, status: number) => {
 }
 
 // 定时任务立即执行一次
-export const runJob = (id: number) => {
+export const runJob = (id: string) => {
   return request.put({ url: '/infra/job/trigger/' + id })
 }
 
 // 获得定时任务的下 n 次执行时间
-export const getJobNextTimes = (id: number) => {
+export const getJobNextTimes = (id: string) => {
   return request.get({ url: '/infra/job/get_next_times/' + id })
 }

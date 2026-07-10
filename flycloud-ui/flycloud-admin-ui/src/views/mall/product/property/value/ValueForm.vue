@@ -36,13 +36,13 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref<{
-  id?: number
-  propertyId?: number
+  id?: string
+  propertyId?: string
   name: string
   remark?: string
 }>({
-  id: undefined as number | undefined,
-  propertyId: undefined as number | undefined,
+  id: undefined as string | undefined,
+  propertyId: undefined as string | undefined,
   name: '',
   remark: undefined as string | undefined
 })
@@ -53,7 +53,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (type: string, propertyId: number, id?: number) => {
+const open = async (type: string, propertyId: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

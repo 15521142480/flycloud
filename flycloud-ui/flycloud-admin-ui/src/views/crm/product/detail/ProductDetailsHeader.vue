@@ -49,7 +49,7 @@ import { erpPriceInputFormatter } from '@/utils'
 import * as ProductApi from '@/api/crm/product'
 const { t } = useI18n()
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 const { product } = defineProps<{ product: ProductApi.ProductVO }>()

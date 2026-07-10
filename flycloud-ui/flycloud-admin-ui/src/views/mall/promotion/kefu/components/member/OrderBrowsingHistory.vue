@@ -15,7 +15,7 @@ const total = ref(0) // 总数
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  userId: 0
+  userId: '0'
 })
 const skipGetMessageList = computed(() => {
   // 已加载到最后一页的话则不触发新的消息获取

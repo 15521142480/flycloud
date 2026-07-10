@@ -48,7 +48,7 @@ const router = useRouter()
 
 // 操作修改
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
@@ -72,7 +72,7 @@ const copyToClipboard = (text: string) => {
  *
  * @param productId 产品 ID
  */
-const goToProductDetail = (productId: number) => {
+const goToProductDetail = (productId: string) => {
   router.push({ name: 'IoTProductDetail', params: { id: productId } })
 }
 </script>

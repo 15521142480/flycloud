@@ -54,7 +54,7 @@ const message = useMessage()
 
 const visible = ref(false)
 const submitting = ref(false)
-const groupId = ref(0)
+const groupId = ref('')
 const members = ref<GroupMemberLite[]>([])
 const hideIds = ref<string[]>([])
 const selectedIds = ref<string[]>([])
@@ -62,7 +62,7 @@ const selectedIds = ref<string[]>([])
 defineExpose({
   /** 打开移除群成员弹窗：reset → 灌参 → visible=true */
   open(opts: {
-    groupId: number
+    groupId: string
     members: GroupMemberLite[]
     /** 隐藏 userId：群主始终隐藏；管理员视角额外隐藏其它管理员 */
     hideIds?: string[]

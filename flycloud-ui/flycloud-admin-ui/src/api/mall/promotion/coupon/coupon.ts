@@ -5,7 +5,7 @@ const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 // TODO @dhb52：vo 缺少
 
 // 删除优惠劵
-export const deleteCoupon = async (id: number) => {
+export const deleteCoupon = async (id: string) => {
   return request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/coupon/delete?id=${id}`
   })

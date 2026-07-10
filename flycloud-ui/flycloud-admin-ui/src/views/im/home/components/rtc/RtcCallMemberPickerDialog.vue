@@ -46,7 +46,7 @@ const groupStore = useGroupStore()
 /** 弹窗显隐 */
 const visible = ref(false)
 /** 当前群编号；open 时由调用方传入 */
-const groupId = ref(0)
+const groupId = ref('')
 /** 弹窗用途；invite=发起群通话选邀请人 / add=通话中追加成员 */
 const mode = ref<PickerMode>('invite')
 /** 置灰的 userId 列表；add 场景把已在通话内的人禁用 */
@@ -83,7 +83,7 @@ const disabledIds = computed<string[]>(() => excludeUserIds.value)
 const canSubmit = computed(() => selectedIds.value.length > 0)
 
 /** 打开弹窗；excludeUserIds 用于「添加成员」时把已在通话内的人置灰 */
-function open(opts: { groupId: number; mode?: PickerMode; excludeUserIds?: string[] }) {
+function open(opts: { groupId: string; mode?: PickerMode; excludeUserIds?: string[] }) {
   groupId.value = opts.groupId
   mode.value = opts.mode || 'invite'
   excludeUserIds.value = opts.excludeUserIds || []

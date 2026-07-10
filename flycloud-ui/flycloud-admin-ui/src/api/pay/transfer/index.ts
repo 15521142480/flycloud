@@ -3,11 +3,11 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface TransferVO {
-  id?: number
+  id?: string
   no?: string
-  appId?: number
+  appId?: string
   appName?: string
-  channelId?: number
+  channelId?: string
   channelCode?: string
   merchantTransferId?: string
   type?: string
@@ -34,7 +34,7 @@ export const getTransferPage = async (params: any) => {
 }
 
 // 查询转账单详情
-export const getTransfer = async (id: number) => {
+export const getTransfer = async (id: string) => {
   return await request.get<TransferVO>({ url: `/${SYS_BASE_URL}/admin/pay/transfer/get?id=` + id })
 }
 

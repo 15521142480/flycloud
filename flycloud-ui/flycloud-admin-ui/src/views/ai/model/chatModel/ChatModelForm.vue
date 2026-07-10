@@ -197,7 +197,7 @@ const formRef = ref() // 表单 Ref
 const apiKeyList = ref([] as ApiKeyVO[]) // API 密钥列表
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

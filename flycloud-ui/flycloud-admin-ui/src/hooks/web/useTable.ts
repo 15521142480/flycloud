@@ -104,12 +104,12 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     return table
   }
 
-  const delData = async (ids: string | number | string[] | number[]) => {
+  const delData = async (ids: string[] | string[]) => {
     let idsLength = 1
     if (ids instanceof Array) {
       idsLength = ids.length
       await Promise.all(
-        ids.map(async (id: string | number) => {
+        ids.map(async (id: string) => {
           await (config?.delListApi && config?.delListApi(id))
         })
       )
@@ -167,7 +167,7 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     },
     // 删除数据
     delList: async (
-      ids: string | number | string[] | number[],
+      ids: string[] | string[],
       multiple: boolean,
       message = true
     ) => {

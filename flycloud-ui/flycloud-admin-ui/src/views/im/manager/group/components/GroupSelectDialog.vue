@@ -9,7 +9,7 @@
   Events:
     selected(rows: ImManagerGroupVO[]) — 确认选择后触发，单选时数组长度为 1
   Expose:
-    open(selectedIds?: number[]) — 打开弹窗，可传入已选 ID 用于预选高亮
+    open(selectedIds?: string[]) — 打开弹窗，可传入已选 ID 用于预选高亮
 -->
 <template>
   <Dialog title="群选择" v-model="dialogVisible" width="70%">
@@ -147,9 +147,9 @@ const total = ref(0) // 总条数
 // ==================== 选中状态 ====================
 const tableRef = ref() // 表格 Ref
 const selectedRows = ref<ManagerGroupApi.ImManagerGroupVO[]>([]) // 多选模式：选中行
-const selectedRadioId = ref<number>() // 单选模式：选中 ID
+const selectedRadioId = ref<string>() // 单选模式：选中 ID
 const currentRadioRow = ref<ManagerGroupApi.ImManagerGroupVO>() // 单选模式：选中行对象
-const preSelectedIds = ref<number[]>([]) // 打开弹窗时传入的已选 ID
+const preSelectedIds = ref<string[]>([]) // 打开弹窗时传入的已选 ID
 
 /** 多选：checkbox 变化 */
 const handleSelectionChange = (rows: ManagerGroupApi.ImManagerGroupVO[]) => {
@@ -275,7 +275,7 @@ const confirmSelect = () => {
 // ==================== 打开弹窗 ====================
 
 /** 打开弹窗，可传入已选 ID 用于预选高亮 */
-const open = async (selectedIds?: number[]) => {
+const open = async (selectedIds?: string[]) => {
   dialogVisible.value = true
   // 二次打开复位查询条件 + 选中状态，避免继承上次上下文
   queryParams.name = undefined

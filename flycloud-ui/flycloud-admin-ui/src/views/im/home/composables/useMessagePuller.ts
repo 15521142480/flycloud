@@ -167,7 +167,7 @@ export const useMessagePuller = () => {
    */
   const pullByType = async (
     conversationType: number,
-    startMinId: number,
+    startMinId: string,
     startEpoch: number,
     startUserId: string,
     signal: AbortSignal

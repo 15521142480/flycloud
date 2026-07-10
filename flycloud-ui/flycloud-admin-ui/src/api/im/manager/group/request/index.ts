@@ -3,8 +3,8 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerGroupRequestVO {
-  id: number
-  groupId: number
+  id: string
+  groupId: string
   groupName?: string
   userId: string
   userNickname?: string

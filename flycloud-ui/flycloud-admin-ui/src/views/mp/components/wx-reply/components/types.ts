@@ -8,7 +8,7 @@ enum ReplyType {
 }
 
 interface _Reply {
-  accountId: number
+  accountId: string
   type: ReplyType
   name?: string | null
   content?: string | null

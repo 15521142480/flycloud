@@ -3,13 +3,13 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ChannelVO {
-  id: number
+  id: string
   code: string
   config: string
   status: number
   remark: string
   feeRate: number
-  appId: number
+  appId: string
   createTime: Date
 }
 
@@ -38,7 +38,7 @@ export const updateChannel = (data: ChannelVO) => {
 }
 
 // 删除支付渠道
-export const deleteChannel = (id: number) => {
+export const deleteChannel = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/admin/pay/channel/delete?id=` + id })
 }
 

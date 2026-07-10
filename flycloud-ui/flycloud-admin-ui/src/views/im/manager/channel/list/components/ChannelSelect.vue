@@ -11,7 +11,7 @@ import * as ChannelApi from '@/api/im/manager/channel'
 defineOptions({ name: 'ImChannelSelect' })
 
 const props = defineProps({
-  modelValue: { type: Number, default: undefined }
+  modelValue: { type: String, default: undefined }
 })
 const emit = defineEmits(['update:modelValue'])
 

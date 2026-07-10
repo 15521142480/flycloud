@@ -2,7 +2,7 @@ import request from '@/config/axios'
 const BPM_BASE_URL = import.meta.env.VITE_BPM_SERVER
 
 export type UserGroupVO = {
-  id: number
+  id: string
   name: string
   description: string
   userIds: string[]
@@ -28,12 +28,12 @@ export const updateUserGroup = async (data: UserGroupVO) => {
 }
 
 // 删除用户组
-export const deleteUserGroup = async (id: number) => {
+export const deleteUserGroup = async (id: string) => {
   return await request.delete({ url: `/${BPM_BASE_URL}/userGroup/delete/` + id })
 }
 
 // 获得用户组
-export const getUserGroup = async (id: number) => {
+export const getUserGroup = async (id: string) => {
   return await request.get({ url: `/${BPM_BASE_URL}/userGroup/get/` + id })
 }
 

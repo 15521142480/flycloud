@@ -278,7 +278,7 @@ const resetQuery = () => {
 
 /** 打开客户详情 */
 const { currentRoute, push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmCustomerDetail', params: { id } })
 }
 

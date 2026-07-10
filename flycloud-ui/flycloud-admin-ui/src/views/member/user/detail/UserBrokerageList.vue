@@ -75,9 +75,9 @@ import * as BrokerageUserApi from '@/api/mall/trade/brokerage/user'
 /** 推广人列表 */
 defineOptions({ name: 'UserBrokerageList' })
 
-const { bindUserId }: { bindUserId: number } = defineProps({
+const { bindUserId }: { bindUserId: string } = defineProps({
   bindUserId: {
-    type: Number,
+    type: String,
     required: true
   }
 }) //用户编号
@@ -88,7 +88,7 @@ const list = ref<BrokerageUserApi.BrokerageUserVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  bindUserId: undefined as number | undefined,
+  bindUserId: undefined as string | undefined,
   level: '',
   bindUserTime: []
 })

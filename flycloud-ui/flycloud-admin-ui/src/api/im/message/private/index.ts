@@ -4,7 +4,7 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 // 私聊消息 Response VO
 export interface ImPrivateMessageRespVO {
-  id: number // 消息编号
+  id: string // 消息编号
   clientMessageId: string // 客户端消息编号
   senderId: string // 发送人编号
   receiverId: string // 接收人编号
@@ -27,7 +27,7 @@ export interface ImPrivateMessageSendReqVO {
 // 私聊历史消息列表 Request VO
 export interface ImPrivateMessageListReqVO {
   receiverId: string // 接收人编号（对方）
-  maxId?: number | string // 起始消息编号（不含），为空则从最新消息开始
+  maxId?: string // 起始消息编号（不含），为空则从最新消息开始
   limit: number // 拉取数量（1 ~ 200）
 }
 
@@ -41,7 +41,7 @@ export const sendPrivateMessage = (data: ImPrivateMessageSendReqVO) => {
 
 // 拉取私聊消息（增量）
 export const pullPrivateMessageList = (
-  params: { minId: number | string; size: number },
+  params: { minId: string; size: number },
   signal?: AbortSignal
 ) => {
   return request.get<ImPrivateMessageRespVO[]>({
@@ -60,7 +60,7 @@ export const getPrivateMessageList = (params: ImPrivateMessageListReqVO) => {
 }
 
 // 标记私聊消息已读
-export const readPrivateMessages = (receiverId: string, messageId: number | string) => {
+export const readPrivateMessages = (receiverId: string, messageId: string) => {
   return request.put<boolean>({
     url: `/${SYS_BASE_URL}/im/message/private/read`,
     params: { receiverId, messageId }
@@ -68,8 +68,8 @@ export const readPrivateMessages = (receiverId: string, messageId: number | stri
 }
 
 // 查询对方已读到我发的最大消息 id（多端 / 离线后用于补齐已读状态）
-export const getPrivateMaxReadMessageId = (peerId: number | string, signal?: AbortSignal) => {
-  return request.get<number | null>({
+export const getPrivateMaxReadMessageId = (peerId: string, signal?: AbortSignal) => {
+  return request.get<string | null>({
     url: `/${SYS_BASE_URL}/im/message/private/max-read-message-id`,
     params: { peerId },
     signal
@@ -77,7 +77,7 @@ export const getPrivateMaxReadMessageId = (peerId: number | string, signal?: Abo
 }
 
 // 撤回私聊消息
-export const recallPrivateMessage = (id: number | string) => {
+export const recallPrivateMessage = (id: string) => {
   return request.delete<ImPrivateMessageRespVO>({
     url: `/${SYS_BASE_URL}/im/message/private/recall`,
     params: { id }

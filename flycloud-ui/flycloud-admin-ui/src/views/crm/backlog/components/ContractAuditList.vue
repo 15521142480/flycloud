@@ -272,22 +272,22 @@ const handleProcessDetail = (row: ContractApi.ContractVO) => {
 
 /** 打开合同详情 */
 const { push } = useRouter()
-const openDetail = (id: number) => {
+const openDetail = (id: string) => {
   push({ name: 'CrmContractDetail', params: { id } })
 }
 
 /** 打开客户详情 */
-const openCustomerDetail = (id: number) => {
+const openCustomerDetail = (id: string) => {
   push({ name: 'CrmCustomerDetail', params: { id } })
 }
 
 /** 打开联系人详情 */
-const openContactDetail = (id: number) => {
+const openContactDetail = (id: string) => {
   push({ name: 'CrmContactDetail', params: { id } })
 }
 
 /** 打开商机详情 */
-const openBusinessDetail = (id: number) => {
+const openBusinessDetail = (id: string) => {
   push({ name: 'CrmBusinessDetail', params: { id } })
 }
 

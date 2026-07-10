@@ -121,7 +121,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 const userOption = ref<UserApi.UserVO[]>([])
 
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   resetForm()
   // 设置数据

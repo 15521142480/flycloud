@@ -2,13 +2,13 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface MenuVO {
-  id: number
+  id: string
   name: string
   permission: string
   buttonPermission: string
   type: number
   sort: number
-  parentId: number
+  parentId: string
   path: string
   icon: string
   component: string
@@ -36,7 +36,7 @@ export const getMenusList = () => {
 }
 
 // 获取菜单详情
-export const getMenu = (id: number) => {
+export const getMenu = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/menu/get/` + id })
 }
 
@@ -51,11 +51,11 @@ export const updateMenu = (data: MenuVO) => {
 }
 
 // 修改菜单状态
-export const updateStatus = (id: number, status: number) => {
+export const updateStatus = (id: string, status: number) => {
   return request.post({ url: `/${SYS_BASE_URL}/menu/enable?id=` + id + `&status=` + status })
 }
 
 // 删除菜单
-export const deleteMenu = (id: number) => {
+export const deleteMenu = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/menu/delete/` + id })
 }

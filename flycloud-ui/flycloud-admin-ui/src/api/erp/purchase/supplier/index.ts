@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // ERP 供应商 VO
 export interface SupplierVO {
-  id: number // 供应商编号
+  id: string // 供应商编号
   name: string // 供应商名称
   contact: string // 联系人
   mobile: string // 手机号码
@@ -32,7 +32,7 @@ export const SupplierApi = {
   },
 
   // 查询供应商详情
-  getSupplier: async (id: number) => {
+  getSupplier: async (id: string) => {
     return await request.get({ url: `/erp/supplier/get/` + id })
   },
 
@@ -47,7 +47,7 @@ export const SupplierApi = {
   },
 
   // 删除供应商
-  deleteSupplier: async (id: number) => {
+  deleteSupplier: async (id: string) => {
     return await request.delete({ url: `/erp/supplier/delete/` + id })
   },
 

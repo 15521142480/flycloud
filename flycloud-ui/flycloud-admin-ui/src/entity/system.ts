@@ -3,9 +3,9 @@ import type { BaseEntity } from '@/entity/base/base-entity'
 export interface SysDept extends BaseEntity {
   code?: string
   name: string
-  parentId: number
+  parentId: string
   sort: number
-  leaderUserId?: number
+  leaderUserId?: string
   phone?: string
   email?: string
 }
@@ -27,7 +27,7 @@ export interface SysRole extends BaseEntity {
 export interface SysMenu extends BaseEntity {
   type: number
   name: string
-  parentId: number
+  parentId: string
   permission?: string
   buttonPermission?: string
   buttonPermissions?: SysMenuButtonPermission[]
@@ -63,7 +63,7 @@ export interface SysUser extends BaseEntity {
   telephone?: string
   birthday?: string
   sex?: number
-  deptId?: number
+  deptId?: string
   deptName?: string
   roleIds?: string
   roleNames?: string
@@ -77,7 +77,7 @@ export interface UserDetailInfo {
 
 export interface SysUserRoleUpdate {
   userId: string
-  roleIds: number[]
+  roleIds: string[]
 }
 
 export interface SysDictType extends BaseEntity {
@@ -95,6 +95,6 @@ export interface SysDictData extends BaseEntity {
 }
 
 export interface RoleMenuPermission {
-  menuId: number
+  menuId: string
   permission: string
 }

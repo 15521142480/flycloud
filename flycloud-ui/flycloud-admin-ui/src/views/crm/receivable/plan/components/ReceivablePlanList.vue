@@ -110,8 +110,8 @@ import { erpPriceTableColumnFormatter } from '@/utils'
 const { t } = useI18n()
 defineOptions({ name: 'CrmReceivablePlanList' })
 const props = defineProps<{
-  customerId?: number // 客户编号
-  contractId?: number // 合同编号
+  customerId?: string // 客户编号
+  contractId?: string // 合同编号
 }>()
 
 const message = useMessage() // 消息弹窗
@@ -122,7 +122,7 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   customerId: undefined as unknown, // 允许 undefined + number
-  contractId: undefined as unknown // 允许 undefined + number
+  contractId: undefined as unknown // 允许 undefined + string
 })
 
 /** 查询列表 */
@@ -155,7 +155,7 @@ const handleQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id, props.customerId, props.contractId)
 }
 
@@ -168,7 +168,7 @@ const createReceivable = (row: ReceivablePlanApi.ReceivablePlanVO) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

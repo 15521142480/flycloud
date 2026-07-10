@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 收款单 VO
 export interface FinanceReceiptVO {
-  id: number // 收款单编号
+  id: string // 收款单编号
   no: string // 收款单号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   receiptTime: Date // 收款时间
   totalPrice: number // 合计金额，单位：元
   status: number // 状态
@@ -19,7 +19,7 @@ export const FinanceReceiptApi = {
   },
 
   // 查询收款单详情
-  getFinanceReceipt: async (id: number) => {
+  getFinanceReceipt: async (id: string) => {
     return await request.get({ url: `/erp/finance-receipt/get/` + id })
   },
 
@@ -34,7 +34,7 @@ export const FinanceReceiptApi = {
   },
 
   // 更新收款单的状态
-  updateFinanceReceiptStatus: async (id: number, status: number) => {
+  updateFinanceReceiptStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/finance-receipt/update-status`,
       params: {
@@ -45,7 +45,7 @@ export const FinanceReceiptApi = {
   },
 
   // 删除收款单
-  deleteFinanceReceipt: async (ids: number[]) => {
+  deleteFinanceReceipt: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/finance-receipt/delete`,
       params: {

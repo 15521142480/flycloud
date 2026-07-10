@@ -11,7 +11,7 @@ interface UserVO {
   id: string
   avatar: string
   name: string
-  deptId: number
+  deptId: string
 }
 
 interface UserInfoVO {
@@ -31,7 +31,7 @@ export const useUserStore = defineStore('admin-user', {
       id: '',
       avatar: '',
       name: '',
-      deptId: 0
+      deptId: '0'
     }
   }),
   getters: {
@@ -119,7 +119,7 @@ export const useUserStore = defineStore('admin-user', {
         id: '',
         avatar: '',
         name: '',
-        deptId: 0
+        deptId: '0'
       }
     }
   }

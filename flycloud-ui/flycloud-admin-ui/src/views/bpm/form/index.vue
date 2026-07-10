@@ -143,8 +143,8 @@ const resetQuery = () => {
 }
 
 /** 添加/修改操作 */
-const openForm = (id?: number) => {
-  const toRouter: { name: string; query?: { id: number } } = {
+const openForm = (id?: string) => {
+  const toRouter: { name: string; query?: { id: string } } = {
     name: 'BpmFormEditor'
   }
   console.log(typeof id)
@@ -158,7 +158,7 @@ const openForm = (id?: number) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -176,7 +176,7 @@ const detailData = ref({
   rule: [],
   option: {}
 })
-const openDetail = async (rowId: number) => {
+const openDetail = async (rowId: string) => {
   // 设置表单
   const data = await FormApi.getForm(rowId)
   setConfAndFields2(detailData, data.conf, data.fields)

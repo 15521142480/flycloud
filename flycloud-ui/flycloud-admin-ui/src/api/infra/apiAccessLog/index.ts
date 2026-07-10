@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface ApiAccessLogVO {
-  id: number
+  id: string
   traceId: string
   userId: string
   userType: number

@@ -80,7 +80,7 @@ defineOptions({ name: 'ImManagerFacePackItemForm' })
 
 const props = defineProps<{
   /** 所属表情包 id；create 时必填 */
-  packId: number
+  packId: string
 }>()
 
 const message = useMessage() // 消息弹窗
@@ -91,8 +91,8 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined as number | undefined,
-  packId: 0,
+  id: undefined as string | undefined,
+  packId: '0',
   url: '',
   name: '',
   width: undefined as number | undefined,
@@ -143,7 +143,7 @@ async function onUrlChange(url: string) {
 }
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = type === 'create' ? '新增表情' : '修改表情'
   formType.value = type

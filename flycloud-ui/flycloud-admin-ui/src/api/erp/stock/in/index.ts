@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 其它入库单 VO
 export interface StockInVO {
-  id: number // 入库编号
+  id: string // 入库编号
   no: string // 入库单号
-  supplierId: number // 供应商编号
+  supplierId: string // 供应商编号
   inTime: Date // 入库时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -20,7 +20,7 @@ export const StockInApi = {
   },
 
   // 查询其它入库单详情
-  getStockIn: async (id: number) => {
+  getStockIn: async (id: string) => {
     return await request.get({ url: `/erp/stock-in/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const StockInApi = {
   },
 
   // 更新其它入库单的状态
-  updateStockInStatus: async (id: number, status: number) => {
+  updateStockInStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/stock-in/update-status`,
       params: {
@@ -46,7 +46,7 @@ export const StockInApi = {
   },
 
   // 删除其它入库单
-  deleteStockIn: async (ids: number[]) => {
+  deleteStockIn: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/stock-in/delete`,
       params: {

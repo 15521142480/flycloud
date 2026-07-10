@@ -158,7 +158,7 @@ const queryParams = reactive({
 })
 const queryFormRef = ref() // 搜索的表单
 const tableRef = ref() // 表格的 Ref
-const selectedIds = ref<number[]>([]) // 表格的选中 ID 数组
+const selectedIds = ref<string[]>([]) // 表格的选中 ID 数组
 
 /** 查询列表 */
 const getList = async () => {

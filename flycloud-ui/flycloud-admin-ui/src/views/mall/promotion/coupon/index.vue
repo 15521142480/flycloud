@@ -167,7 +167,7 @@ const resetQuery = () => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 二次确认
     await message.confirm(

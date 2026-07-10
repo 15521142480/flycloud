@@ -116,7 +116,7 @@ const reply = ref<Reply>({
 })
 
 /** 侦听账号变化 */
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   accountId.value = id
   reply.value.accountId = id
   queryParams.pageNum = 1
@@ -163,7 +163,7 @@ const onCreate = () => {
 }
 
 /** 修改按钮操作 */
-const onUpdate = async (id: number) => {
+const onUpdate = async (id: string) => {
   reset()
 
   const data = await MpAutoReplyApi.getAutoReply(id)
@@ -196,7 +196,7 @@ const onUpdate = async (id: number) => {
 }
 
 /** 删除按钮操作 */
-const onDelete = async (id: number) => {
+const onDelete = async (id: string) => {
   await message.confirm(t('auto.views.mp.autoReply.index.k6d15311a'))
   await MpAutoReplyApi.deleteAutoReply(id)
   await getList()

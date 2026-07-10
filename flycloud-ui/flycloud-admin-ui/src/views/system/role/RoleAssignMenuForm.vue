@@ -127,7 +127,7 @@ const menuExpand = ref(true) // 展开/折叠
 const treeRef = ref() // 菜单树组件 Ref
 const treeNodeAll = ref(false) // 全选/全不选
 // const rolePermissionList = ref(false) // 角色拥有的权限列表
-const rolePermissionMap = ref(new Map<number, any[]>()) // 角色菜单和按钮权限map
+const rolePermissionMap = ref(new Map<string, any[]>()) // 角色菜单和按钮权限map
 
 /** 打开弹窗 */
 const open = async (row: RoleApi.RoleVO) => {
@@ -147,7 +147,7 @@ const open = async (row: RoleApi.RoleVO) => {
   // formLoading.value = true
   // try {
   //   formData.value.menuIds = await PermissionApi.getRoleMenuList(row.id)
-  //   formData.value.menuIds.forEach((menuId: number) => {
+  //   formData.value.menuIds.forEach((menuId: string) => {
   //     treeRef.value.setChecked(menuId, true, false)
   //   })
   // } finally {

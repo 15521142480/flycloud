@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface NoticeVO {
-  id: number | undefined
+  id: string | undefined
   title: string
   type: number
   content: string
@@ -17,7 +17,7 @@ export const getNoticePage = (params: PageParam) => {
 }
 
 // 查询公告详情
-export const getNotice = (id: number) => {
+export const getNotice = (id: string) => {
   return request.get({ url: '/system/notice/get/' + id })
 }
 
@@ -32,11 +32,11 @@ export const updateNotice = (data: NoticeVO) => {
 }
 
 // 删除公告
-export const deleteNotice = (id: number) => {
+export const deleteNotice = (id: string) => {
   return request.delete({ url: '/system/notice/delete/' + id })
 }
 
 // 推送公告
-export const pushNotice = (id: number) => {
+export const pushNotice = (id: string) => {
   return request.post({ url: '/system/notice/push/' + id })
 }

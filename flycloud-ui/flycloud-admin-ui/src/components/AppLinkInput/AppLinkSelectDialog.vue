@@ -64,7 +64,7 @@
       >
         <ProductCategorySelect
           v-model="detailSelectDialog.id"
-          :parent-id="0"
+          parent-id="0"
           @update:model-value="handleProductCategorySelected"
         />
       </el-form-item>
@@ -76,7 +76,6 @@ import { APP_LINK_GROUP_LIST, APP_LINK_TYPE_ENUM, AppLink } from './data'
 import { ButtonInstance, ScrollbarInstance } from 'element-plus'
 import { split } from 'lodash-es'
 import ProductCategorySelect from '@/views/mall/product/category/components/ProductCategorySelect.vue'
-import { getUrlNumberValue } from '@/utils'
 
 // APP 链接选择弹框
 const { t } = useI18n()
@@ -120,7 +119,7 @@ const handleAppLinkSelected = (appLink: AppLink) => {
       detailSelectDialog.value.type = appLink.type
       // 返显
       detailSelectDialog.value.id =
-        getUrlNumberValue('id', 'http://127.0.0.1' + activeAppLink.value.path) || undefined
+        new URL(activeAppLink.value.path, 'http://127.0.0.1').searchParams.get('id') || undefined
       break
     default:
       break
@@ -178,8 +177,8 @@ const groupBtnRefs = ref<ButtonInstance[]>([])
 // 自动滚动分组按钮，确保分组按钮保持在可视区域内
 const scrollToGroupBtn = (group: string) => {
   const groupBtn = groupBtnRefs.value
-    .map((btn: ButtonInstance) => btn['ref'])
-    .find((ref: Node) => ref.textContent === group)
+    .map((btn: ButtonInstance) => btn['ref'] as HTMLElement | undefined)
+    .find((ref): ref is HTMLElement => ref?.textContent === group)
   if (groupBtn) {
     groupScrollbar.value?.setScrollTop(groupBtn.offsetTop)
   }
@@ -193,7 +192,7 @@ const isSameLink = (link1: string, link2: string) => {
 // 详情选择对话框
 const detailSelectDialog = ref<{
   visible: boolean
-  id?: number
+  id?: string
   type?: APP_LINK_TYPE_ENUM
 }>({
   visible: false,
@@ -201,7 +200,7 @@ const detailSelectDialog = ref<{
   type: undefined
 })
 // 处理详情选择
-const handleProductCategorySelected = (id: number) => {
+const handleProductCategorySelected = (id: string) => {
   const url = new URL(activeAppLink.value.path, 'http://127.0.0.1')
   // 修改 id 参数
   url.searchParams.set('id', `${id}`)

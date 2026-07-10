@@ -195,13 +195,13 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 // TODO 芋艿：这里要改下
 /** 关闭按钮操作 */
-const handleClose = async (id: number) => {
+const handleClose = async (id: string) => {
   try {
     // 关闭的二次确认
     await message.confirm('确认关闭该砍价活动吗？')
@@ -214,7 +214,7 @@ const handleClose = async (id: number) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

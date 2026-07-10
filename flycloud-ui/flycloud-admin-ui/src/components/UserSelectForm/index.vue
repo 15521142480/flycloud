@@ -79,7 +79,7 @@ const transferUserList = computed(() => {
 })
 
 /** 打开弹窗 */
-const open = async (id: number, selectedList?: any[]) => {
+const open = async (id: string, selectedList?: any[]) => {
   activityId.value = id
   resetForm()
 
@@ -94,7 +94,7 @@ const open = async (id: number, selectedList?: any[]) => {
 }
 
 /** 获取部门过滤后的用户列表 */
-const getUserList = async (deptId?: number) => {
+const getUserList = async (deptId?: string) => {
   formLoading.value = true
   try {
     // @ts-ignore

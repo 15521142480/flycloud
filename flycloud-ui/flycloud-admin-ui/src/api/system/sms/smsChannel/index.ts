@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface SmsChannelVO {
-  id: number
+  id: string
   code: string
   status: number
   signature: string
@@ -23,7 +23,7 @@ export function getSimpleSmsChannelList() {
 }
 
 // 查询短信渠道详情
-export const getSmsChannel = (id: number) => {
+export const getSmsChannel = (id: string) => {
   return request.get({ url: '/system/sms-channel/get/' + id })
 }
 
@@ -38,6 +38,6 @@ export const updateSmsChannel = (data: SmsChannelVO) => {
 }
 
 // 删除短信渠道
-export const deleteSmsChannel = (id: number) => {
+export const deleteSmsChannel = (id: string) => {
   return request.delete({ url: '/system/sms-channel/delete/' + id })
 }

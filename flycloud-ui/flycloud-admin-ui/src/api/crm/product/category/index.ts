@@ -2,13 +2,13 @@ import request from '@/config/axios'
 
 // TODO @zange：挪到 product 下，建个 category 包，挪进去哈；
 export interface ProductCategoryVO {
-  id: number
+  id: string
   name: string
-  parentId: number
+  parentId: string
 }
 
 // 查询产品分类详情
-export const getProductCategory = async (id: number) => {
+export const getProductCategory = async (id: string) => {
   return await request.get({ url: `/crm/product-category/get/` + id })
 }
 
@@ -23,7 +23,7 @@ export const updateProductCategory = async (data: ProductCategoryVO) => {
 }
 
 // 删除产品分类
-export const deleteProductCategory = async (id: number) => {
+export const deleteProductCategory = async (id: string) => {
   return await request.delete({ url: `/crm/product-category/delete/` + id })
 }
 

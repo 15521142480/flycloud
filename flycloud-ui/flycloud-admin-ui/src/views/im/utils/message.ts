@@ -45,7 +45,7 @@ export function isSameUserId(left?: number | string | null, right?: number | str
  */
 export function getPrivateMessagePeerId(
   message: { senderId: string; receiverId: string },
-  currentUserId: number | string
+  currentUserId: string
 ): string {
   return isSameUserId(message.senderId, currentUserId) ? message.receiverId : message.senderId
 }
@@ -251,7 +251,7 @@ export interface CardMessage extends Quotable {
   /** 名片对象类型 */
   targetType: ImConversationTypeValue
   /** 目标对象编号：PRIVATE 时 = userId；GROUP 时 = groupId */
-  targetId: number | string
+  targetId: string
   /** 显示名快照：PRIVATE 时 = 用户昵称；GROUP 时 = 群名 */
   name: string
   /** 头像（快照） */
@@ -322,7 +322,7 @@ export interface FaceMessage extends Quotable {
 /** 合并转发的单条内嵌消息快照（对齐后端 MergeMessage.Item） */
 export interface MergeMessageItem {
   /** 原消息编号；仅做溯源标识 */
-  messageId: number
+  messageId: string
   /** 发送人编号 */
   senderId: string
   /** 发送人昵称快照；对端可能不在原会话里，无法实时查到 */
@@ -345,8 +345,8 @@ export interface MergeMessage {
 
 /** 频道素材消息 payload（对齐后端 MaterialMessage） */
 export interface MaterialMessage {
-  materialId?: number
-  channelId?: number // 频道编号；转发后渲染卡片底部的频道头像 + 名称
+  materialId?: string
+  channelId?: string // 频道编号；转发后渲染卡片底部的频道头像 + 名称
   title?: string
   coverUrl?: string
   summary?: string
@@ -387,7 +387,7 @@ function buildSenderSnapshotMap(
     }
     if (senderId === selfUserId) {
       result.set(senderId, {
-        nickname: userStore.getUser?.nickname || String(senderId),
+        nickname: userStore.getUser?.name || String(senderId),
         avatar: userStore.getUser?.avatar || ''
       })
       continue
@@ -413,7 +413,7 @@ function mapMessageToMergeItem(
 ): MergeMessageItem {
   const snapshot = senderSnapshots.get(message.senderId)
   return {
-    messageId: message.id || 0,
+    messageId: message.id || '0',
     senderId: message.senderId,
     senderNickname: snapshot?.nickname ?? String(message.senderId),
     senderAvatar: snapshot?.avatar ?? '',
@@ -428,7 +428,7 @@ export function buildMergeTitle(conversation: Conversation): string {
   if (conversation.type === ImConversationType.GROUP) {
     return `${conversation.name || '群聊'} 的聊天记录`
   }
-  const myName = useUserStore().getUser?.nickname || '我'
+  const myName = useUserStore().getUser?.name || '我'
   return `${conversation.name || '对方'} 和 ${myName} 的聊天记录`
 }
 
@@ -554,7 +554,7 @@ export const removeQuotePayload = (content: string): string => {
 /** 由 Message 派生 QuoteMessage 用于乐观渲染;ack 后会被服务端权威版本覆盖 */
 export const buildQuoteFromMessage = (message: Message): QuoteMessage => {
   return {
-    messageId: message.id || 0,
+    messageId: message.id || '0',
     senderId: message.senderId,
     type: message.type,
     content: removeQuotePayload(message.content)
@@ -575,14 +575,14 @@ export const getQuoteFromMessage = (content: string): QuoteMessage | null => {
 
 /**
  * 从后端下发的撤回 RecallMessage content 中解析出被撤回的原消息 id
- * content 形如 `{"messageId": 123}`，若不含 messageId 则返回 0（表示这条不是撤回消息）
+ * content 形如 `{"messageId": 123}`，若不含 messageId 则返回空字符串。
  */
-export const parseRecallMessageId = (content: string): number => {
+export const parseRecallMessageId = (content: string): string => {
   try {
     const parsed = JSON.parse(content)
-    return parsed?.messageId != null ? Number(parsed.messageId) : 0
+    return parsed?.messageId != null ? String(parsed.messageId) : ''
   } catch {
-    return 0
+    return ''
   }
 }
 
@@ -685,7 +685,7 @@ export type GroupNotificationPayload = {
   oldJoinApproval?: boolean
   newJoinApproval?: boolean
   displayUserName?: string
-  messageId?: number
+  messageId?: string
   // 禁言事件
   mutedUserId?: string
   muteEndTime?: string
@@ -696,9 +696,9 @@ export type GroupNotificationPayload = {
   addSource?: number
   // PIN 事件携带的被置顶消息展示数据
   message?: {
-    id: number
+    id: string
     senderId: string
-    groupId: number
+    groupId: string
     type: number
     content: string
     sendTime: string
@@ -714,7 +714,7 @@ export type GroupNotificationPayload = {
  * operatorNameOverride 仅覆盖 operator 段文案，mention userId 仍用 payload.operatorUserId
  */
 export function resolveGroupNotificationSegments(
-  message: { type?: number; content?: string; targetId?: number | string },
+  message: { type?: number; content?: string; targetId?: string },
   resolveName: (userId: string) => string,
   operatorNameOverride?: string
 ): TipSegment[] {
@@ -806,7 +806,7 @@ export function resolveGroupNotificationSegments(
 
 /** 群广播事件中文文案 */
 export function resolveGroupNotificationText(
-  message: { type?: number; content?: string; targetId?: number | string },
+  message: { type?: number; content?: string; targetId?: string },
   resolveName: (userId: string) => string,
   operatorNameOverride?: string
 ): string {

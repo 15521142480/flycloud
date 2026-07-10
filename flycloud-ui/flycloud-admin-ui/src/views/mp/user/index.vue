@@ -149,7 +149,7 @@ const queryFormRef = ref<FormInstance | null>(null) // 搜索的表单
 const tagList = ref<any[]>([]) // 公众号标签列表
 
 /** 侦听公众号变化 **/
-const onAccountChanged = (id: number) => {
+const onAccountChanged = (id: string) => {
   queryParams.accountId = id
   queryParams.pageNum = 1
   getList()
@@ -183,7 +183,7 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref<InstanceType<typeof UserForm> | null>(null)
-const openForm = (id: number) => {
+const openForm = (id: string) => {
   formRef.value?.open(id)
 }
 

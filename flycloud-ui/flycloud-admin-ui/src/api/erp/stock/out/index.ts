@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 其它出库单 VO
 export interface StockOutVO {
-  id: number // 出库编号
+  id: string // 出库编号
   no: string // 出库单号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   outTime: Date // 出库时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -20,7 +20,7 @@ export const StockOutApi = {
   },
 
   // 查询其它出库单详情
-  getStockOut: async (id: number) => {
+  getStockOut: async (id: string) => {
     return await request.get({ url: `/erp/stock-out/get/` + id })
   },
 
@@ -35,7 +35,7 @@ export const StockOutApi = {
   },
 
   // 更新其它出库单的状态
-  updateStockOutStatus: async (id: number, status: number) => {
+  updateStockOutStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/stock-out/update-status`,
       params: {
@@ -46,7 +46,7 @@ export const StockOutApi = {
   },
 
   // 删除其它出库单
-  deleteStockOut: async (ids: number[]) => {
+  deleteStockOut: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/stock-out/delete`,
       params: {

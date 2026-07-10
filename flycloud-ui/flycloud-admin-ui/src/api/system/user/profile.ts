@@ -5,19 +5,19 @@ const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 
 export interface ProfileVO {
-  id: number
+  id: string
   username: string
   name: string
   dept: {
-    id: number
+    id: string
     name: string
   }
   roles: {
-    id: number
+    id: string
     name: string
   }[]
   posts: {
-    id: number
+    id: string
     name: string
   }[]
   socialUsers: {

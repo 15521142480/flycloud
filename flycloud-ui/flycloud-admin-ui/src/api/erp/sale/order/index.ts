@@ -2,9 +2,9 @@ import request from '@/config/axios'
 
 // ERP 销售订单 VO
 export interface SaleOrderVO {
-  id: number // 订单工单编号
+  id: string // 订单工单编号
   no: string // 销售订单号
-  customerId: number // 客户编号
+  customerId: string // 客户编号
   orderTime: Date // 订单时间
   totalCount: number // 合计数量
   totalPrice: number // 合计金额，单位：元
@@ -22,7 +22,7 @@ export const SaleOrderApi = {
   },
 
   // 查询销售订单详情
-  getSaleOrder: async (id: number) => {
+  getSaleOrder: async (id: string) => {
     return await request.get({ url: `/erp/sale-order/get/` + id })
   },
 
@@ -37,7 +37,7 @@ export const SaleOrderApi = {
   },
 
   // 更新销售订单的状态
-  updateSaleOrderStatus: async (id: number, status: number) => {
+  updateSaleOrderStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/sale-order/update-status`,
       params: {
@@ -48,7 +48,7 @@ export const SaleOrderApi = {
   },
 
   // 删除销售订单
-  deleteSaleOrder: async (ids: number[]) => {
+  deleteSaleOrder: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/sale-order/delete`,
       params: {

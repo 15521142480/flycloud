@@ -1,7 +1,7 @@
 import request from '@/config/axios'
 
 export interface OAuth2TokenVO {
-  id: number
+  id: string
   accessToken: string
   refreshToken: string
   userId: string

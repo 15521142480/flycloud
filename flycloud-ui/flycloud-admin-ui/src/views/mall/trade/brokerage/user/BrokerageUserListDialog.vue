@@ -95,7 +95,7 @@ const list = ref<BrokerageUserApi.BrokerageUserVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  bindUserId: undefined as number | undefined,
+  bindUserId: undefined as string | undefined,
   level: '',
   bindUserTime: []
 })

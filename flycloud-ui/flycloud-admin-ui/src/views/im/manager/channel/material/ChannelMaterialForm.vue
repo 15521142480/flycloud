@@ -67,8 +67,8 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined as number | undefined,
-  channelId: undefined as number | undefined,
+  id: undefined as string | undefined,
+  channelId: undefined as string | undefined,
   type: 1, // 内容类型；1 站内富文本 2 外链；参见 ImChannelMaterialTypeEnum
   title: '',
   coverUrl: '',
@@ -84,7 +84,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (type: string, id?: number) => {
+const open = async (type: string, id?: string) => {
   dialogVisible.value = true
   dialogTitle.value = t('action.' + type)
   formType.value = type

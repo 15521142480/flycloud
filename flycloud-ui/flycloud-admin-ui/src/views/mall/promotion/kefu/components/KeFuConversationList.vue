@@ -87,11 +87,11 @@ const message = useMessage() // 消息弹窗
 const appStore = useAppStore()
 const kefuStore = useMallKefuStore() // 客服缓存
 const { replaceEmoji } = useEmoji()
-const activeConversationId = ref(-1) // 选中的会话
+const activeConversationId = ref('') // 选中的会话
 const collapse = computed(() => appStore.getCollapse) // 折叠菜单
 
 /** 计算消息最后发送时间距离现在过去了多久 */
-const lastMessageTimeMap = ref<Map<number, string>>(new Map<number, string>())
+const lastMessageTimeMap = ref<Map<string, string>>(new Map<string, string>())
 const calculationLastMessageTime = () => {
   kefuStore.getConversationList?.forEach((item) => {
     lastMessageTimeMap.value.set(item.id, formatPast(item.lastMessageTime, 'YYYY-MM-DD'))

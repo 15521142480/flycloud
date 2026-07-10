@@ -70,7 +70,7 @@ const props = defineProps<{
   // 当前群所有成员（外部 MessagePanel.groupMembers 传入；没有就传空数组，未读列表会变空但不报错）
   groupMembers: GroupMemberLite[]
   // 当前群编号；供 loadReadUsers 作为 /im/message/group/get-read-users 的入参
-  groupId: number
+  groupId: string
 }>()
 
 const messageStore = useMessageStore()

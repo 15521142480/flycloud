@@ -72,7 +72,7 @@ const detailLoading = ref(false) // 表单的加载中
 const detailData = ref({} as SocialUserApi.SocialUserVO) // 详情数据
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   // 设置数据
   try {

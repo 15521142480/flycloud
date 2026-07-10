@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface BrokerageWithdrawVO {
-  id: number
+  id: string
   userId: string
   price: number
   feePrice: number
@@ -18,7 +18,7 @@ export interface BrokerageWithdrawVO {
   auditReason: string
   auditTime: Date
   remark: string
-  payTransferId?: number
+  payTransferId?: string
   transferChannelCode?: string
   transferTime?: Date
   transferErrorMsg?: string
@@ -30,12 +30,12 @@ export const getBrokerageWithdrawPage = async (params: any) => {
 }
 
 // 查询佣金提现详情
-export const getBrokerageWithdraw = async (id: number) => {
+export const getBrokerageWithdraw = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/trade/brokerage-withdraw/get?id=` + id })
 }
 
 // 佣金提现 - 通过申请
-export const approveBrokerageWithdraw = async (id: number) => {
+export const approveBrokerageWithdraw = async (id: string) => {
   return await request.put({ url: `/${MALL_BASE_URL}/admin/trade/brokerage-withdraw/approve?id=` + id })
 }
 

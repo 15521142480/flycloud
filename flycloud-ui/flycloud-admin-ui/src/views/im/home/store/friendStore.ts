@@ -55,7 +55,7 @@ export interface FriendNotificationPayload {
   operatorUserId: string
   friendUserId: string
   // FRIEND_REQUEST_* 系列：申请记录的核心字段（避免 payload 携带完整 DO）
-  requestId?: number
+  requestId?: string
   applyContent?: string
   handleContent?: string
   addSource?: number
@@ -161,7 +161,7 @@ export const useFriendStore = defineStore('imFriendStore', {
         }
         if (friendRequests.length > 0) {
           this.friendRequests = friendRequests.sort(
-            (requestA, requestB) => requestB.id - requestA.id
+            (requestA, requestB) => requestB.id.localeCompare(requestA.id)
           )
           this.hasMoreFriendRequests = friendRequests.length >= FRIEND_REQUEST_PAGE_SIZE
         }
@@ -349,20 +349,20 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 同意一条好友申请；后端会双向落库 + 推 FRIEND_ADD，本端等通知到达再 upsertFriend */
-    async agreeFriendRequest(requestId: number) {
+    async agreeFriendRequest(requestId: string) {
       await apiAgreeFriendRequest(requestId)
       await this.applyHandleResult(requestId, ImFriendRequestHandleResult.AGREED)
     },
 
     /** 拒绝一条好友申请 */
-    async refuseFriendRequest(requestId: number, handleContent?: string) {
+    async refuseFriendRequest(requestId: string, handleContent?: string) {
       await apiRefuseFriendRequest(requestId, handleContent)
       await this.applyHandleResult(requestId, ImFriendRequestHandleResult.REFUSED, handleContent)
     },
 
     /** 把 handleResult 应用到本地申请记录；找不到就按 id 单查兜底 upsert，避免破坏 id 倒序 */
     async applyHandleResult(
-      requestId: number,
+      requestId: string,
       result: number,
       handleContent?: string
     ): Promise<void> {
@@ -457,12 +457,12 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /** 按 id 查申请记录；列表是按 id 倒序的小列表，O(n) find 即可，不再维护 Map 索引 */
-    getFriendRequest(requestId: number): FriendRequest | undefined {
+    getFriendRequest(requestId: string): FriendRequest | undefined {
       return this.friendRequests.find((request) => request.id === requestId)
     },
 
     /** 按 id 从后端单查并 upsert 到本地（dispatcher 兜底用，避免全量重拉）；后端带越权过滤 */
-    async fetchFriendRequest(requestId: number) {
+    async fetchFriendRequest(requestId: string) {
       const requestEpoch = storeEpoch
       const requestUserId = getCurrentUserId()
       const data = await apiGetMyFriendRequest(requestId)

@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface CouponTemplateVO {
-  id: number
+  id: string
   name: string
   status: number
   totalCount: number
@@ -42,7 +42,7 @@ export function updateCouponTemplate(data: CouponTemplateVO) {
 }
 
 // 更新优惠劵模板的状态
-export function updateCouponTemplateStatus(id: number, status: [0, 1]) {
+export function updateCouponTemplateStatus(id: string, status: [0, 1]) {
   const data = {
     id,
     status
@@ -54,14 +54,14 @@ export function updateCouponTemplateStatus(id: number, status: [0, 1]) {
 }
 
 // 删除优惠劵模板
-export function deleteCouponTemplate(id: number) {
+export function deleteCouponTemplate(id: string) {
   return request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/delete?id=` + id
   })
 }
 
 // 获得优惠劵模板
-export function getCouponTemplate(id: number) {
+export function getCouponTemplate(id: string) {
   return request.get({
     url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/get?id=` + id
   })
@@ -76,7 +76,7 @@ export function getCouponTemplatePage(params: PageParam) {
 }
 
 // 获得优惠劵模板分页
-export function getCouponTemplateList(ids: number[]): Promise<CouponTemplateVO[]> {
+export function getCouponTemplateList(ids: string[]): Promise<CouponTemplateVO[]> {
   return request.get({
     url: `/${MALL_BASE_URL}/admin/promotion/coupon-template/list?ids=${ids}`
   })

@@ -166,7 +166,7 @@ const resetQuery = () => {
 
 /** 打开[助力]弹窗 */
 const recordListDialogRef = ref()
-const openRecordListDialog = (id?: number) => {
+const openRecordListDialog = (id?: string) => {
   recordListDialogRef.value.open(id)
 }
 

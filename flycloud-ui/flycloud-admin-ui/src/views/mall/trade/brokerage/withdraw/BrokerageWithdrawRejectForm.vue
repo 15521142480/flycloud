@@ -25,7 +25,7 @@ const message = useMessage() // 消息弹窗
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formData = ref({
-  id: undefined as number | undefined,
+  id: undefined as string | undefined,
   auditReason: undefined as string | undefined
 })
 const formRules = reactive({
@@ -34,7 +34,7 @@ const formRules = reactive({
 const formRef = ref() // 表单 Ref
 
 /** 打开弹窗 */
-const open = async (id: number) => {
+const open = async (id: string) => {
   dialogVisible.value = true
   resetForm()
   formData.value.id = id

@@ -163,8 +163,8 @@ const list = ref<ManagerPrivateMessageApi.ImManagerPrivateMessageVO[]>([]) // åˆ
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  senderId: undefined as number | undefined,
-  receiverId: undefined as number | undefined,
+  senderId: undefined as string | undefined,
+  receiverId: undefined as string | undefined,
   type: undefined as number | undefined,
   content: undefined as string | undefined,
   sendTime: [] as string[]
@@ -205,10 +205,10 @@ const openDetail = (row: ManagerPrivateMessageApi.ImManagerPrivateMessageVO) => 
 onMounted(() => {
   const query = currentRoute.value.query
   if (query.senderId) {
-    queryParams.senderId = Number(query.senderId)
+    queryParams.senderId = String(query.senderId)
   }
   if (query.receiverId) {
-    queryParams.receiverId = Number(query.receiverId)
+    queryParams.receiverId = String(query.receiverId)
   }
   getList()
 })

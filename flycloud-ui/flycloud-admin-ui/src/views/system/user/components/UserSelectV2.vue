@@ -78,7 +78,7 @@ const props = withDefaults(
     disabledIds?: string[] // 禁用的用户 ID
     clearable?: boolean // 是否允许清空
     placeholder?: string // 占位文字
-    deptId?: number // 部门 ID
+    deptId?: string // 部门 ID
   }>(),
   {
     defaultCurrentUser: false,
@@ -115,7 +115,7 @@ const suffixIcon = computed(() => {
 })
 
 /** 根据 ID 查询用户信息（用于编辑回显） */
-const resolveItemById = async (id: string | string[] | undefined) => {
+const resolveItemById = async (id: string[] | undefined) => {
   if (id === null || id === undefined) {
     selectedItems.value = []
     return

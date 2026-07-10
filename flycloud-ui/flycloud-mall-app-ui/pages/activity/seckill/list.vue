@@ -239,7 +239,7 @@
 
   // 查询活动列表
   const activityPageParams = reactive({
-    configId: 0, // 时间段 ID
+    configId: '0', // 时间段 ID
     pageNum: 1, // 页码
     pageSize: 5, // 每页数量
   });

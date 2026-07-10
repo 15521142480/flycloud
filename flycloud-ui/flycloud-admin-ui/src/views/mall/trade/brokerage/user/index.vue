@@ -273,13 +273,13 @@ const handleCommand = (command: string, row: BrokerageUserApi.BrokerageUserVO) =
 
 /** 打开推广人列表 */
 const listDialogRef = ref()
-const openBrokerageUserTable = (id: number) => {
+const openBrokerageUserTable = (id: string) => {
   listDialogRef.value.open(id)
 }
 
 /** 打开推广订单列表 */
 const orderDialogRef = ref()
-const openBrokerageOrderTable = (id: number) => {
+const openBrokerageOrderTable = (id: string) => {
   orderDialogRef.value.open(id)
 }
 

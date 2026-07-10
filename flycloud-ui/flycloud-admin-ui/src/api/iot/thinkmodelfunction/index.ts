@@ -2,11 +2,11 @@ import request from '@/config/axios'
 
 // IoT 产品物模型 VO
 export interface ThinkModelFunctionVO {
-  id: number // 物模型功能编号
+  id: string // 物模型功能编号
   identifier: string // 功能标识
   name: string // 功能名称
   description: string // 功能描述
-  productId: number // 产品编号
+  productId: string // 产品编号
   productKey: string // 产品标识
   type: number // 功能类型
   property: string // 属性
@@ -29,7 +29,7 @@ export const ThinkModelFunctionApi = {
   },
 
   // 查询产品物模型详情
-  getThinkModelFunction: async (id: number) => {
+  getThinkModelFunction: async (id: string) => {
     return await request.get({ url: `/iot/think-model-function/get/` + id })
   },
 
@@ -44,7 +44,7 @@ export const ThinkModelFunctionApi = {
   },
 
   // 删除产品物模型
-  deleteThinkModelFunction: async (id: number) => {
+  deleteThinkModelFunction: async (id: string) => {
     return await request.delete({ url: `/iot/think-model-function/delete/` + id })
   },
 

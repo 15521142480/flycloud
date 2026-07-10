@@ -3,8 +3,8 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface KeFuMessageRespVO {
-  id: number // 编号
-  conversationId: number // 会话编号
+  id: string // 编号
+  conversationId: string // 会话编号
   senderId: string // 发送人编号
   senderAvatar: string // 发送人头像
   senderType: number // 发送人类型
@@ -26,7 +26,7 @@ export const KeFuMessageApi = {
     })
   },
   // 更新客服消息已读状态
-  updateKeFuMessageReadStatus: async (conversationId: number) => {
+  updateKeFuMessageReadStatus: async (conversationId: string) => {
     return await request.put({
       url:
         `/${MALL_BASE_URL}/admin/promotion/kefu-message/update-read-status?conversationId=` +

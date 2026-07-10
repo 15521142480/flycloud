@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerChannelVO {
-  id: number
+  id: string
   code: string
   name: string
   avatar?: string
@@ -18,7 +18,7 @@ export const getManagerChannelPage = (params: PageParam) => {
 }
 
 // 获得频道详情
-export const getManagerChannel = (id: number) => {
+export const getManagerChannel = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/channel/get`, params: { id } })
 }
 
@@ -33,7 +33,7 @@ export const updateManagerChannel = (data: ImManagerChannelVO) => {
 }
 
 // 删除频道
-export const deleteManagerChannel = (id: number) => {
+export const deleteManagerChannel = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/im/manager/channel/delete`, params: { id } })
 }
 

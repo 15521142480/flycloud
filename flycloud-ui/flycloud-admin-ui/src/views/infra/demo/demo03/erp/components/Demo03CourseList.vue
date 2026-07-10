@@ -74,7 +74,7 @@ const { t } = useI18n()
 const message = useMessage() // 消息弹窗
 
 const props = defineProps<{
-  studentId?: number // 学生编号（主表的关联字段）
+  studentId?: string // 学生编号（主表的关联字段）
 }>()
 const loading = ref(false) // 列表的加载中
 const list = ref([]) // 列表的数据
@@ -118,7 +118,7 @@ const handleQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   if (!props.studentId) {
     message.error(t('auto.views.infra.demo.demo03.erp.components.k3606495e'))
     return
@@ -127,7 +127,7 @@ const openForm = (type: string, id?: number) => {
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()

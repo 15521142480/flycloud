@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // ERP 库存调度单 VO
 export interface StockMoveVO {
-  id: number // 出库编号
+  id: string // 出库编号
   no: string // 出库单号
   outTime: Date // 出库时间
   totalCount: number // 合计数量
@@ -19,7 +19,7 @@ export const StockMoveApi = {
   },
 
   // 查询库存调度单详情
-  getStockMove: async (id: number) => {
+  getStockMove: async (id: string) => {
     return await request.get({ url: `/erp/stock-move/get/` + id })
   },
 
@@ -34,7 +34,7 @@ export const StockMoveApi = {
   },
 
   // 更新库存调度单的状态
-  updateStockMoveStatus: async (id: number, status: number) => {
+  updateStockMoveStatus: async (id: string, status: number) => {
     return await request.put({
       url: `/erp/stock-move/update-status`,
       params: {
@@ -45,7 +45,7 @@ export const StockMoveApi = {
   },
 
   // 删除库存调度单
-  deleteStockMove: async (ids: number[]) => {
+  deleteStockMove: async (ids: string[]) => {
     return await request.delete({
       url: `/erp/stock-move/delete`,
       params: {

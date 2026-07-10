@@ -4,8 +4,8 @@ import { Sku, Spu } from '@/api/mall/product/spu'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface DiscountActivityVO {
-  id?: number
-  spuId?: number
+  id?: string
+  spuId?: string
   name?: string
   status?: number
   remark?: string
@@ -15,8 +15,8 @@ export interface DiscountActivityVO {
 }
 // 限时折扣相关 属性
 export interface DiscountProductVO {
-  spuId: number
-  skuId: number
+  spuId: string
+  skuId: string
   discountType: number
   discountPercent: number
   discountPrice: number
@@ -37,7 +37,7 @@ export const getDiscountActivityPage = async (params) => {
 }
 
 // 查询限时折扣活动详情
-export const getDiscountActivity = async (id: number) => {
+export const getDiscountActivity = async (id: string) => {
   return await request.get({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/get?id=` + id })
 }
 
@@ -52,12 +52,12 @@ export const updateDiscountActivity = async (data: DiscountActivityVO) => {
 }
 
 // 关闭限时折扣活动
-export const closeDiscountActivity = async (id: number) => {
+export const closeDiscountActivity = async (id: string) => {
   return await request.put({ url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/close?id=` + id })
 }
 
 // 删除限时折扣活动
-export const deleteDiscountActivity = async (id: number) => {
+export const deleteDiscountActivity = async (id: string) => {
   return await request.delete({
     url: `/${MALL_BASE_URL}/admin/promotion/discount-activity/delete?id=` + id
   })

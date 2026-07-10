@@ -220,7 +220,7 @@ export const useMediaUploader = () => {
    */
   const markMediaFailed = (
     conversationType: number,
-    targetId: number | string,
+    targetId: string,
     clientMessageId: string
   ): void => {
     messageStore.patchMessage(conversationType, targetId, clientMessageId, {
@@ -358,8 +358,8 @@ export const useMediaUploader = () => {
       const res = (await updateFile(
         form,
         createUploadProgressHandler(conversation, clientMessageId)
-      )) as { data?: string }
-      url = res?.data
+      )) as unknown as { data?: string | { url?: string } }
+      url = typeof res?.data === 'string' ? res.data : res?.data?.url
     } catch (e) {
       console.error(`[IM] ${handler.kind}上传失败`, e)
     }

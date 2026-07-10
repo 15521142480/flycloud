@@ -172,9 +172,9 @@ const list = ref<ManagerGroupRequestApi.ImManagerGroupRequestVO[]>([]) // 列表
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  groupId: undefined as number | undefined,
-  userId: undefined as number | undefined,
-  inviterUserId: undefined as number | undefined,
+  groupId: undefined as string | undefined,
+  userId: undefined as string | undefined,
+  inviterUserId: undefined as string | undefined,
   handleResult: undefined as number | undefined,
   addSource: undefined as number | undefined,
   createTime: [] as string[]

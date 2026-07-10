@@ -185,7 +185,7 @@ watch(show, async (newValue, oldValue) => {
 })
 
 /**  获取图片详情  */
-const getImageDetail = async (id: number) => {
+const getImageDetail = async (id: string) => {
   detail.value = await ImageApi.getImageMy(id)
 }
 

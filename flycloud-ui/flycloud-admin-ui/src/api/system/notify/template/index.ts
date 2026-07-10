@@ -1,8 +1,7 @@
 import request from '@/config/axios'
 
 export interface NotifyTemplateVO {
-  id?: number
-  name: string
+  id?: string
   name: string
   code: string
   content: string
@@ -24,7 +23,7 @@ export const getNotifyTemplatePage = async (params: PageParam) => {
 }
 
 // 查询站内信模板详情
-export const getNotifyTemplate = async (id: number) => {
+export const getNotifyTemplate = async (id: string) => {
   return await request.get({ url: '/system/notify-template/get/' + id })
 }
 
@@ -39,7 +38,7 @@ export const updateNotifyTemplate = async (data: NotifyTemplateVO) => {
 }
 
 // 删除站内信模板
-export const deleteNotifyTemplate = async (id: number) => {
+export const deleteNotifyTemplate = async (id: string) => {
   return await request.delete({ url: '/system/notify-template/delete/' + id })
 }
 

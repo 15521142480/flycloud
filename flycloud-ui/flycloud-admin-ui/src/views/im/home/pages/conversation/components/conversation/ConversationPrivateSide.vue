@@ -266,7 +266,7 @@ function handleTopChange(value: boolean | string | number) {
 }
 
 /** 群创建成功：跳到新群会话 + 关掉本侧抽屉，让用户专注新群 */
-function handleGroupCreated(groupId: number) {
+function handleGroupCreated(groupId: string) {
   const group = groupStore.getGroup(groupId)
   if (!group) {
     return

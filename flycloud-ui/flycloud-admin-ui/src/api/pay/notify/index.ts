@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface NotifyLogVO {
-  id?: number
+  id?: string
   status?: number
   notifyTimes?: number
   lastExecuteTime?: Date
@@ -12,13 +12,13 @@ export interface NotifyLogVO {
 }
 
 export interface NotifyTaskVO {
-  id?: number
-  appId?: number
+  id?: string
+  appId?: string
   appName?: string
   merchantOrderId?: string
   merchantRefundId?: string
   merchantTransferId?: string
-  dataId?: number
+  dataId?: string
   type?: number
   status?: number
   notifyTimes?: number
@@ -31,7 +31,7 @@ export interface NotifyTaskVO {
 }
 
 // 获得支付通知明细
-export const getNotifyTaskDetail = (id: number) => {
+export const getNotifyTaskDetail = (id: string) => {
   return request.get<NotifyTaskVO>({
     url: `/${SYS_BASE_URL}/admin/pay/notify/get-detail?id=` + id
   })

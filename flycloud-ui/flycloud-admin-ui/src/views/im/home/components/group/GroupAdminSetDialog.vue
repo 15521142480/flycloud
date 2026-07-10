@@ -49,7 +49,7 @@ const message = useMessage()
 
 const visible = ref(false)
 const submitting = ref(false)
-const groupId = ref(0)
+const groupId = ref('')
 const members = ref<GroupMemberLite[]>([])
 /** 当前管理员 userId 列表：默认勾选 + 提交时 diff */
 const currentAdminIds = ref<string[]>([])
@@ -60,7 +60,7 @@ const selectedIds = ref<string[]>([])
 defineExpose({
   /** 打开设置管理员弹窗：reset → 灌参 → visible=true */
   open(opts: {
-    groupId: number
+    groupId: string
     members: GroupMemberLite[]
     /** 当前管理员 userId 列表（默认勾选） */
     currentAdminIds: string[]

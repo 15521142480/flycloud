@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const MALL_BASE_URL = import.meta.env.VITE_MALL_SERVER
 
 export interface ConfigVO {
-  id?: number | null
+  id?: string | null
   afterSaleRefundReasons: string[]
   afterSaleReturnReasons: string[]
   deliveryExpressFreeEnabled: boolean

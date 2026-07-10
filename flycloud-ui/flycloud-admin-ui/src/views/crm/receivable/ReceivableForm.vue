@@ -235,7 +235,7 @@ const receivablePlanList = ref<ReceivablePlanApi.ReceivablePlanVO[]>([]) // 回�
 /** 打开弹窗 */
 const open = async (
   type: string,
-  id?: number,
+  id?: string,
   receivablePlan?: ReceivablePlanApi.ReceivablePlanVO
 ) => {
   dialogVisible.value = true
@@ -310,7 +310,7 @@ const resetForm = () => {
 }
 
 /** 处理切换客户 */
-const handleCustomerChange = async (customerId: number) => {
+const handleCustomerChange = async (customerId: string) => {
   // 重置合同编号
   formData.value.contractId = undefined
   // 获得合同列表
@@ -321,7 +321,7 @@ const handleCustomerChange = async (customerId: number) => {
 }
 
 /** 处理切换合同 */
-const handleContractChange = async (contractId: number) => {
+const handleContractChange = async (contractId: string) => {
   // 重置回款计划编号
   formData.value.planId = undefined
   if (contractId) {
@@ -340,7 +340,7 @@ const handleContractChange = async (contractId: number) => {
 }
 
 /** 处理切换回款计划 */
-const handleReceivablePlanChange = (planId: number) => {
+const handleReceivablePlanChange = (planId: string) => {
   if (!planId) {
     return
   }

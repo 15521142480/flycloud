@@ -2,7 +2,7 @@ import request from '@/config/axios'
 
 // ERP 结算账户 VO
 export interface AccountVO {
-  id: number // 结算账户编号
+  id: string // 结算账户编号
   no: string // 账户编码
   remark: string // 备注
   status: number // 开启状态
@@ -24,7 +24,7 @@ export const AccountApi = {
   },
 
   // 查询结算账户详情
-  getAccount: async (id: number) => {
+  getAccount: async (id: string) => {
     return await request.get({ url: `/erp/account/get/` + id })
   },
 
@@ -39,7 +39,7 @@ export const AccountApi = {
   },
 
   // 修改结算账户默认状态
-  updateAccountDefaultStatus: async (id: number, defaultStatus: boolean) => {
+  updateAccountDefaultStatus: async (id: string, defaultStatus: boolean) => {
     return await request.put({
       url: `/erp/account/update-default-status`,
       params: {
@@ -50,7 +50,7 @@ export const AccountApi = {
   },
 
   // 删除结算账户
-  deleteAccount: async (id: number) => {
+  deleteAccount: async (id: string) => {
     return await request.delete({ url: `/erp/account/delete/` + id })
   },
 

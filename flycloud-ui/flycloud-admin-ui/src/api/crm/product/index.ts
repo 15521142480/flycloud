@@ -1,13 +1,13 @@
 import request from '@/config/axios'
 
 export interface ProductVO {
-  id: number
+  id: string
   name: string
   no: string
   unit: number
   price: number
   status: number
-  categoryId: number
+  categoryId: string
   categoryName?: string
   description: string
   ownerUserId: string
@@ -24,7 +24,7 @@ export const getProductSimpleList = async () => {
 }
 
 // 查询产品详情
-export const getProduct = async (id: number) => {
+export const getProduct = async (id: string) => {
   return await request.get({ url: `/crm/product/get/` + id })
 }
 
@@ -39,7 +39,7 @@ export const updateProduct = async (data: ProductVO) => {
 }
 
 // 删除产品
-export const deleteProduct = async (id: number) => {
+export const deleteProduct = async (id: string) => {
   return await request.delete({ url: `/crm/product/delete/` + id })
 }
 

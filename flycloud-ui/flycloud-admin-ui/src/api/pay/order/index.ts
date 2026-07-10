@@ -3,10 +3,10 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface OrderVO {
-  id: number
-  merchantId: number
-  appId: number
-  channelId: number
+  id: string
+  merchantId: string
+  appId: string
+  channelId: string
   channelCode: string
   merchantOrderId: string
   subject: string
@@ -22,7 +22,7 @@ export interface OrderVO {
   expireTime: Date
   successTime: Date
   notifyTime: Date
-  successExtensionId: number
+  successExtensionId: string
   refundStatus: number
   refundTimes: number
   refundAmount: number
@@ -34,7 +34,7 @@ export interface OrderVO {
 export interface OrderDetailVO {
   merchantOrderId?: string
   no?: string
-  appId?: number
+  appId?: string
   appName?: string
   status?: number
   price?: number
@@ -66,7 +66,7 @@ export const getOrderPage = async (params: any) => {
 }
 
 // 查询详情支付订单
-export const getOrder = async (id: number, sync?: boolean) => {
+export const getOrder = async (id: string, sync?: boolean) => {
   return await request.get<OrderVO>({
     url: `/${SYS_BASE_URL}/admin/pay/order/get`,
     params: {
@@ -77,7 +77,7 @@ export const getOrder = async (id: number, sync?: boolean) => {
 }
 
 // 获得支付订单的明细
-export const getOrderDetail = async (id: number) => {
+export const getOrderDetail = async (id: string) => {
   return await request.get<OrderDetailVO>({ url: `/${SYS_BASE_URL}/admin/pay/order/get-detail?id=` + id })
 }
 

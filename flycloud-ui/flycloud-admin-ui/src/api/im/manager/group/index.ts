@@ -3,7 +3,7 @@ import request from '@/config/axios'
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 
 export interface ImManagerGroupVO {
-  id: number
+  id: string
   name: string
   avatar?: string
   notice?: string
@@ -39,26 +39,26 @@ export const getManagerGroupPage = (params: PageParam) => {
 }
 
 // 获得群详情
-export const getManagerGroup = (id: number) => {
+export const getManagerGroup = (id: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/group/get`, params: { id } })
 }
 
 // 封禁群
-export const banManagerGroup = (data: { id: number; reason: string }) => {
+export const banManagerGroup = (data: { id: string; reason: string }) => {
   return request.put({ url: `/${SYS_BASE_URL}/im/manager/group/ban`, data })
 }
 
 // 解封群
-export const unbanManagerGroup = (id: number) => {
+export const unbanManagerGroup = (id: string) => {
   return request.put({ url: `/${SYS_BASE_URL}/im/manager/group/unban`, params: { id } })
 }
 
 // 解散群
-export const dissolveManagerGroup = (id: number) => {
+export const dissolveManagerGroup = (id: string) => {
   return request.delete({ url: `/${SYS_BASE_URL}/im/manager/group/dissolve`, params: { id } })
 }
 
 // 获得群成员列表（含已退群成员，由前端按需过滤）
-export const getManagerGroupMemberList = (groupId: number) => {
+export const getManagerGroupMemberList = (groupId: string) => {
   return request.get({ url: `/${SYS_BASE_URL}/im/manager/group/member/list`, params: { groupId } })
 }

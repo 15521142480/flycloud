@@ -154,8 +154,8 @@ const list = ref<ManagerFriendApi.ImManagerFriendVO[]>([]) // 列表的数据
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  userId: undefined as number | undefined,
-  friendUserId: undefined as number | undefined,
+  userId: undefined as string | undefined,
+  friendUserId: undefined as string | undefined,
   status: undefined as number | undefined,
   silent: undefined as boolean | undefined,
   addTime: [] as string[]

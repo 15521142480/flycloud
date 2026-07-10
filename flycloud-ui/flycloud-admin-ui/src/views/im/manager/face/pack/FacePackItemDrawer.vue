@@ -133,7 +133,7 @@ const { t } = useI18n() // 国际化
 
 const drawerVisible = ref(false) // 抽屉的是否展示
 const drawerTitle = ref('') // 抽屉的标题
-const currentPackId = ref<number>(0) // 当前打开的表情包编号
+const currentPackId = ref<string>('0') // 当前打开的表情包编号
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -141,7 +141,7 @@ const list = ref<ManagerFacePackItemApi.ImManagerFacePackItemVO[]>([]) // 列表
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  packId: 0,
+  packId: '0',
   name: undefined as string | undefined,
   status: undefined as number | undefined
 })
@@ -189,12 +189,12 @@ const resetQuery = () => {
 
 /** 添加 / 修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -208,7 +208,7 @@ const handleDelete = async (id: number) => {
   await getList()
 }
 
-const checkedIds = ref<number[]>([]) // 当前勾选的编号集合
+const checkedIds = ref<string[]>([]) // 当前勾选的编号集合
 
 /** 表格选中变化 */
 const handleRowCheckboxChange = (rows: ManagerFacePackItemApi.ImManagerFacePackItemVO[]) => {

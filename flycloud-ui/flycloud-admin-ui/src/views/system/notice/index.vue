@@ -169,12 +169,12 @@ const resetQuery = () => {
 
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type: string, id?: number) => {
+const openForm = (type: string, id?: string) => {
   formRef.value.open(type, id)
 }
 
 /** 删除按钮操作 */
-const handleDelete = async (id: number) => {
+const handleDelete = async (id: string) => {
   try {
     // 删除的二次确认
     await message.delConfirm()
@@ -187,7 +187,7 @@ const handleDelete = async (id: number) => {
 }
 
 /** 推送按钮操作 */
-const handlePush = async (id: number) => {
+const handlePush = async (id: string) => {
   try {
     // 推送的二次确认
     await message.confirm(t('auto.views.system.notice.index.kc2a3cdde'))

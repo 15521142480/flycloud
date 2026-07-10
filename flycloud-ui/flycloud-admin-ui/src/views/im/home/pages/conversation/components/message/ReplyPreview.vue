@@ -147,7 +147,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  locate: [messageId: number]
+  locate: [messageId: string]
   close: []
 }>()
 

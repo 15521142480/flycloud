@@ -3,6 +3,7 @@ import { toRaw } from 'vue'
 import { getCurrentUserId } from '@/utils/auth'
 import { ImConversationType } from './constants'
 import type { MessageDO, SettingDO } from '../home/types'
+import { compareId } from './id'
 
 export const DB_SCHEMA_VERSION = 2
 
@@ -420,29 +421,28 @@ export function getDb(): DbClient {
 }
 
 /** 当前用户会话主键 */
-export function getClientConversationId(type: number, targetId: number | string): string {
+export function getClientConversationId(type: number, targetId: string): string {
   return `${type}:${targetId}`
 }
 
 /** 解析当前用户会话主键 */
 export function parseClientConversationId(
   clientConversationId: string
-): { type: number; targetId: number | string } | null {
+): { type: number; targetId: string } | null {
   const [typeText, targetIdText] = clientConversationId.split(':')
   const type = Number(typeText)
   if (!Number.isFinite(type) || !targetIdText) {
     return null
   }
-  const targetId =
-    type === ImConversationType.PRIVATE ? targetIdText : Number(targetIdText)
-  if (type !== ImConversationType.PRIVATE && (!Number.isFinite(targetId as number) || (targetId as number) <= 0)) {
+  const targetId = targetIdText
+  if (type !== ImConversationType.PRIVATE && compareId(targetId, '0') <= 0) {
     return null
   }
   return { type, targetId }
 }
 
 /** 服务端消息主键 */
-export function getServerMessageKey(conversationType: number, id: number): string {
+export function getServerMessageKey(conversationType: number, id: string): string {
   return `${conversationType}:${id}`
 }
 
@@ -456,7 +456,7 @@ export function parseMessageKey(
   messageKey: string
 ):
   | { kind: 'client'; clientMessageId: string }
-  | { kind: 'server'; conversationType: number; id: number }
+  | { kind: 'server'; conversationType: number; id: string }
   | null {
   if (!messageKey) {
     return null
@@ -467,8 +467,8 @@ export function parseMessageKey(
   }
   const [conversationTypeText, idText] = messageKey.split(':')
   const conversationType = Number(conversationTypeText)
-  const id = Number(idText)
-  if (!Number.isFinite(conversationType) || !Number.isFinite(id) || id <= 0) {
+  const id = idText
+  if (!Number.isFinite(conversationType) || compareId(id, '0') <= 0) {
     return null
   }
   return { kind: 'server', conversationType, id }
@@ -477,7 +477,7 @@ export function parseMessageKey(
 /** 更新消息拉取游标 */
 export async function setMessageMaxId(
   conversationType: number,
-  maxId: number | undefined,
+  maxId: string | undefined,
   tx?: DbTransaction
 ): Promise<void> {
   if (!maxId) {
@@ -498,8 +498,8 @@ export async function setMessageMaxId(
       throw new Error(`未知 IM 会话类型：${conversationType}`)
   }
   const db = getDb()
-  const current = (await db.getSetting<number>(key, tx)) || 0
-  if (maxId > current) {
+  const current = (await db.getSetting<string>(key, tx)) || '0'
+  if (compareId(maxId, current) > 0) {
     await db.setSetting(key, maxId, tx)
   }
 }

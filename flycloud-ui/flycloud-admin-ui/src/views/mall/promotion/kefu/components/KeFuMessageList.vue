@@ -164,7 +164,7 @@ const messageList = ref<KeFuMessageRespVO[]>([]) // 消息列表
 const conversation = ref<KeFuConversationRespVO>({} as KeFuConversationRespVO) // 用户会话
 const showNewMessageTip = ref(false) // 显示有新消息提示
 const queryParams = reactive({
-  conversationId: 0,
+  conversationId: '0',
   createTime: undefined
 })
 const total = ref(0) // 消息总条数

@@ -44,7 +44,7 @@ import GroupRequestListDialog from '../../../../components/group/GroupRequestLis
 defineOptions({ name: 'ImGroupRequestPending' })
 
 const props = defineProps<{
-  groupId: number
+  groupId: string
 }>()
 
 const groupStore = useGroupStore()
