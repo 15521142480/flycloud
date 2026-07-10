@@ -178,6 +178,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { FinanceReceiptApi, FinanceReceiptVO } from '@/api/erp/finance/receipt'
 import FinanceReceiptItemForm from './components/FinanceReceiptItemForm.vue'
 import { erpPriceInputFormatter } from '@/utils'

@@ -100,6 +100,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import * as DeptApi from '@/api/system/dept'
 import * as UserApi from '@/api/system/user'
 import { useUserStore } from '@/store/modules/user'

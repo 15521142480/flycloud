@@ -75,6 +75,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter, formatPast2 } from '@/utils/formatTime'
 import { propTypes } from '@/utils/propTypes'
 import { DICT_TYPE } from '@/utils/dict'

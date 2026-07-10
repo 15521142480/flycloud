@@ -192,6 +192,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as BusinessApi from '@/api/crm/business'

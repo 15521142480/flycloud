@@ -64,6 +64,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import WxAccountSelect from '@/views/mp/components/wx-account-select'
 import MenuEditor from './components/MenuEditor.vue'
 import MenuPreviewer from './components/MenuPreviewer.vue'

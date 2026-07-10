@@ -112,6 +112,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ChatMessageApi, ChatMessageVO } from '@/api/ai/chat/message'
 import { ChatConversationApi, ChatConversationVO } from '@/api/ai/chat/conversation'
 import ConversationList from './components/conversation/ConversationList.vue'

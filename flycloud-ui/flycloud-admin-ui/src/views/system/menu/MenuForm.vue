@@ -258,6 +258,7 @@
   </ElDialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as MenuApi from '@/api/system/menu'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'

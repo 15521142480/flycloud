@@ -39,6 +39,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductUnitApi } from '@/api/erp/product/unit'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'

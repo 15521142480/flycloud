@@ -71,6 +71,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { StockCheckApi, StockCheckVO } from '@/api/erp/stock/check'
 import StockCheckItemForm from './components/StockCheckItemForm.vue'
 

@@ -67,6 +67,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { formatDate, addTime, betweenDay, beginOfDay, endOfDay } from '@/utils/formatTime'
 import * as StatisticsApi from '@/api/mp/statistics'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'

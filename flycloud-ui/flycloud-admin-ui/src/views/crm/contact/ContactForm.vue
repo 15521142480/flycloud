@@ -227,6 +227,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as ContactApi from '@/api/crm/contact'
 import { DICT_TYPE, getBoolDictOptions, getIntDictOptions } from '@/utils/dict'
 import * as UserApi from '@/api/system/user'

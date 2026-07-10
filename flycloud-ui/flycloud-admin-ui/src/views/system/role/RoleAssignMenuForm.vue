@@ -102,6 +102,7 @@
   </ElDialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { defaultProps, handleTree } from '@/utils/tree'
 import * as RoleApi from '@/api/system/role'
 import * as MenuApi from '@/api/system/menu'

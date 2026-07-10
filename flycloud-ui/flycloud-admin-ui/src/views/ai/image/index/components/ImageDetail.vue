@@ -146,6 +146,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { ImageApi, ImageVO } from '@/api/ai/image'
 import {

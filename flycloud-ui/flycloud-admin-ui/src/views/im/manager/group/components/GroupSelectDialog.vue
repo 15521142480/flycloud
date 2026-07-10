@@ -82,7 +82,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="编号" align="center" prop="id" width="100" />
+        <el-table-column label="编号" align="center" prop="id" width="120" />
         <el-table-column label="头像" align="center" width="80">
           <template #default="{ row }">
             <el-avatar :src="getFilePreviewUrl(row.avatar)" :size="32">

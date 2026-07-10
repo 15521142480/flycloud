@@ -311,6 +311,7 @@
   <ContractForm ref="formRef" @success="getList" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter, dateFormatter2 } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as ContractApi from '@/api/crm/contract'

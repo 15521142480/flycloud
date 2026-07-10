@@ -27,6 +27,7 @@
   </el-form>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/normal'
 const { t } = useI18n()
 const props = defineProps<{

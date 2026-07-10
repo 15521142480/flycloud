@@ -40,4 +40,8 @@
     "src/types/auto-components.d.ts"
   ],
   "exclude": ["dist", "target", "node_modules"]
+  ,
+  "vueCompilerOptions": {
+    "strictTemplates": false
+  }
 }

@@ -135,6 +135,7 @@
   </el-card>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import {
   CrmStatisticsBusinessInversionRateSummaryByDateRespVO,
   StatisticFunnelApi

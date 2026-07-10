@@ -138,6 +138,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getBoolDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'

@@ -70,6 +70,7 @@
 <script lang="ts" setup>
 import { propTypes } from '@/utils/propTypes'
 import type { UploadProps, UploadRawFile, UploadUserFile } from 'element-plus'
+import type { PropType } from 'vue'
 import { isString } from '@/utils/is'
 import {
   cacheFilePreviewUrl,
@@ -87,7 +88,10 @@ const message = useMessage() // 消息弹窗
 const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
-  modelValue: propTypes.oneOfType<string[]>([String, Array<String>]).isRequired,
+  modelValue: {
+    type: [String, Array] as PropType<string | string[]>,
+    required: true
+  },
   fileType: propTypes.array.def(['doc', 'xls', 'ppt', 'txt', 'pdf']), // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileSize: propTypes.number.def(5), // 大小限制(MB)
   limit: propTypes.number.def(5), // 数量限制
@@ -198,7 +202,7 @@ const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
 // 监听模型绑定值变动
 watch(
   () => props.modelValue,
-  (val: string[]) => {
+  (val: string | string[]) => {
     if (!val) {
       fileList.value = [] // fix：处理掉缓存，表单重置后上传组件的内容并没有重置
       return

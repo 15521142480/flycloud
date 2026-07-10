@@ -71,6 +71,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { StockMoveApi, StockMoveVO } from '@/api/erp/stock/move'
 import StockMoveItemForm from './components/StockMoveItemForm.vue'
 

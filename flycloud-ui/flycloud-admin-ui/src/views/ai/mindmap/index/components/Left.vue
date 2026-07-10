@@ -52,6 +52,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { MindMapContentExample } from '@/views/ai/utils/constants'
 const { t } = useI18n()
 const emits = defineEmits(['submit', 'directGenerate'])

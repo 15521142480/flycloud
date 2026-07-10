@@ -63,7 +63,7 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="100" />
+      <el-table-column label="编号" align="center" prop="id" width="120" />
       <el-table-column label="发送人" align="center" min-width="160">
         <template #default="{ row }">
           <span>{{ row.senderNickname || '-' }}</span>

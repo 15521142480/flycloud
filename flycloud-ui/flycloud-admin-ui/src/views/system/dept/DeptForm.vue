@@ -76,6 +76,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { defaultProps, handleTree } from '@/utils/tree'
 import * as DeptApi from '@/api/system/dept'

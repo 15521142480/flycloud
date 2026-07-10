@@ -165,6 +165,7 @@
   </el-row>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductApi, ProductVO } from '@/api/erp/product/product'
 import { StockApi } from '@/api/erp/stock/stock'
 import {

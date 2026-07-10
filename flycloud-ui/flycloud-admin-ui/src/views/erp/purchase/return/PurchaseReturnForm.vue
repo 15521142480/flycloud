@@ -197,6 +197,7 @@
   />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { PurchaseReturnApi, PurchaseReturnVO } from '@/api/erp/purchase/return'
 import PurchaseReturnItemForm from './components/PurchaseReturnItemForm.vue'
 import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'

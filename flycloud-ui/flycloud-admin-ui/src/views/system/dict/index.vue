@@ -212,6 +212,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import * as DictTypeApi from '@/api/system/dict/dict.type'

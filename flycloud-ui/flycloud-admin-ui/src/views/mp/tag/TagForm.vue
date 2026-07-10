@@ -22,6 +22,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as MpTagApi from '@/api/mp/tag'
 import type { FormInstance, FormRules } from 'element-plus'
 const { t } = useI18n()

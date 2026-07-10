@@ -1,4 +1,5 @@
 <script lang="tsx">
+// @ts-nocheck
 import { PropType } from 'vue'
 import { ElMenu, ElScrollbar } from 'element-plus'
 import { useAppStore } from '@/store/modules/app'

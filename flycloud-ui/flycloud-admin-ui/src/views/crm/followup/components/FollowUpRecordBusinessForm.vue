@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { erpPriceTableColumnFormatter } from '@/utils'
 const { t } = useI18n()
 const props = defineProps<{

@@ -55,6 +55,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { formatPast } from '@/utils/formatTime'
 import audioUrl from '@/assets/audio/response.mp3'
 

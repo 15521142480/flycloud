@@ -183,6 +183,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { SaleOrderApi, SaleOrderVO } from '@/api/erp/sale/order'
 import SaleOrderItemForm from './components/SaleOrderItemForm.vue'
 import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'

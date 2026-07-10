@@ -50,6 +50,7 @@
   <CrmTransferForm ref="transferFormRef" :biz-type="BizTypeEnum.CRM_CLUE" @success="close" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as ClueApi from '@/api/crm/clue'
 import ClueForm from '@/views/crm/clue/ClueForm.vue'

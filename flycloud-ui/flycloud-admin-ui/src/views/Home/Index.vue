@@ -2,6 +2,7 @@
   <div>
     <el-card shadow="never">
       <el-skeleton :loading="loading" animated>
+
         <el-row :gutter="16" justify="space-between">
           <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
             <div class="flex items-center">
@@ -52,137 +53,116 @@
             </div>
           </el-col>
         </el-row>
+
       </el-skeleton>
     </el-card>
   </div>
 
-  <el-row class="mt-8px" :gutter="8" justify="space-between">
-    <el-col :xl="16" :lg="16" :md="24" :sm="24" :xs="24" class="mb-8px">
-      <el-card shadow="never">
+  <el-row style="margin-top: 15px">
+
+    <!-- 工作流引擎 -->
+    <el-col :span="6">
+      <el-card shadow="never" class="project-card">
         <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('auto.views.home.Index.k134b78b4') }}</span>
-            <el-link
-              type="primary"
-              :underline="false"
-              href="https://github.com/15521142480/flycloud"
-              target="_blank"
-            >
-              {{ t('action.more') }}
-            </el-link>
+          <div class="card-header">
+            <span>工作流引擎</span>
           </div>
         </template>
-        <el-skeleton :loading="loading" animated>
-          <el-row>
-            <el-col v-for="(item, index) in projects" :key="`card-${index}`">
-              <el-card shadow="hover" class="mr-5px mt-5px">
-                <div class="flex items-center">
-                  <Icon :icon="item.icon" :size="25" class="mr-8px" />
-                  <span class="text-16px">{{ item.name }}</span>
-                </div>
-                <div class="mt-12px text-12px text-gray-400">{{ t(item.message) }}</div>
-                <div class="mt-12px flex justify-between text-12px text-gray-400">
-                  <span>{{ item.personal }}</span>
-                  <span>{{ formatTime(item.time, 'yyyy-MM-dd') }}</span>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
-        </el-skeleton>
-      </el-card>
-
-      <el-card shadow="never" class="mt-8px">
-        <el-skeleton :loading="loading" animated>
-          <el-row :gutter="20" justify="space-between">
-            <el-col :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
-              <el-card shadow="hover" class="mb-8px">
-                <el-skeleton :loading="loading" animated>
-                  <Echart :options="pieOptionsData" :height="280" />
-                </el-skeleton>
-              </el-card>
-            </el-col>
-            <el-col :xl="14" :lg="14" :md="24" :sm="24" :xs="24">
-              <el-card shadow="hover" class="mb-8px">
-                <el-skeleton :loading="loading" animated>
-                  <Echart :options="barOptionsData" :height="280" />
-                </el-skeleton>
-              </el-card>
-            </el-col>
-          </el-row>
-        </el-skeleton>
+        <div ref="chartRef" v-loading="loading"></div>
+        <template #footer>
+          <div class="card-footer">
+            <el-button type="primary" @click="routerForward(1)" text bg>
+              快捷体验
+            </el-button>
+          </div>
+        </template>
       </el-card>
     </el-col>
-    <el-col :xl="8" :lg="8" :md="24" :sm="24" :xs="24" class="mb-8px">
-      <el-card shadow="never">
+
+    <!-- 商城后台 -->
+    <el-col :span="6" style="margin-left: 15px">
+      <el-card shadow="never" class="project-card">
         <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.shortcutOperation') }}</span>
+          <div class="card-header">
+            <span>商城后台</span>
           </div>
         </template>
-        <el-skeleton :loading="loading" animated>
-          <el-row>
-            <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
-              <div class="flex items-center">
-                <Icon :icon="item.icon" class="mr-8px" />
-                <el-link type="default" :underline="false" @click="setWatermark(item.name)">
-                  {{ item.name }}
-                </el-link>
-              </div>
-            </el-col>
-          </el-row>
-        </el-skeleton>
+        <div ref="chartRef" v-loading="loading">
+
+        </div>
+        <template #footer>
+          <div class="card-footer">
+            <el-button type="primary" @click="routerForward(2)" text bg>
+              快捷体验
+            </el-button>
+          </div>
+        </template>
       </el-card>
-      <el-card shadow="never" class="mt-8px">
+    </el-col>
+
+    <!-- 商城移动端 -->
+    <el-col :span="5" style="margin-left: 15px">
+      <el-card shadow="never" class="project-card">
         <template #header>
-          <div class="h-3 flex justify-between">
-            <span>{{ t('workplace.notice') }}</span>
-            <el-link type="primary" :underline="false">{{ t('action.more') }}</el-link>
+          <div class="card-header">
+            <span>商城移动端（h5）</span>
           </div>
         </template>
-        <el-skeleton :loading="loading" animated>
-          <div v-for="(item, index) in notice" :key="`dynamics-${index}`" style="margin-left: 10px">
-            <div class="flex items-center">
-              <!--              <el-avatar :src="getFilePreviewUrl(avatar)" :size="35" class="mr-16px">-->
-              <!--                <img src="@/assets/imgs/avatar.png" alt=""/>-->
-              <!--              </el-avatar>-->
-              <div>
-                <div class="text-14px">
-                  <Highlight :keys="item.keys.map((v) => t(v))">
-                    {{ item.type }} : {{ item.title }}
-                  </Highlight>
-                </div>
-                <div class="mt-16px text-12px text-gray-400">
-                  {{ formatTime(item.date, 'yyyy-MM-dd') }}
-                </div>
-              </div>
-            </div>
-            <el-divider />
+        <div ref="chartRef" v-loading="loading">
+
+        </div>
+        <template #footer>
+          <div class="card-footer">
+            <el-button type="primary" @click="routerForward(3)" text bg>
+              快捷体验
+            </el-button>
           </div>
-        </el-skeleton>
+        </template>
+      </el-card>
+    </el-col>
+
+    <!-- 即时通讯 -->
+    <el-col :span="6" style="margin-left: 15px">
+      <el-card shadow="never" class="project-card">
+        <template #header>
+          <div class="card-header">
+            <span>即时通讯</span>
+          </div>
+        </template>
+        <div ref="chartRef" v-loading="loading">
+
+        </div>
+        <template #footer>
+          <div class="card-footer">
+            <el-button type="primary" @click="routerForward(4)" text bg>
+              体验1（内嵌）
+            </el-button>
+            <el-button type="primary" @click="routerForward(5)" text bg>
+              体验2（窗口）
+            </el-button>
+          </div>
+        </template>
       </el-card>
     </el-col>
   </el-row>
+
 </template>
 <script lang="ts" setup>
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
-import { set } from 'lodash-es'
-import { EChartsOption } from 'echarts'
-import { formatTime } from '@/utils'
+// import { set } from 'lodash-es'
+const { push } = useRouter()
 
 import { useUserStore } from '@/store/modules/user'
-import { useWatermark } from '@/hooks/web/useWatermark'
-import type { WorkplaceTotal, Project, Notice, Shortcut } from './types'
-import { pieOptions, barOptions } from './echarts-data'
+import type { WorkplaceTotal } from './types'
 import avatarImg from '@/assets/imgs/avatar.png'
 const { t } = useI18n()
 defineOptions({ name: 'Home' })
 const userStore = useUserStore()
-const { setWatermark } = useWatermark()
 const loading = ref(true)
-// const avatar = userStore.getUser.avatar
 const avatar = computed(() => userStore.getUser.avatar || avatarImg)
 const username = userStore.getUser.name
-const pieOptionsData = reactive<EChartsOption>(pieOptions) as EChartsOption
+
+
 // 获取统计数
 let totalSate = reactive<WorkplaceTotal>({
   project: 0,
@@ -190,6 +170,7 @@ let totalSate = reactive<WorkplaceTotal>({
   todo: 0
 })
 
+//
 const getCount = async () => {
   const data = {
     project: 40,
@@ -199,152 +180,57 @@ const getCount = async () => {
   totalSate = Object.assign(totalSate, data)
 }
 
-// 获取项目数
-let projects = reactive<Project[]>([])
-const getProject = async () => {
-  const data = [
-    {
-      name: 'flycloud',
-      icon: 'akar-icons:github-fill',
-      message: 'https://github.com/15521142480/flycloud/',
-      personal: t('auto.views.home.Index.k7d560b6f'),
-      time: new Date()
-    }
-  ]
-  projects = Object.assign(projects, data)
+//
+const routerForward = async (optionType : number) => {
+  switch (optionType) {
+    case 1:
+      await push({ path: '/bpm/audit/create' })
+      break
+    case 2:
+      await push({ path: '/mall/product/product' })
+      break
+    case 3:
+       window.open('https://www.laixueshi.cn/mall-app/', '_blank')
+      break
+    case 4:
+      await push({ path: '/im/workbench/conversation' })
+      break
+    case 5:
+      window.open('/#/im/home/conversation', '_blank')
+      break
+  }
+
 }
 
-// 获取通知公告
-let notice = reactive<Notice[]>([])
-const getNotice = async () => {
-  const data = [
-    {
-      title: t('auto.views.home.Index.k571e41b1'),
-      type: t('auto.views.home.Index.k3f956953'),
-      keys: [
-        t('auto.views.home.Index.k3f956953'),
-        'JDK',
-        'Spring Cloud',
-        'Nacos',
-        'Spring Security',
-        'Flowable',
-        'Seata'
-      ],
-      date: new Date()
-    },
-    {
-      title: t('auto.views.home.Index.k34bc00eb'),
-      type: t('auto.views.home.Index.k7a66c0d0'),
-      keys: [
-        t('auto.views.home.Index.k7a66c0d0'),
-        t('auto.views.home.Index.kc5a32f4c'),
-        t('auto.views.home.Index.kf4b6da57'),
-        t('auto.views.home.Index.k79d91579')
-      ],
-      date: new Date()
-    }
-  ]
-  notice = Object.assign(notice, data)
-}
-
-// 获取快捷入口
-let shortcut = reactive<Shortcut[]>([])
-
-const getShortcut = async () => {
-  const data = [
-    {
-      name: 'Github',
-      icon: 'akar-icons:github-fill',
-      url: 'github.io'
-    },
-    {
-      name: 'Vue',
-      icon: 'logos:vue',
-      url: 'vuejs.org'
-    },
-    {
-      name: 'Vite',
-      icon: 'vscode-icons:file-type-vite',
-      url: 'https://vitejs.dev/'
-    },
-    {
-      name: 'Angular',
-      icon: 'logos:angular-icon',
-      url: 'github.io'
-    },
-    {
-      name: 'React',
-      icon: 'logos:react',
-      url: 'github.io'
-    },
-    {
-      name: 'Webpack',
-      icon: 'logos:webpack',
-      url: 'github.io'
-    }
-  ]
-  shortcut = Object.assign(shortcut, data)
-}
-
-// 用户来源
-const getUserAccessSource = async () => {
-  const data = [
-    { value: 335, name: 'analysis.directAccess' },
-    { value: 310, name: 'analysis.mailMarketing' },
-    { value: 234, name: 'analysis.allianceAdvertising' },
-    { value: 135, name: 'analysis.videoAdvertising' },
-    { value: 1548, name: 'analysis.searchEngines' }
-  ]
-  set(
-    pieOptionsData,
-    'legend.data',
-    data.map((v) => t(v.name))
-  )
-  pieOptionsData!.series![0].data = data.map((v) => {
-    return {
-      name: t(v.name),
-      value: v.value
-    }
-  })
-}
-const barOptionsData = reactive<EChartsOption>(barOptions) as EChartsOption
-
-// 周活跃量
-const getWeeklyUserActivity = async () => {
-  const data = [
-    { value: 13253, name: 'analysis.monday' },
-    { value: 34235, name: 'analysis.tuesday' },
-    { value: 26321, name: 'analysis.wednesday' },
-    { value: 12340, name: 'analysis.thursday' },
-    { value: 24643, name: 'analysis.friday' },
-    { value: 1322, name: 'analysis.saturday' },
-    { value: 1324, name: 'analysis.sunday' }
-  ]
-  set(
-    barOptionsData,
-    'xAxis.data',
-    data.map((v) => t(v.name))
-  )
-  set(barOptionsData, 'series', [
-    {
-      name: t('analysis.activeQuantity'),
-      data: data.map((v) => v.value),
-      type: 'bar'
-    }
-  ])
-}
-
+// 获取全部接口api
 const getAllApi = async () => {
   await Promise.all([
-    getCount(),
-    getProject(),
-    getNotice(),
-    getShortcut(),
-    getUserAccessSource(),
-    getWeeklyUserActivity()
+    getCount()
   ])
   loading.value = false
 }
 
+// 初始化获取全部接口api
 getAllApi()
+
 </script>
+
+
+<style lang="scss" scoped>
+
+.project-card {
+  height: calc(100vh - 400px);
+  display: flex;
+  flex-direction: column;
+}
+.project-card :deep(.el-card__body) {
+  flex: 1;
+}
+
+.card-header, .card-footer {
+  text-align: center;
+  font-size: 19px;
+  //font-weight: 500;
+}
+
+</style>

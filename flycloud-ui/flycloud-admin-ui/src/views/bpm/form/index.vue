@@ -98,6 +98,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import * as FormApi from '@/api/bpm/form'

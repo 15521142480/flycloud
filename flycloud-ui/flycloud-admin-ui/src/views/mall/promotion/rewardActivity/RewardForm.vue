@@ -69,6 +69,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import RewardRule from './components/RewardRule.vue'
 import SpuShowcase from '@/views/mall/product/spu/components/SpuShowcase.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'

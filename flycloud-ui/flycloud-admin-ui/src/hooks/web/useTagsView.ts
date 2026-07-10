@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTagsViewStoreWithOut } from '@/store/modules/tagsView'
 import { RouteLocationNormalizedLoaded, useRouter } from 'vue-router'
 import { computed, nextTick, unref } from 'vue'

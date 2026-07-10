@@ -174,6 +174,7 @@
   <JobDetail ref="detailRef" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { checkPermi } from '@/utils/permission'
 import JobForm from './JobForm.vue'

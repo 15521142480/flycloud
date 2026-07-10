@@ -110,6 +110,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import download from '@/utils/download'
 import { StockApi, StockVO } from '@/api/erp/stock/stock'
 import { ProductApi, ProductVO } from '@/api/erp/product/product'

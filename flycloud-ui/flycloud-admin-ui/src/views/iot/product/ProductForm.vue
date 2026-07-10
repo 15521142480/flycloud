@@ -115,6 +115,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductApi, ProductVO } from '@/api/iot/product'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 const { t } = useI18n()

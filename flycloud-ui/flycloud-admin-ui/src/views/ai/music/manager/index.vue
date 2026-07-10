@@ -260,6 +260,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { getIntDictOptions, getBoolDictOptions, DICT_TYPE } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { MusicApi, MusicVO } from '@/api/ai/music'

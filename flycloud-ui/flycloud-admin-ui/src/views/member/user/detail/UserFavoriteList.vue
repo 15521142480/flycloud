@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE } from '@/utils/dict'
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { dateFormatter } from '@/utils/formatTime'

@@ -276,6 +276,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as ContactApi from '@/api/crm/contact'

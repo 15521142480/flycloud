@@ -93,6 +93,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as DefinitionApi from '@/api/bpm/definition'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'

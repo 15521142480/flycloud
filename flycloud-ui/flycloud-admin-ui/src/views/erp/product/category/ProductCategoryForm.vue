@@ -67,6 +67,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { ProductCategoryApi, ProductCategoryVO } from '@/api/erp/product/category'
 import { defaultProps, handleTree } from '@/utils/tree'

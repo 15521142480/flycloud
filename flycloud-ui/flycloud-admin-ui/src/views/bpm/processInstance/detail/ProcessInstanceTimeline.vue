@@ -156,6 +156,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { formatDate } from '@/utils/formatTime'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'

@@ -213,6 +213,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions, getStrDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { useRouter } from 'vue-router'

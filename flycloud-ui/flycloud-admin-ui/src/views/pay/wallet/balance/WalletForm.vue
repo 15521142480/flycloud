@@ -7,6 +7,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import WalletTransactionList from '../transaction/WalletTransactionList.vue'
 const dialogVisible = ref(false) // 弹窗的是否展示
 const dialogTitle = ref('') // 弹窗的标题

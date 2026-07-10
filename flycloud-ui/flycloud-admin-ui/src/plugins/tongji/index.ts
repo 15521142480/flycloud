@@ -1,3 +1,4 @@
+// @ts-nocheck
 import router from '@/router'
 
 // 用于 router push

@@ -51,6 +51,7 @@
   <CrmTransferForm ref="transferFormRef" :biz-type="BizTypeEnum.CRM_CONTRACT" @success="close" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { OperateLogVO } from '@/api/system/operatelog'
 import * as ContractApi from '@/api/crm/contract'

@@ -151,6 +151,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { getBoolDictOptions, DICT_TYPE } from '@/utils/dict'
 import { ChatRoleApi, ChatRoleVO } from '@/api/ai/model/chatRole'

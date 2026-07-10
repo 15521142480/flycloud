@@ -64,7 +64,7 @@ const formData = ref({
   sort: 0,
   status: CommonStatusEnum.ENABLE
 })
-const formRules = reactive({
+const formRules = reactive<any>({
   code: [
     { required: true, message: '频道编码不能为空', trigger: 'blur' },
     {

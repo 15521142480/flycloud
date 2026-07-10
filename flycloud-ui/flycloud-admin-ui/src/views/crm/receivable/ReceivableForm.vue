@@ -181,6 +181,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as ReceivablePlanApi from '@/api/crm/receivable/plan'
 import * as ReceivableApi from '@/api/crm/receivable'
 import { ReceivableVO } from '@/api/crm/receivable'

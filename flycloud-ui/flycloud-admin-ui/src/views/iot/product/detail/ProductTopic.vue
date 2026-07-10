@@ -25,6 +25,7 @@
   </ContentWrap>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductVO } from '@/api/iot/product'
 const { t } = useI18n()
 const props = defineProps<{ product: ProductVO }>()

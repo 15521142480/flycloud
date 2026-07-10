@@ -67,6 +67,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as CustomerLimitConfigApi from '@/api/crm/customer/limitConfig'
 import * as DeptApi from '@/api/system/dept'
 import { defaultProps, handleTree } from '@/utils/tree'

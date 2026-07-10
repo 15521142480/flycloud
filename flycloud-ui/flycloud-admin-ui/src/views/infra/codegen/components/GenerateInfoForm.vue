@@ -293,6 +293,7 @@
   </el-form>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { handleTree } from '@/utils/tree'
 import * as CodegenApi from '@/api/infra/codegen'

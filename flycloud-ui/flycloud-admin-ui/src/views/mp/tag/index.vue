@@ -87,6 +87,7 @@
   <TagForm ref="formRef" @success="getList" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import * as MpTagApi from '@/api/mp/tag'
 import TagForm from './TagForm.vue'

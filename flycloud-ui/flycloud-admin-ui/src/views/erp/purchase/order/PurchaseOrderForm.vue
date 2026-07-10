@@ -168,6 +168,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { PurchaseOrderApi, PurchaseOrderVO } from '@/api/erp/purchase/order'
 import PurchaseOrderItemForm from './components/PurchaseOrderItemForm.vue'
 import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'

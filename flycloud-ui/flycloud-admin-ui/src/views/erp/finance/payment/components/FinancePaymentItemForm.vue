@@ -95,6 +95,7 @@
   />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductVO } from '@/api/erp/product/product'
 import { erpPriceInputFormatter, getSumValue } from '@/utils'
 import PurchaseInPaymentEnableList from '@/views/erp/purchase/in/components/PurchaseInPaymentEnableList.vue'

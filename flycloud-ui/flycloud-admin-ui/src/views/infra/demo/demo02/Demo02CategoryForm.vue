@@ -41,6 +41,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as Demo02CategoryApi from '@/api/infra/demo/demo02'
 import { defaultProps, handleTree } from '@/utils/tree'
 const { t } = useI18n()

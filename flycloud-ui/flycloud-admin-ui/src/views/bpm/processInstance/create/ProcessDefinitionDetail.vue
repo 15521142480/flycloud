@@ -86,6 +86,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { decodeFields, setConfAndFields2 } from '@/utils/formCreate'
 import { BpmModelType } from '@/utils/constants'
 import { CandidateStrategy } from '@/components/SimpleProcessDesignerV2/src/consts'

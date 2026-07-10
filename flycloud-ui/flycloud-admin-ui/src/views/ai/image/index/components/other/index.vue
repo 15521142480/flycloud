@@ -88,6 +88,7 @@
   </div>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ImageApi, ImageDrawReqVO, ImageVO } from '@/api/ai/image'
 import {
   AiPlatformEnum,

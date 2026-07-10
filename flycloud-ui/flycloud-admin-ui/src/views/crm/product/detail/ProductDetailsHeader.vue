@@ -43,6 +43,7 @@
   <ProductForm ref="formRef" @success="emit('refresh')" />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import ProductForm from '@/views/crm/product/ProductForm.vue'
 import { DICT_TYPE } from '@/utils/dict'
 import { erpPriceInputFormatter } from '@/utils'

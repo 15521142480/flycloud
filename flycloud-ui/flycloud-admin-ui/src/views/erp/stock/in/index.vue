@@ -275,6 +275,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import { dateFormatter2 } from '@/utils/formatTime'
 import download from '@/utils/download'

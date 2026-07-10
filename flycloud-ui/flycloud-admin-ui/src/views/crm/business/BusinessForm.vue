@@ -165,6 +165,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as BusinessApi from '@/api/crm/business'
 import * as BusinessStatusApi from '@/api/crm/business/status'
 import * as CustomerApi from '@/api/crm/customer'

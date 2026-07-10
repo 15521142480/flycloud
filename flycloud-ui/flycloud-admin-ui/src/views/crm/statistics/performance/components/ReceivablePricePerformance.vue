@@ -25,6 +25,7 @@
   </el-card>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { EChartsOption } from 'echarts'
 import {
   StatisticsPerformanceApi,

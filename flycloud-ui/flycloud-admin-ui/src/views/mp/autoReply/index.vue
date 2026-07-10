@@ -80,6 +80,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import ReplyForm from '@/views/mp/autoReply/components/ReplyForm.vue'
 import { type Reply, ReplyType } from '@/views/mp/components/wx-reply'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'

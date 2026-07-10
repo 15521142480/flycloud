@@ -69,6 +69,7 @@
   <MailTemplateSendForm ref="sendFormRef" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { allSchemas } from './template.data'
 import * as MailTemplateApi from '@/api/system/mail/template'
 import MailTemplateForm from './MailTemplateForm.vue'

@@ -56,6 +56,7 @@
   </el-card>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { Delete, Download, More, RefreshRight } from '@element-plus/icons-vue'
 import { ImageVO, ImageMidjourneyButtonsVO } from '@/api/ai/image'

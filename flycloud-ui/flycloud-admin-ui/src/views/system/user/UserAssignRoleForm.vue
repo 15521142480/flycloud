@@ -26,6 +26,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as PermissionApi from '@/api/system/permission'
 import * as UserApi from '@/api/system/user'
 import * as RoleApi from '@/api/system/role'

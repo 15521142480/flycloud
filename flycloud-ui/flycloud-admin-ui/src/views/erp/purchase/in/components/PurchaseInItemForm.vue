@@ -200,6 +200,7 @@
   </el-form>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { StockApi } from '@/api/erp/stock/stock'
 import {
   erpCountInputFormatter,

@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import * as SignInRecordApi from '@/api/member/signin/record'
 

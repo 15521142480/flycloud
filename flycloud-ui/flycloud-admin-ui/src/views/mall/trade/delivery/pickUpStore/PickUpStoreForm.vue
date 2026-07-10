@@ -145,7 +145,7 @@ const formData = ref<DeliveryPickUpStoreApi.DeliveryPickUpStoreVO>({
   longitude: undefined,
   status: CommonStatusEnum.ENABLE
 })
-const formRules = reactive({
+const formRules = reactive<any>({
   name: [{ required: true, message: '门店名称不能为空', trigger: 'blur' }],
   logo: [{ required: true, message: '门店 logo 不能为空', trigger: 'blur' }],
   phone: [

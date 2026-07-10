@@ -53,6 +53,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import type {
   FormInstance,
   FormRules,

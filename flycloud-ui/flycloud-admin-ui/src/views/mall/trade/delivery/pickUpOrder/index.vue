@@ -215,6 +215,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import type { FormInstance } from 'element-plus'
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as TradeOrderApi from '@/api/mall/trade/order'

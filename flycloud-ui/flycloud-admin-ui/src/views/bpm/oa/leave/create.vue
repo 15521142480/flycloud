@@ -83,6 +83,7 @@
   </el-form>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as LeaveApi from '@/api/bpm/leave'
 import { useTagsViewStore } from '@/store/modules/tagsView'

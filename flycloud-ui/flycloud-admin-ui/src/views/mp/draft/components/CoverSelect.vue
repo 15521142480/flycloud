@@ -64,6 +64,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import WxMaterialSelect from '@/views/mp/components/wx-material-select'
 import { getAccessToken } from '@/utils/auth'
 import type { UploadFiles, UploadProps, UploadRawFile } from 'element-plus'

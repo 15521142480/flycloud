@@ -66,7 +66,7 @@
   <ContentWrap>
     <el-table v-loading="loading" :data="list" @selection-change="handleRowCheckboxChange">
       <el-table-column type="selection" width="55" />
-      <el-table-column label="编号" align="center" prop="id" width="100" />
+      <el-table-column label="编号" align="center" prop="id" width="120" />
       <el-table-column label="封面" align="center" prop="icon" width="80">
         <template #default="scope">
           <el-image

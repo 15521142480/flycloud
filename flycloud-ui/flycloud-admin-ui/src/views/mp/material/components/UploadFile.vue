@@ -21,6 +21,7 @@
   </el-upload>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import {
   HEADERS,

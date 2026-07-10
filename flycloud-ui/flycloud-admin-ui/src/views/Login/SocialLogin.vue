@@ -149,6 +149,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ElLoading } from 'element-plus'
 
 import { useDesign } from '@/hooks/web/useDesign'

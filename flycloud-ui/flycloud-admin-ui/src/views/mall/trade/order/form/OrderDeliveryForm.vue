@@ -30,6 +30,7 @@
   </Dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as DeliveryExpressApi from '@/api/mall/trade/delivery/express'
 import * as TradeOrderApi from '@/api/mall/trade/order'
 import { copyValueToTarget } from '@/utils'

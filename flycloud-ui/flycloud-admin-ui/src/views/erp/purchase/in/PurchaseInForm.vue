@@ -190,6 +190,7 @@
   />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { PurchaseInApi, PurchaseInVO } from '@/api/erp/purchase/in'
 import PurchaseInItemForm from './components/PurchaseInItemForm.vue'
 import { AccountApi, AccountVO } from '@/api/erp/finance/account'

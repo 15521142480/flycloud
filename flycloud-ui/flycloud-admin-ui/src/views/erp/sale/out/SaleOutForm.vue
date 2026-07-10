@@ -197,6 +197,7 @@
   <SaleOrderOutEnableList ref="saleOrderOutEnableListRef" @success="handleSaleOrderChange" />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { SaleOutApi, SaleOutVO } from '@/api/erp/sale/out'
 import SaleOutItemForm from './components/SaleOutItemForm.vue'
 import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'

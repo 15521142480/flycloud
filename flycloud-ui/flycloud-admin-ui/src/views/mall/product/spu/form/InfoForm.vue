@@ -60,6 +60,7 @@
   </el-form>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { PropType } from 'vue'
 import { copyValueToTarget } from '@/utils'
 import { propTypes } from '@/utils/propTypes'

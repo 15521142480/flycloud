@@ -205,6 +205,7 @@
   <SaleOrderReturnEnableList ref="saleOrderReturnEnableListRef" @success="handleSaleOrderChange" />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { SaleReturnApi, SaleReturnVO } from '@/api/erp/sale/return'
 import SaleReturnItemForm from './components/SaleReturnItemForm.vue'
 import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'

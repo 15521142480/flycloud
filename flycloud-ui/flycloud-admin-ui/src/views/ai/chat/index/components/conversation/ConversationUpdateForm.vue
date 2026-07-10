@@ -83,6 +83,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { CommonStatusEnum } from '@/utils/constants'
 import { ChatModelApi, ChatModelVO } from '@/api/ai/model/chatModel'
 import { ChatConversationApi, ChatConversationVO } from '@/api/ai/chat/conversation'

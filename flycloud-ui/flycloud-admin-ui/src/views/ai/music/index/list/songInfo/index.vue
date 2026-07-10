@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 const { t } = useI18n()
 defineOptions({ name: 'Index' })

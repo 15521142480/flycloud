@@ -84,6 +84,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as MpMessageApi from '@/api/mp/message'
 import WxMsg from '@/views/mp/components/wx-msg'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'

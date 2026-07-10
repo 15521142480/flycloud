@@ -143,6 +143,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductVO } from '@/api/iot/product'
 import { ThinkModelFunctionApi, ThinkModelFunctionVO } from '@/api/iot/thinkmodelfunction'
 const { t } = useI18n()

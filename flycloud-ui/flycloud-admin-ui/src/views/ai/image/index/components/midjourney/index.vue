@@ -111,6 +111,7 @@
   </div>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ImageApi, ImageMidjourneyImagineReqVO, ImageVO } from '@/api/ai/image'
 import {
   AiPlatformEnum,

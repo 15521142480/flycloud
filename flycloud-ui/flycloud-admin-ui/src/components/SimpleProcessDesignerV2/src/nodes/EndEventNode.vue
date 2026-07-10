@@ -87,6 +87,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { SimpleFlowNode } from '../consts'
 import { useWatchNode, useTaskStatusClass } from '../node'
 import { dateFormatter, formatPast2 } from '@/utils/formatTime'

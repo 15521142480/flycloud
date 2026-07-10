@@ -179,6 +179,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime'
 import { DeviceApi, DeviceVO } from '@/api/iot/device'

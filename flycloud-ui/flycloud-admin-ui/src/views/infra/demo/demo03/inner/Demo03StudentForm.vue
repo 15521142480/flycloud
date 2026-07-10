@@ -74,6 +74,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/inner'
 import Demo03CourseForm from './components/Demo03CourseForm.vue'

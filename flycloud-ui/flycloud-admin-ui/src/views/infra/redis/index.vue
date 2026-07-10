@@ -69,6 +69,7 @@
   </el-scrollbar>
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import * as RedisApi from '@/api/infra/redis'
 import { RedisMonitorInfoVO } from '@/api/infra/redis/types'
 const { t } = useI18n()

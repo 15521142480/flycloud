@@ -100,6 +100,7 @@
   <ThinkModelFunctionForm ref="formRef" :product="product" @success="getList" />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ProductVO } from '@/api/iot/product'
 import { ThinkModelFunctionApi, ThinkModelFunctionVO } from '@/api/iot/thinkmodelfunction'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'

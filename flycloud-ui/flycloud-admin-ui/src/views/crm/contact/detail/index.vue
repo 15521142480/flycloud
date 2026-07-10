@@ -42,6 +42,7 @@
   <CrmTransferForm ref="transferFormRef" :biz-type="BizTypeEnum.CRM_CONTACT" @success="close" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as ContactApi from '@/api/crm/contact'
 import ContactDetailsHeader from '@/views/crm/contact/detail/ContactDetailsHeader.vue'

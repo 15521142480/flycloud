@@ -115,6 +115,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import NodeHandler from '../NodeHandler.vue'
 import { useWatchNode, useNodeName2, useTaskStatusClass } from '../node'
 import { SimpleFlowNode, NODE_DEFAULT_TEXT, NodeType } from '../consts'

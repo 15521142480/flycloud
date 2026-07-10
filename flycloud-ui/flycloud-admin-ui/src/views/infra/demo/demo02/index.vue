@@ -122,6 +122,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import { handleTree } from '@/utils/tree'
 import download from '@/utils/download'

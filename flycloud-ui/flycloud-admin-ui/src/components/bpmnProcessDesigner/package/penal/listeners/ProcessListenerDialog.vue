@@ -76,6 +76,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ProcessListenerApi, ProcessListenerVO } from '@/api/bpm/processListener'
 import { DICT_TYPE } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'

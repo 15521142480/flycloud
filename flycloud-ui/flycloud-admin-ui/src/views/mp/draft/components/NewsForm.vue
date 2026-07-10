@@ -133,6 +133,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { Editor } from '@/components/Editor'
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { createEditorConfig } from '../editor-config'

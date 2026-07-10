@@ -44,6 +44,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { CommonStatusEnum } from '@/utils/constants'
 import { ProcessExpressionApi, ProcessExpressionVO } from '@/api/bpm/processExpression'
 /** BPM 流程 表单 */

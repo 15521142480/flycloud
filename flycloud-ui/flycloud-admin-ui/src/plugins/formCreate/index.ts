@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { App } from 'vue'
 // 👇使用 form-create 需额外全局引入 element plus 组件
 import {

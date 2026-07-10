@@ -72,7 +72,7 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="100" />
+      <el-table-column label="编号" align="center" prop="id" width="120" />
       <el-table-column label="群" align="center" min-width="200" show-overflow-tooltip>
         <template #default="{ row }">
           <span>{{ row.groupName || '-' }}</span>

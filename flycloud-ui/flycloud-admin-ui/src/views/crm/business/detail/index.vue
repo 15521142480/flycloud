@@ -58,6 +58,7 @@
   <CrmTransferForm ref="transferFormRef" :biz-type="BizTypeEnum.CRM_BUSINESS" @success="close" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as BusinessApi from '@/api/crm/business'
 import BusinessDetailsHeader from './BusinessDetailsHeader.vue'

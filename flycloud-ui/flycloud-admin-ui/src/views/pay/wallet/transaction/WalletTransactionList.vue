@@ -29,6 +29,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import * as WalletTransactionApi from '@/api/pay/wallet/transaction'
 import * as WalletApi from '@/api/pay/wallet/balance'

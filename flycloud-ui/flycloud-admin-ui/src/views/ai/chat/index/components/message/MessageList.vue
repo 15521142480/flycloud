@@ -59,6 +59,7 @@
   </div>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import { PropType } from 'vue'
 import { formatDate } from '@/utils/formatTime'

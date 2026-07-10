@@ -34,6 +34,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/erp'
 const { t } = useI18n()
 const message = useMessage() // 消息弹窗

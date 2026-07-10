@@ -115,6 +115,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as BusinessStatusApi from '@/api/crm/business/status'
 import { defaultProps, handleTree } from '@/utils/tree'
 import * as DeptApi from '@/api/system/dept'

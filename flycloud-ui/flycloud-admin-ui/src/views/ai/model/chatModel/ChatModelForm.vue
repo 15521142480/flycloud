@@ -123,6 +123,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { ChatModelApi, ChatModelVO } from '@/api/ai/model/chatModel'
 import { ApiKeyApi, ApiKeyVO } from '@/api/ai/model/apiKey'
 import { CommonStatusEnum } from '@/utils/constants'

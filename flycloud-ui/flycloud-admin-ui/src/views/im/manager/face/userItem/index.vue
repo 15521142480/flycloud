@@ -47,7 +47,7 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="100" />
+      <el-table-column label="编号" align="center" prop="id" width="120" />
       <el-table-column label="表情图" align="center" prop="url" width="80">
         <template #default="scope">
           <el-image

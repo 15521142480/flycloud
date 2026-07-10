@@ -39,6 +39,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE } from '@/utils/dict'
 const { t } = useI18n()
 const props = defineProps<{

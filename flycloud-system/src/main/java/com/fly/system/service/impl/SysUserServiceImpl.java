@@ -119,12 +119,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public UserDetailInfoVo getDetailInfo(Long id) {
 
         UserDetailInfoVo userDetailInfoVo = new UserDetailInfoVo();
+
+        // 用户基本信息
+        userDetailInfoVo.setUser(this.queryById(id));
         if (userDetailInfoVo.getUser() == null) {
             throw new UserException("用户不存在！id:" + id);
         }
 
-        // 用户基本信息
-        userDetailInfoVo.setUser(this.queryById(id));
         userDetailInfoVo.getUser().setPassword(null);
 
         // 权限信息

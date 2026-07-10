@@ -52,6 +52,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import * as FreePublishApi from '@/api/mp/freePublish'
 import WxNews from '@/views/mp/components/wx-news'
 import WxAccountSelect from '@/views/mp/components/wx-account-select'

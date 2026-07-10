@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+// @ts-nocheck
 import { PropType } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 

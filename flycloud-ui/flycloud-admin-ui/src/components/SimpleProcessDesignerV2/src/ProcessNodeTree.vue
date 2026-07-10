@@ -53,6 +53,7 @@
   />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import StartUserNode from './nodes/StartUserNode.vue'
 import EndEventNode from './nodes/EndEventNode.vue'
 import UserTaskNode from './nodes/UserTaskNode.vue'

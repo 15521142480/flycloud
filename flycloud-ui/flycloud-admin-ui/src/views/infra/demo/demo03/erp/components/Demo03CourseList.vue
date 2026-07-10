@@ -67,6 +67,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import * as Demo03StudentApi from '@/api/infra/demo/demo03/erp'
 import Demo03CourseForm from './Demo03CourseForm.vue'

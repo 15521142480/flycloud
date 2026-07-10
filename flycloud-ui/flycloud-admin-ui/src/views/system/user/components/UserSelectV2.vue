@@ -58,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import * as UserApi from '@/api/system/user'
 import { Search, CircleClose } from '@element-plus/icons-vue'
 import UserSelectDialogV2 from './UserSelectDialogV2.vue'

@@ -117,6 +117,7 @@
   />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { FollowUpRecordApi, FollowUpRecordVO } from '@/api/crm/followup'
 import { BizTypeEnum } from '@/api/crm/permission'

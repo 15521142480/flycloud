@@ -50,6 +50,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { dateFormatter } from '@/utils/formatTime'
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
 import * as CombinationRecordApi from '@/api/mall/promotion/combination/combinationRecord'

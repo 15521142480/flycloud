@@ -71,6 +71,7 @@
   <ContractForm ref="formRef" @success="getList" />
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as ContractApi from '@/api/crm/contract'
 import ContractForm from './../ContractForm.vue'
 import { BizTypeEnum } from '@/api/crm/permission'

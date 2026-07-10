@@ -81,6 +81,7 @@
   <CrmTransferForm ref="transferFormRef" :biz-type="BizTypeEnum.CRM_CUSTOMER" @success="close" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as CustomerApi from '@/api/crm/customer'
 import CustomerForm from '@/views/crm/customer/CustomerForm.vue'

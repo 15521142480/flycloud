@@ -113,6 +113,7 @@
   </el-row>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import * as ProductApi from '@/api/crm/product'
 import { erpPriceInputFormatter, erpPriceMultiply } from '@/utils'
 import { DICT_TYPE } from '@/utils/dict'

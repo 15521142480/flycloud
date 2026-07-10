@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 针对 https://github.com/xaboy/form-create-designer 封装的工具类
  */

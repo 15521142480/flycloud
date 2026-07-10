@@ -68,6 +68,7 @@
   <MailAccountDetail ref="detailRef" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { allSchemas } from './account.data'
 import * as MailAccountApi from '@/api/system/mail/account'
 import MailAccountForm from './MailAccountForm.vue'

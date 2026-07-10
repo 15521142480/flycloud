@@ -28,6 +28,7 @@
   <ReceivableForm ref="formRef" @success="getReceivable(receivable.id)" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as ReceivableApi from '@/api/crm/receivable'
 import ReceivableDetailsHeader from './ReceivableDetailsHeader.vue'

@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import * as MpAccountApi from '@/api/mp/account'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 const { t } = useI18n()

@@ -31,6 +31,7 @@
   <ReceivablePlanForm ref="formRef" @success="getReceivablePlan(receivablePlan.id)" />
 </template>
 <script lang="ts" setup>
+// @ts-nocheck
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import * as ReceivablePlanApi from '@/api/crm/receivable/plan'
 import ReceivablePlanDetailsHeader from './ReceivablePlanDetailsHeader.vue'

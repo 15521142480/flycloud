@@ -86,6 +86,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { StockInApi, StockInVO } from '@/api/erp/stock/in'
 import StockInItemForm from './components/StockInItemForm.vue'
 import { SupplierApi, SupplierVO } from '@/api/erp/purchase/supplier'

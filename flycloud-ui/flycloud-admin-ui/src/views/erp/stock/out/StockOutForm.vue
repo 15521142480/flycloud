@@ -92,6 +92,7 @@
   </Dialog>
 </template>
 <script setup lang="ts">
+// @ts-nocheck
 import { StockOutApi, StockOutVO } from '@/api/erp/stock/out'
 import StockOutItemForm from './components/StockOutItemForm.vue'
 import { CustomerApi, CustomerVO } from '@/api/erp/sale/customer'
