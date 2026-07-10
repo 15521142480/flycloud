@@ -1,59 +1,68 @@
 <template>
   <div>
-    <el-card shadow="never">
+    <el-card shadow="hover" class="home-overview-card">
       <el-skeleton :loading="loading" animated>
-
-        <el-row :gutter="16" justify="space-between">
-          <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
-            <div class="flex items-center">
-              <el-avatar :src="getFilePreviewUrl(avatar)" :size="70" class="mr-16px">
+        <div class="home-overview">
+          <section class="welcome-panel">
+            <div class="welcome-main">
+              <el-avatar :src="getFilePreviewUrl(avatar)" :size="58" class="welcome-avatar">
                 <img src="@/assets/imgs/profile.png" alt="" />
               </el-avatar>
-              <div>
-                <div class="text-20px">
-                  {{ t('workplace.welcome') }} {{ username }} {{ t('workplace.happyDay') }}
+              <div class="welcome-copy">
+                <div class="welcome-title">
+                  {{ t('workplace.welcome') }}， {{ username }}
                 </div>
-                <div class="mt-10px text-14px text-gray-500">
-                  {{ t('workplace.toady') }}，23℃ - 32℃！
-                </div>
+                <div class="welcome-weather">{{ t('workplace.toady') }}，23℃ - 32℃！</div>
               </div>
             </div>
-          </el-col>
-          <el-col :xl="12" :lg="12" :md="12" :sm="24" :xs="24">
-            <div class="h-70px flex items-center justify-end lt-sm:mt-10px">
-              <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.project') }}</div>
+            <div class="welcome-stats">
+              <div class="welcome-stat">
+                <span>{{ t('workplace.project') }}</span>
                 <CountTo
-                  class="text-20px"
+                  class="welcome-stat-count"
                   :start-val="0"
                   :end-val="totalSate.project"
-                  :duration="2600"
+                  :duration="2200"
                 />
               </div>
-              <el-divider direction="vertical" />
-              <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.toDo') }}</div>
+              <div class="welcome-stat">
+                <span>{{ t('workplace.access') }}</span>
                 <CountTo
-                  class="text-20px"
-                  :start-val="0"
-                  :end-val="totalSate.todo"
-                  :duration="2600"
-                />
-              </div>
-              <el-divider direction="vertical" border-style="dashed" />
-              <div class="px-8px text-right">
-                <div class="mb-16px text-14px text-gray-400">{{ t('workplace.access') }}</div>
-                <CountTo
-                  class="text-20px"
+                  class="welcome-stat-count"
                   :start-val="0"
                   :end-val="totalSate.access"
-                  :duration="2600"
+                  :duration="2200"
                 />
               </div>
             </div>
-          </el-col>
-        </el-row>
-
+          </section>
+          <section class="todo-summary">
+            <div class="todo-summary-title">{{ t('workplace.toDo') }}</div>
+            <CountTo
+              class="todo-summary-count"
+              :start-val="0"
+              :end-val="totalSate.todo"
+              :duration="2200"
+            />
+          </section>
+          <section class="todo-list-panel" :class="{ 'is-single-row': todoDataList.length === 1 }">
+            <el-table
+              :data="todoDataList"
+              :height="todoDataList.length === 1 ? undefined : 98"
+              :show-header="false"
+              class="todo-table"
+            >
+              <el-table-column prop="username" min-width="100" show-overflow-tooltip />
+              <el-table-column prop="title" min-width="110" show-overflow-tooltip />
+              <el-table-column prop="time" min-width="100" align="right" show-overflow-tooltip />
+              <el-table-column width="76" align="right">
+                <template #default>
+                  <el-button link type="primary" class="todo-action" @click="goTodo">去办理</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </section>
+        </div>
       </el-skeleton>
     </el-card>
   </div>
@@ -62,13 +71,16 @@
 
     <!-- 工作流引擎 -->
     <el-col :span="6">
-      <el-card shadow="never" class="project-card">
+      <el-card shadow="hover" class="project-card">
         <template #header>
           <div class="card-header">
             <span>工作流引擎</span>
           </div>
         </template>
-        <div ref="chartRef" v-loading="loading"></div>
+        <div ref="chartRef" v-loading="loading">
+          <el-image fit="cover" :src="img_bpm1" class="card-img" @click="imagePreview(img_bpm1)" />
+          <el-image fit="cover" :src="img_bpm2" class="card-img" @click="imagePreview(img_bpm2)" />
+        </div>
         <template #footer>
           <div class="card-footer">
             <el-button type="primary" @click="routerForward(1)" text bg>
@@ -81,7 +93,7 @@
 
     <!-- 商城后台 -->
     <el-col :span="6" style="margin-left: 15px">
-      <el-card shadow="never" class="project-card">
+      <el-card shadow="hover" class="project-card">
         <template #header>
           <div class="card-header">
             <span>商城后台</span>
@@ -102,7 +114,7 @@
 
     <!-- 商城移动端 -->
     <el-col :span="5" style="margin-left: 15px">
-      <el-card shadow="never" class="project-card">
+      <el-card shadow="hover" class="project-card">
         <template #header>
           <div class="card-header">
             <span>商城移动端（h5）</span>
@@ -123,7 +135,7 @@
 
     <!-- 即时通讯 -->
     <el-col :span="6" style="margin-left: 15px">
-      <el-card shadow="never" class="project-card">
+      <el-card shadow="hover" class="project-card">
         <template #header>
           <div class="card-header">
             <span>即时通讯</span>
@@ -149,19 +161,25 @@
 </template>
 <script lang="ts" setup>
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
-// import { set } from 'lodash-es'
-const { push } = useRouter()
-
 import { useUserStore } from '@/store/modules/user'
 import type { WorkplaceTotal } from './types'
+import { createImageViewer } from '@/components/ImageViewer'
+import * as TaskApi from '@/api/bpm/task'
+
 import avatarImg from '@/assets/imgs/avatar.png'
+import img_bpm1 from '@/assets/imgs/bpm/bpm_1.png'
+import img_bpm2 from '@/assets/imgs/bpm/bpm_2.png'
+
 const { t } = useI18n()
+const { push } = useRouter()
 defineOptions({ name: 'Home' })
+
 const userStore = useUserStore()
 const loading = ref(true)
 const avatar = computed(() => userStore.getUser.avatar || avatarImg)
-const username = userStore.getUser.name
-
+const username = computed(() => userStore.getUser.name)
+const taskList = ref<any[]>([])
+const todoDataList = ref<any[]>([])
 
 // 获取统计数
 let totalSate = reactive<WorkplaceTotal>({
@@ -170,18 +188,41 @@ let totalSate = reactive<WorkplaceTotal>({
   todo: 0
 })
 
-//
+// 初始化数据
 const getCount = async () => {
   const data = {
     project: 40,
     access: 2340,
     todo: 10
   }
+  await getTaskTodoList()
+  data.todo = taskList.value.length
   totalSate = Object.assign(totalSate, data)
+
+  todoDataList.value = []
+  for (const taskData of taskList.value) {
+    const startUser = taskData.processInstance.startUser
+    todoDataList.value.push({
+      username: startUser.name + (startUser.realName !== null ? ' (' + startUser.realName + ")" : ''),
+      title: '请假申请 (' + taskData.processInstance.name + ')',
+      time: taskData.createTime,
+    })
+  }
+
 }
 
-//
-const routerForward = async (optionType : number) => {
+// 获取待办任务数量
+const getTaskTodoList = async () => {
+  const queryParams = {
+    pageNum: 1,
+    pageSize: 100
+  }
+  const data = await TaskApi.getTaskTodoPage(queryParams)
+  taskList.value = data.list || []
+}
+
+// 首页项目卡片快捷跳转
+const routerForward = async (optionType: number) => {
   switch (optionType) {
     case 1:
       await push({ path: '/bpm/audit/create' })
@@ -190,7 +231,7 @@ const routerForward = async (optionType : number) => {
       await push({ path: '/mall/product/product' })
       break
     case 3:
-       window.open('https://www.laixueshi.cn/mall-app/', '_blank')
+      window.open('https://www.laixueshi.cn/mall-app/', '_blank')
       break
     case 4:
       await push({ path: '/im/workbench/conversation' })
@@ -199,7 +240,18 @@ const routerForward = async (optionType : number) => {
       window.open('/#/im/home/conversation', '_blank')
       break
   }
+}
 
+// 跳转到待办任务页面
+const goTodo = async () => {
+  await push({ path: '/bpm/audit/todo' })
+}
+
+// 预览首页项目卡片图片
+const imagePreview = (imgUrl: string) => {
+  createImageViewer({
+    urlList: [imgUrl]
+  })
 }
 
 // 获取全部接口api
@@ -217,20 +269,197 @@ getAllApi()
 
 
 <style lang="scss" scoped>
+.home-overview-card :deep(.el-card__body) {
+  padding: 0;
+}
+
+.home-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 40%) minmax(120px, 10%) minmax(0, 50%);
+  min-height: 120px;
+}
+
+.welcome-panel,
+.todo-summary,
+.todo-list-panel {
+  min-width: 0;
+}
+
+.welcome-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 19px 30px 18px;
+}
+
+.welcome-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.welcome-avatar {
+  flex: 0 0 auto;
+  margin-right: 18px;
+}
+
+.welcome-copy {
+  min-width: 0;
+}
+
+.welcome-title {
+  overflow: hidden;
+  color: #303133;
+  font-size: 20px;
+  line-height: 28px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.welcome-weather {
+  margin-top: 10px;
+  color: #909399;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.welcome-stats {
+  display: flex;
+  gap: 28px;
+  padding-left: 76px;
+  margin-top: 6px;
+  color: #606266;
+}
+
+.welcome-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.welcome-stat-count {
+  color: #303133;
+  font-size: 20px;
+}
+
+.todo-summary {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-summary::before {
+  position: absolute;
+  top: 30%;
+  bottom: 30%;
+  left: 0;
+  width: 1px;
+  content: '';
+  background-color: var(--el-border-color-lighter);
+}
+
+.todo-summary-title {
+  color: #606266;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.todo-summary-count {
+  margin-top: 14px;
+  color: #303133;
+  font-size: 26px;
+  line-height: 32px;
+}
+
+.todo-list-panel {
+  display: flex;
+  align-items: flex-start;
+  padding: 11px 20px 11px 0;
+}
+
+.todo-list-panel.is-single-row {
+  align-items: center;
+}
+
+.todo-action {
+  padding: 0;
+}
+
+.todo-table {
+  width: 100%;
+  font-size: 15px;
+}
+
+.todo-table :deep(.el-table__cell) {
+  padding: 7px 0;
+  color: #606266;
+}
+
+.todo-table :deep(.el-table__row .el-table__cell:first-child) {
+  color: #303133;
+}
+
+.todo-table :deep(.el-table__inner-wrapper::before) {
+  display: none;
+}
+
+.todo-table :deep(.el-scrollbar__bar.is-horizontal) {
+  display: none;
+}
 
 .project-card {
   height: calc(100vh - 400px);
   display: flex;
   flex-direction: column;
 }
+
+.project-card :deep(.el-card__header),
+.project-card :deep(.el-card__footer) {
+  flex-shrink: 0;
+}
+
 .project-card :deep(.el-card__body) {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .card-header, .card-footer {
   text-align: center;
   font-size: 19px;
   //font-weight: 500;
+}
+.card-img {
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .home-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .todo-summary {
+    min-height: 96px;
+    border-top: 0;
+  }
+
+  .todo-summary::before {
+    top: 0;
+    right: 25%;
+    bottom: auto;
+    left: 25%;
+    width: auto;
+    height: 1px;
+  }
+
+  .welcome-stats {
+    padding-left: 0;
+    margin-top: 18px;
+  }
 }
 
 </style>

@@ -17,6 +17,17 @@ export interface NotifyMessageVO {
   createTime: Date
 }
 
+
+// 获取当前用户的最新站内信列表
+export const getUnreadNotifyMessageList = async () => {
+  return await request.get({ url: `/${SYS_BASE_URL}/notify-message/get-unread-list` })
+}
+
+// 获得当前用户的未读站内信数量
+export const getUnreadNotifyMessageCount = async () => {
+  return await request.get({ url: `/${SYS_BASE_URL}/notify-message/get-unread-count` })
+}
+
 // 查询站内信消息列表
 export const getNotifyMessagePage = async (params: PageParam) => {
   return await request.get({ url: `/${SYS_BASE_URL}/notify-message/page`, params })
@@ -41,12 +52,3 @@ export const updateAllNotifyMessageRead = async () => {
   return await request.put({ url: `/${SYS_BASE_URL}/notify-message/update-all-read` })
 }
 
-// 获取当前用户的最新站内信列表
-export const getUnreadNotifyMessageList = async () => {
-  return await request.get({ url: `/${SYS_BASE_URL}/notify-message/get-unread-list` })
-}
-
-// 获得当前用户的未读站内信数量
-export const getUnreadNotifyMessageCount = async () => {
-  return await request.get({ url: `/${SYS_BASE_URL}/notify-message/get-unread-count` })
-}

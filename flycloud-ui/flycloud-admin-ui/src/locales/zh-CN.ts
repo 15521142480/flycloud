@@ -398,7 +398,7 @@ export default {
     sunday: '周日'
   },
   workplace: {
-    welcome: '你好',
+    welcome: '欢迎回来',
     happyDay: '祝你开心每一天!',
     toady: '今日晴',
     notice: '通知公告',

@@ -370,7 +370,7 @@ export default {
     sunday: 'Sunday'
   },
   workplace: {
-    welcome: 'Hello',
+    welcome: 'Welcome back, ',
     happyDay: 'Wish you happy every day!',
     toady: "It's sunny today",
     notice: 'Announcement',

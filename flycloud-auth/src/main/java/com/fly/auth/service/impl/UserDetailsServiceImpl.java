@@ -19,6 +19,7 @@ import com.fly.system.api.system.domain.SysUser;
 
 import jakarta.annotation.Resource;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 用户详情实现类
@@ -114,13 +115,13 @@ public class UserDetailsServiceImpl implements FlyUserDetailsService {
 				user.getId()
 				, userInfo.getSysUser().getUserType()
 				, userInfo.getLoginType()
-				, user.getDeptId().toString()
-				, user.getTelephone()
-				, user.getAvatar()
-				, userInfo.getRoleIds()
+				, user.getDeptId() != null ? user.getDeptId().toString() : ""
+				, user.getTelephone() != null ? user.getTelephone() : ""
+				, user.getAvatar() != null ? user.getAvatar() : ""
+				, userInfo.getRoleIds() != null ? userInfo.getRoleIds() : ""
 				, userInfo.getUserName()
 				, user.getPassword()
-				, StatusEnum.ENABLE.getStatus() == user.getStatus(),
+				, Objects.equals(StatusEnum.ENABLE.getStatus(), user.getStatus()),
 				true
 				, true
 				, true
