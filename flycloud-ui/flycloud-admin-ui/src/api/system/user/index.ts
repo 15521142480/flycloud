@@ -22,6 +22,7 @@ export interface UserVO {
   loginIp: string
   status: number
   remark: string
+  roleIds: string
   loginDate: Date
   createTime: Date
 }

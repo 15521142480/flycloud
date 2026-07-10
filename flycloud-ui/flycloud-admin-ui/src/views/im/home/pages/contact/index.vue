@@ -89,7 +89,6 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import Icon from '@/components/Icon/src/Icon.vue'
 import { useMessage } from '@/hooks/web/useMessage'
-import { useRouter } from 'vue-router'
 
 import ResizableAside from '../../components/ResizableAside.vue'
 import UserInfo from '../../components/user/UserInfo.vue'
@@ -105,14 +104,15 @@ import { getFriendDisplayName, getGroupDisplayName, isGroupQuit } from '../../..
 import type { FriendLite, FriendRequest, Group, GroupLite, User } from '../../types'
 import { ImConversationType } from '../../../utils/constants'
 import { StorageKeys } from '../../../utils/db'
+import { useImNavigation } from '../../composables/useImNavigation'
 
 defineOptions({ name: 'ImContactPage' })
 
-const router = useRouter()
 const conversationStore = useConversationStore()
 const friendStore = useFriendStore()
 const groupStore = useGroupStore()
 const message = useMessage()
+const imNavigation = useImNavigation()
 
 /** 用 type 判别选中是好友 / 群聊 / 好友申请 */
 type Selection =
@@ -252,7 +252,7 @@ function handleChatPeer(peerUserId: string) {
     friend?.avatar || '',
     { silent: !!friend?.silent }
   )
-  router.push({ name: 'ImHomeConversation' })
+  imNavigation.goConversation()
 }
 
 /** 进入与该好友的私聊会话 */
@@ -267,7 +267,7 @@ function handleChatFriend(friend: FriendLite) {
     friend.avatar || '',
     { silent: !!entry?.silent }
   )
-  router.push({ name: 'ImHomeConversation' })
+  imNavigation.goConversation()
 }
 
 /** 进入该群的群聊会话 */
@@ -280,7 +280,7 @@ function handleChatGroup(group: GroupLite) {
     group.showImage || group.showImageThumb || '',
     { silent: !!entry?.silent }
   )
-  router.push({ name: 'ImHomeConversation' })
+  imNavigation.goConversation()
 }
 
 /** 删除好友：二次确认 → store 落库 → 清空当前选中 */

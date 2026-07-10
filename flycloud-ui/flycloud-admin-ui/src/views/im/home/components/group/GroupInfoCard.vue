@@ -20,7 +20,6 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import GroupInfo from './GroupInfo.vue'
@@ -30,6 +29,7 @@ import { useGroupStore } from '../../store/groupStore'
 import { applyJoinGroup } from '@/api/im/group/request'
 import { ImConversationType, ImGroupAddSource } from '../../../utils/constants'
 import { getGroupDisplayName } from '../../../utils/user'
+import { useImNavigation } from '../../composables/useImNavigation'
 import type { GroupLite } from '../../types'
 
 defineOptions({ name: 'ImGroupInfoCard' })
@@ -37,7 +37,7 @@ defineOptions({ name: 'ImGroupInfoCard' })
 const uiStore = useImUiStore()
 const conversationStore = useConversationStore()
 const groupStore = useGroupStore()
-const router = useRouter()
+const imNavigation = useImNavigation()
 
 const card = computed(() => uiStore.groupInfoCard)
 
@@ -70,12 +70,8 @@ function handleChat(group: GroupLite) {
     { silent: !!cached?.silent }
   )
 
-  // 如果不在会话页，先跳过去；菜单内嵌版保持在内嵌路由，避免被带回全屏版
-  const currentRouteName = String(router.currentRoute.value.name || '')
-  const conversationRouteNames = ['ImHomeConversation', 'ImWorkbenchConversation']
-  if (!conversationRouteNames.includes(currentRouteName)) {
-    router.push({ name: 'ImHomeConversation' })
-  }
+  // 内嵌模式只切当前 IM 页面，全屏模式沿用路由跳转。
+  imNavigation.goConversation()
   handleClose()
 }
 

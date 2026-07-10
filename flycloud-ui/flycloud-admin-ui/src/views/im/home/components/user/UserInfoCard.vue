@@ -29,7 +29,6 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
 
 import { getCurrentUserId } from '@/utils/auth'
 import { useImUiStore } from '../../store/uiStore'
@@ -37,6 +36,7 @@ import { useConversationStore } from '../../store/conversationStore'
 import { useFriendStore } from '../../store/friendStore'
 import { getFriendDisplayName } from '../../../utils/user'
 import { ImConversationType } from '../../../utils/constants'
+import { useImNavigation } from '../../composables/useImNavigation'
 import UserInfo, { type UserInfoRelation } from './UserInfo.vue'
 
 defineOptions({ name: 'ImUserInfoCard' })
@@ -44,7 +44,7 @@ defineOptions({ name: 'ImUserInfoCard' })
 const uiStore = useImUiStore()
 const conversationStore = useConversationStore()
 const friendStore = useFriendStore()
-const router = useRouter()
+const imNavigation = useImNavigation()
 
 const card = computed(() => uiStore.userInfoCard)
 const user = computed(() => card.value.user)
@@ -109,12 +109,8 @@ function handleSendMessage() {
     user.value.avatar || '',
     { silent: !!friend?.silent }
   )
-  // 跳转会话页；菜单内嵌版停留在内嵌路由，避免发消息时被带回全屏版
-  const currentRouteName = String(router.currentRoute.value.name || '')
-  const conversationRouteNames = ['ImHomeConversation', 'ImWorkbenchConversation']
-  if (!conversationRouteNames.includes(currentRouteName)) {
-    router.push({ name: 'ImHomeConversation' })
-  }
+  // 内嵌模式只切当前 IM 页面，全屏模式沿用路由跳转。
+  imNavigation.goConversation()
   uiStore.closeUserInfoCard()
 }
 </script>

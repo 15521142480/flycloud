@@ -50,6 +50,7 @@ import { useRtcStore } from './store/rtcStore'
 import { useMessagePuller } from './composables/useMessagePuller'
 import { useMessageSender } from './composables/useMessageSender'
 import { useVoicePlayer } from './composables/useVoicePlayer'
+import { provideImNavigation } from './composables/useImNavigation'
 import { ImConversationType } from '../utils/constants'
 import { initDb, stopRequests, StorageKeys } from '../utils/db'
 import type { Conversation } from './types'
@@ -75,6 +76,10 @@ const props = withDefaults(
 )
 
 const route = useRoute()
+// 菜单内嵌版由工作台页面提供导航上下文，保证插槽内页面与工具栏共用同一状态。
+if (!props.embedded) {
+  provideImNavigation({ embedded: false })
+}
 const appStore = useAppStore()
 const conversationStore = useConversationStore()
 const messageStore = useMessageStore()
