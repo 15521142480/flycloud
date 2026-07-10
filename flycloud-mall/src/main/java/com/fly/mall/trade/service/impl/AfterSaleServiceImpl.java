@@ -295,15 +295,8 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            AfterSale entity = new AfterSale();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     private TradeOrderItemVo validateOrderItemApplicable(Long userId, AfterSaleBo bo) {

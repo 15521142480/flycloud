@@ -252,15 +252,9 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
             if (Objects.equals(oldCoupon.getStatus(), STATUS_USED)) {
                 throw new ServiceException("已使用优惠券不能删除");
             }
-            Coupon entity = new Coupon();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
             couponTemplateService.updateCouponTemplateTakeCount(oldCoupon.getTemplateId(), -1);
         }
-        return true;
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

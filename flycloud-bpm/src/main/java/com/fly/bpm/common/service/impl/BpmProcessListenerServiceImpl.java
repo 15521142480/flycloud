@@ -135,15 +135,8 @@ public class BpmProcessListenerServiceImpl extends BaseServiceImpl<BpmProcessLis
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        for (Long id : ids) {
-            BpmProcessListener entity = new BpmProcessListener();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
 }

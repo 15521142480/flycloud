@@ -115,17 +115,7 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl<SysRoleMenuMapper, S
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-
-        // todo 该表没有删除修改时间等字段
-//        for (Long id : ids) {
-//            SysRoleMenu entity = new
-//        entity.setId(id);
-//            entity.setIsDeleted(true);
-//            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-//            entity.setUpdateTime(LocalDateTime.now());
-//            baseMapper.updateById(entity);
-//        }
-        return true;
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
 }

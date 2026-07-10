@@ -186,10 +186,9 @@ public class BpmFormServiceImpl extends BaseServiceImpl<BpmFormMapper, BpmForm> 
         // 校验存在
         for (Long id : ids) {
             this.validateFormExists(id);
-            baseMapper.deleteByIds(ids);
         }
 
-        return true;
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
 }

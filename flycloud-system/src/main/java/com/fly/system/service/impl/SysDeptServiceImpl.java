@@ -164,15 +164,8 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptMapper, SysDept> 
         if(isValid){
             //TODO 做一些业务上的校验,判断是否需要校验
         }
-        for (Long id : ids) {
-            SysDept entity = new SysDept();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

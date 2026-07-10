@@ -300,12 +300,7 @@ public class ProductSkuServiceImpl extends BaseServiceImpl<ProductSkuMapper, Pro
     private void softDeleteBySpuId(Long spuId) {
         List<ProductSkuVo> oldSkus = queryListBySpuId(spuId);
         for (ProductSkuVo oldSku : oldSkus) {
-            ProductSku entity = new ProductSku();
-            entity.setId(oldSku.getId());
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
+            baseMapper.deleteById(oldSku.getId());
         }
     }
 

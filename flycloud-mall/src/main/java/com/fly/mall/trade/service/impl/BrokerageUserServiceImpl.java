@@ -86,15 +86,8 @@ public class BrokerageUserServiceImpl extends BaseServiceImpl<BrokerageUserMappe
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            BrokerageUser entity = new BrokerageUser();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

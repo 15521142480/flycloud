@@ -156,11 +156,7 @@ public class DiyTemplateServiceImpl extends BaseServiceImpl<DiyTemplateMapper, D
         if (Boolean.TRUE.equals(entity.getUsed())) {
             throw new ServiceException("正在使用的装修模板不能删除");
         }
-        DiyTemplate update = new DiyTemplate();
-        update.setId(id);
-        update.setIsDeleted(true);
-        fillUpdateInfo(update);
-        boolean success = baseMapper.updateById(update) > 0;
+        boolean success = baseMapper.deleteById(id) > 0;
         for (DiyPageVo page : diyPageService.queryListByTemplateId(id)) {
             diyPageService.deleteDiyPage(page.getId());
         }

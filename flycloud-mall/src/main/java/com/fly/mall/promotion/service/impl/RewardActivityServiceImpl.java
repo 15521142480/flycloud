@@ -194,11 +194,7 @@ public class RewardActivityServiceImpl extends BaseServiceImpl<RewardActivityMap
         if (Objects.equals(dbActivity.getStatus(), StatusEnum.ENABLE.getStatus())) {
             throw new ServiceException("请先关闭满减送活动，再删除");
         }
-        RewardActivity entity = new RewardActivity();
-        entity.setId(id);
-        entity.setIsDeleted(true);
-        fillUpdateFields(entity);
-        return baseMapper.updateById(entity) > 0;
+        return baseMapper.deleteById(id) > 0;
     }
 
     /**

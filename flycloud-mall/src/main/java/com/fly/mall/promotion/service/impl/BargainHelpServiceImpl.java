@@ -86,15 +86,8 @@ public class BargainHelpServiceImpl extends BaseServiceImpl<BargainHelpMapper, B
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            BargainHelp entity = new BargainHelp();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

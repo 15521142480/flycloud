@@ -136,11 +136,7 @@ public class DiyPageServiceImpl extends BaseServiceImpl<DiyPageMapper, DiyPage> 
     @Override
     public Boolean deleteDiyPage(Long id) {
         validateExists(id);
-        DiyPage entity = new DiyPage();
-        entity.setId(id);
-        entity.setIsDeleted(true);
-        fillUpdateInfo(entity);
-        return baseMapper.updateById(entity) > 0;
+        return baseMapper.deleteById(id) > 0;
     }
 
     /**

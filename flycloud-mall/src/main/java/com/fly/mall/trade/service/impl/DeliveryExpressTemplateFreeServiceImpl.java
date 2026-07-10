@@ -86,15 +86,8 @@ public class DeliveryExpressTemplateFreeServiceImpl extends BaseServiceImpl<Deli
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            DeliveryExpressTemplateFree entity = new DeliveryExpressTemplateFree();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

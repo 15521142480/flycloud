@@ -91,12 +91,7 @@ public class MemberSignInConfigServiceImpl implements IMemberSignInConfigService
     @Override
     public Boolean deleteById(Long id) {
         validateExists(id);
-        MemberSignInConfig config = new MemberSignInConfig();
-        config.setId(id);
-        config.setIsDeleted(true);
-        config.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        config.setUpdateTime(LocalDateTime.now());
-        return signInConfigMapper.updateById(config) > 0;
+        return signInConfigMapper.deleteById(id) > 0;
     }
 
     private LambdaQueryWrapper<MemberSignInConfig> buildQueryWrapper(MemberSignInConfigBo bo) {

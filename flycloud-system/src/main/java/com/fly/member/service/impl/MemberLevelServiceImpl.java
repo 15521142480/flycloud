@@ -113,12 +113,7 @@ public class MemberLevelServiceImpl implements IMemberLevelService {
         if (memberUserService.countByLevelId(id) > 0) {
             throw new ServiceException("会员等级下存在用户，不能删除");
         }
-        MemberLevel level = new MemberLevel();
-        level.setId(id);
-        level.setIsDeleted(true);
-        level.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        level.setUpdateTime(LocalDateTime.now());
-        return memberLevelMapper.updateById(level) > 0;
+        return memberLevelMapper.deleteById(id) > 0;
     }
 
     @Override

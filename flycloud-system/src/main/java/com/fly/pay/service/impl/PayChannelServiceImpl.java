@@ -105,12 +105,7 @@ public class PayChannelServiceImpl implements IPayChannelService {
     @Override
     public Boolean deleteById(Long id) {
         validateExists(id);
-        PayChannel channel = new PayChannel();
-        channel.setId(id);
-        channel.setIsDeleted(true);
-        channel.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        channel.setUpdateTime(LocalDateTime.now());
-        return payChannelMapper.updateById(channel) > 0;
+        return payChannelMapper.deleteById(id) > 0;
     }
 
     @Override

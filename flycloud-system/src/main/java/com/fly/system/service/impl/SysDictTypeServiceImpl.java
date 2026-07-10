@@ -140,17 +140,8 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeMapper, S
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         // baseMapper.deleteByIds(ids) > 0
-        for (Long id : ids) {
-//            SysDictType entity = RequireUtils.requireById(baseMapper::selectById, id, "字典类型不存在");
-            SysDictType entity = new SysDictType();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setDeletedTime(LocalDateTime.now());
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
 }

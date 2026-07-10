@@ -120,10 +120,7 @@ public class ProductFavoriteServiceImpl extends BaseServiceImpl<ProductFavoriteM
         if (favorite == null || Boolean.TRUE.equals(favorite.getIsDeleted())) {
             throw new ServiceException("商品收藏不存在");
         }
-        favorite.setIsDeleted(true);
-        favorite.setUpdateBy(String.valueOf(userId));
-        favorite.setUpdateTime(LocalDateTime.now());
-        return baseMapper.updateById(favorite) > 0;
+        return baseMapper.deleteById(favorite.getId()) > 0;
     }
 
     /**
@@ -173,15 +170,8 @@ public class ProductFavoriteServiceImpl extends BaseServiceImpl<ProductFavoriteM
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            ProductFavorite entity = new ProductFavorite();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

@@ -51,6 +51,7 @@
               :height="todoDataList.length === 1 ? undefined : 98"
               :show-header="false"
               class="todo-table"
+              empty-text="暂无代办数据"
             >
               <el-table-column prop="username" min-width="100" show-overflow-tooltip />
               <el-table-column prop="title" min-width="110" show-overflow-tooltip />
@@ -191,8 +192,8 @@ let totalSate = reactive<WorkplaceTotal>({
 // 初始化数据
 const getCount = async () => {
   const data = {
-    project: 40,
-    access: 2340,
+    project: 87,
+    access: 5270,
     todo: 10
   }
   await getTaskTodoList()

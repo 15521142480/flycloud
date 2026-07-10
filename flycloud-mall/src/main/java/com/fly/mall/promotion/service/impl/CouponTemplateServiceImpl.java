@@ -219,14 +219,8 @@ public class CouponTemplateServiceImpl extends BaseServiceImpl<CouponTemplateMap
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         for (Long id : ids) {
             validateCouponTemplateExists(id);
-            CouponTemplate entity = new CouponTemplate();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
         }
-        return true;
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

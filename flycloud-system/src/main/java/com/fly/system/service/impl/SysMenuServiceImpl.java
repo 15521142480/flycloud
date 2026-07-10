@@ -286,25 +286,17 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
 
+        boolean success = true;
         for (Long id : ids) {
 
             // 删除包含当前节点和其下所有子节点
             List<Long> resultIds = new ArrayList<>();
             this.handlerMenuIdById(id, resultIds);
             log.info("删除菜单ids为：{}", resultIds);
-
-//            baseMapper.deleteByIds(resultIds);
-            for (Long deleteId : resultIds) {
-                SysMenu entity = new SysMenu();
-                entity.setId(deleteId);
-                entity.setIsDeleted(true);
-                entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-                entity.setUpdateTime(LocalDateTime.now());
-                baseMapper.updateById(entity);
-            }
+            success = baseMapper.deleteByIds(resultIds) > 0 && success;
         }
 
-        return true;
+        return success;
     }
 
 

@@ -84,12 +84,7 @@ public class AddressServiceImpl extends BaseServiceImpl<MemberAddressMapper, Mem
     @Override
     public Boolean deleteAddress(Long userId, Long id) {
         validateUserAddress(userId, id);
-        MemberAddress address = new MemberAddress();
-        address.setId(id);
-        address.setIsDeleted(true);
-        address.setUpdateBy(String.valueOf(userId));
-        address.setUpdateTime(LocalDateTime.now());
-        return baseMapper.updateById(address) > 0;
+        return baseMapper.deleteById(id) > 0;
     }
 
     /**
@@ -187,15 +182,8 @@ public class AddressServiceImpl extends BaseServiceImpl<MemberAddressMapper, Mem
         if (CollectionUtils.isEmpty(ids)) {
             return true;
         }
-        for (Long id : ids) {
-            MemberAddress address = new MemberAddress();
-            address.setId(id);
-            address.setIsDeleted(true);
-            address.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            address.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(address);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

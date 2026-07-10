@@ -163,21 +163,10 @@ public class SysUserRoleServiceImpl extends BaseServiceImpl<SysUserRoleMapper, S
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-
-//        if(isValid){
-//            //TODO 做一些业务上的校验,判断是否需要校验
-//        }
-
-        // todo 该表没有删除修改时间等字段
-//        for (Long id : ids) {
-//            SysUserRole entity = new
-        // entity.setId(id);
-//            entity.setIsDeleted(true);
-//            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-//            entity.setUpdateTime(LocalDateTime.now());
-//            baseMapper.updateById(entity);
-//        }
-        return true;
+        if(isValid){
+            //TODO 做一些业务上的校验,判断是否需要校验
+        }
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
 }

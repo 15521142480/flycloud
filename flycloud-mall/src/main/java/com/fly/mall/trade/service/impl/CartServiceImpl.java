@@ -228,15 +228,11 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
         if (CollectionUtils.isEmpty(ids)) {
             return true;
         }
-        Cart entity = new Cart();
-        entity.setIsDeleted(true);
-        entity.setUpdateBy(String.valueOf(userId));
-        entity.setUpdateTime(LocalDateTime.now());
         LambdaQueryWrapper<Cart> lqw = Wrappers.lambdaQuery();
         lqw.eq(Cart::getUserId, userId);
         lqw.eq(Cart::getIsDeleted, false);
         lqw.in(Cart::getId, ids);
-        return baseMapper.update(entity, lqw) >= 0;
+        return baseMapper.delete(lqw) >= 0;
     }
 
     /**
@@ -277,15 +273,8 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            Cart entity = new Cart();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

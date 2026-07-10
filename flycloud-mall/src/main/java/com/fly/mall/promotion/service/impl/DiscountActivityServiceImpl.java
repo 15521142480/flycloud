@@ -155,13 +155,9 @@ public class DiscountActivityServiceImpl extends BaseServiceImpl<DiscountActivit
         if (StatusEnum.isEnable(activity.getStatus())) {
             throw new ServiceException("未关闭的限时折扣活动不能删除");
         }
-        DiscountActivity updateActivity = new DiscountActivity();
-        updateActivity.setId(id);
-        updateActivity.setIsDeleted(true);
-        fillUpdateFields(updateActivity);
-        baseMapper.updateById(updateActivity);
+        boolean success = baseMapper.deleteById(id) > 0;
         discountProductMapper.deleteByActivityId(id);
-        return true;
+        return success;
     }
 
     /**

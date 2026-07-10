@@ -144,12 +144,7 @@ public class PayWalletRechargePackageServiceImpl implements IPayWalletRechargePa
     @Override
     public Boolean deleteById(Long id) {
         validateExists(id);
-        PayWalletRechargePackage rechargePackage = new PayWalletRechargePackage();
-        rechargePackage.setId(id);
-        rechargePackage.setIsDeleted(true);
-        rechargePackage.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        rechargePackage.setUpdateTime(LocalDateTime.now());
-        return walletRechargePackageMapper.updateById(rechargePackage) > 0;
+        return walletRechargePackageMapper.deleteById(id) > 0;
     }
 
     /**

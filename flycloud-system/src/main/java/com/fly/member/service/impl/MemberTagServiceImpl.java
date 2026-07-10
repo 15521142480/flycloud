@@ -97,12 +97,7 @@ public class MemberTagServiceImpl implements IMemberTagService {
         if (memberUserService.countByTagId(id) > 0) {
             throw new ServiceException("会员标签下存在用户，不能删除");
         }
-        MemberTag tag = new MemberTag();
-        tag.setId(id);
-        tag.setIsDeleted(true);
-        tag.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        tag.setUpdateTime(LocalDateTime.now());
-        return memberTagMapper.updateById(tag) > 0;
+        return memberTagMapper.deleteById(id) > 0;
     }
 
     private LambdaQueryWrapper<MemberTag> buildQueryWrapper(MemberTagBo bo) {

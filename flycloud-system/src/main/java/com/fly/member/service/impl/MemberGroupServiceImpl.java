@@ -95,12 +95,7 @@ public class MemberGroupServiceImpl implements IMemberGroupService {
         if (memberUserService.countByGroupId(id) > 0) {
             throw new ServiceException("会员分组下存在用户，不能删除");
         }
-        MemberGroup group = new MemberGroup();
-        group.setId(id);
-        group.setIsDeleted(true);
-        group.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        group.setUpdateTime(LocalDateTime.now());
-        return memberGroupMapper.updateById(group) > 0;
+        return memberGroupMapper.deleteById(id) > 0;
     }
 
     private LambdaQueryWrapper<MemberGroup> buildQueryWrapper(MemberGroupBo bo) {

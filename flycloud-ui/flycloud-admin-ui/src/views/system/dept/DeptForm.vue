@@ -134,6 +134,20 @@ const formRef = ref() // 表单 Ref
 const deptTree = ref() // 树形结构
 const userList = ref<UserApi.UserVO[]>([]) // 用户列表
 
+/** 将后端返回的部门 ID 兼容成字符串，避免 0 和 '0' 在树选择器中无法匹配 */
+const normalizeDeptId = (value: unknown) => {
+  return value === null || value === undefined ? value : String(value)
+}
+
+/** 统一部门树里的 id / parentId 类型，保持和前端表单字符串 ID 约定一致 */
+const normalizeDeptListIds = (list: DeptApi.DeptVO[]) => {
+  return list.map((item) => ({
+    ...item,
+    id: normalizeDeptId(item.id),
+    parentId: normalizeDeptId(item.parentId)
+  }))
+}
+
 /** 打开弹窗 */
 const open = async (type: string, id?: string) => {
   dialogVisible.value = true
@@ -144,7 +158,12 @@ const open = async (type: string, id?: string) => {
   if (id) {
     formLoading.value = true
     try {
-      formData.value = await DeptApi.getDept(id)
+      const data = await DeptApi.getDept(id)
+      formData.value = {
+        ...data,
+        id: normalizeDeptId(data.id),
+        parentId: normalizeDeptId(data.parentId)
+      }
     } finally {
       formLoading.value = false
     }
@@ -201,7 +220,7 @@ const resetForm = () => {
 /** 获得部门树 */
 const getTree = async () => {
   deptTree.value = []
-  const data = await DeptApi.getSimpleDeptList()
+  const data = normalizeDeptListIds(await DeptApi.getSimpleDeptList())
   let dept: Tree = { id: '0', name: t('auto.views.system.dept.DeptForm.kc01998c0'), children: [] }
   dept.children = handleTree(data)
   deptTree.value.push(dept)

@@ -671,12 +671,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
                 && !Objects.equals(order.getStatus(), ORDER_STATUS_COMPLETED)) {
             throw new ServiceException("只有已取消或已完成订单可以删除");
         }
-        TradeOrder entity = new TradeOrder();
-        entity.setId(id);
-        entity.setIsDeleted(true);
-        entity.setUpdateBy(String.valueOf(userId));
-        entity.setUpdateTime(LocalDateTime.now());
-        return baseMapper.updateById(entity) > 0;
+        return baseMapper.deleteById(id) > 0;
     }
 
     /**
@@ -940,15 +935,8 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        for (Long id : ids) {
-            TradeOrder entity = new TradeOrder();
-            entity.setId(id);
-            entity.setIsDeleted(true);
-            entity.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-            entity.setUpdateTime(LocalDateTime.now());
-            baseMapper.updateById(entity);
-        }
-        return true;
+        
+        return baseMapper.deleteByIds(ids) > 0;
     }
 
     /**

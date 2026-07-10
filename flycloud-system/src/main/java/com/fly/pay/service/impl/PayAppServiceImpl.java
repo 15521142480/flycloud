@@ -100,12 +100,7 @@ public class PayAppServiceImpl implements IPayAppService {
     @Override
     public Boolean deleteById(Long id) {
         validateExists(id);
-        PayApp app = new PayApp();
-        app.setId(id);
-        app.setIsDeleted(true);
-        app.setUpdateBy(String.valueOf(UserUtils.getCurUserId()));
-        app.setUpdateTime(LocalDateTime.now());
-        return payAppMapper.updateById(app) > 0;
+        return payAppMapper.deleteById(id) > 0;
     }
 
     private LambdaQueryWrapper<PayApp> buildQueryWrapper(PayAppBo bo) {
