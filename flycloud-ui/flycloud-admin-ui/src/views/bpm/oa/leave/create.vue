@@ -1,86 +1,110 @@
 <template>
-  <el-form
-    ref="formRef"
-    v-loading="formLoading"
-    :model="formData"
-    :rules="formRules"
-    label-width="80px"
-  >
-    <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1509ea5a')" prop="type">
-      <el-select
-        v-model="formData.type"
-        clearable
-        :placeholder="t('auto.views.bpm.oa.leave.create.k770d5b5d')"
+  <el-card v-loading="formLoading" class="leave-create-card" shadow="never">
+    <template #header>
+      <div style=" text-align: center;">
+        <span class="leave-create-title">请假申请</span>
+      </div>
+    </template>
+
+    <div class="leave-create-body">
+      <el-form
+        ref="formRef"
+        class="leave-create-form"
+        :model="formData"
+        :rules="formRules"
+        label-width="90px"
       >
-        <el-option
-          v-for="dict in getIntDictOptions(DICT_TYPE.BPM_OA_LEAVE_TYPE)"
-          :key="dict.value"
-          :label="dict.label"
-          :value="dict.value"
-        />
-      </el-select>
-    </el-form-item>
-    <el-form-item :label="t('auto.views.bpm.oa.leave.create.ke8868af6')" prop="startTime">
-      <el-date-picker
-        v-model="formData.startTime"
-        clearable
-        :placeholder="t('auto.views.bpm.oa.leave.create.k96870563')"
-        type="datetime"
-        value-format="YYYY-MM-DD HH:mm:ss"
-      />
-    </el-form-item>
-    <el-form-item :label="t('auto.views.bpm.oa.leave.create.ka0bb9f49')" prop="endTime">
-      <el-date-picker
-        v-model="formData.endTime"
-        clearable
-        :placeholder="t('auto.views.bpm.oa.leave.create.k53579ed9')"
-        type="datetime"
-        value-format="YYYY-MM-DD HH:mm:ss"
-      />
-    </el-form-item>
-    <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1ff9c3d0')" prop="reason">
-      <el-input
-        v-model="formData.reason"
-        :placeholder="t('auto.views.bpm.oa.leave.create.kc04d049a')"
-        type="textarea"
-      />
-    </el-form-item>
-    <el-col v-if="startUserSelectTasks && startUserSelectTasks.length > 0">
-      <el-card class="mb-10px">
-        <template #header>{{ t('auto.views.bpm.oa.leave.create.k9f4b1131') }}</template>
-        <el-form
-          :model="startUserSelectAssignees"
-          :rules="startUserSelectAssigneesFormRules"
-          ref="startUserSelectAssigneesFormRef"
-        >
-          <el-form-item
-            v-for="userTask in startUserSelectTasks"
-            :key="userTask.id"
-            :label="`任务【${userTask.name}】`"
-            :prop="userTask.id"
+        <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1509ea5a')" prop="type">
+          <el-select
+            v-model="formData.type"
+            class="leave-form-control"
+            clearable
+            :placeholder="t('auto.views.bpm.oa.leave.create.k770d5b5d')"
           >
-            <el-select
-              v-model="startUserSelectAssignees[userTask.id]"
-              multiple
-              :placeholder="t('auto.views.bpm.processInstance.create.index_old.k263670a1')"
+            <el-option
+              v-for="dict in getIntDictOptions(DICT_TYPE.BPM_OA_LEAVE_TYPE)"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="t('auto.views.bpm.oa.leave.create.ke8868af6')" prop="startTime">
+          <el-date-picker
+            v-model="formData.startTime"
+            class="leave-form-control"
+            clearable
+            :placeholder="t('auto.views.bpm.oa.leave.create.k96870563')"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item :label="t('auto.views.bpm.oa.leave.create.ka0bb9f49')" prop="endTime">
+          <el-date-picker
+            v-model="formData.endTime"
+            class="leave-form-control"
+            clearable
+            :placeholder="t('auto.views.bpm.oa.leave.create.k53579ed9')"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item :label="t('auto.views.bpm.oa.leave.create.k1ff9c3d0')" prop="reason">
+          <el-input
+            v-model="formData.reason"
+            class="leave-form-control"
+            :placeholder="t('auto.views.bpm.oa.leave.create.kc04d049a')"
+            :rows="5"
+            type="textarea"
+          />
+        </el-form-item>
+
+        <div v-if="startUserSelectTasks && startUserSelectTasks.length > 0" class="approver-card">
+          <el-card shadow="never">
+            <template #header>
+              <div style=" text-align: center;">
+                {{ t('auto.views.bpm.oa.leave.create.k9f4b1131') }}
+              </div>
+            </template>
+            <el-form
+              ref="startUserSelectAssigneesFormRef"
+              :model="startUserSelectAssignees"
+              :rules="startUserSelectAssigneesFormRules"
+              label-width="110px"
             >
-              <el-option
-                v-for="user in userList"
-                :key="user.id"
-                :label="user.name"
-                :value="user.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-form>
-      </el-card>
-    </el-col>
-    <el-form-item>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">{{
-        t('extra.k008b8fcb')
-      }}</el-button>
-    </el-form-item>
-  </el-form>
+              <el-form-item
+                v-for="userTask in startUserSelectTasks"
+                :key="userTask.id"
+                :label="`任务【${userTask.name}】`"
+                :prop="userTask.id"
+              >
+                <el-select
+                  v-model="startUserSelectAssignees[userTask.id]"
+                  class="leave-form-control"
+                  multiple
+                  :placeholder="t('auto.views.bpm.processInstance.create.index_old.k263670a1')"
+                >
+                  <el-option
+                    v-for="user in userList"
+                    :key="user.id"
+                    :label="user.name"
+                    :value="user.id"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </el-card>
+        </div>
+
+        <!--    提交    -->
+        <el-form-item class="leave-form-actions">
+          <el-button :disabled="formLoading" type="primary" @click="submitForm">
+            {{t('extra.k008b8fcb') }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-card>
 </template>
 <script lang="ts" setup>
 // @ts-nocheck
@@ -182,3 +206,52 @@ onMounted(async () => {
   // }
 })
 </script>
+
+<style lang="scss" scoped>
+.leave-create-card {
+  max-width: 920px;
+  margin: 24px auto;
+
+  :deep(.el-card__header) {
+    padding: 16px 24px;
+  }
+}
+
+.leave-create-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--el-text-color-primary);
+}
+
+.leave-create-body {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 4px;
+}
+
+.leave-create-form {
+  width: 620px;
+  max-width: 100%;
+}
+
+.leave-form-control {
+  width: 100%;
+}
+
+.approver-card {
+  margin: 20px 0 18px;
+
+  :deep(.el-card__body) {
+    padding-bottom: 2px;
+  }
+}
+
+.leave-form-actions {
+  margin-top: 26px;
+  margin-bottom: 0;
+
+  :deep(.el-form-item__content) {
+    justify-content: flex-end;
+  }
+}
+</style>

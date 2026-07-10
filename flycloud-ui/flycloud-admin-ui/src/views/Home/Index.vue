@@ -159,6 +159,39 @@
     </el-col>
   </el-row>
 
+  <el-row style="margin-top: 15px">
+    <el-col :span="24">
+      <el-card shadow="hover" class="project-info-card">
+        <div class="project-info">
+          <section class="project-info-section project-intro">
+            <h3>项目介绍</h3>
+            <p>飞翔云管理系统</p>
+            <p>Spring Cloud 微服务架构</p>
+            <p>前后端分离</p>
+          </section>
+
+          <section class="project-info-section project-stack">
+            <h3>技术栈</h3>
+            <p>Spring Boot 3</p>
+            <p>Spring Cloud</p>
+            <p>Vue 3 + Element Plus</p>
+          </section>
+
+          <section class="project-info-section project-repo">
+            <h3 style="margin-bottom: 8px;">开源地址</h3>
+            <p class="project-repo-link">
+              <Icon icon="akar-icons:github-fill" :size="20" />
+              <span>https://github.com/15521142480/flycloud</span>
+            </p>
+            <el-button type="primary" text bg @click="routerForward(9)" style="margin-top: 8px">
+              前往仓库 →
+            </el-button>
+          </section>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
+
 </template>
 <script lang="ts" setup>
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
@@ -239,6 +272,9 @@ const routerForward = async (optionType: number) => {
       break
     case 5:
       window.open('/#/im/home/conversation', '_blank')
+      break
+    case 9:
+      window.open('https://github.com/15521142480/flycloud', '_blank')
       break
   }
 }
@@ -413,7 +449,7 @@ getAllApi()
 }
 
 .project-card {
-  height: calc(100vh - 400px);
+  height: calc(100vh - 440px);
   display: flex;
   flex-direction: column;
 }
@@ -438,6 +474,75 @@ getAllApi()
   cursor: pointer;
 }
 
+.project-info-card :deep(.el-card__body) {
+  padding: 14px 30px 12px;
+}
+
+.project-info {
+  display: grid;
+  grid-template-columns: minmax(0, 33%) minmax(0, 33%) minmax(0, 34%);
+  min-height: 80px;
+}
+
+.project-info-section {
+  position: relative;
+  min-width: 0;
+  padding: 0 34px;
+}
+
+.project-info-section::before {
+  position: absolute;
+  top: 30%;
+  bottom: 30%;
+  left: 0;
+  width: 1px;
+  content: '';
+  background-color: var(--el-border-color-lighter);
+}
+
+.project-info-section h3 {
+  margin: 0 0 4px;
+  color: #303133;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.project-info-section p {
+  margin: 0;
+  overflow: hidden;
+  color: #606266;
+  font-size: 14px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-intro {
+  padding-left: 34px;
+}
+
+.project-repo {
+  padding-right: 20px;
+}
+
+.project-repo .el-button {
+  margin-top: 4px;
+  margin-left: 0;
+}
+
+.project-repo-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-repo-link span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 992px) {
   .home-overview {
     grid-template-columns: 1fr;
@@ -460,6 +565,19 @@ getAllApi()
   .welcome-stats {
     padding-left: 0;
     margin-top: 18px;
+  }
+
+  .project-info {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .project-info-section {
+    padding: 0;
+  }
+
+  .project-info-section + .project-info-section::before {
+    display: none;
   }
 }
 

@@ -336,7 +336,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '发起 OA 请假',
+          title: '请假申请',
           activeMenu: '/bpm/oa/leave'
         }
       },
@@ -348,7 +348,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           hidden: true,
           canTo: true,
-          title: '查看 OA 请假',
+          title: '请假详情',
           activeMenu: '/bpm/oa/leave'
         }
       },

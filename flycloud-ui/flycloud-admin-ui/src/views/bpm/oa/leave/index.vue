@@ -87,8 +87,9 @@
         align="center"
         :label="t('auto.views.bpm.oa.leave.index.k4d2ae683')"
         prop="id"
+        width="120"
       />
-      <el-table-column align="center" :label="t('common.status')" prop="status">
+      <el-table-column align="center" :label="t('common.status')" prop="status" width="100">
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_PROCESS_INSTANCE_STATUS" :value="scope.row.status" />
         </template>
@@ -111,6 +112,7 @@
         align="center"
         :label="t('auto.views.bpm.oa.leave.create.k1509ea5a')"
         prop="type"
+        width="80"
       >
         <template #default="scope">
           <dict-tag :type="DICT_TYPE.BPM_OA_LEAVE_TYPE" :value="scope.row.type" />
@@ -120,6 +122,7 @@
         align="center"
         :label="t('auto.views.bpm.oa.leave.create.k1ff9c3d0')"
         prop="reason"
+        min-width="100"
       />
       <el-table-column
         :formatter="dateFormatter"
@@ -128,7 +131,7 @@
         prop="createTime"
         width="180"
       />
-      <el-table-column align="center" :label="t('common.operation')" width="200">
+      <el-table-column align="center" :label="t('common.operation')" width="140" fixed="right">
         <template #default="scope">
           <el-button
             v-hasPermi="['bpm:oa:leave:detail']"
