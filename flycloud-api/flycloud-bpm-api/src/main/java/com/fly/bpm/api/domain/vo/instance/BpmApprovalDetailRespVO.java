@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.instance;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fly.bpm.api.domain.vo.process.BpmProcessDefinitionRespVO;
 import com.fly.bpm.api.domain.vo.task.BpmTaskRespVO;
@@ -70,6 +72,7 @@ public class BpmApprovalDetailRespVO implements Serializable {
 
         @Schema(description = "候选人用户 ID 列表", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1818")
         @JsonIgnore // 不返回，只是方便后续读取，赋值给 candidateUsers
+        @JsonLongId
         private List<Long> candidateUserIds;
 
         @Schema(description = "候选人用户列表")
@@ -86,6 +89,7 @@ public class BpmApprovalDetailRespVO implements Serializable {
 
         @Schema(description = "任务所属人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1818")
         @JsonIgnore // 不返回，只是方便后续读取，赋值给 ownerUser
+        @JsonLongId
         private Long owner;
 
         @Schema(description = "任务所属人", example = "1024")
@@ -93,6 +97,7 @@ public class BpmApprovalDetailRespVO implements Serializable {
 
         @Schema(description = "任务分配人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
         @JsonIgnore // 不返回，只是方便后续读取，赋值给 assigneeUser
+        @JsonLongId
         private Long assignee;
 
         @Schema(description = "任务分配人", example = "2048")

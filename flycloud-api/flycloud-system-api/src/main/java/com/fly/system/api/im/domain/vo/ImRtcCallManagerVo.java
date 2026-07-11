@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 public class ImRtcCallManagerVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "业务通话编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "uuid-xxx")
@@ -24,12 +27,14 @@ public class ImRtcCallManagerVo {
     private Integer mediaType; // 参见 ImRtcCallMediaTypeEnum 枚举类
 
     @Schema(description = "发起人用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long inviterUserId;
 
     @Schema(description = "发起人昵称", example = "张三")
     private String inviterNickname;
 
     @Schema(description = "群编号；私聊为空", example = "999")
+    @JsonLongId
     private Long groupId;
 
     @Schema(description = "群名称；私聊为空", example = "测试群")

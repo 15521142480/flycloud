@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,14 +18,17 @@ public class CouponVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long templateId;
 
     private String name;
 
     private Integer status;
 
+    @JsonLongId
     private Long userId;
 
     private Integer takeType;
@@ -36,6 +41,7 @@ public class CouponVo implements Serializable {
 
     private Integer productScope;
 
+    @JsonLongId
     private List<Long> productScopeValues;
 
     private Integer discountType;
@@ -46,6 +52,7 @@ public class CouponVo implements Serializable {
 
     private Integer discountLimitPrice;
 
+    @JsonLongId
     private Long useOrderId;
 
     private LocalDateTime useTime;

@@ -1,5 +1,7 @@
 package com.fly.system.api.member.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ public class MemberUserVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String mobile;
@@ -43,6 +46,7 @@ public class MemberUserVo implements Serializable {
 
     private LocalDateTime birthday;
 
+    @JsonLongId
     private Integer areaId;
 
     private String mark;
@@ -51,10 +55,12 @@ public class MemberUserVo implements Serializable {
 
     private String tagIds;
 
+    @JsonLongId
     private Long levelId;
 
     private Integer experience;
 
+    @JsonLongId
     private Long groupId;
 
     private String createBy;

@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.group;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,6 +20,7 @@ public abstract class GroupMemberListNotification extends BaseGroupNotification 
     /**
      * 受影响的成员用户编号列表
      */
+    @JsonLongId
     private List<Long> memberUserIds;
 
 }

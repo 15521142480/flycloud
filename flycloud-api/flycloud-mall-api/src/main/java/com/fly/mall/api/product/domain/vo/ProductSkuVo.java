@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.mall.api.product.domain.ProductSku;
 import lombok.Data;
 
@@ -17,8 +19,10 @@ public class ProductSkuVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long spuId;
 
     private List<ProductSku.Property> properties;

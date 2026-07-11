@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.expression;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -13,6 +15,7 @@ public class BpmProcessExpressionRespVO implements Serializable {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "3870")
     @ExcelProperty("编号")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "表达式名字", requiredMode = Schema.RequiredMode.REQUIRED, example = "李四")

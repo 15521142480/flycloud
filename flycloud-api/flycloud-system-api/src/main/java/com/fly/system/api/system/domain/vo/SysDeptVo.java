@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
 import com.fly.common.convert.ExcelDictConvert;
@@ -22,6 +24,7 @@ public class SysDeptVo implements Serializable {
 	 * 部门id
 	 */
 	@ExcelProperty(value = "部门id")
+	@JsonLongId
 	private Long id;
 
 	/**
@@ -40,6 +43,7 @@ public class SysDeptVo implements Serializable {
 	 * 父部门id
 	 */
 	@ExcelProperty(value = "父部门id")
+	@JsonLongId
 	private Long parentId;
 
 	/**
@@ -52,6 +56,7 @@ public class SysDeptVo implements Serializable {
 	 * 负责人
 	 */
 	@ExcelProperty(value = "负责人")
+	@JsonLongId
 	private Long leaderUserId;
 
 	/**

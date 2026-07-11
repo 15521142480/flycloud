@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -15,8 +17,10 @@ public class ProductPropertyValueVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long propertyId;
 
     private String name;

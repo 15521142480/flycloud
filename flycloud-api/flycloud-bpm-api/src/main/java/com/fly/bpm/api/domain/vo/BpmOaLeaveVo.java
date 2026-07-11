@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -27,12 +29,14 @@ public class BpmOaLeaveVo implements Serializable {
      * 请假表单主键
      */
     @ExcelProperty(value = "请假表单主键")
+    @JsonLongId
     private Long id;
 
     /**
      * 申请人的用户编号
      */
     @ExcelProperty(value = "申请人的用户编号")
+    @JsonLongId
     private Long userId;
 
     /**

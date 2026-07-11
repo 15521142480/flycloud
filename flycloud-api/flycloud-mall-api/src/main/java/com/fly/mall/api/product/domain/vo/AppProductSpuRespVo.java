@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,6 +21,7 @@ public class AppProductSpuRespVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "SPU 编号")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "商品名称")
@@ -28,6 +31,7 @@ public class AppProductSpuRespVo implements Serializable {
     private String introduction;
 
     @Schema(description = "分类编号")
+    @JsonLongId
     private Long categoryId;
 
     @Schema(description = "商品封面图")

@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.message;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -24,6 +26,7 @@ public class CardMessage {
     /**
      * 目标对象编号：PRIVATE 时 = 用户编号；GROUP 时 = 群编号
      */
+    @JsonLongId
     private Long targetId;
     /**
      * 显示名快照：PRIVATE 时 = 用户昵称；GROUP 时 = 群名

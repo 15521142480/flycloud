@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
@@ -26,6 +28,7 @@ public class SysDictDataVo implements Serializable {
      * 字典编码
      */
     @ExcelProperty(value = "字典编码")
+    @JsonLongId
     private Long id;
 
     /**

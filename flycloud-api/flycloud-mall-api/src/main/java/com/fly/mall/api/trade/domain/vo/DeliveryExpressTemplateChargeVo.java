@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
@@ -16,10 +18,13 @@ public class DeliveryExpressTemplateChargeVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long templateId;
 
+    @JsonLongId
     private List<Integer> areaIds;
 
     private Integer chargeMode;

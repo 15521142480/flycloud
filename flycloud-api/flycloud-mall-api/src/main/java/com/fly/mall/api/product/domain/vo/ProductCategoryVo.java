@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
@@ -18,9 +20,11 @@ public class ProductCategoryVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "分类编号")
+    @JsonLongId
     private Long id;
 
     @ExcelProperty(value = "父分类编号")
+    @JsonLongId
     private Long parentId;
 
     @ExcelProperty(value = "分类名称")

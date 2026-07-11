@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -21,6 +23,7 @@ public class AppTradeProductSettlementRespVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "SPU 商品编号")
+    @JsonLongId
     private Long spuId;
 
     @Schema(description = "SKU 价格信息数组")
@@ -39,6 +42,7 @@ public class AppTradeProductSettlementRespVo implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Schema(description = "商品 SKU 编号")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "优惠后价格，单位：分")
@@ -48,6 +52,7 @@ public class AppTradeProductSettlementRespVo implements Serializable {
         private Integer promotionType;
 
         @Schema(description = "营销编号")
+        @JsonLongId
         private Long promotionId;
 
         @Schema(description = "活动结束时间")
@@ -65,6 +70,7 @@ public class AppTradeProductSettlementRespVo implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Schema(description = "满减活动编号")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "条件类型")

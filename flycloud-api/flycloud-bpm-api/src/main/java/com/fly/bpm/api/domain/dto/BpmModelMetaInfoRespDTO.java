@@ -1,5 +1,6 @@
 package com.fly.bpm.api.domain.dto;
 
+import com.fly.common.annotation.JsonLongId;
 import lombok.Data;
 
 /**
@@ -29,6 +30,7 @@ public class BpmModelMetaInfoRespDTO {
      * 表单编号
      * 在表单类型为 {@link com.fly.common.enums.bpm.BpmModelFormTypeEnum#NORMAL} 时
      */
+    @JsonLongId
     private Long formId;
     /**
      * 自定义表单的提交路径，使用 Vue 的路由地址

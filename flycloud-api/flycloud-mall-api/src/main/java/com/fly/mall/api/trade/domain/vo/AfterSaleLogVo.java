@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -15,12 +17,15 @@ public class AfterSaleLogVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
     private Integer userType;
 
+    @JsonLongId
     private Long afterSaleId;
 
     private Integer beforeStatus;

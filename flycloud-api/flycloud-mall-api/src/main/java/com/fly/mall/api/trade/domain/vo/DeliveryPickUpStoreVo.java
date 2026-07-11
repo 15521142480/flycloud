@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
@@ -17,6 +19,7 @@ public class DeliveryPickUpStoreVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String name;
@@ -25,6 +28,7 @@ public class DeliveryPickUpStoreVo implements Serializable {
 
     private String phone;
 
+    @JsonLongId
     private Integer areaId;
 
     private String detailAddress;
@@ -39,6 +43,7 @@ public class DeliveryPickUpStoreVo implements Serializable {
 
     private Double longitude;
 
+    @JsonLongId
     private List<Long> verifyUserIds;
 
     private Integer status;

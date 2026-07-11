@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.domain.vo.ImGroupMessageVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -14,12 +16,14 @@ import java.util.List;
 public class ImGroupVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1003")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "群名称", example = "张三")
     private String name;
 
     @Schema(description = "群主用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "31460")
+    @JsonLongId
     private Long ownerUserId;
 
     @Schema(description = "群头像")

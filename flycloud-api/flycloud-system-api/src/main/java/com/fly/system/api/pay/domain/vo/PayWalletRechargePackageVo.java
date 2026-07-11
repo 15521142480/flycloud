@@ -1,5 +1,7 @@
 package com.fly.system.api.pay.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,6 +21,7 @@ public class PayWalletRechargePackageVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "套餐编号")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "套餐名称")

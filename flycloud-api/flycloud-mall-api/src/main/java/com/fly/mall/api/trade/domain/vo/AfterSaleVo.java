@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,7 @@ public class AfterSaleVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String no;
@@ -26,6 +29,7 @@ public class AfterSaleVo implements Serializable {
 
     private Integer type;
 
+    @JsonLongId
     private Long userId;
 
     private String applyReason;
@@ -34,16 +38,20 @@ public class AfterSaleVo implements Serializable {
 
     private List<String> applyPicUrls;
 
+    @JsonLongId
     private Long orderId;
 
     private String orderNo;
 
+    @JsonLongId
     private Long orderItemId;
 
+    @JsonLongId
     private Long spuId;
 
     private String spuName;
 
+    @JsonLongId
     private Long skuId;
 
     private List<Object> properties;
@@ -54,16 +62,19 @@ public class AfterSaleVo implements Serializable {
 
     private LocalDateTime auditTime;
 
+    @JsonLongId
     private Long auditUserId;
 
     private String auditReason;
 
     private Integer refundPrice;
 
+    @JsonLongId
     private Long payRefundId;
 
     private LocalDateTime refundTime;
 
+    @JsonLongId
     private Long logisticsId;
 
     private String logisticsNo;

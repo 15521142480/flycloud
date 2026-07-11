@@ -1,5 +1,7 @@
 package com.fly.system.api.pay.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,10 +18,13 @@ public class PayDemoOrderVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
+    @JsonLongId
     private Long spuId;
 
     private String spuName;
@@ -28,12 +33,14 @@ public class PayDemoOrderVo implements Serializable {
 
     private Boolean payStatus;
 
+    @JsonLongId
     private Long payOrderId;
 
     private LocalDateTime payTime;
 
     private String payChannelCode;
 
+    @JsonLongId
     private Long payRefundId;
 
     private Integer refundPrice;

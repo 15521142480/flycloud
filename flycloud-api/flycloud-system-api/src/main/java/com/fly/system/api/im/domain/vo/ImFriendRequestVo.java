@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -18,12 +20,15 @@ import java.time.LocalDateTime;
 public class ImFriendRequestVo {
 
     @Schema(description = "申请编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "发起方用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "100")
+    @JsonLongId
     private Long fromUserId;
 
     @Schema(description = "接收方用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "200")
+    @JsonLongId
     private Long toUserId;
 
     @Schema(description = "处理结果", requiredMode = Schema.RequiredMode.REQUIRED, example = "0")

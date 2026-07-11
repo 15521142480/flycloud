@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.process;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -41,6 +43,7 @@ public class BpmProcessDefinitionRespVO implements Serializable {
     private Integer formType;
 
     @Schema(description = "表单编号-在表单类型为 {@link BpmModelFormTypeEnum#CUSTOM} 时，必须非空", example = "1024")
+    @JsonLongId
     private Long formId;
 
     @Schema(description = "表单名字", example = "请假表单")

@@ -1,5 +1,7 @@
 package com.fly.system.api.report.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 public class GoViewProjectVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String name;

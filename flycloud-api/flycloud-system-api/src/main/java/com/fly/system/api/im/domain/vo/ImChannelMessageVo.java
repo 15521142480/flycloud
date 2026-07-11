@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -13,15 +15,18 @@ import java.util.List;
 public class ImChannelMessageVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "频道编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @JsonLongId
     private Long channelId;
 
     @Schema(description = "频道名称（关联查询填充）")
     private String channelName;
 
     @Schema(description = "素材编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long materialId;
 
     @Schema(description = "素材标题（关联查询填充）")
@@ -37,6 +42,7 @@ public class ImChannelMessageVo {
     private String content;
 
     @Schema(description = "接收人编号列表；为空表示全员")
+    @JsonLongId
     private List<Long> receiverUserIds;
 
     @Schema(description = "发送时间", requiredMode = Schema.RequiredMode.REQUIRED)

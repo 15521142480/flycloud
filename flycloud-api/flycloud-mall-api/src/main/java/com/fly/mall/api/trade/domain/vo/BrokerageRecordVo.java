@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -15,8 +17,10 @@ public class BrokerageRecordVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
     private String bizId;
@@ -39,6 +43,7 @@ public class BrokerageRecordVo implements Serializable {
 
     private Integer sourceUserLevel;
 
+    @JsonLongId
     private Long sourceUserId;
 
     private Boolean isDeleted;

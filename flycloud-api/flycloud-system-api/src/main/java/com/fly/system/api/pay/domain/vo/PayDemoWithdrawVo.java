@@ -1,5 +1,7 @@
 package com.fly.system.api.pay.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ public class PayDemoWithdrawVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String subject;
@@ -30,6 +33,7 @@ public class PayDemoWithdrawVo implements Serializable {
 
     private Integer status;
 
+    @JsonLongId
     private Long payTransferId;
 
     private String transferChannelCode;

@@ -1,5 +1,7 @@
 package com.fly.system.api.member.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,14 +18,17 @@ public class MemberAddressVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
     private String name;
 
     private String mobile;
 
+    @JsonLongId
     private Long areaId;
 
     private String detailAddress;

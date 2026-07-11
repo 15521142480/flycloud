@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,14 +21,19 @@ public class AppBargainRecordDetailRespVo implements Serializable {
     public static final int HELP_ACTION_FULL = 2;
     public static final int HELP_ACTION_SUCCESS = 3;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
+    @JsonLongId
     private Long spuId;
 
+    @JsonLongId
     private Long skuId;
 
+    @JsonLongId
     private Long activityId;
 
     private Integer bargainFirstPrice;
@@ -35,10 +42,12 @@ public class AppBargainRecordDetailRespVo implements Serializable {
 
     private Integer status;
 
+    @JsonLongId
     private Long orderId;
 
     private Boolean payStatus;
 
+    @JsonLongId
     private Long payOrderId;
 
     private Integer helpAction;

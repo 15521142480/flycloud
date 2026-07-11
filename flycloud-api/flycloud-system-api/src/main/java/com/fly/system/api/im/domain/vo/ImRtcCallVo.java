@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -33,15 +35,19 @@ public class ImRtcCallVo {
     private Integer endReason; // 参见 ImRtcCallEndReasonEnum 枚举类
 
     @Schema(description = "发起人编号")
+    @JsonLongId
     private Long inviterId;
 
     @Schema(description = "群编号；群通话才有")
+    @JsonLongId
     private Long groupId;
 
     @Schema(description = "被邀请人编号集合")
+    @JsonLongId
     private Set<Long> inviteeIds;
 
     @Schema(description = "已加入房间的成员编号集合")
+    @JsonLongId
     private Set<Long> joinedUserIds;
 
 }

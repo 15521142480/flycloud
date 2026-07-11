@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +22,7 @@ public class AppCombinationRecordDetailRespVo implements Serializable {
 
     private List<AppCombinationRecordRespVo> memberRecords;
 
+    @JsonLongId
     private Long orderId;
 
 }

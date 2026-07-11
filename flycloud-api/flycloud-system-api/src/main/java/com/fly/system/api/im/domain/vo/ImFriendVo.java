@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -18,9 +20,11 @@ import java.time.LocalDateTime;
 public class ImFriendVo {
 
     @Schema(description = "关系记录编号", example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "好友的用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "2048")
+    @JsonLongId
     private Long friendUserId;
 
     @Schema(description = "是否免打扰", example = "false")

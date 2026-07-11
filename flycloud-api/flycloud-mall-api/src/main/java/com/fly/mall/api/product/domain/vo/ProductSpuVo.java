@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
@@ -19,6 +21,7 @@ public class ProductSpuVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty(value = "SPU 编号")
+    @JsonLongId
     private Long id;
 
     @ExcelProperty(value = "商品名称")
@@ -33,9 +36,11 @@ public class ProductSpuVo implements Serializable {
     private String description;
 
     @ExcelProperty(value = "分类编号")
+    @JsonLongId
     private Long categoryId;
 
     @ExcelProperty(value = "品牌编号")
+    @JsonLongId
     private Long brandId;
 
     @ExcelProperty(value = "商品封面图")
@@ -64,6 +69,7 @@ public class ProductSpuVo implements Serializable {
 
     private List<Integer> deliveryTypes;
 
+    @JsonLongId
     private Long deliveryTemplateId;
 
     private Integer giveIntegral;

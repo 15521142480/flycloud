@@ -1,5 +1,7 @@
 package com.fly.mall.api.statistics.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,6 +17,7 @@ public class MemberAreaStatisticsRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Integer areaId;
 
     private String areaName;

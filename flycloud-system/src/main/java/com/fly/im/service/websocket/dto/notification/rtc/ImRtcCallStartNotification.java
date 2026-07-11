@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.domain.ImRtcCall;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import lombok.Data;
@@ -38,6 +40,7 @@ public class ImRtcCallStartNotification {
     /**
      * 发起人用户编号
      */
+    @JsonLongId
     private Long inviterUserId;
     /**
      * 发起人昵称：用于聊天 tip 文案，可空走前端 fallback

@@ -1,5 +1,7 @@
 package com.fly.test.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -25,12 +27,14 @@ public class SysUserTestVo implements Serializable {
      * 用户ID
      */
     @ExcelProperty(value = "用户ID")
+    @JsonLongId
     private Long userId;
 
     /**
      * 部门ID
      */
     @ExcelProperty(value = "部门ID")
+    @JsonLongId
     private Long deptId;
 
     /**

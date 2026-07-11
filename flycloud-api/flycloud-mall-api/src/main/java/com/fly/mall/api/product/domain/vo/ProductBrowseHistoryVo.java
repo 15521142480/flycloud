@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -15,10 +17,13 @@ public class ProductBrowseHistoryVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long spuId;
 
+    @JsonLongId
     private Long userId;
 
     private Boolean userDeleted;

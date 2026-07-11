@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.message;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -29,12 +31,14 @@ public class QuoteMessage {
     /**
      * 被引用消息编号
      */
+    @JsonLongId
     private Long messageId;
     /**
      * 被引用消息发送人编号
      * <p>
      * 关联 AdminUserDO 的 id 字段
      */
+    @JsonLongId
     private Long senderId;
     /**
      * 被引用消息类型

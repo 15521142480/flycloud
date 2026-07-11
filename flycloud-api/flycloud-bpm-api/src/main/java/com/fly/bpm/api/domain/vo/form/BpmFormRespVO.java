@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.form;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class BpmFormRespVO implements Serializable {
 
     @Schema(description = "表单编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "表单名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "fly")

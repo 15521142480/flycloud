@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.task;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fly.bpm.api.domain.vo.instance.BpmProcessInstanceRespVO;
 import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
@@ -40,6 +42,7 @@ public class BpmTaskRespVO implements Serializable {
 
     @Schema(description = "任务负责人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
     @JsonIgnore // 不返回，只是方便后续读取，赋值给 ownerUser
+    @JsonLongId
     private Long owner;
 
     /**
@@ -49,6 +52,7 @@ public class BpmTaskRespVO implements Serializable {
 
     @Schema(description = "任务分配人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
     @JsonIgnore // 不返回，只是方便后续读取，赋值给 assigneeUser
+    @JsonLongId
     private Long assignee;
     /**
      * 审核的用户信息
@@ -71,6 +75,7 @@ public class BpmTaskRespVO implements Serializable {
     private List<BpmTaskRespVO> children; // 由加签生成，包含多层子任务
 
     @Schema(description = "表单编号", example = "1024")
+    @JsonLongId
     private Long formId;
     @Schema(description = "表单名字", example = "请假表单")
     private String formName;

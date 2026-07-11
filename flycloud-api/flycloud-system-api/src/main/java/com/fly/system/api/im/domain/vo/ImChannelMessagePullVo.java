@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,12 +14,15 @@ import java.time.LocalDateTime;
 public class ImChannelMessagePullVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "9001")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "频道编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @JsonLongId
     private Long channelId;
 
     @Schema(description = "素材编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long materialId;
 
     @Schema(description = "消息类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "125")

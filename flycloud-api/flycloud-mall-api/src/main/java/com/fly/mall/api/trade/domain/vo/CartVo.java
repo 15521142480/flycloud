@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -15,12 +17,16 @@ public class CartVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
+    @JsonLongId
     private Long spuId;
 
+    @JsonLongId
     private Long skuId;
 
     private Integer count;

@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.mall.api.product.domain.vo.AppProductPropertyValueDetailRespVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -56,15 +58,18 @@ public class AppTradeOrderSettlementRespVo implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Schema(description = "品类编号")
+        @JsonLongId
         private Long categoryId;
 
         @Schema(description = "SPU 编号")
+        @JsonLongId
         private Long spuId;
 
         @Schema(description = "SPU 名称")
         private String spuName;
 
         @Schema(description = "SKU 编号")
+        @JsonLongId
         private Long skuId;
 
         @Schema(description = "价格，单位：分")
@@ -77,6 +82,7 @@ public class AppTradeOrderSettlementRespVo implements Serializable {
         private List<AppProductPropertyValueDetailRespVo> properties;
 
         @Schema(description = "购物车编号")
+        @JsonLongId
         private Long cartId;
 
         @Schema(description = "购买数量")
@@ -128,6 +134,7 @@ public class AppTradeOrderSettlementRespVo implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Schema(description = "编号")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "收件人名称")
@@ -137,6 +144,7 @@ public class AppTradeOrderSettlementRespVo implements Serializable {
         private String mobile;
 
         @Schema(description = "地区编号")
+        @JsonLongId
         private Long areaId;
 
         @Schema(description = "地区名称")
@@ -160,6 +168,7 @@ public class AppTradeOrderSettlementRespVo implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Schema(description = "优惠券编号")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "优惠券名称")

@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,6 +19,7 @@ public class AppSeckillActivityDetailRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String name;
@@ -27,6 +30,7 @@ public class AppSeckillActivityDetailRespVo implements Serializable {
 
     private LocalDateTime endTime;
 
+    @JsonLongId
     private Long spuId;
 
     private Integer totalLimitCount;
@@ -47,6 +51,7 @@ public class AppSeckillActivityDetailRespVo implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
+        @JsonLongId
         private Long skuId;
 
         private Integer seckillPrice;

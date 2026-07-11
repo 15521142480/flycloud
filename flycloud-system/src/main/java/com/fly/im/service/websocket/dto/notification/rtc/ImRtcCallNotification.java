@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.domain.ImRtcCall;
 import com.fly.system.api.im.enums.rtc.ImRtcParticipantStatusEnum;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -45,6 +47,7 @@ public class ImRtcCallNotification {
     /**
      * 群编号：群通话场景必填
      */
+    @JsonLongId
     private Long groupId;
 
     // ========== INVITE 专属字段 ==========
@@ -60,6 +63,7 @@ public class ImRtcCallNotification {
     /**
      * 发起人用户编号；INVITE 专属
      */
+    @JsonLongId
     private Long inviterUserId;
     /**
      * 发起人昵称；INVITE 专属，前端来电界面展示
@@ -74,6 +78,7 @@ public class ImRtcCallNotification {
      *
      * 注意：包含收件人自身，前端按需过滤
      */
+    @JsonLongId
     private List<Long> inviteeIds;
 
     // ========== REJECT 专属字段 ==========
@@ -81,6 +86,7 @@ public class ImRtcCallNotification {
     /**
      * 操作者用户编号；REJECT 触发本次状态变迁的人
      */
+    @JsonLongId
     private Long operatorUserId;
     /**
      * 操作者昵称；前端按需展示（被某某拒接）；普通文案不依赖

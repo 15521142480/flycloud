@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
@@ -24,6 +26,7 @@ public class BpmFormVo implements Serializable {
      * 编号
      */
     @ExcelProperty(value = "编号")
+    @JsonLongId
     private Long id;
 
     /**

@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.ImChannelMessage;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
@@ -26,14 +28,17 @@ public class ImChannelMessageDTO {
     /**
      * 消息编号
      */
+    @JsonLongId
     private Long id;
     /**
      * 频道编号
      */
+    @JsonLongId
     private Long channelId;
     /**
      * 关联素材编号
      */
+    @JsonLongId
     private Long materialId;
     /**
      * 消息类型

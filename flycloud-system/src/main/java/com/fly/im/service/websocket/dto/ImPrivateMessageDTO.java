@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto;
 
+import com.fly.common.annotation.JsonLongId;
+
 import cn.hutool.core.lang.Assert;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.common.utils.BeanUtils;
@@ -35,6 +37,7 @@ public class ImPrivateMessageDTO {
      * RECEIPT：已读位置（对方已读到这条消息）
      * RECALL：被撤回的原消息 id
      */
+    @JsonLongId
     private Long id;
     /**
      * 客户端消息编号
@@ -43,10 +46,12 @@ public class ImPrivateMessageDTO {
     /**
      * 发送人编号
      */
+    @JsonLongId
     private Long senderId;
     /**
      * 接收人编号
      */
+    @JsonLongId
     private Long receiverId;
     /**
      * 消息类型

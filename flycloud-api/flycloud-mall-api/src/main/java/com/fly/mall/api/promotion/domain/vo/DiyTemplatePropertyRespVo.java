@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +20,7 @@ public class DiyTemplatePropertyRespVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "装修模板编号")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "模板名称")

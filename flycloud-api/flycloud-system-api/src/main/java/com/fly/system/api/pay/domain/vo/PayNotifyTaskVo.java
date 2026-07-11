@@ -1,5 +1,7 @@
 package com.fly.system.api.pay.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,14 +15,17 @@ import java.time.LocalDateTime;
 @Data
 public class PayNotifyTaskVo {
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long appId;
 
     private String appName;
 
     private Integer type;
 
+    @JsonLongId
     private Long dataId;
 
     private String merchantOrderId;

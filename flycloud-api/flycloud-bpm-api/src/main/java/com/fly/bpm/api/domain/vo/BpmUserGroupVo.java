@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -29,6 +31,7 @@ public class BpmUserGroupVo implements Serializable {
      * 编号
      */
     @ExcelProperty(value = "编号")
+    @JsonLongId
     private Long id;
 
     /**
@@ -47,6 +50,7 @@ public class BpmUserGroupVo implements Serializable {
     /**
      * 成员用户编号数组
      */
+    @JsonLongId
     private Set<Long> userIds;
 
     /**

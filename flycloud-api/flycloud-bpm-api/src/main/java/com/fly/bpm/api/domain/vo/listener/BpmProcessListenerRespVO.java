@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.listener;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 public class BpmProcessListenerRespVO implements Serializable {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "13089")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "监听器名字", requiredMode = Schema.RequiredMode.REQUIRED, example = "赵六")

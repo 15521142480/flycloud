@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.friend;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -17,10 +19,12 @@ public abstract class BaseFriendNotification {
     /**
      * 操作人用户编号
      */
+    @JsonLongId
     private Long operatorUserId;
     /**
      * 好友用户编号
      */
+    @JsonLongId
     private Long friendUserId;
 
 }

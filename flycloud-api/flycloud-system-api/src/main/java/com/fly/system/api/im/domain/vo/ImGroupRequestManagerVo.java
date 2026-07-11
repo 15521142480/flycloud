@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,21 +14,25 @@ import java.time.LocalDateTime;
 public class ImGroupRequestManagerVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long groupId;
 
     @Schema(description = "群名称", example = "flycloud技术交流群")
     private String groupName;
 
     @Schema(description = "申请人 / 被邀请人用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "100")
+    @JsonLongId
     private Long userId;
 
     @Schema(description = "申请人 / 被邀请人昵称", example = "张三")
     private String userNickname;
 
     @Schema(description = "邀请人用户编号；NULL 表示用户主动申请", example = "200")
+    @JsonLongId
     private Long inviterUserId;
 
     @Schema(description = "邀请人昵称", example = "老张")
@@ -42,6 +48,7 @@ public class ImGroupRequestManagerVo {
     private Integer handleResult; // 参见 ImGroupRequestHandleResultEnum 枚举类
 
     @Schema(description = "处理人用户编号", example = "31460")
+    @JsonLongId
     private Long handleUserId;
 
     @Schema(description = "处理人昵称", example = "管理员")

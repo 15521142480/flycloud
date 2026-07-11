@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +18,10 @@ public class ProductCommentVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long userId;
 
     private String userNickname;
@@ -26,14 +30,18 @@ public class ProductCommentVo implements Serializable {
 
     private Boolean anonymous;
 
+    @JsonLongId
     private Long orderId;
 
+    @JsonLongId
     private Long orderItemId;
 
+    @JsonLongId
     private Long spuId;
 
     private String spuName;
 
+    @JsonLongId
     private Long skuId;
 
     private String skuPicUrl;
@@ -54,6 +62,7 @@ public class ProductCommentVo implements Serializable {
 
     private Boolean replyStatus;
 
+    @JsonLongId
     private Long replyUserId;
 
     private String replyContent;

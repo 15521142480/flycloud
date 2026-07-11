@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,7 @@ public class AppTradeOrderPageItemRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String no;
@@ -30,6 +33,7 @@ public class AppTradeOrderPageItemRespVo implements Serializable {
 
     private LocalDateTime createTime;
 
+    @JsonLongId
     private Long payOrderId;
 
     private Integer payPrice;
@@ -38,5 +42,6 @@ public class AppTradeOrderPageItemRespVo implements Serializable {
 
     private List<AppTradeOrderItemRespVo> items;
 
+    @JsonLongId
     private Long combinationRecordId;
 }

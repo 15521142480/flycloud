@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.model;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.common.enums.bpm.BpmModelFormTypeEnum;
 import com.fly.common.enums.bpm.BpmModelTypeEnum;
 import com.fly.common.validate.InEnum;
@@ -39,6 +41,7 @@ public class BpmModelMetaInfoVO implements Serializable {
     private Integer formType;
 
     @Schema(description = "表单编号", example = "1024")
+    @JsonLongId
     private Long formId;  // formType 为 NORMAL 使用，必须非空
 
     @Schema(description = "自定义表单的提交路径，使用 Vue 的路由地址", example = "/bpm/oa/leave/create")
@@ -53,10 +56,12 @@ public class BpmModelMetaInfoVO implements Serializable {
     private Boolean visible;
 
     @Schema(description = "可发起用户编号数组", example = "[1,2,3]")
+    @JsonLongId
     private List<Long> startUserIds;
 
     @Schema(description = "可管理用户编号数组", requiredMode = Schema.RequiredMode.REQUIRED, example = "[2,4,6]")
     @NotEmpty(message = "可管理用户编号数组不能为空")
+    @JsonLongId
     private List<Long> managerUserIds;
 
     @Schema(description = "排序", example = "1")

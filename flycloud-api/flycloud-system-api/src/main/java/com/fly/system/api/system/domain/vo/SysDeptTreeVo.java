@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import lombok.Data;
 
@@ -23,6 +25,7 @@ public class SysDeptTreeVo implements Serializable {
     /**
      * 部门id
      */
+    @JsonLongId
     private Long id;
 
     /**
@@ -38,6 +41,7 @@ public class SysDeptTreeVo implements Serializable {
     /**
      * 父部门id
      */
+    @JsonLongId
     private Long parentId;
 
     /**

@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.user;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -10,6 +12,7 @@ import java.io.Serializable;
 public class SysUserBpmVO implements Serializable {
 
     @Schema(description = "用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "真名", requiredMode = Schema.RequiredMode.REQUIRED, example = "fly")
@@ -22,6 +25,7 @@ public class SysUserBpmVO implements Serializable {
     private String avatar;
 
     @Schema(description = "部门编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @JsonLongId
     private Long deptId;
 
     @Schema(description = "部门名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "研发部")

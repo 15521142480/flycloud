@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.domain.ImRtcCall;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -25,6 +27,7 @@ public class ImRtcParticipantDisconnectedNotification {
     /**
      * 离开的参与者用户编号
      */
+    @JsonLongId
     private Long userId;
     /**
      * 会话类型
@@ -33,6 +36,7 @@ public class ImRtcParticipantDisconnectedNotification {
     /**
      * 群编号；群通话场景必填
      */
+    @JsonLongId
     private Long groupId;
 
     /**

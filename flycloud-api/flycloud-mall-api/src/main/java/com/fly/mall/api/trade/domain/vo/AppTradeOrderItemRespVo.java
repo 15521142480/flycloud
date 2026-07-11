@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.mall.api.product.domain.vo.AppProductPropertyValueDetailRespVo;
 import java.io.Serializable;
 import java.util.List;
@@ -16,14 +18,18 @@ public class AppTradeOrderItemRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long orderId;
 
+    @JsonLongId
     private Long spuId;
 
     private String spuName;
 
+    @JsonLongId
     private Long skuId;
 
     private List<AppProductPropertyValueDetailRespVo> properties;
@@ -38,6 +44,7 @@ public class AppTradeOrderItemRespVo implements Serializable {
 
     private Integer payPrice;
 
+    @JsonLongId
     private Long afterSaleId;
 
     private Integer afterSaleStatus;

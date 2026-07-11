@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -13,18 +15,21 @@ import java.util.List;
 public class ImGroupMessageManagerVo {
 
     @Schema(description = "消息编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "客户端消息编号", example = "c-uuid-xxx")
     private String clientMessageId;
 
     @Schema(description = "群编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long groupId;
 
     @Schema(description = "群名称", example = "技术交流群")
     private String groupName;
 
     @Schema(description = "发送人编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long senderId;
 
     @Schema(description = "发送人昵称", example = "张三")
@@ -40,6 +45,7 @@ public class ImGroupMessageManagerVo {
     private Integer status; // 参见 ImMessageStatusEnum 枚举类
 
     @Schema(description = "@ 目标用户编号列表（-1 表示 @所有人）")
+    @JsonLongId
     private List<Long> atUserIds;
     @Schema(description = "@ 目标用户昵称列表（-1 位置为 null，前端根据 atUserIds 自行展示「@所有人」）")
     private List<String> atUserNicknames;

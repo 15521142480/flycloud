@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.task;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,9 +14,11 @@ import java.time.LocalDateTime;
 public class BpmProcessInstanceCopyRespVO {
 
     @Schema(description = "抄送主键", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "发起人编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "888")
+    @JsonLongId
     private Long startUserId;
     @Schema(description = "发起人昵称", requiredMode = Schema.RequiredMode.REQUIRED, example = "芋道")
     private String startUserName;

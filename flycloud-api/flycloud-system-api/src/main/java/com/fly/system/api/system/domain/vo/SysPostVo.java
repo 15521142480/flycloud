@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -27,6 +29,7 @@ public class SysPostVo implements Serializable {
      * 岗位ID
      */
     @ExcelProperty(value = "岗位ID")
+    @JsonLongId
     private Long id;
 
     /**

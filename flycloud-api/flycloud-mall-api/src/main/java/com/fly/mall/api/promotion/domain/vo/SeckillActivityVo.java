@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +18,10 @@ public class SeckillActivityVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long spuId;
 
     private String name;
@@ -32,6 +36,7 @@ public class SeckillActivityVo implements Serializable {
 
     private Integer sort;
 
+    @JsonLongId
     private List<Long> configIds;
 
     private Integer totalLimitCount;

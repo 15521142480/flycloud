@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
@@ -34,18 +36,21 @@ public class BpmProcessInstanceCopyVo extends BaseEntity implements Serializable
      * 编号
      */
     @ExcelProperty(value = "编号")
+    @JsonLongId
     private Long id;
 
     /**
      * 用户编号，被抄送人
      */
     @ExcelProperty(value = "用户编号，被抄送人")
+    @JsonLongId
     private Long userId;
 
     /**
      * 发起流程的用户编号
      */
     @ExcelProperty(value = "发起流程的用户编号")
+    @JsonLongId
     private Long startUserId;
 
     /**

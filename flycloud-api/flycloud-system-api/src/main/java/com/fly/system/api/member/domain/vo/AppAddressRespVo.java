@@ -1,5 +1,7 @@
 package com.fly.system.api.member.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -18,6 +20,7 @@ public class AppAddressRespVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "地址编号")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "收件人名称")
@@ -27,6 +30,7 @@ public class AppAddressRespVo implements Serializable {
     private String mobile;
 
     @Schema(description = "地区编号")
+    @JsonLongId
     private Long areaId;
 
     @Schema(description = "地区名称")

@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,9 +14,11 @@ import java.time.LocalDateTime;
 public class ImFaceUserItemManagerVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "4096")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "所属用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long userId;
 
     @Schema(description = "所属用户昵称", example = "张三")

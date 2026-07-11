@@ -1,5 +1,7 @@
 package com.fly.mall.api.statistics.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class ProductStatisticsRespVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ExcelProperty("编号")
+    @JsonLongId
     private Long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -26,6 +29,7 @@ public class ProductStatisticsRespVo implements Serializable {
     private LocalDate time;
 
     @ExcelProperty("商品SPU编号")
+    @JsonLongId
     private Long spuId;
 
     @ExcelProperty("商品名称")

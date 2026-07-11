@@ -1,5 +1,7 @@
 package com.fly.system.api.member.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ public class AppAuthLoginRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long userId;
 
     private String accessToken;

@@ -1,5 +1,7 @@
 package com.fly.system.api.member.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,6 +17,7 @@ public class AppMemberUserInfoRespVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String nickname;
@@ -46,6 +49,7 @@ public class AppMemberUserInfoRespVo implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
+        @JsonLongId
         private Long id;
 
         private String name;

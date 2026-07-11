@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import java.util.Date;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -24,6 +26,7 @@ public class SysUserVo implements Serializable {
      * 主键
      */
     @ExcelProperty(value = "主键")
+    @JsonLongId
     private Long id;
 
     /**
@@ -99,6 +102,7 @@ public class SysUserVo implements Serializable {
      * 部门id
      */
     @ExcelProperty(value = "部门id")
+    @JsonLongId
     private Long deptId;
 
     /**
@@ -148,6 +152,7 @@ public class SysUserVo implements Serializable {
     /**
      * 岗位编号数组
      */
+    @JsonLongId
     private Set<Long> postIds;
 
     /**

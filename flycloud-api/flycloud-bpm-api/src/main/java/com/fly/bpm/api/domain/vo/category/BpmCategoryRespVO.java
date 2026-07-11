@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.category;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 public class BpmCategoryRespVO implements Serializable {
 
     @Schema(description = "分类编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "3167")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "分类名", requiredMode = Schema.RequiredMode.REQUIRED, example = "王五")

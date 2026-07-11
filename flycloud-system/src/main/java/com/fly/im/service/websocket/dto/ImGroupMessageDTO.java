@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.ImGroupMessage;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
@@ -31,6 +33,7 @@ public class ImGroupMessageDTO {
      * READ：无（群已读不需要）
      * RECEIPT：需要回执的目标消息 id
      */
+    @JsonLongId
     private Long id;
     /**
      * 客户端消息编号
@@ -39,10 +42,12 @@ public class ImGroupMessageDTO {
     /**
      * 发送人编号
      */
+    @JsonLongId
     private Long senderId;
     /**
      * 群编号
      */
+    @JsonLongId
     private Long groupId;
     /**
      * 消息类型
@@ -63,10 +68,12 @@ public class ImGroupMessageDTO {
     /**
      * @ 目标用户编号列表
      */
+    @JsonLongId
     private List<Long> atUserIds;
     /**
      * 定向接收用户编号列表
      */
+    @JsonLongId
     private List<Long> receiverUserIds;
     /**
      * 群回执状态
@@ -79,6 +86,7 @@ public class ImGroupMessageDTO {
     /**
      * 已读位置
      */
+    @JsonLongId
     private Long readId;
 
     // ========== 静态工厂方法 ==========

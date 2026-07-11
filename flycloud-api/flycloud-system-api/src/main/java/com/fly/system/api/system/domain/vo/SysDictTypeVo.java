@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -27,6 +29,7 @@ public class SysDictTypeVo implements Serializable {
      * 字典主键
      */
     @ExcelProperty(value = "字典主键")
+    @JsonLongId
     private Long id;
 
     /**

@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo.model.simple;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fly.common.constant.bpm.BpmTaskCandidateStrategyEnum;
@@ -151,6 +153,7 @@ public class BpmSimpleModelNodeVO implements Serializable {
         private Integer type;
 
         @Schema(description = "指定人员审批的用户编号数组", example = "1")
+        @JsonLongId
         private List<Long> userIds;
 
     }
@@ -162,6 +165,7 @@ public class BpmSimpleModelNodeVO implements Serializable {
 
         // TODO @jason：是不是按钮的标识？id 会和数据库的 id 自增有点模糊，key 标识会更合理一点点哈。
         @Schema(description = "按钮 Id", example = "1")
+        @JsonLongId
         private Integer id;
 
         @Schema(description = "显示名称", example = "审批")

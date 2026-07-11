@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -16,15 +18,18 @@ import java.util.List;
 public class ImGroupMessageVo {
 
     @Schema(description = "消息编号", example = "1")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "客户端消息编号", example = "uuid-xxx")
     private String clientMessageId;
 
     @Schema(description = "发送人编号", example = "1")
+    @JsonLongId
     private Long senderId;
 
     @Schema(description = "群编号", example = "1")
+    @JsonLongId
     private Long groupId;
 
     @Schema(description = "消息类型", example = "0")
@@ -40,9 +45,11 @@ public class ImGroupMessageVo {
     private LocalDateTime sendTime;
 
     @Schema(description = "@目标用户编号列表", example = "[1,2,3]")
+    @JsonLongId
     private List<Long> atUserIds;
 
     @Schema(description = "定向接收用户编号列表", example = "[1,2]")
+    @JsonLongId
     private List<Long> receiverUserIds;
 
     @Schema(description = "回执状态", example = "0")

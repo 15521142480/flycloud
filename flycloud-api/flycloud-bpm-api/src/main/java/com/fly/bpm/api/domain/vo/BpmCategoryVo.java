@@ -1,5 +1,7 @@
 package com.fly.bpm.api.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
@@ -27,6 +29,7 @@ public class BpmCategoryVo implements Serializable {
      * 分类编号
      */
     @ExcelProperty(value = "分类编号")
+    @JsonLongId
     private Long id;
 
     /**

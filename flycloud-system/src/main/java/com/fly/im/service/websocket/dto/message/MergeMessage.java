@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.message;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -33,10 +35,12 @@ public class MergeMessage {
         /**
          * 原消息编号
          */
+        @JsonLongId
         private Long messageId;
         /**
          * 发送人编号
          */
+        @JsonLongId
         private Long senderId;
         /**
          * 发送人昵称快照；接收方可能不在原会话里，无法实时查到

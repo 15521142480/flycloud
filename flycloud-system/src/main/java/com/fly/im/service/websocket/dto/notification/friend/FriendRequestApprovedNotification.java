@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.friend;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -15,6 +17,7 @@ public class FriendRequestApprovedNotification extends BaseFriendNotification {
     /**
      * 已处理的申请记录编号
      */
+    @JsonLongId
     private Long requestId;
 
 }

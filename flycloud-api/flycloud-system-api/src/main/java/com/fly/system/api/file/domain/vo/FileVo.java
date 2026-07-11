@@ -1,5 +1,7 @@
 package com.fly.system.api.file.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.fly.system.api.file.domain.FileConfig;
 import lombok.Data;
@@ -23,12 +25,14 @@ public class FileVo implements Serializable {
     /**
      * 编号，数据库自增
      */
+    @JsonLongId
     private Long id;
     /**
      * 配置编号
      *
      * 关联 {@link FileConfig#getId()}
      */
+    @JsonLongId
     private Long configId;
     /**
      * 原文件名

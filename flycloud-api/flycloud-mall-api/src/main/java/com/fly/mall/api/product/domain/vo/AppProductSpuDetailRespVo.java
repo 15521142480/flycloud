@@ -1,5 +1,7 @@
 package com.fly.mall.api.product.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,6 +35,7 @@ public class AppProductSpuDetailRespVo extends AppProductSpuRespVo {
     public static class Sku {
 
         @Schema(description = "SKU 编号")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "商品属性数组")

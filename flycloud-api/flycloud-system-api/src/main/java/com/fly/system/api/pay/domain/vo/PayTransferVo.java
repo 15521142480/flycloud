@@ -1,5 +1,7 @@
 package com.fly.system.api.pay.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,10 +15,13 @@ import java.time.LocalDateTime;
 @Data
 public class PayTransferVo implements Serializable {
     private static final long serialVersionUID = 1L;
+    @JsonLongId
     private Long id;
     private String no;
+    @JsonLongId
     private Long appId;
     private String channelCode;
+    @JsonLongId
     private Long userId;
     private String merchantTransferId;
     private String subject;

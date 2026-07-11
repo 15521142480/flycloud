@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.message;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -17,12 +19,14 @@ public class MaterialMessage {
     /**
      * 素材编号
      */
+    @JsonLongId
     private Long materialId;
     /**
      * 频道编号
      * <p>
      * 冗余到 payload 内；转发到私聊 / 群聊后客户端用本字段定位频道，渲染卡片底部的频道头像 + 名称
      */
+    @JsonLongId
     private Long channelId;
     /**
      * 素材内容类型

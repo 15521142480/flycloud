@@ -1,5 +1,7 @@
 package com.fly.system.api.im.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,6 +14,7 @@ import java.util.List;
 public class ImFacePackUserVo {
 
     @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    @JsonLongId
     private Long id;
 
     @Schema(description = "表情包名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "猫主子")
@@ -28,6 +31,7 @@ public class ImFacePackUserVo {
     public static class Item {
 
         @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "2048")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "表情图 URL", requiredMode = Schema.RequiredMode.REQUIRED,

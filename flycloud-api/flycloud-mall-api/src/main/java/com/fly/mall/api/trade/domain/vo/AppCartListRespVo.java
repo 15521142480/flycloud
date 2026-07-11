@@ -1,5 +1,7 @@
 package com.fly.mall.api.trade.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.mall.api.product.domain.vo.AppProductSkuBaseRespVo;
 import com.fly.mall.api.product.domain.vo.AppProductSpuBaseRespVo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,6 +38,7 @@ public class AppCartListRespVo implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Schema(description = "购物项编号")
+        @JsonLongId
         private Long id;
 
         @Schema(description = "商品数量")

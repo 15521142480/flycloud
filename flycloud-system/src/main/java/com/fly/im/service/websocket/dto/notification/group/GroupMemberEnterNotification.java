@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.group;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,6 +20,7 @@ public class GroupMemberEnterNotification extends BaseGroupNotification {
     /**
      * 进群者用户编号
      */
+    @JsonLongId
     private Long entrantUserId;
     /**
      * 加入来源

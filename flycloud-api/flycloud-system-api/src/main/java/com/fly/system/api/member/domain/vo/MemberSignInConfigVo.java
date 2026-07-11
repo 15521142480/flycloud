@@ -1,5 +1,7 @@
 package com.fly.system.api.member.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class MemberSignInConfigVo implements Serializable {
     private static final long serialVersionUID = 1L;
+    @JsonLongId
     private Long id;
     private Integer day;
     private Integer point;

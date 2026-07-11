@@ -1,5 +1,7 @@
 package com.fly.im.service.websocket.dto.notification.rtc;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.system.api.im.domain.ImRtcCall;
 import com.fly.system.api.im.enums.rtc.ImRtcCallEndReasonEnum;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -50,6 +52,7 @@ public class ImRtcCallEndNotification {
      * <p>
      * 用于前端「被某某挂断」类文案；普通文案不依赖此字段
      */
+    @JsonLongId
     private Long operatorUserId;
     /**
      * 操作者昵称：前端按需展示（被某某挂断 / 头像 tip）；操作者为空时随之为空

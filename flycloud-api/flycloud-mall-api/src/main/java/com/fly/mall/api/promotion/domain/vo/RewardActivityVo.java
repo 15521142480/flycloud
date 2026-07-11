@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.fly.mall.api.promotion.domain.RewardActivity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ public class RewardActivityVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
     private String name;
@@ -34,6 +37,7 @@ public class RewardActivityVo implements Serializable {
 
     private Integer productScope;
 
+    @JsonLongId
     private List<Long> productScopeValues;
 
     private List<RewardActivity.Rule> rules;
@@ -51,6 +55,7 @@ public class RewardActivityVo implements Serializable {
     /**
      * 当前活动命中的商品 SPU 编号集合。
      */
+    @JsonLongId
     private List<Long> spuIds;
 
     private Boolean isDeleted;

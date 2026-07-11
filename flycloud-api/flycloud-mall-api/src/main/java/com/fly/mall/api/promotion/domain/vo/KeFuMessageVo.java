@@ -1,5 +1,7 @@
 package com.fly.mall.api.promotion.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import java.io.Serializable;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -15,14 +17,18 @@ public class KeFuMessageVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonLongId
     private Long id;
 
+    @JsonLongId
     private Long conversationId;
 
+    @JsonLongId
     private Long senderId;
 
     private Integer senderType;
 
+    @JsonLongId
     private Long receiverId;
 
     private Integer receiverType;

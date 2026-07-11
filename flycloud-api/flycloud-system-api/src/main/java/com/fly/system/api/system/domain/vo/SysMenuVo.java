@@ -1,5 +1,7 @@
 package com.fly.system.api.system.domain.vo;
 
+import com.fly.common.annotation.JsonLongId;
+
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fly.common.annotation.ExcelDictFormat;
@@ -27,6 +29,7 @@ public class SysMenuVo implements Serializable {
      * 菜单ID
      */
     @ExcelProperty(value = "菜单ID")
+    @JsonLongId
     private Long id;
 
     /**
@@ -46,6 +49,7 @@ public class SysMenuVo implements Serializable {
      * 父菜单ID
      */
     @ExcelProperty(value = "父菜单ID")
+    @JsonLongId
     private Long parentId;
 
     /**
