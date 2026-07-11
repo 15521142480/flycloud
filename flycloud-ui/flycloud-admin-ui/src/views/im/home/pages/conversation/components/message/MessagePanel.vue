@@ -179,7 +179,7 @@
 
       <!-- 底部：频道和非好友私聊均不提供输入入口；好友关系恢复后自动重新显示。 -->
       <div v-if="!isChannel && !showNotFriendBanner" class="relative">
-        <MessageInput />
+        <MessageInput @start-private-call="startPrivateCall" />
         <MessageMultiSelectBar v-if="multiSelect.state.active" class="absolute inset-0 z-10" />
       </div>
 

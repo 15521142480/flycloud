@@ -102,9 +102,35 @@
               class="message-input__tool inline-flex items-center justify-center box-content p-1.5 cursor-pointer rounded transition-colors hover:bg-[var(--el-fill-color)]"
               @click="videoInputRef?.click()"
             >
-              <Icon icon="ant-design:video-camera-outlined" :size="18" />
+              <Icon icon="ep:film" :size="18" />
             </span>
           </el-tooltip>
+
+          <!-- 私聊通话入口：具体通话流程交给父级 MessagePanel，复用顶部入口的鉴权与发起逻辑 -->
+          <template v-if="isPrivate">
+            <span
+              class="mx-3 h-6 w-px bg-[var(--el-border-color)]"
+              aria-hidden="true"
+            ></span>
+            <el-tooltip content="语音通话" placement="top">
+              <span
+                class="message-input__tool inline-flex items-center gap-1 px-1.5 py-1 cursor-pointer rounded transition-colors hover:bg-[var(--el-fill-color)]"
+                @click="emit('start-private-call', ImRtcCallMediaType.VOICE)"
+              >
+                <Icon icon="ant-design:phone-outlined" :size="18" />
+                <span class="text-sm">语音通话</span>
+              </span>
+            </el-tooltip>
+            <el-tooltip content="视频通话" placement="top">
+              <span
+                class="message-input__tool inline-flex items-center gap-1 px-1.5 py-1 cursor-pointer rounded transition-colors hover:bg-[var(--el-fill-color)]"
+                @click="emit('start-private-call', ImRtcCallMediaType.VIDEO)"
+              >
+                <Icon icon="ant-design:video-camera-outlined" :size="18" />
+                <span class="text-sm">视频通话</span>
+              </span>
+            </el-tooltip>
+          </template>
         </div>
 
         <!-- 群聊 + 群已读开启：发送按钮 + ▼ 下拉菜单（点主按钮普通发送 / 点 ▼ 选「发送回执消息」），对齐微信 PC -->
@@ -178,7 +204,12 @@ import {
 import { useMuteOverlay } from '@/views/im/home/composables/useMuteOverlay'
 import { isOpenableUrl } from '@/utils/url'
 import { getConversationKey } from '@/views/im/utils/conversation'
-import { ImConversationType, ImGroupMemberRole, ImContentType } from '@/views/im/utils/constants'
+import {
+  ImConversationType,
+  ImGroupMemberRole,
+  ImContentType,
+  ImRtcCallMediaType
+} from '@/views/im/utils/constants'
 import { DANGEROUS_FILE_EXTENSIONS, MESSAGE_GROUP_READ_ENABLED } from '@/views/im/utils/config'
 import {
   serializeMessage,
@@ -195,6 +226,11 @@ import type { GroupMemberLite } from '../../../../components/group/GroupMember.v
 import type { Conversation } from '@/views/im/home/types'
 
 defineOptions({ name: 'ImMessageInput' })
+
+const emit = defineEmits<{
+  /** 私聊输入区通话入口：由父级统一执行通话邀请。 */
+  'start-private-call': [mediaType: number]
+}>()
 
 const conversationStore = useConversationStore()
 const groupStore = useGroupStore()
@@ -622,6 +658,11 @@ async function onSelectFace(face: { url: string; width: number; height: number; 
 // ==================== @ 成员选择（群聊） ====================
 const isGroup = computed(
   () => conversationStore.activeConversation?.type === ImConversationType.GROUP
+)
+
+/** 私聊才显示语音、视频通话入口；群聊通话仍由顶部入口发起并选择成员。 */
+const isPrivate = computed(
+  () => conversationStore.activeConversation?.type === ImConversationType.PRIVATE
 )
 
 /** 从 groupStore 读当前激活群的成员（切会话时由 MessagePanel 预拉） */
