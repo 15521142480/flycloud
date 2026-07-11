@@ -31,7 +31,6 @@ import com.fly.im.service.message.ImPrivateMessageService;
 import com.fly.im.service.message.dto.ImGroupMessageSendDTO;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 import com.fly.im.service.websocket.ImWebSocketService;
-import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
 import com.fly.im.service.websocket.dto.notification.rtc.*;
 import com.fly.im.framework.system.AdminUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
@@ -49,6 +48,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
+import static com.fly.system.api.im.enums.ImConversationTypeEnum.NONE;
 import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
 
 /**
@@ -59,7 +59,7 @@ import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
  * 并发幂等：同好友对 / 同群活跃唯一性走 {@link ImRtcCallLockRedisDAO} 分布式锁 + 锁内 SELECT 兜底；webhook 兜底走条件 UPDATE；
  * <p>
  * 推送通道分流：
- *   1601 RTC_CALL（INVITING / JOINED / REJECTED / NO_ANSWER / LEFT 子类型）→ {@link ImWebSocketService#sendPrivateMessageAsync} 仅推参与方；
+ *   1601 RTC_CALL（INVITING / JOINED / REJECTED / NO_ANSWER / LEFT 子类型）→ 无会话通知，仅推参与方；
  *   1602 / 1603 PARTICIPANT_CONNECTED / DISCONNECTED → {@link ImWebSocketService} 推参与方 + 群通话场景广播全群；
  *   1610 RTC_CALL_START + 1611 RTC_CALL_END → {@link ImPrivateMessageService} / {@link ImGroupMessageService} 入消息流当聊天 tip
  *   （START 仅群通话；两者分别在 invite / cancel(leave) 事务里 INSERT，自增 id 自然保证顺序）
@@ -1029,8 +1029,8 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
         String token = signToken(inviteeId, resolveDisplayName(invitee, inviteeId), call.getRoom());
         ImRtcCallNotification payload = ImRtcCallNotification.ofInvite(
                 call, inviter, imProperties.getRtc().getLivekitUrl(), token, inviteeIds);
-        webSocketService.sendPrivateMessageAsync(inviteeId, ImPrivateMessageDTO.ofRtcNotification(
-                ImMessageTypeEnum.RTC_CALL.getType(), call.getInviterUserId(), inviteeId, payload));
+        webSocketService.sendNotificationAsync(inviteeId, NONE.getType(),
+                ImMessageTypeEnum.RTC_CALL.getType(), payload);
     }
 
     /**
@@ -1044,10 +1044,8 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
     private void pushCallRejectNotification(ImRtcCall call, Long operatorUserId) {
         SysUserVo operator = operatorUserId != null ? adminUserApi.getUser(operatorUserId).getCheckedData() : null;
         ImRtcCallNotification payload = ImRtcCallNotification.ofReject(call, operatorUserId, operator);
-        for (Long receiverUserId : getCallAudienceUserIdList(call)) {
-            webSocketService.sendPrivateMessageAsync(receiverUserId, ImPrivateMessageDTO.ofRtcNotification(
-                    ImMessageTypeEnum.RTC_CALL.getType(), operatorUserId, receiverUserId, payload));
-        }
+        webSocketService.sendNotificationAsync(getCallAudienceUserIdList(call), NONE.getType(),
+                ImMessageTypeEnum.RTC_CALL.getType(), payload);
     }
 
     /**
@@ -1061,10 +1059,8 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
      */
     private void pushCallNoAnswerNotification(ImRtcCall call, Long operatorUserId, SysUserVo operator) {
         ImRtcCallNotification payload = ImRtcCallNotification.ofNoAnswer(call, operatorUserId, operator);
-        for (Long receiverUserId : getCallAudienceUserIdList(call)) {
-            webSocketService.sendPrivateMessageAsync(receiverUserId, ImPrivateMessageDTO.ofRtcNotification(
-                    ImMessageTypeEnum.RTC_CALL.getType(), operatorUserId, receiverUserId, payload));
-        }
+        webSocketService.sendNotificationAsync(getCallAudienceUserIdList(call), NONE.getType(),
+                ImMessageTypeEnum.RTC_CALL.getType(), payload);
     }
 
     /**
@@ -1102,8 +1098,7 @@ public class ImRtcCallServiceImpl implements ImRtcCallService {
         if (CollUtil.isEmpty(receivers)) {
             return;
         }
-        ImPrivateMessageDTO dto = ImPrivateMessageDTO.ofRtcNotification(type, actorUserId, null, payload);
-        webSocketService.sendPrivateMessageAsync(receivers, dto);
+        webSocketService.sendNotificationAsync(receivers, NONE.getType(), type, payload);
     }
 
     /**

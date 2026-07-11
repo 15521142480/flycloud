@@ -16,7 +16,6 @@ import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.message.ImPrivateMessageService;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 import com.fly.im.service.websocket.ImWebSocketService;
-import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
 import com.fly.im.service.websocket.dto.notification.friend.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
+import static com.fly.system.api.im.enums.ImConversationTypeEnum.NONE;
 import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 import static com.fly.common.utils.collection.CollectionUtils.filterList;
 import static com.fly.im.dal.redis.RedisKeyConstants.FRIEND_STATE;
@@ -161,8 +161,8 @@ public class ImFriendServiceImpl implements ImFriendService {
         FriendUpdateNotification payload = (FriendUpdateNotification) new FriendUpdateNotification()
                 .setDisplayName(reqVo.getDisplayName()).setSilent(reqVo.getSilent()).setPinned(reqVo.getPinned())
                 .setOperatorUserId(userId).setFriendUserId(reqVo.getFriendUserId());
-        websocketService.sendPrivateMessageAsync(userId, ImPrivateMessageDTO.ofFriendNotification(
-                ImMessageTypeEnum.FRIEND_UPDATE.getType(), userId, userId, payload));
+        websocketService.sendNotificationAsync(userId, NONE.getType(),
+                ImMessageTypeEnum.FRIEND_UPDATE.getType(), payload);
     }
 
     @Override
@@ -254,8 +254,8 @@ public class ImFriendServiceImpl implements ImFriendService {
         // 3. 推 FRIEND_BLOCK 给 A 多端
         FriendBlockNotification payload = (FriendBlockNotification) new FriendBlockNotification()
                 .setOperatorUserId(userId).setFriendUserId(friendUserId);
-        websocketService.sendPrivateMessageAsync(userId, ImPrivateMessageDTO.ofFriendNotification(
-                ImMessageTypeEnum.FRIEND_BLOCK.getType(), userId, userId, payload));
+        websocketService.sendNotificationAsync(userId, NONE.getType(),
+                ImMessageTypeEnum.FRIEND_BLOCK.getType(), payload);
     }
 
     @Override
@@ -283,8 +283,8 @@ public class ImFriendServiceImpl implements ImFriendService {
         // 3. 推 FRIEND_UNBLOCK 给 A 多端
         FriendUnblockNotification payload = (FriendUnblockNotification) new FriendUnblockNotification()
                 .setOperatorUserId(userId).setFriendUserId(friendUserId);
-        websocketService.sendPrivateMessageAsync(userId, ImPrivateMessageDTO.ofFriendNotification(
-                ImMessageTypeEnum.FRIEND_UNBLOCK.getType(), userId, userId, payload));
+        websocketService.sendNotificationAsync(userId, NONE.getType(),
+                ImMessageTypeEnum.FRIEND_UNBLOCK.getType(), payload);
     }
 
     /**

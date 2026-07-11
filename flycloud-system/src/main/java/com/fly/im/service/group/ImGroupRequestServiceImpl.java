@@ -17,7 +17,6 @@ import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.message.ImGroupMessageService;
 import com.fly.im.service.message.dto.ImGroupMessageSendDTO;
 import com.fly.im.service.websocket.ImWebSocketService;
-import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
 import com.fly.im.service.websocket.dto.notification.group.BaseGroupNotification;
 import com.fly.im.service.websocket.dto.notification.group.GroupRequestApprovedNotification;
 import com.fly.im.service.websocket.dto.notification.group.GroupRequestReceivedNotification;
@@ -37,6 +36,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.fly.im.framework.exception.ServiceExceptionUtil.exception;
+import static com.fly.system.api.im.enums.ImConversationTypeEnum.NONE;
 import static com.fly.common.utils.collection.CollectionUtils.convertList;
 import static com.fly.common.utils.collection.CollectionUtils.convertSet;
 import static com.fly.system.api.im.enums.ErrorCodeConstants.*;
@@ -102,10 +102,8 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
         // 4. 1503 私聊定向推群主 + 全部管理员（多端同步）；payload 携带申请方昵称 / 头像
         SysUserVo applyUser = adminUserApi.getUser(userId).getCheckedData();
         GroupRequestReceivedNotification payload = buildRequestNotification(group, request, applyUser);
-        for (Long receiverUserId : getGroupMemberListByOwnerAndAdminUserIds(group)) {
-            websocketService.sendPrivateMessageAsync(receiverUserId, ImPrivateMessageDTO.ofGroupNotification(
-                    ImMessageTypeEnum.GROUP_REQUEST_RECEIVED.getType(), userId, receiverUserId, payload));
-        }
+        websocketService.sendNotificationAsync(getGroupMemberListByOwnerAndAdminUserIds(group), NONE.getType(),
+                ImMessageTypeEnum.GROUP_REQUEST_RECEIVED.getType(), payload);
         return request;
     }
 
@@ -202,10 +200,8 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
         for (ImGroupRequest request : requests) {
             SysUserVo applyUser = userMap.get(request.getUserId());
             GroupRequestReceivedNotification payload = buildRequestNotification(group, request, applyUser);
-            for (Long receiverUserId : ownerAndAdmins) {
-                websocketService.sendPrivateMessageAsync(receiverUserId, ImPrivateMessageDTO.ofGroupNotification(
-                        ImMessageTypeEnum.GROUP_REQUEST_RECEIVED.getType(), inviterUserId, receiverUserId, payload));
-            }
+            websocketService.sendNotificationAsync(ownerAndAdmins, NONE.getType(),
+                    ImMessageTypeEnum.GROUP_REQUEST_RECEIVED.getType(), payload);
         }
     }
 
@@ -399,10 +395,7 @@ public class ImGroupRequestServiceImpl implements ImGroupRequestService {
         }
         Set<Long> receivers = new LinkedHashSet<>(getGroupMemberListByOwnerAndAdminUserIds(group));
         receivers.add(applicantUserId);
-        for (Long receiverUserId : receivers) {
-            websocketService.sendPrivateMessageAsync(receiverUserId, ImPrivateMessageDTO.ofGroupNotification(
-                    messageType, operatorUserId, receiverUserId, payload));
-        }
+        websocketService.sendNotificationAsync(receivers, NONE.getType(), messageType, payload);
     }
 
     /**

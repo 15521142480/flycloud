@@ -18,12 +18,14 @@ import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.framework.config.ImProperties;
 import com.fly.im.service.friend.ImFriendService;
+import com.fly.im.service.conversation.ImConversationReadService;
 import com.fly.im.service.message.dto.ImPrivateMessageSendDTO;
 import com.fly.im.service.sensitiveword.ImSensitiveWordService;
 import com.fly.im.service.websocket.ImWebSocketService;
 import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
 import com.fly.im.service.websocket.dto.message.QuoteMessage;
 import com.fly.im.service.websocket.dto.message.RecallMessage;
+import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import com.fly.im.util.ImMessageUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +61,9 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
 
     @Resource
     private ImWebSocketService imWebSocketService;
+
+    @Resource
+    private ImConversationReadService conversationReadService;
 
     @Resource
     private ImProperties imProperties;
@@ -224,14 +229,19 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         Assert.notNull(messageId, "已读消息编号不能为空");
         // 2. 把 (receiverId → userId) 这条会话上、id <= messageId 的未读消息一步更新为已读
         // 仅 UNREAD 行被命中，避免覆盖已撤回/已读的状态；select-then-update 合成单条 SQL 后也消除了竞态窗口
-        int updated = privateMessageMapper.updateBySenderIdAndReceiverIdAndIdLeAndStatus(
+        privateMessageMapper.updateBySenderIdAndReceiverIdAndIdLeAndStatus(
                 receiverId, userId, messageId, ImMessageStatusEnum.UNREAD.getStatus(),
                 new ImPrivateMessage().setStatus(ImMessageStatusEnum.READ.getStatus()));
-        if (updated == 0) {
+
+        // 3. 会话读位置是跨终端的唯一权威。即使本次没有可更新的 UNREAD 行
+        // （例如另一终端已更新过消息状态），仍需推进数据库游标。
+        boolean advanced = conversationReadService.updateConversationReadPosition(
+                userId, ImConversationTypeEnum.PRIVATE.getType(), receiverId, messageId);
+        if (!advanced) {
             return;
         }
 
-        // 3. 异步发送 READ + RECEIPT 事件（已读位置以前端上报为准，与多端 / 对方 UI 显示一致）
+        // 4. 异步发送 READ + RECEIPT 事件（已读位置以前端上报为准，与多端 / 对方 UI 显示一致）
         imWebSocketService.sendPrivateMessageAsync(userId,
                 ImPrivateMessageDTO.ofRead(userId, receiverId, messageId));
         imWebSocketService.sendPrivateMessageAsync(receiverId,
@@ -243,8 +253,8 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
         if (BooleanUtil.isFalse(imProperties.getMessage().isPrivateReadEnabled())) {
             throw exception(MESSAGE_PRIVATE_READ_DISABLED);
         }
-        return privateMessageMapper.selectMaxIdBySenderIdAndReceiverIdAndStatus(
-                userId, peerId, ImMessageStatusEnum.READ.getStatus());
+        return conversationReadService.getConversationReadMessageId(
+                peerId, ImConversationTypeEnum.PRIVATE.getType(), userId);
     }
 
     @Override

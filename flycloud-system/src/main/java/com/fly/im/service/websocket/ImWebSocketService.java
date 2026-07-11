@@ -18,6 +18,40 @@ import java.util.Collections;
 public interface ImWebSocketService {
 
     /**
+     * 异步推送不绑定具体消息 DTO 的 IM 通知给指定用户。
+     *
+     * @param userId           目标用户编号
+     * @param conversationType 会话类型；系统通知使用 {@code NONE}
+     * @param contentType      内容类型
+     * @param payload          通知内容
+     */
+    default void sendNotificationAsync(Long userId, Integer conversationType, Integer contentType, Object payload) {
+        sendNotificationAsync(Collections.singleton(userId), conversationType, contentType, payload);
+    }
+
+    /**
+     * 异步批量推送不绑定具体消息 DTO 的 IM 通知。
+     *
+     * 好友申请、入群申请和 RTC 信令等状态事件不属于聊天消息，调用方可传入
+     * {@code ImConversationTypeEnum.NONE}，前端将其分发到对应业务 Store。
+     *
+     * @param userIds          目标用户编号列表
+     * @param conversationType 会话类型
+     * @param contentType      内容类型
+     * @param payload          通知内容
+     */
+    void sendNotificationAsync(Collection<Long> userIds, Integer conversationType, Integer contentType, Object payload);
+
+    /**
+     * 异步广播不绑定具体消息 DTO 的 IM 通知。
+     *
+     * @param conversationType 会话类型
+     * @param contentType      内容类型
+     * @param payload          通知内容
+     */
+    void broadcastNotificationAsync(Integer conversationType, Integer contentType, Object payload);
+
+    /**
      * 异步推送私聊消息给指定用户
      *
      * @param userId 目标用户编号

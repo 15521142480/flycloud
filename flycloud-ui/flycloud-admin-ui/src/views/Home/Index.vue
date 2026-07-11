@@ -251,8 +251,13 @@ const getTaskTodoList = async () => {
     pageNum: 1,
     pageSize: 100
   }
-  const data = await TaskApi.getTaskTodoPage(queryParams)
-  taskList.value = data.list || []
+
+  try {
+    const data = await TaskApi.getTaskTodoPage(queryParams)
+    taskList.value = data.list || []
+  } catch (error) {
+    console.log('接口请求出错（TaskApi.getTaskTodoPage）：' + error)
+  }
 }
 
 // 首页项目卡片快捷跳转

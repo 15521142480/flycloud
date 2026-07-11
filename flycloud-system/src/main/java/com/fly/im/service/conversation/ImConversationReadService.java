@@ -64,4 +64,19 @@ public interface ImConversationReadService {
      */
     List<ImConversationRead> pullConversationReadList(Long userId, Long lastUpdateTime, Long lastId, Integer limit);
 
+    /**
+     * 删除用户在指定会话中的读位置。
+     */
+    void deleteConversationReadPosition(Long userId, Integer conversationType, Long conversationId);
+
+    /**
+     * 批量删除多个用户在指定会话中的读位置。
+     */
+    void deleteConversationReadPositions(Collection<Long> userIds, Integer conversationType, Long conversationId);
+
+    /**
+     * 删除指定会话的全部读位置。
+     */
+    void deleteConversationReadPositions(Integer conversationType, Long conversationId);
+
 }

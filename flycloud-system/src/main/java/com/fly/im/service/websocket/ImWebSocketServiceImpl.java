@@ -38,28 +38,36 @@ public class ImWebSocketServiceImpl implements ImWebSocketService {
     private WebSocketSenderApi webSocketSenderApi;
 
     @Override
-    public void sendPrivateMessageAsync(Collection<Long> userIds, ImPrivateMessageDTO dto) {
-        // 说明：通过 executeAfterTransaction 保证事务提交后再推送，避免客户端收到消息后查询数据库时事务尚未提交
-        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.PRIVATE.getType(), dto.getType(), dto);
+    public void sendNotificationAsync(Collection<Long> userIds, Integer conversationType, Integer contentType,
+                                      Object payload) {
+        ImNotificationWebSocketBo notification = buildNotification(conversationType, contentType, payload);
         executeAfterTransaction(() -> doSendNotification(userIds, notification));
+    }
+
+    @Override
+    public void broadcastNotificationAsync(Integer conversationType, Integer contentType, Object payload) {
+        ImNotificationWebSocketBo notification = buildNotification(conversationType, contentType, payload);
+        executeAfterTransaction(() -> doBroadcastNotification(notification));
+    }
+
+    @Override
+    public void sendPrivateMessageAsync(Collection<Long> userIds, ImPrivateMessageDTO dto) {
+        sendNotificationAsync(userIds, ImConversationTypeEnum.PRIVATE.getType(), dto.getType(), dto);
     }
 
     @Override
     public void sendGroupMessageAsync(Collection<Long> userIds, ImGroupMessageDTO dto) {
-        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.GROUP.getType(), dto.getType(), dto);
-        executeAfterTransaction(() -> doSendNotification(userIds, notification));
+        sendNotificationAsync(userIds, ImConversationTypeEnum.GROUP.getType(), dto.getType(), dto);
     }
 
     @Override
     public void sendChannelMessageAsync(Collection<Long> userIds, ImChannelMessageDTO dto) {
-        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.CHANNEL.getType(), dto.getType(), dto);
-        executeAfterTransaction(() -> doSendNotification(userIds, notification));
+        sendNotificationAsync(userIds, ImConversationTypeEnum.CHANNEL.getType(), dto.getType(), dto);
     }
 
     @Override
     public void broadcastChannelMessageAsync(ImChannelMessageDTO dto) {
-        ImNotificationWebSocketBo notification = buildNotification(ImConversationTypeEnum.CHANNEL.getType(), dto.getType(), dto);
-        executeAfterTransaction(() -> doBroadcastNotification(notification));
+        broadcastNotificationAsync(ImConversationTypeEnum.CHANNEL.getType(), dto.getType(), dto);
     }
 
     /**

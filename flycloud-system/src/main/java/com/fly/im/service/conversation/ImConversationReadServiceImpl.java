@@ -90,4 +90,19 @@ public class ImConversationReadServiceImpl implements ImConversationReadService 
         return conversationReadMapper.selectPullListByUserId(userId, lastUpdateTime, lastId, limit);
     }
 
+    @Override
+    public void deleteConversationReadPosition(Long userId, Integer conversationType, Long conversationId) {
+        conversationReadMapper.deleteByUserIdAndConversation(userId, conversationType, conversationId);
+    }
+
+    @Override
+    public void deleteConversationReadPositions(Collection<Long> userIds, Integer conversationType, Long conversationId) {
+        conversationReadMapper.deleteByUserIdsAndConversation(userIds, conversationType, conversationId);
+    }
+
+    @Override
+    public void deleteConversationReadPositions(Integer conversationType, Long conversationId) {
+        conversationReadMapper.deleteByConversation(conversationType, conversationId);
+    }
+
 }

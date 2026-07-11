@@ -491,10 +491,15 @@ export const useImWebSocketStore = defineStore('imWebSocketStore', {
             ignoreRealtimePersistError(this.handlePrivateMessage(websocketMessage))
             break
           default:
-            if (isFriendChatTip(websocketMessage.type)) {
+            // 兼容旧服务曾错误把好友申请生命周期事件打到 PRIVATE 通道：
+            // 1201/1202/1203/1206-1210 只能更新好友状态，绝不能写入私聊消息或创建会话。
+            if (isFriendNotification(websocketMessage.type)) {
               this.handleFriendNotification(websocketMessage)
-              // FRIEND_DELETE 的 clear=true 语义是清会话本身，跳过气泡避免在已清会话里写入虚拟消息
-              if (!isFriendDeleteWithClear(websocketMessage)) {
+              // 只有 FRIEND_ADD / FRIEND_DELETE 是会话内提示气泡；其余好友事件均为无会话状态通知。
+              if (
+                isFriendChatTip(websocketMessage.type) &&
+                !isFriendDeleteWithClear(websocketMessage)
+              ) {
                 ignoreRealtimePersistError(this.handlePrivateMessage(websocketMessage))
               }
             } else {

@@ -18,7 +18,8 @@ import com.fly.system.api.im.domain.ImGroup;
 import com.fly.system.api.im.domain.ImGroupMember;
 import com.fly.system.api.im.domain.ImGroupMessage;
 import com.fly.im.mapper.ImGroupMessageMapper;
-import com.fly.im.dal.redis.message.ImGroupMessageReadRedisDAO;
+import com.fly.im.service.conversation.ImConversationReadService;
+import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import com.fly.system.api.im.enums.group.ImGroupMemberRoleEnum;
 import com.fly.system.api.im.enums.message.ImGroupMessageReceiptStatusEnum;
 import com.fly.system.api.im.enums.message.ImMessageStatusEnum;
@@ -69,7 +70,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     @Resource
     private ImGroupMessageMapper groupMessageMapper;
     @Resource
-    private ImGroupMessageReadRedisDAO groupMessageReadRedisDAO;
+    private ImConversationReadService conversationReadService;
 
     @Resource
     private ImGroupService groupService;
@@ -311,7 +312,7 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
     /**
      * 补全消息已读态和回执已读人数
      *
-     * 1. 消息已读态（status）：根据 Redis 已读游标判断 READ / UNREAD
+     * 1. 消息已读态（status）：根据数据库会话读游标判断 READ / UNREAD
      * 2. 回执已读人数（readCount）：仅对本人发送的回执消息，计算可见成员中的已读人数
      */
     @SuppressWarnings({"StatementWithEmptyBody", "DataFlowIssue"})
@@ -319,18 +320,19 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
         if (CollUtil.isEmpty(messages)) {
             return;
         }
-        // 群已读关闭：不查 Redis 已读游标，status 保持 DB 原值（含撤回），readCount 不补齐
+        // 群已读关闭：不查会话读游标，status 保持 DB 原值（含撤回），readCount 不补齐
         if (BooleanUtil.isFalse(imProperties.getMessage().isGroupReadEnabled())) {
             return;
         }
-        Map<Long, Long> readMaxMessageIdsByGroup = new HashMap<>(); // 群 → 已读位置
+        Map<Long, Long> readMaxMessageIdsByGroup = new HashMap<>(); // 群 → 当前用户已读位置
         Map<Long, Map<Long, Long>> readPositionsByGroup = new HashMap<>(); // 群 → (用户 → 已读位置)
         Map<Long, List<ImGroupMember>> membersByGroup = new HashMap<>(); // 群 → 全部成员列表
         for (ImGroupMessage message : messages) {
             // 消息已读态（status）：撤回 > 已读 > 未读
             Long groupId = message.getGroupId();
             long readMaxMessageId = readMaxMessageIdsByGroup.computeIfAbsent(groupId, gid -> {
-                Long readMaxMsgId = groupMessageReadRedisDAO.getReadMaxMessageId(gid, userId);
+                Long readMaxMsgId = conversationReadService.getConversationReadMessageId(
+                        userId, ImConversationTypeEnum.GROUP.getType(), gid);
                 return readMaxMsgId != null ? readMaxMsgId : -1L;
             });
             if (ImMessageStatusEnum.RECALL.getStatus().equals(message.getStatus())) {
@@ -347,7 +349,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
                 continue;
             }
             Map<Long, Long> positions = readPositionsByGroup.computeIfAbsent(groupId,
-                    gid -> groupMessageReadRedisDAO.getReadMaxMessageIdMap(gid));
+                    gid -> conversationReadService.getUserReadMessageIdMap(
+                            ImConversationTypeEnum.GROUP.getType(), gid));
             List<ImGroupMember> allMembers = membersByGroup.computeIfAbsent(groupId,
                     groupMemberService::getGroupMemberListByGroupId);
             Set<Long> visibleUserIds = getVisibleUserIds(message, allMembers);
@@ -376,15 +379,16 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             throw exception(MESSAGE_NOT_IN_GROUP);
         }
 
-        // 2. 已读位置未前进，直接返回
-        Long prevMaxMessageId = groupMessageReadRedisDAO.getReadMaxMessageId(groupId, userId);
-        if (prevMaxMessageId != null && prevMaxMessageId >= messageId) {
+        // 2. 记录旧游标用于计算本次需要刷新的回执区间；新游标只允许单调前进。
+        Long prevMaxMessageId = conversationReadService.getConversationReadMessageId(
+                userId, ImConversationTypeEnum.GROUP.getType(), groupId);
+        boolean advanced = conversationReadService.updateConversationReadPosition(
+                userId, ImConversationTypeEnum.GROUP.getType(), groupId, messageId);
+        if (!advanced) {
             return;
         }
-        // 3. 更新 Redis 群已读位置
-        groupMessageReadRedisDAO.updateReadMaxMessageId(groupId, userId, messageId);
 
-        // 4. 异步发送 READ 事件 + 刷新范围内的群回执
+        // 3. 异步发送 READ 事件 + 刷新范围内的群回执
         getSelf().readGroupMessageEvent(userId, groupId, prevMaxMessageId, messageId);
     }
 
@@ -409,9 +413,10 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             return Collections.emptyList();
         }
 
-        // 2. 获取所有成员和已读位置
+        // 2. 获取所有成员和数据库读位置
         List<ImGroupMember> allMembers = groupMemberService.getGroupMemberListByGroupId(groupId);
-        Map<Long, Long> allPositions = groupMessageReadRedisDAO.getReadMaxMessageIdMap(groupId);
+        Map<Long, Long> allPositions = conversationReadService.getUserReadMessageIdMap(
+                ImConversationTypeEnum.GROUP.getType(), groupId);
 
         // 3. 计算该消息的可见成员集合（排除发送者自己）
         Set<Long> visibleUserIds = getVisibleUserIds(message, allMembers);
@@ -464,7 +469,8 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
             return;
         }
         List<ImGroupMember> activeMembers = groupMemberService.getActiveGroupMemberListByGroupId(groupId);
-        Map<Long, Long> allPositions = groupMessageReadRedisDAO.getReadMaxMessageIdMap(groupId);
+        Map<Long, Long> allPositions = conversationReadService.getUserReadMessageIdMap(
+                ImConversationTypeEnum.GROUP.getType(), groupId);
         for (ImGroupMessage message : pendingMessages) {
             // 2.1.1 统计可见成员中的已读人数
             Set<Long> visibleUserIds = getVisibleUserIds(message, activeMembers);
@@ -618,17 +624,19 @@ public class ImGroupMessageServiceImpl implements ImGroupMessageService {
 
     @Override
     public void deleteReadMaxMessageId(Long groupId, Long userId) {
-        groupMessageReadRedisDAO.deleteReadMaxMessageId(groupId, userId);
+        conversationReadService.deleteConversationReadPosition(
+                userId, ImConversationTypeEnum.GROUP.getType(), groupId);
     }
 
     @Override
     public void deleteReadMaxMessageIds(Long groupId, Collection<Long> userIds) {
-        groupMessageReadRedisDAO.deleteReadMaxMessageIds(groupId, userIds);
+        conversationReadService.deleteConversationReadPositions(
+                userIds, ImConversationTypeEnum.GROUP.getType(), groupId);
     }
 
     @Override
     public void deleteReadMaxMessageIdMap(Long groupId) {
-        groupMessageReadRedisDAO.deleteReadMaxMessageIdMap(groupId);
+        conversationReadService.deleteConversationReadPositions(ImConversationTypeEnum.GROUP.getType(), groupId);
     }
 
     // ==================== 管理后台 ====================

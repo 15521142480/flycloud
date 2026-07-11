@@ -5,7 +5,6 @@ import com.fly.system.api.im.domain.ImFriend;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.friend.ImFriendService;
 import com.fly.im.service.websocket.ImWebSocketService;
-import com.fly.im.service.websocket.dto.ImPrivateMessageDTO;
 import com.fly.im.service.websocket.dto.notification.friend.FriendInfoUpdatedNotification;
 import com.fly.im.framework.system.AdminUserProfileUpdateMessage;
 import jakarta.annotation.Resource;
@@ -17,6 +16,8 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
+
+import static com.fly.system.api.im.enums.ImConversationTypeEnum.NONE;
 
 /**
  * 监听 system 模块的 {@link AdminUserProfileUpdateMessage} 消息，向「资料被改的人」的所有好友推送 FRIEND_INFO_UPDATED 通知
@@ -54,8 +55,8 @@ public class AdminUserProfileUpdateConsumer {
                 try {
                     FriendInfoUpdatedNotification payload = (FriendInfoUpdatedNotification) new FriendInfoUpdatedNotification()
                             .setOperatorUserId(userId).setFriendUserId(userId);
-                    websocketService.sendPrivateMessageAsync(friend.getFriendUserId(), ImPrivateMessageDTO.ofFriendNotification(
-                            ImMessageTypeEnum.FRIEND_INFO_UPDATED.getType(), userId, friend.getFriendUserId(), payload));
+                    websocketService.sendNotificationAsync(friend.getFriendUserId(), NONE.getType(),
+                            ImMessageTypeEnum.FRIEND_INFO_UPDATED.getType(), payload);
                     successCount++;
                 } catch (Exception e) {
                     log.warn("[onMessage][userId({}) friendUserId({}) 推送失败]",

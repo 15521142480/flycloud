@@ -37,7 +37,7 @@ defineOptions({ name: 'ProductItem' })
 defineProps({
   spuId: {
     type: String,
-    default: 0
+    default: ''
   },
   picUrl: {
     type: String,

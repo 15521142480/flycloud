@@ -2,6 +2,7 @@ package com.fly.im.service.message;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.im.framework.pojo.PageResult;
@@ -12,7 +13,8 @@ import com.fly.system.api.im.domain.bo.ImChannelMessageBo;
 import com.fly.system.api.im.domain.ImChannelMaterial;
 import com.fly.system.api.im.domain.ImChannelMessage;
 import com.fly.im.mapper.ImChannelMessageMapper;
-import com.fly.im.dal.redis.message.ImChannelMessageReadRedisDAO;
+import com.fly.im.service.conversation.ImConversationReadService;
+import com.fly.system.api.im.enums.ImConversationTypeEnum;
 import com.fly.system.api.im.enums.message.ImMessageTypeEnum;
 import com.fly.im.service.channel.ImChannelMaterialService;
 import com.fly.im.service.websocket.ImWebSocketService;
@@ -26,7 +28,6 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
     private ImWebSocketService webSocketService;
 
     @Resource
-    private ImChannelMessageReadRedisDAO channelMessageReadRedisDAO;
+    private ImConversationReadService conversationReadService;
 
     // ==================== 用户端 ====================
 
@@ -63,28 +64,29 @@ public class ImChannelMessageServiceImpl implements ImChannelMessageService {
 
     @Override
     public Map<Long, Long> getChannelReadMaxMessageIdMap(Long userId, Collection<Long> channelIds) {
-        Map<Long, Long> result = new HashMap<>(channelIds.size());
-        for (Long channelId : channelIds) {
-            Long max = channelMessageReadRedisDAO.getReadMaxMessageId(channelId, userId);
-            if (max != null) {
-                result.put(channelId, max);
-            }
-        }
-        return result;
+        return conversationReadService.getConversationReadMessageIdMap(
+                userId, ImConversationTypeEnum.CHANNEL.getType(), channelIds);
     }
 
     @Override
     public void readChannelMessages(Long userId, Long channelId, Long messageId) {
         Assert.notNull(channelId, "频道编号不能为空");
         Assert.notNull(messageId, "已读消息编号不能为空");
-        // 1. 已读位置未前进，直接返回
-        Long prevMaxMessageId = channelMessageReadRedisDAO.getReadMaxMessageId(channelId, userId);
-        if (prevMaxMessageId != null && prevMaxMessageId >= messageId) {
+        // 1. 仅允许推进当前频道内、当前用户可见的真实消息，防止伪造 messageId 污染读游标。
+        ImChannelMessage message = channelMessageMapper.selectById(messageId);
+        if (message == null || ObjUtil.notEqual(message.getChannelId(), channelId)) {
+            return;
+        }
+        if (CollUtil.isNotEmpty(message.getReceiverUserIds()) && !message.getReceiverUserIds().contains(userId)) {
             return;
         }
 
-        // 2. 更新 Redis 频道已读位置
-        channelMessageReadRedisDAO.updateReadMaxMessageId(channelId, userId, messageId);
+        // 2. 数据库游标单调前进；未前进时无需重复广播多端 READ 事件。
+        boolean advanced = conversationReadService.updateConversationReadPosition(
+                userId, ImConversationTypeEnum.CHANNEL.getType(), channelId, messageId);
+        if (!advanced) {
+            return;
+        }
 
         // 3. 异步推 READ 事件给自己多端同步
         getSelf().readChannelMessageEvent(userId, channelId, messageId);

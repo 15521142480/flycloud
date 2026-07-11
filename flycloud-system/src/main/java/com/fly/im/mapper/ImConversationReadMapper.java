@@ -40,6 +40,41 @@ public interface ImConversationReadMapper extends BaseMapperPlus<ImConversationR
     }
 
     /**
+     * 删除用户在指定会话中的读位置。
+     *
+     * 用于成员退出群聊后清理已读状态，避免再次加入同一群时沿用旧游标。
+     */
+    default int deleteByUserIdAndConversation(Long userId, Integer conversationType, Long conversationId) {
+        return delete(new LambdaQueryWrapperX<ImConversationRead>()
+                .eq(ImConversationRead::getUserId, userId)
+                .eq(ImConversationRead::getConversationType, conversationType)
+                .eq(ImConversationRead::getTargetId, conversationId));
+    }
+
+    /**
+     * 批量删除多个用户在指定会话中的读位置。
+     */
+    default int deleteByUserIdsAndConversation(Collection<Long> userIds, Integer conversationType,
+                                                Long conversationId) {
+        if (userIds == null || userIds.isEmpty()) {
+            return 0;
+        }
+        return delete(new LambdaQueryWrapperX<ImConversationRead>()
+                .in(ImConversationRead::getUserId, userIds)
+                .eq(ImConversationRead::getConversationType, conversationType)
+                .eq(ImConversationRead::getTargetId, conversationId));
+    }
+
+    /**
+     * 删除指定会话的全部读位置。
+     */
+    default int deleteByConversation(Integer conversationType, Long conversationId) {
+        return delete(new LambdaQueryWrapperX<ImConversationRead>()
+                .eq(ImConversationRead::getConversationType, conversationType)
+                .eq(ImConversationRead::getTargetId, conversationId));
+    }
+
+    /**
      * 增量拉取当前用户的会话读位置（按 update_time + id 正向游标）
      *
      * @param userId         当前用户编号

@@ -2,10 +2,10 @@ import { toRaw } from 'vue'
 
 import { getCurrentUserId } from '@/utils/auth'
 import { ImConversationType } from './constants'
-import type { MessageDO, SettingDO } from '../home/types'
+import type { ConversationDO, MessageDO, SettingDO } from '../home/types'
 import { compareId } from './id'
 
-export const DB_SCHEMA_VERSION = 2
+export const DB_SCHEMA_VERSION = 3
 
 export type DbStoreName =
   | 'conversations'
@@ -100,7 +100,40 @@ function createIndex(
 }
 
 /** 初始化 schema */
-function upgradeSchema(db: IDBDatabase) {
+/** 旧版本把好友申请等无会话事件错误缓存为私聊消息，需要在升级时一次性剔除。 */
+function removeLegacyFriendNotificationMessages(transaction: IDBTransaction) {
+  const invalidFriendNotificationTypes = new Set([1201, 1202, 1203, 1206, 1207, 1208, 1209, 1210])
+  const invalidConversationIds = new Set<string>()
+  const messageStore = transaction.objectStore('messages')
+  const messageRequest = messageStore.openCursor()
+  messageRequest.onsuccess = () => {
+    const cursor = messageRequest.result
+    if (!cursor) {
+      const conversationStore = transaction.objectStore('conversations')
+      const conversationRequest = conversationStore.openCursor()
+      conversationRequest.onsuccess = () => {
+        const conversationCursor = conversationRequest.result
+        if (!conversationCursor) {
+          return
+        }
+        const conversation = conversationCursor.value as ConversationDO
+        if (invalidConversationIds.has(conversation.clientConversationId)) {
+          conversationCursor.delete()
+        }
+        conversationCursor.continue()
+      }
+      return
+    }
+    const message = cursor.value as MessageDO
+    if (message.conversationType === ImConversationType.PRIVATE && invalidFriendNotificationTypes.has(message.type)) {
+      invalidConversationIds.add(message.clientConversationId)
+      cursor.delete()
+    }
+    cursor.continue()
+  }
+}
+
+function upgradeSchema(db: IDBDatabase, transaction: IDBTransaction, oldVersion: number) {
   if (!db.objectStoreNames.contains('conversations')) {
     const store = db.createObjectStore('conversations', { keyPath: 'clientConversationId' })
     createIndex(store, 'lastSendTime', 'lastSendTime')
@@ -150,6 +183,9 @@ function upgradeSchema(db: IDBDatabase) {
   if (!db.objectStoreNames.contains('settings')) {
     db.createObjectStore('settings', { keyPath: 'key' })
   }
+  if (oldVersion < 3) {
+    removeLegacyFriendNotificationMessages(transaction)
+  }
 }
 
 /** 打开 IM IndexedDB */
@@ -157,7 +193,8 @@ function openDb(name: string): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(name, DB_SCHEMA_VERSION)
     // 创建或升级对象仓库
-    request.onupgradeneeded = () => upgradeSchema(request.result)
+    request.onupgradeneeded = (event) =>
+      upgradeSchema(request.result, request.transaction!, event.oldVersion)
     // 返回可复用连接
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject(request.error)
