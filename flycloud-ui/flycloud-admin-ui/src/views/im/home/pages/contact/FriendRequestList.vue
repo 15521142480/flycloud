@@ -20,7 +20,7 @@
         :max="99"
         class="mr-2"
       />
-      <span class="text-sm text-[var(--el-text-color-secondary)]">{{ requests.length }}</span>
+      <span class="text-sm text-[var(--el-text-color-secondary)]">{{ enrichedRequests.length }}</span>
     </div>
     <div v-show="expanded">
       <div
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div
-        v-if="requests.length === 0"
+        v-if="enrichedRequests.length === 0"
         class="py-3 text-12px text-center text-[var(--el-text-color-disabled)]"
       >
         暂无新的朋友
@@ -81,6 +81,7 @@ import UserAvatar from '../../components/user/UserAvatar.vue'
 import { useFriendStore } from '../../store/friendStore'
 import { getCurrentUserId } from '@/utils/auth'
 import { DICT_TYPE, getDictLabel } from '@/utils/dict'
+import { ImFriendRequestHandleResult } from '../../../utils/constants'
 import type { FriendRequest } from '../../types'
 
 defineOptions({ name: 'ImContactFriendRequestList' })
@@ -111,10 +112,27 @@ function getPeer(request: FriendRequest) {
   }
 }
 
-/** 列表项预先附 peer 字段，模板里直接 {{ peer.xxx }} 一次成型，省 3 次 helper 调用 */
-const enrichedRequests = computed(() =>
-  props.requests.map((request) => ({ request, peer: getPeer(request) }))
-)
+/**
+ * 同一用户可能同时存在「我发出的申请」和「对方发来的申请」两条历史记录。
+ * 通讯录只展示一个对端条目，优先保留待当前用户处理的来信；其余情况按后端倒序保留最新记录。
+ */
+const enrichedRequests = computed(() => {
+  const requestByPeerId = new Map<string, FriendRequest>()
+  for (const request of props.requests) {
+    const peerId = getPeer(request).id
+    const existing = requestByPeerId.get(peerId)
+    const isIncomingUnhandled =
+      request.toUserId === currentUserId.value &&
+      request.handleResult === ImFriendRequestHandleResult.UNHANDLED
+    const existingIncomingUnhandled =
+      existing?.toUserId === currentUserId.value &&
+      existing?.handleResult === ImFriendRequestHandleResult.UNHANDLED
+    if (!existing || (isIncomingUnhandled && !existingIncomingUnhandled)) {
+      requestByPeerId.set(peerId, request)
+    }
+  }
+  return Array.from(requestByPeerId.values()).map((request) => ({ request, peer: getPeer(request) }))
+})
 
 /** 点击「加载更多」拉下一页；store 内部按 maxId 游标分页 + pending 去重 */
 const loadingMore = ref(false)

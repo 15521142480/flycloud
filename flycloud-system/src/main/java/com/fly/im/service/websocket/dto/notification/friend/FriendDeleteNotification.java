@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * 好友删除通知
  * <p>
- * 仅推送给操作人多端做同步（对端不感知，与单边删除语义对齐）；前端清除本地好友 + 按 clear 决定级联清理
+ * 仅推送给操作人多端；前端清除本地好友，并按 clear 决定是否级联清理历史会话。
  */
 @Data
 @Accessors(chain = true)

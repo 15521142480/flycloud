@@ -198,19 +198,16 @@ public class ImFriendServiceImpl implements ImFriendService {
     })
     @Transactional(rollbackFor = Exception.class)
     public void deleteFriend(Long userId, Long friendUserId, Boolean clear) {
-        // 1. 单边软删：仅 userId 视角的关系置 DISABLE；friendUserId 视角不动
+        // 1. 单边软删：仅 userId 视角的关系置 DISABLE；friendUserId 继续保留历史会话和联系人展示。
         if (!deleteFriend0(userId, friendUserId)) {
             return;
         }
 
-        // 2. 走 sendPrivateMessage + persistent=false：不入库 + 仅推 userId 多端（friendUserId 不感知）；clear 透传让多端清理动作一致
-        //    clear=false 时前端按 type=FRIEND_DELETE 渲染「你已删除好友」会话气泡（瞬时）；
-        //    clear=true 时前端按 clear 字段直接清会话，跳过气泡渲染
+        // 2. 仅同步操作人多端：不入库、不影响对端；clear 透传确保同一用户多端的会话清理动作一致。
         FriendDeleteNotification payload = ((FriendDeleteNotification) new FriendDeleteNotification()
                 .setOperatorUserId(userId).setFriendUserId(friendUserId)).setClear(clear);
-        privateMessageService.sendPrivateMessage(userId, new ImPrivateMessageSendDTO()
-                .setReceiverId(friendUserId).setType(ImMessageTypeEnum.FRIEND_DELETE.getType())
-                .setContent(payload).setPersistent(false));
+        websocketService.sendNotificationAsync(userId, NONE.getType(),
+                ImMessageTypeEnum.FRIEND_DELETE.getType(), payload);
     }
 
     @Override

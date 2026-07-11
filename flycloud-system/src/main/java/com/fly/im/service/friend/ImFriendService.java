@@ -83,7 +83,7 @@ public interface ImFriendService {
     /**
      * 删除好友（单向软删除）
      * <p>
-     * 仅删除 userId 视角下的好友关系；对端 friendUserId 的视角不受影响（单边删除语义）
+     * 仅删除 userId 视角下的好友关系；对端 friendUserId 的视角不受影响。
      *
      * @param clear 是否级联清理本端相关数据（当前包含私聊会话；通过 FRIEND_DELETE 通知透传给多端）
      */

@@ -737,8 +737,8 @@ export const useFriendStore = defineStore('imFriendStore', {
     },
 
     /**
-     * FRIEND_DELETE(1205)：好友被删除；本端清理 + 按 payload.clear 决定是否级联清会话（多端跟主操作端一致）
-     * peerUserId 由 websocketStore 按帧 sender / receiver 算好传入；与 FRIEND_ADD 保持一致的 peer 推断
+     * FRIEND_DELETE(1205)：好友被删除；本端清理 + 按 payload.clear 决定是否级联清会话。
+     * 无会话通知中的 friendUserId 是操作人本端的对端编号。
      */
     applyFriendDeleteNotification(payload: FriendNotificationPayload, peerUserId: string) {
       this.removeFriend(peerUserId, payload.clear !== false)
