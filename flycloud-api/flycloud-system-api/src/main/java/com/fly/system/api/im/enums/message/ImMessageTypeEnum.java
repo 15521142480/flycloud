@@ -151,7 +151,6 @@ public enum ImMessageTypeEnum implements ArrayValuable<Integer> {
      * 对应 OpenIM：FriendAddedNotification 1204（OpenIM friendAdded.isSendMsg=false 默认不入消息流；本系统改为入库当会话气泡）
      * 对应自己的类：FriendAddNotification
      * 场景：双方建立好友关系，单条入库（sender=fromUserId, receiver=toUserId）；双向 WebSocket 自动覆盖双方多端
-     * 注意：silentReAddFriend 单边语义场景，发送时显式 setPersistent(false) 覆盖默认值
      */
     FRIEND_ADD(1204, "新增好友", true, false),
     /**

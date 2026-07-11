@@ -2,7 +2,6 @@ package com.fly.im.service.friend;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.fly.common.security.util.UserUtils;
 import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
@@ -66,6 +65,15 @@ public class ImFriendServiceImpl implements ImFriendService {
     @Override
     @Cacheable(cacheNames = FRIEND_STATE, key = "#userId + '_' + #friendUserId", unless = "#result == null")
     public Integer getFriendState(Long userId, Long friendUserId) {
+        return getFriendStateDirect(userId, friendUserId);
+    }
+
+    /**
+     * 直接查询数据库中的双向好友状态。
+     *
+     * 私聊发送、通话邀请等权限动作必须以实时数据为准，不能因缓存短暂滞后继续放行已删除的好友关系。
+     */
+    private Integer getFriendStateDirect(Long userId, Long friendUserId) {
         // 1.1 我侧记录：我方删了，都算非好友
         ImFriend mine = friendMapper.selectByUserIdAndFriendUserId(userId, friendUserId);
         if (mine == null || !CommonStatusEnum.isEnable(mine.getStatus())) {
@@ -82,18 +90,14 @@ public class ImFriendServiceImpl implements ImFriendService {
 
     @Override
     public void validateFriend(Long userId, Long peerUserId) {
-        // 好友 ／ 黑名单校验：和私聊消息发送同一套语义；NONE 已删 ／ 未加，BLOCKED 被对方拉黑
-        Integer state = getSelf().getFriendState(userId, peerUserId);
+        // 权限校验直接读取数据库：NONE 已删／未加，BLOCKED 被对方拉黑。
+        Integer state = getFriendStateDirect(userId, peerUserId);
         if (ImFriendStateEnum.isNone(state)) {
             throw exception(FRIEND_NOT_FRIEND);
         }
         if (ImFriendStateEnum.isBlocked(state)) {
             throw exception(FRIEND_BLOCKED_BY_PEER);
         }
-    }
-
-    private ImFriendService getSelf() {
-        return SpringUtil.getBean(getClass());
     }
 
     @Override
@@ -193,26 +197,6 @@ public class ImFriendServiceImpl implements ImFriendService {
             @CacheEvict(cacheNames = FRIEND_STATE, key = "#friendUserId + '_' + #userId")
     })
     @Transactional(rollbackFor = Exception.class)
-    public void silentReAddFriend(Long userId, Long friendUserId, String displayName, Integer addSource) {
-        // 1. 单边重新启用我侧好友关系
-        addFriend0(userId, friendUserId, displayName, addSource);
-
-        // 2. 走 sendPrivateMessage + persistent=false：不入库 + 仅推 userId 多端（对方完全不感知，保持「对方一直把我当好友」错觉）
-        //    operatorUserId 填 friendUserId（对方）：让 userId 多端 UI 呈现「对方加了我」视角，与 silent 语义对齐
-        //    前端按 type=FRIEND_ADD 渲染会话气泡（瞬时，不入库刷新即消失）
-        FriendAddNotification payload = (FriendAddNotification) new FriendAddNotification()
-                .setOperatorUserId(friendUserId).setFriendUserId(friendUserId);
-        privateMessageService.sendPrivateMessage(userId, new ImPrivateMessageSendDTO()
-                .setReceiverId(friendUserId).setType(ImMessageTypeEnum.FRIEND_ADD.getType())
-                .setContent(payload).setPersistent(false));
-    }
-
-    @Override
-    @Caching(evict = {
-            @CacheEvict(cacheNames = FRIEND_STATE, key = "#userId + '_' + #friendUserId"),
-            @CacheEvict(cacheNames = FRIEND_STATE, key = "#friendUserId + '_' + #userId")
-    })
-    @Transactional(rollbackFor = Exception.class)
     public void deleteFriend(Long userId, Long friendUserId, Boolean clear) {
         // 1. 单边软删：仅 userId 视角的关系置 DISABLE；friendUserId 视角不动
         if (!deleteFriend0(userId, friendUserId)) {
@@ -288,7 +272,7 @@ public class ImFriendServiceImpl implements ImFriendService {
     }
 
     /**
-     * 单向绑定好友关系（内部方法，被 {@link #becomeFriends} / {@link #silentReAddFriend} 调用）：
+     * 单向绑定好友关系（内部方法，由 {@link #becomeFriends} 调用）：
      * - 情况一：已存在 ENABLE 记录 → 已是好友，幂等跳过；不重置 silent / pinned / blocked，避免历史未处理申请再被同意时清掉用户的拉黑 / 置顶 / 免打扰设置
      * - 情况二：已存在 DISABLE 记录 → 复用并恢复 ENABLE，silent / pinned / blocked 一并重置为 false，对齐"重新加好友"语义
      * - 情况三：不存在记录 → 直接插入新记录

@@ -40,7 +40,7 @@
             </el-tooltip>
             <!-- 通话入口：私聊弹「语音 / 视频」popover；群聊直接进选人弹窗 -->
             <el-popover
-              v-if="isPrivate"
+              v-if="isPrivate && !showNotFriendBanner"
               v-model:visible="callPopoverVisible"
               placement="bottom-end"
               :width="140"
@@ -177,8 +177,8 @@
         </transition>
       </div>
 
-      <!-- 底部：输入框（频道单向消息无需输入框）；多选模式底栏作为浮层盖在上面，保持下方输入框尺寸不变 -->
-      <div v-if="!isChannel" class="relative">
+      <!-- 底部：频道和非好友私聊均不提供输入入口；好友关系恢复后自动重新显示。 -->
+      <div v-if="!isChannel && !showNotFriendBanner" class="relative">
         <MessageInput />
         <MessageMultiSelectBar v-if="multiSelect.state.active" class="absolute inset-0 z-10" />
       </div>

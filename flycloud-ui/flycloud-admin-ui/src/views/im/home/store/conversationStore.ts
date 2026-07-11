@@ -10,7 +10,7 @@ import {
   isNormalMessage
 } from '../../utils/constants'
 import { getClientConversationId, getDb, StorageKeys, type DbTransaction } from '../../utils/db'
-import { runIncrementalPull } from '../../utils/pull'
+import { runIncrementalPull, toPullTimestamp } from '../../utils/pull'
 import { getCurrentUserId } from '@/utils/auth'
 import { useMessageStore } from './messageStore'
 import { compareId, isPositiveId, maxId } from '../../utils/id'
@@ -371,7 +371,7 @@ export const useConversationStore = defineStore('imConversationStore', {
             conversationType: record.conversationType,
             targetId: record.targetId,
             messageId,
-            updateTime: record.updateTime
+            updateTime: toPullTimestamp(record.updateTime)
           }
           this.conversationReads[clientConversationId] = next
           changedReads.set(clientConversationId, next)

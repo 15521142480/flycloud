@@ -13,7 +13,7 @@ export interface ImFriendRequestRespVO {
   addSource?: number // 添加来源；参见 ImFriendAddSourceEnum
   handleTime?: string // 处理时间
   createTime: string // 申请创建时间
-  updateTime?: number // 最近更新时间（毫秒时间戳，增量拉取游标用）
+  updateTime?: string // 后端 LocalDateTime，增量拉取器会转换为毫秒时间戳
   // 聚合字段（自 AdminUser）
   fromNickname?: string // 发起方昵称
   fromAvatar?: string // 发起方头像

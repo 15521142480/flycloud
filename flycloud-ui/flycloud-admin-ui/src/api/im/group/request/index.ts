@@ -15,7 +15,7 @@ export interface ImGroupRequestRespVO {
   addSource?: number // 加入来源；参见 ImGroupAddSourceEnum
   handleTime?: string // 处理时间
   createTime: string // 申请创建时间
-  updateTime?: number // 最近更新时间（毫秒时间戳，增量拉取游标用）
+  updateTime?: string // 后端 LocalDateTime，增量拉取器会转换为毫秒时间戳
   // 聚合字段
   userNickname?: string // 申请人 / 被邀请人昵称
   userAvatar?: string // 申请人 / 被邀请人头像

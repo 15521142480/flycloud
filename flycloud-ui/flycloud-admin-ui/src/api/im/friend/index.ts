@@ -15,7 +15,7 @@ export interface ImFriendRespVO {
   status?: number // 好友状态（0=正常，1=已删除）
   addTime?: string // 添加好友时间
   deleteTime?: string // 删除好友时间
-  updateTime?: number // 最近更新时间（毫秒时间戳，增量拉取游标用）
+  updateTime?: string // 后端 LocalDateTime，增量拉取器会转换为毫秒时间戳
   // 聚合字段（自 AdminUser）
   nickname?: string // 好友昵称
   nicknamePinyin?: string // 昵称的拼音（小写无空格，前端按首字母分桶 / 拼音搜索）

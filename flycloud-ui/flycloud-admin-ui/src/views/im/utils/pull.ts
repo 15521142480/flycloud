@@ -18,7 +18,7 @@ export interface PullCursor {
 /** 可作为游标的拉取记录：服务端按 update_time + id 返回，客户端取最后一条推进游标 */
 interface PullRecord {
   id: string
-  updateTime?: number
+  updateTime?: number | string
 }
 
 /** 单次拉取条数（与后端 limit 上限对齐） */
@@ -30,9 +30,47 @@ const PULL_OVERLAP_MS = 5000
 /** 消息类 minId 拉取的单轮翻页上限，兜底防御异常游标死翻；消息量可能远大于状态事件，放宽到 1000 */
 const MIN_ID_PULL_MAX_PAGES = 1000
 
-/** 读取某模块的拉取游标；无则返回空游标（首次拉全量） */
+/**
+ * 将后端 LocalDateTime 字符串或本地缓存值转换成毫秒时间戳。
+ *
+ * IM 增量接口的 updateTime 在 JSON 中是日期字符串，而请求参数需要毫秒数；
+ * 统一在这里收口，避免把 NaN 写进 IndexedDB 后再次发送给后端。
+ */
+export function toPullTimestamp(value: unknown): number | undefined {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) && value >= 0 ? Math.trunc(value) : undefined
+  }
+  if (value instanceof Date) {
+    const timestamp = value.getTime()
+    return Number.isFinite(timestamp) && timestamp >= 0 ? timestamp : undefined
+  }
+  if (typeof value !== 'string') {
+    return undefined
+  }
+  const text = value.trim()
+  if (!text) {
+    return undefined
+  }
+  if (/^\d+(?:\.\d+)?$/.test(text)) {
+    const timestamp = Number(text)
+    return Number.isFinite(timestamp) && timestamp >= 0 ? Math.trunc(timestamp) : undefined
+  }
+  // LocalDateTime 默认形如 "2026-07-12 10:20:30"，替换为空格后的 ISO 分隔符以保证浏览器解析一致。
+  const timestamp = Date.parse(text.replace(' ', 'T'))
+  return Number.isFinite(timestamp) && timestamp >= 0 ? timestamp : undefined
+}
+
+/** 读取某模块的拉取游标；无效缓存按首次全量拉取处理。 */
 export async function getPullCursor(key: string): Promise<PullCursor> {
-  return (await getDb().getSetting<PullCursor>(key)) ?? {}
+  const stored = await getDb().getSetting<PullCursor>(key)
+  const lastUpdateTime = toPullTimestamp(stored?.lastUpdateTime)
+  if (lastUpdateTime == null) {
+    return {}
+  }
+  return {
+    lastUpdateTime,
+    lastId: stored?.lastId != null ? String(stored.lastId) : undefined
+  }
 }
 
 /**
@@ -77,10 +115,12 @@ export async function runIncrementalPull<T extends PullRecord>(
       }
       // 推进游标到本页最后一条并持久化：下次从这里接着拉
       const last = list[list.length - 1]
-      if (last.updateTime == null) {
+      const lastUpdateTime = toPullTimestamp(last.updateTime)
+      if (lastUpdateTime == null || !last.id) {
+        console.warn(`[IM pull] ${cursorKey} 返回了无效 updateTime，停止推进游标`, last)
         return
       }
-      cursor = { lastUpdateTime: last.updateTime, lastId: last.id }
+      cursor = { lastUpdateTime, lastId: String(last.id) }
       if (
         highWater.lastUpdateTime == null ||
         cursor.lastUpdateTime > highWater.lastUpdateTime ||

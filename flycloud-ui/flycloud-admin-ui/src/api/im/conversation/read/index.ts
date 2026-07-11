@@ -8,7 +8,7 @@ export interface ImConversationReadRespVO {
   conversationType: number // 会话类型，参见 ImConversationType
   targetId: string // 会话目标编号
   messageId: string // 最大已读消息编号
-  updateTime?: number // 最近更新时间（毫秒时间戳，增量拉取游标用）
+  updateTime?: string // 后端 LocalDateTime，增量拉取器会转换为毫秒时间戳
 }
 
 // 增量拉取当前用户的会话读位置（重连 / 离线补偿）

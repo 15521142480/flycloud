@@ -70,7 +70,9 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
 
     @Override
     public ImPrivateMessage sendPrivateMessage(Long senderId, ImPrivateMessageBo reqVo) {
-        // 1.1 幂等校验：根据 senderId + clientMessageId 查重
+        // 1.1 发送权限优先于幂等返回：删好友后即使重放旧 clientMessageId，也不能继续发送。
+        friendService.validateFriend(senderId, reqVo.getReceiverId());
+        // 1.2 幂等校验：根据 senderId + clientMessageId 查重
         ImPrivateMessage existing = privateMessageMapper.selectBySenderIdAndClientMessageId(
                 senderId, reqVo.getClientMessageId());
         if (existing != null) {
@@ -78,10 +80,8 @@ public class ImPrivateMessageServiceImpl implements ImPrivateMessageService {
                     senderId, reqVo.getClientMessageId(), existing.getId());
             return existing;
         }
-        // 1.2 消息内容校验
+        // 1.3 消息内容校验
         ImMessageUtils.validateUserMessageContent(reqVo.getType(), reqVo.getContent());
-        // 1.3 好友校验
-        friendService.validateFriend(senderId, reqVo.getReceiverId());
         // 1.4 文本消息敏感词过滤
         if (ImMessageTypeEnum.TEXT.getType().equals(reqVo.getType())) {
             sensitiveWordService.validateText(reqVo.getContent());

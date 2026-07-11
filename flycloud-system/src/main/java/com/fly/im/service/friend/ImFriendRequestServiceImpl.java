@@ -4,7 +4,6 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.fly.common.security.util.UserUtils;
-import com.fly.system.api.im.enums.CommonStatusEnum;
 import com.fly.im.framework.pojo.PageResult;
 import com.fly.common.utils.BeanUtils;
 import com.fly.system.api.im.domain.bo.ImFriendRequestBo;
@@ -84,19 +83,13 @@ public class ImFriendRequestServiceImpl implements ImFriendRequestService {
         if (ImFriendStateEnum.isBlocked(state)) {
             throw exception(FRIEND_REQUEST_BLOCKED_BY_PEER);
         }
-        // 1.4 单向好友（我已删 + 对方仍把我当好友）：静默重新启用我侧关系，避免对方感知我曾删除
+        // 我已单向删除时，双向状态会降为 NONE；仍需单独校验对方是否保留了拉黑标记。
         ImFriend peerFriend = friendService.getFriend(toUserId, fromUserId);
-        if (peerFriend != null && CommonStatusEnum.isEnable(peerFriend.getStatus())) {
-            // 对方已拉黑：静默恢复等于绕过拉黑回到好友列表，必须先拒掉；
-            // getFriendState 在我侧 DISABLE 时直接返回 NONE，拿不到 BLOCKED 信号，这里显式补一次校验
-            if (BooleanUtil.isTrue(peerFriend.getBlocked())) {
-                throw exception(FRIEND_REQUEST_BLOCKED_BY_PEER);
-            }
-            friendService.silentReAddFriend(fromUserId, toUserId, reqVo.getDisplayName(), reqVo.getAddSource());
-            return null;
+        if (peerFriend != null && BooleanUtil.isTrue(peerFriend.getBlocked())) {
+            throw exception(FRIEND_REQUEST_BLOCKED_BY_PEER);
         }
-
-        // 2. 落库：同一申请人和接收人唯一，已有记录覆盖申请内容并重置为未处理
+        // 2. 落库：即使对方仍保留单向好友关系，也必须重新走申请确认，不能静默恢复。
+        // 同一申请人和接收人唯一，已有记录覆盖申请内容并重置为未处理。
         ImFriendRequest request = createOrResetRequest(fromUserId, reqVo);
 
         // 3. 推送 FRIEND_REQUEST_RECEIVED 给 toUser 多端；payload 携带申请方昵称 / 头像，前端按 requestId 直推 push 进列表
