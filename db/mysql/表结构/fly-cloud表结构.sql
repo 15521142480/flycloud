@@ -1719,6 +1719,23 @@ create table sys_menu
 )
     comment '菜单表' charset = utf8mb4;
 
+create table report_go_view_project
+(
+    id          bigint auto_increment comment '项目编号'
+        primary key,
+    name        varchar(255)                       not null comment '项目名称',
+    pic_url     varchar(1024)                      null comment '预览图片 URL',
+    content     longtext                           null comment '报表内容（JSON）',
+    status      tinyint  default 1                 not null comment '发布状态（0：已发布，1：未发布）',
+    remark      varchar(500)                       null comment '项目备注',
+    create_by   varchar(32)                        null comment '创建人',
+    create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_by   varchar(32)                        null comment '更新人',
+    update_time datetime                           null on update CURRENT_TIMESTAMP comment '更新时间',
+    is_deleted  bit      default b'0'              not null comment '是否删除'
+)
+    comment 'GoView 项目表' charset = utf8mb4;
+
 create table sys_menu_old
 (
     id                bigint auto_increment comment '菜单ID'
@@ -1909,5 +1926,4 @@ create table undo_log
         unique (xid, branch_id)
 )
     comment 'AT transaction mode undo table';
-
 

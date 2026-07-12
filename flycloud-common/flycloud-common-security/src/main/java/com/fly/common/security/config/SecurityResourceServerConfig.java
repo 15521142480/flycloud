@@ -10,6 +10,7 @@ import com.fly.common.security.handler.CustomAuthenticationFailureHandler;
 import com.fly.common.security.handler.CustomAuthenticationSuccessHandler;
 import com.fly.common.security.filter.BearerTokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.core.annotation.Order;

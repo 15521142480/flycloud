@@ -1,4 +1,4 @@
-package com.fly.report.framework.jmreport.core.service;
+package com.fly.common.report.jmreport.core.service;
 
 import com.alibaba.fastjson.JSONObject;
 import org.jeecg.modules.drag.service.IOnlDragExternalService;
@@ -12,7 +12,7 @@ import java.util.Map;
  * 积木仪表盘扩展服务。
  *
  * @author lxs
- * @date 2026-07-02
+ * @date 2026-07-12
  */
 public class JmOnlDragExternalServiceImpl implements IOnlDragExternalService {
 

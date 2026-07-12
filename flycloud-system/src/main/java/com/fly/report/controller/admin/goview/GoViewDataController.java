@@ -31,13 +31,13 @@ public class GoViewDataController {
     private final IGoViewDataService goViewDataService;
 
     @RequestMapping("/get-by-sql")
-    @PreAuthorize("@pms.hasPermission('report:go-view-data:get-by-sql')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:list', 'report:manage'})")
     public R<GoViewDataRespVo> getDataBySQL(@Valid @RequestBody GoViewDataGetBySqlBo bo) {
         return R.ok(goViewDataService.getDataBySql(bo.getSql()));
     }
 
     @RequestMapping("/get-by-http")
-    @PreAuthorize("@pms.hasPermission('report:go-view-data:get-by-http')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:list', 'report:manage'})")
     public R<GoViewDataRespVo> getDataByHttp(@RequestParam(required = false) Map<String, String> params,
                                              @RequestBody(required = false) String body) {
         GoViewDataRespVo respVo = new GoViewDataRespVo();

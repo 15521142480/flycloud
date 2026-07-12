@@ -146,6 +146,10 @@ security:
       - /v2/api-docs/**
       - /v3/api-docs
       - /v3/api-docs/**
+      # 积木报表静态资源由网关根路径转发；报表接口自行使用 token 参数或 X-Access-Token 校验。
+      - /jmreport/**
+      - /drag/**
+      - /jimubi/**
 
     # 是否启用网关验证（是：接口都拦截验证；否：全部接口在网关服务都为白名单）
     gateway-enable: true

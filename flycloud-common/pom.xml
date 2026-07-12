@@ -25,6 +25,8 @@
         <module>flycloud-common-elasticsearch</module>
         <module>flycloud-common-feign</module>
         <module>flycloud-common-websocket</module>
+        <module>flycloud-common-report</module>
+        <module>flycloud-common-onlineoffice</module>
     </modules>
 
 </project>

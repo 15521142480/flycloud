@@ -1,7 +1,8 @@
-package com.fly.report.framework.jmreport.core.service;
+package com.fly.common.report.jmreport.core.service;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
@@ -10,17 +11,18 @@ import com.fly.common.security.user.FlyUser;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.auth.SecurityUtils;
 import com.fly.common.utils.auth.TokenUtils;
+import com.fly.common.utils.json.JsonUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.jeecg.modules.jmreport.api.JmReportTokenServiceI;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -30,10 +32,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 积木报表 Token 校验服务。
+ * 积木报表令牌校验服务。
  *
  * @author lxs
- * @date 2026-07-02
+ * @date 2026-07-12
  */
 @RequiredArgsConstructor
 public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
@@ -53,7 +55,6 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     };
 
     private final RedisUtils redisUtils;
-
     private final AuthProperties authProperties;
 
     @Override
@@ -94,7 +95,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         if (user == null) {
             return null;
         }
-        return hasJmReportAdminPermission() ? new String[]{"admin"} : null;
+        return hasJmReportManagePermission() ? new String[]{"admin"} : null;
     }
 
     @Override
@@ -105,23 +106,24 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
 
     @Override
     public String[] getPermissions(String token) {
-        return resolveLoginUser(token) != null && hasJmReportAdminPermission() ? JIMU_REPORT_PERMISSIONS : null;
+        return resolveLoginUser(token) != null && hasJmReportManagePermission()
+                ? JIMU_REPORT_PERMISSIONS : null;
     }
 
     /**
-     * 根据 JmReport 传入的 token 构建登录用户。
+     * 根据积木报表传入的令牌构建登录用户。
      */
     private FlyUser buildLoginUserByToken(String token) {
-        String accessToken = TokenUtils.getToken(token);
-        if (StrUtil.isBlank(accessToken)) {
+        String loginToken = normalizeToken(token);
+        if (StrUtil.isBlank(loginToken)) {
             return null;
         }
-        Claims tokenClaims = SecurityUtils.getClaims(accessToken);
-        Map<String, Object> claims = cachedClaims(accessToken);
+        Claims tokenClaims = SecurityUtils.getClaims(loginToken);
+        Map<String, Object> claims = cachedClaims(loginToken);
         if (tokenClaims == null || claims == null) {
             return null;
         }
-        refreshTokenExpire(accessToken);
+        refreshTokenExpire(loginToken);
         FlyUser user = buildPrincipal(claims);
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -138,7 +140,18 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     }
 
     /**
-     * 获取当前登录用户；没有上下文时尝试使用 JmReport token 恢复。
+     * 积木报表既可能传入 Bearer Token，也可能直接传入 iframe query 参数中的裸令牌。
+     */
+    private String normalizeToken(String token) {
+        if (StrUtil.isBlank(token)) {
+            return null;
+        }
+        String bearerToken = TokenUtils.getToken(token);
+        return StrUtil.isNotBlank(bearerToken) ? bearerToken : token;
+    }
+
+    /**
+     * 获取当前登录用户；没有上下文时尝试使用积木报表令牌恢复。
      */
     private FlyUser resolveLoginUser(String token) {
         FlyUser user = UserUtils.getCurUser();
@@ -146,9 +159,9 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     }
 
     /**
-     * 判断当前用户是否拥有积木报表设计器权限。
+     * 判断当前用户是否拥有积木报表设计器管理权限。
      */
-    private boolean hasJmReportAdminPermission() {
+    private boolean hasJmReportManagePermission() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return false;
@@ -159,7 +172,8 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
                 .anyMatch(authority -> "*:*:*".equals(authority)
                         || "report:*:*".equals(authority)
                         || "report:jimu:*".equals(authority)
-                        || "report:jimu:admin".equals(authority));
+                        || "report:jimu:admin".equals(authority)
+                        || "report:manage".equals(authority));
     }
 
     /**
@@ -170,6 +184,13 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         if (cached == null) {
             cached = redisUtils.get(AuthConstants.ACCESS_TOKEN_KEY + token);
         }
+        if (cached == null) {
+            cached = redisUtils.get(AuthConstants.REFRESH_TOKEN_KEY + token);
+        }
+        if (cached instanceof String json) {
+            return JsonUtils.parseObject(json, new TypeReference<Map<String, Object>>() {
+            });
+        }
         if (cached instanceof Map<?, ?> map) {
             Map<String, Object> claims = new LinkedHashMap<>();
             map.forEach((key, value) -> claims.put(String.valueOf(key), value));
@@ -179,16 +200,18 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     }
 
     /**
-     * 刷新访问令牌有效期。
+     * 刷新令牌缓存有效期。
      */
     private void refreshTokenExpire(String token) {
-        long timeout = authProperties.getToken().getLoginTimeoutSeconds();
-        redisUtils.expire(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token, timeout);
-        redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, timeout);
+        long loginTimeout = authProperties.getToken().getLoginTimeoutSeconds();
+        redisUtils.expire(AuthConstants.GATEWAY_ACCESS_TOKEN_KEY + token, loginTimeout);
+        redisUtils.expire(AuthConstants.ACCESS_TOKEN_KEY + token, loginTimeout);
+        redisUtils.expire(AuthConstants.REFRESH_TOKEN_KEY + token,
+                authProperties.getToken().getRefreshTokenTimeoutSeconds());
     }
 
     /**
-     * 根据缓存声明构建 flycloud 登录用户。
+     * 根据缓存声明构建 FlyCloud 登录用户。
      */
     private FlyUser buildPrincipal(Map<String, Object> claims) {
         return new FlyUser(
@@ -236,7 +259,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     }
 
     /**
-     * 获取当前请求。
+     * 获取当前 HTTP 请求。
      */
     private HttpServletRequest currentRequest() {
         if (!(RequestContextHolder.getRequestAttributes() instanceof ServletRequestAttributes attributes)) {

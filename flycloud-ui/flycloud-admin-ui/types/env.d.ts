@@ -10,6 +10,7 @@ declare module '*.vue' {
 interface ImportMetaEnv {
   readonly VITE_AUTH_SERVER: string
   readonly VITE_SYSTEM_SERVER: string
+  readonly VITE_GOVIEW_URL: string
   readonly VITE_BPM_SERVER: string
   readonly VITE_MALL_SERVER: string
   readonly VITE_GEN_SERVER: string

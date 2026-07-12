@@ -24,6 +24,14 @@ spring:
               filters:
                 - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
 
+            # 积木报表的页面会以根路径加载静态资源，例如 /jmreport/desreport/**。
+            # 因此前端首次通过 /flycloud-system/jmreport/list 进入后，后续资源仍须路由到系统服务。
+            - id: flycloud-system-jmreport
+              uri: lb://flycloud-system
+              order: 0
+              predicates:
+                - Path=/jmreport/**,/drag/**,/jimubi/**
+
             # websocket网关配置；/flycloud-system/ws -> /ws
             - id: flycloud-system-websocket
               uri: lb:ws://flycloud-system

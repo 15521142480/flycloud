@@ -28,33 +28,33 @@ public class GoViewProjectController {
     private final IGoViewProjectService goViewProjectService;
 
     @PostMapping("/create")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:create')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:createOrUpdate', 'report:manage'})")
     public R<Long> createProject(@Valid @RequestBody GoViewProjectBo bo) {
         return R.ok(goViewProjectService.createProject(bo));
     }
 
     @PutMapping("/update")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:update')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:createOrUpdate', 'report:manage'})")
     public R<Boolean> updateProject(@Valid @RequestBody GoViewProjectBo bo) {
         goViewProjectService.updateProject(bo);
         return R.result(true);
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:delete')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:delete', 'report:manage'})")
     public R<Boolean> deleteProject(@RequestParam("id") Long id) {
         goViewProjectService.deleteProject(id);
         return R.result(true);
     }
 
     @GetMapping("/get")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:list')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:list', 'report:manage'})")
     public R<GoViewProjectRespVo> getProject(@RequestParam("id") Long id) {
         return R.ok(goViewProjectService.queryById(id));
     }
 
     @GetMapping("/my-page")
-    @PreAuthorize("@pms.hasPermission('report:go-view-project:list')")
+    @PreAuthorize("@pms.hasAnyPermission({'report:goview:list', 'report:manage'})")
     public R<PageVo<GoViewProjectRespVo>> getMyProjectPage(PageBo pageBo) {
         return R.ok(goViewProjectService.getMyProjectPage(pageBo, UserUtils.getCurUserId()));
     }
