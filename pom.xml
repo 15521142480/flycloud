@@ -517,6 +517,11 @@
 
         <finalName>${project.name}</finalName>
 
+        <filters>
+            <!-- Nacos 连接信息从项目根目录的本地文件读取，文件受 Git 忽略。 -->
+            <filter>${nacos.filter.file}</filter>
+        </filters>
+
         <!-- 公共插件配置 -->
         <pluginManagement>
             <plugins>
@@ -536,6 +541,7 @@
 
                 <!--
                      @profiles.active@              → Maven 打包时替换
+                     @nacos.server@                 → 从环境对应的仓库外 Filter 文件读取
                      ${XXL_JOB_DATASOURCE_URL:...}  → Maven 原样保留，Spring 启动时解析
                  -->
                 <plugin>
@@ -645,6 +651,7 @@
             <properties>
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
+                <nacos.filter.file>${maven.multiModuleProjectDirectory}/config/nacos/nacos-dev.properties</nacos.filter.file>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -656,7 +663,7 @@
             <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
-
+                <nacos.filter.file>${maven.multiModuleProjectDirectory}/config/nacos/nacos-test.properties</nacos.filter.file>
             </properties>
         </profile>
 
@@ -664,6 +671,7 @@
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
+                <nacos.filter.file>${maven.multiModuleProjectDirectory}/config/nacos/nacos-prod.properties</nacos.filter.file>
             </properties>
         </profile>
     </profiles>

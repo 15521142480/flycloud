@@ -13,6 +13,11 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
+    <properties>
+        <!-- 官方测试依赖外部数据库、调度中心及执行器，发布管理端时不执行。 -->
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
+
     <dependencies>
 
         <!-- 官方 XXL-JOB 3.2.0 管理端依赖 -->

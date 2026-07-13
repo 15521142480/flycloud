@@ -8,6 +8,11 @@ target/
 # 配置忽略本地配置文件
 **/src/main/resources/application-dev.yml
 **/src/main/resources/application-prod.yml
+/config/nacos/nacos-dev.properties
+/config/nacos/nacos-prod.properties
+
+/doc/nacos/**
+
 
 node_modules/
 **/node_modules/

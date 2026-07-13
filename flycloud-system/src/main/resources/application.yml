@@ -16,30 +16,30 @@ spring:
 
   cloud:
     nacos:
-      server-addr: ${nacos.server:127.0.0.1:8848}
-      username: ${nacos.username:nacos}
-      password: ${nacos.password:nacos}
+      server-addr: "@nacos.server@"
+      username: "@nacos.username@"
+      password: "@nacos.password@"
 
       discovery:
         server-addr: ${spring.cloud.nacos.server-addr}
-        username: ${nacos.username:nacos}
-        password: ${nacos.password:nacos}
-        namespace: ${nacos.namespace:}
-        group: ${nacos.discovery.group:DEFAULT_GROUP}
+        username: "@nacos.username@"
+        password: "@nacos.password@"
+        namespace: "@nacos.namespace@"
+        group: "@nacos.discovery.group@"
 
       config:
         server-addr: ${spring.cloud.nacos.server-addr}
-        username: ${nacos.username:nacos}
-        password: ${nacos.password:nacos}
-        namespace: ${nacos.namespace:}
-        group: ${nacos.config.group:DEFAULT_GROUP}
+        username: "@nacos.username@"
+        password: "@nacos.password@"
+        namespace: "@nacos.namespace@"
+        group: "@nacos.config.group@"
         file-extension: yaml
 
   config:
     import:
-      - optional:nacos:application-common.yaml?group=${nacos.config.group:DEFAULT_GROUP}&refreshEnabled=true
-      - optional:nacos:application-datasource.yaml?group=${nacos.config.group:DEFAULT_GROUP}&refreshEnabled=true
-      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=${nacos.config.group:DEFAULT_GROUP}&refreshEnabled=true
+      - optional:nacos:application-common.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
 
 
 client:
