@@ -41,21 +41,3 @@ gen:
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
   tablePrefix: t_oa_,t_srm_
 
-
-# 服务资源安全配置
-server:
-  resource:
-    security:
-
-      # 客户端标识 ID
-      client-id: fly
-
-      # 客户端安全码
-      client-secret: fly_secret
-
-      # 客户端访问范围
-      scopes:
-
-      # 白名单 (对外直接暴露服务资源的URL)
-      ignore-urls:
-        - /gen/**

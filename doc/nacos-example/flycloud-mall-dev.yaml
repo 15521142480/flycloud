@@ -9,27 +9,9 @@ spring:
         master:
           type: ${spring.datasource.type}
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: ${datasource.system-master.url}
-          username: ${datasource.system-master.username}
-          password: ${datasource.system-master.password}
-
-
-#       其他数据库系统-参数说明:          
-#        oracle:
-#          type: ${spring.datasource.type}
-#          driverClassName: oracle.jdbc.OracleDriver
-#          url: ${datasource.system-oracle.url}
-#          username: ${datasource.system-oracle.username}
-#          password: ${datasource.system-oracle.password}
-#          hikari:
-#            connectionTestQuery: SELECT 1 FROM DUAL
-
-#        postgres:
-#          type: ${spring.datasource.type}
-#          driverClassName: org.postgresql.Driver
-#          url: ${datasource.system-postgres.url}
-#          username: ${datasource.system-postgres.username}
-#          password: ${datasource.system-postgres.password}
+          url: ${datasource.mall-master.url}
+          username: ${datasource.mall-master.username}
+          password: ${datasource.mall-master.password}
 
 
 
@@ -51,7 +33,7 @@ xxl:
       appname: ${spring.application.name}
       # 执行器端口：调度中心通过这个端口触发当前服务${spring.application.name}如：flycloud-system中的任务
       # 同一台服务器时不同业务服务必须使用不同执行器端口（如：flycloud-system使用9999、flycloud-mall使用10000）；不同服务器时可使用同一个执行器端口
-      port: 9999
+      port: 10000
       # 业务服务xxl-job的日志，比如：XxlJobHelper.log("xxx")
       log-path: ./logs/xxl-job/${spring.application.name}
       # 日志最多存活天数

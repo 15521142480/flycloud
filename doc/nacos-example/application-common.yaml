@@ -34,20 +34,20 @@ spring:
       # 允许对象忽略json中不存在的属性
       fail_on_unknown_properties: false
   cloud:
-  # sentinel 配置
-  # sentinel:
-  #   # sentinel 开关
-  #   enabled: true
-  #   # 取消控制台懒加载
-  #   eager: true
-  #   transport:
-  #     # dashboard控制台服务名 用于服务发现
-  #     # 如无此配置将默认使用下方 dashboard 配置直接注册
-  #     server-name: ruoyi-sentinel-dashboard
-  #     # 客户端指定注册的ip 用于多网卡ip不稳点使用
-  #     # client-ip:
-  #     # 控制台地址 从1.3.0开始使用 server-name 注册
-  #     # dashboard: localhost:8718
+    # sentinel 配置
+    # sentinel:
+    #   # sentinel 开关
+    #   enabled: true
+    #   # 取消控制台懒加载
+    #   eager: true
+    #   transport:
+    #     # dashboard控制台服务名 用于服务发现
+    #     # 如无此配置将默认使用下方 dashboard 配置直接注册
+    #     server-name: ruoyi-sentinel-dashboard
+    #     # 客户端指定注册的ip 用于多网卡ip不稳点使用
+    #     # client-ip:
+    #     # 控制台地址 从1.3.0开始使用 server-name 注册
+    #     # dashboard: localhost:8718
 
   # redis 通用配置 子服务可以自行配置进行覆盖
   data:
@@ -96,6 +96,12 @@ redisson:
     subscriptionConnectionPoolSize: 50
 
 
+# xxl-job 配置
+XXL_JOB_ENABLED: true
+XXL_JOB_ADMIN_ADDRESSES: http://127.0.0.1:9091/xxl-job-admin
+XXL_JOB_ACCESS_TOKEN: 建议随机32位token
+
+
 # websocket公共配置；此处path: /ws目前由flycloud-system统一引入websocket模块实现，其他服务调用api接口WebSocketSenderApi即可
 websocket:
   enabled: true
@@ -122,7 +128,7 @@ security:
       # Feign内部接口签名密钥，各个服务必须保持一致
       secret: flycloud-feign-secret
       # Feign签名时间戳有效期，单位秒
-      expire-seconds: 300
+      expire-seconds: 300      
 
     # 白名单配置 (授权、swagger、监控中心等url)
     ignore-urls:
@@ -150,8 +156,8 @@ security:
       - /jmreport/**
       - /drag/**
       - /jimubi/**
-
-    # 是否启用网关验证（是：接口都拦截验证；否：全部接口在网关服务都为白名单）
+      
+    # 是否启用网关验证（是：经过网关的接口都拦截验证；否：全部接口在网关服务都为白名单）
     gateway-enable: true
 
   # ras密钥对配置
@@ -160,27 +166,28 @@ security:
       # 登录密码
       fly_cloud_login_password:
         public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqG/pmVfnO8KrCL1zHzsnx2hlwmbvFqSGna89QU9a5q0JO+pdeppBhHbHI8Lao/Hsk4jSQbA1C+vSKi018A6a4WILlbRMYZaStouc2abYCZsejL/SMccsCFz+c06WPzFJ5VkxAoTTmVJ0pCViVJEZdQuXMc7GtQRP7VME+DhrVDThII6s/2oxJLNhPxCejGZz84jhekHIedF38/SRz2gj5QQH3v+zYC2SWjH+WAoyLckFQ7A3FBYt9qaFTLA1ObpSmKEeZZvxWadovMW2gw6tQPWbzxalY00Dhei7hGi8yU29bhF032SQaMIgyuIiYW4wLdk2wdjOY1JtJDGgjhmjXwIDAQAB
-        private-key: key对应的私钥
+        private-key: 对应key
 
       # 支付密码
       fly_cloud_pay_password:
         public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAolvhZzAaDugJQ/kADME7zxv2EbQR4377PWliPTbk8cZh+PoSi6EviwN1syWMLJGs8RwuaGFcUQwvXvrTCo/E2nrg1c7odOYTHnEi172Wu9mVUUGoxZ6vNCTXnwyK34u+136IcTunepP/LC+RxSzB/Qk81PJX+Fx3ffXoAclcQWvI2ssTabVYyf8zKnEF5F151qp0PuYYDGNOrYXbbblUjg0BbhVVPINUz7lhMENqPFwz2lAk6GCLlYMvkbIhN9mjcDMCQu3uPTtjadpMaypBniwVuXfqTGMvQ5LxWfHzMutiKNjTU3F4qsTbXslPLMlclIDRCu648Bkj7tB+19tQuQIDAQAB
-        private-key: key对应的私钥
-
+        private-key: 对应key
+      
       # 开放接口
       fly_cloud_open_api:
         public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs7IakV0YmQLRbqT2Vlv2s4ODvb7d7PMeaDyz7g5jvKbuIkxdUU7KRHl+PXXdzH4MiBpl3sq8+oAYfZqwq8+wYkdgZhuAqjIoW6DHoQZXRXF1SrQ6kF4j5PuangfAfh1xp5MkHkc2Xy3qvshplh5eE7odhO3mYhnM9GpRB4w8uJItEX9K0X0XuVhX7t+P9nwBkCm13JBS1WdTxPF9rom+SPxisgsEqhEks9uPyW9ioTL4zsLsHskgy3XsTARla9uI3ggUVLD0Y/yqII5sZ97hUc0GvzoDHysnQmB7jp1MTjspojD+zXmB+aT/NvDi++iN2x9UXbhY/YAcDCexORVEDwIDAQAB
-        private-key: key对应的私钥
+        private-key: 对应key
+
 
 
 # 上传配置
 upload:
   config:
-
+  
     # 使用的服务器类型 (1:本地服务, 2:ftp服务器, 3:sftp服务器, 4:阿里云oss对象存储, 5:华为云obs对象存储, 9:smb共享文件夹)
     use-server-type: 3
 
-    # 本地服务器配置
+    # sftp服务器配置
     local-server-config:
       # 文件上传和读取的前缀真实路径
       base-path: /Users/lxs/applicationFile/file/person/flycloud-server/
@@ -189,19 +196,19 @@ upload:
 
     # sftp服务器配置
     sftp-server-config:
-      ip:
+      ip: localhost
       user: root
-      password:
+      password: root
       port: 22
       base-path: /project/upload-file/
-      # base-url: http://localhost:8080/static/
-      base-url: https://www.laixueshi.cn/static/
-
+      # base-url: https://www.laixueshi.cn/static/
+      base-url: http://localhost:8888/static/
+    
 
 
 # 系统模块功能配置
 flycloud:
-
+  
   # IM 公共配置
   im:
     # 好友配置
@@ -241,11 +248,11 @@ flycloud:
       # 是否启用实时音视频通话
       enabled: true
       # LiveKit 客户端连接地址；本地默认端口 7880（如：ws://127.0.0.1:7880）；生产环境使用公网wss地址（如：wss://www.laixueshi.cn/livekit ）
-      livekit-url: ws://127.0.0.1:7880
+      livekit-url: wss://localhost/livekit
       # 必须与 LiveKit 服务端 livekit.yaml 的 keys 配置保持一致
-      api-key: livekit配置的key
+      api-key: flycloud_livekit_key
       # 本地开发示例密钥；生产环境改为至少 32 位强随机值，并仅保存在 Nacos / 密钥管理服务
-      api-secret: livekit配置的secret
+      api-secret: 建议随机32位
       # 单次签发的 LiveKit Token 有效期，单位：小时
       token-ttl-hours: 6
       # 群通话最大同时在房人数

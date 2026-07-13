@@ -14,24 +14,27 @@ spring:
           password: ${datasource.bpm-master.password}
 
 
-# 服务资源安全配置
-server:
-  resource:
-    security:
 
-      # 客户端标识 ID
-      client-id: fly
+# xxl-job 执行器配置
+xxl:
+  job:
+    admin:
+      # 调度中心
+      addresses: ${XXL_JOB_ADMIN_ADDRESSES:http://127.0.0.1:9091/xxl-job-admin}
+      # 调度中心和执行器之间的通信密码（自己生成，如：openssl rand -hex 32）
+      access-token: ${XXL_JOB_ACCESS_TOKEN:}
+      # HTTP 通信超时时间（秒）
+      timeout: 5
 
-      # 客户端安全码
-      client-secret: fly_secret
-
-      # 客户端访问范围
-      scopes:
-
-      # 白名单 (对外直接暴露服务资源的URL)
-      ignore-urls:
-        # - /v3/api-docs/**   
-        - /provider/**
-
-
-
+    executor:
+      # 为{true}时才创建执行器；如果不使用xxljob服务改成false即可；${XXL_JOB_ENABLED:false}
+      enabled: false
+      # 当前业务服务注册成哪个执行器组
+      appname: ${spring.application.name}
+      # 执行器端口：调度中心通过这个端口触发当前服务${spring.application.name}如：flycloud-system中的任务
+      # 同一台服务器时不同业务服务必须使用不同执行器端口（如：flycloud-system使用9999、flycloud-mall使用10000）；不同服务器时可使用同一个执行器端口
+      port: 10001
+      # 业务服务xxl-job的日志，比如：XxlJobHelper.log("xxx")
+      log-path: ./logs/xxl-job/${spring.application.name}
+      # 日志最多存活天数
+      log-retention-days: 30
