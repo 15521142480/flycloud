@@ -11,7 +11,7 @@
     <artifactId>flycloud-extend</artifactId>
     <description>飞翔云-扩展模块 (如 xxl-job、springboot-admin等)</description>
     <modules>
-        <module>flycloud-xxl-job-admin</module>
+        <module>flycloud-xxljob-admin</module>
         <module>flycloud-file-admin</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>

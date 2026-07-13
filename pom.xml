@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
 
-    <!-- todo 引入模块 -->
+    <!-- note 引入模块 -->
     <modules>
         <module>flycloud-api</module>
         <module>flycloud-auth</module>
@@ -26,7 +26,7 @@
     </modules>
 
 
-    <!-- todo 依赖版本 -->
+    <!-- note 依赖版本 -->
     <properties>
         <revision>1.0.0</revision>
         <modelVersion>4.0.0</modelVersion>
@@ -80,13 +80,14 @@
         <poi.version>5.2.3</poi.version>
         <easyexcel.version>3.1.1</easyexcel.version>
         <easytrans.version>2.0.12</easytrans.version>
-        <fastjson.version>1.2.67</fastjson.version>
+<!--        <fastjson.version>1.2.67</fastjson.version>-->
+        <fastjson.version>2.0.57</fastjson.version>
         <jsch.version>0.1.55</jsch.version>
         <fileupload.version>1.3.1</fileupload.version>
         <redisson.version>3.50.0</redisson.version>
         <jetcache.version>2.7.3</jetcache.version>
         <lock4j.version>2.2.4</lock4j.version>
-        <xxl-job.version>2.3.1</xxl-job.version>
+        <xxl-job.version>3.2.0</xxl-job.version>
         <spring-oauth.version>2.2.5.RELEASE</spring-oauth.version>
         <jjwt.version>0.12.6</jjwt.version>
         <easypoi.version>4.4.0</easypoi.version>
@@ -94,10 +95,12 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <transmittable.version>2.14.2</transmittable.version>
         <ip2region.version>2.7.0</ip2region.version>
+        <jimureport.version>2.3.4</jimureport.version>
+        <jimubi.version>2.3.2</jimubi.version>
     </properties>
 
 
-    <!-- todo 依赖声明 (dependencyManagement的作用是子模块只需要引入依赖不需要定义版本) -->
+    <!-- note 依赖声明 (dependencyManagement的作用是子模块只需要引入依赖不需要定义版本) -->
     <dependencyManagement>
         <dependencies>
 
@@ -467,7 +470,7 @@
     </dependencyManagement>
 
 
-    <!-- todo 其他依赖 -->
+    <!-- note 其他依赖 -->
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -483,7 +486,7 @@
     </dependencies>
 
 
-    <!-- todo 厂库配置 -->
+    <!-- note 厂库配置 -->
     <repositories>
         <repository>
             <id>public</id>
@@ -509,9 +512,12 @@
     </pluginRepositories>
 
 
-    <!-- todo 构建配置 -->
+    <!-- note 构建配置 -->
     <build>
+
         <finalName>${project.name}</finalName>
+
+        <!-- 公共插件配置 -->
         <pluginManagement>
             <plugins>
 
@@ -528,11 +534,28 @@
                     </executions>
                 </plugin>
 
+                <!--
+                     @profiles.active@              → Maven 打包时替换
+                     ${XXL_JOB_DATASOURCE_URL:...}  → Maven 原样保留，Spring 启动时解析
+                 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                    <configuration>
+                        <encoding>${project.encoding}</encoding>
+                        <delimiters>
+                            <delimiter>@</delimiter>
+                        </delimiters>
+                        <useDefaultDelimiters>false</useDefaultDelimiters>
+                    </configuration>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.9.0</version>
-                <configuration>
+                    <configuration>
                     <release>${maven.compiler.release}</release>
                     <parameters>true</parameters>
                     <encoding>${project.build.sourceEncoding}</encoding>
@@ -563,6 +586,8 @@
 
             </plugins>
         </pluginManagement>
+
+
         <plugins>
             <plugin>
                 <groupId>io.spring.javaformat</groupId>
@@ -579,15 +604,8 @@
                     <encoding>${project.encoding}</encoding>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
-            </plugin>
         </plugins>
+
 
         <resources>
             <resource>
@@ -618,7 +636,7 @@
     </build>
 
 
-    <!-- todo 配置文件 -->
+    <!-- note 配置文件 -->
     <profiles>
 
         <!--使用 mvn clean package -Pprod 进行激活prod环境的配置，否则激活默认环境-->
@@ -627,20 +645,6 @@
             <properties>
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
                 <profiles.active>dev</profiles.active>
-                <!-- nacos注册地址 -->
-                <!-- 111.228.51.252  39.98.125.88  laixueshi.cn  除了项目在服务器上域名可以代替ip；本地运行不行，但可以在host新增域名映射ip可实现 -->
-                <nacos.server></nacos.server>
-                <!--
-                    nacos命名空间 https://github.com/alibaba/nacos/issues/3460
-                    默认的命名空间不要去设置namespace  (命名空间的概念是: 新增命名空间可以实现开发/生产等环境)
-                    如有命名空间namespace字段的值必须是命名空间ID
-                -->
-                <nacos.namespace/>
-                <!-- nacos分组 (分组的概念是: 两个配置文件名称可以相同,但所属的分组一定要不同) -->
-                <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
-                <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
-                <nacos.username></nacos.username>
-                <nacos.password></nacos.password>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -649,15 +653,17 @@
         </profile>
 
         <profile>
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+
+            </properties>
+        </profile>
+
+        <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <nacos.server></nacos.server>
-                <nacos.namespace></nacos.namespace>
-                <nacos.discovery.group>DEFAULT_GROUP</nacos.discovery.group>
-                <nacos.config.group>DEFAULT_GROUP</nacos.config.group>
-                <nacos.username></nacos.username>
-                <nacos.password></nacos.password>
             </properties>
         </profile>
     </profiles>

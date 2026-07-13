@@ -78,7 +78,7 @@ flycloud
 │  ├─flycloud-common-rocketmq           -- rocketmq相关
 ├─flycloud-extend           -- 扩展模块 (如 xxl-job-admin、springboot-admin等)
 │  ├─flycloud-file-admin                -- 文件管理后台服务
-│  ├─flycloud-xxl-job-admin             -- 任务调度服务
+│  ├─flycloud-xxljob-admin               -- 任务调度服务
 ├─flycloud-gateway          -- 网关服务
 ├─flycloud-generator        -- 自动生成代码服务
 └─flycloud-mall             -- 商家服务
@@ -106,7 +106,7 @@ flycloud
 | flycloud-test        测试服务         | http://127.0.0.1:8099 |
 | 扩展服务:                             |
 | flycloud-file-admin   文件管理后台      | http://127.0.0.1:9095 |
-| flycloud-xxl-job-admin     任务调度服务 | http://127.0.0.1:9091 |
+| flycloud-xxljob-admin      任务调度服务 | http://127.0.0.1:9091/xxl-job-admin |
 
 
 ### 6、前端服务:（可选）
@@ -201,4 +201,3 @@ flycloud
 ### 12、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
 >   <br> VO -> 客户端(页面)展示的数据, 通常以json存在的形式
-

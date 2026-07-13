@@ -1,0 +1,14 @@
+
+# application-local.yml
+
+XXL_JOB_DATASOURCE_URL: "jdbc:mysql://127.0.0.1:3306/fly_job?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai"
+XXL_JOB_DATASOURCE_USERNAME: "root"
+XXL_JOB_DATASOURCE_PASSWORD: ""
+
+XXL_JOB_MAIL_HOST: "smtp.qq.com"
+XXL_JOB_MAIL_PORT: 25
+XXL_JOB_MAIL_USERNAME: ""
+XXL_JOB_MAIL_FROM: ""
+XXL_JOB_MAIL_PASSWORD: ""
+
+XXL_JOB_ACCESS_TOKEN: ""

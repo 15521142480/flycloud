@@ -27,6 +27,7 @@
         <module>flycloud-common-websocket</module>
         <module>flycloud-common-report</module>
         <module>flycloud-common-onlineoffice</module>
+        <module>flycloud-common-xxljob</module>
     </modules>
 
 </project>

@@ -1,0 +1,25 @@
+
+# application-dev.example.yml
+# note 开发环境配置示例，拷贝和改成application-dev.yml放到resources下，不要提交该文件 -> .gitignore 加：**/src/main/resources/application-dev.yml
+
+
+### nacos 配置
+nacos:
+
+  # 地址
+  server: 127.0.0.1:8848
+
+  # 命名空间: 默认留空即可 -> 表示 public
+  namespace:
+
+  # 登录账号
+  username: nacos
+  password: nacos
+
+  # 服务注册
+  discovery:
+    group: DEFAULT_GROUP
+
+  # 配置中心
+  config:
+    group: DEFAULT_GROUP

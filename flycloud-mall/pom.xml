@@ -39,6 +39,11 @@
         </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-xxljob</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-feign</artifactId>
             <version>${revision}</version>
         </dependency>
