@@ -125,6 +125,14 @@ public class ProductSpuServiceImpl extends BaseServiceImpl<ProductSpuMapper, Pro
     }
 
     /**
+     * 为全部上架商品的销量加一。
+     */
+    @Override
+    public int incrementSalesCountForOnSaleProducts() {
+        return baseMapper.incrementSalesCountForOnSaleProducts();
+    }
+
+    /**
      * 查询商品 SPU 状态数量。
      */
     @Override

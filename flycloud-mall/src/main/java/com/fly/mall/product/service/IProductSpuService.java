@@ -44,6 +44,13 @@ public interface IProductSpuService {
     Boolean updateStatus(Long id, Integer status);
 
     /**
+     * 为全部上架商品的销量加一。
+     *
+     * @return 更新的商品数量
+     */
+    int incrementSalesCountForOnSaleProducts();
+
+    /**
      * 查询商品 SPU 状态数量。
      */
     java.util.Map<Integer, Long> queryStatusCount(ProductSpuBo bo);

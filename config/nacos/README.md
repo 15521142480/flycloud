@@ -1,6 +1,6 @@
 # 本地 Nacos 配置
 
-此目录存放本机环境的 Nacos 连接信息
+此目录存放 Nacos 的连接信息
 
 Maven Profile 与文件对应关系：
 
