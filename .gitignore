@@ -12,6 +12,7 @@ target/
 /config/nacos/nacos-prod.properties
 
 /doc/nacos/**
+/doc/docker-compose/seata/seata.env
 
 
 node_modules/

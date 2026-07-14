@@ -25,6 +25,7 @@ seata:
     service-port: 8091
 
   # 所有可变事务参数都存放在 Nacos 的 flycloud-seata-client.yaml 中。
+  # 目前所有环境的seata都用dev的NACOS_NAMESPACE，因为个人服务器资源有限不再部署多一个seata
   config:
     type: nacos
     nacos:
@@ -47,7 +48,7 @@ seata:
       username: ${NACOS_USERNAME}
       password: ${NACOS_PASSWORD}
 
-  # Console / REST 接口鉴权。生产环境必须提供高强度随机密钥。
+  # Console / REST 接口鉴权。生产环境必须提供高强度随机密钥（openssl rand -base64 48）。
   security:
     secretKey: ${SEATA_SECURITY_SECRET_KEY}
     tokenValidityInMilliseconds: 1800000
