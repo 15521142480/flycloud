@@ -17,6 +17,14 @@ services:
       - /docker/config/seata/seata.env
     environment:
       TZ: Asia/Shanghai
+      # 服务器内存较小，覆盖 Seata 镜像默认的 2G JVM 参数
+      JVM_XMS: 256m
+      JVM_XMX: 512m
+      JVM_XSS: 512k
+      JVM_MetaspaceSize: 96m
+      JVM_MaxMetaspaceSize: 256m
+      JVM_MaxDirectMemorySize: 256m
+
     volumes:
       # 启动引导配置：只读挂载，避免容器内配置漂移。
       - /docker/config/seata/application.yml:/seata-server/resources/application.yml:ro
@@ -27,6 +35,7 @@ services:
       - "8091:8091"
       # Console 仅绑定回环地址，生产通过 SSH 隧道或受鉴权的反向代理访问。
       - "127.0.0.1:7091:7091"
+    # mysql、nacos、seata同一台服务器可以这么写 -> url: jdbc:mysql://mysql_one:3306/fly_seata、nacos_one:8848；如果不是删除depends_on配置
     depends_on:
       - mysql_one
       - nacos_one
