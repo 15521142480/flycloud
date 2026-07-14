@@ -7,7 +7,9 @@
 #   2. 在 Nacos 导入 doc/nacos-example/flycloud-seata-client.yaml（dataId、group 见文件头）；
 #   3. 将 seata/application.yml 和 seata.env.example 分别复制到
 #      /docker/config/seata/application.yml、/docker/config/seata/seata.env，并填好 seata.env；
-#   4. 创建 /docker/config/seata/logs 目录。
+#   4. 将 MySQL Connector/J 8.4.x 驱动包放入 /docker/config/seata/jdbc/，文件名必须以
+#      mysql-connector-j 开头，例如 mysql-connector-j-8.4.0.jar；
+#   5. 创建 /docker/config/seata/logs 目录。
 
 services:
   seata_one:
@@ -28,6 +30,8 @@ services:
     volumes:
       # 启动引导配置：只读挂载，避免容器内配置漂移。
       - /docker/config/seata/application.yml:/seata-server/resources/application.yml:ro
+      # Seata 2.5.0 镜像不会内置 MySQL 驱动；其 loader.path=/lib，驱动必须位于 /lib/jdbc。
+      - /docker/config/seata/jdbc:/lib/jdbc:ro
       # 事务协调器日志：持久化到宿主机，便于日志采集与排障。
       - /docker/config/seata/logs:/seata-server/logs
     ports:

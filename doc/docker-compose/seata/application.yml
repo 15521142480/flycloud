@@ -1,17 +1,10 @@
 # Seata Server 2.5.0 启动引导配置。
 # 此文件必须以只读方式挂载到容器；TC 需要先用它连接 Nacos，才能读取 flycloud-seata-client.yaml。
 
-# NamingServer
-#
-#    服务寻址和 Console
-#
-#    默认端口 8081
-#
-#    配置用户名、密码、security
-
-# note：Seata Server 2.5.0 版本开始 【事务协调器TC服务 -> seata-server:8091】和【控制台服务 -> naming-server:8081】分离；也就是要客户端服务需要单独部署，本项目暂且只部署seata-server
-#server:
-#  port: 控制台服务端口 默认8081 建议改成 7091；新版不在此处合并，需独立部署
+# Seata 2.5.0 中，事务协调器 TC（seata-server:8091）与 Console/原生注册中心
+# （seata-naming-server:8081）已拆分。业务客户端 TM/RM 不需要独立部署，它们运行在
+# flycloud-mall 等业务服务内。本项目采用 Nacos 注册中心，未部署 naming-server 时不提供
+# Seata Console；如需 Console，再独立增加 apache/seata-naming-server 服务。
 
 spring:
   application:
@@ -44,12 +37,12 @@ seata:
       username: ${NACOS_USERNAME}
       password: ${NACOS_PASSWORD}
 
-  # note：不能依赖 Nacos 配置中心读取数据库启动参数，只能把自己注册到 Nacos；
-  # note：所以mysql这些配置要写在此配置文件，其他所有可变事务参数都存放在 Nacos配置中心的 flycloud-seata-client.yaml 中
+  # TC 的数据库启动参数必须在本地引导文件中提供，不能依赖尚未启动的 TC 自己从 Nacos 获取。
+  # 业务客户端的事务路由和 AT 参数放在 Nacos 的 flycloud-seata-client.yaml 中。
 #  config:
 #    type: nacos
 
-  # TC 事务日志持久化。flycloud_seata 是 Seata 专用库，不与任何业务库共用。
+  # TC 事务日志持久化。fly_seata 是 Seata 专用库，不与任何业务库共用。
   store:
     mode: db
     lock:
