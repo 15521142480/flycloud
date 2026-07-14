@@ -1,15 +1,15 @@
 package com.fly.test.service.impl;
 
+import com.fly.bpm.api.domain.dto.SeataTestDataReqDTO;
 import com.fly.bpm.api.feign.ITestApi;
-//import com.fly.commom.elasticsearch.service.ElasticSearchService;
-import com.fly.common.domain.model.R;
-import com.fly.common.utils.json.JsonUtils;
+import com.fly.test.domain.vo.SeataTestDataListVo;
 import com.fly.test.mapper.TestMapper2;
 import com.fly.test.service.ITestService;
-import io.seata.spring.annotation.GlobalTransactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -31,21 +31,48 @@ public class TestServiceImpl2 implements ITestService {
 
 
 
+    /**
+     * note: @GlobalTransactional(
+     *             name = "system-test-seata",
+     *             timeoutMills = 60000,
+     *             rollbackFor = Exception.class
+     *     )
+     *     声明全局事物，写在分布式业务的发起服务层
+     *
+     * note: @Transactional(rollbackFor = Exception.class): 保留本地事务（如果本地事物涉及多条-增删改）
+     *
+     *
+    */
     @Override
-    @GlobalTransactional
-    public int seataTest(Integer isRollback) {
+    @GlobalTransactional(
+            name = "system-test-seata",
+            timeoutMills = 60000,
+            rollbackFor = Exception.class
+    )
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean seataTest(Integer isRollback, String dataSourceOneTestData, String dataSourceTwoTestData) {
 
-        int insertOne = testMapper.insertTestData();
-        R<Void> insertTwoResult = testApi.seataTest();
+        int oneDataBaseResultCount = testMapper.insertTestData(dataSourceOneTestData);
+        SeataTestDataReqDTO reqDTO = new SeataTestDataReqDTO();
+        reqDTO.setDataSourceTwoTestData(dataSourceTwoTestData);
+        Integer twoDataBaseResultCount = testApi.seataTest(reqDTO).getCheckedData();
         log.info("=== seata测试");
-        log.info("=== 插入第一个数据库返回行数:{}", insertOne);
-        log.info("=== 插入第二个数据库返回:{}", JsonUtils.toJsonString(insertTwoResult));
+        log.info("=== 插入第一个数据库返回行数:{}", oneDataBaseResultCount);
+        log.info("=== 插入第二个数据库返回行数:{}", twoDataBaseResultCount);
 
         if (isRollback == 1) {
-            throw new RuntimeException("回滚测试，已手工异常，请检查各库的test表是否有数据！");
+            throw new RuntimeException("回滚测试，已手工异常，请检查下面的各数据源是否有该数据！");
         }
 
-        return 1;
+        return true;
+    }
+
+    @Override
+    public SeataTestDataListVo listTestData() {
+        SeataTestDataListVo result = new SeataTestDataListVo();
+        result.setDataSourceOne(testMapper.selectDataSourceOneTestData());
+        result.setDataSourceTwo(testApi.listSeataTestData().getCheckedData());
+        return result;
     }
 
 

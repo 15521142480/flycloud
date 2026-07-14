@@ -5,8 +5,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.fly.test.mapper.TestMapper2">
 
     <insert id="insertTestData">
-        insert into test(user_id, order_id) values ('fly-001', 'fly-001');
+        insert into test_seata (database_name, test_data)
+        values ('数据源一', #{testData})
     </insert>
 
+    <select id="selectDataSourceOneTestData" resultType="com.fly.bpm.api.domain.vo.SeataTestDataVo">
+        select id, database_name, test_data, create_time
+        from test_seata
+        order by create_time desc, id desc
+        limit 10
+    </select>
 
 </mapper>

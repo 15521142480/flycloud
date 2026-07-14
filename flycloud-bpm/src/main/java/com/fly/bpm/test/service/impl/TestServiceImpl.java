@@ -1,10 +1,12 @@
 package com.fly.bpm.test.service.impl;
 
+import com.fly.bpm.api.domain.vo.SeataTestDataVo;
 import com.fly.bpm.test.mapper.TestMapper;
 import com.fly.bpm.test.service.ITestService;
-import io.seata.spring.annotation.GlobalTransactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * test
@@ -20,9 +22,14 @@ public class TestServiceImpl implements ITestService {
 
 
     @Override
-    public int seataTest() {
+    public int seataTest(String testData) {
 
-        return testMapper.insertTestData();
+        return testMapper.insertTestData(testData);
+    }
+
+    @Override
+    public List<SeataTestDataVo> listSeataTestData() {
+        return testMapper.selectSeataTestData();
     }
 
 }

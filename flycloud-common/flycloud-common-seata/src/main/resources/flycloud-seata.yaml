@@ -10,6 +10,12 @@ seata:
   # 事务服务组。必须与 Nacos flycloud-seata-client.yaml 的 service.vgroupMapping 键完全一致。
   tx-service-group: flycloud-tx-group
 
+  # 启动阶段的本地兜底路由。Seata 会在 Nacos 配置中心加载完成前读取该项；
+  # 事务组与 TC 集群的映射同时仍维护在 flycloud-seata-client.yaml 中，便于统一管理和动态刷新。
+  service:
+    vgroup-mapping:
+      flycloud-tx-group: default
+
   # 数据源由 dynamic-datasource 创建代理；关闭 Seata Starter 的全局自动代理以避免双重代理。
   enable-auto-data-source-proxy: false
   # 当前仅采用 AT 模式；TCC、SAGA、XA 应按业务场景单独设计，不在公共默认配置中开启。
@@ -34,7 +40,8 @@ seata:
       server-addr: ${spring.cloud.nacos.server-addr}
       namespace: ${spring.cloud.nacos.config.namespace:}
       group: SEATA_GROUP
-      data-id: flycloud-seata-client.yaml
+      # Seata 2.5 配置项名称为 dataId；对应 Nacos 的 Data ID。
+      dataId: flycloud-seata-client.yaml
       username: ${spring.cloud.nacos.username:nacos}
       password: ${spring.cloud.nacos.password:nacos}
 
