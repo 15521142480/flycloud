@@ -1,0 +1,45 @@
+# Seata 2.5.0 客户端通用配置。
+# 业务服务引入 flycloud-common-seata 后自动加载；环境差异由 Nacos 的 flycloud-seata-client.yaml 管理。
+seata:
+  # 默认启用。未使用分布式事务的服务不要引入本公共模块。
+  enabled: true
+
+  # TM/RM 在 Nacos 中注册时使用的业务应用标识。
+  application-id: ${spring.application.name}
+
+  # 事务服务组。必须与 Nacos flycloud-seata-client.yaml 的 service.vgroupMapping 键完全一致。
+  tx-service-group: flycloud-tx-group
+
+  # 数据源由 dynamic-datasource 创建代理；关闭 Seata Starter 的全局自动代理以避免双重代理。
+  enable-auto-data-source-proxy: false
+  # 当前仅采用 AT 模式；TCC、SAGA、XA 应按业务场景单独设计，不在公共默认配置中开启。
+  data-source-proxy-mode: AT
+
+  # TC 服务注册中心。application、group、namespace、cluster 必须与 Seata Server 保持一致。
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: ${spring.cloud.nacos.server-addr}
+      namespace: ${spring.cloud.nacos.discovery.namespace:}
+      group: SEATA_GROUP
+      cluster: default
+      username: ${spring.cloud.nacos.username:nacos}
+      password: ${spring.cloud.nacos.password:nacos}
+
+  # TC/客户端共享参数的配置中心。data-id 必须与 Nacos 中导入的文件名一致。
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr}
+      namespace: ${spring.cloud.nacos.config.namespace:}
+      group: SEATA_GROUP
+      data-id: flycloud-seata-client.yaml
+      username: ${spring.cloud.nacos.username:nacos}
+      password: ${spring.cloud.nacos.password:nacos}
+
+# 本项目使用 dynamic-datasource 管理多数据源；由它为每个参与 AT 事务的数据源包装 DataSourceProxy。
+spring:
+  datasource:
+    dynamic:
+      seata: true

@@ -1,0 +1,33 @@
+# Seata 基础设施增量编排。
+# 与现有 docker-compose.yaml 联合执行：
+# docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-seata.yml up -d
+#
+# 部署前准备：
+#   1. 执行 db/mysql/表结构/seata-server-mysql8.sql；
+#   2. 在 Nacos 导入 doc/nacos-example/flycloud-seata-client.yaml（dataId、group 见文件头）；
+#   3. 将 seata/application.yml 和 seata.env.example 分别复制到
+#      /docker/config/seata/application.yml、/docker/config/seata/seata.env，并填好 seata.env；
+#   4. 创建 /docker/config/seata/logs 目录。
+
+services:
+  seata_one:
+    image: apache/seata-server:2.5.0
+    container_name: seata_one
+    env_file:
+      - /docker/config/seata/seata.env
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      # 启动引导配置：只读挂载，避免容器内配置漂移。
+      - /docker/config/seata/application.yml:/seata-server/resources/application.yml:ro
+      # 事务协调器日志：持久化到宿主机，便于日志采集与排障。
+      - /docker/config/seata/logs:/seata-server/logs
+    ports:
+      # 业务服务连接 TC 的 RPC 端口。
+      - "8091:8091"
+      # Console 仅绑定回环地址，生产通过 SSH 隧道或受鉴权的反向代理访问。
+      - "127.0.0.1:7091:7091"
+    depends_on:
+      - mysql_one
+      - nacos_one
+    restart: always

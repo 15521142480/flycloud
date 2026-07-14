@@ -16,39 +16,18 @@
 
     <dependencies>
 
+        <!-- 为公共 YAML 配置提供加载能力。 -->
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-code</artifactId>
             <version>${revision}</version>
         </dependency>
 
+        <!-- Spring Cloud Alibaba 已锁定与项目版本匹配的 Seata 2.5.0。 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.logging.log4j</groupId>-->
-<!--                    <artifactId>*</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>com.alibaba</groupId>-->
-<!--                    <artifactId>druid</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.dubbo.extensions</groupId>-->
-<!--                    <artifactId>dubbo-filter-seata</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>io.seata</groupId>-->
-<!--            <artifactId>seata-spring-boot-starter</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.seata</groupId>-->
-<!--            <artifactId>seata-all</artifactId>-->
-<!--        </dependency>-->
 
     </dependencies>
 

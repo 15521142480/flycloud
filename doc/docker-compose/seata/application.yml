@@ -1,0 +1,55 @@
+# Seata Server 2.5.0 启动引导配置。
+# 此文件必须以只读方式挂载到容器；TC 需要先用它连接 Nacos，才能读取 flycloud-seata-client.yaml。
+
+server:
+  port: 7091
+
+spring:
+  application:
+    name: seata-server
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ${SEATA_LOG_PATH:/seata-server/logs}
+
+# Seata Console 登录账号。密码与安全密钥由 /docker/config/seata/seata.env 提供。
+console:
+  user:
+    username: ${SEATA_CONSOLE_USERNAME}
+    password: ${SEATA_CONSOLE_PASSWORD}
+
+seata:
+  server:
+    # RM/TM 连接 TC 的协议端口；显式指定，不依赖 Console 端口推导。
+    service-port: 8091
+
+  # 所有可变事务参数都存放在 Nacos 的 flycloud-seata-client.yaml 中。
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDR:nacos_one:8848}
+      namespace: ${NACOS_NAMESPACE:}
+      group: ${SEATA_NACOS_GROUP:SEATA_GROUP}
+      username: ${NACOS_USERNAME}
+      password: ${NACOS_PASSWORD}
+      data-id: flycloud-seata-client.yaml
+
+  # TC 自身注册到 Nacos，客户端通过此服务发现 TC 地址。
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: ${NACOS_SERVER_ADDR:nacos_one:8848}
+      namespace: ${NACOS_NAMESPACE:}
+      group: ${SEATA_NACOS_GROUP:SEATA_GROUP}
+      cluster: default
+      username: ${NACOS_USERNAME}
+      password: ${NACOS_PASSWORD}
+
+  # Console / REST 接口鉴权。生产环境必须提供高强度随机密钥。
+  security:
+    secretKey: ${SEATA_SECURITY_SECRET_KEY}
+    tokenValidityInMilliseconds: 1800000
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/api/v1/auth/login

@@ -21,8 +21,8 @@ import java.io.IOException;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/test")
-public class TestController {
+@RequestMapping("/test/seata")
+public class SeataTestController {
 
 
     private final ITestService testService;
@@ -37,12 +37,6 @@ public class TestController {
         return R.result(testService.seataTest(isRollback));
     }
 
-    /**
-     * elasticsearch测试
-     */
-    @GetMapping("/esTest/{type}/{indexName}")
-    public R<Void> seataTest(@NotNull(message = "type不能为空(1到4分别是增删改查)") @PathVariable Integer type, @NotNull(message = "indexName不能为空") @PathVariable String indexName) throws IOException {
-        return R.result(testService.esTest(type, indexName));
-    }
+
 
 }

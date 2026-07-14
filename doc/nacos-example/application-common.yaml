@@ -97,7 +97,7 @@ redisson:
 
 
 # xxl-job 配置
-XXL_JOB_ENABLED: true
+XXL_JOB_ENABLED: false
 XXL_JOB_ADMIN_ADDRESSES: http://127.0.0.1:9091/xxl-job-admin
 XXL_JOB_ACCESS_TOKEN: 建议随机32位token
 

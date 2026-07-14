@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/userTest")
+@RequestMapping("/test/user")
 public class SysUserTestController extends BaseController {
 
 //    private final ISysUserTestService iSysUserService;

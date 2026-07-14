@@ -146,12 +146,12 @@
 
             <!-- seata -->
             <dependency>
-                <groupId>io.seata</groupId>
+                <groupId>org.apache.seata</groupId>
                 <artifactId>seata-spring-boot-starter</artifactId>
                 <version>${seata.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.seata</groupId>
+                <groupId>org.apache.seata</groupId>
                 <artifactId>seata-all</artifactId>
                 <version>${seata.version}</version>
             </dependency>

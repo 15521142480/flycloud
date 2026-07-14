@@ -42,6 +42,12 @@
             <artifactId>flycloud-common-xxljob</artifactId>
             <version>${revision}</version>
         </dependency>
+        <!-- 分布式事务客户端：引入后自动加载 Seata 统一配置。 -->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-seata</artifactId>
+            <version>${revision}</version>
+        </dependency>
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-feign</artifactId>
