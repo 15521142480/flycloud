@@ -22,7 +22,7 @@ import org.springframework.context.annotation.PropertySource;
  * @date: 2025/8/21
  */
 @AutoConfiguration
-@PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:mate-elasticsearch.yml")
+@PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:flycloud-es.yaml")
 @EnableConfigurationProperties(ElasticsearchProperties.class)
 @AllArgsConstructor
 //@RequiredArgsConstructor

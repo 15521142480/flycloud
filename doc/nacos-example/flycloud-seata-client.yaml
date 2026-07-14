@@ -1,20 +1,23 @@
 # ============================================================================
-# Seata 2.5.0 的 Nacos 配置中心配置
+# Seata Client 公共配置
 #
-# Nacos：dataId = flycloud-seata-client.yaml，group = SEATA_GROUP，格式 = YAML。
-# 由 Seata Server 与所有引入 flycloud-common-seata 的业务服务共同读取。
-# 本文件不是 Spring Boot application.yml；键名直接对应 Seata 配置项。
-# 密码不得提交到 Git。导入 Nacos 前请在控制台将 CHANGE_ME 替换为实际的专用账号密码。
+# Nacos：
+# dataId = flycloud-seata-client.yaml
+# group  = SEATA_GROUP
+# format = YAML
+#
+# 仅供业务服务客户端 TM/RM 使用。
+# Seata Server 的数据库、恢复任务、监控配置放在它自己的 application.yml。
 # ============================================================================
 
-# 事务服务组路由。键名必须与客户端 seata.tx-service-group 完全一致。
+# 事务组路由
 service:
   vgroupMapping:
     flycloud-tx-group: default
   enableDegrade: false
   disableGlobalTransaction: false
 
-# AT 客户端事务参数。
+# AT 客户端配置
 client:
   rm:
     asyncCommitBufferLimit: 10000
@@ -23,10 +26,12 @@ client:
     tableMetaCheckerInterval: 60000
     sqlParserType: druid
     reportSuccessEnable: false
+
     lock:
       retryInterval: 10
       retryTimes: 30
       retryPolicyBranchRollbackOnConflict: true
+
   tm:
     commitRetryCount: 5
     rollbackRetryCount: 5
@@ -34,68 +39,14 @@ client:
     degradeCheck: false
     degradeCheckPeriod: 2000
     degradeCheckAllowTimes: 10
+
   undo:
     dataValidation: true
     logSerialization: jackson
     logTable: undo_log
     onlyCareUpdateColumns: true
+
     compress:
       enable: true
       type: zip
       threshold: 64k
-
-# TC 服务端恢复任务。单节点与多节点均可使用；多节点通过 distributed_lock 协调。
-server:
-  recovery:
-    committingRetryPeriod: 1000
-    asynCommittingRetryPeriod: 1000
-    rollbackingRetryPeriod: 1000
-    endstatusRetryPeriod: 1000
-    timeoutRetryPeriod: 1000
-  maxCommitRetryTimeout: -1
-  maxRollbackRetryTimeout: -1
-  rollbackFailedUnlockEnable: false
-  distributedLockExpireTime: 10000
-  session:
-    branchAsyncQueueSize: 5000
-    enableBranchAsyncRemove: false
-  enableParallelRequestHandle: true
-  retryDeadThreshold: 70000
-
-# TC 事务日志持久化。fly_seata 是 Seata 专用库，不与任何业务库共用。
-store:
-  mode: db
-  lock:
-    mode: db
-  session:
-    mode: db
-  db:
-    datasource: druid
-    dbType: mysql
-    driverClassName: com.mysql.cj.jdbc.Driver
-    # Docker 网络内访问 MySQL，禁止填写 localhost 或宿主机 127.0.0.1。
-    url: jdbc:mysql://mysql_one:3306/fly_seata?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia%2FShanghai&rewriteBatchedStatements=true
-    user: seata
-    password: CHANGE_ME_BEFORE_IMPORT
-    minConn: 10
-    maxConn: 100
-    globalTable: global_table
-    branchTable: branch_table
-    lockTable: lock_table
-    distributedLockTable: distributed_lock
-    vgroupTable: vgroup_table
-    queryLimit: 100
-    maxWait: 5000
-    druid:
-      timeBetweenEvictionRunsMillis: 120000
-      minEvictableIdleTimeMillis: 300000
-      testWhileIdle: true
-      testOnBorrow: false
-      keepAlive: false
-
-# 监控指标默认关闭；接入 Prometheus 时统一在此启用并开放对应端口。
-metrics:
-  enabled: false
-  registryType: compact
-  exporterList: prometheus
-  exporterPrometheusPort: 9898

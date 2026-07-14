@@ -31,10 +31,10 @@ services:
       # 事务协调器日志：持久化到宿主机，便于日志采集与排障。
       - /docker/config/seata/logs:/seata-server/logs
     ports:
-      # 业务服务连接 TC 的 RPC 端口。
+      # 业务服务连接 Seata TC端口
       - "8091:8091"
-      # Console 仅绑定回环地址，生产通过 SSH 隧道或受鉴权的反向代理访问。
-      - "127.0.0.1:7091:7091"
+      # 控制台服务，新版需独立部署
+      # - "127.0.0.1:7091:7091"
     # mysql、nacos、seata同一台服务器可以这么写 -> url: jdbc:mysql://mysql_one:3306/fly_seata、nacos_one:8848；如果不是删除depends_on配置
     depends_on:
       - mysql_one

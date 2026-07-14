@@ -1,41 +1,37 @@
 # Seata Server 2.5.0 启动引导配置。
 # 此文件必须以只读方式挂载到容器；TC 需要先用它连接 Nacos，才能读取 flycloud-seata-client.yaml。
 
-server:
-  port: 7091
+# NamingServer
+#
+#    服务寻址和 Console
+#
+#    默认端口 8081
+#
+#    配置用户名、密码、security
+
+# note：Seata Server 2.5.0 版本开始 【事务协调器TC服务 -> seata-server:8091】和【控制台服务 -> naming-server:8081】分离；也就是要客户端服务需要单独部署，本项目暂且只部署seata-server
+#server:
+#  port: 控制台服务端口 默认8081 建议改成 7091；新版不在此处合并，需独立部署
 
 spring:
   application:
     name: seata-server
+  main:
+    web-application-type: none
 
 logging:
   config: classpath:logback-spring.xml
   file:
     path: ${SEATA_LOG_PATH:/seata-server/logs}
 
-# Seata Console 登录账号。密码与安全密钥由 /docker/config/seata/seata.env 提供。
-console:
-  user:
-    username: ${SEATA_CONSOLE_USERNAME}
-    password: ${SEATA_CONSOLE_PASSWORD}
 
 seata:
+
   server:
-    # RM/TM 连接 TC 的协议端口；显式指定，不依赖 Console 端口推导。
-    service-port: 8091
+    # 业务服务连接 TC 的端口
+    service-port: ${SEATA_PORT:8091}
 
-  # 所有可变事务参数都存放在 Nacos 的 flycloud-seata-client.yaml 中。
-  # 目前所有环境的seata都用dev的NACOS_NAMESPACE，因为个人服务器资源有限不再部署多一个seata
-  config:
-    type: nacos
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDR:nacos_one:8848}
-      namespace: ${NACOS_NAMESPACE:}
-      group: ${SEATA_NACOS_GROUP:SEATA_GROUP}
-      username: ${NACOS_USERNAME}
-      password: ${NACOS_PASSWORD}
-      data-id: flycloud-seata-client.yaml
-
+  # Seata Server 注册到 Nacos
   # TC 自身注册到 Nacos，客户端通过此服务发现 TC 地址。
   registry:
     type: nacos
@@ -48,9 +44,53 @@ seata:
       username: ${NACOS_USERNAME}
       password: ${NACOS_PASSWORD}
 
+  # note：不能依赖 Nacos 配置中心读取数据库启动参数，只能把自己注册到 Nacos；
+  # note：所以mysql这些配置要写在此配置文件，其他所有可变事务参数都存放在 Nacos配置中心的 flycloud-seata-client.yaml 中
+#  config:
+#    type: nacos
+
+  # TC 事务日志持久化。flycloud_seata 是 Seata 专用库，不与任何业务库共用。
+  store:
+    mode: db
+    lock:
+      mode: db
+    session:
+      mode: db
+    db:
+      datasource: druid
+      dbType: mysql
+      driverClassName: com.mysql.cj.jdbc.Driver
+      # Docker 网络内访问 MySQL，禁止填写 localhost 或宿主机 127.0.0.1。
+      url: jdbc:mysql://${SEATA_DB_HOST}:${SEATA_DB_PORT:3306}/${SEATA_DB_NAME}?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia%2FShanghai&rewriteBatchedStatements=true
+      user: ${SEATA_DB_USERNAME}
+      password: ${SEATA_DB_PASSWORD}
+      minConn: 10
+      maxConn: 100
+      globalTable: global_table
+      branchTable: branch_table
+      lockTable: lock_table
+      distributedLockTable: distributed_lock
+      vgroupTable: vgroup_table
+      queryLimit: 100
+      maxWait: 5000
+      druid:
+        timeBetweenEvictionRunsMillis: 120000
+        minEvictableIdleTimeMillis: 300000
+        testWhileIdle: true
+        testOnBorrow: false
+        keepAlive: false
+
+
+  # Seata Console 登录账号。密码与安全密钥由 /docker/config/seata/seata.env 提供。
+  #console:
+  #  user:
+  #    username: ${SEATA_CONSOLE_USERNAME}
+  #    password: ${SEATA_CONSOLE_PASSWORD}
+
+
   # Console / REST 接口鉴权。生产环境必须提供高强度随机密钥（openssl rand -base64 48）。
-  security:
-    secretKey: ${SEATA_SECURITY_SECRET_KEY}
-    tokenValidityInMilliseconds: 1800000
-    ignore:
-      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/api/v1/auth/login
+#  security:
+#    secretKey: ${SEATA_SECURITY_SECRET_KEY}
+#    tokenValidityInMilliseconds: 1800000
+#    ignore:
+#      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/api/v1/auth/login
