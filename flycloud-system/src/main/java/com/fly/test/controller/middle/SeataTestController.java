@@ -1,4 +1,4 @@
-package com.fly.test.controller;
+package com.fly.test.controller.middle;
 
 import com.fly.common.domain.model.R;
 import com.fly.test.domain.bo.SeataTestBo;

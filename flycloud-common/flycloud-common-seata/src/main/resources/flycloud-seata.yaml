@@ -49,4 +49,5 @@ seata:
 spring:
   datasource:
     dynamic:
-      seata: true
+      # 与 seata.enabled 共用同一个总开关，关闭 Seata 时同步停止动态数据源代理。
+      seata: ${seata.enabled:true}
