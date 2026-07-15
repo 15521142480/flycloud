@@ -5,3 +5,8 @@ RUN bin/elasticsearch-plugin install --batch https://get.infini.cloud/elasticsea
 
 # 生产环境通过 jvm.options.d 固化 JVM 参数，不使用仅适用于临时调试的 ES_JAVA_OPTS。
 COPY jvm.options.d/99-flycloud-memory.options /usr/share/elasticsearch/config/jvm.options.d/99-flycloud-memory.options
+
+# IK 默认配置不包含项目词典；构建时一并固化，保证每个节点的分词结果一致。
+RUN mkdir -p /usr/share/elasticsearch/plugins/analysis-ik/config/custom
+COPY IKAnalyzer.cfg.xml /usr/share/elasticsearch/plugins/analysis-ik/config/IKAnalyzer.cfg.xml
+COPY custom.dic /usr/share/elasticsearch/plugins/analysis-ik/config/custom/custom.dic

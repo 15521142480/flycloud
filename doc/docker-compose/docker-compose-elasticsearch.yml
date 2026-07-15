@@ -1,6 +1,11 @@
-# 与主 docker-compose.yaml 联合使用：
-# docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-elasticsearch.yml up -d --build
-# 宿主机需执行：sysctl -w vm.max_map_count=262144
+# 服务器部署约定（假设 Compose 文件位于 /docker/docker-compose.yaml）：
+#   1. 复制本目录的 elasticsearch 文件夹到 /docker/elasticsearch；其中 Dockerfile 负责构建带 IK 的 ES 镜像；
+#   2. 创建运行目录并授权：
+#      install -d -o 1000 -g 0 /docker/config/elasticsearch/data /docker/config/elasticsearch/logs
+#   3. 复制 elasticsearch/elasticsearch.env.example 为 /docker/config/elasticsearch/elasticsearch.env，
+#      填写 ELASTIC_PASSWORD，并执行 chmod 600 /docker/config/elasticsearch/elasticsearch.env；
+#   4. 宿主机执行 sysctl -w vm.max_map_count=262144；
+#   5. 执行 docker compose up -d --build elasticsearch_one。
 services:
 
 
@@ -10,17 +15,22 @@ services:
       context: ./elasticsearch
     image: flycloud-elasticsearch:8.18.3-ik
     container_name: elasticsearch_one
+    hostname: elasticsearch_one
+    # 密码文件只注入容器，不提交到代码仓库。
+    env_file:
+      - /docker/config/elasticsearch/elasticsearch.env
     environment:
       TZ: Asia/Shanghai
       discovery.type: single-node
       xpack.security.enabled: "true"
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?请在环境变量中设置 ELASTIC_PASSWORD}
     # Elasticsearch 使用 mmap、网络 Direct Buffer 和文件系统页缓存，容器上限不能只等于 JVM 堆。
     mem_limit: 768m
     ports:
       - "127.0.0.1:9200:9200"
     volumes:
-      - /docker/data/elasticsearch:/usr/share/elasticsearch/data
-      - /docker/logs/elasticsearch:/usr/share/elasticsearch/logs
+      - /docker/config/elasticsearch/data:/usr/share/elasticsearch/data
+      - /docker/config/elasticsearch/logs:/usr/share/elasticsearch/logs
+      - /docker/config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - /docker/config/elasticsearch/jvm.options.d/heap.options:/usr/share/elasticsearch/config/jvm.options.d/heap.options:ro
       - /docker/config/elasticsearch/custom.dic:/usr/share/elasticsearch/plugins/analysis-ik/config/custom/custom.dic:ro
     restart: always

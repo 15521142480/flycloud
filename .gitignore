@@ -11,10 +11,11 @@ target/
 /config/nacos/nacos-dev.properties
 /config/nacos/nacos-prod.properties
 
+# 中间件配置
 /doc/nacos/**
 /doc/docker-compose/seata/seata.env
-
 /doc/docker-compose/rocketmq/broker.conf
+/doc/docker-compose/elasticsearch/elasticsearch.env
 
 
 
