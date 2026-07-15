@@ -8,6 +8,7 @@ import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.common.elasticsearch.exception.ElasticsearchQueryException;
+import com.fly.common.elasticsearch.page.model.ElasticsearchPageRequest;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class ElasticsearchPageExecutor {
      * @param converter 文档到业务 VO 的显式转换器
      */
     public <D, V> PageVo<V> search(String alias, ElasticsearchPageRequest request, Query query,
-                                    Class<D> documentType, Function<D, V> converter) {
+                                   Class<D> documentType, Function<D, V> converter) {
         int pageNum = Math.max(1, request.pageNum());
         int pageSize = Math.min(properties.getMaxPageSize(), Math.max(1, request.pageSize() <= 0 ? properties.getDefaultPageSize() : request.pageSize()));
         String field = request.allowedSortFields().getOrDefault(request.sortField(), request.allowedSortFields().get("createTime"));

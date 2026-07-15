@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration(after = ElasticsearchAutoConfiguration.class)
 @ConditionalOnBean(ElasticsearchClient.class)
-public class ElasticsearchIndexAutoConfiguration {
+public class ElasticsearchInfrastructureAutoConfiguration {
 
     /** 注册真实索引与 Alias 原子切换服务。 */
     @Bean

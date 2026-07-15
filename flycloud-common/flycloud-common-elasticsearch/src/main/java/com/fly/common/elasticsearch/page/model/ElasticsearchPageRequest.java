@@ -1,4 +1,4 @@
-package com.fly.common.elasticsearch.page;
+package com.fly.common.elasticsearch.page.model;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 

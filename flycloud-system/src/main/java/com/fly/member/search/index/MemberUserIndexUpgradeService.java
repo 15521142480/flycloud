@@ -2,7 +2,7 @@ package com.fly.member.search.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fly.common.elasticsearch.bulk.ElasticsearchBulkResult;
+import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkResult;
 import com.fly.common.elasticsearch.index.ElasticsearchAliasService;
 import com.fly.common.elasticsearch.index.ElasticsearchIndexName;
 import com.fly.common.elasticsearch.index.ElasticsearchIndexService;

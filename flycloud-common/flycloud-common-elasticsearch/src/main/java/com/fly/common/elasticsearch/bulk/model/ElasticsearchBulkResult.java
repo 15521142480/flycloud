@@ -1,4 +1,4 @@
-package com.fly.common.elasticsearch.bulk;
+package com.fly.common.elasticsearch.bulk.model;
 
 import java.time.Duration;
 import java.util.List;

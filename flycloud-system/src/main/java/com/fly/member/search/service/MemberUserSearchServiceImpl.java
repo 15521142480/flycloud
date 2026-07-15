@@ -1,7 +1,7 @@
 package com.fly.member.search.service;
 
 import com.fly.common.elasticsearch.page.ElasticsearchPageExecutor;
-import com.fly.common.elasticsearch.page.ElasticsearchPageRequest;
+import com.fly.common.elasticsearch.page.model.ElasticsearchPageRequest;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.rocketmq.constant.RocketMqTagConstants;

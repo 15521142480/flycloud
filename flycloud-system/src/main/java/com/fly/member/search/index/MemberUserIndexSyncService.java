@@ -1,8 +1,9 @@
 package com.fly.member.search.index;
 
-import com.fly.common.elasticsearch.bulk.ElasticsearchBulkDocument;
-import com.fly.common.elasticsearch.bulk.ElasticsearchBulkResult;
+import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkDocument;
+import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkResult;
 import com.fly.common.elasticsearch.bulk.ElasticsearchBulkService;
+import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkFailure;
 import com.fly.common.elasticsearch.index.ElasticsearchAliasService;
 import com.fly.common.elasticsearch.index.ElasticsearchIndexName;
 import com.fly.common.elasticsearch.index.ElasticsearchIndexService;
@@ -57,7 +58,7 @@ public class MemberUserIndexSyncService {
         long failed = 0;
         Long lastId = 0L;
         Instant started = Instant.now();
-        List<com.fly.common.elasticsearch.bulk.ElasticsearchBulkFailure> failures = new ArrayList<>();
+        List<ElasticsearchBulkFailure> failures = new ArrayList<>();
         while (true) {
             List<MemberUser> users = mapper.selectForEsSyncByCursor(lastId, definition.bulkSize());
             if (users.isEmpty()) {
