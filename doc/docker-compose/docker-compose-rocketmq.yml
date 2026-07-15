@@ -1,6 +1,6 @@
 # 与主 docker-compose.yaml 联合使用：
 # docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-rocketmq.yml up -d
-# 部署前：复制 rocketmq/broker.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP。
+# 部署前：复制 rocketmq/broker.example.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP。
 services:
 
 

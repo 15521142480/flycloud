@@ -14,6 +14,9 @@ target/
 /doc/nacos/**
 /doc/docker-compose/seata/seata.env
 
+/doc/docker-compose/rocketmq/broker.conf
+
+
 
 node_modules/
 **/node_modules/
