@@ -28,13 +28,14 @@ services:
       discovery.type: single-node
       # 启用 Elasticsearch 原生认证与授权；HTTPS/TLS 仍需保持自动安全配置或另行显式配置证书。
       xpack.security.enabled: "true"
-      # 个人低负载服务器的 JVM 基线；集中保留在 Compose，避免分散到额外的 JVM 配置目录。
-      ES_JAVA_OPTS: "-Xms256m -Xmx256m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
-    # Elasticsearch 使用 mmap、网络 Direct Buffer 和文件系统页缓存，容器上限不能只等于 JVM 堆。
-    mem_limit: 768m
+      # 个人低负载服务器的 JVM 基线；ES 8.18 加载内置模块与 IK 后元空间至少预留 256MB，避免启动期 Metaspace OOM。
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m -Xss512k -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m -XX:MaxDirectMemorySize=128m"
+    # 容器内存硬上限，不是预分配；除 256MB 堆外还需容纳 256MB 元空间、Direct Memory、线程栈和文件页缓存。
+    mem_limit: 1g
     ports:
-      # HTTP API 端口；当前仅允许服务器本机访问，避免将 ES 管理接口直接暴露到公网。
-      - "127.0.0.1:9200:9200"
+      # HTTP API 端口；当前仅允许服务器本机访问，避免将 ES 管理接口直接暴露到公网；或者防火墙设置指定ip访问
+#      - "127.0.0.1:9200:9200"
+      - "9200:9200"
     volumes:
       # 索引数据持久化目录；容器用户 UID 1000 必须具备读写权限。
       - /docker/elasticsearch/data:/usr/share/elasticsearch/data
