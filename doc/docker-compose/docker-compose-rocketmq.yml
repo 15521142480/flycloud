@@ -1,10 +1,10 @@
 # 与主 docker-compose.yaml 联合使用：
 # docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-rocketmq.yml up -d
 # 部署前：
-#   1. 复制 rocketmq/broker.example.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP；
+#   1. 复制 rocketmq/broker.example.conf 到 /docker/rocketmq/config/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP；
 #   2. RocketMQ 5.3.3 镜像以 UID/GID 3000 运行，必须预创建并授权持久化目录：
-#      install -d -o 3000 -g 3000 /docker/config/rocketmq/data/broker/store \
-#        /docker/config/rocketmq/logs/namesrv /docker/config/rocketmq/logs/broker
+#      install -d -o 3000 -g 3000 /docker/rocketmq/data/broker/store \
+#        /docker/rocketmq/logs/namesrv /docker/rocketmq/logs/broker
 services:
 
 
@@ -23,7 +23,7 @@ services:
     ports:
       - "9876:9876"
     volumes:
-      - /docker/config/rocketmq/logs/namesrv:/home/rocketmq/logs
+      - /docker/rocketmq/logs/namesrv:/home/rocketmq/logs
     restart: always
 
 
@@ -46,7 +46,7 @@ services:
       - "10911:10911"
       - "10912:10912"
     volumes:
-      - /docker/config/rocketmq/broker.conf:/home/rocketmq/rocketmq-5.3.3/conf/broker.conf:ro
-      - /docker/config/rocketmq/data/broker/store:/home/rocketmq/store
-      - /docker/config/rocketmq/logs/broker:/home/rocketmq/logs
+      - /docker/rocketmq/config/broker.conf:/home/rocketmq/rocketmq-5.3.3/conf/broker.conf:ro
+      - /docker/rocketmq/data/broker/store:/home/rocketmq/store
+      - /docker/rocketmq/logs/broker:/home/rocketmq/logs
     restart: always

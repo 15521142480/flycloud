@@ -74,7 +74,7 @@ seata:
         keepAlive: false
 
 
-  # Seata Console 登录账号。密码与安全密钥由 /docker/config/seata/seata.env 提供。
+  # Seata Console 登录账号。密码与安全密钥由 /docker/seata/config/seata.env 提供。
   #console:
   #  user:
   #    username: ${SEATA_CONSOLE_USERNAME}

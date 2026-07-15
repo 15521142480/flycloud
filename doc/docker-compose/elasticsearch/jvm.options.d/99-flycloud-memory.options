@@ -1,7 +1,0 @@
-# 个人低负载单节点基线。Xms 与 Xmx 必须一致；ES 还需要容器内的 Direct Memory、线程栈和文件系统页缓存。
--Xms256m
--Xmx256m
--Xss512k
--XX:MetaspaceSize=64m
--XX:MaxMetaspaceSize=128m
--XX:MaxDirectMemorySize=128m

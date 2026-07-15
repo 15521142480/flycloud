@@ -6,10 +6,10 @@
 #   1. 执行 db/mysql/表结构/seata-server-mysql8.sql；
 #   2. 在 Nacos 导入 doc/nacos-example/application-common.yaml；其中包含 flycloud.seata 客户端参数；
 #   3. 将 seata/application.yml 和 seata.env.example 分别复制到
-#      /docker/config/seata/application.yml、/docker/config/seata/seata.env，并填好 seata.env；
-#   4. 将 MySQL Connector/J 8.4.x 驱动包放入 /docker/config/seata/jdbc/，文件名必须以
+#      /docker/seata/config/application.yml、/docker/seata/config/seata.env，并填好 seata.env；
+#   4. 将 MySQL Connector/J 8.4.x 驱动包放入 /docker/seata/config/jdbc/，文件名必须以
 #      mysql-connector-j 开头，例如 mysql-connector-j-8.4.0.jar；
-#   5. 创建 /docker/config/seata/logs 目录。
+#   5. 创建 /docker/seata/logs 目录。
 
 services:
 
@@ -19,7 +19,7 @@ services:
     image: apache/seata-server:2.5.0
     container_name: seata_one
     env_file:
-      - /docker/config/seata/seata.env
+      - /docker/seata/config/seata.env
     environment:
       TZ: Asia/Shanghai
       # 服务器内存较小，覆盖 Seata 镜像默认的 2G JVM 参数
@@ -32,11 +32,11 @@ services:
 
     volumes:
       # 启动引导配置：只读挂载，避免容器内配置漂移。
-      - /docker/config/seata/application.yml:/seata-server/resources/application.yml:ro
+      - /docker/seata/config/application.yml:/seata-server/resources/application.yml:ro
       # Seata 2.5.0 镜像不会内置 MySQL 驱动；其 loader.path=/lib，驱动必须位于 /lib/jdbc。
-      - /docker/config/seata/jdbc:/lib/jdbc:ro
+      - /docker/seata/config/jdbc:/lib/jdbc:ro
       # 事务协调器日志：持久化到宿主机，便于日志采集与排障。
-      - /docker/config/seata/logs:/seata-server/logs
+      - /docker/seata/logs:/seata-server/logs
     ports:
       # 业务服务连接 Seata TC端口
       - "8091:8091"

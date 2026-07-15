@@ -1,0 +1,11 @@
+# 集群名称，用于节点识别；单节点部署仍应显式指定，避免与其他环境混淆。
+cluster.name: flycloud-elasticsearch
+
+# Docker 单节点名称；多节点部署时每个节点必须唯一。
+node.name: elasticsearch_one
+
+# 容器内监听所有网卡，宿主机访问范围由 Compose ports 绑定地址控制。
+network.host: 0.0.0.0
+
+# HTTP 服务端口。
+http.port: 9200

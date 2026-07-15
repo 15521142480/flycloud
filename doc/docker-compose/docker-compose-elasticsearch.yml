@@ -1,9 +1,10 @@
 # 服务器部署约定（假设 Compose 文件位于 /docker/docker-compose.yaml）：
 #   1. 复制本目录的 elasticsearch 文件夹到 /docker/elasticsearch；其中 Dockerfile 负责构建带 IK 的 ES 镜像；
+#      Elasticsearch 配置和自定义词典直接放在 elasticsearch 根目录并通过只读挂载注入容器；
 #   2. 创建运行目录并授权：
-#      install -d -o 1000 -g 0 /docker/config/elasticsearch/data /docker/config/elasticsearch/logs
-#   3. 复制 elasticsearch/elasticsearch.env.example 为 /docker/config/elasticsearch/elasticsearch.env，
-#      填写 ELASTIC_PASSWORD，并执行 chmod 600 /docker/config/elasticsearch/elasticsearch.env；
+#      install -d -o 1000 -g 0 /docker/elasticsearch/data /docker/elasticsearch/logs
+#   3. 复制 elasticsearch/elasticsearch.env.example 为 /docker/elasticsearch/elasticsearch.env，
+#      填写 ELASTIC_PASSWORD，并执行 chmod 600 /docker/elasticsearch/elasticsearch.env；
 #   4. 宿主机执行 sysctl -w vm.max_map_count=262144；
 #   5. 执行 docker compose up -d --build elasticsearch_one。
 services:
@@ -18,19 +19,20 @@ services:
     hostname: elasticsearch_one
     # 密码文件只注入容器，不提交到代码仓库。
     env_file:
-      - /docker/config/elasticsearch/elasticsearch.env
+      - /docker/elasticsearch/elasticsearch.env
     environment:
       TZ: Asia/Shanghai
       discovery.type: single-node
       xpack.security.enabled: "true"
+      # 个人低负载服务器的 JVM 基线；集中保留在 Compose，避免分散到额外的 JVM 配置目录。
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
     # Elasticsearch 使用 mmap、网络 Direct Buffer 和文件系统页缓存，容器上限不能只等于 JVM 堆。
     mem_limit: 768m
     ports:
       - "127.0.0.1:9200:9200"
     volumes:
-      - /docker/config/elasticsearch/data:/usr/share/elasticsearch/data
-      - /docker/config/elasticsearch/logs:/usr/share/elasticsearch/logs
-      - /docker/config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - /docker/config/elasticsearch/jvm.options.d/heap.options:/usr/share/elasticsearch/config/jvm.options.d/heap.options:ro
-      - /docker/config/elasticsearch/custom.dic:/usr/share/elasticsearch/plugins/analysis-ik/config/custom/custom.dic:ro
+      - /docker/elasticsearch/data:/usr/share/elasticsearch/data
+      - /docker/elasticsearch/logs:/usr/share/elasticsearch/logs
+      - /docker/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - /docker/elasticsearch/custom.dic:/usr/share/elasticsearch/plugins/analysis-ik/config/custom/custom.dic:ro
     restart: always
