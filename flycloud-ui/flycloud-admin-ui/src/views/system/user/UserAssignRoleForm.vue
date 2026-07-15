@@ -91,8 +91,8 @@ const submitForm = async () => {
     })
     message.success(t('common.updateSuccess'))
     dialogVisible.value = false
-    // 发送操作成功的事件
-    emit('success', true)
+    // 将已分配角色的用户 ID 回传给父页面，用于判断是否为当前登录用户。
+    emit('success', String(formData.value.id))
   } finally {
     formLoading.value = false
   }

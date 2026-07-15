@@ -197,10 +197,13 @@ import RoleForm from './RoleForm.vue'
 import RoleAssignMenuForm from './RoleAssignMenuForm.vue'
 import RoleDataPermissionForm from './RoleDataPermissionForm.vue'
 import { refreshCurrentUserAuthorization } from '@/utils/authorization'
+import * as PermissionApi from '@/api/system/permission'
+import { useUserStore } from '@/store/modules/user'
 const { t } = useI18n()
 defineOptions({ name: 'SystemRole' })
 
 const message = useMessage() // 消息弹窗
+const userStore = useUserStore()
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -259,10 +262,33 @@ const openAssignMenuForm = async (row: RoleApi.RoleVO) => {
 }
 
 /**
- * 角色菜单权限保存后刷新角色列表，并重新加载当前会话的权限、菜单和动态路由。
+ * 角色菜单权限保存后刷新角色列表。
+ *
+ * <p>通过服务端查询当前登录用户的角色 ID，确保判断结果不受浏览器缓存影响。仅当当前用户
+ * 拥有本次修改的角色时，才询问是否立即重新加载菜单和页面权限。</p>
+ *
+ * @param role 已完成菜单权限修改的角色信息
  */
-const handleRoleMenuChanged = async () => {
+const handleRoleMenuChanged = async (role: { roleId: string; roleName: string }) => {
   await getList()
+
+  const currentUserRoleIds = await PermissionApi.getUserRoleList(userStore.getUser.id)
+  const currentUserHasChangedRole = currentUserRoleIds.some(
+    (roleId: string | number) => String(roleId) === role.roleId
+  )
+  if (!currentUserHasChangedRole) {
+    return
+  }
+
+  try {
+    await message.confirm(
+      `检测到当前登录用户拥有“${role.roleName}”角色，该角色的菜单权限已修改。是否立即重新加载菜单导航和页面权限？`,
+      '刷新菜单导航'
+    )
+  } catch {
+    return
+  }
+
   await refreshCurrentUserAuthorization()
 }
 

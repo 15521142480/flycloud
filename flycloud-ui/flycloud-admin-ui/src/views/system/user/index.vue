@@ -244,10 +244,12 @@ import UserAssignRoleForm from './UserAssignRoleForm.vue'
 // import DeptTree from './DeptTree.vue'
 import {getFilePreviewUrl} from "@/components/UploadFile/src/useUpload";
 import { refreshCurrentUserAuthorization } from '@/utils/authorization'
+import { useUserStore } from '@/store/modules/user'
 const { t } = useI18n()
 defineOptions({ name: 'SystemUser' })
 
 const message = useMessage() // 消息弹窗
+const userStore = useUserStore()
 
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
@@ -394,10 +396,29 @@ const handleRole = (row: UserApi.UserVO) => {
 }
 
 /**
- * 用户角色分配成功后刷新用户列表，并重新加载当前会话的权限、菜单和动态路由。
+ * 用户角色分配成功后刷新用户列表。
+ *
+ * <p>仅当被分配角色的用户就是当前登录用户时，才询问是否立即重新加载当前浏览器会话的
+ * 菜单和页面权限；修改其他用户不会影响当前会话。</p>
+ *
+ * @param assignedUserId 已完成角色分配的用户 ID
  */
-const handleUserRoleChanged = async () => {
+const handleUserRoleChanged = async (assignedUserId: string) => {
   await getList()
+
+  if (String(userStore.getUser.id) !== String(assignedUserId)) {
+    return
+  }
+
+  try {
+    await message.confirm(
+      '检测到已修改当前登录用户的角色。是否立即重新加载菜单导航和页面权限？',
+      '刷新菜单导航'
+    )
+  } catch {
+    return
+  }
+
   await refreshCurrentUserAuthorization()
 }
 

@@ -208,8 +208,11 @@ const submitForm = async () => {
     await RoleApi.updateMenuPermission(data)
     message.success(t('common.updateSuccess'))
     dialogVisible.value = false
-    // 发送操作成功的事件
-    emit('success')
+    // 回传本次修改的角色，父页面据此判断当前登录用户是否拥有该角色。
+    emit('success', {
+      roleId: String(formData.id),
+      roleName: formData.name
+    })
   } finally {
     formLoading.value = false
   }
