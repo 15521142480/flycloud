@@ -60,6 +60,8 @@
             <version>${revision}</version>
         </dependency>
 
+
+        <!-- 引入websocket、xxl-job、seata、elasticsearch、rocketmq -->
         <dependency>
             <groupId>com.flycloud</groupId>
             <artifactId>flycloud-common-websocket</artifactId>

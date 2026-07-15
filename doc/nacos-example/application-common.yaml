@@ -82,9 +82,9 @@ spring:
   # ====================================================================== spring -> elasticsearch 相关配置
   elasticsearch:
     uris:
-      - ${ELASTICSEARCH_URI:http://127.0.0.1:9200}
-    username: ${ELASTICSEARCH_USERNAME:elastic}
-    password: ${ELASTICSEARCH_PASSWORD:请替换为强密码}
+      - http://127.0.0.1:9200
+    username: elastic
+    password: elastic
     connection-timeout: 3s
     socket-timeout: 30s
 
@@ -131,7 +131,7 @@ xxl:
     # 业务服务执行器的总开关；各服务可在自己的环境配置中覆盖 executor 配置。
     enabled: false
     # 调度中心与执行器通信密钥；生产环境使用 Nacos 加密或密钥管理服务注入。
-    access-token: ${XXL_JOB_ACCESS_TOKEN:建议随机32位token}
+    access-token: 建议随机32位token
 
 
 

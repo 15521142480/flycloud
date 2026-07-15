@@ -7,8 +7,14 @@
 #   2. 在 Nacos 导入 doc/nacos-example/application-common.yaml；其中包含 flycloud.seata 客户端参数；
 #   3. 将 seata/application.yml 和 seata.env.example 分别复制到
 #      /docker/seata/config/application.yml、/docker/seata/config/seata.env，并填好 seata.env；
-#   4. 将 MySQL Connector/J 8.4.x 驱动包放入 /docker/seata/config/jdbc/，文件名必须以
-#      mysql-connector-j 开头，例如 mysql-connector-j-8.4.0.jar；
+#   4. Seata 2.5.0 镜像不内置 MySQL 驱动。创建目录并下载项目统一使用的 Connector/J 9.4.0：
+#      mkdir -p /docker/seata/config/jdbc
+#      curl -fL --retry 3 \
+#        -o /docker/seata/config/jdbc/mysql-connector-j-9.4.0.jar \
+#        https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.4.0/mysql-connector-j-9.4.0.jar
+#      chmod 644 /docker/seata/config/jdbc/mysql-connector-j-9.4.0.jar
+#      ls -lh /docker/seata/config/jdbc/
+#      MySQL 服务端为 8.4.10 时可继续使用该 JDBC 驱动，无需要求两者版本完全相同；
 #   5. 创建 /docker/seata/logs 目录。
 
 services:
