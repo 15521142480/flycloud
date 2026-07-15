@@ -81,9 +81,9 @@ spring:
         keepaliveTime: 30000
 
 
-# seata配置
+# Seata 官方客户端配置：动态数据源已负责创建 AT 数据源代理，因此关闭 Seata Starter 的二次自动代理。
 seata:
-  # 关闭自动代理
+  # 是否由 Seata Starter 自动包装所有数据源；必须为 false，避免与 dynamic-datasource 的代理重复。
   enable-auto-data-source-proxy: false
 
 
@@ -140,4 +140,3 @@ mybatis-encryptor:
   # 公私钥 非对称算法的公私钥 如：SM2，RSA
   publicKey:
   privateKey:
-  

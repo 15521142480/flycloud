@@ -81,11 +81,17 @@ spring:
 
   # ====================================================================== spring -> elasticsearch 相关配置
   elasticsearch:
+    # Elasticsearch HTTP 地址列表；本地服务访问服务器 ES 时填写服务器可达地址。
     uris:
+      # 单节点地址；集群可继续追加多个地址。
       - http://127.0.0.1:9200
+    # Elasticsearch 基础认证用户名。
     username: elastic
+    # Elasticsearch 基础认证密码；生产环境应使用 Nacos 加密配置或密钥管理服务。
     password: elastic
+    # 建立 TCP 连接的超时时间。
     connection-timeout: 3s
+    # 已建立连接后，等待 Elasticsearch 响应的最大时间。
     socket-timeout: 30s
 
 
@@ -122,6 +128,7 @@ rocketmq:
   producer:
     # 每个服务一个稳定的 Producer Group，禁止按请求动态生成。
     group: ${spring.application.name}-producer
+    # 同步发送消息等待 Broker 响应的最大时间，单位毫秒。
     send-message-timeout: 5000
 
 
@@ -251,17 +258,27 @@ flycloud:
 
   # ====================================================================== flycloud -> elasticsearch 相关配置
   elasticsearch:
-    # 全局开关
+    # Elasticsearch 公共能力总开关；关闭后不注册 Flycloud 的 ES 基础设施 Bean。
     enabled: true
+    # 未显式指定分页大小时使用的默认每页条数。
     default-page-size: 10
+    # 单次搜索允许的最大每页条数，防止大分页拖垮集群。
     max-page-size: 100
+    # Bulk 写入时单批最多包含的文档数。
     bulk-size: 500
+    # Bulk 请求失败后的最大重试次数。
     bulk-retry-times: 3
+    # Bulk 请求失败后的两次重试间隔。
     bulk-retry-interval: 1s
+    # 索引版本升级后，旧版本索引的建议观察保留天数。
     index-retention-days: 7
+    # 是否强制一个业务 Alias 同时只能指向一个真实写索引。
     alias-require-single-index: true
+    # 命中量超过该阈值时，分页查询应改用 search_after。
     search-after-threshold: 10000
+    # 单个业务索引全量同步时允许的最大并发数。
     full-sync-concurrency: 1
+    # Bulk 写入完成后是否立即 refresh，使写入数据可被后续搜索读取。
     refresh-after-bulk: true
 
 
@@ -269,40 +286,67 @@ flycloud:
   # ====================================================================== flycloud -> seata 客户端治理配置
   # Seata 官方 seata.* 属性由 flycloud-common-seata 的桥接配置读取本节并映射，业务服务无需再导入独立 Data ID。
   seata:
+    # Seata 客户端总开关；关闭后不创建 TM/RM 和数据源代理相关能力。
     enabled: true
+    # 事务服务组名称；必须与下方 vgroup-mapping 的键一致。
     tx-service-group: flycloud-tx-group
     service:
       vgroup-mapping:
+        # 事务服务组到 TC 集群名的映射；default 必须与 Seata Server 注册集群一致。
         flycloud-tx-group: default
+      # TC 不可用时是否降级为本地事务；生产环境通常保持关闭以避免静默失去分布式事务。
       enable-degrade: false
+      # 全局事务禁用开关；true 时 @GlobalTransactional 不再创建全局事务。
       disable-global-transaction: false
     client:
       rm:
+        # RM 异步提交分支事务的缓冲队列上限。
         async-commit-buffer-limit: 10000
+        # RM 向 TC 上报分支状态失败后的重试次数。
         report-retry-count: 5
+        # 是否校验业务表元数据，防止表结构变化造成 AT 回滚异常。
         table-meta-check-enable: true
+        # 表元数据定时校验间隔，单位毫秒。
         table-meta-checker-interval: 60000
+        # AT 模式 SQL 解析器实现。
         sql-parser-type: druid
+        # 分支事务成功后是否主动向 TC 发送成功上报。
         report-success-enable: false
         lock:
+          # 全局锁冲突后的单次等待间隔，单位毫秒。
           retry-interval: 10
+          # 全局锁冲突后的最大重试次数。
           retry-times: 30
+          # 遇到全局锁冲突时，是否回滚当前分支事务。
           retry-policy-branch-rollback-on-conflict: true
       tm:
+        # TM 提交全局事务失败后的最大重试次数。
         commit-retry-count: 5
+        # TM 回滚全局事务失败后的最大重试次数。
         rollback-retry-count: 5
+        # 未在注解中指定时的全局事务默认超时，单位毫秒。
         default-global-transaction-timeout: 60000
+        # 是否启用 TM 降级检测。
         degrade-check: false
+        # TM 降级检测周期，单位毫秒。
         degrade-check-period: 2000
+        # 连续失败达到该次数后允许进入降级。
         degrade-check-allow-times: 10
       undo:
+        # 回滚时是否校验前后镜像数据，发现脏写时拒绝自动回滚。
         data-validation: true
+        # undo_log 日志序列化方式。
         log-serialization: jackson
+        # 每个参与 AT 事务的业务库中使用的 Undo Log 表名。
         log-table: undo_log
+        # 是否仅记录 UPDATE 语句实际变更的列，减少 undo_log 体积。
         only-care-update-columns: true
         compress:
+          # 是否压缩达到阈值的 undo_log 内容。
           enable: true
+          # undo_log 压缩算法。
           type: zip
+          # 触发 undo_log 压缩的内容大小阈值。
           threshold: 64k
 
 
@@ -312,9 +356,13 @@ flycloud:
     # 全局开关；不使用 RocketMQ 时统一关闭；不会创建生产者、消费者和本地消息调度器。
     enabled: true
     outbox:
+      # 本地消息表调度开关；关闭后不会扫描或投递 mq_outbox_message 中的待发送消息。
       enabled: true
-      dispatch-delay-millis: 5000
+      # 本地消息表轮询间隔，单位毫秒；每轮结束后等待该时长再执行下一轮。
+      dispatch-delay-millis: 10000
+      # 每轮扫描并尝试投递的最大消息数量。
       batch-size: 100
+      # 单条本地消息允许的最大失败重试次数，超过后由人工或补偿任务处理。
       max-retry-count: 16
       # 多实例条件抢占后的租约；实例异常退出时，租约到期后可重新投递。
       claim-lease-seconds: 60
