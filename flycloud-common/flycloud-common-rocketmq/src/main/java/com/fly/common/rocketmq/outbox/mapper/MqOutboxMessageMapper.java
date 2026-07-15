@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/** 本地消息表 Mapper。 */
+/**
+ * 本地消息表 Mapper。
+ */
 @Mapper
 public interface MqOutboxMessageMapper extends BaseMapperPlus<MqOutboxMessageMapper, MqOutboxMessage, MqOutboxMessage> {
 

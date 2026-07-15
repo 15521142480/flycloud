@@ -7,7 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-/** 会员索引升级审计记录。 */
+/**
+ * 会员索引升级审计记录。
+ */
 @Data
 @TableName("member_user_index_upgrade_record")
 public class MemberUserIndexUpgradeRecord {

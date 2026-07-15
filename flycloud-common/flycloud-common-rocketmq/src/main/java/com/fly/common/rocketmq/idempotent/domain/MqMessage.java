@@ -13,9 +13,33 @@ import java.time.LocalDateTime;
 @Data
 public class MqMessage<T> implements Serializable {
 
+    /**
+     * 业务消息唯一标识。
+     */
     private String messageId;
+
+    /**
+     * 业务事件发生时间。
+     */
     private LocalDateTime occurredTime;
+
+    /**
+     * 业务主键。
+     */
     private String bizKey;
+
+    /**
+     * RocketMQ 事件 Tag。
+     */
+    private String tag;
+
+    /**
+     * 业务事件类型。
+     */
     private String eventType;
+
+    /**
+     * 强类型业务载荷。
+     */
     private T payload;
 }

@@ -48,8 +48,10 @@ public class ElasticsearchProjectionWriter {
         });
     }
 
-    /** 计算本次写入目标，去重后返回真实索引集合。 */
-    private Set<String> targets(String alias, String rebuildingIndex) {
+    /**
+     * 计算本次写入目标，去重后返回真实索引集合。
+     */
+     private Set<String> targets(String alias, String rebuildingIndex) {
         Set<String> indexes = new LinkedHashSet<>();
         String currentIndex = aliasService.getCurrentIndex(alias);
         if (currentIndex != null) {

@@ -261,13 +261,11 @@
 // @ts-nocheck
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as MenuApi from '@/api/system/menu'
-import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum, SystemMenuTypeEnum, SystemTypeEnum } from '@/utils/constants'
 import { defaultProps, handleTree } from '@/utils/tree'
 const { t } = useI18n()
 defineOptions({ name: 'SystemMenuForm' })
 
-const { wsCache } = useCache()
 const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
@@ -390,8 +388,6 @@ const submitForm = async () => {
     emit('success')
   } finally {
     formLoading.value = false
-    // 清空，从而触发刷新
-    wsCache.delete(CACHE_KEY.ROLE_ROUTERS)
   }
 }
 

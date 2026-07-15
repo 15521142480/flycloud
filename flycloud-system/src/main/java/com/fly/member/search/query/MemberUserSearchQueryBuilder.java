@@ -6,7 +6,9 @@ import com.fly.member.search.index.MemberUserIndexFields;
 import com.fly.member.search.model.MemberUserSearchPageBo;
 import org.springframework.stereotype.Component;
 
-/** 会员用户 ES 业务查询构造器：只构造 Query，不关心分页、别名或客户端调用。 */
+/**
+ * 会员用户 ES 业务查询构造器：只构造 Query，不关心分页、别名或客户端调用。
+ */
 @Component
 public class MemberUserSearchQueryBuilder {
 
@@ -42,8 +44,10 @@ public class MemberUserSearchQueryBuilder {
         return builder.build()._toQuery();
     }
 
-    /** 判断检索文本是否有效。 */
-    private boolean hasText(String value) {
+    /**
+     * 判断检索文本是否有效。
+     */
+     private boolean hasText(String value) {
         return value != null && !value.isBlank();
     }
 }

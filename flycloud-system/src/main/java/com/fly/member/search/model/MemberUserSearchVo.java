@@ -5,7 +5,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/** 会员用户 ES 查询响应。 */
+/**
+ * 会员用户 ES 查询响应。
+ */
 @Data
 public class MemberUserSearchVo {
 

@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 import java.util.function.Function;
 
-/** 安全浅分页与 search_after 深分页统一执行器。 */
+/**
+ * 安全浅分页与 search_after 深分页统一执行器。
+ */
 @RequiredArgsConstructor
 public class ElasticsearchPageExecutor {
 

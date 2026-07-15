@@ -15,7 +15,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 通用 Bulk 写入、失败聚合、重试与刷新能力。 */
+/**
+ * 通用 Bulk 写入、失败聚合、重试与刷新能力。
+ */
 @RequiredArgsConstructor
 public class ElasticsearchBulkService {
 
@@ -53,8 +55,10 @@ public class ElasticsearchBulkService {
         return new ElasticsearchBulkResult(success, failures.size(), Duration.between(started, Instant.now()), List.copyOf(failures));
     }
 
-    /** 使用 Bulk API 提交单个批次，并对网络级异常执行有限重试。 */
-    private <T> BulkResponse execute(String index, List<ElasticsearchBulkDocument<T>> documents) {
+    /**
+     * 使用 Bulk API 提交单个批次，并对网络级异常执行有限重试。
+     */
+     private <T> BulkResponse execute(String index, List<ElasticsearchBulkDocument<T>> documents) {
         Exception last = null;
         for (int attempt = 0; attempt <= properties.getBulkRetryTimes(); attempt++) {
             try {
@@ -71,8 +75,10 @@ public class ElasticsearchBulkService {
         throw new ElasticsearchSyncException(index, last);
     }
 
-    /** 在批量导入完成后刷新目标索引。 */
-    private void refresh(String index) {
+    /**
+     * 在批量导入完成后刷新目标索引。
+     */
+     private void refresh(String index) {
         try {
             client.indices().refresh(request -> request.index(index));
         } catch (Exception exception) {
@@ -80,8 +86,10 @@ public class ElasticsearchBulkService {
         }
     }
 
-    /** 按配置等待下一次 Bulk 重试。 */
-    private void sleep() {
+    /**
+     * 按配置等待下一次 Bulk 重试。
+     */
+     private void sleep() {
         try {
             Thread.sleep(properties.getBulkRetryInterval().toMillis());
         } catch (InterruptedException exception) {

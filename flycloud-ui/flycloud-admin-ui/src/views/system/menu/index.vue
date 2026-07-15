@@ -75,7 +75,7 @@
   </ContentWrap>
 
   <!-- 表单弹窗：添加/修改 -->
-  <MenuForm ref="formRef" @success="getList" />
+  <MenuForm ref="formRef" @success="handleMenuChanged" />
 </template>
 
 <script lang="ts" setup>
@@ -89,6 +89,7 @@ import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { CommonStatusEnum } from '@/utils/constants'
 import { CirclePlus, Delete, Edit, Plus } from '@element-plus/icons-vue'
 import { checkPermi } from '@/utils/permission'
+import { refreshCurrentUserAuthorization } from '@/utils/authorization'
 const { t } = useI18n()
 defineOptions({ name: 'SystemMenu' })
 
@@ -178,7 +179,9 @@ const handleStatusChange = async (data: MenuVO) => {
     // 取消后，进行恢复按钮
     data.status =
       data.status === CommonStatusEnum.ENABLE ? CommonStatusEnum.DISABLE : CommonStatusEnum.ENABLE
+    return
   }
+  await refreshCurrentUserAuthorization()
 }
 
 /**
@@ -201,7 +204,7 @@ const deleteMenu = async (data: object) => {
     await MenuApi.deleteMenu(data.id)
     message.success(t('common.delSuccess'))
     // 刷新列表
-    handleQuery()
+    await handleMenuChanged()
   } catch {}
 }
 
@@ -212,6 +215,14 @@ const toggleExpandAll = () => {
   nextTick(() => {
     refreshTable.value = true
   })
+}
+
+/**
+ * 菜单新增、修改、删除后刷新菜单树，并重新获取当前登录用户的导航权限。
+ */
+const handleMenuChanged = async () => {
+  await getList()
+  await refreshCurrentUserAuthorization()
 }
 
 /** 刷新菜单缓存按钮操作 */

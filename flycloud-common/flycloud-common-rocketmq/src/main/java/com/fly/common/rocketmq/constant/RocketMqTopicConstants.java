@@ -1,6 +1,8 @@
 package com.fly.common.rocketmq.constant;
 
-/** 按业务域划分的 RocketMQ Topic 常量。 */
+/**
+ * 按业务域划分的 RocketMQ Topic 常量。
+ */
 public final class RocketMqTopicConstants {
 
     public static final String SYSTEM_USER_EVENT = "flycloud-system-user-event";

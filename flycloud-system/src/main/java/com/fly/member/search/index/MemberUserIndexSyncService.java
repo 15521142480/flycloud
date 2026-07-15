@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.time.Duration;
 import java.time.Instant;
 
-/** 会员用户全量同步：基于主键稳定游标和 Bulk API。 */
+/**
+ * 会员用户全量同步：基于主键稳定游标和 Bulk API。
+ */
 @Service
 @RequiredArgsConstructor
 public class MemberUserIndexSyncService {

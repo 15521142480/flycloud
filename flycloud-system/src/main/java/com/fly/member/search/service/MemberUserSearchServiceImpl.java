@@ -1,5 +1,6 @@
 package com.fly.member.search.service;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.elasticsearch.page.ElasticsearchPageExecutor;
 import com.fly.common.elasticsearch.page.model.ElasticsearchPageRequest;
 import com.fly.common.domain.vo.PageVo;
@@ -7,7 +8,10 @@ import com.fly.common.exception.ServiceException;
 import com.fly.common.rocketmq.constant.RocketMqTagConstants;
 import com.fly.common.rocketmq.constant.RocketMqTopicConstants;
 import com.fly.common.rocketmq.outbox.service.MqOutboxService;
+import com.fly.common.security.util.UserUtils;
+import com.fly.common.utils.StringUtils;
 import com.fly.member.mapper.MemberUserMapper;
+import com.fly.member.search.model.MemberUserSearchInsertBo;
 import com.fly.member.search.model.MemberUserSearchUpdateBo;
 import com.fly.system.api.member.domain.MemberUser;
 import com.fly.member.search.converter.MemberUserDocumentConverter;
@@ -26,9 +30,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
-/** 会员用户搜索业务编排；通用索引、查询与同步细节均已下沉公共/专属组件。 */
+/**
+ * 会员用户搜索业务编排；通用索引、查询与同步细节均已下沉公共/专属组件。
+ */
 @Service
 @RequiredArgsConstructor
 @ConditionalOnExpression("'${flycloud.elasticsearch.enabled:false}' == 'true' and '${flycloud.rocketmq.enabled:false}' == 'true'")
@@ -57,6 +64,48 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
     @Override
     public String fullSynchronize() {
         return syncService.initializeAndSynchronize();
+    }
+
+    /**
+     * 新增会员主数据，并在同一数据库事务内创建 ES 投影更新事件。
+     *
+     * <p>消息只传递新增后的会员主键；消费者收到消息后回查 MySQL，再写入 ES，
+     * 从而保证 MySQL 是唯一权威数据源。</p>
+     *
+     * @param bo 新增会员请求
+     * @return 新增会员主键
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Long insertMemberUser(MemberUserSearchInsertBo bo) {
+        validateMobileUnique(bo.getMobile());
+
+        MemberUser user = new MemberUser();
+        user.setMobile(bo.getMobile());
+        user.setEmail(bo.getEmail());
+        user.setNickname(bo.getNickname());
+        user.setName(bo.getName());
+        user.setStatus(bo.getStatus() == null ? 0 : bo.getStatus());
+        user.setMark(bo.getMark());
+        user.setTagIds(bo.getTagIds());
+        user.setPostIds(bo.getPostIds());
+        user.setLevelId(bo.getLevelId());
+        user.setGroupId(bo.getGroupId());
+        user.setPoint(0);
+        user.setExperience(0);
+        user.setIsDeleted(false);
+        LocalDateTime now = LocalDateTime.now();
+        String operator = String.valueOf(UserUtils.getCurUserId());
+        user.setCreateBy(operator);
+        user.setCreateTime(now);
+        user.setUpdateBy(operator);
+        user.setUpdateTime(now);
+        if (memberUserMapper.insert(user) != 1 || user.getId() == null) {
+            throw new ServiceException("新增会员用户失败");
+        }
+
+        saveIndexUpsertEvent(user.getId(), RocketMqTagConstants.CREATE, "MEMBER_USER_INDEX_CREATE");
+        return user.getId();
     }
 
     /**
@@ -96,15 +145,7 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
             user.setPostIds(bo.getPostIds());
         }
         memberUserMapper.updateById(user);
-        MemberUserIndexEvent event = new MemberUserIndexEvent();
-        event.setMemberUserId(user.getId());
-        event.setAction(RocketMqTagConstants.UPDATE);
-        outboxService.save(
-                RocketMqTopicConstants.SYSTEM_USER_EVENT,
-                RocketMqTagConstants.UPDATE,
-                String.valueOf(user.getId()),
-                "MEMBER_USER_INDEX_UPDATE",
-                event);
+        saveIndexUpsertEvent(user.getId(), RocketMqTagConstants.UPDATE, "MEMBER_USER_INDEX_UPDATE");
     }
 
     /**
@@ -152,12 +193,53 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
         repository.delete(definition.alias(), memberUserId, upgradeService.rebuildingIndex());
     }
 
-    /** 根据主键获取有效会员用户。 */
+    /**
+     * 根据主键获取有效会员用户。
+     */
     private MemberUser requiredUser(Long id) {
         MemberUser user = memberUserMapper.selectById(id);
         if (user == null || Boolean.TRUE.equals(user.getIsDeleted())) {
             throw new ServiceException("会员用户不存在");
         }
         return user;
+    }
+
+    /**
+     * 校验手机号在有效会员中唯一。
+     *
+     * @param mobile 待校验手机号
+     */
+    private void validateMobileUnique(String mobile) {
+        if (StringUtils.isBlank(mobile)) {
+            return;
+        }
+        Long count = memberUserMapper.selectCount(Wrappers.<MemberUser>lambdaQuery()
+                .eq(MemberUser::getIsDeleted, false)
+                .eq(MemberUser::getMobile, mobile));
+        if (count != null && count > 0) {
+            throw new ServiceException("手机号已被会员使用");
+        }
+    }
+
+    /**
+     * 在当前业务事务内保存会员 ES 投影事件。
+     *
+     * <p>新增和修改分别使用 {@code create}、{@code update} Tag；ES 消费者订阅两者，
+     * 并统一按主键执行投影 upsert。</p>
+     *
+     * @param memberUserId 会员用户主键
+     * @param action 业务动作
+     * @param eventType 事件类型
+     */
+    private void saveIndexUpsertEvent(Long memberUserId, String action, String eventType) {
+        MemberUserIndexEvent event = new MemberUserIndexEvent();
+        event.setMemberUserId(memberUserId);
+        event.setAction(action);
+        outboxService.save(
+                RocketMqTopicConstants.SYSTEM_USER_EVENT,
+                action,
+                String.valueOf(memberUserId),
+                eventType,
+                event);
     }
 }

@@ -184,7 +184,7 @@
   <!-- 表单弹窗：添加/修改 -->
   <RoleForm ref="formRef" @success="getList" />
   <!-- 表单弹窗：菜单权限 -->
-  <RoleAssignMenuForm ref="assignMenuFormRef" @success="getList" />
+  <RoleAssignMenuForm ref="assignMenuFormRef" @success="handleRoleMenuChanged" />
   <!-- 表单弹窗：数据权限 -->
   <RoleDataPermissionForm ref="dataPermissionFormRef" @success="getList" />
 </template>
@@ -196,6 +196,7 @@ import * as RoleApi from '@/api/system/role'
 import RoleForm from './RoleForm.vue'
 import RoleAssignMenuForm from './RoleAssignMenuForm.vue'
 import RoleDataPermissionForm from './RoleDataPermissionForm.vue'
+import { refreshCurrentUserAuthorization } from '@/utils/authorization'
 const { t } = useI18n()
 defineOptions({ name: 'SystemRole' })
 
@@ -255,6 +256,14 @@ const openDataPermissionForm = async (row: RoleApi.RoleVO) => {
 const assignMenuFormRef = ref()
 const openAssignMenuForm = async (row: RoleApi.RoleVO) => {
   assignMenuFormRef.value.open(row)
+}
+
+/**
+ * 角色菜单权限保存后刷新角色列表，并重新加载当前会话的权限、菜单和动态路由。
+ */
+const handleRoleMenuChanged = async () => {
+  await getList()
+  await refreshCurrentUserAuthorization()
 }
 
 /** 删除按钮操作 */

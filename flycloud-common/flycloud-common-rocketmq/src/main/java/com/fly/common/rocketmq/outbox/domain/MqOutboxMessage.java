@@ -7,7 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-/** 本地消息表记录。消息与业务数据在同一数据库事务内落库，由异步调度器投递。 */
+/**
+ * 本地消息表记录。消息与业务数据在同一数据库事务内落库，由异步调度器投递。
+ */
 @Data
 @TableName("mq_outbox_message")
 public class MqOutboxMessage {

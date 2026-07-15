@@ -39,7 +39,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUserMapper, SysUser, Sy
      */
     int selectCountByName(@Param("name") String account, @Param("id") Long id);
 
-    /** 查询拥有指定角色标识的未删除后台用户，用于运维类通知。 */
+    /**
+     * 查询拥有指定角色标识的未删除后台用户，用于运维类通知。
+     */
     @Select("""
             SELECT DISTINCT u.id
             FROM sys_user u

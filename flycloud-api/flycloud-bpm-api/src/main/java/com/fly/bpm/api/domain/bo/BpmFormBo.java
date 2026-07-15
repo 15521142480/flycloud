@@ -30,19 +30,19 @@ public class BpmFormBo extends BaseEntity {
     /**
      * 表单名
      */
-     @NotBlank(message = "表单名不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotBlank(message = "表单名不能为空", groups = { AddGroup.class, EditGroup.class })
     private String name;
 
     /**
      * 开启状态
      */
-     @NotNull(message = "开启状态不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "开启状态不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer status;
 
     /**
      * 表单的配置
      */
-     @NotBlank(message = "表单的配置不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotBlank(message = "表单的配置不能为空", groups = { AddGroup.class, EditGroup.class })
     private String conf;
 
     /**

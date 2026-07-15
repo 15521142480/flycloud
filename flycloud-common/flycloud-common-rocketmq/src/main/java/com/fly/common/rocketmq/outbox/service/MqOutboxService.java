@@ -21,14 +21,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MqOutboxService {
 
-    /** 待投递状态。 */
-    public static final int STATUS_PENDING = 0;
-    /** 已被 Broker 确认状态。 */
-    public static final int STATUS_SENT = 1;
-    /** 达到最大重试次数后的最终失败状态。 */
-    public static final int STATUS_FAILED = 2;
-    /** 已被某个调度实例持有租约的投递中状态。 */
-    public static final int STATUS_SENDING = 3;
+    /**
+     * 待投递状态。
+     */
+     public static final int STATUS_PENDING = 0;
+    /**
+     * 已被 Broker 确认状态。
+     */
+     public static final int STATUS_SENT = 1;
+    /**
+     * 达到最大重试次数后的最终失败状态。
+     */
+     public static final int STATUS_FAILED = 2;
+    /**
+     * 已被某个调度实例持有租约的投递中状态。
+     */
+     public static final int STATUS_SENDING = 3;
 
     private final MqOutboxMessageMapper mapper;
     private final ObjectMapper objectMapper;
@@ -44,6 +52,7 @@ public class MqOutboxService {
         message.setMessageId(UUID.randomUUID().toString().replace("-", ""));
         message.setOccurredTime(LocalDateTime.now());
         message.setBizKey(bizKey);
+        message.setTag(tag);
         message.setEventType(eventType);
         message.setPayload(payload);
         MqOutboxMessage outbox = new MqOutboxMessage();
@@ -91,8 +100,10 @@ public class MqOutboxService {
         return mapper.update(null, wrapper) > 0 ? dispatchToken : null;
     }
 
-    /** 将本地消息 JSON 反序列化为统一信封。 */
-    public MqMessage<?> readMessage(MqOutboxMessage outbox) {
+    /**
+     * 将本地消息 JSON 反序列化为统一信封。
+     */
+     public MqMessage<?> readMessage(MqOutboxMessage outbox) {
         try {
             return objectMapper.readValue(outbox.getPayload(), MqMessage.class);
         } catch (JsonProcessingException exception) {
@@ -100,13 +111,17 @@ public class MqOutboxService {
         }
     }
 
-    /** 标记当前抢占令牌对应的消息已被 Broker 成功确认。 */
-    public void markSent(Long id, String dispatchToken) {
+    /**
+     * 标记当前抢占令牌对应的消息已被 Broker 成功确认。
+     */
+     public void markSent(Long id, String dispatchToken) {
         updateClaimed(id, dispatchToken, STATUS_SENT, null, null, null);
     }
 
-    /** 记录当前抢占令牌对应的异步投递失败，并按指数退避安排下次重试。 */
-    public void markFailure(MqOutboxMessage outbox, String dispatchToken, int maxRetryCount, Throwable throwable) {
+    /**
+     * 记录当前抢占令牌对应的异步投递失败，并按指数退避安排下次重试。
+     */
+     public void markFailure(MqOutboxMessage outbox, String dispatchToken, int maxRetryCount, Throwable throwable) {
         int retryCount = outbox.getRetryCount() + 1;
         int status = retryCount >= maxRetryCount ? STATUS_FAILED : STATUS_PENDING;
         long delaySeconds = Math.min(300, 1L << Math.min(retryCount, 8));
@@ -114,8 +129,10 @@ public class MqOutboxService {
                 throwable == null ? "未知发送异常" : truncate(throwable.getMessage()));
     }
 
-    /** 使用抢占令牌更新本地消息投递状态，防止租约过期后的旧实例覆盖新实例结果。 */
-    private void updateClaimed(Long id, String dispatchToken, int status, Integer retryCount,
+    /**
+     * 使用抢占令牌更新本地消息投递状态，防止租约过期后的旧实例覆盖新实例结果。
+     */
+     private void updateClaimed(Long id, String dispatchToken, int status, Integer retryCount,
                                LocalDateTime nextRetryTime, String lastError) {
         LambdaUpdateWrapper<MqOutboxMessage> wrapper = new LambdaUpdateWrapper<MqOutboxMessage>()
                 .eq(MqOutboxMessage::getId, id)
@@ -136,8 +153,10 @@ public class MqOutboxService {
         mapper.update(null, wrapper);
     }
 
-    /** 序列化统一消息信封。 */
-    private String writeValue(MqMessage<?> message) {
+    /**
+     * 序列化统一消息信封。
+     */
+     private String writeValue(MqMessage<?> message) {
         try {
             return objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException exception) {
@@ -145,8 +164,10 @@ public class MqOutboxService {
         }
     }
 
-    /** 截断异常文本，避免超过表字段上限。 */
-    private String truncate(String value) {
+    /**
+     * 截断异常文本，避免超过表字段上限。
+     */
+     private String truncate(String value) {
         if (value == null) {
             return null;
         }

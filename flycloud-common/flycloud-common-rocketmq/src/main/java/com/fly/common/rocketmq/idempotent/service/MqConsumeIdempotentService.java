@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-/** 消费幂等服务；消费记录与业务处理放在同一事务中。 */
+/**
+ * 消费幂等服务；消费记录与业务处理放在同一事务中。
+ */
 @RequiredArgsConstructor
 public class MqConsumeIdempotentService {
 

@@ -129,8 +129,10 @@ public class ImGroupRequestController {
                 && ImGroupMemberRoleEnum.isOwnerOrAdmin(member.getRole());
     }
 
-    /** 申请记录列表批量转 VO + 关联回填用户 / 群信息 */
-    private List<ImGroupRequestVo> buildVOList(List<ImGroupRequest> list) {
+    /**
+     * 申请记录列表批量转 VO + 关联回填用户 / 群信息
+     */
+     private List<ImGroupRequestVo> buildVOList(List<ImGroupRequest> list) {
         if (CollUtil.isEmpty(list)) {
             return Collections.emptyList();
         }

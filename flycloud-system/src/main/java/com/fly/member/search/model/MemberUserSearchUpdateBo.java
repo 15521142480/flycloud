@@ -5,7 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
-/** 会员用户修改并异步同步 ES 的测试请求。 */
+/**
+ * 会员用户修改并异步同步 ES 的测试请求。
+ */
 @Data
 public class MemberUserSearchUpdateBo {
 

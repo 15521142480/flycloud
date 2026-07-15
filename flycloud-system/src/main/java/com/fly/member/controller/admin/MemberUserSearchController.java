@@ -2,10 +2,11 @@ package com.fly.member.controller.admin;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.member.search.model.MemberUserSearchVo;
+import com.fly.member.search.model.MemberUserSearchInsertBo;
 import com.fly.member.search.model.MemberUserSearchPageBo;
-import com.fly.member.search.service.MemberUserSearchService;
 import com.fly.member.search.model.MemberUserSearchUpdateBo;
+import com.fly.member.search.model.MemberUserSearchVo;
+import com.fly.member.search.service.MemberUserSearchService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -36,32 +37,53 @@ public class MemberUserSearchController {
 
     private final MemberUserSearchService memberUserSearchService;
 
-    /** 接口 1：创建/复用会员索引别名并分页全量同步 MySQL 数据。 */
+    /**
+     * 接口 1：创建/复用会员索引别名并分页全量同步 MySQL 数据。
+     */
     @PostMapping("/synchronize")
     public R<String> synchronizeMemberUser() {
         return R.ok(memberUserSearchService.fullSynchronize());
     }
 
-    /** 接口 2：使用 ES 官方 Java Client 按条件分页检索会员用户。 */
+    /**
+     * 接口 2：新增会员用户，并在同一事务中写入本地消息表。
+     *
+     * @param bo 新增会员请求
+     * @return 新增会员主键
+     */
+    @PostMapping("/insert")
+    public R<Long> insertMemberUser(@Valid @RequestBody MemberUserSearchInsertBo bo) {
+        return R.ok(memberUserSearchService.insertMemberUser(bo));
+    }
+
+    /**
+     * 接口 3：使用 ES 官方 Java Client 按条件分页检索会员用户。
+     */
     @GetMapping("/page")
     public R<PageVo<MemberUserSearchVo>> memberUserPage(MemberUserSearchPageBo bo) {
         return R.ok(memberUserSearchService.searchPage(bo));
     }
 
-    /** 接口 3：更新 MySQL，写本地消息表，由 RocketMQ 异步更新 ES。 */
+    /**
+     * 接口 4：更新 MySQL，写本地消息表，由 RocketMQ 异步更新 ES。
+     */
     @PutMapping("/update")
     public R<Void> updateMemberUser(@Valid @RequestBody MemberUserSearchUpdateBo bo) {
         memberUserSearchService.updateMemberUser(bo);
         return R.ok();
     }
 
-    /** 接口 4：升级索引并原子切换别名；post_ids 必须先由升级脚本添加。 */
+    /**
+     * 接口 5：升级索引并原子切换别名；post_ids 必须先由升级脚本添加。
+     */
     @PostMapping("/upgrade-index")
     public R<String> upgradeMemberUserIndex() {
         return R.ok(memberUserSearchService.upgradeIndexToNextVersion());
     }
 
-    /** 索引升级观察期内的一键 Alias 回滚。 */
+    /**
+     * 接口 6：索引升级观察期内的一键 Alias 回滚。
+     */
     @PostMapping("/rollback-index/{recordId}")
     public R<Void> rollbackMemberUserIndex(@PathVariable Long recordId) {
         memberUserSearchService.rollbackIndex(recordId);

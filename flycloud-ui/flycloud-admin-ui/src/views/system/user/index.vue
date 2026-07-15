@@ -229,7 +229,7 @@
   <!-- 用户导入对话框 -->
   <UserImportForm ref="importFormRef" @success="getList" />
   <!-- 分配角色 -->
-  <UserAssignRoleForm ref="assignRoleFormRef" @success="getList" />
+  <UserAssignRoleForm ref="assignRoleFormRef" @success="handleUserRoleChanged" />
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -243,6 +243,7 @@ import UserImportForm from './UserImportForm.vue'
 import UserAssignRoleForm from './UserAssignRoleForm.vue'
 // import DeptTree from './DeptTree.vue'
 import {getFilePreviewUrl} from "@/components/UploadFile/src/useUpload";
+import { refreshCurrentUserAuthorization } from '@/utils/authorization'
 const { t } = useI18n()
 defineOptions({ name: 'SystemUser' })
 
@@ -390,6 +391,14 @@ const handleResetPwd = async (row: UserApi.UserVO) => {
 const assignRoleFormRef = ref()
 const handleRole = (row: UserApi.UserVO) => {
   assignRoleFormRef.value.open(row)
+}
+
+/**
+ * 用户角色分配成功后刷新用户列表，并重新加载当前会话的权限、菜单和动态路由。
+ */
+const handleUserRoleChanged = async () => {
+  await getList()
+  await refreshCurrentUserAuthorization()
 }
 
 /** 初始化 */

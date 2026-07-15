@@ -7,7 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-/** MQ 消费成功幂等记录。唯一键为消费者组和业务消息 ID。 */
+/**
+ * MQ 消费成功幂等记录。唯一键为消费者组和业务消息 ID。
+ */
 @Data
 @TableName("mq_consume_record")
 public class MqConsumeRecord {

@@ -22,42 +22,54 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnBean(ElasticsearchClient.class)
 public class ElasticsearchInfrastructureAutoConfiguration {
 
-    /** 注册真实索引与 Alias 原子切换服务。 */
+    /**
+     * 注册真实索引与 Alias 原子切换服务。
+     */
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchAliasService elasticsearchAliasService(ElasticsearchClient client, ElasticsearchProperties properties) {
         return new ElasticsearchAliasService(client, properties);
     }
 
-    /** 注册 classpath JSON Mapping 加载服务。 */
+    /**
+     * 注册 classpath JSON Mapping 加载服务。
+     */
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchMappingService elasticsearchMappingService() {
         return new ElasticsearchMappingService();
     }
 
-    /** 注册真实索引创建、刷新和安全删除服务。 */
+    /**
+     * 注册真实索引创建、刷新和安全删除服务。
+     */
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchIndexService elasticsearchIndexService(ElasticsearchClient client) {
         return new ElasticsearchIndexService(client);
     }
 
-    /** 注册带失败汇总和有限重试的 Bulk 写入服务。 */
+    /**
+     * 注册带失败汇总和有限重试的 Bulk 写入服务。
+     */
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchBulkService elasticsearchBulkService(ElasticsearchClient client, ElasticsearchProperties properties) {
         return new ElasticsearchBulkService(client, properties);
     }
 
-    /** 注册排序字段白名单和深分页阈值保护执行器。 */
+    /**
+     * 注册排序字段白名单和深分页阈值保护执行器。
+     */
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchPageExecutor elasticsearchPageExecutor(ElasticsearchClient client, ElasticsearchProperties properties) {
         return new ElasticsearchPageExecutor(client, properties);
     }
 
-    /** 注册索引升级窗口中的双写投影服务。 */
+    /**
+     * 注册索引升级窗口中的双写投影服务。
+     */
     @Bean
     @ConditionalOnMissingBean
     public ElasticsearchProjectionWriter elasticsearchProjectionWriter(ElasticsearchClient client, ElasticsearchAliasService aliasService) {

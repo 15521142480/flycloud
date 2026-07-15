@@ -15,13 +15,15 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
-/** 消费会员用户更新消息，按业务主键回查 MySQL 并更新 ES 投影。 */
+/**
+ * 消费会员用户更新消息，按业务主键回查 MySQL 并更新 ES 投影。
+ */
 @Slf4j
 @Component
 @ConditionalOnExpression("'${flycloud.elasticsearch.enabled:false}' == 'true' and '${flycloud.rocketmq.enabled:false}' == 'true'")
 @RocketMQMessageListener(
         topic = RocketMqTopicConstants.SYSTEM_USER_EVENT,
-        selectorExpression = RocketMqTagConstants.UPDATE,
+        selectorExpression = RocketMqTagConstants.CREATE + " || " + RocketMqTagConstants.UPDATE,
         consumerGroup = RocketMqConsumerGroupConstants.SYSTEM_MEMBER_USER_ES_INDEX,
         consumeMode = ConsumeMode.CONCURRENTLY,
         maxReconsumeTimes = 16)
@@ -42,25 +44,25 @@ public class MemberUserIndexConsumer extends AbstractIdempotentRocketMqConsumer<
         this.memberUserSearchService = memberUserSearchService;
     }
 
-    /** @return 会员 ES 投影消费者组。 */
+    /**
+     * @return 会员 ES 投影消费者组。
+     */
     @Override
     protected String consumerGroup() {
         return RocketMqConsumerGroupConstants.SYSTEM_MEMBER_USER_ES_INDEX;
     }
 
-    /** @return 用户领域事件 Topic。 */
+    /**
+     * @return 用户领域事件 Topic。
+     */
     @Override
     protected String topic() {
         return RocketMqTopicConstants.SYSTEM_USER_EVENT;
     }
 
-    /** @return 仅监听用户更新事件。 */
-    @Override
-    protected String tag() {
-        return RocketMqTagConstants.UPDATE;
-    }
-
-    /** 按消息业务主键回查 MySQL，再幂等更新 ES 投影。 */
+    /**
+     * 按新增或修改消息的业务主键回查 MySQL，再幂等更新 ES 投影。
+     */
     @Override
     protected void handle(MqMessage<MemberUserIndexEvent> message) {
         MemberUserIndexEvent event = message.getPayload();

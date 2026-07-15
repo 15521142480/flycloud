@@ -1,6 +1,8 @@
 package com.fly.common.elasticsearch.exception;
 
-/** ES 基础设施操作异常，统一携带操作上下文与根因。 */
+/**
+ * ES 基础设施操作异常，统一携带操作上下文与根因。
+ */
 public class ElasticsearchOperationException extends RuntimeException {
 
     /**

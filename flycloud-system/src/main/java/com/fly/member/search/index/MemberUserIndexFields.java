@@ -1,6 +1,8 @@
 package com.fly.member.search.index;
 
-/** 会员用户索引字段名。禁止业务查询散落字符串字段。 */
+/**
+ * 会员用户索引字段名。禁止业务查询散落字符串字段。
+ */
 public final class MemberUserIndexFields {
 
     public static final String ID = "id";

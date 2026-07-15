@@ -2,7 +2,9 @@ package com.fly.common.rocketmq.producer;
 
 import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 
-/** 业务侧唯一允许依赖的消息生产者接口，禁止直接使用 RocketMQTemplate。 */
+/**
+ * 业务侧唯一允许依赖的消息生产者接口，禁止直接使用 RocketMQTemplate。
+ */
 public interface RocketMqProducer {
 
     /**

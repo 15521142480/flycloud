@@ -5,7 +5,9 @@ import com.fly.member.search.document.MemberUserDocument;
 import com.fly.member.search.model.MemberUserSearchVo;
 import org.springframework.stereotype.Component;
 
-/** 显式会员 DO / ES Document / VO 转换，避免弱类型 Bean 复制泄露敏感字段。 */
+/**
+ * 显式会员 DO / ES Document / VO 转换，避免弱类型 Bean 复制泄露敏感字段。
+ */
 @Component
 public class MemberUserDocumentConverter {
 
@@ -33,8 +35,10 @@ public class MemberUserDocumentConverter {
         return target;
     }
 
-    /** 将 ES Document 显式转换为接口响应 VO。 */
-    public MemberUserSearchVo toVo(MemberUserDocument source) {
+    /**
+     * 将 ES Document 显式转换为接口响应 VO。
+     */
+     public MemberUserSearchVo toVo(MemberUserDocument source) {
         MemberUserSearchVo target = new MemberUserSearchVo();
         target.setId(source.getId());
         target.setMobile(source.getMobile());

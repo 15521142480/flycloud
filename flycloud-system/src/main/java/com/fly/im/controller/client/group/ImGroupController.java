@@ -173,8 +173,10 @@ public class ImGroupController {
         return R.result(true);
     }
 
-    /** 单群转 VO + 关联回填 pinnedMessages（仅当登录用户是该群有效成员） */
-    private ImGroupVo buildGroupVo(ImGroup group, Long loginUserId) {
+    /**
+     * 单群转 VO + 关联回填 pinnedMessages（仅当登录用户是该群有效成员）
+     */
+     private ImGroupVo buildGroupVo(ImGroup group, Long loginUserId) {
         if (group == null) {
             return null;
         }

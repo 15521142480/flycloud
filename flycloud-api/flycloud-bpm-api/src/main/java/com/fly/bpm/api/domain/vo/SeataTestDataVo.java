@@ -12,16 +12,24 @@ import java.time.LocalDateTime;
 @Data
 public class SeataTestDataVo {
 
-    /** 数据ID。 */
-    private Integer id;
+    /**
+     * 数据ID。
+     */
+     private Integer id;
 
-    /** 数据源名称。 */
-    private String databaseName;
+    /**
+     * 数据源名称。
+     */
+     private String databaseName;
 
-    /** 测试数据。 */
-    private String testData;
+    /**
+     * 测试数据。
+     */
+     private String testData;
 
-    /** 创建时间。 */
-    private LocalDateTime createTime;
+    /**
+     * 创建时间。
+     */
+     private LocalDateTime createTime;
 
 }

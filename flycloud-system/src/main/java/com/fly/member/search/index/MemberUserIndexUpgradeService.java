@@ -112,8 +112,10 @@ public class MemberUserIndexUpgradeService {
         return record == null ? null : record.getNewIndex();
     }
 
-    /** 创建升级审计记录，使 MQ 消费者从建索引前即进入双写窗口。 */
-    private MemberUserIndexUpgradeRecord createRecord(String oldIndex, String newIndex) {
+    /**
+     * 创建升级审计记录，使 MQ 消费者从建索引前即进入双写窗口。
+     */
+     private MemberUserIndexUpgradeRecord createRecord(String oldIndex, String newIndex) {
         MemberUserIndexUpgradeRecord record = new MemberUserIndexUpgradeRecord();
         record.setAlias(definition.alias());
         record.setOldIndex(oldIndex);
@@ -127,8 +129,10 @@ public class MemberUserIndexUpgradeService {
         return record;
     }
 
-    /** 执行单轮同步并将任何文档级失败转换为可审计的业务异常。 */
-    private ElasticsearchBulkResult synchronizeRequired(String index, String stage) {
+    /**
+     * 执行单轮同步并将任何文档级失败转换为可审计的业务异常。
+     */
+     private ElasticsearchBulkResult synchronizeRequired(String index, String stage) {
         ElasticsearchBulkResult result = syncService.synchronize(index);
         if (result.failedCount() > 0) {
             throw new ServiceException(stage + "存在失败文档：" + result.failedCount());
@@ -136,14 +140,18 @@ public class MemberUserIndexUpgradeService {
         return result;
     }
 
-    /** 统计 MySQL 权威数据行数，作为索引验收基准。 */
-    private long sourceCount() {
+    /**
+     * 统计 MySQL 权威数据行数，作为索引验收基准。
+     */
+     private long sourceCount() {
         return memberUserMapper.selectCount(new LambdaQueryWrapper<MemberUser>()
                 .eq(MemberUser::getIsDeleted, false));
     }
 
-    /** 保存本次升级的权威总量和两轮同步的处理统计。 */
-    private void updateCounts(MemberUserIndexUpgradeRecord record, long sourceCount,
+    /**
+     * 保存本次升级的权威总量和两轮同步的处理统计。
+     */
+     private void updateCounts(MemberUserIndexUpgradeRecord record, long sourceCount,
                               ElasticsearchBulkResult fullSyncResult, ElasticsearchBulkResult compensationResult) {
         record.setTotalCount(sourceCount);
         record.setSuccessCount(fullSyncResult.successCount() + compensationResult.successCount());
@@ -152,8 +160,10 @@ public class MemberUserIndexUpgradeService {
         recordMapper.updateById(record);
     }
 
-    /** 更新升级状态及异常摘要。 */
-    private void updateStatus(MemberUserIndexUpgradeRecord record, String status, String errorMessage) {
+    /**
+     * 更新升级状态及异常摘要。
+     */
+     private void updateStatus(MemberUserIndexUpgradeRecord record, String status, String errorMessage) {
         record.setStatus(status);
         record.setErrorMessage(errorMessage);
         if ("SWITCHED".equals(status) || "FAILED".equals(status)) {
@@ -163,8 +173,10 @@ public class MemberUserIndexUpgradeService {
         recordMapper.updateById(record);
     }
 
-    /** 校验新索引文档总量及集群健康状态。 */
-    private void validate(String index, long expectedCount) {
+    /**
+     * 校验新索引文档总量及集群健康状态。
+     */
+     private void validate(String index, long expectedCount) {
         try {
             long actualCount = client.count(request -> request.index(index)).count();
             if (actualCount != expectedCount) {
@@ -181,8 +193,10 @@ public class MemberUserIndexUpgradeService {
         }
     }
 
-    /** 将索引升级通知作为本地消息表记录持久化，由异步投递器发送。 */
-    private void publishNotification(String oldIndex, String newIndex) {
+    /**
+     * 将索引升级通知作为本地消息表记录持久化，由异步投递器发送。
+     */
+     private void publishNotification(String oldIndex, String newIndex) {
         IndexUpgradeNotificationEvent event = new IndexUpgradeNotificationEvent();
         event.setUserIds(sysUserMapper.selectUserIdsByRoleCode("yunwei"));
         event.setContent("会员用户表的索引已经由" + oldIndex + "升级到" + newIndex

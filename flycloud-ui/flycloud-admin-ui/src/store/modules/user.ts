@@ -18,6 +18,7 @@ interface UserInfoVO {
   // USER 缓存
   permissionList: string[]
   roles: string[]
+  menuTreeList: AppCustomRouteRecordRaw[]
   isSetUser: boolean
   user: UserVO
 }
@@ -26,6 +27,7 @@ export const useUserStore = defineStore('admin-user', {
   state: (): UserInfoVO => ({
     permissionList: [],
     roles: [],
+    menuTreeList: [],
     isSetUser: false,
     user: {
       id: '',
@@ -62,14 +64,39 @@ export const useUserStore = defineStore('admin-user', {
       if (!userInfo) {
         userInfo = await getUserInfoApi()
       }
+      this.applyUserInfo(userInfo)
+      if (!wsCache.get(CACHE_KEY.BASE_URL)) {
+        wsCache.set(CACHE_KEY.BASE_URL, await FileApi.getFileConfig())
+      }
+    },
+
+    /**
+     * 强制从服务端重新获取当前登录用户的权限和菜单。
+     *
+     * <p>菜单、角色权限或当前用户角色变化后调用本方法，不能继续读取浏览器缓存，
+     * 否则左侧导航仍会使用旧菜单。</p>
+     */
+    async refreshUserInfoAction() {
+      if (!getAccessToken()) {
+        this.resetState()
+        return null
+      }
+      const userInfo = await getUserInfoApi()
+      this.applyUserInfo(userInfo)
+      return userInfo
+    },
+
+    /**
+     * 将服务端返回的当前用户权限、角色和菜单同步至 Pinia 与浏览器缓存。
+     *
+     * @param userInfo 当前登录用户的完整授权信息
+     */
+    applyUserInfo(userInfo: UserInfoVO) {
       this.permissionList = userInfo.permissionList
       this.roles = userInfo.roles
       this.user = userInfo.user
       this.isSetUser = true
-      if (!wsCache.get(CACHE_KEY.BASE_URL)) {
-        wsCache.set(CACHE_KEY.BASE_URL, await FileApi.getFileConfig())
-      }
-      wsCache.set(CACHE_KEY.ROLE_ROUTERS, userInfo.menuTreeList) // 菜单
+      wsCache.set(CACHE_KEY.ROLE_ROUTERS, userInfo.menuTreeList)
       wsCache.set(CACHE_KEY.USER, userInfo)
     },
 
@@ -114,6 +141,7 @@ export const useUserStore = defineStore('admin-user', {
     resetState() {
       this.permissionList = []
       this.roles = []
+      this.menuTreeList = []
       this.isSetUser = false
       this.user = {
         id: '',

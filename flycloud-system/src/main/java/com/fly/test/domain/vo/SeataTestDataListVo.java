@@ -13,10 +13,14 @@ import java.util.List;
 @Data
 public class SeataTestDataListVo {
 
-    /** 数据源一（fly_cloud）的最新测试数据。 */
-    private List<SeataTestDataVo> dataSourceOne;
+    /**
+     * 数据源一（fly_cloud）的最新测试数据。
+     */
+     private List<SeataTestDataVo> dataSourceOne;
 
-    /** 数据源二（fly_seata）的最新测试数据。 */
-    private List<SeataTestDataVo> dataSourceTwo;
+    /**
+     * 数据源二（fly_seata）的最新测试数据。
+     */
+     private List<SeataTestDataVo> dataSourceTwo;
 
 }
