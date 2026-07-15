@@ -13,14 +13,17 @@ services:
   rocketmq_namesrv:
     image: apache/rocketmq:5.3.3
     container_name: rocketmq_namesrv
+    # 启动 NameServer 进程。
     command: sh mqnamesrv
     environment:
+      # 容器进程时区。
       TZ: Asia/Shanghai
       # 个人低负载单机基线。镜像默认 NameServer 堆为 4G，必须显式覆盖。
       JAVA_OPT_EXT: "-Xms64m -Xmx128m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=64m"
     # 堆以外仍会产生元空间、线程栈与 JVM Native Memory，保留必要余量。
     mem_limit: 384m
     ports:
+      # NameServer 路由服务端口；业务 Producer/Consumer 用此端口获取 Broker 路由。
       - "9876:9876"
     volumes:
       - /docker/rocketmq/logs/namesrv:/home/rocketmq/logs
@@ -31,22 +34,30 @@ services:
   rocketmq_broker:
     image: apache/rocketmq:5.3.3
     container_name: rocketmq_broker
+    # 指定 NameServer 地址和外置 Broker 配置文件后启动 Broker。
     command: sh mqbroker -n rocketmq_namesrv:9876 -c /home/rocketmq/rocketmq-5.3.3/conf/broker.conf
     environment:
       TZ: Asia/Shanghai
+      # Broker 连接的 NameServer 地址；同一 Compose 网络内使用服务名访问。
       NAMESRV_ADDR: rocketmq_namesrv:9876
       # 个人低负载单机基线。Broker 镜像默认堆为 8G、MaxDirectMemorySize 为 15G，必须同时覆盖。
       JAVA_OPT_EXT: "-Xms128m -Xmx256m -Xmn64m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
     # 256M 最大堆以外仍需容纳 Direct Memory、元空间、线程栈及消息文件页缓存。
     mem_limit: 768m
     depends_on:
+      # Broker 启动前先创建 NameServer 容器；不等同于 NameServer 健康检查。
       - rocketmq_namesrv
     ports:
+      # Broker HA 通信端口；单 Broker 场景通常不被业务客户端直接使用。
       - "10909:10909"
+      # Broker 主业务端口；Producer/Consumer 实际与 Broker 通信使用此端口。
       - "10911:10911"
+      # Broker Fast Remoting 端口；客户端特性需要时使用。
       - "10912:10912"
     volumes:
+      # 外置 Broker 配置，只读挂载，避免容器内配置漂移。
       - /docker/rocketmq/config/broker.conf:/home/rocketmq/rocketmq-5.3.3/conf/broker.conf:ro
+      # 消息 CommitLog、ConsumeQueue 等持久化数据目录。
       - /docker/rocketmq/data/broker/store:/home/rocketmq/store
       - /docker/rocketmq/logs/broker:/home/rocketmq/logs
     restart: always

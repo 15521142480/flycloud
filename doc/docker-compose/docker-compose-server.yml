@@ -3,85 +3,124 @@
 services:
 
 
-  # 网关服务
+  # 网关服务：统一入口、路由转发与跨域治理。
   flycloud-gateway:
     build:
+      # 网关服务 Docker 构建上下文。
       context: /project/flycloud-service/flycloud-gateway
+      # 构建网关镜像使用的 Dockerfile。
       dockerfile: Dockerfile
+    # 构建后的网关镜像名称。
     image: flycloud-gateway
+    # 固定网关容器名称。
     container_name: flycloud-gateway
     ports:
+      # 对外 HTTP 网关端口。
       - "8080:8080"
     volumes:
+      # 网关应用日志持久化目录。
       - /project/flycloud-service/flycloud-gateway/logs/:/flycloud/logs
     environment:
+      # 容器进程时区。
       - TZ=Asia/Shanghai
+    # Docker 或宿主机重启后自动拉起服务。
     restart: always
 
 
-  # 授权服务
+  # 授权服务：负责登录、令牌签发与认证相关接口。
   flycloud-auth:
     build:
+      # 授权服务 Docker 构建上下文。
       context: /project/flycloud-service/flycloud-auth
+      # 构建授权服务镜像使用的 Dockerfile。
       dockerfile: Dockerfile
+    # 构建后的授权服务镜像名称。
     image: flycloud-auth
+    # 固定授权服务容器名称。
     container_name: flycloud-auth
     ports:
+      # 授权服务 HTTP 端口。
       - "8088:8088"
     volumes:
+      # 授权服务应用日志持久化目录。
       - /project/flycloud-service/flycloud-auth/logs/:/flycloud/logs
     environment:
+      # 容器进程时区。
       - TZ=Asia/Shanghai
+    # Docker 或宿主机重启后自动拉起服务。
     restart: always
   
 
-  # 系统平台服务
+  # 系统平台服务：系统管理、用户、权限等核心后台能力。
   flycloud-system:
     build:
+      # 系统服务 Docker 构建上下文。
       context: /project/flycloud-service/flycloud-system
+      # 构建系统服务镜像使用的 Dockerfile。
       dockerfile: Dockerfile
+    # 构建后的系统服务镜像名称。
     image: flycloud-system
+    # 固定系统服务容器名称。
     container_name: flycloud-system
     ports:
+      # 系统服务 HTTP 端口。
       - "8085:8085"
     volumes:
+      # 系统服务应用日志持久化目录。
       - /project/flycloud-service/flycloud-system/logs/:/flycloud/logs
     environment:
+      # 容器进程时区。
       - TZ=Asia/Shanghai
+    # Docker 或宿主机重启后自动拉起服务。
     restart: always
   
 
-  # 工作流服务
+  # 工作流服务：流程定义、任务处理与 BPM 业务能力。
   flycloud-bpm:
     build:
+      # 工作流服务 Docker 构建上下文。
       context: /project/flycloud-service/flycloud-bpm
+      # 构建工作流服务镜像使用的 Dockerfile。
       dockerfile: Dockerfile
+    # 构建后的工作流服务镜像名称。
     image: flycloud-bpm
+    # 固定工作流服务容器名称。
     container_name: flycloud-bpm
     ports:
+      # 工作流服务 HTTP 端口。
       - "8090:8090"
     volumes:
+      # 工作流服务应用日志持久化目录。
       - /project/flycloud-service/flycloud-bpm/logs/:/flycloud/logs
     environment:
+      # 容器进程时区。
       - TZ=Asia/Shanghai
+    # Docker 或宿主机重启后自动拉起服务。
     restart: always
 
 
-  # 商城流服务
+  # 商城服务：商品、订单等商城业务能力。
   flycloud-mall:
     build:
+      # 商城服务 Docker 构建上下文。
       context: /project/flycloud-service/flycloud-mall
+      # 构建商城服务镜像使用的 Dockerfile。
       dockerfile: Dockerfile
+    # 构建后的商城服务镜像名称。
     image: flycloud-mall
+    # 固定商城服务容器名称。
     container_name: flycloud-mall
     ports:
+      # 商城服务 HTTP 端口。
       - "8081:8081"
     volumes:
+      # 商城服务应用日志持久化目录。
       - /project/flycloud-service/flycloud-mall/logs/:/flycloud/logs
     environment:
+      # 容器进程时区。
       - TZ=Asia/Shanghai
+    # Docker 或宿主机重启后自动拉起服务。
     restart: always
-
 
 
 

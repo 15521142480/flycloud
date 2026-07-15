@@ -10,29 +10,37 @@
 services:
 
 
-  # elasticsearch 服务配置
+  # Elasticsearch 单节点服务：负责全文检索与索引存储，不作为业务主数据源。
   elasticsearch_one:
+    # 构建上下文；Dockerfile 在此目录安装与 ES 精确匹配的 IK 插件。
     build:
       context: ./elasticsearch
     image: flycloud-elasticsearch:8.18.3-ik
     container_name: elasticsearch_one
+    # 容器内节点主机名，与 elasticsearch.yml 中 node.name 保持一致。
     hostname: elasticsearch_one
     # 密码文件只注入容器，不提交到代码仓库。
     env_file:
       - /docker/elasticsearch/elasticsearch.env
     environment:
       TZ: Asia/Shanghai
+      # 单节点发现模式；多节点集群部署时必须移除并改为集群发现配置。
       discovery.type: single-node
+      # 启用 Elasticsearch 原生认证与授权；HTTPS/TLS 仍需保持自动安全配置或另行显式配置证书。
       xpack.security.enabled: "true"
       # 个人低负载服务器的 JVM 基线；集中保留在 Compose，避免分散到额外的 JVM 配置目录。
       ES_JAVA_OPTS: "-Xms256m -Xmx256m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
     # Elasticsearch 使用 mmap、网络 Direct Buffer 和文件系统页缓存，容器上限不能只等于 JVM 堆。
     mem_limit: 768m
     ports:
+      # HTTP API 端口；当前仅允许服务器本机访问，避免将 ES 管理接口直接暴露到公网。
       - "127.0.0.1:9200:9200"
     volumes:
+      # 索引数据持久化目录；容器用户 UID 1000 必须具备读写权限。
       - /docker/elasticsearch/data:/usr/share/elasticsearch/data
       - /docker/elasticsearch/logs:/usr/share/elasticsearch/logs
+      # 外置 Elasticsearch 节点配置，只读挂载以防容器内漂移。
       - /docker/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      # IK 自定义词典，只读挂载；修改后重启 ES 使其重新加载。
       - /docker/elasticsearch/custom.dic:/usr/share/elasticsearch/plugins/analysis-ik/config/custom/custom.dic:ro
     restart: always

@@ -4,7 +4,8 @@
 #
 # 部署前准备：
 #   1. 执行 db/mysql/表结构/seata-server-mysql8.sql；
-#   2. 在 Nacos 导入 doc/nacos-example/application-common.yaml；其中包含 flycloud.seata 客户端参数；
+#   2. 在 Nacos 导入当前环境对应的 doc/nacos/application-common.yaml；其中包含 flycloud.seata 客户端参数；
+#      doc/nacos-example 仅作为脱敏示例，不用于实际环境导入；
 #   3. 将 seata/application.yml 和 seata.env.example 分别复制到
 #      /docker/seata/config/application.yml、/docker/seata/config/seata.env，并填好 seata.env；
 #   4. Seata 2.5.0 镜像不内置 MySQL 驱动。创建目录并下载项目统一使用的 Connector/J 9.4.0：
@@ -20,20 +21,27 @@
 services:
 
 
-  # seata 服务配置
+  # Seata TC 服务：协调全局事务并将全局锁、分支事务状态持久化到 fly_seata。
   seata_one:
     image: apache/seata-server:2.5.0
     container_name: seata_one
+    # 服务端私密环境变量文件：包含 Nacos、MySQL 等连接凭据，不提交 Git。
     env_file:
       - /docker/seata/config/seata.env
     environment:
+      # 容器进程时区。
       TZ: Asia/Shanghai
-      # 服务器内存较小，覆盖 Seata 镜像默认的 2G JVM 参数
+      # JVM 初始堆大小；服务器内存较小，覆盖 Seata 镜像默认的 2G 参数。
       JVM_XMS: 256m
+      # JVM 最大堆大小。
       JVM_XMX: 512m
+      # 单个线程栈大小。
       JVM_XSS: 512k
+      # JVM 元空间初始大小。
       JVM_MetaspaceSize: 96m
+      # JVM 元空间最大大小。
       JVM_MaxMetaspaceSize: 256m
+      # JVM 最大直接内存；Netty 网络缓冲区计入该限制。
       JVM_MaxDirectMemorySize: 256m
 
     volumes:
@@ -41,15 +49,17 @@ services:
       - /docker/seata/config/application.yml:/seata-server/resources/application.yml:ro
       # Seata 2.5.0 镜像不会内置 MySQL 驱动；其 loader.path=/lib，驱动必须位于 /lib/jdbc。
       - /docker/seata/config/jdbc:/lib/jdbc:ro
-      # 事务协调器日志：持久化到宿主机，便于日志采集与排障。
       - /docker/seata/logs:/seata-server/logs
     ports:
-      # 业务服务连接 Seata TC端口
+      # 业务服务连接 Seata TC 的 Netty 事务协调端口。
       - "8091:8091"
       # 控制台服务，新版需独立部署
       # - "127.0.0.1:7091:7091"
     # mysql、nacos、seata同一台服务器可以这么写 -> url: jdbc:mysql://mysql_one:3306/fly_seata、nacos_one:8848；如果不是删除depends_on配置
     depends_on:
+      # TC 使用 MySQL 持久化全局/分支事务记录，先创建 MySQL 容器。
       - mysql_one
+      # TC 注册到 Nacos，先创建 Nacos 容器。
       - nacos_one
+    # Docker 或宿主机重启后自动拉起服务。
     restart: always
