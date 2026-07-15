@@ -1,0 +1,22 @@
+# Data ID: flycloud-rocketmq-client.yaml
+# Group: DEFAULT_GROUP
+# RocketMQ 客户端公共配置。需要发送或消费消息的业务服务，在其 application.yml 中导入此配置。
+rocketmq:
+  # 集群部署时使用分号分隔多个 NameServer；生产环境填写内网地址。
+  name-server: ${ROCKETMQ_NAME_SERVER:127.0.0.1:9876}
+  producer:
+    # 每个服务一个稳定的 Producer Group，禁止按请求动态生成。
+    group: ${spring.application.name}-producer
+    send-message-timeout: 5000
+
+flycloud:
+  rocketmq:
+    # 不使用 RocketMQ 时统一关闭；不会创建生产者、消费者和本地消息调度器。
+    enabled: ${ROCKETMQ_ENABLED:false}
+    outbox:
+      enabled: ${ROCKETMQ_OUTBOX_ENABLED:true}
+      dispatch-delay-millis: ${ROCKETMQ_OUTBOX_DISPATCH_DELAY_MILLIS:5000}
+      batch-size: ${ROCKETMQ_OUTBOX_BATCH_SIZE:100}
+      max-retry-count: ${ROCKETMQ_OUTBOX_MAX_RETRY_COUNT:16}
+      # 多实例条件抢占后的租约；实例异常退出时，租约到期后可重新投递。
+      claim-lease-seconds: ${ROCKETMQ_OUTBOX_CLAIM_LEASE_SECONDS:60}

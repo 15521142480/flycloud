@@ -72,6 +72,9 @@ public class MemberUserBo extends BaseEntity {
     @Schema(description = "会员标签", example = "[1, 2]")
     private List<Long> tagIds;
 
+    @Schema(description = "岗位编号数组", example = "[1, 2]")
+    private List<Long> postIds;
+
     @Schema(description = "会员等级编号", example = "1")
     private Long levelId;
 

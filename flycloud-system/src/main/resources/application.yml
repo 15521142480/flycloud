@@ -39,6 +39,8 @@ spring:
     import:
       - optional:nacos:application-common.yaml?group=@nacos.config.group@&refreshEnabled=true
       - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:flycloud-rocketmq-client.yaml?group=@nacos.config.group@&refreshEnabled=true
+      - optional:nacos:flycloud-elasticsearch-client.yaml?group=@nacos.config.group@&refreshEnabled=true
       - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
 
 
@@ -54,7 +56,3 @@ client:
         - /v2/api-docs-ext
         - /cas/sso/**
         - /sso/**
-
-  elasticsearch:
-    rest:
-      uris: http://101.34.33.33:9200

@@ -1,0 +1,16 @@
+{
+  "settings": { "number_of_shards": 1, "number_of_replicas": 0 },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "id": { "type": "long" }, "mobile": { "type": "keyword" }, "email": { "type": "keyword" },
+      "status": { "type": "integer" },
+      "nickname": { "type": "text", "analyzer": "ik_max_word", "search_analyzer": "ik_smart" },
+      "name": { "type": "text", "analyzer": "ik_max_word", "search_analyzer": "ik_smart" },
+      "avatar": { "type": "keyword", "index": false }, "tagIds": { "type": "long" },
+      "postIds": { "type": "long" }, "levelId": { "type": "long" }, "groupId": { "type": "long" },
+      "mark": { "type": "text", "analyzer": "ik_max_word", "search_analyzer": "ik_smart" },
+      "createTime": { "type": "date" }, "updateTime": { "type": "date" }
+    }
+  }
+}

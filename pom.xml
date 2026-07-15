@@ -38,6 +38,7 @@
         <spring-javaformat.version>0.0.22</spring-javaformat.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <lombok.version>1.18.38</lombok.version>
 
         <spring-boot.version>3.5.3</spring-boot.version>
@@ -55,8 +56,8 @@
         <!-- flowable版本 -->
         <flowable.version>7.1.0</flowable.version>
 
-        <!-- elasticsearch版本 -->
-        <elasticsearch.version>7.17.1</elasticsearch.version>
+        <!-- RocketMQ：Spring Boot 3.x 支持的官方 Starter 版本 -->
+        <rocketmq-spring.version>2.3.5</rocketmq-spring.version>
 
         <springdoc.version>2.8.17</springdoc.version>
         <swagger-core.version>2.2.47</swagger-core.version>
@@ -411,21 +412,11 @@
             </dependency>
 
 
-            <!-- elasticsearch搜索引擎依赖 -->
+            <!-- RocketMQ 官方 Spring Boot Starter；版本统一由根工程管理。 -->
             <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                <version>${elasticsearch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-client</artifactId>
-                <version>${elasticsearch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch</groupId>
-                <artifactId>elasticsearch</artifactId>
-                <version>${elasticsearch.version}</version>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq-spring.version}</version>
             </dependency>
 
             <dependency>
@@ -602,6 +593,12 @@
                     <parameters>true</parameters>
                     <encoding>${project.encoding}</encoding>
                 </configuration>
+            </plugin>
+            <!-- JUnit 5 测试执行器；Maven 默认的旧版 Surefire 无法发现 Jupiter 测试。 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
         </plugins>
 

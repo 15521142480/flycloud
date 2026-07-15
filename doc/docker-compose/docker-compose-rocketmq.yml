@@ -1,0 +1,35 @@
+# 与主 docker-compose.yaml 联合使用：
+# docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-rocketmq.yml up -d
+# 部署前：复制 rocketmq/broker.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP。
+services:
+  rocketmq_namesrv:
+    image: apache/rocketmq:5.3.3
+    container_name: rocketmq_namesrv
+    command: sh mqnamesrv
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "9876:9876"
+    volumes:
+      - /docker/logs/rocketmq/namesrv:/home/rocketmq/logs
+    restart: always
+
+  rocketmq_broker:
+    image: apache/rocketmq:5.3.3
+    container_name: rocketmq_broker
+    command: sh mqbroker -n rocketmq_namesrv:9876 -c /home/rocketmq/rocketmq-5.3.3/conf/broker.conf
+    environment:
+      TZ: Asia/Shanghai
+      NAMESRV_ADDR: rocketmq_namesrv:9876
+      JAVA_OPT_EXT: "-Xms512m -Xmx512m -Xmn256m"
+    depends_on:
+      - rocketmq_namesrv
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+      - "10912:10912"
+    volumes:
+      - /docker/config/rocketmq/broker.conf:/home/rocketmq/rocketmq-5.3.3/conf/broker.conf:ro
+      - /docker/data/rocketmq/broker/store:/home/rocketmq/store
+      - /docker/logs/rocketmq/broker:/home/rocketmq/logs
+    restart: always

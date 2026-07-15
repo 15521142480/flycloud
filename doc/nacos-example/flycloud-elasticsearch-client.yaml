@@ -1,0 +1,26 @@
+# Data ID: flycloud-elasticsearch-client.yaml
+# Group: DEFAULT_GROUP
+# Elasticsearch 客户端公共配置。连接参数完全复用 Spring Boot 官方 spring.elasticsearch，
+# Flycloud 仅提供索引治理、分页、Bulk 与升级能力。ES 是查询投影，MySQL 是唯一事实数据源。
+spring:
+  elasticsearch:
+    uris:
+      - ${ELASTICSEARCH_URI:http://127.0.0.1:9200}
+    username: ${ELASTICSEARCH_USERNAME:elastic}
+    password: ${ELASTICSEARCH_PASSWORD:请替换为强密码}
+    connection-timeout: 3s
+    socket-timeout: 30s
+
+flycloud:
+  elasticsearch:
+    enabled: ${ELASTICSEARCH_ENABLED:false}
+    default-page-size: 10
+    max-page-size: 100
+    bulk-size: 500
+    bulk-retry-times: 3
+    bulk-retry-interval: 1s
+    index-retention-days: 7
+    alias-require-single-index: true
+    search-after-threshold: 10000
+    full-sync-concurrency: 1
+    refresh-after-bulk: true

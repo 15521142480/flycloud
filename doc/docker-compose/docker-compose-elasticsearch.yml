@@ -1,0 +1,22 @@
+# 与主 docker-compose.yaml 联合使用：
+# docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-elasticsearch.yml up -d --build
+# 宿主机需执行：sysctl -w vm.max_map_count=262144
+services:
+  elasticsearch_one:
+    build:
+      context: ./elasticsearch
+    image: flycloud-elasticsearch:8.18.3-ik
+    container_name: elasticsearch_one
+    environment:
+      TZ: Asia/Shanghai
+      discovery.type: single-node
+      xpack.security.enabled: "true"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?请在环境变量中设置 ELASTIC_PASSWORD}
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - /docker/data/elasticsearch:/usr/share/elasticsearch/data
+      - /docker/logs/elasticsearch:/usr/share/elasticsearch/logs
+      - /docker/config/elasticsearch/custom.dic:/usr/share/elasticsearch/plugins/analysis-ik/config/custom/custom.dic:ro
+    restart: always

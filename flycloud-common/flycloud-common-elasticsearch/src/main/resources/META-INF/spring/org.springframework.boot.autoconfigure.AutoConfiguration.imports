@@ -1,1 +1,2 @@
-com.fly.commom.elasticsearch.config.ElasticsearchConfig
+com.fly.common.elasticsearch.config.ElasticsearchAutoConfiguration
+com.fly.common.elasticsearch.config.ElasticsearchIndexAutoConfiguration

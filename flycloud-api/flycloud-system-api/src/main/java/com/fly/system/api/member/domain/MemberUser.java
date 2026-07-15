@@ -134,6 +134,12 @@ public class MemberUser extends BaseEntity {
     private List<Long> tagIds;
 
     /**
+     * 岗位编号数组，以逗号分隔存储。
+     */
+    @TableField(typeHandler = LongListTypeHandler.class)
+    private List<Long> postIds;
+
+    /**
      * 会员级别编号
      *
      * 关联 {@link MemberLevelDO#getId()} 字段

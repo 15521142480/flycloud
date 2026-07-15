@@ -76,12 +76,16 @@
             <artifactId>flycloud-common-seata</artifactId>
             <version>${revision}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.flycloud</groupId>-->
-<!--            <artifactId>flycloud-common-elasticsearch</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-elasticsearch</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-rocketmq</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
 
         <!--注册中心客户端-->
@@ -138,6 +142,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

@@ -55,6 +55,8 @@ public class MemberUserVo implements Serializable {
 
     private String tagIds;
 
+    private String postIds;
+
     @JsonLongId
     private Long levelId;
 
