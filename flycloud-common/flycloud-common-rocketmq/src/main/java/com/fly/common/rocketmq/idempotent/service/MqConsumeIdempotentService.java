@@ -1,8 +1,8 @@
-package com.fly.common.rocketmq.service;
+package com.fly.common.rocketmq.idempotent.service;
 
-import com.fly.common.rocketmq.domain.MqConsumeRecord;
-import com.fly.common.rocketmq.domain.MqMessage;
-import com.fly.common.rocketmq.mapper.MqConsumeRecordMapper;
+import com.fly.common.rocketmq.idempotent.domain.MqConsumeRecord;
+import com.fly.common.rocketmq.idempotent.domain.MqMessage;
+import com.fly.common.rocketmq.idempotent.mapper.MqConsumeRecordMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;

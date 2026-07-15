@@ -2,18 +2,28 @@
 # docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-rocketmq.yml up -d
 # 部署前：复制 rocketmq/broker.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP。
 services:
+
+
+  # RocketMQ 服务配置（NameServer、Broker）
+  # namesrv服务（名称服务）；不保存信息，只负责定位：Broker位置、Topic位置、路由信息
   rocketmq_namesrv:
     image: apache/rocketmq:5.3.3
     container_name: rocketmq_namesrv
     command: sh mqnamesrv
     environment:
       TZ: Asia/Shanghai
+      # RocketMQ 镜像默认 NameServer 堆为 4G；小内存服务器必须显式覆盖。
+      JAVA_OPT_EXT: "-Xms256m -Xmx256m -Xss512k -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
+    # 堆、直接内存、元空间和 JVM Native Memory 均计入容器总内存，预留余量防止 OOM。
+    mem_limit: 512m
     ports:
       - "9876:9876"
     volumes:
       - /docker/logs/rocketmq/namesrv:/home/rocketmq/logs
     restart: always
 
+
+  # broker服务（消息代理服务）；负责保存消息：发送消息、消费消息、重试消息、删除消息
   rocketmq_broker:
     image: apache/rocketmq:5.3.3
     container_name: rocketmq_broker
@@ -21,7 +31,10 @@ services:
     environment:
       TZ: Asia/Shanghai
       NAMESRV_ADDR: rocketmq_namesrv:9876
-      JAVA_OPT_EXT: "-Xms512m -Xmx512m -Xmn256m"
+      # Broker 镜像默认堆为 8G、MaxDirectMemorySize 为 15G；必须同时覆盖，避免挤占宿主机内存。
+      JAVA_OPT_EXT: "-Xms512m -Xmx512m -Xmn256m -Xss512k -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=256m -XX:MaxDirectMemorySize=256m"
+    # 512M 堆以外仍需容纳 Direct Memory、Metaspace、线程栈和文件页缓存。
+    mem_limit: 1280m
     depends_on:
       - rocketmq_namesrv
     ports:

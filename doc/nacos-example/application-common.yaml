@@ -149,6 +149,7 @@ springdoc:
 
 # ====================================================================== flycloud 全局相关配置
 # 除 Spring Boot、Spring Cloud 和第三方组件的官方配置入口外，项目自定义配置统一收敛在 flycloud 下。
+# note：本项目为了方便整合了在一起，但正式的规范应该抽出来，比如： es配置 -> flycloud-elasticsearch-client.yam；recketmq配置 -> flycloud-rocketmq-client.yaml；im配置 -> flycloud-im.yaml等等
 
 flycloud:
 
@@ -262,6 +263,7 @@ flycloud:
     search-after-threshold: 10000
     full-sync-concurrency: 1
     refresh-after-bulk: true
+
 
 
   # ====================================================================== flycloud -> seata 客户端治理配置

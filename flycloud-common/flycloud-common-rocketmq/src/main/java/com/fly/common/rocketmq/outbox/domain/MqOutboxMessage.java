@@ -1,4 +1,4 @@
-package com.fly.common.rocketmq.domain;
+package com.fly.common.rocketmq.outbox.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

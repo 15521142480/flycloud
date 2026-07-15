@@ -2,13 +2,13 @@ package com.fly.common.rocketmq.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fly.common.rocketmq.config.properties.RocketMqProperties;
-import com.fly.common.rocketmq.mapper.MqConsumeRecordMapper;
-import com.fly.common.rocketmq.mapper.MqOutboxMessageMapper;
+import com.fly.common.rocketmq.idempotent.mapper.MqConsumeRecordMapper;
+import com.fly.common.rocketmq.outbox.mapper.MqOutboxMessageMapper;
 import com.fly.common.rocketmq.producer.DefaultRocketMqProducer;
 import com.fly.common.rocketmq.producer.RocketMqProducer;
-import com.fly.common.rocketmq.service.MqConsumeIdempotentService;
-import com.fly.common.rocketmq.service.MqOutboxService;
-import com.fly.common.rocketmq.task.MqOutboxDispatcher;
+import com.fly.common.rocketmq.idempotent.service.MqConsumeIdempotentService;
+import com.fly.common.rocketmq.outbox.service.MqOutboxService;
+import com.fly.common.rocketmq.outbox.task.MqOutboxDispatcher;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

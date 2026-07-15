@@ -1,0 +1,7 @@
+# 小内存单节点基线。Xms 与 Xmx 必须一致；ES 还需要容器内的 Direct Memory、线程栈和文件系统页缓存。
+-Xms512m
+-Xmx512m
+-Xss512k
+-XX:MetaspaceSize=96m
+-XX:MaxMetaspaceSize=256m
+-XX:MaxDirectMemorySize=256m

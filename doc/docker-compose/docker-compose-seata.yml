@@ -12,6 +12,9 @@
 #   5. 创建 /docker/config/seata/logs 目录。
 
 services:
+
+
+  # seata 服务配置
   seata_one:
     image: apache/seata-server:2.5.0
     container_name: seata_one

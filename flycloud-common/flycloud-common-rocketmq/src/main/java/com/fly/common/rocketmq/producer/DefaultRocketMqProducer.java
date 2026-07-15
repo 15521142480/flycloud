@@ -1,6 +1,6 @@
 package com.fly.common.rocketmq.producer;
 
-import com.fly.common.rocketmq.domain.MqMessage;
+import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;

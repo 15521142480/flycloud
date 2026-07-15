@@ -1,4 +1,4 @@
-package com.fly.common.rocketmq.domain;
+package com.fly.common.rocketmq.idempotent.domain;
 
 import lombok.Data;
 

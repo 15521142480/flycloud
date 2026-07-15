@@ -1,10 +1,10 @@
-package com.fly.common.rocketmq.task;
+package com.fly.common.rocketmq.outbox.task;
 
 import com.fly.common.rocketmq.config.properties.RocketMqProperties;
-import com.fly.common.rocketmq.domain.MqOutboxMessage;
+import com.fly.common.rocketmq.outbox.domain.MqOutboxMessage;
 import com.fly.common.rocketmq.producer.RocketMqProducer;
 import com.fly.common.rocketmq.producer.RocketMqSendCallback;
-import com.fly.common.rocketmq.service.MqOutboxService;
+import com.fly.common.rocketmq.outbox.service.MqOutboxService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

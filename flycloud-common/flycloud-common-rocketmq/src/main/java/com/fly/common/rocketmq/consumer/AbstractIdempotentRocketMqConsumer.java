@@ -1,7 +1,7 @@
 package com.fly.common.rocketmq.consumer;
 
-import com.fly.common.rocketmq.domain.MqMessage;
-import com.fly.common.rocketmq.service.MqConsumeIdempotentService;
+import com.fly.common.rocketmq.idempotent.domain.MqMessage;
+import com.fly.common.rocketmq.idempotent.service.MqConsumeIdempotentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQListener;

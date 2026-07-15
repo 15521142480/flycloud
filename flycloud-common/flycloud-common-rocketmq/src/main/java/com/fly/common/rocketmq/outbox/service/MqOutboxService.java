@@ -1,11 +1,11 @@
-package com.fly.common.rocketmq.service;
+package com.fly.common.rocketmq.outbox.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.common.rocketmq.domain.MqMessage;
-import com.fly.common.rocketmq.domain.MqOutboxMessage;
-import com.fly.common.rocketmq.mapper.MqOutboxMessageMapper;
+import com.fly.common.rocketmq.idempotent.domain.MqMessage;
+import com.fly.common.rocketmq.outbox.domain.MqOutboxMessage;
+import com.fly.common.rocketmq.outbox.mapper.MqOutboxMessageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

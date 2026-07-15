@@ -10,7 +10,7 @@ import com.fly.common.elasticsearch.index.ElasticsearchMappingService;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.rocketmq.constant.RocketMqTagConstants;
 import com.fly.common.rocketmq.constant.RocketMqTopicConstants;
-import com.fly.common.rocketmq.service.MqOutboxService;
+import com.fly.common.rocketmq.outbox.service.MqOutboxService;
 import com.fly.member.mapper.MemberUserMapper;
 import com.fly.system.api.member.domain.MemberUser;
 import com.fly.system.mapper.SysUserMapper;

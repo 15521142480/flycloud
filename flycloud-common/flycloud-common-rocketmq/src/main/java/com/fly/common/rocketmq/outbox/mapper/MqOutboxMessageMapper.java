@@ -1,7 +1,7 @@
-package com.fly.common.rocketmq.mapper;
+package com.fly.common.rocketmq.outbox.mapper;
 
 import com.fly.common.database.web.support.BaseMapperPlus;
-import com.fly.common.rocketmq.domain.MqOutboxMessage;
+import com.fly.common.rocketmq.outbox.domain.MqOutboxMessage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
