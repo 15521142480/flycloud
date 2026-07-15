@@ -83,7 +83,7 @@ public class SpringDocConfiguration {
 
     @Data
     @Component
-    @ConfigurationProperties("swagger")
+    @ConfigurationProperties("flycloud.swagger")
     public class SwaggerDocProperties {
 
         private Map<String, String> services;

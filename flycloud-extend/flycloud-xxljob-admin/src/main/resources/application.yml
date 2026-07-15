@@ -34,9 +34,9 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: ${XXL_JOB_DATASOURCE_URL:jdbc:mysql://127.0.0.1:3306/fly_job?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai}
-    username: ${XXL_JOB_DATASOURCE_USERNAME:root}
-    password: ${XXL_JOB_DATASOURCE_PASSWORD:}
+    url: ${xxl.job.datasource.url}
+    username: ${xxl.job.datasource.username}
+    password: ${xxl.job.datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 10
@@ -50,11 +50,11 @@ spring:
       validation-timeout: 1000
 
   mail:
-    host: ${XXL_JOB_MAIL_HOST:smtp.qq.com}
-    port: ${XXL_JOB_MAIL_PORT:25}
-    username: ${XXL_JOB_MAIL_USERNAME:}
-    from: ${XXL_JOB_MAIL_FROM:}
-    password: ${XXL_JOB_MAIL_PASSWORD:}
+    host: ${xxl.job.mail.host}
+    port: ${xxl.job.mail.port}
+    username: ${xxl.job.mail.username}
+    from: ${xxl.job.mail.from}
+    password: ${xxl.job.mail.password}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -74,7 +74,19 @@ mybatis:
 
 xxl:
   job:
-    accessToken: ${XXL_JOB_ACCESS_TOKEN}
+    # 数据源和邮件等环境差异配置由 application-{profile}.yml 覆盖；Spring Boot 官方属性仅引用本配置。
+    datasource:
+      url: jdbc:mysql://127.0.0.1:3306/fly_job?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+      username: root
+      password:
+    mail:
+      host: smtp.qq.com
+      port: 25
+      username:
+      from:
+      password:
+    # 调度中心与执行器通信密钥；生产环境建议通过 Nacos 加密或密钥管理服务注入。
+    access-token:
     timeout: 3
     i18n: zh_CN
     triggerpool:

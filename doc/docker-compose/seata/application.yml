@@ -1,5 +1,5 @@
 # Seata Server 2.5.0 启动引导配置。
-# 此文件必须以只读方式挂载到容器；TC 需要先用它连接 Nacos，才能读取 flycloud-seata-client.yaml。
+# 此文件必须以只读方式挂载到容器；TC 使用它注册到 Nacos。
 
 # Seata 2.5.0 中，事务协调器 TC（seata-server:8091）与 Console/原生注册中心
 # （seata-naming-server:8081）已拆分。业务客户端 TM/RM 不需要独立部署，它们运行在
@@ -38,7 +38,7 @@ seata:
       password: ${NACOS_PASSWORD}
 
   # TC 的数据库启动参数必须在本地引导文件中提供，不能依赖尚未启动的 TC 自己从 Nacos 获取。
-  # 业务客户端的事务路由和 AT 参数放在 Nacos 的 flycloud-seata-client.yaml 中。
+  # 业务客户端的事务路由和 AT 参数位于 Nacos application-common.yaml 的 flycloud.seata 中。
 #  config:
 #    type: nacos
 

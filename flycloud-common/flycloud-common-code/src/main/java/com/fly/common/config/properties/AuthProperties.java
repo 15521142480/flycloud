@@ -11,7 +11,7 @@ import java.util.List;
  * 登录 Token 配置。
  */
 @Data
-@ConfigurationProperties(prefix = "security.auth")
+@ConfigurationProperties(prefix = "flycloud.security.auth")
 public class AuthProperties {
 
 

@@ -29,7 +29,7 @@ import java.util.List;
 @EnableWebSocket
 @AutoConfiguration
 @EnableConfigurationProperties(WebSocketProperties.class)
-@ConditionalOnProperty(prefix = "websocket", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "flycloud.websocket", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class WebSocketAutoConfiguration {
 
     /**
@@ -78,7 +78,7 @@ public class WebSocketAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "websocket", name = "sender-type", havingValue = "local", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "flycloud.websocket", name = "sender-type", havingValue = "local", matchIfMissing = true)
     public WebSocketMessageSender localWebSocketMessageSender(WebSocketSessionManager sessionManager) {
         return new LocalWebSocketMessageSender(sessionManager);
     }

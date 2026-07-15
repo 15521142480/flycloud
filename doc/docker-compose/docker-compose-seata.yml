@@ -4,7 +4,7 @@
 #
 # 部署前准备：
 #   1. 执行 db/mysql/表结构/seata-server-mysql8.sql；
-#   2. 在 Nacos 导入 doc/nacos-example/flycloud-seata-client.yaml（dataId、group 见文件头）；
+#   2. 在 Nacos 导入 doc/nacos-example/application-common.yaml；其中包含 flycloud.seata 客户端参数；
 #   3. 将 seata/application.yml 和 seata.env.example 分别复制到
 #      /docker/config/seata/application.yml、/docker/config/seata/seata.env，并填好 seata.env；
 #   4. 将 MySQL Connector/J 8.4.x 驱动包放入 /docker/config/seata/jdbc/，文件名必须以

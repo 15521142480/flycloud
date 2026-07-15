@@ -8,7 +8,8 @@ import org.springframework.context.annotation.PropertySource;
  * Seata 客户端基础配置。
  *
  * <p>业务服务只需引入 {@code flycloud-common-seata}，本配置便会加载
- * {@code flycloud-seata.yaml}。Seata Starter 负责初始化 TM、RM 和
+ * {@code flycloud-seata.yaml}，并将 Nacos {@code application-common.yaml} 中的
+ * {@code flycloud.seata} 参数桥接为 Seata Starter 所需的官方 {@code seata.*} 属性。Seata Starter 负责初始化 TM、RM 和
  * {@code @GlobalTransactional}；动态数据源负责为每个业务数据源创建 Seata 代理，
  * 因此这里不重复注册数据源代理。</p>
  *

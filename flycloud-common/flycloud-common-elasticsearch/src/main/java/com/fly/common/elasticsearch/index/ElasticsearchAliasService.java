@@ -2,7 +2,7 @@ package com.fly.common.elasticsearch.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.indices.GetAliasResponse;
-import com.fly.common.elasticsearch.config.FlycloudElasticsearchProperties;
+import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.common.elasticsearch.exception.ElasticsearchIndexException;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ import java.util.Map;
 public class ElasticsearchAliasService {
 
     private final ElasticsearchClient client;
-    private final FlycloudElasticsearchProperties properties;
+    private final ElasticsearchProperties properties;
 
     /** 获取 Alias 当前唯一指向的真实索引；Alias 不存在时返回 null。 */
     public String getCurrentIndex(String alias) {

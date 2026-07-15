@@ -3,7 +3,7 @@ package com.fly.common.elasticsearch.bulk;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
-import com.fly.common.elasticsearch.config.FlycloudElasticsearchProperties;
+import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.common.elasticsearch.exception.ElasticsearchSyncException;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class ElasticsearchBulkService {
 
     private final ElasticsearchClient client;
-    private final FlycloudElasticsearchProperties properties;
+    private final ElasticsearchProperties properties;
 
     /**
      * 按配置批次执行文档索引写入，聚合全部 item 失败信息并在完成后按配置刷新索引。

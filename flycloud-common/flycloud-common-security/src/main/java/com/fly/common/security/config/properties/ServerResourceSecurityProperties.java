@@ -14,7 +14,7 @@
 // * @date 2026/08/13
 // */
 //@Component
-//@ConfigurationProperties(prefix = "server.resource.security")
+//@ConfigurationProperties(prefix = "flycloud.security.resource")
 //@Data
 //public class ServerResourceSecurityProperties {
 //

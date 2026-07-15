@@ -30,14 +30,14 @@ spring:
 #          username: ${datasource.system-postgres.username}
 #          password: ${datasource.system-postgres.password}
 
-# 代码生成 配置
-gen:
-  # 作者
-  author: fly
-  # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
-  packageName: com.fly.system
-  # 自动去除表前缀，默认是false
-  autoRemovePre: true
-  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
-  tablePrefix: t_oa_,t_srm_
-
+# 代码生成配置（项目自定义配置统一收敛到 flycloud 下）。
+flycloud:
+  gen:
+    # 作者
+    author: fly
+    # 默认生成包路径 system 需改成自己的模块名称，如 system、monitor、tool
+    packageName: com.fly.system
+    # 自动去除表前缀，默认 false
+    autoRemovePre: true
+    # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
+    tablePrefix: t_oa_,t_srm_

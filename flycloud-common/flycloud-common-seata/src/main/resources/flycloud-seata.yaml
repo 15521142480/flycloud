@@ -1,27 +1,47 @@
-# Seata 2.5.0 客户端通用配置。
-# 业务服务引入 flycloud-common-seata 后自动加载；环境差异由 Nacos 的 flycloud-seata-client.yaml 管理。
+# Seata 2.5.0 官方客户端属性桥接。
+# 业务参数统一维护在 Nacos application-common.yaml 的 flycloud.seata 下；本文件只保留
+# Seata Starter 识别的 seata.* 键，禁止再创建独立的 Seata 客户端 Nacos Data ID。
 seata:
-  # 默认启用。未使用分布式事务的服务不要引入本公共模块。
-  enabled: true
-
-  # TM/RM 在 Nacos 中注册时使用的业务应用标识。
+  enabled: ${flycloud.seata.enabled:true}
   application-id: ${spring.application.name}
+  tx-service-group: ${flycloud.seata.tx-service-group:flycloud-tx-group}
 
-  # 事务服务组。必须与 Nacos flycloud-seata-client.yaml 的 service.vgroupMapping 键完全一致。
-  tx-service-group: flycloud-tx-group
-
-  # 启动阶段的本地兜底路由。Seata 会在 Nacos 配置中心加载完成前读取该项；
-  # 事务组与 TC 集群的映射同时仍维护在 flycloud-seata-client.yaml 中，便于统一管理和动态刷新。
   service:
     vgroup-mapping:
-      flycloud-tx-group: default
+      flycloud-tx-group: ${flycloud.seata.service.vgroup-mapping.flycloud-tx-group:default}
+    enable-degrade: ${flycloud.seata.service.enable-degrade:false}
+    disable-global-transaction: ${flycloud.seata.service.disable-global-transaction:false}
 
-  # 数据源由 dynamic-datasource 创建代理；关闭 Seata Starter 的全局自动代理以避免双重代理。
-  enable-auto-data-source-proxy: false
-  # 当前仅采用 AT 模式；TCC、SAGA、XA 应按业务场景单独设计，不在公共默认配置中开启。
-  data-source-proxy-mode: AT
+  client:
+    rm:
+      async-commit-buffer-limit: ${flycloud.seata.client.rm.async-commit-buffer-limit:10000}
+      report-retry-count: ${flycloud.seata.client.rm.report-retry-count:5}
+      table-meta-check-enable: ${flycloud.seata.client.rm.table-meta-check-enable:true}
+      table-meta-checker-interval: ${flycloud.seata.client.rm.table-meta-checker-interval:60000}
+      sql-parser-type: ${flycloud.seata.client.rm.sql-parser-type:druid}
+      report-success-enable: ${flycloud.seata.client.rm.report-success-enable:false}
+      lock:
+        retry-interval: ${flycloud.seata.client.rm.lock.retry-interval:10}
+        retry-times: ${flycloud.seata.client.rm.lock.retry-times:30}
+        retry-policy-branch-rollback-on-conflict: ${flycloud.seata.client.rm.lock.retry-policy-branch-rollback-on-conflict:true}
+    tm:
+      commit-retry-count: ${flycloud.seata.client.tm.commit-retry-count:5}
+      rollback-retry-count: ${flycloud.seata.client.tm.rollback-retry-count:5}
+      default-global-transaction-timeout: ${flycloud.seata.client.tm.default-global-transaction-timeout:60000}
+      degrade-check: ${flycloud.seata.client.tm.degrade-check:false}
+      degrade-check-period: ${flycloud.seata.client.tm.degrade-check-period:2000}
+      degrade-check-allow-times: ${flycloud.seata.client.tm.degrade-check-allow-times:10}
+    undo:
+      data-validation: ${flycloud.seata.client.undo.data-validation:true}
+      log-serialization: ${flycloud.seata.client.undo.log-serialization:jackson}
+      log-table: ${flycloud.seata.client.undo.log-table:undo_log}
+      only-care-update-columns: ${flycloud.seata.client.undo.only-care-update-columns:true}
+      compress:
+        enable: ${flycloud.seata.client.undo.compress.enable:true}
+        type: ${flycloud.seata.client.undo.compress.type:zip}
+        threshold: ${flycloud.seata.client.undo.compress.threshold:64k}
 
-  # TC 服务注册中心。application、group、namespace、cluster 必须与 Seata Server 保持一致。
+  # TC 注册中心属于 Seata 官方配置，连接参数复用 Spring Cloud Nacos。
   registry:
     type: nacos
     nacos:
@@ -33,21 +53,11 @@ seata:
       username: ${spring.cloud.nacos.username:nacos}
       password: ${spring.cloud.nacos.password:nacos}
 
-  # TC/客户端共享参数的配置中心。data-id 必须与 Nacos 中导入的文件名一致。
-  config:
-    type: nacos
-    nacos:
-      server-addr: ${spring.cloud.nacos.server-addr}
-      namespace: ${spring.cloud.nacos.config.namespace:}
-      group: SEATA_GROUP
-      # Seata 2.5 配置项名称为 dataId；对应 Nacos 的 Data ID。
-      dataId: flycloud-seata-client.yaml
-      username: ${spring.cloud.nacos.username:nacos}
-      password: ${spring.cloud.nacos.password:nacos}
+  # dynamic-datasource 负责创建 AT 数据源代理，避免 Seata Starter 二次代理。
+  enable-auto-data-source-proxy: false
+  data-source-proxy-mode: AT
 
-# 本项目使用 dynamic-datasource 管理多数据源；由它为每个参与 AT 事务的数据源包装 DataSourceProxy。
 spring:
   datasource:
     dynamic:
-      # 与 seata.enabled 共用同一个总开关，关闭 Seata 时同步停止动态数据源代理。
-      seata: ${seata.enabled:true}
+      seata: ${flycloud.seata.enabled:true}

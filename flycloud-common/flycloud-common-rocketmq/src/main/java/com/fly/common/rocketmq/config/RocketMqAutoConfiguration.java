@@ -1,6 +1,7 @@
 package com.fly.common.rocketmq.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fly.common.rocketmq.config.properties.RocketMqProperties;
 import com.fly.common.rocketmq.mapper.MqConsumeRecordMapper;
 import com.fly.common.rocketmq.mapper.MqOutboxMessageMapper;
 import com.fly.common.rocketmq.producer.DefaultRocketMqProducer;

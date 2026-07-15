@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date: 2026/7/1
  */
 @Data
-@ConfigurationProperties(prefix = "upload.config")
+@ConfigurationProperties(prefix = "flycloud.upload.config")
 public class FileConfigProperties {
 
     /**

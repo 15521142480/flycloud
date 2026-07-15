@@ -1,6 +1,6 @@
 package com.fly.common.rocketmq.task;
 
-import com.fly.common.rocketmq.config.RocketMqProperties;
+import com.fly.common.rocketmq.config.properties.RocketMqProperties;
 import com.fly.common.rocketmq.domain.MqOutboxMessage;
 import com.fly.common.rocketmq.producer.RocketMqProducer;
 import com.fly.common.rocketmq.producer.RocketMqSendCallback;

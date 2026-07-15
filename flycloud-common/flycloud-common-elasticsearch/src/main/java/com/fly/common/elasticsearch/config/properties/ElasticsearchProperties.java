@@ -1,4 +1,4 @@
-package com.fly.common.elasticsearch.config;
+package com.fly.common.elasticsearch.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,12 +8,12 @@ import java.time.Duration;
 /**
  * Elasticsearch 客户端配置。
  *
- * <p>配置由 Nacos 的 {@code flycloud-elasticsearch-client.yaml} 提供；业务服务只引用该公共模块，
+ * <p>配置由 Nacos 的 {@code application-common.yaml} 中 {@code flycloud.elasticsearch} 提供；业务服务只引用该公共模块，
  * 不自行创建客户端。</p>
  */
 @Data
 @ConfigurationProperties(prefix = "flycloud.elasticsearch")
-public class FlycloudElasticsearchProperties {
+public class ElasticsearchProperties {
 
     /** 是否启用 ES 基础设施。 */
     private boolean enabled = false;

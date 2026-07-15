@@ -20,14 +20,14 @@ xxl:
   job:
     admin:
       # 调度中心
-      addresses: ${XXL_JOB_ADMIN_ADDRESSES:http://127.0.0.1:9091/xxl-job-admin}
+      addresses: ${xxl.job.admin.addresses:http://127.0.0.1:9091/xxl-job-admin}
       # 调度中心和执行器之间的通信密码（自己生成，如：openssl rand -hex 32）
-      access-token: ${XXL_JOB_ACCESS_TOKEN:}
+      access-token: ${xxl.job.access-token:}
       # HTTP 通信超时时间（秒）
       timeout: 5
 
     executor:
-      # 为{true}时才创建执行器；如果不使用xxljob服务改成false即可；${XXL_JOB_ENABLED:false}
+      # 为{true}时才创建执行器；如果不使用xxljob服务改成false即可；${xxl.job.enabled:false}
       enabled: false
       # 当前业务服务注册成哪个执行器组
       appname: ${spring.application.name}

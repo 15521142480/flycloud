@@ -1,5 +1,6 @@
 
-# spring 配置
+# ========================================================= spring 相关配置
+
 spring:
   # 资源信息
   messages:
@@ -20,6 +21,7 @@ spring:
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
+
   #jackson配置
   jackson:
     # 日期格式化
@@ -33,6 +35,9 @@ spring:
     deserialization:
       # 允许对象忽略json中不存在的属性
       fail_on_unknown_properties: false
+
+
+  # ====================================================================== spring -> could 相关配置
   cloud:
     # sentinel 配置
     # sentinel:
@@ -49,6 +54,8 @@ spring:
     #     # 控制台地址 从1.3.0开始使用 server-name 注册
     #     # dashboard: localhost:8718
 
+
+  # ====================================================================== spring -> redis 相关配置
   # redis 通用配置 子服务可以自行配置进行覆盖
   data:
     redis:
@@ -72,7 +79,18 @@ spring:
         shutdown-timeout: 100ms
 
 
-# redisson 配置
+  # ====================================================================== spring -> elasticsearch 相关配置
+  elasticsearch:
+    uris:
+      - ${ELASTICSEARCH_URI:http://127.0.0.1:9200}
+    username: ${ELASTICSEARCH_USERNAME:elastic}
+    password: ${ELASTICSEARCH_PASSWORD:请替换为强密码}
+    connection-timeout: 3s
+    socket-timeout: 30s
+
+
+
+# ====================================================================== redisson 配置
 redisson:
   # redis key前缀
   keyPrefix:
@@ -96,120 +114,222 @@ redisson:
     subscriptionConnectionPoolSize: 50
 
 
-# xxl-job 配置
-XXL_JOB_ENABLED: false
-XXL_JOB_ADMIN_ADDRESSES: http://127.0.0.1:9091/xxl-job-admin
-XXL_JOB_ACCESS_TOKEN: 建议随机32位token
+
+# ====================================================================== rocketmq 配置
+rocketmq:
+  # 集群部署时使用分号分隔多个 NameServer；生产环境填写内网地址。
+  name-server: 127.0.0.1:9876
+  producer:
+    # 每个服务一个稳定的 Producer Group，禁止按请求动态生成。
+    group: ${spring.application.name}-producer
+    send-message-timeout: 5000
 
 
-# websocket公共配置；此处path: /ws目前由flycloud-system统一引入websocket模块实现，其他服务调用api接口WebSocketSenderApi即可
-websocket:
-  enabled: true
-  path: /ws
-  # local、redis；local：单机部署，如flycloud-system 只有一个实例
-  sender-type: local
-
-
-# security授权公共配置
-security:
-  auth:
-
-    # token配置
-    token:
-      # 登录态有效期，单位秒，默认2小时；接口请求认证成功后会滑动续期
-      login-timeout-seconds: 7200
-      # refresh token 有效期，默认30天，单位秒
-      refresh-token-timeout-seconds: 2592000
-
-    # feign配置
-    feign:
-      # 是否启用服务间Feign内部接口签名验证
-      enabled: true
-      # Feign内部接口签名密钥，各个服务必须保持一致
-      secret: flycloud-feign-secret
-      # Feign签名时间戳有效期，单位秒
-      expire-seconds: 300      
-
-    # 白名单配置 (授权、swagger、监控中心等url)
-    ignore-urls:
-      - /admin/auth/**
-      - /app/auth/**
-      - /captcha/**
-      - /app/**
-      - /gen/**
-      - /static/**
-      - /actuator/**
-      - /webjars/**
-      - /druid/**
-      - /assets/**
-      - /css/**
-      - /swagger-ui/index.html
-      - /swagger-ui.html
-      - /swagger-ui/**
-      - /swagger/api-docs
-      - /swagger-resources/**
-      - /doc.html
-      - /v2/api-docs/**
-      - /v3/api-docs
-      - /v3/api-docs/**
-      # 积木报表静态资源由网关根路径转发；报表接口自行使用 token 参数或 X-Access-Token 校验。
-      - /jmreport/**
-      - /drag/**
-      - /jimubi/**
-      
-    # 是否启用网关验证（是：经过网关的接口都拦截验证；否：全部接口在网关服务都为白名单）
-    gateway-enable: true
-
-  # ras密钥对配置
-  rsa:
-    keys:
-      # 登录密码
-      fly_cloud_login_password:
-        public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqG/pmVfnO8KrCL1zHzsnx2hlwmbvFqSGna89QU9a5q0JO+pdeppBhHbHI8Lao/Hsk4jSQbA1C+vSKi018A6a4WILlbRMYZaStouc2abYCZsejL/SMccsCFz+c06WPzFJ5VkxAoTTmVJ0pCViVJEZdQuXMc7GtQRP7VME+DhrVDThII6s/2oxJLNhPxCejGZz84jhekHIedF38/SRz2gj5QQH3v+zYC2SWjH+WAoyLckFQ7A3FBYt9qaFTLA1ObpSmKEeZZvxWadovMW2gw6tQPWbzxalY00Dhei7hGi8yU29bhF032SQaMIgyuIiYW4wLdk2wdjOY1JtJDGgjhmjXwIDAQAB
-        private-key: 对应key
-
-      # 支付密码
-      fly_cloud_pay_password:
-        public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAolvhZzAaDugJQ/kADME7zxv2EbQR4377PWliPTbk8cZh+PoSi6EviwN1syWMLJGs8RwuaGFcUQwvXvrTCo/E2nrg1c7odOYTHnEi172Wu9mVUUGoxZ6vNCTXnwyK34u+136IcTunepP/LC+RxSzB/Qk81PJX+Fx3ffXoAclcQWvI2ssTabVYyf8zKnEF5F151qp0PuYYDGNOrYXbbblUjg0BbhVVPINUz7lhMENqPFwz2lAk6GCLlYMvkbIhN9mjcDMCQu3uPTtjadpMaypBniwVuXfqTGMvQ5LxWfHzMutiKNjTU3F4qsTbXslPLMlclIDRCu648Bkj7tB+19tQuQIDAQAB
-        private-key: 对应key
-      
-      # 开放接口
-      fly_cloud_open_api:
-        public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs7IakV0YmQLRbqT2Vlv2s4ODvb7d7PMeaDyz7g5jvKbuIkxdUU7KRHl+PXXdzH4MiBpl3sq8+oAYfZqwq8+wYkdgZhuAqjIoW6DHoQZXRXF1SrQ6kF4j5PuangfAfh1xp5MkHkc2Xy3qvshplh5eE7odhO3mYhnM9GpRB4w8uJItEX9K0X0XuVhX7t+P9nwBkCm13JBS1WdTxPF9rom+SPxisgsEqhEks9uPyW9ioTL4zsLsHskgy3XsTARla9uI3ggUVLD0Y/yqII5sZ97hUc0GvzoDHysnQmB7jp1MTjspojD+zXmB+aT/NvDi++iN2x9UXbhY/YAcDCexORVEDwIDAQAB
-        private-key: 对应key
+# ====================================================================== XXL-JOB 官方客户端配置
+xxl:
+  job:
+    # 业务服务执行器的总开关；各服务可在自己的环境配置中覆盖 executor 配置。
+    enabled: false
+    # 调度中心与执行器通信密钥；生产环境使用 Nacos 加密或密钥管理服务注入。
+    access-token: ${XXL_JOB_ACCESS_TOKEN:建议随机32位token}
 
 
 
-# 上传配置
-upload:
-  config:
-  
-    # 使用的服务器类型 (1:本地服务, 2:ftp服务器, 3:sftp服务器, 4:阿里云oss对象存储, 5:华为云obs对象存储, 9:smb共享文件夹)
-    use-server-type: 3
-
-    # sftp服务器配置
-    local-server-config:
-      # 文件上传和读取的前缀真实路径
-      base-path: /Users/lxs/applicationFile/file/person/flycloud-server/
-      # 拼给前端或客户端展示的前缀url路径
-      base-url: http://localhost:8080/static/
-
-    # sftp服务器配置
-    sftp-server-config:
-      ip: localhost
-      user: root
-      password: root
-      port: 22
-      base-path: /project/upload-file/
-      # base-url: https://www.laixueshi.cn/static/
-      base-url: http://localhost:8888/static/
-    
+# ====================================================================== springdoc 配置
+springdoc:
+  api-docs:
+    # 是否开启接口文档
+    enabled: true
+  swagger-ui:
+    # 持久化认证数据
+    persistAuthorization: true
 
 
-# 系统模块功能配置
+
+
+# ====================================================================== flycloud 全局相关配置
+# 除 Spring Boot、Spring Cloud 和第三方组件的官方配置入口外，项目自定义配置统一收敛在 flycloud 下。
+
 flycloud:
-  
-  # IM 公共配置
+
+  # ====================================================================== flycloud -> security 相关配置
+  security:
+    auth:
+
+      # token配置
+      token:
+        # 登录态有效期，单位秒，默认2小时；接口请求认证成功后会滑动续期
+        login-timeout-seconds: 7200
+        # refresh token 有效期，默认30天，单位秒
+        refresh-token-timeout-seconds: 2592000
+
+      # feign配置
+      feign:
+        # 是否启用服务间Feign内部接口签名验证
+        enabled: true
+        # Feign内部接口签名密钥，各个服务必须保持一致
+        secret: flycloud-feign-secret
+        # Feign签名时间戳有效期，单位秒
+        expire-seconds: 300
+
+      # 白名单配置 (授权、swagger、监控中心等url)
+      ignore-urls:
+        - /admin/auth/**
+        - /app/auth/**
+        - /captcha/**
+        - /app/**
+        - /gen/**
+        - /static/**
+        - /actuator/**
+        - /webjars/**
+        - /druid/**
+        - /assets/**
+        - /css/**
+        - /swagger-ui/index.html
+        - /swagger-ui.html
+        - /swagger-ui/**
+        - /swagger/api-docs
+        - /swagger-resources/**
+        - /doc.html
+        - /v2/api-docs/**
+        - /v3/api-docs
+        - /v3/api-docs/**
+        # 积木报表静态资源由网关根路径转发；报表接口自行使用 token 参数或 X-Access-Token 校验。
+        - /jmreport/**
+        - /drag/**
+        - /jimubi/**
+
+      # 是否启用网关验证（是：经过网关的接口都拦截验证；否：全部接口在网关服务都为白名单）
+      gateway-enable: true
+
+    # ras密钥对配置
+    rsa:
+      keys:
+        # 登录密码
+        fly_cloud_login_password:
+          public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqG/pmVfnO8KrCL1zHzsnx2hlwmbvFqSGna89QU9a5q0JO+pdeppBhHbHI8Lao/Hsk4jSQbA1C+vSKi018A6a4WILlbRMYZaStouc2abYCZsejL/SMccsCFz+c06WPzFJ5VkxAoTTmVJ0pCViVJEZdQuXMc7GtQRP7VME+DhrVDThII6s/2oxJLNhPxCejGZz84jhekHIedF38/SRz2gj5QQH3v+zYC2SWjH+WAoyLckFQ7A3FBYt9qaFTLA1ObpSmKEeZZvxWadovMW2gw6tQPWbzxalY00Dhei7hGi8yU29bhF032SQaMIgyuIiYW4wLdk2wdjOY1JtJDGgjhmjXwIDAQAB
+          private-key: 对应key
+
+        # 支付密码
+        fly_cloud_pay_password:
+          public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAolvhZzAaDugJQ/kADME7zxv2EbQR4377PWliPTbk8cZh+PoSi6EviwN1syWMLJGs8RwuaGFcUQwvXvrTCo/E2nrg1c7odOYTHnEi172Wu9mVUUGoxZ6vNCTXnwyK34u+136IcTunepP/LC+RxSzB/Qk81PJX+Fx3ffXoAclcQWvI2ssTabVYyf8zKnEF5F151qp0PuYYDGNOrYXbbblUjg0BbhVVPINUz7lhMENqPFwz2lAk6GCLlYMvkbIhN9mjcDMCQu3uPTtjadpMaypBniwVuXfqTGMvQ5LxWfHzMutiKNjTU3F4qsTbXslPLMlclIDRCu648Bkj7tB+19tQuQIDAQAB
+          private-key: 对应key
+
+        # 开放接口
+        fly_cloud_open_api:
+          public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs7IakV0YmQLRbqT2Vlv2s4ODvb7d7PMeaDyz7g5jvKbuIkxdUU7KRHl+PXXdzH4MiBpl3sq8+oAYfZqwq8+wYkdgZhuAqjIoW6DHoQZXRXF1SrQ6kF4j5PuangfAfh1xp5MkHkc2Xy3qvshplh5eE7odhO3mYhnM9GpRB4w8uJItEX9K0X0XuVhX7t+P9nwBkCm13JBS1WdTxPF9rom+SPxisgsEqhEks9uPyW9ioTL4zsLsHskgy3XsTARla9uI3ggUVLD0Y/yqII5sZ97hUc0GvzoDHysnQmB7jp1MTjspojD+zXmB+aT/NvDi++iN2x9UXbhY/YAcDCexORVEDwIDAQAB
+          private-key: 对应key
+
+
+
+  # ====================================================================== flycloud -> 上传 相关配置
+  upload:
+    config:
+
+      # 使用的服务器类型 (1:本地服务, 2:ftp服务器, 3:sftp服务器, 4:阿里云oss对象存储, 5:华为云obs对象存储, 9:smb共享文件夹)
+      use-server-type: 3
+
+      # sftp服务器配置
+      local-server-config:
+        # 文件上传和读取的前缀真实路径
+        base-path: /Users/lxs/applicationFile/file/person/flycloud-server/
+        # 拼给前端或客户端展示的前缀url路径
+        base-url: http://localhost:8080/static/
+
+      # sftp服务器配置
+      sftp-server-config:
+        ip: localhost
+        user: root
+        password: root
+        port: 22
+        base-path: /project/upload-file/
+        # base-url: https://www.laixueshi.cn/static/
+        base-url: http://localhost:8888/static/
+
+
+
+  # ====================================================================== flycloud -> elasticsearch 相关配置
+  elasticsearch:
+    # 全局开关
+    enabled: true
+    default-page-size: 10
+    max-page-size: 100
+    bulk-size: 500
+    bulk-retry-times: 3
+    bulk-retry-interval: 1s
+    index-retention-days: 7
+    alias-require-single-index: true
+    search-after-threshold: 10000
+    full-sync-concurrency: 1
+    refresh-after-bulk: true
+
+
+  # ====================================================================== flycloud -> seata 客户端治理配置
+  # Seata 官方 seata.* 属性由 flycloud-common-seata 的桥接配置读取本节并映射，业务服务无需再导入独立 Data ID。
+  seata:
+    enabled: true
+    tx-service-group: flycloud-tx-group
+    service:
+      vgroup-mapping:
+        flycloud-tx-group: default
+      enable-degrade: false
+      disable-global-transaction: false
+    client:
+      rm:
+        async-commit-buffer-limit: 10000
+        report-retry-count: 5
+        table-meta-check-enable: true
+        table-meta-checker-interval: 60000
+        sql-parser-type: druid
+        report-success-enable: false
+        lock:
+          retry-interval: 10
+          retry-times: 30
+          retry-policy-branch-rollback-on-conflict: true
+      tm:
+        commit-retry-count: 5
+        rollback-retry-count: 5
+        default-global-transaction-timeout: 60000
+        degrade-check: false
+        degrade-check-period: 2000
+        degrade-check-allow-times: 10
+      undo:
+        data-validation: true
+        log-serialization: jackson
+        log-table: undo_log
+        only-care-update-columns: true
+        compress:
+          enable: true
+          type: zip
+          threshold: 64k
+
+
+
+  # ====================================================================== flycloud -> rocketmq 相关配置
+  rocketmq:
+    # 全局开关；不使用 RocketMQ 时统一关闭；不会创建生产者、消费者和本地消息调度器。
+    enabled: true
+    outbox:
+      enabled: true
+      dispatch-delay-millis: 5000
+      batch-size: 100
+      max-retry-count: 16
+      # 多实例条件抢占后的租约；实例异常退出时，租约到期后可重新投递。
+      claim-lease-seconds: 60
+
+
+
+  # ====================================================================== flycloud -> websocket 配置
+  websocket:
+    enabled: true
+    # 此处path: /ws目前由flycloud-system统一引入websocket模块实现，其他服务调用api接口WebSocketSenderApi即可
+    path: /ws
+    # local、redis；local：单机部署，如flycloud-system 只有一个实例
+    sender-type: local
+
+
+
+  # ====================================================================== flycloud -> IM 相关配置
   im:
     # 好友配置
     friend:
@@ -263,29 +383,18 @@ flycloud:
       invite-timeout-minutes: 1
 
 
-
-# springdoc 配置
-springdoc:
-  api-docs:
-    # 是否开启接口文档
+  # ====================================================================== flycloud -> swagger 相关配置
+  swagger:
     enabled: true
-  swagger-ui:
-    # 持久化认证数据
-    persistAuthorization: true
-
-
-# swagger 配置
-swagger:
-  enabled: true
-  title: Fly Swagger API
-  gateway: http://localhost:8080
-  token-url: ${swagger.gateway}/auth/oauth/token
-  scope: server
-  services:
-    flycloud-gateway: flycloud-gateway
-    flycloud-system: flycloud-system
-    flycloud-mall: flycloud-mall
-    flycloud-music: flycloud-music
-    flycloud-generator: flycloud-generator
-    flycloud-job: flycloud-job
-    flycloud-test: flycloud-test
+    title: Fly Swagger API
+    gateway: http://localhost:8080
+    token-url: ${flycloud.swagger.gateway}/auth/oauth/token
+    scope: server
+    services:
+      flycloud-gateway: flycloud-gateway
+      flycloud-system: flycloud-system
+      flycloud-mall: flycloud-mall
+      flycloud-music: flycloud-music
+      flycloud-generator: flycloud-generator
+      flycloud-job: flycloud-job
+      flycloud-test: flycloud-test

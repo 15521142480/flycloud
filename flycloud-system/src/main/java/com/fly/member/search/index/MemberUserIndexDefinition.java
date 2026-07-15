@@ -1,7 +1,7 @@
 package com.fly.member.search.index;
 
 import com.fly.common.elasticsearch.index.ElasticsearchIndexDefinition;
-import com.fly.common.elasticsearch.config.FlycloudElasticsearchProperties;
+import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.member.search.document.MemberUserDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MemberUserIndexDefinition implements ElasticsearchIndexDefinition {
 
-    private final FlycloudElasticsearchProperties properties;
+    private final ElasticsearchProperties properties;
 
     /** @return 会员用户的稳定业务别名。 */
     @Override

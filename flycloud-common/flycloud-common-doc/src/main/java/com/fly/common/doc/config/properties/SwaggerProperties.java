@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2026/4/19
  */
 @Data
-@ConfigurationProperties(prefix = "swagger")
+@ConfigurationProperties(prefix = "flycloud.swagger")
 public class SwaggerProperties {
     /**
      * 是否开启swagger

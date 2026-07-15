@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * rsa 配置。
  */
 @Data
-@ConfigurationProperties(prefix = "security.rsa.keys")
+@ConfigurationProperties(prefix = "flycloud.security.rsa.keys")
 public class RsaProperties {
 
 

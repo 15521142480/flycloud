@@ -1,5 +1,6 @@
 package com.fly.common.elasticsearch.config;
 
+import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * 仅在官方 {@code ElasticsearchClient} 已自动配置后注册 Flycloud 的治理能力。</p>
  */
 @AutoConfiguration(afterName = "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration")
-@EnableConfigurationProperties(FlycloudElasticsearchProperties.class)
+@EnableConfigurationProperties(ElasticsearchProperties.class)
 @ConditionalOnProperty(prefix = "flycloud.elasticsearch", name = "enabled", havingValue = "true")
 public class ElasticsearchAutoConfiguration {
 }

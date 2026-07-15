@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @Data
 @Validated
-@ConfigurationProperties(prefix = "websocket")
+@ConfigurationProperties(prefix = "flycloud.websocket")
 public class WebSocketProperties {
 
     /**

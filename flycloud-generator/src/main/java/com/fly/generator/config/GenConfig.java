@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author lxs
  */
 @Component
-@ConfigurationProperties(prefix = "gen")
+@ConfigurationProperties(prefix = "flycloud.gen")
 public class GenConfig {
 
 

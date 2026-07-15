@@ -39,20 +39,19 @@ spring:
     import:
       - optional:nacos:application-common.yaml?group=@nacos.config.group@&refreshEnabled=true
       - optional:nacos:application-datasource.yaml?group=@nacos.config.group@&refreshEnabled=true
-      - optional:nacos:flycloud-rocketmq-client.yaml?group=@nacos.config.group@&refreshEnabled=true
-      - optional:nacos:flycloud-elasticsearch-client.yaml?group=@nacos.config.group@&refreshEnabled=true
       - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=@nacos.config.group@&refreshEnabled=true
 
 
-client:
-  oauth2:
-    client:
-      client-id: appId # 客户端标识 ID
-      secret: 123456 # 客户端安全码
-      scope: server
-      #默认放行、服务间调用需要放行
-      ignore-urls:
-        # - /actuator/**
-        - /v2/api-docs-ext
-        - /cas/sso/**
-        - /sso/**
+flycloud:
+  client:
+    oauth2:
+      client:
+        client-id: appId # 客户端标识 ID
+        secret: 123456 # 客户端安全码
+        scope: server
+        # 默认放行、服务间调用需要放行
+        ignore-urls:
+          # - /actuator/**
+          - /v2/api-docs-ext
+          - /cas/sso/**
+          - /sso/**

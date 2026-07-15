@@ -6,7 +6,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.common.elasticsearch.config.FlycloudElasticsearchProperties;
+import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.common.elasticsearch.exception.ElasticsearchQueryException;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class ElasticsearchPageExecutor {
 
     private final ElasticsearchClient client;
-    private final FlycloudElasticsearchProperties properties;
+    private final ElasticsearchProperties properties;
 
     /**
      * 以排序白名单执行浅分页或 search_after 深分页，并转换为项目统一 PageVo。

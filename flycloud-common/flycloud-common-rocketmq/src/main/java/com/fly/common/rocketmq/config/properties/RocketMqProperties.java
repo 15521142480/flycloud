@@ -1,4 +1,4 @@
-package com.fly.common.rocketmq.config;
+package com.fly.common.rocketmq.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

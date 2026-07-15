@@ -26,9 +26,9 @@ import java.util.Map;
  * <p>
  * 禁用方法1：使用注解@Profile({"dev","test"})
  * <p>
- * 表示在开发或测试环境开启，而在生产关闭。（推荐使用） 禁用方法2：使用注解@ConditionalOnProperty(name = "swagger.enable",
+ * 表示在开发或测试环境开启，而在生产关闭。（推荐使用） 禁用方法2：使用注解@ConditionalOnProperty(name = "flycloud.swagger.enabled",
  * <p>
- * havingValue = "true") 然后在测试配置或者开发配置中添加swagger.enable=true即可开启，生产环境不填则默认关闭Swagger.
+ * havingValue = "true") 然后在测试配置或者开发配置中添加 flycloud.swagger.enabled=true 即可开启，生产环境不填则默认关闭 Swagger.
  * </p>
  *
  * @author lxs
@@ -38,7 +38,7 @@ import java.util.Map;
 @AutoConfiguration
 @AutoConfigurationPackage
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "flycloud.swagger.enabled", matchIfMissing = true)
 public class SwaggerAutoConfiguration {
 
     private final SwaggerProperties swaggerProperties;
