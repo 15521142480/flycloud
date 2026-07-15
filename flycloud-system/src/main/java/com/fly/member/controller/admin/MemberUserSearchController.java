@@ -2,10 +2,10 @@ package com.fly.member.controller.admin;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
-import com.fly.test.member.domain.bo.MemberUserSearchPageBo;
-import com.fly.test.member.domain.bo.MemberUserSearchUpdateBo;
-import com.fly.test.member.domain.vo.MemberUserSearchVo;
-import com.fly.test.member.service.MemberUserSearchService;
+import com.fly.member.search.model.MemberUserSearchVo;
+import com.fly.member.search.model.MemberUserSearchPageBo;
+import com.fly.member.search.service.MemberUserSearchService;
+import com.fly.member.search.model.MemberUserSearchUpdateBo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
