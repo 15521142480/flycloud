@@ -16,7 +16,7 @@ services:
       xpack.security.enabled: "true"
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?请在环境变量中设置 ELASTIC_PASSWORD}
     # Elasticsearch 使用 mmap、网络 Direct Buffer 和文件系统页缓存，容器上限不能只等于 JVM 堆。
-    mem_limit: 1280m
+    mem_limit: 768m
     ports:
       - "127.0.0.1:9200:9200"
     volumes:

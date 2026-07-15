@@ -1,6 +1,10 @@
 # 与主 docker-compose.yaml 联合使用：
 # docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-rocketmq.yml up -d
-# 部署前：复制 rocketmq/broker.example.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP。
+# 部署前：
+#   1. 复制 rocketmq/broker.example.conf 到 /docker/config/rocketmq/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP；
+#   2. RocketMQ 5.3.3 镜像以 UID/GID 3000 运行，必须预创建并授权持久化目录：
+#      install -d -o 3000 -g 3000 /docker/config/rocketmq/data/broker/store \
+#        /docker/config/rocketmq/logs/namesrv /docker/config/rocketmq/logs/broker
 services:
 
 
@@ -12,14 +16,14 @@ services:
     command: sh mqnamesrv
     environment:
       TZ: Asia/Shanghai
-      # RocketMQ 镜像默认 NameServer 堆为 4G；小内存服务器必须显式覆盖。
-      JAVA_OPT_EXT: "-Xms256m -Xmx256m -Xss512k -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
-    # 堆、直接内存、元空间和 JVM Native Memory 均计入容器总内存，预留余量防止 OOM。
-    mem_limit: 512m
+      # 个人低负载单机基线。镜像默认 NameServer 堆为 4G，必须显式覆盖。
+      JAVA_OPT_EXT: "-Xms64m -Xmx128m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=64m"
+    # 堆以外仍会产生元空间、线程栈与 JVM Native Memory，保留必要余量。
+    mem_limit: 384m
     ports:
       - "9876:9876"
     volumes:
-      - /docker/logs/rocketmq/namesrv:/home/rocketmq/logs
+      - /docker/config/rocketmq/logs/namesrv:/home/rocketmq/logs
     restart: always
 
 
@@ -31,10 +35,10 @@ services:
     environment:
       TZ: Asia/Shanghai
       NAMESRV_ADDR: rocketmq_namesrv:9876
-      # Broker 镜像默认堆为 8G、MaxDirectMemorySize 为 15G；必须同时覆盖，避免挤占宿主机内存。
-      JAVA_OPT_EXT: "-Xms512m -Xmx512m -Xmn256m -Xss512k -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=256m -XX:MaxDirectMemorySize=256m"
-    # 512M 堆以外仍需容纳 Direct Memory、Metaspace、线程栈和文件页缓存。
-    mem_limit: 1280m
+      # 个人低负载单机基线。Broker 镜像默认堆为 8G、MaxDirectMemorySize 为 15G，必须同时覆盖。
+      JAVA_OPT_EXT: "-Xms128m -Xmx256m -Xmn64m -Xss512k -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m"
+    # 256M 最大堆以外仍需容纳 Direct Memory、元空间、线程栈及消息文件页缓存。
+    mem_limit: 768m
     depends_on:
       - rocketmq_namesrv
     ports:
@@ -43,6 +47,6 @@ services:
       - "10912:10912"
     volumes:
       - /docker/config/rocketmq/broker.conf:/home/rocketmq/rocketmq-5.3.3/conf/broker.conf:ro
-      - /docker/data/rocketmq/broker/store:/home/rocketmq/store
-      - /docker/logs/rocketmq/broker:/home/rocketmq/logs
+      - /docker/config/rocketmq/data/broker/store:/home/rocketmq/store
+      - /docker/config/rocketmq/logs/broker:/home/rocketmq/logs
     restart: always
