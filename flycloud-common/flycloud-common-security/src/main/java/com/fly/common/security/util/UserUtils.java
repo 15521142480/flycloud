@@ -45,6 +45,16 @@ public class UserUtils {
 	}
 
 	/**
+	 * 获取操作用户，如果是定时、mq、es等线程操作的话就默认system
+	 *
+	*/
+	public static String getCurOperator() {
+
+		String curUserId = getCurUserIdStr();
+		return curUserId == null ? "system" : curUserId;
+	}
+
+	/**
 	 * 获取用户名称
 	 *
 	 * @return username

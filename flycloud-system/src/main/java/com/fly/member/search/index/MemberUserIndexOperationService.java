@@ -81,7 +81,7 @@ public class MemberUserIndexOperationService {
 
         String newIndex = ElasticsearchIndexName.nextVersion(oldIndex);
         MemberUserIndexOperationRecord record = recordService.create(
-                ElasticsearchIndexOperationTypeEnum.UPGRADE, definition.alias(), oldIndex, newIndex, currentOperator());
+                ElasticsearchIndexOperationTypeEnum.UPGRADE, definition.alias(), oldIndex, newIndex, UserUtils.getCurOperator());
         try {
             indexService.create(newIndex, mappingService.load(definition.mappingResource()));
             recordService.markRunning(record);
@@ -128,7 +128,7 @@ public class MemberUserIndexOperationService {
                 upgradeRecord.getAlias(),
                 upgradeRecord.getTargetIndex(),
                 upgradeRecord.getSourceIndex(),
-                currentOperator());
+                UserUtils.getCurOperator());
         try {
             recordService.markRunning(rollbackRecord);
             aliasService.rollback(upgradeRecord.getAlias(), upgradeRecord.getTargetIndex(), upgradeRecord.getSourceIndex());
@@ -167,7 +167,7 @@ public class MemberUserIndexOperationService {
         }
 
         MemberUserIndexOperationRecord record = recordService.create(
-                ElasticsearchIndexOperationTypeEnum.DELETE, alias, null, index, currentOperator());
+                ElasticsearchIndexOperationTypeEnum.DELETE, alias, null, index, UserUtils.getCurOperator());
         try {
             recordService.markRunning(record);
             indexService.delete(index, aliasService);
@@ -201,7 +201,7 @@ public class MemberUserIndexOperationService {
         ensureNoRunningOperation();
         String initialIndex = ElasticsearchIndexName.buildVersionedIndex(definition.alias(), definition.initialVersion());
         MemberUserIndexOperationRecord record = recordService.create(
-                ElasticsearchIndexOperationTypeEnum.INITIALIZE, definition.alias(), null, initialIndex, currentOperator());
+                ElasticsearchIndexOperationTypeEnum.INITIALIZE, definition.alias(), null, initialIndex, UserUtils.getCurOperator());
         try {
             // 支持上次初始化在绑定 Alias 前中断：已存在索引时复用，不重复创建。
             if (!indexService.exists(initialIndex)) {
@@ -230,7 +230,7 @@ public class MemberUserIndexOperationService {
         ensureNoRunningOperation();
         MemberUserIndexOperationRecord record = recordService.create(
                 ElasticsearchIndexOperationTypeEnum.SYNCHRONIZE,
-                definition.alias(), currentIndex, currentIndex, currentOperator());
+                definition.alias(), currentIndex, currentIndex, UserUtils.getCurOperator());
         try {
             recordService.markRunning(record);
             ElasticsearchBulkResult result = synchronizeRequired(currentIndex);
@@ -297,11 +297,4 @@ public class MemberUserIndexOperationService {
         }
     }
 
-    /**
-     * 获取当前后台操作人；未获取到登录用户时按系统任务记录。
-     */
-    private String currentOperator() {
-        Long userId = UserUtils.getCurUserId();
-        return userId == null ? "system" : String.valueOf(userId);
-    }
 }
