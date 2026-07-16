@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
  *
  * <p>所有 Bean 均允许业务侧按需替换，避免公共模块反向限制业务实现。</p>
  */
-@AutoConfiguration(after = ElasticsearchAutoConfiguration.class)
+@AutoConfiguration(afterName = "org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration")
 @ConditionalOnBean(ElasticsearchClient.class)
 public class ElasticsearchInfrastructureAutoConfiguration {
 
