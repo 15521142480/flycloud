@@ -28,12 +28,21 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class RocketMqAutoConfiguration {
 
     /**
+     * 注册本地消息表、生产者和消费者共用的统一消息编解码器。
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public MqMessageCodec mqMessageCodec(ObjectMapper objectMapper) {
+        return new MqMessageCodec(objectMapper);
+    }
+
+    /**
      * 注册唯一允许业务依赖的 RocketMQ 生产者封装。
      */
     @Bean
     @ConditionalOnMissingBean
-    public RocketMqProducer rocketMqProducer(RocketMQTemplate template) {
-        return new DefaultRocketMqProducer(template);
+    public RocketMqProducer rocketMqProducer(RocketMQTemplate template, MqMessageCodec messageCodec) {
+        return new DefaultRocketMqProducer(template, messageCodec);
     }
 
     /**
@@ -41,8 +50,8 @@ public class RocketMqAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public MqOutboxService mqOutboxService(MqOutboxMessageMapper mapper, ObjectMapper objectMapper) {
-        return new MqOutboxService(mapper, objectMapper);
+    public MqOutboxService mqOutboxService(MqOutboxMessageMapper mapper, MqMessageCodec messageCodec) {
+        return new MqOutboxService(mapper, messageCodec);
     }
 
     /**

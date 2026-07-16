@@ -1,8 +1,8 @@
 package com.fly.common.rocketmq.consumer;
 
+import com.fly.common.rocketmq.codec.MqMessageCodec;
 import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import com.fly.common.rocketmq.idempotent.service.MqConsumeIdempotentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 
@@ -14,7 +14,7 @@ public abstract class AbstractIdempotentRocketMqConsumer<T> implements RocketMQL
 
     private final MqConsumeIdempotentService idempotentService;
 
-    private final ObjectMapper objectMapper;
+    private final MqMessageCodec messageCodec;
 
     /**
      * 当前消费者业务载荷的运行时类型。
@@ -25,13 +25,13 @@ public abstract class AbstractIdempotentRocketMqConsumer<T> implements RocketMQL
      * 创建统一消费者。
      *
      * @param idempotentService 消费幂等服务
-     * @param objectMapper 消息 JSON 转换器
+     * @param messageCodec 消息编解码器
      * @param payloadType 业务消息载荷类型
      */
-    protected AbstractIdempotentRocketMqConsumer(MqConsumeIdempotentService idempotentService, ObjectMapper objectMapper,
+    protected AbstractIdempotentRocketMqConsumer(MqConsumeIdempotentService idempotentService, MqMessageCodec messageCodec,
                                                  Class<T> payloadType) {
         this.idempotentService = idempotentService;
-        this.objectMapper = objectMapper;
+        this.messageCodec = messageCodec;
         this.payloadType = payloadType;
     }
 
@@ -73,18 +73,14 @@ public abstract class AbstractIdempotentRocketMqConsumer<T> implements RocketMQL
      * 将统一消息信封反序列化为强类型业务载荷。
      */
     private MqMessage<T> deserialize(String rawMessage) {
-        try {
-            MqMessage<?> envelope = objectMapper.readValue(rawMessage, MqMessage.class);
-            MqMessage<T> message = new MqMessage<>();
-            message.setMessageId(envelope.getMessageId());
-            message.setOccurredTime(envelope.getOccurredTime());
-            message.setBizKey(envelope.getBizKey());
-            message.setTag(envelope.getTag());
-            message.setEventType(envelope.getEventType());
-            message.setPayload(objectMapper.convertValue(envelope.getPayload(), payloadType));
-            return message;
-        } catch (Exception exception) {
-            throw new IllegalArgumentException("RocketMQ 消息反序列化失败", exception);
-        }
+        MqMessage<?> envelope = messageCodec.deserialize(rawMessage);
+        MqMessage<T> message = new MqMessage<>();
+        message.setMessageId(envelope.getMessageId());
+        message.setOccurredTime(envelope.getOccurredTime());
+        message.setBizKey(envelope.getBizKey());
+        message.setTag(envelope.getTag());
+        message.setEventType(envelope.getEventType());
+        message.setPayload(messageCodec.convertPayload(envelope.getPayload(), payloadType));
+        return message;
     }
 }

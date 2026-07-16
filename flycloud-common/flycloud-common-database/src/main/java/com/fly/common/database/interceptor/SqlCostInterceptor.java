@@ -44,10 +44,7 @@ public class SqlCostInterceptor implements Interceptor {
             BoundSql boundSql = resolveBoundSql(invocation, mappedStatement);
             String sql = normalizeSql(boundSql.getSql());
             String params = getSqlParams(mappedStatement, boundSql);
-            log.info("SQL语句: {}", sql);
-            log.info("SQL参数: {}", params);
-            log.info("SQL位置: {}", mappedStatement.getId());
-            log.info("SQL耗时: {}ms\n", costMs);
+            log.info("SQL日志 -> \n SQL语句: {} \n SQL参数: {} \n SQL位置: {} \n SQL耗时: {}ms \n", sql, params, mappedStatement.getId(), costMs);
         }
     }
 

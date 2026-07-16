@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.List;
+
 /**
  * 周期性投递本地消息表中的待发送消息。
  */
@@ -16,21 +18,26 @@ import org.springframework.scheduling.annotation.Scheduled;
 @RequiredArgsConstructor
 public class MqOutboxDispatcher {
 
+
     private final RocketMqProperties properties;
 
     private final MqOutboxService outboxService;
 
     private final RocketMqProducer producer;
 
+
     /**
      * 扫描待发送消息，并通过统一生产者异步投递到 RocketMQ。
      */
-    @Scheduled(fixedDelayString = "${flycloud.rocketmq.outbox.dispatch-delay-millis:5000}")
+    @Scheduled(fixedDelayString = "${flycloud.rocketmq.outbox.dispatch-delay-millis:15000}")
     public void dispatch() {
+
         if (!properties.getOutbox().isEnabled()) {
             return;
         }
-        for (MqOutboxMessage outbox : outboxService.findPending(properties.getOutbox().getBatchSize())) {
+        List<MqOutboxMessage> outboxMessageList = outboxService.findPending(properties.getOutbox().getBatchSize());
+        log.info("扫描MQ本地消息表，并异步投递到RocketMQ生产信息；待发送的本地消息数量为: {}", outboxMessageList.size());
+        for (MqOutboxMessage outbox : outboxMessageList) {
             String dispatchToken = outboxService.claim(outbox.getId(), properties.getOutbox().getClaimLeaseSeconds());
             if (dispatchToken == null) {
                 continue;
