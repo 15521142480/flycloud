@@ -106,15 +106,18 @@
           <Icon class="mr-5px" icon="ep:refresh" />
           重置
         </el-button>
+        <el-button @click="openForm('create')">
+          <Icon class="mr-5px" icon="ep:plus" />
+          新增会员
+        </el-button>
       </el-form-item>
     </el-form>
   </ContentWrap>
 
   <ContentWrap>
     <div class="mb-12px">
-      <el-button type="primary" @click="openForm('create')">
-        <Icon class="mr-5px" icon="ep:plus" />
-        新增会员
+      <el-button>
+        Elasticsearch搜索引擎的会员用户信息
       </el-button>
     </div>
 
