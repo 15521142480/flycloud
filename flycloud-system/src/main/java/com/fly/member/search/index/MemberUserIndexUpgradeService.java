@@ -12,6 +12,7 @@ import com.fly.common.rocketmq.constant.RocketMqTagConstants;
 import com.fly.common.rocketmq.constant.RocketMqTopicConstants;
 import com.fly.common.rocketmq.outbox.service.MqOutboxService;
 import com.fly.member.mapper.MemberUserMapper;
+import com.fly.member.search.consumer.IndexUpgradeNotificationConsumer;
 import com.fly.system.api.member.domain.MemberUser;
 import com.fly.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -206,9 +207,10 @@ public class MemberUserIndexUpgradeService {
     /**
      * 将索引升级通知作为本地消息表记录持久化，由异步投递器发送。
      */
-    private void publishNotification(String oldIndex, String newIndex) {
+    public void publishNotification(String oldIndex, String newIndex) {
+
         IndexUpgradeNotificationEvent event = new IndexUpgradeNotificationEvent();
-        event.setUserIds(sysUserMapper.selectUserIdsByRoleCode("yunwei"));
+        event.setUserIds(sysUserMapper.selectUserIdsByRoleCode(IndexUpgradeNotificationConsumer.notificationRoleCode));
         event.setContent("会员用户表的索引已经由" + oldIndex + "升级到" + newIndex
                 + "，请观察7天没问题后删除索引" + oldIndex);
         outboxService.save(

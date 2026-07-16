@@ -30,6 +30,8 @@ public class IndexUpgradeNotificationConsumer extends AbstractIdempotentRocketMq
 
     private final WebSocketMessageSender webSocketMessageSender;
 
+    public static final String notificationRoleCode = "yunwei";
+
     /**
      * 创建索引升级通知消费者。
      *
