@@ -206,7 +206,7 @@ public class MemberUserIndexUpgradeService {
     /**
      * 将索引升级通知作为本地消息表记录持久化，由异步投递器发送。
      */
-     private void publishNotification(String oldIndex, String newIndex) {
+    private void publishNotification(String oldIndex, String newIndex) {
         IndexUpgradeNotificationEvent event = new IndexUpgradeNotificationEvent();
         event.setUserIds(sysUserMapper.selectUserIdsByRoleCode("yunwei"));
         event.setContent("会员用户表的索引已经由" + oldIndex + "升级到" + newIndex

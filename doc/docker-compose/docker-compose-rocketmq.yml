@@ -1,10 +1,12 @@
 # 与主 docker-compose.yaml 联合使用：
 # docker compose -f /Users/lxs/Downloads/docker-compose.yaml -f docker-compose-rocketmq.yml up -d
 # 部署前：
-#   1. 复制 rocketmq/broker.example.conf 到 /docker/rocketmq/config/broker.conf，并将 ROCKETMQ_BROKER_IP 替换为宿主机内网 IP；
+#   1. 复制 rocketmq/broker.example.conf 到 /docker/rocketmq/config/broker.conf，并确认 brokerIP1 为宿主机内网 IP；
 #   2. RocketMQ 5.3.3 镜像以 UID/GID 3000 运行，必须预创建并授权持久化目录：
 #      install -d -o 3000 -g 3000 /docker/rocketmq/data/broker/store \
 #        /docker/rocketmq/logs/namesrv /docker/rocketmq/logs/broker
+#   3. Broker 关闭自动创建 Topic（生产规范）后，启动完成必须执行
+#      rocketmq/initialize-topics.sh 预创建已启用的业务 Topic；禁止依赖 Producer 发送时自动创建。
 services:
 
 
