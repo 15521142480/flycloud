@@ -10,7 +10,8 @@
       "avatar": { "type": "keyword", "index": false }, "tagIds": { "type": "long" },
       "postIds": { "type": "long" }, "levelId": { "type": "long" }, "groupId": { "type": "long" },
       "mark": { "type": "text", "analyzer": "ik_max_word", "search_analyzer": "ik_smart" },
-      "createTime": { "type": "date" }, "updateTime": { "type": "date" }
+      "createTime": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss" },
+      "updateTime": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss" }
     }
   }
 }

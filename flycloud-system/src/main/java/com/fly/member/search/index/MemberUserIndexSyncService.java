@@ -56,7 +56,8 @@ public class MemberUserIndexSyncService {
             }
             aliasService.switchAlias(definition.alias(), null, index);
         }
-        synchronize(index);
+        ElasticsearchBulkResult result = synchronize(index);
+        result.assertNoFailures(index);
         return index;
     }
 
@@ -88,4 +89,5 @@ public class MemberUserIndexSyncService {
         }
         return new ElasticsearchBulkResult(success, failed, Duration.between(started, Instant.now()), failures);
     }
+
 }

@@ -72,9 +72,9 @@ public class MemberUserIndexUpgradeService {
             indexService.create(newIndex, mappingService.load(definition.mappingResource()));
             updateStatus(record, "SYNCING", null);
 
-            ElasticsearchBulkResult fullSyncResult = synchronizeRequired(newIndex, "全量同步");
+            ElasticsearchBulkResult fullSyncResult = synchronizeRequired(newIndex);
             // 升级状态未结束前，MQ 消费链路会双写；再次基于权威 MySQL 补偿，覆盖切换前的边界增量。
-            ElasticsearchBulkResult compensationResult = synchronizeRequired(newIndex, "补偿同步");
+            ElasticsearchBulkResult compensationResult = synchronizeRequired(newIndex);
             long sourceCount = sourceCount();
 
             updateCounts(record, sourceCount, fullSyncResult, compensationResult);
@@ -144,11 +144,9 @@ public class MemberUserIndexUpgradeService {
     /**
      * 执行单轮同步并将任何文档级失败转换为可审计的业务异常。
      */
-     private ElasticsearchBulkResult synchronizeRequired(String index, String stage) {
+    private ElasticsearchBulkResult synchronizeRequired(String index) {
         ElasticsearchBulkResult result = syncService.synchronize(index);
-        if (result.failedCount() > 0) {
-            throw new ServiceException(stage + "存在失败文档：" + result.failedCount());
-        }
+        result.assertNoFailures(index);
         return result;
     }
 
