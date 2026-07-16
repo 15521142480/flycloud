@@ -1,10 +1,13 @@
 package com.fly.member.search.service;
 
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.elasticsearch.index.model.ElasticsearchAliasIndexGroup;
 import com.fly.member.search.model.MemberUserSearchInsertBo;
 import com.fly.member.search.model.MemberUserSearchVo;
 import com.fly.member.search.model.MemberUserSearchUpdateBo;
 import com.fly.member.search.model.MemberUserSearchPageBo;
+
+import java.util.List;
 
 /**
  * 会员用户搜索业务服务。
@@ -44,7 +47,21 @@ public interface MemberUserSearchService {
     /**
      * 在观察期内回滚指定索引升级记录。
      */
-     void rollbackIndex(Long recordId);
+    void rollbackIndex(Long recordId);
+
+    /**
+     * 查询 Elasticsearch 集群中全部业务别名及其真实版本索引。
+     *
+     * @return Alias 与版本索引分组
+     */
+    List<ElasticsearchAliasIndexGroup> listIndexAliases();
+
+    /**
+     * 删除未被 Alias 引用的会员用户历史版本索引。
+     *
+     * @param index 待删除真实版本索引
+     */
+    void deleteHistoricalIndex(String index);
 
     /**
      * 按会员主键回查 MySQL 并幂等写入 ES 投影。

@@ -4,10 +4,6 @@ import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkDocument;
 import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkResult;
 import com.fly.common.elasticsearch.bulk.ElasticsearchBulkService;
 import com.fly.common.elasticsearch.bulk.model.ElasticsearchBulkFailure;
-import com.fly.common.elasticsearch.index.ElasticsearchAliasService;
-import com.fly.common.elasticsearch.index.ElasticsearchIndexName;
-import com.fly.common.elasticsearch.index.ElasticsearchIndexService;
-import com.fly.common.elasticsearch.index.ElasticsearchMappingService;
 import com.fly.member.mapper.MemberUserMapper;
 import com.fly.system.api.member.domain.MemberUser;
 import com.fly.member.search.converter.MemberUserDocumentConverter;
@@ -33,33 +29,6 @@ public class MemberUserIndexSyncService {
     private final MemberUserIndexDefinition definition;
 
     private final ElasticsearchBulkService bulkService;
-
-    private final ElasticsearchAliasService aliasService;
-
-    private final ElasticsearchIndexService indexService;
-
-    private final ElasticsearchMappingService mappingService;
-
-
-    /**
-     * 初始化会员真实版本索引（不存在时）并全量同步 MySQL 权威数据。
-     *
-     * @return 当前业务 Alias 指向的真实索引名称
-     */
-    public String initializeAndSynchronize() {
-        String index = aliasService.getCurrentIndex(definition.alias());
-        if (index == null) {
-            index = ElasticsearchIndexName.buildVersionedIndex(definition.alias(), definition.initialVersion());
-            // 索引可能在上一次初始化中已创建、但尚未来得及绑定 Alias；此时只补绑定，不重复创建。
-            if (!indexService.exists(index)) {
-                indexService.create(index, mappingService.load(definition.mappingResource()));
-            }
-            aliasService.switchAlias(definition.alias(), null, index);
-        }
-        ElasticsearchBulkResult result = synchronize(index);
-        result.assertNoFailures(index);
-        return index;
-    }
 
     /**
      * 使用主键游标将会员权威数据分批写入指定真实索引。

@@ -5,12 +5,15 @@ import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch.indices.GetAliasResponse;
 import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.common.elasticsearch.exception.ElasticsearchIndexException;
+import com.fly.common.elasticsearch.index.model.ElasticsearchAliasIndexGroup;
 import lombok.RequiredArgsConstructor;
 
 import co.elastic.clients.elasticsearch._types.ExpandWildcard;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Alias 查询、单写索引校验、原子切换与回滚能力。
@@ -46,7 +49,7 @@ public class ElasticsearchAliasService {
                     .keySet()
                     .stream()
                     .filter(ElasticsearchIndexName::isVersionedIndex)
-                    .sorted()
+                    .sorted(ElasticsearchIndexName.versionDescendingComparator())
                     .toList();
         } catch (ElasticsearchException exception) {
             if (isNotFound(exception)) {
@@ -55,6 +58,28 @@ public class ElasticsearchAliasService {
             throw new ElasticsearchIndexException("list", alias, exception);
         } catch (Exception exception) {
             throw new ElasticsearchIndexException("list", alias, exception);
+        }
+    }
+
+    /**
+     * 查询集群内全部业务 Alias 及其版本索引。
+     *
+     * <p>只返回符合 {@code {alias}_v{version}} 命名规范的真实索引，避免将 Elasticsearch 内部索引
+     * 或不受版本治理的索引暴露给历史版本清理界面。</p>
+     *
+     * @return 按 Alias 字母顺序排列的索引分组
+     */
+    public List<ElasticsearchAliasIndexGroup> listAliasIndexGroups() {
+        try {
+            GetAliasResponse response = client.indices().getAlias(request -> request);
+            Set<String> aliases = new TreeSet<>();
+            response.result().values().forEach(indexAliases -> aliases.addAll(indexAliases.aliases().keySet()));
+            return aliases.stream()
+                    .map(alias -> new ElasticsearchAliasIndexGroup(alias, getCurrentIndex(alias), getVersionIndexes(alias)))
+                    .filter(group -> !group.versionIndexes().isEmpty())
+                    .toList();
+        } catch (Exception exception) {
+            throw new ElasticsearchIndexException("list-aliases", "*", exception);
         }
     }
 

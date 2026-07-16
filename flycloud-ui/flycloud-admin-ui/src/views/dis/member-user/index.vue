@@ -1,18 +1,52 @@
 <template>
   <ContentWrap>
-    <div class="mb-15px flex flex-wrap gap-10px">
-      <el-button :loading="indexOperating" type="primary" @click="handleSynchronize">
-        <Icon class="mr-5px" icon="ep:refresh" />
-        初始化/全量同步索引
-      </el-button>
-      <el-button :loading="indexOperating" type="warning" @click="handleUpgradeIndex">
-        <Icon class="mr-5px" icon="ep:upload" />
-        升级索引
-      </el-button>
-      <el-button :loading="indexOperating" type="danger" plain @click="handleRollbackIndex">
-        <Icon class="mr-5px" icon="ep:refresh-left" />
-        回滚索引
-      </el-button>
+    <div class="mb-15px flex flex-wrap items-center justify-between gap-10px">
+      <div class="flex flex-wrap gap-10px">
+        <el-button :loading="indexOperating" type="primary" @click="handleSynchronize">
+          <Icon class="mr-5px" icon="ep:refresh" />
+          初始化/全量同步索引
+        </el-button>
+        <el-button :loading="indexOperating" type="warning" @click="handleUpgradeIndex">
+          <Icon class="mr-5px" icon="ep:upload" />
+          升级索引
+        </el-button>
+        <el-button :loading="indexOperating" type="danger" plain @click="handleRollbackIndex">
+          <Icon class="mr-5px" icon="ep:refresh-left" />
+          回滚索引
+        </el-button>
+      </div>
+      <div class="flex items-center gap-10px">
+        <el-select
+          v-model="selectedHistoricalIndex"
+          class="!w-260px"
+          clearable
+          placeholder="选择会员用户历史索引"
+        >
+          <el-option-group
+            v-for="group in indexAliasGroups"
+            :key="group.alias"
+            :label="`${group.alias}（当前：${group.currentIndex}）`"
+          >
+            <el-option
+              v-for="index in group.versionIndexes"
+              :key="index"
+              :disabled="!isHistoricalMemberUserIndex(group, index)"
+              :label="index === group.currentIndex ? `${index}（当前运行中）` : index"
+              :value="index"
+            />
+          </el-option-group>
+        </el-select>
+        <el-button
+          :disabled="!selectedHistoricalIndex"
+          :loading="indexOperating"
+          type="danger"
+          plain
+          @click="handleDeleteHistoricalIndex"
+        >
+          <Icon class="mr-5px" icon="ep:delete" />
+          删除旧版本
+        </el-button>
+      </div>
     </div>
 
     <el-alert
@@ -137,6 +171,8 @@ const { push } = useRouter()
 
 const loading = ref(false)
 const indexOperating = ref(false)
+const selectedHistoricalIndex = ref<string>()
+const indexAliasGroups = ref<MemberUserSearchApi.ElasticsearchAliasIndexGroup[]>([])
 const total = ref(0)
 const list = ref<MemberUserSearchApi.MemberUserSearchVO[]>([])
 const queryFormRef = ref()
@@ -162,6 +198,16 @@ const getList = async () => {
   } finally {
     loading.value = false
   }
+}
+
+/** 查询 Elasticsearch 中受版本治理的业务别名与真实索引。 */
+const getIndexAliases = async () => {
+  indexAliasGroups.value = await MemberUserSearchApi.getIndexAliases()
+}
+
+/** 判断选项是否为可从会员用户页面安全删除的历史版本。 */
+const isHistoricalMemberUserIndex = (group: MemberUserSearchApi.ElasticsearchAliasIndexGroup, index: string) => {
+  return group.alias === 'member_user' && index !== group.currentIndex
 }
 
 /** 按当前筛选条件重新查询第一页。 */
@@ -198,7 +244,7 @@ const handleSynchronize = async () => {
     indexOperating.value = true
     const index = await MemberUserSearchApi.synchronize()
     message.success(`会员索引同步完成，当前真实索引：${index}`)
-    await getList()
+    await Promise.all([getList(), getIndexAliases()])
   } catch {
     // 用户取消时不提示错误。
   } finally {
@@ -213,7 +259,7 @@ const handleUpgradeIndex = async () => {
     indexOperating.value = true
     const index = await MemberUserSearchApi.upgradeIndex()
     message.success(`会员索引已升级并切换至：${index}`)
-    await getList()
+    await Promise.all([getList(), getIndexAliases()])
   } catch {
     // 用户取消或接口异常时由请求拦截器提示。
   } finally {
@@ -233,7 +279,27 @@ const handleRollbackIndex = async () => {
     indexOperating.value = true
     await MemberUserSearchApi.rollbackIndex(value.trim())
     message.success('会员索引 Alias 已回滚')
-    await getList()
+    await Promise.all([getList(), getIndexAliases()])
+  } catch {
+    // 用户取消或接口异常时由请求拦截器提示。
+  } finally {
+    indexOperating.value = false
+  }
+}
+
+/** 删除已脱离 Alias 的会员用户旧版本索引。 */
+const handleDeleteHistoricalIndex = async () => {
+  const index = selectedHistoricalIndex.value
+  if (!index) {
+    return
+  }
+  try {
+    await message.confirm(`将永久删除 Elasticsearch 索引 ${index}，删除后不可恢复且不能再回滚至该版本，是否继续？`)
+    indexOperating.value = true
+    await MemberUserSearchApi.deleteHistoricalIndex(index)
+    selectedHistoricalIndex.value = undefined
+    message.success(`历史索引 ${index} 已删除`)
+    await getIndexAliases()
   } catch {
     // 用户取消或接口异常时由请求拦截器提示。
   } finally {
@@ -243,5 +309,6 @@ const handleRollbackIndex = async () => {
 
 onMounted(() => {
   getList()
+  getIndexAliases()
 })
 </script>

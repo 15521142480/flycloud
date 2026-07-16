@@ -1,6 +1,7 @@
 package com.fly.common.elasticsearch.index;
 
 import java.util.Objects;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,9 +29,28 @@ public final class ElasticsearchIndexName {
     /**
      * 解析真实索引中的正整数版本号。
      */
-     public static int parseVersion(String indexName) {
+    public static int parseVersion(String indexName) {
         Matcher matcher = matcher(indexName);
         return Integer.parseInt(matcher.group(2));
+    }
+
+    /**
+     * 解析真实版本索引归属的业务别名。
+     *
+     * @param indexName 真实版本索引名称
+     * @return 业务稳定别名
+     */
+    public static String parseAlias(String indexName) {
+        return matcher(indexName).group(1);
+    }
+
+    /**
+     * 返回按版本号倒序排列真实版本索引的比较器。
+     *
+     * <p>不能使用字符串自然排序，否则 {@code _v10} 会被错误排在 {@code _v2} 前面。</p>
+     */
+    public static Comparator<String> versionDescendingComparator() {
+        return Comparator.comparingInt(ElasticsearchIndexName::parseVersion).reversed();
     }
 
     /**

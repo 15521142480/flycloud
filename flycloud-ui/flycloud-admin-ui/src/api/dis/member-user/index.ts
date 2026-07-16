@@ -58,6 +58,13 @@ export interface MemberUserSearchUpdateReq {
   postIds?: string[]
 }
 
+/** Elasticsearch 业务别名及真实版本索引分组。 */
+export interface ElasticsearchAliasIndexGroup {
+  alias: string
+  currentIndex: string
+  versionIndexes: string[]
+}
+
 /** 初始化或全量同步会员索引。 */
 export const synchronize = () => request.post<string>({ url: `${BASE_URL}/synchronize` })
 
@@ -79,3 +86,9 @@ export const upgradeIndex = () => request.post<string>({ url: `${BASE_URL}/upgra
 /** 在观察期内回滚指定的索引升级记录。 */
 export const rollbackIndex = (recordId: string) =>
   request.post({ url: `${BASE_URL}/rollback-index/${recordId}` })
+
+/** 查询 Elasticsearch 中全部业务别名及真实版本索引。 */
+export const getIndexAliases = () => request.get<ElasticsearchAliasIndexGroup[]>({ url: `${BASE_URL}/indexes` })
+
+/** 删除未被业务别名引用的会员用户历史版本索引。 */
+export const deleteHistoricalIndex = (index: string) => request.delete({ url: `${BASE_URL}/indexes/${index}` })

@@ -46,7 +46,7 @@ public class MqOutboxMessage {
     private String payload;
 
     /**
-     * 投递状态：0 待投递、1 已投递、2 最终失败、3 投递中。
+     * 投递状态，取值见 RocketMqOutboxStatusEnum。
      */
     private Integer status;
 

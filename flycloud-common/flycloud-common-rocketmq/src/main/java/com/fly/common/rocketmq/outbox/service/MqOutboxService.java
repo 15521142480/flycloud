@@ -1,6 +1,7 @@
 package com.fly.common.rocketmq.outbox.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.fly.common.enums.rocketmq.RocketMqOutboxStatusEnum;
 import com.fly.common.rocketmq.codec.MqMessageCodec;
 import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import com.fly.common.rocketmq.outbox.domain.MqOutboxMessage;
@@ -21,23 +22,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class MqOutboxService {
-
-    /**
-     * 待投递状态。
-     */
-    public static final int STATUS_PENDING = 0;
-    /**
-     * 已被 Broker 确认状态。
-     */
-    public static final int STATUS_SENT = 1;
-    /**
-     * 达到最大重试次数后的最终失败状态。
-     */
-    public static final int STATUS_FAILED = 2;
-    /**
-     * 已被某个调度实例持有租约的投递中状态。
-     */
-    public static final int STATUS_SENDING = 3;
 
     private final MqOutboxMessageMapper mapper;
 
@@ -63,7 +47,7 @@ public class MqOutboxService {
         outbox.setTag(tag);
         outbox.setBizKey(bizKey);
         outbox.setPayload(writeValue(message));
-        outbox.setStatus(STATUS_PENDING);
+        outbox.setStatus(RocketMqOutboxStatusEnum.PENDING.getCode());
         outbox.setRetryCount(0);
         outbox.setNextRetryTime(LocalDateTime.now());
         outbox.setCreateTime(LocalDateTime.now());
@@ -80,7 +64,10 @@ public class MqOutboxService {
      * <p>结果仍需调用 {@link #claim(Long, long)} 进行条件抢占，查询本身不提供并发互斥。</p>
      */
     public List<MqOutboxMessage> findPending(int batchSize) {
-        return mapper.selectPendingMessages(batchSize);
+        return mapper.selectPendingMessages(
+                RocketMqOutboxStatusEnum.PENDING.getCode(),
+                RocketMqOutboxStatusEnum.SENDING.getCode(),
+                batchSize);
     }
 
     /**
@@ -97,9 +84,11 @@ public class MqOutboxService {
         String dispatchToken = UUID.randomUUID().toString().replace("-", "");
         LambdaUpdateWrapper<MqOutboxMessage> wrapper = new LambdaUpdateWrapper<MqOutboxMessage>()
                 .eq(MqOutboxMessage::getId, outboxId)
-                .in(MqOutboxMessage::getStatus, STATUS_PENDING, STATUS_SENDING)
+                .in(MqOutboxMessage::getStatus,
+                        RocketMqOutboxStatusEnum.PENDING.getCode(),
+                        RocketMqOutboxStatusEnum.SENDING.getCode())
                 .le(MqOutboxMessage::getNextRetryTime, now)
-                .set(MqOutboxMessage::getStatus, STATUS_SENDING)
+                .set(MqOutboxMessage::getStatus, RocketMqOutboxStatusEnum.SENDING.getCode())
                 .set(MqOutboxMessage::getDispatchToken, dispatchToken)
                 .set(MqOutboxMessage::getNextRetryTime, now.plusSeconds(claimLeaseSeconds))
                 .set(MqOutboxMessage::getUpdateTime, now);
@@ -121,7 +110,7 @@ public class MqOutboxService {
      * 标记当前抢占令牌对应的消息已被 Broker 成功确认。
      */
     public void markSent(Long outboxId, String dispatchToken) {
-        updateClaimed(outboxId, dispatchToken, STATUS_SENT, null, null, null);
+        updateClaimed(outboxId, dispatchToken, RocketMqOutboxStatusEnum.SENT.getCode(), null, null, null);
     }
 
     /**
@@ -129,7 +118,9 @@ public class MqOutboxService {
      */
     public void markFailure(MqOutboxMessage outbox, String dispatchToken, int maxRetryCount, Throwable throwable) {
         int retryCount = outbox.getRetryCount() + 1;
-        int status = retryCount >= maxRetryCount ? STATUS_FAILED : STATUS_PENDING;
+        int status = retryCount >= maxRetryCount
+                ? RocketMqOutboxStatusEnum.FAILED.getCode()
+                : RocketMqOutboxStatusEnum.PENDING.getCode();
         long delaySeconds = Math.min(300, 1L << Math.min(retryCount, 8));
         updateClaimed(outbox.getId(), dispatchToken, status, retryCount, LocalDateTime.now().plusSeconds(delaySeconds),
                 throwable == null ? "未知发送异常" : truncate(throwable.getMessage()));
@@ -142,7 +133,7 @@ public class MqOutboxService {
                                LocalDateTime nextRetryTime, String lastError) {
         LambdaUpdateWrapper<MqOutboxMessage> wrapper = new LambdaUpdateWrapper<MqOutboxMessage>()
                 .eq(MqOutboxMessage::getId, outboxId)
-                .eq(MqOutboxMessage::getStatus, STATUS_SENDING)
+                .eq(MqOutboxMessage::getStatus, RocketMqOutboxStatusEnum.SENDING.getCode())
                 .eq(MqOutboxMessage::getDispatchToken, dispatchToken)
                 .set(MqOutboxMessage::getStatus, status)
                 .set(MqOutboxMessage::getDispatchToken, null)

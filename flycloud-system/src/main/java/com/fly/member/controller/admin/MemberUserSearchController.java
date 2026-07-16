@@ -2,6 +2,7 @@ package com.fly.member.controller.admin;
 
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.elasticsearch.index.model.ElasticsearchAliasIndexGroup;
 import com.fly.member.search.model.MemberUserSearchInsertBo;
 import com.fly.member.search.model.MemberUserSearchPageBo;
 import com.fly.member.search.model.MemberUserSearchUpdateBo;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 会员用户 Elasticsearch 演示控制器。
@@ -87,6 +91,25 @@ public class MemberUserSearchController {
     @PostMapping("/rollback-index/{recordId}")
     public R<Void> rollbackMemberUserIndex(@PathVariable Long recordId) {
         memberUserSearchService.rollbackIndex(recordId);
+        return R.ok();
+    }
+
+    /**
+     * 接口 7：查询 Elasticsearch 中全部业务 Alias 与真实版本索引，版本号按倒序返回。
+     */
+    @GetMapping("/indexes")
+    public R<List<ElasticsearchAliasIndexGroup>> listIndexes() {
+        return R.ok(memberUserSearchService.listIndexAliases());
+    }
+
+    /**
+     * 接口 8：删除未被 Alias 引用的会员用户历史版本索引。
+     *
+     * @param index 待删除真实版本索引
+     */
+    @DeleteMapping("/indexes/{index}")
+    public R<Void> deleteHistoricalIndex(@PathVariable String index) {
+        memberUserSearchService.deleteHistoricalIndex(index);
         return R.ok();
     }
 }

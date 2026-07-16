@@ -3,6 +3,7 @@ package com.fly.member.search.service;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fly.common.elasticsearch.page.ElasticsearchPageExecutor;
 import com.fly.common.elasticsearch.page.model.ElasticsearchPageRequest;
+import com.fly.common.elasticsearch.index.model.ElasticsearchAliasIndexGroup;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.rocketmq.constant.RocketMqTagConstants;
@@ -20,8 +21,7 @@ import com.fly.member.search.model.MemberUserSearchVo;
 import com.fly.member.search.index.MemberUserIndexDefinition;
 import com.fly.member.search.index.MemberUserIndexEvent;
 import com.fly.member.search.index.MemberUserIndexFields;
-import com.fly.member.search.index.MemberUserIndexSyncService;
-import com.fly.member.search.index.MemberUserIndexUpgradeService;
+import com.fly.member.search.index.MemberUserIndexOperationService;
 import com.fly.member.search.model.MemberUserSearchPageBo;
 import com.fly.member.search.query.MemberUserSearchQueryBuilder;
 import com.fly.member.search.repository.MemberUserSearchRepository;
@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,9 +60,7 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
 
     private final MemberUserDocumentConverter converter;
 
-    private final MemberUserIndexSyncService syncService;
-
-    private final MemberUserIndexUpgradeService upgradeService;
+    private final MemberUserIndexOperationService indexOperationService;
 
     private final MemberUserMapper memberUserMapper;
 
@@ -74,7 +73,7 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
      */
     @Override
     public String fullSynchronize() {
-        return syncService.initializeAndSynchronize();
+        return indexOperationService.initializeOrSynchronize();
     }
 
     /**
@@ -166,7 +165,7 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
      */
     @Override
     public String upgradeIndexToNextVersion() {
-        return upgradeService.upgrade();
+        return indexOperationService.upgrade();
     }
 
     /**
@@ -176,7 +175,27 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
      */
     @Override
     public void rollbackIndex(Long recordId) {
-        upgradeService.rollback(recordId);
+        indexOperationService.rollback(recordId);
+    }
+
+    /**
+     * 查询 Elasticsearch 集群内所有业务 Alias 及其版本索引。
+     *
+     * @return Alias 与真实版本索引分组
+     */
+    @Override
+    public List<ElasticsearchAliasIndexGroup> listIndexAliases() {
+        return indexOperationService.listAliasIndexGroups();
+    }
+
+    /**
+     * 删除未被业务 Alias 使用的会员用户历史版本索引。
+     *
+     * @param index 待删除真实版本索引
+     */
+    @Override
+    public void deleteHistoricalIndex(String index) {
+        indexOperationService.deleteHistoricalIndex(index);
     }
 
     /**
@@ -191,7 +210,7 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
             deleteByMemberUserId(memberUserId);
             return;
         }
-        repository.upsert(definition.alias(), memberUserId, converter.toDocument(user), upgradeService.rebuildingIndex());
+        repository.upsert(definition.alias(), memberUserId, converter.toDocument(user), indexOperationService.rebuildingIndex());
     }
 
     /**
@@ -201,7 +220,7 @@ public class MemberUserSearchServiceImpl implements MemberUserSearchService {
      */
     @Override
     public void deleteByMemberUserId(Long memberUserId) {
-        repository.delete(definition.alias(), memberUserId, upgradeService.rebuildingIndex());
+        repository.delete(definition.alias(), memberUserId, indexOperationService.rebuildingIndex());
     }
 
     /**
