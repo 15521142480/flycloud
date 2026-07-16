@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 /**
- * rocketmq测试
+ * RocketMQ 集成验证接口。
+ *
+ * <p>该控制器仅保留历史联调入口，不承载生产 RocketMQ 业务；生产消息必须通过本地消息表投递。</p>
  *
  * @author: lxs
  * @date: 2025/8/15
@@ -24,13 +26,15 @@ import java.io.IOException;
 @RequestMapping("/test/rocketmq")
 public class RocketmqTestController {
 
-
     private final ITestService testService;
 
-
-
     /**
-     * 测试
+     * 执行历史 ES 联调操作。
+     *
+     * @param type 操作类型：1 到 4 分别表示增、删、改、查
+     * @param indexName 索引名称
+     * @return 操作结果
+     * @throws IOException ES 调用异常
      */
     @GetMapping("/test/{type}/{indexName}")
     public R<Void> seataTest(@NotNull(message = "type不能为空(1到4分别是增删改查)") @PathVariable Integer type, @NotNull(message = "indexName不能为空") @PathVariable String indexName) throws IOException {

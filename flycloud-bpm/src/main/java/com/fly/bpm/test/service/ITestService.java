@@ -5,7 +5,7 @@ import com.fly.bpm.api.domain.vo.SeataTestDataVo;
 import java.util.List;
 
 /**
- * - 接口层
+ * Seata 测试场景的数据源二业务服务。
  *
  * @author: lxs
  * @date: 2025/8/15
@@ -14,7 +14,10 @@ public interface ITestService {
 
 
     /**
-     * seata测试
+     * 写入数据源二的 Seata 测试数据。
+     *
+     * @param testData 测试内容
+     * @return 影响行数
      */
     int seataTest(String testData);
 

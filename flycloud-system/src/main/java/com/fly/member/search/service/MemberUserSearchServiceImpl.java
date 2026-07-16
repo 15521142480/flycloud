@@ -41,19 +41,30 @@ import java.util.Map;
 @ConditionalOnExpression("'${flycloud.elasticsearch.enabled:false}' == 'true' and '${flycloud.rocketmq.enabled:false}' == 'true'")
 public class MemberUserSearchServiceImpl implements MemberUserSearchService {
 
+    /**
+     * 对外允许使用的排序字段白名单，键和值均为 ES Document 字段名。
+     */
     private static final Map<String, String> SORT_FIELDS = Map.of(
             MemberUserIndexFields.ID, MemberUserIndexFields.ID,
             MemberUserIndexFields.CREATE_TIME, MemberUserIndexFields.CREATE_TIME,
             MemberUserIndexFields.UPDATE_TIME, MemberUserIndexFields.UPDATE_TIME);
 
     private final MemberUserIndexDefinition definition;
+
     private final ElasticsearchPageExecutor pageExecutor;
+
     private final MemberUserSearchRepository repository;
+
     private final MemberUserSearchQueryBuilder queryBuilder;
+
     private final MemberUserDocumentConverter converter;
+
     private final MemberUserIndexSyncService syncService;
+
     private final MemberUserIndexUpgradeService upgradeService;
+
     private final MemberUserMapper memberUserMapper;
+
     private final MqOutboxService outboxService;
 
     /**

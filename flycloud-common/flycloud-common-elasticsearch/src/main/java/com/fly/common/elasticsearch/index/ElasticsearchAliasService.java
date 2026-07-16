@@ -1,6 +1,7 @@
 package com.fly.common.elasticsearch.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch.indices.GetAliasResponse;
 import com.fly.common.elasticsearch.config.properties.ElasticsearchProperties;
 import com.fly.common.elasticsearch.exception.ElasticsearchIndexException;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class ElasticsearchAliasService {
 
     private final ElasticsearchClient client;
+
     private final ElasticsearchProperties properties;
 
     /**
@@ -37,7 +39,7 @@ public class ElasticsearchAliasService {
     /**
      * 获取指定业务别名的全部版本索引，供观察期清理与审计使用。
      */
-     public List<String> getVersionIndexes(String alias) {
+    public List<String> getVersionIndexes(String alias) {
         try {
             return client.indices().get(request -> request.index(alias + "_v*").expandWildcards(ExpandWildcard.Open))
                     .result()
@@ -46,6 +48,11 @@ public class ElasticsearchAliasService {
                     .filter(ElasticsearchIndexName::isVersionedIndex)
                     .sorted()
                     .toList();
+        } catch (ElasticsearchException exception) {
+            if (isNotFound(exception)) {
+                return List.of();
+            }
+            throw new ElasticsearchIndexException("list", alias, exception);
         } catch (Exception exception) {
             throw new ElasticsearchIndexException("list", alias, exception);
         }
@@ -87,12 +94,28 @@ public class ElasticsearchAliasService {
     /**
      * 查询 Alias 到真实索引的原始映射。
      */
-     private Map<String, ?> aliases(String alias) {
+    private Map<String, ?> aliases(String alias) {
         try {
             GetAliasResponse response = client.indices().getAlias(request -> request.name(alias).ignoreUnavailable(true));
             return response.result();
+        } catch (ElasticsearchException exception) {
+            // ES 对不存在的 Alias 仍会返回 404；首次创建版本索引时这是正常状态。
+            if (isNotFound(exception)) {
+                return Map.of();
+            }
+            throw new ElasticsearchIndexException("get-alias", alias, exception);
         } catch (Exception exception) {
             throw new ElasticsearchIndexException("get-alias", alias, exception);
         }
+    }
+
+    /**
+     * 判断 ES 异常是否表示目标资源尚未创建。
+     *
+     * @param exception Elasticsearch 客户端异常
+     * @return {@code true} 表示 HTTP 404
+     */
+    private boolean isNotFound(ElasticsearchException exception) {
+        return exception.status() == 404;
     }
 }

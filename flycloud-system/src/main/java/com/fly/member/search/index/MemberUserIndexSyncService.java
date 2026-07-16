@@ -27,12 +27,19 @@ import java.time.Instant;
 public class MemberUserIndexSyncService {
 
     private final MemberUserMapper mapper;
+
     private final MemberUserDocumentConverter converter;
+
     private final MemberUserIndexDefinition definition;
+
     private final ElasticsearchBulkService bulkService;
+
     private final ElasticsearchAliasService aliasService;
+
     private final ElasticsearchIndexService indexService;
+
     private final ElasticsearchMappingService mappingService;
+
 
     /**
      * 初始化会员真实版本索引（不存在时）并全量同步 MySQL 权威数据。
@@ -43,7 +50,10 @@ public class MemberUserIndexSyncService {
         String index = aliasService.getCurrentIndex(definition.alias());
         if (index == null) {
             index = ElasticsearchIndexName.buildVersionedIndex(definition.alias(), definition.initialVersion());
-            indexService.create(index, mappingService.load(definition.mappingResource()));
+            // 索引可能在上一次初始化中已创建、但尚未来得及绑定 Alias；此时只补绑定，不重复创建。
+            if (!indexService.exists(index)) {
+                indexService.create(index, mappingService.load(definition.mappingResource()));
+            }
             aliasService.switchAlias(definition.alias(), null, index);
         }
         synchronize(index);

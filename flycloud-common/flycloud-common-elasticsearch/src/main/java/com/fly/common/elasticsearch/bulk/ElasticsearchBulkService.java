@@ -22,6 +22,7 @@ import java.util.List;
 public class ElasticsearchBulkService {
 
     private final ElasticsearchClient client;
+
     private final ElasticsearchProperties properties;
 
     /**

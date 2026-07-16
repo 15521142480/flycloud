@@ -30,17 +30,29 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MemberUserIndexUpgradeService {
 
+    /**
+     * 表示索引仍处于重建窗口的升级状态；此时 MQ 消费者必须双写。
+     */
     private static final Set<String> REBUILDING_STATUSES = Set.of("CREATED", "SYNCING", "VALIDATING");
 
     private final MemberUserIndexDefinition definition;
+
     private final ElasticsearchAliasService aliasService;
+
     private final ElasticsearchIndexService indexService;
+
     private final ElasticsearchMappingService mappingService;
+
     private final MemberUserIndexSyncService syncService;
+
     private final MemberUserIndexUpgradeRecordMapper recordMapper;
+
     private final MemberUserMapper memberUserMapper;
+
     private final SysUserMapper sysUserMapper;
+
     private final MqOutboxService outboxService;
+
     private final ElasticsearchClient client;
 
     /**

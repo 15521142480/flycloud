@@ -47,7 +47,7 @@ public class MemberUserSearchQueryBuilder {
     /**
      * 判断检索文本是否有效。
      */
-     private boolean hasText(String value) {
+    private boolean hasText(String value) {
         return value != null && !value.isBlank();
     }
 }

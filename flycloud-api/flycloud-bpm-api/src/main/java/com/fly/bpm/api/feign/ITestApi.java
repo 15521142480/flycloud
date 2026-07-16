@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 /**
- * d
+ * Seata 测试场景的数据源二 Feign 服务接口。
  *
  * @author: lxs
  * @date: 2025/8/15
@@ -24,13 +24,18 @@ public interface ITestApi {
 
 
     /**
-     * seata 测试
+     * 在数据源二写入 Seata 测试数据。
+     *
+     * @param reqDTO 数据源二测试数据请求
+     * @return 影响行数
      */
     @PostMapping(BpmApiPaths.PROVIDER_TEST_SEATA)
     R<Integer> seataTest(@Valid @RequestBody SeataTestDataReqDTO reqDTO);
 
     /**
      * 查询 BPM 数据源最新的十条 Seata 测试数据。
+     *
+     * @return 测试数据列表
      */
     @GetMapping(BpmApiPaths.PROVIDER_TEST_SEATA + "/list")
     R<List<SeataTestDataVo>> listSeataTestData();

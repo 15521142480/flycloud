@@ -16,6 +16,7 @@ import java.util.Set;
 public class ElasticsearchProjectionWriter {
 
     private final ElasticsearchClient client;
+
     private final ElasticsearchAliasService aliasService;
 
     /**

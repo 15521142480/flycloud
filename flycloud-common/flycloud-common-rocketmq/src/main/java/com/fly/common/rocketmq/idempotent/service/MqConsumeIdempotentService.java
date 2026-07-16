@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class MqConsumeIdempotentService {
 
-
     private final MqConsumeRecordMapper mapper;
 
     /**

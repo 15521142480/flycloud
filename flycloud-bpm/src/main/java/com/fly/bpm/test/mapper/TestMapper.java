@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * - 接口层
+ * Seata 测试场景的数据源二数据访问接口。
  *
  * @author: lxs
  * @date: 2025/8/15

@@ -19,14 +19,14 @@ public class MemberUserSearchRepository {
     /**
      * 按稳定会员主键幂等写入当前索引及升级窗口中的新索引。
      */
-     public void upsert(String alias, Long memberUserId, MemberUserDocument document, String rebuildingIndex) {
+    public void upsert(String alias, Long memberUserId, MemberUserDocument document, String rebuildingIndex) {
         projectionWriter.upsert(alias, String.valueOf(memberUserId), document, rebuildingIndex);
     }
 
     /**
      * 按稳定会员主键删除当前索引及升级窗口中的新索引文档。
      */
-     public void delete(String alias, Long memberUserId, String rebuildingIndex) {
+    public void delete(String alias, Long memberUserId, String rebuildingIndex) {
         projectionWriter.delete(alias, String.valueOf(memberUserId), rebuildingIndex);
     }
 }

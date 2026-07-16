@@ -13,7 +13,12 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 public abstract class AbstractIdempotentRocketMqConsumer<T> implements RocketMQListener<String> {
 
     private final MqConsumeIdempotentService idempotentService;
+
     private final ObjectMapper objectMapper;
+
+    /**
+     * 当前消费者业务载荷的运行时类型。
+     */
     private final Class<T> payloadType;
 
     /**
@@ -52,22 +57,22 @@ public abstract class AbstractIdempotentRocketMqConsumer<T> implements RocketMQL
     /**
      * @return 消费者组常量。
      */
-     protected abstract String consumerGroup();
+    protected abstract String consumerGroup();
 
     /**
      * @return 当前消费者监听的 Topic 常量。
      */
-     protected abstract String topic();
+    protected abstract String topic();
 
     /**
      * 执行业务处理；异常必须继续抛出以便 RocketMQ 重试。
      */
-     protected abstract void handle(MqMessage<T> message);
+    protected abstract void handle(MqMessage<T> message);
 
     /**
      * 将统一消息信封反序列化为强类型业务载荷。
      */
-     private MqMessage<T> deserialize(String rawMessage) {
+    private MqMessage<T> deserialize(String rawMessage) {
         try {
             MqMessage<?> envelope = objectMapper.readValue(rawMessage, MqMessage.class);
             MqMessage<T> message = new MqMessage<>();

@@ -17,7 +17,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class MqOutboxDispatcher {
 
     private final RocketMqProperties properties;
+
     private final MqOutboxService outboxService;
+
     private final RocketMqProducer producer;
 
     /**

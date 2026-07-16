@@ -12,6 +12,13 @@ import java.io.Serializable;
 @Data
 public class MemberUserIndexEvent implements Serializable {
 
+    /**
+     * 发生变化的会员用户主键。
+     */
     private Long memberUserId;
+
+    /**
+     * 业务动作，例如 create、update、delete。
+     */
     private String action;
 }

@@ -29,10 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test/seata")
 public class SeataTestController {
 
-
     private final ITestService testService;
-
-
 
     /**
      * 执行 Seata 分布式事务测试。

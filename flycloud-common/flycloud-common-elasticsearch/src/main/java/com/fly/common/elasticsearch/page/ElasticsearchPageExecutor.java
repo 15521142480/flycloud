@@ -21,6 +21,7 @@ import java.util.function.Function;
 public class ElasticsearchPageExecutor {
 
     private final ElasticsearchClient client;
+
     private final ElasticsearchProperties properties;
 
     /**

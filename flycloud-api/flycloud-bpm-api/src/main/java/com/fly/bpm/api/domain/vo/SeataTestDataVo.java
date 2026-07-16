@@ -15,21 +15,21 @@ public class SeataTestDataVo {
     /**
      * 数据ID。
      */
-     private Integer id;
+    private Integer id;
 
     /**
      * 数据源名称。
      */
-     private String databaseName;
+    private String databaseName;
 
     /**
      * 测试数据。
      */
-     private String testData;
+    private String testData;
 
     /**
      * 创建时间。
      */
-     private LocalDateTime createTime;
+    private LocalDateTime createTime;
 
 }

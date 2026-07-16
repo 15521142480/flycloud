@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 
 /**
- * test
+ * Seata 分布式事务测试服务实现。
  *
  * @author: lxs
  * @date: 2025/8/15
@@ -24,25 +24,23 @@ import java.io.IOException;
 @Service
 public class TestServiceImpl2 implements ITestService {
 
-
     private final TestMapper2 testMapper;
+
     private final ITestApi testApi;
-//    private final ElasticSearchService elasticSearchService;
 
 
 
     /**
-     * note: @GlobalTransactional(
-     *             name = "system-test-seata",
-     *             timeoutMills = 60000,
-     *             rollbackFor = Exception.class
-     *     )
-     *     声明全局事物，写在分布式业务的发起服务层
+     * 执行两个数据源的 Seata AT 模式事务测试。
      *
-     * note: @Transactional(rollbackFor = Exception.class): 保留本地事务（如果本地事物涉及多条-增删改）
+     * <p>全局事务由当前服务发起；本地事务用于保证当前服务的多条 SQL 操作保持原子性。
+     * 当 {@code isRollback} 为 1 时，在两个数据源写入完成后主动抛出异常，以验证全局回滚。</p>
      *
-     *
-    */
+     * @param isRollback 是否模拟异常并回滚：0 否、1 是
+     * @param dataSourceOneTestData 写入数据源一的测试内容
+     * @param dataSourceTwoTestData 写入数据源二的测试内容
+     * @return 执行成功时返回 {@code true}
+     */
     @Override
     @GlobalTransactional(
             name = "system-test-seata",
@@ -67,6 +65,11 @@ public class TestServiceImpl2 implements ITestService {
         return true;
     }
 
+    /**
+     * 查询两个数据源各自最新的测试数据。
+     *
+     * @return 数据源一与数据源二的测试数据集合
+     */
     @Override
     public SeataTestDataListVo listTestData() {
         SeataTestDataListVo result = new SeataTestDataListVo();
@@ -76,6 +79,14 @@ public class TestServiceImpl2 implements ITestService {
     }
 
 
+    /**
+     * 预留的 Elasticsearch 测试入口。
+     *
+     * @param type 操作类型
+     * @param indexName 索引名称
+     * @return 当前固定返回 1
+     * @throws IOException Elasticsearch 调用异常
+     */
     @Override
     public int esTest(Integer type, String indexName) throws IOException {
 

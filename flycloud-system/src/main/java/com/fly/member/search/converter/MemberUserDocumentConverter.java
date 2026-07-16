@@ -38,7 +38,7 @@ public class MemberUserDocumentConverter {
     /**
      * 将 ES Document 显式转换为接口响应 VO。
      */
-     public MemberUserSearchVo toVo(MemberUserDocument source) {
+    public MemberUserSearchVo toVo(MemberUserDocument source) {
         MemberUserSearchVo target = new MemberUserSearchVo();
         target.setId(source.getId());
         target.setMobile(source.getMobile());

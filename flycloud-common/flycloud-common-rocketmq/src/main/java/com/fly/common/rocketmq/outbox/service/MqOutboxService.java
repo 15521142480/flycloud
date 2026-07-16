@@ -24,21 +24,22 @@ public class MqOutboxService {
     /**
      * 待投递状态。
      */
-     public static final int STATUS_PENDING = 0;
+    public static final int STATUS_PENDING = 0;
     /**
      * 已被 Broker 确认状态。
      */
-     public static final int STATUS_SENT = 1;
+    public static final int STATUS_SENT = 1;
     /**
      * 达到最大重试次数后的最终失败状态。
      */
-     public static final int STATUS_FAILED = 2;
+    public static final int STATUS_FAILED = 2;
     /**
      * 已被某个调度实例持有租约的投递中状态。
      */
-     public static final int STATUS_SENDING = 3;
+    public static final int STATUS_SENDING = 3;
 
     private final MqOutboxMessageMapper mapper;
+
     private final ObjectMapper objectMapper;
 
     /**
@@ -82,15 +83,17 @@ public class MqOutboxService {
     /**
      * 以条件更新抢占待发送消息，避免多实例重复调度同一条记录。
      *
-     * @param messageId 本地消息表主键
+     * <p>该操作通过单条条件更新利用 InnoDB 行锁实现“先到先得”；只有更新行数大于零的调度实例获得租约。</p>
+     *
+     * @param outboxId 本地消息表主键，不是业务消息唯一标识 {@code messageId}
      * @param claimLeaseSeconds 抢占租约，实例异常退出后可由其他实例重新投递
      * @return 抢占令牌；未抢到时返回 {@code null}
      */
-    public String claim(Long messageId, long claimLeaseSeconds) {
+    public String claim(Long outboxId, long claimLeaseSeconds) {
         LocalDateTime now = LocalDateTime.now();
         String dispatchToken = UUID.randomUUID().toString().replace("-", "");
         LambdaUpdateWrapper<MqOutboxMessage> wrapper = new LambdaUpdateWrapper<MqOutboxMessage>()
-                .eq(MqOutboxMessage::getId, messageId)
+                .eq(MqOutboxMessage::getId, outboxId)
                 .in(MqOutboxMessage::getStatus, STATUS_PENDING, STATUS_SENDING)
                 .le(MqOutboxMessage::getNextRetryTime, now)
                 .set(MqOutboxMessage::getStatus, STATUS_SENDING)
@@ -103,7 +106,7 @@ public class MqOutboxService {
     /**
      * 将本地消息 JSON 反序列化为统一信封。
      */
-     public MqMessage<?> readMessage(MqOutboxMessage outbox) {
+    public MqMessage<?> readMessage(MqOutboxMessage outbox) {
         try {
             return objectMapper.readValue(outbox.getPayload(), MqMessage.class);
         } catch (JsonProcessingException exception) {
@@ -114,14 +117,14 @@ public class MqOutboxService {
     /**
      * 标记当前抢占令牌对应的消息已被 Broker 成功确认。
      */
-     public void markSent(Long id, String dispatchToken) {
-        updateClaimed(id, dispatchToken, STATUS_SENT, null, null, null);
+    public void markSent(Long outboxId, String dispatchToken) {
+        updateClaimed(outboxId, dispatchToken, STATUS_SENT, null, null, null);
     }
 
     /**
      * 记录当前抢占令牌对应的异步投递失败，并按指数退避安排下次重试。
      */
-     public void markFailure(MqOutboxMessage outbox, String dispatchToken, int maxRetryCount, Throwable throwable) {
+    public void markFailure(MqOutboxMessage outbox, String dispatchToken, int maxRetryCount, Throwable throwable) {
         int retryCount = outbox.getRetryCount() + 1;
         int status = retryCount >= maxRetryCount ? STATUS_FAILED : STATUS_PENDING;
         long delaySeconds = Math.min(300, 1L << Math.min(retryCount, 8));
@@ -132,10 +135,10 @@ public class MqOutboxService {
     /**
      * 使用抢占令牌更新本地消息投递状态，防止租约过期后的旧实例覆盖新实例结果。
      */
-     private void updateClaimed(Long id, String dispatchToken, int status, Integer retryCount,
+    private void updateClaimed(Long outboxId, String dispatchToken, int status, Integer retryCount,
                                LocalDateTime nextRetryTime, String lastError) {
         LambdaUpdateWrapper<MqOutboxMessage> wrapper = new LambdaUpdateWrapper<MqOutboxMessage>()
-                .eq(MqOutboxMessage::getId, id)
+                .eq(MqOutboxMessage::getId, outboxId)
                 .eq(MqOutboxMessage::getStatus, STATUS_SENDING)
                 .eq(MqOutboxMessage::getDispatchToken, dispatchToken)
                 .set(MqOutboxMessage::getStatus, status)
@@ -156,7 +159,7 @@ public class MqOutboxService {
     /**
      * 序列化统一消息信封。
      */
-     private String writeValue(MqMessage<?> message) {
+    private String writeValue(MqMessage<?> message) {
         try {
             return objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException exception) {
@@ -167,7 +170,7 @@ public class MqOutboxService {
     /**
      * 截断异常文本，避免超过表字段上限。
      */
-     private String truncate(String value) {
+    private String truncate(String value) {
         if (value == null) {
             return null;
         }
