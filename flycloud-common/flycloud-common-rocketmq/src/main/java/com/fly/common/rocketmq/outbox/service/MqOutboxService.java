@@ -6,6 +6,7 @@ import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import com.fly.common.rocketmq.outbox.domain.MqOutboxMessage;
 import com.fly.common.rocketmq.outbox.mapper.MqOutboxMessageMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.UUID;
  * <p>业务服务必须在更新业务数据的同一事务中调用 {@link #save}；发送由调度器在事务提交后异步完成。</p>
  */
 @RequiredArgsConstructor
+@Slf4j
 public class MqOutboxService {
 
     /**
@@ -67,6 +69,8 @@ public class MqOutboxService {
         outbox.setCreateTime(LocalDateTime.now());
         outbox.setUpdateTime(LocalDateTime.now());
         mapper.insert(outbox);
+        log.info("MQ 本地消息已落库，outboxId={}, messageId={}, topic={}, tag={}, eventType={}, bizKey={}",
+                outbox.getId(), message.getMessageId(), topic, tag, eventType, bizKey);
         return message;
     }
 

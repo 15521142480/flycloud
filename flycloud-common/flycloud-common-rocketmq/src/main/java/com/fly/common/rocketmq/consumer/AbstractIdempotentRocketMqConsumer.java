@@ -43,11 +43,16 @@ public abstract class AbstractIdempotentRocketMqConsumer<T> implements RocketMQL
     @Override
     public final void onMessage(String rawMessage) {
         MqMessage<T> message = deserialize(rawMessage);
+        log.info("RocketMQ 开始消费，consumerGroup={}, messageId={}, topic={}, tag={}, eventType={}, bizKey={}",
+                consumerGroup(), message.getMessageId(), topic(), message.getTag(), message.getEventType(), message.getBizKey());
         try {
             boolean consumed = idempotentService.consume(consumerGroup(), topic(), message.getTag(), message, () -> handle(message));
             if (!consumed) {
                 log.info("重复 RocketMQ 消息已忽略，consumerGroup={}, messageId={}", consumerGroup(), message.getMessageId());
+                return;
             }
+            log.info("RocketMQ 消费成功，consumerGroup={}, messageId={}, topic={}, tag={}, eventType={}, bizKey={}",
+                    consumerGroup(), message.getMessageId(), topic(), message.getTag(), message.getEventType(), message.getBizKey());
         } catch (Exception exception) {
             log.error("RocketMQ 消费失败，将由框架重试，consumerGroup={}, messageId={}", consumerGroup(), message.getMessageId(), exception);
             throw exception;

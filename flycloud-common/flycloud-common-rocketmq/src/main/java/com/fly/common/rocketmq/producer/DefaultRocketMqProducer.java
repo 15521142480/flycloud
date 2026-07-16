@@ -30,13 +30,15 @@ public class DefaultRocketMqProducer implements RocketMqProducer {
     public void sendAsync(String topic, String tag, MqMessage<?> message, RocketMqSendCallback callback) {
         String destination = topic + ":" + tag;
         String body = messageCodec.serialize(message);
+        log.info("RocketMQ 开始异步投递，messageId={}, topic={}, tag={}, eventType={}, bizKey={}",
+                message.getMessageId(), topic, tag, message.getEventType(), message.getBizKey());
         rocketMQTemplate.asyncSend(destination, MessageBuilder.withPayload(body).build(), new SendCallback() {
             /**
              * 记录 Broker 确认结果并通知本地消息调度器。
              */
             @Override
             public void onSuccess(SendResult sendResult) {
-                log.debug("RocketMQ 已投递，messageId={}, destination={}, msgId={}",
+                log.info("RocketMQ Broker 已确认消息，messageId={}, destination={}, brokerMessageId={}",
                         message.getMessageId(), destination, sendResult.getMsgId());
                 callback.onSuccess();
             }

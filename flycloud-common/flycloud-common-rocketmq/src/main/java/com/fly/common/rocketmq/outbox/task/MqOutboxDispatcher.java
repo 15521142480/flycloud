@@ -36,6 +36,10 @@ public class MqOutboxDispatcher {
             return;
         }
         List<MqOutboxMessage> outboxMessageList = outboxService.findPending(properties.getOutbox().getBatchSize());
+        if (outboxMessageList.isEmpty()) {
+            log.debug("扫描 MQ 本地消息表，无待发送消息");
+            return;
+        }
         log.info("扫描MQ本地消息表，并异步投递到RocketMQ生产信息；待发送的本地消息数量为: {}", outboxMessageList.size());
         for (MqOutboxMessage outbox : outboxMessageList) {
             String dispatchToken = outboxService.claim(outbox.getId(), properties.getOutbox().getClaimLeaseSeconds());
@@ -43,13 +47,16 @@ public class MqOutboxDispatcher {
                 continue;
             }
             try {
+                log.info("MQ 本地消息开始投递，outboxId={}, messageId={}, topic={}, tag={}, bizKey={}",
+                        outbox.getId(), outbox.getMessageId(), outbox.getTopic(), outbox.getTag(), outbox.getBizKey());
                 producer.sendAsync(outbox.getTopic(), outbox.getTag(), outboxService.readMessage(outbox), new RocketMqSendCallback() {
                     /**
                      * 将 Broker 成功确认的消息标记为已发送。
                      */
-                     @Override
+                    @Override
                     public void onSuccess() {
                         outboxService.markSent(outbox.getId(), dispatchToken);
+                        log.info("MQ 本地消息投递成功，outboxId={}, messageId={}", outbox.getId(), outbox.getMessageId());
                     }
 
                     /**
