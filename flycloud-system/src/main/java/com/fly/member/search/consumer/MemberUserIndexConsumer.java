@@ -3,12 +3,12 @@ package com.fly.member.search.consumer;
 import com.fly.common.rocketmq.constant.RocketMqConsumerGroupConstants;
 import com.fly.common.rocketmq.constant.RocketMqTagConstants;
 import com.fly.common.rocketmq.constant.RocketMqTopicConstants;
+import com.fly.common.rocketmq.codec.MqMessageCodec;
 import com.fly.common.rocketmq.consumer.AbstractIdempotentRocketMqConsumer;
 import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import com.fly.common.rocketmq.idempotent.service.MqConsumeIdempotentService;
 import com.fly.member.search.index.MemberUserIndexEvent;
 import com.fly.member.search.service.MemberUserSearchService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -35,12 +35,12 @@ public class MemberUserIndexConsumer extends AbstractIdempotentRocketMqConsumer<
      * 创建会员 ES 投影消费者。
      *
      * @param idempotentService 消费幂等服务
-     * @param objectMapper 消息 JSON 转换器
+     * @param messageCodec 消息编解码器
      * @param memberUserSearchService 会员搜索业务编排服务
      */
-    public MemberUserIndexConsumer(MqConsumeIdempotentService idempotentService, ObjectMapper objectMapper,
+    public MemberUserIndexConsumer(MqConsumeIdempotentService idempotentService, MqMessageCodec messageCodec,
                                    MemberUserSearchService memberUserSearchService) {
-        super(idempotentService, objectMapper, MemberUserIndexEvent.class);
+        super(idempotentService, messageCodec, MemberUserIndexEvent.class);
         this.memberUserSearchService = memberUserSearchService;
     }
 

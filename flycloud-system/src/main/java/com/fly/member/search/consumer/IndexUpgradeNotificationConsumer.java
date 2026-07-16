@@ -1,6 +1,7 @@
 package com.fly.member.search.consumer;
 
 import com.fly.common.enums.user.UserTypeEnum;
+import com.fly.common.rocketmq.codec.MqMessageCodec;
 import com.fly.common.rocketmq.constant.RocketMqConsumerGroupConstants;
 import com.fly.common.rocketmq.constant.RocketMqTagConstants;
 import com.fly.common.rocketmq.constant.RocketMqTopicConstants;
@@ -9,7 +10,6 @@ import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import com.fly.common.rocketmq.idempotent.service.MqConsumeIdempotentService;
 import com.fly.common.websocket.sender.WebSocketMessageSender;
 import com.fly.member.search.index.IndexUpgradeNotificationEvent;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -34,12 +34,12 @@ public class IndexUpgradeNotificationConsumer extends AbstractIdempotentRocketMq
      * 创建索引升级通知消费者。
      *
      * @param idempotentService 消费幂等服务
-     * @param objectMapper 消息 JSON 转换器
+     * @param messageCodec 消息编解码器
      * @param webSocketMessageSender 后台 WebSocket 消息发送器
      */
-    public IndexUpgradeNotificationConsumer(MqConsumeIdempotentService idempotentService, ObjectMapper objectMapper,
+    public IndexUpgradeNotificationConsumer(MqConsumeIdempotentService idempotentService, MqMessageCodec messageCodec,
                                             WebSocketMessageSender webSocketMessageSender) {
-        super(idempotentService, objectMapper, IndexUpgradeNotificationEvent.class);
+        super(idempotentService, messageCodec, IndexUpgradeNotificationEvent.class);
         this.webSocketMessageSender = webSocketMessageSender;
     }
 

@@ -1,8 +1,7 @@
 package com.fly.common.rocketmq.outbox.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fly.common.rocketmq.codec.MqMessageCodec;
 import com.fly.common.rocketmq.idempotent.domain.MqMessage;
 import com.fly.common.rocketmq.outbox.domain.MqOutboxMessage;
 import com.fly.common.rocketmq.outbox.mapper.MqOutboxMessageMapper;
@@ -40,7 +39,7 @@ public class MqOutboxService {
 
     private final MqOutboxMessageMapper mapper;
 
-    private final ObjectMapper objectMapper;
+    private final MqMessageCodec messageCodec;
 
     /**
      * 在业务事务中创建标准消息信封与本地消息表记录。
@@ -108,8 +107,8 @@ public class MqOutboxService {
      */
     public MqMessage<?> readMessage(MqOutboxMessage outbox) {
         try {
-            return objectMapper.readValue(outbox.getPayload(), MqMessage.class);
-        } catch (JsonProcessingException exception) {
+            return messageCodec.deserialize(outbox.getPayload());
+        } catch (IllegalArgumentException exception) {
             throw new IllegalStateException("本地消息表 payload 反序列化失败，messageId=" + outbox.getMessageId(), exception);
         }
     }
@@ -161,8 +160,8 @@ public class MqOutboxService {
      */
     private String writeValue(MqMessage<?> message) {
         try {
-            return objectMapper.writeValueAsString(message);
-        } catch (JsonProcessingException exception) {
+            return messageCodec.serialize(message);
+        } catch (IllegalStateException exception) {
             throw new IllegalStateException("本地消息表 payload 序列化失败", exception);
         }
     }
