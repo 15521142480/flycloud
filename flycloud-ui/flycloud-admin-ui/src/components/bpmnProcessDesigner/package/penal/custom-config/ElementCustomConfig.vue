@@ -35,9 +35,9 @@
       <el-select v-model="returnNodeId" clearable style="width: 100%" @change="updateReturnNodeId">
         <el-option
           v-for="item in returnTaskList"
-          :key="item.id"
+          :key="String(item.id)"
           :label="item.name"
-          :value="item.id"
+          :value="String(item.id)"
         />
       </el-select>
     </el-form-item>
@@ -73,7 +73,12 @@
         style="width: 100%"
         @change="updateAssignEmptyUserIds"
       >
-        <el-option v-for="item in userOptions" :key="item.id" :label="item.name" :value="item.id" />
+        <el-option
+          v-for="item in userOptions"
+          :key="String(item.id)"
+          :label="item.name"
+          :value="String(item.id)"
+        />
       </el-select>
     </el-form-item>
 
@@ -132,6 +137,14 @@ const otherExtensions = ref()
 const bpmnElement = ref()
 const bpmnInstances = () => (window as any)?.bpmnInstances
 
+/** 统一用户编号为字符串，避免回显时 value 类型不一致 */
+const normalizeOptionIds = <T extends { id?: unknown }>(list: T[]): T[] => {
+  return list.map((item) => ({
+    ...item,
+    id: item.id == null ? item.id : String(item.id)
+  }))
+}
+
 const resetCustomConfigList = () => {
   bpmnElement.value = bpmnInstances().bpmnElement
 
@@ -175,11 +188,9 @@ const resetCustomConfigList = () => {
     elExtensionElements.value.values?.filter(
       (ex) => ex.$type === `${prefix}:AssignEmptyUserIds`
     )?.[0] || bpmnInstances().moddle.create(`${prefix}:AssignEmptyUserIds`, { value: '' })
-  assignEmptyUserIds.value = assignEmptyUserIdsEl.value.value.split(',').map((item) => {
-    // 如果数字超出了最大安全整数范围，则将其作为字符串处理
-    let num = Number(item)
-    return num > Number.MAX_SAFE_INTEGER || num < -Number.MAX_SAFE_INTEGER ? item : num
-  })
+  assignEmptyUserIds.value = assignEmptyUserIdsEl.value.value
+    .split(',')
+    .filter((item) => item !== '')
 
   // 保留剩余扩展元素，便于后面更新该元素对应属性
   otherExtensions.value =
@@ -294,6 +305,6 @@ function findAllPredecessorsExcludingStart(elementId, modeler) {
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 onMounted(async () => {
   // 获得用户列表
-  userOptions.value = await UserApi.getSimpleUserList()
+  userOptions.value = normalizeOptionIds(await UserApi.getSimpleUserList())
 })
 </script>

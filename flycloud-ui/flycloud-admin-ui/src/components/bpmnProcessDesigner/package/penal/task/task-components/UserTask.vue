@@ -30,7 +30,12 @@
         style="width: 100%"
         @change="updateElementTask"
       >
-        <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id" />
+        <el-option
+          v-for="item in roleOptions"
+          :key="String(item.id)"
+          :label="item.name"
+          :value="String(item.id)"
+        />
       </el-select>
     </el-form-item>
     <el-form-item
@@ -66,7 +71,12 @@
         style="width: 100%"
         @change="updateElementTask"
       >
-        <el-option v-for="item in postOptions" :key="item.id" :label="item.name" :value="item.id" />
+        <el-option
+          v-for="item in postOptions"
+          :key="String(item.id)"
+          :label="item.name"
+          :value="String(item.id)"
+        />
       </el-select>
     </el-form-item>
     <el-form-item
@@ -82,7 +92,12 @@
         style="width: 100%"
         @change="updateElementTask"
       >
-        <el-option v-for="item in userOptions" :key="item.id" :label="item.name" :value="item.id" />
+        <el-option
+          v-for="item in userOptions"
+          :key="String(item.id)"
+          :label="item.name"
+          :value="String(item.id)"
+        />
       </el-select>
     </el-form-item>
     <el-form-item
@@ -99,9 +114,9 @@
       >
         <el-option
           v-for="item in userGroupOptions"
-          :key="item.id"
+          :key="String(item.id)"
           :label="item.name"
-          :value="item.id"
+          :value="String(item.id)"
         />
       </el-select>
     </el-form-item>
@@ -155,6 +170,23 @@ const postOptions = ref<PostApi.PostVO[]>([]) // 岗位列表
 const userOptions = ref<UserApi.UserVO[]>([]) // 用户列表
 const userGroupOptions = ref<UserGroupApi.UserGroupVO[]>([]) // 用户组列表
 
+/** 统一树节点编号为字符串，避免回显时 value 类型不一致 */
+const normalizeTreeIds = <T extends { id?: unknown; parentId?: unknown }>(list: T[]): T[] => {
+  return list.map((item) => ({
+    ...item,
+    id: item.id == null ? item.id : String(item.id),
+    parentId: item.parentId == null ? item.parentId : String(item.parentId)
+  }))
+}
+
+/** 统一列表编号为字符串，避免小 Long 被组件当 number 处理 */
+const normalizeOptionIds = <T extends { id?: unknown }>(list: T[]): T[] => {
+  return list.map((item) => ({
+    ...item,
+    id: item.id == null ? item.id : String(item.id)
+  }))
+}
+
 const resetTaskForm = () => {
   const businessObject = bpmnElement.value.businessObject
   if (!businessObject) {
@@ -172,13 +204,7 @@ const resetTaskForm = () => {
     } else {
       userTaskForm.value.candidateParam = businessObject.candidateParam
         .split(',')
-        .map((item) => {
-          const num = Number(item)
-          return Number.isSafeInteger(num) ? num : item
-        })
-      // userTaskForm.value.candidateParam = businessObject.candidateParam
-      //   .split(',')
-      //   .map((item) => +item)
+        .filter((item) => item !== '')
     }
   } else {
     userTaskForm.value.candidateParam = []
@@ -222,16 +248,16 @@ watch(
 
 onMounted(async () => {
   // 获得角色列表
-  roleOptions.value = await RoleApi.getSimpleRoleList()
+  roleOptions.value = normalizeOptionIds(await RoleApi.getSimpleRoleList())
   // 获得部门列表
   const deptOptions = await DeptApi.getSimpleDeptList()
-  deptTreeOptions.value = handleTree(deptOptions, 'id')
+  deptTreeOptions.value = handleTree(normalizeTreeIds(deptOptions), 'id')
   // 获得岗位列表
-  postOptions.value = await PostApi.getSimplePostList()
+  postOptions.value = normalizeOptionIds(await PostApi.getSimplePostList())
   // 获得用户列表
-  userOptions.value = await UserApi.getSimpleUserList()
+  userOptions.value = normalizeOptionIds(await UserApi.getSimpleUserList())
   // 获得用户组列表
-  userGroupOptions.value = await UserGroupApi.getUserGroupSimpleList()
+  userGroupOptions.value = normalizeOptionIds(await UserGroupApi.getUserGroupSimpleList())
 })
 
 onBeforeUnmount(() => {

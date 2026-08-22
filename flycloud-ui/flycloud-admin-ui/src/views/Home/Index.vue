@@ -148,10 +148,10 @@
         <template #footer>
           <div class="card-footer">
             <el-button type="primary" @click="routerForward(4)" text bg>
-              体验1（内嵌）
+              体验1 (内嵌)
             </el-button>
             <el-button type="primary" @click="routerForward(5)" text bg>
-              体验2（窗口）
+              体验2 (窗口)
             </el-button>
           </div>
         </template>

@@ -78,6 +78,24 @@ const message = useMessage() // 国际化
 const processNodeTree = ref<SimpleFlowNode | undefined>()
 const errorDialogVisible = ref(false)
 let errorNodes: SimpleFlowNode[] = []
+
+/** 统一树节点编号为字符串，避免回显时 value 类型不一致 */
+const normalizeTreeIds = <T extends { id?: unknown; parentId?: unknown }>(list: T[]): T[] => {
+  return list.map((item) => ({
+    ...item,
+    id: item.id == null ? item.id : String(item.id),
+    parentId: item.parentId == null ? item.parentId : String(item.parentId)
+  }))
+}
+
+/** 统一列表编号为字符串，避免小 Long 被组件当 number 处理 */
+const normalizeOptionIds = <T extends { id?: unknown }>(list: T[]): T[] => {
+  return list.map((item) => ({
+    ...item,
+    id: item.id == null ? item.id : String(item.id)
+  }))
+}
+
 const saveSimpleFlowModel = async (simpleModelNode: SimpleFlowNode) => {
   if (!simpleModelNode) {
     message.error(t('auto.components.SimpleProcessDesignerV2.src.SimpleProcessDesigner.k1d811a51'))
@@ -156,17 +174,17 @@ onMounted(async () => {
       }
     }
     // 获得角色列表
-    roleOptions.value = await RoleApi.getSimpleRoleList()
+    roleOptions.value = normalizeOptionIds(await RoleApi.getSimpleRoleList())
     // 获得岗位列表
-    postOptions.value = await PostApi.getSimplePostList()
+    postOptions.value = normalizeOptionIds(await PostApi.getSimplePostList())
     // 获得用户列表
-    userOptions.value = await UserApi.getSimpleUserList()
+    userOptions.value = normalizeOptionIds(await UserApi.getSimpleUserList())
     // 获得部门列表
-    deptOptions.value = await DeptApi.getSimpleDeptList()
+    deptOptions.value = normalizeTreeIds(await DeptApi.getSimpleDeptList())
 
     deptTreeOptions.value = handleTree(deptOptions.value as DeptApi.DeptVO[], 'id')
     // 获取用户组列表
-    userGroupOptions.value = await UserGroupApi.getUserGroupSimpleList()
+    userGroupOptions.value = normalizeOptionIds(await UserGroupApi.getUserGroupSimpleList())
 
     //获取 SIMPLE 设计器模型
     const result = await getBpmSimpleModel(props.modelId)

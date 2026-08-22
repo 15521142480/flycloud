@@ -54,9 +54,9 @@
               <el-select v-model="configForm.roleIds" clearable multiple style="width: 100%">
                 <el-option
                   v-for="item in roleOptions"
-                  :key="item.id"
+                  :key="String(item.id)"
                   :label="item.name"
-                  :value="item.id"
+                  :value="String(item.id)"
                 />
               </el-select>
             </el-form-item>
@@ -103,9 +103,9 @@
               <el-select v-model="configForm.postIds" clearable multiple style="width: 100%">
                 <el-option
                   v-for="item in postOptions"
-                  :key="item.id"
+                  :key="String(item.id)"
                   :label="item.name"
-                  :value="item.id!"
+                  :value="String(item.id)"
                 />
               </el-select>
             </el-form-item>
@@ -122,9 +122,9 @@
               <el-select v-model="configForm.userIds" clearable multiple style="width: 100%">
                 <el-option
                   v-for="item in userOptions"
-                  :key="item.id"
+                  :key="String(item.id)"
                   :label="item.name"
-                  :value="item.id"
+                  :value="String(item.id)"
                 />
               </el-select>
             </el-form-item>
@@ -140,9 +140,9 @@
               <el-select v-model="configForm.userGroups" clearable multiple style="width: 100%">
                 <el-option
                   v-for="item in userGroupOptions"
-                  :key="item.id"
+                  :key="String(item.id)"
                   :label="item.name"
-                  :value="item.id"
+                  :value="String(item.id)"
                 />
               </el-select>
             </el-form-item>
