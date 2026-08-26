@@ -43,6 +43,14 @@ public abstract class AbstractChatCompletionsClient {
     private final ChatCompletionsResponseParser responseParser;
     private final Executor streamTaskExecutor;
 
+    /**
+     * 初始化 Chat Completions 协议所需的公共依赖。
+     *
+     * @param httpClient 模型 HTTP 客户端
+     * @param objectMapper JSON 序列化工具
+     * @param properties AI 配置
+     * @param streamTaskExecutor 流式任务线程池
+     */
     protected AbstractChatCompletionsClient(HttpClient httpClient, ObjectMapper objectMapper, AiProperties properties,
             Executor streamTaskExecutor) {
         this.httpClient = httpClient;
@@ -52,28 +60,68 @@ public abstract class AbstractChatCompletionsClient {
         this.streamTaskExecutor = streamTaskExecutor;
     }
 
+    /**
+     * 调用兼容 Chat Completions 协议的普通聊天接口。
+     *
+     * @param providerName 供应商名称
+     * @param baseUrl 服务地址
+     * @param apiKey API Key
+     * @param chatModel 默认聊天模型
+     * @param chatPath 聊天接口路径
+     * @param responseTimeout 响应超时时间
+     * @param request 聊天请求
+     * @return 完整聊天响应
+     */
     protected AiChatResponse chat(String providerName, String baseUrl, String apiKey, String chatModel, String chatPath,
             Duration responseTimeout, AiChatRequest request) {
         validateProvider(providerName, baseUrl, apiKey, chatModel);
         ObjectNode body = buildChatBody(chatModel, request, false);
+        String requestBody = toJson(body);
         HttpRequest httpRequest = requestBuilder(baseUrl, apiKey, chatPath, responseTimeout)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .POST(HttpRequest.BodyPublishers.ofString(toJson(body), StandardCharsets.UTF_8))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
+        AiHttpLog.request(providerName, httpRequest, requestBody);
         HttpResponse<String> response = send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        AiHttpLog.response(providerName, httpRequest, response.statusCode(), response.body());
         ensureSuccess(response.statusCode(), response.body());
         return responseParser.parseChatResponse(response.body(), resolveModel(chatModel, request.model()));
     }
 
+    /**
+     * 调用兼容 Chat Completions 协议的流式聊天接口。
+     *
+     * @param providerName 供应商名称
+     * @param baseUrl 服务地址
+     * @param apiKey API Key
+     * @param chatModel 默认聊天模型
+     * @param chatPath 聊天接口路径
+     * @param responseTimeout 响应超时时间
+     * @param request 聊天请求
+     * @return SSE 响应发送器
+     */
     protected SseEmitter stream(String providerName, String baseUrl, String apiKey, String chatModel, String chatPath,
             Duration responseTimeout, AiChatRequest request) {
         validateProvider(providerName, baseUrl, apiKey, chatModel);
         SseEmitter emitter = new SseEmitter(0L);
-        CompletableFuture.runAsync(() -> readStream(baseUrl, apiKey, chatModel, chatPath, responseTimeout, request, emitter),
+        CompletableFuture.runAsync(() -> readStream(providerName, baseUrl, apiKey, chatModel, chatPath, responseTimeout, request, emitter),
                 streamTaskExecutor);
         return emitter;
     }
 
+    /**
+     * 调用兼容 Chat Completions 协议的文本向量化接口。
+     *
+     * @param providerName 供应商名称
+     * @param baseUrl 服务地址
+     * @param apiKey API Key
+     * @param chatModel 聊天模型，用于校验供应商基础配置
+     * @param embeddingModel 默认向量模型
+     * @param embeddingPath 向量接口路径
+     * @param responseTimeout 响应超时时间
+     * @param request 向量化请求
+     * @return 文本向量响应
+     */
     protected AiEmbeddingResponse embed(String providerName, String baseUrl, String apiKey, String chatModel,
             String embeddingModel, String embeddingPath, Duration responseTimeout, AiEmbeddingRequest request) {
         validateProvider(providerName, baseUrl, apiKey, chatModel);
@@ -83,50 +131,74 @@ public abstract class AbstractChatCompletionsClient {
         ObjectNode body = objectMapper.createObjectNode();
         body.put("model", resolveModel(embeddingModel, request.model()));
         body.put("input", request.input());
+        String requestBody = toJson(body);
         HttpRequest httpRequest = requestBuilder(baseUrl, apiKey, embeddingPath, responseTimeout)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
-                .POST(HttpRequest.BodyPublishers.ofString(toJson(body), StandardCharsets.UTF_8))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
+        AiHttpLog.request(providerName, httpRequest, requestBody);
         HttpResponse<String> response = send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        AiHttpLog.response(providerName, httpRequest, response.statusCode(), response.body());
         ensureSuccess(response.statusCode(), response.body());
         return responseParser.parseEmbeddingResponse(response.body(), resolveModel(embeddingModel, request.model()));
     }
 
-    private void readStream(String baseUrl, String apiKey, String chatModel, String chatPath, Duration responseTimeout,
+    /**
+     * 在异步线程中读取上游 SSE，并转换为本服务统一事件。
+     *
+     * @param providerName 供应商名称
+     * @param baseUrl 服务地址
+     * @param apiKey API Key
+     * @param chatModel 默认聊天模型
+     * @param chatPath 聊天接口路径
+     * @param responseTimeout 响应超时时间
+     * @param request 聊天请求
+     * @param emitter 下游 SSE 发送器
+     */
+    private void readStream(String providerName, String baseUrl, String apiKey, String chatModel, String chatPath,
+            Duration responseTimeout,
             AiChatRequest request, SseEmitter emitter) {
         try {
             ObjectNode body = buildChatBody(chatModel, request, true);
+            String requestBody = toJson(body);
             HttpRequest httpRequest = requestBuilder(baseUrl, apiKey, chatPath, responseTimeout)
                     .header("Accept", MediaType.TEXT_EVENT_STREAM_VALUE)
-                    .POST(HttpRequest.BodyPublishers.ofString(toJson(body), StandardCharsets.UTF_8))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                     .build();
+            AiHttpLog.request(providerName, httpRequest, requestBody);
             HttpResponse<java.util.stream.Stream<String>> response = send(httpRequest, HttpResponse.BodyHandlers.ofLines());
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
                 String errorBody;
                 try (java.util.stream.Stream<String> lines = response.body()) {
                     errorBody = lines.reduce("", (left, right) -> left + right);
                 }
+                AiHttpLog.response(providerName, httpRequest, response.statusCode(), errorBody);
                 ensureSuccess(response.statusCode(), errorBody);
             }
             try (java.util.stream.Stream<String> lines = response.body()) {
                 AtomicBoolean completed = new AtomicBoolean(false);
+                StringBuilder responsePreview = new StringBuilder();
                 lines.filter(line -> line.startsWith("data:"))
                         .map(line -> line.substring("data:".length()).trim())
                         .filter(data -> !data.isBlank() && !"[DONE]".equals(data))
-                        .forEach(data -> responseParser.parseStreamEvent(data).ifPresent(event -> {
-                            if ("completed".equals(event.type())) {
-                                completed.set(true);
-                            }
-                            sendEvent(emitter, event);
-                        }));
+                        .forEach(data -> {
+                            appendPreview(responsePreview, data);
+                            responseParser.parseStreamEvent(data).ifPresent(event -> {
+                                if ("completed".equals(event.type())) {
+                                    completed.set(true);
+                                }
+                                sendEvent(emitter, event);
+                            });
+                        });
                 if (!completed.get()) {
                     sendEvent(emitter, AiStreamEvent.completed(null, null));
                 }
+                AiHttpLog.response(providerName, httpRequest, response.statusCode(), responsePreview.toString());
             }
             emitter.complete();
         } catch (Exception exception) {
             String message = providerMessage(exception);
-            log.warn("Chat Completions 流式调用失败: {}", message);
+            log.error("Chat Completions 流式调用失败: {}", message, exception);
             try {
                 sendEvent(emitter, AiStreamEvent.error(message));
                 emitter.complete();
@@ -136,6 +208,14 @@ public abstract class AbstractChatCompletionsClient {
         }
     }
 
+    /**
+     * 构造 Chat Completions 协议请求体。
+     *
+     * @param defaultChatModel 默认聊天模型
+     * @param request 聊天请求
+     * @param stream 是否启用流式输出
+     * @return 请求 JSON 对象
+     */
     private ObjectNode buildChatBody(String defaultChatModel, AiChatRequest request, boolean stream) {
         ObjectNode body = objectMapper.createObjectNode();
         body.put("model", resolveModel(defaultChatModel, request.model()));
@@ -149,6 +229,15 @@ public abstract class AbstractChatCompletionsClient {
         return body;
     }
 
+    /**
+     * 创建包含认证和超时配置的 HTTP 请求构造器。
+     *
+     * @param baseUrl 服务地址
+     * @param apiKey API Key
+     * @param path 接口路径
+     * @param responseTimeout 响应超时时间
+     * @return HTTP 请求构造器
+     */
     private HttpRequest.Builder requestBuilder(String baseUrl, String apiKey, String path, Duration responseTimeout) {
         return HttpRequest.newBuilder(resolveUri(baseUrl, path))
                 .timeout(responseTimeout)
@@ -156,6 +245,14 @@ public abstract class AbstractChatCompletionsClient {
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE);
     }
 
+    /**
+     * 发送 HTTP 请求，并将网络异常转换为统一异常。
+     *
+     * @param request HTTP 请求
+     * @param bodyHandler 响应体处理器
+     * @param <T> 响应体类型
+     * @return HTTP 响应
+     */
     private <T> HttpResponse<T> send(HttpRequest request, HttpResponse.BodyHandler<T> bodyHandler) {
         try {
             return httpClient.send(request, bodyHandler);
@@ -167,6 +264,12 @@ public abstract class AbstractChatCompletionsClient {
         }
     }
 
+    /**
+     * 校验上游 HTTP 状态码，非成功状态转换为供应商异常。
+     *
+     * @param statusCode HTTP 状态码
+     * @param responseBody 上游响应内容
+     */
     private void ensureSuccess(int statusCode, String responseBody) {
         if (statusCode >= 200 && statusCode < 300) {
             return;
@@ -174,6 +277,14 @@ public abstract class AbstractChatCompletionsClient {
         throw new AiProviderException(statusCode, responseParser.parseErrorMessage(responseBody));
     }
 
+    /**
+     * 校验供应商是否已启用且基础配置完整。
+     *
+     * @param providerName 供应商名称
+     * @param baseUrl 服务地址
+     * @param apiKey API Key
+     * @param chatModel 聊天模型
+     */
     private void validateProvider(String providerName, String baseUrl, String apiKey, String chatModel) {
         if (!properties.isEnabled()) {
             throw new AiProviderException(503, "AI 服务当前已关闭");
@@ -186,20 +297,46 @@ public abstract class AbstractChatCompletionsClient {
         }
     }
 
+    /**
+     * 选择调用时指定的模型，未指定时回退到默认模型。
+     *
+     * @param defaultModel 默认模型
+     * @param model 请求指定模型
+     * @return 实际使用的模型
+     */
     private String resolveModel(String defaultModel, String model) {
         return hasText(model) ? model : defaultModel;
     }
 
+    /**
+     * 选择调用时指定的最大输出 Token，未指定时回退到默认配置。
+     *
+     * @param maxOutputTokens 请求指定的最大输出 Token
+     * @return 实际使用的最大输出 Token
+     */
     private int resolveMaxOutputTokens(Integer maxOutputTokens) {
         return maxOutputTokens == null ? properties.getMaxOutputTokens() : maxOutputTokens;
     }
 
+    /**
+     * 拼接服务地址和接口路径。
+     *
+     * @param baseUrl 服务地址
+     * @param path 接口路径
+     * @return 完整请求 URI
+     */
     private URI resolveUri(String baseUrl, String path) {
         String normalizedBaseUrl = baseUrl.replaceAll("/+$", "");
         String normalizedPath = path.startsWith("/") ? path : "/" + path;
         return URI.create(normalizedBaseUrl + normalizedPath);
     }
 
+    /**
+     * 将 JSON 对象序列化为请求字符串。
+     *
+     * @param body JSON 对象
+     * @return JSON 字符串
+     */
     private String toJson(ObjectNode body) {
         try {
             return objectMapper.writeValueAsString(body);
@@ -208,6 +345,12 @@ public abstract class AbstractChatCompletionsClient {
         }
     }
 
+    /**
+     * 向下游客户端发送统一格式的 SSE 事件。
+     *
+     * @param emitter SSE 发送器
+     * @param event 事件内容
+     */
     private void sendEvent(SseEmitter emitter, AiStreamEvent event) {
         try {
             emitter.send(SseEmitter.event().name(event.type()).data(event, MediaType.APPLICATION_JSON));
@@ -216,6 +359,25 @@ public abstract class AbstractChatCompletionsClient {
         }
     }
 
+    /**
+     * 将流式数据追加到日志预览缓冲区，最多保留前 50 个字符。
+     *
+     * @param responsePreview 响应预览缓冲区
+     * @param content 当前 SSE 数据
+     */
+    private void appendPreview(StringBuilder responsePreview, String content) {
+        int remaining = 50 - responsePreview.length();
+        if (remaining > 0) {
+            responsePreview.append(content, 0, Math.min(remaining, content.length()));
+        }
+    }
+
+    /**
+     * 提取适合返回给客户端的流式调用失败说明。
+     *
+     * @param exception 异常对象
+     * @return 错误说明
+     */
     private String providerMessage(Exception exception) {
         if (exception instanceof AiProviderException providerException) {
             return providerException.getMessage();
@@ -223,6 +385,12 @@ public abstract class AbstractChatCompletionsClient {
         return "AI 流式响应处理失败";
     }
 
+    /**
+     * 判断字符串是否包含非空白字符。
+     *
+     * @param value 待判断字符串
+     * @return 存在有效内容时返回 {@code true}
+     */
     private boolean hasText(String value) {
         return value != null && !value.isBlank();
     }

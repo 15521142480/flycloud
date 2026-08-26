@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(basePackages = "com.fly.ai")
 public class AiExceptionHandler {
 
+    /**
+     * 将模型供应商异常转换为统一的业务响应，并保留错误日志用于排查。
+     *
+     * @param exception 模型供应商异常
+     * @return 统一错误响应
+     */
     @ExceptionHandler(AiProviderException.class)
     public ResponseEntity<R<Void>> handleProviderException(AiProviderException exception) {
         HttpStatus status = exception.getStatusCode() == 401 || exception.getStatusCode() == 403
@@ -28,7 +34,7 @@ public class AiExceptionHandler {
         if (status == null || status.is2xxSuccessful()) {
             status = HttpStatus.BAD_GATEWAY;
         }
-        log.warn("AI 调用失败，statusCode={}, message={}", exception.getStatusCode(), exception.getMessage());
+        log.error("AI 调用失败，statusCode={}, message={}", exception.getStatusCode(), exception.getMessage(), exception);
         return ResponseEntity.status(status).body(R.failed("AI 服务调用失败：" + exception.getMessage()));
     }
 

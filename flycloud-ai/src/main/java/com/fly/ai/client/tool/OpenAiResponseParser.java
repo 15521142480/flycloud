@@ -25,10 +25,22 @@ public class OpenAiResponseParser {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * 创建 OpenAI 响应解析器。
+     *
+     * @param objectMapper JSON 解析工具
+     */
     public OpenAiResponseParser(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 解析 OpenAI Responses API 的普通聊天响应。
+     *
+     * @param responseBody 原始响应 JSON
+     * @param defaultModel 默认模型名称
+     * @return 统一聊天响应
+     */
     public AiChatResponse parseChatResponse(String responseBody, String defaultModel) {
         JsonNode root = readTree(responseBody);
         StringBuilder content = new StringBuilder();
@@ -49,6 +61,13 @@ public class OpenAiResponseParser {
                 parseUsage(root.path("usage")));
     }
 
+    /**
+     * 解析 OpenAI Embeddings API 的响应。
+     *
+     * @param responseBody 原始响应 JSON
+     * @param defaultModel 默认模型名称
+     * @return 统一向量响应
+     */
     public AiEmbeddingResponse parseEmbeddingResponse(String responseBody, String defaultModel) {
         JsonNode root = readTree(responseBody);
         JsonNode embeddingNode = root.path("data").path(0).path("embedding");
@@ -61,6 +80,12 @@ public class OpenAiResponseParser {
                 new AiEmbeddingResponse.EmbeddingUsage(usage.path("prompt_tokens").asLong(), usage.path("total_tokens").asLong()));
     }
 
+    /**
+     * 解析单个 OpenAI SSE 数据片段。
+     *
+     * @param data SSE 的 data 内容
+     * @return 可识别时返回统一流式事件，否则为空
+     */
     public Optional<AiStreamEvent> parseStreamEvent(String data) {
         JsonNode root = readTree(data);
         String type = root.path("type").asText();
@@ -77,6 +102,12 @@ public class OpenAiResponseParser {
         return Optional.empty();
     }
 
+    /**
+     * 从 OpenAI 错误响应中提取可展示的错误信息。
+     *
+     * @param responseBody 原始错误响应 JSON
+     * @return 错误说明
+     */
     public String parseErrorMessage(String responseBody) {
         try {
             return errorMessage(readTree(responseBody));
@@ -85,11 +116,23 @@ public class OpenAiResponseParser {
         }
     }
 
+    /**
+     * 解析 Token 用量字段。
+     *
+     * @param usage 用量 JSON 节点
+     * @return 统一 Token 用量
+     */
     private AiUsage parseUsage(JsonNode usage) {
         return new AiUsage(usage.path("input_tokens").asLong(), usage.path("output_tokens").asLong(),
                 usage.path("total_tokens").asLong());
     }
 
+    /**
+     * 从 OpenAI 响应根节点提取错误说明。
+     *
+     * @param root 响应根节点
+     * @return 错误说明
+     */
     private String errorMessage(JsonNode root) {
         String message = root.path("error").path("message").asText();
         if (message.isBlank()) {
@@ -98,6 +141,12 @@ public class OpenAiResponseParser {
         return message.isBlank() ? "模型服务调用失败" : message;
     }
 
+    /**
+     * 将 JSON 字符串解析为树结构。
+     *
+     * @param body 原始 JSON 字符串
+     * @return JSON 根节点
+     */
     private JsonNode readTree(String body) {
         try {
             return objectMapper.readTree(body);

@@ -30,6 +30,12 @@ public class AiModelProviderRouter {
     private final DeepseekClient deepseekClient;
     private final DashscopeClient dashscopeClient;
 
+    /**
+     * 按当前 provider 路由普通聊天请求。
+     *
+     * @param request 聊天请求
+     * @return 完整聊天响应
+     */
     public AiChatResponse chat(AiChatRequest request) {
         return switch (provider()) {
             case "openai" -> openAiResponsesClient.chat(request);
@@ -39,6 +45,12 @@ public class AiModelProviderRouter {
         };
     }
 
+    /**
+     * 按当前 provider 路由流式聊天请求。
+     *
+     * @param request 聊天请求
+     * @return SSE 响应发送器
+     */
     public SseEmitter stream(AiChatRequest request) {
         return switch (provider()) {
             case "openai" -> openAiResponsesClient.stream(request);
@@ -48,6 +60,12 @@ public class AiModelProviderRouter {
         };
     }
 
+    /**
+     * 按当前 provider 路由文本向量化请求。
+     *
+     * @param request 向量化请求
+     * @return 文本向量响应
+     */
     public AiEmbeddingResponse embed(AiEmbeddingRequest request) {
         return switch (provider()) {
             case "openai" -> openAiResponsesClient.embed(request);
@@ -57,10 +75,20 @@ public class AiModelProviderRouter {
         };
     }
 
+    /**
+     * 获取标准化后的供应商标识。
+     *
+     * @return 小写且去除空白后的 provider；未配置时返回空字符串
+     */
     private String provider() {
         return properties.getProvider() == null ? "" : properties.getProvider().trim().toLowerCase();
     }
 
+    /**
+     * 构造不支持供应商时的异常。
+     *
+     * @return 供应商配置异常
+     */
     private AiProviderException unsupportedProvider() {
         return new AiProviderException(400, "不支持的 AI provider：" + properties.getProvider() + "；可选 openai、deepseek、dashscope");
     }

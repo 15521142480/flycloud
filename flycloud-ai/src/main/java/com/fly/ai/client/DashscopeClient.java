@@ -23,24 +23,50 @@ public class DashscopeClient extends AbstractChatCompletionsClient {
 
     private final AiProperties properties;
 
+    /**
+     * 创建阿里云百炼客户端。
+     *
+     * @param aiHttpClient 模型 HTTP 客户端
+     * @param objectMapper JSON 序列化工具
+     * @param properties AI 配置
+     * @param streamTaskExecutor 流式任务线程池
+     */
     public DashscopeClient(HttpClient aiHttpClient, ObjectMapper objectMapper, AiProperties properties,
             @org.springframework.beans.factory.annotation.Qualifier("aiStreamTaskExecutor") Executor streamTaskExecutor) {
         super(aiHttpClient, objectMapper, properties, streamTaskExecutor);
         this.properties = properties;
     }
 
+    /**
+     * 调用百炼普通聊天接口。
+     *
+     * @param request 聊天请求
+     * @return 完整聊天响应
+     */
     public AiChatResponse chat(AiChatRequest request) {
         AiProperties.Dashscope dashscope = properties.getDashscope();
         return chat("阿里云百炼", dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(), dashscope.getChatPath(),
                 dashscope.getResponseTimeout(), request);
     }
 
+    /**
+     * 调用百炼流式聊天接口。
+     *
+     * @param request 聊天请求
+     * @return SSE 响应发送器
+     */
     public SseEmitter stream(AiChatRequest request) {
         AiProperties.Dashscope dashscope = properties.getDashscope();
         return stream("阿里云百炼", dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(), dashscope.getChatPath(),
                 dashscope.getResponseTimeout(), request);
     }
 
+    /**
+     * 调用百炼文本向量化接口。
+     *
+     * @param request 向量化请求
+     * @return 文本向量响应
+     */
     public AiEmbeddingResponse embed(AiEmbeddingRequest request) {
         AiProperties.Dashscope dashscope = properties.getDashscope();
         return embed("阿里云百炼", dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(),

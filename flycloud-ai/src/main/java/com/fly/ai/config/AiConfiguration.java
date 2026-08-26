@@ -17,6 +17,12 @@ import java.net.http.HttpClient;
 @EnableConfigurationProperties(AiProperties.class)
 public class AiConfiguration {
 
+    /**
+     * 创建调用模型原生接口的 JDK HTTP 客户端。
+     *
+     * @param properties AI 配置
+     * @return HTTP 客户端
+     */
     @Bean
     public HttpClient aiHttpClient(AiProperties properties) {
         return HttpClient.newBuilder()
@@ -24,6 +30,11 @@ public class AiConfiguration {
                 .build();
     }
 
+    /**
+     * 创建处理模型流式响应的专用线程池。
+     *
+     * @return 流式任务线程池
+     */
     @Bean(name = "aiStreamTaskExecutor")
     public ThreadPoolTaskExecutor aiStreamTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

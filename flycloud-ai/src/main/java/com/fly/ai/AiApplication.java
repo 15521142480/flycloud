@@ -16,6 +16,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableSwaggerDoc
 public class AiApplication {
 
+    /**
+     * 启动 AI 微服务。
+     *
+     * @param args 启动参数
+     */
     public static void main(String[] args) {
         SpringApplication.run(AiApplication.class, args);
     }

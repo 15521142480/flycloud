@@ -32,13 +32,25 @@ public class AiChatController {
 
     private final AiChatService aiChatService;
 
-    @Operation(summary = "普通聊天测试", description = "使用当前 provider，通过 JDK HttpClient 发起一次真实模型请求")
+    /**
+     * 发起一次性返回完整结果的聊天请求。
+     *
+     * @param request 聊天请求
+     * @return 模型完整响应
+     */
+    @Operation(summary = "普通聊天测试（一次性返回）", description = "使用当前 provider，通过 JDK HttpClient 发起一次真实模型请求")
     @PostMapping
     public R<AiChatResponse> chat(@Valid @RequestBody AiChatRequest request) {
         return R.ok(aiChatService.chat(request));
     }
 
-    @Operation(summary = "流式聊天测试", description = "使用当前 provider，通过 SSE 逐段返回真实模型输出")
+    /**
+     * 发起以 SSE 逐段返回内容的聊天请求。
+     *
+     * @param request 聊天请求
+     * @return SSE 响应发送器
+     */
+    @Operation(summary = "流式聊天测试（多次连续返回，直到结束）", description = "使用当前 provider，通过 SSE 逐段返回真实模型输出")
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter stream(@Valid @RequestBody AiChatRequest request) {
         return aiChatService.stream(request);

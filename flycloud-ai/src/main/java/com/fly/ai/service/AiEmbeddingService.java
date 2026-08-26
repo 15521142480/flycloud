@@ -17,6 +17,12 @@ public class AiEmbeddingService {
 
     private final AiModelProviderRouter aiModelProviderRouter;
 
+    /**
+     * 根据当前供应商配置执行文本向量化。
+     *
+     * @param request 向量化请求
+     * @return 文本向量响应
+     */
     public AiEmbeddingResponse embed(AiEmbeddingRequest request) {
         return aiModelProviderRouter.embed(request);
     }
