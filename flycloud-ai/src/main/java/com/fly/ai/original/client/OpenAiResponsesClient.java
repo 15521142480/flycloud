@@ -1,15 +1,17 @@
-package com.fly.ai.client;
+package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fly.ai.client.tool.OpenAiResponseParser;
+import com.fly.ai.original.client.tool.OpenAiResponseParser;
 import com.fly.ai.model.AiChatRequest;
 import com.fly.ai.model.AiChatResponse;
 import com.fly.ai.model.AiStreamEvent;
-import com.fly.ai.config.AiProperties;
+import com.fly.common.enums.ai.AiProviderEnum;
+import com.fly.ai.original.config.AiProperties;
 import com.fly.ai.model.AiEmbeddingRequest;
 import com.fly.ai.model.AiEmbeddingResponse;
+import com.fly.ai.utils.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -22,6 +24,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -73,14 +77,14 @@ public class OpenAiResponsesClient {
     public AiChatResponse chat(AiChatRequest request) {
         validateAvailable();
         ObjectNode body = buildChatBody(request, false);
-        String requestBody = toJson(body);
+        String requestBody = AiUtils.toJson(objectMapper, body);
         HttpRequest httpRequest = requestBuilder(properties.getOpenai().getChatPath())
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
-        AiHttpLog.request("OpenAI", httpRequest, requestBody);
+        AiHttpLog.request(AiProviderEnum.OPENAI.getDisplayName(), httpRequest, requestBody);
         HttpResponse<String> response = send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        AiHttpLog.response("OpenAI", httpRequest, response.statusCode(), response.body());
+        AiHttpLog.response(objectMapper, AiProviderEnum.OPENAI.getDisplayName(), httpRequest, response.statusCode(), response.body());
         ensureSuccess(response.statusCode(), response.body());
         return responseParser.parseChatResponse(response.body(), resolveChatModel(request.model()));
     }
@@ -109,14 +113,14 @@ public class OpenAiResponsesClient {
         ObjectNode body = objectMapper.createObjectNode();
         body.put("model", resolveEmbeddingModel(request.model()));
         body.put("input", request.input());
-        String requestBody = toJson(body);
+        String requestBody = AiUtils.toJson(objectMapper, body);
         HttpRequest httpRequest = requestBuilder(properties.getOpenai().getEmbeddingPath())
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
-        AiHttpLog.request("OpenAI", httpRequest, requestBody);
+        AiHttpLog.request(AiProviderEnum.OPENAI.getDisplayName(), httpRequest, requestBody);
         HttpResponse<String> response = send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        AiHttpLog.response("OpenAI", httpRequest, response.statusCode(), response.body());
+        AiHttpLog.response(objectMapper, AiProviderEnum.OPENAI.getDisplayName(), httpRequest, response.statusCode(), response.body());
         ensureSuccess(response.statusCode(), response.body());
         return responseParser.parseEmbeddingResponse(response.body(), resolveEmbeddingModel(request.model()));
     }
@@ -130,35 +134,36 @@ public class OpenAiResponsesClient {
     private void readStream(AiChatRequest request, SseEmitter emitter) {
         try {
             ObjectNode body = buildChatBody(request, true);
-            String requestBody = toJson(body);
+            String requestBody = AiUtils.toJson(objectMapper, body);
             HttpRequest httpRequest = requestBuilder(properties.getOpenai().getChatPath())
                     .header("Accept", MediaType.TEXT_EVENT_STREAM_VALUE)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                     .build();
-            AiHttpLog.request("OpenAI", httpRequest, requestBody);
+            AiHttpLog.request(AiProviderEnum.OPENAI.getDisplayName(), httpRequest, requestBody);
             HttpResponse<java.util.stream.Stream<String>> response = send(httpRequest, HttpResponse.BodyHandlers.ofLines());
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
                 String errorBody;
                 try (java.util.stream.Stream<String> lines = response.body()) {
                     errorBody = lines.reduce("", (left, right) -> left + right);
                 }
-                AiHttpLog.response("OpenAI", httpRequest, response.statusCode(), errorBody);
+                AiHttpLog.response(objectMapper, AiProviderEnum.OPENAI.getDisplayName(), httpRequest, response.statusCode(), errorBody);
                 ensureSuccess(response.statusCode(), errorBody);
             }
             try (java.util.stream.Stream<String> lines = response.body()) {
-                StringBuilder responsePreview = new StringBuilder();
+                List<String> responseEvents = new ArrayList<>();
                 lines.filter(line -> line.startsWith("data:"))
                         .map(line -> line.substring("data:".length()).trim())
                         .filter(data -> !data.isBlank() && !"[DONE]".equals(data))
                         .forEach(data -> {
-                            appendPreview(responsePreview, data);
+                            responseEvents.add(data);
                             responseParser.parseStreamEvent(data).ifPresent(event -> sendEvent(emitter, event));
                         });
-                AiHttpLog.response("OpenAI", httpRequest, response.statusCode(), responsePreview.toString());
+                AiHttpLog.streamResponse(objectMapper, AiProviderEnum.OPENAI.getDisplayName(), httpRequest,
+                        response.statusCode(), responseEvents);
             }
             emitter.complete();
         } catch (Exception exception) {
-            String message = providerMessage(exception);
+            String message = AiUtils.providerMessage(exception, "AI 流式响应处理失败");
             log.error("AI 流式调用失败: {}", message, exception);
             try {
                 sendEvent(emitter, AiStreamEvent.error(message));
@@ -184,19 +189,6 @@ public class OpenAiResponsesClient {
     }
 
     /**
-     * 将流式数据追加到日志预览缓冲区，最多保留前 50 个字符。
-     *
-     * @param responsePreview 响应预览缓冲区
-     * @param content 当前 SSE 数据
-     */
-    private void appendPreview(StringBuilder responsePreview, String content) {
-        int remaining = 50 - responsePreview.length();
-        if (remaining > 0) {
-            responsePreview.append(content, 0, Math.min(remaining, content.length()));
-        }
-    }
-
-    /**
      * 构造 OpenAI Responses API 请求体。
      *
      * @param request 聊天请求
@@ -206,7 +198,7 @@ public class OpenAiResponsesClient {
     private ObjectNode buildChatBody(AiChatRequest request, boolean stream) {
         ObjectNode body = objectMapper.createObjectNode();
         body.put("model", resolveChatModel(request.model()));
-        if (hasText(properties.getSystemPrompt())) {
+        if (AiUtils.hasText(properties.getSystemPrompt())) {
             body.put("instructions", properties.getSystemPrompt());
         }
         ArrayNode input = body.putArray("input");
@@ -226,7 +218,7 @@ public class OpenAiResponsesClient {
      * @return HTTP 请求构造器
      */
     private HttpRequest.Builder requestBuilder(String path) {
-        return HttpRequest.newBuilder(resolveUri(path))
+        return HttpRequest.newBuilder(AiUtils.resolveUri(properties.getOpenai().getBaseUrl(), path))
                 .timeout(properties.getOpenai().getResponseTimeout())
                 .header("Authorization", "Bearer " + properties.getOpenai().getApiKey())
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE);
@@ -268,13 +260,12 @@ public class OpenAiResponsesClient {
      * 校验 AI 服务和 OpenAI 配置是否可用。
      */
     private void validateAvailable() {
-        if (!properties.isEnabled()) {
-            throw new AiProviderException(503, "AI 服务当前已关闭");
+        AiUtils.requireServiceEnabled(properties.isEnabled());
+        if (properties.getProvider() != AiProviderEnum.OPENAI) {
+            throw new AiProviderException(503, "当前版本仅支持 " + AiProviderEnum.OPENAI.getValue()
+                    + " provider，实际配置为：" + properties.getProvider());
         }
-        if (!"openai".equalsIgnoreCase(properties.getProvider())) {
-            throw new AiProviderException(503, "当前版本仅支持 openai provider，实际配置为：" + properties.getProvider());
-        }
-        if (!hasText(properties.getOpenai().getApiKey())) {
+        if (!AiUtils.hasText(properties.getOpenai().getApiKey())) {
             throw new AiProviderException(503, "未配置 AI API Key，请在 Nacos 设置 OPENAI_API_KEY 环境变量或 flycloud.ai.openai.api-key");
         }
     }
@@ -286,7 +277,7 @@ public class OpenAiResponsesClient {
      * @return 实际使用的聊天模型
      */
     private String resolveChatModel(String model) {
-        return hasText(model) ? model : properties.getOpenai().getChatModel();
+        return AiUtils.hasText(model) ? model : properties.getOpenai().getChatModel();
     }
 
     /**
@@ -296,7 +287,7 @@ public class OpenAiResponsesClient {
      * @return 实际使用的向量模型
      */
     private String resolveEmbeddingModel(String model) {
-        return hasText(model) ? model : properties.getOpenai().getEmbeddingModel();
+        return AiUtils.hasText(model) ? model : properties.getOpenai().getEmbeddingModel();
     }
 
     /**
@@ -307,55 +298,6 @@ public class OpenAiResponsesClient {
      */
     private int resolveMaxOutputTokens(Integer maxOutputTokens) {
         return maxOutputTokens == null ? properties.getMaxOutputTokens() : maxOutputTokens;
-    }
-
-    /**
-     * 拼接 OpenAI 服务地址和接口路径。
-     *
-     * @param path 接口路径
-     * @return 完整请求 URI
-     */
-    private URI resolveUri(String path) {
-        String baseUrl = properties.getOpenai().getBaseUrl().replaceAll("/+$", "");
-        String normalizedPath = path.startsWith("/") ? path : "/" + path;
-        return URI.create(baseUrl + normalizedPath);
-    }
-
-    /**
-     * 将 JSON 对象序列化为请求字符串。
-     *
-     * @param body JSON 对象
-     * @return JSON 字符串
-     */
-    private String toJson(ObjectNode body) {
-        try {
-            return objectMapper.writeValueAsString(body);
-        } catch (Exception exception) {
-            throw new AiProviderException(500, "AI 请求 JSON 序列化失败", exception);
-        }
-    }
-
-    /**
-     * 提取适合返回给客户端的流式调用失败说明。
-     *
-     * @param exception 异常对象
-     * @return 错误说明
-     */
-    private String providerMessage(Exception exception) {
-        if (exception instanceof AiProviderException providerException) {
-            return providerException.getMessage();
-        }
-        return "AI 流式响应处理失败";
-    }
-
-    /**
-     * 判断字符串是否包含非空白字符。
-     *
-     * @param value 待判断字符串
-     * @return 存在有效内容时返回 {@code true}
-     */
-    private boolean hasText(String value) {
-        return value != null && !value.isBlank();
     }
 
 }

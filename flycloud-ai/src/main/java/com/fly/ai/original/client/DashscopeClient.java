@@ -1,9 +1,10 @@
-package com.fly.ai.client;
+package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fly.ai.model.AiChatRequest;
 import com.fly.ai.model.AiChatResponse;
-import com.fly.ai.config.AiProperties;
+import com.fly.common.enums.ai.AiProviderEnum;
+import com.fly.ai.original.config.AiProperties;
 import com.fly.ai.model.AiEmbeddingRequest;
 import com.fly.ai.model.AiEmbeddingResponse;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class DashscopeClient extends AbstractChatCompletionsClient {
      */
     public AiChatResponse chat(AiChatRequest request) {
         AiProperties.Dashscope dashscope = properties.getDashscope();
-        return chat("阿里云百炼", dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(), dashscope.getChatPath(),
+        return chat(AiProviderEnum.DASHSCOPE.getDisplayName(), dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(), dashscope.getChatPath(),
                 dashscope.getResponseTimeout(), request);
     }
 
@@ -57,7 +58,7 @@ public class DashscopeClient extends AbstractChatCompletionsClient {
      */
     public SseEmitter stream(AiChatRequest request) {
         AiProperties.Dashscope dashscope = properties.getDashscope();
-        return stream("阿里云百炼", dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(), dashscope.getChatPath(),
+        return stream(AiProviderEnum.DASHSCOPE.getDisplayName(), dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(), dashscope.getChatPath(),
                 dashscope.getResponseTimeout(), request);
     }
 
@@ -69,7 +70,7 @@ public class DashscopeClient extends AbstractChatCompletionsClient {
      */
     public AiEmbeddingResponse embed(AiEmbeddingRequest request) {
         AiProperties.Dashscope dashscope = properties.getDashscope();
-        return embed("阿里云百炼", dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(),
+        return embed(AiProviderEnum.DASHSCOPE.getDisplayName(), dashscope.getBaseUrl(), dashscope.getApiKey(), dashscope.getChatModel(),
                 dashscope.getEmbeddingModel(), dashscope.getEmbeddingPath(), dashscope.getResponseTimeout(), request);
     }
 

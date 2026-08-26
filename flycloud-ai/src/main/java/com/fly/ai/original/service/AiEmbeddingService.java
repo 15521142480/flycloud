@@ -1,4 +1,4 @@
-package com.fly.ai.service;
+package com.fly.ai.original.service;
 
 import com.fly.ai.model.AiEmbeddingRequest;
 import com.fly.ai.model.AiEmbeddingResponse;

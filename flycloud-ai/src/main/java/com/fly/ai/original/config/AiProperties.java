@@ -1,5 +1,6 @@
-package com.fly.ai.config;
+package com.fly.ai.original.config;
 
+import com.fly.common.enums.ai.AiProviderEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,7 +20,7 @@ public class AiProperties {
 
     private boolean enabled = true;
 
-    private String provider = "dashscope";
+    private AiProviderEnum provider = AiProviderEnum.DASHSCOPE;
 
     private String systemPrompt = "你是飞翔云系统的智能助手，请使用简洁、准确的中文回答。";
 

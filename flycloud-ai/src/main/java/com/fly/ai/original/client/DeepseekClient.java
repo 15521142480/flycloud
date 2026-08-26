@@ -1,9 +1,10 @@
-package com.fly.ai.client;
+package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fly.ai.model.AiChatRequest;
 import com.fly.ai.model.AiChatResponse;
-import com.fly.ai.config.AiProperties;
+import com.fly.common.enums.ai.AiProviderEnum;
+import com.fly.ai.original.config.AiProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -43,7 +44,7 @@ public class DeepseekClient extends AbstractChatCompletionsClient {
      */
     public AiChatResponse chat(AiChatRequest request) {
         AiProperties.Deepseek deepseek = properties.getDeepseek();
-        return chat("DeepSeek", deepseek.getBaseUrl(), deepseek.getApiKey(), deepseek.getChatModel(), deepseek.getChatPath(),
+        return chat(AiProviderEnum.DEEPSEEK.getDisplayName(), deepseek.getBaseUrl(), deepseek.getApiKey(), deepseek.getChatModel(), deepseek.getChatPath(),
                 deepseek.getResponseTimeout(), request);
     }
 
@@ -55,7 +56,7 @@ public class DeepseekClient extends AbstractChatCompletionsClient {
      */
     public SseEmitter stream(AiChatRequest request) {
         AiProperties.Deepseek deepseek = properties.getDeepseek();
-        return stream("DeepSeek", deepseek.getBaseUrl(), deepseek.getApiKey(), deepseek.getChatModel(), deepseek.getChatPath(),
+        return stream(AiProviderEnum.DEEPSEEK.getDisplayName(), deepseek.getBaseUrl(), deepseek.getApiKey(), deepseek.getChatModel(), deepseek.getChatPath(),
                 deepseek.getResponseTimeout(), request);
     }
 

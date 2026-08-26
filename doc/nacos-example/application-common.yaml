@@ -95,6 +95,42 @@ spring:
     socket-timeout: 30s
 
 
+  # ====================================================================== spring -> ai 相关配置
+  ai:
+    # 本项目显式创建多个 ChatClient，并由 flycloud.ai.provider 决定使用哪个。
+    # 因此关闭 Spring AI 的“单一默认 ChatModel”自动装配，避免多供应商 Bean 歧义。
+    model:
+      chat: none
+
+    # spring.ai.openai 表示使用 Spring AI 的 OpenAI 协议适配器；
+    # 供应商【ChatGPT的OpenAi】和【阿里云通义千问的dashscope】用的同一个spring.ai.openai 配置前缀。
+    # 所以flycloud.ai.provider=dashscope或flycloud.ai.provider=openai 修改模型地址、密钥和模型配置。
+    openai:
+      # Spring AI 会将 completions-path 拼接到此地址；与原生实现的
+      # https://dashscope.aliyuncs.com/compatible-mode/v1 + /chat/completions 等价。
+      base-url: https://dashscope.aliyuncs.com/compatible-mode
+      # 与原生调用共用同一环境变量，严禁在配置文件写入真实密钥。
+      api-key: ${DASHSCOPE_API_KEY:}
+      chat:
+        completions-path: /v1/chat/completions
+        options:
+          model: qwen-plus
+          # 与原生实现共用 flycloud.ai.max-output-tokens；单次请求可传 maxOutputTokens 覆盖。
+          max-tokens: ${flycloud.ai.max-output-tokens}
+
+    # DeepSeek 使用 Spring AI 的 DeepSeek 官方适配器，而非 OpenAI 兼容适配器。
+    # 当 flycloud.ai.provider=deepseek 时，Spring AI 聊天接口自动路由至该配置。
+    deepseek:
+      base-url: https://api.deepseek.com
+      api-key: ${DEEPSEEK_API_KEY:}
+      chat:
+        completions-path: /chat/completions
+        options:
+          model: deepseek-chat
+          # 与原生实现共用 flycloud.ai.max-output-tokens；单次请求可传 maxOutputTokens 覆盖。
+          max-tokens: ${flycloud.ai.max-output-tokens}
+
+
 
 # ====================================================================== redisson 配置
 redisson:
@@ -162,14 +198,17 @@ flycloud:
 
   # ====================================================================== flycloud -> ai 相关配置
   ai:
+
     # AI 服务总开关；关闭后所有 AI 接口会直接拒绝请求。
     enabled: true
     # 可选：openai、deepseek、dashscope（阿里云百炼-通义千问）
     provider: dashscope
     # 所有供应商共用的第一版系统提示词；后续应改为可版本化的提示词管理。
     system-prompt: 你是飞翔云系统的智能助手，请使用简洁、准确的中文回答。
-    # 所有供应商共用的默认最大输出 Token；客户端可传更小的值覆盖。
+    # 所有供应商共用的默认最大输出 Token；客户端可传 maxOutputTokens 覆盖。
     max-output-tokens: 1024
+
+    # note 以下为原生请求模型配置，使用SpringAi后可忽略
     openai:
       # API 服务地址。不使用官方服务时，可在此替换为兼容服务地址。
       base-url: https://api.openai.com

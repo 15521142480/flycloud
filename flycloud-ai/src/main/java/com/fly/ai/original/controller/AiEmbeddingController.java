@@ -1,8 +1,8 @@
-package com.fly.ai.controller;
+package com.fly.ai.original.controller;
 
 import com.fly.ai.model.AiEmbeddingRequest;
 import com.fly.ai.model.AiEmbeddingResponse;
-import com.fly.ai.service.AiEmbeddingService;
+import com.fly.ai.original.service.AiEmbeddingService;
 import com.fly.common.domain.model.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "AI 原生向量测试")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ai/embedding")
+@RequestMapping({ "/ai/original/embedding", "/ai/embedding" })
 public class AiEmbeddingController {
 
     private final AiEmbeddingService aiEmbeddingService;

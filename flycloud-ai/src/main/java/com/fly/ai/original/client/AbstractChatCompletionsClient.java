@@ -1,16 +1,17 @@
-package com.fly.ai.client;
+package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fly.ai.client.tool.ChatCompletionsResponseParser;
+import com.fly.ai.original.client.tool.ChatCompletionsResponseParser;
 import com.fly.ai.model.AiChatRequest;
 import com.fly.ai.model.AiChatResponse;
 import com.fly.ai.model.AiStreamEvent;
-import com.fly.ai.config.AiProperties;
+import com.fly.ai.original.config.AiProperties;
 import com.fly.ai.model.AiEmbeddingRequest;
 import com.fly.ai.model.AiEmbeddingResponse;
 import com.fly.common.exception.AiProviderException;
+import com.fly.ai.utils.AiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -22,6 +23,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -76,14 +79,14 @@ public abstract class AbstractChatCompletionsClient {
             Duration responseTimeout, AiChatRequest request) {
         validateProvider(providerName, baseUrl, apiKey, chatModel);
         ObjectNode body = buildChatBody(chatModel, request, false);
-        String requestBody = toJson(body);
+        String requestBody = AiUtils.toJson(objectMapper, body);
         HttpRequest httpRequest = requestBuilder(baseUrl, apiKey, chatPath, responseTimeout)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
         AiHttpLog.request(providerName, httpRequest, requestBody);
         HttpResponse<String> response = send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        AiHttpLog.response(providerName, httpRequest, response.statusCode(), response.body());
+        AiHttpLog.response(objectMapper, providerName, httpRequest, response.statusCode(), response.body());
         ensureSuccess(response.statusCode(), response.body());
         return responseParser.parseChatResponse(response.body(), resolveModel(chatModel, request.model()));
     }
@@ -125,20 +128,20 @@ public abstract class AbstractChatCompletionsClient {
     protected AiEmbeddingResponse embed(String providerName, String baseUrl, String apiKey, String chatModel,
             String embeddingModel, String embeddingPath, Duration responseTimeout, AiEmbeddingRequest request) {
         validateProvider(providerName, baseUrl, apiKey, chatModel);
-        if (!hasText(embeddingModel)) {
+        if (!AiUtils.hasText(embeddingModel)) {
             throw new AiProviderException(400, providerName + " 未配置 Embedding 模型");
         }
         ObjectNode body = objectMapper.createObjectNode();
         body.put("model", resolveModel(embeddingModel, request.model()));
         body.put("input", request.input());
-        String requestBody = toJson(body);
+        String requestBody = AiUtils.toJson(objectMapper, body);
         HttpRequest httpRequest = requestBuilder(baseUrl, apiKey, embeddingPath, responseTimeout)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
         AiHttpLog.request(providerName, httpRequest, requestBody);
         HttpResponse<String> response = send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        AiHttpLog.response(providerName, httpRequest, response.statusCode(), response.body());
+        AiHttpLog.response(objectMapper, providerName, httpRequest, response.statusCode(), response.body());
         ensureSuccess(response.statusCode(), response.body());
         return responseParser.parseEmbeddingResponse(response.body(), resolveModel(embeddingModel, request.model()));
     }
@@ -160,7 +163,7 @@ public abstract class AbstractChatCompletionsClient {
             AiChatRequest request, SseEmitter emitter) {
         try {
             ObjectNode body = buildChatBody(chatModel, request, true);
-            String requestBody = toJson(body);
+            String requestBody = AiUtils.toJson(objectMapper, body);
             HttpRequest httpRequest = requestBuilder(baseUrl, apiKey, chatPath, responseTimeout)
                     .header("Accept", MediaType.TEXT_EVENT_STREAM_VALUE)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
@@ -172,17 +175,17 @@ public abstract class AbstractChatCompletionsClient {
                 try (java.util.stream.Stream<String> lines = response.body()) {
                     errorBody = lines.reduce("", (left, right) -> left + right);
                 }
-                AiHttpLog.response(providerName, httpRequest, response.statusCode(), errorBody);
+                AiHttpLog.response(objectMapper, providerName, httpRequest, response.statusCode(), errorBody);
                 ensureSuccess(response.statusCode(), errorBody);
             }
             try (java.util.stream.Stream<String> lines = response.body()) {
                 AtomicBoolean completed = new AtomicBoolean(false);
-                StringBuilder responsePreview = new StringBuilder();
+                List<String> responseEvents = new ArrayList<>();
                 lines.filter(line -> line.startsWith("data:"))
                         .map(line -> line.substring("data:".length()).trim())
                         .filter(data -> !data.isBlank() && !"[DONE]".equals(data))
                         .forEach(data -> {
-                            appendPreview(responsePreview, data);
+                            responseEvents.add(data);
                             responseParser.parseStreamEvent(data).ifPresent(event -> {
                                 if ("completed".equals(event.type())) {
                                     completed.set(true);
@@ -193,11 +196,11 @@ public abstract class AbstractChatCompletionsClient {
                 if (!completed.get()) {
                     sendEvent(emitter, AiStreamEvent.completed(null, null));
                 }
-                AiHttpLog.response(providerName, httpRequest, response.statusCode(), responsePreview.toString());
+                AiHttpLog.streamResponse(objectMapper, providerName, httpRequest, response.statusCode(), responseEvents);
             }
             emitter.complete();
         } catch (Exception exception) {
-            String message = providerMessage(exception);
+            String message = AiUtils.providerMessage(exception, "AI 流式响应处理失败");
             log.error("Chat Completions 流式调用失败: {}", message, exception);
             try {
                 sendEvent(emitter, AiStreamEvent.error(message));
@@ -220,7 +223,7 @@ public abstract class AbstractChatCompletionsClient {
         ObjectNode body = objectMapper.createObjectNode();
         body.put("model", resolveModel(defaultChatModel, request.model()));
         ArrayNode messages = body.putArray("messages");
-        if (hasText(properties.getSystemPrompt())) {
+        if (AiUtils.hasText(properties.getSystemPrompt())) {
             messages.addObject().put("role", "system").put("content", properties.getSystemPrompt());
         }
         messages.addObject().put("role", "user").put("content", request.message());
@@ -239,7 +242,7 @@ public abstract class AbstractChatCompletionsClient {
      * @return HTTP 请求构造器
      */
     private HttpRequest.Builder requestBuilder(String baseUrl, String apiKey, String path, Duration responseTimeout) {
-        return HttpRequest.newBuilder(resolveUri(baseUrl, path))
+        return HttpRequest.newBuilder(AiUtils.resolveUri(baseUrl, path))
                 .timeout(responseTimeout)
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE);
@@ -286,13 +289,11 @@ public abstract class AbstractChatCompletionsClient {
      * @param chatModel 聊天模型
      */
     private void validateProvider(String providerName, String baseUrl, String apiKey, String chatModel) {
-        if (!properties.isEnabled()) {
-            throw new AiProviderException(503, "AI 服务当前已关闭");
-        }
-        if (!hasText(apiKey)) {
+        AiUtils.requireServiceEnabled(properties.isEnabled());
+        if (!AiUtils.hasText(apiKey)) {
             throw new AiProviderException(503, "未配置 " + providerName + " API Key，请在运行环境设置对应环境变量或 Nacos 配置");
         }
-        if (!hasText(baseUrl) || !hasText(chatModel)) {
+        if (!AiUtils.hasText(baseUrl) || !AiUtils.hasText(chatModel)) {
             throw new AiProviderException(503, providerName + " 的服务地址或聊天模型未配置");
         }
     }
@@ -305,7 +306,7 @@ public abstract class AbstractChatCompletionsClient {
      * @return 实际使用的模型
      */
     private String resolveModel(String defaultModel, String model) {
-        return hasText(model) ? model : defaultModel;
+        return AiUtils.hasText(model) ? model : defaultModel;
     }
 
     /**
@@ -316,33 +317,6 @@ public abstract class AbstractChatCompletionsClient {
      */
     private int resolveMaxOutputTokens(Integer maxOutputTokens) {
         return maxOutputTokens == null ? properties.getMaxOutputTokens() : maxOutputTokens;
-    }
-
-    /**
-     * 拼接服务地址和接口路径。
-     *
-     * @param baseUrl 服务地址
-     * @param path 接口路径
-     * @return 完整请求 URI
-     */
-    private URI resolveUri(String baseUrl, String path) {
-        String normalizedBaseUrl = baseUrl.replaceAll("/+$", "");
-        String normalizedPath = path.startsWith("/") ? path : "/" + path;
-        return URI.create(normalizedBaseUrl + normalizedPath);
-    }
-
-    /**
-     * 将 JSON 对象序列化为请求字符串。
-     *
-     * @param body JSON 对象
-     * @return JSON 字符串
-     */
-    private String toJson(ObjectNode body) {
-        try {
-            return objectMapper.writeValueAsString(body);
-        } catch (Exception exception) {
-            throw new AiProviderException(500, "AI 请求 JSON 序列化失败", exception);
-        }
     }
 
     /**
@@ -357,42 +331,6 @@ public abstract class AbstractChatCompletionsClient {
         } catch (IOException exception) {
             throw new AiProviderException(499, "客户端已断开 AI 流式连接", exception);
         }
-    }
-
-    /**
-     * 将流式数据追加到日志预览缓冲区，最多保留前 50 个字符。
-     *
-     * @param responsePreview 响应预览缓冲区
-     * @param content 当前 SSE 数据
-     */
-    private void appendPreview(StringBuilder responsePreview, String content) {
-        int remaining = 50 - responsePreview.length();
-        if (remaining > 0) {
-            responsePreview.append(content, 0, Math.min(remaining, content.length()));
-        }
-    }
-
-    /**
-     * 提取适合返回给客户端的流式调用失败说明。
-     *
-     * @param exception 异常对象
-     * @return 错误说明
-     */
-    private String providerMessage(Exception exception) {
-        if (exception instanceof AiProviderException providerException) {
-            return providerException.getMessage();
-        }
-        return "AI 流式响应处理失败";
-    }
-
-    /**
-     * 判断字符串是否包含非空白字符。
-     *
-     * @param value 待判断字符串
-     * @return 存在有效内容时返回 {@code true}
-     */
-    private boolean hasText(String value) {
-        return value != null && !value.isBlank();
     }
 
 }

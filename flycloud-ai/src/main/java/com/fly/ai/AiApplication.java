@@ -1,6 +1,8 @@
 package com.fly.ai;
 
 import com.fly.common.doc.annotation.EnableSwaggerDoc;
+import org.springframework.ai.model.deepseek.autoconfigure.DeepSeekChatAutoConfiguration;
+import org.springframework.ai.model.openai.autoconfigure.OpenAiChatAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -12,7 +14,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @date 2026-08-25
  */
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = { "com.fly.**" })
+@SpringBootApplication(scanBasePackages = { "com.fly.**" }, exclude = {
+        OpenAiChatAutoConfiguration.class, DeepSeekChatAutoConfiguration.class })
 @EnableSwaggerDoc
 public class AiApplication {
 

@@ -1,8 +1,8 @@
-package com.fly.ai.controller;
+package com.fly.ai.springai.controller;
 
 import com.fly.ai.model.AiChatRequest;
 import com.fly.ai.model.AiChatResponse;
-import com.fly.ai.service.AiChatService;
+import com.fly.ai.springai.service.SpringAiChatService;
 import com.fly.common.domain.model.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,44 +16,40 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
- * 第一版原生模型调用测试控制器。
- * <p>
- * 此控制器不依赖供应商 SDK，调用链为 Controller -> Service -> Provider Router -> JDK HttpClient。
- * 可直接通过 Swagger 或 Postman 验证普通聊天和 SSE 流式响应。
+ * Spring AI 聊天测试控制器。
  *
  * @author lxs
- * @date 2026-08-25
+ * @date 2026-08-26
  */
-@Tag(name = "AI 原生聊天测试")
+@Tag(name = "AI Spring AI 聊天测试")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ai/chat")
-public class AiChatController {
+@RequestMapping("/ai/spring/chat")
+public class SpringAiChatController {
 
-    private final AiChatService aiChatService;
+    private final SpringAiChatService springAiChatService;
 
     /**
-     * 发起一次性返回完整结果的聊天请求。
+     * 使用 Spring AI 发起一次性返回完整结果的聊天请求。
      *
      * @param request 聊天请求
      * @return 模型完整响应
      */
-    @Operation(summary = "普通聊天测试（一次性返回）", description = "使用当前 provider，通过 JDK HttpClient 发起一次真实模型请求")
+    @Operation(summary = "Spring AI 普通聊天测试", description = "通过 Spring AI ChatClient 调用当前配置的模型")
     @PostMapping
     public R<AiChatResponse> chat(@Valid @RequestBody AiChatRequest request) {
-        return R.ok(aiChatService.chat(request));
+        return R.ok(springAiChatService.chat(request));
     }
 
     /**
-     * 发起以 SSE 逐段返回内容的聊天请求。
+     * 使用 Spring AI 发起以 SSE 逐段返回内容的聊天请求。
      *
      * @param request 聊天请求
      * @return SSE 响应发送器
      */
-    @Operation(summary = "流式聊天测试（多次连续返回，直到结束）", description = "使用当前 provider，通过 SSE 逐段返回真实模型输出")
+    @Operation(summary = "Spring AI 流式聊天测试", description = "通过 Spring AI ChatClient 流式调用当前配置的模型")
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter stream(@Valid @RequestBody AiChatRequest request) {
-        return aiChatService.stream(request);
+        return springAiChatService.stream(request);
     }
-
 }
