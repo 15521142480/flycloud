@@ -1884,25 +1884,6 @@ create table sys_user_role
 create index sys_user_role_user_id_index
     on sys_user_role (user_id);
 
-create table t_oa_leave
-(
-    id          bigint auto_increment comment '主键'
-        primary key,
-    user_id     bigint                                not null comment '申请人的用户编号',
-    type        tinyint                               not null comment '请假类型',
-    reason      varchar(200)                          not null comment '请假原因',
-    start_time  datetime                              not null comment '开始时间',
-    end_time    datetime                              not null comment '结束时间',
-    day         tinyint                               not null comment '请假天数',
-    status      tinyint                               not null comment '审批结果',
-    instance_id varchar(64)                           null comment '流程实例编号',
-    create_by   varchar(64) default ''                null comment '创建者',
-    create_time datetime    default CURRENT_TIMESTAMP not null comment '创建时间',
-    update_by   varchar(64) default ''                null comment '更新者',
-    update_time datetime    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    is_deleted  bit         default b'0'              not null comment '是否删除'
-)
-    comment 'OA 请假申请表' collate = utf8mb4_unicode_ci;
 
 create table test
 (

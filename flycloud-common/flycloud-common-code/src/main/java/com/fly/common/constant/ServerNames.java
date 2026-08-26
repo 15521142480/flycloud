@@ -8,6 +8,11 @@ package com.fly.common.constant;
  */
 public interface ServerNames {
 
+    /**
+     * AI 服务名
+     */
+    String AI_SERVER_NAME = "flycloud-ai";
+
 
     /**
      * 系统服务名

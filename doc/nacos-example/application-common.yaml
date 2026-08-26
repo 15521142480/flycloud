@@ -160,6 +160,51 @@ springdoc:
 
 flycloud:
 
+  # ====================================================================== flycloud -> ai 相关配置
+  ai:
+    # AI 服务总开关；关闭后所有 AI 接口会直接拒绝请求。
+    enabled: true
+    # 可选：openai、deepseek、dashscope（阿里云百炼-通义千问）
+    provider: dashscope
+    # 所有供应商共用的第一版系统提示词；后续应改为可版本化的提示词管理。
+    system-prompt: 你是飞翔云系统的智能助手，请使用简洁、准确的中文回答。
+    # 所有供应商共用的默认最大输出 Token；客户端可传更小的值覆盖。
+    max-output-tokens: 1024
+    openai:
+      # API 服务地址。不使用官方服务时，可在此替换为兼容服务地址。
+      base-url: https://api.openai.com
+      # 通过环境变量注入，严禁填写真实密钥并提交 Git；生产环境应使用 Nacos 加密配置或密钥管理服务。
+      api-key: ${OPENAI_API_KEY:}
+      # 对话模型与向量模型分开配置，避免 Embedding 误使用聊天模型。
+      chat-model: gpt-5.4-mini
+      embedding-model: text-embedding-3-small
+      # OpenAI Responses API 路径；保留为配置项，便于学习和切换兼容服务。
+      chat-path: /v1/responses
+      embedding-path: /v1/embeddings
+      # 网络超时，避免供应商异常时长期占用业务线程。
+      connect-timeout: 10s
+      response-timeout: 60s
+
+    # DeepSeek 使用 OpenAI 兼容的 Chat Completions API。
+    deepseek:
+      base-url: https://api.deepseek.com
+      api-key: ${DEEPSEEK_API_KEY:}
+      chat-model: deepseek-v4-flash
+      chat-path: /chat/completions
+      response-timeout: 60s
+
+    # 阿里云百炼（通义千问）使用 OpenAI 兼容 API。
+    # 如需使用业务空间专属域名，可将 base-url 改为：https://${DASHSCOPE_WORKSPACE_ID}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+    dashscope:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: ${DASHSCOPE_API_KEY:}
+      chat-model: qwen-plus
+      embedding-model: text-embedding-v4
+      chat-path: /chat/completions
+      embedding-path: /embeddings
+      response-timeout: 60s
+
+
   # ====================================================================== flycloud -> security 相关配置
   security:
     auth:
@@ -442,6 +487,7 @@ flycloud:
     scope: server
     services:
       flycloud-gateway: flycloud-gateway
+      flycloud-ai: flycloud-ai
       flycloud-system: flycloud-system
       flycloud-mall: flycloud-mall
       flycloud-music: flycloud-music

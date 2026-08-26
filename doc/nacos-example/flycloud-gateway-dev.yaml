@@ -59,6 +59,15 @@ spring:
               uri: lb://flycloud-auth
               predicates:
                 - Path=/flycloud-auth/**
+
+            - id: flycloud-ai
+              uri: lb://flycloud-ai
+              predicates:
+                - Path=/flycloud-ai/**
+              filters:
+                # AI 服务未设置 servlet context-path，网关转发时去除服务前缀。
+                # 同时兼容 /flycloud-ai/** 业务接口和 /v3/api-docs/flycloud-ai 聚合文档转发。
+                - StripPrefix=1
             
             - id: flycloud-bpm
               uri: lb://flycloud-bpm

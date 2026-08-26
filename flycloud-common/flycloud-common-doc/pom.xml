@@ -30,6 +30,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
         </dependency>
+        <!-- MVC 服务（如 flycloud-ai）使用的 Swagger / Knife4j 配置端点。 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
         <!--接口文档-->
         <dependency>
             <groupId>org.springdoc</groupId>

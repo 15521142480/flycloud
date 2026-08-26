@@ -1,0 +1,5 @@
+# AI 服务开发环境配置。
+# 通用模型配置位于 application-common.yaml 的 flycloud.ai 下。
+logging:
+  level:
+    com.fly.ai: INFO

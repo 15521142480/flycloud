@@ -1,0 +1,2 @@
+# application-dev.yml 开发环境配置示例。
+# 如有本地覆盖项，请复制为 application-dev.yml；该文件不应提交 Git。

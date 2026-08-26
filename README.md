@@ -127,7 +127,7 @@ flycloud
 | 岗位管理             | 配置用户所属担任职务                                   |
 
 ![img.png](doc/img/ImageTextClickCaptcha.png)
-![img.png](doc/img/roleMenu1.png)
+![img.png](doc/img/roleMenu-1.png)
 
 ### 8、工作流程
 >   采用flowable + bpmn.js 支撑整个系统的工作流引擎
@@ -188,15 +188,21 @@ flycloud
 -   第一种: 通过后台管理生成，生成后位置在后端部署的根目录下的src文件夹；
 -   第二种: 直接访问接口生成: http://ip:网关端口/flycloud-generator/gen/generatorCode?tables=sys_user  (多个用,隔开; 默认生成的文件在当前根目录下, 具体看生成时的控制台日志信息)
 
-![img.png](doc/img/gen3.png)
-![img.png](doc/img/gen1.png)
-![img.png](doc/img/gen2.png)
+![img.png](doc/img/gen-3.png)
+![img.png](doc/img/gen-1.png)
+![img.png](doc/img/gen-2.png)
 
 ### 11、Swagger文档说明:
 -  本系统使用的是 Spring doc
--  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox, 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`, 如: http://localhost:8080/flycloud-system/v3/api-docs/
+   </br> 网关统一接口地址：http://localhost:8080/doc.html
+   </br> 单个服务接口地址：http://localhost:8086/doc.html
+-  由于框架采用openapi行业规范，如需使用第三方文档工具 如 apifox
+   </br> 则数据源的url是: `域名+网关端口+/服务名/v3/api-docs/`
+   </br> 如: http://localhost:8080/flycloud-system/v3/api-docs/
 
-![img.png](doc/img/swagger.png)
+![img.png](doc/img/swagger-1.png)
+![img.png](doc/img/swagger-2.png)
+![img.png](doc/img/swagger-3.png)
 
 ### 12、实体模型(domain)说明:
 >   BO -> 由于此系统采用的分布式微服务架构, 也就每个服务相对独立, 且都是服务之间的调用(网关), 所以DTO的概念换成了BO
