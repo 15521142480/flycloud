@@ -14,6 +14,7 @@ import org.springframework.ai.chat.model.ToolContext;
 import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.ai.tool.ToolCallback;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,14 +61,57 @@ class AiBusinessToolsTest {
         ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
         when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(true));
         TradeOrderVo order = order(20L, 2L);
-        when(tradeOrderApi.getOrderById(20L)).thenReturn(R.ok(order));
+        when(tradeOrderApi.getOrderByIdOrNo("20")).thenReturn(R.ok(order));
         AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi);
         AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
 
-        Object result = tools.queryMallOrderById(20L, toolContext(1L, trace));
+        Object result = tools.queryMallOrderByIdOrNo("20", toolContext(1L, trace));
 
         AiToolOrderSummary summary = assertInstanceOf(AiToolOrderSummary.class, result);
         assertEquals(20L, summary.orderId());
+        assertEquals("检查到您有该模块权限（超级管理员）", trace.permissionMessage());
+    }
+
+    /**
+     * 订单流水号必须按字符串传递，避免超出 Long 范围时在 Spring AI 参数转换阶段发生溢出。
+     */
+    @Test
+    void shouldAllowSuperAdminToQueryOrderByStringOrderNo() {
+        String orderNo = "M202607040355023193520";
+        ISysRoleApi sysRoleApi = mock(ISysRoleApi.class);
+        ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
+        when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(true));
+        when(tradeOrderApi.getOrderByIdOrNo(orderNo)).thenReturn(R.ok(order(20L, 2L)));
+        AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi);
+        AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
+
+        Object result = tools.queryMallOrderByIdOrNo(orderNo, toolContext(1L, trace));
+
+        AiToolOrderSummary summary = assertInstanceOf(AiToolOrderSummary.class, result);
+        assertEquals(20L, summary.orderId());
+        assertEquals("检查到您有该模块权限（超级管理员）", trace.permissionMessage());
+    }
+
+    /**
+     * 雪花算法生成的大整数订单主键必须以字符串传入工具，避免模型 JSON 数字精度或 Long 转换问题。
+     */
+    @Test
+    void shouldAcceptLargeNumericOrderIdFromToolJson() {
+        Long orderId = 2073133434168320001L;
+        ISysRoleApi sysRoleApi = mock(ISysRoleApi.class);
+        ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
+        when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(true));
+        when(tradeOrderApi.getOrderByIdOrNo(orderId.toString())).thenReturn(R.ok(order(orderId, 2L)));
+        AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi);
+        AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
+        ToolCallback callback = Arrays.stream(ToolCallbacks.from(tools))
+                .filter(item -> "query_mall_order_by_id_or_no".equals(item.getToolDefinition().name()))
+                .findFirst()
+                .orElseThrow();
+
+        String result = callback.call("{\"idOrNo\":\"2073133434168320001\"}", toolContext(1L, trace));
+
+        assertTrue(result.contains("2073133434168320001"));
         assertEquals("检查到您有该模块权限（超级管理员）", trace.permissionMessage());
     }
 
@@ -79,11 +123,11 @@ class AiBusinessToolsTest {
         ISysRoleApi sysRoleApi = mock(ISysRoleApi.class);
         ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
         when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(false));
-        when(tradeOrderApi.getOrderById(20L)).thenReturn(R.ok(order(20L, 1L)));
+        when(tradeOrderApi.getOrderByIdOrNo("20")).thenReturn(R.ok(order(20L, 1L)));
         AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi);
         AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
 
-        Object result = tools.queryMallOrderById(20L, toolContext(1L, trace));
+        Object result = tools.queryMallOrderByIdOrNo("20", toolContext(1L, trace));
 
         assertInstanceOf(AiToolOrderSummary.class, result);
         assertEquals("检查到您有该模块权限（当前用户为订单用户）", trace.permissionMessage());
@@ -97,11 +141,11 @@ class AiBusinessToolsTest {
         ISysRoleApi sysRoleApi = mock(ISysRoleApi.class);
         ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
         when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(false));
-        when(tradeOrderApi.getOrderById(20L)).thenReturn(R.ok(order(20L, 2L)));
+        when(tradeOrderApi.getOrderByIdOrNo("20")).thenReturn(R.ok(order(20L, 2L)));
         AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi);
         AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
 
-        Object result = tools.queryMallOrderById(20L, toolContext(1L, trace));
+        Object result = tools.queryMallOrderByIdOrNo("20", toolContext(1L, trace));
 
         assertEquals("当前登录用户无权查询该订单。", result);
         assertTrue(trace.isDenied());

@@ -191,6 +191,42 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     }
 
     /**
+     * 根据订单数据库主键或订单流水号查询交易订单详情。
+     *
+     * @param idOrNo 订单数据库主键或订单流水号
+     * @return 订单详情
+     */
+    @Override
+    public TradeOrderVo queryByIdOrNo(String idOrNo) {
+        Long orderId = parsePositiveLong(idOrNo);
+        TradeOrderVo order = baseMapper.selectVoOne(Wrappers.<TradeOrder>lambdaQuery()
+                .eq(TradeOrder::getIsDeleted, false)
+                .and(query -> {
+                    query.eq(TradeOrder::getNo, idOrNo);
+                    if (orderId != null) {
+                        query.or().eq(TradeOrder::getId, orderId);
+                    }
+                }));
+        fillOrderItems(order);
+        return order;
+    }
+
+    /**
+     * 将可能的订单数据库主键解析为正整数；订单流水号等非数字文本返回 {@code null}。
+     *
+     * @param value 待解析标识
+     * @return 正整数订单主键，或 {@code null}
+     */
+    private Long parsePositiveLong(String value) {
+        try {
+            long number = Long.parseLong(value);
+            return number > 0 ? number : null;
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    /**
      * 查询当前用户交易订单详情。
      */
     @Override

@@ -23,6 +23,6 @@ public class MallApiPaths {
     /**
      * 根据订单编号查询订单。
      */
-    public static final String PROVIDER_TRADE_ORDER_ID = PROVIDER + "/trade/order/id";
+    public static final String PROVIDER_TRADE_ORDER_ID_OR_NO = PROVIDER + "/trade/order/id-or-no";
 
 }

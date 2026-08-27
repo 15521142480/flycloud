@@ -231,10 +231,10 @@ const learningSteps: LearningStep[] = [
     completed: false,
     available: true,
     chatStage: 'tool',
-    placeholder: '请输入问题，例如：查询订单 ID 10001 的信息',
+    placeholder: '请输入问题，例如：查询订单 ID M202607040355023193520 的信息',
     emptyTitle: '开始一次受控的业务查询',
-    emptyDescription: '例如：查询用户 ID 1 的信息；或查询订单 ID 10001 的信息。',
-    examples: ['查询用户 ID 1 的信息', '查询订单 ID 10001 的信息']
+    emptyDescription: '例如：查询用户 ID 1 的信息；查询订单 ID M202607040355023193520 或 2073133434168320001 的信息。',
+    examples: ['查询用户 ID 1 的信息', '查询订单 ID M202607040355023193520 的信息', '查询订单 ID 2073133434168320001 的信息']
   },
   {
     id: 4,

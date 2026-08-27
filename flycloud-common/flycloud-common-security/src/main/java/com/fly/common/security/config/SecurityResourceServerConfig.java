@@ -9,6 +9,7 @@ import com.fly.common.security.handler.CustomAuthenticationEntryPoint;
 import com.fly.common.security.handler.CustomAuthenticationFailureHandler;
 import com.fly.common.security.handler.CustomAuthenticationSuccessHandler;
 import com.fly.common.security.filter.BearerTokenAuthenticationFilter;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -75,6 +76,8 @@ public class SecurityResourceServerConfig {
                 .addFilterBefore(feignSignatureAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(bearerTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
+                        // SseEmitter 写入和完成时会触发容器 ASYNC 分派；初始请求已完成认证，异步分派无需重复认证。
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
                         .requestMatchers(ignoreUrls).permitAll()
                         .anyRequest().authenticated())
                 .build();

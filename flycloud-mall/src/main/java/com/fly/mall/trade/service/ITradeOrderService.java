@@ -33,6 +33,14 @@ public interface ITradeOrderService {
     TradeOrderVo queryById(Long id);
 
     /**
+     * 根据订单数据库主键或订单流水号查询交易订单详情。
+     *
+     * @param idOrNo 订单数据库主键或订单流水号
+     * @return 订单详情
+     */
+    TradeOrderVo queryByIdOrNo(String idOrNo);
+
+    /**
      * 查询当前用户交易订单详情。
      */
     TradeOrderVo queryByUserAndId(Long userId, Long id);

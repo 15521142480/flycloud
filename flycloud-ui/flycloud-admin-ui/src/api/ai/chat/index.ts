@@ -108,6 +108,7 @@ export const streamChat = async (
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
+  let terminalEventReceived = false
   try {
     while (true) {
       const { done, value } = await reader.read()
@@ -120,15 +121,18 @@ export const streamChat = async (
       while (separatorIndex >= 0) {
         const eventBlock = buffer.slice(0, separatorIndex)
         buffer = buffer.slice(separatorIndex + 2)
-        const event = parseSseEvent(eventBlock, onEvent)
+        const event = terminalEventReceived ? undefined : parseSseEvent(eventBlock, onEvent)
         if (event?.type === 'completed' || event?.type === 'error') {
-          await reader.cancel()
-          return
+          // 终态事件由后端的 SseEmitter.complete() 关闭连接。不能主动 cancel，
+          // 否则网关会将客户端主动断开记录为 PrematureCloseException。
+          terminalEventReceived = true
         }
         separatorIndex = buffer.indexOf('\n\n')
       }
     }
-    parseSseEvent(buffer, onEvent)
+    if (!terminalEventReceived) {
+      parseSseEvent(buffer, onEvent)
+    }
   } finally {
     reader.releaseLock()
   }

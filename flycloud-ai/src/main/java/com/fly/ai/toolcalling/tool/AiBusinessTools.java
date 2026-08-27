@@ -16,6 +16,7 @@ import org.springframework.ai.chat.model.ToolContext;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -41,7 +42,7 @@ public class AiBusinessTools {
 
     private static final String QUERY_SYSTEM_USER_TOOL = "query_system_user_by_id";
 
-    private static final String QUERY_MALL_ORDER_TOOL = "query_mall_order_by_id";
+    private static final String QUERY_MALL_ORDER_TOOL = "query_mall_order_by_id_or_no";
 
     private final ISysUserApi sysUserApi;
 
@@ -73,35 +74,50 @@ public class AiBusinessTools {
     }
 
     /**
-     * 根据订单编号查询订单摘要。
+     * 根据订单数据库主键或订单流水号查询订单摘要。
      * <p>
      * 超级管理员可查询全部订单；普通用户仅能查询本人订单。未授权时不向模型返回订单是否存在以及任何订单内容。
      *
-     * @param orderId 订单编号
+     * @param idOrNo 订单数据库主键或订单流水号
      * @param toolContext 服务端工具上下文
      * @return 已脱敏的订单摘要，或无权限/不存在说明
      */
-    @Tool(name = QUERY_MALL_ORDER_TOOL, description = "根据订单ID查询商城订单摘要。仅在当前登录用户是订单创建人或拥有超级管理员角色时返回订单信息。")
-    public Object queryMallOrderById(
-            @ToolParam(description = "需要查询的商城订单ID") Long orderId,
+    @Tool(name = QUERY_MALL_ORDER_TOOL, description = "根据商城订单数据库主键或订单流水号查询订单摘要。参数统一传入用户提供的订单 ID、订单编号或订单流水号，例如 2073133434168320001 或 M202607040355023193520。仅在当前登录用户是订单创建人或拥有超级管理员角色时返回订单信息。")
+    public Object queryMallOrderByIdOrNo(
+            @ToolParam(description = "需要查询的订单数据库主键或订单流水号，必须保持原始字符串，例如 2073133434168320001 或 M202607040355023193520") String idOrNo,
             ToolContext toolContext) {
-        requireResourceId(orderId, "订单ID");
+        requireOrderIdentifier(idOrNo);
         AiToolAuthorizationTrace trace = authorizationTrace(toolContext);
         Long loginUserId = loginUserId(toolContext);
+        TradeOrderVo order = checkedData(tradeOrderApi.getOrderByIdOrNo(idOrNo), "商城订单");
+        return authorizeOrderQuery(order, loginUserId, trace, QUERY_MALL_ORDER_TOOL, "idOrNo=" + idOrNo);
+    }
+
+    /**
+     * 执行订单资源的服务端授权并返回最小化订单摘要。
+     *
+     * @param order 已查询到的订单，可为 {@code null}
+     * @param loginUserId 当前登录用户编号
+     * @param trace 本次工具调用授权轨迹
+     * @param toolName 当前工具名称
+     * @param queryCondition 已脱敏的查询条件日志文本
+     * @return 已授权的订单摘要，或不泄露资源状态的拒绝说明
+     */
+    private Object authorizeOrderQuery(TradeOrderVo order, Long loginUserId, AiToolAuthorizationTrace trace,
+            String toolName, String queryCondition) {
         boolean superAdmin = Boolean.TRUE.equals(checkedData(sysRoleApi.isSuperAdmin(loginUserId), "用户角色"));
-        TradeOrderVo order = checkedData(tradeOrderApi.getOrderById(orderId), "商城订单");
         if (superAdmin) {
-            trace.grantSuperAdmin(QUERY_MALL_ORDER_TOOL);
-            log.info("AI 工具调用，tool={}, orderId={}, authorization=super-admin", QUERY_MALL_ORDER_TOOL, orderId);
+            trace.grantSuperAdmin(toolName);
+            log.info("AI 工具调用，tool={}, {}, authorization=super-admin", toolName, queryCondition);
             return order == null ? "未查询到该订单。" : toOrderSummary(order);
         }
         if (order != null && Objects.equals(order.getUserId(), loginUserId)) {
-            trace.grantResourceOwner(QUERY_MALL_ORDER_TOOL);
-            log.info("AI 工具调用，tool={}, orderId={}, authorization=order-owner", QUERY_MALL_ORDER_TOOL, orderId);
+            trace.grantResourceOwner(toolName);
+            log.info("AI 工具调用，tool={}, {}, authorization=order-owner", toolName, queryCondition);
             return toOrderSummary(order);
         }
-        trace.deny(QUERY_MALL_ORDER_TOOL);
-        log.warn("AI 工具调用被拒绝，tool={}, orderId={}, loginUserId={}", QUERY_MALL_ORDER_TOOL, orderId, loginUserId);
+        trace.deny(toolName);
+        log.warn("AI 工具调用被拒绝，tool={}, {}, loginUserId={}", toolName, queryCondition, loginUserId);
         return "当前登录用户无权查询该订单。";
     }
 
@@ -142,6 +158,17 @@ public class AiBusinessTools {
     private void requireResourceId(Long resourceId, String resourceName) {
         if (resourceId == null || resourceId <= 0) {
             throw new AiProviderException(400, resourceName + "必须为正整数");
+        }
+    }
+
+    /**
+     * 校验模型提供的订单标识。
+     *
+     * @param idOrNo 订单数据库主键或订单流水号
+     */
+    private void requireOrderIdentifier(String idOrNo) {
+        if (!StringUtils.hasText(idOrNo)) {
+            throw new AiProviderException(400, "订单ID或订单流水号不能为空");
         }
     }
 

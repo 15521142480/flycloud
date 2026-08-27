@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ITradeOrderApi {
 
     /**
-     * 根据订单编号查询订单详情。
+     * 根据订单数据库主键或订单流水号查询订单详情。
      *
-     * @param id 订单编号
+     * @param idOrNo 订单数据库主键或订单流水号
      * @return 订单详情
      */
-    @GetMapping(MallApiPaths.PROVIDER_TRADE_ORDER_ID)
-    R<TradeOrderVo> getOrderById(@RequestParam("id") Long id);
+    @GetMapping(MallApiPaths.PROVIDER_TRADE_ORDER_ID_OR_NO)
+    R<TradeOrderVo> getOrderByIdOrNo(@RequestParam("idOrNo") String idOrNo);
 }
