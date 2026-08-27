@@ -2,7 +2,7 @@ package com.fly.ai.springai.service;
 
 import com.fly.common.enums.ai.AiProviderEnum;
 import com.fly.ai.original.config.AiProperties;
-import com.fly.ai.utils.AiUtils;
+import com.fly.common.utils.ai.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.ai.chat.client.ChatClient;

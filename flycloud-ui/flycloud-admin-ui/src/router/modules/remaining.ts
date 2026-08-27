@@ -673,7 +673,9 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
-    path: '/ai',
+    // 历史 YuDao AI 示例页与业务菜单 /ai 冲突。保留示例页面，但迁移到独立的静态访问前缀，
+    // 避免其 Layout 路由抢占数据库菜单配置的 /ai。
+    path: '/ai-other',
     component: Layout,
     name: 'Ai',
     meta: {
@@ -682,7 +684,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     children: [
       {
         path: 'image/square',
-        component: () => import('@/views/ai/image/square/index.vue'),
+        component: () => import('@/views/ai/other/image/square/index.vue'),
         name: 'AiImageSquare',
         meta: {
           title: 'auto.router.modules.remaining.k85439d81',

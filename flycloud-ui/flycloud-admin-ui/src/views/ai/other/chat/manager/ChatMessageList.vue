@@ -1,0 +1,200 @@
+<template>
+  <ContentWrap>
+    <!-- 搜索工作栏 -->
+    <el-form
+      class="-mb-15px"
+      :model="queryParams"
+      ref="queryFormRef"
+      :inline="true"
+      label-width="68px"
+    >
+      <el-form-item
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.k2e064cf1')"
+        prop="conversationId"
+      >
+        <el-input
+          v-model="queryParams.conversationId"
+          :placeholder="t('auto.views.ai.chat.manager.ChatMessageList.k82db5534')"
+          clearable
+          @keyup.enter="handleQuery"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.kec750ef6')"
+        prop="userId"
+      >
+        <el-select
+          v-model="queryParams.userId"
+          clearable
+          :placeholder="t('auto.views.ai.chat.manager.ChatMessageList.kb719fb8a')"
+          class="!w-240px"
+        >
+          <el-option v-for="item in userList" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
+      <el-form-item :label="t('common.createTime')" prop="createTime">
+        <el-date-picker
+          v-model="queryParams.createTime"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          type="daterange"
+          :start-placeholder="t('auto.views.ai.chat.manager.ChatMessageList.k1f291968')"
+          :end-placeholder="t('auto.views.ai.chat.manager.ChatMessageList.kf4b9b2b5')"
+          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+          class="!w-240px"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="handleQuery"
+          ><Icon icon="ep:search" class="mr-5px" /> {{ t('common.search') }}</el-button
+        >
+        <el-button @click="resetQuery"
+          ><Icon icon="ep:refresh" class="mr-5px" /> {{ t('common.reset') }}</el-button
+        >
+      </el-form-item>
+    </el-form>
+  </ContentWrap>
+
+  <!-- 列表 -->
+  <ContentWrap>
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+      <el-table-column
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.kbaa5619d')"
+        align="center"
+        prop="id"
+        width="180"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.k2e064cf1')"
+        align="center"
+        prop="conversationId"
+        width="180"
+        fixed="left"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.chat.manager.ChatMessageList.k9ba763ea')"
+        align="center"
+        prop="userId"
+        width="180"
+      >
+        <template #default="scope">
+          <span>{{ userList.find((item) => item.id === scope.row.userId)?.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('system.user.role')" align="center" prop="roleName" width="180" />
+      <el-table-column
+        :label="t('auto.views.mp.autoReply.components.ReplyForm.k15218877')"
+        align="center"
+        prop="type"
+        width="100"
+      />
+      <el-table-column
+        :label="t('auto.views.ai.model.chatModel.ChatModelForm.k3a818387')"
+        align="center"
+        prop="model"
+        width="180"
+      />
+      <el-table-column :label="t('extra.kb87b7756')" align="center" prop="content" width="300" />
+      <el-table-column
+        :label="t('common.createTime')"
+        align="center"
+        prop="createTime"
+        :formatter="dateFormatter"
+        width="180px"
+      />
+      <el-table-column :label="t('extra.k328782c6')" align="center" prop="replyId" width="180" />
+      <el-table-column :label="t('extra.k3f1b7791')" align="center" prop="useContext" width="100">
+        <template #default="scope">
+          <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.useContext" />
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('common.operation')" align="center" fixed="right">
+        <template #default="scope">
+          <el-button
+            link
+            type="danger"
+            @click="handleDelete(scope.row.id)"
+            v-hasPermi="['ai:chat-message:delete']"
+          >
+            {{ t('common.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 分页 -->
+    <Pagination
+      :total="total"
+      v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize"
+      @pagination="getList"
+    />
+  </ContentWrap>
+</template>
+
+<script setup lang="ts">
+import { dateFormatter } from '@/utils/formatTime'
+import { ChatMessageApi, ChatMessageVO } from '@/api/ai/other/chat/message'
+import * as UserApi from '@/api/system/user'
+import { DICT_TYPE } from '@/utils/dict'
+const { t } = useI18n()
+const message = useMessage() // 消息弹窗
+
+const loading = ref(true) // 列表的加载中
+const list = ref<ChatMessageVO[]>([]) // 列表的数据
+const total = ref(0) // 列表的总页数
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  conversationId: undefined,
+  userId: undefined,
+  content: undefined,
+  createTime: []
+})
+const queryFormRef = ref() // 搜索的表单
+const userList = ref<UserApi.UserVO[]>([]) // 用户列表
+
+/** 查询列表 */
+const getList = async () => {
+  loading.value = true
+  try {
+    const data = await ChatMessageApi.getChatMessagePage(queryParams)
+    list.value = data.list
+    total.value = data.total
+  } finally {
+    loading.value = false
+  }
+}
+
+/** 搜索按钮操作 */
+const handleQuery = () => {
+  queryParams.pageNum = 1
+  getList()
+}
+
+/** 重置按钮操作 */
+const resetQuery = () => {
+  queryFormRef.value.resetFields()
+  handleQuery()
+}
+
+/** 删除按钮操作 */
+const handleDelete = async (id: string) => {
+  try {
+    // 删除的二次确认
+    await message.delConfirm()
+    // 发起删除
+    await ChatMessageApi.deleteChatMessageByAdmin(id)
+    message.success(t('common.delSuccess'))
+    // 刷新列表
+    await getList()
+  } catch {}
+}
+
+/** 初始化 **/
+onMounted(async () => {
+  getList()
+  // 获得用户列表
+  userList.value = await UserApi.getSimpleUserList()
+})
+</script>

@@ -25,6 +25,41 @@
             <artifactId>flycloud-common-doc</artifactId>
             <version>${revision}</version>
         </dependency>
+        <!-- AI Tool Calling 需要复用统一登录态、Feign 签名与服务间调用规范。 -->
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-common-feign</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-system-api</artifactId>
+            <version>${revision}</version>
+            <exclusions>
+                <!-- AI 只使用系统 Feign 接口和 VO，不应因 API 模块的传递依赖初始化本地数据源。 -->
+                <exclusion>
+                    <groupId>com.flycloud</groupId>
+                    <artifactId>flycloud-common-database</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.flycloud</groupId>
+            <artifactId>flycloud-mall-api</artifactId>
+            <version>${revision}</version>
+            <exclusions>
+                <!-- AI 只使用商城 Feign 接口和 VO，不应因 API 模块的传递依赖初始化本地数据源。 -->
+                <exclusion>
+                    <groupId>com.flycloud</groupId>
+                    <artifactId>flycloud-common-database</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- 注册中心与配置中心客户端 -->
         <dependency>

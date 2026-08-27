@@ -79,4 +79,12 @@ public interface ISysRoleService {
      * @param ids
     */
     Boolean validateRoleByIds(Set<Long> ids);
+
+    /**
+     * 判断用户是否拥有超级管理员角色。
+     *
+     * @param userId 用户编号
+     * @return 是否为超级管理员
+     */
+    Boolean isSuperAdmin(Long userId);
 }

@@ -4,7 +4,7 @@ import com.fly.ai.model.AiChatRequest;
 import com.fly.ai.model.AiChatResponse;
 import com.fly.ai.original.config.AiProperties;
 import com.fly.ai.springai.utils.SpringAiChatUtils;
-import com.fly.ai.utils.AiUtils;
+import com.fly.common.utils.ai.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

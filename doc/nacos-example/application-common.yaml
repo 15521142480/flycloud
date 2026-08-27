@@ -208,6 +208,10 @@ flycloud:
     # 所有供应商共用的默认最大输出 Token；客户端可传 maxOutputTokens 覆盖。
     max-output-tokens: 1024
 
+    # Tool Calling 总开关。关闭后只保留普通 Spring AI 聊天，不允许模型调用任何业务工具。
+    tool-calling:
+      enabled: true
+
     # note 以下为原生请求模型配置，使用SpringAi后可忽略
     openai:
       # API 服务地址。不使用官方服务时，可在此替换为兼容服务地址。

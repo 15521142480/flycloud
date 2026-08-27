@@ -400,5 +400,20 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         return true;
     }
 
+    /**
+     * 判断用户是否拥有超级管理员角色。
+     *
+     * @param userId 用户编号
+     * @return 是否为超级管理员
+     */
+    @Override
+    public Boolean isSuperAdmin(Long userId) {
+        if (userId == null) {
+            return false;
+        }
+        return baseMapper.getRoleCountByUserAndCode(userId, SysTypeEnum.fly_platform.getCode(),
+                RoleCodeEnum.SUPER_ADMIN.getCode()) > 0;
+    }
+
 
 }

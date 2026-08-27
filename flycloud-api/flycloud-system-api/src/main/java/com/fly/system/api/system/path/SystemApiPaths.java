@@ -55,6 +55,11 @@ public interface SystemApiPaths {
 
     String PROVIDER_ROLE_VALID_IDS = PROVIDER + "/role/valid/ids";
 
+    /**
+     * 判断用户是否拥有超级管理员角色。
+     */
+    String PROVIDER_ROLE_SUPER_ADMIN = PROVIDER + "/role/super-admin";
+
 
 
     // ================================================== 菜单

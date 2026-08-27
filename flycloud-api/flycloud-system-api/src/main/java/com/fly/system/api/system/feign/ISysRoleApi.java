@@ -26,4 +26,13 @@ public interface ISysRoleApi {
     @GetMapping(SystemApiPaths.PROVIDER_ROLE_VALID_IDS)
     R<Boolean> validateRoleByIds(@RequestParam("roleIds") Set<Long> roleIds);
 
+    /**
+     * 判断指定用户是否拥有超级管理员角色。
+     *
+     * @param userId 用户编号
+     * @return {@code true} 表示拥有 {@code RoleCodeEnum.SUPER_ADMIN} 角色
+     */
+    @GetMapping(SystemApiPaths.PROVIDER_ROLE_SUPER_ADMIN)
+    R<Boolean> isSuperAdmin(@RequestParam("userId") Long userId);
+
 }

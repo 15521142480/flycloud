@@ -11,7 +11,7 @@ import com.fly.common.enums.ai.AiProviderEnum;
 import com.fly.ai.original.config.AiProperties;
 import com.fly.ai.model.AiEmbeddingRequest;
 import com.fly.ai.model.AiEmbeddingResponse;
-import com.fly.ai.utils.AiUtils;
+import com.fly.common.utils.ai.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;

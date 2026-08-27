@@ -26,6 +26,9 @@ public class AiProperties {
 
     private Integer maxOutputTokens = 1024;
 
+    /** Tool Calling 相关配置。 */
+    private ToolCalling toolCalling = new ToolCalling();
+
     private OpenAi openai = new OpenAi();
 
     private Deepseek deepseek = new Deepseek();
@@ -93,6 +96,17 @@ public class AiProperties {
 
         private Duration responseTimeout = Duration.ofSeconds(60);
 
+    }
+
+    /**
+     * Tool Calling 安全配置。
+     */
+    @Getter
+    @Setter
+    public static class ToolCalling {
+
+        /** 是否启用业务工具调用。 */
+        private boolean enabled = true;
     }
 
 }

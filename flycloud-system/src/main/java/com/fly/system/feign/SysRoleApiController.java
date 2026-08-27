@@ -60,5 +60,17 @@ public class SysRoleApiController implements ISysRoleApi {
         return R.result(sysRoleService.validateRoleByIds(ids));
     }
 
+    /**
+     * 判断指定用户是否为超级管理员。
+     *
+     * @param userId 用户编号
+     * @return 是否为超级管理员
+     */
+    @Override
+    @GetMapping(SystemApiPaths.PROVIDER_ROLE_SUPER_ADMIN)
+    public R<Boolean> isSuperAdmin(Long userId) {
+        return R.ok(sysRoleService.isSuperAdmin(userId));
+    }
+
 
 }

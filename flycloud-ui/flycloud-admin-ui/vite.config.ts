@@ -62,6 +62,15 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
                 rewrite: (path) => path.replace(new RegExp(`^/flycloud-system`), ''),
               },
 
+              // ai服务
+              ['/flycloud-ai']: {
+                target: 'http://localhost:8080/flycloud-ai',
+                // target: 'http://101.34.33.33:8080/flycloud-ai',
+                ws: false,
+                changeOrigin: true,
+                rewrite: (path) => path.replace(new RegExp(`^/flycloud-ai`), ''),
+              },
+
               // 工作流服务
               ['/flycloud-bpm']: {
                 target: 'http://localhost:8080/flycloud-bpm',

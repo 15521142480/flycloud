@@ -5,17 +5,33 @@ import { cloneDeep, omit } from 'lodash-es'
 import qs from 'qs'
 
 const modules = import.meta.glob('../views/**/*.{vue,tsx}')
+
+/**
+ * 根据菜单配置的组件地址精确解析页面组件。
+ *
+ * 菜单组件地址约定为相对于 views 目录、且不带扩展名的路径，例如 ai/index。
+ * 不能使用 includes 模糊匹配，否则 ai/index 等短路径可能误命中 ai/other 下的历史页面。
+ *
+ * @param componentPath 菜单配置的组件地址
+ * @returns 对应的异步页面组件；未找到时返回 undefined
+ */
+const resolveViewComponent = (componentPath?: string) => {
+  if (!componentPath) {
+    return undefined
+  }
+
+  const normalizedPath = componentPath.replace(/^\/+/, '').replace(/\.(vue|tsx)$/, '')
+  return modules[`../views/${normalizedPath}.vue`] || modules[`../views/${normalizedPath}.tsx`]
+}
+
 /**
  * 注册一个异步组件
  * @param componentPath 例:/bpm/oa/leave/detail
  */
 export const registerComponent = (componentPath: string) => {
-  for (const item in modules) {
-    if (item.includes(componentPath)) {
-      // 使用异步组件的方式来动态加载组件
-      // @ts-ignore
-      return defineAsyncComponent(modules[item])
-    }
+  const component = resolveViewComponent(componentPath)
+  if (component) {
+    return defineAsyncComponent(component)
   }
 }
 /* Layout */
@@ -70,7 +86,6 @@ export const generateRoute = (
   routeNameSet: Set<string> = new Set()
 ): AppRouteRecordRaw[] => {
   const res: AppRouteRecordRaw[] = []
-  const modulesRoutesKeys = Object.keys(modules)
   for (const route of routes) {
     // 1. 生成 meta 菜单元数据
     const meta = {
@@ -120,10 +135,7 @@ export const generateRoute = (
         redirect: route.redirect,
         meta: meta
       }
-      const index = route?.component
-        ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
-        : modulesRoutesKeys.findIndex((ev) => ev.includes(route.path))
-      childrenData.component = modules[modulesRoutesKeys[index]]
+      childrenData.component = resolveViewComponent(route.component || route.path)
       data.children = [childrenData]
     } else {
       // 目录
@@ -143,10 +155,7 @@ export const generateRoute = (
         // 菜单
       } else {
         // 对后端传component组件路径和不传做兼容（如果后端传component组件路径，那么path可以随便写，如果不传，component组件路径会根path保持一致）
-        const index = route?.component
-          ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
-          : modulesRoutesKeys.findIndex((ev) => ev.includes(route.path))
-        data.component = modules[modulesRoutesKeys[index]]
+        data.component = resolveViewComponent(route.component || route.path)
       }
       if (route.children) {
         data.children = generateRoute(route.children, routeNameSet)
