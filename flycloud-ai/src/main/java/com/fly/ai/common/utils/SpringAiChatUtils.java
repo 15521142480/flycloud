@@ -157,8 +157,8 @@ public final class SpringAiChatUtils {
      * @return 项目 Token 用量
      */
     private static AiUsage toUsage(Usage usage) {
-        if (usage == null) {
-            return new AiUsage(0, 0, 0);
+        if (usage == null || usage.getTotalTokens() == null || usage.getTotalTokens() <= 0) {
+            return null;
         }
         return new AiUsage(AiUtils.valueOrZero(usage.getPromptTokens()),
                 AiUtils.valueOrZero(usage.getCompletionTokens()), AiUtils.valueOrZero(usage.getTotalTokens()));

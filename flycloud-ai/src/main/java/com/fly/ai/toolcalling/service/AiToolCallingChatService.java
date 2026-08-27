@@ -2,6 +2,7 @@ package com.fly.ai.toolcalling.service;
 
 import com.fly.ai.common.model.AiChatRequest;
 import com.fly.ai.common.model.AiChatResponse;
+import com.fly.ai.common.model.AiPermission;
 import com.fly.ai.common.model.AiStreamEvent;
 import com.fly.ai.original.config.AiProperties;
 import com.fly.ai.springai.service.SpringAiModelProviderRouter;
@@ -68,13 +69,13 @@ public class AiToolCallingChatService {
                     .call()
                     .chatResponse();
             AiChatResponse modelResponse = SpringAiChatUtils.toChatResponse(response);
-            String permissionMessage = authorizationTrace.permissionMessage();
-            String content = responseContent(modelResponse.content(), authorizationTrace, permissionMessage);
-            log.info("AI Tool Calling 响应，provider={}, responseId={}, toolNames={}, permissionMessage={}, contentPreview={}",
-                    selected.providerName(), modelResponse.responseId(), authorizationTrace.toolNames(), permissionMessage,
+            AiPermission permission = authorizationTrace.permission();
+            String content = responseContent(modelResponse.content(), authorizationTrace);
+            log.info("AI Tool Calling 响应，provider={}, responseId={}, toolNames={}, permission={}, contentPreview={}",
+                    selected.providerName(), modelResponse.responseId(), authorizationTrace.toolNames(), permission,
                     AiUtils.previewModelContent(content));
             return new AiToolCallingResponse(modelResponse.responseId(), modelResponse.model(), content, modelResponse.usage(),
-                    permissionMessage, authorizationTrace.toolNames());
+                    permission, authorizationTrace.toolNames());
         } catch (AiProviderException exception) {
             throw exception;
         } catch (RuntimeException exception) {
@@ -87,7 +88,7 @@ public class AiToolCallingChatService {
      * 使用 Spring AI 发起流式 Tool Calling 聊天请求。
      * <p>
      * Spring AI 会在流中自动识别并执行工具调用。本方法只会在工具执行后转发最终文本；若任一订单工具
-     * 拒绝访问，则阻断模型文本并仅发送固定的权限拒绝提示。
+     * 拒绝访问，则阻断模型文本并发送结构化的权限拒绝事件。
      *
      * @param request 聊天请求
      * @param loginUserId 当前认证用户编号
@@ -99,7 +100,7 @@ public class AiToolCallingChatService {
         AiToolAuthorizationTrace authorizationTrace = new AiToolAuthorizationTrace();
         SseEmitter emitter = new SseEmitter(0L);
         AtomicReference<ChatResponseMetadata> lastMetadata = new AtomicReference<>();
-        AtomicBoolean permissionMessageSent = new AtomicBoolean(false);
+        AtomicBoolean permissionEventSent = new AtomicBoolean(false);
         StringBuilder contentPreview = new StringBuilder();
         log.info("AI Tool Calling 流式请求，provider={}, loginUserId={}, message={}, model={}, maxOutputTokens={}",
                 selected.providerName(), loginUserId, request.message(), request.model(), request.maxOutputTokens());
@@ -112,10 +113,10 @@ public class AiToolCallingChatService {
                     .chatResponse()
                     .subscribe(
                             response -> handleToolStreamResponse(emitter, response, authorizationTrace,
-                                    permissionMessageSent, lastMetadata, contentPreview),
+                                    permissionEventSent, lastMetadata, contentPreview),
                             exception -> SpringAiChatUtils.handleStreamError(emitter, selected.providerName(), exception),
                             () -> completeToolStream(emitter, selected.providerName(), authorizationTrace,
-                                    permissionMessageSent, lastMetadata.get(), contentPreview));
+                                    permissionEventSent, lastMetadata.get(), contentPreview));
         } catch (RuntimeException exception) {
             SpringAiChatUtils.handleStreamError(emitter, selected.providerName(), exception);
         }
@@ -125,22 +126,18 @@ public class AiToolCallingChatService {
     /**
      * 组装最终对外文本。
      * <p>
-     * 任一资源工具被拒绝时只返回固定拒绝提示，避免模型基于上下文补充或猜测受保护数据。
+     * 任一资源工具被拒绝时不返回模型文本，避免模型基于上下文补充或猜测受保护数据。权限说明由响应中的
+     * {@code permission} 对象单独承载，不能与模型文本拼接。
      *
      * @param modelContent 模型回答
      * @param authorizationTrace 授权轨迹
-     * @param permissionMessage 权限提示
      * @return 最终文本
      */
-    private String responseContent(String modelContent, AiToolAuthorizationTrace authorizationTrace,
-            String permissionMessage) {
-        if (!authorizationTrace.hasToolCall()) {
-            return modelContent;
-        }
+    private String responseContent(String modelContent, AiToolAuthorizationTrace authorizationTrace) {
         if (authorizationTrace.isDenied()) {
-            return permissionMessage;
+            return "";
         }
-        return AiUtils.hasText(modelContent) ? permissionMessage + "\n" + modelContent : permissionMessage;
+        return modelContent;
     }
 
     /**
@@ -177,19 +174,19 @@ public class AiToolCallingChatService {
      * @param emitter SSE 发送器
      * @param response 模型响应分片
      * @param authorizationTrace 工具授权轨迹
-     * @param permissionMessageSent 权限前缀是否已发送
+     * @param permissionEventSent 权限事件是否已发送
      * @param lastMetadata 最近一次响应元数据
      * @param contentPreview 安全日志预览缓冲区
      */
     private void handleToolStreamResponse(SseEmitter emitter, ChatResponse response,
-            AiToolAuthorizationTrace authorizationTrace, AtomicBoolean permissionMessageSent,
+            AiToolAuthorizationTrace authorizationTrace, AtomicBoolean permissionEventSent,
             AtomicReference<ChatResponseMetadata> lastMetadata, StringBuilder contentPreview) {
         if (authorizationTrace.isDenied()) {
-            sendPermissionMessage(emitter, authorizationTrace, permissionMessageSent);
+            sendPermissionEvent(emitter, authorizationTrace, permissionEventSent);
             return;
         }
         if (authorizationTrace.hasToolCall()) {
-            sendPermissionMessage(emitter, authorizationTrace, permissionMessageSent);
+            sendPermissionEvent(emitter, authorizationTrace, permissionEventSent);
         }
         SpringAiChatUtils.handleStreamResponse(emitter, response, lastMetadata, contentPreview);
     }
@@ -200,39 +197,38 @@ public class AiToolCallingChatService {
      * @param emitter SSE 发送器
      * @param providerName 模型供应商名称
      * @param authorizationTrace 工具授权轨迹
-     * @param permissionMessageSent 权限前缀是否已发送
+     * @param permissionEventSent 权限事件是否已发送
      * @param metadata 最近一次响应元数据
      * @param contentPreview 安全日志预览缓冲区
      */
     private void completeToolStream(SseEmitter emitter, String providerName, AiToolAuthorizationTrace authorizationTrace,
-            AtomicBoolean permissionMessageSent, ChatResponseMetadata metadata, StringBuilder contentPreview) {
-        if (authorizationTrace.isDenied()) {
-            sendPermissionMessage(emitter, authorizationTrace, permissionMessageSent);
+            AtomicBoolean permissionEventSent, ChatResponseMetadata metadata, StringBuilder contentPreview) {
+        if (authorizationTrace.hasToolCall()) {
+            sendPermissionEvent(emitter, authorizationTrace, permissionEventSent);
         }
         SpringAiChatUtils.completeStream(emitter, providerName, metadata, contentPreview);
-        log.info("AI Tool Calling 流式响应，provider={}, responseId={}, toolNames={}, permissionMessage={}",
+        log.info("AI Tool Calling 流式响应，provider={}, responseId={}, toolNames={}, permission={}",
                 providerName, metadata == null ? null : metadata.getId(), authorizationTrace.toolNames(),
-                authorizationTrace.permissionMessage());
+                authorizationTrace.permission());
     }
 
     /**
-     * 向客户端发送一次权限前缀。
+     * 向客户端发送一次结构化的权限事件。
      *
      * @param emitter SSE 发送器
      * @param authorizationTrace 工具授权轨迹
-     * @param permissionMessageSent 权限前缀是否已发送
+     * @param permissionEventSent 权限事件是否已发送
      */
-    private void sendPermissionMessage(SseEmitter emitter, AiToolAuthorizationTrace authorizationTrace,
-            AtomicBoolean permissionMessageSent) {
-        if (!permissionMessageSent.compareAndSet(false, true)) {
+    private void sendPermissionEvent(SseEmitter emitter, AiToolAuthorizationTrace authorizationTrace,
+            AtomicBoolean permissionEventSent) {
+        if (!permissionEventSent.compareAndSet(false, true)) {
             return;
         }
-        String permissionMessage = authorizationTrace.permissionMessage();
-        if (!AiUtils.hasText(permissionMessage)) {
+        AiPermission permission = authorizationTrace.permission();
+        if (permission == null) {
             return;
         }
-        String content = authorizationTrace.isDenied() ? permissionMessage : permissionMessage + "\n";
-        SpringAiChatUtils.sendStreamEvent(emitter, AiStreamEvent.delta(content));
+        SpringAiChatUtils.sendStreamEvent(emitter, AiStreamEvent.permission(permission));
     }
 
     /**

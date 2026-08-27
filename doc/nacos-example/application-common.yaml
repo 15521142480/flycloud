@@ -117,6 +117,8 @@ spring:
           model: qwen-plus
           # 与原生实现共用 flycloud.ai.max-output-tokens；单次请求可传 maxOutputTokens 覆盖。
           max-tokens: ${flycloud.ai.max-output-tokens}
+          # 百炼 OpenAI 兼容接口默认不会在流式响应中返回用量；开启后最后一个分片会携带 usage。
+          stream-usage: true
 
     # DeepSeek 使用 Spring AI 的 DeepSeek 官方适配器，而非 OpenAI 兼容适配器。
     # 当 flycloud.ai.provider=deepseek 时，Spring AI 聊天接口自动路由至该配置。

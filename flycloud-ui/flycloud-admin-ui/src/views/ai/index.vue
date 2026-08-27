@@ -2,7 +2,7 @@
   <div class="ai-learning-page">
     <aside class="learning-steps" aria-label="AI 学习阶段">
       <div class="steps-header">
-        <div class="steps-title">AI 管理</div>
+        <div class="steps-title">AI 实验室</div>
         <div class="steps-subtitle">从模型调用到智能体的实践路线</div>
       </div>
 
@@ -53,16 +53,30 @@
           <div v-else class="message-avatar"><Icon icon="ep:cpu" /></div>
           <div class="message-content">
             <div class="message-role">{{ item.role === 'user' ? '我' : '飞翔云 AI' }}</div>
+            <div v-if="item.permission" class="tool-meta">
+              <el-tag
+                class="permission-tag"
+                size="small"
+                :type="item.permission.granted ? 'success' : 'danger'"
+                effect="light"
+              >
+                {{ item.permission.message }}
+              </el-tag>
+              <el-tag v-for="toolName in item.toolNames" :key="toolName" size="small" type="info">
+                {{ toolName }}
+              </el-tag>
+            </div>
             <div v-if="item.loading" class="loading-indicator">
               <el-icon class="is-loading"><Loading /></el-icon>
               <span>{{ loadingText }}</span>
             </div>
             <div v-if="item.content" class="message-text">{{ item.content }}</div>
-            <div v-if="item.permissionMessage" class="tool-meta">
-              <el-tag size="small" type="success">{{ item.permissionMessage }}</el-tag>
-              <el-tag v-for="toolName in item.toolNames" :key="toolName" size="small" type="info">
-                {{ toolName }}
-              </el-tag>
+            <div v-if="hasTokenUsage(item.usage)" class="usage-meta">
+              <Icon icon="ep:data-analysis" />
+              <span>
+                Token 用量：输入 {{ item.usage.inputTokens }} · 输出 {{ item.usage.outputTokens }} · 总计
+                {{ item.usage.totalTokens }}
+              </span>
             </div>
           </div>
         </article>
@@ -123,7 +137,9 @@ import {
   streamChat,
   type AiChatResponse,
   type AiChatStage,
-  type AiStreamEvent
+  type AiPermission,
+  type AiStreamEvent,
+  type AiUsage
 } from '@/api/ai/chat'
 
 defineOptions({ name: 'AiManagement' })
@@ -148,8 +164,9 @@ interface ChatMessage {
   id: number
   role: 'user' | 'assistant'
   content: string
-  permissionMessage?: string
+  permission?: AiPermission
   toolNames: string[]
+  usage?: AiUsage
   loading?: boolean
 }
 
@@ -368,8 +385,9 @@ const toAssistantMessage = (response: AiChatResponse): ChatMessage => {
     id: Date.now() + 1,
     role: 'assistant',
     content: response.content,
-    permissionMessage: response.permissionMessage,
-    toolNames: response.toolNames || []
+    permission: response.permission,
+    toolNames: response.toolNames || [],
+    usage: response.usage
   }
 }
 
@@ -382,15 +400,26 @@ const sendStreamMessage = async (content: string, assistantMessage: ChatMessage)
 
 /** 应用服务端统一 SSE 聊天事件。 */
 const applyStreamEvent = (assistantMessage: ChatMessage, event: AiStreamEvent) => {
+  if (event.type === 'permission') {
+    assistantMessage.permission = event.permission
+    return
+  }
   if (event.type === 'delta') {
     assistantMessage.content += event.delta || ''
     void scrollToBottom()
+    return
+  }
+  if (event.type === 'completed') {
+    assistantMessage.usage = event.usage
     return
   }
   if (event.type === 'error') {
     assistantMessage.content = event.message || '模型流式响应失败'
   }
 }
+
+/** 判断模型是否返回了可展示的真实 Token 用量。 */
+const hasTokenUsage = (usage?: AiUsage) => Boolean(usage && usage.totalTokens > 0)
 
 /** 加载后端当前生效的 AI 运行配置。 */
 const loadRuntimeConfiguration = async () => {
@@ -656,6 +685,28 @@ const scrollToBottom = async () => {
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 10px;
+}
+
+.permission-tag {
+  height: 20px;
+  padding: 0 7px;
+  font-size: 11px;
+  line-height: 20px;
+  border: 0;
+}
+
+.usage-meta {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px;
+  margin-top: 10px;
+  color: var(--el-text-color-secondary);
+  font-size: 11px;
+  line-height: 18px;
+  background: #edf2f7;
+  border-radius: 4px;
 }
 
 .loading-indicator {

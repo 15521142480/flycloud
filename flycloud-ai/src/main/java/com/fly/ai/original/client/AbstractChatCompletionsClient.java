@@ -227,6 +227,10 @@ public abstract class AbstractChatCompletionsClient {
         }
         messages.addObject().put("role", "user").put("content", request.message());
         body.put("stream", stream);
+        if (stream) {
+            // OpenAI 兼容协议默认不在流中返回 usage；最后一个空 choices 分片将携带本次完整 Token 用量。
+            body.putObject("stream_options").put("include_usage", true);
+        }
         body.put("max_tokens", resolveMaxOutputTokens(request.maxOutputTokens()));
         return body;
     }

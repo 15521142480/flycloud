@@ -1,5 +1,7 @@
 package com.fly.ai.toolcalling.model;
 
+import com.fly.ai.common.model.AiPermission;
+
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,18 +83,28 @@ public final class AiToolAuthorizationTrace {
     }
 
     /**
-     * 返回最终响应应展示的权限前缀。
+     * 返回最终响应应展示的权限说明文本。
      *
      * @return 权限提示；未调用工具时返回 {@code null}
      */
     public synchronized String permissionMessage() {
+        AiPermission permission = permission();
+        return permission == null ? null : permission.message();
+    }
+
+    /**
+     * 返回结构化的最终资源权限结果。
+     *
+     * @return 权限结果；未调用工具时返回 {@code null}
+     */
+    public synchronized AiPermission permission() {
         if (!hasToolCall()) {
             return null;
         }
         if (denied) {
-            return PERMISSION_DENIED_MESSAGE;
+            return new AiPermission(false, PERMISSION_DENIED_MESSAGE);
         }
-        return String.join("\n", grantedMessages);
+        return new AiPermission(true, String.join("\n", grantedMessages));
     }
 
     /**

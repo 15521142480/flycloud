@@ -13,26 +13,37 @@ export interface AiChatRequest {
   maxOutputTokens?: number
 }
 
+/** 工具调用的资源权限结果。 */
+export interface AiPermission {
+  granted: boolean
+  message: string
+}
+
+/** 模型本次调用的 Token 用量。 */
+export interface AiUsage {
+  inputTokens: number
+  outputTokens: number
+  totalTokens: number
+}
+
 /** 普通聊天响应。 */
 export interface AiChatResponse {
   responseId: string
   model: string
   content: string
-  permissionMessage?: string
+  permission?: AiPermission
   toolNames?: string[]
-  usage?: {
-    promptTokens: number
-    completionTokens: number
-    totalTokens: number
-  }
+  usage?: AiUsage
 }
 
 /** 统一 SSE 聊天事件。 */
 export interface AiStreamEvent {
-  type: 'delta' | 'completed' | 'error'
+  type: 'delta' | 'permission' | 'completed' | 'error'
   delta?: string
   responseId?: string
+  usage?: AiUsage
   message?: string
+  permission?: AiPermission
 }
 
 /** AI 聊天页面运行配置。 */

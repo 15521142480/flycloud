@@ -3,13 +3,15 @@ package com.fly.ai.common.model;
 /**
  * 向前端推送的 SSE 事件。
  *
- * @param type 事件类型：delta、completed、error
+ * @param type 事件类型：delta、permission、completed、error
  * @param delta 本次新增文本，仅 delta 事件存在
  * @param responseId 供应商响应 ID，仅 completed 事件存在
  * @param usage Token 用量，仅 completed 事件存在
  * @param message 错误说明，仅 error 事件存在
+ * @param permission 工具调用权限结果，仅 permission 事件存在
  */
-public record AiStreamEvent(String type, String delta, String responseId, AiUsage usage, String message) {
+public record AiStreamEvent(String type, String delta, String responseId, AiUsage usage, String message,
+        AiPermission permission) {
 
     /**
      * 创建文本增量事件。
@@ -18,7 +20,7 @@ public record AiStreamEvent(String type, String delta, String responseId, AiUsag
      * @return 增量事件
      */
     public static AiStreamEvent delta(String delta) {
-        return new AiStreamEvent("delta", delta, null, null, null);
+        return new AiStreamEvent("delta", delta, null, null, null, null);
     }
 
     /**
@@ -29,7 +31,7 @@ public record AiStreamEvent(String type, String delta, String responseId, AiUsag
      * @return 完成事件
      */
     public static AiStreamEvent completed(String responseId, AiUsage usage) {
-        return new AiStreamEvent("completed", null, responseId, usage, null);
+        return new AiStreamEvent("completed", null, responseId, usage, null, null);
     }
 
     /**
@@ -39,7 +41,17 @@ public record AiStreamEvent(String type, String delta, String responseId, AiUsag
      * @return 错误事件
      */
     public static AiStreamEvent error(String message) {
-        return new AiStreamEvent("error", null, null, null, message);
+        return new AiStreamEvent("error", null, null, null, message, null);
+    }
+
+    /**
+     * 创建工具调用权限事件。
+     *
+     * @param permission 资源权限结果
+     * @return 权限事件
+     */
+    public static AiStreamEvent permission(AiPermission permission) {
+        return new AiStreamEvent("permission", null, null, null, null, permission);
     }
 
 }

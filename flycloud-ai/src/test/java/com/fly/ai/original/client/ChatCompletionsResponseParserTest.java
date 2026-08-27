@@ -19,7 +19,7 @@ class ChatCompletionsResponseParserTest {
     private final ChatCompletionsResponseParser parser = new ChatCompletionsResponseParser(new ObjectMapper());
 
     @Test
-    void shouldParseChatCompletionAndStreamDelta() {
+    void shouldParseChatCompletionStreamDeltaAndStreamUsage() {
         AiChatResponse response = parser.parseChatResponse("""
                 {
                   "id": "chatcmpl_123",
@@ -31,6 +31,9 @@ class ChatCompletionsResponseParserTest {
         Optional<AiStreamEvent> event = parser.parseStreamEvent("""
                 {"id": "chatcmpl_123", "choices": [{"delta": {"content": "你"}}]}
                 """);
+        Optional<AiStreamEvent> usageEvent = parser.parseStreamEvent("""
+                {"id": "chatcmpl_123", "choices": [], "usage": {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15}}
+                """);
 
         assertEquals("chatcmpl_123", response.responseId());
         assertEquals("qwen-plus", response.model());
@@ -38,6 +41,9 @@ class ChatCompletionsResponseParserTest {
         assertEquals(15, response.usage().totalTokens());
         assertTrue(event.isPresent());
         assertEquals("你", event.get().delta());
+        assertTrue(usageEvent.isPresent());
+        assertEquals("completed", usageEvent.get().type());
+        assertEquals(15, usageEvent.get().usage().totalTokens());
     }
 
 }
