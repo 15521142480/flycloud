@@ -1,7 +1,7 @@
 package com.fly.ai.original.controller;
 
-import com.fly.ai.model.AiEmbeddingRequest;
-import com.fly.ai.model.AiEmbeddingResponse;
+import com.fly.ai.common.model.AiEmbeddingRequest;
+import com.fly.ai.common.model.AiEmbeddingResponse;
 import com.fly.ai.original.service.AiEmbeddingService;
 import com.fly.common.domain.model.R;
 import io.swagger.v3.oas.annotations.Operation;

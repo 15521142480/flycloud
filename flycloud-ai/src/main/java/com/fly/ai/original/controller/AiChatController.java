@@ -1,7 +1,7 @@
 package com.fly.ai.original.controller;
 
-import com.fly.ai.model.AiChatRequest;
-import com.fly.ai.model.AiChatResponse;
+import com.fly.ai.common.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatResponse;
 import com.fly.ai.original.service.AiChatService;
 import com.fly.common.domain.model.R;
 import io.swagger.v3.oas.annotations.Operation;

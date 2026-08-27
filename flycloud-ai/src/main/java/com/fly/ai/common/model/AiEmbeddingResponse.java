@@ -1,4 +1,4 @@
-package com.fly.ai.model;
+package com.fly.ai.common.model;
 
 import java.util.List;
 

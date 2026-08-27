@@ -1,6 +1,6 @@
 package com.fly.ai.toolcalling.controller;
 
-import com.fly.ai.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatRequest;
 import com.fly.ai.toolcalling.model.AiToolCallingResponse;
 import com.fly.ai.toolcalling.service.AiToolCallingChatService;
 import com.fly.common.domain.model.R;
@@ -10,10 +10,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * AI Tool Calling 测试控制器。
@@ -40,10 +42,33 @@ public class AiToolCallingController {
     @Operation(summary = "Tool Calling 聊天测试", description = "模型可调用系统用户查询和商城订单查询工具，订单查询会在服务端二次校验资源权限")
     @PostMapping("/chat")
     public R<AiToolCallingResponse> chat(@Valid @RequestBody AiChatRequest request) {
+        return R.ok(aiToolCallingChatService.chat(request, currentLoginUserId()));
+    }
+
+    /**
+     * 发起流式 Tool Calling 聊天请求。
+     * <p>
+     * 模型可先调用受控业务工具，再通过 SSE 逐段输出最终回答。订单工具的资源权限判断始终在服务端执行。
+     *
+     * @param request 聊天请求
+     * @return SSE 响应发送器
+     */
+    @Operation(summary = "Tool Calling 流式聊天测试", description = "模型在流式调用中执行受控工具；无订单权限时仅返回固定拒绝提示")
+    @PostMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter stream(@Valid @RequestBody AiChatRequest request) {
+        return aiToolCallingChatService.stream(request, currentLoginUserId());
+    }
+
+    /**
+     * 从服务端安全上下文获取当前登录用户。
+     *
+     * @return 当前登录用户编号
+     */
+    private Long currentLoginUserId() {
         Long loginUserId = UserUtils.getCurUserId();
         if (loginUserId == null) {
             throw new AiProviderException(401, "请先登录后再使用 AI Tool Calling");
         }
-        return R.ok(aiToolCallingChatService.chat(request, loginUserId));
+        return loginUserId;
     }
 }

@@ -3,10 +3,10 @@ package com.fly.ai.original.client.tool;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.ai.model.AiChatResponse;
-import com.fly.ai.model.AiStreamEvent;
-import com.fly.ai.model.AiUsage;
-import com.fly.ai.model.AiEmbeddingResponse;
+import com.fly.ai.common.model.AiChatResponse;
+import com.fly.ai.common.model.AiStreamEvent;
+import com.fly.ai.common.model.AiUsage;
+import com.fly.ai.common.model.AiEmbeddingResponse;
 import com.fly.common.exception.AiProviderException;
 
 import java.util.ArrayList;

@@ -1,12 +1,12 @@
 package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.ai.model.AiChatRequest;
-import com.fly.ai.model.AiChatResponse;
+import com.fly.ai.common.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatResponse;
 import com.fly.common.enums.ai.AiProviderEnum;
 import com.fly.ai.original.config.AiProperties;
-import com.fly.ai.model.AiEmbeddingRequest;
-import com.fly.ai.model.AiEmbeddingResponse;
+import com.fly.ai.common.model.AiEmbeddingRequest;
+import com.fly.ai.common.model.AiEmbeddingResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 

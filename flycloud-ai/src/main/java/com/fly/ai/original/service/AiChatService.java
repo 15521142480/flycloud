@@ -1,7 +1,7 @@
 package com.fly.ai.original.service;
 
-import com.fly.ai.model.AiChatRequest;
-import com.fly.ai.model.AiChatResponse;
+import com.fly.ai.common.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

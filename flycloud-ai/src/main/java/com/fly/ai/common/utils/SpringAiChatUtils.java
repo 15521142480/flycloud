@@ -1,9 +1,9 @@
-package com.fly.ai.springai.utils;
+package com.fly.ai.common.utils;
 
-import com.fly.ai.model.AiChatRequest;
-import com.fly.ai.model.AiChatResponse;
-import com.fly.ai.model.AiStreamEvent;
-import com.fly.ai.model.AiUsage;
+import com.fly.ai.common.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatResponse;
+import com.fly.ai.common.model.AiStreamEvent;
+import com.fly.ai.common.model.AiUsage;
 import com.fly.common.utils.ai.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import lombok.extern.slf4j.Slf4j;
@@ -118,6 +118,19 @@ public final class SpringAiChatUtils {
         } catch (Exception sendException) {
             emitter.completeWithError(sendException);
         }
+    }
+
+    /**
+     * 向 SSE 客户端发送统一事件。
+     * <p>
+     * 除普通 Spring AI 聊天外，Tool Calling 等上层编排也需要复用同一事件协议，避免前端为不同
+     * 聊天模式维护多套 SSE 解析逻辑。
+     *
+     * @param emitter SSE 发送器
+     * @param event SSE 事件
+     */
+    public static void sendStreamEvent(SseEmitter emitter, AiStreamEvent event) {
+        sendEvent(emitter, event);
     }
 
     /**

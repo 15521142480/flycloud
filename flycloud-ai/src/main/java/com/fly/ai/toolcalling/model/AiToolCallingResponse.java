@@ -1,6 +1,6 @@
 package com.fly.ai.toolcalling.model;
 
-import com.fly.ai.model.AiUsage;
+import com.fly.ai.common.model.AiUsage;
 
 import java.util.List;
 

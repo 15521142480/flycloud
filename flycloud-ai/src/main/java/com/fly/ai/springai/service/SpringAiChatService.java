@@ -1,9 +1,9 @@
 package com.fly.ai.springai.service;
 
-import com.fly.ai.model.AiChatRequest;
-import com.fly.ai.model.AiChatResponse;
+import com.fly.ai.common.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatResponse;
 import com.fly.ai.original.config.AiProperties;
-import com.fly.ai.springai.utils.SpringAiChatUtils;
+import com.fly.ai.common.utils.SpringAiChatUtils;
 import com.fly.common.utils.ai.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import lombok.RequiredArgsConstructor;

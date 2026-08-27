@@ -2,9 +2,9 @@ package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fly.ai.original.client.tool.OpenAiResponseParser;
-import com.fly.ai.model.AiChatResponse;
-import com.fly.ai.model.AiStreamEvent;
-import com.fly.ai.model.AiEmbeddingResponse;
+import com.fly.ai.common.model.AiChatResponse;
+import com.fly.ai.common.model.AiStreamEvent;
+import com.fly.ai.common.model.AiEmbeddingResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

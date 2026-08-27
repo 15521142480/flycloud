@@ -1,8 +1,8 @@
 package com.fly.ai.original.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fly.ai.model.AiChatRequest;
-import com.fly.ai.model.AiChatResponse;
+import com.fly.ai.common.model.AiChatRequest;
+import com.fly.ai.common.model.AiChatResponse;
 import com.fly.common.enums.ai.AiProviderEnum;
 import com.fly.ai.original.config.AiProperties;
 import org.springframework.stereotype.Component;

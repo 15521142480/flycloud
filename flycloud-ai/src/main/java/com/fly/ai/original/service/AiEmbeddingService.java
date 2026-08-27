@@ -1,7 +1,7 @@
 package com.fly.ai.original.service;
 
-import com.fly.ai.model.AiEmbeddingRequest;
-import com.fly.ai.model.AiEmbeddingResponse;
+import com.fly.ai.common.model.AiEmbeddingRequest;
+import com.fly.ai.common.model.AiEmbeddingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

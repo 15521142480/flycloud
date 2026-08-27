@@ -1,4 +1,4 @@
-package com.fly.ai.model;
+package com.fly.ai.common.model;
 
 /**
  * 向前端推送的 SSE 事件。
