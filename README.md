@@ -58,8 +58,11 @@
 ### 4、框架目录结构:
 ```
 flycloud
-├─db       -- 系统sql
-├─doc      -- 系统文档
+├─config       -- 系统配置
+├─db           -- 系统sql
+├─doc          -- 系统文档
+├─ext-lib      -- 外部jai包
+├─flycloud-ai               -- ai服务
 ├─flycloud-api              -- 内网接口（实体和feign等api层）
 │  ├─flycloud_bpm_api                   -- 工作流api
 │  ├─flycloud_system_api                -- 系统api
@@ -67,52 +70,58 @@ flycloud
 ├─flycloud-auth             -- 授权服务
 ├─flycloud-bpm              -- 工作流服务
 ├─flycloud-common           -- 公共模块
-│  ├─flycloud-common-core               -- 公共模块核心代码
-│  ├─flycloud-common-database           -- 数据库连接相关
-│  └─flycloud-common-doc                -- springdoc(swagger)相关
-│  └─[flycloud-common-elasticsearch     -- es相关
-│  └─flycloud-common-feign              -- feign相关
-│  └─flycloud-common-redis              -- redis相关
-│  └─flycloud-common-seata              -- seata(分布式事务)相关
-│  └─flycloud-common-security           -- 安全相关
-│  ├─flycloud-common-rocketmq           -- rocketmq相关
-├─flycloud-extend           -- 扩展模块 (如 xxl-job-admin、springboot-admin等)
+│  ├─flycloud-common-core               -- core/公共模块核心代码
+│  ├─flycloud-common-database           -- database/数据库连接
+│  └─flycloud-common-doc                -- doc/接口文档
+│  └─[flycloud-common-elasticsearch     -- es/搜索引擎
+│  └─flycloud-common-feign              -- feign/服务接口调用
+│  └─flycloud-common-onlineoffice       -- onlineoffice/在线文档
+│  └─flycloud-common-redis              -- redis/缓存
+│  └─flycloud-common-report             -- report/报表
+│  ├─flycloud-common-rocketmq           -- rocketmq/通讯队列
+│  └─flycloud-common-seata              -- seata/分布式事务
+│  └─flycloud-common-security           -- security/微服务之间的授权验证
+│  └─flycloud-common-websocket          -- websocket/信息通讯
+│  └─flycloud-common-xxljob             -- xxljob/任务调度
+├─flycloud-extend           -- 扩展服务模块 (如 xxl-job-admin、springboot-admin等)
 │  ├─flycloud-file-admin                -- 文件管理后台服务
-│  ├─flycloud-xxljob-admin               -- 任务调度服务
+│  ├─flycloud-xxljob-admin              -- 任务调度服务
 ├─flycloud-gateway          -- 网关服务
 ├─flycloud-generator        -- 自动生成代码服务
 └─flycloud-mall             -- 商家服务
 └─flycloud-system           -- 平台服务
-└─flycloud-test             -- 测试服务 (测试各种服务代码或中间件)
-└─flycloud-ui               -- 系统的ui前端模块
+└─flycloud-test             -- 测试服务
+└─flycloud-ui               -- 系统前端ui模块
 │  ├─flycloud-admin-ui                  -- 平台管理后台ui 
-│  ├─flycloud-mall-app-ui               -- 商城ui（兼容h5和小程序等） 
-└─logs     -- 系统日志 
+│  ├─flycloud-mall-app-ui               -- 商城ui（兼容h5/小程序等） 
+└─logs        -- 系统日志 
 ```
 
 
 ### 5、后端服务:
-| 服务                                | 地址                    |
-|-----------------------------------|-----------------------|
+| 服务                                | 地址                                  |
+|-----------------------------------|-------------------------------------|
 | 优先启动（必须）:                         |
-| flycloud-gateway     网关服务         | http://127.0.0.1:8080 |
-| flycloud-auth        授权校验服务       | http://127.0.0.1:8088 |
-| flycloud-system      系统服务         | http://127.0.0.1:8085 |
+| flycloud-gateway     网关服务         | http://127.0.0.1:8080               |
+| flycloud-auth        授权校验服务       | http://127.0.0.1:8088               |
+| flycloud-system      系统服务         | http://127.0.0.1:8085               |
 | 系统业务服务:                           |
-| flycloud-bpm         工作流服务        | http://127.0.0.1:8090 |
-| flycloud-mall        商城服务         | http://127.0.0.1:8081 |
+| flycloud-bpm         工作流服务        | http://127.0.0.1:8090               |
+| flycloud-mall        商城服务         | http://127.0.0.1:8081               |
+| flycloud-ai          ai服务         | http://127.0.0.1:8086               |
 | 其他服务:                             |
-| flycloud-generator   自动生成代码服务     | http://127.0.0.1:8089 |
-| flycloud-test        测试服务         | http://127.0.0.1:8099 |
+| flycloud-generator   自动生成代码服务     | http://127.0.0.1:8089               |
+| flycloud-test        测试服务         | http://127.0.0.1:8099               |
 | 扩展服务:                             |
-| flycloud-file-admin   文件管理后台      | http://127.0.0.1:9095 |
+| flycloud-file-admin   文件管理后台      | http://127.0.0.1:9095               |
 | flycloud-xxljob-admin      任务调度服务 | http://127.0.0.1:9091/xxl-job-admin |
 
 
-### 6、前端服务:（可选）
-| 服务                                        | 地址                    |
-|-------------------------------------------|-----------------------|
-| flycloud-admin-ui            平台ui (新)     | http://127.0.0.1:7075 |
+### 6、前端服务:
+| 服务                                      | 地址                    |
+|-----------------------------------------|-----------------------|
+| flycloud-admin-ui        平台后台前端ui       | http://127.0.0.1:7075 |
+| flycloud-mall-app-ui     商城(小程序/h5)前端ui | http://127.0.0.1:3000 |
 
 
 ### 7、系统功能:
