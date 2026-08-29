@@ -82,7 +82,7 @@ public class AiBusinessTools {
      * @param toolContext 服务端工具上下文
      * @return 已脱敏的订单摘要，或无权限/不存在说明
      */
-    @Tool(name = QUERY_MALL_ORDER_TOOL, description = "根据商城订单数据库主键或订单流水号查询订单摘要。参数统一传入用户提供的订单 ID、订单编号或订单流水号，例如 2073133434168320001 或 M202607040355023193520。仅在当前登录用户是订单创建人或拥有超级管理员角色时返回订单信息。")
+    @Tool(name = QUERY_MALL_ORDER_TOOL, description = "根据商城订单数据库主键或订单流水号查询订单摘要。参数统一传入用户提供的订单 ID、订单编号或订单流水号，例如 2073133434168320001 或 M202607040355023193520。仅在当前登录用户是订单创建人或拥有超级管理员角色时返回订单信息。工具成功返回订单摘要即表示后端授权已通过；结果中的 buyerUserId 可用于继续调用“根据用户ID查询系统用户的公共信息”工具，以回答订单由谁购买。")
     public Object queryMallOrderByIdOrNo(
             @ToolParam(description = "需要查询的订单数据库主键或订单流水号，必须保持原始字符串，例如 2073133434168320001 或 M202607040355023193520") String idOrNo,
             ToolContext toolContext) {
@@ -194,7 +194,7 @@ public class AiBusinessTools {
      * @return 脱敏订单摘要
      */
     private AiToolOrderSummary toOrderSummary(TradeOrderVo order) {
-        return new AiToolOrderSummary(order.getId(), order.getNo(), order.getStatus(), order.getProductCount(),
+        return new AiToolOrderSummary(order.getId(), order.getNo(), order.getUserId(), order.getStatus(), order.getProductCount(),
                 order.getPayStatus(), order.getTotalPrice(), order.getDiscountPrice(), order.getDeliveryPrice(),
                 order.getPayPrice(), order.getCreateTime());
     }

@@ -69,6 +69,7 @@ class AiBusinessToolsTest {
 
         AiToolOrderSummary summary = assertInstanceOf(AiToolOrderSummary.class, result);
         assertEquals(20L, summary.orderId());
+        assertEquals(2L, summary.buyerUserId());
         assertEquals("检查到您有该模块权限（超级管理员）", trace.permissionMessage());
     }
 
