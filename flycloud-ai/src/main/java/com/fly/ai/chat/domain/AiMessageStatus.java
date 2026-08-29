@@ -8,7 +8,6 @@ package com.fly.ai.chat.domain;
  */
 public enum AiMessageStatus {
 
-    GENERATING("generating"),
     COMPLETED("completed"),
     FAILED("failed");
 

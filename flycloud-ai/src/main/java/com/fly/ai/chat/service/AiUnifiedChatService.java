@@ -1,6 +1,5 @@
 package com.fly.ai.chat.service;
 
-import com.fly.ai.chat.model.AiConversationTurn;
 import com.fly.ai.chat.model.AiUnifiedChatRequest;
 import com.fly.ai.chat.model.AiUnifiedChatResponse;
 import com.fly.ai.common.model.AiStreamEvent;
@@ -45,17 +44,17 @@ public class AiUnifiedChatService {
      * @return 统一聊天响应
      */
     public AiUnifiedChatResponse chat(AiUnifiedChatRequest request, Long loginUserId) {
-        AiConversationTurn turn = conversationService.prepareTurn(request.conversationId(), loginUserId, request.message());
+        String conversationId = conversationService.prepareTurn(request.conversationId(), loginUserId, request.message());
         try {
             AiRagContext ragContext = ragService.retrieveContext(request.message());
             AiAgentResponse agentResponse = agentService.chat(request.toChatRequest(), loginUserId,
-                    turn.conversationId(), ragContext);
+                    conversationId, ragContext);
             AiToolCallingResponse response = agentResponse.response();
-            conversationService.completeAssistantMessage(turn.assistantMessageId(), response,
+            conversationService.saveAssistantMessage(conversationId, loginUserId, response,
                     aiProperties.getProvider().getValue(), agentResponse.knowledgeReferences());
-            return toUnifiedResponse(turn.conversationId(), response, agentResponse.knowledgeReferences());
+            return toUnifiedResponse(conversationId, response, agentResponse.knowledgeReferences());
         } catch (RuntimeException exception) {
-            conversationService.failAssistantMessage(turn.assistantMessageId());
+            conversationService.saveFailedAssistantMessage(conversationId, loginUserId);
             throw exception;
         }
     }
@@ -68,31 +67,31 @@ public class AiUnifiedChatService {
      * @return SSE 发送器
      */
     public SseEmitter stream(AiUnifiedChatRequest request, Long loginUserId) {
-        AiConversationTurn turn = conversationService.prepareTurn(request.conversationId(), loginUserId, request.message());
+        String conversationId = conversationService.prepareTurn(request.conversationId(), loginUserId, request.message());
         AiRagContext ragContext;
         try {
             ragContext = ragService.retrieveContext(request.message());
         } catch (RuntimeException exception) {
-            conversationService.failAssistantMessage(turn.assistantMessageId());
+            conversationService.saveFailedAssistantMessage(conversationId, loginUserId);
             throw exception;
         }
-        return agentService.stream(request.toChatRequest(), loginUserId, turn.conversationId(), ragContext,
+        return agentService.stream(request.toChatRequest(), loginUserId, conversationId, ragContext,
                 new AiToolCallingStreamObserver() {
 
                     @Override
                     public void onStarted(SseEmitter emitter) {
-                        SpringAiChatUtils.sendStreamEvent(emitter, AiStreamEvent.conversation(turn.conversationId()));
+                        SpringAiChatUtils.sendStreamEvent(emitter, AiStreamEvent.conversation(conversationId));
                     }
 
                     @Override
                     public void onCompleted(AiToolCallingResponse response) {
-                        conversationService.completeAssistantMessage(turn.assistantMessageId(), response,
+                        conversationService.saveAssistantMessage(conversationId, loginUserId, response,
                                 aiProperties.getProvider().getValue(), ragContext.references());
                     }
 
                     @Override
                     public void onError(Throwable exception) {
-                        conversationService.failAssistantMessage(turn.assistantMessageId());
+                        conversationService.saveFailedAssistantMessage(conversationId, loginUserId);
                     }
                 });
     }

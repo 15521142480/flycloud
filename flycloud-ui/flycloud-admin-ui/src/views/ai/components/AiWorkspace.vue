@@ -198,10 +198,10 @@ const chatModes: Array<{ value: ChatMode; label: string }> = [
   { value: 'normal', label: '普通聊天' }
 ]
 const unifiedDefinition: ChatDefinition = {
-  name: '统一 AI 聊天',
+  name: 'AI 助手',
   chatStage: 'unified',
   placeholder: '请输入问题，例如：查询订单 10001',
-  emptyTitle: '开始统一 AI 聊天',
+  emptyTitle: '开始 AI 助手',
   emptyDescription: '自动使用会话记忆，并在需要时调用已接入的受控业务工具。',
   examples: ['查询订单 ID M202607040355023193520 的信息', '查询用户 ID 1 的信息']
 }

@@ -673,7 +673,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
-    // AI 实验室为统一聊天页面的学习辅助入口，不作为独立菜单展示。
+    // AI 实验室为AI助手页面的学习辅助入口，不作为独立菜单展示。
     path: '/ai/demo',
     component: Layout,
     name: 'AiDemoRoot',

@@ -4,11 +4,11 @@
     <section class="unified-chat-nav">
       <div class="unified-nav-heading">
         <div>
-          <div class="steps-title">统一 AI 聊天</div>
+          <div class="steps-title">AI 助手</div>
           <div class="steps-subtitle">会话、记忆与业务能力的正式入口</div>
         </div>
         <el-button text type="primary" @click="openDemo">
-          <Icon icon="ep:guide" /> 实验室过程
+          <Icon icon="ep:guide" /> 助手实验室过程
         </el-button>
       </div>
       <button
@@ -42,7 +42,7 @@
     </section>
     <div class="security-tip">
       <Icon icon="ep:shield-check" />
-      <span>统一聊天会根据当前用户身份执行受控工具授权。</span>
+      <span>AI助手会根据当前用户身份执行受控工具授权。</span>
     </div>
     </template>
   </AiWorkspace>

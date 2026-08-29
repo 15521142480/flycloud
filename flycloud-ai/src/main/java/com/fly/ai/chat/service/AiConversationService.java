@@ -12,7 +12,6 @@ import com.fly.ai.chat.mapper.AiMessageMapper;
 import com.fly.ai.chat.memory.AiRedisChatMemoryRepository;
 import com.fly.ai.chat.model.AiChatHistoryMessage;
 import com.fly.ai.chat.model.AiConversationSummary;
-import com.fly.ai.chat.model.AiConversationTurn;
 import com.fly.ai.chat.model.AiMessageMetadata;
 import com.fly.ai.common.model.AiPermission;
 import com.fly.ai.common.model.AiUsage;
@@ -52,15 +51,18 @@ public class AiConversationService {
     private final ObjectMapper objectMapper;
 
     /**
-     * 创建或校验会话，并持久化本轮用户消息和生成中的助手消息。
+     * 创建或校验会话，并先持久化本轮用户消息。
+     * <p>
+     * 助手消息必须在模型调用完成或失败后再写入，使消息创建时间就是实际发生时间，避免预创建占位消息
+     * 造成历史顺序歧义。
      *
      * @param requestedConversationId 客户端携带的会话编号，可为空
      * @param userId 当前登录用户编号
      * @param content 用户输入
-     * @return 本轮持久化标识
+     * @return 本轮所属会话编号
      */
     @Transactional(rollbackFor = Exception.class)
-    public AiConversationTurn prepareTurn(String requestedConversationId, Long userId, String content) {
+    public String prepareTurn(String requestedConversationId, Long userId, String content) {
         AiConversation conversation = resolveConversation(requestedConversationId, userId);
         LocalDateTime now = LocalDateTime.now();
         if (DEFAULT_TITLE.equals(conversation.getTitle())) {
@@ -79,42 +81,28 @@ public class AiConversationService {
         userMessage.setStatus(AiMessageStatus.COMPLETED.getValue());
         messageMapper.insert(userMessage);
 
-        AiMessage assistantMessage = new AiMessage();
-        assistantMessage.setId(UUID.randomUUID().toString());
-        assistantMessage.setConversationId(conversation.getId());
-        assistantMessage.setUserId(userId);
-        assistantMessage.setRole(AiMessageRole.ASSISTANT.getValue());
-        assistantMessage.setMessageType(AiMessageType.TEXT.getValue());
-        assistantMessage.setStatus(AiMessageStatus.GENERATING.getValue());
-        messageMapper.insert(assistantMessage);
-        return new AiConversationTurn(conversation.getId(), assistantMessage.getId());
+        return conversation.getId();
     }
 
     /**
-     * 完成助手消息并写入模型、Token 和工具授权审计信息。
+     * 在模型调用完成后持久化助手消息及其模型、Token、工具授权和知识库检索审计信息。
      *
-     * @param assistantMessageId 助手消息编号
-     * @param response 模型响应
-     * @param provider 模型供应商标识
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void completeAssistantMessage(String assistantMessageId, AiToolCallingResponse response, String provider) {
-        completeAssistantMessage(assistantMessageId, response, provider, Collections.emptyList());
-    }
-
-    /**
-     * 完成助手消息并写入模型、Token、工具授权和知识库检索审计信息。
-     *
-     * @param assistantMessageId 助手消息编号
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
      * @param response 模型响应
      * @param provider 模型供应商标识
      * @param knowledgeReferences 本次实际命中的知识库片段
      */
     @Transactional(rollbackFor = Exception.class)
-    public void completeAssistantMessage(String assistantMessageId, AiToolCallingResponse response, String provider,
+    public void saveAssistantMessage(String conversationId, Long userId, AiToolCallingResponse response, String provider,
             List<AiKnowledgeHit> knowledgeReferences) {
-        AiMessage message = requiredMessage(assistantMessageId);
         AiUsage usage = response.usage();
+        AiMessage message = new AiMessage();
+        message.setId(UUID.randomUUID().toString());
+        message.setConversationId(conversationId);
+        message.setUserId(userId);
+        message.setRole(AiMessageRole.ASSISTANT.getValue());
+        message.setMessageType(AiMessageType.TEXT.getValue());
         message.setContent(response.content());
         message.setModelProvider(provider);
         message.setModelName(response.model());
@@ -123,20 +111,26 @@ public class AiConversationService {
         message.setTotalTokens(usage == null ? null : usage.totalTokens());
         message.setMetadata(writeMetadata(response.permission(), response.toolNames(), knowledgeReferences));
         message.setStatus(AiMessageStatus.COMPLETED.getValue());
-        messageMapper.updateById(message);
+        messageMapper.insert(message);
     }
 
     /**
-     * 标记助手消息调用失败，不写入底层异常细节，避免泄露内部信息。
+     * 在模型调用失败后持久化助手失败消息，不写入底层异常细节，避免泄露内部信息。
      *
-     * @param assistantMessageId 助手消息编号
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
      */
     @Transactional(rollbackFor = Exception.class)
-    public void failAssistantMessage(String assistantMessageId) {
-        AiMessage message = requiredMessage(assistantMessageId);
+    public void saveFailedAssistantMessage(String conversationId, Long userId) {
+        AiMessage message = new AiMessage();
+        message.setId(UUID.randomUUID().toString());
+        message.setConversationId(conversationId);
+        message.setUserId(userId);
+        message.setRole(AiMessageRole.ASSISTANT.getValue());
+        message.setMessageType(AiMessageType.TEXT.getValue());
         message.setContent("模型调用失败，请稍后重试");
         message.setStatus(AiMessageStatus.FAILED.getValue());
-        messageMapper.updateById(message);
+        messageMapper.insert(message);
     }
 
     /**
@@ -167,7 +161,10 @@ public class AiConversationService {
         requireOwnedConversation(conversationId, userId);
         return messageMapper.selectList(Wrappers.<AiMessage>lambdaQuery()
                         .eq(AiMessage::getConversationId, conversationId)
-                        .orderByAsc(AiMessage::getCreateTime))
+                        .orderByAsc(AiMessage::getCreateTime)
+                        .orderByAsc(AiMessage::getUpdateTime)
+                        // 仅兼容历史秒级数据的并列排序；新消息使用毫秒时间，实际写入顺序自然唯一。
+                        .orderByDesc(AiMessage::getRole))
                 .stream()
                 .map(this::toHistoryMessage)
                 .toList();
@@ -222,20 +219,6 @@ public class AiConversationService {
             throw new AiProviderException(404, "AI 会话不存在或无权访问");
         }
         return conversation;
-    }
-
-    /**
-     * 查询必须存在的助手消息。
-     *
-     * @param messageId 消息编号
-     * @return 消息实体
-     */
-    private AiMessage requiredMessage(String messageId) {
-        AiMessage message = messageMapper.selectById(messageId);
-        if (message == null) {
-            throw new AiProviderException(404, "AI 消息不存在");
-        }
-        return message;
     }
 
     /**

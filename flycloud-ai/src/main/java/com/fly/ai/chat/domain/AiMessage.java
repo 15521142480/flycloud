@@ -55,7 +55,7 @@ public class AiMessage extends BaseEntity {
     /** 模型总 Token，用于会话统计。 */
     private Long totalTokens;
 
-    /** 消息状态：generating、completed、failed。 */
+    /** 消息状态：completed、failed。 */
     private String status;
 
     /** JSON 格式的可扩展元数据。 */

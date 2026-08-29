@@ -7,7 +7,7 @@
         <div class="steps-subtitle">按步骤学习并验证 AI 能力</div>
       </div>
       <el-button text type="primary" @click="openUnified">
-        <Icon icon="ep:chat-dot-round" /> 统一聊天
+        <Icon icon="ep:chat-dot-round" /> AI助手
       </el-button>
     </section>
     <section class="laboratory-steps" aria-label="AI 实验室过程">
@@ -45,7 +45,7 @@ import AiWorkspace from '../components/AiWorkspace.vue'
 defineOptions({ name: 'AiDemo' })
 
 const router = useRouter()
-/** 返回正式统一聊天页面。 */
+/** 返回正式AI助手页面。 */
 const openUnified = () => router.push('/ai')
 </script>
 

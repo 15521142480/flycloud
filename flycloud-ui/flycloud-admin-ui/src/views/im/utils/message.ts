@@ -293,7 +293,7 @@ export function toGroupCardTarget(group: GroupLite | null | undefined): CardTarg
 }
 
 /**
- * 名片标签 + 图标（按 targetType 二分），统一聊天气泡 / 引用预览 / 历史摘要 / 后台预览的文案与图标
+ * 名片标签 + 图标（按 targetType 二分），AI助手气泡 / 引用预览 / 历史摘要 / 后台预览的文案与图标
  *
  * 缺失 / 非法 targetType 走「个人名片」兜底，避免老消息或脏数据导致 UI 空白
  */
