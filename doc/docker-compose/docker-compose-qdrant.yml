@@ -1,0 +1,35 @@
+# Qdrant：flycloud-ai 的正式向量存储。
+services:
+  flycloud-qdrant:
+    image: qdrant/qdrant:v1.13.4
+    container_name: flycloud-qdrant
+    ports:
+      # AI 服务默认同机部署，仅绑定本机，避免向公网暴露向量库。"127.0.0.1:6333:6333"
+      - "6333:6333"
+      # Spring AI QdrantVectorStore 使用的 gRPC 端口。
+      - "6334:6334"
+    volumes:
+      # 向量、集合和 WAL 均持久化到宿主机，目录固定为项目约定的 /docker/qdrant。
+      - /docker/qdrant/storage:/qdrant/storage
+    environment:
+      - TZ=Asia/Shanghai
+      # 关闭遥测并减少运行日志，适合资源有限的单机学习/小规模部署。
+      - QDRANT__TELEMETRY_DISABLED=true
+      - QDRANT__LOG_LEVEL=WARN
+      # Qdrant 的自动值会按宿主机 CPU 数创建线程；容器限额下应显式限制为单线程。
+      - QDRANT__SERVICE__MAX_WORKERS=1
+      - QDRANT__STORAGE__PERFORMANCE__MAX_SEARCH_THREADS=1
+      - QDRANT__STORAGE__PERFORMANCE__MAX_OPTIMIZATION_THREADS=1
+      - QDRANT__STORAGE__PERFORMANCE__OPTIMIZER_CPU_BUDGET=1
+      - QDRANT__STORAGE__HNSW_INDEX__MAX_INDEXING_THREADS=1
+      # 关闭 jemalloc 后台线程，避免低线程配额下启动失败。
+      - MALLOC_CONF=background_thread:false
+    # 兼容旧版 Docker/runc 的默认 seccomp：其会将 glibc 的 clone3 线程创建返回 EPERM。
+    # 仅取消此容器的 seccomp 过滤；不授予 privileged，也不新增 Linux capabilities。
+    security_opt:
+      - seccomp=unconfined
+    # 小规模知识库的可用下限；已有较多文档或并发检索时应提升至 1G 以上。
+    cpus: 0.50
+    mem_limit: 512m
+    mem_reservation: 256m
+    restart: unless-stopped

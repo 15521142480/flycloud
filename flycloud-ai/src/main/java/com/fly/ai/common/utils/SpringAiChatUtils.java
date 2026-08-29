@@ -68,10 +68,10 @@ public final class SpringAiChatUtils {
      * @param lastMetadata 最近一次响应元数据
      * @param contentPreview 日志文本预览缓冲区
      */
-    public static void handleStreamResponse(SseEmitter emitter, ChatResponse response,
+    public static String handleStreamResponse(SseEmitter emitter, ChatResponse response,
             AtomicReference<ChatResponseMetadata> lastMetadata, StringBuilder contentPreview) {
         if (response == null || response.getResult() == null || response.getResult().getOutput() == null) {
-            return;
+            return null;
         }
         lastMetadata.set(response.getMetadata());
         String delta = response.getResult().getOutput().getText();
@@ -79,6 +79,7 @@ public final class SpringAiChatUtils {
         if (AiUtils.hasText(delta)) {
             sendEvent(emitter, AiStreamEvent.delta(delta));
         }
+        return delta;
     }
 
     /**
@@ -156,7 +157,7 @@ public final class SpringAiChatUtils {
      * @param usage Spring AI 用量对象
      * @return 项目 Token 用量
      */
-    private static AiUsage toUsage(Usage usage) {
+    public static AiUsage toUsage(Usage usage) {
         if (usage == null || usage.getTotalTokens() == null || usage.getTotalTokens() <= 0) {
             return null;
         }

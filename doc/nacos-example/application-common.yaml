@@ -119,6 +119,10 @@ spring:
           max-tokens: ${flycloud.ai.max-output-tokens}
           # 百炼 OpenAI 兼容接口默认不会在流式响应中返回用量；开启后最后一个分片会携带 usage。
           stream-usage: true
+      embedding:
+        options:
+          # 百炼 OpenAI 兼容 Embedding 接口的真实模型。
+          model: ${flycloud.ai.dashscope.embedding-model}
 
     # DeepSeek 使用 Spring AI 的 DeepSeek 官方适配器，而非 OpenAI 兼容适配器。
     # 当 flycloud.ai.provider=deepseek 时，Spring AI 聊天接口自动路由至该配置。
@@ -131,6 +135,37 @@ spring:
           model: deepseek-chat
           # 与原生实现共用 flycloud.ai.max-output-tokens；单次请求可传 maxOutputTokens 覆盖。
           max-tokens: ${flycloud.ai.max-output-tokens}
+
+    # Qdrant 为正式 Vector Store；localhost 用于本地启动 AI 服务，容器部署时覆盖为 flycloud-qdrant。
+    vectorstore:
+      qdrant:
+        host: ${QDRANT_HOST:localhost}
+        port: ${QDRANT_GRPC_PORT:6334}
+        collection-name: flycloud_ai_knowledge
+        initialize-schema: true
+
+    # 内部 MCP Server/Client：Server 公开 Streamable HTTP，Client 用于第 9 步真实协议调用演示。
+    mcp:
+      server:
+        enabled: true
+        name: flycloud-ai-business-tools
+        version: 1.0.0
+        protocol: streamable
+        streamable-http:
+          mcp-endpoint: /mcp
+      client:
+        enabled: true
+        # Client 在业务请求线程中初始化，才能转发该请求的 Bearer Token 至内部 MCP Server。
+        initialized: false
+        # 第 9 步 Demo 通过 AiMcpClientService 显式调用 MCP；不能在容器启动阶段自动转换为
+        # ChatClient ToolCallback，否则会在本服务 /mcp 尚未监听前触发 listTools() 连接失败。
+        toolcallback:
+          enabled: false
+        streamable-http:
+          connections:
+            flycloud-ai-internal:
+              url: ${FLYCLOUD_AI_MCP_BASE_URL:http://localhost:8086}
+              endpoint: /mcp
 
 
 
@@ -213,6 +248,14 @@ flycloud:
     # Tool Calling 总开关。关闭后只保留普通 Spring AI 聊天，不允许模型调用任何业务工具。
     tool-calling:
       enabled: true
+
+    # 统一聊天的短期上下文只保存在 Redis；MySQL 保留完整历史记录用于会话展示、审计和统计。
+    memory:
+      enabled: true
+      # 最近 20 条用户/助手消息参与模型上下文，避免长会话无限增长 Token。
+      max-messages: 20
+      # 短期上下文 12 小时未访问自动清理；完整历史不会受此影响。
+      redis-ttl: 12h
 
     # note 以下为原生请求模型配置，使用SpringAi后可忽略
     openai:

@@ -1,0 +1,317 @@
+package com.fly.ai.chat.service;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fly.ai.chat.domain.AiConversation;
+import com.fly.ai.chat.domain.AiMessage;
+import com.fly.ai.chat.domain.AiMessageRole;
+import com.fly.ai.chat.domain.AiMessageStatus;
+import com.fly.ai.chat.domain.AiMessageType;
+import com.fly.ai.chat.mapper.AiConversationMapper;
+import com.fly.ai.chat.mapper.AiMessageMapper;
+import com.fly.ai.chat.memory.AiRedisChatMemoryRepository;
+import com.fly.ai.chat.model.AiChatHistoryMessage;
+import com.fly.ai.chat.model.AiConversationSummary;
+import com.fly.ai.chat.model.AiConversationTurn;
+import com.fly.ai.chat.model.AiMessageMetadata;
+import com.fly.ai.common.model.AiPermission;
+import com.fly.ai.common.model.AiUsage;
+import com.fly.ai.common.knowledge.model.AiKnowledgeHit;
+import com.fly.ai.common.tool.model.AiToolCallingResponse;
+import com.fly.common.exception.AiProviderException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * 统一 AI 会话与完整消息历史服务。
+ * <p>
+ * MySQL 保存可展示、可审计的完整历史；本服务只在删除会话时清理 Redis，模型短期上下文的读写仍由
+ * Spring AI {@code ChatMemory} 完成，避免混淆两种存储职责。
+ *
+ * @author lxs
+ * @date 2026-08-28
+ */
+@Service
+@RequiredArgsConstructor
+public class AiConversationService {
+
+    private static final String DEFAULT_TITLE = "新会话";
+
+    private final AiConversationMapper conversationMapper;
+
+    private final AiMessageMapper messageMapper;
+
+    private final AiRedisChatMemoryRepository chatMemoryRepository;
+
+    private final ObjectMapper objectMapper;
+
+    /**
+     * 创建或校验会话，并持久化本轮用户消息和生成中的助手消息。
+     *
+     * @param requestedConversationId 客户端携带的会话编号，可为空
+     * @param userId 当前登录用户编号
+     * @param content 用户输入
+     * @return 本轮持久化标识
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public AiConversationTurn prepareTurn(String requestedConversationId, Long userId, String content) {
+        AiConversation conversation = resolveConversation(requestedConversationId, userId);
+        LocalDateTime now = LocalDateTime.now();
+        if (DEFAULT_TITLE.equals(conversation.getTitle())) {
+            conversation.setTitle(buildTitle(content));
+        }
+        conversation.setLastMessageTime(now);
+        conversationMapper.updateById(conversation);
+
+        AiMessage userMessage = new AiMessage();
+        userMessage.setId(UUID.randomUUID().toString());
+        userMessage.setConversationId(conversation.getId());
+        userMessage.setUserId(userId);
+        userMessage.setRole(AiMessageRole.USER.getValue());
+        userMessage.setMessageType(AiMessageType.TEXT.getValue());
+        userMessage.setContent(content);
+        userMessage.setStatus(AiMessageStatus.COMPLETED.getValue());
+        messageMapper.insert(userMessage);
+
+        AiMessage assistantMessage = new AiMessage();
+        assistantMessage.setId(UUID.randomUUID().toString());
+        assistantMessage.setConversationId(conversation.getId());
+        assistantMessage.setUserId(userId);
+        assistantMessage.setRole(AiMessageRole.ASSISTANT.getValue());
+        assistantMessage.setMessageType(AiMessageType.TEXT.getValue());
+        assistantMessage.setStatus(AiMessageStatus.GENERATING.getValue());
+        messageMapper.insert(assistantMessage);
+        return new AiConversationTurn(conversation.getId(), assistantMessage.getId());
+    }
+
+    /**
+     * 完成助手消息并写入模型、Token 和工具授权审计信息。
+     *
+     * @param assistantMessageId 助手消息编号
+     * @param response 模型响应
+     * @param provider 模型供应商标识
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void completeAssistantMessage(String assistantMessageId, AiToolCallingResponse response, String provider) {
+        completeAssistantMessage(assistantMessageId, response, provider, Collections.emptyList());
+    }
+
+    /**
+     * 完成助手消息并写入模型、Token、工具授权和知识库检索审计信息。
+     *
+     * @param assistantMessageId 助手消息编号
+     * @param response 模型响应
+     * @param provider 模型供应商标识
+     * @param knowledgeReferences 本次实际命中的知识库片段
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void completeAssistantMessage(String assistantMessageId, AiToolCallingResponse response, String provider,
+            List<AiKnowledgeHit> knowledgeReferences) {
+        AiMessage message = requiredMessage(assistantMessageId);
+        AiUsage usage = response.usage();
+        message.setContent(response.content());
+        message.setModelProvider(provider);
+        message.setModelName(response.model());
+        message.setInputTokens(usage == null ? null : usage.inputTokens());
+        message.setOutputTokens(usage == null ? null : usage.outputTokens());
+        message.setTotalTokens(usage == null ? null : usage.totalTokens());
+        message.setMetadata(writeMetadata(response.permission(), response.toolNames(), knowledgeReferences));
+        message.setStatus(AiMessageStatus.COMPLETED.getValue());
+        messageMapper.updateById(message);
+    }
+
+    /**
+     * 标记助手消息调用失败，不写入底层异常细节，避免泄露内部信息。
+     *
+     * @param assistantMessageId 助手消息编号
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void failAssistantMessage(String assistantMessageId) {
+        AiMessage message = requiredMessage(assistantMessageId);
+        message.setContent("模型调用失败，请稍后重试");
+        message.setStatus(AiMessageStatus.FAILED.getValue());
+        messageMapper.updateById(message);
+    }
+
+    /**
+     * 查询当前用户的会话列表。
+     *
+     * @param userId 当前登录用户编号
+     * @return 会话摘要列表
+     */
+    public List<AiConversationSummary> listConversations(Long userId) {
+        return conversationMapper.selectList(Wrappers.<AiConversation>lambdaQuery()
+                        .eq(AiConversation::getUserId, userId)
+                        .orderByDesc(AiConversation::getLastMessageTime)
+                        .orderByDesc(AiConversation::getCreateTime))
+                .stream()
+                .map(conversation -> new AiConversationSummary(conversation.getId(), conversation.getTitle(),
+                        conversation.getLastMessageTime(), conversation.getCreateTime()))
+                .toList();
+    }
+
+    /**
+     * 查询属于当前用户的完整历史消息。
+     *
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
+     * @return 历史消息列表
+     */
+    public List<AiChatHistoryMessage> listMessages(String conversationId, Long userId) {
+        requireOwnedConversation(conversationId, userId);
+        return messageMapper.selectList(Wrappers.<AiMessage>lambdaQuery()
+                        .eq(AiMessage::getConversationId, conversationId)
+                        .orderByAsc(AiMessage::getCreateTime))
+                .stream()
+                .map(this::toHistoryMessage)
+                .toList();
+    }
+
+    /**
+     * 逻辑删除当前用户的一段会话和其消息，同时清理 Redis 短期上下文。
+     *
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteConversation(String conversationId, Long userId) {
+        AiConversation conversation = requireOwnedConversation(conversationId, userId);
+        messageMapper.delete(Wrappers.<AiMessage>lambdaQuery().eq(AiMessage::getConversationId, conversationId));
+        conversationMapper.deleteById(conversation.getId());
+        chatMemoryRepository.deleteByConversationId(conversationId);
+    }
+
+    /**
+     * 创建新会话或校验客户端指定的会话归属。
+     *
+     * @param requestedConversationId 客户端会话编号
+     * @param userId 当前登录用户编号
+     * @return 可使用的会话
+     */
+    private AiConversation resolveConversation(String requestedConversationId, Long userId) {
+        if (requestedConversationId != null && !requestedConversationId.isBlank()) {
+            return requireOwnedConversation(requestedConversationId, userId);
+        }
+        AiConversation conversation = new AiConversation();
+        conversation.setId(UUID.randomUUID().toString());
+        conversation.setUserId(userId);
+        conversation.setTitle(DEFAULT_TITLE);
+        conversation.setLastMessageTime(LocalDateTime.now());
+        conversationMapper.insert(conversation);
+        return conversation;
+    }
+
+    /**
+     * 校验会话存在且只属于当前登录用户。
+     *
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
+     * @return 已校验的会话
+     */
+    private AiConversation requireOwnedConversation(String conversationId, Long userId) {
+        AiConversation conversation = conversationMapper.selectOne(Wrappers.<AiConversation>lambdaQuery()
+                .eq(AiConversation::getId, conversationId)
+                .eq(AiConversation::getUserId, userId));
+        if (conversation == null) {
+            throw new AiProviderException(404, "AI 会话不存在或无权访问");
+        }
+        return conversation;
+    }
+
+    /**
+     * 查询必须存在的助手消息。
+     *
+     * @param messageId 消息编号
+     * @return 消息实体
+     */
+    private AiMessage requiredMessage(String messageId) {
+        AiMessage message = messageMapper.selectById(messageId);
+        if (message == null) {
+            throw new AiProviderException(404, "AI 消息不存在");
+        }
+        return message;
+    }
+
+    /**
+     * 将消息转换为前端历史记录。
+     *
+     * @param message 消息实体
+     * @return 历史消息
+     */
+    private AiChatHistoryMessage toHistoryMessage(AiMessage message) {
+        AiMessageMetadata metadata = readMetadata(message.getMetadata());
+        AiUsage usage = message.getTotalTokens() == null ? null : new AiUsage(valueOrZero(message.getInputTokens()),
+                valueOrZero(message.getOutputTokens()), message.getTotalTokens());
+        return new AiChatHistoryMessage(message.getId(), message.getRole(), message.getContent(), usage,
+                metadata.permission(), metadata.toolNames(), metadata.knowledgeReferences(), message.getStatus(),
+                message.getCreateTime());
+    }
+
+    /**
+     * 构建会话首条标题。
+     *
+     * @param content 用户消息
+     * @return 短标题
+     */
+    private String buildTitle(String content) {
+        String title = content.replaceAll("\\s+", " ").trim();
+        return title.length() > 40 ? title.substring(0, 40) + "…" : title;
+    }
+
+    /**
+     * 序列化当前已实现的工具调用附加信息。
+     *
+     * @param permission 权限结果
+     * @param toolNames 工具名称
+     * @return JSON 元数据
+     */
+    private String writeMetadata(AiPermission permission, List<String> toolNames, List<AiKnowledgeHit> knowledgeReferences) {
+        if (permission == null && (toolNames == null || toolNames.isEmpty())
+                && (knowledgeReferences == null || knowledgeReferences.isEmpty())) {
+            return null;
+        }
+        try {
+            return objectMapper.writeValueAsString(new AiMessageMetadata(permission,
+                    toolNames == null ? Collections.emptyList() : toolNames,
+                    knowledgeReferences == null ? Collections.emptyList() : knowledgeReferences));
+        } catch (Exception exception) {
+            throw new AiProviderException(500, "保存 AI 消息元数据失败", exception);
+        }
+    }
+
+    /**
+     * 安全解析消息元数据；旧消息或无元数据时返回空对象。
+     *
+     * @param metadataJson JSON 元数据
+     * @return 元数据对象
+     */
+    private AiMessageMetadata readMetadata(String metadataJson) {
+        if (metadataJson == null || metadataJson.isBlank()) {
+            return new AiMessageMetadata(null, Collections.emptyList(), Collections.emptyList());
+        }
+        try {
+            AiMessageMetadata metadata = objectMapper.readValue(metadataJson, AiMessageMetadata.class);
+            return new AiMessageMetadata(metadata.permission(), metadata.toolNames() == null
+                    ? Collections.emptyList() : metadata.toolNames(), metadata.knowledgeReferences() == null
+                    ? Collections.emptyList() : metadata.knowledgeReferences());
+        } catch (Exception exception) {
+            return new AiMessageMetadata(null, Collections.emptyList(), Collections.emptyList());
+        }
+    }
+
+    /**
+     * 将可空 Token 数值转换为零。
+     *
+     * @param value Token 数值
+     * @return 非空数值
+     */
+    private long valueOrZero(Long value) {
+        return value == null ? 0 : value;
+    }
+}

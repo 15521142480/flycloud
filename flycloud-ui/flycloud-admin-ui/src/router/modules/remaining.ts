@@ -673,6 +673,30 @@ const remainingRouter: AppRouteRecordRaw[] = [
     ]
   },
   {
+    // AI 实验室为统一聊天页面的学习辅助入口，不作为独立菜单展示。
+    path: '/ai/demo',
+    component: Layout,
+    name: 'AiDemoRoot',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/ai/demo/index.vue'),
+        name: 'AiDemo',
+        meta: {
+          canTo: true,
+          hidden: true,
+          noCache: false,
+          title: 'AI 实验室过程',
+          icon: 'ep:guide',
+          activeMenu: '/ai'
+        }
+      }
+    ]
+  },
+  {
     // 历史 YuDao AI 示例页与业务菜单 /ai 冲突。保留示例页面，但迁移到独立的静态访问前缀，
     // 避免其 Layout 路由抢占数据库菜单配置的 /ai。
     path: '/ai-other',

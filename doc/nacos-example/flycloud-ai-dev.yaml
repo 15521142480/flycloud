@@ -1,5 +1,17 @@
 # AI 服务开发环境配置。
 # 通用模型配置位于 application-common.yaml 的 flycloud.ai 下。
-logging:
-  level:
-    com.fly.ai: INFO
+
+spring:
+  datasource:
+    dynamic:
+      # 设置默认的数据源或者数据源组,默认值即为 master
+      primary: master
+      datasource:
+        # 主库数据源
+        master:
+          type: ${spring.datasource.type}
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: ${datasource.ai-master.url}
+          username: ${datasource.ai-master.username}
+          password: ${datasource.ai-master.password}
+

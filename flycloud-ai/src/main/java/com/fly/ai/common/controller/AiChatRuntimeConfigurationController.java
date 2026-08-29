@@ -1,7 +1,7 @@
 package com.fly.ai.common.controller;
 
 import com.fly.ai.common.model.AiChatRuntimeConfiguration;
-import com.fly.ai.original.config.AiProperties;
+import com.fly.ai.common.config.AiProperties;
 import com.fly.common.domain.model.R;
 import com.fly.common.enums.ai.AiProviderEnum;
 import io.swagger.v3.oas.annotations.Operation;
