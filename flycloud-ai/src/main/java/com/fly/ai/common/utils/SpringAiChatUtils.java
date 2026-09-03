@@ -4,10 +4,13 @@ import com.fly.ai.common.model.AiChatRequest;
 import com.fly.ai.common.model.AiChatResponse;
 import com.fly.ai.common.model.AiStreamEvent;
 import com.fly.ai.common.model.AiUsage;
+import com.fly.ai.common.config.AiProperties;
 import com.fly.common.utils.ai.AiUtils;
 import com.fly.common.exception.AiProviderException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -43,6 +46,25 @@ public final class SpringAiChatUtils {
             requestSpec.options(chatOptions(request));
         }
         return requestSpec;
+    }
+
+    /**
+     * 为正式统一会话注入 Redis 短期记忆。
+     *
+     * @param requestSpec 当前请求规格
+     * @param chatMemory Spring AI 会话记忆
+     * @param aiProperties AI 公共配置
+     * @param conversationId 会话编号；为空时不注入记忆
+     * @return 注入记忆后的请求规格
+     */
+    public static ChatClient.ChatClientRequestSpec withConversationMemory(ChatClient.ChatClientRequestSpec requestSpec,
+            ChatMemory chatMemory, AiProperties aiProperties, String conversationId) {
+        if (!aiProperties.getMemory().isEnabled() || !AiUtils.hasText(conversationId)) {
+            return requestSpec;
+        }
+        return requestSpec.advisors(MessageChatMemoryAdvisor.builder(chatMemory)
+                .conversationId(conversationId)
+                .build());
     }
 
     /**

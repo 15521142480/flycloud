@@ -2,6 +2,7 @@ package com.fly.ai.common.knowledge.service;
 
 import com.fly.ai.common.knowledge.model.AiEmbeddingResult;
 import com.fly.ai.common.knowledge.model.AiKnowledgeHit;
+import com.fly.ai.common.config.AiProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
@@ -33,6 +34,8 @@ public class AiKnowledgeService {
 
     private final VectorStore vectorStore;
 
+    private final AiProperties aiProperties;
+
     /**
      * 调用真实 Embedding 模型生成文本向量。
      *
@@ -54,7 +57,7 @@ public class AiKnowledgeService {
         return vectorStore.similaritySearch(SearchRequest.builder()
                         .query(query)
                         .topK(3)
-                        .similarityThreshold(0.45d)
+                        .similarityThreshold(aiProperties.getKnowledge().getSimilarityThreshold())
                         .build())
                 .stream()
                 .map(document -> new AiKnowledgeHit(document.getId(), document.getText(), document.getScore(),

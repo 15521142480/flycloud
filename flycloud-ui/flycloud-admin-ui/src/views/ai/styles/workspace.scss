@@ -24,12 +24,19 @@
   padding: 0 4px 12px;
 }
 
-.unified-nav-heading,
+.unified-nav-heading {
+  padding: 0 6px 10px;
+}
+
+.unified-heading-row,
 .demo-nav {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 0 6px 10px;
+}
+
+.unified-heading-row {
+  align-items: center;
 }
 
 .steps-title,
@@ -43,6 +50,14 @@
   margin-top: 5px;
   color: var(--el-text-color-secondary);
   font-size: 12px;
+  white-space: nowrap;
+}
+
+.conversation-section-title {
+  padding: 12px 8px 5px;
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .conversation-item,

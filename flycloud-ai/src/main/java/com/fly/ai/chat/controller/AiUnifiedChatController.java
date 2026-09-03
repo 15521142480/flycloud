@@ -48,7 +48,7 @@ public class AiUnifiedChatController {
      * @param request 聊天请求
      * @return 含会话编号的模型响应
      */
-    @Operation(summary = "统一 AI 聊天", description = "自动创建或续接会话，并启用 Chat Memory 与已接入的受控工具")
+    @Operation(summary = "统一 AI 聊天", description = "自动创建或续接会话；按问题意图启用 Chat Memory、受控工具或 RAG")
     @PostMapping
     public R<AiUnifiedChatResponse> chat(@Valid @RequestBody AiUnifiedChatRequest request) {
         return R.ok(unifiedChatService.chat(request, AiSecurityUtils.requiredLoginUserId("AI 聊天")));
@@ -60,7 +60,7 @@ public class AiUnifiedChatController {
      * @param request 聊天请求
      * @return SSE 发送器；首个 conversation 事件携带服务端会话编号
      */
-    @Operation(summary = "统一 AI 流式聊天", description = "自动创建或续接会话，按 SSE 返回模型文本和完成状态")
+    @Operation(summary = "统一 AI 流式聊天", description = "自动创建或续接会话，按问题意图启用能力并通过 SSE 返回结果")
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter stream(@Valid @RequestBody AiUnifiedChatRequest request) {
         return unifiedChatService.stream(request, AiSecurityUtils.requiredLoginUserId("AI 聊天"));

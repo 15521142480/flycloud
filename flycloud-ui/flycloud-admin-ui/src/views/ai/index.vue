@@ -3,13 +3,13 @@
     <template #sidebar="workspace">
     <section class="unified-chat-nav">
       <div class="unified-nav-heading">
-        <div>
+        <div class="unified-heading-row">
           <div class="steps-title">AI 助手</div>
-          <div class="steps-subtitle">会话、记忆与业务能力的正式入口</div>
+          <el-button text type="primary" @click="openDemo">
+            <Icon icon="ep:guide" /> 助手实验室过程
+          </el-button>
         </div>
-        <el-button text type="primary" @click="openDemo">
-          <Icon icon="ep:guide" /> 助手实验室过程
-        </el-button>
+        <div class="steps-subtitle">会话、记忆与业务能力的正式入口</div>
       </div>
       <button
         class="conversation-item"
@@ -19,6 +19,7 @@
       >
         <Icon icon="ep:chat-dot-round" /> 开始新会话
       </button>
+      <div class="conversation-section-title">最近</div>
       <button
         v-for="conversation in workspace.conversations"
         :key="conversation.conversationId"

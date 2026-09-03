@@ -32,6 +32,9 @@ public class AiProperties {
     /** Chat Memory 相关配置。 */
     private Memory memory = new Memory();
 
+    /** RAG 知识检索相关配置。 */
+    private Knowledge knowledge = new Knowledge();
+
     private OpenAi openai = new OpenAi();
 
     private Deepseek deepseek = new Deepseek();
@@ -127,6 +130,17 @@ public class AiProperties {
 
         /** Redis 中单个会话短期记忆的存活时间。 */
         private Duration redisTtl = Duration.ofHours(12);
+    }
+
+    /**
+     * RAG 知识检索配置。
+     */
+    @Getter
+    @Setter
+    public static class Knowledge {
+
+        /** 只有相似度达到该阈值的片段才可作为正式聊天上下文。 */
+        private double similarityThreshold = 0.70d;
     }
 
 }

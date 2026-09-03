@@ -144,6 +144,7 @@ spring:
         collection-name: flycloud_ai_knowledge
         initialize-schema: true
 
+    # note 正常使用mcp应该新增一个mcp微服务（flycloud-mcp），本案例是（MCP Client + MCP Server）都集成在flycloud-ai微服务
     # 内部 MCP Server/Client：Server 公开 Streamable HTTP，Client 用于第 9 步真实协议调用演示。
     mcp:
       server:
@@ -256,6 +257,10 @@ flycloud:
       max-messages: 20
       # 短期上下文 12 小时未访问自动清理；完整历史不会受此影响。
       redis-ttl: 12h
+
+    # 正式统一聊天仅在公司规则问题且检索分数达到阈值时注入内部知识库，避免无关问题被 RAG 干扰。
+    knowledge:
+      similarity-threshold: 0.70
 
     # note 以下为原生请求模型配置，使用SpringAi后可忽略
     openai:

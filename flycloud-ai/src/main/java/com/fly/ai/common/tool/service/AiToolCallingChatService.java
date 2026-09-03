@@ -16,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -97,7 +95,8 @@ public class AiToolCallingChatService {
         log.info("AI Tool Calling 请求，provider={}, loginUserId={}, message={}, model={}, maxOutputTokens={}",
                 selected.providerName(), loginUserId, request.message(), request.model(), request.maxOutputTokens());
         try {
-            ChatResponse response = withConversationMemory(SpringAiChatUtils.requestSpec(selected.chatClient(), request), conversationId)
+            ChatResponse response = SpringAiChatUtils.withConversationMemory(
+                            SpringAiChatUtils.requestSpec(selected.chatClient(), request), aiChatMemory, aiProperties, conversationId)
                     .system(toolCallingSystemPrompt(supplementalSystemPrompt))
                     .tools(aiBusinessTools)
                     .toolContext(toolContext(loginUserId, authorizationTrace))
@@ -172,7 +171,8 @@ public class AiToolCallingChatService {
                 selected.providerName(), loginUserId, request.message(), request.model(), request.maxOutputTokens());
         try {
             observer.onStarted(emitter);
-            withConversationMemory(SpringAiChatUtils.requestSpec(selected.chatClient(), request), conversationId)
+            SpringAiChatUtils.withConversationMemory(
+                            SpringAiChatUtils.requestSpec(selected.chatClient(), request), aiChatMemory, aiProperties, conversationId)
                     .system(toolCallingSystemPrompt(supplementalSystemPrompt))
                     .tools(aiBusinessTools)
                     .toolContext(toolContext(loginUserId, authorizationTrace))
@@ -321,23 +321,6 @@ public class AiToolCallingChatService {
             AiToolCallingStreamObserver observer) {
         observer.onError(exception);
         SpringAiChatUtils.handleStreamError(emitter, providerName, exception);
-    }
-
-    /**
-     * 为正式会话请求注入 Redis 短期记忆。
-     *
-     * @param requestSpec 当前请求规格
-     * @param conversationId 会话编号
-     * @return 注入记忆后的请求规格
-     */
-    private ChatClient.ChatClientRequestSpec withConversationMemory(ChatClient.ChatClientRequestSpec requestSpec,
-            String conversationId) {
-        if (!aiProperties.getMemory().isEnabled() || !AiUtils.hasText(conversationId)) {
-            return requestSpec;
-        }
-        return requestSpec.advisors(MessageChatMemoryAdvisor.builder(aiChatMemory)
-                .conversationId(conversationId)
-                .build());
     }
 
     /**

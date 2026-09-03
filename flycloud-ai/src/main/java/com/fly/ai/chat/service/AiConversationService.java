@@ -14,6 +14,7 @@ import com.fly.ai.chat.model.AiChatHistoryMessage;
 import com.fly.ai.chat.model.AiConversationSummary;
 import com.fly.ai.chat.model.AiMessageMetadata;
 import com.fly.ai.common.model.AiPermission;
+import com.fly.ai.common.model.AiChatResponse;
 import com.fly.ai.common.model.AiUsage;
 import com.fly.ai.common.knowledge.model.AiKnowledgeHit;
 import com.fly.ai.common.tool.model.AiToolCallingResponse;
@@ -96,6 +97,39 @@ public class AiConversationService {
     @Transactional(rollbackFor = Exception.class)
     public void saveAssistantMessage(String conversationId, Long userId, AiToolCallingResponse response, String provider,
             List<AiKnowledgeHit> knowledgeReferences) {
+        saveAssistantMessage(conversationId, userId,
+                new AiChatResponse(response.responseId(), response.model(), response.content(), response.usage()), provider,
+                response.permission(), response.toolNames(), knowledgeReferences);
+    }
+
+    /**
+     * 在模型调用完成后持久化不包含工具调用的助手消息及其模型、Token 和 RAG 审计信息。
+     *
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
+     * @param response 模型响应
+     * @param provider 模型供应商标识
+     * @param knowledgeReferences 本次实际命中的知识库片段
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveAssistantMessage(String conversationId, Long userId, AiChatResponse response, String provider,
+            List<AiKnowledgeHit> knowledgeReferences) {
+        saveAssistantMessage(conversationId, userId, response, provider, null, Collections.emptyList(), knowledgeReferences);
+    }
+
+    /**
+     * 持久化任意正式模型回答的公共实现。
+     *
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
+     * @param response 模型响应
+     * @param provider 模型供应商标识
+     * @param permission 工具调用权限结果
+     * @param toolNames 实际调用工具名称
+     * @param knowledgeReferences 本次实际命中的知识库片段
+     */
+    private void saveAssistantMessage(String conversationId, Long userId, AiChatResponse response, String provider,
+            AiPermission permission, List<String> toolNames, List<AiKnowledgeHit> knowledgeReferences) {
         AiUsage usage = response.usage();
         AiMessage message = new AiMessage();
         message.setId(UUID.randomUUID().toString());
@@ -109,7 +143,7 @@ public class AiConversationService {
         message.setInputTokens(usage == null ? null : usage.inputTokens());
         message.setOutputTokens(usage == null ? null : usage.outputTokens());
         message.setTotalTokens(usage == null ? null : usage.totalTokens());
-        message.setMetadata(writeMetadata(response.permission(), response.toolNames(), knowledgeReferences));
+        message.setMetadata(writeMetadata(permission, toolNames, knowledgeReferences));
         message.setStatus(AiMessageStatus.COMPLETED.getValue());
         messageMapper.insert(message);
     }

@@ -203,7 +203,7 @@ const unifiedDefinition: ChatDefinition = {
   placeholder: '请输入问题，例如：查询订单 10001',
   emptyTitle: '开始 AI 助手',
   emptyDescription: '自动使用会话记忆，并在需要时调用已接入的受控业务工具。',
-  examples: ['查询订单 ID M202607040355023193520 的信息', '查询用户 ID 1 的信息']
+  examples: ['查询订单 ID M202607040355023193520 的信息', '查询用户 ID 2 的信息']
 }
 const learningSteps: LearningStep[] = [
   {
@@ -240,7 +240,7 @@ const learningSteps: LearningStep[] = [
     placeholder: '请输入问题，例如：查询订单 ID 10001 的信息',
     emptyTitle: '开始一次受控的业务查询',
     emptyDescription: '模型可调用用户和订单工具，服务端会按当前登录用户二次授权。',
-    examples: ['查询用户 ID 1 的信息', '查询订单 ID 2073133434168320001 的信息']
+    examples: ['查询用户 ID 2 的信息', '查询订单 ID 2073133434168320001 的信息']
   },
   {
     id: 4,
@@ -314,7 +314,7 @@ const learningSteps: LearningStep[] = [
     placeholder: '请输入 MCP 测试问题',
     emptyTitle: 'MCP',
     emptyDescription: '已通过 Spring AI MCP 暴露并调用用户、订单查询工具。',
-    examples: ['查询用户 ID 1 的信息'],
+    examples: ['查询用户 ID 2 的信息', '查询订单 ID 2073133434168320001 的信息'],
     demoAction: 'mcp'
   }
 ]
@@ -381,9 +381,19 @@ const selectConversation = async (conversationId: string) => {
 }
 /** 删除一段正式会话。 */
 const removeConversation = async (conversationId: string) => {
+  if (sending.value) {
+    message.warning('当前正在生成回答，请结束后再删除会话')
+    return
+  }
+  try {
+    await message.delConfirm('删除后将无法恢复该对话及其完整聊天记录，确定删除吗？', '删除对话')
+  } catch {
+    return
+  }
   await deleteConversation(conversationId)
   if (activeConversationId.value === conversationId) createConversation()
   await loadConversations()
+  message.success('对话已删除')
 }
 /** 填入示例消息。 */ const fillExample = (example: string) => {
   inputMessage.value = example
