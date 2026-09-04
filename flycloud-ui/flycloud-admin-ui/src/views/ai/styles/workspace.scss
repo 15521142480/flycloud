@@ -86,7 +86,7 @@
   white-space: nowrap;
 }
 
-.conversation-item span { flex: 1; }
+.conversation-item > span:not(.conversation-actions) { flex: 1; }
 
 .conversation-item:hover,
 .conversation-item.active,
@@ -96,10 +96,44 @@
   background: #ecf5ff;
 }
 
-.delete-conversation { display: none; }
-.conversation-item:hover .delete-conversation {
-  display: inline-block;
+.conversation-actions {
+  display: none;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  gap: 2px;
+}
+
+.conversation-item:hover .conversation-actions,
+.conversation-item:focus-visible .conversation-actions {
+  display: inline-flex;
+}
+
+.conversation-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rename-conversation {
   color: var(--el-text-color-secondary);
+}
+
+.rename-conversation:hover {
+  color: var(--el-color-primary);
+  background: var(--el-color-primary-light-9);
+}
+
+.delete-conversation {
+  color: var(--el-color-danger);
+}
+
+.delete-conversation:hover {
+  background: var(--el-color-danger-light-9);
 }
 
 .laboratory-collapse {
@@ -238,7 +272,6 @@
   background: #f5f7fa;
   border-radius: 10px;
 }
-.message-role { margin-bottom: 6px; color: var(--el-text-color-secondary); font-size: 12px; }
 .message-text { color: var(--el-text-color-primary); line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
 
 .tool-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }

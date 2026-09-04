@@ -10,6 +10,7 @@
         :create-conversation="createConversation"
         :learning-steps="learningSteps"
         :remove-conversation="removeConversation"
+        :rename-conversation="renameConversation"
         :select-conversation="selectConversation"
         :select-step="selectStep"
       ></slot>
@@ -36,7 +37,6 @@
             alt="当前用户头像"
           /><div v-else class="message-avatar"><Icon icon="ep:cpu" /></div
           ><div class="message-content"
-            ><div class="message-role">{{ item.role === 'user' ? '我' : '飞翔云 AI' }}</div
             ><div v-if="item.permission || item.toolNames.length" class="tool-meta"
               ><el-tag
                 v-if="item.permission"
@@ -115,6 +115,7 @@
 
 <script setup lang="ts">
 import { Loading } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import avatarImg from '@/assets/imgs/avatar.png'
 import { getFilePreviewUrl } from '@/components/UploadFile/src/useUpload'
@@ -130,6 +131,7 @@ import {
   getConversations,
   queryMcpOrder,
   queryMcpUser,
+  renameConversation as renameConversationApi,
   searchVector,
   streamChat,
   type AiChatResponse,
@@ -203,7 +205,7 @@ const unifiedDefinition: ChatDefinition = {
   placeholder: '请输入问题，例如：查询订单 10001',
   emptyTitle: '开始 AI 助手',
   emptyDescription: '自动使用会话记忆，并在需要时调用已接入的受控业务工具。',
-  examples: ['查询订单 ID M202607040355023193520 的信息', '查询用户 ID 2 的信息']
+  examples: ['查询订单 ID M202607040355023193520 的信息', '查询用户 ID 2 的信息', '查询订单 ID 2073133434168320001，并根据公司退款规则判断能否退款']
 }
 const learningSteps: LearningStep[] = [
   {
@@ -394,6 +396,29 @@ const removeConversation = async (conversationId: string) => {
   if (activeConversationId.value === conversationId) createConversation()
   await loadConversations()
   message.success('对话已删除')
+}
+/** 重命名当前用户的一段正式会话。 */
+const renameConversation = async (conversation: AiConversationSummary) => {
+  if (sending.value) {
+    message.warning('当前正在生成回答，请结束后再重命名会话')
+    return
+  }
+  try {
+    const { value } = await ElMessageBox.prompt('请输入新的会话名称', '重命名会话', {
+      inputValue: conversation.title,
+      inputValidator: (input: string) => {
+        const title = input.trim()
+        return (title.length > 0 && title.length <= 40) || '会话名称应为 1 至 40 个字符'
+      },
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    })
+    await renameConversationApi(conversation.conversationId, value.trim())
+    await loadConversations()
+    message.success('会话已重命名')
+  } catch {
+    // 用户取消时无需提示。
+  }
 }
 /** 填入示例消息。 */ const fillExample = (example: string) => {
   inputMessage.value = example

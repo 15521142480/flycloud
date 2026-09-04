@@ -200,6 +200,14 @@ export const deleteConversation = (conversationId: string) => {
   return request.delete({ url: `/${AI_BASE_URL}/ai/chat/conversations/${conversationId}` })
 }
 
+/** 重命名当前用户的一段统一 AI 会话。 */
+export const renameConversation = (conversationId: string, title: string) => {
+  return request.put({
+    url: `/${AI_BASE_URL}/ai/chat/conversations/${conversationId}`,
+    data: { title }
+  })
+}
+
 /**
  * 发起 POST SSE 流式聊天请求。
  *

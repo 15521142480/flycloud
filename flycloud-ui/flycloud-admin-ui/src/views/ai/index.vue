@@ -34,11 +34,22 @@
       >
         <Icon icon="ep:chat-line-round" />
         <span>{{ conversation.title }}</span>
-        <Icon
-          class="delete-conversation"
-          icon="ep:delete"
-          @click.stop="workspace.removeConversation(conversation.conversationId)"
-        />
+        <span class="conversation-actions">
+          <el-tooltip content="重命名" placement="top">
+            <Icon
+              class="conversation-action rename-conversation"
+              icon="ep:edit-pen"
+              @click.stop="workspace.renameConversation(conversation)"
+            />
+          </el-tooltip>
+          <el-tooltip content="删除" placement="top">
+            <Icon
+              class="conversation-action delete-conversation"
+              icon="ep:delete"
+              @click.stop="workspace.removeConversation(conversation.conversationId)"
+            />
+          </el-tooltip>
+        </span>
       </button>
     </section>
     <div class="security-tip">

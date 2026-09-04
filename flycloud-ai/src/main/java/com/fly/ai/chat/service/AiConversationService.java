@@ -219,6 +219,26 @@ public class AiConversationService {
     }
 
     /**
+     * 重命名当前用户的一段会话。
+     * <p>
+     * 重命名属于会话元数据修改，不更新时间线字段，避免仅修改标题就改变会话在最近列表中的顺序。
+     *
+     * @param conversationId 会话编号
+     * @param userId 当前登录用户编号
+     * @param title 新名称
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void renameConversation(String conversationId, Long userId, String title) {
+        AiConversation conversation = requireOwnedConversation(conversationId, userId);
+        String normalizedTitle = title.trim();
+        if (normalizedTitle.isEmpty()) {
+            throw new AiProviderException(400, "会话名称不能为空");
+        }
+        conversation.setTitle(normalizedTitle);
+        conversationMapper.updateById(conversation);
+    }
+
+    /**
      * 创建新会话或校验客户端指定的会话归属。
      *
      * @param requestedConversationId 客户端会话编号

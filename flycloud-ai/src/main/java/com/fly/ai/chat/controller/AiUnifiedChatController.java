@@ -1,6 +1,7 @@
 package com.fly.ai.chat.controller;
 
 import com.fly.ai.chat.model.AiChatHistoryMessage;
+import com.fly.ai.chat.model.AiConversationRenameRequest;
 import com.fly.ai.chat.model.AiConversationSummary;
 import com.fly.ai.chat.model.AiUnifiedChatRequest;
 import com.fly.ai.chat.model.AiUnifiedChatResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,6 +101,21 @@ public class AiUnifiedChatController {
     @DeleteMapping("/conversations/{conversationId}")
     public R<Void> deleteConversation(@PathVariable String conversationId) {
         conversationService.deleteConversation(conversationId, AiSecurityUtils.requiredLoginUserId("AI 聊天"));
+        return R.ok();
+    }
+
+    /**
+     * 重命名当前用户指定会话。
+     *
+     * @param conversationId 会话编号
+     * @param request 重命名请求
+     * @return 操作结果
+     */
+    @Operation(summary = "重命名 AI 会话")
+    @PutMapping("/conversations/{conversationId}")
+    public R<Void> renameConversation(@PathVariable String conversationId,
+            @Valid @RequestBody AiConversationRenameRequest request) {
+        conversationService.renameConversation(conversationId, AiSecurityUtils.requiredLoginUserId("AI 聊天"), request.title());
         return R.ok();
     }
 }
