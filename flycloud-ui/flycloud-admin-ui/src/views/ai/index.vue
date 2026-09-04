@@ -6,7 +6,7 @@
         <div class="unified-heading-row">
           <div class="steps-title">AI 助手</div>
           <el-button text type="primary" @click="openDemo">
-            <Icon icon="ep:guide" /> 助手实验室过程
+            <Icon icon="ep:guide" /> AI助手实验过程
           </el-button>
         </div>
         <div class="steps-subtitle">会话、记忆与业务能力的正式入口</div>
