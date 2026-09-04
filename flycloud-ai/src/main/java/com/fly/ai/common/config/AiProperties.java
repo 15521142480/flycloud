@@ -24,6 +24,9 @@ public class AiProperties {
 
     private String systemPrompt = "你是飞翔云系统的智能助手，请使用简洁、准确的中文回答。";
 
+    /** 业务时间上下文使用的时区。 */
+    private String timeZone = "Asia/Shanghai";
+
     private Integer maxOutputTokens = 1024;
 
     /** Tool Calling 相关配置。 */

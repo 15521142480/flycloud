@@ -243,6 +243,8 @@ flycloud:
     provider: dashscope
     # 所有供应商共用的第一版系统提示词；后续应改为可版本化的提示词管理。
     system-prompt: 你是飞翔云系统的智能助手，请使用简洁、准确的中文回答。
+    # 当前日期等运行时事实由服务端统一生成；不依赖模型训练知识。生产环境应与服务器 NTP 时钟保持同步。
+    time-zone: Asia/Shanghai
     # 所有供应商共用的默认最大输出 Token；客户端可传 maxOutputTokens 覆盖。
     max-output-tokens: 1024
 

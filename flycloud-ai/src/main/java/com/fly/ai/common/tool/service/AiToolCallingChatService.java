@@ -5,6 +5,7 @@ import com.fly.ai.common.model.AiChatResponse;
 import com.fly.ai.common.model.AiPermission;
 import com.fly.ai.common.model.AiStreamEvent;
 import com.fly.ai.common.config.AiProperties;
+import com.fly.ai.common.config.AiRuntimeContextService;
 import com.fly.ai.common.springai.SpringAiModelProviderRouter;
 import com.fly.ai.common.utils.SpringAiChatUtils;
 import com.fly.ai.common.tool.model.AiToolAuthorizationTrace;
@@ -48,6 +49,8 @@ public class AiToolCallingChatService {
             """;
 
     private final AiProperties aiProperties;
+
+    private final AiRuntimeContextService runtimeContextService;
 
     private final SpringAiModelProviderRouter providerRouter;
 
@@ -329,10 +332,6 @@ public class AiToolCallingChatService {
      * @return 公共系统提示词与工具调用安全策略
      */
     private String toolCallingSystemPrompt(String supplementalSystemPrompt) {
-        if (!AiUtils.hasText(supplementalSystemPrompt)) {
-            return aiProperties.getSystemPrompt() + "\n\n" + TOOL_CALLING_SYSTEM_POLICY;
-        }
-        return aiProperties.getSystemPrompt() + "\n\n" + TOOL_CALLING_SYSTEM_POLICY + "\n\n"
-                + supplementalSystemPrompt;
+        return runtimeContextService.systemPrompt(TOOL_CALLING_SYSTEM_POLICY, supplementalSystemPrompt);
     }
 }

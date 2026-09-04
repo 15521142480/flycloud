@@ -339,6 +339,9 @@ const loadingText = computed(() =>
     ? '正在选择工具并加载会话上下文…'
     : '正在请求模型服务…'
 )
+// const loadingText = computed(() =>
+//   '正在思考…'
+// )
 /** 新建正式会话；首次发送时由后端分配会话编号。 */
 const createConversation = () => {
   activeScope.value = 'unified'

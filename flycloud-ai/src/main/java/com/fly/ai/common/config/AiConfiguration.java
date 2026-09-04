@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.net.http.HttpClient;
+import java.time.Clock;
+import java.time.ZoneId;
 
 /**
  * 原生 HTTP 客户端与流式任务线程池配置。
@@ -28,6 +30,19 @@ public class AiConfiguration {
         return HttpClient.newBuilder()
                 .connectTimeout(properties.getOpenai().getConnectTimeout())
                 .build();
+    }
+
+    /**
+     * 创建 AI 运行时事实所使用的统一业务时钟。
+     * <p>
+     * 当前日期、相对日期计算等不应依赖模型训练知识，而应以该服务端时钟为准。
+     *
+     * @param properties AI 配置
+     * @return 业务时钟
+     */
+    @Bean
+    public Clock aiClock(AiProperties properties) {
+        return Clock.system(ZoneId.of(properties.getTimeZone()));
     }
 
     /**

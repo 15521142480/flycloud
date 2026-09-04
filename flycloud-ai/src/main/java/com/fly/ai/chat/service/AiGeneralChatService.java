@@ -1,6 +1,7 @@
 package com.fly.ai.chat.service;
 
 import com.fly.ai.common.config.AiProperties;
+import com.fly.ai.common.config.AiRuntimeContextService;
 import com.fly.ai.common.model.AiChatRequest;
 import com.fly.ai.common.model.AiChatResponse;
 import com.fly.ai.common.springai.SpringAiModelProviderRouter;
@@ -35,9 +36,13 @@ public class AiGeneralChatService {
             产品和学习类问题。对于“当前”“最新”等可能变化的模型价格、产品能力、政策或版本信息，请明确说明
             你的回答可能不是实时数据，并建议用户以相应供应商的官方页面或已接入的可信数据源为准；不得声称已联网
             查询或掌握未经提供的实时价格。
+            对天气、行情、汇率、新闻、航班、交通等实时外部事实，只有系统通过受控 Tool 或可信数据源提供结果时才可
+            回答具体数据；未提供时必须明确说明无法获得实时结果，不得编造。
             """;
 
     private final AiProperties aiProperties;
+
+    private final AiRuntimeContextService runtimeContextService;
 
     private final SpringAiModelProviderRouter providerRouter;
 
@@ -168,9 +173,6 @@ public class AiGeneralChatService {
      * @return 系统提示词
      */
     private String systemPrompt(String supplementalSystemPrompt) {
-        if (!AiUtils.hasText(supplementalSystemPrompt)) {
-            return aiProperties.getSystemPrompt() + "\n\n" + GENERAL_SYSTEM_POLICY;
-        }
-        return aiProperties.getSystemPrompt() + "\n\n" + GENERAL_SYSTEM_POLICY + "\n\n" + supplementalSystemPrompt;
+        return runtimeContextService.systemPrompt(GENERAL_SYSTEM_POLICY, supplementalSystemPrompt);
     }
 }
