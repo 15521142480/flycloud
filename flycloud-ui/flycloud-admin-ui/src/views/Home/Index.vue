@@ -78,9 +78,12 @@
             <span>工作流引擎</span>
           </div>
         </template>
-        <div ref="chartRef" v-loading="loading">
+        <div ref="chartRef">
           <el-image fit="cover" :src="img_bpm1" class="card-img" @click="imagePreview(img_bpm1)" />
           <el-image fit="cover" :src="img_bpm2" class="card-img" @click="imagePreview(img_bpm2)" />
+          <el-image fit="cover" :src="img_bpm3" class="card-img" @click="imagePreview(img_bpm3)" />
+          <el-image fit="cover" :src="img_bpm4" class="card-img" @click="imagePreview(img_bpm4)" />
+          <el-image fit="cover" :src="img_bpm5" class="card-img" @click="imagePreview(img_bpm5)" />
         </div>
         <template #footer>
           <div class="card-footer">
@@ -100,8 +103,11 @@
             <span>商城后台</span>
           </div>
         </template>
-        <div ref="chartRef" v-loading="loading">
-
+        <div ref="chartRef">
+          <el-image fit="cover" :src="img_mall1" class="card-img" @click="imagePreview(img_mall1)" />
+          <el-image fit="cover" :src="img_mall2" class="card-img" @click="imagePreview(img_mall2)" />
+          <el-image fit="cover" :src="img_mall3" class="card-img" @click="imagePreview(img_mall3)" />
+          <el-image fit="cover" :src="img_mall4" class="card-img" @click="imagePreview(img_mall4)" />
         </div>
         <template #footer>
           <div class="card-footer">
@@ -201,8 +207,17 @@ import { createImageViewer } from '@/components/ImageViewer'
 import * as TaskApi from '@/api/bpm/task'
 
 import avatarImg from '@/assets/imgs/avatar.png'
-import img_bpm1 from '@/assets/imgs/bpm/bpm_1.png'
-import img_bpm2 from '@/assets/imgs/bpm/bpm_2.png'
+
+import img_bpm1 from '@/assets/imgs/bpm/bpm-1.png'
+import img_bpm2 from '@/assets/imgs/bpm/bpm-2.png'
+import img_bpm3 from '@/assets/imgs/bpm/bpm-3.png'
+import img_bpm4 from '@/assets/imgs/bpm/bpm-4.png'
+import img_bpm5 from '@/assets/imgs/bpm/bpm-5.png'
+
+import img_mall1 from '@/assets/imgs/mall/mall-1.png'
+import img_mall2 from '@/assets/imgs/mall/mall-2.png'
+import img_mall3 from '@/assets/imgs/mall/mall-3.png'
+import img_mall4 from '@/assets/imgs/mall/mall-4.png'
 
 const { t } = useI18n()
 const { push } = useRouter()

@@ -58,6 +58,10 @@ const user = defineStore('user', {
 
     // 获得用户钱包
     async getWallet() {
+      if (!this.isLogin || !uni.getStorageSync('token')) {
+        this.userWallet = clone(defaultUserWallet);
+        return;
+      }
       const { code, data } = await PayWalletApi.getPayWallet();
       if (code !== 0) {
         return;
@@ -96,7 +100,7 @@ const user = defineStore('user', {
 
     // 更新用户相关信息 (手动限流，5 秒之内不刷新)
     async updateUserData() {
-      if (!this.isLogin) {
+      if (!this.isLogin || !uni.getStorageSync('token')) {
         this.resetUserData();
         return;
       }

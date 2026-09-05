@@ -50,4 +50,4 @@ CREATE TABLE IF NOT EXISTS `mq_consume_record` (
 
 -- DDL 由升级脚本统一管理；索引迁移接口不在运行期执行 ALTER TABLE。
 ALTER TABLE `member_user`
-    ADD COLUMN IF NOT EXISTS `post_ids` VARCHAR(256) NULL COMMENT '岗位编号数组' AFTER `tag_ids`;
+    ADD COLUMN `post_ids` VARCHAR(256) NULL COMMENT '岗位编号数组' AFTER `tag_ids`;

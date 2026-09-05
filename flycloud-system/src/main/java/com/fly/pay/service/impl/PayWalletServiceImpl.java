@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import static com.fly.common.constant.GlobalErrorCodeConstants.UNAUTHORIZED;
+
 /**
  * 支付钱包 Service 业务层处理。
  *
@@ -42,6 +44,12 @@ public class PayWalletServiceImpl implements IPayWalletService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public synchronized PayWallet getOrCreateWallet(Long userId, Integer userType) {
+        if (userId == null) {
+            throw new ServiceException(UNAUTHORIZED.getCode(), UNAUTHORIZED.getMsg());
+        }
+        if (userType == null) {
+            throw new ServiceException("用户类型不能为空");
+        }
         PayWallet wallet = selectByUserIdAndType(userId, userType);
         if (wallet != null) {
             return wallet;

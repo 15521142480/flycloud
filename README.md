@@ -183,9 +183,11 @@ flycloud
 | 条件分支                 | （排它分支）用于在流程中实现决策，即根据条件选择一个分支执行                                                      | ✅    |
 | 并行分支                 | 允许将流程分成多条分支，不进行条件判断，所有分支都会执行                                                        | ✅    |
 
-  ![img.png](doc/img/bpm2.png)
-  ![img.png](doc/img/bpm1.png)
-  ![img.png](doc/img/bpm3.png)
+  ![img.png](doc/img/bpm-1.png)
+  ![img.png](doc/img/bpm-2.png)
+  ![img.png](doc/img/bpm-3.png)
+  ![img.png](doc/img/bpm-4.png)
+  ![img.png](doc/img/bpm-5.png)
 
 ### 9、es索引引擎说明:
 -   elasticsearch 版本为: 7.17.7
