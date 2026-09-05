@@ -89,7 +89,8 @@ public class PayOrderServiceImpl implements IPayOrderService {
      */
     @Override
     public Long createPayOrder(PayOrderCreateReqDto createReqDto) {
-        Long appId = createReqDto.getAppId() == null ? DEFAULT_APP_ID : createReqDto.getAppId();
+        PayApp app = resolvePayApp(createReqDto);
+        Long appId = app.getId();
         PayOrder existsOrder = selectByAppIdAndMerchantOrderId(appId, createReqDto.getMerchantOrderId());
         if (existsOrder != null) {
             return existsOrder.getId();
@@ -97,14 +98,13 @@ public class PayOrderServiceImpl implements IPayOrderService {
 
         LocalDateTime now = LocalDateTime.now();
         PayOrder order = new PayOrder();
-        PayApp app = payAppMapper.selectById(appId);
         order.setAppId(appId);
         order.setUserId(createReqDto.getUserId());
         order.setUserType(createReqDto.getUserType());
         order.setMerchantOrderId(createReqDto.getMerchantOrderId());
         order.setSubject(createReqDto.getSubject());
         order.setBody(createReqDto.getBody());
-        order.setNotifyUrl(app == null ? null : app.getOrderNotifyUrl());
+        order.setNotifyUrl(app.getOrderNotifyUrl());
         order.setPrice(createReqDto.getPrice());
         order.setChannelFeeRate(0D);
         order.setChannelFeePrice(0);
@@ -119,6 +119,27 @@ public class PayOrderServiceImpl implements IPayOrderService {
         order.setUpdateTime(now);
         payOrderMapper.insert(order);
         return order.getId();
+    }
+
+    /**
+     * 解析支付应用；调用方可以传稳定的 appKey，避免依赖各环境的数据库主键。
+     */
+    private PayApp resolvePayApp(PayOrderCreateReqDto createReqDto) {
+        PayApp app;
+        if (createReqDto.getAppId() != null) {
+            app = payAppMapper.selectById(createReqDto.getAppId());
+        } else if (StringUtils.isNotBlank(createReqDto.getAppKey())) {
+            app = payAppMapper.selectOne(Wrappers.<PayApp>lambdaQuery()
+                    .eq(PayApp::getAppKey, createReqDto.getAppKey())
+                    .eq(PayApp::getIsDeleted, false)
+                    .last("LIMIT 1"));
+        } else {
+            app = payAppMapper.selectById(DEFAULT_APP_ID);
+        }
+        if (app == null || Boolean.TRUE.equals(app.getIsDeleted())) {
+            throw new ServiceException("支付应用不存在");
+        }
+        return app;
     }
 
     /**

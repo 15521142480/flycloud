@@ -8,6 +8,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.pay.enums.PayWalletBizTypeEnum;
+import com.fly.pay.mapper.PayAppMapper;
 import com.fly.pay.mapper.PayRefundMapper;
 import com.fly.pay.mapper.PayWalletRechargeMapper;
 import com.fly.pay.service.IPayNotifyService;
@@ -15,6 +16,7 @@ import com.fly.pay.service.IPayOrderService;
 import com.fly.pay.service.IPayWalletRechargePackageService;
 import com.fly.pay.service.IPayWalletRechargeService;
 import com.fly.pay.service.IPayWalletService;
+import com.fly.system.api.pay.domain.PayApp;
 import com.fly.system.api.pay.domain.PayOrder;
 import com.fly.system.api.pay.domain.PayRefund;
 import com.fly.system.api.pay.domain.PayWallet;
@@ -49,15 +51,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
 
     private static final String WALLET_RECHARGE_ORDER_SUBJECT = "钱包余额充值";
+    private static final String PAY_APP_KEY = "wallet";
 
     private static final Integer REFUND_STATUS_NONE = 0;
     private static final Integer REFUND_STATUS_WAITING = 0;
     private static final Integer REFUND_STATUS_SUCCESS = 10;
     private static final Integer PAY_ORDER_STATUS_SUCCESS = 10;
-    private static final Long DEFAULT_APP_ID = 1L;
+    private static final Long DEFAULT_APP_ID = 8L;
 
     private final PayWalletRechargeMapper walletRechargeMapper;
     private final PayRefundMapper payRefundMapper;
+    private final PayAppMapper payAppMapper;
     private final IPayWalletService payWalletService;
     private final IPayWalletRechargePackageService rechargePackageService;
     private final IPayOrderService payOrderService;
@@ -86,7 +90,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         walletRechargeMapper.insert(recharge);
 
         PayOrderCreateReqDto payOrderCreateReqDto = new PayOrderCreateReqDto();
-        payOrderCreateReqDto.setAppId(1L);
+        payOrderCreateReqDto.setAppKey(PAY_APP_KEY);
         payOrderCreateReqDto.setUserIp(userIp);
         payOrderCreateReqDto.setUserId(userId);
         payOrderCreateReqDto.setUserType(userType);
@@ -209,6 +213,8 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         refund.setUserType(wallet.getUserType());
         refund.setMerchantOrderId(String.valueOf(id));
         refund.setMerchantRefundId(id + "-refund");
+        PayApp payApp = payAppMapper.selectById(refund.getAppId());
+        refund.setNotifyUrl(payApp == null ? null : payApp.getRefundNotifyUrl());
         refund.setStatus(REFUND_STATUS_SUCCESS);
         refund.setPayPrice(recharge.getPayPrice());
         refund.setRefundPrice(recharge.getPayPrice());

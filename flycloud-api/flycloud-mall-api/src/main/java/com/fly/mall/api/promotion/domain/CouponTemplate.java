@@ -3,7 +3,7 @@ package com.fly.mall.api.promotion.domain;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.fly.common.database.handler.JacksonLongListTypeHandler;
 import com.fly.common.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -42,7 +42,7 @@ public class CouponTemplate extends BaseEntity {
 
     private Integer productScope;
 
-    @TableField(typeHandler = JacksonTypeHandler.class)
+    @TableField(typeHandler = JacksonLongListTypeHandler.class)
     private List<Long> productScopeValues;
 
     private Integer validityType;

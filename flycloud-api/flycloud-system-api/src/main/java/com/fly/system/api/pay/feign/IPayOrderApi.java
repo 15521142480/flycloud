@@ -4,6 +4,7 @@ import com.fly.common.constant.ServerNames;
 import com.fly.common.domain.model.R;
 import com.fly.system.api.pay.domain.bo.PayOrderCreateReqDto;
 import com.fly.system.api.pay.domain.vo.PayOrderRespVo;
+import com.fly.system.api.pay.path.PayApiPaths;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +23,13 @@ public interface IPayOrderApi {
     /**
      * 创建支付订单。
      */
-    @PostMapping("/provider/sys/pay/order/create")
+    @PostMapping(PayApiPaths.PROVIDER_ORDER_CREATE)
     R<Long> createPayOrder(@RequestBody PayOrderCreateReqDto createReqDto);
 
     /**
      * 查询支付订单。
      */
-    @GetMapping("/provider/sys/pay/order/get")
+    @GetMapping(PayApiPaths.PROVIDER_ORDER_GET)
     R<PayOrderRespVo> getOrder(@RequestParam("id") Long id);
 
 }

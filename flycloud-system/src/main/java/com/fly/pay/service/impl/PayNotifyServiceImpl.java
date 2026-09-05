@@ -16,6 +16,7 @@ import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.json.JsonUtils;
 import com.fly.pay.enums.PayNotifyStatusEnum;
 import com.fly.pay.enums.PayNotifyTypeEnum;
+import com.fly.pay.event.PayNotifyTaskEvent;
 import com.fly.pay.mapper.PayAppMapper;
 import com.fly.pay.mapper.PayNotifyLogMapper;
 import com.fly.pay.mapper.PayNotifyTaskMapper;
@@ -35,11 +36,10 @@ import com.fly.system.api.pay.domain.vo.PayNotifyTaskDetailVo;
 import com.fly.system.api.pay.domain.vo.PayNotifyTaskVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -69,6 +69,8 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
     private final PayRefundMapper payRefundMapper;
     private final PayTransferMapper payTransferMapper;
     private final PayAppMapper payAppMapper;
+    private final ApplicationEventPublisher eventPublisher;
+    private final ObjectProvider<IPayNotifyService> selfProvider;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -91,7 +93,7 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
             return;
         }
         notifyTaskMapper.insert(task);
-        executeAfterCommit(() -> executeNotifyAsync(task));
+        eventPublisher.publishEvent(new PayNotifyTaskEvent(task.getId()));
     }
 
     /**
@@ -134,13 +136,15 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
         if (CollUtil.isEmpty(tasks)) {
             return 0;
         }
-        tasks.forEach(this::executeNotify);
+        IPayNotifyService self = selfProvider.getObject();
+        for (PayNotifyTask task : tasks) {
+            try {
+                self.executeNotify(task);
+            } catch (Exception e) {
+                log.error("[executeNotify][支付通知任务({})执行失败]", task.getId(), e);
+            }
+        }
         return tasks.size();
-    }
-
-    @Async
-    public void executeNotifyAsync(PayNotifyTask task) {
-        executeNotify(task);
     }
 
     @Override
@@ -217,13 +221,16 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
             notifyTaskMapper.updateById(updateTask);
             return updateTask.getStatus();
         }
-        if (nextNotifyTimes >= PayNotifyTask.NOTIFY_FREQUENCY.length) {
+        int maxNotifyTimes = task.getMaxNotifyTimes() == null
+                ? PayNotifyTask.NOTIFY_FREQUENCY.length + 1 : task.getMaxNotifyTimes();
+        if (nextNotifyTimes >= maxNotifyTimes) {
             updateTask.setStatus(PayNotifyStatusEnum.FAILURE.getStatus());
             notifyTaskMapper.updateById(updateTask);
             return updateTask.getStatus();
         }
+        int delayIndex = Math.min(nextNotifyTimes - 1, PayNotifyTask.NOTIFY_FREQUENCY.length - 1);
         updateTask.setNextNotifyTime(LocalDateTime.now()
-                .plus(Duration.ofSeconds(PayNotifyTask.NOTIFY_FREQUENCY[nextNotifyTimes])));
+                .plus(Duration.ofSeconds(PayNotifyTask.NOTIFY_FREQUENCY[delayIndex])));
         updateTask.setStatus(invokeException != null ? PayNotifyStatusEnum.REQUEST_FAILURE.getStatus()
                 : PayNotifyStatusEnum.REQUEST_SUCCESS.getStatus());
         notifyTaskMapper.updateById(updateTask);
@@ -309,22 +316,6 @@ public class PayNotifyServiceImpl implements IPayNotifyService {
     @Override
     public List<PayNotifyLog> getNotifyLogList(Long taskId) {
         return notifyLogMapper.selectListByTaskId(taskId);
-    }
-
-    /**
-     * 事务提交后执行任务，避免通知早于业务数据落库。
-     */
-    private void executeAfterCommit(Runnable runnable) {
-        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
-            runnable.run();
-            return;
-        }
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override
-            public void afterCommit() {
-                runnable.run();
-            }
-        });
     }
 
 }

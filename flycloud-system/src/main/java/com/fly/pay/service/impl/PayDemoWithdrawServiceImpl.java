@@ -8,10 +8,12 @@ import com.fly.common.utils.BeanUtils;
 import com.fly.pay.enums.PayDemoWithdrawStatusEnum;
 import com.fly.pay.enums.PayDemoWithdrawTypeEnum;
 import com.fly.pay.enums.PayNotifyTypeEnum;
+import com.fly.pay.mapper.PayAppMapper;
 import com.fly.pay.mapper.PayDemoWithdrawMapper;
 import com.fly.pay.mapper.PayTransferMapper;
 import com.fly.pay.service.IPayDemoWithdrawService;
 import com.fly.pay.service.IPayNotifyService;
+import com.fly.system.api.pay.domain.PayApp;
 import com.fly.system.api.pay.domain.PayDemoWithdraw;
 import com.fly.system.api.pay.domain.PayTransfer;
 import com.fly.system.api.pay.domain.bo.PayDemoWithdrawCreateReqBo;
@@ -44,10 +46,11 @@ public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
 
     private static final int TRANSFER_STATUS_CLOSED = 20;
 
-    private static final long DEFAULT_APP_ID = 1L;
+    private static final long DEFAULT_APP_ID = 7L;
 
     private final PayDemoWithdrawMapper payDemoWithdrawMapper;
     private final PayTransferMapper payTransferMapper;
+    private final PayAppMapper payAppMapper;
     private final ObjectProvider<IPayNotifyService> payNotifyServiceProvider;
 
     /**
@@ -85,9 +88,13 @@ public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
         }
 
         LocalDateTime now = LocalDateTime.now();
+        PayApp payApp = payAppMapper.selectById(DEFAULT_APP_ID);
+        if (payApp == null || Boolean.TRUE.equals(payApp.getIsDeleted())) {
+            throw new ServiceException("示例支付应用不存在");
+        }
         PayTransfer transfer = new PayTransfer();
         transfer.setNo(generateTransferNo());
-        transfer.setAppId(DEFAULT_APP_ID);
+        transfer.setAppId(payApp.getId());
         transfer.setChannelCode(withdraw.getTransferChannelCode());
         transfer.setUserId(userId);
         transfer.setUserType(USER_TYPE_ADMIN);
@@ -98,6 +105,7 @@ public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
         transfer.setUserName(withdraw.getUserName());
         transfer.setStatus(TRANSFER_STATUS_SUCCESS);
         transfer.setSuccessTime(now);
+        transfer.setNotifyUrl(payApp.getTransferNotifyUrl());
         transfer.setUserIp(userIp);
         transfer.setIsDeleted(false);
         transfer.setCreateBy(String.valueOf(userId));

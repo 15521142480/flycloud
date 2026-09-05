@@ -6,6 +6,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.pay.service.IPayWalletRechargeService;
 import com.fly.system.api.pay.domain.bo.PayWalletRechargeBo;
 import com.fly.system.api.pay.domain.vo.PayWalletRechargeVo;
+import jakarta.annotation.security.PermitAll;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,6 +55,7 @@ public class PayWalletRechargeController {
      * 更新钱包充值为已支付。
      */
     @PostMapping("/update-paid")
+    @PermitAll
     public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
         walletRechargeService.updateWalletRechargerPaid(Long.valueOf(req.getMerchantOrderId()), req.getPayOrderId());
         return R.result(true);
@@ -72,6 +74,7 @@ public class PayWalletRechargeController {
      * 更新钱包充值为已退款。
      */
     @PostMapping("/update-refunded")
+    @PermitAll
     public R<Boolean> updateRefunded(@RequestBody PayRefundNotifyReq req) {
         walletRechargeService.updateWalletRechargeRefunded(Long.valueOf(req.getMerchantOrderId()),
                 req.getMerchantRefundId(), req.getPayRefundId());

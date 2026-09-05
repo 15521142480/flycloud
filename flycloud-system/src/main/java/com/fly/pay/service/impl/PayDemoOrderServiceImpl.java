@@ -6,12 +6,14 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.exception.ServiceException;
 import com.fly.pay.enums.PayNotifyTypeEnum;
+import com.fly.pay.mapper.PayAppMapper;
 import com.fly.pay.mapper.PayDemoOrderMapper;
 import com.fly.pay.mapper.PayOrderMapper;
 import com.fly.pay.mapper.PayRefundMapper;
 import com.fly.pay.service.IPayDemoOrderService;
 import com.fly.pay.service.IPayNotifyService;
 import com.fly.pay.service.IPayOrderService;
+import com.fly.system.api.pay.domain.PayApp;
 import com.fly.system.api.pay.domain.PayDemoOrder;
 import com.fly.system.api.pay.domain.PayOrder;
 import com.fly.system.api.pay.domain.PayRefund;
@@ -49,24 +51,27 @@ public class PayDemoOrderServiceImpl implements IPayDemoOrderService {
 
     private static final int REFUND_STATUS_SUCCESS = 10;
 
-    private static final long DEFAULT_APP_ID = 1L;
+    private static final long DEFAULT_APP_ID = 7L;
 
     private final Map<Long, Object[]> spuMap = new HashMap<>();
 
     private final PayDemoOrderMapper payDemoOrderMapper;
     private final PayOrderMapper payOrderMapper;
     private final PayRefundMapper payRefundMapper;
+    private final PayAppMapper payAppMapper;
     private final IPayOrderService payOrderService;
     private final ObjectProvider<IPayNotifyService> payNotifyServiceProvider;
 
     public PayDemoOrderServiceImpl(PayDemoOrderMapper payDemoOrderMapper,
                                    PayOrderMapper payOrderMapper,
                                    PayRefundMapper payRefundMapper,
+                                   PayAppMapper payAppMapper,
                                    IPayOrderService payOrderService,
                                    ObjectProvider<IPayNotifyService> payNotifyServiceProvider) {
         this.payDemoOrderMapper = payDemoOrderMapper;
         this.payOrderMapper = payOrderMapper;
         this.payRefundMapper = payRefundMapper;
+        this.payAppMapper = payAppMapper;
         this.payOrderService = payOrderService;
         this.payNotifyServiceProvider = payNotifyServiceProvider;
         spuMap.put(1L, new Object[]{"华为手机", 1});
@@ -195,6 +200,8 @@ public class PayDemoOrderServiceImpl implements IPayDemoOrderService {
         refund.setUserType(payOrder.getUserType());
         refund.setMerchantOrderId(String.valueOf(order.getId()));
         refund.setMerchantRefundId(order.getId() + "-refund");
+        PayApp payApp = payAppMapper.selectById(refund.getAppId());
+        refund.setNotifyUrl(payApp == null ? null : payApp.getRefundNotifyUrl());
         refund.setStatus(REFUND_STATUS_SUCCESS);
         refund.setPayPrice(order.getPrice());
         refund.setRefundPrice(order.getPrice());
