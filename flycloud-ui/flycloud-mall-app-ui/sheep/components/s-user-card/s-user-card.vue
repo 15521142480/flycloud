@@ -2,13 +2,17 @@
 <template>
   <view class="ss-user-info-wrap ss-p-t-50" :style="[bgStyle, { marginLeft: `${data.space}px` }]">
     <view class="ss-flex ss-col-center ss-row-between ss-m-b-20">
-      <view class="left-box ss-flex ss-col-center ss-m-l-36">
+      <view class="left-box ss-flex ss-col-center ss-m-l-36" @tap="onUserInfo">
         <view class="avatar-box ss-m-r-24">
-          <image class="avatar-img" :src="
+          <image
+            class="avatar-img"
+            :src="
               isLogin && userInfo.avatar
                 ? sheep.$url.cdn(userInfo.avatar)
-                : sheep.$url.static('/static/img/shop/default_avatar.png')"
-                 mode="aspectFill" @tap="sheep.$router.go('/pages/user/info')">
+                : sheep.$url.static('/static/img/shop/default_avatar.png')
+            "
+            mode="aspectFill"
+          >
           </image>
         </view>
         <view>
@@ -55,10 +59,7 @@
    */
   import { computed } from 'vue';
   import sheep from '@/sheep';
-  import {
-    showShareModal,
-    showAuthModal,
-  } from '@/sheep/hooks/useModal';
+  import { showShareModal, showAuthModal } from '@/sheep/hooks/useModal';
 
   // 用户信息
   // const userInfo = computed(() => sheep.$store('user').userInfo);
@@ -108,11 +109,18 @@
 
     // 根据 bgType 返回相应的样式
     return {
-      background: bgType === 'img'
-        ? `url(${bgImg}) no-repeat top center / 100% 100%`
-        : bgColor,
+      background: bgType === 'img' ? `url(${bgImg}) no-repeat top center / 100% 100%` : bgColor,
     };
   });
+
+  // 打开用户信息；游客先进入登录流程
+  function onUserInfo() {
+    if (!isLogin.value) {
+      showAuthModal();
+      return;
+    }
+    sheep.$router.go('/pages/user/info');
+  }
 
   // 绑定手机号
   function onBind() {

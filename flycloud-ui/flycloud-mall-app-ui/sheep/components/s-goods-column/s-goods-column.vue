@@ -245,7 +245,7 @@
 
       <slot name="cart">
         <view class="cart-box ss-flex ss-col-center ss-row-center">
-          <image class="cart-icon" src="/static/img/shop/tabbar/category2.png" mode="" />
+          <image class="cart-icon" src="/static/img/shop/tools/cart.png" mode="" />
         </view>
       </slot>
     </view>
