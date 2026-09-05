@@ -1,5 +1,7 @@
 package com.fly.mall.product.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -41,6 +43,7 @@ public class AppProductCommentController {
      * 获得分页列表。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<ProductCommentVo>> page(ProductCommentBo bo, PageBo page) {
         return R.ok(productCommentService.queryPageList(bo, page));
     }

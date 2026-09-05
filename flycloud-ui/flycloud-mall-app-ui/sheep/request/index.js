@@ -49,7 +49,6 @@ function closeLoading() {
  * @description 请求基础配置 可直接使用访问自定义请求
  */
 const http = new Request({
-
   // 默认接口为mall服务
   baseURL: getMallBaseUrl() + apiPath,
   timeout: 8000,
@@ -75,7 +74,8 @@ const http = new Request({
 http.interceptors.request.use(
   (config) => {
     // 自定义处理【auth 授权】：必须登录的接口，则跳出 AuthModal 登录弹窗
-    if (config.custom.auth && !$store('user').isLogin) {
+    if (config.custom.auth && (!$store('user').isLogin || !getAccessToken())) {
+      $store('user').syncLoginState();
       showAuthModal();
       return Promise.reject();
     }
@@ -114,7 +114,6 @@ http.interceptors.request.use(
  */
 http.interceptors.response.use(
   (response) => {
-
     // 约定：登录或刷新令牌接口返回 accessToken 时，自动保存令牌。
     if (isTokenResponse(response.config.url) && response.data?.data?.accessToken) {
       $store('user').setToken(response.data.data.accessToken, response.data.data.refreshToken);

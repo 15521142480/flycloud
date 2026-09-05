@@ -1,5 +1,7 @@
 package com.fly.mall.product.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.model.R;
 import com.fly.mall.api.product.domain.vo.ProductCategoryVo;
 import com.fly.mall.product.service.IProductCategoryService;
@@ -29,6 +31,7 @@ public class AppCategoryController {
      * 获得启用的商品分类列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<ProductCategoryVo>> getProductCategoryList() {
         return R.ok(productCategoryService.queryEnableList(null));
     }
@@ -37,6 +40,7 @@ public class AppCategoryController {
      * 获得指定编号的启用商品分类列表。
      */
     @GetMapping("/list-by-ids")
+    @PermitAll
     public R<List<ProductCategoryVo>> getProductCategoryList(@RequestParam("ids") List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return R.ok(Collections.emptyList());

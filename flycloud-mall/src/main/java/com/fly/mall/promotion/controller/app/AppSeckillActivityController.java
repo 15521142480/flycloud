@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -34,6 +36,7 @@ public class AppSeckillActivityController {
      * 获得秒杀活动分页。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<AppSeckillActivityRespVo>> page(@RequestParam(value = "configId", required = false) Long configId,
                                                     PageBo page) {
         return R.ok(seckillActivityService.queryAppPageList(configId, page));
@@ -43,6 +46,7 @@ public class AppSeckillActivityController {
      * 获得秒杀活动明细。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<AppSeckillActivityDetailRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(seckillActivityService.queryAppDetail(id));
     }
@@ -51,6 +55,7 @@ public class AppSeckillActivityController {
      * 根据编号列表查询秒杀活动。
      */
     @GetMapping("/list-by-ids")
+    @PermitAll
     public R<List<AppSeckillActivityRespVo>> listByIds(@RequestParam("ids") List<Long> ids) {
         return R.ok(seckillActivityService.queryAppListByIds(ids));
     }
@@ -59,6 +64,7 @@ public class AppSeckillActivityController {
      * 获得当前秒杀活动。
      */
     @GetMapping("/get-now")
+    @PermitAll
     public R<AppSeckillActivityNowRespVo> getNow() {
         return R.ok(seckillActivityService.queryAppNow());
     }

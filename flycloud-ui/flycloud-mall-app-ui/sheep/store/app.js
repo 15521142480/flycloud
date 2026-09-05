@@ -110,8 +110,8 @@ const app = defineStore('app', {
 
         // 模拟用户登录
         const userStore = user();
-        if (userStore.isLogin) {
-          userStore.loginAfter();
+        if (userStore.syncLoginState()) {
+          await userStore.loginAfter();
         }
         return Promise.resolve(true);
       } else {

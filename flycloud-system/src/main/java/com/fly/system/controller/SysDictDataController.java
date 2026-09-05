@@ -18,6 +18,7 @@ import com.fly.system.service.ISysDictDataService;
 
 import java.util.List;
 import java.util.Arrays;
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,6 +51,7 @@ public class SysDictDataController extends BaseController {
      * 查询字典数据列表
      */
     @GetMapping("/getList")
+    @PermitAll
     public R<List<SysDictDataVo>> getList(SysDictDataBo bo) {
 
         bo.setStatus(StatusEnum.ENABLE.getStatus());

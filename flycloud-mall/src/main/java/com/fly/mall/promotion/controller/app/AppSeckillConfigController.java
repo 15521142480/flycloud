@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.model.R;
 import com.fly.mall.api.promotion.domain.vo.AppSeckillConfigRespVo;
 import com.fly.mall.promotion.service.ISeckillConfigService;
@@ -29,6 +31,7 @@ public class AppSeckillConfigController {
      * 获得秒杀时间段列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<AppSeckillConfigRespVo>> list() {
         return R.ok(seckillConfigService.queryAppList());
     }

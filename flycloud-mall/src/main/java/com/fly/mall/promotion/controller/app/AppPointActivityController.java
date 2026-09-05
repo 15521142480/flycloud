@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -33,6 +35,7 @@ public class AppPointActivityController {
      * 获得积分商城活动分页。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<AppPointActivityRespVo>> page(PageBo page) {
         return R.ok(pointActivityService.queryAppPageList(page));
     }
@@ -41,6 +44,7 @@ public class AppPointActivityController {
      * 获得积分商城活动明细。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<AppPointActivityDetailRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(pointActivityService.queryAppDetail(id));
     }
@@ -49,6 +53,7 @@ public class AppPointActivityController {
      * 根据编号列表查询积分商城活动。
      */
     @GetMapping("/list-by-ids")
+    @PermitAll
     public R<List<AppPointActivityRespVo>> listByIds(@RequestParam("ids") List<Long> ids) {
         return R.ok(pointActivityService.queryAppListByIds(ids));
     }

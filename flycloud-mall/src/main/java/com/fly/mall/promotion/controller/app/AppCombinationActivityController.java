@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -33,6 +35,7 @@ public class AppCombinationActivityController {
      * 获得拼团活动分页。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<AppCombinationActivityRespVo>> page(PageBo page) {
         return R.ok(combinationActivityService.queryAppPageList(page));
     }
@@ -41,6 +44,7 @@ public class AppCombinationActivityController {
      * 获得拼团活动明细。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<AppCombinationActivityDetailRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationActivityService.queryAppDetail(id));
     }
@@ -49,6 +53,7 @@ public class AppCombinationActivityController {
      * 根据编号列表查询拼团活动。
      */
     @GetMapping("/list-by-ids")
+    @PermitAll
     public R<List<AppCombinationActivityRespVo>> listByIds(@RequestParam("ids") List<Long> ids) {
         return R.ok(combinationActivityService.queryAppListByIds(ids));
     }

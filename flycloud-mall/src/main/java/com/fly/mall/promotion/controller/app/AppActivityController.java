@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.model.R;
 import com.fly.common.enums.StatusEnum;
 import com.fly.mall.api.promotion.domain.bo.BargainActivityBo;
@@ -46,6 +48,7 @@ public class AppActivityController {
      * 获得单个商品正在进行中的拼团、秒杀、砍价活动信息。
      */
     @GetMapping("/list-by-spu-id")
+    @PermitAll
     public R<List<AppActivityRespVo>> getActivityListBySpuId(@RequestParam("spuId") Long spuId) {
         List<AppActivityRespVo> result = new ArrayList<>();
         findCombination(spuId).stream().findFirst().ifPresent(activity -> result.add(new AppActivityRespVo(

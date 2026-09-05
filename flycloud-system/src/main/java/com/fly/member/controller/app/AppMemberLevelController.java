@@ -4,6 +4,7 @@ import com.fly.common.domain.model.R;
 import com.fly.member.service.IMemberLevelService;
 import com.fly.system.api.member.domain.bo.MemberLevelBo;
 import com.fly.system.api.member.domain.vo.MemberLevelVo;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class AppMemberLevelController {
      * 查询启用会员等级列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<MemberLevelVo>> list() {
         MemberLevelBo bo = new MemberLevelBo();
         bo.setStatus(0);

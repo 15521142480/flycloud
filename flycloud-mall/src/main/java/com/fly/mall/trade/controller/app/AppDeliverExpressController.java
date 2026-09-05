@@ -1,5 +1,7 @@
 package com.fly.mall.trade.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.model.R;
 import com.fly.common.enums.StatusEnum;
 import com.fly.mall.api.trade.domain.bo.DeliveryExpressBo;
@@ -30,6 +32,7 @@ public class AppDeliverExpressController {
      * 获得启用的快递公司列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<DeliveryExpressVo>> getDeliveryExpressList() {
         DeliveryExpressBo bo = new DeliveryExpressBo();
         bo.setStatus(StatusEnum.ENABLE.getStatus());

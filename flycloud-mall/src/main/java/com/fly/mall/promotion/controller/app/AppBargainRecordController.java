@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -62,6 +64,7 @@ public class AppBargainRecordController {
      * 获得详情。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<BargainRecordVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bargainRecordService.queryById(id));
     }

@@ -4,6 +4,7 @@ import com.fly.common.domain.model.R;
 import com.fly.member.service.IMemberSignInConfigService;
 import com.fly.system.api.member.domain.bo.MemberSignInConfigBo;
 import com.fly.system.api.member.domain.vo.MemberSignInConfigVo;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class AppMemberSignInConfigController {
      * 查询启用签到规则列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<MemberSignInConfigVo>> list() {
         MemberSignInConfigBo bo = new MemberSignInConfigBo();
         bo.setStatus(0);

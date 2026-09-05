@@ -325,7 +325,7 @@ flycloud:
         - /admin/auth/**
         - /app/auth/**
         - /captcha/**
-        - /app/**
+        #        - /app/** app接口白名单通过@PermitAll处理
         - /gen/**
         - /static/**
         - /actuator/**

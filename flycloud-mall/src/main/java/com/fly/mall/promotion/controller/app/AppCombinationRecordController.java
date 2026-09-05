@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -59,6 +61,7 @@ public class AppCombinationRecordController {
      * 获得详情。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<CombinationRecordVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(combinationRecordService.queryById(id));
     }
@@ -67,6 +70,7 @@ public class AppCombinationRecordController {
      * 获得团长拼团记录列表。
      */
     @GetMapping("/get-head-list")
+    @PermitAll
     public R<java.util.List<CombinationRecordVo>> getHeadList(@RequestParam("activityId") Long activityId) {
         CombinationRecordBo bo = new CombinationRecordBo();
         bo.setActivityId(activityId);
@@ -78,6 +82,7 @@ public class AppCombinationRecordController {
      * 获得拼团记录汇总。
      */
     @GetMapping("/get-summary")
+    @PermitAll
     public R<Map<String, Long>> getSummary(@RequestParam(value = "activityId", required = false) Long activityId) {
         CombinationRecordBo bo = new CombinationRecordBo();
         bo.setActivityId(activityId);

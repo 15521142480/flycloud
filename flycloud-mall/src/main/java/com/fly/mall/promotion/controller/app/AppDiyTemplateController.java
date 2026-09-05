@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -34,6 +36,7 @@ public class AppDiyTemplateController {
      * 获取移动端正在使用的装修模板。
      */
     @GetMapping("/used")
+    @PermitAll
     public R<AppDiyTemplatePropertyRespVo> used() {
         return R.ok(diyTemplateService.queryUsedAppTemplateProperty());
     }
@@ -42,6 +45,7 @@ public class AppDiyTemplateController {
      * 获取移动端装修模板详情。
      */
     @GetMapping("/get")
+    @PermitAll
     public R<AppDiyTemplatePropertyRespVo> get(@RequestParam("id") Long id) {
         return R.ok(diyTemplateService.queryAppPropertyRespById(id));
     }
@@ -73,7 +77,7 @@ public class AppDiyTemplateController {
     /**
      * 获得详情。
      */
-    @GetMapping({"/get-detail", "/get"})
+    @GetMapping("/get-detail")
     public R<AppDiyTemplatePropertyRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(diyTemplateService.queryAppPropertyRespById(id));
     }

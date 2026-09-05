@@ -1,5 +1,7 @@
 package com.fly.mall.trade.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.model.R;
 import com.fly.common.enums.StatusEnum;
 import com.fly.mall.api.trade.domain.bo.DeliveryPickUpStoreBo;
@@ -30,6 +32,7 @@ public class AppDeliverPickUpStoreController {
      * 获得启用的自提门店列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<DeliveryPickUpStoreVo>> getDeliveryPickUpStoreList(
             @RequestParam(value = "latitude", required = false) Double latitude,
             @RequestParam(value = "longitude", required = false) Double longitude) {
@@ -42,6 +45,7 @@ public class AppDeliverPickUpStoreController {
      * 获得自提门店详情。
      */
     @GetMapping("/get")
+    @PermitAll
     public R<DeliveryPickUpStoreVo> getOrder(@RequestParam("id") Long id) {
         return R.ok(deliveryPickUpStoreService.queryById(id));
     }

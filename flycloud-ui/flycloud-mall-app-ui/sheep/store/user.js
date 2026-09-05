@@ -46,6 +46,19 @@ const user = defineStore('user', {
   }),
 
   actions: {
+    // 根据令牌同步登录状态，避免持久化状态与实际令牌不一致
+    syncLoginState() {
+      const hasToken = !!uni.getStorageSync('token');
+      this.isLogin = hasToken;
+      this.lastUpdateTime = 0;
+      if (!hasToken) {
+        this.userInfo = clone(defaultUserInfo);
+        this.userWallet = clone(defaultUserWallet);
+        this.numData = cloneDeep(defaultNumData);
+      }
+      return hasToken;
+    },
+
     // 获取用户信息
     async getInfo() {
       const { code, data } = await UserApi.getUserInfo();
@@ -70,17 +83,17 @@ const user = defineStore('user', {
     },
 
     // 获取订单、优惠券等其他资产信息
-    getNumData() {
-      OrderApi.getOrderCount().then((res) => {
-        if (res.code === 0) {
-          this.numData.orderCount = res.data;
-        }
-      });
-      CouponApi.getUnusedCouponCount().then((res) => {
-        if (res.code === 0) {
-          this.numData.unusedCouponCount = res.data;
-        }
-      });
+    async getNumData() {
+      const [orderResult, couponResult] = await Promise.all([
+        OrderApi.getOrderCount(),
+        CouponApi.getUnusedCouponCount(),
+      ]);
+      if (orderResult.code === 0) {
+        this.numData.orderCount = orderResult.data;
+      }
+      if (couponResult.code === 0) {
+        this.numData.unusedCouponCount = couponResult.data;
+      }
     },
 
     // 设置 token
@@ -102,20 +115,26 @@ const user = defineStore('user', {
     async updateUserData() {
       if (!this.isLogin || !uni.getStorageSync('token')) {
         this.resetUserData();
-        return;
+        return false;
       }
       // 防抖，5 秒之内不刷新
       const nowTime = new Date().getTime();
       if (this.lastUpdateTime + 5000 > nowTime) {
-        return;
+        return this.userInfo;
       }
       this.lastUpdateTime = nowTime;
 
-      // 获取最新信息
-      await this.getInfo();
-      this.getWallet();
-      this.getNumData();
-      return this.userInfo;
+      try {
+        // 先确认当前令牌仍能取得用户信息，再请求钱包和用户资产接口
+        const userInfo = await this.getInfo();
+        if (!userInfo) {
+          return false;
+        }
+        await Promise.all([this.getWallet(), this.getNumData()]);
+        return userInfo;
+      } catch {
+        return false;
+      }
     },
 
     // 重置用户默认数据
@@ -126,13 +145,17 @@ const user = defineStore('user', {
       this.userInfo = clone(defaultUserInfo);
       this.userWallet = clone(defaultUserWallet);
       this.numData = cloneDeep(defaultNumData);
+      this.lastUpdateTime = 0;
       // 清空购物车的缓存
       cart().emptyList();
     },
 
     // 登录后，加载各种信息
     async loginAfter() {
-      await this.updateUserData();
+      const updated = await this.updateUserData();
+      if (!updated) {
+        return false;
+      }
 
       // 加载购物车
       cart().getList();
@@ -146,6 +169,7 @@ const user = defineStore('user', {
 
       // 绑定推广员
       $share.bindBrokerageUser();
+      return true;
     },
 
     // 登出系统
@@ -162,6 +186,7 @@ const user = defineStore('user', {
     strategies: [
       {
         key: 'user-store',
+        paths: ['userInfo', 'userWallet', 'numData'],
       },
     ],
   },

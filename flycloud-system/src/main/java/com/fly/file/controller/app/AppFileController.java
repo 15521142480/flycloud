@@ -10,6 +10,7 @@ import com.fly.system.api.file.domain.vo.FileUploadRespVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class AppFileController {
      * 获取当前文件存储配置。
      */
     @GetMapping("/config")
+    @PermitAll
     @Operation(summary = "获取文件配置", description = "获取当前文件存储基础路径和访问地址")
     public R<FileConfigRespVo> getConfig() {
         return R.ok(new FileConfigRespVo(fileUrlService.getBasePath(), fileUrlService.getBaseUrl()));

@@ -1,5 +1,7 @@
 package com.fly.mall.trade.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -59,6 +61,7 @@ public class AppTradeOrderController {
      * 获得商品结算信息。
      */
     @GetMapping("/settlement-product")
+    @PermitAll
     public R<List<AppTradeProductSettlementRespVo>> settlementProduct(@RequestParam("spuIds") List<Long> spuIds) {
         return R.ok(tradeOrderService.settlementProduct(spuIds));
     }
@@ -107,6 +110,7 @@ public class AppTradeOrderController {
      * 支付回调后更新订单为已支付。
      */
     @PostMapping("/update-paid")
+    @PermitAll
     public R<Boolean> updatePaid(@RequestBody PayOrderNotifyReq req) {
         tradeOrderService.updateOrderPaid(Long.valueOf(req.getMerchantOrderId()), req.getPayOrderId());
         return R.result(Boolean.TRUE);

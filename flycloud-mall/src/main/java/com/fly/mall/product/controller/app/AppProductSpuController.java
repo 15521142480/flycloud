@@ -1,5 +1,7 @@
 package com.fly.mall.product.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -51,6 +53,7 @@ public class AppProductSpuController {
      * 获得商品 SPU 列表。
      */
     @GetMapping("/list-by-ids")
+    @PermitAll
     public R<List<AppProductSpuRespVo>> getSpuList(@RequestParam("ids") Set<Long> ids) {
         return R.ok(productSpuService.queryAppListByIds(ids));
     }
@@ -59,6 +62,7 @@ public class AppProductSpuController {
      * 获得商品 SPU 分页。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<AppProductSpuRespVo>> getSpuPage(ProductSpuBo bo, PageBo page) {
         bo.setStatus(ProductSpuStatusEnum.ENABLE.getStatus());
         return R.ok(productSpuService.queryAppPageList(bo, page));
@@ -78,6 +82,7 @@ public class AppProductSpuController {
      * 获得商品 SPU 明细。
      */
     @GetMapping("/get-detail")
+    @PermitAll
     public R<AppProductSpuDetailRespVo> getSpuDetail(@RequestParam("id") Long id) {
         AppProductSpuDetailRespVo detail = productSpuService.queryAppDetailRespById(id);
         productBrowseHistoryService.createBrowseHistory(UserUtils.getCurUserId(), id);

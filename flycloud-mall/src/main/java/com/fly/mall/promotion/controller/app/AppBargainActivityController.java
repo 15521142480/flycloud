@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -33,6 +35,7 @@ public class AppBargainActivityController {
      * 获得砍价活动列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<AppBargainActivityRespVo>> list(@RequestParam(name = "count", defaultValue = "6") Integer count) {
         return R.ok(bargainActivityService.queryAppList(count));
     }
@@ -41,6 +44,7 @@ public class AppBargainActivityController {
      * 获得砍价活动分页。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<AppBargainActivityRespVo>> page(PageBo page) {
         return R.ok(bargainActivityService.queryAppPageList(page));
     }
@@ -49,6 +53,7 @@ public class AppBargainActivityController {
      * 获得砍价活动详情。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<AppBargainActivityDetailRespVo> getDetail(@RequestParam("id") Long id) {
         return R.ok(bargainActivityService.queryAppDetail(id));
     }

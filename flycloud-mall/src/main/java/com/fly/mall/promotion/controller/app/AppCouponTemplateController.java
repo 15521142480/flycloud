@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -40,6 +42,7 @@ public class AppCouponTemplateController {
      * 查询移动端优惠券模板分页列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<CouponTemplateVo>> list(@RequestParam(value = "spuId", required = false) Long spuId,
                                           @RequestParam(value = "productScope", required = false) Integer productScope,
                                           @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
@@ -53,6 +56,7 @@ public class AppCouponTemplateController {
      * 获得分页列表。
      */
     @GetMapping("/page")
+    @PermitAll
     public R<PageVo<CouponTemplateVo>> page(CouponTemplateBo bo, PageBo page) {
         PageVo<CouponTemplateVo> pageVo = couponTemplateService.queryPageList(bo, page);
         fillCanTake(pageVo.getList());
@@ -76,6 +80,7 @@ public class AppCouponTemplateController {
      * 获得详情。
      */
     @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<CouponTemplateVo> getDetail(@RequestParam("id") Long id) {
         return getInfo(id);
     }
@@ -84,6 +89,7 @@ public class AppCouponTemplateController {
      * 根据编号列表查询优惠券模板。
      */
     @GetMapping("/list-by-ids")
+    @PermitAll
     public R<List<CouponTemplateVo>> listByIds(@RequestParam("ids") List<Long> ids) {
         List<CouponTemplateVo> list = couponTemplateService.queryList(ids);
         fillCanTake(list);

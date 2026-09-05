@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -36,7 +38,8 @@ public class AppArticleController {
     /**
      * 查询移动端文章分页列表。
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
+    @PermitAll
     public R<List<ArticleVo>> list(ArticleBo bo) {
         return R.ok(articleService.queryList(bo));
     }
@@ -44,7 +47,8 @@ public class AppArticleController {
     /**
      * 获得分页列表。
      */
-    @RequestMapping("/page")
+    @GetMapping("/page")
+    @PermitAll
     public R<PageVo<ArticleVo>> page(ArticleBo bo, PageBo page) {
         return R.ok(articleService.queryPageList(bo, page));
     }
@@ -60,7 +64,8 @@ public class AppArticleController {
     /**
      * 获得详情。
      */
-    @RequestMapping({"/get-detail", "/get"})
+    @GetMapping({"/get-detail", "/get"})
+    @PermitAll
     public R<ArticleVo> getDetail(@RequestParam(value = "id", required = false) Long id,
                                   @RequestParam(value = "title", required = false) String title) {
         if (id != null) {
@@ -73,6 +78,7 @@ public class AppArticleController {
      * 增加文章浏览次数。
      */
     @PutMapping("/add-browse-count")
+    @PermitAll
     public R<Boolean> addBrowseCount(@RequestParam("id") Long id) {
         return R.result(articleService.addBrowseCount(id));
     }

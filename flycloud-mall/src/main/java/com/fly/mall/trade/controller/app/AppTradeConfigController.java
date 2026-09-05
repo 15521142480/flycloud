@@ -1,5 +1,7 @@
 package com.fly.mall.trade.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -33,6 +35,7 @@ public class AppTradeConfigController {
      * 获得交易配置。
      */
     @GetMapping("/get")
+    @PermitAll
     public R<TradeConfigVo> getTradeConfig() {
         return R.ok(tradeConfigService.getTradeConfig());
     }

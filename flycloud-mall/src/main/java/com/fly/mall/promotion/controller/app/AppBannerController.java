@@ -1,5 +1,7 @@
 package com.fly.mall.promotion.controller.app;
 
+import jakarta.annotation.security.PermitAll;
+
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
@@ -36,6 +38,7 @@ public class AppBannerController {
      * 查询移动端轮播图分页列表。
      */
     @GetMapping("/list")
+    @PermitAll
     public R<List<BannerVo>> list(@RequestParam("position") Integer position) {
         return R.ok(bannerService.queryListByPosition(position));
     }
@@ -68,6 +71,7 @@ public class AppBannerController {
      * 增加轮播图浏览次数。
      */
     @PutMapping("/add-browse-count")
+    @PermitAll
     public R<Boolean> addBrowseCount(@RequestParam("id") Long id) {
         return R.result(bannerService.addBrowseCount(id));
     }
