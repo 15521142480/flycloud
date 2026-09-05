@@ -257,12 +257,12 @@ export function handleTree(
   // 循环所有项
   const treeData = cloneData.filter((father) => {
     let branchArr = cloneData.filter((child) => {
-      //返回每一项的子级数组
-      return father[id] === child[parentId];
+      // 兼容后端 Long ID 序列化为字符串后与数字类型混用的情况
+      return String(father[id]) === String(child[parentId]);
     });
     branchArr.length > 0 ? (father.children = branchArr) : '';
     //返回第一层
-    return father[parentId] === rootId;
+    return String(father[parentId]) === String(rootId);
   });
   return treeData !== '' ? treeData : data;
 }

@@ -21,7 +21,6 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +31,8 @@ import reactor.core.publisher.Mono;
  * @date: 2025/8/14
  */
 @Slf4j
-@Component
+// note 网关不再校验 Token，统一由 Spring Security 校验各业务服务的认证和接口。（因为业务服务的白名单接口是使用 @PermitAll，导致网关需要再配置一遍）
+// @Component
 @AllArgsConstructor
 public class TokenSecurityFilter implements GlobalFilter, Ordered {
 

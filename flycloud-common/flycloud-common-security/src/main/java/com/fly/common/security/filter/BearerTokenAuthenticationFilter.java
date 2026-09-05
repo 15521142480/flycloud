@@ -6,11 +6,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
+import com.fly.common.domain.model.R;
 import com.fly.common.redis.utils.RedisUtils;
 import com.fly.common.security.user.FlyUser;
+import com.fly.common.utils.ResponseUtils;
 import com.fly.common.utils.auth.SecurityUtils;
-import com.fly.common.utils.auth.TokenUtils;
 import com.fly.common.utils.auth.TokenResolveUtils;
+import com.fly.common.utils.feign.FeignSignatureUtils;
 import com.fly.common.utils.json.JsonUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -26,12 +28,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Spring Security 6 资源服务 Bearer token 认证过滤器。
+ * Spring Security 6 资源服务认证过滤器，统一处理Feign内部签名和Bearer Token认证。
  */
 @RequiredArgsConstructor
 public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
@@ -49,12 +50,30 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        String token = TokenResolveUtils.resolve(request);
+        String path = FeignSignatureUtils.normalizePath(request.getRequestURI());
+        if (FeignSignatureUtils.isFeignPath(path) && authProperties.getFeign().isEnabled()) {
+            if (!verifyFeignSignature(request, path)) {
+                ResponseUtils.responseWriter(
+                        response,
+                        "application/json;charset=UTF-8",
+                        HttpServletResponse.SC_UNAUTHORIZED,
+                        R.failed("Feign内部接口签名无效")
+                );
+                return;
+            }
+            if (StrUtil.isBlank(token)) {
+                setFeignAuthentication(request);
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
+
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = TokenResolveUtils.resolve(request);
         if (StrUtil.isBlank(token)) {
             filterChain.doFilter(request, response);
             return;
@@ -86,6 +105,40 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
         // 所以每次请求都能从spring-security的上下文获取当前用户信息：SecurityContextHolder.getContext().getAuthentication()
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
+    }
+
+
+    /**
+     * 校验Feign内部接口签名。
+     *
+     * @param request 请求对象
+     * @param path 规范化后的请求路径
+     * @return 是否校验通过
+     */
+    private boolean verifyFeignSignature(HttpServletRequest request, String path) {
+        return FeignSignatureUtils.verify(
+                authProperties.getFeign().getSecret(),
+                request.getMethod(),
+                path,
+                request.getHeader(FeignSignatureUtils.HEADER_TIMESTAMP),
+                request.getHeader(FeignSignatureUtils.HEADER_NONCE),
+                request.getHeader(FeignSignatureUtils.HEADER_SIGNATURE),
+                authProperties.getFeign().getExpireSeconds());
+    }
+
+
+    /**
+     * 为未携带用户Token的Feign请求设置内部服务认证信息。
+     *
+     * @param request 请求对象
+     */
+    private void setFeignAuthentication(HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                "feign-internal",
+                null,
+                AuthorityUtils.NO_AUTHORITIES);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 
