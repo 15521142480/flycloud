@@ -17,8 +17,10 @@ target/
 /doc/docker-compose/rocketmq/broker.conf
 /doc/docker-compose/elasticsearch/elasticsearch.env
 
+# 前端配置
+/flycloud-ui/flycloud-mall-app-ui/.env
 
-
+# 前端非项目文件
 node_modules/
 **/node_modules/
 **/unpackage/
