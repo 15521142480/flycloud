@@ -79,11 +79,14 @@
           </div>
         </template>
         <div ref="chartRef">
-          <el-image fit="cover" :src="img_bpm1" class="card-img" @click="imagePreview(img_bpm1)" />
-          <el-image fit="cover" :src="img_bpm2" class="card-img" @click="imagePreview(img_bpm2)" />
-          <el-image fit="cover" :src="img_bpm3" class="card-img" @click="imagePreview(img_bpm3)" />
-          <el-image fit="cover" :src="img_bpm4" class="card-img" @click="imagePreview(img_bpm4)" />
-          <el-image fit="cover" :src="img_bpm5" class="card-img" @click="imagePreview(img_bpm5)" />
+          <el-image
+            v-for="(image, index) in bpmImages"
+            :key="image"
+            fit="cover"
+            :src="image"
+            class="card-img"
+            @click="imagePreview(bpmImages, index)"
+          />
         </div>
         <template #footer>
           <div class="card-footer">
@@ -95,45 +98,31 @@
       </el-card>
     </el-col>
 
-    <!-- 商城后台 -->
+    <!-- 商城 -->
     <el-col :span="6" style="margin-left: 15px">
       <el-card shadow="hover" class="project-card">
         <template #header>
           <div class="card-header">
-            <span>商城后台</span>
+            <span>商城-后台/移动端</span>
           </div>
         </template>
         <div ref="chartRef">
-          <el-image fit="cover" :src="img_mall1" class="card-img" @click="imagePreview(img_mall1)" />
-          <el-image fit="cover" :src="img_mall2" class="card-img" @click="imagePreview(img_mall2)" />
-          <el-image fit="cover" :src="img_mall3" class="card-img" @click="imagePreview(img_mall3)" />
-          <el-image fit="cover" :src="img_mall4" class="card-img" @click="imagePreview(img_mall4)" />
+          <el-image
+            v-for="(image, index) in mallImages"
+            :key="image"
+            fit="cover"
+            :src="image"
+            class="card-img"
+            @click="imagePreview(mallImages, index)"
+          />
         </div>
         <template #footer>
           <div class="card-footer">
             <el-button type="primary" @click="routerForward(2)" text bg>
-              快捷体验
+              体验1 (后台)
             </el-button>
-          </div>
-        </template>
-      </el-card>
-    </el-col>
-
-    <!-- 商城移动端 -->
-    <el-col :span="5" style="margin-left: 15px">
-      <el-card shadow="hover" class="project-card">
-        <template #header>
-          <div class="card-header">
-            <span>商城移动端（h5）</span>
-          </div>
-        </template>
-        <div ref="chartRef" v-loading="loading">
-
-        </div>
-        <template #footer>
-          <div class="card-footer">
             <el-button type="primary" @click="routerForward(3)" text bg>
-              快捷体验
+              体验2 (移动端)
             </el-button>
           </div>
         </template>
@@ -148,7 +137,7 @@
             <span>即时通讯</span>
           </div>
         </template>
-        <div ref="chartRef" v-loading="loading">
+        <div ref="chartRef">
 
         </div>
         <template #footer>
@@ -163,6 +152,28 @@
         </template>
       </el-card>
     </el-col>
+
+    <!-- AI -->
+    <el-col :span="5" style="margin-left: 15px">
+      <el-card shadow="hover" class="project-card">
+        <template #header>
+          <div class="card-header">
+            <span>AI</span>
+          </div>
+        </template>
+        <div ref="chartRef">
+
+        </div>
+        <template #footer>
+          <div class="card-footer">
+            <el-button type="primary" @click="routerForward(6)" text bg>
+              快捷体验
+            </el-button>
+          </div>
+        </template>
+      </el-card>
+    </el-col>
+
   </el-row>
 
   <el-row style="margin-top: 15px">
@@ -208,16 +219,34 @@ import * as TaskApi from '@/api/bpm/task'
 
 import avatarImg from '@/assets/imgs/avatar.png'
 
-import img_bpm1 from '@/assets/imgs/bpm/bpm-1.png'
-import img_bpm2 from '@/assets/imgs/bpm/bpm-2.png'
-import img_bpm3 from '@/assets/imgs/bpm/bpm-3.png'
-import img_bpm4 from '@/assets/imgs/bpm/bpm-4.png'
-import img_bpm5 from '@/assets/imgs/bpm/bpm-5.png'
+const bpmImageModules = import.meta.glob<string>(
+  '/src/assets/imgs/bpm/bpm-[0-9].png',
+  { eager: true, import: 'default', query: '?url' }
+)
+const mallImageModules = import.meta.glob<string>(
+  '/src/assets/imgs/mall/mall-[0-9].png',
+  { eager: true, import: 'default', query: '?url' }
+)
+const mallAppImageModules = import.meta.glob<string>(
+  '/src/assets/imgs/mall/mall-app-[0-9].png',
+  { eager: true, import: 'default', query: '?url' }
+)
 
-import img_mall1 from '@/assets/imgs/mall/mall-1.png'
-import img_mall2 from '@/assets/imgs/mall/mall-2.png'
-import img_mall3 from '@/assets/imgs/mall/mall-3.png'
-import img_mall4 from '@/assets/imgs/mall/mall-4.png'
+const sortImageModules = (modules: Record<string, string>) =>
+  Object.entries(modules)
+    .sort(([leftPath], [rightPath]) =>
+      leftPath.localeCompare(rightPath, undefined, { numeric: true })
+    )
+    .map(([, imageUrl]) => imageUrl)
+
+const bpmImages = sortImageModules(bpmImageModules)
+const mallProjectImages = sortImageModules(mallImageModules)
+const mallAppImages = sortImageModules(mallAppImageModules)
+const mallImages = [
+  ...mallProjectImages.slice(0, 4),
+  ...mallAppImages,
+  ...mallProjectImages.slice(4)
+]
 
 const { t } = useI18n()
 const { push } = useRouter()
@@ -293,6 +322,9 @@ const routerForward = async (optionType: number) => {
     case 5:
       window.open('/#/im/home/conversation', '_blank')
       break
+    case 6:
+      await push({ path: '/ai' })
+      break
     case 9:
       window.open('https://github.com/15521142480/flycloud', '_blank')
       break
@@ -305,9 +337,10 @@ const goTodo = async () => {
 }
 
 // 预览首页项目卡片图片
-const imagePreview = (imgUrl: string) => {
+const imagePreview = (images: string[], initialIndex: number) => {
   createImageViewer({
-    urlList: [imgUrl]
+    urlList: images,
+    initialIndex
   })
 }
 

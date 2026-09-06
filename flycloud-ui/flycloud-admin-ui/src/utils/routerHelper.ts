@@ -10,6 +10,7 @@ const modules = import.meta.glob('../views/**/*.{vue,tsx}')
  * 根据菜单配置的组件地址精确解析页面组件。
  *
  * 菜单组件地址约定为相对于 views 目录、且不带扩展名的路径，例如 ai/index。
+ * 同时兼容目录形式，例如 im/workbench/conversation 会精确匹配其 index.vue。
  * 不能使用 includes 模糊匹配，否则 ai/index 等短路径可能误命中 ai/other 下的历史页面。
  *
  * @param componentPath 菜单配置的组件地址
@@ -20,8 +21,20 @@ const resolveViewComponent = (componentPath?: string) => {
     return undefined
   }
 
-  const normalizedPath = componentPath.replace(/^\/+/, '').replace(/\.(vue|tsx)$/, '')
-  return modules[`../views/${normalizedPath}.vue`] || modules[`../views/${normalizedPath}.tsx`]
+  const normalizedPath = componentPath
+    .replace(/^\/+/, '')
+    .replace(/\/$/, '')
+    .replace(/\.(vue|tsx)$/, '')
+  const component =
+    modules[`../views/${normalizedPath}.vue`] ||
+    modules[`../views/${normalizedPath}.tsx`] ||
+    modules[`../views/${normalizedPath}/index.vue`] ||
+    modules[`../views/${normalizedPath}/index.tsx`]
+
+  if (!component) {
+    console.warn(`[Router] 未找到菜单组件: ${componentPath}`)
+  }
+  return component
 }
 
 /**

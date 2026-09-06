@@ -108,12 +108,12 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="编号" align="center" prop="id" width="80" />
+      <el-table-column label="编号" align="center" prop="id" width="110" />
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
-        width="180"
+        width="150"
         :formatter="dateFormatter"
       />
       <el-table-column label="支付金额" align="center" prop="price" width="100">
@@ -127,7 +127,7 @@
           ￥{{ (scope.row.channelFeePrice! / 100).toFixed(2) }}
         </template>
       </el-table-column>
-      <el-table-column label="订单号" align="left" width="300">
+      <el-table-column label="订单号" align="left" width="250">
         <template #default="scope">
           <p class="order-font">
             <el-tag size="small"> 商户</el-tag> {{ scope.row.merchantOrderId }}
@@ -145,7 +145,7 @@
           <dict-tag :type="DICT_TYPE.PAY_ORDER_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="支付渠道" align="center" prop="channelCode" width="140">
+      <el-table-column label="支付渠道" align="center" prop="channelCode" width="110">
         <template #default="scope">
           <dict-tag
             v-if="scope.row.channelCode"
@@ -158,7 +158,7 @@
         label="支付时间"
         align="center"
         prop="successTime"
-        width="180"
+        width="150"
         :formatter="dateFormatter"
       />
       <el-table-column label="支付应用" align="center" prop="appName" width="100" />

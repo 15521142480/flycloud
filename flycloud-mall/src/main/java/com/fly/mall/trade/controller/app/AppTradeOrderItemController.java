@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping({"/app/trade/trade-order-item", "/app/trade/order/item"})
+@RequestMapping("/app/trade/trade-order-item")
 public class AppTradeOrderItemController {
 
     private final ITradeOrderItemService tradeOrderItemService;
