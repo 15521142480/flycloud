@@ -138,7 +138,14 @@
           </div>
         </template>
         <div ref="chartRef">
-
+          <el-image
+            v-for="(image, index) in imImages"
+            :key="image"
+            fit="cover"
+            :src="image"
+            class="card-img"
+            @click="imagePreview(imImages, index)"
+          />
         </div>
         <template #footer>
           <div class="card-footer">
@@ -162,7 +169,14 @@
           </div>
         </template>
         <div ref="chartRef">
-
+          <el-image
+            v-for="(image, index) in aiImages"
+            :key="image"
+            fit="cover"
+            :src="image"
+            class="card-img"
+            @click="imagePreview(aiImages, index)"
+          />
         </div>
         <template #footer>
           <div class="card-footer">
@@ -189,9 +203,9 @@
 
           <section class="project-info-section project-stack">
             <h3>技术栈</h3>
-            <p>Spring Boot 3</p>
-            <p>Spring Cloud</p>
-            <p>Vue 3 + Element Plus</p>
+            <p>Spring Boot 3、Spring Cloud</p>
+            <p>Spring AI、Flowable、Nacos、Seata、Rocketmq...</p>
+            <p>Vue 3 + Element Plus、Uni-app + uni-ui</p>
           </section>
 
           <section class="project-info-section project-repo">
@@ -231,6 +245,14 @@ const mallAppImageModules = import.meta.glob<string>(
   '/src/assets/imgs/mall/mall-app-[0-9].png',
   { eager: true, import: 'default', query: '?url' }
 )
+const aiImageModules = import.meta.glob<string>(
+  '/src/assets/imgs/ai/ai-[0-9].png',
+  { eager: true, import: 'default', query: '?url' }
+)
+const imImageModules = import.meta.glob<string>(
+  '/src/assets/imgs/im/im-[0-9].png',
+  { eager: true, import: 'default', query: '?url' }
+)
 
 const sortImageModules = (modules: Record<string, string>) =>
   Object.entries(modules)
@@ -247,6 +269,8 @@ const mallImages = [
   ...mallAppImages,
   ...mallProjectImages.slice(4)
 ]
+const aiImages = sortImageModules(aiImageModules)
+const imImages = sortImageModules(imImageModules)
 
 const { t } = useI18n()
 const { push } = useRouter()
