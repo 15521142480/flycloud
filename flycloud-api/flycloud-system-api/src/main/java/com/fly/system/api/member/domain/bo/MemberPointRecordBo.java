@@ -4,6 +4,9 @@ import com.fly.common.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 /**
  * 会员积分记录业务对象。
@@ -22,5 +25,12 @@ public class MemberPointRecordBo extends BaseEntity {
     private Integer bizType;
     private String title;
     private Integer point;
+
+    @Schema(description = "是否增加积分")
+    private Boolean addStatus;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "创建时间范围")
+    private LocalDateTime[] createTimeRange;
 
 }

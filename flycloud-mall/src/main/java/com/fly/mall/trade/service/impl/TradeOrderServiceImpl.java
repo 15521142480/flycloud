@@ -43,6 +43,7 @@ import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeProductSettlementRespVo;
 import com.fly.mall.api.trade.domain.vo.CartVo;
+import com.fly.mall.api.trade.domain.vo.DeliveryExpressVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderSummaryRespVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderItemVo;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
@@ -55,6 +56,7 @@ import com.fly.mall.trade.config.TradeOrderProperties;
 import com.fly.mall.trade.mapper.TradeOrderItemMapper;
 import com.fly.mall.trade.mapper.TradeOrderMapper;
 import com.fly.mall.trade.service.ICartService;
+import com.fly.mall.trade.service.IDeliveryExpressService;
 import com.fly.mall.trade.service.ITradeOrderItemService;
 import com.fly.mall.trade.service.ITradeOrderService;
 import com.fly.system.api.pay.domain.bo.PayOrderCreateReqDto;
@@ -141,6 +143,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     private final TradeOrderMapper baseMapper;
     private final TradeOrderItemMapper tradeOrderItemMapper;
     private final ITradeOrderItemService tradeOrderItemService;
+    private final IDeliveryExpressService deliveryExpressService;
     private final ICartService cartService;
     private final IProductSkuService productSkuService;
     private final IProductSpuService productSpuService;
@@ -1481,6 +1484,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         respVo.setPayPrice(order.getPayPrice());
         respVo.setDeliveryType(order.getDeliveryType());
         respVo.setLogisticsId(order.getLogisticsId());
+        if (order.getLogisticsId() != null) {
+            DeliveryExpressVo deliveryExpress = deliveryExpressService.queryById(order.getLogisticsId());
+            if (deliveryExpress != null) {
+                respVo.setLogisticsName(deliveryExpress.getName());
+            }
+        }
         respVo.setLogisticsNo(order.getLogisticsNo());
         respVo.setDeliveryTime(order.getDeliveryTime());
         respVo.setReceiveTime(order.getReceiveTime());

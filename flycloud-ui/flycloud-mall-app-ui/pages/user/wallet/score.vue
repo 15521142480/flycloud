@@ -139,8 +139,8 @@
       pageNum: state.pagination.pageNum,
       pageSize: state.pagination.pageSize,
       addStatus: state.currentTab > 0 ? tabMaps[state.currentTab].value : undefined,
-      'createTime[0]': state.date[0] + ' 00:00:00',
-      'createTime[1]': state.date[1] + ' 23:59:59',
+      'createTimeRange[0]': state.date[0] + ' 00:00:00',
+      'createTimeRange[1]': state.date[1] + ' 23:59:59',
     });
     if (code !== 0) {
       return;

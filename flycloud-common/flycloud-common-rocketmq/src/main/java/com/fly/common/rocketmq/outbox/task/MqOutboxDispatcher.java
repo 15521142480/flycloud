@@ -37,6 +37,7 @@ public class MqOutboxDispatcher {
         }
         List<MqOutboxMessage> outboxMessageList = outboxService.findPending(properties.getOutbox().getBatchSize());
         if (outboxMessageList.isEmpty()) {
+            System.out.println("扫描 MQ 本地消息表，无待发送消息");
             log.debug("扫描 MQ 本地消息表，无待发送消息");
             return;
         }

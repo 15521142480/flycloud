@@ -38,6 +38,16 @@ public class MemberPointRecordServiceImpl implements IMemberPointRecordService {
         if (bo != null) {
             lqw.eq(bo.getUserId() != null, MemberPointRecord::getUserId, bo.getUserId());
             lqw.eq(bo.getBizType() != null, MemberPointRecord::getBizType, bo.getBizType());
+            if (Boolean.TRUE.equals(bo.getAddStatus())) {
+                lqw.gt(MemberPointRecord::getPoint, 0);
+            } else if (Boolean.FALSE.equals(bo.getAddStatus())) {
+                lqw.lt(MemberPointRecord::getPoint, 0);
+            }
+            LocalDateTime[] createTimeRange = bo.getCreateTimeRange();
+            if (createTimeRange != null && createTimeRange.length == 2
+                    && createTimeRange[0] != null && createTimeRange[1] != null) {
+                lqw.between(MemberPointRecord::getCreateTime, createTimeRange[0], createTimeRange[1]);
+            }
         }
         lqw.orderByDesc(MemberPointRecord::getId);
         Page<MemberPointRecordVo> page = pointRecordMapper.selectVoPage(pageBo.build(), lqw);

@@ -7,7 +7,7 @@
         <uni-swiper-dot :info="goodsImages" :current="state.current" mode="round">
           <swiper class="swiper-box">
             <swiper-item v-for="(item, index) in goodsImages" :key="index">
-              <image class="log-card-img" :src="sheep.$url.static(item.image)" />
+              <image class="log-card-img" :src="sheep.$url.cdn(item.image)" mode="aspectFit" />
             </swiper-item>
           </swiper>
         </uni-swiper-dot>

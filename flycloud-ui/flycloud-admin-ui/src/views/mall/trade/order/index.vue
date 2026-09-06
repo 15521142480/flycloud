@@ -129,16 +129,15 @@
           v-show="true"
           v-model="queryParams[queryType.queryParam]"
           :type="queryType.queryParam === 'userId' ? 'number' : 'text'"
-          class="!w-280px"
+          class="!w-400px"
           clearable
           placeholder="请输入"
+          @keyup.enter="handleQuery"
         >
           <template #prepend>
             <el-select
               v-model="queryType.queryParam"
               class="!w-110px"
-              clearable
-              placeholder="全部"
               @change="inputChangeSelect"
             >
               <el-option
@@ -279,7 +278,7 @@ const queryParams = ref({
   pickUpStoreId: undefined, // 自提门店
   pickUpVerifyCode: undefined // 自提核销码
 })
-const queryType = reactive({ queryParam: '' }) // 订单搜索类型 queryParam
+const queryType = reactive({ queryParam: 'no' }) // 订单搜索类型 queryParam
 
 // 订单聚合搜索 select 类型配置（动态搜索）
 const dynamicSearchList = ref([
