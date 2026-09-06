@@ -9,7 +9,7 @@
 							:style="[{ background: item.badge.bgColor, color: item.badge.textColor }]">
 							{{ item.badge.text }}
 						</view>
-						<image class="menu-image" :src="sheep.$url.cdn(item.iconUrl)"></image>
+						<image class="menu-image" :src="resolveIconUrl(item.iconUrl)"></image>
 					</view>
 
 					<view class="title-box ss-flex ss-flex-col ss-row-center ss-col-center">
@@ -45,6 +45,19 @@
 			default: () => ({}),
 		},
 	});
+
+	const duplicateCollectionIconUrls = [
+		'http://test.yudao.iocoder.cn/static/img/diy/goods-collect.png',
+		'https://test.yudao.iocoder.cn/static/img/diy/goods-collect.png',
+	];
+
+	const resolveIconUrl = (iconUrl = '') => {
+		if (duplicateCollectionIconUrls.includes(iconUrl)) {
+			return sheep.$url.static('/static/img/shop/goods/collect_0.png');
+		}
+		return sheep.$url.cdn(iconUrl);
+	};
+
 	// 设置背景样式
 	const bgStyle = computed(() => {
 		// 直接从 props.styles 解构

@@ -34,6 +34,7 @@ import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
 import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderCountRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderDetailRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemRespVo;
@@ -71,7 +72,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -598,15 +598,15 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      * 查询当前用户订单数量。
      */
     @Override
-    public Map<String, Long> getOrderCount(Long userId) {
-        Map<String, Long> result = new LinkedHashMap<>();
-        result.put("allCount", countByUserAndStatus(userId, null, null));
-        result.put("unpaidCount", countByUserAndStatus(userId, TradeOrderStatusEnum.UNPAID.getStatus(), null));
-        result.put("undeliveredCount", countByUserAndStatus(userId, TradeOrderStatusEnum.UNDELIVERED.getStatus(), null));
-        result.put("deliveredCount", countByUserAndStatus(userId, TradeOrderStatusEnum.DELIVERED.getStatus(), null));
-        result.put("uncommentedCount", countByUserAndStatus(userId, TradeOrderStatusEnum.COMPLETED.getStatus(), false));
-        result.put("afterSaleCount", 0L);
-        return result;
+    public AppTradeOrderCountRespVo getOrderCount(Long userId) {
+        AppTradeOrderCountRespVo respVo = new AppTradeOrderCountRespVo();
+        respVo.setAllCount(countByUserAndStatus(userId, null, null));
+        respVo.setUnpaidCount(countByUserAndStatus(userId, TradeOrderStatusEnum.UNPAID.getStatus(), null));
+        respVo.setUndeliveredCount(countByUserAndStatus(userId, TradeOrderStatusEnum.UNDELIVERED.getStatus(), null));
+        respVo.setDeliveredCount(countByUserAndStatus(userId, TradeOrderStatusEnum.DELIVERED.getStatus(), null));
+        respVo.setUncommentedCount(countByUserAndStatus(userId, TradeOrderStatusEnum.COMPLETED.getStatus(), false));
+        respVo.setAfterSaleCount(0L);
+        return respVo;
     }
 
     /**

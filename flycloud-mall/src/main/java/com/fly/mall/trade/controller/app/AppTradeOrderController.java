@@ -9,6 +9,7 @@ import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderCountRespVo;
 import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderDetailRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
@@ -32,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 import lombok.Data;
 
 /**
@@ -128,7 +128,7 @@ public class AppTradeOrderController {
      * 获得交易订单数量。
      */
     @GetMapping("/get-count")
-    public R<Map<String, Long>> getOrderCount() {
+    public R<AppTradeOrderCountRespVo> getOrderCount() {
         return R.ok(tradeOrderService.getOrderCount(UserUtils.getCurUserId()));
     }
 

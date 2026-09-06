@@ -3,19 +3,29 @@
   <view class="ss-order-menu-wrap ss-flex ss-col-center" :style="[style, { marginLeft: `${data.space}px` }]">
     <view
       class="menu-item ss-flex-1 ss-flex-col ss-row-center ss-col-center"
+      :class="{ 'all-order-item': item.isAll }"
       v-for="item in orderMap"
       :key="item.title"
       @tap="sheep.$router.go(item.path, { type: item.value })"
     >
-      <uni-badge
-        class="uni-badge-left-margin"
-        :text="numData.orderCount[item.count]"
-        absolute="rightTop"
-        size="small"
-      >
-        <image class="item-icon" :src="sheep.$url.static(item.icon)" mode="aspectFit" />
-      </uni-badge>
-      <view class="menu-title ss-m-t-28">{{ item.title }}</view>
+      <template v-if="!item.isAll">
+        <uni-badge
+          class="uni-badge-left-margin"
+          :text="numData.orderCount[item.count]"
+          absolute="rightTop"
+          size="small"
+        >
+          <image class="item-icon" :src="sheep.$url.static(item.icon)" mode="aspectFit" />
+        </uni-badge>
+        <view class="menu-title ss-m-t-28">{{ item.title }}</view>
+      </template>
+      <template v-else>
+        <view class="all-order-divider"></view>
+        <view class="all-order-title">全部</view>
+        <view class="all-order-arrow ss-flex ss-row-center ss-col-center">
+          <uni-icons type="right" size="14" color="#999999" />
+        </view>
+      </template>
     </view>
   </view>
 </template>
@@ -35,6 +45,14 @@
       path: '/pages/order/list',
       type: 'unpaid',
       count: 'unpaidCount',
+    },
+    {
+      title: '待发货',
+      value: '2',
+      icon: '/static/img/shop/order/cargo.png',
+      path: '/pages/order/list',
+      type: 'undelivered',
+      count: 'undeliveredCount',
     },
     {
       title: '待收货',
@@ -61,10 +79,10 @@
       count: 'afterSaleCount',
     },
     {
-      title: '全部订单',
+      title: '全部',
       value: '0',
-      icon: '/static/img/shop/order/all_order.png',
       path: '/pages/order/list',
+      isAll: true,
     },
   ];
   // 接收参数
@@ -110,6 +128,37 @@
         width: 44rpx;
         height: 44rpx;
       }
+
+      &.all-order-item {
+        flex: 0 0 92rpx;
+
+        .all-order-divider {
+          position: absolute;
+          top: 25%;
+          left: 0;
+          width: 1px;
+          height: 50%;
+          background: #eeeeee;
+        }
+
+        .all-order-title {
+          font-size: 28rpx;
+          line-height: 1;
+          color: #333333;
+          margin-top: 14rpx;
+          margin-bottom: 10rpx;
+        }
+
+        .all-order-arrow {
+          width: 30rpx;
+          height: 30rpx;
+          margin-top: 14rpx;
+          border: 2rpx solid #999999;
+          border-radius: 50%;
+          box-sizing: border-box;
+        }
+      }
+
       .num-icon {
         position: absolute;
         right: 18rpx;

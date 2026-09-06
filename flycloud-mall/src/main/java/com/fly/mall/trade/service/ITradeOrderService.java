@@ -5,6 +5,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.mall.api.trade.domain.bo.TradeOrderBo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateReqVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderCreateRespVo;
+import com.fly.mall.api.trade.domain.vo.AppTradeOrderCountRespVo;
 import com.fly.mall.api.trade.domain.vo.AppOrderExpressTrackRespDto;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderDetailRespVo;
 import com.fly.mall.api.trade.domain.vo.AppTradeOrderItemCommentCreateReqVo;
@@ -113,7 +114,7 @@ public interface ITradeOrderService {
     /**
      * 查询当前用户订单数量。
      */
-    java.util.Map<String, Long> getOrderCount(Long userId);
+    AppTradeOrderCountRespVo getOrderCount(Long userId);
 
     /**
      * 支付回调后更新订单为已支付。
