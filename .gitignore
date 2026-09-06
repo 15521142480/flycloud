@@ -1,4 +1,9 @@
 
+# 如果想要已经被 Git 跟踪的文件也加入.gitignore，执行如下 3 条指令：
+# git rm --cached xxx （如：git rm --cached flycloud-ui/flycloud-mall-app-ui/.env）
+# git add .gitignore
+# git commit -m "ignore xxx"
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
