@@ -1,8 +1,21 @@
 # FlyCloud（飞翔云）
 
-FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台，覆盖系统权限、AI 助手、工作流、商城、支付、会员、即时通讯、报表、代码生成和任务调度等场景。项目采用 JDK 21、Spring Boot 3.5、Vue 3 和 uni-app，可作为微服务学习项目，也可作为企业后台与业务系统的二次开发基础。
+FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台，覆盖系统权限、AI 助手、工作流、商城、支付、会员、即时通讯、报表、代码生成和任务调度等场景。 
+项目采用 JDK 21、Spring Boot 3.5、Vue 3 和 uni-app，可作为微服务学习项目，也可作为企业后台与业务系统的二次开发基础。
 
 > 当前主线已接入 `flycloud-ai`：基于 Spring AI 提供多模型对话、流式输出、Chat Memory、Tool Calling、Embedding、Qdrant、RAG、Agent 和 MCP 等能力。
+
+> 目前整合了
+> <br>
+> JDK 21、Spring Boot 3.5.3、Spring Cloud 2025.0.3、Spring Cloud Alibaba 2025、Nacos 3、Spring Security、JWT、OpenFeign；
+> <br>
+> Spring AI 1.1.5、OpenAI / DeepSeek / 阿里云百炼（通义千问）、Qdrant 1.13.4、RAG、Tool Calling、Agent、MCP；
+> <br>
+> Mysql 8.4 + MyBatis-Plus 3.5.7 + Seata 2.5、Redis + ElasticSearch 8 + RocketMQ 5.3.3；
+> <br>
+> Flowable7.1.0 + BPMN 2.0 + bpmn.js、WebSocket + LiveKit、Velocity、Xxl-job；
+> <br>
+> Vue 3.5 + Element Plus 2.8、uni-app、TypeScript、Vite、ECharts 等主流技术。
 
 - [1、项目介绍](#1项目介绍)
 - [2、在线体验与仓库地址](#2在线体验与仓库地址)
@@ -17,7 +30,40 @@ FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台�
 - [11、工程与中间件能力](#11工程与中间件能力)
 - [12、接口文档与开发约定](#12接口文档与开发约定)
 
-## 1、项目介绍
+
+## 1、在线体验与仓库地址
+
+### 在线演示
+
+### 👉 演示地址1（飞翔云管理系统）：[https://www.laixueshi.cn](https://www.laixueshi.cn)
+### 👉 演示地址2（飞翔云商城 H5）：[https://www.laixueshi.cn/mall-app](https://www.laixueshi.cn/mall-app)
+
+演示账号仅用于体验，请勿在演示环境中录入敏感信息。
+
+| 账号          | 密码 | 说明 |
+|-------------| --- | --- |
+| `admin`     | `admin123` | 平台管理员 |
+| `lxs`       | `123456` | 平台管理员 |
+
+### 项目仓库
+
+| 内容 | 地址 |
+| --- | --- |
+| 后端与完整工程 | [https://github.com/15521142480/flycloud](https://github.com/15521142480/flycloud) |
+| 前端工程 | [`flycloud-ui`](flycloud-ui)（与后端位于同一仓库） |
+
+### 分支说明
+
+| 分支 | 说明 | JDK | 前端 |
+| --- | --- | --- | --- |
+| `main` | 主分支，使用当前技术栈 | JDK 21 | Vue 3 |
+| `dev/main` | 日常开发分支 | JDK 21 | Vue 3 |
+| `jdk8` | JDK 8 稳定归档版本 | JDK 8 | Vue 2 + Vue 3 |
+| `jdk8_two_server` | 面向低配置环境的双服务版本，认证服务集成用户服务 | JDK 8 | Vue 2 + Vue 3 |
+
+新项目建议使用 `main`；需要维护旧环境时再选择归档分支。
+
+## 2、项目介绍
 
 FlyCloud 以网关为统一入口，通过 Nacos 完成服务注册与配置管理，并将通用能力拆分为独立公共模块。开发者可以只启动网关、认证和系统服务体验基础后台，也可以按需加入 AI、工作流、商城和扩展服务。
 
@@ -54,37 +100,6 @@ flowchart LR
     S --> ES[(Elasticsearch / RocketMQ)]
 ```
 
-## 2、在线体验与仓库地址
-
-### 在线演示
-
-- 飞翔云管理系统：[https://www.laixueshi.cn](https://www.laixueshi.cn)
-- 飞翔云商城 H5：[https://www.laixueshi.cn/mall-app](https://www.laixueshi.cn/mall-app)
-
-演示账号仅用于体验，请勿在演示环境中录入敏感信息。
-
-| 账号 | 密码 | 说明 |
-| --- | --- | --- |
-| `admin` | `admin123` | 平台管理员 |
-| `fileadmin` | `123456` | 文件管理演示账号 |
-
-### 项目仓库
-
-| 内容 | 地址 |
-| --- | --- |
-| 后端与完整工程 | [https://github.com/15521142480/flycloud](https://github.com/15521142480/flycloud) |
-| 前端工程 | [`flycloud-ui`](flycloud-ui)（与后端位于同一仓库） |
-
-### 分支说明
-
-| 分支 | 说明 | JDK | 前端 |
-| --- | --- | --- | --- |
-| `main` | 主分支，使用当前技术栈 | JDK 21 | Vue 3 |
-| `dev/main` | 日常开发分支 | JDK 21 | Vue 3 |
-| `jdk8` | JDK 8 稳定归档版本 | JDK 8 | Vue 2 + Vue 3 |
-| `jdk8_two_server` | 面向低配置环境的双服务版本，认证服务集成用户服务 | JDK 8 | Vue 2 + Vue 3 |
-
-新项目建议使用 `main`；需要维护旧环境时再选择归档分支。
 
 ## 3、技术栈
 
@@ -104,11 +119,11 @@ flowchart LR
 | 工作流 | Flowable 7.1.0、BPMN 2.0、bpmn.js 8.9.0 |
 | 缓存 | Redis、Redisson、JetCache |
 | 分布式事务 | Seata 2.5.0 |
-| 消息队列 | RocketMQ 5.3.3、RocketMQ Spring 2.3.5 |
+| 消息队列 | RocketMQ 5.3.3 |
 | 搜索引擎 | Spring Data Elasticsearch、Elasticsearch 8.18.3 + IK |
+| 实时通信与文档 | WebSocket、LiveKit、OnlyOffice |
 | 接口文档 | SpringDoc 2.8.17、Knife4j 4.5.0、OpenAPI 3 |
 | 调度与报表 | XXL-JOB 3.2.0、积木报表 JimuReport 2.3.4 |
-| 实时通信与文档 | WebSocket、LiveKit、OnlyOffice |
 
 ### 前端
 
@@ -123,42 +138,43 @@ flowchart LR
 
 ```text
 flycloud
-├── config                         # 本地构建配置（Nacos 连接信息）
-├── db                             # MySQL / PostgreSQL 表结构、基础数据和升级脚本
-├── doc                            # Nacos 示例、Docker Compose、部署脚本和项目截图
-├── ext-lib                        # 外部依赖或扩展包
-├── flycloud-api                   # 微服务内部 API、实体与 Feign 契约
-│   ├── flycloud-bpm-api           # 工作流 API
-│   ├── flycloud-mall-api          # 商城 API
-│   └── flycloud-system-api        # 系统 API
-├── flycloud-ai                    # AI 助手服务（Spring AI / RAG / Agent / MCP）
-├── flycloud-auth                  # 认证与授权服务
-├── flycloud-bpm                   # Flowable 工作流服务
-├── flycloud-common                # 公共能力
-│   ├── flycloud-common-code       # 基础代码、模型、枚举与工具
-│   ├── flycloud-common-database   # 数据源与 MyBatis-Plus
-│   ├── flycloud-common-doc        # SpringDoc / Knife4j
-│   ├── flycloud-common-elasticsearch
-│   ├── flycloud-common-feign
-│   ├── flycloud-common-onlineoffice
-│   ├── flycloud-common-redis
-│   ├── flycloud-common-report
-│   ├── flycloud-common-rocketmq
-│   ├── flycloud-common-seata
-│   ├── flycloud-common-security
-│   ├── flycloud-common-websocket
-│   └── flycloud-common-xxljob
-├── flycloud-extend                # 可独立部署的扩展服务
-│   ├── flycloud-file-admin        # 文件管理后台
-│   └── flycloud-xxljob-admin      # XXL-JOB 调度中心
-├── flycloud-gateway               # API 网关
-├── flycloud-generator             # 代码生成服务
-├── flycloud-mall                  # 商城服务
-├── flycloud-system                # 系统、会员、支付、IM 等平台服务
-├── flycloud-test                  # 测试与示例服务
-└── flycloud-ui
-    ├── flycloud-admin-ui          # Vue 3 管理后台
-    └── flycloud-mall-app-ui       # uni-app 商城移动端
+├─config       -- 系统配置
+├─db           -- 系统sql
+├─doc          -- 系统文档
+├─ext-lib      -- 外部jai包
+├─flycloud-ai               -- ai服务
+├─flycloud-api              -- 微服务内部 API、实体与 Feign 契约
+│  ├─flycloud_bpm_api                   -- 工作流api
+│  ├─flycloud_system_api                -- 系统api
+│  ├─flycloud_mall_api                  -- 商城api
+├─flycloud-auth             -- 授权服务
+├─flycloud-bpm              -- 工作流服务
+├─flycloud-common           -- 公共模块
+│  ├─flycloud-common-core               -- core/公共模块核心代码
+│  ├─flycloud-common-database           -- database/数据库连接
+│  └─flycloud-common-doc                -- doc/接口文档
+│  └─[flycloud-common-elasticsearch     -- es/搜索引擎
+│  └─flycloud-common-feign              -- feign/服务接口调用
+│  └─flycloud-common-onlineoffice       -- onlineoffice/在线文档
+│  └─flycloud-common-redis              -- redis/缓存
+│  └─flycloud-common-report             -- report/报表
+│  ├─flycloud-common-rocketmq           -- rocketmq/通讯队列
+│  └─flycloud-common-seata              -- seata/分布式事务
+│  └─flycloud-common-security           -- security/微服务之间的授权验证
+│  └─flycloud-common-websocket          -- websocket/信息通讯
+│  └─flycloud-common-xxljob             -- xxljob/任务调度
+├─flycloud-extend           -- 可独立部署的扩展服务 (如 xxl-job-admin、springboot-admin等)
+│  ├─flycloud-file-admin                -- 文件管理后台服务
+│  ├─flycloud-xxljob-admin              -- 任务调度服务
+├─flycloud-gateway          -- 网关服务
+├─flycloud-generator        -- 自动生成代码服务
+└─flycloud-mall             -- 商家服务
+└─flycloud-system           -- 平台服务
+└─flycloud-test             -- 测试服务
+└─flycloud-ui               -- 系统前端ui模块
+│  ├─flycloud-admin-ui                  -- 管理后台ui 
+│  ├─flycloud-mall-app-ui               -- 商城移动端（兼容h5/小程序等） 
+└─logs        -- 系统日志 
 ```
 
 ## 5、快速开始
@@ -255,18 +271,18 @@ pnpm dev
 
 ## 7、系统基础功能
 
-| 功能 | 说明 |
-| --- | --- |
-| 登录与认证 | 图文点选验证码、密码端到端加密、JWT 登录态和 OAuth2/第三方登录扩展 |
-| 首页 | 汇总业务数据、流程待办、通知和常用入口 |
-| 用户管理 | 管理后台用户、状态、部门、岗位和角色关系 |
-| 角色与权限 | 分配菜单权限、按钮权限和数据权限，支持权限可视化配置 |
-| 菜单管理 | 动态配置路由、组件、菜单层级、图标、显示状态与按钮标识 |
-| 组织管理 | 部门树、岗位和基于组织结构的数据范围控制 |
-| 系统配置 | 字典、参数、通知公告、租户与租户套餐 |
-| 审计运维 | 登录日志、操作日志、API 访问日志、错误日志和在线用户 |
-| 会员与支付 | 会员等级/标签/积分、地址、支付应用、渠道、订单、退款和转账 |
-| 即时通讯 | 好友和群组关系、私聊/群聊、丰富消息类型、WebSocket 通知与 RTC 通话 |
+| 功能 | 说明                                                         |
+| --- |------------------------------------------------------------|
+| 登录与认证 | 图文点选验证码、密码端到端加密、JWT 登录态和 OAuth2/第三方登录扩展                    |
+| 首页 | 汇总业务数据、流程待办、通知和常用入口                                        |
+| 用户管理 | 管理后台用户、状态、部门、岗位和角色关系                                       |
+| 角色与权限 | 分配菜单权限、按钮权限和数据权限，支持权限可视化配置；<br> 其中菜单权限采用自研的新型设计思路来实现权限的可视化 |
+| 菜单管理 | 动态配置路由、组件、菜单层级、图标、显示状态与按钮标识                                |
+| 组织管理 | 部门树、岗位和基于组织结构的数据范围控制                                       |
+| 系统配置 | 字典、参数、通知公告、租户与租户套餐                                         |
+| 审计运维 | 登录日志、操作日志、API 访问日志、错误日志和在线用户                               |
+| 会员与支付 | 会员等级/标签/积分、地址、支付应用、渠道、订单、退款和转账                             |
+| 即时通讯 | 好友和群组关系、私聊/群聊、丰富消息类型、WebSocket 通知与 RTC 通话                  |
 
 ### 登录安全与角色权限
 
@@ -375,17 +391,17 @@ pnpm dev
 
 ### 9.3 工作流截图
 
-| 流程模型 | BPMN 流程设计器 |
-| --- | --- |
-| ![工作流流程模型](doc/img/bpm/bpm-1.png) | ![BPMN 可视化流程设计器](doc/img/bpm/bpm-2.png) |
+| 流程模型 / BPMN 流程设计器                 | 节点与审批1                 |
+|-----------------------------------|----------------------------------|
+| ![工作流流程模型](doc/img/bpm/bpm-1.png) | ![节点与审批1](doc/img/bpm/bpm-2.png) |
 
-| 节点与审批规则 | 动态表单设计 |
-| --- | --- |
-| ![工作流节点配置](doc/img/bpm/bpm-3.png) | ![工作流动态表单设计](doc/img/bpm/bpm-4.png) |
+| 节点与审批2                              | 节点与审批3                              |
+|-------------------------------------|-------------------------------------|
+| ![工作流节点与审批2](doc/img/bpm/bpm-3.png) | ![工作流节点与审批3](doc/img/bpm/bpm-4.png) |
 
-| 审批中心 |
-| --- |
-| ![工作流审批中心](doc/img/bpm/bpm-5.png) |
+| 审批通过                            |
+|---------------------------------|
+| ![审批通过](doc/img/bpm/bpm-5.png) |
 
 ## 10、商城系统
 
@@ -480,9 +496,9 @@ http://<网关地址>:8080/flycloud-generator/gen/generatorCode?tables=sys_user
 
 Apifox 等第三方工具可直接导入对应服务的 OpenAPI 数据源。
 
-| 聚合文档 | 接口调试 | OpenAPI 信息 |
-| --- | --- | --- |
-| ![Swagger 聚合文档](doc/img/swagger-1.png) | ![Swagger 接口调试](doc/img/swagger-2.png) | ![Swagger OpenAPI 信息](doc/img/swagger-3.png) |
+| 聚合文档                                   | 单服务文档 | OpenAPI 数据源                                  |
+|----------------------------------------| --- |----------------------------------------------|
+| ![Swagger 聚合文档](doc/img/swagger-1.png) | ![Swagger 单服务文档](doc/img/swagger-2.png) | ![Swagger OpenAPI 数据源](doc/img/swagger-3.png) |
 
 ### 12.2 实体模型
 
