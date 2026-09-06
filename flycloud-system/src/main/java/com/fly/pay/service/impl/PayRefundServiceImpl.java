@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayRefundStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.StringUtils;
 import com.fly.pay.enums.PayNotifyTypeEnum;
@@ -38,8 +39,6 @@ public class PayRefundServiceImpl implements IPayRefundService {
     /**
      * 退款成功。
      */
-    private static final int REFUND_STATUS_SUCCESS = 10;
-
     private final PayRefundMapper payRefundMapper;
     private final ObjectProvider<IPayNotifyService> payNotifyServiceProvider;
 
@@ -78,14 +77,14 @@ public class PayRefundServiceImpl implements IPayRefundService {
         if (refund == null) {
             throw new ServiceException("退款回调对应的退款单不存在");
         }
-        if (Objects.equals(refund.getStatus(), REFUND_STATUS_SUCCESS)) {
+        if (Objects.equals(refund.getStatus(), PayRefundStatusEnum.SUCCESS.getStatus())) {
             return;
         }
 
         PayRefund updateRefund = new PayRefund();
         updateRefund.setId(refund.getId());
         updateRefund.setChannelId(channelId);
-        updateRefund.setStatus(REFUND_STATUS_SUCCESS);
+        updateRefund.setStatus(PayRefundStatusEnum.SUCCESS.getStatus());
         updateRefund.setSuccessTime(LocalDateTime.now());
         updateRefund.setChannelRefundNo(PayNotifyParseUtils.firstValue(data, "channelRefundNo", "refund_id", "refund_no"));
         updateRefund.setChannelNotifyData(PayNotifyParseUtils.toNotifyData(params, body, headers));

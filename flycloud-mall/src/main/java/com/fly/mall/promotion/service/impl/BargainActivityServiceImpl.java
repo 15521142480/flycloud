@@ -8,6 +8,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.BargainRecordStatusEnum;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
 import com.fly.common.utils.collection.CollectionUtils;
@@ -230,7 +231,7 @@ public class BargainActivityServiceImpl extends BaseServiceImpl<BargainActivityM
     private Integer getSuccessUserCount(Long activityId) {
         BargainRecordBo bo = new BargainRecordBo();
         bo.setActivityId(activityId);
-        bo.setStatus(20);
+        bo.setStatus(BargainRecordStatusEnum.SUCCESS.getStatus());
         return (int) bargainRecordService.queryList(bo).stream()
                 .map(record -> record.getUserId())
                 .filter(Objects::nonNull)

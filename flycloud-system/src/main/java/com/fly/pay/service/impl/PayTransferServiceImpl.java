@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayTransferStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.StringUtils;
 import com.fly.pay.enums.PayNotifyTypeEnum;
@@ -38,26 +39,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 @Service
 public class PayTransferServiceImpl implements IPayTransferService {
-
-    /**
-     * 等待转账。
-     */
-    private static final int TRANSFER_STATUS_WAITING = 0;
-
-    /**
-     * 转账进行中。
-     */
-    private static final int TRANSFER_STATUS_PROCESSING = 5;
-
-    /**
-     * 转账成功。
-     */
-    private static final int TRANSFER_STATUS_SUCCESS = 10;
-
-    /**
-     * 转账关闭。
-     */
-    private static final int TRANSFER_STATUS_CLOSED = 20;
 
     /**
      * 默认支付应用编号。
@@ -117,7 +98,7 @@ public class PayTransferServiceImpl implements IPayTransferService {
         Long appId = bo.getAppId() == null ? DEFAULT_APP_ID : bo.getAppId();
         PayTransfer transfer = selectByAppIdAndMerchantTransferId(appId, bo.getMerchantTransferId());
         if (transfer != null) {
-            if (!Objects.equals(transfer.getStatus(), TRANSFER_STATUS_CLOSED)) {
+            if (!Objects.equals(transfer.getStatus(), PayTransferStatusEnum.CLOSED.getStatus())) {
                 throw new ServiceException("转账单已存在，且不是关闭状态");
             }
             if (!Objects.equals(transfer.getPrice(), bo.getPrice())) {
@@ -128,7 +109,7 @@ public class PayTransferServiceImpl implements IPayTransferService {
             }
             PayTransfer updateTransfer = new PayTransfer();
             updateTransfer.setId(transfer.getId());
-            updateTransfer.setStatus(TRANSFER_STATUS_WAITING);
+            updateTransfer.setStatus(PayTransferStatusEnum.WAITING.getStatus());
             updateTransfer.setChannelErrorCode("");
             updateTransfer.setChannelErrorMsg("");
             updateTransfer.setUpdateBy(String.valueOf(userId));
@@ -154,7 +135,7 @@ public class PayTransferServiceImpl implements IPayTransferService {
         transfer.setPrice(bo.getPrice());
         transfer.setUserAccount(bo.getUserAccount());
         transfer.setUserName(bo.getUserName());
-        transfer.setStatus(TRANSFER_STATUS_WAITING);
+        transfer.setStatus(PayTransferStatusEnum.WAITING.getStatus());
         transfer.setNotifyUrl(payApp.getTransferNotifyUrl());
         transfer.setUserIp(userIp);
         transfer.setIsDeleted(false);
@@ -178,7 +159,7 @@ public class PayTransferServiceImpl implements IPayTransferService {
     public int syncTransfer() {
         LambdaQueryWrapper<PayTransfer> lqw = Wrappers.lambdaQuery();
         lqw.eq(PayTransfer::getIsDeleted, false);
-        lqw.in(PayTransfer::getStatus, TRANSFER_STATUS_WAITING, TRANSFER_STATUS_PROCESSING);
+        lqw.in(PayTransfer::getStatus, PayTransferStatusEnum.WAITING.getStatus(), PayTransferStatusEnum.PROCESSING.getStatus());
         List<PayTransfer> transfers = payTransferMapper.selectList(lqw);
 
         int count = 0;
@@ -214,19 +195,19 @@ public class PayTransferServiceImpl implements IPayTransferService {
         if (transfer == null) {
             throw new ServiceException("转账回调对应的转账单不存在");
         }
-        if (Objects.equals(transfer.getStatus(), TRANSFER_STATUS_SUCCESS)
-                || Objects.equals(transfer.getStatus(), TRANSFER_STATUS_CLOSED)) {
+        if (Objects.equals(transfer.getStatus(), PayTransferStatusEnum.SUCCESS.getStatus())
+                || Objects.equals(transfer.getStatus(), PayTransferStatusEnum.CLOSED.getStatus())) {
             return;
         }
 
         Integer notifyStatus = resolveNotifyStatus(data);
         String channelTransferNo = PayNotifyParseUtils.firstValue(data, "channelTransferNo", "transfer_id", "transfer_no");
         String notifyData = PayNotifyParseUtils.toNotifyData(params, body, headers);
-        if (Objects.equals(notifyStatus, TRANSFER_STATUS_PROCESSING)) {
+        if (Objects.equals(notifyStatus, PayTransferStatusEnum.PROCESSING.getStatus())) {
             markTransferProcessing(transfer, channelId, channelTransferNo, notifyData);
             return;
         }
-        if (Objects.equals(notifyStatus, TRANSFER_STATUS_CLOSED)) {
+        if (Objects.equals(notifyStatus, PayTransferStatusEnum.CLOSED.getStatus())) {
             markTransferClosed(transfer, channelId, channelTransferNo,
                     PayNotifyParseUtils.firstValue(data, "channelErrorCode", "error_code", "err_code"),
                     PayNotifyParseUtils.firstValue(data, "channelErrorMsg", "error_msg", "err_msg"),
@@ -258,15 +239,15 @@ public class PayTransferServiceImpl implements IPayTransferService {
      * 同步本地可确认的转账状态。
      */
     private boolean syncLocalTransfer(PayTransfer transfer) {
-        if (Objects.equals(transfer.getStatus(), TRANSFER_STATUS_SUCCESS)
-                || Objects.equals(transfer.getStatus(), TRANSFER_STATUS_CLOSED)) {
+        if (Objects.equals(transfer.getStatus(), PayTransferStatusEnum.SUCCESS.getStatus())
+                || Objects.equals(transfer.getStatus(), PayTransferStatusEnum.CLOSED.getStatus())) {
             return false;
         }
         if (Objects.equals("mock", transfer.getChannelCode())) {
             markTransferSuccess(transfer, "mock-" + transfer.getNo(), transfer.getChannelNotifyData());
             return true;
         }
-        if (Objects.equals(transfer.getStatus(), TRANSFER_STATUS_WAITING)) {
+        if (Objects.equals(transfer.getStatus(), PayTransferStatusEnum.WAITING.getStatus())) {
             markTransferProcessing(transfer, transfer.getChannelId(), transfer.getChannelTransferNo(), transfer.getChannelNotifyData());
             return true;
         }
@@ -277,14 +258,14 @@ public class PayTransferServiceImpl implements IPayTransferService {
      * 标记转账单为进行中。
      */
     private void markTransferProcessing(PayTransfer transfer, Long channelId, String channelTransferNo, String notifyData) {
-        if (!Objects.equals(transfer.getStatus(), TRANSFER_STATUS_WAITING)
-                && !Objects.equals(transfer.getStatus(), TRANSFER_STATUS_PROCESSING)) {
+        if (!Objects.equals(transfer.getStatus(), PayTransferStatusEnum.WAITING.getStatus())
+                && !Objects.equals(transfer.getStatus(), PayTransferStatusEnum.PROCESSING.getStatus())) {
             throw new ServiceException("转账单状态不是等待或处理中");
         }
         PayTransfer updateTransfer = new PayTransfer();
         updateTransfer.setId(transfer.getId());
         updateTransfer.setChannelId(channelId);
-        updateTransfer.setStatus(TRANSFER_STATUS_PROCESSING);
+        updateTransfer.setStatus(PayTransferStatusEnum.PROCESSING.getStatus());
         updateTransfer.setChannelTransferNo(channelTransferNo);
         updateTransfer.setChannelNotifyData(notifyData);
         updateTransfer.setUpdateTime(LocalDateTime.now());
@@ -295,13 +276,13 @@ public class PayTransferServiceImpl implements IPayTransferService {
      * 标记转账单为成功。
      */
     private void markTransferSuccess(PayTransfer transfer, String channelTransferNo, String notifyData) {
-        if (!Objects.equals(transfer.getStatus(), TRANSFER_STATUS_WAITING)
-                && !Objects.equals(transfer.getStatus(), TRANSFER_STATUS_PROCESSING)) {
+        if (!Objects.equals(transfer.getStatus(), PayTransferStatusEnum.WAITING.getStatus())
+                && !Objects.equals(transfer.getStatus(), PayTransferStatusEnum.PROCESSING.getStatus())) {
             throw new ServiceException("转账单状态不是等待或处理中");
         }
         PayTransfer updateTransfer = new PayTransfer();
         updateTransfer.setId(transfer.getId());
-        updateTransfer.setStatus(TRANSFER_STATUS_SUCCESS);
+        updateTransfer.setStatus(PayTransferStatusEnum.SUCCESS.getStatus());
         updateTransfer.setSuccessTime(LocalDateTime.now());
         updateTransfer.setChannelTransferNo(channelTransferNo);
         updateTransfer.setChannelNotifyData(notifyData);
@@ -315,14 +296,14 @@ public class PayTransferServiceImpl implements IPayTransferService {
      */
     private void markTransferClosed(PayTransfer transfer, Long channelId, String channelTransferNo,
                                     String errorCode, String errorMsg, String notifyData) {
-        if (!Objects.equals(transfer.getStatus(), TRANSFER_STATUS_WAITING)
-                && !Objects.equals(transfer.getStatus(), TRANSFER_STATUS_PROCESSING)) {
+        if (!Objects.equals(transfer.getStatus(), PayTransferStatusEnum.WAITING.getStatus())
+                && !Objects.equals(transfer.getStatus(), PayTransferStatusEnum.PROCESSING.getStatus())) {
             throw new ServiceException("转账单状态不是等待或处理中");
         }
         PayTransfer updateTransfer = new PayTransfer();
         updateTransfer.setId(transfer.getId());
         updateTransfer.setChannelId(channelId);
-        updateTransfer.setStatus(TRANSFER_STATUS_CLOSED);
+        updateTransfer.setStatus(PayTransferStatusEnum.CLOSED.getStatus());
         updateTransfer.setChannelTransferNo(channelTransferNo);
         updateTransfer.setChannelErrorCode(errorCode);
         updateTransfer.setChannelErrorMsg(errorMsg);
@@ -338,16 +319,16 @@ public class PayTransferServiceImpl implements IPayTransferService {
     private Integer resolveNotifyStatus(Map<String, String> data) {
         String status = PayNotifyParseUtils.firstValue(data, "status", "transferStatus", "trade_state");
         if (StringUtils.isBlank(status)) {
-            return TRANSFER_STATUS_SUCCESS;
+            return PayTransferStatusEnum.SUCCESS.getStatus();
         }
         String normalizedStatus = status.toLowerCase();
         if (normalizedStatus.contains("process") || normalizedStatus.contains("wait")) {
-            return TRANSFER_STATUS_PROCESSING;
+            return PayTransferStatusEnum.PROCESSING.getStatus();
         }
         if (normalizedStatus.contains("close") || normalizedStatus.contains("fail") || normalizedStatus.contains("error")) {
-            return TRANSFER_STATUS_CLOSED;
+            return PayTransferStatusEnum.CLOSED.getStatus();
         }
-        return TRANSFER_STATUS_SUCCESS;
+        return PayTransferStatusEnum.SUCCESS.getStatus();
     }
 
     /**

@@ -9,6 +9,7 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.CouponStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -40,9 +41,6 @@ import java.util.Objects;
 @Service
 public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> implements ICouponService {
 
-    private static final int STATUS_UNUSED = 1;
-    private static final int STATUS_USED = 2;
-    private static final int STATUS_EXPIRE = 3;
     private static final int TAKE_TYPE_USER = 1;
     private static final int VALIDITY_TYPE_DATE = 1;
     private static final int VALIDITY_TYPE_TERM = 2;
@@ -102,14 +100,14 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
     @Override
     public Boolean useCoupon(Long id, Long userId, Long orderId) {
         Coupon coupon = validateUserCoupon(id, userId);
-        if (!Objects.equals(coupon.getStatus(), STATUS_UNUSED)) {
+        if (!Objects.equals(coupon.getStatus(), CouponStatusEnum.UNUSED.getStatus())) {
             throw new ServiceException("优惠券不是未使用状态");
         }
         if (!isCouponInValidTime(coupon)) {
             throw new ServiceException("优惠券不在有效期内");
         }
         Coupon entity = new Coupon();
-        entity.setStatus(STATUS_USED);
+        entity.setStatus(CouponStatusEnum.USED.getStatus());
         entity.setUseOrderId(orderId);
         entity.setUseTime(LocalDateTime.now());
         entity.setUpdateBy(String.valueOf(userId));
@@ -117,7 +115,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
         LambdaUpdateWrapper<Coupon> luw = Wrappers.lambdaUpdate();
         luw.eq(Coupon::getId, id);
         luw.eq(Coupon::getUserId, userId);
-        luw.eq(Coupon::getStatus, STATUS_UNUSED);
+        luw.eq(Coupon::getStatus, CouponStatusEnum.UNUSED.getStatus());
         boolean success = baseMapper.update(entity, luw) > 0;
         if (!success) {
             throw new ServiceException("优惠券状态已变化，请刷新后重试");
@@ -135,18 +133,18 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
         if (coupon == null || Boolean.TRUE.equals(coupon.getIsDeleted())) {
             throw new ServiceException("优惠券不存在");
         }
-        if (!Objects.equals(coupon.getStatus(), STATUS_USED)) {
+        if (!Objects.equals(coupon.getStatus(), CouponStatusEnum.USED.getStatus())) {
             throw new ServiceException("优惠券不是已使用状态");
         }
         Coupon entity = new Coupon();
-        entity.setStatus(LocalDateTime.now().isAfter(coupon.getValidEndTime()) ? STATUS_EXPIRE : STATUS_UNUSED);
+        entity.setStatus(LocalDateTime.now().isAfter(coupon.getValidEndTime()) ? CouponStatusEnum.EXPIRED.getStatus() : CouponStatusEnum.UNUSED.getStatus());
         entity.setUseOrderId(null);
         entity.setUseTime(null);
         entity.setUpdateBy(String.valueOf(coupon.getUserId()));
         entity.setUpdateTime(LocalDateTime.now());
         LambdaUpdateWrapper<Coupon> luw = Wrappers.lambdaUpdate();
         luw.eq(Coupon::getId, id);
-        luw.eq(Coupon::getStatus, STATUS_USED);
+        luw.eq(Coupon::getStatus, CouponStatusEnum.USED.getStatus());
         boolean success = baseMapper.update(entity, luw) > 0;
         if (success) {
             updateTemplateUseCount(coupon.getTemplateId(), -1);
@@ -161,15 +159,15 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
     public Integer expireCoupon() {
         List<Coupon> coupons = baseMapper.selectList(new LambdaQueryWrapper<Coupon>()
                 .eq(Coupon::getIsDeleted, false)
-                .eq(Coupon::getStatus, STATUS_UNUSED)
+                .eq(Coupon::getStatus, CouponStatusEnum.UNUSED.getStatus())
                 .le(Coupon::getValidEndTime, LocalDateTime.now()));
         int count = 0;
         for (Coupon coupon : coupons) {
             Coupon entity = new Coupon();
-            entity.setStatus(STATUS_EXPIRE);
+            entity.setStatus(CouponStatusEnum.EXPIRED.getStatus());
             LambdaUpdateWrapper<Coupon> luw = Wrappers.lambdaUpdate();
             luw.eq(Coupon::getId, coupon.getId());
-            luw.eq(Coupon::getStatus, STATUS_UNUSED);
+            luw.eq(Coupon::getStatus, CouponStatusEnum.UNUSED.getStatus());
             count += baseMapper.update(entity, luw);
         }
         return count;
@@ -183,7 +181,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
         return baseMapper.selectCount(new LambdaQueryWrapper<Coupon>()
                 .eq(Coupon::getIsDeleted, false)
                 .eq(Coupon::getUserId, userId)
-                .eq(Coupon::getStatus, STATUS_UNUSED)
+                .eq(Coupon::getStatus, CouponStatusEnum.UNUSED.getStatus())
                 .le(Coupon::getValidStartTime, LocalDateTime.now())
                 .ge(Coupon::getValidEndTime, LocalDateTime.now()));
     }
@@ -249,7 +247,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
             if (oldCoupon == null || Boolean.TRUE.equals(oldCoupon.getIsDeleted())) {
                 continue;
             }
-            if (Objects.equals(oldCoupon.getStatus(), STATUS_USED)) {
+            if (Objects.equals(oldCoupon.getStatus(), CouponStatusEnum.USED.getStatus())) {
                 throw new ServiceException("已使用优惠券不能删除");
             }
             couponTemplateService.updateCouponTemplateTakeCount(oldCoupon.getTemplateId(), -1);
@@ -295,7 +293,7 @@ public class CouponServiceImpl extends BaseServiceImpl<CouponMapper, Coupon> imp
         Coupon coupon = new Coupon();
         coupon.setTemplateId(template.getId());
         coupon.setName(template.getName());
-        coupon.setStatus(STATUS_UNUSED);
+        coupon.setStatus(CouponStatusEnum.UNUSED.getStatus());
         coupon.setUserId(userId);
         coupon.setTakeType(takeType);
         coupon.setUsePrice(template.getUsePrice());

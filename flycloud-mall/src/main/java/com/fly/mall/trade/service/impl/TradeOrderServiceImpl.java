@@ -9,7 +9,12 @@ import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.StatusEnum;
+import com.fly.common.enums.mall.CouponStatusEnum;
 import com.fly.common.enums.mall.ProductSpuStatusEnum;
+import com.fly.common.enums.mall.TradeOrderItemAfterSaleStatusEnum;
+import com.fly.common.enums.mall.TradeOrderRefundStatusEnum;
+import com.fly.common.enums.mall.TradeOrderStatusEnum;
+import com.fly.common.enums.pay.PayOrderStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -89,36 +94,6 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     private static final int ORDER_TYPE_NORMAL = 0;
 
     /**
-     * 待支付。
-     */
-    private static final int ORDER_STATUS_UNPAID = 0;
-
-    /**
-     * 待发货。
-     */
-    private static final int ORDER_STATUS_UNDELIVERED = 10;
-
-    /**
-     * 已发货。
-     */
-    private static final int ORDER_STATUS_DELIVERED = 20;
-
-    /**
-     * 已完成。
-     */
-    private static final int ORDER_STATUS_COMPLETED = 30;
-
-    /**
-     * 已取消。
-     */
-    private static final int ORDER_STATUS_CANCELED = 40;
-
-    /**
-     * 未退款。
-     */
-    private static final int REFUND_STATUS_NONE = 0;
-
-    /**
      * 快递配送。
      */
     private static final int DELIVERY_TYPE_EXPRESS = 1;
@@ -147,11 +122,6 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
      * 优惠类型：折扣。
      */
     private static final int DISCOUNT_TYPE_PERCENT = 2;
-
-    /**
-     * 优惠券状态：未使用。
-     */
-    private static final int COUPON_STATUS_UNUSED = 1;
 
     /**
      * 商品范围：全部商品。
@@ -315,7 +285,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         respVo.setAfterSalePrice(0L);
         for (TradeOrderVo order : orders) {
             Integer refundStatus = order.getRefundStatus();
-            if (refundStatus == null || refundStatus == REFUND_STATUS_NONE) {
+            if (refundStatus == null || refundStatus == TradeOrderRefundStatusEnum.NONE.getStatus()) {
                 respVo.setOrderCount(respVo.getOrderCount() + 1);
                 respVo.setOrderPayPrice(respVo.getOrderPayPrice() + defaultZero(order.getPayPrice()));
             } else {
@@ -352,7 +322,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             throw new ServiceException("订单项不存在");
         }
         TradeOrder order = validateUserOrder(userId, item.getOrderId());
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_COMPLETED)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.COMPLETED.getStatus())) {
             throw new ServiceException("订单完成后才可以评价");
         }
         if (Boolean.TRUE.equals(item.getCommentStatus())) {
@@ -414,7 +384,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         order.setType(ORDER_TYPE_NORMAL);
         order.setTerminal(order.getTerminal() == null ? 20 : order.getTerminal());
         order.setUserId(userId);
-        order.setStatus(ORDER_STATUS_UNPAID);
+        order.setStatus(TradeOrderStatusEnum.UNPAID.getStatus());
         order.setProductCount(productCount);
         order.setCommentStatus(false);
         order.setPayStatus(false);
@@ -428,7 +398,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         order.setPayPrice(Math.max(0, totalPrice + order.getDeliveryPrice() + order.getAdjustPrice()
                 - order.getDiscountPrice() - order.getCouponPrice() - order.getPointPrice() - order.getVipPrice()));
         order.setDeliveryType(order.getDeliveryType() == null ? DELIVERY_TYPE_EXPRESS : order.getDeliveryType());
-        order.setRefundStatus(REFUND_STATUS_NONE);
+        order.setRefundStatus(TradeOrderRefundStatusEnum.NONE.getStatus());
         order.setRefundPrice(0);
         order.setUsePoint(defaultZero(order.getUsePoint()));
         order.setGivePoint(defaultZero(order.getGivePoint()));
@@ -565,7 +535,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         order.setTerminal(20);
         order.setUserId(userId);
         order.setUserRemark(createReqVo == null ? null : createReqVo.getRemark());
-        order.setStatus(ORDER_STATUS_UNPAID);
+        order.setStatus(TradeOrderStatusEnum.UNPAID.getStatus());
         order.setProductCount(productCount);
         order.setCommentStatus(false);
         order.setPayStatus(false);
@@ -583,7 +553,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         order.setReceiverName(createReqVo == null ? null : createReqVo.getReceiverName());
         order.setReceiverMobile(createReqVo == null ? null : createReqVo.getReceiverMobile());
         order.setPickUpStoreId(createReqVo == null ? null : createReqVo.getPickUpStoreId());
-        order.setRefundStatus(REFUND_STATUS_NONE);
+        order.setRefundStatus(TradeOrderRefundStatusEnum.NONE.getStatus());
         order.setRefundPrice(0);
         order.setUsePoint(0);
         order.setGivePoint(0);
@@ -631,10 +601,10 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     public Map<String, Long> getOrderCount(Long userId) {
         Map<String, Long> result = new LinkedHashMap<>();
         result.put("allCount", countByUserAndStatus(userId, null, null));
-        result.put("unpaidCount", countByUserAndStatus(userId, ORDER_STATUS_UNPAID, null));
-        result.put("undeliveredCount", countByUserAndStatus(userId, ORDER_STATUS_UNDELIVERED, null));
-        result.put("deliveredCount", countByUserAndStatus(userId, ORDER_STATUS_DELIVERED, null));
-        result.put("uncommentedCount", countByUserAndStatus(userId, ORDER_STATUS_COMPLETED, false));
+        result.put("unpaidCount", countByUserAndStatus(userId, TradeOrderStatusEnum.UNPAID.getStatus(), null));
+        result.put("undeliveredCount", countByUserAndStatus(userId, TradeOrderStatusEnum.UNDELIVERED.getStatus(), null));
+        result.put("deliveredCount", countByUserAndStatus(userId, TradeOrderStatusEnum.DELIVERED.getStatus(), null));
+        result.put("uncommentedCount", countByUserAndStatus(userId, TradeOrderStatusEnum.COMPLETED.getStatus(), false));
         result.put("afterSaleCount", 0L);
         return result;
     }
@@ -646,7 +616,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Transactional(rollbackFor = Exception.class)
     public void updateOrderPaid(Long id, Long payOrderId) {
         TradeOrder order = validateOrderExists(id);
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNPAID) || Boolean.TRUE.equals(order.getPayStatus())) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.UNPAID.getStatus()) || Boolean.TRUE.equals(order.getPayStatus())) {
             if (Objects.equals(order.getPayOrderId(), payOrderId)) {
                 return;
             }
@@ -655,7 +625,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
 
         PayOrderRespVo payOrder = validatePayOrderPaid(order, payOrderId);
         TradeOrder updateOrder = new TradeOrder();
-        updateOrder.setStatus(ORDER_STATUS_UNDELIVERED);
+        updateOrder.setStatus(TradeOrderStatusEnum.UNDELIVERED.getStatus());
         updateOrder.setPayStatus(true);
         updateOrder.setPayTime(LocalDateTime.now());
         updateOrder.setPayChannelCode(payOrder.getChannelCode());
@@ -664,7 +634,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
 
         LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
         updateWrapper.eq(TradeOrder::getId, order.getId());
-        updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID);
+        updateWrapper.eq(TradeOrder::getStatus, TradeOrderStatusEnum.UNPAID.getStatus());
         updateWrapper.eq(TradeOrder::getPayStatus, false);
         int updateCount = baseMapper.update(updateOrder, updateWrapper);
         if (updateCount == 0) {
@@ -679,12 +649,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Transactional(rollbackFor = Exception.class)
     public Boolean cancelOrder(Long userId, Long id) {
         TradeOrder order = validateUserOrder(userId, id);
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNPAID)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.UNPAID.getStatus())) {
             throw new ServiceException("只有待支付订单可以取消");
         }
         TradeOrder entity = new TradeOrder();
         entity.setId(id);
-        entity.setStatus(ORDER_STATUS_CANCELED);
+        entity.setStatus(TradeOrderStatusEnum.CANCELED.getStatus());
         entity.setCancelTime(LocalDateTime.now());
         entity.setCancelType(10);
         entity.setUpdateBy(String.valueOf(userId));
@@ -703,8 +673,8 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Override
     public Boolean deleteOrder(Long userId, Long id) {
         TradeOrder order = validateUserOrder(userId, id);
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_CANCELED)
-                && !Objects.equals(order.getStatus(), ORDER_STATUS_COMPLETED)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.CANCELED.getStatus())
+                && !Objects.equals(order.getStatus(), TradeOrderStatusEnum.COMPLETED.getStatus())) {
             throw new ServiceException("只有已取消或已完成订单可以删除");
         }
         return baseMapper.deleteById(id) > 0;
@@ -716,12 +686,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
     @Override
     public Boolean receiveOrder(Long userId, Long id) {
         TradeOrder order = validateUserOrder(userId, id);
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_DELIVERED)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.DELIVERED.getStatus())) {
             throw new ServiceException("只有已发货订单可以确认收货");
         }
         TradeOrder entity = new TradeOrder();
         entity.setId(id);
-        entity.setStatus(ORDER_STATUS_COMPLETED);
+        entity.setStatus(TradeOrderStatusEnum.COMPLETED.getStatus());
         entity.setReceiveTime(LocalDateTime.now());
         entity.setFinishTime(LocalDateTime.now());
         entity.setUpdateBy(String.valueOf(userId));
@@ -738,13 +708,13 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         LocalDateTime expireTime = LocalDateTime.now().minus(tradeOrderProperties.getReceiveExpireTime());
         List<TradeOrder> orders = baseMapper.selectList(new LambdaQueryWrapper<TradeOrder>()
                 .eq(TradeOrder::getIsDeleted, false)
-                .eq(TradeOrder::getStatus, ORDER_STATUS_DELIVERED)
+                .eq(TradeOrder::getStatus, TradeOrderStatusEnum.DELIVERED.getStatus())
                 .lt(TradeOrder::getDeliveryTime, expireTime));
         int count = 0;
         for (TradeOrder order : orders) {
             TradeOrder entity = new TradeOrder();
             entity.setId(order.getId());
-            entity.setStatus(ORDER_STATUS_COMPLETED);
+            entity.setStatus(TradeOrderStatusEnum.COMPLETED.getStatus());
             entity.setReceiveTime(LocalDateTime.now());
             entity.setFinishTime(LocalDateTime.now());
             entity.setUpdateBy("system");
@@ -752,7 +722,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
 
             LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
             updateWrapper.eq(TradeOrder::getId, order.getId());
-            updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_DELIVERED);
+            updateWrapper.eq(TradeOrder::getStatus, TradeOrderStatusEnum.DELIVERED.getStatus());
             count += baseMapper.update(entity, updateWrapper);
         }
         return count;
@@ -767,7 +737,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         LocalDateTime expireTime = LocalDateTime.now().minus(tradeOrderProperties.getPayExpireTime());
         List<TradeOrder> orders = baseMapper.selectList(new LambdaQueryWrapper<TradeOrder>()
                 .eq(TradeOrder::getIsDeleted, false)
-                .eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID)
+                .eq(TradeOrder::getStatus, TradeOrderStatusEnum.UNPAID.getStatus())
                 .lt(TradeOrder::getCreateTime, expireTime));
         int count = 0;
         for (TradeOrder order : orders) {
@@ -776,7 +746,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             }
             TradeOrder entity = new TradeOrder();
             entity.setId(order.getId());
-            entity.setStatus(ORDER_STATUS_CANCELED);
+            entity.setStatus(TradeOrderStatusEnum.CANCELED.getStatus());
             entity.setCancelTime(LocalDateTime.now());
             entity.setCancelType(20);
             entity.setUpdateBy("system");
@@ -784,7 +754,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
 
             LambdaUpdateWrapper<TradeOrder> updateWrapper = Wrappers.lambdaUpdate();
             updateWrapper.eq(TradeOrder::getId, order.getId());
-            updateWrapper.eq(TradeOrder::getStatus, ORDER_STATUS_UNPAID);
+            updateWrapper.eq(TradeOrder::getStatus, TradeOrderStatusEnum.UNPAID.getStatus());
             int updateCount = baseMapper.update(entity, updateWrapper);
             if (updateCount > 0) {
                 returnOrderStock(order.getId());
@@ -804,7 +774,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             throw new ServiceException("订单编号不能为空");
         }
         TradeOrder order = validateOrderExists(bo.getId());
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNDELIVERED)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.UNDELIVERED.getStatus())) {
             throw new ServiceException("只有待发货订单可以发货");
         }
         if (!Objects.equals(order.getDeliveryType(), DELIVERY_TYPE_EXPRESS)) {
@@ -815,7 +785,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         }
         TradeOrder entity = new TradeOrder();
         entity.setId(order.getId());
-        entity.setStatus(ORDER_STATUS_DELIVERED);
+        entity.setStatus(TradeOrderStatusEnum.DELIVERED.getStatus());
         entity.setLogisticsId(bo.getLogisticsId() == null ? 0L : bo.getLogisticsId());
         entity.setLogisticsNo(bo.getLogisticsId() == null || bo.getLogisticsId() == 0 ? "" : bo.getLogisticsNo());
         entity.setDeliveryTime(LocalDateTime.now());
@@ -897,7 +867,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             throw new ServiceException("订单编号不能为空");
         }
         TradeOrder order = validateOrderExists(bo.getId());
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNDELIVERED)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.UNDELIVERED.getStatus())) {
             throw new ServiceException("只有待发货订单可以修改收货地址");
         }
         TradeOrder entity = new TradeOrder();
@@ -1147,7 +1117,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setGivePoint(0);
             item.setVipPrice(0);
             item.setPayPrice(price * count);
-            item.setAfterSaleStatus(0);
+            item.setAfterSaleStatus(TradeOrderItemAfterSaleStatusEnum.NONE.getStatus());
             item.setIsDeleted(false);
             item.setCreateBy(operator);
             item.setCreateTime(now);
@@ -1187,7 +1157,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             item.setGivePoint(0);
             item.setVipPrice(0);
             item.setPayPrice(Math.max(0, price * source.count() - discountPrice));
-            item.setAfterSaleStatus(0);
+            item.setAfterSaleStatus(TradeOrderItemAfterSaleStatusEnum.NONE.getStatus());
             item.setIsDeleted(false);
             item.setCreateBy(operator);
             item.setCreateTime(now);
@@ -1262,7 +1232,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         if (payOrder == null) {
             throw new ServiceException("支付订单不存在");
         }
-        if (!Objects.equals(payOrder.getStatus(), 10)) {
+        if (!PayOrderStatusEnum.isSuccess(payOrder.getStatus())) {
             throw new ServiceException("支付订单未支付成功");
         }
         if (!Objects.equals(payOrder.getPrice(), order.getPayPrice())) {
@@ -1285,7 +1255,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
             return false;
         }
         PayOrderRespVo payOrder = payOrderApi.getOrder(order.getPayOrderId()).getCheckedData();
-        return payOrder != null && Objects.equals(payOrder.getStatus(), 10);
+        return payOrder != null && PayOrderStatusEnum.isSuccess(payOrder.getStatus());
     }
 
     /**
@@ -1397,12 +1367,12 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
         if (!Objects.equals(order.getDeliveryType(), DELIVERY_TYPE_PICK_UP)) {
             throw new ServiceException("只有到店自提订单可以核销");
         }
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_UNDELIVERED)) {
+        if (!Objects.equals(order.getStatus(), TradeOrderStatusEnum.UNDELIVERED.getStatus())) {
             throw new ServiceException("只有待核销订单可以核销");
         }
         TradeOrder entity = new TradeOrder();
         entity.setId(order.getId());
-        entity.setStatus(ORDER_STATUS_COMPLETED);
+        entity.setStatus(TradeOrderStatusEnum.COMPLETED.getStatus());
         entity.setReceiveTime(LocalDateTime.now());
         entity.setFinishTime(LocalDateTime.now());
         entity.setUpdateBy(String.valueOf(userId));
@@ -1627,7 +1597,7 @@ public class TradeOrderServiceImpl extends BaseServiceImpl<TradeOrderMapper, Tra
                                                                                List<Long> spuIds, List<Long> categoryIds) {
         CouponBo couponBo = new CouponBo();
         couponBo.setUserId(userId);
-        couponBo.setStatus(COUPON_STATUS_UNUSED);
+        couponBo.setStatus(CouponStatusEnum.UNUSED.getStatus());
         return couponService.queryList(couponBo).stream()
                 .map(coupon -> buildSettlementCoupon(coupon, couponBasePrice, spuIds, categoryIds))
                 .toList();

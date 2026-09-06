@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -112,7 +113,7 @@ public class PayChannelServiceImpl implements IPayChannelService {
     public Set<String> getEnableChannelCodeList(Long appId) {
         PayChannelBo bo = new PayChannelBo();
         bo.setAppId(appId);
-        bo.setStatus(0);
+        bo.setStatus(StatusEnum.ENABLE.getStatus());
         return queryList(bo).stream().map(PayChannelVo::getCode).collect(Collectors.toSet());
     }
 

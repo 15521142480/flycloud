@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayOrderStatusEnum;
+import com.fly.common.enums.pay.PayRefundStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.pay.enums.PayNotifyTypeEnum;
 import com.fly.pay.mapper.PayAppMapper;
@@ -46,10 +48,6 @@ public class PayDemoOrderServiceImpl implements IPayDemoOrderService {
     private static final String PAY_APP_KEY = "demo";
 
     private static final int USER_TYPE_ADMIN = 1;
-
-    private static final int ORDER_STATUS_SUCCESS = 10;
-
-    private static final int REFUND_STATUS_SUCCESS = 10;
 
     private static final long DEFAULT_APP_ID = 7L;
 
@@ -202,7 +200,7 @@ public class PayDemoOrderServiceImpl implements IPayDemoOrderService {
         refund.setMerchantRefundId(order.getId() + "-refund");
         PayApp payApp = payAppMapper.selectById(refund.getAppId());
         refund.setNotifyUrl(payApp == null ? null : payApp.getRefundNotifyUrl());
-        refund.setStatus(REFUND_STATUS_SUCCESS);
+        refund.setStatus(PayRefundStatusEnum.SUCCESS.getStatus());
         refund.setPayPrice(order.getPrice());
         refund.setRefundPrice(order.getPrice());
         refund.setReason("想退钱");
@@ -256,7 +254,7 @@ public class PayDemoOrderServiceImpl implements IPayDemoOrderService {
         if (payOrder == null) {
             throw new ServiceException("支付订单不存在");
         }
-        if (!Objects.equals(payOrder.getStatus(), ORDER_STATUS_SUCCESS)) {
+        if (!Objects.equals(payOrder.getStatus(), PayOrderStatusEnum.SUCCESS.getStatus())) {
             throw new ServiceException("示例订单更新支付状态失败，支付单状态不是支付成功");
         }
         if (!Objects.equals(payOrder.getPrice(), order.getPrice())) {
@@ -288,7 +286,7 @@ public class PayDemoOrderServiceImpl implements IPayDemoOrderService {
         if (payRefund == null || Boolean.TRUE.equals(payRefund.getIsDeleted())) {
             throw new ServiceException("发起退款失败，退款订单不存在");
         }
-        if (!Objects.equals(payRefund.getStatus(), REFUND_STATUS_SUCCESS)) {
+        if (!Objects.equals(payRefund.getStatus(), PayRefundStatusEnum.SUCCESS.getStatus())) {
             throw new ServiceException("发起退款失败，退款订单未退款成功");
         }
         if (!Objects.equals(payRefund.getRefundPrice(), order.getPrice())) {

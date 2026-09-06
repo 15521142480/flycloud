@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayOrderStatusEnum;
+import com.fly.common.enums.pay.PayRefundStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.pay.enums.PayWalletBizTypeEnum;
 import com.fly.pay.mapper.PayAppMapper;
@@ -53,10 +55,6 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
     private static final String WALLET_RECHARGE_ORDER_SUBJECT = "钱包余额充值";
     private static final String PAY_APP_KEY = "wallet";
 
-    private static final Integer REFUND_STATUS_NONE = 0;
-    private static final Integer REFUND_STATUS_WAITING = 0;
-    private static final Integer REFUND_STATUS_SUCCESS = 10;
-    private static final Integer PAY_ORDER_STATUS_SUCCESS = 10;
     private static final Long DEFAULT_APP_ID = 8L;
 
     private final PayWalletRechargeMapper walletRechargeMapper;
@@ -215,7 +213,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         refund.setMerchantRefundId(id + "-refund");
         PayApp payApp = payAppMapper.selectById(refund.getAppId());
         refund.setNotifyUrl(payApp == null ? null : payApp.getRefundNotifyUrl());
-        refund.setStatus(REFUND_STATUS_SUCCESS);
+        refund.setStatus(PayRefundStatusEnum.SUCCESS.getStatus());
         refund.setPayPrice(recharge.getPayPrice());
         refund.setRefundPrice(recharge.getPayPrice());
         refund.setReason("想退钱");
@@ -232,7 +230,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         PayWalletRecharge updateRecharge = new PayWalletRecharge();
         updateRecharge.setId(id);
         updateRecharge.setPayRefundId(refund.getId());
-        updateRecharge.setRefundStatus(REFUND_STATUS_WAITING);
+        updateRecharge.setRefundStatus(PayRefundStatusEnum.WAITING.getStatus());
         updateRecharge.setUpdateBy(String.valueOf(wallet.getUserId()));
         updateRecharge.setUpdateTime(LocalDateTime.now());
         walletRechargeMapper.updateById(updateRecharge);
@@ -263,7 +261,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         if (!Objects.equals(refund.getRefundPrice(), recharge.getPayPrice())) {
             throw new ServiceException("支付退款金额与钱包充值金额不匹配");
         }
-        if (!Objects.equals(refund.getStatus(), REFUND_STATUS_SUCCESS)) {
+        if (!Objects.equals(refund.getStatus(), PayRefundStatusEnum.SUCCESS.getStatus())) {
             return;
         }
 
@@ -272,7 +270,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
 
         PayWalletRecharge updateRecharge = new PayWalletRecharge();
         updateRecharge.setId(id);
-        updateRecharge.setRefundStatus(REFUND_STATUS_SUCCESS);
+        updateRecharge.setRefundStatus(PayRefundStatusEnum.SUCCESS.getStatus());
         updateRecharge.setRefundTime(refund.getSuccessTime() == null ? LocalDateTime.now() : refund.getSuccessTime());
         updateRecharge.setRefundTotalPrice(recharge.getTotalPrice());
         updateRecharge.setRefundPayPrice(recharge.getPayPrice());
@@ -312,7 +310,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         recharge.setRefundTotalPrice(0);
         recharge.setRefundPayPrice(0);
         recharge.setRefundBonusPrice(0);
-        recharge.setRefundStatus(REFUND_STATUS_NONE);
+        recharge.setRefundStatus(PayRefundStatusEnum.WAITING.getStatus());
         recharge.setIsDeleted(false);
         recharge.setCreateBy(String.valueOf(userId));
         recharge.setCreateTime(now);
@@ -351,7 +349,7 @@ public class PayWalletRechargeServiceImpl implements IPayWalletRechargeService {
         if (payOrder == null) {
             throw new ServiceException("支付订单不存在");
         }
-        if (!Objects.equals(payOrder.getStatus(), PAY_ORDER_STATUS_SUCCESS)) {
+        if (!Objects.equals(payOrder.getStatus(), PayOrderStatusEnum.SUCCESS.getStatus())) {
             throw new ServiceException("支付订单未支付成功");
         }
         if (!Objects.equals(payOrder.getPrice(), recharge.getPayPrice())) {

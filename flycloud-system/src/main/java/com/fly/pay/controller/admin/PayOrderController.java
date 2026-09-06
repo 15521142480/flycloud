@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayOrderStatusEnum;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.ExcelUtil;
 import com.fly.pay.service.IPayAppService;
@@ -43,8 +44,6 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/admin/pay/order")
 public class PayOrderController {
-
-    private static final int ORDER_STATUS_WAITING = 0;
 
     private final IPayOrderService payOrderService;
     private final IPayAppService payAppService;
@@ -93,7 +92,7 @@ public class PayOrderController {
     public R<PayOrderRespVo> get(@RequestParam("id") Long id,
                                  @RequestParam(value = "sync", required = false) Boolean sync) {
         PayOrderRespVo order = payOrderService.getOrder(id);
-        if (order != null && Boolean.TRUE.equals(sync) && Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+        if (order != null && Boolean.TRUE.equals(sync) && Objects.equals(order.getStatus(), PayOrderStatusEnum.WAITING.getStatus())) {
             payOrderService.syncOrderQuietly(order.getId());
             order = payOrderService.getOrder(id);
         }

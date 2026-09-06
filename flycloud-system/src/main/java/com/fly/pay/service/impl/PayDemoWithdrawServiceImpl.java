@@ -3,6 +3,7 @@ package com.fly.pay.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.pay.PayTransferStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.BeanUtils;
 import com.fly.pay.enums.PayDemoWithdrawStatusEnum;
@@ -41,10 +42,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
 
     private static final int USER_TYPE_ADMIN = 1;
-
-    private static final int TRANSFER_STATUS_SUCCESS = 10;
-
-    private static final int TRANSFER_STATUS_CLOSED = 20;
 
     private static final long DEFAULT_APP_ID = 7L;
 
@@ -103,7 +100,7 @@ public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
         transfer.setPrice(withdraw.getPrice());
         transfer.setUserAccount(withdraw.getUserAccount());
         transfer.setUserName(withdraw.getUserName());
-        transfer.setStatus(TRANSFER_STATUS_SUCCESS);
+        transfer.setStatus(PayTransferStatusEnum.SUCCESS.getStatus());
         transfer.setSuccessTime(now);
         transfer.setNotifyUrl(payApp.getTransferNotifyUrl());
         transfer.setUserIp(userIp);
@@ -159,9 +156,9 @@ public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
         }
 
         PayTransfer payTransfer = validateDemoTransferStatusCanUpdate(withdraw, payTransferId);
-        Integer newStatus = Objects.equals(payTransfer.getStatus(), TRANSFER_STATUS_SUCCESS)
+        Integer newStatus = Objects.equals(payTransfer.getStatus(), PayTransferStatusEnum.SUCCESS.getStatus())
                 ? PayDemoWithdrawStatusEnum.SUCCESS.getStatus()
-                : Objects.equals(payTransfer.getStatus(), TRANSFER_STATUS_CLOSED)
+                : Objects.equals(payTransfer.getStatus(), PayTransferStatusEnum.CLOSED.getStatus())
                 ? PayDemoWithdrawStatusEnum.CLOSED.getStatus()
                 : null;
         if (newStatus == null) {
@@ -201,8 +198,8 @@ public class PayDemoWithdrawServiceImpl implements IPayDemoWithdrawService {
         if (payTransfer == null || Boolean.TRUE.equals(payTransfer.getIsDeleted())) {
             throw new ServiceException("转账单不存在");
         }
-        if (!Objects.equals(payTransfer.getStatus(), TRANSFER_STATUS_SUCCESS)
-                && !Objects.equals(payTransfer.getStatus(), TRANSFER_STATUS_CLOSED)) {
+        if (!Objects.equals(payTransfer.getStatus(), PayTransferStatusEnum.SUCCESS.getStatus())
+                && !Objects.equals(payTransfer.getStatus(), PayTransferStatusEnum.CLOSED.getStatus())) {
             throw new ServiceException("更新示例提现单状态失败，支付转账单状态不是转账成功或转账失败");
         }
         if (!Objects.equals(payTransfer.getPrice(), withdraw.getPrice())) {

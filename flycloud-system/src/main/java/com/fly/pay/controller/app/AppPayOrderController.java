@@ -1,6 +1,7 @@
 package com.fly.pay.controller.app;
 
 import com.fly.common.domain.model.R;
+import com.fly.common.enums.pay.PayOrderStatusEnum;
 import com.fly.common.security.util.UserUtils;
 import com.fly.pay.service.IPayOrderService;
 import com.fly.system.api.pay.domain.bo.AppPayOrderSubmitReqVo;
@@ -30,8 +31,6 @@ import java.util.Objects;
 @RequestMapping("/app/pay/order")
 public class AppPayOrderController {
 
-    private static final int ORDER_STATUS_WAITING = 0;
-
     private final IPayOrderService payOrderService;
 
     /**
@@ -49,7 +48,7 @@ public class AppPayOrderController {
         if (order.getUserId() != null && !Objects.equals(order.getUserId(), userId)) {
             return R.ok((PayOrderRespVo) null);
         }
-        if (Boolean.TRUE.equals(sync) && Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+        if (Boolean.TRUE.equals(sync) && Objects.equals(order.getStatus(), PayOrderStatusEnum.WAITING.getStatus())) {
             payOrderService.syncOrderQuietly(order.getId());
             order = payOrderService.getOrder(order.getId());
         }

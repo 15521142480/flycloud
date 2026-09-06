@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.mall.AfterSaleStatusEnum;
+import com.fly.common.enums.mall.TradeOrderItemAfterSaleStatusEnum;
+import com.fly.common.enums.mall.TradeOrderStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -42,26 +45,10 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, AfterSale> implements IAfterSaleService {
 
-    private static final int STATUS_APPLY = 10;
-    private static final int STATUS_SELLER_AGREE = 20;
-    private static final int STATUS_BUYER_DELIVERY = 30;
-    private static final int STATUS_WAIT_REFUND = 40;
-    private static final int STATUS_COMPLETE = 50;
-    private static final int STATUS_SELLER_DISAGREE = 61;
-    private static final int STATUS_BUYER_CANCEL = 62;
-    private static final int STATUS_SELLER_REFUSE = 63;
-
     private static final int WAY_REFUND = 10;
     private static final int WAY_RETURN_AND_REFUND = 20;
-    private static final int ORDER_STATUS_UNPAID = 0;
-    private static final int ORDER_STATUS_DELIVERED = 20;
-    private static final int ORDER_STATUS_COMPLETED = 30;
-    private static final int ORDER_STATUS_CANCELED = 40;
     private static final int AFTER_SALE_TYPE_IN_SALE = 10;
     private static final int AFTER_SALE_TYPE_AFTER_SALE = 20;
-    private static final int ORDER_ITEM_AFTER_SALE_NONE = 0;
-    private static final int ORDER_ITEM_AFTER_SALE_APPLYING = 10;
-    private static final int ORDER_ITEM_AFTER_SALE_SUCCESS = 20;
 
     private final AfterSaleMapper baseMapper;
     private final ITradeOrderService tradeOrderService;
@@ -119,9 +106,10 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
         AfterSale entity = BeanUtil.toBean(bo, AfterSale.class);
         entity.setId(null);
         entity.setNo(generateAfterSaleNo());
-        entity.setStatus(STATUS_APPLY);
+        entity.setStatus(AfterSaleStatusEnum.APPLY.getStatus());
         entity.setUserId(userId);
-        entity.setType(Objects.equals(order.getStatus(), ORDER_STATUS_COMPLETED) ? AFTER_SALE_TYPE_AFTER_SALE : AFTER_SALE_TYPE_IN_SALE);
+        entity.setType(Objects.equals(order.getStatus(), TradeOrderStatusEnum.COMPLETED.getStatus())
+                ? AFTER_SALE_TYPE_AFTER_SALE : AFTER_SALE_TYPE_IN_SALE);
         entity.setOrderId(order.getId());
         entity.setOrderNo(order.getNo());
         entity.setOrderItemId(orderItem.getId());
@@ -138,7 +126,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
         entity.setUpdateBy(String.valueOf(userId));
         entity.setUpdateTime(now);
         baseMapper.insert(entity);
-        updateOrderItemAfterSale(orderItem.getId(), entity.getId(), ORDER_ITEM_AFTER_SALE_APPLYING);
+        updateOrderItemAfterSale(orderItem.getId(), entity.getId(), TradeOrderItemAfterSaleStatusEnum.APPLYING.getStatus());
         return entity.getId();
     }
 
@@ -148,11 +136,11 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     @Override
     public Boolean cancelAfterSale(Long userId, Long id) {
         AfterSale afterSale = validateUserAfterSale(userId, id);
-        if (!List.of(STATUS_APPLY, STATUS_SELLER_AGREE, STATUS_BUYER_DELIVERY).contains(afterSale.getStatus())) {
+        if (!List.of(AfterSaleStatusEnum.APPLY.getStatus(), AfterSaleStatusEnum.SELLER_AGREE.getStatus(), AfterSaleStatusEnum.BUYER_DELIVERY.getStatus()).contains(afterSale.getStatus())) {
             throw new ServiceException("当前售后状态不允许取消");
         }
-        updateAfterSaleStatus(afterSale, STATUS_BUYER_CANCEL, null);
-        updateOrderItemAfterSale(afterSale.getOrderItemId(), null, ORDER_ITEM_AFTER_SALE_NONE);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.BUYER_CANCEL.getStatus(), null);
+        updateOrderItemAfterSale(afterSale.getOrderItemId(), null, TradeOrderItemAfterSaleStatusEnum.NONE.getStatus());
         return true;
     }
 
@@ -162,18 +150,18 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     @Override
     public Boolean deliveryAfterSale(Long userId, AfterSaleBo bo) {
         AfterSale afterSale = validateUserAfterSale(userId, bo.getId());
-        if (!Objects.equals(afterSale.getStatus(), STATUS_SELLER_AGREE)) {
+        if (!Objects.equals(afterSale.getStatus(), AfterSaleStatusEnum.SELLER_AGREE.getStatus())) {
             throw new ServiceException("只有商家同意后才可以填写退货物流");
         }
         if (bo.getLogisticsId() == null || StringUtils.isBlank(bo.getLogisticsNo())) {
             throw new ServiceException("退货物流公司和物流单号不能为空");
         }
         AfterSale update = new AfterSale();
-        update.setStatus(STATUS_BUYER_DELIVERY);
+        update.setStatus(AfterSaleStatusEnum.BUYER_DELIVERY.getStatus());
         update.setLogisticsId(bo.getLogisticsId());
         update.setLogisticsNo(bo.getLogisticsNo());
         update.setDeliveryTime(LocalDateTime.now());
-        updateAfterSaleStatus(afterSale, STATUS_BUYER_DELIVERY, update);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.BUYER_DELIVERY.getStatus(), update);
         return true;
     }
 
@@ -183,7 +171,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     @Override
     public Boolean agreeAfterSale(Long userId, Long id) {
         AfterSale afterSale = validateAfterSaleAuditable(id);
-        int nextStatus = Objects.equals(afterSale.getWay(), WAY_REFUND) ? STATUS_WAIT_REFUND : STATUS_SELLER_AGREE;
+        int nextStatus = Objects.equals(afterSale.getWay(), WAY_REFUND) ? AfterSaleStatusEnum.WAIT_REFUND.getStatus() : AfterSaleStatusEnum.SELLER_AGREE.getStatus();
         AfterSale update = new AfterSale();
         update.setStatus(nextStatus);
         update.setAuditUserId(userId);
@@ -199,12 +187,12 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     public Boolean disagreeAfterSale(Long userId, AfterSaleBo bo) {
         AfterSale afterSale = validateAfterSaleAuditable(bo.getId());
         AfterSale update = new AfterSale();
-        update.setStatus(STATUS_SELLER_DISAGREE);
+        update.setStatus(AfterSaleStatusEnum.SELLER_DISAGREE.getStatus());
         update.setAuditUserId(userId);
         update.setAuditTime(LocalDateTime.now());
         update.setAuditReason(bo.getAuditReason());
-        updateAfterSaleStatus(afterSale, STATUS_SELLER_DISAGREE, update);
-        updateOrderItemAfterSale(afterSale.getOrderItemId(), null, ORDER_ITEM_AFTER_SALE_NONE);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.SELLER_DISAGREE.getStatus(), update);
+        updateOrderItemAfterSale(afterSale.getOrderItemId(), null, TradeOrderItemAfterSaleStatusEnum.NONE.getStatus());
         return true;
     }
 
@@ -215,9 +203,9 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     public Boolean receiveAfterSale(Long userId, Long id) {
         AfterSale afterSale = validateAfterSaleReceivable(id);
         AfterSale update = new AfterSale();
-        update.setStatus(STATUS_WAIT_REFUND);
+        update.setStatus(AfterSaleStatusEnum.WAIT_REFUND.getStatus());
         update.setReceiveTime(LocalDateTime.now());
-        updateAfterSaleStatus(afterSale, STATUS_WAIT_REFUND, update);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.WAIT_REFUND.getStatus(), update);
         return true;
     }
 
@@ -228,10 +216,10 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     public Boolean refundAfterSale(Long userId, Long id) {
         AfterSale afterSale = validateAfterSaleRefundable(id);
         AfterSale update = new AfterSale();
-        update.setStatus(STATUS_COMPLETE);
+        update.setStatus(AfterSaleStatusEnum.COMPLETE.getStatus());
         update.setRefundTime(LocalDateTime.now());
-        updateAfterSaleStatus(afterSale, STATUS_COMPLETE, update);
-        updateOrderItemAfterSale(afterSale.getOrderItemId(), afterSale.getId(), ORDER_ITEM_AFTER_SALE_SUCCESS);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.COMPLETE.getStatus(), update);
+        updateOrderItemAfterSale(afterSale.getOrderItemId(), afterSale.getId(), TradeOrderItemAfterSaleStatusEnum.SUCCESS.getStatus());
         return true;
     }
 
@@ -242,11 +230,11 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
     public Boolean refuseAfterSale(Long userId, AfterSaleBo bo) {
         AfterSale afterSale = validateAfterSaleReceivable(bo.getId());
         AfterSale update = new AfterSale();
-        update.setStatus(STATUS_SELLER_REFUSE);
+        update.setStatus(AfterSaleStatusEnum.SELLER_REFUSE.getStatus());
         update.setReceiveTime(LocalDateTime.now());
         update.setReceiveReason(bo.getReceiveReason());
-        updateAfterSaleStatus(afterSale, STATUS_SELLER_REFUSE, update);
-        updateOrderItemAfterSale(afterSale.getOrderItemId(), null, ORDER_ITEM_AFTER_SALE_NONE);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.SELLER_REFUSE.getStatus(), update);
+        updateOrderItemAfterSale(afterSale.getOrderItemId(), null, TradeOrderItemAfterSaleStatusEnum.NONE.getStatus());
         return true;
     }
 
@@ -260,11 +248,11 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
             throw new ServiceException("售后单与退款订单不匹配");
         }
         AfterSale update = new AfterSale();
-        update.setStatus(STATUS_COMPLETE);
+        update.setStatus(AfterSaleStatusEnum.COMPLETE.getStatus());
         update.setPayRefundId(payRefundId);
         update.setRefundTime(LocalDateTime.now());
-        updateAfterSaleStatus(afterSale, STATUS_COMPLETE, update);
-        updateOrderItemAfterSale(afterSale.getOrderItemId(), afterSale.getId(), ORDER_ITEM_AFTER_SALE_SUCCESS);
+        updateAfterSaleStatus(afterSale, AfterSaleStatusEnum.COMPLETE.getStatus(), update);
+        updateOrderItemAfterSale(afterSale.getOrderItemId(), afterSale.getId(), TradeOrderItemAfterSaleStatusEnum.SUCCESS.getStatus());
         return true;
     }
 
@@ -307,19 +295,19 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
         if (orderItem == null || !Objects.equals(orderItem.getUserId(), userId)) {
             throw new ServiceException("订单项不存在");
         }
-        if (orderItem.getAfterSaleStatus() != null && !Objects.equals(orderItem.getAfterSaleStatus(), ORDER_ITEM_AFTER_SALE_NONE)) {
+        if (orderItem.getAfterSaleStatus() != null && !Objects.equals(orderItem.getAfterSaleStatus(), TradeOrderItemAfterSaleStatusEnum.NONE.getStatus())) {
             throw new ServiceException("订单项已申请售后");
         }
         TradeOrderVo order = tradeOrderService.queryByUserAndId(userId, orderItem.getOrderId());
         if (order == null) {
             throw new ServiceException("订单不存在");
         }
-        if (Objects.equals(order.getStatus(), ORDER_STATUS_CANCELED) || Objects.equals(order.getStatus(), ORDER_STATUS_UNPAID)) {
+        if (Objects.equals(order.getStatus(), TradeOrderStatusEnum.CANCELED.getStatus()) || Objects.equals(order.getStatus(), TradeOrderStatusEnum.UNPAID.getStatus())) {
             throw new ServiceException("未支付或已取消订单不能申请售后");
         }
         if (Objects.equals(bo.getWay(), WAY_RETURN_AND_REFUND)
-                && !Objects.equals(order.getStatus(), ORDER_STATUS_DELIVERED)
-                && !Objects.equals(order.getStatus(), ORDER_STATUS_COMPLETED)) {
+                && !Objects.equals(order.getStatus(), TradeOrderStatusEnum.DELIVERED.getStatus())
+                && !Objects.equals(order.getStatus(), TradeOrderStatusEnum.COMPLETED.getStatus())) {
             throw new ServiceException("订单发货后才可以申请退货退款");
         }
         int refundPrice = bo.getRefundPrice() == null ? 0 : bo.getRefundPrice();
@@ -339,7 +327,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
 
     private AfterSale validateAfterSaleAuditable(Long id) {
         AfterSale afterSale = validateAfterSaleExists(id);
-        if (!Objects.equals(afterSale.getStatus(), STATUS_APPLY)) {
+        if (!Objects.equals(afterSale.getStatus(), AfterSaleStatusEnum.APPLY.getStatus())) {
             throw new ServiceException("只有待审核售后单可以审核");
         }
         return afterSale;
@@ -347,7 +335,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
 
     private AfterSale validateAfterSaleReceivable(Long id) {
         AfterSale afterSale = validateAfterSaleExists(id);
-        if (!Objects.equals(afterSale.getStatus(), STATUS_BUYER_DELIVERY)) {
+        if (!Objects.equals(afterSale.getStatus(), AfterSaleStatusEnum.BUYER_DELIVERY.getStatus())) {
             throw new ServiceException("只有买家已退货售后单可以确认收货");
         }
         return afterSale;
@@ -355,7 +343,7 @@ public class AfterSaleServiceImpl extends BaseServiceImpl<AfterSaleMapper, After
 
     private AfterSale validateAfterSaleRefundable(Long id) {
         AfterSale afterSale = validateAfterSaleExists(id);
-        if (!Objects.equals(afterSale.getStatus(), STATUS_WAIT_REFUND)) {
+        if (!Objects.equals(afterSale.getStatus(), AfterSaleStatusEnum.WAIT_REFUND.getStatus())) {
             throw new ServiceException("只有待退款售后单可以退款");
         }
         return afterSale;

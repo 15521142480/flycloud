@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.StatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.security.util.UserUtils;
 import com.fly.common.utils.StringUtils;
@@ -30,11 +31,6 @@ import java.util.List;
 @Service
 public class PayWalletRechargePackageServiceImpl implements IPayWalletRechargePackageService {
 
-    /**
-     * 启用状态。
-     */
-    private static final int STATUS_ENABLE = 0;
-
     private final PayWalletRechargePackageMapper walletRechargePackageMapper;
 
     /**
@@ -58,7 +54,7 @@ public class PayWalletRechargePackageServiceImpl implements IPayWalletRechargePa
         if (rechargePackage == null) {
             throw new ServiceException("钱包充值套餐不存在");
         }
-        if (!Integer.valueOf(STATUS_ENABLE).equals(rechargePackage.getStatus())) {
+        if (!StatusEnum.isEnable(rechargePackage.getStatus())) {
             throw new ServiceException("钱包充值套餐已禁用");
         }
         return rechargePackage;
@@ -106,7 +102,7 @@ public class PayWalletRechargePackageServiceImpl implements IPayWalletRechargePa
             rechargePackage.setIsDeleted(false);
         }
         if (rechargePackage.getStatus() == null) {
-            rechargePackage.setStatus(STATUS_ENABLE);
+            rechargePackage.setStatus(StatusEnum.ENABLE.getStatus());
         }
         if (rechargePackage.getId() != null) {
             validateExists(rechargePackage.getId());
@@ -128,7 +124,7 @@ public class PayWalletRechargePackageServiceImpl implements IPayWalletRechargePa
         String userId = String.valueOf(UserUtils.getCurUserId());
         rechargePackage.setIsDeleted(false);
         if (rechargePackage.getStatus() == null) {
-            rechargePackage.setStatus(STATUS_ENABLE);
+            rechargePackage.setStatus(StatusEnum.ENABLE.getStatus());
         }
         rechargePackage.setCreateBy(userId);
         rechargePackage.setCreateTime(now);

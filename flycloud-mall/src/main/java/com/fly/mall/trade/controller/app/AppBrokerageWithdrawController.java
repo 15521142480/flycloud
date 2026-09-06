@@ -2,6 +2,7 @@ package com.fly.mall.trade.controller.app;
 
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
+import com.fly.common.enums.mall.BrokerageWithdrawStatusEnum;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.trade.domain.bo.BrokerageWithdrawBo;
@@ -70,7 +71,7 @@ public class AppBrokerageWithdrawController {
     @PostMapping("/create")
     public R<Void> create(@RequestBody BrokerageWithdrawBo bo) {
         bo.setUserId(UserUtils.getCurUserId());
-        bo.setStatus(0);
+        bo.setStatus(BrokerageWithdrawStatusEnum.AUDITING.getStatus());
         return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
 

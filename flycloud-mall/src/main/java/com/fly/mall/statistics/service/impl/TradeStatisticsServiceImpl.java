@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.database.web.service.impl.BaseServiceImpl;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.mall.AfterSaleStatusEnum;
+import com.fly.common.enums.mall.BrokerageWithdrawStatusEnum;
+import com.fly.common.enums.mall.TradeOrderStatusEnum;
 import com.fly.common.security.util.UserUtils;
 import com.fly.mall.api.statistics.domain.TradeStatistics;
 import com.fly.mall.api.statistics.domain.bo.StatisticsTimeRangeBo;
@@ -128,10 +131,14 @@ public class TradeStatisticsServiceImpl extends BaseServiceImpl<TradeStatisticsM
     @Override
     public TradeOrderCountRespVo getOrderCount() {
         TradeOrderCountRespVo respVo = new TradeOrderCountRespVo();
-        respVo.setUndelivered(queryCount("select count(1) from trade_order where is_deleted = 0 and status = ? and delivery_type = ?", 10, 1));
-        respVo.setPickUp(queryCount("select count(1) from trade_order where is_deleted = 0 and status = ? and delivery_type = ?", 20, 2));
-        respVo.setAfterSaleApply(queryCount("select count(1) from trade_after_sale where is_deleted = 0 and status = ?", 10));
-        respVo.setAuditingWithdraw(queryCount("select count(1) from trade_brokerage_withdraw where is_deleted = 0 and status = ?", 0));
+        respVo.setUndelivered(queryCount("select count(1) from trade_order where is_deleted = 0 and status = ? and delivery_type = ?",
+                TradeOrderStatusEnum.UNDELIVERED.getStatus(), 1));
+        respVo.setPickUp(queryCount("select count(1) from trade_order where is_deleted = 0 and status = ? and delivery_type = ?",
+                TradeOrderStatusEnum.UNDELIVERED.getStatus(), 2));
+        respVo.setAfterSaleApply(queryCount("select count(1) from trade_after_sale where is_deleted = 0 and status = ?",
+                AfterSaleStatusEnum.APPLY.getStatus()));
+        respVo.setAuditingWithdraw(queryCount("select count(1) from trade_brokerage_withdraw where is_deleted = 0 and status = ?",
+                BrokerageWithdrawStatusEnum.AUDITING.getStatus()));
         return respVo;
     }
 

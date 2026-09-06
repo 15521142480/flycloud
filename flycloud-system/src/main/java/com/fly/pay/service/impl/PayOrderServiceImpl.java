@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.pay.PayChannelEnum;
+import com.fly.common.enums.pay.PayOrderStatusEnum;
 import com.fly.common.exception.ServiceException;
 import com.fly.common.utils.StringUtils;
 import com.fly.pay.enums.PayNotifyTypeEnum;
@@ -53,26 +54,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PayOrderServiceImpl implements IPayOrderService {
 
     /**
-     * 等待支付。
-     */
-    private static final int ORDER_STATUS_WAITING = 0;
-
-    /**
-     * 支付成功。
-     */
-    private static final int ORDER_STATUS_SUCCESS = 10;
-
-    /**
-     * 已退款。
-     */
-    private static final int ORDER_STATUS_REFUND = 20;
-
-    /**
-     * 支付关闭。
-     */
-    private static final int ORDER_STATUS_CLOSED = 30;
-
-    /**
      * 默认支付应用编号。
      */
     private static final long DEFAULT_APP_ID = 1L;
@@ -108,7 +89,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         order.setPrice(createReqDto.getPrice());
         order.setChannelFeeRate(0D);
         order.setChannelFeePrice(0);
-        order.setStatus(ORDER_STATUS_WAITING);
+        order.setStatus(PayOrderStatusEnum.WAITING.getStatus());
         order.setUserIp(createReqDto.getUserIp());
         order.setExpireTime(createReqDto.getExpireTime());
         order.setRefundPrice(0);
@@ -271,7 +252,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         }
         payOrderMapper.updateById(updateOrder);
 
-        if (ORDER_STATUS_SUCCESS == (updateOrder.getStatus() == null ? order.getStatus() : updateOrder.getStatus())) {
+        if (PayOrderStatusEnum.SUCCESS.getStatus() == (updateOrder.getStatus() == null ? order.getStatus() : updateOrder.getStatus())) {
             IPayWalletRechargeService rechargeService = walletRechargeServiceProvider.getIfAvailable();
             if (rechargeService != null) {
                 rechargeService.updateWalletRechargePaid(order.getId(), extension.getChannelCode());
@@ -300,7 +281,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         if (order == null) {
             throw new ServiceException("支付回调对应的支付订单不存在");
         }
-        if (Objects.equals(order.getStatus(), ORDER_STATUS_SUCCESS)) {
+        if (Objects.equals(order.getStatus(), PayOrderStatusEnum.SUCCESS.getStatus())) {
             return;
         }
 
@@ -308,7 +289,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         PayOrder updateOrder = new PayOrder();
         updateOrder.setId(order.getId());
         updateOrder.setChannelId(channelId);
-        updateOrder.setStatus(ORDER_STATUS_SUCCESS);
+        updateOrder.setStatus(PayOrderStatusEnum.SUCCESS.getStatus());
         updateOrder.setSuccessTime(now);
         updateOrder.setChannelOrderNo(PayNotifyParseUtils.firstValue(data, "channelOrderNo", "transaction_id", "trade_no"));
         updateOrder.setUpdateBy("callback");
@@ -318,7 +299,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         if (order.getExtensionId() != null) {
             PayOrderExtension updateExtension = new PayOrderExtension();
             updateExtension.setId(order.getExtensionId());
-            updateExtension.setStatus(ORDER_STATUS_SUCCESS);
+            updateExtension.setStatus(PayOrderStatusEnum.SUCCESS.getStatus());
             updateExtension.setChannelNotifyData(PayNotifyParseUtils.toNotifyData(params, body, headers));
             updateExtension.setUpdateBy("callback");
             updateExtension.setUpdateTime(now);
@@ -348,8 +329,8 @@ public class PayOrderServiceImpl implements IPayOrderService {
         if (order == null || Boolean.TRUE.equals(order.getIsDeleted())) {
             throw new ServiceException("支付订单不存在");
         }
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_SUCCESS)
-                && !Objects.equals(order.getStatus(), ORDER_STATUS_REFUND)) {
+        if (!Objects.equals(order.getStatus(), PayOrderStatusEnum.SUCCESS.getStatus())
+                && !Objects.equals(order.getStatus(), PayOrderStatusEnum.REFUND.getStatus())) {
             throw new ServiceException("支付订单未支付，不能退款");
         }
 
@@ -362,7 +343,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         PayOrder updateOrder = new PayOrder();
         updateOrder.setId(order.getId());
         updateOrder.setRefundPrice(newRefundPrice);
-        updateOrder.setStatus(ORDER_STATUS_REFUND);
+        updateOrder.setStatus(PayOrderStatusEnum.REFUND.getStatus());
         updateOrder.setUpdateTime(LocalDateTime.now());
         payOrderMapper.updateById(updateOrder);
     }
@@ -383,7 +364,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         if (order == null || Boolean.TRUE.equals(order.getIsDeleted())) {
             throw new ServiceException("支付订单不存在");
         }
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+        if (!Objects.equals(order.getStatus(), PayOrderStatusEnum.WAITING.getStatus())) {
             throw new ServiceException("只有待支付订单可以改价");
         }
 
@@ -432,7 +413,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
     public int syncOrder(LocalDateTime minCreateTime) {
         LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
         lqw.eq(PayOrder::getIsDeleted, false);
-        lqw.eq(PayOrder::getStatus, ORDER_STATUS_WAITING);
+        lqw.eq(PayOrder::getStatus, PayOrderStatusEnum.WAITING.getStatus());
         lqw.ge(minCreateTime != null, PayOrder::getCreateTime, minCreateTime);
         List<PayOrder> orders = payOrderMapper.selectList(lqw);
 
@@ -471,7 +452,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
     public int expireOrder() {
         LambdaQueryWrapper<PayOrder> lqw = Wrappers.lambdaQuery();
         lqw.eq(PayOrder::getIsDeleted, false);
-        lqw.eq(PayOrder::getStatus, ORDER_STATUS_WAITING);
+        lqw.eq(PayOrder::getStatus, PayOrderStatusEnum.WAITING.getStatus());
         lqw.le(PayOrder::getExpireTime, LocalDateTime.now());
         List<PayOrder> orders = payOrderMapper.selectList(lqw);
         for (PayOrder order : orders) {
@@ -484,11 +465,11 @@ public class PayOrderServiceImpl implements IPayOrderService {
      * 标记支付订单和拓展单支付成功。
      */
     private void markOrderSuccess(Long userId, PayOrder updateOrder, PayOrderExtension extension) {
-        updateOrder.setStatus(ORDER_STATUS_SUCCESS);
+        updateOrder.setStatus(PayOrderStatusEnum.SUCCESS.getStatus());
         updateOrder.setSuccessTime(LocalDateTime.now());
         PayOrderExtension updateExtension = new PayOrderExtension();
         updateExtension.setId(extension.getId());
-        updateExtension.setStatus(ORDER_STATUS_SUCCESS);
+        updateExtension.setStatus(PayOrderStatusEnum.SUCCESS.getStatus());
         updateExtension.setUpdateBy(String.valueOf(userId));
         updateExtension.setUpdateTime(LocalDateTime.now());
         payOrderExtensionMapper.updateById(updateExtension);
@@ -498,14 +479,14 @@ public class PayOrderServiceImpl implements IPayOrderService {
      * 根据本地拓展单和过期时间同步订单状态。
      */
     private boolean syncLocalOrder(PayOrder order) {
-        if (!Objects.equals(order.getStatus(), ORDER_STATUS_WAITING)) {
+        if (!Objects.equals(order.getStatus(), PayOrderStatusEnum.WAITING.getStatus())) {
             return false;
         }
         PayOrderExtension extension = order.getExtensionId() == null ? null : getOrderExtension(order.getExtensionId());
-        if (extension != null && Objects.equals(extension.getStatus(), ORDER_STATUS_SUCCESS)) {
+        if (extension != null && Objects.equals(extension.getStatus(), PayOrderStatusEnum.SUCCESS.getStatus())) {
             PayOrder updateOrder = new PayOrder();
             updateOrder.setId(order.getId());
-            updateOrder.setStatus(ORDER_STATUS_SUCCESS);
+            updateOrder.setStatus(PayOrderStatusEnum.SUCCESS.getStatus());
             updateOrder.setSuccessTime(LocalDateTime.now());
             updateOrder.setUpdateTime(LocalDateTime.now());
             payOrderMapper.updateById(updateOrder);
@@ -525,14 +506,14 @@ public class PayOrderServiceImpl implements IPayOrderService {
     private void closeWaitingOrder(PayOrder order) {
         PayOrder updateOrder = new PayOrder();
         updateOrder.setId(order.getId());
-        updateOrder.setStatus(ORDER_STATUS_CLOSED);
+        updateOrder.setStatus(PayOrderStatusEnum.CLOSED.getStatus());
         updateOrder.setUpdateTime(LocalDateTime.now());
         payOrderMapper.updateById(updateOrder);
 
         if (order.getExtensionId() != null) {
             PayOrderExtension updateExtension = new PayOrderExtension();
             updateExtension.setId(order.getExtensionId());
-            updateExtension.setStatus(ORDER_STATUS_CLOSED);
+            updateExtension.setStatus(PayOrderStatusEnum.CLOSED.getStatus());
             updateExtension.setUpdateTime(LocalDateTime.now());
             payOrderExtensionMapper.updateById(updateExtension);
         }
@@ -559,10 +540,10 @@ public class PayOrderServiceImpl implements IPayOrderService {
         if (order.getUserId() != null && !Objects.equals(order.getUserId(), userId)) {
             throw new ServiceException("支付订单不存在");
         }
-        if (Objects.equals(order.getStatus(), ORDER_STATUS_SUCCESS)) {
+        if (Objects.equals(order.getStatus(), PayOrderStatusEnum.SUCCESS.getStatus())) {
             throw new ServiceException("支付订单已支付");
         }
-        if (Objects.equals(order.getStatus(), ORDER_STATUS_CLOSED)) {
+        if (Objects.equals(order.getStatus(), PayOrderStatusEnum.CLOSED.getStatus())) {
             throw new ServiceException("支付订单已关闭");
         }
         if (order.getExpireTime() != null && order.getExpireTime().isBefore(LocalDateTime.now())) {
@@ -582,7 +563,7 @@ public class PayOrderServiceImpl implements IPayOrderService {
         extension.setChannelId(resolveChannelId(submitReqVo.getChannelCode()));
         extension.setChannelCode(submitReqVo.getChannelCode());
         extension.setUserIp(userIp);
-        extension.setStatus(ORDER_STATUS_WAITING);
+        extension.setStatus(PayOrderStatusEnum.WAITING.getStatus());
         extension.setChannelExtras(submitReqVo.getChannelExtras());
         extension.setIsDeleted(false);
         extension.setCreateBy(String.valueOf(order.getUserId()));

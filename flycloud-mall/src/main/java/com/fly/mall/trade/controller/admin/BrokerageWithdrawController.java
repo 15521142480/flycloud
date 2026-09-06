@@ -6,6 +6,7 @@ import com.fly.common.domain.bo.PageBo;
 import com.fly.common.domain.model.R;
 import com.fly.common.domain.vo.PageVo;
 import com.fly.common.enums.BusinessType;
+import com.fly.common.enums.mall.BrokerageWithdrawStatusEnum;
 import com.fly.mall.api.trade.domain.bo.BrokerageWithdrawBo;
 import com.fly.mall.api.trade.domain.vo.BrokerageWithdrawVo;
 import com.fly.mall.trade.service.IBrokerageWithdrawService;
@@ -100,7 +101,7 @@ public class BrokerageWithdrawController extends BaseController {
      */
     @PutMapping("/approve")
     public R<Void> approve(@RequestBody BrokerageWithdrawBo bo) {
-        bo.setStatus(10);
+        bo.setStatus(BrokerageWithdrawStatusEnum.AUDIT_SUCCESS.getStatus());
         bo.setAuditTime(LocalDateTime.now());
         return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
@@ -110,7 +111,7 @@ public class BrokerageWithdrawController extends BaseController {
      */
     @PutMapping("/reject")
     public R<Void> reject(@RequestBody BrokerageWithdrawBo bo) {
-        bo.setStatus(20);
+        bo.setStatus(BrokerageWithdrawStatusEnum.AUDIT_FAIL.getStatus());
         bo.setAuditTime(LocalDateTime.now());
         return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }
@@ -120,7 +121,7 @@ public class BrokerageWithdrawController extends BaseController {
      */
     @PostMapping("/update-transferred")
     public R<Void> updateTransferred(@RequestBody BrokerageWithdrawBo bo) {
-        bo.setStatus(30);
+        bo.setStatus(BrokerageWithdrawStatusEnum.WITHDRAW_SUCCESS.getStatus());
         bo.setTransferTime(LocalDateTime.now());
         return R.result(brokerageWithdrawService.saveOrUpdate(bo));
     }

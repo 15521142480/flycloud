@@ -1,6 +1,7 @@
 package com.fly.pay.controller.app;
 
 import com.fly.common.domain.model.R;
+import com.fly.common.enums.StatusEnum;
 import com.fly.pay.service.IPayWalletRechargePackageService;
 import com.fly.system.api.pay.domain.vo.AppPayWalletPackageRespVo;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,6 @@ import java.util.List;
 @RequestMapping("/app/pay/wallet-recharge-package")
 public class AppPayWalletRechargePackageController {
 
-    private static final int STATUS_ENABLE = 0;
-
     private final IPayWalletRechargePackageService rechargePackageService;
 
     /**
@@ -32,7 +31,8 @@ public class AppPayWalletRechargePackageController {
     @GetMapping("/list")
     public R<List<AppPayWalletPackageRespVo>> list() {
         List<AppPayWalletPackageRespVo> list = cn.hutool.core.bean.BeanUtil.copyToList(
-                rechargePackageService.getWalletRechargePackageList(STATUS_ENABLE), AppPayWalletPackageRespVo.class);
+                rechargePackageService.getWalletRechargePackageList(StatusEnum.ENABLE.getStatus()),
+                AppPayWalletPackageRespVo.class);
         list.sort(Comparator.comparing(AppPayWalletPackageRespVo::getPayPrice,
                 Comparator.nullsLast(Integer::compareTo)));
         return R.ok(list);
