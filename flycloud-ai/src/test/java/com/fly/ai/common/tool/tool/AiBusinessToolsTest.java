@@ -2,10 +2,13 @@ package com.fly.ai.common.tool.tool;
 
 import com.fly.ai.common.tool.model.AiToolAuthorizationTrace;
 import com.fly.ai.common.tool.model.AiToolOrderSummary;
+import com.fly.ai.common.tool.model.AiToolPublicMemberInfo;
 import com.fly.ai.common.tool.model.AiToolPublicUserInfo;
 import com.fly.common.domain.model.R;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.api.trade.feign.ITradeOrderApi;
+import com.fly.system.api.member.domain.vo.MemberUserVo;
+import com.fly.system.api.member.feign.IMemberUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import com.fly.system.api.system.feign.ISysRoleApi;
 import com.fly.system.api.system.feign.ISysUserApi;
@@ -22,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -69,7 +74,7 @@ class AiBusinessToolsTest {
 
         AiToolOrderSummary summary = assertInstanceOf(AiToolOrderSummary.class, result);
         assertEquals(20L, summary.orderId());
-        assertEquals(2L, summary.buyerUserId());
+        assertEquals(2L, summary.buyerMemberUserId());
         assertEquals("检查到您有该模块权限（超级管理员）", trace.permissionMessage());
     }
 
@@ -154,6 +159,80 @@ class AiBusinessToolsTest {
     }
 
     /**
+     * 订单状态名称必须来自商城枚举，不能由模型根据支付状态推断。
+     */
+    @Test
+    void shouldResolveOrderStatusNameFromMallEnum() {
+        ISysRoleApi sysRoleApi = mock(ISysRoleApi.class);
+        ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
+        TradeOrderVo order = order(20L, 2L);
+        order.setStatus(20);
+        order.setPayStatus(true);
+        when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(true));
+        when(tradeOrderApi.getOrderByIdOrNo("20")).thenReturn(R.ok(order));
+        AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi);
+
+        AiToolOrderSummary summary = assertInstanceOf(AiToolOrderSummary.class,
+                tools.queryMallOrderByIdOrNo("20", toolContext(1L, new AiToolAuthorizationTrace())));
+
+        assertEquals(20, summary.status());
+        assertEquals("已发货", summary.statusName());
+        assertTrue(summary.payStatus());
+    }
+
+    /**
+     * 已获授权的订单查询才能继续读取该订单买家的商城会员信息。
+     */
+    @Test
+    void shouldQueryMallMemberAfterAuthorizedOrderQuery() {
+        ISysRoleApi sysRoleApi = mock(ISysRoleApi.class);
+        ITradeOrderApi tradeOrderApi = mock(ITradeOrderApi.class);
+        IMemberUserApi memberUserApi = mock(IMemberUserApi.class);
+        TradeOrderVo order = order(20L, 2L);
+        MemberUserVo memberUser = new MemberUserVo();
+        memberUser.setId(2L);
+        memberUser.setNickname("商城买家");
+        memberUser.setName("飞翔会员");
+        memberUser.setStatus(0);
+        memberUser.setMobile("18800000000");
+        memberUser.setPassword("must-not-leak");
+        when(sysRoleApi.isSuperAdmin(1L)).thenReturn(R.ok(true));
+        when(tradeOrderApi.getOrderByIdOrNo("20")).thenReturn(R.ok(order));
+        when(memberUserApi.getMemberUserById(2L)).thenReturn(R.ok(memberUser));
+        AiBusinessTools tools = tools(mock(ISysUserApi.class), sysRoleApi, tradeOrderApi, memberUserApi);
+        AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
+        ToolContext toolContext = toolContext(1L, trace);
+
+        tools.queryMallOrderByIdOrNo("20", toolContext);
+        AiToolPublicMemberInfo result = assertInstanceOf(AiToolPublicMemberInfo.class,
+                tools.queryMallMemberUserById(2L, toolContext));
+
+        assertEquals(2L, result.memberUserId());
+        assertEquals("商城买家", result.nickname());
+        assertEquals("飞翔会员", result.name());
+        assertEquals(0, result.status());
+        assertEquals("检查到您有该模块权限（超级管理员）", trace.permissionMessage());
+        verify(memberUserApi).getMemberUserById(2L);
+    }
+
+    /**
+     * 不能绕开订单资源授权，直接按任意会员编号查询商城会员。
+     */
+    @Test
+    void shouldDenyMallMemberQueryWithoutAuthorizedOrder() {
+        IMemberUserApi memberUserApi = mock(IMemberUserApi.class);
+        AiBusinessTools tools = tools(mock(ISysUserApi.class), mock(ISysRoleApi.class), mock(ITradeOrderApi.class),
+                memberUserApi);
+        AiToolAuthorizationTrace trace = new AiToolAuthorizationTrace();
+
+        Object result = tools.queryMallMemberUserById(2L, toolContext(1L, trace));
+
+        assertEquals("当前订单授权范围不包含该商城会员用户。", result);
+        assertTrue(trace.isDenied());
+        verifyNoInteractions(memberUserApi);
+    }
+
+    /**
      * 注解工具必须能被 Spring AI 正确解析为 ToolCallback。
      */
     @Test
@@ -162,16 +241,25 @@ class AiBusinessToolsTest {
 
         ToolCallback[] callbacks = ToolCallbacks.from(tools);
 
-        assertEquals(2, callbacks.length);
+        assertEquals(3, callbacks.length);
         assertFalse(callbacks[0].getToolDefinition().name().isBlank());
         assertFalse(callbacks[1].getToolDefinition().name().isBlank());
+        assertFalse(callbacks[2].getToolDefinition().name().isBlank());
     }
 
     /**
      * 创建工具实例。
      */
     private AiBusinessTools tools(ISysUserApi sysUserApi, ISysRoleApi sysRoleApi, ITradeOrderApi tradeOrderApi) {
-        return new AiBusinessTools(sysUserApi, sysRoleApi, tradeOrderApi);
+        return tools(sysUserApi, sysRoleApi, tradeOrderApi, mock(IMemberUserApi.class));
+    }
+
+    /**
+     * 创建带商城会员 API 的工具实例。
+     */
+    private AiBusinessTools tools(ISysUserApi sysUserApi, ISysRoleApi sysRoleApi, ITradeOrderApi tradeOrderApi,
+            IMemberUserApi memberUserApi) {
+        return new AiBusinessTools(sysUserApi, sysRoleApi, tradeOrderApi, memberUserApi);
     }
 
     /**

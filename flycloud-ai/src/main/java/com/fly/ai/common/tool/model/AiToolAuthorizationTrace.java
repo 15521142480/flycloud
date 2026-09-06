@@ -22,6 +22,9 @@ public final class AiToolAuthorizationTrace {
 
     private final Set<String> toolNames = new LinkedHashSet<>();
 
+    /** 已通过订单授权、允许继续查询的商城下单会员。 */
+    private final Set<Long> authorizedOrderBuyerMemberUserIds = new LinkedHashSet<>();
+
     private boolean denied;
 
     /**
@@ -52,6 +55,38 @@ public final class AiToolAuthorizationTrace {
     public synchronized void grantResourceOwner(String toolName) {
         recordToolCall(toolName);
         grantedMessages.add("检查到您有该模块权限（当前用户为订单用户）");
+    }
+
+    /**
+     * 标记已通过订单资源授权的下单会员编号。
+     * <p>
+     * 该数据仅存在于本次服务端 ToolContext 中，用于限制后续会员查询只能读取刚刚获准访问的订单买家。
+     *
+     * @param memberUserId 商城下单会员编号
+     */
+    public synchronized void authorizeOrderBuyerMemberUser(Long memberUserId) {
+        if (memberUserId != null) {
+            authorizedOrderBuyerMemberUserIds.add(memberUserId);
+        }
+    }
+
+    /**
+     * 判断本次工具调用是否已通过对应订单获得该会员查询授权。
+     *
+     * @param memberUserId 商城会员编号
+     * @return 是否允许查询
+     */
+    public synchronized boolean isOrderBuyerMemberUserAuthorized(Long memberUserId) {
+        return memberUserId != null && authorizedOrderBuyerMemberUserIds.contains(memberUserId);
+    }
+
+    /**
+     * 记录已获订单授权的商城会员查询工具调用。
+     *
+     * @param toolName 工具名称
+     */
+    public synchronized void grantAuthorizedOrderBuyerMemberUser(String toolName) {
+        recordToolCall(toolName);
     }
 
     /**

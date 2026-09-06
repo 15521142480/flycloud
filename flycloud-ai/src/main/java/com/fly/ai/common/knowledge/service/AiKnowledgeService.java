@@ -54,10 +54,26 @@ public class AiKnowledgeService {
      * @return 命中的知识片段
      */
     public List<AiKnowledgeHit> retrieve(String query) {
+        return retrieve(query, aiProperties.getKnowledge().getSimilarityThreshold());
+    }
+
+    /**
+     * 供学习 Demo 观察 Qdrant 实际 TopK 检索结果。
+     * <p>
+     * 不应用正式 RAG 的上下文注入阈值；阈值仅用于决定结果是否适合交给 LLM，而不应隐藏向量检索本身的结果。
+     *
+     * @param query 用户查询文本
+     * @return Qdrant 返回的相似知识片段
+     */
+    public List<AiKnowledgeHit> retrieveForDemo(String query) {
+        return retrieve(query, SearchRequest.SIMILARITY_THRESHOLD_ACCEPT_ALL);
+    }
+
+    private List<AiKnowledgeHit> retrieve(String query, double similarityThreshold) {
         return vectorStore.similaritySearch(SearchRequest.builder()
                         .query(query)
                         .topK(3)
-                        .similarityThreshold(aiProperties.getKnowledge().getSimilarityThreshold())
+                        .similarityThreshold(similarityThreshold)
                         .build())
                 .stream()
                 .map(document -> new AiKnowledgeHit(document.getId(), document.getText(), document.getScore(),

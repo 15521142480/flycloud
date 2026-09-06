@@ -2,11 +2,15 @@ package com.fly.ai.common.tool.tool;
 
 import com.fly.ai.common.tool.model.AiToolAuthorizationTrace;
 import com.fly.ai.common.tool.model.AiToolOrderSummary;
+import com.fly.ai.common.tool.model.AiToolPublicMemberInfo;
 import com.fly.ai.common.tool.model.AiToolPublicUserInfo;
 import com.fly.common.domain.model.R;
+import com.fly.common.enums.mall.TradeOrderStatusEnum;
 import com.fly.common.exception.AiProviderException;
 import com.fly.mall.api.trade.domain.vo.TradeOrderVo;
 import com.fly.mall.api.trade.feign.ITradeOrderApi;
+import com.fly.system.api.member.domain.vo.MemberUserVo;
+import com.fly.system.api.member.feign.IMemberUserApi;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import com.fly.system.api.system.feign.ISysRoleApi;
 import com.fly.system.api.system.feign.ISysUserApi;
@@ -18,6 +22,7 @@ import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -44,11 +49,15 @@ public class AiBusinessTools {
 
     private static final String QUERY_MALL_ORDER_TOOL = "query_mall_order_by_id_or_no";
 
+    private static final String QUERY_MALL_MEMBER_USER_TOOL = "query_mall_member_user_by_id";
+
     private final ISysUserApi sysUserApi;
 
     private final ISysRoleApi sysRoleApi;
 
     private final ITradeOrderApi tradeOrderApi;
+
+    private final IMemberUserApi memberUserApi;
 
     /**
      * 根据用户编号查询公共用户信息。
@@ -57,7 +66,7 @@ public class AiBusinessTools {
      * @param toolContext 服务端工具上下文
      * @return 已脱敏的公共用户信息，用户不存在时返回说明文本
      */
-    @Tool(name = QUERY_SYSTEM_USER_TOOL, description = "根据用户ID查询系统用户的公共信息。该工具不返回密码、手机号、邮箱等敏感字段。")
+    @Tool(name = QUERY_SYSTEM_USER_TOOL, description = "根据用户ID查询后台系统用户（sys_user）的公共信息。用于用户直接说“查询用户 ID ...”的场景；该工具不返回密码、手机号、邮箱等敏感字段，不能用于查询商城订单买家。")
     public Object querySystemUserById(
             @ToolParam(description = "需要查询的用户ID") Long userId,
             ToolContext toolContext) {
@@ -82,7 +91,7 @@ public class AiBusinessTools {
      * @param toolContext 服务端工具上下文
      * @return 已脱敏的订单摘要，或无权限/不存在说明
      */
-    @Tool(name = QUERY_MALL_ORDER_TOOL, description = "根据商城订单数据库主键或订单流水号查询订单摘要。参数统一传入用户提供的订单 ID、订单编号或订单流水号，例如 2073133434168320001 或 M202607040355023193520。仅在当前登录用户是订单创建人或拥有超级管理员角色时返回订单信息。工具成功返回订单摘要即表示后端授权已通过；结果中的 buyerUserId 可用于继续调用“根据用户ID查询系统用户的公共信息”工具，以回答订单由谁购买。")
+    @Tool(name = QUERY_MALL_ORDER_TOOL, description = "根据商城订单数据库主键或订单流水号查询订单摘要。参数统一传入用户提供的订单 ID、订单编号或订单流水号，例如 2073133434168320001 或 M202607040355023193520。仅在当前登录用户是订单创建人或拥有超级管理员角色时返回订单信息。工具成功返回订单摘要即表示后端授权已通过。statusName 是后端枚举解析的订单状态名称，必须以它为准，不能根据 payStatus 猜测。若用户问该订单是谁下的，只能将结果中的 buyerMemberUserId 传给“根据商城订单买家ID查询会员公共信息”工具，不能调用后台系统用户工具。")
     public Object queryMallOrderByIdOrNo(
             @ToolParam(description = "需要查询的订单数据库主键或订单流水号，必须保持原始字符串，例如 2073133434168320001 或 M202607040355023193520") String idOrNo,
             ToolContext toolContext) {
@@ -91,6 +100,34 @@ public class AiBusinessTools {
         Long loginUserId = loginUserId(toolContext);
         TradeOrderVo order = checkedData(tradeOrderApi.getOrderByIdOrNo(idOrNo), "商城订单");
         return authorizeOrderQuery(order, loginUserId, trace, QUERY_MALL_ORDER_TOOL, "idOrNo=" + idOrNo);
+    }
+
+    /**
+     * 查询已获授权订单的商城下单会员公共信息。
+     *
+     * @param memberUserId 由订单摘要返回的下单会员编号
+     * @param toolContext 服务端工具上下文
+     * @return 已脱敏的会员公共信息，或授权范围说明
+     */
+    @Tool(name = QUERY_MALL_MEMBER_USER_TOOL, description = "根据商城订单摘要返回的 buyerMemberUserId 查询商城会员（member_user）公共信息。仅在本次调用中已经成功查询对应订单后才能调用；用于回答“该订单是谁下的”。不能用于普通“查询用户 ID”的后台系统用户查询，也不返回手机号、邮箱、密码、登录IP等敏感字段。")
+    public Object queryMallMemberUserById(
+            @ToolParam(description = "订单摘要中的 buyerMemberUserId，必须来自本次已授权订单查询结果") Long memberUserId,
+            ToolContext toolContext) {
+        requireResourceId(memberUserId, "商城会员ID");
+        AiToolAuthorizationTrace trace = authorizationTrace(toolContext);
+        if (!trace.isOrderBuyerMemberUserAuthorized(memberUserId)) {
+            trace.deny(QUERY_MALL_MEMBER_USER_TOOL);
+            log.warn("AI 工具调用被拒绝，tool={}, memberUserId={}", QUERY_MALL_MEMBER_USER_TOOL, memberUserId);
+            return "当前订单授权范围不包含该商城会员用户。";
+        }
+        trace.grantAuthorizedOrderBuyerMemberUser(QUERY_MALL_MEMBER_USER_TOOL);
+        log.info("AI 工具调用，tool={}, memberUserId={}", QUERY_MALL_MEMBER_USER_TOOL, memberUserId);
+        MemberUserVo memberUser = checkedData(memberUserApi.getMemberUserById(memberUserId), "商城会员");
+        if (memberUser == null) {
+            return "未查询到该商城会员。";
+        }
+        return new AiToolPublicMemberInfo(memberUser.getId(), memberUser.getNickname(), memberUser.getName(),
+                memberUser.getStatus(), memberUser.getCreateTime());
     }
 
     /**
@@ -109,12 +146,12 @@ public class AiBusinessTools {
         if (superAdmin) {
             trace.grantSuperAdmin(toolName);
             log.info("AI 工具调用，tool={}, {}, authorization=super-admin", toolName, queryCondition);
-            return order == null ? "未查询到该订单。" : toOrderSummary(order);
+            return order == null ? "未查询到该订单。" : authorizedOrderSummary(order, trace);
         }
         if (order != null && Objects.equals(order.getUserId(), loginUserId)) {
             trace.grantResourceOwner(toolName);
             log.info("AI 工具调用，tool={}, {}, authorization=order-owner", toolName, queryCondition);
-            return toOrderSummary(order);
+            return authorizedOrderSummary(order, trace);
         }
         trace.deny(toolName);
         log.warn("AI 工具调用被拒绝，tool={}, {}, loginUserId={}", toolName, queryCondition, loginUserId);
@@ -194,8 +231,21 @@ public class AiBusinessTools {
      * @return 脱敏订单摘要
      */
     private AiToolOrderSummary toOrderSummary(TradeOrderVo order) {
-        return new AiToolOrderSummary(order.getId(), order.getNo(), order.getUserId(), order.getStatus(), order.getProductCount(),
-                order.getPayStatus(), order.getTotalPrice(), order.getDiscountPrice(), order.getDeliveryPrice(),
-                order.getPayPrice(), order.getCreateTime());
+        return new AiToolOrderSummary(order.getId(), order.getNo(), order.getUserId(), order.getStatus(),
+                orderStatusName(order.getStatus()), order.getProductCount(), order.getPayStatus(), order.getTotalPrice(),
+                order.getDiscountPrice(), order.getDeliveryPrice(), order.getPayPrice(), order.getCreateTime());
+    }
+
+    private AiToolOrderSummary authorizedOrderSummary(TradeOrderVo order, AiToolAuthorizationTrace trace) {
+        trace.authorizeOrderBuyerMemberUser(order.getUserId());
+        return toOrderSummary(order);
+    }
+
+    private String orderStatusName(Integer status) {
+        return Arrays.stream(TradeOrderStatusEnum.values())
+                .filter(item -> Objects.equals(item.getStatus(), status))
+                .map(TradeOrderStatusEnum::getName)
+                .findFirst()
+                .orElse("未知状态");
     }
 }

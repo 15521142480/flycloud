@@ -38,7 +38,23 @@ public class AiRagService {
      * @return 回答及引用片段
      */
     public AiRagChatResponse chat(AiChatRequest request) {
-        AiRagContext context = retrieveContext(request.message());
+        return chat(request, retrieveContext(request.message()));
+    }
+
+    /**
+     * 执行供第 7 步学习 Demo 使用的检索增强问答。
+     * <p>
+     * 学习页面需要完整展示“检索到的 TopK 片段 → 上下文注入 → 模型回答”的链路，因此不使用正式聊天
+     * 的上下文注入阈值；底层仍是同一个 EmbeddingModel 和 Qdrant VectorStore。
+     *
+     * @param request 聊天请求
+     * @return 回答及 Qdrant 命中片段
+     */
+    public AiRagChatResponse chatForDemo(AiChatRequest request) {
+        return chat(request, retrieveContextForDemo(request.message()));
+    }
+
+    private AiRagChatResponse chat(AiChatRequest request, AiRagContext context) {
         SpringAiModelProviderRouter.SelectedChatClient selected = providerRouter.getSelectedChatClient();
         ChatResponse response = SpringAiChatUtils.requestSpec(selected.chatClient(), request)
                 .system(context.systemPrompt())
@@ -54,7 +70,20 @@ public class AiRagService {
      * @return 真实检索片段格式化后的上下文；无命中时为空
      */
     public AiRagContext retrieveContext(String query) {
-        List<AiKnowledgeHit> references = knowledgeService.retrieve(query);
+        return ragContext(knowledgeService.retrieve(query));
+    }
+
+    /**
+     * 获取供学习 Demo 展示的 RAG 上下文。
+     *
+     * @param query 用户问题
+     * @return Qdrant 实际 TopK 片段格式化后的上下文
+     */
+    public AiRagContext retrieveContextForDemo(String query) {
+        return ragContext(knowledgeService.retrieveForDemo(query));
+    }
+
+    private AiRagContext ragContext(List<AiKnowledgeHit> references) {
         return new AiRagContext(references.isEmpty() ? "" : ragSystemPrompt(references), references);
     }
 

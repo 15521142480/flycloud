@@ -47,6 +47,20 @@ public class AiAgentService {
     }
 
     /**
+     * 执行第 8 步 Agent 学习 Demo。
+     * <p>
+     * Demo 需要可观察到真实 RAG 与 Tool Calling 的组合过程，因此使用不受正式聊天上下文阈值过滤的
+     * Qdrant TopK 结果；工具、模型和权限二次校验仍与正式能力完全复用。
+     *
+     * @param request 聊天请求
+     * @param loginUserId 当前登录用户编号
+     * @return Agent 结果
+     */
+    public AiAgentResponse chatForDemo(AiChatRequest request, Long loginUserId) {
+        return chat(request, loginUserId, null, ragService.retrieveContextForDemo(request.message()));
+    }
+
+    /**
      * 使用已完成的检索上下文执行 Agent 非流式聊天，供统一聊天在同一轮同时保存引用审计信息。
      *
      * @param request 聊天请求
@@ -73,6 +87,19 @@ public class AiAgentService {
     public SseEmitter stream(AiChatRequest request, Long loginUserId, String conversationId,
             AiToolCallingStreamObserver observer) {
         return stream(request, loginUserId, conversationId, ragService.retrieveContext(request.message()), observer);
+    }
+
+    /**
+     * 执行第 8 步 Agent 流式学习 Demo。
+     *
+     * @param request 聊天请求
+     * @param loginUserId 当前登录用户编号
+     * @param observer 流式生命周期观察器
+     * @return SSE 发送器
+     */
+    public SseEmitter streamForDemo(AiChatRequest request, Long loginUserId,
+            AiToolCallingStreamObserver observer) {
+        return stream(request, loginUserId, null, ragService.retrieveContextForDemo(request.message()), observer);
     }
 
     /**

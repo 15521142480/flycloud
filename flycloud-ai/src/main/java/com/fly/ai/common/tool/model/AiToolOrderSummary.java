@@ -5,13 +5,14 @@ import java.time.LocalDateTime;
 /**
  * 提供给模型的最小化订单信息。
  * <p>
- * 不包含收货人、手机号、地址、物流单号、用户 IP 等敏感字段。{@code buyerUserId} 仅用于让模型在用户追问
- * “谁购买了订单”时继续调用公共用户查询工具，不直接携带买家个人资料；金额单位均为分。
+ * 不包含收货人、手机号、地址、物流单号、用户 IP 等敏感字段。{@code buyerMemberUserId} 仅用于让模型在用户追问
+ * “谁购买了订单”时继续调用商城会员查询工具，不直接携带买家个人资料；金额单位均为分。
  *
  * @param orderId 订单编号
  * @param orderNo 订单流水号
- * @param buyerUserId 下单用户编号，仅用于继续查询公共用户信息
+ * @param buyerMemberUserId 下单会员编号，仅用于继续查询会员公共信息
  * @param status 订单状态编码
+ * @param statusName 由商城订单状态枚举解析的状态名称，不能由模型根据支付状态猜测
  * @param productCount 商品数量
  * @param payStatus 是否支付
  * @param totalPrice 商品总价，单位分
@@ -25,8 +26,9 @@ import java.time.LocalDateTime;
 public record AiToolOrderSummary(
         Long orderId,
         String orderNo,
-        Long buyerUserId,
+        Long buyerMemberUserId,
         Integer status,
+        String statusName,
         Integer productCount,
         Boolean payStatus,
         Integer totalPrice,

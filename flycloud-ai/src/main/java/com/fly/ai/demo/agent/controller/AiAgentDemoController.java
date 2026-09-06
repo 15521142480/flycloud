@@ -40,7 +40,7 @@ public class AiAgentDemoController {
     @Operation(summary = "Agent 聊天测试")
     @PostMapping("/chat")
     public R<AiAgentResponse> chat(@Valid @RequestBody AiChatRequest request) {
-        return R.ok(agentService.chat(request, AiSecurityUtils.requiredLoginUserId("AI Agent"), null));
+        return R.ok(agentService.chatForDemo(request, AiSecurityUtils.requiredLoginUserId("AI Agent")));
     }
 
     /**
@@ -52,7 +52,7 @@ public class AiAgentDemoController {
     @Operation(summary = "Agent 流式聊天测试")
     @PostMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter stream(@Valid @RequestBody AiChatRequest request) {
-        return agentService.stream(request, AiSecurityUtils.requiredLoginUserId("AI Agent"), null,
+        return agentService.streamForDemo(request, AiSecurityUtils.requiredLoginUserId("AI Agent"),
                 new AiToolCallingStreamObserver() {
                 });
     }

@@ -39,6 +39,6 @@ public class AiVectorStoreDemoController {
     @Operation(summary = "Qdrant 相似度检索测试")
     @GetMapping("/search")
     public R<List<AiKnowledgeHit>> search(@RequestParam @NotBlank(message = "query 不能为空") String query) {
-        return R.ok(knowledgeService.retrieve(query));
+        return R.ok(knowledgeService.retrieveForDemo(query));
     }
 }

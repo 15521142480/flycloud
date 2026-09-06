@@ -36,6 +36,6 @@ public class AiRagDemoController {
     @Operation(summary = "RAG 问答测试")
     @PostMapping("/chat")
     public R<AiRagChatResponse> chat(@Valid @RequestBody AiChatRequest request) {
-        return R.ok(ragService.chat(request));
+        return R.ok(ragService.chatForDemo(request));
     }
 }
