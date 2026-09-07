@@ -1,29 +1,33 @@
+#!/usr/bin/env bash
 
+set -Eeuo pipefail
 
-#!/bin/bash
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=common.sh
+source "$SCRIPT_DIR/common.sh"
 
-set -e
+require_deployment_tools
+ensure_project_layout
+acquire_deployment_lock
 
-PROJECT_DIR="/project/flycloud-service"
-COMPOSE_FILE="$PROJECT_DIR/docker-compose-server.yml"
+log "开始校验 Compose 配置和服务构建文件"
+validate_compose_config
+validate_all_service_artifacts
 
-# 创建日志目录
-mkdir -p \
-  "$PROJECT_DIR/flycloud-gateway/logs" \
-  "$PROJECT_DIR/flycloud-auth/logs" \
-  "$PROJECT_DIR/flycloud-system/logs" \
-  "$PROJECT_DIR/flycloud-bpm/logs" \
-  "$PROJECT_DIR/flycloud-mall/logs" \
-  "$PROJECT_DIR/flycloud-ai/logs"
+log "准备日志目录"
+prepare_log_directories "${SERVICES[@]}"
 
-# 设置日志目录权限
-chown -R 10001:10001 \
-  "$PROJECT_DIR/flycloud-gateway/logs" \
-  "$PROJECT_DIR/flycloud-auth/logs" \
-  "$PROJECT_DIR/flycloud-system/logs" \
-  "$PROJECT_DIR/flycloud-bpm/logs" \
-  "$PROJECT_DIR/flycloud-mall/logs" \
-  "$PROJECT_DIR/flycloud-ai/logs"
+# 先完成全部镜像构建；任何服务构建失败时，不会重建正在运行的容器。
+build_args=()
+if [[ "${PULL_BASE_IMAGES:-false}" == "true" ]]; then
+  build_args+=(--pull)
+fi
 
-# 构建并启动服务
-docker compose -f "$COMPOSE_FILE" up -d --build
+log "开始构建全部服务镜像"
+compose build "${build_args[@]}"
+
+log "开始创建或更新服务容器"
+compose up -d --remove-orphans
+
+show_status
+log "部署完成"

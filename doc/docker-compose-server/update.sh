@@ -1,25 +1,40 @@
+#!/usr/bin/env bash
 
-#!/bin/bash
+set -Eeuo pipefail
 
-set -e
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=common.sh
+source "$SCRIPT_DIR/common.sh"
 
-PROJECT_DIR="/project/flycloud-service"
-COMPOSE_FILE="$PROJECT_DIR/docker-compose-server.yml"
-
-SERVICE="$1"
-
-if [ -z "$SERVICE" ]; then
-  echo "请输入需要更新的服务名称"
-  echo "例如：./update.sh flycloud-auth"
+if [[ $# -ne 1 ]]; then
+  printf '用法：%s <服务名>\n' "$0" >&2
+  printf '例如：%s flycloud-ai\n' "$0" >&2
+  printf '可用服务：%s\n' "${SERVICES[*]}" >&2
   exit 1
 fi
 
-echo "开始更新服务：$SERVICE"
+SERVICE="$1"
+is_known_service "$SERVICE" || die "不允许更新未知服务：${SERVICE}；可用服务：${SERVICES[*]}"
 
-# 重新构建指定服务镜像
-docker compose -f "$COMPOSE_FILE" build "$SERVICE"
+require_deployment_tools
+ensure_project_layout
+acquire_deployment_lock
+validate_compose_config
+validate_service_artifact "$SERVICE"
+prepare_log_directories "$SERVICE"
 
-# 重新创建并启动指定服务
-docker compose -f "$COMPOSE_FILE" up -d --no-deps "$SERVICE"
+build_args=()
+if [[ "${PULL_BASE_IMAGES:-false}" == "true" ]]; then
+  build_args+=(--pull)
+fi
 
-echo "服务更新完成：$SERVICE"
+# 先构建新镜像，构建失败不会影响当前正在运行的旧容器。
+log "开始构建服务镜像：$SERVICE"
+compose build "${build_args[@]}" "$SERVICE"
+
+# 不联动重启依赖服务；强制使用刚构建的镜像重建目标容器。
+log "开始更新服务容器：$SERVICE"
+compose up -d --no-deps --force-recreate "$SERVICE"
+
+show_status
+log "服务更新完成：$SERVICE"

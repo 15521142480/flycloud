@@ -18,6 +18,8 @@ target/
 
 # 中间件配置
 /doc/nacos/**
+/doc/docker-compose-server/.env
+/doc/docker-compose-server/.flycloud-deploy.lock
 /doc/docker-compose/seata/seata.env
 /doc/docker-compose/rocketmq/broker.conf
 /doc/docker-compose/elasticsearch/elasticsearch.env

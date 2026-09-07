@@ -1,6 +1,6 @@
 # FlyCloud（飞翔云）
 
-FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台，覆盖系统权限、AI 助手、工作流、商城、支付、会员、即时通讯、报表、代码生成和任务调度等场景。 
+FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台，覆盖系统权限、AI 助手、工作流、商城、支付、会员、即时通讯、报表、代码生成和任务调度等场景。
 项目采用 JDK 21、Spring Boot 3.5、Vue 3 和 uni-app，可作为微服务学习项目，也可作为企业后台与业务系统的二次开发基础。
 
 > 当前主线已接入 `flycloud-ai`：基于 Spring AI 提供多模型对话、流式输出、Chat Memory、Tool Calling、Embedding、Qdrant、RAG、Agent 和 MCP 等能力。
@@ -172,9 +172,9 @@ flycloud
 └─flycloud-system           -- 平台服务
 └─flycloud-test             -- 测试服务
 └─flycloud-ui               -- 系统前端ui模块
-│  ├─flycloud-admin-ui                  -- 管理后台ui 
-│  ├─flycloud-mall-app-ui               -- 商城移动端（兼容h5/小程序等） 
-└─logs        -- 系统日志 
+│  ├─flycloud-admin-ui                  -- 管理后台ui
+│  ├─flycloud-mall-app-ui               -- 商城移动端（兼容h5/小程序等）
+└─logs        -- 系统日志
 ```
 
 ## 5、快速开始
@@ -481,7 +481,7 @@ http://<网关地址>:8080/flycloud-generator/gen/generatorCode?tables=sys_user
 - Seata 提供跨服务分布式事务能力。
 - XXL-JOB 提供任务调度中心和业务执行器封装。
 - 文件管理、积木报表、OnlyOffice 和 WebSocket 均按公共模块或扩展服务接入。
-- 相关 Docker Compose、初始化说明和部署脚本位于 [`doc`](doc)。
+- 后端服务的 Docker Compose 脚本、AI 配置和安全更新流程见 [Docker Compose 部署说明](doc/docker-compose-server/README.md)，其他中间件部署文件位于 [`doc/docker-compose`](doc/docker-compose)。
 
 ## 12、接口文档与开发约定
 
