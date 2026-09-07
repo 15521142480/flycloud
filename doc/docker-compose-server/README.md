@@ -39,7 +39,6 @@
 
 ```bash
 cd /project/flycloud-service
-cp .env.example .env
 chmod 600 .env
 chmod +x deploy.sh start.sh stop.sh update.sh
 ```
