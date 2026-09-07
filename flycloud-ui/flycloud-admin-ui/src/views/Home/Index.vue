@@ -1,51 +1,51 @@
 <template>
   <div>
     <el-card shadow="hover" class="home-overview-card">
-      <el-skeleton :loading="loading" animated>
-        <div class="home-overview">
-          <section class="welcome-panel">
-            <div class="welcome-main">
-              <el-avatar :src="getFilePreviewUrl(avatar)" :size="58" class="welcome-avatar">
-                <img src="@/assets/imgs/profile.png" alt="" />
-              </el-avatar>
-              <div class="welcome-copy">
-                <div class="welcome-title">
-                  {{ t('workplace.welcome') }}， {{ username }}
-                </div>
-                <div class="welcome-weather">{{ t('workplace.toady') }}，23℃ - 32℃！</div>
+      <div class="home-overview">
+        <section class="welcome-panel">
+          <div class="welcome-main">
+            <el-avatar :src="getFilePreviewUrl(avatar)" :size="58" class="welcome-avatar">
+              <img src="@/assets/imgs/profile.png" alt="" />
+            </el-avatar>
+            <div class="welcome-copy">
+              <div class="welcome-title">
+                {{ t('workplace.welcome') }}， {{ username }}
               </div>
+              <div class="welcome-weather">{{ t('workplace.toady') }}，23℃ - 32℃！</div>
             </div>
-            <div class="welcome-stats">
-              <div class="welcome-stat">
-                <span>{{ t('workplace.project') }}</span>
-                <CountTo
-                  class="welcome-stat-count"
-                  :start-val="0"
-                  :end-val="totalSate.project"
-                  :duration="2200"
-                />
-              </div>
-              <div class="welcome-stat">
-                <span>{{ t('workplace.access') }}</span>
-                <CountTo
-                  class="welcome-stat-count"
-                  :start-val="0"
-                  :end-val="totalSate.access"
-                  :duration="2200"
-                />
-              </div>
+          </div>
+          <div class="welcome-stats">
+            <div class="welcome-stat">
+              <span>{{ t('workplace.project') }}</span>
+              <CountTo
+                class="welcome-stat-count"
+                :start-val="0"
+                :end-val="totalSate.project"
+                :duration="2200"
+              />
             </div>
-          </section>
-          <section class="todo-summary">
-            <div class="todo-summary-title">{{ t('workplace.toDo') }}</div>
-            <CountTo
-              class="todo-summary-count"
-              :start-val="0"
-              :end-val="totalSate.todo"
-              :duration="2200"
-            />
-          </section>
-          <section class="todo-list-panel" :class="{ 'is-single-row': todoDataList.length === 1 }">
+            <div class="welcome-stat">
+              <span>{{ t('workplace.access') }}</span>
+              <CountTo
+                class="welcome-stat-count"
+                :start-val="0"
+                :end-val="totalSate.access"
+                :duration="2200"
+              />
+            </div>
+          </div>
+        </section>
+        <section class="todo-summary">
+          <div class="todo-summary-title">{{ t('workplace.toDo') }}</div>
+          <CountTo
+            class="todo-summary-count"
+            :start-val="0"
+            :end-val="totalSate.todo"
+            :duration="2200"
+          />
+        </section>
+        <section class="todo-list-panel" :class="{ 'is-single-row': todoDataList.length === 1 }">
+          <el-skeleton :loading="loading" :rows="2" animated class="todo-list-skeleton">
             <el-table
               :data="todoDataList"
               :height="todoDataList.length === 1 ? undefined : 98"
@@ -62,9 +62,9 @@
                 </template>
               </el-table-column>
             </el-table>
-          </section>
-        </div>
-      </el-skeleton>
+          </el-skeleton>
+        </section>
+      </div>
     </el-card>
   </div>
 
@@ -493,6 +493,10 @@ getAllApi()
   display: flex;
   align-items: flex-start;
   padding: 11px 20px 11px 0;
+}
+
+.todo-list-skeleton {
+  width: 100%;
 }
 
 .todo-list-panel.is-single-row {

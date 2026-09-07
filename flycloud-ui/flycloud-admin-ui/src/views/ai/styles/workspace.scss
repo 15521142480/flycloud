@@ -60,6 +60,18 @@
   font-weight: 500;
 }
 
+.conversation-list-loading {
+  display: flex;
+  height: 43px;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px;
+  color: var(--el-text-color-secondary);
+  font-size: 13px;
+}
+
+.conversation-loading-icon { color: var(--el-color-primary); font-size: 18px; }
+
 .conversation-item,
 .step-item {
   display: flex;

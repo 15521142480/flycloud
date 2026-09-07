@@ -36,6 +36,9 @@ public class FileController {
 
     /**
      * 获取当前文件存储配置。
+     *
+     * note：该接口是登录生效，如果在 nacos 修改了文件配置，需重新登陆即可
+     *
      */
     @GetMapping("/config")
     @Operation(summary = "获取文件配置", description = "获取当前文件存储基础路径和访问地址")

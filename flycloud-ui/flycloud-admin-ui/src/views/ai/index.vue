@@ -20,37 +20,47 @@
         <Icon icon="ep:chat-dot-round" /> 开始新会话
       </button>
       <div class="conversation-section-title">最近</div>
-      <button
-        v-for="conversation in workspace.conversations"
-        :key="conversation.conversationId"
-        class="conversation-item"
-        :class="{
-          active:
-            workspace.activeScope === 'unified' &&
-            workspace.activeConversationId === conversation.conversationId
-        }"
-        type="button"
-        @click="workspace.selectConversation(conversation.conversationId)"
+      <div
+        v-if="workspace.conversationsLoading || !workspace.conversations"
+        class="conversation-list-loading"
+        aria-busy="true"
       >
-        <Icon icon="ep:chat-line-round" />
-        <span>{{ conversation.title }}</span>
-        <span class="conversation-actions">
-          <el-tooltip content="重命名" placement="top">
-            <Icon
-              class="conversation-action rename-conversation"
-              icon="ep:edit-pen"
-              @click.stop="workspace.renameConversation(conversation)"
-            />
-          </el-tooltip>
-          <el-tooltip content="删除" placement="top">
-            <Icon
-              class="conversation-action delete-conversation"
-              icon="ep:delete"
-              @click.stop="workspace.removeConversation(conversation.conversationId)"
-            />
-          </el-tooltip>
-        </span>
-      </button>
+        <Icon class="conversation-loading-icon is-loading" icon="ep:loading" />
+        <span>正在加载最近会话…</span>
+      </div>
+      <template v-else>
+        <button
+          v-for="conversation in workspace.conversations || []"
+          :key="conversation.conversationId"
+          class="conversation-item"
+          :class="{
+            active:
+              workspace.activeScope === 'unified' &&
+              workspace.activeConversationId === conversation.conversationId
+          }"
+          type="button"
+          @click="workspace.selectConversation(conversation.conversationId)"
+        >
+          <Icon icon="ep:chat-line-round" />
+          <span>{{ conversation.title }}</span>
+          <span class="conversation-actions">
+            <el-tooltip content="重命名" placement="top">
+              <Icon
+                class="conversation-action rename-conversation"
+                icon="ep:edit-pen"
+                @click.stop="workspace.renameConversation(conversation)"
+              />
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <Icon
+                class="conversation-action delete-conversation"
+                icon="ep:delete"
+                @click.stop="workspace.removeConversation(conversation.conversationId)"
+              />
+            </el-tooltip>
+          </span>
+        </button>
+      </template>
     </section>
     <div class="security-tip">
       <Icon icon="ep:shield-check" />

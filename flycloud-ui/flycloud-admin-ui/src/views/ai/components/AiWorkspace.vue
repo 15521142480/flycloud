@@ -7,6 +7,7 @@
         :active-scope="activeScope"
         :active-step-id="activeStepId"
         :conversations="conversations"
+        :conversations-loading="conversationsLoading"
         :create-conversation="createConversation"
         :learning-steps="learningSteps"
         :remove-conversation="removeConversation"
@@ -182,7 +183,8 @@ const sending = ref(false)
 const activeScope = ref<ChatScope>(props.initialScope)
 const activeStepId = ref(4)
 const activeConversationId = ref<string>()
-const conversations = ref<AiConversationSummary[]>([])
+const conversations = ref<AiConversationSummary[]>()
+const conversationsLoading = ref(props.initialScope === 'unified')
 const messages = ref<ChatMessage[]>([])
 const chatMode = ref<ChatMode>('stream')
 const currentUserAvatar = computed(() => userStore.user.avatar || avatarImg)
@@ -545,10 +547,14 @@ const executeMcpDemo = async (content: string): Promise<string> => {
   }
 }
 /** 加载当前用户的会话列表。 */ const loadConversations = async () => {
+  conversationsLoading.value = true
   try {
     conversations.value = await getConversations()
   } catch {
+    conversations.value = []
     /* Axios 已统一处理错误 */
+  } finally {
+    conversationsLoading.value = false
   }
 }
 /** 滚动消息区到底部。 */ const scrollToBottom = async () => {
