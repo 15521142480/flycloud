@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 部门的负责人 {@link BpmTaskCandidateStrategy} 抽象类
+ * 部门负责人策略 {@link BpmTaskCandidateStrategy} 抽象类
  *
  * @author lxs
  */

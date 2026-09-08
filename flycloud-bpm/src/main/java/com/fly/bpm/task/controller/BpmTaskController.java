@@ -147,11 +147,14 @@ public class BpmTaskController {
     @GetMapping("/taskList")
     public R<List<BpmTaskRespVO>> getTaskListByProcessInstanceId(@RequestParam("processInstanceId") String processInstanceId) {
 
+        // 流程节点工作项信息 （表 ACT_RU_TASK、ACT_HI_TASKINST）
         List<HistoricTaskInstance> taskList = taskService.getTaskListByProcessInstanceId(processInstanceId, true);
         HistoricProcessInstance processInstance = instanceService.getHistoricProcessInstance(processInstanceId);
         if (processInstance == null) {
             return R.ok(Collections.emptyList());
         }
+
+        // 流程节点之外的审批和评论（表 ACT_HI_COMMENT），如：转办、委派 等；用于展示合并流程节点审批
         List<Comment> commentList = taskService.getCommentListByProcessInstanceId(processInstanceId);
 
         // 拼接数据

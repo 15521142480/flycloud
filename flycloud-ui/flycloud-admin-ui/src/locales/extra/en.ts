@@ -811,7 +811,7 @@ export default {
   k739343cd: 'Back',
   k73d6d025: 'Confirm [{p0}]is Customer?',
   k73d86dd3: 'Please Enter New Password',
-  k74144771: 'Department of Owner: {p0}',
+  k74144771: 'Specified Department Owner: {p0}',
   k74536abc: 'Created successfully',
   k746c7f74: 'Create',
   k7488c259: 'Please enter UserPassword',

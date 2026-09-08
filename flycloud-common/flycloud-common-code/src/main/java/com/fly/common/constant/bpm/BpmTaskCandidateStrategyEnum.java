@@ -20,7 +20,7 @@ public enum BpmTaskCandidateStrategyEnum implements ArrayValuable<Integer> {
 
     ROLE(10, "角色"),
     DEPT_MEMBER(20, "部门的成员"), // 包括负责人
-    DEPT_LEADER(21, "部门的负责人"),
+    DEPT_LEADER(21, "指定部门负责人"),
     MULTI_DEPT_LEADER_MULTI(23, "连续多级部门的负责人"),
     POST(22, "岗位"),
     USER(30, "用户"),

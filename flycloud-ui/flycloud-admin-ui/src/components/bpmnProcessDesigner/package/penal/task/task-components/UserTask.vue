@@ -11,7 +11,7 @@
         @change="changeCandidateStrategy"
       >
         <el-option
-          v-for="dict in getIntDictOptions(DICT_TYPE.BPM_TASK_CANDIDATE_STRATEGY)"
+          v-for="dict in candidateStrategyOptions"
           :key="dict.value"
           :label="dict.label"
           :value="dict.value"
@@ -151,6 +151,7 @@ import * as UserApi from '@/api/system/user'
 import * as UserGroupApi from '@/api/bpm/userGroup'
 import ProcessExpressionDialog from './ProcessExpressionDialog.vue'
 import { ProcessExpressionVO } from '@/api/bpm/processExpression'
+import { CandidateStrategy } from '@/components/SimpleProcessDesignerV2/src/consts'
 const { t } = useI18n()
 defineOptions({ name: 'UserTask' })
 const props = defineProps({
@@ -160,6 +161,31 @@ const props = defineProps({
 const userTaskForm = ref({
   candidateStrategy: undefined, // 分配规则
   candidateParam: [] // 分配选项
+})
+
+/**
+ * 旧版 BPMN 设计器使用后端字典渲染策略选项。发起人部门负责人是通用的首个审批策略，
+ * 即使历史字典数据尚未补齐，也要保证它出现在第一位；新配置默认使用层级 1（发起人当前部门）。
+ */
+const candidateStrategyOptions = computed(() => {
+  const options = getIntDictOptions(DICT_TYPE.BPM_TASK_CANDIDATE_STRATEGY)
+  const startUserDeptLeader = {
+    value: CandidateStrategy.START_USER_DEPT_LEADER,
+    label: t('auto.components.SimpleProcessDesignerV2.src.consts.k4f428552')
+  }
+  const normalizedOptions = options.map((item) => {
+    if (item.value === CandidateStrategy.DEPT_LEADER) {
+      return {
+        ...item,
+        label: t('auto.components.SimpleProcessDesignerV2.src.consts.k3798d110')
+      }
+    }
+    return item
+  })
+  return [
+    startUserDeptLeader,
+    ...normalizedOptions.filter((item) => item.value !== CandidateStrategy.START_USER_DEPT_LEADER)
+  ]
 })
 const bpmnElement = ref()
 const bpmnInstances = () => (window as any)?.bpmnInstances
@@ -209,11 +235,18 @@ const resetTaskForm = () => {
   } else {
     userTaskForm.value.candidateParam = []
   }
+  if (
+    userTaskForm.value.candidateStrategy === CandidateStrategy.START_USER_DEPT_LEADER &&
+    userTaskForm.value.candidateParam.length === 0
+  ) {
+    userTaskForm.value.candidateParam = ['1']
+  }
 }
 
 /** 更新 candidateStrategy 字段时，需要清空 candidateParam，并触发 bpmn 图更新 */
 const changeCandidateStrategy = () => {
-  userTaskForm.value.candidateParam = []
+  userTaskForm.value.candidateParam =
+    userTaskForm.value.candidateStrategy === CandidateStrategy.START_USER_DEPT_LEADER ? ['1'] : []
   updateElementTask()
 }
 

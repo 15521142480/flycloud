@@ -179,7 +179,6 @@
             <el-form-item
               v-if="
                 configForm.candidateStrategy == CandidateStrategy.MULTI_LEVEL_DEPT_LEADER ||
-                configForm.candidateStrategy == CandidateStrategy.START_USER_DEPT_LEADER ||
                 configForm.candidateStrategy ==
                   CandidateStrategy.START_USER_MULTI_LEVEL_DEPT_LEADER ||
                 configForm.candidateStrategy == CandidateStrategy.FORM_DEPT_LEADER

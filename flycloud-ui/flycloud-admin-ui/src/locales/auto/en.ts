@@ -750,7 +750,7 @@ export default {
           k59ee319d: 'Specified',
           kf0b09386: 'SpecifiedRole',
           kcf5b1ca4: 'Department',
-          k3798d110: 'DepartmentOwner',
+          k3798d110: 'Specified Department Owner',
           k3c28e3ce: 'Level Department Owner',
           k63f1f84d: 'Initiator',
           k9a016504: 'Initiator',

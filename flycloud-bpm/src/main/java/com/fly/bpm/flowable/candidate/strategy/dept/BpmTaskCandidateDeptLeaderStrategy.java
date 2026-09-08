@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 /**
- * 部门的负责人 {@link BpmTaskCandidateStrategy} 实现类
+ * 指定部门负责人 {@link BpmTaskCandidateStrategy} 实现类
  *
  * @author lxs
  */

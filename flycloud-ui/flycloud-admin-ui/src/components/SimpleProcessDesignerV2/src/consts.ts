@@ -113,7 +113,7 @@ export enum CandidateStrategy {
    */
   DEPT_MEMBER = 20,
   /**
-   * 部门的负责人
+   * 指定部门负责人
    */
   DEPT_LEADER = 21,
   /**
@@ -450,6 +450,10 @@ NODE_DEFAULT_NAME.set(
 // 候选人策略。暂时不从字典中取。 后续可能调整。控制显示顺序
 export const CANDIDATE_STRATEGY: DictDataVO[] = [
   {
+    label: t('auto.components.SimpleProcessDesignerV2.src.consts.k4f428552'),
+    value: CandidateStrategy.START_USER_DEPT_LEADER
+  },
+  {
     label: t('auto.components.SimpleProcessDesignerV2.src.consts.k59ee319d'),
     value: CandidateStrategy.USER
   },
@@ -476,10 +480,6 @@ export const CANDIDATE_STRATEGY: DictDataVO[] = [
   {
     label: t('auto.components.SimpleProcessDesignerV2.src.consts.k9a016504'),
     value: CandidateStrategy.START_USER
-  },
-  {
-    label: t('auto.components.SimpleProcessDesignerV2.src.consts.k4f428552'),
-    value: CandidateStrategy.START_USER_DEPT_LEADER
   },
   {
     label: t('auto.components.SimpleProcessDesignerV2.src.consts.k3ee19e36'),
