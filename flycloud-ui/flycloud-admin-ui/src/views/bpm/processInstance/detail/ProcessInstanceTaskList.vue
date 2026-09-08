@@ -17,7 +17,11 @@
       align="center"
     >
       <template #default="scope">
-        {{ scope.row.assigneeUser?.name || scope.row.ownerUser?.name || '-' }}
+        {{
+          scope.row.recordType === 'end'
+            ? ''
+            : scope.row.assigneeUser?.name || scope.row.ownerUser?.name || '-'
+        }}
       </template>
     </el-table-column>
     <el-table-column
@@ -48,12 +52,18 @@
         >
           {{ scope.row.action }}
         </span>
-        <dict-tag v-else :type="DICT_TYPE.BPM_TASK_STATUS" :value="scope.row.status" />
+        <dict-tag
+          v-else-if="scope.row.recordType !== 'end'"
+          :type="DICT_TYPE.BPM_TASK_STATUS"
+          :value="scope.row.status"
+        />
       </template>
     </el-table-column>
     <el-table-column align="center" :label="t('extra.kd2a31c2e')" prop="reason" min-width="200">
       <template #default="scope">
-        {{ scope.row.reason }}
+        <template v-if="scope.row.recordType !== 'end'">
+          {{ scope.row.reason }}
+        </template>
         <el-button
           class="ml-10px"
           size="small"
@@ -71,7 +81,13 @@
       min-width="100"
     >
       <template #default="scope">
-        {{ scope.row.durationInMillis == null ? '-' : formatPast2(scope.row.durationInMillis) }}
+        {{
+          scope.row.recordType === 'end'
+            ? ''
+            : scope.row.durationInMillis == null
+              ? '-'
+              : formatPast2(scope.row.durationInMillis)
+        }}
       </template>
     </el-table-column>
   </el-table>
@@ -125,7 +141,7 @@ const recordRows = computed(() => {
     }))
     groupRows.push({
       ...task,
-      recordType: task.taskDefinitionKey === 'StartUserNode' ? 'start' : 'task'
+      recordType: task.recordType || (task.taskDefinitionKey === 'StartUserNode' ? 'start' : 'task')
     })
     groupRows.forEach((row: any, index: number) => {
       row.nodeRowSpan = index === 0 ? groupRows.length : 0

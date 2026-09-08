@@ -25,6 +25,9 @@ public class BpmTaskRespVO implements Serializable {
     @Schema(description = "任务名字", requiredMode = Schema.RequiredMode.REQUIRED, example = "芋道")
     private String name;
 
+    @Schema(description = "流转记录类型", example = "end")
+    private String recordType;
+
     @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDateTime createTime;
 

@@ -134,6 +134,10 @@ public interface BpmTaskConvert {
                     commentMap.getOrDefault(task.getId(), Collections.emptyList()), userMap, deptMap));
             return taskVO;
         }));
+        // 流程实例结束后补充结束节点。该行不是 Flowable 任务，只用于完整展示流转记录。
+        if (processInstance.getEndTime() != null) {
+            result.add(buildEndTask(processInstance));
+        }
         return result;
     }
 
@@ -153,6 +157,15 @@ public interface BpmTaskConvert {
                 .setComments(Collections.emptyList());
         buildTaskAssignee(taskVO, processInstance.getStartUserId(), userMap, deptMap);
         return taskVO;
+    }
+
+    default BpmTaskRespVO buildEndTask(HistoricProcessInstance processInstance) {
+        return new BpmTaskRespVO()
+                .setId(processInstance.getId() + "-end")
+                .setName(BpmSimpleModelNodeType.END_NODE.getName())
+                .setRecordType("end")
+                .setProcessInstanceId(processInstance.getId())
+                .setEndTime(DateUtils.of(processInstance.getEndTime()));
     }
 
     default List<BpmTaskCommentRespVO> buildTaskCommentList(List<Comment> commentList,
