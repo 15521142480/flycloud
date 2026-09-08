@@ -6,6 +6,7 @@ import {
 } from 'element-plus/es/components/upload/src/upload'
 import axios, { AxiosProgressEvent } from 'axios'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
+import { getLocalMallAssetUrl } from '@/utils/localMallAssets'
 
 const SYS_BASE_URL = import.meta.env.VITE_SYSTEM_SERVER
 const { wsCache } = useCache()
@@ -59,6 +60,10 @@ export const getFilePreviewUrl = (pathOrUrl?: unknown): string => {
   }
   if (/^[a-z][a-z0-9-]*:[\w-]+$/i.test(pathOrUrl)) {
     return pathOrUrl
+  }
+  const localMallAssetUrl = getLocalMallAssetUrl(pathOrUrl)
+  if (localMallAssetUrl) {
+    return localMallAssetUrl
   }
   const cachedUrl = filePreviewUrlMap.get(pathOrUrl)
   if (cachedUrl) {

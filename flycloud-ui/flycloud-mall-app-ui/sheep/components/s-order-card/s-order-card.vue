@@ -41,7 +41,7 @@
     {
       title: '待付款',
       value: '1',
-      icon: '/static/img/shop/order/no_pay.png',
+      icon: '/static/img/icon/order/pending-payment.png',
       path: '/pages/order/list',
       type: 'unpaid',
       count: 'unpaidCount',
@@ -49,7 +49,7 @@
     {
       title: '待发货',
       value: '2',
-      icon: '/static/img/shop/order/cargo.png',
+      icon: '/static/img/icon/order/pending-shipment.png',
       path: '/pages/order/list',
       type: 'undelivered',
       count: 'undeliveredCount',
@@ -57,7 +57,7 @@
     {
       title: '待收货',
       value: '3',
-      icon: '/static/img/shop/order/no_take.png',
+      icon: '/static/img/icon/order/pending-receipt.png',
       path: '/pages/order/list',
       type: 'noget',
       count: 'deliveredCount',
@@ -65,7 +65,7 @@
     {
       title: '待评价',
       value: '4',
-      icon: '/static/img/shop/order/no_comment.png',
+      icon: '/static/img/icon/order/pending-review.png',
       path: '/pages/order/list',
       type: 'nocomment',
       count: 'uncommentedCount',
@@ -73,7 +73,7 @@
     {
       title: '售后单',
       value: '0',
-      icon: '/static/img/shop/order/change_order.png',
+      icon: '/static/img/icon/order/after-sale.png',
       path: '/pages/order/aftersale/list',
       type: 'aftersale',
       count: 'afterSaleCount',

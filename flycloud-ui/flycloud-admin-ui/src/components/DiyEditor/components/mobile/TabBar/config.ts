@@ -53,26 +53,26 @@ export const component = {
       {
         text: '首页',
         url: '/pages/index/index',
-        iconUrl: 'http://mall.yudao.iocoder.cn/static/images/1-001.png',
-        activeIconUrl: 'http://mall.yudao.iocoder.cn/static/images/1-002.png'
+        iconUrl: '/static/img/icon/tabbar/home.png',
+        activeIconUrl: '/static/img/icon/tabbar/home-active.png'
       },
       {
         text: '分类',
         url: '/pages/index/category?id=3',
-        iconUrl: 'http://mall.yudao.iocoder.cn/static/images/2-001.png',
-        activeIconUrl: 'http://mall.yudao.iocoder.cn/static/images/2-002.png'
+        iconUrl: '/static/img/icon/tabbar/category.png',
+        activeIconUrl: '/static/img/icon/tabbar/category-active.png'
       },
       {
         text: '购物车',
         url: '/pages/index/cart',
-        iconUrl: 'http://mall.yudao.iocoder.cn/static/images/3-001.png',
-        activeIconUrl: 'http://mall.yudao.iocoder.cn/static/images/3-002.png'
+        iconUrl: '/static/img/icon/tabbar/cart.png',
+        activeIconUrl: '/static/img/icon/tabbar/cart-active.png'
       },
       {
         text: '我的',
         url: '/pages/index/user',
-        iconUrl: 'http://mall.yudao.iocoder.cn/static/images/4-001.png',
-        activeIconUrl: 'http://mall.yudao.iocoder.cn/static/images/4-002.png'
+        iconUrl: '/static/img/icon/tabbar/user.png',
+        activeIconUrl: '/static/img/icon/tabbar/user-active.png'
       }
     ]
   }

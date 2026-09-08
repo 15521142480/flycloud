@@ -46,15 +46,7 @@
 		},
 	});
 
-	const duplicateCollectionIconUrls = [
-		'http://test.yudao.iocoder.cn/static/img/diy/goods-collect.png',
-		'https://test.yudao.iocoder.cn/static/img/diy/goods-collect.png',
-	];
-
 	const resolveIconUrl = (iconUrl = '') => {
-		if (duplicateCollectionIconUrls.includes(iconUrl)) {
-			return sheep.$url.static('/static/img/shop/goods/collect_0.png');
-		}
 		return sheep.$url.cdn(iconUrl);
 	};
 

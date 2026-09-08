@@ -2,9 +2,14 @@ import $store from '@/sheep/store';
 import { baseUrl, staticUrl } from '@/sheep/config';
 import { getFileBaseUrl as getCachedFileBaseUrl } from '@/sheep/helper/fileConfig';
 import { getMallBaseUrl } from '@/sheep/config/server';
+import { getLocalStaticUrl, resolveLocalAssetPath } from './localAssets';
 
 const cdn = (url = '', cdnurl = '') => {
   if (!url) return '';
+  const localAssetPath = resolveLocalAssetPath(url);
+  if (localAssetPath) {
+    return getLocalStaticUrl(localAssetPath);
+  }
   if (isAbsoluteUrl(url)) {
     return url;
   }
@@ -29,6 +34,9 @@ export default {
     if (staticurl === '') {
       staticurl = staticUrl;
     }
+    if (staticurl === 'local' && !isAbsoluteUrl(url)) {
+      return getLocalStaticUrl(url);
+    }
     if (staticurl !== 'local') {
       url = cdn(url, staticurl);
     }
@@ -38,6 +46,9 @@ export default {
   css: (url = '', staticurl = '') => {
     if (staticurl === '') {
       staticurl = staticUrl;
+    }
+    if (staticurl === 'local' && !isAbsoluteUrl(url)) {
+      url = getLocalStaticUrl(url);
     }
     if (staticurl !== 'local') {
       url = cdn(url, staticurl);
