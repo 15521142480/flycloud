@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.task.Comment;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +32,7 @@ import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -146,16 +148,19 @@ public class BpmTaskController {
     public R<List<BpmTaskRespVO>> getTaskListByProcessInstanceId(@RequestParam("processInstanceId") String processInstanceId) {
 
         List<HistoricTaskInstance> taskList = taskService.getTaskListByProcessInstanceId(processInstanceId, true);
-        if (CollUtil.isEmpty(taskList)) {
+        HistoricProcessInstance processInstance = instanceService.getHistoricProcessInstance(processInstanceId);
+        if (processInstance == null) {
             return R.ok(Collections.emptyList());
         }
+        List<Comment> commentList = taskService.getCommentListByProcessInstanceId(processInstanceId);
 
         // 拼接数据
-        HistoricProcessInstance processInstance = instanceService.getHistoricProcessInstance(processInstanceId);
         // 获得 User 和 Dept Map
         Set<Long> userIds = convertSetByFlatMap(taskList, task ->
                 Stream.of(NumberUtils.parseLong(task.getAssignee()), NumberUtils.parseLong(task.getOwner())));
         userIds.add(NumberUtils.parseLong(processInstance.getStartUserId()));
+        commentList.stream().map(Comment::getUserId).filter(Objects::nonNull)
+                .map(NumberUtils::parseLong).forEach(userIds::add);
         Map<Long, SysUserVo> userMap = sysUserApi.getUserMapByIds(userIds);
         Map<Long, SysDeptVo> deptMap = deptApi.getDeptMapByIds(
                 convertSet(userMap.values(), SysUserVo::getDeptId));
@@ -164,7 +169,8 @@ public class BpmTaskController {
         Map<Long, BpmForm> formMap = formService.getFormMap(
                 convertSet(taskList, task -> NumberUtils.parseLong(task.getFormKey())));
 
-        return R.ok(BpmTaskConvert.INSTANCE.buildTaskListByProcessInstanceId(taskList, formMap, userMap, deptMap));
+        return R.ok(BpmTaskConvert.INSTANCE.buildTaskListByProcessInstanceId(
+                taskList, processInstance, commentList, formMap, userMap, deptMap));
     }
 
 

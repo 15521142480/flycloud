@@ -5,6 +5,7 @@ import com.fly.common.domain.vo.PageVo;
 import com.fly.common.utils.collection.CollectionUtils;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.history.HistoricActivityInstance;
+import org.flowable.engine.task.Comment;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.history.HistoricTaskInstance;
@@ -86,6 +87,14 @@ public interface BpmTaskService {
      * @return 流程任务列表
      */
     List<HistoricTaskInstance> getTaskListByProcessInstanceId(String processInstanceId, Boolean asc);
+
+    /**
+     * 获得指定流程实例的评论列表
+     *
+     * @param processInstanceId 流程实例编号
+     * @return 评论列表
+     */
+    List<Comment> getCommentListByProcessInstanceId(String processInstanceId);
 
     /**
      * 获取任务

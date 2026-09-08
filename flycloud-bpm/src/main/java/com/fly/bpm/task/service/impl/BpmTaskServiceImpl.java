@@ -38,6 +38,7 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.task.Comment;
 import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
@@ -228,6 +229,13 @@ public class BpmTaskServiceImpl implements BpmTaskService {
             query.orderByHistoricTaskInstanceStartTime().desc();
         }
         return query.list();
+    }
+
+    @Override
+    public List<Comment> getCommentListByProcessInstanceId(String processInstanceId) {
+        List<Comment> comments = new ArrayList<>(taskService.getProcessInstanceComments(processInstanceId));
+        comments.sort(Comparator.comparing(Comment::getTime));
+        return comments;
     }
 
     /**

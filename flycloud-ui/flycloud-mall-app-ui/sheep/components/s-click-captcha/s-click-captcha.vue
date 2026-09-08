@@ -149,8 +149,8 @@
   // 获取验证码图片在当前页面上的实际位置。
   function getImageRect() {
     return new Promise((resolve) => {
-      uni
-        .createSelectorQuery()
+      // H5 生产构建会按连续的 `uni.` 语法注入并摇树对应 API，不能把二者拆行。
+      uni.createSelectorQuery()
         .in(instance?.proxy)
         .select('.captcha-image')
         .boundingClientRect((rect) => resolve(rect))

@@ -40,6 +40,9 @@ public class BpmTaskRespVO implements Serializable {
     @Schema(description = "审批理由", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     private String reason;
 
+    @Schema(description = "任务评论（转办、委派、加减签等操作记录）")
+    private List<BpmTaskCommentRespVO> comments;
+
     @Schema(description = "任务负责人编号", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "2048")
     @JsonIgnore // 不返回，只是方便后续读取，赋值给 ownerUser
     @JsonLongId

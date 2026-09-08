@@ -3,27 +3,37 @@ package com.fly.bpm.flowable.convert;
 import cn.hutool.core.map.MapUtil;
 import com.fly.bpm.api.domain.BpmForm;
 import com.fly.bpm.api.domain.dto.message.BpmMessageSendWhenTaskCreatedReqDTO;
+import com.fly.bpm.api.domain.vo.task.BpmTaskCommentRespVO;
 import com.fly.bpm.api.domain.vo.task.BpmTaskRespVO;
 import com.fly.bpm.api.domain.vo.user.SysUserBpmVO;
 import com.fly.bpm.flowable.utils.FlowableUtils;
+import com.fly.common.constant.bpm.BpmnModelConstants;
 import com.fly.common.domain.vo.PageVo;
+import com.fly.common.enums.bpm.BpmCommentTypeEnum;
+import com.fly.common.enums.bpm.BpmSimpleModelNodeType;
 import com.fly.common.enums.bpm.BpmTaskStatusEnum;
 import com.fly.common.utils.BeanUtils;
+import com.fly.common.utils.DateUtils;
 import com.fly.common.utils.collection.CollectionUtils;
 import com.fly.common.utils.number.NumberUtils;
 import com.fly.system.api.system.domain.vo.SysDeptVo;
 import com.fly.system.api.system.domain.vo.SysUserVo;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.task.Comment;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.service.impl.persistence.entity.TaskEntityImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.fly.common.utils.collection.CollectionUtils.*;
 import static com.fly.common.utils.collection.MapUtils.findAndThen;
@@ -87,10 +97,23 @@ public interface BpmTaskConvert {
 
 
     default List<BpmTaskRespVO> buildTaskListByProcessInstanceId(List<HistoricTaskInstance> taskList,
+                                                                 HistoricProcessInstance processInstance,
+                                                                 List<Comment> commentList,
                                                                  Map<Long, BpmForm> formMap,
                                                                  Map<Long, SysUserVo> userMap,
                                                                  Map<Long, SysDeptVo> deptMap) {
-        return CollectionUtils.convertList(taskList, task -> {
+        Map<String, List<Comment>> commentMap = commentList.stream()
+                .filter(comment -> comment.getTaskId() != null)
+                .collect(Collectors.groupingBy(Comment::getTaskId));
+        List<BpmTaskRespVO> result = new ArrayList<>();
+        BpmTaskRespVO startUserTask = buildStartUserTask(processInstance, userMap, deptMap);
+        result.add(startUserTask);
+
+        result.addAll(CollectionUtils.convertList(taskList, task -> {
+            // 发起人统一使用上面根据流程实例生成的记录，避免简单流程模型重复展示发起人。
+            if (BpmnModelConstants.START_USER_NODE_ID.equals(task.getTaskDefinitionKey())) {
+                return null;
+            }
             // 特殊：已取消的任务，不返回
             BpmTaskRespVO taskVO = BeanUtils.toBean(task, BpmTaskRespVO.class);
             Integer taskStatus = FlowableUtils.getTaskStatus(task);
@@ -107,7 +130,50 @@ public interface BpmTaskConvert {
             // 用户信息
             this.buildTaskAssignee(taskVO, task.getAssignee(), userMap, deptMap);
             this.buildTaskOwner(taskVO, task.getOwner(), userMap, deptMap);
+            taskVO.setComments(buildTaskCommentList(
+                    commentMap.getOrDefault(task.getId(), Collections.emptyList()), userMap, deptMap));
             return taskVO;
+        }));
+        return result;
+    }
+
+    default BpmTaskRespVO buildStartUserTask(HistoricProcessInstance processInstance,
+                                             Map<Long, SysUserVo> userMap,
+                                             Map<Long, SysDeptVo> deptMap) {
+        BpmTaskRespVO taskVO = new BpmTaskRespVO()
+                .setId(processInstance.getId() + "-start-user")
+                .setName(BpmSimpleModelNodeType.START_USER_NODE.getName())
+                .setTaskDefinitionKey(BpmnModelConstants.START_USER_NODE_ID)
+                .setProcessInstanceId(processInstance.getId())
+                .setCreateTime(DateUtils.of(processInstance.getStartTime()))
+                .setEndTime(DateUtils.of(processInstance.getStartTime()))
+                .setDurationInMillis(0L)
+                .setStatus(BpmTaskStatusEnum.APPROVE.getStatus())
+                .setReason("发起申请")
+                .setComments(Collections.emptyList());
+        buildTaskAssignee(taskVO, processInstance.getStartUserId(), userMap, deptMap);
+        return taskVO;
+    }
+
+    default List<BpmTaskCommentRespVO> buildTaskCommentList(List<Comment> commentList,
+                                                            Map<Long, SysUserVo> userMap,
+                                                            Map<Long, SysDeptVo> deptMap) {
+        Map<String, BpmCommentTypeEnum> commentTypeMap = java.util.Arrays.stream(BpmCommentTypeEnum.values())
+                .collect(Collectors.toMap(BpmCommentTypeEnum::getType, Function.identity()));
+        return CollectionUtils.convertList(commentList, comment -> {
+            BpmCommentTypeEnum commentType = commentTypeMap.get(comment.getType());
+            BpmTaskCommentRespVO commentVO = new BpmTaskCommentRespVO()
+                    .setId(comment.getId())
+                    .setType(comment.getType())
+                    .setTypeName(commentType != null ? commentType.getName() : "流程评论")
+                    .setMessage(comment.getFullMessage())
+                    .setCreateTime(DateUtils.of(comment.getTime()));
+            SysUserVo user = userMap.get(NumberUtils.parseLong(comment.getUserId()));
+            if (user != null) {
+                commentVO.setUser(BeanUtils.toBean(user, SysUserBpmVO.class));
+                findAndThen(deptMap, user.getDeptId(), dept -> commentVO.getUser().setDeptName(dept.getName()));
+            }
+            return commentVO;
         });
     }
 
