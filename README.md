@@ -1,35 +1,40 @@
-# FlyCloud（飞翔云）
+# <img src="flycloud-ui/flycloud-admin-ui/src/assets/imgs/logo.png" alt="FlyCloud Logo" width="40" align="absmiddle" /> FlyCloud（飞翔云）
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台，覆盖系统权限、AI 助手、工作流、商城、支付、会员、即时通讯、报表、代码生成和任务调度等场景。
 项目采用 JDK 21、Spring Boot 3.5、Vue 3 和 uni-app，可作为微服务学习项目，也可作为企业后台与业务系统的二次开发基础。
 
 > 当前主线已接入 `flycloud-ai`：基于 Spring AI 提供多模型对话、流式输出、Chat Memory、Tool Calling、Embedding、Qdrant、RAG、Agent 和 MCP 等能力。
 
-> 目前整合了
-> <br>
-> JDK 21、Spring Boot 3.5.3、Spring Cloud 2025.0.3、Spring Cloud Alibaba 2025、Nacos 3、Spring Security、JWT、OpenFeign；
-> <br>
-> Spring AI 1.1.5、OpenAI / DeepSeek / 阿里云百炼（通义千问）、Qdrant 1.13.4、RAG、Tool Calling、Agent、MCP；
-> <br>
-> Mysql 8.4 + MyBatis-Plus 3.5.7 + Seata 2.5、Redis + ElasticSearch 8 + RocketMQ 5.3.3；
-> <br>
-> Flowable7.1.0 + BPMN 2.0 + bpmn.js、WebSocket + LiveKit、Velocity、Xxl-job；
-> <br>
-> Vue 3.5 + Element Plus 2.8、uni-app、TypeScript、Vite、ECharts 等主流技术。
+> **核心技术栈一览**
+>
+> **微服务基础：** JDK 21 + Spring Boot 3.5.3 + Spring Cloud 2025.0.3 + Spring Cloud Alibaba 2025.0.0.0 + Nacos 3.0.3 + OpenFeign + Spring Cloud LoadBalancer；Spring Security + JWT + OAuth 2.0
+>
+> **AI 智能：** Spring AI 1.1.5 + Reactor + SSE + Chat Memory + Tool Calling + Embedding + Qdrant 1.13.4 + RAG + Agent + MCP Streamable HTTP；支持 OpenAI / DeepSeek / 阿里云百炼（通义千问）
+>
+> **数据与中间件：** MySQL 8.4 + MyBatis-Plus 3.5.7 + Dynamic DataSource + Druid + MapStruct；Redis + Redisson + JetCache；Spring Data Elasticsearch + Elasticsearch 8.18.3 + IK；RocketMQ 5.3.3；Seata 2.5.0
+>
+> **流程与实时通信：** Flowable 7.1.0 + BPMN 2.0 + bpmn.js 8.9.0；WebSocket + LiveKit
+>
+> **工程能力：** SpringDoc 2.8.17 + Knife4j 4.5.0 + OpenAPI 3；XXL-JOB 3.2.0；JimuReport 2.3.4；OnlyOffice；Velocity；Docker Compose
+>
+> **前端体系：** Vue 3.5 + TypeScript 5.3 + Vite 5.4 + Element Plus 2.8 + Pinia + Vue Router + ECharts + UnoCSS；uni-app（H5 / 微信小程序 / iOS / Android）
 
 - [1、在线体验与仓库地址](#1在线体验与仓库地址)
 - [2、项目介绍](#2项目介绍)
 - [3、技术栈](#3技术栈)
 - [4、项目目录](#4项目目录)
-- [5、快速开始](#5快速开始)
-- [6、服务与端口](#6服务与端口)
-- [7、系统基础功能](#7系统基础功能)
-- [8、AI 助手](#8ai-助手)
-- [9、工作流程](#9工作流程)
-- [10、商城系统](#10商城系统)
-- [11、即时通讯（IM）](#11即时通讯im)
+- [5、系统基础功能](#5系统基础功能)
+- [6、AI 助手](#6ai-助手)
+- [7、工作流程](#7工作流程)
+- [8、商城系统](#8商城系统)
+- [9、即时通讯（IM）](#9即时通讯im)
+- [10、快速开始](#10快速开始)
+- [11、服务与端口](#11服务与端口)
 - [12、工程与中间件能力](#12工程与中间件能力)
 - [13、接口文档与开发约定](#13接口文档与开发约定)
+- [14、开源协议](#14开源协议)
 
 
 ## 1、在线体验与仓库地址
@@ -37,14 +42,25 @@ FlyCloud 是一套基于 Spring Cloud Alibaba 的前后端分离微服务平台�
 ### 在线演示
 
 ### 👉 演示地址1（飞翔云管理系统）：<a href="https://www.laixueshi.cn" target="_blank" rel="noopener noreferrer">https://www.laixueshi.cn</a>
-### 👉 演示地址2（飞翔云商城 H5）：<a href="https://www.laixueshi.cn/mall-app" target="_blank" rel="noopener noreferrer">https://www.laixueshi.cn/mall-app</a>
+### 👉 演示地址2（商城移动端 H5）：<a href="https://www.laixueshi.cn/mall-app" target="_blank" rel="noopener noreferrer">https://www.laixueshi.cn/mall-app</a>
 <br>
+
+| 后台首页                           |
+|--------------------------------|
+| ![商城移动端订单详情](doc/img/home.png) |
+
+
+| 商城移动端-首页                                | 商城移动端-我的                             |
+|-----------------------------------------|--------------------------------------|
+| ![商城移动端-首页](doc/img/mall-app-home.png) | ![商城移动端-我的](doc/img/mall-app-my.png) |
+
 演示账号仅用于体验，请勿在演示环境中录入敏感信息。
 
-| 账号          | 密码 | 说明 |
-|-------------| --- | --- |
-| `admin`     | `admin123` | 平台管理员 |
-| `lxs`       | `123456` | 平台管理员 |
+| 系统     | 账号            | 密码 | 说明    |
+|--------|---------------| --- |-------|
+| 平台后台   | `admin`       | `admin123` | 平台管理员 |
+| 平台后台   | `lxs`         | `123456` | 平台管理员 |
+| 商城移动端  | `15521142480` | `abc123456` | 会员用户  |
 
 ### 项目仓库
 
@@ -181,99 +197,7 @@ flycloud
 └─logs        -- 系统日志
 ```
 
-## 5、快速开始
-
-### 5.1 环境准备
-
-基础后台至少需要：
-
-- JDK 21、Maven 3.9+
-- MySQL 8.x、Redis
-- Nacos 3.x
-- Node.js 16+、pnpm 8.6+
-
-使用对应功能时，再启动 Qdrant、Elasticsearch、RocketMQ、Seata、XXL-JOB、OnlyOffice 等组件。项目提供的部署示例位于 [`doc/docker-compose`](doc/docker-compose)。
-
-### 5.2 初始化数据库
-
-1. 新环境先导入 [`db/mysql/表结构/fly-cloud表结构.sql`](db/mysql/表结构/fly-cloud表结构.sql)。
-2. 按需导入 [`db/mysql/表数据/fly-cloud表数据`](db/mysql/表数据/fly-cloud表数据) 下的基础数据。
-3. 已有数据库按文件名顺序执行 [`db/mysql/升级脚本`](db/mysql/升级脚本)；AI 会话、知识库和文档分块表由 `V20260828__ai_chat_memory.sql` 提供。
-4. 使用 Seata 时，额外初始化 Seata Server 和客户端 `undo_log` 表。
-
-执行 SQL 前请先备份现有数据库，并根据目标环境确认库名和字符集。
-
-### 5.3 配置 Nacos
-
-1. 将 [`config/nacos/nacos-dev.example.properties`](config/nacos/nacos-dev.example.properties) 复制为 `config/nacos/nacos-dev.properties`，填写本地 Nacos 地址、账号、命名空间和分组。
-2. 参考 [`doc/nacos-example`](doc/nacos-example) 中的脱敏示例，在 Nacos 导入 `application-common.yaml`、`application-datasource.yaml` 和需要启动的 `flycloud-*-dev.yaml`。
-3. `dev`、`test`、`prod` Profile 与本地文件的对应关系见 [`config/nacos/README.md`](config/nacos/README.md)。
-
-数据库密码、AI 模型密钥等敏感配置应通过环境变量、Nacos 加密配置或密钥管理服务注入，不要提交到 Git。例如启用百炼模型时：
-
-```bash
-export DASHSCOPE_API_KEY="your-api-key"
-```
-
-### 5.4 启动基础设施与后端
-
-AI 的向量检索使用 Qdrant，可通过示例编排启动：
-
-```bash
-docker compose -f doc/docker-compose/docker-compose-qdrant.yml up -d
-```
-
-构建后端：
-
-```bash
-mvn clean package -Pdev -DskipTests
-```
-
-推荐启动顺序：
-
-1. MySQL、Redis、Nacos，以及本次功能依赖的其他中间件。
-2. `flycloud-gateway`、`flycloud-auth`、`flycloud-system`。
-3. 按需启动 `flycloud-ai`、`flycloud-bpm`、`flycloud-mall`、`flycloud-generator` 和扩展服务。
-
-### 5.5 启动前端
-
-管理后台：
-
-```bash
-cd flycloud-ui/flycloud-admin-ui
-pnpm install
-pnpm dev
-```
-
-商城移动端使用 HBuilderX 打开 `flycloud-ui/flycloud-mall-app-ui`，选择运行到 H5、微信小程序或 App；接口地址和端口配置位于该工程的 `.env`。
-
-## 6、服务与端口
-
-### 后端服务
-
-| 启动级别 | 服务 | 职责 | 默认地址 |
-| --- | --- | --- | --- |
-| 必需 | `flycloud-gateway` | 统一入口与路由 | `http://127.0.0.1:8080` |
-| 必需 | `flycloud-auth` | 登录、令牌和授权 | `http://127.0.0.1:8088` |
-| 必需 | `flycloud-system` | 系统、会员、支付、IM 等核心能力 | `http://127.0.0.1:8085` |
-| 按需 | `flycloud-ai` | AI 助手与 AI 实验室 | `http://127.0.0.1:8086` |
-| 按需 | `flycloud-bpm` | 工作流 | `http://127.0.0.1:8090` |
-| 按需 | `flycloud-mall` | 商城 | `http://127.0.0.1:8081` |
-| 按需 | `flycloud-generator` | 代码生成 | `http://127.0.0.1:8089` |
-| 按需 | `flycloud-test` | 测试与示例 | `http://127.0.0.1:8099` |
-| 扩展 | `flycloud-file-admin` | 文件管理后台 | `http://127.0.0.1:9095` |
-| 扩展 | `flycloud-xxljob-admin` | 任务调度中心 | `http://127.0.0.1:9091/xxl-job-admin` |
-
-### 前端服务
-
-| 工程 | 默认地址 |
-| --- | --- |
-| `flycloud-admin-ui` | `http://127.0.0.1:7075` |
-| `flycloud-mall-app-ui`（H5） | `http://127.0.0.1:3000/mall-app` |
-
-业务访问建议统一经过网关；各服务端口主要用于本地调试和单服务接口文档。
-
-## 7、系统基础功能
+## 5、系统基础功能
 
 | 功能 | 说明                                                        |
 | --- |-----------------------------------------------------------|
@@ -294,14 +218,14 @@ pnpm dev
 | --- | --- |
 | ![图文点选验证码](doc/img/ImageTextClickCaptcha.png) | ![角色菜单权限](doc/img/roleMenu-1.png) |
 
-## 8、AI 助手
+## 6、AI 助手
 
 `flycloud-ai` 是独立的 AI 微服务，基于 Spring AI 1.1.5 实现。管理端提供两个入口：
 
 - **AI 助手**：面向实际使用的统一会话入口，自动组合记忆、知识检索和受控业务工具。
 - **AI 实验室过程**：按 9 个阶段拆解 AI 能力，便于学习、调试和验证每一层能力。
 
-### 8.1 技术组成
+### 6.1 技术组成
 
 | 能力 | 实现 |
 | --- | --- |
@@ -316,7 +240,7 @@ pnpm dev
 | MCP | 内置 MCP Server 与 Client，使用 Streamable HTTP，并转发当前请求认证信息 |
 | 智能路由 | 普通问答、业务查询、知识问答和复合任务按意图启用不同能力，减少无效调用 |
 
-### 8.2 AI 实验室学习路径
+### 6.2 AI 实验室学习路径
 
 | 阶段 | 内容 |
 | --- | --- |
@@ -330,7 +254,7 @@ pnpm dev
 | 8 | Agent / 业务工具与知识库编排 |
 | 9 | MCP Client + MCP Server 协议调用 |
 
-### 8.3 AI 功能截图
+### 6.3 AI 功能截图
 
 | 通用问答与多轮会话 | 受控系统用户查询 |
 | --- | --- |
@@ -348,7 +272,7 @@ pnpm dev
 | --- |
 | ![AI MCP Client 与 Server 工具调用](doc/img/ai/ai-7.png) |
 
-## 9、工作流程
+## 7、工作流程
 
 工作流服务基于 Flowable 7.1.0 和 BPMN 2.0，管理端使用 bpmn.js 完成可视化流程设计。系统同时提供流程配置后台和审批中心，覆盖从建模到归档的完整闭环：
 
@@ -357,7 +281,7 @@ pnpm dev
 → 待办审批与协作 → 消息/超时处理 → 流程结束 → 实例、任务和审批记录归档
 ```
 
-### 9.1 功能分区
+### 7.1 功能分区
 
 | 分区 | 功能 | 说明 |
 | --- | --- | --- |
@@ -373,7 +297,7 @@ pnpm dev
 | 审批中心 | 抄送我的 | 查看抄送给当前用户的流程与表单信息 |
 | 示例 | 请假申请 | 演示业务表单提交后启动流程，可扩展到合同、采购和订单等业务 |
 
-### 9.2 流程引擎能力
+### 7.2 流程引擎能力
 
 | 能力 | 说明 | 状态 |
 | --- | --- | --- |
@@ -393,7 +317,7 @@ pnpm dev
 | 父子流程 | 支持同步或异步子流程，并控制主流程后续执行 | ✅ |
 | 条件/并行分支 | 支持排他条件决策和多分支并行执行 | ✅ |
 
-### 9.3 工作流截图
+### 7.3 工作流截图
 
 | 流程模型 / BPMN 流程设计器                 | 自定义表单提交                 |
 |-----------------------------------|----------------------------------|
@@ -412,11 +336,11 @@ pnpm dev
 | ![节点3审批](doc/img/bpm/bpm-7.png) | ![审批纪录](doc/img/bpm/bpm-8.png) |
 
 
-## 10、商城系统
+## 8、商城系统
 
 商城由 `flycloud-mall`、管理后台商城模块和 `flycloud-mall-app-ui` 组成，形成“后台配置商品与营销 → 用户浏览下单 → 支付配送 → 售后与统计”的业务闭环。
 
-### 10.1 商城后台
+### 8.1 商城后台
 
 | 模块 | 主要功能 |
 | --- | --- |
@@ -444,7 +368,7 @@ pnpm dev
 | --- |
 | ![商城订单状态与支付信息](doc/img/mall/mall-5.png) |
 
-### 10.2 商城移动端
+### 8.2 商城移动端
 
 移动端基于 uni-app，一套代码可面向 H5、微信小程序、iOS 和 Android 发布，主要包含商品搜索与详情、购物车、订单、支付、物流、售后、会员、积分、优惠券、分销和客服等功能。
 
@@ -460,11 +384,11 @@ pnpm dev
 | --- |
 | ![商城移动端订单详情](doc/img/mall/mall-app-5.png) |
 
-## 11、即时通讯（IM）
+## 9、即时通讯（IM）
 
 即时通讯能力集成在 `flycloud-system` 的 `im` 业务域中，管理端同时提供用户通信工作台和运营管理功能。消息、关系与通话记录由业务服务统一管理，WebSocket 负责消息及通话信令的实时推送，LiveKit 负责语音/视频媒体传输，从而形成“关系建立 → 实时会话 → 多媒体通信 → 运营治理”的完整链路。
 
-### 11.1 核心能力
+### 9.1 核心能力
 
 | 功能域 | 主要能力 |
 | --- | --- |
@@ -477,14 +401,14 @@ pnpm dev
 | 实时通话 | 基于 LiveKit 的私聊/群聊语音和视频通话，支持邀请、接听、拒绝、取消、离开、超时与异常断线清理 |
 | 运营管理 | 好友、群组、私聊/群聊消息、频道、表情包、敏感词、通话记录和 IM 数据统计 |
 
-### 11.2 实时通信与数据链路
+### 9.2 实时通信与数据链路
 
 - `flycloud-common-websocket` 提供连接鉴权、在线会话管理和点对点/群体推送能力，IM 模块在其上实现消息、好友、群组与 RTC 信令的多端同步。
 - LiveKit 作为音视频 SFU，负责实时媒体传输；后端负责房间状态、Token 签发、参与者权限、来电信令和通话记录。
 - MySQL 持久化好友、群组、频道、消息与通话数据；Redis 维护会话已读位置、群消息回执进度和通话并发锁等实时状态。
 - 历史消息与离线增量拉取用于断线补偿，LiveKit Webhook 与定时清理任务用于处理异常退出和残留通话。
 
-### 11.3 IM 功能截图
+### 9.3 IM 功能截图
 
 | 单聊与多类型消息 | websocket接收消息                     |
 | --- |-----------------------------------|
@@ -501,6 +425,98 @@ pnpm dev
 | 发起方视频通话中                              | 接收方视频通话中                         |
 |-------------------------------------|----------------------------------|
 | ![IM 发起方视频通话中](doc/img/im/im-7.png) | ![IM 接收方视频通话中](doc/img/im/im-8.png) |
+
+## 10、快速开始
+
+### 10.1 环境准备
+
+基础后台至少需要：
+
+- JDK 21、Maven 3.9+
+- MySQL 8.x、Redis
+- Nacos 3.x
+- Node.js 16+、pnpm 8.6+
+
+使用对应功能时，再启动 Qdrant、Elasticsearch、RocketMQ、Seata、XXL-JOB、OnlyOffice 等组件。项目提供的部署示例位于 [`doc/docker-compose`](doc/docker-compose)。
+
+### 10.2 初始化数据库
+
+1. 新环境先导入 [`db/mysql/表结构/fly-cloud表结构.sql`](db/mysql/表结构/fly-cloud表结构.sql)。
+2. 按需导入 [`db/mysql/表数据/fly-cloud表数据`](db/mysql/表数据/fly-cloud表数据) 下的基础数据。
+3. 已有数据库按文件名顺序执行 [`db/mysql/升级脚本`](db/mysql/升级脚本)；AI 会话、知识库和文档分块表由 `V20260828__ai_chat_memory.sql` 提供。
+4. 使用 Seata 时，额外初始化 Seata Server 和客户端 `undo_log` 表。
+
+执行 SQL 前请先备份现有数据库，并根据目标环境确认库名和字符集。
+
+### 10.3 配置 Nacos
+
+1. 将 [`config/nacos/nacos-dev.example.properties`](config/nacos/nacos-dev.example.properties) 复制为 `config/nacos/nacos-dev.properties`，填写本地 Nacos 地址、账号、命名空间和分组。
+2. 参考 [`doc/nacos-example`](doc/nacos-example) 中的脱敏示例，在 Nacos 导入 `application-common.yaml`、`application-datasource.yaml` 和需要启动的 `flycloud-*-dev.yaml`。
+3. `dev`、`test`、`prod` Profile 与本地文件的对应关系见 [`config/nacos/README.md`](config/nacos/README.md)。
+
+数据库密码、AI 模型密钥等敏感配置应通过环境变量、Nacos 加密配置或密钥管理服务注入，不要提交到 Git。例如启用百炼模型时：
+
+```bash
+export DASHSCOPE_API_KEY="your-api-key"
+```
+
+### 10.4 启动基础设施与后端
+
+AI 的向量检索使用 Qdrant，可通过示例编排启动：
+
+```bash
+docker compose -f doc/docker-compose/docker-compose-qdrant.yml up -d
+```
+
+构建后端：
+
+```bash
+mvn clean package -Pdev -DskipTests
+```
+
+推荐启动顺序：
+
+1. MySQL、Redis、Nacos，以及本次功能依赖的其他中间件。
+2. `flycloud-gateway`、`flycloud-auth`、`flycloud-system`。
+3. 按需启动 `flycloud-ai`、`flycloud-bpm`、`flycloud-mall`、`flycloud-generator` 和扩展服务。
+
+### 10.5 启动前端
+
+管理后台：
+
+```bash
+cd flycloud-ui/flycloud-admin-ui
+pnpm install
+pnpm dev
+```
+
+商城移动端使用 HBuilderX 打开 `flycloud-ui/flycloud-mall-app-ui`，选择运行到 H5、微信小程序或 App；接口地址和端口配置位于该工程的 `.env`。
+
+## 11、服务与端口
+
+### 后端服务
+
+| 启动级别 | 服务 | 职责 | 默认地址 |
+| --- | --- | --- | --- |
+| 必需 | `flycloud-gateway` | 统一入口与路由 | `http://127.0.0.1:8080` |
+| 必需 | `flycloud-auth` | 登录、令牌和授权 | `http://127.0.0.1:8088` |
+| 必需 | `flycloud-system` | 系统、会员、支付、IM 等核心能力 | `http://127.0.0.1:8085` |
+| 按需 | `flycloud-ai` | AI 助手与 AI 实验室 | `http://127.0.0.1:8086` |
+| 按需 | `flycloud-bpm` | 工作流 | `http://127.0.0.1:8090` |
+| 按需 | `flycloud-mall` | 商城 | `http://127.0.0.1:8081` |
+| 按需 | `flycloud-generator` | 代码生成 | `http://127.0.0.1:8089` |
+| 按需 | `flycloud-test` | 测试与示例 | `http://127.0.0.1:8099` |
+| 扩展 | `flycloud-file-admin` | 文件管理后台 | `http://127.0.0.1:9095` |
+| 扩展 | `flycloud-xxljob-admin` | 任务调度中心 | `http://127.0.0.1:9091/xxl-job-admin` |
+
+### 前端服务
+
+| 工程 | 默认地址 |
+| --- | --- |
+| `flycloud-admin-ui` | `http://127.0.0.1:7075` |
+| `flycloud-mall-app-ui`（H5） | `http://127.0.0.1:3000/mall-app` |
+
+业务访问建议统一经过网关；各服务端口主要用于本地调试和单服务接口文档。
 
 ## 12、工程与中间件能力
 
@@ -560,3 +576,11 @@ Apifox 等第三方工具可直接导入对应服务的 OpenAPI 数据源。
 | VO | 返回给前端或调用方的展示对象，通常序列化为 JSON |
 
 建议保持 Controller、Service、Mapper、BO/VO 职责清晰，不直接将数据库实体暴露给客户端；跨服务调用统一复用 `flycloud-api` 中的契约。
+
+## 14、开源协议
+
+FlyCloud 项目贡献者拥有版权且未另行标注协议的代码，采用 [GNU General Public License v3.0](LICENSE) 开源。
+
+你可以在遵守 GPL v3 的前提下使用、研究、修改和分发本项目。分发本项目或其修改版本时，需要继续提供相应源代码，并保留版权及许可证声明。本项目按“原样”提供，不提供任何形式的担保。
+
+仓库中已单独声明许可证的子项目、第三方源码和资源继续遵循各自的许可证，主要来源与版权声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
