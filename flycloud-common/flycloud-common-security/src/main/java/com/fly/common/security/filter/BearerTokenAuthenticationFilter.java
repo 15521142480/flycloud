@@ -7,7 +7,9 @@ import com.fly.common.config.properties.AuthProperties;
 import com.fly.common.constant.AuthConstants;
 import com.fly.common.constant.Oauth2Constants;
 import com.fly.common.domain.model.R;
+import com.fly.common.exception.TokenException;
 import com.fly.common.redis.utils.RedisUtils;
+import com.fly.common.security.handler.CustomAuthenticationEntryPoint;
 import com.fly.common.security.user.FlyUser;
 import com.fly.common.utils.ResponseUtils;
 import com.fly.common.utils.auth.SecurityUtils;
@@ -20,6 +22,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,17 +36,30 @@ import java.util.Map;
 
 /**
  * Spring Security 6 资源服务认证过滤器，统一处理Feign内部签名和Bearer Token认证。
+ *
+ * @author lxs
  */
 @RequiredArgsConstructor
 public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
 
+    /** 用户登录态缓存访问工具。 */
     private final RedisUtils redisUtils;
 
+    /** 用户令牌与内部接口签名配置。 */
     private final AuthProperties authProperties;
+
+    /** 统一输出未认证响应，供客户端清理失效登录态。 */
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
 
     /**
-     * 接口拦截
+     * 认证用户令牌或内部接口签名；无效令牌返回 401，避免解析异常变成 500。
+     *
+     * @param request 当前 HTTP 请求
+     * @param response 当前 HTTP 响应
+     * @param filterChain 后续过滤器链
+     * @throws ServletException 后续过滤器处理失败时抛出
+     * @throws IOException 读取请求或写入响应失败时抛出
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -79,10 +95,25 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Claims tokenClaims = SecurityUtils.getClaims(token);
+        Claims tokenClaims;
+        try {
+            tokenClaims = SecurityUtils.getClaims(token);
+        } catch (TokenException exception) {
+            // 当前过滤器位于安全异常转换过滤器之前，必须在此转换令牌解析异常。
+            authenticationEntryPoint.commence(request, response,
+                    new BadCredentialsException("token无效或已过期", exception));
+            return;
+        }
+        if (tokenClaims == null) {
+            authenticationEntryPoint.commence(request, response,
+                    new BadCredentialsException("token无效或已过期"));
+            return;
+        }
         Map<String, Object> claims = getTokenClaims(token);
-        if (tokenClaims == null || claims == null) {
-            filterChain.doFilter(request, response);
+        if (claims == null) {
+            // 携带了令牌却查不到登录态时统一要求重新登录，公开接口也不能把失效令牌当作有效会话。
+            authenticationEntryPoint.commence(request, response,
+                    new BadCredentialsException("token无效或已过期"));
             return;
         }
 

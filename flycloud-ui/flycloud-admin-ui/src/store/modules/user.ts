@@ -53,14 +53,16 @@ export const useUserStore = defineStore('admin-user', {
 
   actions: {
     /**
-     * 设置用户信息
+     * 设置当前会话的用户信息；页面初始化时可强制验证服务端会话。
+     *
+     * @param forceRefresh 是否忽略浏览器用户缓存并从服务端重新获取
      */
-    async setUserInfoAction() {
+    async setUserInfoAction(forceRefresh = false) {
       if (!getAccessToken()) {
         this.resetState()
         return null
       }
-      let userInfo = wsCache.get(CACHE_KEY.USER)
+      let userInfo = forceRefresh ? undefined : wsCache.get(CACHE_KEY.USER)
       if (!userInfo) {
         userInfo = await getUserInfoApi()
       }

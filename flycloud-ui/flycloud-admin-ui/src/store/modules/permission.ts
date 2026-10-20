@@ -33,34 +33,31 @@ export const usePermissionStore = defineStore('permission', {
 
   actions: {
     /**
-     * 生成路由
+     * 根据当前用户菜单生成动态路由；解析失败时向调用方抛出异常以结束导航等待。
      */
-    async generateRoutes(): Promise<unknown> {
-      return new Promise<void>(async (resolve) => {
-        // 获得菜单列表，它在登录的时候，setUserInfoAction 方法中已经进行获取
-        let res: AppCustomRouteRecordRaw[] = []
-        if (wsCache.get(CACHE_KEY.ROLE_ROUTERS)) {
-          res = wsCache.get(CACHE_KEY.ROLE_ROUTERS) as AppCustomRouteRecordRaw[]
-        }
-        const routerMap: AppRouteRecordRaw[] = generateRoute(res)
-        // 动态路由，404一定要放到最后面
-        // preschooler：vue-router@4以后已支持静态404路由，此处可不再追加
-        this.addRouters = routerMap.concat([
-          {
-            path: '/:path(.*)*',
-            // redirect: '/404',
-            component: () => import('@/views/Error/404.vue'),
-            name: '404Page',
-            meta: {
-              hidden: true,
-              breadcrumb: false
-            }
+    async generateRoutes(): Promise<void> {
+      // 获得菜单列表，它在登录的时候，setUserInfoAction 方法中已经进行获取
+      let res: AppCustomRouteRecordRaw[] = []
+      if (wsCache.get(CACHE_KEY.ROLE_ROUTERS)) {
+        res = wsCache.get(CACHE_KEY.ROLE_ROUTERS) as AppCustomRouteRecordRaw[]
+      }
+      const routerMap: AppRouteRecordRaw[] = generateRoute(res)
+      // 动态路由，404一定要放到最后面
+      // preschooler：vue-router@4以后已支持静态404路由，此处可不再追加
+      this.addRouters = routerMap.concat([
+        {
+          path: '/:path(.*)*',
+          // redirect: '/404',
+          component: () => import('@/views/Error/404.vue'),
+          name: '404Page',
+          meta: {
+            hidden: true,
+            breadcrumb: false
           }
-        ])
-        // 渲染菜单的所有路由
-        this.routers = cloneDeep(remainingRouter).concat(routerMap)
-        resolve()
-      })
+        }
+      ])
+      // 渲染菜单的所有路由
+      this.routers = cloneDeep(remainingRouter).concat(routerMap)
     },
     setMenuTabRouters(routers: AppRouteRecordRaw[]): void {
       this.menuTabRouters = routers

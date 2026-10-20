@@ -1,7 +1,9 @@
-import router from './router'
+import router, { resetRouter } from './router'
 import type { RouteRecordRaw } from 'vue-router'
+import { isAxiosError } from 'axios'
 import { isRelogin } from '@/config/axios/service'
-import { getAccessToken } from '@/utils/auth'
+import { getAccessToken, removeToken } from '@/utils/auth'
+import { deleteUserCache } from '@/hooks/web/useCache'
 import { useTitle } from '@/hooks/web/useTitle'
 import { useNProgress } from '@/hooks/web/useNProgress'
 import { usePageLoading } from '@/hooks/web/usePageLoading'
@@ -13,40 +15,7 @@ const { start, done } = useNProgress()
 
 const { loadStart, loadDone } = usePageLoading()
 
-const parseURL = (
-  url: string | null | undefined
-): { basePath: string; paramsObject: { [key: string]: string } } => {
-  // 如果输入为 null 或 undefined，返回空字符串和空对象
-  if (url == null) {
-    return { basePath: '', paramsObject: {} }
-  }
-
-  // 找到问号 (?) 的位置，它之前是基础路径，之后是查询参数
-  const questionMarkIndex = url.indexOf('?')
-  let basePath = url
-  const paramsObject: { [key: string]: string } = {}
-
-  // 如果找到了问号，说明有查询参数
-  if (questionMarkIndex !== -1) {
-    // 获取 basePath
-    basePath = url.substring(0, questionMarkIndex)
-
-    // 从 URL 中获取查询字符串部分
-    const queryString = url.substring(questionMarkIndex + 1)
-
-    // 使用 URLSearchParams 遍历参数
-    const searchParams = new URLSearchParams(queryString)
-    searchParams.forEach((value, key) => {
-      // 封装进 paramsObject 对象
-      paramsObject[key] = value
-    })
-  }
-
-  // 返回 basePath 和 paramsObject
-  return { basePath, paramsObject }
-}
-
-// 路由不重定向白名单
+/** 公开页面无需加载用户、字典和菜单，残留 Token 不能阻止进入登录页。 */
 const whiteList = [
   '/login',
   '/social-login',
@@ -56,55 +25,94 @@ const whiteList = [
   '/oauthLogin/gitee'
 ]
 
+/** 初始化失败时允许展示的静态错误页，避免错误页再次触发同一失败请求。 */
+const recoveryPaths = ['/403', '/404', '/500']
+
 /**
- * 路由加载前
+ * 导航前验证当前会话并初始化字典和菜单；失败时进入登录页或可重试的错误页。
  */
 router.beforeEach(async (to, from, next) => {
   start()
   loadStart()
-  if (getAccessToken()) {
-    if (to.path === '/login') {
-      next({ path: '/' })
-    } else {
-      // 获取所有字典
-      const dictStore = useDictStoreWithOut()
-      const userStore = useUserStoreWithOut()
-      const permissionStore = usePermissionStoreWithOut()
+  const userStore = useUserStoreWithOut()
+  const accessToken = getAccessToken()
+  if (!accessToken || to.path === '/login') {
+    userStore.resetState()
+  }
+  if (whiteList.includes(to.path) || recoveryPaths.includes(to.path)) {
+    next()
+    return
+  }
+  if (!accessToken) {
+    next({ path: '/login', query: { redirect: to.fullPath }, replace: true })
+    return
+  }
 
-      if (!dictStore.getIsSetDict) {
-        await dictStore.setDictMap()
-      }
-
-      if (!userStore.getIsSetUser) {
-        isRelogin.show = true
-        await userStore.setUserInfoAction()
-        isRelogin.show = false
-        // 后端过滤菜单
-        await permissionStore.generateRoutes()
-        permissionStore.getAddRouters.forEach((route) => {
-          router.addRoute(route as unknown as RouteRecordRaw) // 动态添加可访问路由表
-        })
-        const redirectPath = from.query.redirect || to.path
-        // 修复跳转时不带参数的问题
-        const redirect = decodeURIComponent(redirectPath as string)
-        const { paramsObject: query } = parseURL(redirect)
-        const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect, query }
-        next(nextData)
-      } else {
-        next()
-      }
+  const dictStore = useDictStoreWithOut()
+  const permissionStore = usePermissionStoreWithOut()
+  const needsInitialization = !userStore.getIsSetUser
+  isRelogin.show = true
+  try {
+    if (needsInitialization) {
+      // 每次页面重新打开都先向服务端验证会话，浏览器里的用户缓存不能证明 Token 仍有效。
+      await userStore.setUserInfoAction(true)
     }
-  } else {
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (!dictStore.getIsSetDict) {
+      await dictStore.setDictMap()
+    }
+    if (needsInitialization) {
+      await permissionStore.generateRoutes()
+      resetRouter()
+      permissionStore.getAddRouters.forEach((route) => {
+        router.addRoute(route as unknown as RouteRecordRaw)
+      })
+      // Vue Router 已解码 query，直接保留完整地址，避免重复解码导致参数丢失或异常。
+      const redirect = from.query.redirect
+      const redirectPath =
+        typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+          ? redirect
+          : to.fullPath
+      const target = router.resolve(redirectPath)
+      next({ path: target.path, query: target.query, hash: target.hash, replace: true })
+    } else {
       next()
-    } else {
-      next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页
     }
+  } catch (error: unknown) {
+    if (getAccessToken() && getAccessToken() !== accessToken) {
+      // 重新登录后迟到的旧初始化请求不能清理新会话，重新验证当前令牌即可。
+      next({ path: to.path, query: to.query, hash: to.hash, replace: true })
+      return
+    }
+    userStore.resetState()
+    resetRouter()
+    const status = isAxiosError(error) ? error.response?.status : undefined
+    if (status === 401 || !getAccessToken()) {
+      removeToken()
+      deleteUserCache()
+      next({ path: '/login', query: { redirect: to.fullPath }, replace: true })
+    } else {
+      // 服务故障和无权限不等于会话失效；保留 Token，错误页可返回首页重新加载。
+      next({
+        path: status === 403 ? '/403' : '/500',
+        query: { redirect: to.fullPath },
+        replace: true
+      })
+    }
+  } finally {
+    isRelogin.show = false
   }
 })
 
+/** 导航完成或被取消时结束进度条和页面加载状态。 */
 router.afterEach((to) => {
   useTitle(to?.meta?.title as string)
   done() // 结束Progress
+  loadDone()
+})
+
+/** 异步组件等导航异常也必须释放加载状态，避免遗留全屏遮罩。 */
+router.onError(() => {
+  isRelogin.show = false
+  done()
   loadDone()
 })

@@ -10,6 +10,7 @@
     "dev": "vite --mode env.local",
     "dev-server": "vite --mode dev",
     "ts:check": "vue-tsc --noEmit",
+    "test:auth": "node --test tests/auth-navigation.test.cjs",
     "build:local": "node ./node_modules/vite/bin/vite.js build",
     "build:dev": "node ./node_modules/vite/bin/vite.js build --mode dev",
     "build:test": "node ./node_modules/vite/bin/vite.js build --mode test",
