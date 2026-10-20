@@ -36,7 +36,9 @@
             :alt="t('textCaptcha.imageAlt')"
             @click="handleCaptchaClick"
           />
-          <div v-else class="captcha-placeholder">{{ t('common.loading') }}</div>
+          <div v-else class="captcha-placeholder">
+            {{ captchaLoading ? t('common.loading') : t('textCaptcha.loadFailed') }}
+          </div>
           <span
             v-for="(point, index) in clickPoints"
             :key="`${point.x}-${point.y}-${index}`"
@@ -45,11 +47,9 @@
           >
             {{ index + 1 }}
           </span>
-          <div
-            v-if="props.textCaptchaData.captchaCode"
-            class="captcha-passed"
-            >{{ t('textCaptcha.passed') }}</div
-          >
+          <div v-if="props.textCaptchaData.captchaCode" class="captcha-passed">{{
+            t('textCaptcha.passed')
+          }}</div>
         </div>
       </div>
     </el-dialog>
@@ -65,7 +65,7 @@ import type {
   TextCaptchaDataVo
 } from '@/entity/auth'
 import { getImageTextClickCaptchaApi, checkImageTextClickCaptchaApi } from '@/api/login'
-import { PropType } from 'vue'
+import type { PropType } from 'vue'
 const { t } = useI18n()
 const props = defineProps({
   textCaptchaData: {
@@ -106,36 +106,43 @@ const openImageTextClickCaptchaProp = async () => {
 defineExpose({ openImageTextClickCaptchaProp })
 
 /**
- * 加载图文点选验证码‌
+ * 加载图文验证码，等待期间隐藏旧题目并合并重复刷新。
  */
 const loadCaptcha = async () => {
+  if (captchaLoading.value) {
+    return
+  }
   captchaLoading.value = true
+  captchaChallenge.value = undefined
   clickPoints.value = []
   resetTextCaptchaData()
 
   try {
-    captchaChallenge.value = await getImageTextClickCaptchaApi()
+    const challenge = await getImageTextClickCaptchaApi()
+    if (!captchaDialogVisible.value) {
+      return
+    }
+    captchaChallenge.value = challenge
     emit('update:textCaptchaData', {
       ...props.textCaptchaData,
       imageTextClickCaptchaKey: captchaChallenge.value?.captchaId ?? ''
     })
-  } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : t('auto.views.login.components.ImageTextClickCaptcha.k8ffea958')
-    ElMessage.error(message)
+  } catch {
+    // 请求错误由公共拦截器提示，图片区域展示加载失败并允许重新刷新。
+    captchaChallenge.value = undefined
   } finally {
     captchaLoading.value = false
   }
 }
 
 /**
- * 点击图片事件
- * @param event
+ * 收集原图坐标；加载和校验期间忽略点击，避免提交正在被替换的旧题目。
+ *
+ * @param event 验证码图片上的鼠标点击事件
  */
 const handleCaptchaClick = async (event: MouseEvent) => {
   if (
+    captchaLoading.value ||
     !captchaChallenge.value ||
     props.textCaptchaData.captchaCode ||
     clickPoints.value.length >= 3
@@ -167,33 +174,47 @@ const handleCaptchaClick = async (event: MouseEvent) => {
 }
 
 /**
- * 验证图文点选验证码‌
+ * 校验当前题目，通过后通知父组件自动登录，失效或失败时重新加载题目。
  */
 const checkCaptcha = async () => {
-  if (!captchaChallenge.value) {
+  const captchaId = captchaChallenge.value?.captchaId
+  if (!captchaId || captchaLoading.value) {
     return
   }
   captchaLoading.value = true
+  let reloadCaptcha = false
   try {
     const result = await checkImageTextClickCaptchaApi({
-      captchaId: captchaChallenge.value.captchaId,
+      captchaId,
       points: clickPoints.value.map(({ x, y }) => ({ x, y }))
     })
-    emit('update:textCaptchaData', {
-      ...props.textCaptchaData,
-      captchaCode: result.captchaVerification ?? ''
-    })
-    // jq祖传问题，代码跳开跑，赋值有问题
-    await nextTick()
-    emit('success', props.textCaptchaData)
-    ElMessage.success(t('textCaptcha.passed'))
-    captchaDialogVisible.value = false
-  } catch (error) {
-    // const message = error instanceof Error ? error.message : t('textCaptcha.invalid')
-    // ElMessage.error(message)
-    await loadCaptcha()
+    // 用户关闭弹窗后到达的响应不能触发自动登录。
+    if (!captchaDialogVisible.value || captchaChallenge.value?.captchaId !== captchaId) {
+      return
+    }
+    if (!result?.captchaVerification) {
+      ElMessage.error(t('textCaptcha.invalid'))
+      reloadCaptcha = true
+    } else {
+      const verifiedData: TextCaptchaDataVo = {
+        ...props.textCaptchaData,
+        captchaCode: result.captchaVerification
+      }
+      emit('update:textCaptchaData', verifiedData)
+      // 等待父组件同步验证码凭证，再通知其提交登录。
+      await nextTick()
+      ElMessage.success(t('textCaptcha.passed'))
+      captchaDialogVisible.value = false
+      emit('success', verifiedData)
+    }
+  } catch {
+    // 公共拦截器已经提示错误，释放忙碌状态后再刷新，避免刷新被自身的并发保护阻止。
+    reloadCaptcha = captchaDialogVisible.value && captchaChallenge.value?.captchaId === captchaId
   } finally {
     captchaLoading.value = false
+  }
+  if (reloadCaptcha) {
+    await loadCaptcha()
   }
 }
 

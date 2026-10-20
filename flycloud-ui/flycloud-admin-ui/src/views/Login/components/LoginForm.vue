@@ -291,7 +291,7 @@ const getLoginFormCache = () => {
 const loading = ref() // ElLoading.service 返回的实例
 
 /**
- * 登录
+ * 校验表单并提交登录，供登录按钮和图文验证码成功回调共用。
  */
 const handleLogin = async () => {
   if (loginLoading.value) {
@@ -299,14 +299,11 @@ const handleLogin = async () => {
   }
 
   const data = await validForm()
-  if (!data) {
+  if (!data || loginLoading.value) {
     return
   }
 
-  if (
-    !textCaptchaData.value.captchaCode ||
-    !loginData.loginForm.captchaCode
-  ) {
+  if (!textCaptchaData.value.captchaCode || !loginData.loginForm.captchaCode) {
     ElMessage.warning(t('auto.views.login.components.LoginForm.kbe6f5b7d'))
     return
   }
@@ -359,11 +356,14 @@ const clickImageTextClickCaptcha = () => {
 }
 
 /**
- * 子组件回调_图文点选验证码‌
- * @param data
+ * 图文验证码通过后同步凭证并自动提交登录。
+ *
+ * @param data 服务端校验成功后返回的图文验证码凭证
+ * @returns 登录流程结束后完成
  */
-const successImageTextClick = (data: TextCaptchaDataVo) => {
+const successImageTextClick = async (data: TextCaptchaDataVo): Promise<void> => {
   loginData.loginForm.captchaCode = data.captchaCode
+  await handleLogin()
 }
 
 /**

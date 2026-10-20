@@ -32,8 +32,9 @@ import java.util.*;
 import java.util.List;
 
 /**
- * 验证码业务类
+ * 授权业务验证码服务，负责题目生成、一次性校验和登录凭证消费。
  *
+ * @author lxs
  */
 @Slf4j
 @Service
@@ -67,6 +68,12 @@ public class CaptchaServiceImpl implements CaptchaService {
     }
 
 
+    /**
+     * 生成并缓存图文验证码题目；缓存写入失败时不返回不可校验的图片。
+     *
+     * @return 含题目编号、图片和有效秒数的验证码信息
+     * @throws AuthException 题目缓存写入失败时抛出
+     */
     @Override
     public ImageTextClickCaptchaVo createImageTextClickCaptcha() {
 
@@ -84,11 +91,14 @@ public class CaptchaServiceImpl implements CaptchaService {
                 .map(word -> new CaptchaPoint(word.getX(), word.getY()))
                 .toList());
 
-        redisService.set(
+        Boolean saved = redisService.set(
                 AuthConstants.CHALLENGE_KEY_PREFIX + captchaId,
                 JsonUtils.toJsonString(challenge),
                 Duration.ofSeconds(AuthConstants.CAPTCHA_CHALLENGE_TTL_SECONDS)
         );
+        if (!Boolean.TRUE.equals(saved)) {
+            throw new AuthException("验证码生成失败，请稍后重试");
+        }
 
         vo.setCaptchaId(captchaId);
         vo.setTargetText(challenge.getTargetText());
@@ -98,30 +108,42 @@ public class CaptchaServiceImpl implements CaptchaService {
         return vo;
     }
 
+    /**
+     * 一次性校验图文验证码坐标并签发短期登录凭证。
+     *
+     * @param bo 题目编号及按提示顺序点击的坐标
+     * @return 含一次性登录凭证和有效秒数的校验结果
+     * @throws AuthException 题目已失效、校验失败或凭证缓存写入失败时抛出
+     */
     @Override
     public ImageTextClickCaptchaVerifyVo verifyImageTextClickCaptcha(ImageTextClickCaptchaVerifyBo bo) {
 
         ImageTextClickCaptchaVerifyVo vo = new ImageTextClickCaptchaVerifyVo();
         String key = AuthConstants.CHALLENGE_KEY_PREFIX + bo.getCaptchaId();
-        String value = redisService.get(key).toString();
-        redisService.del(key);
-
-        if (!StringUtils.hasText(value)) {
+        Object cached = redisService.get(key);
+        if (!(cached instanceof String value) || !StringUtils.hasText(value)) {
+            throw new AuthException("验证码已过期，请刷新后重试");
+        }
+        // Redis 删除只会有一个请求成功，防止并发校验同一道题后重复签发登录凭证。
+        if (!Boolean.TRUE.equals(redisService.del(key))) {
             throw new AuthException("验证码已过期，请刷新后重试");
         }
 
         CaptchaChallenge challenge = JsonUtils.parseObject(value, CaptchaChallenge.class);
-        if (!matches(challenge.getAnswers(), bo.getPoints())) {
+        if (challenge == null || !matches(challenge.getAnswers(), bo.getPoints())) {
             log.error("Click captcha verify failed. captchaId={}", bo.getCaptchaId());
             throw new AuthException("验证码错误，请重新验证");
         }
 
         String verification = UUID.randomUUID().toString().replace("-", "");
-        redisService.set(
+        Boolean saved = redisService.set(
                 AuthConstants.VERIFIED_KEY_PREFIX + verification,
                 bo.getCaptchaId(),
                 Duration.ofSeconds(AuthConstants.CAPTCHA_VERIFICATION_TOKEN_TTL_SECONDS)
         );
+        if (!Boolean.TRUE.equals(saved)) {
+            throw new AuthException("验证码校验暂不可用，请稍后重试");
+        }
 
         vo.setCaptchaVerification(verification);
         vo.setExpiresInSeconds(AuthConstants.CAPTCHA_VERIFICATION_TOKEN_TTL_SECONDS);
@@ -276,6 +298,13 @@ public class CaptchaServiceImpl implements CaptchaService {
         return positions;
     }
 
+    /**
+     * 按顺序和像素容差核对点击坐标，缺失的答案或坐标均视为校验失败。
+     *
+     * @param answers 缓存题目对应的有序答案坐标
+     * @param points 用户提交的有序点击坐标
+     * @return 坐标完整且全部落在容差内时返回 true
+     */
     private boolean matches(List<CaptchaPoint> answers, List<ImageTextClickCaptchaPointBo> points) {
 
         if (answers == null || points == null || answers.size() != AuthConstants.TARGET_COUNT || points.size() != AuthConstants.TARGET_COUNT) {
@@ -285,7 +314,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         for (int index = 0; index < AuthConstants.TARGET_COUNT; index += 1) {
             CaptchaPoint answer = answers.get(index);
             ImageTextClickCaptchaPointBo point = points.get(index);
-            if (point.getX() == null || point.getY() == null) {
+            if (answer == null || point == null || point.getX() == null || point.getY() == null) {
                 return false;
             }
             double distance = Math.hypot(point.getX() - answer.getX(), point.getY() - answer.getY());
